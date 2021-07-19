@@ -560,6 +560,7 @@
 		C3357DB524768C400028F4A9 /* CustomFCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3357DB424768C400028F4A9 /* CustomFCTheme.plist */; };
 		C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */; };
 		C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */; };
+		C34F491026A5527F0090A327 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34F490F26A5527F0090A327 /* GoogleService-Info.plist */; };
 		C356C000243C2F85007E419B /* KNSelectMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */; };
 		C356C001243C2F85007E419B /* KNSelectMarketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C356BFFF243C2F85007E419B /* KNSelectMarketViewController.xib */; };
 		C356C009243DAE9F007E419B /* KNMarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */; };
@@ -583,7 +584,6 @@
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC3F7E24AC984000B1ADFE /* KNSecret.swift */; };
-		C3BC3F8124AC985900B1ADFE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3BC3F8024AC985900B1ADFE /* GoogleService-Info.plist */; };
 		C3C4DAB22446FA5500CA4206 /* KNCancelSuggestOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C4DAB02446FA5500CA4206 /* KNCancelSuggestOrdersViewController.swift */; };
 		C3C4DAB32446FA5500CA4206 /* KNCancelSuggestOrdersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3C4DAB12446FA5500CA4206 /* KNCancelSuggestOrdersViewController.xib */; };
 		C3E401D7242B048D00F31372 /* LimitOrderContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E401D5242B048D00F31372 /* LimitOrderContainerViewController.swift */; };
@@ -1227,6 +1227,7 @@
 		C3357DB424768C400028F4A9 /* CustomFCTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CustomFCTheme.plist; sourceTree = "<group>"; };
 		C33CCB2B23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNConfirmCancelTransactionPopUp.swift; sourceTree = "<group>"; };
 		C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNConfirmCancelTransactionPopUp.xib; sourceTree = "<group>"; };
+		C34F490F26A5527F0090A327 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "KyberSwap/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		C356BFFE243C2F85007E419B /* KNSelectMarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSelectMarketViewController.swift; sourceTree = "<group>"; };
 		C356BFFF243C2F85007E419B /* KNSelectMarketViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSelectMarketViewController.xib; sourceTree = "<group>"; };
 		C356C007243DAE9F007E419B /* KNMarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarketTableViewCell.swift; sourceTree = "<group>"; };
@@ -1250,7 +1251,6 @@
 		C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTutorialPagerCell.swift; sourceTree = "<group>"; };
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
 		C3BC3F7E24AC984000B1ADFE /* KNSecret.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KNSecret.swift; path = KyberNetwork/KyberNetwork/Configurations/Environments/KNSecret.swift; sourceTree = SOURCE_ROOT; };
-		C3BC3F8024AC985900B1ADFE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "KyberNetwork/Configurations/Environments/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3C4DAB02446FA5500CA4206 /* KNCancelSuggestOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCancelSuggestOrdersViewController.swift; sourceTree = "<group>"; };
 		C3C4DAB12446FA5500CA4206 /* KNCancelSuggestOrdersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNCancelSuggestOrdersViewController.xib; sourceTree = "<group>"; };
 		C3E401D5242B048D00F31372 /* LimitOrderContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitOrderContainerViewController.swift; sourceTree = "<group>"; };
@@ -3440,7 +3440,7 @@
 				29AD8A071F93E1F0008E10E7 /* KyberNetwork.entitlements */,
 				296106CD1F777E410006164B /* LaunchScreen.storyboard */,
 				C364819324726B1200137596 /* KyberSwap-Bridging-Header.h */,
-				C3BC3F8024AC985900B1ADFE /* GoogleService-Info.plist */,
+				C34F490F26A5527F0090A327 /* GoogleService-Info.plist */,
 				C3357DB424768C400028F4A9 /* CustomFCTheme.plist */,
 			);
 			path = KyberNetwork;
@@ -4490,6 +4490,7 @@
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
 				2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
+				C34F491026A5527F0090A327 /* GoogleService-Info.plist in Resources */,
 				25F1BAD921BBA7D200A36900 /* config_env_ropsten2.json in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
 				C3E8D86525B9316900FDA2AB /* KNGasWarningViewController.xib in Resources */,
@@ -4588,7 +4589,6 @@
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
 				254A88B6229BDBEC00AA6BBA /* KNLimitOrderSearchTokenViewController.xib in Resources */,
-				C3BC3F8124AC985900B1ADFE /* GoogleService-Info.plist in Resources */,
 				25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */,
 				C37CC09C245803CA0081FB32 /* Roboto-Bold.ttf in Resources */,
 				251ABCB520578F6E0069687F /* config_env_staging.json in Resources */,

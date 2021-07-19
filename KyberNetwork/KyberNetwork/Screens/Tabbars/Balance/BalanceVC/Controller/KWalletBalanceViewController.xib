@@ -55,13 +55,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="JqR-o8-0HL">
-                    <rect key="frame" x="12" y="587" width="351" height="68"/>
+                    <rect key="frame" x="12" y="575" width="351" height="80"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="68" id="QSq-Pd-dqd"/>
+                        <constraint firstAttribute="height" constant="80" id="QSq-Pd-dqd"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                    <state key="normal" title="Tap here to download our new app Krystal for more features, cheaper gas and attractive prizes" backgroundImage="krystal_warning_button_bg">
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="25"/>
+                    <state key="normal" title="Sunset of KyberSwap" backgroundImage="krystal_warning_button_bg">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -78,19 +78,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4,543.123 USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-YM-0aU">
-                            <rect key="frame" x="20" y="81" width="190.5" height="33"/>
+                            <rect key="frame" x="20" y="81" width="186" height="33"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="28"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlW-Mm-bZf">
-                            <rect key="frame" x="20" y="118" width="116" height="16.5"/>
+                            <rect key="frame" x="20" y="118" width="115.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="qr_code_white_small" translatesAutoresizingMaskIntoConstraints="NO" id="DHe-5I-0yd">
-                            <rect key="frame" x="140" y="118.5" width="16" height="16"/>
+                            <rect key="frame" x="139.5" y="118.5" width="16" height="16"/>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uX4-lo-QAu">
                             <rect key="frame" x="327" y="30.5" width="48" height="48"/>
@@ -104,7 +104,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LI-U8-W7j">
-                            <rect key="frame" x="20" y="65" width="190.5" height="69.5"/>
+                            <rect key="frame" x="20" y="65" width="186" height="69.5"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WJc-fq-iX6">
@@ -163,7 +163,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5h-dN-kSy">
-                            <rect key="frame" x="156" y="115.5" width="37" height="22"/>
+                            <rect key="frame" x="155.5" y="115.5" width="37" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="WjN-co-0oi"/>
                                 <constraint firstAttribute="width" constant="37" id="sMT-Jk-rCg"/>
@@ -212,7 +212,7 @@
                     <rect key="frame" x="0.0" y="160" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPs-kS-P1d">
-                            <rect key="frame" x="20" y="2" width="79" height="36"/>
+                            <rect key="frame" x="20" y="2" width="78" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="zWD-Ze-1D3"/>
                             </constraints>
@@ -225,7 +225,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfz-k4-GjU">
-                            <rect key="frame" x="115" y="2" width="64" height="36"/>
+                            <rect key="frame" x="114" y="2" width="64" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="U7k-H2-WOW"/>
                                 <constraint firstAttribute="height" constant="36" id="YmJ-bz-nyz"/>
@@ -295,7 +295,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EY4-fd-g0P">
-                            <rect key="frame" x="296" y="0.0" width="39" height="36"/>
+                            <rect key="frame" x="299" y="0.0" width="36" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="bBq-ro-mjv"/>
                             </constraints>
@@ -308,7 +308,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61z-Hi-1ah">
-                            <rect key="frame" x="226" y="0.0" width="31" height="36"/>
+                            <rect key="frame" x="227" y="0.0" width="30" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="R2Q-ff-dAH"/>
                             </constraints>
@@ -322,7 +322,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2FJ-V0-D8n">
-                            <rect key="frame" x="188" y="0.0" width="30" height="36"/>
+                            <rect key="frame" x="189" y="0.0" width="30" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="Lq4-wz-Clc"/>
                             </constraints>
@@ -358,7 +358,7 @@
                     <rect key="frame" x="0.0" y="236" width="375" height="431"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tokens found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6g5-Hf-gED">
-                            <rect key="frame" x="120.5" y="106.5" width="134" height="21"/>
+                            <rect key="frame" x="121" y="106.5" width="133" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
