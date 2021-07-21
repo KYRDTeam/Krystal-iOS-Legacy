@@ -380,7 +380,7 @@ class KWalletBalanceViewController: KNBaseViewController {
   }
   
   @IBAction func krystalWarningButtonTapped(_ sender: UIButton) {
-    self.openSafari(with: "https://apps.apple.com/us/app/id1558105691")
+    self.openSafari(with: "https://medium.com/kyberswap/bidding-farewell-to-kyberswap-318baa8b73c9")
   }
 
   override func quickTutorialNextAction() {

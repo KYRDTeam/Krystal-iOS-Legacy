@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -145,7 +145,7 @@
                     </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zub-Ew-Bz8">
-                    <rect key="frame" x="0.0" y="193" width="414" height="577"/>
+                    <rect key="frame" x="0.0" y="193" width="414" height="549"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CVY-HD-0LX">
@@ -200,13 +200,13 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tgB-T9-IFY">
-                    <rect key="frame" x="12" y="782" width="390" height="68"/>
+                    <rect key="frame" x="12" y="760" width="390" height="90"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="68" id="hXv-qZ-ayx"/>
+                        <constraint firstAttribute="height" constant="90" id="hXv-qZ-ayx"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                    <state key="normal" title="Tap here to download our new app Krystal for more features, cheaper gas and attractive prizes" backgroundImage="krystal_warning_button_bg">
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="25"/>
+                    <state key="normal" title="Sunset of KyberSwap" backgroundImage="krystal_warning_button_bg">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -226,7 +226,7 @@
                 <constraint firstAttribute="trailing" secondItem="Ce9-To-TMZ" secondAttribute="trailing" id="AuI-lJ-5tc"/>
                 <constraint firstItem="Zub-Ew-Bz8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Buj-xI-0eM"/>
                 <constraint firstItem="mct-Gm-G3A" firstAttribute="top" secondItem="2c9-ao-Wbk" secondAttribute="bottom" id="DHg-wm-LeT"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Zub-Ew-Bz8" secondAttribute="bottom" constant="92" id="Ddk-Ew-9XH"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Zub-Ew-Bz8" secondAttribute="bottom" constant="120" id="Ddk-Ew-9XH"/>
                 <constraint firstItem="yh7-rU-M3u" firstAttribute="top" secondItem="mct-Gm-G3A" secondAttribute="top" id="LF6-oo-hA6"/>
                 <constraint firstItem="2c9-ao-Wbk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="18" id="MCS-L6-jmV"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CVY-HD-0LX" secondAttribute="trailing" id="Mjo-6l-0Mi"/>
