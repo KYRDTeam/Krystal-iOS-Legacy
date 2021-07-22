@@ -47,8 +47,8 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCS_SA_CREDENTIAL }}
           export_default_credentials: true
-      
-      - name: Setup cache 
+
+      - name: Setup cache
         uses: actions/cache@v1
         with:
           path: Pods
@@ -63,7 +63,7 @@ jobs:
 
       - name: Copy secret
         run: cp /Users/runner/privates/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-      
+
       - name: Pods install
         run: pod install
 
@@ -72,5 +72,24 @@ jobs:
         with:
           lane: all
 
-      - name: Check result
-        run: ls -lah archives
+      - name: Deploy to OTA Server
+        run: |
+          # upload ipa to OTA server
+          OBJECT_ID=$(curl -sSlF -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
+          
+          # set default app name
+          APP_NAME="Kyber Swap: Develop"
+
+          # extract build 
+          BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+
+          # extract version
+          VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+
+          # upload profile
+          CODE=$(curl -XPOST -H "Content-Type: application/json" \
+                  -o /dev/null -w "%{http_code}"
+                  -u "$OTA_USERNAME:$OTA_SECRET" \
+                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"} }" \
+                  $OTA_URL/api/v1/profiles/ios)
+          [[ "$CODE" == 20* ]] || exit 1
