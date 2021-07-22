@@ -89,7 +89,7 @@ jobs:
           VERSION=${VERSION:-1.0.0}
 
           # ota url
-          OTA_URL="${{ secrets.OTA_URL }}""
+          OTA_URL="${{ secrets.OTA_URL }}"
 
           # upload profile
           CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
