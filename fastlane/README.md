@@ -40,6 +40,11 @@ fastlane update_project
 fastlane build
 ```
 
+### bump_build_number
+```
+fastlane bump_build_number
+```
+
 
 ----
 
