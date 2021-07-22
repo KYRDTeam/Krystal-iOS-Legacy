@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ci
+      - develop
 
 env:
   LANG: en_US.UTF-8
@@ -13,7 +14,21 @@ env:
   GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
 
 jobs:
+  prepare:
+    runs-on: ubuntu-18.04
+    outputs:
+      current_branch: ${{ steps.current_branch.outputs.value }}
+    steps:
+      - name: Extract branch
+        shell: bash
+        id: current_branch
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          echo "::set-output name=value::$BRANCH"
+
   build-ios:
+    needs:
+      - prepare
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
@@ -108,7 +123,7 @@ jobs:
           git config --global user.email 'vietanhduong@users.noreply.github.com'
 
       - name: Bump Build number
+        if: needs.prepare.outputs.current_branch == 'develop'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
-
