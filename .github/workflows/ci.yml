@@ -75,8 +75,10 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         run: |
-          # ota url
+          # ota configure variable
           OTA_URL="${{ secrets.OTA_URL }}"
+          OTA_USERNAME="${{ secrets.OTA_USERNAME }}"
+          OTA_SECRET="${{ secrets.OTA_SECRET }}"
 
           # upload ipa to OTA server
           OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
