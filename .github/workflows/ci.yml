@@ -82,7 +82,7 @@ jobs:
 
           # upload ipa to OTA server
           OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
-          
+
           # set default app name
           APP_NAME="Kyber Swap: Develop"
 
@@ -101,3 +101,14 @@ jobs:
                   -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
                   $OTA_URL/api/v1/profiles/ios)
           [[ "$CODE" == 20* ]] || exit 1
+
+      - name: Prepare bump build number
+        run: |
+          git config --global user.name 'DevOps'
+          git config --global user.email 'vietanhduong@users.noreply.github.com'
+
+      - name: Bump Build number
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: all
+

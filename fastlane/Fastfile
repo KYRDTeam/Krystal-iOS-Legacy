@@ -36,6 +36,9 @@ lane :all do
   build
 end
 
+# prepare_keychain create a tmp keychain and install 
+# certificates. please prepare 2 certificates (.p12 format)
+# 1 distribution certificate and 1 development certificate
 lane :prepare_keychain do
   # travis provider is still working with github actions
   setup_ci(
@@ -69,6 +72,7 @@ lane :prepare_keychain do
   )
 end
 
+# install_profiles 
 lane :install_profiles do 
   # install dev profile
   install_provisioning_profile(path: dev_profile_path)
@@ -80,6 +84,9 @@ lane :install_profiles do
   install_provisioning_profile(path: ext_ad_hoc_profile_path)
 end 
 
+# update_project update devops code signing id 
+# if you want to change this field, make sure 
+# your certificate can sign on both of 2 targets
 lane :update_project do 
   # update code signing identity for KyberNetwork
   # ref: https://docs.fastlane.tools/actions/update_code_signing_settings/
@@ -99,6 +106,8 @@ lane :update_project do
   )
 end
 
+# build build ipa and export by ad-hoc method
+# output path: base_repo/archives/KyberSwap.ipa
 lane :build do
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
@@ -120,6 +129,8 @@ lane :build do
   )
 end
 
+# bump_build_number increment xcodeproject's build number 
+# this lane will be call at the end of build phase (after deploy to OTA success)
 lane :bump_build_number do
   # make sure repo is clean
   reset_git_repo(skip_clean: true, force: true)
@@ -129,5 +140,6 @@ lane :bump_build_number do
   git_add
   @version = get_version_number(xcodeproj: "KyberNetwork.xcodeproj", target: "KyberNetwork")
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
-  git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @old_build_number + " => " + @build_number + " (ver: " + @version + ")")
+  git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
+  push_to_git_remote((tags: false)
 end
