@@ -94,8 +94,8 @@ jobs:
 
           # upload profile
           CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
-                  -o /dev/null -w "%{http_code}"
+                  -o /dev/null -w "%{http_code}" \
                   -u "$OTA_USERNAME:$OTA_SECRET" \
-                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": \"$OBJECT_ID\", \"build\": \"$BUILD\", \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
+                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
                   $OTA_URL/api/v1/profiles/ios)
           [[ "$CODE" == 20* ]] || exit 1
