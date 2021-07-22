@@ -110,5 +110,5 @@ jobs:
       - name: Bump Build number
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: all
+          lane: bump_build_number
 
