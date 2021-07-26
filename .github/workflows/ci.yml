@@ -154,7 +154,7 @@ jobs:
           fi
 
           # notification
-          ./script/notify $MESSAGE
+          ./scripts/notify $MESSAGE
           [[ "$?" -eq 0 ]] || exit 1           
 
       - name: Prepare bump build number
