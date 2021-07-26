@@ -55,6 +55,9 @@ jobs:
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+      # notification
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
 
     steps:
       - name: Checkout
@@ -94,11 +97,65 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         run: |
-          # prepare message for notify to telegram
-          echo "$GITHUB_REF"
-          echo "$GITHUB_EVENT_PATH"
-          echo "$GITHUB_EVENT_NAME"
+          # ota configure variable
+          DEV_OTA_URL="${{ secrets.DEV_OTA_URL }}"
+          STG_OTA_URL="${{ secrets.STG_OTA_URL }}"
+
+          OTA_URL="$DEV_OTA_URL"
+          APP_SUFFIX="Develop"
           
+          # deploy to Staging OTA server if event 
+          # that trigger workflow is `pull_request`
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            OTA_URL="$STG_OTA_URL"
+            APP_SUFFIX="Staging"
+          fi
+
+          OTA_USERNAME="${{ secrets.OTA_USERNAME }}"
+          OTA_SECRET="${{ secrets.OTA_SECRET }}"
+
+          # upload ipa to OTA server
+          OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
+
+          # set default app name
+          APP_NAME="Kyber Swap: $APP_SUFFIX"
+
+          # extract build 
+          BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+          BUILD=${BUILD:-1}
+
+          # extract version
+          VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+          VERSION=${VERSION:-1.0.0}
+
+          # upload profile
+          CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
+                  -o /dev/null -w "%{http_code}" \
+                  -u "$OTA_USERNAME:$OTA_SECRET" \
+                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
+                  $OTA_URL/api/v1/profiles/ios)
+          
+          # stop CI if upload to OTA server failed
+          [[ "$CODE" == 20* ]] || exit 
+
+          # prepare message for notify to telegram
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+            PR_URL="https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER"
+            
+            MESSAGE="There is a new build on OTA Server *(staging)*. You can download at [$OTA_URL]($OTA_URL)
+            \n*Infomation*\n---\n*App name*: $APP_NAME\n*Version:* $VERSION\n*Build:* $BUILD\n*PR:* [#$PR_NUMBER]($PR_URL)"
+          else
+            COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
+            COMMIT_LESS="$(echo $GITHUB_SHA | head -c7)"
+
+            MESSAGE="There is a new build on OTA Server *(develop)*. You can download at [$OTA_URL]($OTA_URL)
+            \n*Infomation*\n---\n*App name*: $APP_NAME\n*Version:* $VERSION\n*Build:* $BUILD\n*Commit:* [#$COMMIT_LESS]($COMMIT_URL)" 
+          fi
+
+          # notification
+          ./script/notify $MESSAGE
+          [[ "$?" -eq 0 ]] || exit 1           
 
       - name: Prepare bump build number
         run: |
