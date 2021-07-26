@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# Notify to Telegram Group
+# Required environments:
+# - TELEGRAM_BOT_TOKEN  (required)
+# - TELEGRAM_GROUP_ID (required): It can be channel ID or group ID
+
+# common functions
+err() {
+  echo -e "ERROR: $*" >&2
+}
+
+info() {
+  echo -e "INFO: $*"
+}
+
+# validate telegram bot token
+if [[ -z "$TELEGRAM_BOT_TOKEN" ]]; then
+  err "BOT Token is empty" && exit 1
+fi
+
+# validate telegram group id
+if [[ -z "$TELEGRAM_GROUP_ID" ]]; then
+  err "Telegram group id is empty" && exit 1
+fi
+
+# validate input message
+_msg="$1"
+if [[ -z "$_msg" ]]; then
+  info "Input message is empty. Stop notify to Telegram!" && exit 0
+fi
+
+_ok=$(curl -sSfL -XPOST -H "Content-Type: application/json" -d "{\"chat_id\": \"$TELEGRAM_GROUP_ID\", \"text\": \"$_msg\", \"parse_mode\": \"Markdown\"}" https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage | jq -r .ok)
+
+[[ "$_ok" == "true" ]] && exit 0 || exit 1

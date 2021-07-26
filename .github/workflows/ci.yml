@@ -5,6 +5,10 @@ on:
     branches:
       - ci
       - develop
+  pull_request:
+    branches:
+      - master
+      - ci
 
 env:
   LANG: en_US.UTF-8
@@ -90,32 +94,11 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         run: |
-          # ota configure variable
-          OTA_URL="${{ secrets.OTA_URL }}"
-          OTA_USERNAME="${{ secrets.OTA_USERNAME }}"
-          OTA_SECRET="${{ secrets.OTA_SECRET }}"
-
-          # upload ipa to OTA server
-          OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
-
-          # set default app name
-          APP_NAME="Kyber Swap: Develop"
-
-          # extract build 
-          BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
-          BUILD=${BUILD:-1}
-
-          # extract version
-          VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
-          VERSION=${VERSION:-1.0.0}
-
-          # upload profile
-          CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
-                  -o /dev/null -w "%{http_code}" \
-                  -u "$OTA_USERNAME:$OTA_SECRET" \
-                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
-                  $OTA_URL/api/v1/profiles/ios)
-          [[ "$CODE" == 20* ]] || exit 1
+          # prepare message for notify to telegram
+          echo "$GITHUB_REF"
+          echo "$GITHUB_EVENT_PATH"
+          echo "$GITHUB_EVENT_NAME"
+          
 
       - name: Prepare bump build number
         run: |
