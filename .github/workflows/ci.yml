@@ -55,9 +55,6 @@ jobs:
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
-      # notification
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
 
     steps:
       - name: Checkout
@@ -137,25 +134,6 @@ jobs:
           
           # stop CI if upload to OTA server failed
           [[ "$CODE" == 20* ]] || exit 
-
-          # prepare message for notify to telegram
-          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-            PR_URL="https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER"
-            
-            MESSAGE="There is a new build on OTA Server *(staging)*. You can download at [$OTA_URL]($OTA_URL)
-            \n*Infomation*\n---\n*App name*: $APP_NAME\n*Version:* $VERSION\n*Build:* $BUILD\n*PR:* [#$PR_NUMBER]($PR_URL)"
-          else
-            COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
-            COMMIT_LESS="$(echo $GITHUB_SHA | head -c7)"
-
-            MESSAGE="There is a new build on OTA Server *(develop)*. You can download at [$OTA_URL]($OTA_URL)
-            \n*Infomation*\n---\n*App name*: $APP_NAME\n*Version:* $VERSION\n*Build:* $BUILD\n*Commit:* [#$COMMIT_LESS]($COMMIT_URL)" 
-          fi
-
-          # notification
-          ./scripts/notify $MESSAGE
-          [[ "$?" -eq 0 ]] || exit 1           
 
       - name: Prepare bump build number
         run: |
