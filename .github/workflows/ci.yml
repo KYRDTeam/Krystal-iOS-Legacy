@@ -35,6 +35,7 @@ jobs:
       - prepare
     runs-on: macos-latest
     env:
+      # keychain
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
       DISTRIBUTE_CERT_PATH: /Users/runner/privates/distribution.p12
