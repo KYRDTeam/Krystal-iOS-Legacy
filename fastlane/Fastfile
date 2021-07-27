@@ -10,7 +10,6 @@ distribute_cert_pwd = ENV["DISTRIBUTE_CERT_PASSWORD"]
 development_cert_path = ENV["DEVELOPMENT_CERT_PATH"]
 development_cert_pwd = ENV["DEVELOPMENT_CERT_PASSWORD"]
 
-
 # build variables
 team_id = ENV["APPLE_TEAM_ID"]
 bundle_id = ENV["APPLE_BUNDLE_ID"]
