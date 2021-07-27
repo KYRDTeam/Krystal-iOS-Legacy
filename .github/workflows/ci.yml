@@ -59,6 +59,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "2.6.3"
+          bundler-cache: true
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -89,6 +95,8 @@ jobs:
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: all
+          subdirectory: "ios"
+          bundle-install-path: "vendor/bundle"
 
       - name: Deploy to OTA Server
         shell: bash
@@ -138,9 +146,9 @@ jobs:
                   -u "$OTA_USERNAME:$OTA_SECRET" \
                   -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": $METADATA}" \
                   $OTA_URL/api/v1/profiles/ios)
-          
+
           # stop CI if upload to OTA server failed
-          [[ "$CODE" == 20* ]] || exit 
+          [[ "$CODE" == 20* ]] || exit
 
       - name: Prepare bump build number
         run: |
