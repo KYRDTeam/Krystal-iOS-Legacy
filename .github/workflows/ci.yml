@@ -100,12 +100,20 @@ jobs:
 
           OTA_URL="$DEV_OTA_URL"
           APP_SUFFIX="Develop"
-          
+
+          # prepare metadata
+          REPO_URL="https://github.com/${{ github.repository }}" 
+          METADATA="{\"repo\": \"$REPO_URL\", \"commit\": \"$GITHUB_SHA\"}"
+
           # deploy to Staging OTA server if event 
           # that trigger workflow is `pull_request`
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
             OTA_URL="$STG_OTA_URL"
             APP_SUFFIX="Staging"
+
+            # extract PR number
+            PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+            METADATA="{\"repo\": \"$REPO_URL\", \"pr_number\": \"$PR_NUMBER\"}"
           fi
 
           OTA_USERNAME="${{ secrets.OTA_USERNAME }}"
@@ -129,7 +137,7 @@ jobs:
           CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
                   -o /dev/null -w "%{http_code}" \
                   -u "$OTA_USERNAME:$OTA_SECRET" \
-                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": {\"commit\": \"${{ github.sha }}\", \"repo\": \"https://github.com/${{ github.repository }}\"}}" \
+                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": $METADATA}" \
                   $OTA_URL/api/v1/profiles/ios)
           
           # stop CI if upload to OTA server failed
