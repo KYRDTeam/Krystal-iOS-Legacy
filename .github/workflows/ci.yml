@@ -129,7 +129,7 @@ jobs:
           OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
 
           # set default app name
-          APP_NAME="Kyber Swap: $APP_SUFFIX"
+          APP_NAME="Krystal: $APP_SUFFIX"
 
           # extract build 
           BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
