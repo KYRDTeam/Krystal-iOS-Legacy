@@ -62,7 +62,7 @@ jobs:
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: "2.6.3"
+          ruby-version: 2.6
           bundler-cache: true
 
       - name: Set up Cloud SDK
