@@ -95,7 +95,6 @@ jobs:
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: all
-          subdirectory: "ios"
           bundle-install-path: "vendor/bundle"
 
       - name: Deploy to OTA Server
@@ -160,3 +159,4 @@ jobs:
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
+          bundle-install-path: 'vendor/bundle'
