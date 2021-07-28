@@ -24,19 +24,13 @@ class EarnSwapViewModel {
   fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
   
-  var swapRates: (String, String, BigInt, [JSONDictionary]) = ("", "", BigInt(0), [])
-  var currentFlatform: String = "kyber" {
+  var swapRates: (String, String, BigInt, [Rate]) = ("", "", BigInt(0), [])
+  var currentFlatform: String = "Kyber" {
     didSet {
       let dict = self.swapRates.3.first { (element) -> Bool in
-        if let platformString = element["platform"] as? String {
-          return platformString == self.currentFlatform
-        } else {
-          return false
-        }
+        return element.platform == self.currentFlatform
       }
-      if let estGasString = dict?["estimatedGas"] as? NSNumber, let estGas = BigInt(estGasString.stringValue) {
-        self.gasLimit = estGas
-      }
+      self.gasLimit = BigInt(dict?.estimatedGas ?? 0)
     }
   }
   var remainApprovedAmount: (TokenData, BigInt)?
@@ -80,7 +74,7 @@ class EarnSwapViewModel {
     let string = self.fromTokenData.getBalanceBigInt().string(
       decimals: self.fromTokenData.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.fromTokenData.decimals, 6)
+      maxFractionDigits: min(self.fromTokenData.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
@@ -131,7 +125,7 @@ class EarnSwapViewModel {
       let string = availableValue.string(
         decimals: self.fromTokenData.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.fromTokenData.decimals, 6)
+        maxFractionDigits: min(self.fromTokenData.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
@@ -250,17 +244,9 @@ class EarnSwapViewModel {
     }
 
     let rateDict = self.swapRates.3.first { (element) -> Bool in
-      if let platformString = element["platform"] as? String {
-        return platformString == platform
-      } else {
-        return false
-      }
+      return element.platform == platform
     }
-    if let rateString = rateDict?["rate"] as? String {
-      return rateString
-    } else {
-      return ""
-    }
+    return rateDict?.rate ?? ""
   }
 
   func resetSwapRates() {
@@ -283,8 +269,8 @@ class EarnSwapViewModel {
     }()
     return expectedAmount.string(
       decimals: self.toTokenData.decimals,
-      minFractionDigits: min(self.toTokenData.decimals, 6),
-      maxFractionDigits: min(self.toTokenData.decimals, 6)
+      minFractionDigits: min(self.toTokenData.decimals, 5),
+      maxFractionDigits: min(self.toTokenData.decimals, 5)
     ).removeGroupSeparator()
   }
   
@@ -317,7 +303,7 @@ class EarnSwapViewModel {
 //    let value = amount.displayRate(decimals: 18)
 //    return "~ $\(value) USD"
 //  }
-  func updateSwapRates(from: TokenData, to: TokenData, amount: BigInt, rates: [JSONDictionary]) {
+  func updateSwapRates(from: TokenData, to: TokenData, amount: BigInt, rates: [Rate]) {
     guard from == self.fromTokenData, to == self.toTokenData else {
       return
     }
@@ -333,20 +319,16 @@ class EarnSwapViewModel {
     let rates = self.swapRates.3
     if rates.count == 1 {
       let dict = rates.first
-      if let platformString = dict?["platform"] as? String {
-        self.currentFlatform = platformString
-      }
+      self.currentFlatform = dict?.platform ?? ""
     } else {
       let max = rates.max { (left, right) -> Bool in
-        if let leftRate = left["rate"] as? String, let leftBigInt = BigInt(leftRate), let rightRate = right["rate"] as? String, let rightBigInt = BigInt(rightRate) {
+        if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
           return leftBigInt < rightBigInt
         } else {
           return false
         }
       }
-      if let platformString = max?["platform"] as? String {
-        self.currentFlatform = platformString
-      }
+      self.currentFlatform = max?.platform ?? ""
     }
   }
 
@@ -436,7 +418,7 @@ class EarnSwapViewModel {
     let comp = self.toTokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
-    let apy = String(format: "%.6f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
+    let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
     return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\nOnce redeemed, COMP token can be swapped to any token."
   }
   
@@ -845,7 +827,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.navigationController?.showErrorTopBannerMessage(with: error.localizedDescription)
   }
   
-  func coordinatorDidUpdateRates(from: TokenData, to: TokenData, srcAmount: BigInt, rates: [JSONDictionary]) {
+  func coordinatorDidUpdateRates(from: TokenData, to: TokenData, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
     self.viewModel.reloadBestPlatform()
     self.updateExchangeRateField()

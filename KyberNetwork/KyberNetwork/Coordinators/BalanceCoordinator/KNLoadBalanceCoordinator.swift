@@ -39,11 +39,15 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadAllBalances() {
-//    self.loadAllTokenBalance()
     self.loadLendingBalances()
     self.loadLendingDistributionBalance()
-//    self.loadBalanceForCustomToken()
-    self.loadTokenBalancesFromApi()
+    if KNEnvironment.default == .ropsten {
+      self.loadBalanceForCustomToken()
+      self.loadAllTokenBalance()
+    } else {
+      self.loadTokenBalancesFromApi()
+    }
+    
   }
 
   func resume() {

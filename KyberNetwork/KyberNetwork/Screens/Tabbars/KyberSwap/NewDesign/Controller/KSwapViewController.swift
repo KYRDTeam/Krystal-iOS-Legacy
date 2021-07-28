@@ -20,7 +20,7 @@ enum KSwapViewEvent {
   case openHistory
   case openWalletsList
   case getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt)
-  case openChooseRate(from: TokenObject, to: TokenObject, rates: [JSONDictionary], gasPrice: BigInt)
+  case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt)
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
   case getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String)
@@ -507,7 +507,7 @@ class KSwapViewController: KNBaseViewController {
         let fee = self.viewModel.feeBigInt
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
-          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 5))
         )
         return true
       }
@@ -820,7 +820,7 @@ extension KSwapViewController {
     self.updateUIMinReceiveAmount()
   }
 
-  func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [JSONDictionary]) {
+  func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
     self.updateInputFieldsUI()
     self.viewModel.reloadBestPlatform()

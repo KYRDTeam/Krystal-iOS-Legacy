@@ -26,9 +26,9 @@ class OverviewMainCellViewModel {
   
   var tokenSymbol: String {
     switch self.mode {
-    case .market(token: let token, rightMode: let mode):
+    case .market(token: let token, _):
       return token.symbol
-    case .asset(token: let token, rightMode: let mode):
+    case .asset(token: let token, _):
       return token.symbol
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
@@ -55,11 +55,11 @@ class OverviewMainCellViewModel {
       }
       if let lendingBalance = balance as? LendingBalance {
         let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
-        let balanceString = balanceBigInt.string(decimals: lendingBalance.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+        let balanceString = balanceBigInt.string(decimals: lendingBalance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
         return "\(balanceString) \(lendingBalance.symbol)"
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
-        let balanceString = balanceBigInt.string(decimals: distributionBalance.decimal, minFractionDigits: 0, maxFractionDigits: 6)
+        let balanceString = balanceBigInt.string(decimals: distributionBalance.decimal, minFractionDigits: 0, maxFractionDigits: 5)
         return "\(balanceString) \(distributionBalance.symbol)"
       } else {
         return ""
@@ -73,12 +73,12 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       let price = token.getTokenLastPrice(self.currency)
-      return self.currency.symbol() + String(format: "%.6f", price)
+      return self.currency.symbol() + String(format: "%.4f", price)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
       }
-      return token.getBalanceBigInt().string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 6))
+      return token.getBalanceBigInt().string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 5))
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
         let rateString = String(format: "%.2f", lendingBalance.supplyRate * 100)
@@ -100,7 +100,7 @@ class OverviewMainCellViewModel {
         return String(format: "%.2f", change24) + "%"
       case .lastPrice:
         let price = token.getTokenLastPrice(self.currency)
-        return self.currency.symbol() + String(format: "%.2f", price)
+        return self.currency.symbol() + String(format: "%.4f", price)
       default:
         return ""
       }
@@ -113,7 +113,8 @@ class OverviewMainCellViewModel {
       case .value:
         let rateBigInt = BigInt(token.getTokenLastPrice(self.currency) * pow(10.0, 18.0))
         let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 6))
+        
+        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return self.currency.symbol() + valueString
       case .ch24:
         let change24 = token.getTokenChange24(self.currency)
@@ -130,7 +131,7 @@ class OverviewMainCellViewModel {
         let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: lendingBalance.address, currency: self.currency)
         let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
         let valueBigInt = balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(lendingBalance.decimals)
-        return self.currency.symbol() + valueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+        return self.currency.symbol() + valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         guard !self.hideBalanceStatus else {
           return "********"
@@ -138,7 +139,7 @@ class OverviewMainCellViewModel {
         let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: distributionBalance.address, currency: self.currency)
         let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
         let valueBigInt = balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(distributionBalance.decimal)
-        return self.currency.symbol() + valueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+        return self.currency.symbol() + valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
       } else {
         return ""
       }

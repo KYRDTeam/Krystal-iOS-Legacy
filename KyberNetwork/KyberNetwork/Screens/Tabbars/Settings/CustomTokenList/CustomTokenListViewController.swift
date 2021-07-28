@@ -13,7 +13,7 @@ class CustomTokenListViewModel {
   var dataSource: [CustomTokenCellViewModel] = []
   
   func reloadData() {
-    self.dataSource = KNSupportedTokenStorage.shared.getCustomToken().map({ (token) -> CustomTokenCellViewModel in
+    self.dataSource = KNSupportedTokenStorage.shared.getFullCustomToken().map({ (token) -> CustomTokenCellViewModel in
       let balance = BalanceStorage.shared.balanceForAddress(token.address)
       let balanceBigInt = BigInt(balance?.balance ?? "0") ?? BigInt(0)
       let viewModel = CustomTokenCellViewModel(token: token, balance: balanceBigInt.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: 6))

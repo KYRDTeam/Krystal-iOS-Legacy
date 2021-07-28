@@ -36,7 +36,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
 
     return "\(balanceString) \(self.balance.symbol) "
   }
@@ -45,7 +45,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     switch self.currencyType {
     case .usd:
       return "$" + string
@@ -100,7 +100,7 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 6)
+    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 5)
 
     return "\(balanceString) \(self.balance.symbol)"
   }
@@ -109,7 +109,7 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     switch self.currencyType {
     case .usd:
       return "$" + string

@@ -82,6 +82,17 @@ enum CurrencyMode: Int {
       return "btc"
     }
   }
+  
+  func decimalNumber() -> Int {
+    switch self {
+    case .eth:
+      return 4
+    case .usd:
+      return 2
+    case .btc:
+      return 5
+    }
+  }
 }
 
 protocol OverviewMainViewControllerDelegate: class {
@@ -150,7 +161,7 @@ class OverviewMainViewModel {
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
-      let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+      let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
       self.displayTotalValues["all"] = displayTotalString
     case .supply:
       let supplyBalance = BalanceStorage.shared.getSupplyBalances()
@@ -170,13 +181,13 @@ class OverviewMainViewModel {
           sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
         })
         models[key] = sectionModels
-        let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+        let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
         self.displayTotalValues[key] = displayTotalSection
         total += totalSection
       }
       self.dataSource = models
       self.displayDataSource = models
-      self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+      self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -234,7 +245,7 @@ class OverviewMainViewModel {
       return "********"
     }
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
-    return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)
+    return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber())
   }
 
   var displayHideBalanceImage: UIImage {

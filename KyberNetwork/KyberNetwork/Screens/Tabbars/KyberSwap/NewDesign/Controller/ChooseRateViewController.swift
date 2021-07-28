@@ -9,13 +9,15 @@ import UIKit
 import BigInt
 
 class ChooseRateViewModel {
-  var data: [JSONDictionary]
+  var data: [Rate]
   fileprivate(set) var from: TokenData
   fileprivate(set) var to: TokenData
   fileprivate(set) var gasPrice: BigInt
   fileprivate(set) var isDeposit: Bool
   
-  init(from: TokenObject, to: TokenObject, data: [JSONDictionary], gasPrice: BigInt, isDeposit: Bool = false) {
+  var dataSource: [ChooseRateCellViewModel] = []
+  
+  init(from: TokenObject, to: TokenObject, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false) {
     self.data = data
     self.from = from.toTokenData()
     self.to = to.toTokenData()
@@ -23,68 +25,79 @@ class ChooseRateViewModel {
     self.isDeposit = isDeposit
   }
   
-  init(from: TokenData, to: TokenData, data: [JSONDictionary], gasPrice: BigInt, isDeposit: Bool = false) {
+  init(from: TokenData, to: TokenData, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false) {
     self.data = data
     self.from = from
     self.to = to
     self.gasPrice = gasPrice
     self.isDeposit = isDeposit
   }
-
-  var uniRateText: String {
-    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
-    return rateStringFor(platform: key)
-  }
-
-  var kyberRateText: String {
-    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
-    return rateStringFor(platform: key)
+  
+  func reloadDataSource() {
+    self.dataSource = self.data.map({ rate in
+      return ChooseRateCellViewModel(rate: rate, from: self.from, to: self.to, gasPrice: self.gasPrice)
+    })
+    
   }
   
-  var uniFeeText: String {
-    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
-    return feeStringFor(platform: key)
-  }
-  
-  var kyberFeeText: String {
-    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
-    return feeStringFor(platform: key)
+  var popupHeight: CGFloat {
+    return CGFloat(125 + self.data.count * 115)
   }
 
-  fileprivate func rateStringFor(platform: String) -> String {
-    let dict = self.data.first { (element) -> Bool in
-      if let platformString = element["platform"] as? String {
-        return platformString == platform
-      } else {
-        return false
-      }
-    }
-    if let rateString = dict?["rate"] as? String, let rate = BigInt(rateString) {
-      return rate.isZero ? "---" : "1 \(self.from.symbol) = \(rate.displayRate(decimals: 18)) \(self.to.symbol)"
-    } else {
-      return "---"
-    }
-  }
-
-  fileprivate func feeStringFor(platform: String) -> String {
-    let dict = self.data.first { (element) -> Bool in
-      if let platformString = element["platform"] as? String {
-        return platformString == platform
-      } else {
-        return false
-      }
-    }
-    if let estGasString = dict?["estimatedGas"] as? NSNumber, let estGas = BigInt(estGasString.stringValue) {
-      let rate = KNTrackerRateStorage.shared.getETHPrice()
-      let rateUSDDouble = rate?.usd ?? 0
-      let fee = estGas * gasPrice
-      let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
-      let feeUSD = fee * rateBigInt / BigInt(10).power(18)
-      return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken) ~ $\(feeUSD.displayRate(decimals: 18))"
-    } else {
-      return "---"
-    }
-  }
+//  var uniRateText: String {
+//    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
+//    return rateStringFor(platform: key)
+//  }
+//
+//  var kyberRateText: String {
+//    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
+//    return rateStringFor(platform: key)
+//  }
+//
+//  var uniFeeText: String {
+//    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
+//    return feeStringFor(platform: key)
+//  }
+//
+//  var kyberFeeText: String {
+//    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
+//    return feeStringFor(platform: key)
+//  }
+//
+//  fileprivate func rateStringFor(platform: String) -> String {
+//    let dict = self.data.first { (element) -> Bool in
+//      if let platformString = element["platform"] as? String {
+//        return platformString == platform
+//      } else {
+//        return false
+//      }
+//    }
+//    if let rateString = dict?["rate"] as? String, let rate = BigInt(rateString) {
+//      return rate.isZero ? "---" : "1 \(self.from.symbol) = \(rate.displayRate(decimals: 18)) \(self.to.symbol)"
+//    } else {
+//      return "---"
+//    }
+//  }
+//
+//  fileprivate func feeStringFor(platform: String) -> String {
+//    let dict = self.data.first { (element) -> Bool in
+//      if let platformString = element["platform"] as? String {
+//        return platformString == platform
+//      } else {
+//        return false
+//      }
+//    }
+//    if let estGasString = dict?["estimatedGas"] as? NSNumber, let estGas = BigInt(estGasString.stringValue) {
+//      let rate = KNTrackerRateStorage.shared.getETHPrice()
+//      let rateUSDDouble = rate?.usd ?? 0
+//      let fee = estGas * gasPrice
+//      let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
+//      let feeUSD = fee * rateBigInt / BigInt(10).power(18)
+//      return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken) ~ $\(feeUSD.displayRate(decimals: 18))"
+//    } else {
+//      return "---"
+//    }
+//  }
 }
 
 protocol ChooseRateViewControllerDelegate: class {
@@ -92,20 +105,11 @@ protocol ChooseRateViewControllerDelegate: class {
 }
 
 class ChooseRateViewController: KNBaseViewController {
-  @IBOutlet weak var kyberRateLabel: UILabel!
-  @IBOutlet weak var uniRateLabel: UILabel!
-  @IBOutlet weak var feeKyberLabel: UILabel!
-  @IBOutlet weak var feeUniLabel: UILabel!
-  @IBOutlet weak var feeKyberTitleLabel: UILabel!
-  @IBOutlet weak var feeUniTitleLabel: UILabel!
-  
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var firstplatformNameLabel: UILabel!
-  @IBOutlet weak var secondPlatformLabel: UILabel!
-  @IBOutlet weak var firstPlatformIconImage: UIImageView!
-  @IBOutlet weak var secondPlatformIconImage: UIImageView!
-  
+  @IBOutlet weak var platformTableView: UITableView!
+  @IBOutlet weak var popupHeightContraint: NSLayoutConstraint!
+
   weak var delegate: ChooseRateViewControllerDelegate?
   let viewModel: ChooseRateViewModel
   let transitor = TransitionDelegate()
@@ -123,23 +127,33 @@ class ChooseRateViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.kyberRateLabel.text = self.viewModel.kyberRateText
-    self.uniRateLabel.text = self.viewModel.uniRateText
-    if !self.viewModel.isDeposit {
-      self.feeUniLabel.text = self.viewModel.uniFeeText
-      self.feeKyberLabel.text = self.viewModel.kyberFeeText
-    } else {
-      self.feeUniLabel.isHidden = true
-      self.feeKyberLabel.isHidden = true
-      self.feeUniTitleLabel.isHidden = true
-      self.feeKyberTitleLabel.isHidden = true
-    }
-    if !KNGeneralProvider.shared.isEthereum {
-      self.firstPlatformIconImage.image = UIImage(named: "pancake_icon")
-      self.secondPlatformIconImage.image = UIImage(named: "pancake_icon")
-      self.firstplatformNameLabel.text = "PancakeSwap v1"
-      self.secondPlatformLabel.text = "PancakeSwap v2"
-    }
+//    self.kyberRateLabel.text = self.viewModel.kyberRateText
+//    self.uniRateLabel.text = self.viewModel.uniRateText
+//    if !self.viewModel.isDeposit {
+//      self.feeUniLabel.text = self.viewModel.uniFeeText
+//      self.feeKyberLabel.text = self.viewModel.kyberFeeText
+//    } else {
+//      self.feeUniLabel.isHidden = true
+//      self.feeKyberLabel.isHidden = true
+//      self.feeUniTitleLabel.isHidden = true
+//      self.feeKyberTitleLabel.isHidden = true
+//    }
+//    if !KNGeneralProvider.shared.isEthereum {
+//      self.firstPlatformIconImage.image = UIImage(named: "pancake_icon")
+//      self.secondPlatformIconImage.image = UIImage(named: "pancake_icon")
+//      self.firstplatformNameLabel.text = "PancakeSwap v1"
+//      self.secondPlatformLabel.text = "PancakeSwap v2"
+//    }
+    
+    let nib = UINib(nibName: ChooseRateTableViewCell.className, bundle: nil)
+    self.platformTableView.register(
+      nib,
+      forCellReuseIdentifier: ChooseRateTableViewCell.kCellID
+    )
+    self.platformTableView.rowHeight = ChooseRateTableViewCell.kCellHeight
+    
+    self.viewModel.reloadDataSource()
+    self.popupHeightContraint.constant = self.viewModel.popupHeight
   }
 
   @IBAction func chooseRateButtonTapped(_ sender: UIButton) {
@@ -163,10 +177,41 @@ extension ChooseRateViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 331
+    return self.viewModel.popupHeight
   }
 
   func getPopupContentView() -> UIView {
     return self.contentView
+  }
+}
+
+extension ChooseRateViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.dataSource.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: ChooseRateTableViewCell.kCellID,
+      for: indexPath
+    ) as! ChooseRateTableViewCell
+    
+    let cellModel = self.viewModel.dataSource[indexPath.row]
+    cellModel.completionHandler = { rate in
+      self.delegate?.chooseRateViewController(self, didSelect: rate.platform)
+      self.dismiss(animated: true, completion: nil)
+    }
+    cellModel.isDeposit = self.viewModel.isDeposit
+    cell.updateCell(cellModel)
+    return cell
+  }
+}
+
+extension ChooseRateViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
   }
 }

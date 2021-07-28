@@ -32,5 +32,5 @@ struct BalancesResponse: Codable {
 struct BalanceData: Codable {
     let token: Token
     let balance: String
-    let quote, quoteRate: Double
+//    let quote, quoteRate: Double
 }

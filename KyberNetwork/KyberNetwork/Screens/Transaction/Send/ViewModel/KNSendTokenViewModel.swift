@@ -37,7 +37,7 @@ class KNSendTokenViewModel: NSObject {
       let string = availableValue.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.from.decimals, 6)
+        maxFractionDigits: min(self.from.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
@@ -137,7 +137,7 @@ class KNSendTokenViewModel: NSObject {
     let string = self.from.getBalanceBigInt().string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
+      maxFractionDigits: min(self.from.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"

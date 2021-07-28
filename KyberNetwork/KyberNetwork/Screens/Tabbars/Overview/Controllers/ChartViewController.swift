@@ -15,8 +15,8 @@ class ChartViewModel {
   var xLabels: [Double] = []
   let token: Token
   var periodType: ChartPeriodType = .oneDay
-  var detailInfo: TokenDetailData?
-  var chartData: ChartData?
+  var detailInfo: TokenDetailInfo?
+  var chartData: [[Double]]?
   var chartOriginTimeStamp: Double = 0
   var currency: String
   var isFaved: Bool
@@ -27,15 +27,15 @@ class ChartViewModel {
     self.isFaved = KNSupportedTokenStorage.shared.getFavedStatusWithAddress(token.address)
   }
   
-  func updateChartData(_ data: ChartData) {
-    guard !data.prices.isEmpty else { return }
+  func updateChartData(_ data: [[Double]]) {
+    guard !data.isEmpty else { return }
     self.chartData = data
-    let originTimeStamp = data.prices[0][0]
+    let originTimeStamp = data[0][0]
     self.chartOriginTimeStamp = originTimeStamp
-    self.dataSource = data.prices.map { (item) -> (x: Double, y: Double) in
+    self.dataSource = data.map { (item) -> (x: Double, y: Double) in
       return (x: item[0] - originTimeStamp, y: item[1])
     }
-    if let lastTimeStamp = data.prices.last?[0] {
+    if let lastTimeStamp = data.last?[0] {
       let interval = lastTimeStamp - originTimeStamp
       let divide = interval / 7
       self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
@@ -50,37 +50,34 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    guard let unwrapped = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else {
-      return "---"
-    }
-    if self.currency == "eth" {
-      return "\(unwrapped.eth) ETH"
-    } else if self.currency == "btc" {
-      return "\(unwrapped.btc) BTC"
-    } else {
-      return "$\(unwrapped.usd)"
-    }
+    return "\(self.detailInfo?.markets[self.currency]?.price ?? 0)"
   }
 
   var display24hVol: String {
-    guard let lastVol = self.chartData?.totalVolumes.last?[1] else { return "---" }
-    return "\(self.formatPoints(lastVol)) \(self.currency.uppercased())"
+    return "\(self.detailInfo?.markets[self.currency]?.volume24H ?? 0)"
   }
-  
-  var displayDiffPercent: String {
-    guard let firstPrice = self.chartData?.prices.first?[1], let lastPrice =  self.chartData?.prices.last?[1] else {
-      return "---"
+
+  var diffPercent: Double {
+    switch self.periodType {
+    case .oneDay:
+      return self.detailInfo?.markets[self.currency]?.priceChange24H ?? 0
+    case .sevenDay:
+      return self.detailInfo?.markets[self.currency]?.priceChange7DPercentage ?? 0
+    case .oneMonth:
+      return self.detailInfo?.markets[self.currency]?.priceChange30DPercentage ?? 0
+    case .threeMonth:
+      return self.detailInfo?.markets[self.currency]?.priceChange200DPercentage ?? 0
+    case .oneYear:
+      return self.detailInfo?.markets[self.currency]?.priceChange1YPercentage ?? 0
     }
-    let diff = (lastPrice - firstPrice) * 100.0
-    return String(format: "%.2f", diff / firstPrice) + "%"
+  }
+
+  var displayDiffPercent: String {
+    return String(format: "%.2f", self.diffPercent) + "%"
   }
   
   var displayDiffColor: UIColor? {
-    guard let firstPrice = self.chartData?.prices.first?[1], let lastPrice =  self.chartData?.prices.last?[1] else {
-      return UIColor.clear
-    }
-    let diff = lastPrice - firstPrice
-    return diff > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+    return self.diffPercent > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
   }
   
   var diplayBalance: String {
@@ -110,46 +107,30 @@ class ChartViewModel {
     }
   }
   
+  var marketCap: Double {
+    return self.detailInfo?.markets[self.currency]?.marketCap ?? 0
+  }
+  
   var displayMarketCap: String {
-    guard let lastMC = self.chartData?.marketCaps.last?[1] else {
-      return "---"
-    }
     if self.currency == "eth" {
-      return "\(self.formatPoints(lastMC)) ETH"
+      return "\(self.formatPoints(self.marketCap)) ETH"
     } else if self.currency == "btc" {
-      return "\(self.formatPoints(lastMC)) BTC"
+      return "\(self.formatPoints(self.marketCap)) BTC"
     } else {
-      return "$\(self.formatPoints(lastMC))"
+      return "$\(self.formatPoints(self.marketCap))"
     }
   }
   
   var displayAllTimeHigh: String {
-    guard let ath = self.detailInfo?.marketData.ath?[self.currency] else { return "---"}
-    if self.currency == "eth" {
-      return "\(ath) ETH"
-    } else if self.currency == "btc" {
-      return "\(ath) BTC"
-    } else {
-      return "$\(ath)"
-    }
+    return "\(self.detailInfo?.markets[self.currency]?.ath ?? 0)"
   }
 
   var displayAllTimeLow: String {
-    guard let atl = self.detailInfo?.marketData.atl?[self.currency] else { return "---"}
-    if self.currency == "eth" {
-      return "\(atl) ETH"
-    } else if self.currency == "btc" {
-      return "\(atl) BTC"
-    } else {
-      return "$\(atl)"
-    }
+    return "\(self.detailInfo?.markets[self.currency]?.atl ?? 0)"
   }
 
   var displayDescription: String {
-    guard let description = self.detailInfo?.tokenDetailDataDescription.en, !description.isEmpty else {
-      return self.detailInfo?.icoData?.icoDataDescription ?? ""
-    }
-    return description
+    return self.detailInfo?.resultDescription ?? ""
   }
 
   var displayDescriptionAttribution: NSAttributedString? {
@@ -190,10 +171,10 @@ class ChartViewModel {
   }
   
   func displayChartDetaiInfoAt(index: Int) -> NSAttributedString {
-    guard let priceItem = self.chartData?.prices[index],
-    let volumeItem = self.chartData?.totalVolumes[index],
+    guard let priceItem = self.chartData?[index],
+//    let volumeItem = self.chartData?.totalVolumes[index],
     let price = priceItem.last,
-    let volume = volumeItem.last,
+//    let volume = volumeItem.last,
     let timestamp = priceItem.first
     else {
       return NSAttributedString()
@@ -210,13 +191,13 @@ class ChartViewModel {
       NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
     let priceBigInt = BigInt(price * pow(10.0, 18.0))
-    let volumeBigInt = BigInt(volume * pow(10.0, 18.0))
+//    let volumeBigInt = BigInt(volume * pow(10.0, 18.0))
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: dateString + " ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "$\(priceBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
-    attributedText.append(NSAttributedString(string: "  Volume" + ": ", attributes: boldAttributes))
-    attributedText.append(NSAttributedString(string: "$\(volumeBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
+//    attributedText.append(NSAttributedString(string: "  Volume" + ": ", attributes: boldAttributes))
+//    attributedText.append(NSAttributedString(string: "$\(volumeBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
     return attributedText
   }
   
@@ -357,7 +338,7 @@ class ChartViewController: KNBaseViewController {
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openWebsite(url: self.viewModel.detailInfo?.links.homepage.first ?? ""))
+    self.delegate?.chartViewController(self, run: .openWebsite(url: self.viewModel.detailInfo?.links.homepage ?? ""))
   }
   
   @IBAction func twitterButtonTapped(_ sender: UIButton) {
@@ -372,6 +353,14 @@ class ChartViewController: KNBaseViewController {
   
   
   fileprivate func updateUIChartInfo() {
+    self.updateUIPeriodSelectButtons()
+  }
+
+  fileprivate func updateUITokenInfo() {
+    self.atlLabel.text = self.viewModel.displayAllTimeLow
+    self.athLabel.text = self.viewModel.displayAllTimeHigh
+    self.descriptionTextView.attributedText = self.viewModel.displayDescriptionAttribution
+    self.priceLabel.text = self.viewModel.displayPrice
     self.volumeLabel.text = self.viewModel.display24hVol
     self.ethBalanceLabel.text = self.viewModel.diplayBalance
     self.usdBalanceLabel.text = self.viewModel.displayUSDBalance
@@ -381,15 +370,6 @@ class ChartViewController: KNBaseViewController {
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
     self.investButton.backgroundColor = self.viewModel.displayDiffColor
-    self.updateUIPeriodSelectButtons()
-    
-  }
-
-  fileprivate func updateUITokenInfo() {
-    self.atlLabel.text = self.viewModel.displayAllTimeLow
-    self.athLabel.text = self.viewModel.displayAllTimeHigh
-    self.descriptionTextView.attributedText = self.viewModel.displayDescriptionAttribution
-    self.priceLabel.text = self.viewModel.displayPrice
   }
 
   fileprivate func loadChartData() {
@@ -413,8 +393,8 @@ class ChartViewController: KNBaseViewController {
     }
   }
 
-  func coordinatorDidUpdateChartData(_ data: ChartData) {
-    self.noDataLabel.isHidden = !data.prices.isEmpty
+  func coordinatorDidUpdateChartData(_ data: [[Double]]) {
+    self.noDataLabel.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
     self.chartView.removeAllSeries()
     self.chartView.add(self.viewModel.series)
@@ -442,14 +422,14 @@ class ChartViewController: KNBaseViewController {
         return "\(month)/\(year)"
       }
     }
-    
+    self.updateUITokenInfo()
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
     self.showErrorTopBannerMessage(with: "", message: error.localizedDescription)
   }
 
-  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailData) {
+  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
   }

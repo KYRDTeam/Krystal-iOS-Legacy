@@ -122,7 +122,6 @@ class TokenPrice: Codable {
   var btcMarketCap: Double
   var btc24hVol: Double
   var btc24hChange: Double
-  var lastUpdateAt: Int
 
   init(dictionary: JSONDictionary) {
     self.address = (dictionary["address"] as? String ?? "").lowercased()
@@ -138,7 +137,25 @@ class TokenPrice: Codable {
     self.btcMarketCap = dictionary["btc_market_cap"] as? Double ?? 0.0
     self.btc24hVol = dictionary["btc_24h_vol"] as? Double ?? 0.0
     self.btc24hChange = dictionary["btc_24h_change"] as? Double ?? 0.0
-    self.lastUpdateAt = dictionary["last_updated_at"] as? Int ?? 0
+  }
+  
+  init(address: String, quotes: [String: Quote]) {
+    self.address = address
+    
+    self.usd = quotes["usd"]?.price ?? 0.0
+    self.usdMarketCap = quotes["usd"]?.marketCap ?? 0.0
+    self.usd24hVol = quotes["usd"]?.volume24H ?? 0.0
+    self.usd24hChange = quotes["usd"]?.price24HChangePercentage ?? 0.0
+    
+    self.eth = quotes["eth"]?.price ?? 0.0
+    self.ethMarketCap = quotes["eth"]?.marketCap ?? 0.0
+    self.eth24hVol = quotes["eth"]?.volume24H ?? 0.0
+    self.eth24hChange = quotes["eth"]?.price24HChangePercentage ?? 0.0
+    
+    self.btc = quotes["btc"]?.price ?? 0.0
+    self.btcMarketCap = quotes["btc"]?.marketCap ?? 0.0
+    self.btc24hVol = quotes["btc"]?.volume24H ?? 0.0
+    self.btc24hChange = quotes["btc"]?.price24HChangePercentage ?? 0.0
   }
 }
 

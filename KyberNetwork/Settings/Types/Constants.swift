@@ -18,8 +18,8 @@ public struct Constants {
   public static let oneSignalAppID = KNEnvironment.default == .ropsten ? "361e7815-4da2-41c9-ba0a-d35add5a58ef" : "0487532e-7b19-415b-91a1-2a285b0b8382"
   public static let gasTokenAddress = KNEnvironment.default == .ropsten ? "0x0000000000b3F879cb30FE243b4Dfee438691c04" : "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
 
-  public static let krystalProxyAddress = KNEnvironment.default == .ropsten ? "0x1e49809B423C1E45645E523804E77584414963E6" : "0xCf276A0A972C504b88224E92d047b3DaD6A4a426"
-  public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0x8565Fb7dfB5D36b2aA00086ffc920cfF20db4F2f" : "0x2FA1e7dF142665320cA916AFDA9DFD9A97C9b986"
+  public static let krystalProxyAddress = KNEnvironment.default == .ropsten ? "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a" : "0x70270C228c5B4279d1578799926873aa72446CcD"
+  public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let customBalanceStoreFileName = "-custom-balance.data"
@@ -42,6 +42,8 @@ public struct Constants {
   public static let lendingTokensStoreFileName = "lending-tokens.data"
   public static let platformWallet = KNEnvironment.default == .production ? "0x5250b8202AEBca35328E2c217C687E894d70Cd31" : "0x5250b8202AEBca35328E2c217C687E894d70Cd31"
   public static let currentChainSaveKey = "current-chain-save-key"
+  public static let disableTokenStoreFileName = "disable-token.data"
+  public static let deleteTokenStoreFileName = "delete-token.data"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,

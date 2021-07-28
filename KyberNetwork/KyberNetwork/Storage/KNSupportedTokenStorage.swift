@@ -10,8 +10,14 @@ class KNSupportedTokenStorage {
   private var supportedToken: [Token]
   private var favedTokens: [FavedToken]
   private var customTokens: [Token]
+  private var disableTokens: [Token]
+  private var deletedTokens: [Token]
   
   var allTokens: [Token] {
+    return self.supportedToken + self.getCustomToken()
+  }
+  
+  var allFullToken: [Token] {
     return self.supportedToken + self.customTokens
   }
   
@@ -21,6 +27,8 @@ class KNSupportedTokenStorage {
     self.supportedToken = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.tokenStoreFileName, as: [Token].self) ?? []
     self.favedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.favedTokenStoreFileName, as: [FavedToken].self) ?? []
     self.customTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName, as: [Token].self) ?? []
+    self.disableTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
+    self.deletedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
     self.migrationCustomTokenIfNeeded()
   }
 
@@ -79,6 +87,9 @@ class KNSupportedTokenStorage {
   }
 
   func updateSupportedTokens(_ tokens: [Token]) {
+    guard tokens != self.supportedToken else {
+      return
+    }
     Storage.store(tokens, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
     self.supportedToken = tokens
   }
@@ -132,7 +143,15 @@ class KNSupportedTokenStorage {
   }
 
   func getCustomToken() -> [Token] {
-    return self.customTokens
+    return self.customTokens.filter { token in
+      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
+    }
+  }
+  
+  func getFullCustomToken() -> [Token] {
+    return self.customTokens.filter { token in
+      return !self.getTokenDeleteStatus(token)
+    }
   }
 
   func getCustomTokenWith(address: String) -> Token? {
@@ -140,13 +159,52 @@ class KNSupportedTokenStorage {
       return token.address.lowercased() == address.lowercased()
     }
   }
+  
+  func getTokenDeleteStatus(_ token: Token) -> Bool {
+    return self.deletedTokens.contains(token)
+  }
+  
+  func removeTokenFromDeleteList(_ token: Token) {
+    if let index = self.deletedTokens.firstIndex(where: { item in
+      return item == token
+    }) {
+      self.deletedTokens.remove(at: index)
+    }
+  }
+  
+  func getTokenActiveStatus(_ token: Token) -> Bool {
+    return !self.disableTokens.contains(token)
+  }
 
-  func deleteCustomToken(address: String) {
-    guard let index = self.customTokens.firstIndex(where: { (token) -> Bool in
-      return token.address.lowercased() == address.lowercased()
-    }) else { return }
-    self.customTokens.remove(at: index)
-    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+  func setTokenActiveStatus(token: Token, status: Bool) {
+    if status {
+      if let index = self.disableTokens.firstIndex(where: { item in
+        return item == token
+      }) {
+        self.disableTokens.remove(at: index)
+        Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+      }
+    } else {
+      if !self.disableTokens.contains(token) {
+        self.disableTokens.append(token)
+        Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+      }
+    }
+  }
+  
+  func deleteCustomToken(_ token: Token) {
+    
+    guard !self.deletedTokens.contains(token) else {
+      return
+    }
+    
+    self.deletedTokens.append(token)
+    Storage.store(self.self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+//    guard let index = self.customTokens.firstIndex(where: { (token) -> Bool in
+//      return token.address.lowercased() == address.lowercased()
+//    }) else { return }
+//    self.customTokens.remove(at: index)
+//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
   
   func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {
@@ -175,50 +233,50 @@ class KNSupportedTokenStorage {
     } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
   }
   
-  func checkAddCustomTokenIfNeeded() {
-    var unknown: [Token] = []
-    let all = self.allTokens
-    guard !all.isEmpty else {
-      return
-    }
-    let etherscanTokens = EtherscanTransactionStorage.shared.getEtherscanToken()
-    etherscanTokens.forEach { (token) in
-      if !all.contains(token) {
-        unknown.append(token)
-      }
-    }
-    guard !unknown.isEmpty else {
-      return
-    }
-    var customTokenCache = self.customTokens
-    unknown.forEach { (token) in
-      if !customTokenCache.contains(token) {
-        customTokenCache.append(token)
-      }
-    }
-
-    //Check duplicate with support token list
-    var duplicateToken: [Token] = []
-    customTokenCache.forEach { (token) in
-      if self.supportedToken.contains(token) {
-        duplicateToken.append(token)
-      }
-    }
-    duplicateToken.forEach { (token) in
-      if let idx = customTokenCache.firstIndex(where: { $0 == token }) {
-        customTokenCache.remove(at: idx)
-      }
-    }
-
-    self.customTokens = customTokenCache
-    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
-  }
+//  func checkAddCustomTokenIfNeeded() {
+//    var unknown: [Token] = []
+//    let all = self.allTokens
+//    guard !all.isEmpty else {
+//      return
+//    }
+//    let etherscanTokens = EtherscanTransactionStorage.shared.getEtherscanToken()
+//    etherscanTokens.forEach { (token) in
+//      if !all.contains(token) {
+//        unknown.append(token)
+//      }
+//    }
+//    guard !unknown.isEmpty else {
+//      return
+//    }
+//    var customTokenCache = self.customTokens
+//    unknown.forEach { (token) in
+//      if !customTokenCache.contains(token) {
+//        customTokenCache.append(token)
+//      }
+//    }
+//
+//    //Check duplicate with support token list
+//    var duplicateToken: [Token] = []
+//    customTokenCache.forEach { (token) in
+//      if self.supportedToken.contains(token) {
+//        duplicateToken.append(token)
+//      }
+//    }
+//    duplicateToken.forEach { (token) in
+//      if let idx = customTokenCache.firstIndex(where: { $0 == token }) {
+//        customTokenCache.remove(at: idx)
+//      }
+//    }
+//
+//    self.customTokens = customTokenCache
+//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+//  }
   
   func checkAddCustomTokenIfNeeded(_ tokens: [Token]) {
-    let all = self.allTokens
-    guard !all.isEmpty else {
+    guard !self.supportedToken.isEmpty else {
       return
     }
+    let all = self.allFullToken
     var unknown: [Token] = []
     tokens.forEach { token in
       if !all.contains(token) {
@@ -240,7 +298,7 @@ class KNSupportedTokenStorage {
     guard !token.isEmpty else {
       return
     }
-    let all = self.allTokens
+    let all = self.allFullToken
     var add: [Token] = []
     token.forEach { (item) in
       if !all.contains(item) {
