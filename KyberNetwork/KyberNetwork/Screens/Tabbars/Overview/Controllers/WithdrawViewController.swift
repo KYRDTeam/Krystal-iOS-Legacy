@@ -33,7 +33,7 @@ class WithdrawViewModel {
   }
   
   var displayAmount: String {
-    return self.amountBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: self.balance.decimals)
+    return self.amountBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
   }
   
   var withdrawableAmountString: String {

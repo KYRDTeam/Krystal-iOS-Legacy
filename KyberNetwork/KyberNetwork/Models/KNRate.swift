@@ -80,3 +80,16 @@ extension KNRate {
     )
   }
 }
+
+// MARK: - RateResponse
+struct RateResponse: Codable {
+    let timestamp: Int
+    let rates: [Rate]
+}
+
+// MARK: - Rate
+class Rate: Codable {
+    let rate, platform, hint: String
+    let tradePath: [String]
+    var estimatedGas: Int
+}

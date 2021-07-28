@@ -871,6 +871,10 @@ enum KrytalService {
   case login(address: String, timestamp: Int, signature: String)
   case getClaimHistory(address: String, accessToken: String)
   case claimReward(address: String, amount: Double, accessToken: String)
+  case getBalances(address: String)
+  case getOverviewMarket(addresses: [String], quotes: [String])
+  case getTokenDetail(address: String)
+  case getChartData(address: String, quote: String, from: Int)
 }
 
 extension KrytalService: TargetType {
@@ -902,15 +906,15 @@ extension KrytalService: TargetType {
     case .getHint:
       return ""
     case .getExpectedRate:
-      return "/v1/swap/expectedRate"
+      return "/v2/swap/expectedRate"
     case .getAllRates:
-      return "/v1/swap/allRates"
+      return "/v2/swap/allRates"
     case .buildSwapTx:
-      return "/v1/swap/buildTx"
+      return "/v2/swap/buildTx"
     case .getGasPrice:
-      return "/v1/swap/gasPrice"
+      return "/v2/swap/gasPrice"
     case .getGasLimit:
-      return "/v1/swap/gasLimit"
+      return "/v2/swap/gasLimit"
     case .getRefPrice:
       return "/v1/market/refPrice"
     case .getTokenList:
@@ -945,6 +949,14 @@ extension KrytalService: TargetType {
       return "/v1/account/claimHistory"
     case .claimReward:
       return "/v1/account/claimReward"
+    case .getBalances:
+      return "/v1/account/balances"
+    case .getOverviewMarket:
+      return "/v1/market/overview"
+    case .getTokenDetail(address: let address):
+      return "/v1/token/tokenDetails"
+    case .getChartData:
+      return "/v1/market/priceSeries"
     }
   }
 
@@ -1119,6 +1131,31 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getBalances(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
+      let json: JSONDictionary = [
+        "tokenAddresses": addresses.joined(separator: ","),
+        "quoteCurrencies": quotes.joined(separator: ","),
+        "sparkline": "false"
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+      
+    case .getTokenDetail(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getChartData(address: let address, quote: let quote, from: let from):
+      let json: JSONDictionary = [
+        "token": address,
+        "quoteCurrency": quote,
+        "from": from
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 

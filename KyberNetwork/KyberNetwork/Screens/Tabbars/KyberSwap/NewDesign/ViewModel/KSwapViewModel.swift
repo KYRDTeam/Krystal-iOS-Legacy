@@ -44,16 +44,13 @@ class KSwapViewModel {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
 
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
-  var swapRates: (String, String, BigInt, [JSONDictionary]) = ("", "", BigInt(0), [])
-  var currentFlatform: String = "kyber" {
+  var swapRates: (String, String, BigInt, [Rate]) = ("", "", BigInt(0), [])
+  var currentFlatform: String = "Kyber" {
     didSet {
       let dict = self.swapRates.3.first { (element) -> Bool in
-        if let platformString = element["platform"] as? String {
-          return platformString == self.currentFlatform
-        } else {
-          return false
-        }
+        return element.platform == self.currentFlatform
       }
+      self.estimateGasLimit = BigInt(dict?.estimatedGas ?? 0)
     }
   }
   var remainApprovedAmount: (TokenObject, BigInt)?
@@ -109,7 +106,7 @@ class KSwapViewModel {
       let string = availableToSwap.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.from.decimals, 6)
+        maxFractionDigits: min(self.from.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
@@ -213,8 +210,8 @@ class KSwapViewModel {
     }()
     return expectedAmount.string(
       decimals: self.to.decimals,
-      minFractionDigits: min(self.to.decimals, 6),
-      maxFractionDigits: min(self.to.decimals, 6)
+      minFractionDigits: min(self.to.decimals, 5),
+      maxFractionDigits: min(self.to.decimals, 5)
     ).removeGroupSeparator()
   }
 
@@ -228,7 +225,7 @@ class KSwapViewModel {
     let string = bal.string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
+      maxFractionDigits: min(self.from.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
@@ -527,15 +524,16 @@ class KSwapViewModel {
 
     var allRates: [JSONDictionary] = []
     self.swapRates.3.forEach { (element) in
-      if let platformString = element["platform"] as? String, platformString == self.currentFlatform {
-        var mutable = element
-        mutable["estimatedGas"] = Double(gasLimit)
-        allRates.append(mutable)
+      if element.platform == self.currentFlatform {
+//        var mutable = element
+//        mutable["estimatedGas"] = Double(gasLimit)
+//        allRates.append(mutable)
+        element.estimatedGas = Int(gasLimit)
       } else {
-        allRates.append(element)
+//        allRates.append(element)
       }
     }
-    self.updateSwapRates(from: from, to: to, amount: amount, rates: allRates)
+//    self.updateSwapRates(from: from, to: to, amount: amount, rates: allRates)
   }
 
   func getDefaultGasLimit(for from: TokenObject, to: TokenObject) -> BigInt {
@@ -562,13 +560,9 @@ class KSwapViewModel {
     }
 
     let rateDict = self.swapRates.3.first { (element) -> Bool in
-      if let platformString = element["platform"] as? String {
-        return platformString == platform
-      } else {
-        return false
-      }
+      return platform == element.platform
     }
-    if let rateString = rateDict?["hint"] as? String {
+    if let rateString = rateDict?.hint {
       return rateString
     } else {
       return ""
@@ -587,13 +581,9 @@ class KSwapViewModel {
     }
 
     let rateDict = self.swapRates.3.first { (element) -> Bool in
-      if let platformString = element["platform"] as? String {
-        return platformString == platform
-      } else {
-        return false
-      }
+      return platform == element.platform
     }
-    if let rateString = rateDict?["rate"] as? String {
+    if let rateString = rateDict?.rate {
       return rateString
     } else {
       return ""
@@ -604,7 +594,7 @@ class KSwapViewModel {
     self.swapRates = ("", "", BigInt(0), [])
   }
 
-  func updateSwapRates(from: TokenObject, to: TokenObject, amount: BigInt, rates: [JSONDictionary]) {
+  func updateSwapRates(from: TokenObject, to: TokenObject, amount: BigInt, rates: [Rate]) {
     guard from.isEqual(self.from), to.isEqual(self.to) else {
       return
     }
@@ -620,18 +610,18 @@ class KSwapViewModel {
     let rates = self.swapRates.3
     if rates.count == 1 {
       let dict = rates.first
-      if let platformString = dict?["platform"] as? String {
+      if let platformString = dict?.rate {
         self.currentFlatform = platformString
       }
     } else {
       let max = rates.max { (left, right) -> Bool in
-        if let leftRate = left["rate"] as? String, let leftBigInt = BigInt(leftRate), let rightRate = right["rate"] as? String, let rightBigInt = BigInt(rightRate) {
+        if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
           return leftBigInt < rightBigInt
         } else {
           return false
         }
       }
-      if let platformString = max?["platform"] as? String {
+      if let platformString = max?.platform {
         self.currentFlatform = platformString
       }
     }

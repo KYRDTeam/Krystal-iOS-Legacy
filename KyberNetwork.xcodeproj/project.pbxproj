@@ -549,8 +549,11 @@
 		C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D21C255E95A900B166E0 /* TransitionDelegate.swift */; };
 		C360D222255E9AEE00B166E0 /* KNBottomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */; };
 		C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */; };
+		C360FAA026AADA99006D22D0 /* ChooseRateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360FA9E26AADA99006D22D0 /* ChooseRateTableViewCell.swift */; };
+		C360FAA126AADA99006D22D0 /* ChooseRateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C360FA9F26AADA99006D22D0 /* ChooseRateTableViewCell.xib */; };
 		C365811E25E1132400A6DA4B /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365811D25E1132400A6DA4B /* Storage.swift */; };
 		C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365812125E2503F00A6DA4B /* BalanceStorage.swift */; };
+		C36C5C7026AEC4BB00A3711C /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36C5C6F26AEC4BB00A3711C /* Overview.swift */; };
 		C3794179262816E100FBCA14 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3794178262816E100FBCA14 /* NotificationService.swift */; };
 		C379417D262816E100FBCA14 /* KrystalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C3794176262816E100FBCA14 /* KrystalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */; };
@@ -1290,9 +1293,12 @@
 		C360D21C255E95A900B166E0 /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBottomPopupViewController.swift; sourceTree = "<group>"; };
 		C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBottomPopupViewController.xib; sourceTree = "<group>"; };
+		C360FA9E26AADA99006D22D0 /* ChooseRateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseRateTableViewCell.swift; sourceTree = "<group>"; };
+		C360FA9F26AADA99006D22D0 /* ChooseRateTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseRateTableViewCell.xib; sourceTree = "<group>"; };
 		C364819324726B1200137596 /* KyberSwap-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KyberSwap-Bridging-Header.h"; sourceTree = "<group>"; };
 		C365811D25E1132400A6DA4B /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C365812125E2503F00A6DA4B /* BalanceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceStorage.swift; sourceTree = "<group>"; };
+		C36C5C6F26AEC4BB00A3711C /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		C3794176262816E100FBCA14 /* KrystalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KrystalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3794178262816E100FBCA14 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		C379417A262816E100FBCA14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2541,6 +2547,7 @@
 		25BE32992090969600D760FB /* SwapVC */ = {
 			isa = PBXGroup;
 			children = (
+				C360FA9D26AADA11006D22D0 /* Views */,
 				2542604821215C230015ECC7 /* ViewModel */,
 				2542604721215C190015ECC7 /* Controller */,
 				25CC0A9B2057E2940009D0D5 /* Model */,
@@ -3172,6 +3179,7 @@
 				C31371F02603579D003D432B /* Krytal.swift */,
 				C3ED1DD72616F7540024970C /* Notifications.swift */,
 				C3ED1E2C261871F80024970C /* LoginInfo.swift */,
+				C36C5C6F26AEC4BB00A3711C /* Overview.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3873,6 +3881,15 @@
 			path = CustomTransition;
 			sourceTree = "<group>";
 		};
+		C360FA9D26AADA11006D22D0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C360FA9E26AADA99006D22D0 /* ChooseRateTableViewCell.swift */,
+				C360FA9F26AADA99006D22D0 /* ChooseRateTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C3794177262816E100FBCA14 /* KrystalNotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -4437,6 +4454,7 @@
 				C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */,
 				C33C33B825ECC70700F347E5 /* AddTokenViewController.xib in Resources */,
 				25C45AD420AD398C00CDA1FF /* KNImportJSONViewController.xib in Resources */,
+				C360FAA126AADA99006D22D0 /* ChooseRateTableViewCell.xib in Resources */,
 				C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */,
 				C3EE06C3267A15E50090B432 /* Karla-Regular.ttf in Resources */,
 				25485B052272F938004B7454 /* KNTransactionFilterTableViewCell.xib in Resources */,
@@ -4892,6 +4910,7 @@
 				29F1C85120032688003780D8 /* Address.swift in Sources */,
 				29FA00D4201EC662002F7DC5 /* NSObject.swift in Sources */,
 				255A70EF214FB908005D7A6A /* KNEditWalletViewController.swift in Sources */,
+				C360FAA026AADA99006D22D0 /* ChooseRateTableViewCell.swift in Sources */,
 				257C9FC42078A9F800EE0128 /* KNTransactionCollectionReusableView.swift in Sources */,
 				771AA94E1FF971CD00D25403 /* DappAction.swift in Sources */,
 				25369F0B20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift in Sources */,
@@ -5107,6 +5126,7 @@
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,
 				255F6F2820BBCA6800EF808F /* KNWalletQRCodeCoordinator.swift in Sources */,
+				C36C5C7026AEC4BB00A3711C /* Overview.swift in Sources */,
 				2502AC1D20947840007F23CD /* KNWalletStorage.swift in Sources */,
 				CCA4FE381FD428B300749AE4 /* JailbreakChecker.swift in Sources */,
 				C3F71C842618A47200285935 /* KrytalHistoryViewController.swift in Sources */,

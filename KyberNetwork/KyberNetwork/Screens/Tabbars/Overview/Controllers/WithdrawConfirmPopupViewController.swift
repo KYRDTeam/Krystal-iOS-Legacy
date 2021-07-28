@@ -26,7 +26,7 @@ class ClaimConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   }
   
   var displayBalance: NSAttributedString {
-    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 6)
+    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 5)
     return NSAttributedString(string: balanceString + " " + "COMP")
   }
   
@@ -37,7 +37,7 @@ class ClaimConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   }
 
   var displayValue: String {
-    let string = self.valueBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 6)
+    let string = self.valueBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 2)
     return "$" + string
   }
   
@@ -76,7 +76,7 @@ class WithdrawConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   }
 
   var displayBalance: NSAttributedString {
-    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    let balanceString = self.balanceBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
     let rateString = String(format: "%.2f", self.balance.supplyRate * 100)
     let amountAttributes: [NSAttributedStringKey: Any] = [
       NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
@@ -99,7 +99,7 @@ class WithdrawConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   }
   
   var displayValue: String {
-    let string = self.valueBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    let string = self.valueBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 2)
     return "$" + string
   }
 

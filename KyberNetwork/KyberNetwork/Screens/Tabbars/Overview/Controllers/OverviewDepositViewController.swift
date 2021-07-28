@@ -69,7 +69,7 @@ class OverviewDepositViewModel {
       return "********"
     }
     let valueBigInt = self.getTotalValueForSection(section)
-    let totalString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+    let totalString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     return self.currencyType == .usd ? "$" + totalString : totalString
   }
   
@@ -85,7 +85,7 @@ class OverviewDepositViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let totalString = self.totalValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
+    let totalString = self.totalValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
     switch self.currencyType {
     case .usd:
       return "$" + totalString

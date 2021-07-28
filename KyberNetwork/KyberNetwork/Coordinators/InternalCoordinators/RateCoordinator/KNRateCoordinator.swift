@@ -299,28 +299,25 @@ class KNRateCoordinator {
     let tokenAddress = KNSupportedTokenStorage.shared.allTokens.map { (token) -> String in
       return token.address
     }
-    let addressesTrucked = tokenAddress.chunked(into: 25)
-    let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    var output: [TokenPrice] = []
-    let group = DispatchGroup()
-    addressesTrucked.forEach { (element) in
-      group.enter()
-      provider.request(.getPriceTokens(addresses: element)) { (result) in
-        if case .success(let resp) = result, let json = try? resp.mapJSON() as? [String: JSONDictionary] ?? [:] {
-          json.keys.forEach { (jsonKey) in
-            var dict = json[jsonKey]
-            dict?["address"] = jsonKey
-            if let notNil = dict {
-              let price = TokenPrice(dictionary: notNil)
-              output.append(price)
-            }
+    //TODO: call new krystal api
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getOverviewMarket(addresses: tokenAddress, quotes: ["eth", "btc", "usd"])) { result in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(OverviewResponse.self, from: resp.data)
+          let priceObj = data.data.map { item in
+            return TokenPrice(address: item.address, quotes: item.quotes)
           }
-          group.leave()
+          KNTrackerRateStorage.shared.updatePrices(priceObj)
+          
+          print("[GetOverview][Success] ")
+        } catch let error {
+          print("[GetOverview][Error] \(error.localizedDescription)")
         }
+      } else {
+        print("[GetOverview][Error] ")
       }
-    }
-    group.notify(queue: .global()) {
-      KNTrackerRateStorage.shared.updatePrices(output)
     }
   }
 }

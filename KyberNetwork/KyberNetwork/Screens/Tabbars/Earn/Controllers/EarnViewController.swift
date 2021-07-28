@@ -60,7 +60,7 @@ class EarnViewModel {
     let string = self.tokenData.getBalanceBigInt().string(
       decimals: self.tokenData.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.tokenData.decimals, 6)
+      maxFractionDigits: min(self.tokenData.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
@@ -103,7 +103,7 @@ class EarnViewModel {
       let string = availableValue.string(
         decimals: self.tokenData.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.tokenData.decimals, 6)
+        maxFractionDigits: min(self.tokenData.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
@@ -236,7 +236,7 @@ class EarnViewModel {
     let comp = self.tokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
-    let apy = String(format: "%.6f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
+    let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
     return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\nOnce redeemed, COMP token can be swapped to any token."
   }
   
@@ -260,7 +260,7 @@ enum EarnViewEvent {
   case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool, rawTransaction: TxObject)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, srcAmount: BigInt)
-  case openChooseRate(from: TokenData, to: TokenData, rates: [JSONDictionary], gasPrice: BigInt)
+  case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt)
   case getRefPrice(from: TokenData, to: TokenData)
   case checkAllowance(token: TokenData)
   case sendApprove(token: TokenData, remain: BigInt)

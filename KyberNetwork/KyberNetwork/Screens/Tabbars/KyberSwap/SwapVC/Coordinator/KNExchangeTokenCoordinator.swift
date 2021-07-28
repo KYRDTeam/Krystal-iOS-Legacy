@@ -878,8 +878,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }
-      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rates = json["rates"] as? [JSONDictionary] {
-        self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: srcAmount, rates: rates)
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(RateResponse.self, from: resp.data)
+          self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: srcAmount, rates: data.rates)
+        } catch let error {
+          self.rootViewController.coordinatorFailUpdateRates()
+        }
       } else {
         self.rootViewController.coordinatorFailUpdateRates()
       }

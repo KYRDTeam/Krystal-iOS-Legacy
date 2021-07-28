@@ -153,32 +153,33 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
     case .getChartData(let address, let from, let to, let currency):
-      let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getChartData(address: address, from: from, to: to, currency: currency)) { result in
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getChartData(address: address, quote: currency, from: from)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
         case .success(let resp):
           let decoder = JSONDecoder()
           do {
-            let data = try decoder.decode(ChartData.self, from: resp.data)
-            controller.coordinatorDidUpdateChartData(data)
+            let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
+            controller.coordinatorDidUpdateChartData(data.prices)
           } catch let error {
             print("[Debug]" + error.localizedDescription)
           }
         }
       }
     case .getTokenDetailInfo(address: let address):
-      let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTokenDetailInfo(address: address)) { (result) in
+      
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getTokenDetail(address: address)) { (result) in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
         case .success(let resp):
           let decoder = JSONDecoder()
           do {
-            let data = try decoder.decode(TokenDetailData.self, from: resp.data)
-            controller.coordinatorDidUpdateTokenDetailInfo(data)
+            let data = try decoder.decode(TokenDetailResponse.self, from: resp.data)
+            controller.coordinatorDidUpdateTokenDetailInfo(data.result)
           } catch let error {
             print("[Debug]" + error.localizedDescription)
           }

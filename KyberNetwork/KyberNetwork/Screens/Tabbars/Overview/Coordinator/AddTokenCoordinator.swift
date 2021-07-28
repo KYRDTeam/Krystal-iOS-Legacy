@@ -67,7 +67,15 @@ extension AddTokenCoordinator: AddTokenViewControllerDelegate {
       let token = Token(dictionary: tokenDict)
       if KNSupportedTokenStorage.shared.isTokenSaved(token) {
         self.showErrorTopBannerMessage(with: "Fail", message: "Token is already added")
-      } else {
+      } else if KNSupportedTokenStorage.shared.getTokenDeleteStatus(token) {
+        KNSupportedTokenStorage.shared.removeTokenFromDeleteList(token)
+        self.showSuccessTopBannerMessage(
+          with: NSLocalizedString("success", value: "Success", comment: ""),
+          message: NSLocalizedString("Token has been added successfully!", comment: ""),
+          time: 1.0
+        )
+      }
+      else {
         KNSupportedTokenStorage.shared.saveCustomToken(token)
         self.showSuccessTopBannerMessage(
           with: NSLocalizedString("success", value: "Success", comment: ""),
@@ -143,7 +151,7 @@ extension AddTokenCoordinator: CustomTokenListViewControllerDelegate {
     case .edit(token: let token):
       self.start(showList: false, token: token)
     case .delete(token: let token):
-      KNSupportedTokenStorage.shared.deleteCustomToken(address: token.address)
+      KNSupportedTokenStorage.shared.deleteCustomToken(token)
       self.listTokenViewController.coordinatorDidUpdateTokenList()
     case .add:
       self.start()
