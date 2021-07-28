@@ -126,7 +126,7 @@ class OverviewMainViewModel {
   func reloadAllData() {
     switch self.currentMode {
     case .market(let mode):
-      let marketToken = KNSupportedTokenStorage.shared.allTokens.sorted { (left, right) -> Bool in
+      let marketToken = KNSupportedTokenStorage.shared.marketTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
         case .name(des: let des):
           return des ? left.symbol > right.symbol : left.symbol < right.symbol

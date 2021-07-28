@@ -36,6 +36,10 @@ class KNSupportedTokenStorage {
   var supportedTokens: [TokenObject] {
     return self.getAllTokenObject()
   }
+  
+  var marketTokens: [Token] {
+    return self.supportedToken
+  }
 
   var ethToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
