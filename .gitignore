@@ -94,3 +94,11 @@ Trust.zip
 # node
 node_modules
 JS/staging
+
+archives/
+.privates/
+
+Gemfile.lock
+*.env
+
+.profiles/

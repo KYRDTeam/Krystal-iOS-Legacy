@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function cleanup() {
+  # set default keychain is login
+  login_keychain=$(security login-keychain | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '"')
+  security default-keychain -s "$login_keychain"
+  # remove tmp keychain
+  TMP_KEYCHAIN_NAME=${TMP_KEYCHAIN_NAME:-"fastlane_tmp_keychain"}
+  tmp_keychain=$(security list-keychains | grep "$TMP_KEYCHAIN_NAME" | awk '{ sub(/^[ \t]+/, ""); print }' | tr -d '"')
+  if [[ -n $tmp_keychain ]]; then
+    security delete-keychain "$tmp_keychain"
+  fi
+}
+
+# make sure cleanup function always called after the script finished
+trap cleanup EXIT SIGTERM SIGINT SIGQUIT
+
+ENV_FILE="./scripts/build.env"
+# shellcheck disable=SC1090
+[[ -f "$ENV_FILE" ]] && source $ENV_FILE
+
+fastlane all
