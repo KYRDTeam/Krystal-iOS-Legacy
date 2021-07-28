@@ -16,33 +16,28 @@ class KNSendTokenViewModel: NSObject {
   let defaultTokenIconImg = UIImage(named: "default_token")
 
   fileprivate(set) var from: TokenObject
-  fileprivate(set) var balances: [String: Balance] = [:]
-  fileprivate(set) var balance: Balance?
 
   fileprivate(set) var amount: String = ""
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
-  fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.fastKNGas
+  fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
 
   fileprivate(set) var addressString: String = ""
   fileprivate(set) var isUsingEns: Bool = false
   var isSendAllBalanace: Bool = false
-  var isCloseGasWarningPopup: Bool {
-    return UserDefaults.standard.bool(forKey: Constants.gasWarningClosedValueKey)
-  }
 
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
 
   var allTokenBalanceString: String {
-    if self.from.isETH {
-      let balance = self.balances[self.from.contract]?.value ?? BigInt(0)
+    if self.from.isETH  || self.from.isBNB {
+      let balance = self.from.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.from.decimals, 6)
+        maxFractionDigits: min(self.from.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
@@ -54,10 +49,9 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var equivalentUSDAmount: BigInt? {
-    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.from) {
-      return usdRate.rate * self.amountBigInt / BigInt(10).power(self.from.decimals)
-    }
-    return nil
+    guard let tokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(self.from.address) else { return nil }
+    
+    return self.amountBigInt * BigInt(tokenPrice.usd * pow(10.0, 18.0)) / BigInt(10).power(self.from.decimals)
   }
 
   var displayEquivalentUSDAmount: String? {
@@ -67,21 +61,22 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var amountTextColor: UIColor {
-    return isAmountValid ? UIColor.Kyber.enygold : UIColor.red
+    return isAmountValid ? UIColor.white : UIColor.red
   }
 
   var address: Address?
 
-  init(from: TokenObject, balances: [String: Balance]) {
+  var currentWalletAddress: String
+
+  init(from: TokenObject, balances: [String: Balance], currentAddress: String) {
     self.from = from.clone()
-    self.balances = balances
-    self.balance = balances[from.contract]
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
+    self.currentWalletAddress = currentAddress
   }
 
   var navTitle: String {
-    return "\(NSLocalizedString("transfer", value: "Transfer", comment: ""))"
+    return "transfer".toBeLocalised().uppercased()
   }
 
   var tokenButtonAttributedText: NSAttributedString {
@@ -96,24 +91,76 @@ class KNSendTokenViewModel: NSObject {
     return attributedString
   }
 
+  var tokenButtonText: String {
+    return String(self.from.symbol.prefix(8))
+  }
+  
+  func resetFromToken() {
+    if KNGeneralProvider.shared.isEthereum {
+      self.from = KNSupportedTokenStorage.shared.ethToken
+    } else {
+      self.from = KNSupportedTokenStorage.shared.bnbToken
+    }
+  }
+
+  fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
+    let sourceToken = KNGeneralProvider.shared.quoteToken
+    let fee = gasPrice * self.gasLimit
+    let feeString: String = fee.displayRate(decimals: 18)
+    var typeString = ""
+    switch self.selectedGasPriceType {
+    case .superFast:
+      typeString = "super.fast".toBeLocalised().uppercased()
+    case .fast:
+      typeString = "fast".toBeLocalised().uppercased()
+    case .medium:
+      typeString = "regular".toBeLocalised().uppercased()
+    case .slow:
+      typeString = "slow".toBeLocalised().uppercased()
+    default:
+      break
+    }
+    return "\(feeString) \(sourceToken) (\(typeString))"
+  }
+
+  var gasFeeString: String {
+    self.updateSelectedGasPriceType(self.selectedGasPriceType)
+    return self.formatFeeStringFor(gasPrice: self.gasPrice)
+  }
+
   var balanceText: String {
     let balanceText = NSLocalizedString("balance", value: "Balance", comment: "")
     return "\(self.from.symbol.prefix(8)) \(balanceText)".uppercased()
   }
 
   var displayBalance: String {
-    guard let bal = self.balance else { return "0" }
-    let string = bal.value.string(
+    let string = self.from.getBalanceBigInt().string(
       decimals: self.from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 6)
+      maxFractionDigits: min(self.from.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
   }
 
-  var placeHolderEnterAddress: String {
-    return "Recipient Address/ENS"
+  var totalBalanceText: String {
+    return "\(self.displayBalance) \(self.from.symbol)"
+  }
+
+  var placeHolderEnterAddress: NSAttributedString {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    ]
+    return NSAttributedString(string: "Recipient Address/ENS", attributes: attributes)
+  }
+
+  var placeHolderAmount: NSAttributedString {
+    let attributes: [NSAttributedStringKey: Any] = [
+      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    ]
+    return NSAttributedString(string: "0", attributes: attributes)
   }
 
   var displayAddress: String? {
@@ -146,12 +193,12 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAmountTooSmall: Bool {
-    if self.from.isETH { return false }
+    if self.from.isETH || self.from.isBNB { return false }
     return self.amountBigInt == BigInt(0)
   }
 
   var isAmountTooBig: Bool {
-    let balanceVal = balance?.value ?? BigInt(0)
+    let balanceVal = self.from.getBalanceBigInt()
     return amountBigInt > balanceVal
   }
 
@@ -169,27 +216,26 @@ class KNSendTokenViewModel: NSObject {
 
   var isHavingEnoughETHForFee: Bool {
     var fee = self.ethFeeBigInt
-    if self.from.isETH { fee += self.amountBigInt }
-    let eth = KNSupportedTokenStorage.shared.ethToken
-    let ethBal = self.balances[eth.contract]?.value ?? BigInt(0)
+    if self.from.isETH || self.from.isBNB { fee += self.amountBigInt }
+    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
     return ethBal >= fee
   }
 
   var unconfirmTransaction: UnconfirmedTransaction {
     let transferType: TransferType = {
-      if self.from.isETH {
+      if self.from.isETH || self.from.isBNB {
         return TransferType.ether(destination: self.address)
       }
       return TransferType.token(self.from)
     }()
     let amount: BigInt = {
-      if self.from.isETH {
+      if self.from.isETH || self.from.isBNB {
         // eth needs to minus some fee
         if !self.isSendAllBalanace { return self.amountBigInt } // not send all balance
-        let balance = self.balance?.value ?? BigInt(0)
+        let balance = self.from.getBalanceBigInt()
         return max(BigInt(0), balance - self.allETHBalanceFee)
       }
-      return self.isSendAllBalanace ? (self.balance?.value ?? BigInt(0)) : self.amountBigInt
+      return self.isSendAllBalanace ? self.from.getBalanceBigInt() : self.amountBigInt
     }()
     return UnconfirmedTransaction(
       transferType: transferType,
@@ -207,22 +253,12 @@ class KNSendTokenViewModel: NSObject {
   // MARK: Update
   func updateSendToken(from token: TokenObject, balance: Balance?) {
     self.from = token.clone()
-    self.balance = balance
     self.amount = ""
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: self.from)
   }
 
   func updateBalance(_ balances: [String: Balance]) {
-    balances.forEach { (key, value) in
-      self.balances[key] = value
-    }
-    if let bal = balances[self.from.contract] {
-      if let oldBal = self.balance, oldBal.value != bal.value {
-        self.isSendAllBalanace = false
-      }
-      self.balance = bal
-    }
   }
 
   func updateAmount(_ amount: String, forSendAllETH: Bool = false) {
@@ -245,10 +281,6 @@ class KNSendTokenViewModel: NSObject {
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
     default: return
     }
-  }
-
-  func saveCloseGasWarningState() {
-    UserDefaults.standard.set(true, forKey: Constants.gasWarningClosedValueKey)
   }
 
   @discardableResult

@@ -9,24 +9,27 @@ class KNWalletObject: Object {
   @objc dynamic var name: String = ""
   @objc dynamic var icon: String = ""
   @objc dynamic var isBackedUp: Bool = true
+  @objc dynamic var isWatchWallet: Bool = false
   @objc dynamic var date: Date = Date()
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = true) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = true, isWatchWallet: Bool = false) {
     self.init()
     self.address = address
     self.name = name
     self.icon = ""
     self.date = Date()
     self.isBackedUp = isBackedUp
+    self.isWatchWallet = isWatchWallet
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = true) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = true, isWatchWallet: Bool) {
     self.init()
     self.address = address
     self.name = name
     self.icon = icon
     self.date = date
     self.isBackedUp = isBackedUp
+    self.isWatchWallet = isWatchWallet
   }
 
   func copy(withNewName newName: String) -> KNWalletObject {
@@ -35,7 +38,8 @@ class KNWalletObject: Object {
       name: newName,
       icon: self.icon,
       date: self.date,
-      isBackedUp: self.isBackedUp
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet
     )
   }
 
@@ -49,7 +53,8 @@ class KNWalletObject: Object {
       name: self.name,
       icon: self.icon,
       date: self.date,
-      isBackedUp: self.isBackedUp
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet
     )
   }
 }
@@ -61,7 +66,7 @@ class KNWalletPromoInfoStorage: NSObject {
   let expiredTimeKey = "expiredTimeKey"
   static let shared = KNWalletPromoInfoStorage()
   var kKeyPrefix: String {
-    return "\(KNEnvironment.default.displayName)_\(KNEnvironment.default.chainID)_"
+    return "\(KNEnvironment.default.displayName)_\(KNGeneralProvider.shared.customRPC.chainID)_"
   }
 
   override init() {}

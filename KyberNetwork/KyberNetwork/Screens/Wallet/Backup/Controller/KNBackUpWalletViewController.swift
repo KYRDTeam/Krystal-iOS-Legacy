@@ -9,7 +9,7 @@ protocol KNBackUpWalletViewControllerDelegate: class {
 
 class KNBackUpWalletViewController: KNBaseViewController {
 
-  weak var delegate: KNBackUpWalletViewControllerDelegate?
+  var delegate: KNBackUpWalletViewControllerDelegate?
   fileprivate var viewModel: KNBackUpWalletViewModel
 
   @IBOutlet weak var headerContainerView: UIView!
@@ -45,99 +45,85 @@ class KNBackUpWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let style = KNAppStyleType.current
-    self.view.backgroundColor = style.mainBackgroundColor
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
 
-    self.nextButton.rounded(radius: style.buttonRadius())
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.headerContainerView.rounded(radius: 20)
     self.nextButton.setTitle(
       NSLocalizedString("next", value: "Next", comment: ""),
       for: .normal
     )
-    self.completeButton.rounded(radius: style.buttonRadius())
+    self.nextButton.rounded(radius: 16)
+    self.completeButton.rounded(radius: 16)
     self.completeButton.setTitle(
-      NSLocalizedString("complete", value: "Complete", comment: ""),
+      "continue".toBeLocalised().capitalized,
       for: .normal
     )
     self.backupWalletLabel.text = self.viewModel.headerText
     self.backupWalletLabel.addLetterSpacing()
+    self.backButton.isHidden = self.viewModel.isBackButtonHidden
 
-    self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
+    self.firstWordTextField.attributedPlaceholder = self.viewModel.firstWordTextFieldPlaceholder
     self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.firstWordTextField.delegate = self
     self.firstWordTextField.addPlaceholderSpacing()
     self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
 
-    self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
+    self.secondWordTextField.attributedPlaceholder = self.viewModel.secondWordTextFieldPlaceholder
     self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
     self.secondWordTextField.delegate = self
     self.secondWordTextField.addPlaceholderSpacing()
     self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
-
+    
     self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
-    self.completeButton.setBackgroundColor(
-      style.createWalletButtonDisabledColor,
-      forState: .disabled
-    )
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
-    if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
-    }
-    self.nextButton.applyGradient()
-
+    self.completeButton.alpha = self.isCompleteButtonEnabled ? 1 : 0.2
     self.updateUI()
   }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.nextButton.applyGradient()
+
+    if !self.completeButton.isHidden {
+      if !self.completeButton.isEnabled { self.completeButton.isEnabled = true } // Gradient does not apply when button is not enable
+      self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    }
   }
 
   fileprivate func updateUI() {
-    UIView.animate(
-      withDuration: 0.25,
-      delay: 0,
-      options: UIViewAnimationOptions.curveEaseInOut,
-      animations: {
-        self.backButton.isHidden = self.viewModel.isBackButtonHidden
-        self.backupWalletLabel.text = self.viewModel.headerText
-        self.backupWalletLabel.addLetterSpacing()
-        self.titlelabel.text = self.viewModel.titleText
-        self.titlelabel.addLetterSpacing()
-        self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
-        self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
-        self.writeDownWordsTextLabel.addLetterSpacing()
-        self.writeDownWordsTextLabel.isHidden = self.viewModel.isWriteDownWordsLabelHidden
-        self.nextButton.isHidden = self.viewModel.isNextButtonHidden
 
-        for id in 0..<self.viewModel.numberWords {
-          let label = self.wordLabels.first(where: { $0.tag == id })
-          label?.attributedText = self.viewModel.attributedString(for: id)
-          label?.isHidden = self.viewModel.isListWordsLabelsHidden
-        }
+    self.backButton.isHidden = self.viewModel.isBackButtonHidden
+    self.backupWalletLabel.text = self.viewModel.headerText
+    self.backupWalletLabel.addLetterSpacing()
+    self.titlelabel.text = self.viewModel.titleText
+    self.titlelabel.addLetterSpacing()
+    self.descriptionLabel.attributedText = self.viewModel.descriptionAttributedText
+    self.writeDownWordsTextLabel.text = self.viewModel.writeDownWordsText
+    self.writeDownWordsTextLabel.addLetterSpacing()
+    self.writeDownWordsTextLabel.isHidden = self.viewModel.isWriteDownWordsLabelHidden
+    self.nextButton.isHidden = self.viewModel.isNextButtonHidden
 
-        self.firstWordTextField.placeholder = self.viewModel.firstWordTextFieldPlaceholder
-        self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
-        self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    for id in 0..<self.viewModel.numberWords {
+      let label = self.wordLabels.first(where: { $0.tag == id })
+      label?.attributedText = self.viewModel.attributedString(for: id)
+      label?.isHidden = self.viewModel.isListWordsLabelsHidden
+    }
 
-        self.secondWordTextField.placeholder = self.viewModel.secondWordTextFieldPlaceholder
-        self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
-        self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
-
-        if self.firstWordTextField.isHidden {
-          self.view.endEditing(true)
-        }
-
-        self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
-        self.completeButton.isEnabled = self.isCompleteButtonEnabled
-        if self.isCompleteButtonEnabled {
-          self.completeButton.applyGradient()
-        }
-        self.view.layoutIfNeeded()
-      }, completion: nil
-    )
+    self.firstWordTextField.attributedPlaceholder = self.viewModel.firstWordTextFieldPlaceholder
+    self.firstWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    self.firstSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    self.secondWordTextField.attributedPlaceholder = self.viewModel.secondWordTextFieldPlaceholder
+    self.secondSeparatorView.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    self.secondWordTextField.isHidden = self.viewModel.isTestWordsTextFieldHidden
+    if self.firstWordTextField.isHidden {
+      self.view.endEditing(true)
+    }
+    self.completeButton.isHidden = self.viewModel.isCompleteButtonHidden
+    self.completeButton.isEnabled = self.isCompleteButtonEnabled
+    self.completeButton.alpha = self.isCompleteButtonEnabled ? 1 : 0.2
+    self.view.layoutIfNeeded()
   }
 
   @IBAction func bacButtonPressed(_ sender: Any) {
@@ -146,13 +132,15 @@ class KNBackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "next_button"])
     self.viewModel.updateNextBackUpWords()
     self.updateUI()
   }
 
+  @IBAction func skipButtonTapped(_ sender: UIButton) {
+    self.delegate?.backupWalletViewControllerDidConfirmSkipWallet()
+  }
+
   @IBAction func completeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "screen_back_up_wallet", customAttributes: ["action": "complete_button"])
     guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
       return
     }
@@ -166,9 +154,7 @@ class KNBackUpWalletViewController: KNBaseViewController {
       self.firstWordTextField.text = ""
       self.secondWordTextField.text = ""
       self.completeButton.isEnabled = self.isCompleteButtonEnabled
-      if self.isCompleteButtonEnabled {
-        self.completeButton.applyGradient()
-      }
+      self.completeButton.alpha = self.isCompleteButtonEnabled ? 1 : 0.2
       self.viewModel.numberWrongs += 1
       isFirstTime = self.viewModel.numberWrongs == 1
       isSuccess = false
@@ -193,9 +179,7 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
-    if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
-    }
+    self.completeButton.alpha = self.isCompleteButtonEnabled ? 1 : 0.2
     self.view.layoutIfNeeded()
     return false
   }
@@ -203,9 +187,7 @@ extension KNBackUpWalletViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
     self.completeButton.isEnabled = self.isCompleteButtonEnabled
-    if self.isCompleteButtonEnabled {
-      self.completeButton.applyGradient()
-    }
+    self.completeButton.alpha = self.isCompleteButtonEnabled ? 1 : 0.2
     self.view.layoutIfNeeded()
     return false
   }

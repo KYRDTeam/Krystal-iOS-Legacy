@@ -16,7 +16,7 @@ class KNSession {
   private(set) var keystore: Keystore
   private(set) var wallet: Wallet
   let web3Swift: Web3Swift
-  let externalProvider: KNExternalProvider
+  var externalProvider: KNExternalProvider?
   private(set) var realm: Realm
   private(set) var transactionStorage: TransactionsStorage
   private(set) var tokenStorage: KNTokenStorage
@@ -27,24 +27,30 @@ class KNSession {
        wallet: Wallet) {
     self.keystore = keystore
     self.wallet = wallet
-    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
+    if let path = URL(string: KNGeneralProvider.shared.customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
       self.web3Swift = Web3Swift(url: path)
     } else {
       self.web3Swift = Web3Swift()
     }
     // Wallet type should always be real(account)
-    var account: Account!
+    //TODO: Add support watch account
+    var account: Account?
     if case .real(let acc) = self.wallet.type {
       account = acc
     }
-    let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+    let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
     self.realm = try! Realm(configuration: config)
     self.transactionStorage = TransactionsStorage(realm: self.realm)
     self.tokenStorage = KNTokenStorage(realm: self.realm)
-    self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: account)
+    if let realAccount = account {
+      self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
+    } else {
+      self.externalProvider = nil
+    }
+
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
     if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
-      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+      self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
   }
 
@@ -58,6 +64,8 @@ class KNSession {
       wallet: self.wallet
     )
     self.transacionCoordinator?.start()
+    BalanceStorage.shared.updateCurrentWallet(self.wallet)
+    EtherscanTransactionStorage.shared.updateCurrentWallet(self.wallet)
   }
 
   func stopSession() {
@@ -77,25 +85,32 @@ class KNSession {
     self.wallet = wallet
     self.keystore.recentlyUsedWallet = wallet
 
-    var account: Account!
+    var account: Account?
     if case .real(let acc) = self.wallet.type {
       account = acc
     }
-    self.externalProvider.updateNewAccount(account)
-    let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
-    self.realm = try! Realm(configuration: config)
-    self.transactionStorage = TransactionsStorage(realm: self.realm)
-    self.tokenStorage = KNTokenStorage(realm: self.realm)
-    self.transacionCoordinator = KNTransactionCoordinator(
-      transactionStorage: self.transactionStorage,
-      tokenStorage: self.tokenStorage,
-      externalProvider: self.externalProvider,
-      wallet: self.wallet
-    )
-    self.transacionCoordinator?.start()
-    let pendingTxs = self.transactionStorage.kyberPendingTransactions
-    if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
-      self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+    DispatchQueue.main.async {
+      if let realAccount = account {
+        self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
+      } else {
+        self.externalProvider = nil
+      }
+
+      let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
+      self.realm = try! Realm(configuration: config)
+      self.transactionStorage = TransactionsStorage(realm: self.realm)
+      self.tokenStorage = KNTokenStorage(realm: self.realm)
+      self.transacionCoordinator = KNTransactionCoordinator(
+        transactionStorage: self.transactionStorage,
+        tokenStorage: self.tokenStorage,
+        externalProvider: self.externalProvider,
+        wallet: self.wallet
+      )
+      self.transacionCoordinator?.start(isReloadData: false)
+      let pendingTxs = self.transactionStorage.kyberPendingTransactions
+      if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
+        self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
+      }
     }
   }
 
@@ -118,7 +133,7 @@ class KNSession {
     KNAppTracker.resetAppTrackerData(for: wallet.address)
     for env in KNEnvironment.allEnvironments() {
       // Remove token and transaction storage
-      let config = RealmConfiguration.configuration(for: wallet, chainID: env.chainID)
+      let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
       let realm = try! Realm(configuration: config)
       let transactionStorage = TransactionsStorage(realm: realm)
       transactionStorage.deleteAll()
@@ -126,7 +141,7 @@ class KNSession {
       tokenStorage.deleteAll()
 
       // Remove wallet storage
-      let globalConfig = RealmConfiguration.globalConfiguration(for: env.chainID)
+      let globalConfig = RealmConfiguration.globalConfiguration(for: KNGeneralProvider.shared.customRPC.chainID)
       let globalRealm = try! Realm(configuration: globalConfig)
       if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
         KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
@@ -189,7 +204,7 @@ class KNSession {
     KNGasCoordinator.shared.resume()
     KNRecentTradeCoordinator.shared.resume()
     KNSupportedTokenCoordinator.shared.resume()
-    KNNotificationCoordinator.shared.resume()
+//    KNNotificationCoordinator.shared.resume()
   }
 
   static func pauseInternalSession() {
@@ -197,7 +212,7 @@ class KNSession {
     KNGasCoordinator.shared.pause()
     KNRecentTradeCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.pause()
-    KNNotificationCoordinator.shared.pause()
+//    KNNotificationCoordinator.shared.pause()
   }
 }
 

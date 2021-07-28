@@ -1,0 +1,162 @@
+name: CI Build
+
+on:
+  push:
+    branches:
+      - ci
+      - develop
+  pull_request:
+    branches:
+      - master
+
+env:
+  LANG: en_US.UTF-8
+  # base64 service account credentials
+  GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
+  GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
+  GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-18.04
+    outputs:
+      current_branch: ${{ steps.current_branch.outputs.value }}
+    steps:
+      - name: Extract branch
+        shell: bash
+        id: current_branch
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          echo "::set-output name=value::$BRANCH"
+
+  build-ios:
+    needs:
+      - prepare
+    runs-on: macos-latest
+    env:
+      TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
+      # cetificate environment
+      DISTRIBUTE_CERT_PATH: /Users/runner/privates/distribution.p12
+      DISTRIBUTE_CERT_PASSWORD: ${{ secrets.DISTRIBUTE_CERT_PASSWORD }}
+      DEVELOPMENT_CERT_PATH: /Users/runner/privates/devops_development.p12
+      DEVELOPMENT_CERT_PASSWORD: ${{ secrets.DEVELOPMENT_CERT_PASSWORD }}
+      # xcode project environment
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
+      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID }}
+      # profiles
+      DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
+      KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
+      AD_HOC_PROFILE: ${{ secrets.AD_HOC_PROFILE }}
+      EXT_AD_HOC_PROFILE: ${{ secrets.EXT_AD_HOC_PROFILE }}
+      # profile paths
+      DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.DEV_PROFILE }}.mobileprovision"
+      KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
+      AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
+      EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+          bundler-cache: true
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCS_SA_CREDENTIAL }}
+          export_default_credentials: true
+
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Get configuration items
+        run: |
+          mkdir -p /Users/runner/privates        
+          gsutil cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
+
+      - name: Copy secret
+        run: cp /Users/runner/privates/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+
+      - name: Pods install
+        run: pod install
+
+      - name: Build IPA
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: all
+          bundle-install-path: "vendor/bundle"
+
+      - name: Deploy to OTA Server
+        shell: bash
+        run: |
+          # ota configure variable
+          DEV_OTA_URL="${{ secrets.DEV_OTA_URL }}"
+          STG_OTA_URL="${{ secrets.STG_OTA_URL }}"
+
+          OTA_URL="$DEV_OTA_URL"
+          APP_SUFFIX="Develop"
+
+          # prepare metadata
+          REPO_URL="https://github.com/${{ github.repository }}" 
+          METADATA="{\"repo\": \"$REPO_URL\", \"commit\": \"$GITHUB_SHA\"}"
+
+          # deploy to Staging OTA server if event 
+          # that trigger workflow is `pull_request`
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            OTA_URL="$STG_OTA_URL"
+            APP_SUFFIX="Staging"
+
+            # extract PR number
+            PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+            METADATA="{\"repo\": \"$REPO_URL\", \"pr_number\": \"$PR_NUMBER\"}"
+          fi
+
+          OTA_USERNAME="${{ secrets.OTA_USERNAME }}"
+          OTA_SECRET="${{ secrets.OTA_SECRET }}"
+
+          # upload ipa to OTA server
+          OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -u "$OTA_USERNAME:$OTA_SECRET" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
+
+          # set default app name
+          APP_NAME="Krystal: $APP_SUFFIX"
+
+          # extract build 
+          BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+          BUILD=${BUILD:-1}
+
+          # extract version
+          VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+          VERSION=${VERSION:-1.0.0}
+
+          # upload profile
+          CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
+                  -o /dev/null -w "%{http_code}" \
+                  -u "$OTA_USERNAME:$OTA_SECRET" \
+                  -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": $METADATA}" \
+                  $OTA_URL/api/v1/profiles/ios)
+
+          # stop CI if upload to OTA server failed
+          [[ "$CODE" == 20* ]] || exit
+
+      - name: Prepare bump build number
+        run: |
+          git config --global user.name 'DevOps'
+          git config --global user.email 'vietanhduong@users.noreply.github.com'
+
+      - name: Bump Build number
+        if: needs.prepare.outputs.current_branch == 'develop'
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: bump_build_number
+          bundle-install-path: 'vendor/bundle'

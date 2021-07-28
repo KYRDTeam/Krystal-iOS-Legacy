@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import TrustCore
 
 protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidClickBack()
@@ -8,7 +9,7 @@ protocol KNListWalletsCoordinatorDelegate: class {
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject)
   func listWalletsCoordinatorDidUpdateWalletObjects()
-  func listWalletsCoordinatorDidSelectAddWallet()
+  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType)
 }
 
 class KNListWalletsCoordinator: Coordinator {
@@ -16,6 +17,7 @@ class KNListWalletsCoordinator: Coordinator {
   let navigationController: UINavigationController
   private(set) var session: KNSession
   var coordinators: [Coordinator] = []
+  var addWalletCoordinator: KNAddNewWalletCoordinator?
 
   weak var delegate: KNListWalletsCoordinatorDelegate?
 
@@ -48,7 +50,30 @@ class KNListWalletsCoordinator: Coordinator {
         with: listWallets,
         currentWallet: curWallet
       )
+      guard !self.navigationController.viewControllers.contains(self.rootViewController) else {
+        return
+      }
       self.navigationController.pushViewController(self.rootViewController, animated: true)
+    }
+  }
+  
+  func startEditWallet() {
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
+    self.selectedWallet = curWallet
+    if !curWallet.isWatchWallet {
+      let viewModel = KNEditWalletViewModel(wallet: curWallet)
+      let controller = KNEditWalletViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      self.navigationController.pushViewController(controller, animated: true)
+    } else {
+      let coordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
+      coordinator.delegate = self
+      self.navigationController.present(coordinator.navigationController, animated: true) {
+        coordinator.start(type: .watch, wallet: curWallet)
+        self.addWalletCoordinator = coordinator
+      }
     }
   }
 
@@ -82,13 +107,22 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       self.showDeleteWallet(wallet)
     case .edit(let wallet):
       self.selectedWallet = wallet
-      let viewModel = KNEditWalletViewModel(wallet: wallet)
-      let controller = KNEditWalletViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      self.navigationController.pushViewController(controller, animated: true)
-    case .addWallet:
-      self.delegate?.listWalletsCoordinatorDidSelectAddWallet()
+      if !wallet.isWatchWallet {
+        let viewModel = KNEditWalletViewModel(wallet: wallet)
+        let controller = KNEditWalletViewController(viewModel: viewModel)
+        controller.loadViewIfNeeded()
+        controller.delegate = self
+        self.navigationController.pushViewController(controller, animated: true)
+      } else {
+        let coordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
+        coordinator.delegate = self
+        self.navigationController.present(coordinator.navigationController, animated: true) {
+          coordinator.start(type: .watch, wallet: wallet)
+          self.addWalletCoordinator = coordinator
+        }
+      }
+    case .addWallet(let type):
+      self.delegate?.listWalletsCoordinatorDidSelectAddWallet(type: type)
     }
   }
 
@@ -169,5 +203,17 @@ extension KNListWalletsCoordinator: KNEnterWalletNameViewControllerDelegate {
       currentWallet: curWallet
     )
     self.delegate?.listWalletsCoordinatorDidUpdateWalletObjects()
+  }
+}
+
+extension KNListWalletsCoordinator: KNAddNewWalletCoordinatorDelegate {
+  func addNewWalletCoordinator(add wallet: Wallet) {
+    self.rootViewController.coordinatorDidUpdateWalletsList()
+  }
+
+  func addNewWalletCoordinator(remove wallet: Wallet) {
+  }
+
+  func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
   }
 }

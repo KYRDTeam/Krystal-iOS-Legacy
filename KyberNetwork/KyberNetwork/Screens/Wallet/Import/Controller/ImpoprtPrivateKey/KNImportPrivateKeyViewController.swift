@@ -5,6 +5,8 @@ import QRCodeReaderViewController
 
 protocol KNImportPrivateKeyViewControllerDelegate: class {
   func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String, name: String?)
+  func importPrivateKeyViewController(controller: KNImportPrivateKeyViewController, send refCode: String)
+  func importPrivateKeyControllerDidSelectQRCode(controller: KNImportPrivateKeyViewController)
 }
 
 class KNImportPrivateKeyViewController: KNBaseViewController {
@@ -17,8 +19,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var enterPrivateKeyTextField: UITextField!
   @IBOutlet weak var privateKeyNoteLabel: UILabel!
+  @IBOutlet weak var privateKeyFieldContainer: UIView!
 
   @IBOutlet weak var nextButton: UIButton!
+  @IBOutlet weak var refCodeField: UITextField!
+  @IBOutlet weak var containerRefCodeView: UIView!
+  @IBOutlet weak var refCodeTitleLabel: UILabel!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,21 +34,14 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.enterPrivateKeyTextLabel.text = NSLocalizedString("your.private.key", value: "Your Private Key", comment: "")
     self.enterPrivateKeyTextLabel.addLetterSpacing()
-    self.enterPrivateKeyTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0))
-    self.enterPrivateKeyTextField.rightViewMode = .always
     self.enterPrivateKeyTextField.delegate = self
 
     self.privateKeyNoteLabel.text = "*\(NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: ""))"
     self.privateKeyNoteLabel.addLetterSpacing()
 
-    let style = KNAppStyleType.current
-    self.nextButton.rounded(radius: style.buttonRadius())
-    self.nextButton.setBackgroundColor(
-      style.importWalletButtonDisabledColor,
-      forState: .disabled
-    )
+    self.nextButton.rounded(radius: 16)
     self.nextButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
+      NSLocalizedString("Connect", value: "Connect", comment: ""),
       for: .normal
     )
     self.nextButton.addTextSpacing()
@@ -50,7 +49,10 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.addPlaceholderSpacing()
-
+    
+    self.privateKeyFieldContainer.rounded(radius: 8)
+    self.walletNameTextField.rounded(radius: 8)
+    self.refCodeField.attributedPlaceholder = NSAttributedString(string: "Paste your Referral Code", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
     self.resetUI()
   }
 
@@ -63,13 +65,8 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.updateNextButton()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.updateNextButton()
-  }
-
   fileprivate func updateSecureTextEntry() {
-    let secureTextImage = UIImage(named: !self.isSecureText ? "hide_secure_text" : "show_secure_text")
+    let secureTextImage = UIImage(named: !self.isSecureText ? "hide_eye_icon" : "show_eye_icon")
     self.secureTextButton.setImage(secureTextImage, for: .normal)
     self.enterPrivateKeyTextField.isSecureTextEntry = self.isSecureText
   }
@@ -86,7 +83,11 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       return UIColor.Kyber.strawberry
     }()
     self.privateKeyNoteLabel.textColor = noteColor
-    if enabled { self.nextButton.applyGradient() }
+    if enabled {
+      self.nextButton.alpha = 1
+    } else {
+      self.nextButton.alpha = 0.2
+    }
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {
@@ -104,12 +105,29 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
+    if let text = self.refCodeField.text, !text.isEmpty {
+      self.delegate?.importPrivateKeyViewController(controller: self, send: text)
+    }
     let privateKey: String = self.enterPrivateKeyTextField.text ?? ""
     self.delegate?.importPrivateKeyViewControllerDidPressNext(
       sender: self,
       privateKey: privateKey,
       name: self.walletNameTextField.text
     )
+  }
+  
+  @IBAction func pasteButtonTapped(_ sender: UIButton) {
+    if let string = UIPasteboard.general.string {
+      self.refCodeField.text = string
+    }
+  }
+  
+  @IBAction func qrCodeButtonTapped(_ sender: UIButton) {
+    self.delegate?.importPrivateKeyControllerDidSelectQRCode(controller: self)
+  }
+  
+  func containerViewDidUpdateRefCode(_ refCode: String) {
+    self.refCodeField.text = refCode
   }
 }
 

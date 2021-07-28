@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
         </array>
-        <array key="Roboto-Bold.ttf">
-            <string>Roboto-Bold</string>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="KyberNetwork" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListContactViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="addContactButton" destination="CLT-QW-LlX" id="m1b-0x-u8Q"/>
                 <outlet property="bottomPaddingConstraintForTableView" destination="KoO-dy-EQH" id="blq-MO-xKe"/>
@@ -36,88 +35,84 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Nx-3L-1U6">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JI-zn-Q2P">
-                            <rect key="frame" x="147" y="46" width="81.5" height="22"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <rect key="frame" x="147" y="73.5" width="81.5" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUV-Ge-Xk8">
-                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="80v-IN-6Qp"/>
                                 <constraint firstAttribute="height" constant="36" id="CBq-lN-jej"/>
                             </constraints>
-                            <state key="normal" image="back_white_icon"/>
+                            <state key="normal" image="back_blue_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="wwR-2D-uWu"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEr-kh-NAw">
-                            <rect key="frame" x="323" y="39" width="36" height="36"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="36" id="bDL-eL-uY0"/>
-                                <constraint firstAttribute="height" constant="36" id="iVp-CC-Hmt"/>
-                            </constraints>
-                            <state key="normal" image="add_icon_white"/>
-                            <connections>
-                                <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="NKS-mc-lY2"/>
-                            </connections>
-                        </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="5JI-zn-Q2P" secondAttribute="bottom" constant="16" id="9zb-0C-2Hs"/>
-                        <constraint firstItem="hEr-kh-NAw" firstAttribute="centerY" secondItem="5JI-zn-Q2P" secondAttribute="centerY" id="Hco-qU-emf"/>
-                        <constraint firstAttribute="height" constant="84" id="Uy4-cI-igf"/>
+                        <constraint firstAttribute="height" constant="113" id="Uy4-cI-igf"/>
                         <constraint firstItem="5JI-zn-Q2P" firstAttribute="centerX" secondItem="6Nx-3L-1U6" secondAttribute="centerX" id="cHy-bY-YH5"/>
                         <constraint firstItem="eUV-Ge-Xk8" firstAttribute="centerY" secondItem="5JI-zn-Q2P" secondAttribute="centerY" id="h5z-bX-a2z"/>
                         <constraint firstItem="eUV-Ge-Xk8" firstAttribute="leading" secondItem="6Nx-3L-1U6" secondAttribute="leading" constant="16" id="pXF-E2-r4u"/>
-                        <constraint firstAttribute="trailing" secondItem="hEr-kh-NAw" secondAttribute="trailing" constant="16" id="t8I-Zg-vbK"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="KyberNetwork" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0eJ-nQ-IR7" customClass="KNContactTableView" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O1V-Us-qFQ">
-                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your contact is empty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APl-2d-Lg3">
-                            <rect key="frame" x="20" y="100" width="335" height="22"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
-                            <color key="textColor" red="0.67450980392156867" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="20" y="188" width="335" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLT-QW-LlX">
-                            <rect key="frame" x="72" y="187" width="231" height="45"/>
-                            <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLT-QW-LlX">
+                            <rect key="frame" x="37" y="270" width="301" height="38"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="45" id="JGi-40-gbu"/>
+                                <constraint firstAttribute="height" constant="38" id="JGi-40-gbu"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
-                            <state key="normal" title="Add Contact">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="tintColor" name="normalTextColor"/>
+                            <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Add Contact" image="add_blue_icon">
+                                <color key="titleColor" name="normalTextColor"/>
                             </state>
                             <connections>
                                 <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="ynT-Me-YRh"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_contact_icon" translatesAutoresizingMaskIntoConstraints="NO" id="r8k-jM-7uG">
+                            <rect key="frame" x="136" y="60" width="103" height="104"/>
+                        </imageView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstItem="APl-2d-Lg3" firstAttribute="leading" secondItem="O1V-Us-qFQ" secondAttribute="leading" constant="20" id="6PX-Vk-24Z"/>
-                        <constraint firstAttribute="trailing" secondItem="CLT-QW-LlX" secondAttribute="trailing" constant="72" id="JSe-iS-lGA"/>
+                        <constraint firstItem="r8k-jM-7uG" firstAttribute="top" secondItem="O1V-Us-qFQ" secondAttribute="top" constant="60" id="7A2-KY-uVP"/>
+                        <constraint firstAttribute="trailing" secondItem="CLT-QW-LlX" secondAttribute="trailing" constant="37" id="GsL-7T-eYL"/>
+                        <constraint firstItem="CLT-QW-LlX" firstAttribute="centerX" secondItem="O1V-Us-qFQ" secondAttribute="centerX" id="XBj-CU-kkq"/>
+                        <constraint firstItem="CLT-QW-LlX" firstAttribute="leading" secondItem="O1V-Us-qFQ" secondAttribute="leading" constant="37" id="dfk-9l-e79"/>
+                        <constraint firstItem="r8k-jM-7uG" firstAttribute="centerX" secondItem="O1V-Us-qFQ" secondAttribute="centerX" id="fvS-gn-fgq"/>
                         <constraint firstAttribute="trailing" secondItem="APl-2d-Lg3" secondAttribute="trailing" constant="20" id="gtz-Cs-UQf"/>
-                        <constraint firstItem="APl-2d-Lg3" firstAttribute="top" secondItem="O1V-Us-qFQ" secondAttribute="top" constant="100" id="oKM-vK-jgL"/>
-                        <constraint firstItem="CLT-QW-LlX" firstAttribute="leading" secondItem="O1V-Us-qFQ" secondAttribute="leading" constant="72" id="rrK-YB-7by"/>
+                        <constraint firstItem="APl-2d-Lg3" firstAttribute="top" secondItem="O1V-Us-qFQ" secondAttribute="top" constant="188" id="oKM-vK-jgL"/>
                         <constraint firstItem="CLT-QW-LlX" firstAttribute="top" secondItem="APl-2d-Lg3" secondAttribute="bottom" constant="65" id="u92-EX-Pn2"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="O1V-Us-qFQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3Ch-Vu-Dr8"/>
@@ -132,11 +127,10 @@
                 <constraint firstItem="6Nx-3L-1U6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pWb-JZ-tFw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="O1V-Us-qFQ" secondAttribute="bottom" id="vPm-vT-5y6"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="HH1-PQ-gRm" appends="YES" id="Vbp-lZ-5Wa"/>
             </connections>
-            <point key="canvasLocation" x="24.5" y="51.5"/>
+            <point key="canvasLocation" x="23.199999999999999" y="50.824587706146929"/>
         </view>
         <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="HH1-PQ-gRm">
             <rectEdge key="edges" left="YES"/>
@@ -146,7 +140,17 @@
         </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="add_icon_white" width="26" height="26"/>
-        <image name="back_white_icon" width="38" height="19"/>
+        <image name="add_blue_icon" width="12" height="12"/>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <image name="no_contact_icon" width="103" height="104"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

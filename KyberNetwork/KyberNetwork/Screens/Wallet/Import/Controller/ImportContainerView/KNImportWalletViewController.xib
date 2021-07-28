@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -18,7 +19,6 @@
                 <outlet property="headerContainerView" destination="qw3-JL-nXK" id="GnU-ap-5gR"/>
                 <outlet property="jsonButton" destination="kob-xN-pmG" id="RKV-5R-RN9"/>
                 <outlet property="navTitleLabel" destination="7QT-CL-yPl" id="7Ke-Oc-Pdn"/>
-                <outlet property="pageControl" destination="YJG-zg-uNF" id="PM9-he-h55"/>
                 <outlet property="privateKeyButton" destination="TYq-lc-2ub" id="sN4-UT-UUw"/>
                 <outlet property="scrollView" destination="Kke-yj-k62" id="vPf-S7-R2L"/>
                 <outlet property="seedsButton" destination="r9U-mU-xnN" id="jI7-f7-nZ5"/>
@@ -34,13 +34,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTV-4M-5g7">
-                            <rect key="frame" x="16" y="37" width="46" height="36"/>
+                            <rect key="frame" x="16" y="36.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="HuA-zZ-aMd"/>
                                 <constraint firstAttribute="height" constant="36" id="nbz-7p-peA"/>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="back_white_icon">
+                            <state key="normal" image="back_blue_icon">
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
@@ -48,13 +48,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import your Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7QT-CL-yPl">
-                            <rect key="frame" x="113.5" y="44" width="148.5" height="22"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <rect key="frame" x="106" y="42.5" width="163.5" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="7QT-CL-yPl" secondAttribute="bottom" constant="16" id="75S-CN-iJL"/>
                         <constraint firstItem="7QT-CL-yPl" firstAttribute="centerX" secondItem="qw3-JL-nXK" secondAttribute="centerX" id="D1l-Yk-SfE"/>
@@ -67,23 +67,15 @@
                     <rect key="frame" x="0.0" y="220.5" width="375" height="446.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </scrollView>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="YJG-zg-uNF">
-                    <rect key="frame" x="168" y="620" width="39" height="37"/>
-                    <color key="pageIndicatorTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <color key="currentPageIndicatorTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <connections>
-                        <action selector="pageControlValueDidChange:" destination="-1" eventType="valueChanged" id="o1f-2a-dj2"/>
-                    </connections>
-                </pageControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kob-xN-pmG">
                     <rect key="frame" x="16" y="98" width="106.5" height="106.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="kob-xN-pmG" secondAttribute="height" multiplier="1:1" id="Ynd-hB-1s3"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <state key="normal" title="Keystore" image="json_import_icon">
-                        <color key="titleColor" red="0.40784313725490196" green="0.45490196078431372" blue="0.5607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <state key="normal" title="JSON" image="json_import_icon">
+                        <color key="titleColor" name="textWhiteColor"/>
                         <color key="titleShadowColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -93,9 +85,9 @@
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYq-lc-2ub">
                     <rect key="frame" x="134.5" y="98" width="106" height="106.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <state key="normal" title="Private Key" image="private_key_import_icon">
-                        <color key="titleColor" red="0.40784313729999999" green="0.4549019608" blue="0.56078431370000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" name="textWhiteColor"/>
                         <color key="titleShadowColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -105,9 +97,9 @@
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9U-mU-xnN">
                     <rect key="frame" x="252.5" y="98" width="106.5" height="106.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <state key="normal" title="Mnemonic" image="seeds_import_icon">
-                        <color key="titleColor" red="0.40784313729999999" green="0.4549019608" blue="0.56078431370000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <state key="normal" title="Seeds" image="seeds_import_icon">
+                        <color key="titleColor" name="textWhiteColor"/>
                         <color key="titleShadowColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
@@ -115,7 +107,8 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="qw3-JL-nXK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8HK-NH-3ft"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Kke-yj-k62" secondAttribute="trailing" id="8Rb-wd-cyh"/>
@@ -127,25 +120,28 @@
                 <constraint firstItem="r9U-mU-xnN" firstAttribute="leading" secondItem="TYq-lc-2ub" secondAttribute="trailing" constant="12" id="KOm-vO-Yhi"/>
                 <constraint firstItem="TYq-lc-2ub" firstAttribute="width" secondItem="kob-xN-pmG" secondAttribute="width" id="Lya-Uy-Pms"/>
                 <constraint firstItem="r9U-mU-xnN" firstAttribute="width" secondItem="TYq-lc-2ub" secondAttribute="width" id="NPh-iq-AFr"/>
-                <constraint firstItem="YJG-zg-uNF" firstAttribute="centerX" secondItem="Kke-yj-k62" secondAttribute="centerX" id="Pz8-yS-eJb"/>
                 <constraint firstItem="qw3-JL-nXK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RBh-Ob-wlQ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qw3-JL-nXK" secondAttribute="trailing" id="VRD-3G-gBn"/>
                 <constraint firstItem="r9U-mU-xnN" firstAttribute="height" secondItem="TYq-lc-2ub" secondAttribute="height" id="XpG-E8-T4q"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="YJG-zg-uNF" secondAttribute="bottom" constant="10" id="Z4p-6c-Fqj"/>
                 <constraint firstItem="TYq-lc-2ub" firstAttribute="height" secondItem="kob-xN-pmG" secondAttribute="height" id="dcv-wi-zHF"/>
                 <constraint firstItem="Kke-yj-k62" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hn6-Um-xxP"/>
                 <constraint firstItem="kob-xN-pmG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="iJN-WX-BXH"/>
                 <constraint firstItem="r9U-mU-xnN" firstAttribute="centerY" secondItem="TYq-lc-2ub" secondAttribute="centerY" id="n27-8U-7Cr"/>
                 <constraint firstItem="kob-xN-pmG" firstAttribute="top" secondItem="qw3-JL-nXK" secondAttribute="bottom" constant="16" id="ocv-Lv-dbF"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="35.5" y="54.5"/>
+            <point key="canvasLocation" x="34.399999999999999" y="54.422788605697157"/>
         </view>
     </objects>
     <resources>
-        <image name="back_white_icon" width="38" height="19"/>
-        <image name="json_import_icon" width="39" height="43"/>
-        <image name="private_key_import_icon" width="41" height="40"/>
-        <image name="seeds_import_icon" width="45" height="41"/>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <image name="json_import_icon" width="28" height="36"/>
+        <image name="private_key_import_icon" width="34" height="34"/>
+        <image name="seeds_import_icon" width="42" height="33"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

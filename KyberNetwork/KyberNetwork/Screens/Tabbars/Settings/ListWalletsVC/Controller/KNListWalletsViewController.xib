@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="KyberNetwork" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNListWalletsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="addWalletButton" destination="8dd-He-VDD" id="u40-Jn-4EG"/>
                 <outlet property="bottomPaddingConstraintForTableView" destination="fPU-Qc-GQ7" id="K07-PO-QRu"/>
+                <outlet property="emptyMessageLabel" destination="4RW-EU-LFv" id="2CL-UO-3Z4"/>
+                <outlet property="emptyView" destination="khX-ck-Eac" id="h6x-6D-1aA"/>
+                <outlet property="emptyViewAddButton" destination="8dd-He-VDD" id="tZv-yW-UJ3"/>
                 <outlet property="headerContainerView" destination="vL2-AA-W03" id="gdG-2O-37t"/>
                 <outlet property="navTitleLabel" destination="xmh-i9-3kJ" id="uUG-Br-Uu8"/>
+                <outlet property="segmentedControl" destination="n1m-mB-qB7" id="5dz-kP-tEO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletTableView" destination="TaA-Qi-UUl" id="0Yx-am-FGE"/>
             </connections>
@@ -30,79 +37,147 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vL2-AA-W03">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmh-i9-3kJ">
-                            <rect key="frame" x="118.5" y="46" width="138" height="22"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MANAGE WALLETS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmh-i9-3kJ">
+                            <rect key="frame" x="115" y="78" width="145" height="19"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pwE-Ad-dkO">
-                            <rect key="frame" x="16" y="39" width="46" height="36"/>
+                            <rect key="frame" x="19" y="69.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="06Y-mP-ZF5"/>
                                 <constraint firstAttribute="width" constant="46" id="EVx-gL-vue"/>
                             </constraints>
-                            <state key="normal" image="back_white_icon"/>
+                            <state key="normal" image="back_blue_icon"/>
                             <connections>
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="hEe-8M-jca"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX3-sw-7fy">
-                            <rect key="frame" x="323" y="39" width="36" height="36"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX3-sw-7fy">
+                            <rect key="frame" x="330" y="75.5" width="24" height="24"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="36" id="ttY-xd-4wn"/>
-                                <constraint firstAttribute="height" constant="36" id="w1Y-FZ-WTv"/>
+                                <constraint firstAttribute="width" constant="24" id="ttY-xd-4wn"/>
+                                <constraint firstAttribute="height" constant="24" id="w1Y-FZ-WTv"/>
                             </constraints>
-                            <state key="normal" image="add_icon_white"/>
+                            <state key="normal" image="add_circle_grey"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="addButtonPressed:" destination="-1" eventType="touchUpInside" id="mdG-Ct-2ma"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.058823529409999999" green="0.66666666669999997" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstItem="pwE-Ad-dkO" firstAttribute="leading" secondItem="vL2-AA-W03" secondAttribute="leading" constant="16" id="CVA-4d-QTk"/>
-                        <constraint firstAttribute="trailing" secondItem="KX3-sw-7fy" secondAttribute="trailing" constant="16" id="KCF-xF-lvM"/>
+                        <constraint firstItem="pwE-Ad-dkO" firstAttribute="leading" secondItem="vL2-AA-W03" secondAttribute="leading" constant="19" id="CVA-4d-QTk"/>
+                        <constraint firstAttribute="trailing" secondItem="KX3-sw-7fy" secondAttribute="trailing" constant="21" id="KCF-xF-lvM"/>
                         <constraint firstItem="pwE-Ad-dkO" firstAttribute="centerY" secondItem="xmh-i9-3kJ" secondAttribute="centerY" id="MuR-cL-Wif"/>
                         <constraint firstItem="xmh-i9-3kJ" firstAttribute="centerX" secondItem="vL2-AA-W03" secondAttribute="centerX" id="V2v-Fz-213"/>
                         <constraint firstAttribute="bottom" secondItem="xmh-i9-3kJ" secondAttribute="bottom" constant="16" id="ar5-KR-p1k"/>
                         <constraint firstItem="KX3-sw-7fy" firstAttribute="centerY" secondItem="xmh-i9-3kJ" secondAttribute="centerY" id="pJi-96-uqp"/>
-                        <constraint firstAttribute="height" constant="84" id="vQQ-JE-uBe"/>
+                        <constraint firstAttribute="height" constant="113" id="vQQ-JE-uBe"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="TaA-Qi-UUl">
-                    <rect key="frame" x="0.0" y="84" width="375" height="583"/>
+                    <rect key="frame" x="0.0" y="157" width="375" height="510"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khX-ck-Eac">
+                    <rect key="frame" x="0.0" y="157" width="375" height="510"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_wallet_icon" translatesAutoresizingMaskIntoConstraints="NO" id="WAM-Gt-QfK">
+                            <rect key="frame" x="135.5" y="10" width="104" height="118"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your list of watched wallets is empty." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4RW-EU-LFv">
+                            <rect key="frame" x="56" y="151" width="263.5" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dd-He-VDD">
+                            <rect key="frame" x="103.5" y="207" width="168" height="37"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="tintColor" name="normalTextColor"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="9" maxX="40" maxY="9"/>
+                            <inset key="imageEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Add wallet" image="add_blue_icon">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="emptyViewAddButtonTapped:" destination="-1" eventType="touchUpInside" id="puo-Tj-BBL"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="WAM-Gt-QfK" firstAttribute="centerX" secondItem="khX-ck-Eac" secondAttribute="centerX" id="36X-Ht-xDg"/>
+                        <constraint firstItem="4RW-EU-LFv" firstAttribute="centerX" secondItem="khX-ck-Eac" secondAttribute="centerX" id="4yM-RR-NgP"/>
+                        <constraint firstItem="8dd-He-VDD" firstAttribute="top" secondItem="4RW-EU-LFv" secondAttribute="bottom" constant="37" id="7rc-qv-riZ"/>
+                        <constraint firstItem="4RW-EU-LFv" firstAttribute="top" secondItem="WAM-Gt-QfK" secondAttribute="bottom" constant="23" id="fth-In-edF"/>
+                        <constraint firstItem="8dd-He-VDD" firstAttribute="centerX" secondItem="khX-ck-Eac" secondAttribute="centerX" id="qOT-Tc-tsm"/>
+                        <constraint firstItem="WAM-Gt-QfK" firstAttribute="top" secondItem="khX-ck-Eac" secondAttribute="top" constant="10" id="zeJ-zH-cdI"/>
+                    </constraints>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="n1m-mB-qB7" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                    <rect key="frame" x="20" y="113" width="185.5" height="32"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <segments>
+                        <segment title="Imported" width="86.5"/>
+                        <segment title="Watch" width="98"/>
+                    </segments>
+                    <color key="tintColor" name="buttonBackgroundColor"/>
+                    <color key="selectedSegmentTintColor" name="textWhiteColor"/>
+                    <connections>
+                        <action selector="segmentedControlDidChange:" destination="-1" eventType="valueChanged" id="nFB-fr-H3Z"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
-            <color key="backgroundColor" red="0.96470588239999999" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="khX-ck-Eac" firstAttribute="trailing" secondItem="TaA-Qi-UUl" secondAttribute="trailing" id="4YU-9k-l6k"/>
+                <constraint firstItem="n1m-mB-qB7" firstAttribute="top" secondItem="vL2-AA-W03" secondAttribute="bottom" id="5UY-Oi-E40"/>
                 <constraint firstItem="vL2-AA-W03" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5ko-aD-cdh"/>
+                <constraint firstItem="khX-ck-Eac" firstAttribute="leading" secondItem="TaA-Qi-UUl" secondAttribute="leading" id="5o4-Q0-uL5"/>
+                <constraint firstItem="khX-ck-Eac" firstAttribute="bottom" secondItem="TaA-Qi-UUl" secondAttribute="bottom" id="7Fa-1I-7ot"/>
                 <constraint firstItem="TaA-Qi-UUl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8FL-qF-vxS"/>
+                <constraint firstItem="khX-ck-Eac" firstAttribute="top" secondItem="TaA-Qi-UUl" secondAttribute="top" id="E4O-de-dHU"/>
+                <constraint firstItem="n1m-mB-qB7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="EPv-gO-1AH"/>
                 <constraint firstAttribute="trailing" secondItem="vL2-AA-W03" secondAttribute="trailing" id="JNE-fg-WZh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TaA-Qi-UUl" secondAttribute="trailing" id="Ncx-8J-13i"/>
-                <constraint firstItem="TaA-Qi-UUl" firstAttribute="top" secondItem="vL2-AA-W03" secondAttribute="bottom" id="RsG-IW-mMu"/>
+                <constraint firstItem="TaA-Qi-UUl" firstAttribute="top" secondItem="vL2-AA-W03" secondAttribute="bottom" constant="44" id="RsG-IW-mMu"/>
                 <constraint firstItem="vL2-AA-W03" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V3S-Xc-Orm"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TaA-Qi-UUl" secondAttribute="bottom" id="fPU-Qc-GQ7"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="UeW-F6-I1o" appends="YES" id="EpA-uK-Tlr"/>
-            </connections>
+            <point key="canvasLocation" x="-218.40000000000001" y="134.48275862068968"/>
         </view>
-        <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="UeW-F6-I1o">
-            <rectEdge key="edges" left="YES"/>
-            <connections>
-                <action selector="screenEdgePanGestureAction:" destination="-1" id="tPY-Ug-sdJ"/>
-            </connections>
-        </screenEdgePanGestureRecognizer>
     </objects>
     <resources>
-        <image name="add_icon_white" width="26" height="26"/>
-        <image name="back_white_icon" width="38" height="19"/>
+        <image name="add_blue_icon" width="12" height="12"/>
+        <image name="add_circle_grey" width="32" height="32"/>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <image name="empty_wallet_icon" width="104" height="118"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

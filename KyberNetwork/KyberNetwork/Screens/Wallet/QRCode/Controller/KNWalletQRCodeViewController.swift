@@ -33,18 +33,10 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.setupWalletData()
     self.setupButtons()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.copyWalletButton.removeSublayer(at: 0)
-    self.copyWalletButton.applyGradient()
-  }
 
   fileprivate func setupWalletData() {
     self.titleLabel.text = self.viewModel.wallet.name
@@ -59,12 +51,13 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   fileprivate func setupButtons() {
-    self.copyWalletButton.rounded(radius: self.style.buttonRadius())
-    self.copyWalletButton.backgroundColor = style.walletFlowHeaderColor
     self.shareButton.rounded(
-      color: UIColor.Kyber.border,
+      radius: 16
+    )
+    self.copyWalletButton.rounded(
+      color: UIColor.Kyber.SWButtonBlueColor,
       width: 1.0,
-      radius: self.style.buttonRadius()
+      radius: 16
     )
     self.copyWalletButton.setTitle(
       NSLocalizedString("copy", value: "Copy", comment: ""),
@@ -74,15 +67,16 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       NSLocalizedString("share", value: "Share", comment: ""),
       for: .normal
     )
-    self.copyWalletButton.applyGradient()
-    let attributedString = NSMutableAttributedString(string: "send.only.ERC20.tokens.to.this.address".toBeLocalised(), attributes: [
+    let token = KNGeneralProvider.shared.isEthereum ? "ERC20" : "BEP20"
+    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    let attributedString = NSMutableAttributedString(string: "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds", attributes: [
       .font: UIFont.Kyber.regular(with: 14),
-      .foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+      .foregroundColor: UIColor.Kyber.SWWhiteTextColor,
       .kern: 0.0,
     ])
-    if let range = attributedString.string.range(of: "only.send.ETH.or.any.ERC-20".toBeLocalised()) {
+    if let range = attributedString.string.range(of: "Only send \(quoteToken) or any \(token)".toBeLocalised()) {
       let r = NSRange(range, in: attributedString.string)
-      attributedString.addAttribute(.font, value: UIFont.Kyber.medium(with: 14), range: r)
+      attributedString.addAttribute(.font, value: UIFont.Kyber.regular(with: 14), range: r)
     }
     self.infoLabel.attributedText = attributedString
   }

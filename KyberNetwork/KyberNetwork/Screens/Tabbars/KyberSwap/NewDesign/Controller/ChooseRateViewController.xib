@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChooseRateViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="ea6-aD-2tI" id="dKi-or-AN5"/>
+                <outlet property="contentViewTopContraint" destination="zJv-W1-qs5" id="4Zs-kZ-4Ym"/>
+                <outlet property="platformTableView" destination="4gh-Xi-lQw" id="79v-Q4-CrR"/>
+                <outlet property="popupHeightContraint" destination="mbD-HK-qgf" id="hZO-Px-eC6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ea6-aD-2tI">
+                    <rect key="frame" x="0.0" y="565" width="414" height="331"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Rate and Gas fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZS-eY-4Jj">
+                            <rect key="frame" x="92.000000000000014" y="30" width="230.33333333333337" height="23.666666666666671"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4gh-Xi-lQw">
+                            <rect key="frame" x="37" y="88.666666666666643" width="340" height="207.33333333333337"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="MNn-40-2AI"/>
+                                <outlet property="delegate" destination="-1" id="xX7-vg-ASH"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="gZS-eY-4Jj" firstAttribute="centerX" secondItem="ea6-aD-2tI" secondAttribute="centerX" id="98L-F9-m69"/>
+                        <constraint firstItem="4gh-Xi-lQw" firstAttribute="top" secondItem="gZS-eY-4Jj" secondAttribute="bottom" constant="35" id="NPl-k0-Cef"/>
+                        <constraint firstItem="gZS-eY-4Jj" firstAttribute="top" secondItem="ea6-aD-2tI" secondAttribute="top" constant="30" id="PWH-Ac-Q5R"/>
+                        <constraint firstAttribute="bottom" secondItem="4gh-Xi-lQw" secondAttribute="bottom" constant="35" id="Xxc-Aq-484"/>
+                        <constraint firstAttribute="trailing" secondItem="4gh-Xi-lQw" secondAttribute="trailing" constant="37" id="hTJ-Fn-6N2"/>
+                        <constraint firstAttribute="height" constant="331" id="mbD-HK-qgf"/>
+                        <constraint firstItem="4gh-Xi-lQw" firstAttribute="leading" secondItem="ea6-aD-2tI" secondAttribute="leading" constant="37" id="rnJ-gJ-Yl6"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="ea6-aD-2tI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="11c-5Q-rDw"/>
+                <constraint firstItem="ea6-aD-2tI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="X16-Xw-vbc"/>
+                <constraint firstItem="ea6-aD-2tI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="565" id="zJv-W1-qs5"/>
+            </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="U31-Zq-ry5" appends="YES" id="TA2-8R-ibp"/>
+            </connections>
+            <point key="canvasLocation" x="-197.10144927536234" y="122.54464285714285"/>
+        </view>
+        <tapGestureRecognizer id="U31-Zq-ry5">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="7Lb-8H-TV3"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

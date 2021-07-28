@@ -87,12 +87,18 @@ class KNNewContactViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var saveButton: UIButton!
   @IBOutlet weak var deleteButton: UIButton!
   @IBOutlet weak var sendButton: UIButton!
   @IBOutlet weak var nameTextField: UITextField!
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var ensMessageLabel: UILabel!
+  @IBOutlet weak var sendButtonTitleLabel: UILabel!
+  @IBOutlet weak var deleteButtonTitleLabel: UILabel!
+  @IBOutlet weak var sendButtonContainerView: UIView!
+  @IBOutlet weak var deleteButtonContainerView: UIView!
+  @IBOutlet weak var doneButton: UIButton!
+  @IBOutlet weak var separateView: UIView!
+  @IBOutlet weak var doneButtonTopContraint: NSLayoutConstraint!
 
   init(viewModel: KNNewContactViewModel) {
     self.viewModel = viewModel
@@ -118,20 +124,25 @@ class KNNewContactViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-  }
-
   fileprivate func setupUI() {
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.deleteButton.setTitle(NSLocalizedString("delete.contact", value: "Delete Contact", comment: ""), for: .normal)
-    self.sendButton.setTitle(NSLocalizedString("transfer", value: "Transfer", comment: ""), for: .normal)
-    self.sendButton.setTitleColor(UIColor.Kyber.marketBlue, for: .normal)
+    self.deleteButtonTitleLabel.text = "delete.contact".toBeLocalised()
+    self.sendButtonTitleLabel.text = "transfer".toBeLocalised()
     self.addressTextField.delegate = self
-    self.nameTextField.placeholder = NSLocalizedString("name", value: "Name", comment: "")
-    self.addressTextField.placeholder = NSLocalizedString("address", value: "Address", comment: "")
+    self.nameTextField.attributedPlaceholder = NSAttributedString(
+      string: "name".toBeLocalised(),
+      attributes: [
+        NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWTextFieldPlaceHolderColor,
+        NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      ]
+    )
+    self.addressTextField.attributedPlaceholder = NSAttributedString(
+      string: "address".toBeLocalised(),
+      attributes: [
+        NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWTextFieldPlaceHolderColor,
+        NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+      ]
+    )
+    self.doneButton.rounded(radius: 16)
     self.updateUI()
   }
 
@@ -139,8 +150,11 @@ class KNNewContactViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.title
     self.nameTextField.text = self.viewModel.contact.name
     self.addressTextField.text = self.viewModel.addressString
-    self.deleteButton.isHidden = !self.viewModel.isEditing
-
+    self.deleteButtonContainerView.isHidden = !self.viewModel.isEditing
+    self.sendButtonContainerView.isHidden = !self.viewModel.isEditing
+    self.separateView.isHidden = !self.viewModel.isEditing
+    self.doneButtonTopContraint.constant = self.viewModel.isEditing ? 184 : 51
+    self.doneButton.setTitle(self.viewModel.isEditing ? "done".toBeLocalised() : "add".toBeLocalised(), for: .normal)
     self.ensMessageLabel.text = self.viewModel.displayEnsMessage
     self.ensMessageLabel.textColor = self.viewModel.displayEnsMessageColor
     self.ensMessageLabel.isHidden = false
@@ -151,7 +165,7 @@ class KNNewContactViewController: KNBaseViewController {
       self.nameTextField.text = self.viewModel.contact.name
     }
     self.titleLabel.text = self.viewModel.title
-    self.deleteButton.isHidden = !self.viewModel.isEditing
+    self.deleteButtonContainerView.isHidden = !self.viewModel.isEditing
 
     self.ensMessageLabel.text = self.viewModel.displayEnsMessage
     self.ensMessageLabel.textColor = self.viewModel.displayEnsMessageColor
@@ -168,15 +182,16 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "new_contact_save_button_tapped", customAttributes: nil)
+    
     guard let name = self.nameTextField.text, !name.isEmpty else {
       self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
     }
-    guard let address = self.viewModel.address else {
-      self.showWarningTopBannerMessage(
+    guard let address = Address(string: self.addressTextField.text ?? "") else {
+      self.showErrorTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: "")
+        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
+        time: 2.0
       )
       return
     }
@@ -187,7 +202,6 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "new_contact_delete_btn_tapped", customAttributes: nil)
     let alertController = UIAlertController(
       title: "",
       message: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
@@ -203,7 +217,6 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "new_contact_send_btn_tapped", customAttributes: nil)
     guard let address = Address(string: self.addressTextField.text ?? "") else {
       self.showErrorTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
@@ -281,7 +294,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
       self.updateUI()
       return
     }
-    DispatchQueue.global().async {
+    DispatchQueue.main.async {
       KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {

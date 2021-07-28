@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WalletListTableViewCell" rowHeight="56" id="KGk-i7-Jjw" customClass="WalletListTableViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jda-1l-m4X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                        <connections>
+                            <action selector="tapCell:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bIp-6k-kjb"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="86A-Yl-NIU">
+                        <rect key="frame" x="66" y="12" width="90.5" height="19"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xb45thu4c…8f6hn" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeH-ae-lRl">
+                        <rect key="frame" x="66" y="33" width="104.5" height="16.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="104.5" id="lCE-Zc-Uga"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="juK-dW-ofX">
+                        <rect key="frame" x="38" y="24.5" width="12" height="7.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="12" id="GcO-DP-Lea"/>
+                            <constraint firstAttribute="height" constant="7.5" id="QKx-IR-83g"/>
+                        </constraints>
+                    </imageView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMS-v8-7wg">
+                        <rect key="frame" x="175.5" y="29.5" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="fdE-cL-KXS"/>
+                            <constraint firstAttribute="width" constant="24" id="hpz-fQ-1nz"/>
+                        </constraints>
+                        <state key="normal" image="copy_icon_blue"/>
+                        <connections>
+                            <action selector="copyButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oxs-Ev-qAw"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="86A-Yl-NIU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="66" id="01I-A3-v5D"/>
+                    <constraint firstItem="jda-1l-m4X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0BO-rH-ubV"/>
+                    <constraint firstAttribute="bottom" secondItem="jda-1l-m4X" secondAttribute="bottom" id="5xE-27-vcU"/>
+                    <constraint firstItem="86A-Yl-NIU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="9Ke-hh-DLL"/>
+                    <constraint firstItem="NeH-ae-lRl" firstAttribute="top" secondItem="86A-Yl-NIU" secondAttribute="bottom" constant="2" id="CNa-80-8KY"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="centerY" secondItem="NeH-ae-lRl" secondAttribute="centerY" id="aOl-ho-Xi9"/>
+                    <constraint firstItem="EMS-v8-7wg" firstAttribute="leading" secondItem="NeH-ae-lRl" secondAttribute="trailing" constant="5" id="cLq-8q-uPi"/>
+                    <constraint firstAttribute="trailing" secondItem="jda-1l-m4X" secondAttribute="trailing" id="dLi-ir-rpl"/>
+                    <constraint firstItem="juK-dW-ofX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ggV-Mq-3rA"/>
+                    <constraint firstItem="juK-dW-ofX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="lI7-HG-fOv"/>
+                    <constraint firstItem="86A-Yl-NIU" firstAttribute="leading" secondItem="NeH-ae-lRl" secondAttribute="leading" id="lKt-Lr-AjQ"/>
+                    <constraint firstItem="jda-1l-m4X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="rKO-2z-naV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="popupBackgroundColor"/>
+            <connections>
+                <outlet property="checkIconImage" destination="juK-dW-ofX" id="MgY-kl-vqZ"/>
+                <outlet property="leftPaddingContraint" destination="01I-A3-v5D" id="45Q-VJ-2Py"/>
+                <outlet property="walletAddressLabel" destination="NeH-ae-lRl" id="8Ml-iV-bRz"/>
+                <outlet property="walletNameLabel" destination="86A-Yl-NIU" id="Mxl-Us-1Fe"/>
+            </connections>
+            <point key="canvasLocation" x="124.6376811594203" y="110.49107142857143"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="check_icon_green" width="14" height="10"/>
+        <image name="copy_icon_blue" width="14" height="14"/>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16099999845027924" green="0.17599999904632568" blue="0.17299999296665192" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

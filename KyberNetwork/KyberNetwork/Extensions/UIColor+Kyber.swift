@@ -79,11 +79,29 @@ extension UIColor {
     static var marketRed = UIColor(red: 250, green: 101, blue: 102)
     static var marketBlue = UIColor(red: 0, green: 162, blue: 247)
 
+    static var SWYellow = UIColor(red: 255, green: 190, blue: 0)
+    static var SWGreen = UIColor(red: 39, green: 163, blue: 49)
+    static var SWRed = UIColor(red: 249, green: 86, blue: 109)
+    static var SWButtonYellow = UIColor(red: 253, green: 190, blue: 1)
+    static var SWPlaceHolder = UIColor(red: 164, green: 171, blue: 187)
+    static var SWDarkBlueBackground = UIColor(red: 0, green: 50, blue: 67)
+    static var SWActivePageControlColor = UIColor(named: "buttonBackgroundColor")!
+    static var SWInActivePageControlColor = UIColor(named: "normalTextColor")!
+    static var SWButtonBlueColor = UIColor(red: 35, green: 167, blue: 181)
+    static var SWTextFieldPlaceHolderColor = UIColor(red: 76, green: 102, blue: 112)
+    static var SWWhiteTextColor = UIColor(red: 245, green: 246, blue: 249)
+    static var SWSelectedBlueColor = UIColor(red: 1, green: 38, blue: 51)
+
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
 
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,
       UIColor.Kyber.coral,
+    ]
+
+    static var SWButtonColors: [UIColor] = [
+      UIColor.Kyber.SWYellow,
+      UIColor.Kyber.SWGreen,
     ]
 
     static var headerColors: [UIColor] = [

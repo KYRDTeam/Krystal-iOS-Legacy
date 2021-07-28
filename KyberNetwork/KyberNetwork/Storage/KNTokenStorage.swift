@@ -111,4 +111,11 @@ class KNTokenStorage {
     self.realm.delete(realm.objects(TokenObject.self))
     try! self.realm.commitWrite()
   }
+
+  func findTokensWithAddresses(addresses: [String]) -> [TokenObject] {
+    return self.tokens.filter { (token) -> Bool in
+      return addresses.contains(token.contract.lowercased())
+    }
+  }
+  
 }

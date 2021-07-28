@@ -6,92 +6,336 @@ import TrustCore
 import BigInt
 
 class KNSupportedTokenStorage {
+  
+  private var supportedToken: [Token]
+  private var favedTokens: [FavedToken]
+  private var customTokens: [Token]
+  private var disableTokens: [Token]
+  private var deletedTokens: [Token]
+  
+  var allTokens: [Token] {
+    return self.supportedToken + self.getCustomToken()
+  }
+  
+  var allFullToken: [Token] {
+    return self.supportedToken + self.customTokens
+  }
+  
   static let shared = KNSupportedTokenStorage()
-  lazy var realm: Realm = {
-    let config = RealmConfiguration.globalConfiguration()
-    return try! Realm(configuration: config)
-  }()
 
-  func addLocalSupportedTokens() {
-    let supportedTokenObjects = KNJSONLoaderUtil.loadListSupportedTokensFromJSONFile()
-    supportedTokenObjects.forEach { token in
-      if let savedToken = self.supportedTokens.first(where: { $0.contract == token.contract }) {
-        token.value = savedToken.value
-      }
-    }
-    self.add(tokens: supportedTokenObjects)
+  init() {
+    self.supportedToken = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.tokenStoreFileName, as: [Token].self) ?? []
+    self.favedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.favedTokenStoreFileName, as: [FavedToken].self) ?? []
+    self.customTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName, as: [Token].self) ?? []
+    self.disableTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
+    self.deletedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
+    self.migrationCustomTokenIfNeeded()
   }
 
+  //TODO: temp wrap method delete later
   var supportedTokens: [TokenObject] {
-    if self.realm.objects(TokenObject.self).isInvalidated { return [] }
-    return self.realm.objects(TokenObject.self)
-      .filter { return !$0.contract.isEmpty }
+    return self.getAllTokenObject()
+  }
+  
+  var marketTokens: [Token] {
+    return self.supportedToken
   }
 
   var ethToken: TokenObject {
-    return self.supportedTokens.first(where: { return $0.isETH })!.clone()
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "ETH"
+    } ?? Token(name: "Ethereum", symbol: "ETH", address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", decimals: 18, logo: "eth")
+    return token.toObject()
   }
 
   var wethToken: TokenObject? {
-    return self.supportedTokens.first(where: { return $0.isWETH })?.clone()
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "WETH"
+    } ?? Token(name: "Wrapped Ether", symbol: "WETH", address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", decimals: 18, logo: "weth")
+    return token.toObject()
   }
 
   var kncToken: TokenObject {
-    return self.supportedTokens.first(where: { $0.isKNC })!.clone()
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "KNC"
+    } ?? Token(name: "KyberNetwork", symbol: "WETH", address: "0xdd974d5c2e2928dea5f71b9825b8b646686bd200", decimals: 18, logo: "knc")
+    return token.toObject()
   }
-
-  var ptToken: TokenObject? {
-    return self.supportedTokens.first(where: { $0.isPromoToken })?.clone()
+  
+  var bnbToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "BNB"
+    } ?? Token(name: "BNB", symbol: "BNB", address: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", decimals: 18, logo: "bnb")
+    return token.toObject()
+  }
+  
+  var busdToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "BUSD"
+    } ?? Token(name: "BUSD", symbol: "BUSD", address: "0xa2d2b501e6788158da07fa7e14dee9f2c5a01054", decimals: 18, logo: "")
+    return token.toObject()
   }
 
   func get(forPrimaryKey key: String) -> TokenObject? {
-    return self.realm.object(ofType: TokenObject.self, forPrimaryKey: key)
+    let token = self.getTokenWith(address: key)
+    return token?.toObject()
+  }
+  //MARK:-new data type implemetation
+  func reloadData() {
+    self.supportedToken = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.tokenStoreFileName, as: [Token].self) ?? []
+    self.customTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName, as: [Token].self) ?? []
   }
 
-  /**
-   Update supported token list if needed
-   */
-  func updateSupportedTokens(tokenObjects: [TokenObject]) {
-    if self.realm.objects(TokenObject.self).isInvalidated { return }
-    let savedTokens = self.supportedTokens
-    let needUpdate: Bool = {
-      if savedTokens.count != tokenObjects.count { return true }
-      for id in 0..<savedTokens.count where savedTokens[id].contract != tokenObjects[id].contract { return true }
-      return false
-    }()
-    if !needUpdate { return }
-    tokenObjects.forEach { token in
-      if let savedToken = savedTokens.first(where: { $0.contract == token.contract }) {
-        token.value = savedToken.value
+  func getSupportedTokens() -> [Token] {
+    return self.supportedToken
+  }
+
+  func updateSupportedTokens(_ tokens: [Token]) {
+    guard tokens != self.supportedToken else {
+      return
+    }
+    Storage.store(tokens, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
+    self.supportedToken = tokens
+  }
+
+  func getTokenWith(address: String) -> Token? {
+    return self.allTokens.first { (token) -> Bool in
+      return token.address.lowercased() == address.lowercased()
+    }
+  }
+
+  func getTokenWith(symbol: String) -> Token? {
+    return self.allTokens.first { (token) -> Bool in
+      return token.symbol.lowercased() == symbol.lowercased()
+    }
+  }
+
+  func getFavedTokenWithAddress(_ address: String) -> FavedToken? {
+    let faved = self.favedTokens.first { (token) -> Bool in
+      return token.address.lowercased() == address.lowercased()
+    }
+    return faved
+  }
+
+  func getFavedStatusWithAddress(_ address: String) -> Bool {
+    let faved = self.getFavedTokenWithAddress(address)
+    return faved?.status ?? false
+  }
+
+  func setFavedStatusWithAddress(_ address: String, status: Bool) {
+    if let faved = self.getFavedTokenWithAddress(address) {
+      faved.status = status
+    } else {
+      let newStatus = FavedToken(address: address, status: status)
+      self.favedTokens.append(newStatus)
+    }
+    Storage.store(self.favedTokens, as: KNEnvironment.default.envPrefix + Constants.favedTokenStoreFileName)
+  }
+  
+  func saveCustomToken(_ token: Token) {
+    self.customTokens.append(token)
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+  }
+
+  func isTokenSaved(_ token: Token) -> Bool {
+    let tokens = self.allTokens
+    let saved = tokens.first { (item) -> Bool in
+      return item.address.lowercased() == token.address.lowercased()
+    }
+
+    return saved != nil
+  }
+
+  func getCustomToken() -> [Token] {
+    return self.customTokens.filter { token in
+      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
+    }
+  }
+  
+  func getFullCustomToken() -> [Token] {
+    return self.customTokens.filter { token in
+      return !self.getTokenDeleteStatus(token)
+    }
+  }
+
+  func getCustomTokenWith(address: String) -> Token? {
+    return self.customTokens.first { (token) -> Bool in
+      return token.address.lowercased() == address.lowercased()
+    }
+  }
+  
+  func getTokenDeleteStatus(_ token: Token) -> Bool {
+    return self.deletedTokens.contains(token)
+  }
+  
+  func removeTokenFromDeleteList(_ token: Token) {
+    if let index = self.deletedTokens.firstIndex(where: { item in
+      return item == token
+    }) {
+      self.deletedTokens.remove(at: index)
+    }
+  }
+  
+  func getTokenActiveStatus(_ token: Token) -> Bool {
+    return !self.disableTokens.contains(token)
+  }
+
+  func setTokenActiveStatus(token: Token, status: Bool) {
+    if status {
+      if let index = self.disableTokens.firstIndex(where: { item in
+        return item == token
+      }) {
+        self.disableTokens.remove(at: index)
+        Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+      }
+    } else {
+      if !self.disableTokens.contains(token) {
+        self.disableTokens.append(token)
+        Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
       }
     }
-    self.add(tokens: tokenObjects)
-    let removedTokens = savedTokens.filter { token -> Bool in
-      return tokenObjects.first(where: { $0.contract == token.contract }) == nil
+  }
+  
+  func deleteCustomToken(_ token: Token) {
+    
+    guard !self.deletedTokens.contains(token) else {
+      return
     }
-    self.delete(tokens: removedTokens)
-    // Send post notification to update other UI if needed
-    KNNotificationUtil.postNotification(for: kSupportedTokenListDidUpdateNotificationKey)
+    
+    self.deletedTokens.append(token)
+    Storage.store(self.self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+//    guard let index = self.customTokens.firstIndex(where: { (token) -> Bool in
+//      return token.address.lowercased() == address.lowercased()
+//    }) else { return }
+//    self.customTokens.remove(at: index)
+//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+  }
+  
+  func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {
+    guard let token = self.getCustomTokenWith(address: address) else { return }
+    token.address = newAddress
+    token.symbol = symbol
+    token.decimals = decimal
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+  }
+  
+  func getAllTokenObject() -> [TokenObject] {
+    return self.allTokens.map { (token) -> TokenObject in
+      return token.toObject()
+    }
+  }
+  
+  func getETH() -> Token {
+    return self.supportedToken.first { (item) -> Bool in
+      return item.symbol == "ETH"
+    } ?? Token(name: "Ethereum", symbol: "ETH", address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", decimals: 18, logo: "eth")
+  }
+  
+  func getKNC() -> Token {
+    return self.supportedToken.first { (item) -> Bool in
+      return item.symbol == "KNC"
+    } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
+  }
+  
+//  func checkAddCustomTokenIfNeeded() {
+//    var unknown: [Token] = []
+//    let all = self.allTokens
+//    guard !all.isEmpty else {
+//      return
+//    }
+//    let etherscanTokens = EtherscanTransactionStorage.shared.getEtherscanToken()
+//    etherscanTokens.forEach { (token) in
+//      if !all.contains(token) {
+//        unknown.append(token)
+//      }
+//    }
+//    guard !unknown.isEmpty else {
+//      return
+//    }
+//    var customTokenCache = self.customTokens
+//    unknown.forEach { (token) in
+//      if !customTokenCache.contains(token) {
+//        customTokenCache.append(token)
+//      }
+//    }
+//
+//    //Check duplicate with support token list
+//    var duplicateToken: [Token] = []
+//    customTokenCache.forEach { (token) in
+//      if self.supportedToken.contains(token) {
+//        duplicateToken.append(token)
+//      }
+//    }
+//    duplicateToken.forEach { (token) in
+//      if let idx = customTokenCache.firstIndex(where: { $0 == token }) {
+//        customTokenCache.remove(at: idx)
+//      }
+//    }
+//
+//    self.customTokens = customTokenCache
+//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+//  }
+  
+  func checkAddCustomTokenIfNeeded(_ tokens: [Token]) {
+    guard !self.supportedToken.isEmpty else {
+      return
+    }
+    let all = self.allFullToken
+    var unknown: [Token] = []
+    tokens.forEach { token in
+      if !all.contains(token) {
+        unknown.append(token)
+      }
+    }
+    guard !unknown.isEmpty else {
+      return
+    }
+    self.customTokens.append(contentsOf: unknown)
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
 
-  func add(tokens: [TokenObject]) {
-    if self.realm.objects(TokenObject.self).isInvalidated { return }
-    self.realm.beginWrite()
-    self.realm.add(tokens, update: .modified)
-    try! self.realm.commitWrite()
+  func migrationCustomTokenIfNeeded() {
+    guard KNGeneralProvider.shared.isEthereum, Storage.isFileExistAtPath(Constants.customTokenStoreFileName) else {
+      return
+    }
+    let token = Storage.retrieve(Constants.customTokenStoreFileName, as: [Token].self) ?? []
+    guard !token.isEmpty else {
+      return
+    }
+    let all = self.allFullToken
+    var add: [Token] = []
+    token.forEach { (item) in
+      if !all.contains(item) {
+        add.append(item)
+      }
+    }
+    self.customTokens.append(contentsOf: add)
+    Storage.removeFileAtPath(Constants.customTokenStoreFileName)
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
-
-  func delete(tokens: [TokenObject]) {
-    if self.realm.objects(TokenObject.self).isInvalidated { return }
-    self.realm.beginWrite()
-    self.realm.delete(tokens)
-    try! realm.commitWrite()
+  
+  func getAssetTokens() -> [Token] {
+    var result: [Token] = []
+    let tokens = KNSupportedTokenStorage.shared.allTokens
+    let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
+    var lendingSymbols: [String] = []
+    lendingBalances.forEach { (lendingPlatform) in
+      lendingPlatform.balances.forEach { (balance) in
+        lendingSymbols.append(balance.interestBearingTokenSymbol.lowercased())
+      }
+    }
+    tokens.forEach { (token) in
+      guard token.getBalanceBigInt() > BigInt(0), !lendingSymbols.contains(token.symbol.lowercased()) else {
+        return
+      }
+      result.append(token)
+    }
+    return result
   }
-
-  func deleteAll() {
-    if self.realm.objects(TokenObject.self).isInvalidated { return }
-    self.realm.beginWrite()
-    self.realm.delete(realm.objects(TokenObject.self))
-    try! self.realm.commitWrite()
+  
+  func findTokensWithAddresses(addresses: [String]) -> [Token] {
+    return self.allTokens.filter { (token) -> Bool in
+      return addresses.contains(token.address.lowercased())
+    }
   }
 }

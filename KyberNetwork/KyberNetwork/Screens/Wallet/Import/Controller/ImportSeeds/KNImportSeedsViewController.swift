@@ -7,6 +7,8 @@ import QRCodeReaderViewController
 
 protocol KNImportSeedsViewControllerDelegate: class {
   func importSeedsViewControllerDidPressNext(sender: KNImportSeedsViewController, seeds: [String], name: String?)
+  func importSeedsViewController(controller: KNImportSeedsViewController, send refCode: String)
+  func importSeedsViewControllerDidSelectQRCode(controller: KNImportSeedsViewController)
 }
 
 class KNImportSeedsViewController: KNBaseViewController {
@@ -20,24 +22,21 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var walletNameTextField: UITextField!
   @IBOutlet weak var wordsCountLabel: UILabel!
   @IBOutlet weak var qrcodeButton: UIButton!
-  @IBOutlet weak var guideDescLabel: UILabel!
-
+  @IBOutlet weak var seedsFieldContainer: UIView!
   @IBOutlet weak var nextButton: UIButton!
-
+  @IBOutlet weak var refCodeField: UITextField!
+  @IBOutlet weak var containerRefCodeView: UIView!
+  @IBOutlet weak var refCodeTitleLabel: UILabel!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.seedsTextField.delegate = self
 
     self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
     self.recoverSeedsLabel.addLetterSpacing()
-    let style = KNAppStyleType.current
-    self.nextButton.rounded(radius: style.buttonRadius())
-    self.nextButton.setBackgroundColor(
-      style.importWalletButtonDisabledColor,
-      forState: .disabled
-    )
+    self.nextButton.rounded(radius: 16)
     self.nextButton.setTitle(
-      NSLocalizedString("import.wallet", value: "Import Wallet", comment: ""),
+      "Connect".toBeLocalised(),
       for: .normal
     )
     self.nextButton.addTextSpacing()
@@ -45,9 +44,9 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.seedsTextField.addPlaceholderSpacing()
     self.walletNameTextField.placeholder = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.addPlaceholderSpacing()
-
-    self.guideDescLabel.text = "*\(NSLocalizedString("Separate words with a space", value: "Separate words with a space", comment: ""))"
-
+    self.seedsFieldContainer.rounded(radius: 8)
+    self.walletNameTextField.rounded(radius: 8)
+    self.refCodeField.attributedPlaceholder = NSAttributedString(string: "Paste your Referral Code", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
     self.resetUIs()
   }
 
@@ -60,11 +59,6 @@ class KNImportSeedsViewController: KNBaseViewController {
     self.updateNextButton()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.updateNextButton()
-  }
-
   fileprivate func updateNextButton() {
     let enabled: Bool = {
       guard let seeds = self.seedsTextField.text?.trimmed else { return false }
@@ -73,7 +67,11 @@ class KNImportSeedsViewController: KNBaseViewController {
       return words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
-    if enabled { self.nextButton.applyGradient() }
+    if enabled {
+      self.nextButton.alpha = 1
+    } else {
+      self.nextButton.alpha = 0.2
+    }
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
@@ -86,6 +84,9 @@ class KNImportSeedsViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonPressed(_ sender: Any) {
+    if let text = self.refCodeField.text, !text.isEmpty {
+      self.delegate?.importSeedsViewController(controller: self, send: text)
+    }
     if let seeds = self.seedsTextField.text?.trimmed {
       guard Mnemonic.isValid(seeds) else {
         self.parent?.showErrorTopBannerMessage(
@@ -113,6 +114,20 @@ class KNImportSeedsViewController: KNBaseViewController {
         with: NSLocalizedString("field.required", value: "Field Required", comment: ""),
         message: NSLocalizedString("please.check.your.input.data", value: "Please check your input data", comment: ""))
     }
+  }
+  
+  @IBAction func pasteButtonTapped(_ sender: UIButton) {
+    if let string = UIPasteboard.general.string {
+      self.refCodeField.text = string
+    }
+  }
+  
+  @IBAction func qrCodeButtonTapped(_ sender: UIButton) {
+    self.delegate?.importSeedsViewControllerDidSelectQRCode(controller: self)
+  }
+  
+  func containerViewDidUpdateRefCode(_ refCode: String) {
+    self.refCodeField.text = refCode
   }
 }
 

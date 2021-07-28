@@ -174,7 +174,7 @@ extension KNTransaction {
         do {
           let keystore = try EtherKeystore()
           guard let wallet = keystore.recentlyUsedWallet else { return nil }
-          let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+          let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
           do {
             let realm = try Realm(configuration: config)
             return KNTokenStorage(realm: realm)
@@ -219,7 +219,7 @@ extension KNTransaction {
       do {
         let keystore = try EtherKeystore()
         guard let wallet = keystore.recentlyUsedWallet else { return nil }
-        let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+        let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
         do {
           let realm = try Realm(configuration: config)
           return KNTokenStorage(realm: realm)
@@ -253,16 +253,16 @@ extension KNTransaction {
       if self.state == .completed { return .success }
       return .unknown
     }()
-    let (details, rate): (String, String?) = {
+    let detail: String? = {
       if status == .failed {
-        return ("\(self.id.prefix(12))...\(self.id.suffix(10))", nil)
+        return nil
       }
-      guard let object = self.localizedOperations.first, status == .failed || status == .success || status == .pending else { return (status.statusDetails, nil) }
+      guard let object = self.localizedOperations.first, status == .failed || status == .success || status == .pending else { return nil }
       let storage: KNTokenStorage? = {
         do {
           let keystore = try EtherKeystore()
           guard let wallet = keystore.recentlyUsedWallet else { return nil }
-          let config = RealmConfiguration.configuration(for: wallet, chainID: KNEnvironment.default.chainID)
+          let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
           do {
             let realm = try Realm(configuration: config)
             return KNTokenStorage(realm: realm)
@@ -270,21 +270,19 @@ extension KNTransaction {
         } catch { }
         return nil
       }()
-      guard let from = storage?.get(forPrimaryKey: object.from) else { return (status.statusDetails, nil) }
-      guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return (status.statusDetails, nil) }
+      guard let from = storage?.get(forPrimaryKey: object.from) else { return nil }
+      guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return nil }
       let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
       if object.type.lowercased() == "transfer" {
         let address = "\(self.to.prefix(5))...\(self.to.suffix(3))"
-        return (String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", address]), nil)
+        return String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", address])
       }
-      guard let to = storage?.get(forPrimaryKey: object.to) else { return (status.statusDetails, nil) }
-      guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return (status.statusDetails, nil) }
+      guard let to = storage?.get(forPrimaryKey: object.to) else { return nil }
+      guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return nil }
       let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      let rate = amount.isZero ? BigInt(0) : expectedAmount * BigInt(10).power(from.decimals) / amount
-      let rateString = "1 \(from.symbol) = \(rate.displayRate(decimals: to.decimals)) \(to.symbol)"
-      return (String(format: "from %@ to %@", arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"]), rateString)
+      return String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
     }()
-    return (details, rate)
+    return (self.id, detail)
   }
 }
 

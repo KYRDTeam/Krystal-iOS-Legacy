@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewAssetsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="btcButton" destination="dtE-A3-SzH" id="6by-6C-ERS"/>
+                <outlet property="buyETHButton" destination="aGf-uh-HB3" id="3zU-nu-VSk"/>
+                <outlet property="emptyView" destination="Ivh-b6-bHI" id="skp-dj-O5a"/>
+                <outlet property="ethButton" destination="MOf-jT-olF" id="a0r-rd-itW"/>
+                <outlet property="tableView" destination="1ZU-UM-RlI" id="rXg-ry-3nq"/>
+                <outlet property="totalStringLabel" destination="NR6-x9-Cl8" id="Whz-cg-J6A"/>
+                <outlet property="usdButton" destination="ZRD-12-1fd" id="YeU-W6-p4I"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="currencySelectButtons" destination="ZRD-12-1fd" collectionClass="NSMutableArray" id="LiE-0b-QtA"/>
+                <outletCollection property="currencySelectButtons" destination="MOf-jT-olF" collectionClass="NSMutableArray" id="Y62-L9-b3x"/>
+                <outletCollection property="sortingImageIndicator" destination="fEj-vb-UXq" collectionClass="NSMutableArray" id="rzI-7Q-HeE"/>
+                <outletCollection property="sortingImageIndicator" destination="xTP-cl-MCz" collectionClass="NSMutableArray" id="AJw-2q-3XR"/>
+                <outletCollection property="sortingImageIndicator" destination="xd2-VH-ubZ" collectionClass="NSMutableArray" id="r8q-HN-3fA"/>
+                <outletCollection property="currencySelectButtons" destination="dtE-A3-SzH" collectionClass="NSMutableArray" id="7QB-Yu-veP"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HEV-nW-Uyc">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73g-gy-kUy">
+                            <rect key="frame" x="30" y="8.5" width="48" height="19"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRD-12-1fd">
+                            <rect key="frame" x="90" y="4.5" width="30" height="27"/>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                            <state key="normal" title="USD">
+                                <color key="titleColor" red="1" green="0.86274509799999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="currencyTypeButtonTapped:" destination="-1" eventType="touchUpInside" id="hh0-4U-LrN"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MOf-jT-olF">
+                            <rect key="frame" x="130" y="4.5" width="30" height="27"/>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                            <state key="normal" title="ETH">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="currencyTypeButtonTapped:" destination="-1" eventType="touchUpInside" id="JA1-SR-gwa"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,320.65" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NR6-x9-Cl8">
+                            <rect key="frame" x="290.5" y="9.5" width="63.5" height="17"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtE-A3-SzH">
+                            <rect key="frame" x="170" y="4.5" width="30" height="27"/>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                            <state key="normal" title="BTC">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="currencyTypeButtonTapped:" destination="-1" eventType="touchUpInside" id="TnG-cY-AxT"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.090196078430000007" green="0.43921568630000002" blue="0.55294117649999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="Cej-vd-BQi"/>
+                        <constraint firstItem="dtE-A3-SzH" firstAttribute="leading" secondItem="MOf-jT-olF" secondAttribute="trailing" constant="10" id="Okl-5C-ZIt"/>
+                        <constraint firstItem="MOf-jT-olF" firstAttribute="leading" secondItem="ZRD-12-1fd" secondAttribute="trailing" constant="10" id="TlH-T7-JG2"/>
+                        <constraint firstItem="73g-gy-kUy" firstAttribute="leading" secondItem="HEV-nW-Uyc" secondAttribute="leading" constant="30" id="ULt-3K-TPb"/>
+                        <constraint firstItem="dtE-A3-SzH" firstAttribute="centerY" secondItem="MOf-jT-olF" secondAttribute="centerY" id="f0E-eH-DaH"/>
+                        <constraint firstAttribute="trailing" secondItem="NR6-x9-Cl8" secondAttribute="trailing" constant="21" id="g5f-70-gOC"/>
+                        <constraint firstItem="MOf-jT-olF" firstAttribute="centerY" secondItem="HEV-nW-Uyc" secondAttribute="centerY" id="oVD-65-9WA"/>
+                        <constraint firstItem="NR6-x9-Cl8" firstAttribute="centerY" secondItem="HEV-nW-Uyc" secondAttribute="centerY" id="q4q-ys-X2d"/>
+                        <constraint firstItem="ZRD-12-1fd" firstAttribute="leading" secondItem="73g-gy-kUy" secondAttribute="trailing" constant="12" id="xph-WY-wzs"/>
+                        <constraint firstItem="73g-gy-kUy" firstAttribute="centerY" secondItem="HEV-nW-Uyc" secondAttribute="centerY" id="yzT-aY-U2L"/>
+                        <constraint firstItem="ZRD-12-1fd" firstAttribute="centerY" secondItem="HEV-nW-Uyc" secondAttribute="centerY" id="zB4-td-fbO"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1ZU-UM-RlI">
+                    <rect key="frame" x="12" y="71" width="351" height="596"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Evt-Tf-AKR"/>
+                        <outlet property="delegate" destination="-1" id="Ieh-X2-Ri8"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FPS-hJ-G1O">
+                    <rect key="frame" x="12" y="47" width="351" height="24"/>
+                    <subviews>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-M4-chH">
+                            <rect key="frame" x="25" y="6" width="52" height="12"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="10"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="16" maxY="0.0"/>
+                            <state key="normal" title="Balance">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="sortingButtonTapped:" destination="-1" eventType="touchUpInside" id="kl2-7h-QY5"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" image="no_arrow_overview_icon" translatesAutoresizingMaskIntoConstraints="NO" id="fEj-vb-UXq">
+                            <rect key="frame" x="65" y="8" width="8" height="8"/>
+                        </imageView>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OwM-T2-4jq">
+                            <rect key="frame" x="155.5" y="6" width="40" height="12"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="10"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="16" maxY="0.0"/>
+                            <state key="normal" title="Price">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="sortingButtonTapped:" destination="-1" eventType="touchUpInside" id="rRx-dX-ODO"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" image="no_arrow_overview_icon" translatesAutoresizingMaskIntoConstraints="NO" id="xTP-cl-MCz">
+                            <rect key="frame" x="183.5" y="8" width="8" height="8"/>
+                        </imageView>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpv-I8-vAu">
+                            <rect key="frame" x="265" y="6" width="42" height="12"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="10"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="16" maxY="0.0"/>
+                            <state key="normal" title="Value">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="sortingButtonTapped:" destination="-1" eventType="touchUpInside" id="Qj2-4s-Rwx"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" image="up_arrow_overview_icon" translatesAutoresizingMaskIntoConstraints="NO" id="xd2-VH-ubZ">
+                            <rect key="frame" x="295" y="8" width="8" height="8"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.14901960780000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="jpv-I8-vAu" secondAttribute="trailing" constant="44" id="52E-Kc-N1o"/>
+                        <constraint firstItem="xd2-VH-ubZ" firstAttribute="centerY" secondItem="jpv-I8-vAu" secondAttribute="centerY" id="C4f-6i-IGZ"/>
+                        <constraint firstItem="OwM-T2-4jq" firstAttribute="centerY" secondItem="FPS-hJ-G1O" secondAttribute="centerY" id="LOI-L1-9SC"/>
+                        <constraint firstAttribute="height" constant="24" id="LcE-ev-6zo"/>
+                        <constraint firstItem="jpv-I8-vAu" firstAttribute="centerY" secondItem="FPS-hJ-G1O" secondAttribute="centerY" id="OP3-Ee-SvK"/>
+                        <constraint firstItem="OwM-T2-4jq" firstAttribute="centerX" secondItem="FPS-hJ-G1O" secondAttribute="centerX" id="YEG-Uz-paP"/>
+                        <constraint firstItem="fEj-vb-UXq" firstAttribute="trailing" secondItem="Vl7-M4-chH" secondAttribute="trailing" constant="-4" id="Ydq-Zb-hjl"/>
+                        <constraint firstItem="xd2-VH-ubZ" firstAttribute="trailing" secondItem="jpv-I8-vAu" secondAttribute="trailing" constant="-4" id="ZWh-ln-BAG"/>
+                        <constraint firstItem="fEj-vb-UXq" firstAttribute="centerY" secondItem="Vl7-M4-chH" secondAttribute="centerY" id="d3T-sC-X78"/>
+                        <constraint firstItem="xTP-cl-MCz" firstAttribute="centerY" secondItem="OwM-T2-4jq" secondAttribute="centerY" id="egP-Ii-DiL"/>
+                        <constraint firstItem="xTP-cl-MCz" firstAttribute="trailing" secondItem="OwM-T2-4jq" secondAttribute="trailing" constant="-4" id="fI2-6w-vaO"/>
+                        <constraint firstItem="Vl7-M4-chH" firstAttribute="centerY" secondItem="FPS-hJ-G1O" secondAttribute="centerY" id="m8h-xC-Kcx"/>
+                        <constraint firstItem="Vl7-M4-chH" firstAttribute="leading" secondItem="FPS-hJ-G1O" secondAttribute="leading" constant="25" id="pTf-dL-JoM"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ivh-b6-bHI">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_asset_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Z8n-Zd-PwG">
+                            <rect key="frame" x="142" y="45" width="91" height="105"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGf-uh-HB3">
+                            <rect key="frame" x="106.5" y="227" width="162" height="40"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="9" maxX="40" maxY="9"/>
+                            <inset key="imageEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Buy ETH" image="add_blue_icon">
+                                <color key="titleColor" red="0.13725490200000001" green="0.65490196079999996" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="buyETHButtonTapped:" destination="-1" eventType="touchUpInside" id="zYO-Yh-2yy"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your balance is empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYa-hG-ALN">
+                            <rect key="frame" x="121" y="173" width="133" height="17"/>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.1960784314" blue="0.26274509800000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="Z8n-Zd-PwG" firstAttribute="top" secondItem="Ivh-b6-bHI" secondAttribute="top" constant="45" id="19Y-QT-lKn"/>
+                        <constraint firstItem="BYa-hG-ALN" firstAttribute="top" secondItem="Z8n-Zd-PwG" secondAttribute="bottom" constant="23" id="a3u-9g-fcL"/>
+                        <constraint firstItem="aGf-uh-HB3" firstAttribute="top" secondItem="BYa-hG-ALN" secondAttribute="bottom" constant="37" id="pap-bU-3OM"/>
+                        <constraint firstItem="BYa-hG-ALN" firstAttribute="centerX" secondItem="Ivh-b6-bHI" secondAttribute="centerX" id="sOO-nW-sy8"/>
+                        <constraint firstItem="aGf-uh-HB3" firstAttribute="centerX" secondItem="Ivh-b6-bHI" secondAttribute="centerX" id="wy6-qi-dgt"/>
+                        <constraint firstItem="Z8n-Zd-PwG" firstAttribute="centerX" secondItem="Ivh-b6-bHI" secondAttribute="centerX" id="x37-Rg-ExQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.1960784314" blue="0.26274509800000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="FPS-hJ-G1O" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="Bo3-b1-nsN"/>
+                <constraint firstItem="Ivh-b6-bHI" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="KUd-da-w4E"/>
+                <constraint firstItem="1ZU-UM-RlI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="LlJ-Qn-8E9"/>
+                <constraint firstItem="Ivh-b6-bHI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="R2k-vg-PoY"/>
+                <constraint firstAttribute="bottom" secondItem="1ZU-UM-RlI" secondAttribute="bottom" id="SXN-YM-QdF"/>
+                <constraint firstItem="1ZU-UM-RlI" firstAttribute="top" secondItem="FPS-hJ-G1O" secondAttribute="bottom" id="TIy-NH-o94"/>
+                <constraint firstItem="Ivh-b6-bHI" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="Yfo-Ik-UZS"/>
+                <constraint firstItem="HEV-nW-Uyc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ZHP-qk-S5X"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1ZU-UM-RlI" secondAttribute="trailing" constant="12" id="aex-N3-KBV"/>
+                <constraint firstItem="Ivh-b6-bHI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="iBD-EG-e5t"/>
+                <constraint firstItem="FPS-hJ-G1O" firstAttribute="top" secondItem="HEV-nW-Uyc" secondAttribute="bottom" constant="11" id="sOA-Oi-Eb2"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FPS-hJ-G1O" secondAttribute="trailing" constant="12" id="uZw-nO-eph"/>
+                <constraint firstItem="HEV-nW-Uyc" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="urb-Mf-U6T"/>
+                <constraint firstItem="HEV-nW-Uyc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="vGe-tl-VRi"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="103.89805097451276"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="add_blue_icon" width="12" height="12"/>
+        <image name="empty_asset_icon" width="91" height="105"/>
+        <image name="no_arrow_overview_icon" width="8" height="8"/>
+        <image name="up_arrow_overview_icon" width="8" height="8"/>
+    </resources>
+</document>

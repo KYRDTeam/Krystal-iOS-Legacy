@@ -100,10 +100,34 @@ class TokenObject: Object {
       self.isGasFixed = apiDict["is_gas_fixed"] as? Bool ?? false
       self.quotePriority = apiDict["quote_priority"] as? Int ?? 0
     }
+  
+  convenience init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
+    self.init()
+    self.contract = address
+    self.address = address
+    self.symbol = symbol
+    self.decimals = decimals
+    self.icon = logo
+    self.name = name
+    
+  }
+  
+  func toData() -> Token {
+    return Token(name: self.name, symbol: self.symbol, address: self.contract, decimals: self.decimals, logo: self.icon)
+  }
+  
+  func getBalanceBigInt() -> BigInt {
+    let balance = BalanceStorage.shared.balanceForAddress(self.contract)
+    return BigInt(balance?.balance ?? "") ?? BigInt(0)
+  }
 
     var isETH: Bool {
       return self.symbol == "ETH" && self.name.lowercased() == "ethereum"
     }
+  
+  var isBNB: Bool {
+    return self.address.lowercased() == Constants.bnbAddress.lowercased()
+  }
 
     var isWETH: Bool {
       return self.symbol == "WETH"
@@ -133,9 +157,6 @@ class TokenObject: Object {
     var isPRO: Bool { return self.symbol == "PRO" }
     var isPT: Bool { return self.symbol == "PT" }
     var isTUSD: Bool { return self.symbol == "TUSD" && self.name.lowercased() == "trueusd" }
-    var isCOMP: Bool { return self.symbol == "COMP" }
-    var isAAVE: Bool { return self.symbol == "AAVE" }
-    var isBZRX: Bool { return self.symbol == "BZRX" }
 
     var isKNC: Bool {
       return self.symbol == "KNC" && self.name.replacingOccurrences(of: " ", with: "").lowercased() == "kybernetwork"
@@ -237,5 +258,13 @@ extension TokenObject {
   var isListed: Bool {
     let date = Date(timeIntervalSince1970: self.listingTime)
     return Date().timeIntervalSince(date) >= 0
+  }
+  
+  func toTokenData() -> TokenData {
+    return TokenData(address: self.address, name: self.name, symbol: self.symbol, decimals: self.decimals, lendingPlatforms: [])
+  }
+  
+  func toToken() -> Token {
+    return Token(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.icon)
   }
 }

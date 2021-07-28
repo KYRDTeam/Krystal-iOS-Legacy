@@ -4,13 +4,10 @@ import UIKit
 import BigInt
 import JdenticonSwift
 
-class KConfirmSendViewModel {
+struct KConfirmSendViewModel {
 
   let transaction: UnconfirmedTransaction
   let ens: String?
-  var isCloseGasWarningPopup: Bool {
-    return UserDefaults.standard.bool(forKey: Constants.gasWarningClosedValueKey)
-  }
 
   init(transaction: UnconfirmedTransaction, ens: String?) {
     self.transaction = transaction
@@ -25,7 +22,8 @@ class KConfirmSendViewModel {
   }
 
   var titleString: String {
-    return "\(NSLocalizedString("transfer", value: "Transfer", comment: "")) \(self.token.symbol)" }
+    return "Sending confirm".toBeLocalised().uppercased()
+  }
 
   var contactName: String {
     let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
@@ -42,6 +40,12 @@ class KConfirmSendViewModel {
     let address = transaction.to?.description ?? ""
     return "\(address.prefix(20))...\(address.suffix(8))"
   }
+  
+  var shortAddress: String {
+    let address = transaction.to?.description ?? ""
+    return "\(address.prefix(6))...\(address.suffix(6))"
+  }
+  
 
   var totalAmountString: String {
     let string = self.transaction.value.string(
@@ -53,14 +57,15 @@ class KConfirmSendViewModel {
   }
 
   var usdValueString: String {
-    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
+//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
     let displayString: String = {
-      let valueUSD = KNRate.rateUSD(from: trackerRate).rate * self.transaction.value / BigInt(10).power(self.token.decimals)
-      return valueUSD.string(
-        units: EthereumUnit.ether,
-        minFractionDigits: 0,
-        maxFractionDigits: 4
-      )
+    let usd = self.transaction.value * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
+    return usd.string(
+      units: EthereumUnit.ether,
+      minFractionDigits: 0,
+      maxFractionDigits: 4
+    )
     }()
     return "~ \(displayString) USD"
   }
@@ -72,7 +77,7 @@ class KConfirmSendViewModel {
       return gasPrice * gasLimit
     }()
     let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
-    return "\(feeString) ETH"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   var transactionFeeUSDString: String {
@@ -81,12 +86,16 @@ class KConfirmSendViewModel {
       return gasPrice * gasLimit
     }()
     guard let feeBigInt = fee else { return "" }
-    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
-    let feeUSD: String = {
-      let fee = feeBigInt * trackerRate.rateUSDBigInt / BigInt(EthereumUnit.ether.rawValue)
-      return fee.displayRate(decimals: 18)
-    }()
-    return "~ \(feeUSD) USD"
+//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
+//    let feeUSD: String = {
+//      let fee = feeBigInt * trackerRate.rateUSDBigInt / BigInt(EthereumUnit.ether.rawValue)
+//      return fee.displayRate(decimals: 18)
+//    }()
+//    return "~ \(feeUSD) USD"
+    guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
+    let usd = feeBigInt * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let valueString: String = usd.displayRate(decimals: 18)
+    return "~ \(valueString) USD"
   }
   var transactionGasPriceString: String {
     let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
@@ -98,9 +107,5 @@ class KConfirmSendViewModel {
     let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
-  }
-  
-  func saveCloseGasWarningState() {
-    UserDefaults.standard.set(true, forKey: Constants.gasWarningClosedValueKey)
   }
 }

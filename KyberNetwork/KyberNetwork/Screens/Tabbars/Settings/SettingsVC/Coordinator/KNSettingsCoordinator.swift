@@ -8,8 +8,10 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorUserDidSelectExit()
   func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidUpdateWalletObjects()
-  func settingsCoordinatorUserDidSelectAddWallet()
-  func settingCoordinatorUserDidUpdateGasWarningLimit()
+  func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType)
+  func settingsCoordinatorDidSelectAddWallet()
+  func settingsCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func settingsCoordinatorDidSelectManageWallet()
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
@@ -19,8 +21,9 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   private(set) var session: KNSession
   fileprivate(set) var balances: [String: Balance] = [:]
   var selectedWallet: KNWalletObject?
-
+  var historyCoordinator: KNHistoryCoordinator?
   weak var delegate: KNSettingsCoordinatorDelegate?
+  var notificationCoordinator: NotificationCoordinator?
 
   lazy var rootViewController: KNSettingsTabViewController = {
     let controller = KNSettingsTabViewController()
@@ -52,9 +55,14 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     coordinator.delegate = self
     return coordinator
   }()
+  
+  lazy var customTokenCoordinator: AddTokenCoordinator = {
+    let coordinator = AddTokenCoordinator(navigationController: self.navigationController, session: self.session)
+    return coordinator
+  }()
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
-  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
+//  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -92,14 +100,23 @@ class KNSettingsCoordinator: NSObject, Coordinator {
 
   func appCoordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
     self.sendTokenCoordinator?.coordinatorTokenObjectListDidUpdate(tokenObjects)
+    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: KNTransaction?, txID: String) -> Bool {
-    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx, txID: txID) ?? false
+  func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
+    self.sendTokenCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
-
-  func appCoordinatorDidUpdateGasWarningLimit() {
-    self.sendTokenCoordinator?.coordinatorDidUpdateGasWarningLimit()
+  
+  func openHistoryScreen() {
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator?.start()
   }
 }
 
@@ -109,28 +126,21 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .manageWallet:
       self.settingsViewControllerWalletsButtonPressed()
     case .manageAlerts:
-      if let _ = IEOUserStorage.shared.user {
-        self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
-        self.manageAlertCoordinator?.start()
-      } else {
-        self.navigationController.showWarningTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
-          time: 1.5
-        )
-      }
+//      if let _ = IEOUserStorage.shared.user {
+//        self.manageAlertCoordinator = KNManageAlertCoordinator(navigationController: self.navigationController)
+//        self.manageAlertCoordinator?.start()
+//      } else {
+//        self.navigationController.showWarningTopBannerMessage(
+//          with: NSLocalizedString("error", value: "Error", comment: ""),
+//          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
+//          time: 1.5
+//        )
+//      }
+    break
     case .alertMethods:
-      if let _ = IEOUserStorage.shared.user {
-        let alertMethodsVC = KNNotificationMethodsViewController()
-        alertMethodsVC.loadViewIfNeeded()
-        self.navigationController.pushViewController(alertMethodsVC, animated: true)
-      } else {
-        self.navigationController.showWarningTopBannerMessage(
-          with: NSLocalizedString("error", value: "Error", comment: ""),
-          message: NSLocalizedString("You must sign in to use Price Alert feature", comment: ""),
-          time: 1.5
-        )
-      }
+      let coordinator = NotificationCoordinator(navigationController: self.navigationController)
+      coordinator.start()
+      self.notificationCoordinator = coordinator
     case .contact:
       self.navigationController.pushViewController(self.contactVC, animated: true)
     case .support:
@@ -145,20 +155,20 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.passcodeCoordinator.delegate = self
       self.passcodeCoordinator.start()
     case .community:
-      let url = "https://kyber.network/community"
+      let url = "https://support.krystal.app"
       self.openCommunityURL(url)
     case .shareWithFriends:
       self.openShareWithFriends()
     case .telegram:
-      self.openCommunityURL("https://t.me/KyberSwapOfficial")
+      self.openCommunityURL("https://t.me/KrystalDefi")
     case .github:
       self.openCommunityURL("https://github.com/KyberNetwork/KyberSwap-iOS")
     case .twitter:
-      self.openCommunityURL("https://twitter.com/KyberSwap/")
+      self.openCommunityURL("https://twitter.com/KrystalDefi")
     case .facebook:
       self.openCommunityURL("https://www.facebook.com/kybernetwork")
     case .medium:
-      self.openCommunityURL("https://medium.com/@kyberswap")
+      self.openCommunityURL("https://medium.com/krystaldefi")
     case .reddit:
       self.openCommunityURL("https://www.reddit.com/r/kybernetwork")
     case .linkedIn:
@@ -166,20 +176,23 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .reportBugs:
       self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
     case .rateOurApp:
-      self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1521778973")
+      self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1558105691")
     case .liveChat:
-      break
-    case .gasWarning:
-      self.openGasWarningScreen()
+      Freshchat.sharedInstance().showConversations(self.navigationController)
+    case .addCustomToken:
+      self.customTokenCoordinator.rootViewController.tokenObject = nil
+      self.customTokenCoordinator.start()
+    case .manangeCustomToken:
+      self.customTokenCoordinator.start(showList: true)
+    case .termOfUse:
+      self.navigationController.openSafari(with: "https://files.krystal.app/terms.pdf")
+    case .privacyPolicy:
+      self.navigationController.openSafari(with: "https://files.krystal.app/privacy.pdf")
+    case .fingerPrint(status: let status):
+      UserDefaults.standard.setValue(status, forKey: "bio-auth")
+    case .refPolicy:
+      self.navigationController.openSafari(with: "https://files.krystal.app/referral.pdf")
     }
-  }
-
-  fileprivate func openGasWarningScreen() {
-    let vc = KNGasWarningViewController()
-    vc.modalTransitionStyle = .crossDissolve
-    vc.modalPresentationStyle = .overCurrentContext
-    vc.delegate = self
-    self.rootViewController.tabBarController?.present(vc, animated: true, completion: nil)
   }
 
   fileprivate func openCommunityURL(_ url: String) {
@@ -189,7 +202,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   fileprivate func openShareWithFriends() {
     let text = NSLocalizedString(
       "share.with.friends.text",
-      value: "I just found an awesome wallet app. Check out here https://apps.apple.com/us/app/id1521778973",
+      value: "I just found an awesome wallet app. Check out here https://apps.apple.com/us/app/id1558105691",
       comment: ""
     )
     let activitiy = UIActivityViewController(activityItems: [text], applicationActivities: nil)
@@ -218,12 +231,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     if MFMailComposeViewController.canSendMail() {
       let emailVC = MFMailComposeViewController()
       emailVC.mailComposeDelegate = self
-      emailVC.setToRecipients(["support@kyberswap.com"])
+      emailVC.setToRecipients(["support@krystal.app"])
       self.navigationController.present(emailVC, animated: true, completion: nil)
     } else {
       let message = NSLocalizedString(
         "please.send.your.request.to.support",
-        value: "Please send your request to support@kyberswap.com",
+        value: "Please send your request to support@krystal.app",
         comment: ""
       )
       self.navigationController.showWarningTopBannerMessage(with: "", message: message, time: 1.5)
@@ -237,8 +250,9 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   func settingsViewControllerBackUpButtonPressed(wallet: KNWalletObject) {
     let alertController = KNPrettyAlertController(
-      title: NSLocalizedString("export.at.your.own.risk", value: "Export at your own risk!", comment: ""),
-      message: "⚠️NEVER share Keystore/Private Key/Mnemonic with anyone (including KyberSwap). These data grant access to all your funds and they may get stolen".toBeLocalised(),
+      title: "Export at your own risk!",
+      isWarning: true,
+      message: "NEVER share Keystore/Private Key/Mnemonic with anyone (including Krystal). These data grant access to all your funds and they may get stolen".toBeLocalised(),
       secondButtonTitle: NSLocalizedString("continue", value: "Continue", comment: ""),
       firstButtonTitle: NSLocalizedString("cancel", value: "Cancel", comment: ""),
       secondButtonAction: {
@@ -310,7 +324,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupKeystore(wallet: Wallet) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "setting_show_back_up_keystore", customAttributes: nil)
     let createPassword = KNCreatePasswordViewController(wallet: wallet, delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
     createPassword.modalTransitionStyle = .crossDissolve
@@ -318,7 +331,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupPrivateKey(wallet: Wallet) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "setting_show_back_up_private_key", customAttributes: nil)
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
       if case .real(let account) = wallet.type {
@@ -337,7 +349,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupMnemonic(wallet: Wallet) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "setting_show_back_up_mnemonic", customAttributes: nil)
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
       if case .real(let account) = wallet.type {
@@ -365,12 +376,11 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func copyAddress(wallet: Wallet) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "setting_show_back_up_copy_address", customAttributes: nil)
     UIPasteboard.general.string = wallet.address.description
   }
 
   fileprivate func exportDataString(_ value: String, wallet: Wallet) {
-    let fileName = "kyberswap_backup_\(wallet.address.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
+    let fileName = "krystal_backup_\(wallet.address.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
@@ -387,6 +397,39 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     activityViewController.popoverPresentationController?.sourceView = navigationController.view
     activityViewController.popoverPresentationController?.sourceRect = navigationController.view.centerRect
     self.navigationController.topViewController?.present(activityViewController, animated: true, completion: nil)
+  }
+
+  func appCoordinatorPendingTransactionsDidUpdate() {
+    self.sendTokenCoordinator?.coordinatorDidUpdatePendingTx()
+  }
+  
+  func appCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    self.navigationController.popToRootViewController(animated: false)
+    self.customTokenCoordinator.start()
+    self.customTokenCoordinator.coordinatorDidUpdateTokenObject(token)
+  }
+
+  func appCoordinatorDidUpdateChain() {
+    self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
+  }
+  
+  func appCoordinatorDidSelectRenameWallet() {
+    self.listWalletsCoordinator.startEditWallet()
+  }
+  
+  func appCoordinatorDidSelectExportWallet() {
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
+    self.settingsViewControllerBackUpButtonPressed(wallet: curWallet)
+  }
+  
+  func appCoordinatorDidSelectDeleteWallet() {
+    let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
+      self.delegate?.settingsCoordinatorUserDidRemoveWallet(self.session.wallet)
+    }))
+    self.navigationController.present(alert, animated: true, completion: nil)
   }
 }
 
@@ -441,29 +484,22 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
   }
 
   fileprivate func openSendToken(address: String) {
-    if self.session.transactionStorage.kyberPendingTransactions.isEmpty {
-      let from: TokenObject = {
-        guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description), let token = self.session.tokenStorage.tokens.first(where: { return $0.symbol == destToken }) else {
-          return self.session.tokenStorage.ethToken
-        }
-        return token
-      }()
-      self.sendTokenCoordinator = KNSendTokenViewCoordinator(
-        navigationController: self.navigationController,
-        session: self.session,
-        balances: self.balances,
-        from: from
-      )
-      self.sendTokenCoordinator?.start()
-      self.sendTokenCoordinator?.coordinatorOpenSendView(to: address)
-    } else {
-      let message = NSLocalizedString("Please wait for other transactions to be mined before making a transfer", comment: "")
-      self.navigationController.showWarningTopBannerMessage(
-        with: "",
-        message: message,
-        time: 2.0
-      )
-    }
+    let from: TokenObject = {
+      if KNGeneralProvider.shared.isEthereum {
+        return KNSupportedTokenStorage.shared.ethToken
+      } else {
+        return KNSupportedTokenStorage.shared.bnbToken
+      }
+    }()
+    self.sendTokenCoordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      balances: self.balances,
+      from: from
+    )
+    self.sendTokenCoordinator?.delegate = self
+    self.sendTokenCoordinator?.start()
+    self.sendTokenCoordinator?.coordinatorOpenSendView(to: address)
   }
 }
 
@@ -533,8 +569,8 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
     self.delegate?.settingsCoordinatorUserDidUpdateWalletObjects()
   }
 
-  func listWalletsCoordinatorDidSelectAddWallet() {
-    self.delegate?.settingsCoordinatorUserDidSelectAddWallet()
+  func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType) {
+    self.delegate?.settingsCoordinatorUserDidSelectAddWallet(type: type)
   }
 
   func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject) {
@@ -544,15 +580,50 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
 
 extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
   func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-    if case .sent = result {
-      KNCrashlyticsUtil.logCustomEvent(withName: "setting_support_email_sent", customAttributes: nil)
-    }
     controller.dismiss(animated: true, completion: nil)
   }
 }
 
-extension KNSettingsCoordinator: KNGasWarningViewControllerDelegate {
-  func gasWarningViewControllerDidUpdateLimitValue(_ controller: KNGasWarningViewController) {
-    self.delegate?.settingCoordinatorUserDidUpdateGasWarningLimit()
+extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    self.appCoordinatorDidSelectAddToken(token)
+  }
+  
+  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.settingsCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func sendTokenViewCoordinatorSelectOpenHistoryList() {
+    self.openHistoryScreen()
+  }
+  
+  func sendTokenCoordinatorDidSelectManageWallet() {
+    self.delegate?.settingsCoordinatorDidSelectManageWallet()
+  }
+  
+  func sendTokenCoordinatorDidSelectAddWallet() {
+    self.delegate?.settingsCoordinatorDidSelectAddWallet()
+  }
+}
+
+extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    self.appCoordinatorDidSelectAddToken(token)
+  }
+  
+  func historyCoordinatorDidClose() {
+    
+  }
+  
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.settingsCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func historyCoordinatorDidSelectManageWallet() {
+    self.delegate?.settingsCoordinatorDidSelectManageWallet()
+  }
+  
+  func historyCoordinatorDidSelectAddWallet() {
+    self.delegate?.settingsCoordinatorDidSelectAddWallet()
   }
 }

@@ -163,17 +163,17 @@ class KNAppTracker {
   }
 
   // MARK: Currency used (USD, ETH)
-  static func updateCurrencyType(_ type: KWalletCurrencyType) {
-    userDefaults.set(type.rawValue, forKey: kCurrencyTypeKey)
-    userDefaults.synchronize()
-  }
-
-  static func getCurrencyType() -> KWalletCurrencyType {
-    if let type = userDefaults.object(forKey: kCurrencyTypeKey) as? String {
-      return KWalletCurrencyType(rawValue: type) ?? .usd
-    }
-    return .usd
-  }
+//  static func updateCurrencyType(_ type: KWalletCurrencyType) {
+//    userDefaults.set(type.rawValue, forKey: kCurrencyTypeKey)
+//    userDefaults.synchronize()
+//  }
+//
+//  static func getCurrencyType() -> KWalletCurrencyType {
+//    if let type = userDefaults.object(forKey: kCurrencyTypeKey) as? String {
+//      return KWalletCurrencyType(rawValue: type) ?? .usd
+//    }
+//    return .usd
+//  }
 
   // MARK: Profile base string
   static func getKyberProfileBaseString() -> String {
@@ -240,10 +240,11 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  static func saveHistoryFilterData(json: JSONDictionary) {
-    let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
-    userDefaults.set(json, forKey: key)
-    userDefaults.synchronize()
+  static func saveHistoryFilterData(_ object: KNTransactionFilter) {
+//    let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
+//    userDefaults.set(json, forKey: key)
+//    userDefaults.synchronize()
+    Storage.store(object, as: Constants.customFilterOptionFileName)
   }
 
   static func removeHistoryFilterData() {
@@ -253,32 +254,7 @@ class KNAppTracker {
   }
 
   static func getLastHistoryFilterData() -> KNTransactionFilter? {
-    let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
-    if let json = userDefaults.object(forKey: key) as? JSONDictionary {
-      let from = json["from"] as? TimeInterval
-      let to = json["to"] as? TimeInterval
-      let fromDate: Date? = {
-        if let date = from { return Date(timeIntervalSince1970: date) }
-        return nil
-      }()
-      let toDate: Date? = {
-        if let date = to { return Date(timeIntervalSince1970: date) }
-        return nil
-      }()
-      let isSend = json["send"] as? Bool ?? true
-      let isReceive = json["receive"] as? Bool ?? true
-      let isSwap = json["swap"] as? Bool ?? true
-      let tokens = json["tokens"] as? [String] ?? []
-      return KNTransactionFilter(
-        from: fromDate,
-        to: toDate,
-        isSend: isSend,
-        isReceive: isReceive,
-        isSwap: isSwap,
-        tokens: tokens
-      )
-    }
-    return nil
+    Storage.retrieve(Constants.customFilterOptionFileName, as: KNTransactionFilter.self)
   }
 
   static func saveLastTimeAuthenticate() {

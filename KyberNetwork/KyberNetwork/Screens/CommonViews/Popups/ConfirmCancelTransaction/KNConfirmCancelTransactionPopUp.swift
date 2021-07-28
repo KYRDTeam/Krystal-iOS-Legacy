@@ -4,27 +4,23 @@ import UIKit
 import BigInt
 
 protocol KNConfirmCancelTransactionPopUpDelegate: class {
-  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: Transaction)
+  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction)
 }
 
 struct KNConfirmCancelTransactionViewModel {
-  let transaction: Transaction
+  let transaction: InternalHistoryTransaction
 
-  init(transaction: Transaction) {
+  init(transaction: InternalHistoryTransaction) {
     self.transaction = transaction
   }
 
   var transactionFeeETHString: String {
-    if let cancelTransaction = transaction.makeCancelTransaction() {
-      let fee: BigInt? = {
-        guard let gasPrice = cancelTransaction.gasPrice, let gasLimit = cancelTransaction.gasLimit else { return nil }
-        return gasPrice * gasLimit
-      }()
-      let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
-      return "\(feeString) ETH"
-    } else {
-      return ""
-    }
+    let fee: BigInt? = {
+      let gasPrice = self.transaction.transactionObject.gasPriceForCancelTransaction()
+      return gasPrice * KNGasConfiguration.transferETHGasLimitDefault
+    }()
+    let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
+    return "\(feeString) ETH"
   }
 }
 
@@ -36,12 +32,16 @@ class KNConfirmCancelTransactionPopUp: KNBaseViewController {
   @IBOutlet weak var yesButton: UIButton!
   @IBOutlet weak var noButton: UIButton!
   @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  let transitor = TransitionDelegate()
   fileprivate let viewModel: KNConfirmCancelTransactionViewModel
   weak var delegate: KNConfirmCancelTransactionPopUpDelegate?
 
   init(viewModel: KNConfirmCancelTransactionViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNConfirmCancelTransactionPopUp.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -54,37 +54,39 @@ class KNConfirmCancelTransactionPopUp: KNBaseViewController {
       width: 1.0
     )
     self.noButton.setTitle("No".toBeLocalised(), for: .normal)
+    self.noButton.rounded(radius: 16)
     self.yesButton.setTitle("Yes".toBeLocalised(), for: .normal)
-    self.yesButton.rounded()
-    self.yesButton.applyGradient()
-    containerView.rounded(radius: 8.0)
+    self.yesButton.rounded(radius: 16)
+    
+    
     questionTitleLabel.text = "Attempt to Cancel?".toBeLocalised()
     titleLabel.text = "Cancellation Gas Fee".toBeLocalised()
     contentLabel.text = "sumitting.does.not.guarantee".toBeLocalised()
     ethFeeLabel.text = viewModel.transactionFeeETHString
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOutSideToDismiss(_:)))
-    self.view.addGestureRecognizer(tapGesture)
     self.view.isUserInteractionEnabled = true
   }
-
-  @objc func tapOutSideToDismiss(_ tapGesture: UITapGestureRecognizer) {
-    let loc = tapGesture.location(in: self.view)
-    if loc.x < self.containerView.frame.minX
-      || loc.x > self.containerView.frame.maxX
-      || loc.y < self.containerView.frame.minY
-      || loc.y > self.containerView.frame.maxY {
-      self.dismiss(animated: true, completion: nil)
-    }
-  }
-
+  
   @IBAction func yesButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "tap_yes_button_on_cancel_tx_confirm_popup", customAttributes: ["transactionHash": viewModel.transaction.id])
+    
     delegate?.didConfirmCancelTransactionPopup(self, transaction: viewModel.transaction)
     dismiss(animated: true, completion: nil)
   }
 
   @IBAction func noButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "tap_no_button_on_cancel_tx_confirm_popup", customAttributes: ["transactionHash": viewModel.transaction.id])
     dismiss(animated: true, completion: nil)
+  }
+}
+
+extension KNConfirmCancelTransactionPopUp: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 350
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.containerView
   }
 }

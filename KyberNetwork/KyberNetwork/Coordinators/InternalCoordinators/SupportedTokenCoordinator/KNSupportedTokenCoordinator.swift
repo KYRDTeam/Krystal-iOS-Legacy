@@ -6,7 +6,7 @@ import Moya
 class KNSupportedTokenCoordinator {
 
   static let shared = KNSupportedTokenCoordinator()
-  fileprivate let provider = MoyaProvider<KyberNetworkService>()
+  fileprivate let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
 
   fileprivate var timer: Timer?
 
@@ -27,23 +27,23 @@ class KNSupportedTokenCoordinator {
   }
 
   fileprivate func fetchSupportedTokens() {
-    // Token address is different for other envs
-    KNSupportedTokenStorage.shared.addLocalSupportedTokens()
-    if isDebug { print("---- Supported Tokens: Start fetching data ----") }
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.supportedToken) { result in
+      self.provider.request(.getTokenList) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
             do {
               _ = try response.filterSuccessfulStatusCodes()
               let respJSON: JSONDictionary = try response.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let jsonArr: [JSONDictionary] = respJSON["data"] as? [JSONDictionary] ?? []
-              let tokenObjects = jsonArr.map({ return TokenObject(apiDict: $0) })
-              if tokenObjects.isEmpty { return }
-              KNSupportedTokenStorage.shared.updateSupportedTokens(tokenObjects: tokenObjects)
-              KNAppTracker.updateSuccessfullyLoadSupportedTokens()
-              if isDebug { print("---- Supported Tokens: Load successfully") }
+              let jsonArr: [JSONDictionary] = respJSON["tokens"] as? [JSONDictionary] ?? []
+              let tokenStruct = jsonArr.map { (item) -> Token in
+                return Token(dictionary: item)
+              }
+              if tokenStruct.isEmpty {
+                return
+              }
+              KNSupportedTokenStorage.shared.updateSupportedTokens(tokenStruct)
+              KNNotificationUtil.postNotification(for: kSupportedTokenListDidUpdateNotificationKey)
             } catch let error {
               if isDebug { print("---- Supported Tokens: Cast reponse failed with error: \(error.prettyError) ----") }
             }

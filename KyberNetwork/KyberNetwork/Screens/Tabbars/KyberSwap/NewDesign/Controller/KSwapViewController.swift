@@ -7,33 +7,41 @@ import Moya
 
 //swiftlint:disable file_length
 
-enum KSwapViewEvent: Equatable {
+enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool)
-  case estimateComparedRate(from: TokenObject, to: TokenObject, hint: String) // compare to show warning
-  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
+//  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool) //TODO: remove to apply new get rate procedure
+//  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
-  case validateRate(data: KNDraftExchangeTransaction)
-  case swap(data: KNDraftExchangeTransaction)
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
-  case referencePrice(from: TokenObject, to: TokenObject)
-  case swapHint(from: TokenObject, to: TokenObject, amount: String?)
-  case openExplainPage
+  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
+  case updateRate(rate: Double)
+  case openHistory
+  case openWalletsList
+  case getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt)
+  case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt)
+  case checkAllowance(token: TokenObject)
+  case sendApprove(token: TokenObject, remain: BigInt)
+  case getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String)
+  case getLatestNonce
+  case buildTx(rawTx: RawSwapTransaction)
+  case signAndSendTx(tx: SignTransaction)
+  case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, rawTx: RawSwapTransaction)
+  case getRefPrice(from: TokenObject, to: TokenObject)
 
-  static public func == (left: KSwapViewEvent, right: KSwapViewEvent) -> Bool {
-    switch (left, right) {
-    case let (.estimateGas(fromL, toL, amountL, gasPriceL, hintL), .estimateGas(fromR, toR, amountR, gasPriceR, hintR)):
-      return fromL == fromR && toL == toR && amountL == amountR && gasPriceL == gasPriceR && hintL == hintR
-    default:
-      return false //Not implement
-    }
-  }
+//  static public func == (left: KSwapViewEvent, right: KSwapViewEvent) -> Bool {
+//    switch (left, right) {
+//    case let (.getGasLimit(fromL, toL, amountL, hintL), .getGasLimit(fromR, toR, amountR, hintR)):
+//      return fromL == fromR && toL == toR && amountL == amountR && hintL == hintR
+//    default:
+//      return false //Not implement
+//    }
+//  }
 }
 
 protocol KSwapViewControllerDelegate: class {
   func kSwapViewController(_ controller: KSwapViewController, run event: KSwapViewEvent)
-  func kSwapViewController(_ controller: KSwapViewController, run event: KNBalanceTabHamburgerMenuViewEvent)
 }
 
 //swiftlint:disable type_body_length
@@ -48,12 +56,8 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var scrollContainerView: UIScrollView!
 
   @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var walletNameLabel: UILabel!
-  @IBOutlet weak var dataContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
 
-  @IBOutlet weak var hasPendingTxView: UIView!
-  @IBOutlet weak var balanceTextLabel: UILabel! // "\(symbol) balance"
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var toTokenButton: UIButton!
 
@@ -61,70 +65,29 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var toAmountTextField: UITextField!
 
-  @IBOutlet weak var rateTextLabel: UILabel!
   @IBOutlet weak var exchangeRateLabel: UILabel!
-  @IBOutlet weak var loadingRateIndicator: UIActivityIndicatorView!
-
-  @IBOutlet weak var warningRateContainerView: UIView!
-  @IBOutlet weak var warningRatePercent: UIButton!
-
-  @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
-  @IBOutlet weak var heightConstraintForAdvacedSettingsView: NSLayoutConstraint!
 
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
 
   @IBOutlet weak var continueButton: UIButton!
-
-  @IBOutlet var continueButtonBottomPaddingToContainerConstraint: NSLayoutConstraint!
-  @IBOutlet var continueButtonBottomPaddingToSuggestViewConstraint: NSLayoutConstraint!
-
-  @IBOutlet weak var swapSuggestionView: UIView!
-  @IBOutlet weak var suggestionTextLabel: UILabel!
-
-  @IBOutlet weak var firstSuggestButton: UIButton!
-  @IBOutlet weak var firstSuggestType: UIButton!
-
-  @IBOutlet weak var secondSuggestButton: UIButton!
-  @IBOutlet weak var secondSuggestType: UIButton!
-
-  @IBOutlet weak var thirdSuggestButton: UIButton!
-  @IBOutlet weak var thirdSuggestType: UIButton!
-  @IBOutlet weak var hasUnreadNotification: UIView!
-  @IBOutlet weak var advanceSettingTopContraint: NSLayoutConstraint!
-  @IBOutlet weak var gasWarningTextLabel: UILabel!
-  @IBOutlet weak var gasWarningContainerView: UIView!
-  @IBOutlet weak var gasWarningContainerViewHieghtContraint: NSLayoutConstraint!
-
+  @IBOutlet weak var walletsListButton: UIButton!
+  @IBOutlet weak var gasFeeLabel: UILabel!
+  @IBOutlet weak var slippageLabel: UILabel!
+  @IBOutlet weak var changeRateButton: UIButton!
+  @IBOutlet weak var approveButtonLeftPaddingContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonRightPaddingContaint: NSLayoutConstraint!
+  @IBOutlet weak var approveButton: UIButton!
+  @IBOutlet weak var approveButtonEqualWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var approveButtonWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var rateWarningLabel: UILabel!
+  @IBOutlet weak var pendingTxIndicatorView: UIView!
+  @IBOutlet weak var currentChainIcon: UIImageView!
+  @IBOutlet weak var minReceivedAmount: UILabel!
+  
   fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
-
-  lazy var hamburgerMenu: KNBalanceTabHamburgerMenuViewController = {
-    let viewModel = KNBalanceTabHamburgerMenuViewModel(
-      walletObjects: KNWalletStorage.shared.wallets,
-      currentWallet: self.viewModel.walletObject
-    )
-    let hamburgerVC = KNBalanceTabHamburgerMenuViewController(viewModel: viewModel)
-    hamburgerVC.view.frame = self.view.bounds
-    self.view.addSubview(hamburgerVC.view)
-    self.addChildViewController(hamburgerVC)
-    hamburgerVC.didMove(toParentViewController: self)
-    hamburgerVC.delegate = self
-    return hamburgerVC
-  }()
-
-  lazy var toolBar: KNCustomToolbar = {
-    return KNCustomToolbar(
-      leftBtnTitle: NSLocalizedString("swap.all", value: "Swap All", comment: ""),
-      rightBtnTitle: NSLocalizedString("done", value: "Done", comment: ""),
-      barTintColor: UIColor.Kyber.enygold,
-      delegate: self)
-  }()
-
-  deinit {
-    self.removeObserveNotification()
-  }
 
   init(viewModel: KSwapViewModel) {
     self.viewModel = viewModel
@@ -137,10 +100,7 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.continueButton.applyGradient()
-
-    self.addObserveNotifications()
+    self.viewModel.resetDefaultTokensPair()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -148,39 +108,28 @@ class KSwapViewController: KNBaseViewController {
     if !self.isViewSetup {
       self.isViewSetup = true
       self.setupUI()
+      if self.viewModel.approvingToken == nil {
+        self.updateAllowance()
+      }
     }
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.dataContainerView.addShadow(
-      color: UIColor.black.withAlphaComponent(0.6),
-      offset: CGSize(width: 0, height: 7),
-      opacity: 0.32,
-      radius: 32
-    )
-    self.advancedSettingsView.layoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.continueButton.removeSublayer(at: 0)
-    self.continueButton.applyGradient()
+    self.updateUIForSendApprove(isShowApproveButton: false)
+    self.updateUISwitchChain()
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-
+    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
     self.isErrorMessageEnabled = true
     // start update est rate
     self.estRateTimer?.invalidate()
-    self.updateEstimatedRate(showError: true, showLoading: true)
-    self.updateReferencePrice()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
+    self.updateAllRates()
+    self.updateAllowance()
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-        self.updateEstimatedRate()
+        self.updateAllRates()
       }
     )
 
@@ -193,18 +142,11 @@ class KSwapViewController: KNBaseViewController {
       block: { [weak self] _ in
         guard let `self` = self else { return }
         self.updateEstimatedGasLimit()
-        self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
       }
     )
 
     self.updateExchangeRateField()
-
-    self.loadSwapSuggestionIfNeeded()
-
-    if NSObject.isNeedShowTutorial(for: Constants.isDoneShowQuickTutorialForSwapView) {
-      self.viewModel.currentTutorialStep = 1
-      self.showQuickTutorial()
-    }
+    self.updateRefPrice()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -222,37 +164,29 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
-    hasUnreadNotification.rounded(radius: hasUnreadNotification.frame.height / 2)
-    self.walletNameLabel.text = self.viewModel.walletNameString
     self.setupTokensView()
-    self.setupHamburgerMenu()
-    self.setupAdvancedSettingsView()
     self.setupContinueButton()
-    self.setupSwapSuggestionView()
-    self.notificationDidUpdate(nil)
+    self.updateApproveButton()
+    self.setUpGasFeeView()
+    self.setUpChangeRateButton()
+    self.updateUIForSendApprove(isShowApproveButton: false)
+    self.updateUIRefPrice()
+    self.updateUIPendingTxIndicatorView()
   }
 
   fileprivate func setupTokensView() {
-    self.dataContainerView.rounded(radius: 4)
-
-    self.fromTokenButton.titleLabel?.numberOfLines = 2
-    self.fromTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
-    self.toTokenButton.titleLabel?.numberOfLines = 2
-    self.toTokenButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
     self.fromAmountTextField.text = ""
     self.fromAmountTextField.adjustsFontSizeToFitWidth = true
-    self.fromAmountTextField.inputAccessoryView = self.toolBar
     self.fromAmountTextField.delegate = self
 
     self.viewModel.updateAmount("", isSource: true)
-    self.balanceTextLabel.text = self.viewModel.balanceTextString
-    self.rateTextLabel.text = NSLocalizedString("rate", value: "Rate", comment: "").uppercased()
 
     self.toAmountTextField.text = ""
     self.toAmountTextField.adjustsFontSizeToFitWidth = true
-    self.toAmountTextField.inputAccessoryView = self.toolBar
+//    self.toAmountTextField.inputAccessoryView = self.toolBar
     self.toAmountTextField.delegate = self
 
     self.viewModel.updateAmount("", isSource: false)
@@ -263,11 +197,19 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
   }
 
-  fileprivate func setupHamburgerMenu() {
-    self.hasPendingTxView.rounded()
-    self.hamburgerMenu.hideMenu(animated: false)
+  fileprivate func setUpGasFeeView() {
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
+    self.gasFeeLabel.attributedText = self.viewModel.gasFeeString
+    self.slippageLabel.text = self.viewModel.slippageString
   }
 
+  fileprivate func updateUIPendingTxIndicatorView() {
+    guard self.isViewLoaded else {
+      return
+    }
+    self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+  }
+/*
   fileprivate func setupAdvancedSettingsView() {
     let isPromo = KNWalletPromoInfoStorage.shared.getDestWallet(from: self.viewModel.walletObject.address) != nil
     let viewModel = KAdvancedSettingsViewModel(hasMinRate: true, isPromo: isPromo, gasLimit: self.viewModel.estimateGasLimit)
@@ -289,112 +231,34 @@ class KSwapViewController: KNBaseViewController {
     self.view.setNeedsUpdateConstraints()
     self.view.updateConstraints()
   }
-
+*/
   fileprivate func setupContinueButton() {
-    let style = KNAppStyleType.current
-    let radius = style.buttonRadius()
-    self.continueButton.rounded(radius: radius)
     self.continueButton.setTitle(
       NSLocalizedString("Swap Now", value: "Swap Now", comment: ""),
       for: .normal
     )
   }
-
-  // MARK: Swap Suggestion
-  fileprivate func setupSwapSuggestionView() {
-    self.suggestionTextLabel.text = "Suggestion".toBeLocalised()
-    self.firstSuggestButton.rounded(
-      color: UIColor.Kyber.border,
-      width: 1.0,
-      radius: 5.0
-    )
-    self.firstSuggestType.rounded(radius: self.firstSuggestType.frame.height / 2.0)
-    self.secondSuggestButton.rounded(
-      color: UIColor.Kyber.border,
-      width: 1.0,
-      radius: 5.0
-    )
-    self.secondSuggestType.rounded(radius: self.secondSuggestType.frame.height / 2.0)
-    self.thirdSuggestButton.rounded(
-      color: UIColor.Kyber.border,
-      width: 1.0,
-      radius: 5.0
-    )
-    self.thirdSuggestType.rounded(radius: self.thirdSuggestType.frame.height / 2.0)
-
-    self.updateSwapSuggestionView()
+  
+  fileprivate func updateApproveButton() {
+    self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.from.symbol, for: .normal)
   }
 
-  fileprivate func updateSwapSuggestionView() {
-    if self.viewModel.isSwapSuggestionShown {
-      self.swapSuggestionView.isHidden = false
-      self.continueButtonBottomPaddingToContainerConstraint.constant = 164.0
-      self.continueButtonBottomPaddingToContainerConstraint.isActive = false
-      self.continueButtonBottomPaddingToSuggestViewConstraint.isActive = true
-
-      guard let suggestions = self.viewModel.swapSuggestion else { return }
-      self.updateSwapSuggestionButtonWithData(suggestButton: self.firstSuggestButton, typeButton: self.firstSuggestType, data: suggestions[0])
-      if suggestions.count > 1 {
-        self.updateSwapSuggestionButtonWithData(suggestButton: self.secondSuggestButton, typeButton: self.secondSuggestType, data: suggestions[1])
-      } else {
-        self.updateSwapSuggestionButtonWithData(suggestButton: self.secondSuggestButton, typeButton: self.secondSuggestType, data: nil)
-      }
-      if suggestions.count > 2 {
-        self.updateSwapSuggestionButtonWithData(suggestButton: self.thirdSuggestButton, typeButton: self.thirdSuggestType, data: suggestions[2])
-      } else {
-        self.updateSwapSuggestionButtonWithData(suggestButton: self.thirdSuggestButton, typeButton: self.thirdSuggestType, data: nil)
-      }
-    } else {
-      self.swapSuggestionView.isHidden = true
-      self.continueButtonBottomPaddingToContainerConstraint.constant = 32.0
-      self.continueButtonBottomPaddingToContainerConstraint.isActive = true
-      self.continueButtonBottomPaddingToSuggestViewConstraint.isActive = false
-    }
-    self.view.layoutIfNeeded()
-  }
-
-  fileprivate func updateSwapSuggestionButtonWithData(suggestButton: UIButton, typeButton: UIButton, data: JSONDictionary?) {
-    guard let json = data else {
-      suggestButton.isHidden = true
-      typeButton.isHidden = true
+  fileprivate func setUpChangeRateButton() {
+    guard KNGeneralProvider.shared.isEthereum else {
+      let icon = UIImage(named: "pancake_icon")?.resizeImage(to: CGSize(width: 16, height: 16))
+      self.changeRateButton.setImage(icon, for: .normal)
       return
     }
-    if let from = json["frm"] as? String, let to = json["to"] as? String {
-      suggestButton.setTitle("\(from) ➞ \(to)", for: .normal)
-      suggestButton.isHidden = false
-
-      if let type = json["tags"] as? String {
-        typeButton.setTitle(type, for: .normal)
-        typeButton.isHidden = false
-        if type == "trending" {
-          typeButton.setImage(UIImage(named: "trending_icon"), for: .normal)
-          typeButton.setTitleColor(UIColor(red: 250, green: 101, blue: 102), for: .normal)
-        }
-        if type == "best rate" {
-          typeButton.setImage(UIImage(named: "best_rate_icon"), for: .normal)
-          typeButton.setTitleColor(UIColor.Kyber.blueGreen, for: .normal)
-        }
-        if type == "promoted" {
-          typeButton.setImage(UIImage(named: "promoted_icon"), for: .normal)
-          typeButton.setTitleColor(UIColor.Kyber.shamrock, for: .normal)
-        }
-      } else {
-        typeButton.isHidden = true
-      }
+    if self.viewModel.currentFlatform == "Uniswap" {
+      let icon = UIImage(named: "uni_icon_medium")?.resizeImage(to: CGSize(width: 16, height: 16))
+      self.changeRateButton.setImage(icon, for: .normal)
     } else {
-      suggestButton.isHidden = true
-      typeButton.isHidden = true
+      let icon = UIImage(named: "kyber_icon_medium")?.resizeImage(to: CGSize(width: 16, height: 16))
+      self.changeRateButton.setImage(icon, for: .normal)
     }
-  }
-
-  @IBAction func hamburgerMenuPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_hamburger_menu", customAttributes: nil)
-    self.view.endEditing(true)
-    self.hamburgerMenu.openMenu(animated: true)
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_token_select", customAttributes: nil)
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -404,7 +268,6 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func toTokenButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_token_select", customAttributes: nil)
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -414,8 +277,8 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func swapButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_swap_2_tokens", customAttributes: nil)
     if !self.viewModel.isFromTokenBtnEnabled { return }
+    self.viewModel.showingRevertRate = false
     self.viewModel.swapTokens()
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
@@ -423,29 +286,15 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
     self.updateEstimatedGasLimit()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: nil)
-    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
-    self.viewModel.isUsingReverseRouting = true
+    self.updateUIMinReceiveAmount()
   }
 
-  @IBAction func warningRateButtonPressed(_ sender: Any) {
-    guard let string = self.viewModel.differentRatePercentageDisplay else { return }
-    let message = String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), string)
-    self.showTopBannerView(
-      with: "",
-      message: message,
-      icon: UIImage(named: "info_blue_icon"),
-      time: 5.0
-    )
+  @IBAction func historyListButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSwapViewController(self, run: .openHistory)
   }
 
-  @objc func prodCachedRateFailedToLoad(_ sender: Any?) {
-    let event = KSwapViewEvent.estimateComparedRate(
-      from: self.viewModel.from,
-      to: self.viewModel.to,
-      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
-    )
-    self.delegate?.kSwapViewController(self, run: event)
+  @IBAction func walletsListButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSwapViewController(self, run: .openWalletsList)
   }
 
   /*
@@ -456,110 +305,72 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_swap_tapped", customAttributes: nil)
-    self.validateDataBeforeContinuing(hasCallValidateRate: false)
-  }
-
-  fileprivate func validateDataBeforeContinuing(hasCallValidateRate: Bool) {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
-    let rate = self.viewModel.estRate ?? BigInt(0)
-    let amount: BigInt = {
-      if self.viewModel.isFocusingFromAmount {
-        if self.viewModel.isSwapAllBalance {
-          let balance = self.viewModel.balance?.value ?? BigInt(0)
-          if !self.viewModel.from.isETH { return balance } // token, no need minus fee
-          let fee = self.viewModel.allETHBalanceFee
-          return max(BigInt(0), balance - fee)
-        }
-        return self.viewModel.amountFromBigInt
-      }
-      let expectedExchange: BigInt = {
-        if rate.isZero { return rate }
-        let amount = self.viewModel.amountToBigInt
-        return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
-      }()
-      return expectedExchange
-    }()
-    let exchange = KNDraftExchangeTransaction(
+    let event = KSwapViewEvent.getExpectedRate(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: amount,
-      maxDestAmount: BigInt(2).power(255),
-      expectedRate: rate,
-      minRate: self.viewModel.minRate,
-      gasPrice: self.viewModel.gasPrice,
-      gasLimit: self.viewModel.estimateGasLimit,
-      expectedReceivedString: self.viewModel.amountTo,
-      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
+      srcAmount: self.viewModel.amountFromBigInt,
+      hint: self.viewModel.getHint(
+        from: self.viewModel.from.address,
+        to: self.viewModel.to.address,
+        amount: self.viewModel.amountFromBigInt,
+        platform: self.viewModel.currentFlatform
+      )
     )
-    if !hasCallValidateRate {
-      self.delegate?.kSwapViewController(self, run: .validateRate(data: exchange))
-    } else {
-      self.delegate?.kSwapViewController(self, run: .swap(data: exchange))
+    self.delegate?.kSwapViewController(self, run: event)
+  }
+
+  @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
+    self.balanceLabelTapped(sender)
+  }
+
+  @IBAction func changeRateButtonTapped(_ sender: UIButton) {
+    let rates = self.viewModel.swapRates.3
+    if rates.count >= 2 {
+      self.delegate?.kSwapViewController(self, run: .openChooseRate(from: self.viewModel.from, to: self.viewModel.to, rates: rates, gasPrice: self.viewModel.gasPrice))
     }
   }
 
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    self.hamburgerMenu.gestureScreenEdgePanAction(sender)
+  @IBAction func approveButtonTapped(_ sender: UIButton) {
+    guard let remain = self.viewModel.remainApprovedAmount else {
+      return
+    }
+    self.delegate?.kSwapViewController(self, run: .sendApprove(token: remain.0, remain: remain.1))
   }
 
-  @IBAction func swapSuggestionButtonPressed(_ sender: UIButton) {
-    guard let suggestions = self.viewModel.swapSuggestion, suggestions.count > sender.tag else { return }
-    let suggest = suggestions[sender.tag]
-    guard let from = suggest["frm"] as? String,
-      let fromToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == from }),
-      let to = suggest["to"] as? String,
-      let toToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == to }) else { return }
-    // Update source and dest tokens
-    self.coordinatorUpdateSelectedToken(fromToken, isSource: true, isWarningShown: false)
-    self.coordinatorUpdateSelectedToken(toToken, isSource: false, isWarningShown: true)
-    if self.viewModel.from != fromToken { return } // can not update from token, should be fromToken is disabled
-    // Update source amount if needed
-    guard let amount = suggest["amt"] as? Double else { return }
-    guard let balance = self.viewModel.balances[fromToken.contract] else { return }
+  @IBAction func warningRateButtonTapped(_ sender: UIButton) {
+    guard !self.viewModel.refPriceDiffText.isEmpty else { return }
+    let message = KNGeneralProvider.shared.isEthereum ? String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), self.viewModel.refPriceDiffText) : String(format: "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised(), self.viewModel.refPriceDiffText)
+    self.showTopBannerView(
+      with: "",
+      message: message,
+      icon: UIImage(named: "info_blue_icon"),
+      time: 5.0
+    )
+  }
 
-    // Computing available balance, in case ETH need to minus tx fee
-    let availableBal: Double = {
-      let bal = Double(balance.value) / pow(10.0, Double(fromToken.decimals))
-      if fromToken.isETH {
-        let fee = Double(self.viewModel.feeBigInt) / pow(10.0, 18.0)
-        return max(0, bal - fee)
-      }
-      return bal
-    }()
-
-    let amountFrom = min(amount, availableBal)
-    if amountFrom <= 0.0001 { return } // no need to update if amount is small to prevent showing warning
-    let amountString = BigInt(amountFrom * pow(10.0, Double(fromToken.decimals))).string(
-      decimals: fromToken.decimals,
-      minFractionDigits: min(fromToken.decimals, 4),
-      maxFractionDigits: min(fromToken.decimals, 4)
-      ).removeGroupSeparator()
-
-    // Update source amount data
-    self.viewModel.updateFocusingField(true)
-    self.fromAmountTextField.text = amountString
-    self.viewModel.updateAmount(amountString, isSource: true)
-    self.updateViewAmountDidChange()
-    _ = self.showWarningDataInvalidIfNeeded()
+  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
   }
 
   fileprivate func updateFromAmountUIForSwapAllBalanceIfNeeded() {
     guard self.viewModel.isSwapAllBalance, self.viewModel.from.isETH else { return }
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSwapAllETH: true)
-    self.updateViewAmountDidChange(needUpdateEstRate: false)
+    self.updateViewAmountDidChange()
   }
-
+  
+  @IBAction func revertRateButtonTapped(_ sender: UIButton) {
+    self.viewModel.showingRevertRate = !self.viewModel.showingRevertRate
+    self.updateExchangeRateField()
+  }
+  
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_swap_all", customAttributes: nil)
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSwapAllETH: self.viewModel.from.isETH)
     self.updateTokensView()
     self.updateViewAmountDidChange()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
     if sender as? KSwapViewController != self {
       if self.viewModel.from.isETH {
         self.showSuccessTopBannerMessage(
@@ -578,102 +389,102 @@ class KSwapViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.view.layoutIfNeeded()
   }
+  
+  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    let popup = SwitchChainViewController()
+    popup.completionHandler = {
+      let secondPopup = SwitchChainWalletsListViewController()
+      self.present(secondPopup, animated: true, completion: nil)
+    }
+    self.present(popup, animated: true, completion: nil)
+  }
+  
+  fileprivate func updateUISwitchChain() {
+    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    self.currentChainIcon.image = icon
+    self.setUpGasFeeView()
+  }
 
   func coordinatorUpdateGasPriceCached() {
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
-    self.updateAdvancedSettingsView()
+    self.setUpGasFeeView()
+//    self.updateAdvancedSettingsView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
-    self.updateGasWarningUI()
   }
 
-  fileprivate func updateEstimatedRate(showError: Bool = false, showLoading: Bool = false) {
-    self.loadingRateIndicator.startAnimating()
-    if showLoading { self.loadingRateIndicator.isHidden = false }
-    let event = KSwapViewEvent.estimateRate(
-      from: self.viewModel.from,
-      to: self.viewModel.to,
-      amount: self.viewModel.amountToEstimate,
-      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address),
-      showError: showError
-    )
+//  fileprivate func updateEstimatedRate(showError: Bool = false) {
+//    let event = KSwapViewEvent.estimateRate(
+//      from: self.viewModel.from,
+//      to: self.viewModel.to,
+//      amount: self.viewModel.amountToEstimate,
+//      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform),
+//      showError: showError
+//    )
+//    self.delegate?.kSwapViewController(self, run: event)
+//  }
+
+  fileprivate func updateAllRates() {
+    let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, srcAmount: self.viewModel.amountFromBigInt)
     self.delegate?.kSwapViewController(self, run: event)
   }
-
-  fileprivate func updateReferencePrice() {
-    KNRateCoordinator.shared.currentSymPair = (self.viewModel.from.symbol, self.viewModel.to.symbol)
-    let event = KSwapViewEvent.referencePrice(from: self.viewModel.from, to: self.viewModel.to)
-    self.delegate?.kSwapViewController(self, run: event)
+  
+  fileprivate func updateRefPrice() {
+    self.delegate?.kSwapViewController(self, run: .getRefPrice(from: self.viewModel.from, to: self.viewModel.to))
   }
 
-  fileprivate func updateSwapHint(from: TokenObject, to: TokenObject, amount: String?) {
-    let event = KSwapViewEvent.swapHint(from: from, to: to, amount: amount)
-    self.delegate?.kSwapViewController(self, run: event)
-  }
-
-  @IBAction func notificationMenuButtonPressed(_ sender: UIButton) {
-    self.delegate?.kSwapViewController(self, run: .selectNotifications)
-  }
+//  fileprivate func updateReferencePrice() {
+//    KNRateCoordinator.shared.currentSymPair = (self.viewModel.from.symbol, self.viewModel.to.symbol)
+//    let event = KSwapViewEvent.referencePrice(from: self.viewModel.from, to: self.viewModel.to)
+//    self.delegate?.kSwapViewController(self, run: event)
+//  }
 
   fileprivate func updateEstimatedGasLimit() {
-    let event = KSwapViewEvent.estimateGas(
+    let event = KSwapViewEvent.getGasLimit(
       from: self.viewModel.from,
       to: self.viewModel.to,
-      amount: self.viewModel.amountToEstimate,
-      gasPrice: self.viewModel.gasPrice,
-      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address)
+      srcAmount: self.viewModel.amountToEstimate,
+      rawTx: self.viewModel.buildRawSwapTx()
     )
     //Dismiss event call if the same parameter call within 5 sec
-    if let previousEvent = self.previousCallEvent, previousEvent == event, Date().timeIntervalSince1970 - self.previousCallTimeStamp < 5 {
-      return
-    }
-    self.previousCallEvent = event
-    self.previousCallTimeStamp = Date().timeIntervalSince1970
+//    if let previousEvent = self.previousCallEvent, previousEvent == event, Date().timeIntervalSince1970 - self.previousCallTimeStamp < 5 {
+//      return
+//    }
+//    self.previousCallEvent = event
+//    self.previousCallTimeStamp = Date().timeIntervalSince1970
     self.delegate?.kSwapViewController(self, run: event)
   }
+
   /*
    Return true if data is invalid and a warning message is shown,
    false otherwise
   */
   fileprivate func showWarningDataInvalidIfNeeded(isConfirming: Bool = false) -> Bool {
-    if !isConfirming && !self.isErrorMessageEnabled || !self.hamburgerMenu.view.isHidden { return false }
+    if !isConfirming && !self.isErrorMessageEnabled { return false }
     if !isConfirming && (self.fromAmountTextField.isEditing || self.toAmountTextField.isEditing) { return false }
+    let estRate = self.viewModel.getSwapRate(from: self.viewModel.from.address.lowercased(), to: self.viewModel.to.address.lowercased(), amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
+    let estRateBigInt = BigInt(estRate)
     guard self.viewModel.from != self.viewModel.to else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
         message: NSLocalizedString("can.not.swap.same.token", value: "Can not swap the same token", comment: ""),
         time: 1.5
       )
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "can.not.swap.same.token".toBeLocalised()])
       return true
     }
     guard !self.viewModel.amountFrom.isEmpty else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
-        message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
-      )
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "please.enter.an.amount.to.continue".toBeLocalised()])
+      if isConfirming == true {
+        self.showWarningTopBannerMessage(
+          with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
+          message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
+        )
+      }
       return true
     }
-    if self.viewModel.isPairUnderMaintenance {
+    if estRateBigInt?.isZero == true {
       self.showWarningTopBannerMessage(
         with: "",
-        message: NSLocalizedString("This token pair is temporarily under maintenance", value: "This token pair is temporarily under maintenance", comment: ""),
-        time: 3
-      ) {
-        self.delegate?.kSwapViewController(self, run: .openExplainPage)
-      }
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "This token pair is temporarily under maintenance".toBeLocalised()])
-      return true
-    }
-    if self.viewModel.estRate?.isZero == true {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: ""),
-        time: 3
-      ) {
-        self.delegate?.kSwapViewController(self, run: .openExplainPage)
-      }
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "can.not.handle.your.amount".toBeLocalised()])
+        message: "Can not find the exchange rate"
+      )
       return true
     }
     guard self.viewModel.isBalanceEnough else {
@@ -681,7 +492,6 @@ class KSwapViewController: KNBaseViewController {
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
         message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not enough to make the transaction.", comment: "")
       )
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "balance.not.enough.to.make.transaction".toBeLocalised()])
       return true
     }
     guard !self.viewModel.isAmountTooSmall else {
@@ -689,145 +499,61 @@ class KSwapViewController: KNBaseViewController {
         with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
         message: NSLocalizedString("amount.too.small.to.perform.swap", value: "Amount too small to perform swap, minimum equivalent to 0.001 ETH", comment: "")
       )
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "amount.too.small.to.perform.swap".toBeLocalised()])
       return true
     }
     if isConfirming {
+      let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.feeBigInt
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 5))
         )
-        KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised()])
         return true
       }
-      guard self.viewModel.isSlippageRateValid else {
-        self.showWarningTopBannerMessage(
-          with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-          message: NSLocalizedString("can.not.handle.your.amount", value: "Can not handle your amount", comment: ""),
-          time: 3
-        ) {
-          self.delegate?.kSwapViewController(self, run: .openExplainPage)
-        }
-        KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "can.not.handle.your.amount".toBeLocalised()])
-        return true
-      }
-      guard self.advancedSettingsView.isMinRateValid else {
-        if self.advancedSettingsView.viewModel != nil && self.advancedSettingsView.viewModel.isViewHidden {
-          self.advancedSettingsView.displayViewButtonPressed(self)
-        }
-        self.advancedSettingsView.updateMinRateCustomErrorShown(true)
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: "Please enter a value between 0 and 100 for custom field in advanced settings view".toBeLocalised()
-        )
-        KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "Please enter a value between 0 and 100 for custom field in advanced settings view".toBeLocalised()])
-        return true
-      }
-      guard self.viewModel.estRate != nil, self.viewModel.estRate?.isZero == false else {
+      guard estRateBigInt != nil, estRateBigInt?.isZero == false else {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("rate.might.change", value: "Rate might change", comment: ""),
           message: NSLocalizedString("please.wait.for.expected.rate.updated", value: "Please wait for expected rate to be updated", comment: "")
         )
-        KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_error", customAttributes: ["error_text": "please.wait.for.expected.rate.updated".toBeLocalised()])
+        return true
+      }
+      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: "Please wait for transaction is completed"
+        )
         return true
       }
     }
     return false
   }
 
-  // Swap suggestion
-  fileprivate func loadSwapSuggestionIfNeeded() {
-    if self.viewModel.swapSuggestion != nil { return }
-    let provider = MoyaProvider<KNTrackerService>()
-    var tokens: JSONDictionary = [:]
-    KNSupportedTokenStorage.shared.supportedTokens.forEach { token in
-      if let bal = self.viewModel.balances[token.contract], !bal.value.isZero {
-        tokens[token.contract] = Double(bal.value) / pow(10.0, Double(token.decimals))
-      }
-    }
-    let address = self.viewModel.walletObject.address
-    DispatchQueue.global().async {
-      provider.request(.swapSuggestion(address: address, tokens: tokens)) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let data):
-            do {
-              let json = try data.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-              let keys = json.keys.sorted(by: { return $0 < $1 })
-              self.viewModel.swapSuggestion = keys.map({ return json[$0] as? JSONDictionary ?? [:] })
-              self.updateSwapSuggestionView()
-            } catch { }
-          case .failure(let error):
-            print("Error Swap Suggestion: \(error.prettyError)")
-          }
-        }
-      }
-    }
-  }
-
-  @objc func notificationDidUpdate(_ sender: Any?) {
-    let numUnread: Int = {
-      if IEOUserStorage.shared.user == nil { return 0 }
-      return KNNotificationCoordinator.shared.numberUnread
-    }()
-    self.update(notificationsCount: numUnread)
-  }
-
-  @objc func notificationReachabilityDidUpdate(notification: Notification) {
-    guard self.isViewSetup else {
-      return
-    }
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
-  }
-
-  func update(notificationsCount: Int) {
-    self.hasUnreadNotification.isHidden = notificationsCount == 0
-  }
-
-  func showQuickTutorial() {
-    var pointsAndRadius: [(CGPoint, CGFloat)] = []
-    switch self.viewModel.currentTutorialStep {
-    case 1:
-      pointsAndRadius = [(CGPoint(x: 92, y: self.dataContainerView.frame.midY), 109)]
-    case 2:
-      pointsAndRadius = [(CGPoint(x: self.view.frame.size.width - 92, y: self.dataContainerView.frame.midY), 108)]
-    case 3:
-      pointsAndRadius = [(CGPoint(x: self.scrollContainerView.frame.midX - 60, y: self.view.frame.height - self.scrollContainerView.frame.size.height / 2), 167)]
-      self.advancedSettingsView.displayViewButtonPressed(self)
-    default:
-      break
-    }
-    let event = KSwapViewEvent.quickTutorial(step: self.viewModel.currentTutorialStep, pointsAndRadius: pointsAndRadius)
+  @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
+    let event = KSwapViewEvent.openGasPriceSelect(
+      gasLimit: self.viewModel.estimateGasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      pair: "\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)",
+      minRatePercent: self.viewModel.minRatePercent
+    )
     self.delegate?.kSwapViewController(self, run: event)
   }
-
-  override func quickTutorialNextAction() {
-    self.dismissTutorialOverlayer()
-    if self.viewModel.currentTutorialStep == 3 {
-      self.advancedSettingsView.displayViewButtonPressed(self)
-      NSObject.updateDoneTutorial(for: Constants.isDoneShowQuickTutorialForSwapView)
-      KNCrashlyticsUtil.logCustomEvent(withName: "tut_swap_got_it_button_tapped", customAttributes: nil)
+  
+  fileprivate func checkUpdateApproveButton() {
+    guard let token = self.viewModel.approvingToken else {
       return
     }
-    self.viewModel.currentTutorialStep += 1
-    self.showQuickTutorial()
-    KNCrashlyticsUtil.logCustomEvent(withName: "tut_swap_next_button_tapped", customAttributes: nil)
-  }
-
-  func isNeedToReloadGasLimit() -> Bool {
-    return Date().timeIntervalSince1970 - self.viewModel.lastSuccessLoadGasLimitTimeStamp > KNLoadingInterval.seconds60
-  }
-
-  @IBAction func closeGasWarningPopupTapped(_ sender: UIButton) {
-    self.viewModel.saveCloseGasWarningState()
-    self.updateGasWarningUI()
-  }
-  
-  @IBAction func krystalWarningButtonTapped(_ sender: UIButton) {
-    self.openSafari(with: "https://medium.com/kyberswap/bidding-farewell-to-kyberswap-318baa8b73c9")
+    if EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      self.viewModel.approvingToken = nil
+    }
+    let pending = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().filter({ (item) -> Bool in
+      return item.transactionDetailDescription.lowercased() == token.address.lowercased() && item.type == .allowance
+    })
+    if pending.isEmpty {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      self.viewModel.approvingToken = nil
+    }
   }
 }
 
@@ -840,143 +566,81 @@ extension KSwapViewController {
    */
   func updateTokensView(updatedFrom: Bool = true, updatedTo: Bool = true) {
     if updatedFrom {
-      self.fromTokenButton.setAttributedTitle(
-        self.viewModel.tokenButtonAttributedText(isSource: true),
-        for: .normal
-      )
-      self.fromTokenButton.setTokenImage(
-        token: self.viewModel.from,
-        size: self.viewModel.defaultTokenIconImg?.size
-      )
-      self.balanceTextLabel.text = self.viewModel.balanceTextString
+      self.fromTokenButton.setTitle(self.viewModel.tokenButtonText(isSource: true), for: .normal)
     }
     if updatedTo {
-      self.toTokenButton.setAttributedTitle(
-        self.viewModel.tokenButtonAttributedText(isSource: false),
-        for: .normal
-      )
-      self.toTokenButton.setTokenImage(
-        token: self.viewModel.to,
-        size: self.viewModel.defaultTokenIconImg?.size
-      )
+      self.toTokenButton.setTitle(self.viewModel.tokenButtonText(isSource: false), for: .normal)
     }
-    self.viewModel.updateEstimatedRateFromCachedIfNeeded()
+    //TODO: remove est rate cache logic
+//    self.viewModel.updateEstimatedRateFromCachedIfNeeded()
     // call update est rate from node
-    self.updateEstimatedRate(showError: updatedFrom || updatedTo, showLoading: updatedFrom || updatedTo)
-    self.updateReferencePrice()
-    self.balanceLabel.text = self.viewModel.balanceText
-
-    self.updateExchangeRateField()
-
-    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    }
-    if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
-      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-    }
-    self.updateAdvancedSettingsView()
+    self.updateAllRates()
+//    self.updateEstimatedRate(showError: updatedFrom || updatedTo)
+//    self.updateReferencePrice()
+    self.balanceLabel.text = self.viewModel.balanceDisplayText
+    self.updateAllowance()
 
     // update tokens button in case promo wallet
     self.toTokenButton.isEnabled = self.viewModel.isToTokenBtnEnabled
     self.fromTokenButton.isEnabled = self.viewModel.isFromTokenBtnEnabled
-
+    self.updateExchangeRateField()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    self.updateUIRefPrice()
+    self.updateRefPrice()
+
     self.view.layoutIfNeeded()
   }
 
   fileprivate func updateExchangeRateField() {
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
-    let warningRate: String? = self.viewModel.differentRatePercentageDisplay
-    self.warningRateContainerView.isHidden = warningRate == nil
-    self.warningRatePercent.setTitle(warningRate, for: .normal)
   }
 
-  fileprivate func updateAdvancedSettingsView() {
-    let rate = self.viewModel.estimatedRateDouble
-    let percent = self.viewModel.minRatePercent
-    self.advancedSettingsView.updatePairToken("\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)")
-    self.advancedSettingsView.updateMinRate(rate, percent: percent)
-
-    self.advancedSettingsView.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    self.view.layoutIfNeeded()
-  }
-
-  fileprivate func updateGasWarningUI() {
-    guard self.isViewSetup else {
-      return
-    }
-    var currentGasPrice = KNGasCoordinator.shared.standardKNGas
-    switch self.viewModel.selectedGasPriceType {
-    case .superFast:
-      currentGasPrice = KNGasCoordinator.shared.superFastKNGas
-    case .fast:
-      currentGasPrice = KNGasCoordinator.shared.fastKNGas
-    case .medium:
-      currentGasPrice = KNGasCoordinator.shared.standardKNGas
-    case .slow:
-      currentGasPrice = KNGasCoordinator.shared.lowKNGas
-    }
-    var limit = UserDefaults.standard.double(forKey: Constants.gasWarningValueKey)
-    if limit <= 0 { limit = 200 }
-    let limitBigInt = BigInt(limit * pow(10, 9))
-    let isShowWarning = (currentGasPrice > limitBigInt) && !self.viewModel.isCloseGasWarningPopup
-    self.advanceSettingTopContraint.constant = isShowWarning ? 86 : 24
-    self.gasWarningContainerView.isHidden = !isShowWarning
-    if isShowWarning {
-      let estFee = currentGasPrice * self.viewModel.estimateGasLimit
-      let feeString: String = estFee.displayRate(decimals: 18)
-      let warningText = String(format: "High network congestion. Please double check gas fee (~%@ ETH) before confirmation.".toBeLocalised(), feeString)
-      self.gasWarningTextLabel.text = warningText
-    }
+  fileprivate func updateAllowance() {
+    self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
 
   @objc func balanceLabelTapped(_ sender: Any) {
     self.keyboardSwapAllButtonPressed(sender)
   }
-}
 
-extension KSwapViewController {
-  fileprivate func addObserveNotifications() {
-    let name = Notification.Name(kProdCachedRateFailedToLoadNotiKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.prodCachedRateFailedToLoad(_:)),
-      name: name,
-      object: nil
-    )
+  fileprivate func updateUIForSendApprove(isShowApproveButton: Bool, token: TokenObject? = nil) {
+    if let unwrapped = token, unwrapped.contract.lowercased() != self.viewModel.from.contract.lowercased() {
+      return
+    }
+    self.updateApproveButton()
+    if isShowApproveButton {
+      self.approveButtonLeftPaddingContraint.constant = 37
+      self.approveButtonRightPaddingContaint.constant = 15
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 999)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.continueButton.isEnabled = false
+      self.continueButton.alpha = 0.2
+      if self.viewModel.approvingToken == nil {
+        self.approveButton.isEnabled = true
+        self.approveButton.alpha = 1
+      } else {
+        self.approveButton.isEnabled = false
+        self.approveButton.alpha = 0.2
+      }
+    } else {
+      self.approveButtonLeftPaddingContraint.constant = 0
+      self.approveButtonRightPaddingContaint.constant = 37
+      self.approveButtonEqualWidthContraint.priority = UILayoutPriority(rawValue: 250)
+      self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 999)
+      self.continueButton.isEnabled = true
+      self.continueButton.alpha = 1
+    }
 
-    let nameUpdateListNotificationKey = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.notificationDidUpdate(_:)),
-      name: nameUpdateListNotificationKey,
-      object: nil
-    )
-    let notiReachabilityName = Notification.Name(rawValue: KNReachability.kNetworkReachableNotificationKey)
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.notificationReachabilityDidUpdate(notification:)),
-      name: notiReachabilityName,
-      object: nil
-    )
+    self.view.layoutIfNeeded()
   }
 
-  fileprivate func removeObserveNotification() {
-    let name = Notification.Name(kProdCachedRateFailedToLoadNotiKey)
-    NotificationCenter.default.removeObserver(self, name: name, object: nil)
+  fileprivate func updateUIRefPrice() {
+    let change = self.viewModel.refPriceDiffText
+    self.rateWarningLabel.text = change
+  }
 
-    let nameUpdateListNotificationKey = Notification.Name(kUpdateListNotificationsKey)
-    NotificationCenter.default.removeObserver(self, name: nameUpdateListNotificationKey, object: nil)
-
-    let notiReachabilityName = Notification.Name(rawValue: KNReachability.kNetworkReachableNotificationKey)
-    NotificationCenter.default.removeObserver(self, name: notiReachabilityName, object: nil)
+  fileprivate func updateUIMinReceiveAmount() {
+    self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
   }
 }
 
@@ -987,62 +651,31 @@ extension KSwapViewController {
    */
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
-    self.walletNameLabel.text = self.viewModel.walletNameString
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
     self.updateViewAmountDidChange()
-    self.updateAdvancedSettingsView()
-    self.updateGasWarningUI()
-    let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: wallet.address.description) != nil
-    self.advancedSettingsView.updateIsPromoWallet(isPromo)
-    self.hamburgerMenu.update(
-      walletObjects: KNWalletStorage.shared.wallets,
-      currentWallet: self.viewModel.walletObject
-    )
-    self.hamburgerMenu.hideMenu(animated: false)
-    self.loadSwapSuggestionIfNeeded()
+    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.balanceLabel.text = self.viewModel.balanceDisplayText
+    self.updateUIPendingTxIndicatorView()
     self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateWalletObjects() {
     self.viewModel.updateWalletObject()
-    self.walletNameLabel.text = self.viewModel.walletNameString
-    self.hamburgerMenu.update(
-      walletObjects: KNWalletStorage.shared.wallets,
-      currentWallet: self.viewModel.walletObject
-    )
     self.view.layoutIfNeeded()
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
-    self.balanceLabel.text = self.viewModel.balanceText
-    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
-      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-    }
+    self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.view.layoutIfNeeded()
   }
 
-  /*
-   Update estimate rate, check if the from, to, amount are all the same as current value in the model
-   Update UIs according to new values
-   */
-  func coordinatorDidUpdateEstimateRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) {
-    let updated = self.viewModel.updateExchangeRate(
-      for: from,
-      to: to,
-      amount: amount,
-      rate: rate,
-      slippageRate: slippageRate
-    )
-    self.updateExchangeRateField()
+  func coordinatorDidUpdateExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt) {
+    self.viewModel.updateExpectedRate(for: from, to: to, amount: amount, rate: rate)
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
@@ -1050,64 +683,28 @@ extension KSwapViewController {
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
-    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    } else if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
-      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-    }
-
-    self.updateAdvancedSettingsView()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
-    if updated { self.loadingRateIndicator.isHidden = true }
     if self.viewModel.isTappedSwapAllBalance {
       self.keyboardSwapAllButtonPressed(self)
       self.viewModel.isTappedSwapAllBalance = false
     }
     self.view.layoutIfNeeded()
+    self.delegate?.kSwapViewController(self, run: .getLatestNonce)
   }
 
   /*
    Update estimate gas limit, check if the from, to, amount are all the same as current value in the model    Update UIs according to new values
    */
-  func coordinatorDidUpdateEstimateGasUsed(from: TokenObject, to: TokenObject, amount: BigInt) {
-    let defaultValue = self.viewModel.getDefaultGasLimit(for: from, to: to)
-    let estValue = self.viewModel.getEstValueGasLimit(for: from, to: to, amount: amount)
-    var gasValue = BigInt()
-    if (from.isGasFixed || to.isGasFixed) && (!self.viewModel.isAbleToUseReverseRouting || !self.viewModel.isUsingReverseRouting) {
-      gasValue = max(defaultValue, estValue)
-    } else {
-      gasValue = min(defaultValue, estValue)
-    }
+  func coordinatorDidUpdateGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     self.viewModel.updateEstimateGasLimit(
       for: from,
       to: to,
       amount: amount,
-      gasLimit: gasValue
+      gasLimit: gasLimit
     )
+    
+    self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
-    self.viewModel.lastSuccessLoadGasLimitTimeStamp = Date().timeIntervalSince1970
-    if self.isViewSetup {
-      self.advancedSettingsView.updateGasLimit(self.viewModel.estimateGasLimit)
-    }
-  }
-
-  func coordinatorDidUpdateDefaultGasLimit(from: TokenObject, to: TokenObject, gasLimit: BigInt) {
-    self.viewModel.updateDefaultGasLimit(
-      for: from,
-      to: to,
-      gasLimit: gasLimit
-    )
-  }
-
-  func coordinatorDidUpdateEstValueGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    self.viewModel.updateEstValueGasLimit(
-      for: from,
-      to: to,
-      amount: amount,
-      gasLimit: gasLimit
-    )
   }
 
   /*
@@ -1121,6 +718,7 @@ extension KSwapViewController {
     if !isSource, !self.toTokenButton.isEnabled { return }
     if isSource, self.viewModel.from == token { return }
     if !isSource, self.viewModel.to == token { return }
+    self.viewModel.showingRevertRate = false
     self.viewModel.updateSelectedToken(token, isSource: isSource)
     // support for promo wallet
     let isUpdatedTo: Bool = {
@@ -1133,15 +731,11 @@ extension KSwapViewController {
       return !isSource
     }()
 
-    if self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.text = self.viewModel.amountFrom
-      self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
-    } else {
-      self.toAmountTextField.text = self.viewModel.amountTo
-      self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
-    }
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
-    self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
+    
+    self.toAmountTextField.text = ""
+    self.fromAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView(updatedFrom: isSource, updatedTo: isUpdatedTo)
     if self.viewModel.from == self.viewModel.to && isWarningShown {
       self.showWarningTopBannerMessage(
@@ -1150,13 +744,14 @@ extension KSwapViewController {
         time: 1.5
       )
     }
-    if isSource && !self.viewModel.isFocusingFromAmount {
-      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
-    }
+    self.viewModel.gasPriceSelectedAmount = ("", "")
+    self.updateApproveButton()
+    //TODO: reset only swap button on screen, can be optimize with
+    self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateEstimatedGasLimit()
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
-    self.advancedSettingsView.updateIsUsingReverseRoutingStatus(value: true)
-    self.viewModel.isUsingReverseRouting = true
+    self.updateAllowance()
+    self.updateAllRates()
+    self.updateUIMinReceiveAmount()
     self.view.layoutIfNeeded()
   }
 
@@ -1168,14 +763,6 @@ extension KSwapViewController {
       self.displayError(error: error)
     }
   }
-
-  /*
-  Rate validate for swapping
-   */
-  func coordinatorDidValidateRate() {
-    self.validateDataBeforeContinuing(hasCallValidateRate: true)
-  }
-
   /*
    Show transaction status after user confirmed transaction
    */
@@ -1187,30 +774,26 @@ extension KSwapViewController {
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
-    self.updateExchangeRateField()
+//    self.updateExchangeRateField()
     self.view.layoutIfNeeded()
   }
 
   func coordinatorTrackerRateDidUpdate() {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
-    self.updateExchangeRateField()
-  }
-  
-  func coordinatorUpdateGasWarningLimit() {
-    self.updateGasWarningUI()
+//    self.updateExchangeRateField()
   }
 
-  func coordinatorUpdateProdCachedRates() {
-    self.viewModel.updateProdCachedRate()
-    self.updateExchangeRateField()
-  }
-
-  func coordinatorUpdateComparedRateFromNode(from: TokenObject, to: TokenObject, rate: BigInt) {
-    if self.viewModel.from == from, self.viewModel.to == to {
-      self.viewModel.updateProdCachedRate(rate)
-      self.updateExchangeRateField()
-    }
-  }
+//  func coordinatorUpdateProdCachedRates() {
+//    self.viewModel.updateProdCachedRate()
+////    self.updateExchangeRateField()
+//  }
+//
+//  func coordinatorUpdateComparedRateFromNode(from: TokenObject, to: TokenObject, rate: BigInt) {
+//    if self.viewModel.from == from, self.viewModel.to == to {
+//      self.viewModel.updateProdCachedRate(rate)
+////      self.updateExchangeRateField()
+//    }
+//  }
 
   /*
    - gasPrice: new gas price after user finished selected gas price from set gas price view
@@ -1220,43 +803,166 @@ extension KSwapViewController {
       self.viewModel.updateGasPrice(gasPrice)
       self.updateFromAmountUIForSwapAllBalanceIfNeeded()
     }
+    self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
 
-  func coordinatorDidUpdatePendingTransactions(_ transactions: [KNTransaction]) {
-    self.hamburgerMenu.update(transactions: transactions)
-    self.hasPendingTxView.isHidden = transactions.isEmpty
-    self.view.layoutIfNeeded()
+  func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
+    self.viewModel.updateSelectedGasPriceType(type)
+    self.viewModel.updateGasPrice(value)
+    self.setUpGasFeeView()
+    self.updateFromAmountUIForSwapAllBalanceIfNeeded()
   }
 
-  func coordinatorDidUpdateSwapHint(from: String, to: String, hint: String) {
-    if from == self.viewModel.from.address && to == self.viewModel.to.address {
-      let isHintChanged = hint != self.viewModel.swapHint.2
-      self.viewModel.swapHint = (from, to, hint)
-      if isHintChanged {
-        // reload rate and gas limit when hint is changed
-        self.updateEstimatedRate(showError: false, showLoading: true)
-        self.updateEstimatedGasLimit()
-      }
-      if self.advancedSettingsView.updateIsAbleToUseReverseRouting(value: self.viewModel.isAbleToUseReverseRouting) && self.advancedSettingsView.isExpanded {
-        self.advancedSettingsView.displayViewButtonPressed(self)
-      }
+  func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
+    self.viewModel.updateExchangeMinRatePercent(Double(value))
+    self.setUpGasFeeView()
+    self.updateUIMinReceiveAmount()
+  }
+
+  func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [Rate]) {
+    self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
+    self.updateInputFieldsUI()
+    self.viewModel.reloadBestPlatform()
+    self.updateExchangeRateField()
+    self.setUpChangeRateButton()
+    self.updateUIRefPrice()
+  }
+
+  func coordinatorFailUpdateRates() {
+    //TODO: show error loading rate if needed on UI
+  }
+
+  func coordinatorDidUpdatePlatform(_ platform: String) {
+    self.viewModel.currentFlatform = platform
+    self.viewModel.gasPriceSelectedAmount = (self.viewModel.amountFrom, self.viewModel.amountTo)
+    self.setUpChangeRateButton()
+    self.updateExchangeRateField()
+    self.updateInputFieldsUI()
+    self.setUpGasFeeView()
+    self.updateEstimatedGasLimit()
+  }
+
+  func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
+    if self.viewModel.from.getBalanceBigInt() > allowance {
+      self.viewModel.remainApprovedAmount = (token, allowance)
+      self.updateUIForSendApprove(isShowApproveButton: true, token: token)
+    } else {
+      //TODO: need to check more to avoid lagging ui
+      self.updateUIForSendApprove(isShowApproveButton: false)
     }
   }
 
-  func coordinatorFailUpdateSwapHint(from: String, to: String) {
-    if self.viewModel.swapHint.0 != from || self.viewModel.swapHint.1 != to {
-      let isHintChanged = "" != self.viewModel.swapHint.2 && "0x" != self.viewModel.swapHint.2
-      self.viewModel.swapHint = (from, to, "")
-      if isHintChanged {
-        // reload rate and gas limit when hint is changed
-        self.updateEstimatedRate(showError: false, showLoading: true)
-        self.updateEstimatedGasLimit()
+  func coordinatorDidFailUpdateAllowance(token: TokenObject) {
+    //TODO: handle error
+  }
+
+  func coordinatorSuccessApprove(token: TokenObject) {
+    self.viewModel.approvingToken = token
+    self.updateUIForSendApprove(isShowApproveButton: true, token: token)
+  }
+
+  func coordinatorFailApprove(token: TokenObject) {
+    //TODO: show error message
+    self.showErrorMessage()
+    self.updateUIForSendApprove(isShowApproveButton: true, token: token)
+  }
+
+  func coordinatorSuccessUpdateLatestNonce(nonce: Int) {
+    self.viewModel.latestNonce = nonce
+    let raw = self.viewModel.buildRawSwapTx()
+    self.delegate?.kSwapViewController(self, run: .buildTx(rawTx: raw))
+  }
+
+  func coordinatorFailUpdateLatestNonce() {
+    self.showErrorMessage()
+    self.hideLoading()
+  }
+
+  func coordinatorSuccessUpdateEncodedTx(object: TxObject) {
+    self.hideLoading()
+    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return }
+    let rate = self.viewModel.estRate ?? BigInt(0)
+    let amount: BigInt = {
+      if self.viewModel.isFocusingFromAmount {
+        if self.viewModel.isSwapAllBalance {
+          let balance = self.viewModel.from.getBalanceBigInt()
+          if !self.viewModel.from.isETH { return balance } // token, no need minus fee
+          let fee = self.viewModel.allETHBalanceFee
+          return max(BigInt(0), balance - fee)
+        }
+        return self.viewModel.amountFromBigInt
       }
-      if self.advancedSettingsView.updateIsAbleToUseReverseRouting(value: self.viewModel.isAbleToUseReverseRouting) && self.advancedSettingsView.isExpanded {
-        self.advancedSettingsView.displayViewButtonPressed(self)
-      }
-    }
+      let expectedExchange: BigInt = {
+        if rate.isZero { return rate }
+        let amount = self.viewModel.amountToBigInt
+        return amount * BigInt(10).power(self.viewModel.from.decimals) / rate
+      }()
+      return expectedExchange
+    }()
+    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
+    let exchange = KNDraftExchangeTransaction(
+      from: self.viewModel.from,
+      to: self.viewModel.to,
+      amount: amount,
+      maxDestAmount: BigInt(2).power(255),
+      expectedRate: rate,
+      minRate: self.viewModel.minRate,
+      gasPrice: self.viewModel.gasPrice,
+      gasLimit: gasLimit,
+      expectedReceivedString: self.viewModel.amountTo,
+      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
+    )
+    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+  }
+
+  func coordinatorFailUpdateEncodedTx() {
+    self.showErrorMessage()
+    self.hideLoading()
+  }
+
+  func coordinatorSuccessSendTransaction() {
+    print("[Debug] send success")
+    self.hideLoading()
+  }
+
+  func coordinatorFailSendTransaction() {
+    self.showErrorMessage()
+    self.hideLoading()
+  }
+
+  func coordinatorSuccessUpdateRefPrice(from: TokenObject, to: TokenObject, change: String, source: [String]) {
+    self.viewModel.updateRefPrice(from: from, to: to, change: change, source: source)
+    self.updateUIRefPrice()
+  }
+  
+  func coordinatorUpdateIsUseGasToken(_ state: Bool) {
+  }
+
+  fileprivate func showErrorMessage() {
+    self.showWarningTopBannerMessage(
+      with: "",
+      message: "Something went wrong, please try again later".toBeLocalised(),
+      time: 2.0
+    )
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.updateUIPendingTxIndicatorView()
+    self.checkUpdateApproveButton()
+  }
+  
+  func coordinatorDidUpdateChain() {
+    self.updateUISwitchChain()
+    self.viewModel.resetDefaultTokensPair()
+    self.fromAmountTextField.text = ""
+    self.toAmountTextField.text = ""
+    self.viewModel.updateAmount("", isSource: true)
+    self.viewModel.updateAmount("", isSource: false)
+    self.updateTokensView()
+    self.updateViewAmountDidChange()
+    self.balanceLabel.text = self.viewModel.balanceDisplayText
+    self.setUpChangeRateButton()
   }
 }
 
@@ -1268,7 +974,6 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.updateAmount("", isSource: textField == self.fromAmountTextField)
     self.viewModel.isSwapAllBalance = false
     self.updateViewAmountDidChange()
-    self.updateEstimatedRate(showError: true, showLoading: true)
     self.updateEstimatedGasLimit()
     return false
   }
@@ -1291,52 +996,25 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
     self.updateViewAmountDidChange()
-    if textField == self.toAmountTextField {
-      let prevDestAmountBigInt = prevDest.removeGroupSeparator().amountBigInt(decimals: self.viewModel.to.decimals) ?? BigInt(0)
-      self.updateRateDestAmountDidChangeIfNeeded(prevDest: prevDestAmountBigInt)
-    }
-    if self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = UIColor.Kyber.merigold
-    } else {
-      self.toAmountTextField.textColor = UIColor.Kyber.merigold
-    }
+
     return false
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.isSwapAllBalance = false
-    let isFocusingSource = self.viewModel.isFocusingFromAmount
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
-    if self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = UIColor.Kyber.merigold
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    } else {
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-      self.toAmountTextField.textColor = UIColor.Kyber.merigold
-    }
-    if !self.viewModel.isFocusingFromAmount && isFocusingSource {
-      self.updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt(0), isForceLoad: true)
-    }
     self.updateViewAmountDidChange()
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    if self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    } else {
-      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-    }
-    self.updateSwapHint(from: self.viewModel.from, to: self.viewModel.to, amount: self.viewModel.amountFromStringParameter)
-    self.updateEstimatedRate(showError: true)
+    self.updateAllRates()
     self.updateEstimatedGasLimit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
     }
   }
 
-  fileprivate func updateViewAmountDidChange(needUpdateEstRate: Bool = true) {
+  fileprivate func updateInputFieldsUI() {
     if self.viewModel.isFocusingFromAmount {
       self.toAmountTextField.text = self.viewModel.expectedReceivedAmountText
       self.viewModel.updateAmount(self.toAmountTextField.text ?? "", isSource: false)
@@ -1344,145 +1022,17 @@ extension KSwapViewController: UITextFieldDelegate {
       self.fromAmountTextField.text = self.viewModel.expectedExchangeAmountText
       self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true)
     }
-    if needUpdateEstRate { self.updateEstimatedRate(showLoading: true) }
-    if !self.fromAmountTextField.isEditing && self.viewModel.isFocusingFromAmount {
-      self.fromAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.toAmountTextField.textColor = UIColor.Kyber.mirage
-    }
-    if !self.toAmountTextField.isEditing && !self.viewModel.isFocusingFromAmount {
-      self.toAmountTextField.textColor = self.viewModel.amountTextFieldColor
-      self.fromAmountTextField.textColor = UIColor.Kyber.mirage
-    }
+
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+  }
+  
+  
+
+  fileprivate func updateViewAmountDidChange() {
+    self.updateInputFieldsUI()
+    self.updateAllRates()
     self.updateExchangeRateField()
+    self.updateUIMinReceiveAmount()
     self.view.layoutIfNeeded()
-  }
-
-  fileprivate func updateRateDestAmountDidChangeIfNeeded(prevDest: BigInt, isForceLoad: Bool = false) {
-    let destAmount = self.viewModel.amountToBigInt
-    let isChanged: Bool = {
-      if isForceLoad { return true }
-      if prevDest.isZero { return !destAmount.isZero }
-      let percent = (Double(destAmount) - Double(prevDest)) / Double(prevDest) * 100.0
-      return fabs(percent) >= 1.0
-    }()
-    if !isChanged { return } // no need to call if change is small
-    KNRateCoordinator.shared.getCachedSourceAmount(
-      from: self.viewModel.from,
-      to: self.viewModel.to,
-      destAmount: Double(destAmount) / pow(10.0, Double(self.viewModel.to.decimals))
-    ) { [weak self] result in
-      guard let `self` = self else { return }
-      if case .success(let data) = result, let srcAmount = data, !srcAmount.isZero {
-        let rate = destAmount * BigInt(10).power(self.viewModel.from.decimals) / srcAmount
-        self.viewModel.updateAmount(
-          srcAmount.fullString(decimals: self.viewModel.from.decimals).removeGroupSeparator(),
-          isSource: true
-        )
-        self.viewModel.updateExchangeRate(
-          for: self.viewModel.from,
-          to: self.viewModel.to,
-          amount: srcAmount,
-          rate: rate,
-          slippageRate: rate * BigInt(97) / BigInt(100)
-        )
-        self.updateTokensView(updatedFrom: false, updatedTo: false)
-      }
-      self.updateEstimatedRate(showError: true, showLoading: true)
-    }
-  }
-}
-
-// MARK: Advanced Settings View
-extension KSwapViewController: KAdvancedSettingsViewDelegate {
-  fileprivate func displayAdvancedSettingView() {
-    UIView.animate(
-      withDuration: 0.32,
-      animations: {
-        self.heightConstraintForAdvacedSettingsView.constant = self.advancedSettingsView.height
-        self.updateAdvancedSettingsView()
-        self.view.layoutIfNeeded()
-    }, completion: { _ in
-      if self.advancedSettingsView.isExpanded && self.scrollContainerView.contentSize.height > self.scrollContainerView.bounds.size.height {
-        let offSetY: CGFloat = {
-          if self.viewModel.isSwapSuggestionShown {
-            let reverseRoutingSpace: CGFloat = self.viewModel.isAbleToUseReverseRouting ? 46.0 : 0.0
-            return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height - 210.0 - reverseRoutingSpace
-          }
-          return self.scrollContainerView.contentSize.height - self.scrollContainerView.bounds.size.height
-        }()
-        guard offSetY > 0 else {
-          return
-        }
-        let bottomOffset = CGPoint(
-          x: 0,
-          y: offSetY
-        )
-        self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
-      }
-    }
-    )
-  }
-
-  func kAdvancedSettingsView(_ view: KAdvancedSettingsView, run event: KAdvancedSettingsViewEvent) {
-    switch event {
-    case .displayButtonPressed:
-      self.displayAdvancedSettingView()
-    case .gasPriceChanged(let type, let value):
-      self.viewModel.updateSelectedGasPriceType(type)
-      self.viewModel.updateGasPrice(value)
-      self.updateFromAmountUIForSwapAllBalanceIfNeeded()
-      self.updateGasWarningUI()
-      KNCrashlyticsUtil.logCustomEvent(withName: "advanced", customAttributes: ["gas_option": type.displayString(), "gas_value": self.viewModel.gasPriceText, "slippage": self.viewModel.slippageRateText ?? "0.0"])
-    case .minRatePercentageChanged(let percent):
-      self.viewModel.updateExchangeMinRatePercent(Double(percent))
-      self.updateAdvancedSettingsView()
-    case .infoPressed:
-      let minRateDescVC: KMinAcceptableRatePopupViewController = {
-        let viewModel = KMinAcceptableRatePopupViewModel(
-          minRate: self.viewModel.slippageRateText ?? "0.0",
-          symbol: self.viewModel.to.symbol
-        )
-        return KMinAcceptableRatePopupViewController(viewModel: viewModel)
-      }()
-      minRateDescVC.modalPresentationStyle = .overFullScreen
-      minRateDescVC.modalTransitionStyle = .crossDissolve
-      self.present(minRateDescVC, animated: true, completion: nil)
-    case .helpPressed:
-      KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_gas_fee_info_tapped", customAttributes: nil)
-      self.showBottomBannerView(
-        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
-        icon: UIImage(named: "help_icon_large") ?? UIImage(),
-        time: 10
-      )
-    case .changeIsUsingReverseRouting(let value):
-      self.viewModel.isUsingReverseRouting = value
-      self.updateEstimatedGasLimit()
-      self.updateEstimatedRate(showError: true)
-    case .reverseRoutingHelpPress:
-      self.showBottomBannerView(
-        message: "Reduce.gas.costs.by.routing.your.trade.to.predefined.reserves".toBeLocalised(),
-        icon: UIImage(named: "help_icon_large") ?? UIImage(),
-        time: 10
-      )
-    }
-  }
-}
-
-// MARK: Hamburger Menu Delegate
-extension KSwapViewController: KNBalanceTabHamburgerMenuViewControllerDelegate {
-  func balanceTabHamburgerMenuViewController(_ controller: KNBalanceTabHamburgerMenuViewController, run event: KNBalanceTabHamburgerMenuViewEvent) {
-    self.delegate?.kSwapViewController(self, run: event)
-  }
-}
-
-// MARK: Toolbar delegate
-extension KSwapViewController: KNCustomToolbarDelegate {
-  func customToolbarLeftButtonPressed(_ toolbar: KNCustomToolbar) {
-    self.keyboardSwapAllButtonPressed(toolbar)
-  }
-
-  func customToolbarRightButtonPressed(_ toolbar: KNCustomToolbar) {
-    self.keyboardDoneButtonPressed(toolbar)
   }
 }

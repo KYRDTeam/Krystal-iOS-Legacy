@@ -16,17 +16,12 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.resume()
 
     self.tabbarController = KNTabBarController()
-    self.tabbarController.tabBar.barTintColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
-    // Balance Tab
-    self.balanceTabCoordinator = {
-      let coordinator = KNBalanceTabCoordinator(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.balanceTabCoordinator!)
-    self.balanceTabCoordinator?.start()
+    
+    let overviewCoordinator = OverviewCoordinator(session: self.session)
+    self.addCoordinator(overviewCoordinator)
+    overviewCoordinator.delegate = self
+    overviewCoordinator.start()
+    self.overviewTabCoordinator = overviewCoordinator
 
     // KyberSwap Tab
     self.exchangeCoordinator = {
@@ -39,16 +34,6 @@ extension KNAppCoordinator {
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
 
-    self.limitOrderCoordinator = {
-      let coordinator = KNLimitOrderTabCoordinatorV2(
-        session: self.session
-      )
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.addCoordinator(self.limitOrderCoordinator!)
-    self.limitOrderCoordinator?.start()
-
     // Settings tab
     self.settingsCoordinator = {
       let coordinator = KNSettingsCoordinator(
@@ -57,63 +42,69 @@ extension KNAppCoordinator {
       coordinator.delegate = self
       return coordinator
     }()
-
-    self.exploreCoordinator = {
-      let coordinator = KNExploreCoordinator(session: self.session)
+    
+    self.investCoordinator = {
+      let coordinator = InvestCoordinator(session: self.session)
       coordinator.delegate = self
       return coordinator
     }()
-    self.exploreCoordinator?.start()
+    self.investCoordinator?.start()
+
+    self.earnCoordinator = {
+      let coordinator = EarnCoordinator(session: self.session)
+      coordinator.delegate = self
+      return coordinator
+    }()
+    self.earnCoordinator?.start()
 
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
 
     self.tabbarController.viewControllers = [
-      self.balanceTabCoordinator!.navigationController,
+      self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
-      self.limitOrderCoordinator!.navigationController,
-      self.exploreCoordinator!.navigationController,
+      self.investCoordinator!.navigationController,
+      self.earnCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,
     ]
-    self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
-    self.balanceTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("balance", value: "Balance", comment: ""),
-      image: UIImage(named: "tabbar_balance_icon_normal"),
-      selectedImage: UIImage(named: "tabbar_balance_icon_active")
+    self.tabbarController.tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
+    self.tabbarController.tabBar.barTintColor = UIColor(named: "toolbarBgColor")
+    self.overviewTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: nil,
+      image: UIImage(named: "tabbar_summary_icon"),
+      selectedImage: nil
     )
-    self.balanceTabCoordinator?.navigationController.tabBarItem.tag = 0
+    self.overviewTabCoordinator?.navigationController.tabBarItem.tag = 0
 
     self.exchangeCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("kyberswap", value: "KyberSwap", comment: ""),
-      image: UIImage(named: "tabbar_kyberswap_icon_normal"),
-      selectedImage: UIImage(named: "tabbar_kyberswap_icon_active")
+      title: nil,
+      image: UIImage(named: "tabbar_swap_icon"),
+      selectedImage: nil
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
 
-    self.limitOrderCoordinator?.navigationController.tabBarItem.tag = 2
-    self.limitOrderCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("Limit Order", value: "Limit Order", comment: ""),
-      image: UIImage(named: "tabbar_limit_order_icon_normal"),
-      selectedImage: UIImage(named: "tabbar_limit_order_icon_active")
+    self.investCoordinator?.navigationController.tabBarItem.tag = 2
+    self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: nil,
+      image: UIImage(named: "tabbar_invest_icon"),
+      selectedImage: nil
     )
 
-    self.exploreCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("Explore", value: "Explore", comment: ""),
-      image: UIImage(named: "tabbar_explore_normal_icon"),
-      selectedImage: UIImage(named: "tabbar_explore_active_icon")
+    self.earnCoordinator?.navigationController.tabBarItem = UITabBarItem(
+      title: nil,
+      image: UIImage(named: "tabbar_earn_icon"),
+      selectedImage: nil
     )
-    self.exploreCoordinator?.navigationController.tabBarItem.tag = 3
+    self.earnCoordinator?.navigationController.tabBarItem.tag = 3
 
     self.settingsCoordinator?.navigationController.tabBarItem = UITabBarItem(
-      title: NSLocalizedString("settings", value: "Settings", comment: ""),
-      image: UIImage(named: "tabbar_settings_icon_normal"),
-      selectedImage: UIImage(named: "tabbar_settings_icon_active")
+      title: nil,
+      image: UIImage(named: "tabbar_setting_icon"),
+      selectedImage: nil
     )
     self.settingsCoordinator?.navigationController.tabBarItem.tag = 4
 
     self.navigationController.pushViewController(self.tabbarController, animated: true) {
-      // default balance tab
-      self.tabbarController.tabBar.tintColor = UIColor.Kyber.tabbarActive
     }
 
     self.addObserveNotificationFromSession()
@@ -122,15 +113,15 @@ extension KNAppCoordinator {
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
 
     let transactions = self.session.transactionStorage.kyberPendingTransactions
-    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
+    
+//    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+    self.doLogin()
   }
 
   func stopAllSessions() {
     KNPasscodeUtil.shared.deletePasscode()
     self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
-    self.removeObserveNotificationFromSession()
 
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
@@ -150,68 +141,52 @@ extension KNAppCoordinator {
     // Stop all coordinators in tabs and re-assign to nil
     self.exchangeCoordinator?.stop()
     self.exchangeCoordinator = nil
-    self.balanceTabCoordinator?.stop()
-    self.balanceTabCoordinator = nil
-    self.limitOrderCoordinator?.stop()
-    self.limitOrderCoordinator = nil
-    self.exploreCoordinator?.stop()
-    self.exploreCoordinator = nil
+//    self.balanceTabCoordinator?.stop()
+//    self.balanceTabCoordinator = nil
     self.settingsCoordinator?.stop()
     self.settingsCoordinator = nil
-    IEOUserStorage.shared.signedOut()
+//    IEOUserStorage.shared.signedOut()
     self.tabbarController = nil
   }
 
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet, isLoading: Bool = true) {
     if isLoading { self.navigationController.displayLoading() }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      self.removeObserveNotificationFromSession()
-
+    DispatchQueue.global(qos: .background).async {
       self.loadBalanceCoordinator?.exit()
+      EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
+      BalanceStorage.shared.updateCurrentWallet(wallet)
+      
+    }
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       self.session.switchSession(wallet)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
-
-      let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: wallet.address.description) != nil
-      if isPromo {
-        // default select swap for PT wallet
-        self.tabbarController.selectedIndex = 1
-      }
-
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
-      self.exploreCoordinator?.appCoordinatorDidUpdateNewSession(
+      
+      self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
-      self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
+      
+      self.overviewTabCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
-      self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
-        self.session,
-        resetRoot: true
-      )
-      self.exploreCoordinator?.updateSession(self.session)
+      
       self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-      self.addObserveNotificationFromSession()
-      self.updateLocalData()
+      
+      self.investCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-      let transactions = self.session.transactionStorage.kyberPendingTransactions
       self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
       )
-      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
+      self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
       )
-      self.limitOrderCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
-      )
-      self.exploreCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
-        transactions: transactions
-      )
+      self.doLogin()
       if isLoading { self.navigationController.hideLoading() }
     }
   }
@@ -249,15 +224,13 @@ extension KNAppCoordinator {
           self.session,
           resetRoot: isRemovingCurrentWallet
         )
-        self.balanceTabCoordinator?.appCoordinatorDidUpdateNewSession(
-          self.session,
-          resetRoot: isRemovingCurrentWallet
-        )
-        self.limitOrderCoordinator?.appCoordinatorDidUpdateNewSession(
-          self.session,
-          resetRoot: isRemovingCurrentWallet
-        )
+
         self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(
+          self.session,
+          resetRoot: isRemovingCurrentWallet
+        )
+
+        self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
           self.session,
           resetRoot: isRemovingCurrentWallet
         )
@@ -273,13 +246,11 @@ extension KNAppCoordinator {
     }
   }
 
-  func addNewWallet() {
-    let addWalletCoordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
-    addWalletCoordinator.delegate = self
+  func addNewWallet(type: AddNewWalletType) {
     self.navigationController.present(
-      addWalletCoordinator.navigationController,
+      self.addWalletCoordinator.navigationController,
       animated: false) {
-      addWalletCoordinator.start()
+      self.addWalletCoordinator.start(type: type)
     }
   }
 

@@ -2,8 +2,9 @@
 
 import UIKit
 import TrustCore
+import SwipeCellKit
 
-class KNListWalletsTableViewCell: UITableViewCell {
+class KNListWalletsTableViewCell: SwipeTableViewCell {
 
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var walletAddressLabel: UILabel!
@@ -12,12 +13,12 @@ class KNListWalletsTableViewCell: UITableViewCell {
     super.awakeFromNib()
     self.walletNameLabel.text = "Untitled"
     self.walletAddressLabel.text = ""
+    self.backgroundColor = .clear
   }
 
   func updateCell(with wallet: KNWalletObject, id: Int) {
     self.walletNameLabel.text = wallet.name
     self.walletAddressLabel.text = wallet.address.lowercased()
-    self.backgroundColor = id % 2 == 0 ? UIColor.clear : UIColor.white
     self.layoutIfNeeded()
   }
 }

@@ -34,34 +34,36 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .production
+    return .ropsten
   }
 
   var isMainnet: Bool {
     return KNEnvironment.default == .mainnetTest || KNEnvironment.default == .production || KNEnvironment.default == .staging
   }
 
-  var chainID: Int {
-    return self.customRPC?.chainID ?? 0
+  var envPrefix: String {
+    let chain = KNGeneralProvider.shared.isEthereum ? "eth" : "bsc"
+    return chain + "-" + self.displayName + "-"
   }
-
-  var etherScanIOURLString: String {
-    return self.knCustomRPC?.etherScanEndpoint ?? ""
-  }
-
-  var enjinXScanIOURLString: String {
-    return self.knCustomRPC?.enjinScanEndpoint ?? ""
-  }
-
-  var customRPC: CustomRPC? {
-    return self.knCustomRPC?.customRPC
-  }
-
-  var knCustomRPC: KNCustomRPC? {
-    guard let json = KNJSONLoaderUtil.jsonDataFromFile(with: self.configFileName) else {
-      return nil
+  
+  var ethRPC: CustomRPC {
+    switch self {
+    case .ropsten:
+      return Constants.ethRoptenPRC
+    case .staging:
+      return Constants.ethStaggingPRC
+    default:
+      return Constants.ethMainnetPRC
     }
-    return KNCustomRPC(dictionary: json)
+  }
+  
+  var bscRPC: CustomRPC {
+    switch self {
+    case .ropsten:
+      return Constants.bscRoptenPRC
+    default:
+      return Constants.bscMainnetPRC
+    }
   }
 
   var configFileName: String {
@@ -74,6 +76,19 @@ enum KNEnvironment: Int {
     case .rinkeby: return "config_env_rinkeby"
     }
   }
+  
+  var notificationAppID: String {
+    switch self {
+    case .ropsten:
+      return "96c1718d-c4a1-4ce7-8583-59d39cabeaee"
+    case .staging:
+      return "361e7815-4da2-41c9-ba0a-d35add5a58ef"
+    case .production:
+      return "0487532e-7b19-415b-91a1-2a285b0b8382"
+    default:
+      return ""
+    }
+  }
 
   var apiEtherScanEndpoint: String {
     switch self {
@@ -83,6 +98,19 @@ enum KNEnvironment: Int {
     case .ropsten: return "http://api-ropsten.etherscan.io/"
     case .kovan: return "http://api-kovan.etherscan.io/"
     case .rinkeby: return "https://api-rinkeby.etherscan.io/"
+    }
+  }
+  
+  var krystalEndpoint: String {
+    switch self {
+    case .production:
+      return KNSecret.productionKrytalURL
+    case .ropsten:
+      return KNSecret.devKrytalURL
+    case .staging:
+      return KNSecret.staggingKrytalURL
+    default:
+      return ""
     }
   }
 
@@ -114,6 +142,10 @@ enum KNEnvironment: Int {
     case .kovan: return KNSecret.kovanApiURL
     default: return KNSecret.devApiURL
     }
+  }
+
+  var krytalAPIEndPoint: String {
+    return KNSecret.devKrytalURL
   }
 
   var oneSignAppID: String {

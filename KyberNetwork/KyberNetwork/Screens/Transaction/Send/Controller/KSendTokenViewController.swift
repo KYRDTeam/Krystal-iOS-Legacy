@@ -16,6 +16,9 @@ enum KSendTokenViewEvent {
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
   case contactSelectMore
+  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
+  case openHistory
+  case openWalletsList
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -28,16 +31,11 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var navTitleLabel: UILabel!
 
   @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var tokenContainerView: UIView!
-  @IBOutlet weak var tokenButton: UIButton!
+
   @IBOutlet weak var amountTextField: UITextField!
-  @IBOutlet weak var balanceTextLabel: UILabel!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
-  @IBOutlet weak var equivalentUSDLabel: UILabel!
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
-  @IBOutlet weak var advancedSettingsView: KAdvancedSettingsView!
-  @IBOutlet weak var heightConstraintAdvancedSettingsView: NSLayoutConstraint!
 
   @IBOutlet weak var moreContactButton: UIButton!
   @IBOutlet weak var recentContactView: UIView!
@@ -50,13 +48,18 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
 
-  @IBOutlet weak var newContactButton: UIButton!
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
-  @IBOutlet weak var advanceSettingTopContraint: NSLayoutConstraint!
-  @IBOutlet weak var gasWarningTextLabel: UILabel!
-  @IBOutlet weak var gasWarningContainerView: UIView!
+
+  @IBOutlet weak var selectedGasFeeLabel: UILabel!
+  @IBOutlet weak var maxAmountButton: UIButton!
+  @IBOutlet weak var sendMessageLabel: UILabel!
+
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
+  @IBOutlet weak var currentTokenButton: UIButton!
+  @IBOutlet weak var walletsSelectButton: UIButton!
+  @IBOutlet weak var pendingTxIndicatorView: UIView!
+  @IBOutlet weak var currentChainIcon: UIImageView!
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -90,23 +93,6 @@ class KSendTokenViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.sendButton.applyGradient()
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.tokenContainerView.addShadow(
-      color: UIColor.black.withAlphaComponent(0.6),
-      offset: CGSize(width: 0, height: 7),
-      opacity: 0.32,
-      radius: 32
-    )
-    self.advancedSettingsView.layoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.sendButton.removeSublayer(at: 0)
-    self.sendButton.applyGradient()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -117,6 +103,9 @@ class KSendTokenViewController: KNBaseViewController {
     }
     self.isViewDisappeared = false
     self.updateUIAddressQRCode()
+    self.updateUIPendingTxIndicatorView()
+    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_send_view", customAttributes: nil)
+    self.updateUISwitchChain()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -128,12 +117,12 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.setupNavigationView()
     self.setupTokenView()
-    self.setupAdvancedSettingsView()
     self.setupRecentContact()
     self.setupAddressTextField()
     self.setupSendButton()
-    self.updateGasWarningUI()
+
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
+    self.updateGasFeeUI()
   }
 
   func removeObserveNotification() {
@@ -144,28 +133,16 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
+    self.walletsSelectButton.setTitle(self.viewModel.currentWalletAddress, for: .normal)
   }
 
   fileprivate func setupTokenView() {
-    self.tokenContainerView.rounded(radius: 4.0)
-    self.tokenButton.titleLabel?.numberOfLines = 2
-    self.tokenButton.titleLabel?.lineBreakMode = .byWordWrapping
-
     self.amountTextField.text = nil
+    self.amountTextField.attributedPlaceholder = self.viewModel.placeHolderAmount
     self.amountTextField.adjustsFontSizeToFitWidth = true
     self.amountTextField.delegate = self
-    self.amountTextField.inputAccessoryView = self.toolBar
-
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
-
-    self.tokenButton.setTokenImage(
-      token: self.viewModel.from,
-      size: self.viewModel.defaultTokenIconImg?.size
-    )
-    self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
-
-    self.balanceTextLabel.text = self.viewModel.balanceText
-    self.tokenBalanceLabel.text = self.viewModel.displayBalance
+    self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     let tapBalanceGesture = UITapGestureRecognizer(target: self, action: #selector(self.tokenBalanceLabelTapped(_:)))
     self.tokenBalanceLabel.addGestureRecognizer(tapBalanceGesture)
   }
@@ -175,74 +152,28 @@ class KSendTokenViewController: KNBaseViewController {
     self.recentContactTableView.delegate = self
     self.recentContactTableView.updateScrolling(isEnabled: false)
     self.recentContactTableView.shouldUpdateContacts(nil)
-    self.moreContactButton.setTitleColor(
-      UIColor.Kyber.enygold,
-      for: .normal
-    )
     self.moreContactButton.setTitle(
-      NSLocalizedString("more", value: "More", comment: ""),
+      "more".toBeLocalised().uppercased(),
       for: .normal
     )
-  }
-
-  fileprivate func setupAdvancedSettingsView() {
-    // TODO: Do we need to check if it is a promo wallet here?
-    let viewModel = KAdvancedSettingsViewModel(hasMinRate: false, isPromo: false, gasLimit: self.viewModel.gasLimit)
-    viewModel.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    viewModel.updateViewHidden(isHidden: true)
-    self.advancedSettingsView.updateViewModel(viewModel)
-    self.heightConstraintAdvancedSettingsView.constant = self.advancedSettingsView.height
-    self.advancedSettingsView.delegate = self
-    self.advancedSettingsView.updateGasLimit(self.viewModel.gasLimit)
-    self.view.setNeedsUpdateConstraints()
-    self.view.updateConstraints()
   }
 
   fileprivate func setupAddressTextField() {
     self.ensAddressLabel.isHidden = true
     self.recentContactLabel.text = NSLocalizedString("recent.contact", value: "Recent Contact", comment: "")
-    self.addressTextField.placeholder = self.viewModel.placeHolderEnterAddress
-    self.addressTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    self.addressTextField.leftViewMode = .always
-    self.addressTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 0))
-    self.addressTextField.rightViewMode = .always
+    self.addressTextField.attributedPlaceholder = self.viewModel.placeHolderEnterAddress
     self.addressTextField.delegate = self
     self.addressTextField.text = self.viewModel.displayAddress
-    self.newContactButton.setTitle(
-      NSLocalizedString("add.contact", value: "Add contact", comment: ""),
-      for: .normal
-    )
-    self.newContactButton.setTitleColor(
-      UIColor.Kyber.enygold,
-      for: .normal
-    )
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.ensAddressDidTapped(_:)))
     self.ensAddressLabel.addGestureRecognizer(tapGesture)
     self.ensAddressLabel.isUserInteractionEnabled = true
   }
 
   fileprivate func setupSendButton() {
-    self.sendButton.rounded(radius: self.style.buttonRadius())
     self.sendButton.setTitle(
       NSLocalizedString("Transfer Now", value: "Transfer Now", comment: ""),
       for: .normal
     )
-  }
-
-  fileprivate func updateAdvancedSettingsView() {
-    self.advancedSettingsView.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
-    )
-    self.advancedSettingsView.updateGasLimit(self.viewModel.gasLimit)
-    self.view.layoutIfNeeded()
   }
 
   @objc func tokenBalanceLabelTapped(_ sender: Any) {
@@ -250,24 +181,25 @@ class KSendTokenViewController: KNBaseViewController {
     self.viewModel.isNeedUpdateEstFeeForTransferingAllBalance = true
   }
 
+  @IBAction func maxButtonTapped(_ sender: UIButton) {
+    self.tokenBalanceLabelTapped(sender)
+  }
+
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.kSendTokenViewController(self, run: .back)
   }
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_token_select", customAttributes: nil)
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
   }
 
+  @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
+    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType))
+  }
+
   @IBAction func sendButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_transfernow_tapped", customAttributes: nil)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
-    if KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (self.viewModel.address?.description.lowercased() ?? "") }) != nil {
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_send_to_contact", customAttributes: nil)
-    } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_send_not_in_contact", customAttributes: nil)
-    }
     let event = KSendTokenViewEvent.validate(
       transaction: self.viewModel.unconfirmTransaction,
       ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
@@ -276,7 +208,6 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_scan_qr_code", customAttributes: nil)
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
       return
     }
@@ -295,39 +226,33 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_recent_contact_more", customAttributes: nil)
     self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
   }
 
-  @IBAction func newContactButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_new_contact_button", customAttributes: nil)
-    let event = KSendTokenViewEvent.addContact(
-      address: self.viewModel.address?.description ?? "",
-      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
-    )
-    self.delegate?.kSendTokenViewController(self, run: event)
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSendTokenViewController(self, run: .openHistory)
   }
 
-  @IBAction func closeGasWarningPopupTapped(_ sender: UIButton) {
-    self.viewModel.saveCloseGasWarningState()
-    self.updateGasWarningUI()
+  @IBAction func walletsSelectButtonTapped(_ sender: UIButton) {
+    self.delegate?.kSendTokenViewController(self, run: .openWalletsList)
   }
 
   fileprivate func updateAmountFieldUIForTransferAllIfNeeded() {
     guard self.viewModel.isSendAllBalanace, self.viewModel.from.isETH else { return }
     self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.amountTextField.text ?? "", forSendAllETH: true)
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.amountTextField.resignFirstResponder()
     self.amountTextField.textColor = self.viewModel.amountTextColor
   }
 
+  fileprivate func updateGasFeeUI() {
+    self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
+  }
+
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_send_all", customAttributes: nil)
     self.viewModel.isSendAllBalanace = true
     self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
     self.viewModel.updateAmount(self.amountTextField.text ?? "", forSendAllETH: self.viewModel.from.isETH)
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.amountTextField.resignFirstResponder()
     self.amountTextField.textColor = self.viewModel.amountTextColor
     self.shouldUpdateEstimatedGasLimit(nil)
@@ -349,7 +274,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @objc func ensAddressDidTapped(_ sender: Any?) {
     if let addr = self.viewModel.address?.description,
-      let url = URL(string: "\(KNEnvironment.default.etherScanIOURLString)address/\(addr)") {
+       let url = URL(string: "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(addr)") {
       self.openSafari(with: url)
     }
   }
@@ -371,10 +296,18 @@ class KSendTokenViewController: KNBaseViewController {
     if !isConfirming && self.isViewDisappeared { return false }
     if isConfirming {
       guard self.viewModel.isHavingEnoughETHForFee else {
+        let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
         let fee = self.viewModel.ethFeeBigInt
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+        )
+        return true
+      }
+      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: "Please wait for transaction is completed"
         )
         return true
       }
@@ -418,6 +351,15 @@ class KSendTokenViewController: KNBaseViewController {
     }
     return false
   }
+  
+  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    let popup = SwitchChainViewController()
+    popup.completionHandler = {
+      let secondPopup = SwitchChainWalletsListViewController()
+      self.present(secondPopup, animated: true, completion: nil)
+    }
+    self.present(popup, animated: true, completion: nil)
+  }
 }
 
 // MARK: Update UIs
@@ -425,18 +367,12 @@ extension KSendTokenViewController {
   func updateUIFromTokenDidChange() {
     self.viewModel.updateAmount("")
     self.amountTextField.text = ""
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
-    self.tokenButton.setTokenImage(
-      token: self.viewModel.from,
-      size: self.viewModel.defaultTokenIconImg?.size
-    )
-    self.tokenButton.setAttributedTitle(self.viewModel.tokenButtonAttributedText, for: .normal)
+    self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
     self.updateUIBalanceDidChange()
   }
 
   func updateUIBalanceDidChange() {
-    self.tokenBalanceLabel.text = self.viewModel.displayBalance
-    self.balanceTextLabel.text = self.viewModel.balanceText
+    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     if !self.amountTextField.isEditing {
       self.amountTextField.textColor = self.viewModel.amountTextColor
     }
@@ -445,7 +381,6 @@ extension KSendTokenViewController {
 
   func updateUIAddressQRCode(isAddressChanged: Bool = true) {
     self.addressTextField.text = self.viewModel.displayAddress
-    self.newContactButton.setTitle(self.viewModel.newContactTitle, for: .normal)
     self.updateUIEnsMessage()
     if isAddressChanged { self.shouldUpdateEstimatedGasLimit(nil) }
     self.view.layoutIfNeeded()
@@ -456,34 +391,17 @@ extension KSendTokenViewController {
     self.ensAddressLabel.text = self.viewModel.displayEnsMessage
     self.ensAddressLabel.textColor = self.viewModel.displayEnsMessageColor
   }
-
-  fileprivate func updateGasWarningUI() {
-    guard self.isViewSetup else {
+  
+  fileprivate func updateUIPendingTxIndicatorView() {
+    guard self.isViewLoaded else {
       return
     }
-    var currentGasPrice = KNGasCoordinator.shared.standardKNGas
-    switch self.viewModel.selectedGasPriceType {
-    case .superFast:
-      currentGasPrice = KNGasCoordinator.shared.superFastKNGas
-    case .fast:
-      currentGasPrice = KNGasCoordinator.shared.fastKNGas
-    case .medium:
-      currentGasPrice = KNGasCoordinator.shared.standardKNGas
-    case .slow:
-      currentGasPrice = KNGasCoordinator.shared.lowKNGas
-    }
-    var limit = UserDefaults.standard.double(forKey: Constants.gasWarningValueKey)
-    if limit <= 0 { limit = 200 }
-    let limitBigInt = BigInt(limit * pow(10, 9))
-    let isShowWarning = (currentGasPrice > limitBigInt) && !self.viewModel.isCloseGasWarningPopup
-    self.advanceSettingTopContraint.constant = isShowWarning ? 88 : 32
-    self.gasWarningContainerView.isHidden = !isShowWarning
-    if isShowWarning {
-      let estFee = currentGasPrice * self.viewModel.gasLimit
-      let feeString: String = estFee.displayRate(decimals: 18)
-      let warningText = String(format: "High network congestion. Please double check gas fee (~%@ ETH) before confirmation.".toBeLocalised(), feeString)
-      self.gasWarningTextLabel.text = warningText
-    }
+    self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+  }
+  
+  fileprivate func updateUISwitchChain() {
+    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    self.currentChainIcon.image = icon
   }
 }
 
@@ -523,7 +441,6 @@ extension KSendTokenViewController {
     // Reset exchange amount
     self.amountTextField.text = ""
     self.viewModel.updateAmount("")
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     self.shouldUpdateEstimatedGasLimit(nil)
     self.view.layoutIfNeeded()
   }
@@ -531,7 +448,7 @@ extension KSendTokenViewController {
   func coordinatorUpdateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, address: String) {
     if self.viewModel.updateEstimatedGasLimit(gasLimit, from: from, address: address) {
       self.updateAmountFieldUIForTransferAllIfNeeded()
-      self.updateAdvancedSettingsView()
+      self.updateGasFeeUI()
       if self.viewModel.isNeedUpdateEstFeeForTransferingAllBalance {
         self.keyboardSendAllButtonPressed(self)
         self.viewModel.isNeedUpdateEstFeeForTransferingAllBalance = false
@@ -551,16 +468,10 @@ extension KSendTokenViewController {
 
   func coordinatorUpdateGasPriceCached() {
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
-    self.updateAdvancedSettingsView()
-    self.updateGasWarningUI()
-  }
-
-  func coordinatorUpdateGasWarningLimit() {
-    self.updateGasWarningUI()
+    self.updateGasFeeUI()
   }
 
   func coordinatorUpdateIsPromoWallet(_ isPromo: Bool) {
-    self.advancedSettingsView.updateIsPromoWallet(isPromo)
   }
 
   func coordinatorDidSelectContact(_ contact: KNContact) {
@@ -580,7 +491,6 @@ extension KSendTokenViewController {
   }
 
   func coordinatorUpdateTrackerRate() {
-    self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
   }
 
   func coordinatorDidValidateTransferTransaction() {
@@ -590,6 +500,33 @@ extension KSendTokenViewController {
     )
     self.delegate?.kSendTokenViewController(self, run: event)
   }
+
+  func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
+    self.viewModel.updateSelectedGasPriceType(type)
+    self.viewModel.updateGasPrice(value)
+    self.updateAmountFieldUIForTransferAllIfNeeded()
+    self.updateGasFeeUI()
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorUpdateNewSession(wallet: Wallet) {
+    self.viewModel.currentWalletAddress = wallet.address.description
+    self.setupNavigationView()
+    self.updateUIBalanceDidChange()
+    self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorDidUpdateChain() {
+    guard self.isViewLoaded else { return }
+    self.updateUISwitchChain()
+    self.viewModel.resetFromToken()
+    self.updateGasFeeUI()
+    self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
+    self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+  }
 }
 
 // MARK: UITextFieldDelegate
@@ -598,7 +535,6 @@ extension KSendTokenViewController: UITextFieldDelegate {
     textField.text = ""
     if self.amountTextField == textField {
       self.viewModel.updateAmount("")
-      self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
       self.view.layoutIfNeeded()
     } else {
       self.viewModel.updateAddress("")
@@ -617,7 +553,6 @@ extension KSendTokenViewController: UITextFieldDelegate {
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.viewModel.updateAmount(cleanedText)
-      self.equivalentUSDLabel.text = self.viewModel.displayEquivalentUSDAmount
     } else {
       textField.text = text
       self.viewModel.updateAddress(text)
@@ -630,7 +565,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.isSendAllBalanace = false
-    self.amountTextField.textColor = UIColor.Kyber.enygold
+    self.amountTextField.textColor = UIColor.white
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.addressString
     }
@@ -654,7 +589,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.updateUIAddressQRCode()
       return
     }
-    DispatchQueue.global().async {
+    DispatchQueue.main.async {
       KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
@@ -702,16 +637,12 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     case .update(let height):
       self.updateContactTableView(height: height)
     case .select(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_selected_contact", customAttributes: nil)
       self.contactTableView(select: contact)
     case .edit(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_edit/add_contact", customAttributes: nil)
       self.delegate?.kSendTokenViewController(self, run: .addContact(address: contact.address, ens: nil))
     case .delete(let contact):
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_delete_contact", customAttributes: nil)
       self.contactTableView(delete: contact)
     case .send(let address):
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_send_contact", customAttributes: nil)
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
@@ -723,6 +654,8 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       self.showMessageWithInterval(
         message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
       )
+    case .addContact:
+     break
     }
   }
 
@@ -769,45 +702,3 @@ extension KSendTokenViewController: KNCustomToolbarDelegate {
   }
 }
 
-// MARK: Advanced Settings View
-extension KSendTokenViewController: KAdvancedSettingsViewDelegate {
-  func kAdvancedSettingsView(_ view: KAdvancedSettingsView, run event: KAdvancedSettingsViewEvent) {
-    switch event {
-    case .displayButtonPressed:
-      UIView.animate(
-        withDuration: 0.32,
-        animations: {
-          self.heightConstraintAdvancedSettingsView.constant = self.advancedSettingsView.height
-          self.updateAdvancedSettingsView()
-          self.view.layoutIfNeeded()
-        }, completion: { _ in
-          guard self.advancedSettingsView.isExpanded else {
-            self.scrollContainerView.setContentOffset(CGPoint.zero, animated: true)
-            return
-          }
-          if self.advancedSettingsView.isExpanded && self.scrollContainerView.bounds.height < 454 {
-            let bottomOffset = CGPoint(
-              x: 0,
-              y: 128
-            )
-            self.scrollContainerView.setContentOffset(bottomOffset, animated: true)
-          }
-        }
-      )
-    case .gasPriceChanged(let type, let value):
-      self.viewModel.updateSelectedGasPriceType(type)
-      self.viewModel.updateGasPrice(value)
-      self.updateAmountFieldUIForTransferAllIfNeeded()
-      self.updateGasWarningUI()
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_advanced", customAttributes: ["gas_option": type.displayString(), "gas_value": value.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)])
-    case .helpPressed:
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_gas_fee_info_tapped", customAttributes: nil)
-      self.showBottomBannerView(
-        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
-        icon: UIImage(named: "help_icon_large") ?? UIImage(),
-        time: 10
-      )
-    default: break
-    }
-  }
-}

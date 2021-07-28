@@ -3,14 +3,18 @@
 import UIKit
 import TrustKeystore
 import TrustCore
+import QRCodeReaderViewController
+import WalletConnect
+import Moya
 
 protocol KNCreateWalletCoordinatorDelegate: class {
   func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet)
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?)
   func createWalletCoordinatorDidClose()
+  func createWalletCoordinatorDidSendRefCode(_ code: String)
 }
 
-class KNCreateWalletCoordinator: Coordinator {
+class KNCreateWalletCoordinator: NSObject, Coordinator {
 
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
@@ -18,7 +22,9 @@ class KNCreateWalletCoordinator: Coordinator {
 
   fileprivate var newWallet: Wallet?
   fileprivate var name: String?
+  fileprivate var refCode: String = ""
   weak var delegate: KNCreateWalletCoordinatorDelegate?
+  var createWalletController: KNCreateWalletViewController?
 
   fileprivate var isCreating: Bool = false
 
@@ -46,6 +52,7 @@ class KNCreateWalletCoordinator: Coordinator {
       createWalletVC.modalTransitionStyle = .crossDissolve
       createWalletVC.modalPresentationStyle = .overCurrentContext
       self.navigationController.present(createWalletVC, animated: true, completion: nil)
+      self.createWalletController = createWalletVC
     }
   }
 
@@ -97,6 +104,30 @@ class KNCreateWalletCoordinator: Coordinator {
       fatalError("Can not get seeds from account")
     }
   }
+  
+  func sendRefCode(_ code: String, account: Account) {
+    let data = Data(code.utf8)
+    let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+    let sendData = prefix + data
+    let result = self.keystore.signMessage(sendData, for: account)
+    switch result {
+    case .success(let signedData):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+        if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let isSuccess = json["success"] as? Bool, isSuccess {
+            self.navigationController.showTopBannerView(message: "Success register referral code")
+          } else if let error = json["error"] as? String {
+            self.navigationController.showTopBannerView(message: error)
+          } else {
+            self.navigationController.showTopBannerView(message: "Fail to register referral code")
+          }
+        }
+      }
+    case .failure(let error):
+      print("[Send ref code] \(error.localizedDescription)")
+    }
+  }
 }
 
 extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
@@ -120,6 +151,12 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
     self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)
+  }
+  
+  fileprivate func openQRCode(_ controller: UIViewController) {
+    let qrcode = QRCodeReaderViewController()
+    qrcode.delegate = self
+    controller.present(qrcode, animated: true, completion: nil)
   }
 }
 
@@ -145,9 +182,28 @@ extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
             let wallet = Wallet(type: WalletType.real(account))
             self.name = name
             self.openBackUpWallet(wallet, name: name)
+            if !self.refCode.isEmpty {
+              self.sendRefCode(self.refCode.uppercased(), account: account)
+            }
           }
         }
       }
+    case .openQR:
+      self.openQRCode(controller)
+    case .sendRefCode(code: let code):
+      self.refCode = code
+    }
+  }
+}
+
+extension KNCreateWalletCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      self.createWalletController?.containerViewDidUpdateRefCode(result)
     }
   }
 }

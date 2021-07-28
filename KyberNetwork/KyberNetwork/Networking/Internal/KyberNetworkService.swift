@@ -58,7 +58,8 @@ extension KyberNetworkService: TargetType {
       case .getGasPrice:
         return "\(KNEnvironment.default.cachedURL)/gasPrice"
       case .supportedToken:
-        return KNEnvironment.default.supportedTokenEndpoint
+        return "https://dev-krystal-api.knstats.com/v1/token/tokenList"
+//        return KNEnvironment.default.supportedTokenEndpoint
       case .getReferencePrice(sym: let sym):
         return "\(KNEnvironment.default.cachedURL)/refprice?base=\(sym)&quote=ETH"
       }
@@ -386,113 +387,113 @@ extension UserInfoService: TargetType {
   }
 }
 
-enum LimitOrderService {
-  case getOrders(accessToken: String, pageIndex: Int, pageSize: Int)
-  case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
-  case cancelOrder(accessToken: String, id: String)
-  case getNonce(accessToken: String)
-  case getFee(accessToken: String?, address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
-  case checkEligibleAddress(accessToken: String, address: String)
-  case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
-  case pendingBalance(accessToken: String, address: String)
-  case getMarkets
-}
+//enum LimitOrderService {
+//  case getOrders(accessToken: String, pageIndex: Int, pageSize: Int)
+//  case createOrder(accessToken: String, order: KNLimitOrder, signedData: Data)
+//  case cancelOrder(accessToken: String, id: String)
+//  case getNonce(accessToken: String)
+//  case getFee(accessToken: String?, address: String, src: String, dest: String, srcAmount: Double, destAmount: Double)
+//  case checkEligibleAddress(accessToken: String, address: String)
+//  case getRelatedOrders(accessToken: String, address: String, src: String, dest: String, rate: Double)
+//  case pendingBalance(accessToken: String, address: String)
+//  case getMarkets
+//}
+//
+//extension LimitOrderService: MoyaCacheable {
+//  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
+//  var httpShouldHandleCookies: Bool { return false }
+//}
 
-extension LimitOrderService: MoyaCacheable {
-  var cachePolicy: MoyaCacheablePolicy { return .reloadIgnoringLocalAndRemoteCacheData }
-  var httpShouldHandleCookies: Bool { return false }
-}
-
-extension LimitOrderService: TargetType {
-  var baseURL: URL {
-    let baseString = KNAppTracker.getKyberProfileBaseString()
-    switch self {
-    case .getOrders(_, let pageIndex, let pageSize):
-      return URL(string: "\(baseString)/api/orders?page_index=\(pageIndex)&page_size=\(pageSize)&sort=desc")!
-    case .createOrder:
-      return URL(string: "\(baseString)/api/orders")!
-    case .cancelOrder(_, let id):
-      return URL(string: "\(baseString)/api/orders/\(id)/cancel")!
-    case .getNonce:
-      return URL(string: "\(baseString)/api/orders/nonce")!
-    case .getFee(_, let address, let src, let dest, let srcAmount, let destAmount):
-      return URL(string: "\(baseString)/api/orders/fee?user_addr=\(address)&src=\(src)&dst=\(dest)&src_amount=\(srcAmount)&dst_amount=\(destAmount)")!
-    case .checkEligibleAddress(_, let address):
-      return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
-    case .getRelatedOrders(_, let address, let src, let dest, let rate):
-      return URL(string: "\(baseString)/api/orders/related_orders?user_addr=\(address)&src=\(src)&dst=\(dest)&min_rate=\(rate)")!
-    case .pendingBalance(_, let address):
-      return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
-    case .getMarkets:
-      let base = KNEnvironment.default.cachedSourceAmountRateURL
-      return URL(string: base + "/pairs/market")!
-    }
-  }
-
-  var path: String { return "" }
-
-  var method: Moya.Method {
-    switch self {
-    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance, .getMarkets: return .get
-    case .cancelOrder: return .put
-    case .createOrder: return .post
-    }
-  }
-
-  var task: Task {
-    switch self {
-    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance, .getFee, .getRelatedOrders, .getMarkets:
-      return .requestPlain
-    case .createOrder(_, let order, let signedData):
-      var json: JSONDictionary = [
-        "user_address": order.sender.description.lowercased(),
-        "nonce": order.nonce,
-        "src_token": order.from.contract.lowercased(),
-        "dest_token": order.to.contract.lowercased(),
-        "dest_address": order.sender.description.lowercased(),
-        "src_amount": order.srcAmount.hexEncoded,
-        "min_rate": (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded,
-        "fee": BigInt(order.fee).hexEncoded,
-        "signature": signedData.hexEncoded,
-      ]
-      if let isBuy = order.isBuy {
-        json["side_trade"] = isBuy ? "buy" : "sell"
-      }
-      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-      return .requestData(data)
-    }
-  }
-
-  var sampleData: Data { return Data() }
-  var headers: [String: String]? {
-    var json: [String: String] = [
-      "content-type": "application/json",
-      "client": "com.kyberswap.ios.bvi",
-      "client-build": Bundle.main.buildNumber ?? "",
-    ]
-    switch self {
-    case .getOrders(let accessToken, _, _):
-      json["Authorization"] = accessToken
-    case .createOrder(let accessToken, _, _):
-      json["Authorization"] = accessToken
-    case .cancelOrder(let accessToken, _):
-      json["Authorization"] = accessToken
-    case .getNonce(let accessToken):
-      json["Authorization"] = accessToken
-    case .checkEligibleAddress(let accessToken, _):
-      json["Authorization"] = accessToken
-    case .getRelatedOrders(let accessToken, _, _, _, _):
-      json["Authorization"] = accessToken
-    case .pendingBalance(let accessToken, _):
-      json["Authorization"] = accessToken
-    case .getFee(let accessToken, _, _, _, _, _):
-      if let accessToken = accessToken { json["Authorization"] = accessToken }
-    case .getMarkets:
-      break
-    }
-    return json
-  }
-}
+//extension LimitOrderService: TargetType {
+//  var baseURL: URL {
+//    let baseString = KNAppTracker.getKyberProfileBaseString()
+//    switch self {
+//    case .getOrders(_, let pageIndex, let pageSize):
+//      return URL(string: "\(baseString)/api/orders?page_index=\(pageIndex)&page_size=\(pageSize)&sort=desc")!
+//    case .createOrder:
+//      return URL(string: "\(baseString)/api/orders")!
+//    case .cancelOrder(_, let id):
+//      return URL(string: "\(baseString)/api/orders/\(id)/cancel")!
+//    case .getNonce:
+//      return URL(string: "\(baseString)/api/orders/nonce")!
+//    case .getFee(_, let address, let src, let dest, let srcAmount, let destAmount):
+//      return URL(string: "\(baseString)/api/orders/fee?user_addr=\(address)&src=\(src)&dst=\(dest)&src_amount=\(srcAmount)&dst_amount=\(destAmount)")!
+//    case .checkEligibleAddress(_, let address):
+//      return URL(string: "\(baseString)/api/orders/eligible_address?user_addr=\(address)")!
+//    case .getRelatedOrders(_, let address, let src, let dest, let rate):
+//      return URL(string: "\(baseString)/api/orders/related_orders?user_addr=\(address)&src=\(src)&dst=\(dest)&min_rate=\(rate)")!
+//    case .pendingBalance(_, let address):
+//      return URL(string: "\(baseString)/api/orders/pending_balances?user_addr=\(address)")!
+//    case .getMarkets:
+//      let base = KNEnvironment.default.cachedSourceAmountRateURL
+//      return URL(string: base + "/pairs/market")!
+//    }
+//  }
+//
+//  var path: String { return "" }
+//
+//  var method: Moya.Method {
+//    switch self {
+//    case .getOrders, .getFee, .getNonce, .checkEligibleAddress, .getRelatedOrders, .pendingBalance, .getMarkets: return .get
+//    case .cancelOrder: return .put
+//    case .createOrder: return .post
+//    }
+//  }
+//
+//  var task: Task {
+//    switch self {
+//    case .getOrders, .cancelOrder, .getNonce, .checkEligibleAddress, .pendingBalance, .getFee, .getRelatedOrders, .getMarkets:
+//      return .requestPlain
+//    case .createOrder(_, let order, let signedData):
+//      var json: JSONDictionary = [
+//        "user_address": order.sender.description.lowercased(),
+//        "nonce": order.nonce,
+//        "src_token": order.from.contract.lowercased(),
+//        "dest_token": order.to.contract.lowercased(),
+//        "dest_address": order.sender.description.lowercased(),
+//        "src_amount": order.srcAmount.hexEncoded,
+//        "min_rate": (order.targetRate * BigInt(10).power(18 - order.to.decimals)).hexEncoded,
+//        "fee": BigInt(order.fee).hexEncoded,
+//        "signature": signedData.hexEncoded,
+//      ]
+//      if let isBuy = order.isBuy {
+//        json["side_trade"] = isBuy ? "buy" : "sell"
+//      }
+//      let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+//      return .requestData(data)
+//    }
+//  }
+//
+//  var sampleData: Data { return Data() }
+//  var headers: [String: String]? {
+//    var json: [String: String] = [
+//      "content-type": "application/json",
+//      "client": "com.kyberswap.ios.bvi",
+//      "client-build": Bundle.main.buildNumber ?? "",
+//    ]
+//    switch self {
+//    case .getOrders(let accessToken, _, _):
+//      json["Authorization"] = accessToken
+//    case .createOrder(let accessToken, _, _):
+//      json["Authorization"] = accessToken
+//    case .cancelOrder(let accessToken, _):
+//      json["Authorization"] = accessToken
+//    case .getNonce(let accessToken):
+//      json["Authorization"] = accessToken
+//    case .checkEligibleAddress(let accessToken, _):
+//      json["Authorization"] = accessToken
+//    case .getRelatedOrders(let accessToken, _, _, _, _):
+//      json["Authorization"] = accessToken
+//    case .pendingBalance(let accessToken, _):
+//      json["Authorization"] = accessToken
+//    case .getFee(let accessToken, _, _, _, _, _):
+//      if let accessToken = accessToken { json["Authorization"] = accessToken }
+//    case .getMarkets:
+//      break
+//    }
+//    return json
+//  }
+//}
 
 enum NativeSignInUpService {
   case signUpEmail(email: String, password: String, name: String, isSubs: Bool)
@@ -842,5 +843,418 @@ extension ProfileService: TargetType {
       ]
     }
     return json
+  }
+}
+
+enum KrytalService {
+  case getBestPath(src: String, dst: String, srcAmount: String)
+  case getHint(path: [JSONDictionary])
+  case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
+  case getAllRates(src: String, dst: String, srcAmount: String)
+  case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
+  case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
+  case getGasPrice
+  case getRefPrice(src: String, dst: String)
+  case getTokenList
+  case getLendingOverview
+  case buildSwapAndDepositTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
+  case getLendingBalance(address: String)
+  case getLendingDistributionBalance(lendingPlatform: String, address: String)
+  case getWithdrawableAmount(platform: String, userAddress: String, token: String)
+  case buildWithdrawTx(platform: String, userAddress: String, token: String, amount: String, gasPrice: String, nonce: Int, useGasToken: Bool)
+  case getMarketingAssets
+  case getReferralOverview(address: String, accessToken: String)
+  case registerReferrer(address: String, referralCode: String, signature: String)
+  case getRewardHistory(address: String, from: Int, to: Int, offset: Int, limit: Int, accessToken: String)
+  case buildClaimTx(address: String, nonce: Int)
+  case getNotification(batchId: String, limit: Int = 20)
+  case login(address: String, timestamp: Int, signature: String)
+  case getClaimHistory(address: String, accessToken: String)
+  case claimReward(address: String, amount: Double, accessToken: String)
+  case getBalances(address: String)
+  case getOverviewMarket(addresses: [String], quotes: [String])
+  case getTokenDetail(address: String)
+  case getChartData(address: String, quote: String, from: Int)
+}
+
+extension KrytalService: TargetType {
+  var baseURL: URL {
+    switch self {
+    case .getHint(let path):
+      var urlComponents = URLComponents(string: KNEnvironment.default.krystalEndpoint + "/v1/swap/buildHint")!
+      var queryItems: [URLQueryItem] = []
+      path.forEach { (element) in
+        let id = element["id"] as? String ?? ""
+        let value = element["split_value"] as? NSNumber ?? NSNumber(0)
+        let idItem = URLQueryItem(name: "id", value: id)
+        let valueItem = URLQueryItem(name: "split_value", value: value.description)
+        queryItems.append(idItem)
+        queryItems.append(valueItem)
+      }
+      urlComponents.queryItems = queryItems
+      return urlComponents.url!
+    default:
+      let chainPath = KNGeneralProvider.shared.isEthereum ? "/ethereum" : "/bsc"
+      return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
+    }
+  }
+
+  var path: String {
+    switch self {
+    case .getBestPath:
+      return "/v1/swap/bestPath"
+    case .getHint:
+      return ""
+    case .getExpectedRate:
+      return "/v2/swap/expectedRate"
+    case .getAllRates:
+      return "/v2/swap/allRates"
+    case .buildSwapTx:
+      return "/v2/swap/buildTx"
+    case .getGasPrice:
+      return "/v2/swap/gasPrice"
+    case .getGasLimit:
+      return "/v2/swap/gasLimit"
+    case .getRefPrice:
+      return "/v1/market/refPrice"
+    case .getTokenList:
+      return "/v1/token/tokenList"
+    case .getLendingOverview:
+      return "/v1/lending/overview"
+    case .buildSwapAndDepositTx:
+      return "/v1/swap/buildSwapAndDepositTx"
+    case .getLendingBalance:
+      return "/v1/lending/balance"
+    case .getLendingDistributionBalance:
+      return "/v1/lending/distributionBalance"
+    case .getWithdrawableAmount:
+      return "/v1/lending/withdrawableAmount"
+    case .buildWithdrawTx:
+      return "/v1/lending/buildWithdrawTx"
+    case .getMarketingAssets:
+      return "/v1/mkt/assets"
+    case .getReferralOverview:
+      return "/v1/account/referralOverview"
+    case .registerReferrer:
+      return "/v1/account/registerReferrer"
+    case .getRewardHistory:
+      return "/v1/account/rewardHistory"
+    case .buildClaimTx:
+      return "/v1/lending/buildClaimTx"
+    case .getNotification:
+      return "/v1/notification/list"
+    case .login:
+      return "/v1/login"
+    case .getClaimHistory:
+      return "/v1/account/claimHistory"
+    case .claimReward:
+      return "/v1/account/claimReward"
+    case .getBalances:
+      return "/v1/account/balances"
+    case .getOverviewMarket:
+      return "/v1/market/overview"
+    case .getTokenDetail(address: let address):
+      return "/v1/token/tokenDetails"
+    case .getChartData:
+      return "/v1/market/priceSeries"
+    }
+  }
+
+  var method: Moya.Method {
+    switch self {
+    case .registerReferrer, .login:
+      return .post
+    default:
+      return .get
+    }
+  }
+
+  var sampleData: Data {
+    return Data()
+  }
+
+  var task: Task {
+    switch self {
+    case .getBestPath(let src, let dst, let srcAmount):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getHint:
+      return .requestPlain
+    case .getExpectedRate(let src, let dst, let srcAmount, let hint, let isCaching):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "hint": hint,
+        "isCaching": isCaching,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getAllRates(let src, let dst, let srcAmount):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint, let useGasToken):
+      let json: JSONDictionary = [
+        "userAddress": address,
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "minDestAmount": minDstAmount,
+        "gasPrice": gasPrice,
+        "nonce": nonce,
+        "hint": hint,
+        "platformWallet": Constants.platformWallet,
+        "useGasToken": useGasToken,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getGasPrice:
+      return .requestPlain
+    case .getGasLimit(let src, let dst, let srcAmount, let hint):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+        "srcAmount": srcAmount,
+        "hint": hint,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getRefPrice(let src, let dst):
+      let json: JSONDictionary = [
+        "src": src,
+        "dest": dst,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getTokenList, .getLendingOverview:
+      return .requestPlain
+    case .buildSwapAndDepositTx(let lendingPlatform, let userAddress, let src, let dest, let srcAmount, let minDestAmount, let gasPrice, let nonce, let hint, let useGasToken):
+      let json: JSONDictionary = [
+        "lendingPlatform": lendingPlatform,
+        "userAddress": userAddress,
+        "src": src,
+        "dest": dest,
+        "srcAmount": srcAmount,
+        "minDestAmount": minDestAmount,
+        "gasPrice": gasPrice,
+        "nonce": nonce,
+        "hint": hint,
+        "platformWallet": Constants.platformWallet,
+        "useGasToken": useGasToken,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLendingBalance(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address):
+      let json: JSONDictionary = [
+        "address": address,
+        "lendingPlatform": lendingPlatform
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, token: let token):
+      let json: JSONDictionary = [
+        "lendingPlatform": platform,
+        "userAddress": userAddress,
+        "token": token
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildWithdrawTx(platform: let platform, userAddress: let userAddress, token: let token, amount: let amount, gasPrice: let gasPrice, nonce: let nonce, useGasToken: let useGasToken):
+      let json: JSONDictionary = [
+        "lendingPlatform": platform,
+        "token": token,
+        "amount": amount,
+        "gasPrice": gasPrice,
+        "nonce": nonce,
+        "useGasToken": useGasToken,
+        "userAddress": userAddress
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getMarketingAssets:
+      return .requestPlain
+    case .getReferralOverview(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .registerReferrer(address: let address, referralCode: let referralCode, signature: let signature):
+      let json: JSONDictionary = [
+        "address": address,
+        "referralCode": referralCode,
+        "signature": signature
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getRewardHistory(address: let address, from: let from, to: let to, offset: let offset, limit: let limit, _):
+      let json: JSONDictionary = [
+        "address": address,
+        "from": from,
+        "to": to,
+        "offset": offset,
+        "limit": limit
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildClaimTx(address: let address, nonce: let nonce):
+      let json: JSONDictionary = [
+        "lendingPlatform": "Compound",
+        "address": address,
+        "gasPrice": KNGasCoordinator.shared.fastKNGas.description,
+        "nonce": nonce
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getNotification(batchId: let batchId, limit: let limit):
+      let json: JSONDictionary = [
+        "batchId": batchId,
+        "limit": limit
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .login(address: let address, timestamp: let timestamp, signature: let signature):
+      let json: JSONDictionary = [
+        "address": address,
+        "timestamp": timestamp,
+        "signature": signature
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getClaimHistory(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .claimReward(address: let address, amount: let amount, _):
+      let json: JSONDictionary = [
+        "address": address,
+        "amount": amount
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getBalances(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
+      let json: JSONDictionary = [
+        "tokenAddresses": addresses.joined(separator: ","),
+        "quoteCurrencies": quotes.joined(separator: ","),
+        "sparkline": "false"
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+      
+    case .getTokenDetail(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getChartData(address: let address, quote: let quote, from: let from):
+      let json: JSONDictionary = [
+        "token": address,
+        "quoteCurrency": quote,
+        "from": from
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    }
+  }
+
+  var headers: [String: String]? {
+    switch self {
+    case .getReferralOverview( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getRewardHistory(_ , _, _ , _ , _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getClaimHistory( _, let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .claimReward(_ , _, let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    default:
+      return nil
+    }
+  }
+}
+
+
+enum CoinGeckoService {
+  case getChartData(address: String, from: Int, to: Int, currency: String)
+  case getTokenDetailInfo(address: String)
+  case getPriceETH
+  case getPriceTokens(addresses: [String])
+}
+
+extension CoinGeckoService: TargetType {
+  var baseURL: URL {
+    return URL(string: "https://api.coingecko.com/api")!
+  }
+
+  var path: String {
+    let chainPath = KNGeneralProvider.shared.isEthereum ? "ethereum" : "binance-smart-chain"
+    switch self {
+    case .getChartData(let address, _ , _, _):
+      let coin = KNGeneralProvider.shared.isEthereum ? "ethereum" : "binancecoin"
+      return address.isNativeAddress() ? "/v3/coins/\(coin)/market_chart/range" : "/v3/coins/\(chainPath)/contract/\(address)/market_chart/range"
+    case .getTokenDetailInfo(address: let address):
+      return address.isNativeAddress() ? "/v3/coins/\(chainPath)" : "/v3/coins/\(chainPath)/contract/\(address)"
+    case .getPriceETH:
+      return "/v3/simple/price"
+    case .getPriceTokens:
+      return "/v3/simple/token_price/\(chainPath)"
+      
+    }
+  }
+  
+  var method: Moya.Method {
+    return .get
+  }
+  
+  var sampleData: Data {
+    return Data()
+  }
+  
+  var task: Task {
+    switch self {
+    case .getChartData( _, let from , let to, let currency):
+      let json: JSONDictionary = [
+        "vs_currency": currency,
+        "from": from,
+        "to": to,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getTokenDetailInfo:
+      let json: JSONDictionary = [
+        "localization": false,
+        "tickers": false,
+        "market_data": true,
+        "community_data": false,
+        "developer_data": false,
+        "sparkline": false,
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getPriceETH:
+      let json: JSONDictionary = [
+        "ids": KNGeneralProvider.shared.isEthereum ? "ethereum" : "binancecoin",
+        "vs_currencies": "eth,usd,btc",
+        "include_market_cap": "true",
+        "include_24hr_vol": "true",
+        "include_24hr_change": "true",
+        "include_last_updated_at": "true",
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getPriceTokens(addresses: let addresses):
+      let json: JSONDictionary = [
+        "contract_addresses": addresses.joined(separator: ","),
+        "vs_currencies": "eth,usd,btc",
+        "include_market_cap": "true",
+        "include_24hr_vol": "true",
+        "include_24hr_change": "true",
+        "include_last_updated_at": "true",
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    }
+  }
+  
+  var headers: [String : String]? {
+   return nil
   }
 }

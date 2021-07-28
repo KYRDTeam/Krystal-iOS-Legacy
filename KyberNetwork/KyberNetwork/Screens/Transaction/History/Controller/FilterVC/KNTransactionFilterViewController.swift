@@ -2,12 +2,16 @@
 
 import UIKit
 
-struct KNTransactionFilter {
+struct KNTransactionFilter: Codable {
   let from: Date?
   let to: Date?
   let isSend: Bool
   let isReceive: Bool
   let isSwap: Bool
+  let isApprove: Bool
+  let isWithdraw: Bool
+  let isTrade: Bool
+  let isContractInteraction: Bool
   let tokens: [String]
 }
 
@@ -17,6 +21,10 @@ class KNTransactionFilterViewModel {
   private(set) var isSend: Bool = false
   private(set) var isReceive: Bool = false
   private(set) var isSwap: Bool = false
+  var isTrade: Bool = false
+  var isApprove: Bool = false
+  var isWithdraw: Bool = false
+  var isContractInteraction: Bool = false
   private(set) var tokens: [String] = []
   private(set) var supportedTokens: [String] = []
   private(set) var isSelectAll: Bool = true
@@ -28,16 +36,20 @@ class KNTransactionFilterViewModel {
     self.isSend = filter.isSend
     self.isReceive = filter.isReceive
     self.isSwap = filter.isSwap
+    self.isApprove = filter.isApprove
+    self.isWithdraw = filter.isWithdraw
+    self.isTrade = filter.isTrade
+    self.isContractInteraction = filter.isContractInteraction
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
-    self.supportedTokens.sort { (t0, t1) -> Bool in
-      let isContain0 = self.tokens.contains(t0)
-      let isContain1 = self.tokens.contains(t1)
-      if isContain0 && !isContain1 { return true }
-      if !isContain0 && isContain1 { return false }
-      return t0 < t1
-    }
+//    self.supportedTokens.sort { (t0, t1) -> Bool in
+//      let isContain0 = self.tokens.contains(t0)
+//      let isContain1 = self.tokens.contains(t1)
+//      if isContain0 && !isContain1 { return true }
+//      if !isContain0 && isContain1 { return false }
+//      return t0 < t1
+//    }
   }
 
   func updateFrom(date: Date?) {
@@ -90,6 +102,10 @@ class KNTransactionFilterViewModel {
     self.isSend = true
     self.isReceive = true
     self.isSwap = true
+    self.isApprove = true
+    self.isWithdraw = true
+    self.isTrade = true
+    self.isContractInteraction = true
     self.tokens = self.supportedTokens
     self.isSelectAll = true
     self.isSeeMore = false
@@ -122,7 +138,11 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var sendButton: UIButton!
   @IBOutlet weak var receiveButton: UIButton!
   @IBOutlet weak var swapButton: UIButton!
-
+  @IBOutlet weak var approveButton: UIButton!
+  @IBOutlet weak var withdrawButton: UIButton!
+  @IBOutlet weak var tradeButton: UIButton!
+  @IBOutlet weak var contractInteractionButton: UIButton!
+  
   @IBOutlet weak var selectButton: UIButton!
   @IBOutlet weak var tokenTextLabel: UILabel!
   @IBOutlet weak var tokensTableView: UITableView!
@@ -150,6 +170,9 @@ class KNTransactionFilterViewController: KNBaseViewController {
     picker.maximumDate = Date()
     picker.addTarget(self, action: #selector(self.fromDatePickerDidChange(_:)), for: .valueChanged)
     picker.date = Date()
+    if #available(iOS 13.4, *) {
+      picker.preferredDatePickerStyle = .wheels
+    }
     return picker
   }()
 
@@ -166,6 +189,9 @@ class KNTransactionFilterViewController: KNBaseViewController {
     picker.maximumDate = Date()
     picker.addTarget(self, action: #selector(self.toDatePickerDidChange(_:)), for: .valueChanged)
     picker.date = Date()
+    if #available(iOS 13.4, *) {
+      picker.preferredDatePickerStyle = .wheels
+    }
     return picker
   }()
 
@@ -180,28 +206,24 @@ class KNTransactionFilterViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = "Filter".toBeLocalised()
     self.timeTextLabel.text = "Time".toBeLocalised()
-    self.separatorViews.forEach({ $0.backgroundColor = .clear })
-    self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
+    
     self.transactionTypeTextLabel.text = "Transaction Type".toBeLocalised()
     self.sendButton.setTitle(NSLocalizedString("transfer", value: "Transfer", comment: ""), for: .normal)
     self.receiveButton.setTitle(NSLocalizedString("receive", value: "Receive", comment: ""), for: .normal)
     self.swapButton.setTitle(NSLocalizedString("swap", value: "Swap", comment: ""), for: .normal)
     self.tokenTextLabel.text = "Token".toBeLocalised()
     self.resetButton.rounded(
-      color: UIColor.Kyber.border,
-      width: 1.0
+      radius: 16
     )
     self.resetButton.setTitle("Reset".toBeLocalised(), for: .normal)
-    self.applyButton.applyGradient()
     self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
-    self.applyButton.rounded()
+    self.applyButton.rounded(radius: 16)
 
     let nib = UINib(nibName: KNTransactionFilterTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kFilterTokensTableViewCellID)
-    self.tokensTableView.rowHeight = 44.0
+    self.tokensTableView.rowHeight = 48.0
     self.tokensTableView.delegate = self
     self.tokensTableView.dataSource = self
     self.tokensTableView.reloadData()
@@ -217,14 +239,6 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.updateUI()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.separatorViews.forEach({ $0.dashLine(width: 1.0, color: UIColor.Kyber.dashLine) })
-    self.applyButton.removeSublayer(at: 0)
-    self.applyButton.applyGradient()
-  }
 
   fileprivate func updateUI(isUpdatingTokens: Bool = true) {
     UIView.animate(withDuration: 0.16) {
@@ -240,32 +254,56 @@ class KNTransactionFilterViewController: KNBaseViewController {
         )
       }
       if self.viewModel.isSend {
-        self.sendButton.rounded(color: UIColor.Kyber.enygold, width: 1.0)
-        self.sendButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-        self.sendButton.backgroundColor = .white
+        self.sendButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.sendButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
       } else {
-        self.sendButton.rounded(color: .clear, width: 0.0)
-        self.sendButton.setImage(nil, for: .normal)
-        self.sendButton.backgroundColor = .clear
+        self.sendButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.sendButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
       if self.viewModel.isReceive {
-        self.receiveButton.rounded(color: UIColor.Kyber.enygold, width: 1.0)
-        self.receiveButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-        self.receiveButton.backgroundColor = .white
+        self.receiveButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.receiveButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
       } else {
-        self.receiveButton.rounded(color: .clear, width: 0.0)
-        self.receiveButton.setImage(nil, for: .normal)
-        self.receiveButton.backgroundColor = .clear
+        self.receiveButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.receiveButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
       if self.viewModel.isSwap {
-        self.swapButton.rounded(color: UIColor.Kyber.enygold, width: 1.0)
-        self.swapButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)
-        self.swapButton.backgroundColor = .white
+        self.swapButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.swapButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
       } else {
-        self.swapButton.rounded(color: .clear, width: 0.0)
-        self.swapButton.setImage(nil, for: .normal)
-        self.swapButton.backgroundColor = .clear
+        self.swapButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.swapButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
+      if self.viewModel.isApprove {
+        self.approveButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.approveButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      } else {
+        self.approveButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.approveButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      }
+      if self.viewModel.isWithdraw {
+        self.withdrawButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.withdrawButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      } else {
+        self.withdrawButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.withdrawButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      }
+      if self.viewModel.isTrade {
+        self.tradeButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.tradeButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      } else {
+        self.tradeButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.tradeButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      }
+
+      if self.viewModel.isContractInteraction {
+        self.contractInteractionButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.contractInteractionButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      } else {
+        self.contractInteractionButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.contractInteractionButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      }
+      
       if let date = self.viewModel.from {
         self.fromDatePicker.setDate(date, animated: false)
         self.fromDatePickerDidChange(self.fromDatePicker)
@@ -313,6 +351,26 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.updateUI()
   }
 
+  @IBAction func approveButtonPressed(_ sender: UIButton) {
+    self.viewModel.isApprove = !self.viewModel.isApprove
+    self.updateUI(isUpdatingTokens: false)
+  }
+
+  @IBAction func withdrawButtonPressed(_ sender: UIButton) {
+    self.viewModel.isWithdraw = !self.viewModel.isWithdraw
+    self.updateUI(isUpdatingTokens: false)
+  }
+
+  @IBAction func tradeButtonPressed(_ sender: UIButton) {
+    self.viewModel.isTrade = !self.viewModel.isTrade
+    self.updateUI(isUpdatingTokens: false)
+  }
+  
+  @IBAction func contractInteractionButtonPressed(_ sender: UIButton) {
+    self.viewModel.isContractInteraction = !self.viewModel.isContractInteraction
+    self.updateUI(isUpdatingTokens: false)
+  }
+  
   // See more/less
   @IBAction func tokensActionButtonPressed(_ sender: Any) {
     self.viewModel.isSeeMore = !self.viewModel.isSeeMore
@@ -353,6 +411,10 @@ class KNTransactionFilterViewController: KNBaseViewController {
       isSend: self.viewModel.isSend,
       isReceive: self.viewModel.isReceive,
       isSwap: self.viewModel.isSwap,
+      isApprove: self.viewModel.isApprove,
+      isWithdraw: self.viewModel.isWithdraw,
+      isTrade: self.viewModel.isTrade,
+      isContractInteraction: self.viewModel.isContractInteraction,
       tokens: self.viewModel.tokens
     )
     self.navigationController?.popViewController(animated: true, completion: {
@@ -373,7 +435,11 @@ extension KNTransactionFilterViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.isSeeMore ? (self.viewModel.supportedTokens.count + 3) / 4 : 3
+    if self.viewModel.supportedTokens.count <= 4 {
+      return 1
+    } else {
+      return self.viewModel.isSeeMore ? (self.viewModel.supportedTokens.count + 3) / 4 : 2
+    }
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -382,9 +448,13 @@ extension KNTransactionFilterViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kFilterTokensTableViewCellID, for: indexPath) as! KNTransactionFilterTableViewCell
-    let data = Array(self.viewModel.supportedTokens[indexPath.row * 4..<min(indexPath.row * 4 + 4, self.viewModel.supportedTokens.count)])
+    if self.viewModel.supportedTokens.count <= 4 {
+      cell.updateCell(with: self.viewModel.supportedTokens, selectedTokens: self.viewModel.tokens)
+    } else {
+      let data = Array(self.viewModel.supportedTokens[indexPath.row * 4..<min(indexPath.row * 4 + 4, self.viewModel.supportedTokens.count)])
+      cell.updateCell(with: data, selectedTokens: self.viewModel.tokens)
+    }
     cell.delegate = self
-    cell.updateCell(with: data, selectedTokens: self.viewModel.tokens)
     return cell
   }
 }

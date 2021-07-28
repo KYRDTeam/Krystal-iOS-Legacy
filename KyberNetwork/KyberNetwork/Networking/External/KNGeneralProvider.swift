@@ -13,44 +13,71 @@ import CryptoSwift
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
+  
+  var isEthereum: Bool {
+    didSet {
+      UserDefaults.standard.set(self.isEthereum, forKey: Constants.currentChainSaveKey)
+    }
+  }
+  
+  var customRPC: CustomRPC {
+    return self.isEthereum ? KNEnvironment.default.ethRPC : KNEnvironment.default.bscRPC
+  }
+  
+  var currentWeb3: Web3Swift = Web3Swift()
+  
+  var quoteToken: String {
+    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    return quoteToken
+  }
 
-  lazy var web3Swift: Web3Swift = {
-    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
+  var web3Swift: Web3Swift {
+    if let path = URL(string: self.customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
+      let web3 = Web3Swift(url: path)
+      if web3.url != self.currentWeb3.url {
+        self.currentWeb3 = web3
+        DispatchQueue.main.async {
+          self.currentWeb3.start()
+        }
+      }
+      return self.currentWeb3
+    } else {
+      return Web3Swift()
+    }
+  }
+
+  var web3SwiftKyber: Web3Swift {
+    if let path = URL(string: self.customRPC.endpointKyber + KNEnvironment.default.nodeEndpoint) {
       return Web3Swift(url: path)
     } else {
       return Web3Swift()
     }
-  }()
+  }
 
-  lazy var web3SwiftKyber: Web3Swift = {
-    if let path = URL(string: KNEnvironment.default.kyberEndpointURL + KNEnvironment.default.nodeEndpoint) {
+  var web3SwiftAlchemy: Web3Swift  {
+    if let path = URL(string: self.customRPC.endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
       return Web3Swift(url: path)
     } else {
       return Web3Swift()
     }
-  }()
+  }
 
-  lazy var web3SwiftAlchemy: Web3Swift = {
-    if let customRPC = KNEnvironment.default.customRPC, let path = URL(string: customRPC.endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
-      return Web3Swift(url: path)
+  var networkAddress: Address {
+    let address = KNGeneralProvider.shared.isEthereum ? Constants.krystalProxyAddress.lowercased() : Constants.krystalProxyAddressBSC.lowercased()
+    return Address(string: address)!
+  }
+
+  var wrapperAddress: Address {
+    return Address(string: self.customRPC.wrappedAddress)!
+  }
+
+  init() {
+    if let saved = UserDefaults.standard.object(forKey: Constants.currentChainSaveKey) as? Bool {
+      self.isEthereum = saved
     } else {
-      return Web3Swift()
+      self.isEthereum = true
     }
-  }()
-
-  lazy var networkAddress: Address = {
-    return Address(string: KNEnvironment.default.knCustomRPC?.networkAddress ?? "")!
-  }()
-
-  lazy var limitOrderAddress: Address = {
-    return Address(string: KNEnvironment.default.knCustomRPC?.limitOrderAddress ?? "")!
-  }()
-
-  lazy var wrapperAddress: Address = {
-    return Address(string: KNEnvironment.default.knCustomRPC?.wrapperAddress ?? "")!
-  }()
-
-  init() { DispatchQueue.main.async { self.web3Swift.start() } }
+  }
 
   // MARK: Balance
   func getETHBalanace(for address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {
@@ -61,22 +88,6 @@ class KNGeneralProvider {
           switch result {
           case .success(let balance):
             completion(.success(balance))
-          case .failure(let error):
-            completion(.failure(AnyError(error)))
-          }
-        }
-      }
-    }
-  }
-
-  func getEstimateGas(from: Address, to: Address, data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
-    DispatchQueue.global().async {
-      let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(EstimateGasRequest(from: from, to: to, data: data)))
-      Session.send(request) { result in
-        DispatchQueue.main.async {
-          switch result {
-          case .success(let est):
-            completion(.success(est))
           case .failure(let error):
             completion(.failure(AnyError(error)))
           }
@@ -126,6 +137,61 @@ class KNGeneralProvider {
     }
   }
 
+  func getTokenSymbol(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.getSymbolEncodeData { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: address, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let symbol):
+                self.getTokenSymbolDecodeData(from: symbol, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  func getTokenDecimals(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.getDecimalsEncodeData { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: address, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let decimals):
+                self.getTokenDecimalsDecodeData(from: decimals, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+    
+  }
+
   func getMutipleERC20Balances(for address: Address, tokens: [Address], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
     let data = "0x6a385ae9"
       + "000000000000000000000000\(address.description.lowercased().drop0x)"
@@ -136,6 +202,7 @@ class KNGeneralProvider {
     let request = EtherServiceAlchemyRequest(
       batch: BatchFactory().create(CallRequest(to: self.wrapperAddress.description, data: "\(data)\(tokenCount)\(tokenAddresses)"))
     )
+    print("\(data)\(tokenCount)\(tokenAddresses)")
     DispatchQueue.global().async {
       Session.send(request) { [weak self] result in
         guard let `self` = self else { return }
@@ -162,6 +229,7 @@ class KNGeneralProvider {
         DispatchQueue.main.async {
           switch result {
           case .success(let count):
+//            minTxCount = max(minTxCount, count)
             completion(.success(count))
           case .failure(let error):
             completion(.failure(AnyError(error)))
@@ -171,13 +239,12 @@ class KNGeneralProvider {
     }
   }
 
-  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    if token.isETH {
+  func getAllowance(for address: Address, networkAddress: Address, tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if tokenAddress == Address(string: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       // ETH no need to request for approval
       completion(.success(BigInt(2).power(255)))
       return
     }
-    let tokenAddress: Address = Address(string: token.contract)!
     self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
       switch dataResult {
       case .success(let data):
@@ -200,6 +267,16 @@ class KNGeneralProvider {
         completion(.failure(error))
       }
     }
+  }
+
+  func getAllowance(for token: TokenObject, address: Address, networkAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if token.isETH || token.isBNB {
+      // ETH no need to request for approval
+      completion(.success(BigInt(2).power(255)))
+      return
+    }
+    let tokenAddress: Address = Address(string: token.contract)!
+    self.getAllowance(for: address, networkAddress: networkAddress, tokenAddress: tokenAddress, completion: completion)
   }
 
   func getExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
@@ -252,7 +329,7 @@ class KNGeneralProvider {
       switch result {
       case .success(let resp):
         let callRequest = CallRequest(
-          to: KNEnvironment.default.knCustomRPC?.ensAddress ?? "",
+          to: KNGeneralProvider.shared.customRPC.ensAddress,
           data: resp
         )
         let getResolverRequest = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
@@ -367,30 +444,93 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(
-        forApproving: token,
-        account: account,
-        nonce: txCount,
-        data: encodeData,
-        keystore: keystore,
-        gasPrice: gasPrice,
-        completion: { [weak self] result in
-          guard let `self` = self else { return }
-          switch result {
-          case .success(let signData):
-            self.sendSignedTransactionData(signData, completion: { sendResult in
-              switch sendResult {
-              case .success:
-                completion(.success(txCount + 1))
-              case .failure(let error):
-                completion(.failure(error))
+
+      guard let tokenAddress = Address(string: token.contract) else { return }
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let signData):
+          self.sendSignedTransactionData(signData.0, completion: { sendResult in
+            switch sendResult {
+            case .success(let hash):
+              var symbol = KNSupportedTokenStorage.shared.getTokenWith(address: tokenAddress.description.lowercased())?.name ?? "Token"
+              if tokenAddress.description.lowercased() == Constants.gasTokenAddress {
+                symbol = "CHI"
               }
-            })
-          case .failure(let error):
-            completion(.failure(error))
-          }
+              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject())
+              historyTransaction.hash = hash
+              historyTransaction.time = Date()
+              historyTransaction.nonce = txCount
+              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+              completion(.success(txCount + 1))
+            case .failure(let error):
+              completion(.failure(error))
+            }
+          })
+        case .failure(let error):
+          completion(.failure(error))
         }
-      )
+      }
+    }
+  }
+  
+  func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+    var error: Error?
+    var encodeData: Data = Data()
+    var txCount: Int = 0
+    let group = DispatchGroup()
+
+    group.enter()
+    self.getSendApproveERC20TokenEncodeData(networkAddress: networkAddress, value: value, completion: { result in
+      switch result {
+      case .success(let resp):
+        encodeData = resp
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    })
+    group.enter()
+    self.getTransactionCount(for: account.address.description) { result in
+      switch result {
+      case .success(let resp):
+        txCount = max(resp, currentNonce)
+      case .failure(let err):
+        error = err
+      }
+      group.leave()
+    }
+
+    group.notify(queue: .main) {
+      if let error = error {
+        completion(.failure(AnyError(error)))
+        return
+      }
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let signData):
+          self.sendSignedTransactionData(signData.0, completion: { sendResult in
+            switch sendResult {
+            case .success(let hash):
+              var symbol = KNSupportedTokenStorage.shared.getTokenWith(address: tokenAddress.description.lowercased())?.name ?? "Token"
+              if tokenAddress.description.lowercased() == Constants.gasTokenAddress {
+                symbol = "CHI"
+              }
+              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject())
+              historyTransaction.hash = hash
+              historyTransaction.time = Date()
+              historyTransaction.nonce = txCount
+              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+              completion(.success(txCount + 1))
+            case .failure(let error):
+              completion(.failure(error))
+            }
+          })
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
     }
   }
 
@@ -447,6 +587,7 @@ class KNGeneralProvider {
         }
       case .failure(let er):
         error = er
+        print(error.debugDescription)
       }
       group.leave()
     }
@@ -544,12 +685,33 @@ extension KNGeneralProvider {
       data: data,
       gasPrice: gasPrice,
       gasLimit: gasLimit,
-      chainID: KNEnvironment.default.chainID
+      chainID: KNGeneralProvider.shared.customRPC.chainID
     )
     let signResult = keystore.signTransaction(signTransaction)
     switch signResult {
     case .success(let data):
       completion(.success(data))
+    case .failure(let error):
+      completion(.failure(AnyError(error)))
+    }
+  }
+
+  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
+    let gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+    let signTransaction = SignTransaction(
+      value: BigInt(0),
+      account: account,
+      to: tokenAddress,
+      nonce: nonce,
+      data: data,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
+    let signResult = keystore.signTransaction(signTransaction)
+    switch signResult {
+    case .success(let data):
+      completion(.success((data, signTransaction)))
     case .failure(let error):
       completion(.failure(AnyError(error)))
     }
@@ -560,6 +722,30 @@ extension KNGeneralProvider {
 extension KNGeneralProvider {
   fileprivate func getTokenBalanceEncodeData(for address: Address, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20BalanceEncode(address: address)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  fileprivate func getSymbolEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC20SymbolEncode()
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  fileprivate func getDecimalsEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC20DecimalsEncode()
     self.web3Swift.request(request: request) { result in
       switch result {
       case .success(let data):
@@ -690,6 +876,30 @@ extension KNGeneralProvider {
       }
     }
   }
+  
+  fileprivate func getTokenSymbolDecodeData(from symbol: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC20SymbolDecode(data: symbol)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  fileprivate func getTokenDecimalsDecodeData(from decimals: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC20DecimalsDecode(data: decimals)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 
   fileprivate func getTokenAllowanceDecodeData(_ data: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     if data == "0x" {
@@ -739,7 +949,7 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getMultipleERC20BalancesDecode(data: String, completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
+  func getMultipleERC20BalancesDecode(data: String, completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
     let request = GetMultipleERC20BalancesDecode(data: data)
     self.web3Swift.request(request: request) { result in
       switch result {
@@ -751,6 +961,26 @@ extension KNGeneralProvider {
         completion(.success(res))
       case .failure(let error):
         completion(.failure(error))
+      }
+    }
+  }
+  
+  func getEstimateGasLimit(transaction: SignTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    let request = KNEstimateGasLimitRequest(
+      from: transaction.account.address.description,
+      to: transaction.to?.description,
+      value: transaction.value,
+      data: transaction.data,
+      gasPrice: transaction.gasPrice
+    )
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
+      switch result {
+      case .success(let value):
+        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        completion(.success(limit))
+      case .failure(let error):
+        NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
+        completion(.failure(AnyError(error)))
       }
     }
   }

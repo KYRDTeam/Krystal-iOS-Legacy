@@ -51,11 +51,41 @@ extension UIImageView {
     )
   }
 
-  func setTokenImage(with alert: KNAlertObject, size: CGSize? = nil, applyNoir: Bool = false) {
-     let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(alert.token.lowercased()).png"
-     let assetImage = UIImage(named: alert.token.lowercased())
-     let defaultImage = UIImage(named: "default_token")!
-     let placeholder = assetImage ?? defaultImage
-     setImage(with: url, placeholder: placeholder, size: size, applyNoir: applyNoir)
+  func setTokenImage(
+    tokenData: TokenData,
+    size: CGSize? = nil
+    ) {
+    let icon = tokenData.symbol.lowercased()
+    let image = UIImage(named: icon.lowercased())
+    let placeHolderImg = image ?? UIImage(named: "default_token")!
+    let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(icon).png"
+    self.setImage(
+      with: url,
+      placeholder: placeHolderImg,
+      size: size
+    )
   }
+  
+  func setSymbolImage(symbol: String, size: CGSize? = nil) {
+    let icon = symbol.lowercased()
+    let image = UIImage(named: icon.lowercased())
+    let placeHolderImg = image ?? UIImage(named: "default_token")!
+    var url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(icon).png"
+    if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: symbol) {
+      url = token.logo
+    }
+    self.setImage(
+      with: url,
+      placeholder: placeHolderImg,
+      size: size
+    )
+  }
+
+//  func setTokenImage(with alert: KNAlertObject, size: CGSize? = nil, applyNoir: Bool = false) {
+//     let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(alert.token.lowercased()).png"
+//     let assetImage = UIImage(named: alert.token.lowercased())
+//     let defaultImage = UIImage(named: "default_token")!
+//     let placeholder = assetImage ?? defaultImage
+//     setImage(with: url, placeholder: placeholder, size: size, applyNoir: applyNoir)
+//  }
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletMenuViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="addWatchWalletButton" destination="hpH-K0-ZSL" id="2u2-KU-Qyt"/>
+                <outlet property="contentView" destination="MHq-lZ-NUu" id="k6d-Vt-pxW"/>
+                <outlet property="contentViewTopContraint" destination="Vng-ZR-4GB" id="Tuo-Xr-pPj"/>
+                <outlet property="createRealWalletButton" destination="zEE-bM-tvz" id="6G2-P3-m5R"/>
+                <outlet property="importWalletButton" destination="zf4-kI-r09" id="fwu-PQ-Slv"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MHq-lZ-NUu">
+                    <rect key="frame" x="0.0" y="600" width="414" height="296"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to do?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGt-mF-TdA">
+                            <rect key="frame" x="85.5" y="32" width="243.5" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEE-bM-tvz">
+                            <rect key="frame" x="37" y="88.5" width="340" height="36"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="nvi-IP-O5D"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <state key="normal" title="Create a new wallet">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="createRealWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="CuJ-hG-snX"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zf4-kI-r09">
+                            <rect key="frame" x="37" y="144.5" width="340" height="38"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="4Zz-5W-nK3"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <state key="normal" title="Import a wallet">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="importWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="N9W-PI-P6L"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpH-K0-ZSL">
+                            <rect key="frame" x="37" y="202.5" width="340" height="38"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="Prl-VX-gcX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <state key="normal" title="Add a new watched wallet">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="createWatchWalletButtonTapped:" destination="-1" eventType="touchUpInside" id="faF-RE-XOV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="fGt-mF-TdA" firstAttribute="top" secondItem="MHq-lZ-NUu" secondAttribute="top" constant="32" id="1sv-oY-8Fh"/>
+                        <constraint firstItem="hpH-K0-ZSL" firstAttribute="top" secondItem="zf4-kI-r09" secondAttribute="bottom" constant="20" id="6oy-WA-Y8f"/>
+                        <constraint firstItem="hpH-K0-ZSL" firstAttribute="leading" secondItem="MHq-lZ-NUu" secondAttribute="leading" constant="37" id="AlB-jA-2aO"/>
+                        <constraint firstItem="fGt-mF-TdA" firstAttribute="centerX" secondItem="MHq-lZ-NUu" secondAttribute="centerX" id="XW6-dh-PIJ"/>
+                        <constraint firstItem="zEE-bM-tvz" firstAttribute="leading" secondItem="MHq-lZ-NUu" secondAttribute="leading" constant="37" id="Xtb-ga-p9Q"/>
+                        <constraint firstAttribute="height" constant="296" id="azv-uw-jEC"/>
+                        <constraint firstAttribute="trailing" secondItem="zEE-bM-tvz" secondAttribute="trailing" constant="37" id="fdP-nq-Ix7"/>
+                        <constraint firstItem="zEE-bM-tvz" firstAttribute="top" secondItem="fGt-mF-TdA" secondAttribute="bottom" constant="33" id="fyG-Kh-Ayu"/>
+                        <constraint firstAttribute="trailing" secondItem="hpH-K0-ZSL" secondAttribute="trailing" constant="37" id="hwf-XI-Mr2"/>
+                        <constraint firstItem="zf4-kI-r09" firstAttribute="top" secondItem="zEE-bM-tvz" secondAttribute="bottom" constant="20" id="qTH-nN-RhE"/>
+                        <constraint firstItem="zf4-kI-r09" firstAttribute="leading" secondItem="MHq-lZ-NUu" secondAttribute="leading" constant="37" id="y56-6e-xuY"/>
+                        <constraint firstAttribute="trailing" secondItem="zf4-kI-r09" secondAttribute="trailing" constant="37" id="yME-Qs-aCb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="MHq-lZ-NUu" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="0Gd-lI-aU2"/>
+                <constraint firstItem="MHq-lZ-NUu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8vn-pl-YOG"/>
+                <constraint firstItem="MHq-lZ-NUu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="600" id="Vng-ZR-4GB"/>
+            </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="06b-h4-M1w" appends="YES" id="hCg-dq-XKD"/>
+            </connections>
+            <point key="canvasLocation" x="140.57971014492756" y="105.80357142857143"/>
+        </view>
+        <tapGestureRecognizer id="06b-h4-M1w">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="foF-ah-0Sy"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <namedColor name="navButtonBgColor">
+            <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

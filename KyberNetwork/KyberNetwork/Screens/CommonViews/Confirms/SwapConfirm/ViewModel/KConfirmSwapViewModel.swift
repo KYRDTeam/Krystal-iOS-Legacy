@@ -7,13 +7,20 @@ struct KConfirmSwapViewModel {
 
   let transaction: KNDraftExchangeTransaction
   let ethBalance: BigInt
-  var isCloseGasWarningPopup: Bool {
-    return UserDefaults.standard.bool(forKey: Constants.gasWarningClosedValueKey)
-  }
+  let signTransaction: SignTransaction
+  let hasRateWarning: Bool
+  let platform: String
+  let rawTransaction: TxObject
+  let minDestAmount: BigInt
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt) {
+  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
     self.transaction = transaction
     self.ethBalance = ethBalance
+    self.signTransaction = signTransaction
+    self.hasRateWarning = hasRateWarning
+    self.platform = platform
+    self.rawTransaction = rawTransaction
+    self.minDestAmount = minDestAmount
   }
 
   var titleString: String {
@@ -26,11 +33,14 @@ struct KConfirmSwapViewModel {
   }
 
   var equivalentUSDAmount: BigInt? {
-    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.to) {
-      let expectedReceive = self.transaction.expectedReceive
-      return usdRate.rate * expectedReceive / BigInt(10).power(self.transaction.to.decimals)
-    }
-    return nil
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.to.address) else { return nil }
+//    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.to) {
+//      let expectedReceive = self.transaction.expectedReceive
+//      return usdRate.rate * expectedReceive / BigInt(10).power(self.transaction.to.decimals)
+//    }
+//    return nil
+    let usd = self.transaction.expectedReceive * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.to.decimals)
+    return usd
   }
 
   var displayEquivalentUSDAmount: String? {
@@ -45,29 +55,11 @@ struct KConfirmSwapViewModel {
   }
 
   var displayEstimatedRate: String {
-    let rateString = self.transaction.expectedRate.displayRate(decimals: transaction.to.decimals)
-    return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol)"
-  }
-
-  var percentageRateDiff: Double {
-    guard let rate = KNRateCoordinator.shared.getCachedProdRate(from: self.transaction.from, to: self.transaction.to), !rate.isZero else {
-      return 0.0
-    }
-    if self.transaction.expectedRate.isZero { return 0.0 }
-    let marketRateDouble = Double(rate) / pow(10.0, Double(self.transaction.to.decimals))
-    let estimatedRateDouble = Double(self.transaction.expectedRate) / pow(10.0, Double(self.transaction.to.decimals))
-    let change = (estimatedRateDouble - marketRateDouble) / marketRateDouble * 100.0
-    if change >= -5.0 { return 0.0 }
-    return change
-  }
-
-  var warningRateMessage: String? {
-    let change = self.percentageRateDiff
-    if change > -5.0 { return nil }
-    let display = NumberFormatterUtil.shared.displayPercentage(from: fabs(change))
-    let percent = "\(display)%"
-    let message = String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), percent)
-    return message
+    let rateString = self.transaction.expectedRate.displayRate(decimals: 18)
+    let usdPriceDouble = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.to.address)?.usd ?? 0.0
+    let usdPrice = BigInt(usdPriceDouble * pow(10.0, 18.0))
+    let usdValue = self.transaction.expectedRate * usdPrice / BigInt(10).power(18)
+    return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol) = \(usdValue.displayRate(decimals: 18)) USD"
   }
 
   var warningMinAcceptableRateMessage: String? {
@@ -78,8 +70,13 @@ struct KConfirmSwapViewModel {
 
   var minRateString: String {
     let minRate = self.transaction.minRate ?? BigInt(0)
-    return minRate.displayRate(decimals: self.transaction.to.decimals)
+    return minRate.displayRate(decimals: 18)
   }
+  
+  var displayMinDestAmount: String {
+    return self.minDestAmount.string(decimals: self.transaction.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.transaction.to.symbol
+  }
+  
 
   var transactionFee: BigInt {
     let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
@@ -88,22 +85,27 @@ struct KConfirmSwapViewModel {
   }
 
   var feeETHString: String {
+    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
     let string: String = self.transactionFee.displayRate(decimals: 18)
-    return "\(string) ETH"
+    return "\(string) \(quoteToken)"
   }
 
   var feeUSDString: String {
-    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
-    let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
-    let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
-    let valueString: String = value.displayRate(decimals: 18)
+//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
+//    let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
+//    let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
+//    let valueString: String = value.displayRate(decimals: 18)
+//    return "~ \(valueString) USD"
+    guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
+    let usd = self.transactionFee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let valueString: String = usd.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
 
   var warningETHBalanceShown: Bool {
     if !self.transaction.from.isETH { return false }
     let totalAmount = self.transactionFee + self.transaction.amount
-    return self.ethBalance - totalAmount <= BigInt(0.01 * pow(10.0, 18.0))
+    return self.self.transaction.from.getBalanceBigInt() - totalAmount <= BigInt(0.01 * pow(10.0, 18.0))
   }
 
   var transactionGasPriceString: String {
@@ -121,8 +123,8 @@ struct KConfirmSwapViewModel {
   var hint: String {
     return self.transaction.hint ?? ""
   }
-
-  func saveCloseGasWarningState() {
-    UserDefaults.standard.set(true, forKey: Constants.gasWarningClosedValueKey)
+  
+  var reverseRoutingText: String {
+    return String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized)
   }
 }

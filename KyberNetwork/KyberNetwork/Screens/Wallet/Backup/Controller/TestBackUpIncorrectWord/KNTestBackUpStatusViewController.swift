@@ -37,7 +37,7 @@ struct KNTestBackUpStatusViewModel {
   }
 
   var firstButtonTitle: String {
-    return self.isFirstTime ? NSLocalizedString("try.again", value: "Try Again", comment: "") : NSLocalizedString("retry", value: "Retry", comment: "")
+    return NSLocalizedString("try.again", value: "Try Again", comment: "")
   }
 
   var firstButtonColor: UIColor {
@@ -55,13 +55,9 @@ struct KNTestBackUpStatusViewModel {
   var secondButtonTitle: String {
     return NSLocalizedString("backup.again", value: "Backup Again", comment: "")
   }
-
-  var secondButtonColor: UIColor {
-    return KNAppStyleType.current.walletFlowHeaderColor
-  }
 }
 
-class KNTestBackUpStatusViewController: KNBaseViewController {
+class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstract {
 
   @IBOutlet weak var containerView: UIView!
 
@@ -73,6 +69,8 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
 
   @IBOutlet weak var secondButtonWidthConstraint: NSLayoutConstraint!
   @IBOutlet weak var paddingConstraintForButtons: NSLayoutConstraint!
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  let transitor = TransitionDelegate()
 
   fileprivate var viewModel: KNTestBackUpStatusViewModel
   weak var delegate: KNTestBackUpStatusViewControllerDelegate?
@@ -80,6 +78,8 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   init(viewModel: KNTestBackUpStatusViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNTestBackUpStatusViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -89,7 +89,6 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-    let style = KNAppStyleType.current
 
     self.containerView.rounded(radius: 10.0)
     self.containerView.isHidden = self.viewModel.isContainerViewHidden
@@ -99,28 +98,29 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.messageLabel.text = self.viewModel.message
     self.messageLabel.addLetterSpacing()
 
-    self.firstButton.rounded(
-      color: self.viewModel.firstButtonBorderColor,
-      width: 1,
-      radius: style.buttonRadius()
-    )
-    self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
-
-    self.secondButton.rounded(radius: style.buttonRadius())
-    self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
-    self.secondButton.backgroundColor = self.viewModel.secondButtonColor
-
     if self.viewModel.numberButtons == 1 {
       self.secondButtonWidthConstraint.constant = 0
       self.paddingConstraintForButtons.constant = 0
-      self.firstButton.applyGradient()
-      self.firstButton.setTitleColor(.white, for: .normal)
+      self.firstButton.rounded(radius: 16)
+      self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
+      self.firstButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+      self.firstButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
     } else {
+      self.firstButton.rounded(color: UIColor.Kyber.SWButtonYellow, width: 1, radius: self.firstButton.frame.size.height / 2)
+      self.firstButton.setTitle(self.viewModel.firstButtonTitle, for: .normal)
+      self.secondButton.rounded(radius: 16)
+      self.secondButton.setTitle(self.viewModel.secondButtonTitle, for: .normal)
+
       self.paddingConstraintForButtons.constant = 16
       self.secondButtonWidthConstraint.constant = (self.containerView.frame.width - 48) / 2.0
-      self.secondButton.applyGradient()
-      self.firstButton.setTitleColor(UIColor.Kyber.mirage, for: .normal)
-      self.secondButton.setTitleColor(.white, for: .normal)
+      
+      self.secondButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+      self.secondButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      
+      self.firstButton.backgroundColor = UIColor(named: "navButtonBgColor")
+      self.firstButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      
+      
     }
     self.view.updateConstraints()
     if self.viewModel.isSuccess {
@@ -143,17 +143,6 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    if self.viewModel.numberButtons == 1 {
-      self.firstButton.removeSublayer(at: 0)
-      self.firstButton.applyGradient()
-    } else {
-      self.secondButton.removeSublayer(at: 0)
-      self.secondButton.applyGradient()
-    }
-  }
-
   @IBAction func firstButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
   }
@@ -162,5 +151,22 @@ class KNTestBackUpStatusViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       self.delegate?.testBackUpStatusViewDidPressSecondButton(sender: self)
     }
+  }
+
+  @IBAction func tapOutSidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
+  }
+
+  // MARK: BottomPopUpAbstract
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
+  }
+
+  func getPopupHeight() -> CGFloat {
+    return 294
+  }
+
+  func getPopupContentView() -> UIView {
+    return self.containerView
   }
 }

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPasscodeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
-                <outlet property="actionButton" destination="1Ye-rp-M12" id="fA1-0F-q4Q"/>
                 <outlet property="bioAuthenButton" destination="Di7-0c-jbX" id="YfV-QQ-Grd"/>
                 <outlet property="errorLabel" destination="2vV-ba-j6R" id="1dV-c6-KLn"/>
                 <outlet property="passcodeContainerView" destination="7Ek-ZI-Va7" id="qjG-ac-Wpw"/>
@@ -46,14 +49,14 @@
             <subviews>
                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ylg-Cb-Sks">
                     <rect key="frame" x="150" y="296" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="69b-ql-DBr"/>
                         <constraint firstAttribute="height" constant="75" id="wxH-07-LNG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="5">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="t8m-4q-cIb"/>
@@ -61,14 +64,14 @@
                 </button>
                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cku-mu-38E">
                     <rect key="frame" x="55" y="296" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="nKo-l0-fRh"/>
                         <constraint firstAttribute="height" constant="75" id="sK5-g8-fCB"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="4">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="wM5-mu-qjc"/>
@@ -76,14 +79,14 @@
                 </button>
                 <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neI-BK-Nw0">
                     <rect key="frame" x="245" y="296" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="cat-9F-2rJ"/>
                         <constraint firstAttribute="width" constant="75" id="tE4-O1-vxq"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="6">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="Oai-we-EYK"/>
@@ -91,14 +94,14 @@
                 </button>
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iko-Cb-5k8">
                     <rect key="frame" x="150" y="201" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="bo9-8W-80D"/>
                         <constraint firstAttribute="height" constant="75" id="owj-TI-wRb"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="2">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="2dl-kh-z2T"/>
@@ -106,14 +109,14 @@
                 </button>
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOq-K5-z3m">
                     <rect key="frame" x="55" y="201" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="IIP-8Z-anm"/>
                         <constraint firstAttribute="height" constant="75" id="c6D-q2-n5H"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="1">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="JGQ-cd-B42"/>
@@ -121,14 +124,14 @@
                 </button>
                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C5h-n8-Fpg">
                     <rect key="frame" x="245" y="201" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="RB8-d2-2Z3"/>
                         <constraint firstAttribute="height" constant="75" id="wUV-gg-fsS"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="3">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="oZD-7c-U8l"/>
@@ -136,14 +139,14 @@
                 </button>
                 <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IsP-nF-c3X">
                     <rect key="frame" x="150" y="391" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="FXI-8e-oF4"/>
                         <constraint firstAttribute="width" constant="75" id="vwo-5y-RwD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="8">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="CqE-x1-bG9"/>
@@ -151,14 +154,14 @@
                 </button>
                 <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBa-D8-K83">
                     <rect key="frame" x="55" y="391" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="NDn-9M-lJR"/>
                         <constraint firstAttribute="width" constant="75" id="cJ8-Cx-1tX"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="7">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="Qqb-vx-gkW"/>
@@ -166,14 +169,14 @@
                 </button>
                 <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sxt-Re-76G">
                     <rect key="frame" x="245" y="391" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="3jt-Tz-6J7"/>
                         <constraint firstAttribute="height" constant="75" id="vTe-hH-ezK"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="9">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="6m1-4B-Zd5"/>
@@ -181,79 +184,65 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sP7-ZT-eta">
                     <rect key="frame" x="150" y="486" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="75" id="A5G-Ak-gNZ"/>
                         <constraint firstAttribute="height" constant="75" id="hKq-XA-DXa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="28"/>
                     <state key="normal" title="0">
-                        <color key="titleColor" red="0.93725490199999995" green="0.50588235290000005" blue="0.0078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.81568627450980391" green="0.83137254901960778" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="digitButtonPressed:" destination="-1" eventType="touchUpInside" id="CGG-rc-hep"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ye-rp-M12">
-                    <rect key="frame" x="285" y="608" width="60" height="29"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="60" id="gQ1-6Y-nYz"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <state key="normal" title="Cancel">
-                        <color key="titleColor" red="0.1137254902" green="0.14901960780000001" blue="0.24313725489999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="actionButtonPressed:" destination="-1" eventType="touchUpInside" id="2gJ-af-Kkw"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="17d-uX-RC2">
-                    <rect key="frame" x="20" y="40" width="335" height="22"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
-                    <color key="textColor" red="0.11372549019607843" green="0.14901960784313725" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="20" y="62" width="335" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Too many attempts, please try again in 60 second(s)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vV-ba-j6R">
-                    <rect key="frame" x="40" y="72" width="295" height="33"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                    <color key="textColor" red="0.40784313729999999" green="0.4549019608" blue="0.56078431370000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="40" y="95.5" width="295" height="42"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                    <color key="textColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ek-ZI-Va7">
-                    <rect key="frame" x="87.5" y="121" width="200" height="40"/>
+                    <rect key="frame" x="87.5" y="137.5" width="200" height="63.5"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6fM-kj-jjn">
-                            <rect key="frame" x="2.5" y="12.5" width="15" height="15"/>
-                            <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="20" y="27" width="10" height="10"/>
+                            <color key="backgroundColor" name="normalTextColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="15" id="0GT-DW-hWB"/>
-                                <constraint firstAttribute="width" constant="15" id="K6X-RO-uvC"/>
+                                <constraint firstAttribute="height" constant="10" id="0GT-DW-hWB"/>
+                                <constraint firstAttribute="width" constant="10" id="K6X-RO-uvC"/>
                             </constraints>
                         </view>
                         <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vao-NJ-C23">
-                            <rect key="frame" x="37.5" y="12.5" width="15" height="15"/>
+                            <rect key="frame" x="50" y="27" width="10" height="10"/>
                             <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ds9-za-Dqc">
-                            <rect key="frame" x="72.5" y="12.5" width="15" height="15"/>
+                            <rect key="frame" x="80" y="27" width="10" height="10"/>
                             <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8gA-fj-avw">
-                            <rect key="frame" x="107.5" y="12.5" width="15" height="15"/>
+                            <rect key="frame" x="110" y="27" width="10" height="10"/>
                             <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lWc-fb-u9Z">
-                            <rect key="frame" x="142.5" y="12.5" width="15" height="15"/>
+                            <rect key="frame" x="140" y="27" width="10" height="10"/>
                             <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6GK-a7-c4P">
-                            <rect key="frame" x="177.5" y="12.5" width="15" height="15"/>
+                            <rect key="frame" x="170" y="27" width="10" height="10"/>
                             <color key="backgroundColor" red="0.83529411764705885" green="0.85098039215686272" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="055-hR-f5q"/>
                         <constraint firstItem="6GK-a7-c4P" firstAttribute="centerY" secondItem="lWc-fb-u9Z" secondAttribute="centerY" id="0J4-Qp-9lD"/>
                         <constraint firstItem="6fM-kj-jjn" firstAttribute="centerY" secondItem="7Ek-ZI-Va7" secondAttribute="centerY" id="0vP-PF-ThR"/>
                         <constraint firstItem="6GK-a7-c4P" firstAttribute="height" secondItem="lWc-fb-u9Z" secondAttribute="height" id="7yX-ZV-j4L"/>
@@ -280,22 +269,32 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di7-0c-jbX">
-                    <rect key="frame" x="169.5" y="592.5" width="36" height="36"/>
+                    <rect key="frame" x="169.5" y="591" width="36" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="2dq-td-F3t"/>
                         <constraint firstAttribute="width" constant="36" id="ciK-hn-CW5"/>
                     </constraints>
-                    <state key="normal" image="faceid_icon"/>
+                    <color key="tintColor" name="textWhiteColor"/>
+                    <state key="normal" image="faceid_blue_icon"/>
                     <connections>
                         <action selector="bioAuthenButtonPressed:" destination="-1" eventType="touchUpInside" id="rmw-4k-aSY"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56z-gV-8Rd">
+                    <rect key="frame" x="256.5" y="501.5" width="52" height="44"/>
+                    <state key="normal" image="keyboard_delete_icon"/>
+                    <connections>
+                        <action selector="actionButtonPressed:" destination="-1" eventType="touchUpInside" id="baW-88-b7p"/>
+                    </connections>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="leading" secondItem="Cku-mu-38E" secondAttribute="trailing" constant="20" id="0ud-u6-Wc7"/>
                 <constraint firstItem="neI-BK-Nw0" firstAttribute="leading" secondItem="Ylg-Cb-Sks" secondAttribute="trailing" constant="20" id="2G0-x9-uA3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="17d-uX-RC2" secondAttribute="trailing" constant="20" id="2vy-vu-Jiw"/>
+                <constraint firstItem="56z-gV-8Rd" firstAttribute="centerX" secondItem="Sxt-Re-76G" secondAttribute="centerX" id="4JY-wC-0YS"/>
                 <constraint firstItem="IsP-nF-c3X" firstAttribute="leading" secondItem="kBa-D8-K83" secondAttribute="trailing" constant="20" id="4Xy-N2-0ku"/>
                 <constraint firstItem="hOq-K5-z3m" firstAttribute="centerY" secondItem="iko-Cb-5k8" secondAttribute="centerY" id="4Zp-lD-RIc"/>
                 <constraint firstItem="17d-uX-RC2" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="8pM-T6-lB1"/>
@@ -304,14 +303,11 @@
                 <constraint firstItem="iko-Cb-5k8" firstAttribute="centerX" secondItem="Ylg-Cb-Sks" secondAttribute="centerX" id="B4h-uQ-zdf"/>
                 <constraint firstItem="2vV-ba-j6R" firstAttribute="centerX" secondItem="17d-uX-RC2" secondAttribute="centerX" id="B8n-QB-eg4"/>
                 <constraint firstItem="IsP-nF-c3X" firstAttribute="top" secondItem="Ylg-Cb-Sks" secondAttribute="bottom" constant="20" id="DAP-K3-uHM"/>
-                <constraint firstItem="Di7-0c-jbX" firstAttribute="centerY" secondItem="1Ye-rp-M12" secondAttribute="centerY" constant="-12" id="EdI-YG-aoy"/>
                 <constraint firstItem="2vV-ba-j6R" firstAttribute="top" secondItem="17d-uX-RC2" secondAttribute="bottom" constant="10" id="Ltb-06-QSh"/>
                 <constraint firstItem="neI-BK-Nw0" firstAttribute="centerY" secondItem="Ylg-Cb-Sks" secondAttribute="centerY" id="Nex-bY-oeM"/>
-                <constraint firstItem="17d-uX-RC2" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="40" id="NpO-eP-1tk"/>
+                <constraint firstItem="17d-uX-RC2" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="62" id="NpO-eP-1tk"/>
                 <constraint firstItem="Cku-mu-38E" firstAttribute="centerY" secondItem="Ylg-Cb-Sks" secondAttribute="centerY" id="O7O-Ad-8cs"/>
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="QEC-HN-op1"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="1Ye-rp-M12" secondAttribute="bottom" constant="30" id="SeX-KX-XST"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1Ye-rp-M12" secondAttribute="trailing" constant="30" id="bKb-qE-wBF"/>
                 <constraint firstItem="kBa-D8-K83" firstAttribute="centerY" secondItem="IsP-nF-c3X" secondAttribute="centerY" id="cl2-FL-IWd"/>
                 <constraint firstItem="C5h-n8-Fpg" firstAttribute="leading" secondItem="iko-Cb-5k8" secondAttribute="trailing" constant="20" id="d16-5b-aH5"/>
                 <constraint firstItem="Sxt-Re-76G" firstAttribute="leading" secondItem="IsP-nF-c3X" secondAttribute="trailing" constant="20" id="d8b-zf-3Y3"/>
@@ -320,18 +316,30 @@
                 <constraint firstItem="Ylg-Cb-Sks" firstAttribute="top" secondItem="iko-Cb-5k8" secondAttribute="bottom" constant="20" id="hDr-ow-4I0"/>
                 <constraint firstItem="7Ek-ZI-Va7" firstAttribute="centerX" secondItem="2vV-ba-j6R" secondAttribute="centerX" id="hs7-9K-rsH"/>
                 <constraint firstItem="Sxt-Re-76G" firstAttribute="centerY" secondItem="IsP-nF-c3X" secondAttribute="centerY" id="k9v-XO-WiJ"/>
-                <constraint firstItem="7Ek-ZI-Va7" firstAttribute="top" secondItem="2vV-ba-j6R" secondAttribute="bottom" constant="16" id="lqW-0O-fDE"/>
+                <constraint firstItem="Di7-0c-jbX" firstAttribute="top" secondItem="sP7-ZT-eta" secondAttribute="bottom" constant="30" id="lGS-cy-GJc"/>
+                <constraint firstItem="7Ek-ZI-Va7" firstAttribute="top" secondItem="2vV-ba-j6R" secondAttribute="bottom" id="lqW-0O-fDE"/>
+                <constraint firstItem="56z-gV-8Rd" firstAttribute="centerY" secondItem="sP7-ZT-eta" secondAttribute="centerY" id="mXZ-jC-Mb8"/>
                 <constraint firstItem="iko-Cb-5k8" firstAttribute="leading" secondItem="hOq-K5-z3m" secondAttribute="trailing" constant="20" id="obr-c1-MEi"/>
                 <constraint firstItem="17d-uX-RC2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="pNY-UN-p3O"/>
                 <constraint firstItem="sP7-ZT-eta" firstAttribute="centerX" secondItem="IsP-nF-c3X" secondAttribute="centerX" id="rz2-GB-qFq"/>
                 <constraint firstItem="IsP-nF-c3X" firstAttribute="centerX" secondItem="Ylg-Cb-Sks" secondAttribute="centerX" id="uSl-bI-2UU"/>
                 <constraint firstItem="C5h-n8-Fpg" firstAttribute="centerY" secondItem="iko-Cb-5k8" secondAttribute="centerY" id="wn0-jx-Az5"/>
+                <constraint firstItem="iko-Cb-5k8" firstAttribute="top" secondItem="7Ek-ZI-Va7" secondAttribute="bottom" id="xFE-ql-aL5"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="33.5" y="70.5"/>
         </view>
     </objects>
     <resources>
-        <image name="faceid_icon" width="52" height="51"/>
+        <image name="faceid_blue_icon" width="26" height="26"/>
+        <image name="keyboard_delete_icon" width="52" height="44"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

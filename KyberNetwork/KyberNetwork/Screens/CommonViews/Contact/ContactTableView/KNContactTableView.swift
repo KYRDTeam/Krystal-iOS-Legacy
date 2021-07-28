@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import SwipeCellKit
 
 enum KNContactTableViewEvent {
   case select(contact: KNContact)
@@ -9,6 +10,7 @@ enum KNContactTableViewEvent {
   case edit(contact: KNContact)
   case update(height: CGFloat)
   case copiedAddress
+  case addContact
 }
 
 protocol KNContactTableViewDelegate: class {
@@ -48,6 +50,31 @@ class KNContactTableView: XibLoaderView {
       name: NSNotification.Name(rawValue: kUpdateListContactNotificationKey),
       object: nil
     )
+
+    let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 375, height: 156))
+    containerView.backgroundColor = UIColor.clear
+    let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 36))
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(
+      NSLocalizedString("add.contact", value: "Add Contact", comment: ""),
+      for: .normal
+    )
+    button.titleLabel?.font = UIFont.Kyber.bold(with: 14)
+    button.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+    button.setImage(UIImage(named: "add_blue_icon"), for: .normal)
+    button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+    button.tintColor = UIColor(named: "normalTextColor")
+    containerView.addSubview(button)
+    let contraints = [
+      button.widthAnchor.constraint(equalToConstant: 150),
+      button.heightAnchor.constraint(equalToConstant: 36),
+      button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      button.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+    ]
+    NSLayoutConstraint.activate(contraints)
+    button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: button.frame.size.height / 2)
+    button.addTarget(self, action: #selector(addContactTapped(_:)), for: .touchUpInside)
+    self.tableView.tableFooterView = containerView
   }
 
   func removeNotificationObserve() {
@@ -62,6 +89,13 @@ class KNContactTableView: XibLoaderView {
     self.tableView.isScrollEnabled = isEnabled
     self.tableView.showsVerticalScrollIndicator = isEnabled
     self.tableView.showsHorizontalScrollIndicator = isEnabled
+  }
+
+  @objc func addContactTapped(_ sender: UIButton) {
+    self.delegate?.contactTableView(
+      self.tableView,
+      run: .addContact
+    )
   }
 
   @objc func shouldUpdateContacts(_ sender: Notification?) {
@@ -119,12 +153,17 @@ extension KNContactTableView: UITableViewDataSource {
     return self.contacts.count
   }
 
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 0
+  }
+
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return UIView()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kContactTableViewCellID, for: indexPath) as! KNContactTableViewCell
+    cell.delegate = self
     let contact: KNContact = self.contacts[indexPath.row]
     let viewModel = KNContactTableViewCellModel(
       contact: contact,
@@ -133,33 +172,58 @@ extension KNContactTableView: UITableViewDataSource {
     cell.update(with: viewModel)
     return cell
   }
+}
 
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    return true
+extension KNContactTableView: SwipeTableViewCellDelegate {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard orientation == .right else { return nil }
+    let bgImg = UIImage(named: "history_cell_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 60))!
+
+    let transfer = SwipeAction(style: .default, title: nil) { (_, idx) in
+      self.delegate?.contactTableView(
+        tableView,
+        run: .send(address: self.contacts[idx.row].address)
+      )
+    }
+    transfer.hidesWhenSelected = true
+    transfer.title = "transfer".toBeLocalised().uppercased()
+    transfer.textColor = UIColor(named: "normalTextColor")
+    transfer.font = UIFont.Kyber.medium(with: 12)
+    transfer.backgroundColor = UIColor(patternImage: resized)
+
+    let edit = SwipeAction(style: .default, title: nil) { (_, idx) in
+      self.delegate?.contactTableView(
+        tableView,
+        run: .edit(contact: self.contacts[idx.row])
+      )
+    }
+    edit.hidesWhenSelected = true
+    edit.title = "edit".toBeLocalised().uppercased()
+    edit.textColor = UIColor(named: "normalTextColor")
+    edit.font = UIFont.Kyber.medium(with: 12)
+    edit.backgroundColor = UIColor(patternImage: resized)
+
+    let delete = SwipeAction(style: .default, title: nil) { (_, idx) in
+      self.delegate?.contactTableView(
+        tableView,
+        run: .delete(contact: self.contacts[idx.row])
+      )
+    }
+    delete.hidesWhenSelected = true
+    delete.title = "delete".toBeLocalised().uppercased()
+    delete.textColor = UIColor(named: "normalTextColor")
+    delete.font = UIFont.Kyber.medium(with: 12)
+    delete.backgroundColor = UIColor(patternImage: resized)
+    return [delete, edit, transfer]
   }
 
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    let send = UITableViewRowAction(style: .normal, title: NSLocalizedString("transfer", value: "Transfer", comment: "")) { (_, _) in
-      self.delegate?.contactTableView(
-        tableView,
-        run: .send(address: self.contacts[indexPath.row].address)
-      )
-    }
-    send.backgroundColor = UIColor.Kyber.marketBlue
-    let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
-      self.delegate?.contactTableView(
-        tableView,
-        run: .edit(contact: self.contacts[indexPath.row])
-      )
-    }
-    edit.backgroundColor = UIColor.Kyber.shamrock
-    let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
-      self.delegate?.contactTableView(
-        tableView,
-        run: .delete(contact: self.contacts[indexPath.row])
-      )
-    }
-    delete.backgroundColor = UIColor.Kyber.strawberry
-    return [delete, edit, send]
+  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    var options = SwipeOptions()
+    options.expansionStyle = .selection
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
+    return options
   }
 }

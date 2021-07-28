@@ -1,31 +1,25 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import BigInt
+
+
 
 protocol KConfirmSwapViewControllerDelegate: class {
-  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, run event: KConfirmViewEvent)
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
+  func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
 
-  @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var titleLabel: UILabel!
 
   @IBOutlet weak var fromAmountLabel: UILabel!
   @IBOutlet weak var toAmountLabel: UILabel!
-  @IBOutlet weak var toTextLabel: UILabel!
+
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
-  @IBOutlet weak var minAcceptableRateTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
 
-  @IBOutlet weak var firstSeparatorView: UIView!
-
-  @IBOutlet weak var warningMessageLabel: UILabel!
   @IBOutlet weak var expectedRateLabel: UILabel!
   @IBOutlet weak var minAcceptableRateValueButton: UIButton!
-
-  @IBOutlet weak var secondSeparatorView: UIView!
 
   @IBOutlet weak var transactionFeeETHLabel: UILabel!
   @IBOutlet weak var transactionFeeUSDLabel: UILabel!
@@ -38,19 +32,20 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var reserveRoutingMessageContainer: UIView!
   @IBOutlet weak var reserveRoutingMessageLabel: UILabel!
   @IBOutlet weak var reserveRountingContainerTopConstraint: NSLayoutConstraint!
-  @IBOutlet weak var gasWarningTextLabel: UILabel!
-  @IBOutlet weak var gasWarningContainerView: UIView!
-  @IBOutlet weak var confirmButtonTopContraintWithReverseRoutingLabel: NSLayoutConstraint!
-  fileprivate var isViewSetup: Bool = false
-
+  @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var rateWarningLabel: UILabel!
+  @IBOutlet weak var rateTopContraint: NSLayoutConstraint!
+  
   fileprivate var viewModel: KConfirmSwapViewModel
   weak var delegate: KConfirmSwapViewControllerDelegate?
-
-  fileprivate var isConfirmed: Bool = false
+  let transitor = TransitionDelegate()
 
   init(viewModel: KConfirmSwapViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KConfirmSwapViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -59,48 +54,20 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    if !self.isViewSetup {
-      self.isViewSetup = true
-      self.setupUI()
-    }
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    if !self.isConfirmed {
-      self.confirmButton.removeSublayer(at: 0)
-      self.confirmButton.applyGradient()
-    }
+    self.setupUI()
   }
 
   fileprivate func setupUI() {
-    let style = KNAppStyleType.current
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-
-    self.titleLabel.text = self.viewModel.titleString
-    self.titleLabel.addLetterSpacing()
-
     self.fromAmountLabel.text = self.viewModel.leftAmountString
     self.fromAmountLabel.addLetterSpacing()
     self.toAmountLabel.text = self.viewModel.rightAmountString
     self.toAmountLabel.addLetterSpacing()
 
-    self.firstSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-
-    self.warningMessageLabel.text = self.viewModel.warningRateMessage
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
     self.expectedRateLabel.addLetterSpacing()
-    self.minAcceptableRateValueButton.setTitle(self.viewModel.minRateString, for: .normal)
+    self.minAcceptableRateValueButton.setTitle(self.viewModel.displayMinDestAmount, for: .normal)
     self.minAcceptableRateValueButton.setTitleColor(
-      self.viewModel.warningMinAcceptableRateMessage == nil ? UIColor(red: 90, green: 94, blue: 103) : UIColor(red: 250, green: 101, blue: 102),
+      self.viewModel.warningMinAcceptableRateMessage == nil ? UIColor(red: 245, green: 246, blue: 249) : UIColor(red: 250, green: 101, blue: 102),
       for: .normal
     )
     self.minAcceptableRateValueButton.isEnabled = self.viewModel.warningMinAcceptableRateMessage != nil
@@ -117,21 +84,16 @@ class KConfirmSwapViewController: KNBaseViewController {
     transactionGasPriceLabel.text = viewModel.transactionGasPriceString
     transactionGasPriceLabel.addLetterSpacing()
 
-    self.secondSeparatorView.dashLine(width: 1.0, color: UIColor.Kyber.dashLine)
-
-    self.confirmButton.rounded(radius: style.buttonRadius())
+    self.confirmButton.rounded(radius: self.confirmButton.frame.size.height / 2)
+    self.cancelButton.rounded(radius: self.cancelButton.frame.size.height / 2)
     self.confirmButton.setTitle(
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
       for: .normal
     )
-    self.confirmButton.applyGradient()
     self.cancelButton.setTitle(
       NSLocalizedString("cancel", value: "Cancel", comment: ""),
       for: .normal
     )
-
-    self.toTextLabel.text = NSLocalizedString("transaction.to.text", value: "To", comment: "")
-    self.minAcceptableRateTextLabel.text = NSLocalizedString("min.acceptable.rate", value: "Min Acceptable Rate", comment: "")
     self.transactionFeeTextLabel.text = "Maximum gas fee".toBeLocalised()
     self.transactionFeeTextLabel.addLetterSpacing()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
@@ -143,36 +105,16 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.reserveRoutingMessageContainer.isHidden = self.viewModel.hint == "" || self.viewModel.hint == "0x"
     if !warningBalShown {
-      self.reserveRountingContainerTopConstraint.constant = 20
+      self.reserveRountingContainerTopConstraint.constant = 23
     } else {
-      self.reserveRountingContainerTopConstraint.constant = 50
+      self.reserveRountingContainerTopConstraint.constant = 62.5
     }
 
-    self.reserveRoutingMessageLabel.text = "Reserve routing is used in this transaction to reduce gas costs".toBeLocalised()
-    self.updateGasWarningUI()
+    self.reserveRoutingMessageLabel.text = self.viewModel.reverseRoutingText
+    self.rateWarningLabel.isHidden = !self.viewModel.hasRateWarning
+    self.rateTopContraint.constant = self.viewModel.hasRateWarning ? 90.0 : 14.0
 
     self.view.layoutIfNeeded()
-  }
-
-  @IBAction func backButtonPressed(_ sender: Any) {
-
-    KNCrashlyticsUtil.logCustomEvent(withName: "swapconfirm_cancel",
-                                     customAttributes: [
-                                      "token_pair": self.viewModel.titleString,
-                                      "amount": self.viewModel.leftAmountString,
-                                      "current_rate": self.viewModel.displayEstimatedRate,
-                                      "min_rate": self.viewModel.minRateString,
-                                      "tx_fee": self.viewModel.feeETHString,
-      ]
-    )
-    self.delegate?.kConfirmSwapViewController(self, run: .cancel)
-  }
-
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_confirm_swap", customAttributes: ["action": "screen_edge_pan_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
-      self.delegate?.kConfirmSwapViewController(self, run: .cancel)
-    }
   }
 
   @IBAction func tapMinAcceptableRateValue(_ sender: Any?) {
@@ -186,27 +128,19 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "screen_confirm_swap", customAttributes: ["action": "confirmed_\(self.viewModel.transaction.from.symbol)_\(self.viewModel.transaction.to.symbol)"])
-    let event = KConfirmViewEvent.confirm(type: KNTransactionType.exchange(self.viewModel.transaction))
-    self.updateActionButtonsSendingSwap()
-    self.delegate?.kConfirmSwapViewController(self, run: event)
+    self.dismiss(animated: true, completion: nil)
+    
+    let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: self.viewModel.signTransaction.toSignTransactionObject())
+    internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
+    self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction, internalHistoryTransaction: internalHistory)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "swapconfirm_cancel",
-                                     customAttributes: [
-                                      "token_pair": self.viewModel.titleString,
-                                      "amount": self.viewModel.leftAmountString,
-                                      "current_rate": self.viewModel.displayEstimatedRate,
-                                      "min_rate": self.viewModel.minRateString,
-                                      "tx_fee": self.viewModel.feeETHString,
-      ]
-    )
-    self.delegate?.kConfirmSwapViewController(self, run: .cancel)
+    self.dismiss(animated: true, completion: nil)
+    self.delegate?.kConfirmSwapViewControllerDidCancel(self)
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "swapconfirm_gas_fee_info_tapped", customAttributes: nil)
     self.showBottomBannerView(
       message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
@@ -214,66 +148,21 @@ class KConfirmSwapViewController: KNBaseViewController {
     )
   }
 
-  @IBAction func closeGasWarningPopupTapped(_ sender: UIButton) {
-    self.viewModel.saveCloseGasWarningState()
-    self.updateGasWarningUI()
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension KConfirmSwapViewController: BottomPopUpAbstract {
+  func setTopContrainConstant(value: CGFloat) {
+    self.contentViewTopContraint.constant = value
   }
 
-  func updateActionButtonsSendingSwap() {
-    self.isConfirmed = true
-    self.confirmButton.removeSublayer(at: 0)
-    self.confirmButton.backgroundColor = UIColor.clear
-    self.confirmButton.setTitle("\(NSLocalizedString("in.progress", value: "In Progress", comment: "")) ...", for: .normal)
-    self.confirmButton.setTitleColor(
-      UIColor.Kyber.enygold,
-      for: .normal
-    )
-    self.confirmButton.isEnabled = false
-    self.cancelButton.isHidden = true
+  func getPopupHeight() -> CGFloat {
+    return 600
   }
 
-  func resetActionButtons() {
-    self.confirmButton.setTitle(
-      NSLocalizedString("confirm", value: "Confirm", comment: ""),
-      for: .normal
-    )
-    self.confirmButton.setTitleColor(UIColor.white, for: .normal)
-    self.confirmButton.applyGradient()
-    self.isConfirmed = false
-    self.confirmButton.isEnabled = true
-    self.cancelButton.isHidden = false
-    self.cancelButton.setTitle(
-      NSLocalizedString("cancel", value: "Cancel", comment: ""),
-      for: .normal
-    )
-    self.view.layoutIfNeeded()
-  }
-
-  fileprivate func updateGasWarningUI() {
-    guard self.isViewSetup else {
-      return
-    }
-    let currentGasPrice = self.viewModel.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.viewModel.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
-    var limit = UserDefaults.standard.double(forKey: Constants.gasWarningValueKey)
-    if limit <= 0 { limit = 200 }
-    let limitBigInt = BigInt(limit * pow(10, 9))
-    let isShowWarning = (currentGasPrice > limitBigInt) && !self.viewModel.isCloseGasWarningPopup
-    self.confirmButtonTopContraintWithReverseRoutingLabel.constant = isShowWarning ? 76 : 20
-    self.gasWarningContainerView.isHidden = !isShowWarning
-    if isShowWarning {
-      let estFee = currentGasPrice * gasLimit
-      let feeString: String = estFee.displayRate(decimals: 18)
-      let warningText = String(format: "High network congestion. Please double check gas fee (~%@ ETH) before confirmation.".toBeLocalised(), feeString)
-      self.gasWarningTextLabel.text = warningText
-    }
-  }
-
-  func coordinatorUpdateCurrentMarketRate() {
-    self.warningMessageLabel.text = self.viewModel.warningRateMessage
-  }
-
-  func coordinatorUpdateGasWaringLimit() {
-    self.updateGasWarningUI()
+  func getPopupContentView() -> UIView {
+    return self.contentView
   }
 }

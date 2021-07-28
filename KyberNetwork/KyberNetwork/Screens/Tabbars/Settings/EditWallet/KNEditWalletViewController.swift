@@ -30,7 +30,8 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBOutlet weak var showBackupPhraseButton: UIButton!
   @IBOutlet weak var deleteButton: UIButton!
-
+  @IBOutlet weak var doneButton: UIButton!
+  
   fileprivate let viewModel: KNEditWalletViewModel
   weak var delegate: KNEditWalletViewControllerDelegate?
 
@@ -45,14 +46,13 @@ class KNEditWalletViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.navTitleLabel.text = NSLocalizedString("edit.wallet", value: "Edit Wallet", comment: "")
     self.nameWalletTextLabel.text = NSLocalizedString("name.of.your.wallet.optional", value: "Name of your wallet (optional)", comment: "")
     self.walletNameTextField.placeholder = NSLocalizedString("give.your.wallet.a.name", value: "Give your wallet a name", comment: "")
     self.walletNameTextField.text = self.viewModel.wallet.name
     self.showBackupPhraseButton.setTitle(NSLocalizedString("show.backup.phrase", value: "Show Backup Phrase", comment: ""), for: .normal)
     self.deleteButton.setTitle(NSLocalizedString("delete.wallet", value: "Delete Wallet", comment: ""), for: .normal)
-    self.view.layoutIfNeeded()
+    self.doneButton.rounded(radius: 16)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -65,12 +65,6 @@ class KNEditWalletViewController: KNBaseViewController {
     self.view.endEditing(true)
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-  }
-
   @IBAction func backButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.delegate?.editWalletViewController(self, run: .back)
@@ -78,19 +72,16 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBAction func showBackUpPhraseButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet_show_back_up", customAttributes: nil)
     self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet))
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet_delete_wallet", customAttributes: ["action": "delete_wallet"])
     self.delegate?.editWalletViewController(self, run: .delete(wallet: self.viewModel.wallet))
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    KNCrashlyticsUtil.logCustomEvent(withName: "edit_wallet_save_wallet", customAttributes: ["action": "save_wallet"])
     let wallet = self.viewModel.wallet.copy(withNewName: self.walletNameTextField.text ?? "")
     self.delegate?.editWalletViewController(self, run: .update(newWallet: wallet))
   }

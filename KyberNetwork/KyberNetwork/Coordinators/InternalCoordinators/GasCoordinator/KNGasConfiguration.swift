@@ -6,6 +6,7 @@ import BigInt
 public struct KNGasConfiguration {
   static let digixGasLimitDefault = BigInt(1_140_000)
   static let exchangeTokensGasLimitDefault = BigInt(1_140_000)
+  static let earnGasLimitDefault = BigInt(1_140_000) //TODO: hard code the same swap value change later
   static let exchangeETHTokenGasLimitDefault = BigInt(884_000)
   static let approveTokenGasLimitDefault = BigInt(160_000)
   static let transferTokenGasLimitDefault = BigInt(180_000)
@@ -17,7 +18,6 @@ public struct KNGasConfiguration {
   static let propyGasLimitDefault = BigInt(884_000)
   static let promotionTokenGasLimitDefault = BigInt(884_000)
   static let trueUSDTokenGasLimitDefault = BigInt(870_000)
-  static let transferSpecialTokenGasLimitDefault = BigInt(400_000)
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "50", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "20", units: UnitConfiguration.gasPriceUnit)!
@@ -63,9 +63,6 @@ public struct KNGasConfiguration {
   }
 
   static func calculateDefaultGasLimitTransfer(token: TokenObject) -> BigInt {
-    if token.isCOMP || token.isAAVE || token.isBZRX {
-      return transferSpecialTokenGasLimitDefault
-    }
-    return token.isETH ? transferETHGasLimitDefault : transferTokenGasLimitDefault
+    return token.isETH || token.isBNB ? transferETHGasLimitDefault : transferTokenGasLimitDefault
   }
 }

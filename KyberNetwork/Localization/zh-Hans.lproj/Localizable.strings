@@ -292,7 +292,7 @@
 "enter.or.scan.private.key" = "输入或扫描私钥";
 "private.key" = "私钥";
 "enter.password.to.decrypt" = "输入密码解密";
-"enter.your.seeds" = "输入你的mnemonic";
+"enter.your.seeds" = "输入你的seeds";
 "first.name" = "名字";
 "middle.name" = "Middle Name";
 "last.name" = "姓氏";
@@ -315,7 +315,7 @@
 "copy.address" = "复制地址";
 "export.at.your.own.risk" = "导出风险自负！";
 "backup" = "备份";
-"share.with.friends.text" = "我刚刚找到一个很棒的钱包应用程序。在这里查看https://apps.apple.com/us/app/id1521778973";
+"share.with.friends.text" = "我刚刚找到一个很棒的钱包应用程序。在这里查看https://apps.apple.com/us/app/id1558105691";
 "transaction.being.broadcasted" = "正在广播交易";
 "can.not.create.transaction" = "无法创建交易";
 "transaction.being.mined" = "交易正在上链";
@@ -389,7 +389,7 @@
 "regular" = "定期";
 "still.proceed.if.rate.goes.down.by" = "仍然继续，即便%@下降：";
 "transaction.will.be.reverted.if.rate.lower.than" = "如果费率%@低于%@ （当前费率%@ ），那么交易将被退回";
-"can.not.handle.your.amount" = "该代币储备库目前无法处理您的交易金额。 请进行金额较小的交易，或等待外部机构增加流动性。  了解更多";
+"can.not.handle.your.amount" = "无法处理您的数量";
 "advanced.optional" = "高级 (可选)";
 "kybercode" = "KyberCode";
 "your.kybercode" = "你的KyberCode";
@@ -472,7 +472,7 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "您设置的最低可接受汇率高于KyberNetwork的建议汇率。您的兑换很可能失败。";
 
-"This token pair is temporarily under maintenance" = "该代币对暂时处于维护状态。 流动性是由外部机构管理。  了解更多";
+"This token pair is temporarily under maintenance" = "此对正在暂时维修中";
 
 "can.not.decode.data" = "无法解码数据";
 "something.went.wrong.please.try.again" = "出了点问题，请再试一次";
@@ -736,7 +736,7 @@
 
 "Invalid nonce" = "无法导入Kyber code，请确认您输入的序号在有效期限内";
 "KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "目前仅在KyberSwap的网页版上支持通过法币购买ETH。您想访问该网站吗？";
-"⚠️NEVER share Keystore/Private Key/Mnemonic with anyone (including KyberSwap). These data grant access to all your funds and they may get stolen" = "⚠️切勿与任何人（包括KyberSwap）分享密钥库/私钥/助记符。 这些数据会授予您所有资金的访问权限，可能有被盗風險。";
+"⚠️NEVER share Keystore/Private Key/Mnemonic with anyone (including KyberSwap). These data grant access to all your funds and they may get stolen" = "⚠️切勿与任何人（包括Krystal）分享密钥库/私钥/助记符。 这些数据会授予您所有资金的访问权限，可能有被盗風險。";
 
 "Select higher gas price to accelerate your transaction processing time" = "选择较高的燃料价格，以加快您的交易处理时间";
 
@@ -777,10 +777,10 @@
 "Manage Order\nCheck your order history, pending orders etc. You can modify your orders as well." = "管理订单\n检查您的订单历史记录、待处理订单等。您也可以对订单进行修改。";
 "Speed Up or Cancel transaction." = "加快交易速度或取消交易。";
 
-"There.is.a.difference.between.the.estimated.price" = "您兑换金额的估计价格与参考价格之间存在%@的差异。\ n注意：估计价格取决于您的兑换金额。参考价格来自Chainlink、Band protocol 和Kyber Network。";
+"There.is.a.difference.between.the.estimated.price" = "您兑换金额的估计价格与参考价格之间存在%@的差异。\ n注意：估计价格取决于您的兑换金额。参考价格来自Coingecko、Band protocol 和Kyber Network。";
 
-"Gas.fee.is.the.fee.you.pay.to.the.miner" = "Gas费用是您支付给矿工的费用（并非Kyberswap），以在区块链上进行交易。 gas费用的高低反映了交易打包出块的优先级。";
-"Wallet.must.be.backed.up" = "请备份您的钱包。以便在手机发生损坏、丢失或被盗的情况下，能帮助您找回钱包.";
+"Gas.fee.is.the.fee.you.pay.to.the.miner" = "Gas fee is the fee you pay to the miner (not to Krystal) to mine your transaction on blockchain. The price of gas generally reflect how fast you want a transaction mined";
+"Wallet.must.be.backed.up" = "Please backup your wallet. It will allow you to recover your wallet if your device is damaged, lost or stolen";
 "Later" = "以后";
 
 "Explore" = "探索";
@@ -798,8 +798,3 @@
 "send.only.ERC20.tokens.to.this.address" = "仅将ETH或ERC-20代币发送到该地址\n\n*发送其他类型的代币可能会导致您的代币遗失";
 "Something is wrong? View your wallet on" = "出什么状况了吗？请查看您的钱包确认。";
 "only.send.ETH.or.any.ERC-20" = "仅将ETH或ERC-20代币发送到该地址";
-
-"Save.gas.fees" = "节省gas费用。当gas价格昂贵时，会在交易确认画面上显示额外的警告。只需在下面设置您的警报即可触发。 \n如果gas价格达到以下所选标准，请向我显示警告：";
-"Enter your own" = "输入您想设置的标准";
-"Gas Warning" = "Gas警告";
-"High network congestion. Please double check gas fee (~%@ ETH) before confirmation." = "网络非常拥挤。请在确认之前仔细检查gas费用（〜%@ ETH）。";

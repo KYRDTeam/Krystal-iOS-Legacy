@@ -3,24 +3,28 @@
 import Moya
 
 let apiKey = KNSecret.etherscanAPIKey
-
+let apiKeyBSC = KNSecret.bscscanAPIKey
 enum KNEtherScanService {
   case getListTransactions(address: String, startBlock: Int)
-  case getListTokenTransactions(address: String, startBlock: Int, page: Int, sort: String)
+  case getListTokenTransactions(address: String, startBlock: Int)
   case getListInternalTransactions(address: String, startBlock: Int)
 }
 
 extension KNEtherScanService: TargetType {
+  
   var baseURL: URL {
     switch self {
     case .getListTransactions(let address, let startBlock):
-      let baseURLString = "\(KNEnvironment.default.apiEtherScanEndpoint)api?module=account&action=txlist&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(apiKey)"
+      let key = KNGeneralProvider.shared.isEthereum ? apiKey : apiKeyBSC
+      let baseURLString = "\(KNGeneralProvider.shared.customRPC.apiEtherscanEndpoint)api?module=account&action=txlist&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(key)"
       return URL(string: baseURLString)!
-    case .getListTokenTransactions(let address, let startBlock, let page, let sort):
-      let baseURLString = "\(KNEnvironment.default.apiEtherScanEndpoint)api?module=account&action=tokentx&address=\(address)&page=\(page)&offset=200&startblock=\(startBlock)&sort=\(sort)&apikey=\(apiKey)"
+    case .getListTokenTransactions(let address, let startBlock):
+      let key = KNGeneralProvider.shared.isEthereum ? apiKey : apiKeyBSC
+      let baseURLString = "\(KNGeneralProvider.shared.customRPC.apiEtherscanEndpoint)api?module=account&action=tokentx&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(key)"
       return URL(string: baseURLString)!
     case .getListInternalTransactions(let address, let startBlock):
-      let baseURLString = "\(KNEnvironment.default.apiEtherScanEndpoint)api?module=account&action=txlistinternal&address=\(address)&offset=200&startblock=\(startBlock)&sort=desc&apikey=\(apiKey)"
+      let key = KNGeneralProvider.shared.isEthereum ? apiKey : apiKeyBSC
+      let baseURLString = "\(KNGeneralProvider.shared.customRPC.apiEtherscanEndpoint)api?module=account&action=txlistinternal&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(key)"
       return URL(string: baseURLString)!
     }
   }

@@ -44,18 +44,11 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     let address = self.knSession.wallet.address.description
     self.addressLabel.text = "\(address.prefix(12))...\(address.suffix(10))"
     self.urlLabel.text = ""
     self.connectionStatusLabel.text = ""
     self.connect(session: self.wcSession)
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
   }
 
   override func viewDidDisappear(_ animated: Bool) {
@@ -76,7 +69,7 @@ class KNWalletConnectViewController: KNBaseViewController {
       self.interactor?.disconnect()
     }
     let accounts = [self.knSession.wallet.address.description]
-    let chainId = KNEnvironment.default.chainID
+    let chainId = KNGeneralProvider.shared.customRPC.chainID
 
     interactor.killSession().cauterize()
 
@@ -85,7 +78,6 @@ class KNWalletConnectViewController: KNBaseViewController {
         self?.isShowLoading = false
         self?.hideLoading()
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_error", customAttributes: nil)
       let alert = UIAlertController(title: "Error", message: "Do you want to re-connect?", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
         guard let session = self?.wcSession else { return }
@@ -107,17 +99,14 @@ class KNWalletConnectViewController: KNBaseViewController {
       let message = [peer.description, peer.url].joined(separator: "\n")
       self?.nameTextLabel.text = peer.name
       self?.urlLabel.text = peer.url
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_connected", customAttributes: ["url": peer.url])
       self?.logoImageView.setImage(with: peer.icons.first ?? "", placeholder: nil)
       let alert = UIAlertController(title: peer.name, message: message, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_reject", customAttributes: ["url": peer.url])
         self?.interactor?.rejectSession().cauterize()
         self?.interactor?.killSession().cauterize()
         self?.shouldRecover = false
       }))
       alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_approved", customAttributes: ["url": peer.url])
         self?.interactor?.approveSession(accounts: accounts, chainId: chainId).cauterize()
       }))
       self?.show(alert, sender: nil)
@@ -128,7 +117,6 @@ class KNWalletConnectViewController: KNBaseViewController {
         self?.isShowLoading = false
         self?.hideLoading()
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_disconnected", customAttributes: nil)
       self?.connectionStatusUpdated(self?.interactor?.state == .connected)
       guard let err = error as? WSError, err.code == 1000 else {
         if self?.shouldRecover == true {
@@ -145,14 +133,11 @@ class KNWalletConnectViewController: KNBaseViewController {
         self?.isShowLoading = false
         self?.hideLoading()
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_sign_data", customAttributes: nil)
       let alert = UIAlertController(title: "Sign data".toBeLocalised(), message: payload.message, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_sign_data_reject", customAttributes: nil)
         self?.interactor?.rejectRequest(id: id, message: "User canceled").cauterize()
       }))
       alert.addAction(UIAlertAction(title: "Sign", style: .default, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_sign_data_approved", customAttributes: nil)
         self?.signEth(id: id, payload: payload)
       }))
       self?.present(alert, animated: true, completion: nil)
@@ -163,7 +148,6 @@ class KNWalletConnectViewController: KNBaseViewController {
         self?.isShowLoading = false
         self?.hideLoading()
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction", customAttributes: nil)
       let data = try! JSONEncoder().encode(transaction)
       self?.sendTransaction(id, data: data)
     }
@@ -186,6 +170,9 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   fileprivate func sendTransaction(_ id: Int64, data: Data) {
+    guard let provider = self.knSession.externalProvider else {
+      return
+    }
     guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary, let json = jsonData else {
       return
     }
@@ -197,8 +184,8 @@ class KNWalletConnectViewController: KNBaseViewController {
 
     let message: String = {
       if let msg = self.tryParseTransactionData(json) { return msg }
-      if let networkProxy = KNEnvironment.default.knCustomRPC?.networkAddress.lowercased(),
-        networkProxy == to.lowercased() {
+      if
+         Constants.krystalProxyAddress.lowercased() == to.lowercased() {
         return "Interact with Kyber Network Proxy: transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to). Please check your transaction details carefully."
       }
       if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { return $0.contract.lowercased() == to.lowercased() }) {
@@ -209,13 +196,11 @@ class KNWalletConnectViewController: KNBaseViewController {
     }()
     let alert = UIAlertController(title: "Approve transaction", message: message, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_rejected", customAttributes: nil)
       self.interactor?.rejectRequest(id: id, message: "User cancelled").cauterize()
     }))
     alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_approved", customAttributes: nil)
       self.displayLoading(text: "Submitting...", animated: true)
-      self.knSession.externalProvider.sendTxWalletConnect(txData: json) { [weak self] result in
+      provider.sendTxWalletConnect(txData: json) { [weak self] result in
         guard let `self` = self else { return }
         self.hideLoading()
         switch result {
@@ -225,10 +210,10 @@ class KNWalletConnectViewController: KNBaseViewController {
             self.addTransactionToPendingListIfNeeded(
               json: json,
               hash: txID,
-              nonce: self.knSession.externalProvider.minTxCount - 1
+              nonce: provider.minTxCount - 1
             )
             self.showTopBannerView(with: "Broadcasted", message: "Your transaction has been broadcasted successfully!", time: 2.0) {
-              self.openSafari(with: KNEnvironment.default.etherScanIOURLString + "tx/\(txID)")
+              self.openSafari(with: KNGeneralProvider.shared.customRPC.etherScanEndpoint + "tx/\(txID)")
             }
           } else {
             self.interactor?.rejectRequest(id: id, message: "Something went wrong, please try again").cauterize()
@@ -318,42 +303,31 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   fileprivate func tryParseTransactionData(_ json: JSONDictionary) -> String? {
-    var defaultKNGas: BigInt = KNGasConfiguration.gasPriceDefault
-    if let defaultGasString = UserDefaults.standard.string(forKey: KNGasCoordinator.kSavedDefaultGas), let defaultGasBigInt = BigInt(defaultGasString) {
-      defaultKNGas = defaultGasBigInt
-    }
-    let gasPriceString = defaultKNGas.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
     let data = (json["data"] as? String ?? "").drop0x
     let to = (json["to"] as? String ?? "").lowercased()
     let value = (json["value"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
     if data.isEmpty {
-      return "Transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to)\nGas price: \(gasPriceString) gwei"
+      return "Transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to)"
     }
     if data.starts(with: kApprovePrefix),
       let token = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == to }) {
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_type_approve", customAttributes: nil)
       let address = data.substring(to: 72).substring(from: 32).add0x.lowercased()
       let contractName: String = {
-        if let networkAddr = KNEnvironment.default.knCustomRPC?.networkAddress, networkAddr.lowercased() == address {
-          return "Kyber Network Proxy\nGas price: \(gasPriceString) gwei"
-        }
-        if let limitOrder = KNEnvironment.default.knCustomRPC?.limitOrderAddress, limitOrder.lowercased() == address {
-          return "KyberSwap Limit Order\nGas price: \(gasPriceString) gwei"
+        if Constants.krystalProxyAddress.lowercased() == address {
+          return "Kyber Network Proxy"
         }
         return address
       }()
-      return "You need to grant permission for \(contractName) to interact with \(token.symbol)\nGas price: \(gasPriceString) gwei"
+      return "You need to grant permission for \(contractName) to interact with \(token.symbol)"
     }
     if data.starts(with: kTransferPrefix),
       let token = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == to }) {
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_type_transfer", customAttributes: nil)
       let address = data.substring(to: 72).substring(from: 32).add0x.lowercased()
       let amount = data.substring(from: 72).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
-      return "Transfer \(amount.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 6))) \(token.symbol) to \(address)\nGas price: \(gasPriceString) gwei"
+      return "Transfer \(amount.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 6))) \(token.symbol) to \(address)"
     }
     if data.starts(with: kTradeWithHintPrefix),
-      let networkAddr = KNEnvironment.default.knCustomRPC?.networkAddress, networkAddr.lowercased() == to {
-      KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_type_swap", customAttributes: nil)
+      Constants.krystalProxyAddress.lowercased() == to {
       // swap
       let fromToken = data.substring(to: 8 + 64).substring(from: 8 + 24).add0x.lowercased()
       let fromAmount = data.substring(to: 8 + 64 * 2).substring(from: 8 + 64).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
@@ -362,9 +336,8 @@ class KNWalletConnectViewController: KNBaseViewController {
         let to = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == toToken }) else {
           return nil
       }
-      return "Swap \(fromAmount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: min(6, from.decimals))) \(from.symbol) to \(to.symbol)\nGas price: \(gasPriceString) gwei"
+      return "Swap \(fromAmount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: min(6, from.decimals))) \(from.symbol) to \(to.symbol)"
     }
-    KNCrashlyticsUtil.logCustomEvent(withName: "wallet_connect_transaction_type_unknown", customAttributes: nil)
     return nil
   }
 
@@ -419,7 +392,7 @@ class KNWalletConnectViewController: KNBaseViewController {
       self.knSession.addNewPendingTransaction(tx)
     } else if data.starts(with: kTradeWithHintPrefix) {
       // swap
-      guard let networkAddr = KNEnvironment.default.knCustomRPC?.networkAddress, networkAddr.lowercased() == to else {
+      guard Constants.krystalProxyAddress.lowercased() == to else {
         return
       }
       // swap

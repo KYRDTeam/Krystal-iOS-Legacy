@@ -292,7 +292,7 @@
 "enter.or.scan.private.key" = "Nhập hoặc quét khóa cá nhân";
 "private.key" = "Khóa cá nhân";
 "enter.password.to.decrypt" = "Nhập mật khẩu để giải mã";
-"enter.your.seeds" = "Nhập mnemonic";
+"enter.your.seeds" = "Nhập seeds";
 "first.name" = "Tên";
 "middle.name" = "Tên đệm";
 "last.name" = "Họ";
@@ -306,7 +306,7 @@
 "do.you.want.to.exit.and.remove.all.wallets" = "Bạn có muốn thoát và xóa tất cả các ví từ ứng dụng không?";
 "contribute" = "Contribute";
 "loading" = "Đang tải";
-"recover.with.seeds" = "Phục hồi bằng mnemonic";
+"recover.with.seeds" = "Phục hồi bằng seeds";
 "create.new.wallet.desc" = "Điều này sẽ tạo ra một ví mới. Nó không thể hoàn tác, nhưng bạn có thể từ bỏ nó";
 "edit.wallet" = "Chỉnh sử ví";
 "backup.keystore" = "Sao lưu Keystore";
@@ -315,7 +315,7 @@
 "copy.address" = "Sao chép địa chỉ";
 "export.at.your.own.risk" = "Bạn phải tự chịu rủi ro khi xuất ví!";
 "backup" = "Sao lưu";
-"share.with.friends.text" = "Tôi vừa tìm thấy một ứng dụng ví tuyệt vời. Kiểm tra ở đây https://apps.apple.com/us/app/id1521778973";
+"share.with.friends.text" = "Tôi vừa tìm thấy một ứng dụng ví tuyệt vời. Kiểm tra ở đây https://apps.apple.com/us/app/id1558105691";
 "transaction.being.broadcasted" = "Giao dịch đang được gửi";
 "can.not.create.transaction" = "Không thể tạo giao dịch";
 "transaction.being.mined" = "Giao dịch được mine";
@@ -389,7 +389,7 @@
 "regular" = "Thường";
 "still.proceed.if.rate.goes.down.by" = "Vẫn tiếp tục nếu %@ giảm xuống:";
 "transaction.will.be.reverted.if.rate.lower.than" = "Giao dịch sẽ huỷ bỏ nếu tỷ giá %@ thấp hơn %@ (Tỷ giá hiện tại %@)";
-"can.not.handle.your.amount" = "Quỹ dự trữ của token này không thể xử lý khối lượng giao dịch của bạn. Vui lòng chia nhỏ giao dịch hoặc chờ cho thanh khoản được bổ sung bởi bên thứ 3. Tìm hiểu thêm";
+"can.not.handle.your.amount" = "Không thể xử lý số tiền của bạn";
 "advanced.optional" = "Nâng cao (tuỳ chọn)";
 "kybercode" = "KyberCode";
 "your.kybercode" = "KyberCode của bạn";
@@ -449,7 +449,7 @@
 
 "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail." = "Your configured minimal rate is higher than what is recommended by KyberNetwork. Your swap has high chance to fail.";
 
-"This token pair is temporarily under maintenance" = "Token này hiện đang được bảo trì. Nguồn thanh khoản của token này được quản lý bởi bên thứ 3. Tìm hiểu thêm";
+"This token pair is temporarily under maintenance" = "Cặp token này tạm thời đang được bảo trì";
 
 "can.not.decode.data" = "Không thể giải mã dữ liệu";
 "something.went.wrong.please.try.again" = "Đã xảy ra lỗi, vui lòng thử lại";
@@ -736,7 +736,7 @@
 
 "Invalid nonce" = "Nhập KyberCode thất bại, vui lòng kiểm tra lại thời hạn code của bạn";
 "KyberSwap.is.only.support.buying.ETH.with.fiat.on.web" = "Hiện tại, dịch vụ mua ETH qua thẻ chỉ được hỗ trợ trên trang web của KyberSwap. Bạn có muốn chuyển sang website không?";
-"⚠️NEVER share Keystore/Private Key/Mnemonic with anyone (including KyberSwap). These data grant access to all your funds and they may get stolen" = "⚠️KHÔNG chia sẻ Keystore/Private Key/Mnemonic cho bất kỳ ai (kể cả đội ngũ KyberSwap). Những thông tin này có thể giúp kẻ gian tiếp cận và đánh cắp tài sản trong ví của bạn";
+"⚠️NEVER share Keystore/Private Key/Mnemonic with anyone (including KyberSwap). These data grant access to all your funds and they may get stolen" = "⚠️KHÔNG chia sẻ Keystore/Private Key/Mnemonic cho bất kỳ ai (kể cả đội ngũ Krystal). Những thông tin này có thể giúp kẻ gian tiếp cận và đánh cắp tài sản trong ví của bạn";
 
 "Select higher gas price to accelerate your transaction processing time" = "Chọn giá gas cao hơn để tăng tốc độ giao dịch";
 
@@ -777,10 +777,10 @@
 "Manage Order\nCheck your order history, pending orders etc. You can modify your orders as well." = "Quản lý lệnh\nKiểm tra lịch sử lệnh, lệnh đang chờ v.v… Bạn cũng có thể thay đổi lệnh này.";
 "Speed Up or Cancel transaction." = "Tăng tốc hoặc hủy giao dịch";
 
-"There.is.a.difference.between.the.estimated.price" = "Có chênh lệch %@ giữa giá dự tính và giá tham khảo.\nLưu ý: giá dự tính phụ thuộc vào khối lượng mà bạn giao dịch. Giá tham khảo được lấy từ Chainlink, Band protocol và Kyber Network";
+"There.is.a.difference.between.the.estimated.price" = "Có chênh lệch %@ giữa giá dự tính và giá tham khảo.\nLưu ý: giá dự tính phụ thuộc vào khối lượng mà bạn giao dịch. Giá tham khảo được lấy từ Coingecko, Band protocol và Kyber Network";
 
-"Gas.fee.is.the.fee.you.pay.to.the.miner" = "Phí gas là phí bạn phải trả cho miner (không phải KyberSwap) để họ xác nhận giao dịch của bạn trên blockchain. Phí gas bạn chọn sẽ ảnh hưởng đến tốc độ giao dịch.";
-"Wallet.must.be.backed.up" = "Vui lòng sao lưu ví của bạn. Nó sẽ giúp bạn khôi phục lại ví nếu điện thoại của bạn bị hỏng, mất hoặc bị cướp.";
+"Gas.fee.is.the.fee.you.pay.to.the.miner" = "Gas fee is the fee you pay to the miner (not to Krystal) to mine your transaction on blockchain. The price of gas generally reflect how fast you want a transaction mined";
+"Wallet.must.be.backed.up" = "Please backup your wallet. It will allow you to recover your wallet if your device is damaged, lost or stolen";
 "Later" = "Để sau";
 
 "Explore" = "Khám phá";
@@ -798,8 +798,3 @@
 "send.only.ERC20.tokens.to.this.address" = "Chỉ gửi ETH hoặc các loại token ERC-20 đến địa chỉ này\n\n* Nếu bạn gửi token khác đến địa chỉ này, tài sản của bạn có thể bị mất";
 "Something is wrong? View your wallet on" = "Kiểm tra ví của bạn tại đây?";
 "only.send.ETH.or.any.ERC-20" = "Chỉ gửi ETH hoặc các loại token ERC-20 đến địa chỉ này";
-
-"Save.gas.fees" = "Tiết kiệm gas. Cài đặt thêm cảnh báo khi giá gas cao. Chọn cài đặt bên dưới.\nHiện cảnh báo khi giá gas ở:";
-"Enter your own" = "Tự điều chỉnh";
-"Gas Warning" = "Cảnh báo Gas";
-"High network congestion. Please double check gas fee (~%@ ETH) before confirmation." = "Mạng Ethereum đang nghẽn. Vui lòng kiếm tra giá gas (~%@ ETH) trước khi giao dịch.";

@@ -2,6 +2,7 @@
 
 import UIKit
 import TrustCore
+import SwipeCellKit
 
 struct KNContactTableViewCellModel {
   let contact: KNContact
@@ -38,14 +39,32 @@ struct KNContactTableViewCellModel {
   }
 }
 
-class KNContactTableViewCell: UITableViewCell {
+struct KNWalletTableCellViewModel {
+  let wallet: KNWalletObject
+  
+  var addressImage: UIImage? {
+    guard let data = Address(string: self.wallet.address.description)?.data else { return nil }
+    return UIImage.generateImage(with: 32, hash: data)
+  }
 
-  static let height: CGFloat = 68
+  var displayedName: String { return self.wallet.name }
+  var displayedAddress: String {
+    let address = self.wallet.address.description.lowercased()
+    return "\(address.prefix(20))...\(address.suffix(6))"
+  }
+}
+
+class KNContactTableViewCell: SwipeTableViewCell {
+
+  static let height: CGFloat = 60
 
   @IBOutlet weak var addressImageView: UIImageView!
   @IBOutlet weak var contactNameLabel: UILabel!
   @IBOutlet weak var contactAddressLabel: UILabel!
-
+  
+  @IBOutlet weak var checkIcon: UIImageView!
+  @IBOutlet weak var addressImageLeftPaddingContraint: NSLayoutConstraint!
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     self.contactNameLabel.text = ""
@@ -59,7 +78,20 @@ class KNContactTableViewCell: UITableViewCell {
     self.contactNameLabel.addLetterSpacing()
     self.contactAddressLabel.text = viewModel.displayedAddress
     self.contactAddressLabel.addLetterSpacing()
-    self.backgroundColor = viewModel.backgroundColor
+    self.addressImageLeftPaddingContraint.constant = 24
+    self.checkIcon.isHidden = true
+    self.layoutIfNeeded()
+  }
+  
+  func update(with viewModel: KNWalletTableCellViewModel, selected: String) {
+    self.addressImageView.image = viewModel.addressImage
+    self.contactNameLabel.text = viewModel.displayedName
+    self.contactNameLabel.addLetterSpacing()
+    self.contactAddressLabel.text = viewModel.displayedAddress
+    self.contactAddressLabel.addLetterSpacing()
+    let isSelected = viewModel.wallet.address.description.lowercased() == selected.lowercased()
+    self.addressImageLeftPaddingContraint.constant = (isSelected ? 66.0 : 24.0)
+    self.checkIcon.isHidden = !isSelected
     self.layoutIfNeeded()
   }
 }

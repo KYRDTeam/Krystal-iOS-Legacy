@@ -88,12 +88,13 @@ class KNGasCoordinator {
     if isLoadingGasPrice { return }
     isLoadingGasPrice = true
     DispatchQueue.global(qos: .background).async {
-      KNInternalProvider.shared.getKNCachedGasPrice { [weak self] (result) in
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getGasPrice) { [weak self] (result) in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           self.isLoadingGasPrice = false
-          if case .success(let data) = result {
-            try? self.updateGasPrice(dataJSON: data)
+          if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+            try? self.updateGasPrice(dataJSON: json)
           } else {
             if Date().timeIntervalSince1970 - self.lastGasPriceLoadedSuccessTimeStamp >= KNLoadingInterval.minutes5 {
               self.fetchGasPriceFromNode()
@@ -101,6 +102,10 @@ class KNGasCoordinator {
           }
         }
       }
+      //TODO: remove old function
+//      KNInternalProvider.shared.getKNCachedGasPrice { [weak self] (result) in
+//
+//      }
     }
   }
 
@@ -138,7 +143,7 @@ class KNGasCoordinator {
   }
 
   fileprivate func updateGasPrice(dataJSON: JSONDictionary) throws {
-    guard let data = dataJSON["data"] as? JSONDictionary else { return }
+    guard let data = dataJSON["gasPrice"] as? JSONDictionary else { return }
     let stringDefault: String = data["default"] as? String ?? ""
     let updateKNGas = stringDefault.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.defaultKNGas
     self.defaultKNGas = min(updateKNGas, self.maxKNGas)

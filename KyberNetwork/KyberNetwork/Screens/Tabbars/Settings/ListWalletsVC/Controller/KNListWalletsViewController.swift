@@ -1,13 +1,15 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BetterSegmentedControl
+import SwipeCellKit
 
 enum KNListWalletsViewEvent {
   case close
   case select(wallet: KNWalletObject)
   case remove(wallet: KNWalletObject)
   case edit(wallet: KNWalletObject)
-  case addWallet
+  case addWallet(type: AddNewWalletType)
 }
 
 protocol KNListWalletsViewControllerDelegate: class {
@@ -17,15 +19,22 @@ protocol KNListWalletsViewControllerDelegate: class {
 class KNListWalletsViewModel {
   var listWallets: [KNWalletObject] = []
   var curWallet: KNWalletObject
+  var isDisplayWatchWallets: Bool = false
 
   init(listWallets: [KNWalletObject], curWallet: KNWalletObject) {
     self.listWallets = listWallets
     self.curWallet = curWallet
   }
 
-  var numberRows: Int { return self.listWallets.count }
-  func wallet(at row: Int) -> KNWalletObject { return self.listWallets[row] }
-  func isCurrentWallet(row: Int) -> Bool { return self.listWallets[row].address == self.curWallet.address }
+  var displayWallets: [KNWalletObject] {
+    return self.listWallets.filter { (object) -> Bool in
+      return object.isWatchWallet == self.isDisplayWatchWallets
+    }
+  }
+
+  var numberRows: Int { return self.displayWallets.count }
+  func wallet(at row: Int) -> KNWalletObject { return self.displayWallets[row] }
+  func isCurrentWallet(row: Int) -> Bool { return self.displayWallets[row].address == self.curWallet.address }
 
   func update(wallets: [KNWalletObject], curWallet: KNWalletObject) {
     self.listWallets = wallets
@@ -45,7 +54,12 @@ class KNListWalletsViewController: KNBaseViewController {
   @IBOutlet weak var walletTableView: UITableView!
   @IBOutlet weak var bottomPaddingConstraintForTableView: NSLayoutConstraint!
   fileprivate var longPressTimer: Timer?
-
+  @IBOutlet weak var emptyView: UIView!
+  @IBOutlet weak var emptyMessageLabel: UILabel!
+  @IBOutlet weak var emptyViewAddButton: UIButton!
+  @IBOutlet weak var addWalletButton: UIButton!
+  @IBOutlet weak var segmentedControl: SegmentedControl!
+  
   init(viewModel: KNListWalletsViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNListWalletsViewController.className, bundle: nil)
@@ -58,34 +72,44 @@ class KNListWalletsViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+    segmentedControl.highlightSelectedSegment()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    self.headerContainerView.removeSublayer(at: 0)
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
   }
 
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.setupWalletTableView()
+    self.setupSegmentedControl()
+    self.emptyViewAddButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.emptyViewAddButton.frame.size.height / 2)
+    self.updateEmptyView()
+    self.addWalletButton.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
+  }
+
+  @IBAction func segmentedControlDidChange(_ sender: UISegmentedControl) {
+    segmentedControl.underlinePosition()
+    self.viewModel.isDisplayWatchWallets = self.segmentedControl.selectedSegmentIndex == 1
+    self.updateEmptyView()
+    self.walletTableView.reloadData()
+  }
+  
+  fileprivate func setupSegmentedControl() {
+    segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
   }
 
   fileprivate func setupNavigationBar() {
-    self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
-    self.navTitleLabel.text = NSLocalizedString("manage.wallet", value: "Manage Wallet", comment: "")
   }
 
   fileprivate func setupWalletTableView() {
     let nib = UINib(nibName: KNListWalletsTableViewCell.className, bundle: nil)
     self.walletTableView.register(nib, forCellReuseIdentifier: kCellID)
-    self.walletTableView.rowHeight = 68.0
+    self.walletTableView.rowHeight = 60.0
     self.walletTableView.delegate = self
     self.walletTableView.dataSource = self
     self.bottomPaddingConstraintForTableView.constant = self.bottomPaddingSafeArea()
 
-    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressedWalletTableView(_:)))
-    self.walletTableView.addGestureRecognizer(longPressGesture)
     self.walletTableView.isUserInteractionEnabled = true
 
     self.view.layoutIfNeeded()
@@ -93,47 +117,34 @@ class KNListWalletsViewController: KNBaseViewController {
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: wallets, curWallet: currentWallet)
+    self.updateEmptyView()
     self.walletTableView.reloadData()
     self.view.layoutIfNeeded()
   }
 
-  @objc func handleLongPressedWalletTableView(_ sender: UILongPressGestureRecognizer) {
-    if sender.state == .began {
-        longPressTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] _ in
-            guard let strongSelf = self else { return }
-            let touch = sender.location(in: strongSelf.walletTableView)
-            guard let indexPath = strongSelf.walletTableView.indexPathForRow(at: touch) else { return }
-            if indexPath.row >= strongSelf.viewModel.listWallets.count { return }
-            let wallet = strongSelf.viewModel.wallet(at: indexPath.row)
-            UIPasteboard.general.string = wallet.address
+  fileprivate func updateEmptyView() {
+    self.emptyView.isHidden = !self.viewModel.displayWallets.isEmpty
+    let walletString = self.segmentedControl.selectedSegmentIndex == 0 ? "wallet" : "watched wallet"
+    self.emptyMessageLabel.text = "Your list of \(walletString)s is empty.".toBeLocalised()
+    self.addWalletButton.setTitle("Add " + walletString, for: .normal)
+  }
 
-            strongSelf.showMessageWithInterval(
-              message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
-            )
-            strongSelf.longPressTimer?.invalidate()
-            strongSelf.longPressTimer = nil
-        })
-    }
-    if sender.state == .ended {
-        if longPressTimer != nil {
-            longPressTimer?.fire()
-        }
-    }
+  func coordinatorDidUpdateWalletsList() {
+    //TODO: perform wait wallet save to disk
+    self.viewModel.listWallets = KNWalletStorage.shared.wallets
+    self.walletTableView.reloadData()
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.listWalletsViewController(self, run: .close)
   }
 
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
-      self.delegate?.listWalletsViewController(self, run: .close)
-    }
+  @IBAction func addButtonPressed(_ sender: Any) {
+    self.delegate?.listWalletsViewController(self, run: .addWallet(type: .full))
   }
 
-  @IBAction func addButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_add_wallet", customAttributes: nil)
-    self.delegate?.listWalletsViewController(self, run: .addWallet)
+  @IBAction func emptyViewAddButtonTapped(_ sender: UIButton) {
+    self.delegate?.listWalletsViewController(self, run: self.viewModel.isDisplayWatchWallets ? .addWallet(type: .watch) : .addWallet(type: .onlyReal))
   }
 }
 
@@ -148,16 +159,13 @@ extension KNListWalletsViewController: UITableViewDelegate {
     )
     if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
       alertController.addAction(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
-        KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_select_wallet", customAttributes: nil)
         self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
       }))
     }
     alertController.addAction(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_edit_wallet", customAttributes: nil)
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_delete_wallet", customAttributes: nil)
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }))
     alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
@@ -182,39 +190,67 @@ extension KNListWalletsViewController: UITableViewDataSource {
     return true
   }
 
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    let wallet = self.viewModel.wallet(at: indexPath.row)
-    let switchWallet = UITableViewRowAction(style: .normal, title: NSLocalizedString("Switch", value: "Switch", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_select_wallet", customAttributes: nil)
-      self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
-    }
-    switchWallet.backgroundColor = UIColor.Kyber.marketBlue
-    let edit = UITableViewRowAction(style: .normal, title: NSLocalizedString("edit", value: "Edit", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_edit_wallet", customAttributes: nil)
-      self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
-    }
-    edit.backgroundColor = UIColor.Kyber.shamrock
-    let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("delete", value: "Delete", comment: "")) { (_, _) in
-      KNCrashlyticsUtil.logCustomEvent(withName: "list_wallet_delete_wallet", customAttributes: nil)
-      self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
-    }
-    delete.backgroundColor = UIColor.Kyber.strawberry
-    if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
-      return [delete, edit, switchWallet]
-    }
-    return [delete, edit]
-  }
-
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! KNListWalletsTableViewCell
     let wallet = self.viewModel.wallet(at: indexPath.row)
     cell.updateCell(with: wallet, id: indexPath.row)
+    cell.delegate = self
     if self.viewModel.isCurrentWallet(row: indexPath.row) {
       cell.accessoryType = .checkmark
-      cell.tintColor = UIColor.Kyber.lightSeaGreen
+      cell.tintColor = UIColor.Kyber.SWGreen
     } else {
       cell.accessoryType = .none
     }
     return cell
+  }
+}
+
+extension KNListWalletsViewController: SwipeTableViewCellDelegate {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard orientation == .right else {
+      return nil
+    }
+    let wallet = self.viewModel.wallet(at: indexPath.row)
+
+    let copy = SwipeAction(style: .default, title: nil) { (_, _) in
+      UIPasteboard.general.string = wallet.address
+      self.showMessageWithInterval(
+        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+      )
+    }
+    copy.hidesWhenSelected = true
+    copy.title = "copy".toBeLocalised().uppercased()
+    copy.textColor = UIColor(named: "normalTextColor")
+    copy.font = UIFont.Kyber.medium(with: 12)
+    let bgImg = UIImage(named: "history_cell_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 60))!
+    copy.backgroundColor = UIColor(patternImage: resized)
+
+    let edit = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
+    }
+    edit.title = "edit".toBeLocalised().uppercased()
+    edit.textColor = UIColor(named: "normalTextColor")
+    edit.font = UIFont.Kyber.medium(with: 12)
+    edit.backgroundColor = UIColor(patternImage: resized)
+
+    let delete = SwipeAction(style: .default, title: nil) { _, _ in
+      self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
+    }
+    delete.title = "delete".toBeLocalised().uppercased()
+    delete.textColor = UIColor(named: "normalTextColor")
+    delete.font = UIFont.Kyber.medium(with: 12)
+    delete.backgroundColor = UIColor(patternImage: resized)
+
+    return [delete, edit, copy]
+  }
+
+  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    var options = SwipeOptions()
+    options.expansionStyle = .selection
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
+    return options
   }
 }
