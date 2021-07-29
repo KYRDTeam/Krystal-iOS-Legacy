@@ -44,7 +44,7 @@ class KNRateCoordinator {
 
   func resume() {
 //    self.fetchCacheRate(nil)
-    self.loadETHPrice()
+//    self.loadETHPrice()
     self.loadTokenPrice()
     self.cacheRateTimer?.invalidate()
     self.cacheRateTimer = Timer.scheduledTimer(
@@ -52,7 +52,7 @@ class KNRateCoordinator {
       repeats: true,
       block: { [weak self] timer in
 //        self?.fetchCacheRate(timer)
-        self?.loadETHPrice()
+//        self?.loadETHPrice()
         self?.loadTokenPrice()
       }
     )
@@ -322,6 +322,7 @@ class KNRateCoordinator {
         } else {
           print("[GetOverview][Error] ")
         }
+        group.leave()
       }
     }
     group.notify(queue: .global()) {

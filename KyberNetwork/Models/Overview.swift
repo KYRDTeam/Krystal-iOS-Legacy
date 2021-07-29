@@ -18,18 +18,7 @@ struct OverviewData: Codable {
     let address, symbol, name: String
     let decimals: Int
     let logo: String
-    let usd: Double
-    let usdMarketCap, usd24HVol: Int
-    let usd24HChange, usd24HChangePercentage: Double
     let quotes: [String: Quote]
-
-    enum CodingKeys: String, CodingKey {
-        case address, symbol, name, decimals, logo, usd, usdMarketCap
-        case usd24HVol = "usd24hVol"
-        case usd24HChange = "usd24hChange"
-        case usd24HChangePercentage = "usd24hChangePercentage"
-        case quotes
-    }
 }
 
 // MARK: - Quote
