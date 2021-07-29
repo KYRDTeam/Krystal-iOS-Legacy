@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,31 +24,31 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="ABI96666666666666666666" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dv5-RV-kNN">
-                        <rect key="frame" x="14" y="14" width="100" height="16.5"/>
+                        <rect key="frame" x="14" y="14" width="106" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10-10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WEY-LN-9hd">
-                        <rect key="frame" x="119" y="14" width="37" height="16.5"/>
+                        <rect key="frame" x="125" y="14" width="31" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mq-Fn-18I">
-                        <rect key="frame" x="182" y="14" width="16" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="2mq-Fn-18I">
+                        <rect key="frame" x="161" y="14" width="37" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="993" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ylW-HC-fF5">
-                        <rect key="frame" x="231.5" y="14" width="23.5" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9930000000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="ylW-HC-fF5">
+                        <rect key="frame" x="203" y="14" width="52" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="429" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-dK-Kn9">
-                        <rect key="frame" x="275.5" y="14" width="23.5" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-dK-Kn9">
+                        <rect key="frame" x="260" y="14" width="39" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
@@ -59,11 +59,14 @@
                     <constraint firstAttribute="trailing" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="137" id="73l-fE-WmT"/>
                     <constraint firstItem="Dv5-RV-kNN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="HO7-mo-rdd"/>
                     <constraint firstItem="2mq-Fn-18I" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KfS-jN-Cc7"/>
+                    <constraint firstItem="ylW-HC-fF5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="5" id="MJz-XV-WU6"/>
                     <constraint firstItem="Dv5-RV-kNN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="OwY-53-g4J"/>
+                    <constraint firstItem="2mq-Fn-18I" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WEY-LN-9hd" secondAttribute="trailing" constant="5" id="Pti-TQ-zco"/>
                     <constraint firstItem="WEY-LN-9hd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="R6b-MF-g6Q"/>
                     <constraint firstAttribute="trailing" secondItem="WEY-LN-9hd" secondAttribute="trailing" constant="179" id="Yus-iz-DHc"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ESJ-dK-Kn9" secondAttribute="trailing" constant="20" id="bYK-zb-KrG"/>
                     <constraint firstItem="ESJ-dK-Kn9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dyW-jJ-uQV"/>
+                    <constraint firstItem="ESJ-dK-Kn9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ylW-HC-fF5" secondAttribute="trailing" constant="5" id="hyF-Ig-YjN"/>
                     <constraint firstAttribute="trailing" secondItem="ylW-HC-fF5" secondAttribute="trailing" constant="80" id="wV5-2N-wdU"/>
                     <constraint firstItem="ylW-HC-fF5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="z2Y-Yc-Cll"/>
                 </constraints>
