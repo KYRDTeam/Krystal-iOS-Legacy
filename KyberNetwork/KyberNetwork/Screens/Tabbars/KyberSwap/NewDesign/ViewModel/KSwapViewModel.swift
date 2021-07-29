@@ -589,6 +589,13 @@ class KSwapViewModel {
       return ""
     }
   }
+  
+  func getCurrentRateObj(platform: String) -> Rate? {
+    let rateDict = self.swapRates.3.first { (element) -> Bool in
+      return platform == element.platform
+    }
+    return rateDict
+  }
 
   func resetSwapRates() {
     self.swapRates = ("", "", BigInt(0), [])
