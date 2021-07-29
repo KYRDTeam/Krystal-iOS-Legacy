@@ -296,17 +296,16 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate: 1 ETH = 367.8765 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DpQ-Q8-bTa">
-                                    <rect key="frame" x="20" y="215" width="183.5" height="16.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Rate: 1 ETH = 367.870000000065 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DpQ-Q8-bTa">
+                                    <rect key="frame" x="20" y="215" width="179" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyV-ue-RaN">
-                                    <rect key="frame" x="245" y="211.5" width="70" height="24"/>
+                                    <rect key="frame" x="240" y="211.5" width="75" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="PJl-wY-F4Z"/>
-                                        <constraint firstAttribute="width" constant="70" id="XGK-11-Zmf"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <inset key="imageEdgeInsets" minX="-7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -331,7 +330,11 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkA-Xh-Z0r">
-                                    <rect key="frame" x="210.5" y="212.5" width="29" height="22"/>
+                                    <rect key="frame" x="206" y="212.5" width="29" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="29" id="8eU-96-KOg"/>
+                                        <constraint firstAttribute="height" constant="22" id="LbU-wa-2Um"/>
+                                    </constraints>
                                     <state key="normal" title="   " image="revert_icon"/>
                                     <connections>
                                         <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="THy-oY-xM5"/>
@@ -340,6 +343,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="lyV-ue-RaN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LkA-Xh-Z0r" secondAttribute="trailing" constant="5" id="1YL-ux-egp"/>
                                 <constraint firstItem="8wx-BU-7Mc" firstAttribute="trailing" secondItem="Gm0-2V-zzS" secondAttribute="trailing" id="3Rt-SM-PHJ"/>
                                 <constraint firstItem="wNg-4t-wUv" firstAttribute="top" secondItem="Gm0-2V-zzS" secondAttribute="bottom" constant="25" id="9sO-YW-3bX"/>
                                 <constraint firstItem="Gm0-2V-zzS" firstAttribute="top" secondItem="LwO-dD-Td4" secondAttribute="bottom" constant="15" id="Aid-UE-XBU"/>

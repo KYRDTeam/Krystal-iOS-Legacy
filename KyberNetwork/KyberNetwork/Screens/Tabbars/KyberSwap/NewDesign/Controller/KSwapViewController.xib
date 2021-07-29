@@ -306,8 +306,8 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate: 1 ETH = 367.8765 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WYb-EV-F1u">
-                            <rect key="frame" x="37" y="241.5" width="167.5" height="16.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Rate: 1 ETH = 367.8000000000765 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WYb-EV-F1u">
+                            <rect key="frame" x="37" y="241.5" width="191" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
@@ -352,9 +352,8 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9PL-XD-kXQ">
-                            <rect key="frame" x="268" y="238" width="70" height="24"/>
+                            <rect key="frame" x="269" y="238" width="69" height="24"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="70" id="RXo-QF-GCe"/>
                                 <constraint firstAttribute="height" constant="24" id="wko-sA-XHt"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
@@ -456,7 +455,11 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ww-el-4Y6">
-                            <rect key="frame" x="211.5" y="239" width="29" height="22"/>
+                            <rect key="frame" x="235" y="239" width="29" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="iDp-Cj-ntx"/>
+                                <constraint firstAttribute="width" constant="29" id="yiA-oA-OoH"/>
+                            </constraints>
                             <state key="normal" title="   " image="revert_icon"/>
                             <connections>
                                 <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="foI-dG-kSD"/>
@@ -501,6 +504,7 @@
                         <constraint firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" constant="37" id="Pz0-JN-ret"/>
                         <constraint firstAttribute="trailing" secondItem="8mR-fc-0KZ" secondAttribute="trailing" constant="38" id="QiN-HF-SF5"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="centerX" secondItem="P3a-OW-m6C" secondAttribute="centerX" id="R3t-iN-2fH"/>
+                        <constraint firstItem="9PL-XD-kXQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5ww-el-4Y6" secondAttribute="trailing" constant="5" id="Re9-9B-PJc"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="width" secondItem="Hag-Sy-it8" secondAttribute="width" priority="999" id="RfS-tT-Ftm"/>
                         <constraint firstItem="zVq-fT-O6e" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="50" id="Rk2-Na-5TW"/>
                         <constraint firstItem="n4X-Ab-mqq" firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" id="TRP-JH-nyg"/>
