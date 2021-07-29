@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,9 +14,6 @@
         </array>
         <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
-        </array>
-        <array key="Lato-Bold.ttf">
-            <string>Lato-Bold</string>
         </array>
         <array key="Lato-Regular.ttf">
             <string>Lato-Regular</string>
@@ -306,15 +303,15 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyV-ue-RaN">
-                                    <rect key="frame" x="291" y="211.5" width="24" height="24"/>
+                                    <rect key="frame" x="245" y="211.5" width="70" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="PJl-wY-F4Z"/>
-                                        <constraint firstAttribute="width" constant="24" id="XGK-11-Zmf"/>
+                                        <constraint firstAttribute="width" constant="70" id="XGK-11-Zmf"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="10"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <inset key="imageEdgeInsets" minX="-7" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" image="uniswap_icon">
-                                        <color key="titleColor" red="1" green="0.86274509799999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="CHANGE" image="uniswap_icon">
+                                        <color key="titleColor" name="buttonBackgroundColor"/>
                                     </state>
                                     <connections>
                                         <action selector="changeRateButtonTapped:" destination="-1" eventType="touchUpInside" id="lgR-Kd-ryZ"/>

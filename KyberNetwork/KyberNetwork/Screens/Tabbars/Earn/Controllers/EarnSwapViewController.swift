@@ -248,6 +248,13 @@ class EarnSwapViewModel {
     }
     return rateDict?.rate ?? ""
   }
+  
+  func getCurrentRateObj(platform: String) -> Rate? {
+    let rateDict = self.swapRates.3.first { (element) -> Bool in
+      return platform == element.platform
+    }
+    return rateDict
+  }
 
   func resetSwapRates() {
     self.swapRates = ("", "", BigInt(0), [])
@@ -675,13 +682,21 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func setUpChangeRateButton() {
-    if self.viewModel.currentFlatform == "Uniswap" {
-      let icon = UIImage(named: "uni_icon_medium")?.resizeImage(to: CGSize(width: 16, height: 16))
-      self.changeRateButton.setImage(icon, for: .normal)
-    } else {
-      let icon = UIImage(named: "kyber_icon_medium")?.resizeImage(to: CGSize(width: 16, height: 16))
-      self.changeRateButton.setImage(icon, for: .normal)
+    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform), let url = URL(string: rate.platformIcon) else {
+      self.changeRateButton.setImage(nil, for: .normal)
+      return
     }
+    self.changeRateButton.kf.setImage(with: url, for: .normal, completionHandler: { result in
+      switch result {
+      case .success(let image):
+        let resized = image.image.resizeImage(to: CGSize(width: 16, height: 16))
+        self.changeRateButton.setImage(resized, for: .normal)
+      case .failure(_):
+        break
+      }
+    })
+    self.changeRateButton.setTitle(rate.platformShort, for: .normal)
+
   }
 
   fileprivate func setUpGasFeeView() {

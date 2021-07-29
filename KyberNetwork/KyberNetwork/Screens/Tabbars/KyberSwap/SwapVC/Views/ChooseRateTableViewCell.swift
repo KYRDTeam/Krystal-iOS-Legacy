@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import Kingfisher
 
 class ChooseRateCellViewModel {
   let rate: Rate
@@ -44,6 +45,10 @@ class ChooseRateCellViewModel {
     let feeUSD = fee * rateBigInt / BigInt(10).power(18)
     return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken) ~ $\(feeUSD.displayRate(decimals: 18))"
   }
+  
+  var platformIconUrl: URL? {
+    return URL(string: self.rate.platformIcon)
+  }
 }
 
 class ChooseRateTableViewCell: UITableViewCell {
@@ -54,6 +59,8 @@ class ChooseRateTableViewCell: UITableViewCell {
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var maxGasFeeLabel: UILabel!
   @IBOutlet weak var gasFeeTitleLabel: UILabel!
+  @IBOutlet weak var platformIconImg: UIImageView!
+  
   
   var cellModel: ChooseRateCellViewModel?
   
@@ -68,6 +75,7 @@ class ChooseRateTableViewCell: UITableViewCell {
     self.maxGasFeeLabel.text = viewModel.displayMaxGasFee
     self.gasFeeTitleLabel.isHidden = viewModel.isDeposit
     self.maxGasFeeLabel.isHidden = viewModel.isDeposit
+    self.platformIconImg.kf.setImage(with: viewModel.platformIconUrl)
     self.cellModel = viewModel
   }
   

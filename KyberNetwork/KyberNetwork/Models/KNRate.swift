@@ -89,7 +89,9 @@ struct RateResponse: Codable {
 
 // MARK: - Rate
 class Rate: Codable {
-    let rate, platform, hint: String
+    let rate, platform, platformShort: String
+    let platformIcon: String
+    let hint: String
     let tradePath: [String]
     var estimatedGas: Int
 }
