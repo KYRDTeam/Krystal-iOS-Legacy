@@ -621,9 +621,12 @@ class KSwapViewModel {
         self.currentFlatform = platformString
       }
     } else {
+      //MAX RETUN = destAmount * price - gasFee
       let max = rates.max { (left, right) -> Bool in
         if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
-          return leftBigInt < rightBigInt
+          let leftValue = self.amountToBigInt * leftBigInt - self.gasPrice * BigInt(left.estimatedGas)
+          let rightValue = self.amountToBigInt * rightBigInt - self.gasPrice * BigInt(right.estimatedGas)
+          return leftValue < rightValue
         } else {
           return false
         }
