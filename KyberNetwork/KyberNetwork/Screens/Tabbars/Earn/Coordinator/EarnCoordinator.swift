@@ -146,9 +146,10 @@ class EarnCoordinator: NSObject, Coordinator {
   }
   
   func loadCachedLendingTokens() {
-    let tokens = Storage.retrieve(Constants.lendingTokensStoreFileName, as: [TokenData].self) ?? []
-    self.lendingTokens = tokens
-    self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+    if let tokens = Storage.retrieve(Constants.lendingTokensStoreFileName, as: [TokenData].self) {
+      self.lendingTokens = tokens
+      self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
+    }
   }
   
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -218,7 +219,7 @@ class EarnCoordinator: NSObject, Coordinator {
   }
   
   func appCoordinatorDidUpdateChain() {
-    self.navigationController.popToRootViewController(animated: false)
+//    self.navigationController.popToRootViewController(animated: false)
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadCachedLendingTokens()
     self.getLendingOverview()

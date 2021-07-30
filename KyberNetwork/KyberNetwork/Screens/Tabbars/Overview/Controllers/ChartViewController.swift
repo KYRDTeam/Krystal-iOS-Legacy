@@ -422,7 +422,6 @@ class ChartViewController: KNBaseViewController {
         return "\(month)/\(year)"
       }
     }
-    self.updateUITokenInfo()
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
@@ -432,6 +431,9 @@ class ChartViewController: KNBaseViewController {
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
+    self.chartView.removeAllSeries()
+    self.chartView.add(self.viewModel.series)
+    self.updateUIChartInfo()
   }
 }
 
