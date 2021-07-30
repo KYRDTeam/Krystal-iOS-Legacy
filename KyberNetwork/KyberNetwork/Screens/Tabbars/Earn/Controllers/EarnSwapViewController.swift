@@ -519,7 +519,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateGasFeeUI()
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.toTokenButton.setTitle(self.viewModel.toTokenData.symbol.uppercased(), for: .normal)
-    self.updateUITokenDidChange(self.viewModel.fromTokenData)
+    self.updateUITokenDidChange(self.viewModel.toTokenData)
     self.updateUIWalletSelectButton()
     self.setUpGasFeeView()
   }
@@ -961,7 +961,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorUpdateSelectedToken(_ token: TokenData) {
     self.viewModel.showingRevertRate = false
     self.viewModel.updateFromToken(token)
-    self.updateUITokenDidChange(token)
+    self.updateUITokenDidChange(self.viewModel.toTokenData)
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)

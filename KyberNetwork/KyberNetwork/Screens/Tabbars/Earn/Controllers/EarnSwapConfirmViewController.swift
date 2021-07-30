@@ -228,7 +228,7 @@ extension EarnSwapConfirmViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 650
+    return 660
   }
 
   func getPopupContentView() -> UIView {
