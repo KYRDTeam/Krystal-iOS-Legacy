@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -40,7 +40,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-Gi-nXw">
-                            <rect key="frame" x="51" y="66" width="48" height="21"/>
+                            <rect key="frame" x="51" y="66" width="46.5" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -176,7 +176,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSG-mf-L9y">
-                    <rect key="frame" x="37" y="143" width="301" height="65.5"/>
+                    <rect key="frame" x="37" y="143" width="301" height="67.5"/>
                     <string key="text">Select the token you wish to supply to earn interest. Interest rate may change as per market dynamics.
 </string>
                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
@@ -184,7 +184,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PZ6-PZ-AYR">
-                    <rect key="frame" x="37" y="231.5" width="301" height="415.5"/>
+                    <rect key="frame" x="37" y="233.5" width="301" height="413.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="gnw-14-QJA"/>
@@ -192,13 +192,13 @@
                     </connections>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pud-pD-ziz">
-                    <rect key="frame" x="291.5" y="207.5" width="31.5" height="19"/>
+                    <rect key="frame" x="296" y="209.5" width="27" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qh0-kL-esV">
-                    <rect key="frame" x="325" y="210.5" width="25" height="25"/>
+                    <rect key="frame" x="325" y="212.5" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="PDB-RN-euf"/>
                         <constraint firstAttribute="height" constant="25" id="kL4-ae-0HG"/>

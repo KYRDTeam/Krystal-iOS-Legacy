@@ -137,7 +137,7 @@ class EarnCoordinator: NSObject, Coordinator {
           }
           self.lendingTokens = lendingTokensData
           self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
-          Storage.store(self.lendingTokens, as: Constants.lendingTokensStoreFileName)
+          Storage.store(self.lendingTokens, as: KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName)
         } else {
           self.loadCachedLendingTokens()
         }
@@ -146,7 +146,7 @@ class EarnCoordinator: NSObject, Coordinator {
   }
   
   func loadCachedLendingTokens() {
-    if let tokens = Storage.retrieve(Constants.lendingTokensStoreFileName, as: [TokenData].self) {
+    if let tokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self) {
       self.lendingTokens = tokens
       self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
     }
@@ -219,7 +219,7 @@ class EarnCoordinator: NSObject, Coordinator {
   }
   
   func appCoordinatorDidUpdateChain() {
-//    self.navigationController.popToRootViewController(animated: false)
+    self.navigationController.popToRootViewController(animated: false)
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadCachedLendingTokens()
     self.getLendingOverview()
@@ -265,7 +265,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                         srcAmount: amount,
                         minDestAmount: minDestAmount,
                         gasPrice: gasPrice,
-                        nonce: 0,
+                        nonce: 1,
                         hint: "",
                         useGasToken: false
       )) { (result) in
@@ -289,7 +289,10 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           gasPrice: gasPrice,
           nonce: nonce
         ) { (result) in
-          self.navigationController.hideLoading()
+          DispatchQueue.main.async {
+            self.navigationController.hideLoading()
+          }
+          
           switch result {
           case .success(let txObj):
             controller.coordinatorDidUpdateSuccessTxObject(txObject: txObj)
@@ -327,7 +330,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       }
       
     case .openEarnSwap(let token, let wallet):
-      let fromToken = self.session.tokenStorage.ethToken.toTokenData()
+      let fromToken = KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken.toTokenData() : KNSupportedTokenStorage.shared.bnbToken.toTokenData()
       let viewModel = EarnSwapViewModel(to: token, from: fromToken, wallet: wallet)
       let controller = EarnSwapViewController(viewModel: viewModel)
       controller.delegate = self

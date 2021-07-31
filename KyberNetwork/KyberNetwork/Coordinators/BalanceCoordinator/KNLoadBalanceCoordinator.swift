@@ -335,7 +335,7 @@ class KNLoadBalanceCoordinator {
 
   func loadLendingDistributionBalance() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getLendingDistributionBalance(lendingPlatform: "Compound", address: self.session.wallet.address.description)) { (result) in
+    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.isEthereum ? "Compound" : "Venus", address: self.session.wallet.address.description)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)

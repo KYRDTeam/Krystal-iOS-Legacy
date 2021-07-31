@@ -255,7 +255,7 @@ enum HistoryModelType: Codable {
       return .allowance
     case "0x818e80b7", "0xdb006a75":
       return .withdraw
-    case "0x30037de5", "0x9059232f":
+    case "0x30037de5", "0x9059232f", "0x852a12e3":
       return .earn
     case "0xa9059cbb":
       return .transferToken

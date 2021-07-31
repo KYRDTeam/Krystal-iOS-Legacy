@@ -18,7 +18,6 @@ class EarnOverviewViewController: KNBaseViewController {
   @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var currentChainIcon: UIImageView!
-  @IBOutlet weak var bscNotSupportView: UIView!
   
   weak var delegate: EarnOverviewViewControllerDelegate?
   weak var navigationDelegate: NavigationBarDelegate?
@@ -85,7 +84,6 @@ class EarnOverviewViewController: KNBaseViewController {
     }
     let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
     self.currentChainIcon.image = icon
-    self.bscNotSupportView.isHidden = KNGeneralProvider.shared.isEthereum
   }
 
   @IBAction func exploreButtonTapped(_ sender: UIButton) {

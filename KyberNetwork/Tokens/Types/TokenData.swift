@@ -252,6 +252,10 @@ struct TokenData: Codable, Equatable {
   var isETH: Bool {
     return self.symbol == "ETH"
   }
+  
+  var isBNB: Bool {
+    return self.symbol == "BNB"
+  }
 
   func getBalanceBigInt() -> BigInt {
     let balance = BalanceStorage.shared.balanceForAddress(self.address)
@@ -272,6 +276,6 @@ struct LendingPlatformData: Codable {
   let distributionBorrowRate: Double
 
   var isCompound: Bool {
-    return self.name == "Compound"
+    return self.name == "Compound" || self.name == "Venus"
   }
 }

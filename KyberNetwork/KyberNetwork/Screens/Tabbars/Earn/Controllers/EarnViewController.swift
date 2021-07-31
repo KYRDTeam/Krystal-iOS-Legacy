@@ -236,8 +236,9 @@ class EarnViewModel {
     let comp = self.tokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
+    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
     let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
-    return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\nOnce redeemed, COMP token can be swapped to any token."
+    return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(comp?.name ?? "") (supply or borrow).\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
   
   var gasFeeBigInt: BigInt {
@@ -247,8 +248,8 @@ class EarnViewModel {
   
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
-    if self.tokenData.isETH { fee += self.amountBigInt }
-    let ethBal = BalanceStorage.shared.getBalanceETHBigInt()
+    if self.tokenData.isETH || self.tokenData.isBNB { fee += self.amountBigInt }
+    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
     return ethBal >= fee
   }
 }
@@ -417,7 +418,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   fileprivate func updateInforMessageUI() {
-    if self.viewModel.selectedPlatform == "Compound" {
+    if self.viewModel.selectedPlatform == "Compound" || !KNGeneralProvider.shared.isEthereum {
       self.compInfoLabel.text = self.viewModel.displayCompInfo
       self.compInfoMessageContainerView.isHidden = false
       self.sendButtonTopContraint.constant = 150
@@ -744,8 +745,8 @@ extension EarnViewController: UITextFieldDelegate {
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.gasFeeBigInt
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient ETH for transaction", comment: ""),
+          message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
         )
         return true
       }

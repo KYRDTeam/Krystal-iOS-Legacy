@@ -338,4 +338,5 @@ class KNSupportedTokenStorage {
       return addresses.contains(token.address.lowercased())
     }
   }
+  
 }

@@ -52,13 +52,20 @@ class EarnSelectTableViewCell: UITableViewCell {
     super.awakeFromNib()
     // Initialization code
   }
-  
+
   func updateCellViewViewModel(_ viewModel: EarnSelectTableViewCellViewModel) {
     let selectColor = viewModel.isSelected ? UIColor(named: "buttonBackgroundColor")! : UIColor(named: "investButtonBgColor")!
     let selectedBorder = viewModel.isSelected ? 5 : 1
     self.checkStatusIndicator.rounded(color: selectColor, width: CGFloat(selectedBorder), radius: 8)
-    //TODO: temp soluton with only 2 platform and aave ropten is not correct name
-    let iconImage = viewModel.platform == "Compound" ? UIImage(named: "comp_icon") : UIImage(named: "aave_icon")
+    var iconImage: UIImage? = nil
+    switch viewModel.platform {
+    case "Compound":
+      iconImage = UIImage(named: "comp_icon")
+    case "Venus":
+      iconImage = UIImage(named: "venus_icon")
+    default:
+      iconImage = UIImage(named: "aave_icon")
+    }
     self.platformIconImageView.image = iconImage
     self.platformNameLabel.text = viewModel.platform
     self.distributionSupplyRateContainerView.isHidden = viewModel.distributionSupplyRateDiplayString().isEmpty

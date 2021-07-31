@@ -922,7 +922,7 @@ extension KrytalService: TargetType {
     case .getLendingOverview:
       return "/v1/lending/overview"
     case .buildSwapAndDepositTx:
-      return "/v1/swap/buildSwapAndDepositTx"
+      return "/v2/swap/buildSwapAndDepositTx"
     case .getLendingBalance:
       return "/v1/lending/balance"
     case .getLendingDistributionBalance:

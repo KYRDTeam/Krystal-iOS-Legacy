@@ -27,7 +27,8 @@ class ClaimConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   
   var displayBalance: NSAttributedString {
     let balanceString = self.balanceBigInt.string(decimals: self.balance.decimal, minFractionDigits: 0, maxFractionDigits: 5)
-    return NSAttributedString(string: balanceString + " " + "COMP")
+    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    return NSAttributedString(string: balanceString + " " + symbol)
   }
   
   var valueBigInt: BigInt {
@@ -42,7 +43,7 @@ class ClaimConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   }
   
   var symbol: String {
-    return "comp_icon"
+    return KNGeneralProvider.shared.isEthereum ? "comp_icon" : "venus_icon"
   }
   
   var isWithdraw: Bool {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,7 +19,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnOverviewViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
-                <outlet property="bscNotSupportView" destination="W2J-Yb-hbf" id="swY-pJ-JQm"/>
                 <outlet property="contentView" destination="4Pv-jk-W5c" id="bJB-ej-wmK"/>
                 <outlet property="currentChainIcon" destination="fSp-Rn-gNZ" id="ddh-YN-dF4"/>
                 <outlet property="exploreButton" destination="JYK-Ol-cwQ" id="u99-Mf-u7P"/>
@@ -174,30 +173,6 @@
                     <rect key="frame" x="0.0" y="113" width="375" height="472"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W2J-Yb-hbf">
-                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="chain_empty_icon" translatesAutoresizingMaskIntoConstraints="NO" id="riV-72-aXi">
-                            <rect key="frame" x="138.5" y="48" width="98" height="119"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdi-dv-wfG">
-                            <rect key="frame" x="47" y="200" width="281" height="59.5"/>
-                            <string key="text">We are sorry. 
-Currently we support earn functionality only on Ethereum chain.</string>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="17"/>
-                            <color key="textColor" name="textWhiteColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
-                    <constraints>
-                        <constraint firstItem="riV-72-aXi" firstAttribute="centerX" secondItem="W2J-Yb-hbf" secondAttribute="centerX" id="F8b-Zk-pCo"/>
-                        <constraint firstItem="wdi-dv-wfG" firstAttribute="leading" secondItem="W2J-Yb-hbf" secondAttribute="leading" constant="47" id="NQf-7B-zZP"/>
-                        <constraint firstItem="wdi-dv-wfG" firstAttribute="top" secondItem="riV-72-aXi" secondAttribute="bottom" constant="33" id="NVK-BP-lwL"/>
-                        <constraint firstAttribute="trailing" secondItem="wdi-dv-wfG" secondAttribute="trailing" constant="47" id="Rea-ce-aWE"/>
-                        <constraint firstItem="riV-72-aXi" firstAttribute="top" secondItem="W2J-Yb-hbf" secondAttribute="top" constant="48" id="zd2-T6-T4o"/>
-                    </constraints>
-                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -206,15 +181,11 @@ Currently we support earn functionality only on Ethereum chain.</string>
                 <constraint firstItem="ESA-T6-5qz" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6cU-zS-QFX"/>
                 <constraint firstItem="ESA-T6-5qz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8ih-HK-u23"/>
                 <constraint firstItem="4Pv-jk-W5c" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Jg8-V2-NAD"/>
-                <constraint firstItem="W2J-Yb-hbf" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="N8I-WX-M3w"/>
                 <constraint firstItem="4Pv-jk-W5c" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="OD8-8i-tK6"/>
-                <constraint firstItem="W2J-Yb-hbf" firstAttribute="top" secondItem="ESA-T6-5qz" secondAttribute="bottom" id="PJw-FG-SgS"/>
-                <constraint firstItem="W2J-Yb-hbf" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="VPA-WF-EDu"/>
                 <constraint firstItem="JYK-Ol-cwQ" firstAttribute="top" secondItem="4Pv-jk-W5c" secondAttribute="bottom" constant="20" id="YLV-AZ-rsp"/>
                 <constraint firstItem="JYK-Ol-cwQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="Zul-65-G5I"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JYK-Ol-cwQ" secondAttribute="trailing" constant="37" id="bP4-hL-qyZ"/>
                 <constraint firstItem="ESA-T6-5qz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dDP-6M-dOM"/>
-                <constraint firstItem="W2J-Yb-hbf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gW5-Hi-CxR"/>
                 <constraint firstItem="4Pv-jk-W5c" firstAttribute="top" secondItem="ESA-T6-5qz" secondAttribute="bottom" id="r9c-jV-GRB"/>
             </constraints>
             <point key="canvasLocation" x="140" y="103.89805097451276"/>
@@ -222,7 +193,6 @@ Currently we support earn functionality only on Ethereum chain.</string>
     </objects>
     <resources>
         <image name="arrow_down_template" width="24" height="24"/>
-        <image name="chain_empty_icon" width="98" height="119"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
@@ -234,9 +204,6 @@ Currently we support earn functionality only on Ethereum chain.</string>
         </namedColor>
         <namedColor name="navButtonBgColor">
             <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textWhiteColor">
-            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="toolbarBgColor">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

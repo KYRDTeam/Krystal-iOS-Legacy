@@ -89,7 +89,8 @@ struct EarnConfirmViewModel {
   
   var displayCompInfo: String {
     let apy = String(format: "%.6f", self.platform.distributionSupplyRate * 100.0)
-    return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\n\nOnce redeemed, COMP token can be swapped to any token."
+    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(self.platform.name) (supply or borrow).\n\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
 }
 

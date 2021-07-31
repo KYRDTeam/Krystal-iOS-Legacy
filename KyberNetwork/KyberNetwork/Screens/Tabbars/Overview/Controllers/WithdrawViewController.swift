@@ -54,7 +54,7 @@ class WithdrawViewModel {
   }
   
   var isEnoughFee: Bool {
-    let ethBalance = BigInt(BalanceStorage.shared.balanceETH()) ?? BigInt(0)
+    let ethBalance = KNGeneralProvider.shared.isEthereum ? (BigInt(BalanceStorage.shared.balanceETH()) ?? BigInt(0)) : (BigInt(BalanceStorage.shared.balanceBNB()) ?? BigInt(0))
     return ethBalance > self.transactionFee
   }
   
@@ -417,8 +417,8 @@ extension WithdrawViewController: UITextFieldDelegate {
     }
     guard self.viewModel.isEnoughFee else {
       self.showWarningTopBannerMessage(
-        with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-        message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), self.viewModel.transactionFee.shortString(units: .ether, maxFractionDigits: 6))
+        with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", comment: ""),
+        message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), self.viewModel.transactionFee.shortString(units: .ether, maxFractionDigits: 6))
       )
       return true
     }
