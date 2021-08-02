@@ -847,6 +847,10 @@ extension KSwapViewController {
   }
 
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
+    guard !self.viewModel.from.isQuoteToken else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
     if self.viewModel.from.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token)

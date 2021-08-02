@@ -128,6 +128,10 @@ class TokenObject: Object {
   var isBNB: Bool {
     return self.address.lowercased() == Constants.bnbAddress.lowercased()
   }
+  
+  var isQuoteToken: Bool {
+    return self.isETH || self.isBNB
+  }
 
     var isWETH: Bool {
       return self.symbol == "WETH"

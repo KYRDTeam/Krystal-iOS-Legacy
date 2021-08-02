@@ -414,6 +414,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   fileprivate func updateAllowance() {
+    
     self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.tokenData))
   }
   
@@ -600,6 +601,10 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
+    guard !self.viewModel.tokenData.isQuoteToken else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
     if self.viewModel.tokenData.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true)
@@ -641,6 +646,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
+    self.updateUIBalanceDidChange()
   }
   
   fileprivate func checkUpdateApproveButton() {

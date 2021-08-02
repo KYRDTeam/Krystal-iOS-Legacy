@@ -256,6 +256,10 @@ struct TokenData: Codable, Equatable {
   var isBNB: Bool {
     return self.symbol == "BNB"
   }
+  
+  var isQuoteToken: Bool {
+    return self.isETH || self.isBNB
+  }
 
   func getBalanceBigInt() -> BigInt {
     let balance = BalanceStorage.shared.balanceForAddress(self.address)

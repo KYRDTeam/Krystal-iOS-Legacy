@@ -902,7 +902,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
-    guard !(self.viewModel.fromTokenData.isETH || self.viewModel.fromTokenData.isBNB) else {
+    guard !self.viewModel.fromTokenData.isQuoteToken else {
       self.updateUIForSendApprove(isShowApproveButton: false)
       return
     }
@@ -921,6 +921,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
+    self.updateUIBalanceDidChange()
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
