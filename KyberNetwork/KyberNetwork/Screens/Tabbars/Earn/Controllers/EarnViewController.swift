@@ -140,7 +140,7 @@ class EarnViewModel {
     default:
       break
     }
-    return "\(feeString) ETH (\(typeString))"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken) (\(typeString))"
   }
   //TODO: can be improve with extension
   var gasFeeString: String {

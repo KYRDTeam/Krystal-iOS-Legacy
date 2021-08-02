@@ -88,7 +88,7 @@ class WithdrawViewModel {
     default:
       break
     }
-    return "\(feeString) ETH (\(typeString))"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken) (\(typeString))"
   }
   
   var gasFeeString: String {

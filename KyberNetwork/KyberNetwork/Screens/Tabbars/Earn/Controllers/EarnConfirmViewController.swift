@@ -212,7 +212,7 @@ class EarnConfirmViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       let historyTransaction = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.toTokenSym, transactionDescription: "\(self.viewModel.amountString) -> \(self.viewModel.toAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction.toSignTransactionObject())
       historyTransaction.transactionSuccessDescription = "\(self.viewModel.amountString) with \(self.viewModel.netAPYString.dropFirst()) APY"
-      let earnTokenString = self.viewModel.platform.isCompound ? "c" + self.viewModel.token.symbol : "a" + self.viewModel.token.symbol
+      let earnTokenString = self.viewModel.platform.isCompound ? self.viewModel.platform.compondPrefix + self.viewModel.token.symbol : "a" + self.viewModel.token.symbol
       historyTransaction.earnTransactionSuccessDescription = "You’ve received \(earnTokenString) token because you supplied \(self.viewModel.token.symbol) in \(self.viewModel.platform.name). Simply by holding \(earnTokenString) token, you will earn interest."
       self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
     }

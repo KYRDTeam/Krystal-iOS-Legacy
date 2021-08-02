@@ -278,4 +278,8 @@ struct LendingPlatformData: Codable {
   var isCompound: Bool {
     return self.name == "Compound" || self.name == "Venus"
   }
+  
+  var compondPrefix: String {
+    return KNGeneralProvider.shared.isEthereum ? "c" : "v"
+  }
 }
