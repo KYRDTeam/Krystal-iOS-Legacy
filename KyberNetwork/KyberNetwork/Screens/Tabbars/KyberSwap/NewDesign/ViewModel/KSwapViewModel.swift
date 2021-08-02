@@ -617,7 +617,7 @@ class KSwapViewModel {
     let rates = self.swapRates.3
     if rates.count == 1 {
       let dict = rates.first
-      if let platformString = dict?.rate {
+      if let platformString = dict?.platform {
         self.currentFlatform = platformString
       }
     } else {

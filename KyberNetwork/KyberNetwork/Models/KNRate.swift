@@ -92,6 +92,6 @@ class Rate: Codable {
     let rate, platform, platformShort: String
     let platformIcon: String
     let hint: String
-    let tradePath: [String]
+//    let tradePath: [String]
     var estimatedGas: Int
 }

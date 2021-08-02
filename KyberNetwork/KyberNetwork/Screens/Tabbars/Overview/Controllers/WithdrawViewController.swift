@@ -106,7 +106,7 @@ class WithdrawViewModel {
   
   var feeETHString: String {
     let string: String = self.transactionFee.displayRate(decimals: 18)
-    return "\(string) ETH"
+    return "\(string) \(KNGeneralProvider.shared.quoteToken)"
   }
   
   var feeUSDString: String {

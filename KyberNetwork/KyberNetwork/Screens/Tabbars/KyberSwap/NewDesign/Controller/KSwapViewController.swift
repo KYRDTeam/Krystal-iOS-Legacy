@@ -245,10 +245,11 @@ class KSwapViewController: KNBaseViewController {
 
   fileprivate func setUpChangeRateButton() {
     
-    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform), let url = URL(string: rate.platformIcon) else {
+    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform) else {
       self.changeRateButton.setImage(nil, for: .normal)
       return
     }
+    let url = URL(string: rate.platformIcon)
     self.changeRateButton.kf.setImage(with: url, for: .normal, completionHandler: { result in
       switch result {
       case .success(let image):

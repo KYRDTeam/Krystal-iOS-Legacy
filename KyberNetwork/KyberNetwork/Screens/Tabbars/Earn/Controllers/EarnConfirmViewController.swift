@@ -57,7 +57,7 @@ struct EarnConfirmViewModel {
 
   var feeETHString: String {
     let string: String = self.transactionFee.displayRate(decimals: 18)
-    return "\(string) ETH"
+    return "\(string) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   var feeUSDString: String {
@@ -182,6 +182,7 @@ class EarnConfirmViewController: KNBaseViewController {
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.token.symbol)
     self.usdValueLabel.text = self.viewModel.displayUSDValue
+    self.platformIconImageView.image = KNGeneralProvider.shared.isEthereum ? UIImage(named: "comp_icon") : UIImage(named: "venus_icon")
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
