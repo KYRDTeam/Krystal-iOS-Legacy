@@ -894,7 +894,7 @@ extension KrytalService: TargetType {
       urlComponents.queryItems = queryItems
       return urlComponents.url!
     default:
-      let chainPath = KNGeneralProvider.shared.isEthereum ? "/ethereum" : "/bsc"
+      let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
     }
   }
@@ -1182,17 +1182,17 @@ enum CoinGeckoService {
   case getPriceETH
   case getPriceTokens(addresses: [String])
 }
-
+/*
 extension CoinGeckoService: TargetType {
   var baseURL: URL {
     return URL(string: "https://api.coingecko.com/api")!
   }
 
   var path: String {
-    let chainPath = KNGeneralProvider.shared.isEthereum ? "ethereum" : "binance-smart-chain"
+    let chainPath = KNGeneralProvider.shared.currentChain ? "ethereum" : "binance-smart-chain"
     switch self {
     case .getChartData(let address, _ , _, _):
-      let coin = KNGeneralProvider.shared.isEthereum ? "ethereum" : "binancecoin"
+      let coin = KNGeneralProvider.shared.currentChain ? "ethereum" : "binancecoin"
       return address.isNativeAddress() ? "/v3/coins/\(coin)/market_chart/range" : "/v3/coins/\(chainPath)/contract/\(address)/market_chart/range"
     case .getTokenDetailInfo(address: let address):
       return address.isNativeAddress() ? "/v3/coins/\(chainPath)" : "/v3/coins/\(chainPath)/contract/\(address)"
@@ -1233,7 +1233,7 @@ extension CoinGeckoService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getPriceETH:
       let json: JSONDictionary = [
-        "ids": KNGeneralProvider.shared.isEthereum ? "ethereum" : "binancecoin",
+        "ids": KNGeneralProvider.shared.currentChain ? "ethereum" : "binancecoin",
         "vs_currencies": "eth,usd,btc",
         "include_market_cap": "true",
         "include_24hr_vol": "true",
@@ -1258,3 +1258,4 @@ extension CoinGeckoService: TargetType {
    return nil
   }
 }
+*/

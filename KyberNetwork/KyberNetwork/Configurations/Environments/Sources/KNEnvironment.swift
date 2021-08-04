@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }
 
   var envPrefix: String {
-    let chain = KNGeneralProvider.shared.isEthereum ? "eth" : "bsc"
+    let chain = KNGeneralProvider.shared.quoteToken.lowercased()
     return chain + "-" + self.displayName + "-"
   }
   
@@ -63,6 +63,15 @@ enum KNEnvironment: Int {
       return Constants.bscRoptenPRC
     default:
       return Constants.bscMainnetPRC
+    }
+  }
+  
+  var maticRPC: CustomRPC {
+    switch self {
+    case .ropsten:
+      return Constants.polygonRoptenPRC
+    default:
+      return Constants.polygonMainnetPRC
     }
   }
 

@@ -54,7 +54,7 @@ class WithdrawViewModel {
   }
   
   var isEnoughFee: Bool {
-    let ethBalance = KNGeneralProvider.shared.isEthereum ? (BigInt(BalanceStorage.shared.balanceETH()) ?? BigInt(0)) : (BigInt(BalanceStorage.shared.balanceBNB()) ?? BigInt(0))
+    let ethBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBalance > self.transactionFee
   }
   

@@ -89,7 +89,7 @@ struct EarnConfirmViewModel {
   
   var displayCompInfo: String {
     let apy = String(format: "%.6f", self.platform.distributionSupplyRate * 100.0)
-    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    let symbol = KNGeneralProvider.shared.compoundSymbol
     return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(self.platform.name) (supply or borrow).\n\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
 }
@@ -182,7 +182,7 @@ class EarnConfirmViewController: KNBaseViewController {
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.token.symbol)
     self.usdValueLabel.text = self.viewModel.displayUSDValue
-    self.platformIconImageView.image = KNGeneralProvider.shared.isEthereum ? UIImage(named: "comp_icon") : UIImage(named: "venus_icon")
+    self.platformIconImageView.image = KNGeneralProvider.shared.compoundImageIcon
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

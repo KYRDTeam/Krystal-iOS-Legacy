@@ -10,7 +10,9 @@ import UIKit
 class SwitchChainWalletsListViewModel {
   let dataSource: [KNWalletTableCellViewModel]
   var selectedAddress: String = ""
-  init() {
+  let selectedChain: ChainType
+  init(selected: ChainType) {
+    self.selectedChain = selected
     self.dataSource = KNWalletStorage.shared.wallets.map({ (obj) -> KNWalletTableCellViewModel in
       return KNWalletTableCellViewModel(wallet: obj)
     })
@@ -32,9 +34,10 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   let kContactTableViewCellID: String = "kContactTableViewCellID"
   
   let transitor = TransitionDelegate()
-  let viewModel = SwitchChainWalletsListViewModel()
+  let viewModel: SwitchChainWalletsListViewModel
   
-  init() {
+  init(viewModel: SwitchChainWalletsListViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: SwitchChainWalletsListViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -57,7 +60,7 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      KNGeneralProvider.shared.isEthereum = !KNGeneralProvider.shared.isEthereum
+      KNGeneralProvider.shared.currentChain = self.viewModel.selectedChain
       KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.viewModel.selectedAddress)
     }
   }

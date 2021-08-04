@@ -96,11 +96,7 @@ class KNSendTokenViewModel: NSObject {
   }
   
   func resetFromToken() {
-    if KNGeneralProvider.shared.isEthereum {
-      self.from = KNSupportedTokenStorage.shared.ethToken
-    } else {
-      self.from = KNSupportedTokenStorage.shared.bnbToken
-    }
+    self.from = KNGeneralProvider.shared.quoteTokenObject
   }
 
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
@@ -217,7 +213,7 @@ class KNSendTokenViewModel: NSObject {
   var isHavingEnoughETHForFee: Bool {
     var fee = self.ethFeeBigInt
     if self.from.isETH || self.from.isBNB { fee += self.amountBigInt }
-    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
 

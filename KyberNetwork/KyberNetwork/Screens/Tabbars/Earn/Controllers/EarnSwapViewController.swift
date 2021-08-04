@@ -427,7 +427,7 @@ class EarnSwapViewModel {
     let comp = self.toTokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
-    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    let symbol = KNGeneralProvider.shared.currentChain == .bsc ? "XVS" : "COMP"
     let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
     return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(comp?.name ?? "") (supply or borrow).\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
@@ -452,9 +452,13 @@ class EarnSwapViewModel {
   
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
-    if self.fromTokenData.isETH || self.fromTokenData.isBNB { fee += self.amountFromBigInt }
-    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
+    if self.fromTokenData.isQuoteToken { fee += self.amountFromBigInt }
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
+  }
+  
+  var isCompound: Bool {
+    return self.selectedPlatform == "Compound" || KNGeneralProvider.shared.currentChain == .bsc
   }
 }
 
@@ -573,7 +577,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateInforMessageUI() {
-    if self.viewModel.selectedPlatform == "Compound" || !KNGeneralProvider.shared.isEthereum {
+    if self.viewModel.isCompound {
       self.compInfoLabel.text = self.viewModel.displayCompInfo
       self.compInfoMessageContainerView.isHidden = false
       self.sendButtonTopContraint.constant = 150
@@ -714,7 +718,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = KNGeneralProvider.shared.isEthereum ? String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), self.viewModel.refPriceDiffText) : String(format: "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised(), self.viewModel.refPriceDiffText)
+    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     self.showTopBannerView(
       with: "",
       message: message,

@@ -96,7 +96,7 @@ struct EarnSwapConfirmViewModel {
   
   var displayCompInfo: String {
     let apy = String(format: "%.6f", self.platform.distributionSupplyRate * 100.0)
-    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    let symbol = KNGeneralProvider.shared.currentChain == .bsc ? "XVS" : "COMP" 
     return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(self.platform.name) (supply or borrow).\n\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
 }
@@ -190,7 +190,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
     self.transactionGasPriceLabel.text = self.viewModel.transactionGasPriceString
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.usdValueLabel.text = self.viewModel.displayUSDValue
-    self.platformIconImageView.image = KNGeneralProvider.shared.isEthereum ? UIImage(named: "comp_icon") : UIImage(named: "venus_icon")
+    self.platformIconImageView.image = KNGeneralProvider.shared.chainIconImage
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {

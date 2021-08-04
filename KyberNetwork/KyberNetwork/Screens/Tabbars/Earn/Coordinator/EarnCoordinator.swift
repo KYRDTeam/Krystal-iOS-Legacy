@@ -330,7 +330,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       }
       
     case .openEarnSwap(let token, let wallet):
-      let fromToken = KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken.toTokenData() : KNSupportedTokenStorage.shared.bnbToken.toTokenData()
+      let fromToken = KNGeneralProvider.shared.quoteTokenObject.toTokenData()
       let viewModel = EarnSwapViewModel(to: token, from: fromToken, wallet: wallet)
       let controller = EarnSwapViewController(viewModel: viewModel)
       controller.delegate = self
@@ -659,13 +659,7 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup scre
   }
 
   fileprivate func openSendTokenView() {
-    let from: TokenObject = {
-      if KNGeneralProvider.shared.isEthereum {
-        return KNSupportedTokenStorage.shared.ethToken
-      } else {
-        return KNSupportedTokenStorage.shared.bnbToken
-      }
-    }()
+    let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,

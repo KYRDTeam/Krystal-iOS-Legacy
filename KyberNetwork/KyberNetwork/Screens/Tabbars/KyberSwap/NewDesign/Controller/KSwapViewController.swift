@@ -344,7 +344,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = KNGeneralProvider.shared.isEthereum ? String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), self.viewModel.refPriceDiffText) : String(format: "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised(), self.viewModel.refPriceDiffText)
+    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     self.showTopBannerView(
       with: "",
       message: message,
@@ -396,15 +396,16 @@ class KSwapViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = {
-      let secondPopup = SwitchChainWalletsListViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.setUpGasFeeView()
   }
@@ -506,7 +507,7 @@ class KSwapViewController: KNBaseViewController {
       return true
     }
     if isConfirming {
-      let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+      let quoteToken = KNGeneralProvider.shared.quoteToken
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.feeBigInt
         self.showWarningTopBannerMessage(

@@ -276,7 +276,7 @@ class EtherscanTransactionStorage {
 
   func getEtherscanToken() -> [Token] {
     var tokenSet = Set<Token>()
-    let eth = KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken.toToken() : KNSupportedTokenStorage.shared.bnbToken.toToken()
+    let eth = KNGeneralProvider.shared.quoteTokenObject.toToken()
     tokenSet.insert(eth)
     self.tokenTransactions.forEach { (transaction) in
       let token = Token(name: transaction.tokenName, symbol: transaction.tokenSymbol, address: transaction.contractAddress, decimals: Int(transaction.tokenDecimal) ?? 0, logo: transaction.tokenSymbol)

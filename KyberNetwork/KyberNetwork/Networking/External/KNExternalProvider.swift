@@ -14,12 +14,8 @@ class KNExternalProvider {
   fileprivate var account: Account
   let web3Swift: Web3Swift
   var networkAddress: Address {
-    let address = KNGeneralProvider.shared.isEthereum ? Constants.krystalProxyAddress.lowercased() : Constants.krystalProxyAddressBSC.lowercased()
+    let address = KNGeneralProvider.shared.proxyAddress
     return Address(string: address)!
-  }
-
-  var isEthereum: Bool {
-    return KNGeneralProvider.shared.isEthereum
   }
 
   var minTxCount: Int {
@@ -37,7 +33,7 @@ class KNExternalProvider {
   }
   
   var customRPC: CustomRPC {
-    return self.isEthereum ? KNEnvironment.default.ethRPC : KNEnvironment.default.bscRPC
+    return KNGeneralProvider.shared.customRPC
   }
 
   func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {

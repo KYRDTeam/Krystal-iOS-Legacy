@@ -275,25 +275,25 @@ class KNRateCoordinator {
   }
 
   //MARK: - NEW IMPLEMENTATION
-  func loadETHPrice() {
-    let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getPriceETH) { (result) in
-      if case .success(let resp) = result, let json = try? resp.mapJSON() as? [String: JSONDictionary] ?? [:] {
-        var output: [TokenPrice] = []
-        json.keys.forEach { (jsonKey) in
-          var dict = json[jsonKey]
-          dict?["address"] = KNGeneralProvider.shared.isEthereum ? Constants.ethAddress : Constants.bnbAddress
-          if let notNil = dict {
-            let price = TokenPrice(dictionary: notNil)
-            output.append(price)
-          }
-        }
-        DispatchQueue.global(qos: .background).async {
-          KNTrackerRateStorage.shared.updatePrices(output)
-        }
-      }
-    }
-  }
+//  func loadETHPrice() {
+//    let provider = MoyaProvider<CoinGeckoService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+//    provider.request(.getPriceETH) { (result) in
+//      if case .success(let resp) = result, let json = try? resp.mapJSON() as? [String: JSONDictionary] ?? [:] {
+//        var output: [TokenPrice] = []
+//        json.keys.forEach { (jsonKey) in
+//          var dict = json[jsonKey]
+//          dict?["address"] = KNGeneralProvider.shared.currentChain ? Constants.ethAddress : Constants.bnbAddress
+//          if let notNil = dict {
+//            let price = TokenPrice(dictionary: notNil)
+//            output.append(price)
+//          }
+//        }
+//        DispatchQueue.global(qos: .background).async {
+//          KNTrackerRateStorage.shared.updatePrices(output)
+//        }
+//      }
+//    }
+//  }
 
   func loadTokenPrice() {
     let tokenAddress = KNSupportedTokenStorage.shared.allTokens.map { (token) -> String in

@@ -280,7 +280,7 @@ class InternalHistoryTransaction: Codable {
   var transactionSuccessDescription: String?
   var earnTransactionSuccessDescription: String?
   var transactionObject: SignTransactionObject
-  let isEth: Bool
+  let chain: ChainType
 
   init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String, transactionObj: SignTransactionObject) {
     self.type = type
@@ -290,7 +290,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionDescription = transactionDescription
     self.transactionDetailDescription = transactionDetailDescription
     self.transactionObject = transactionObj
-    self.isEth = KNGeneralProvider.shared.isEthereum
+    self.chain = KNGeneralProvider.shared.currentChain
   }
 }
 

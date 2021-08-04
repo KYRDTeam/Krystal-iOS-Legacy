@@ -85,16 +85,7 @@ class KSwapViewModel {
   }
 
   var isUseGasToken: Bool {
-    if !KNGeneralProvider.shared.isEthereum {
-      return false
-    }
-    var data: [String: Bool] = [:]
-    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
-      data = saved
-    } else {
-      return false
-    }
-    return data[self.wallet.address.description] ?? false
+    return false
   }
 
   var allFromTokenBalanceString: String {
@@ -350,7 +341,7 @@ class KSwapViewModel {
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
     if self.from.isETH || self.from.isBNB { fee += self.amountFromBigInt }
-    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
 
@@ -364,7 +355,7 @@ class KSwapViewModel {
   }
 
   var gasFeeString: NSAttributedString {
-    let sourceToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    let sourceToken = KNGeneralProvider.shared.quoteToken
     let fee = self.gasPrice * self.estimateGasLimit
     let feeString: String = fee.displayRate(decimals: 18)
     var typeString = ""
@@ -404,13 +395,18 @@ class KSwapViewModel {
   }
 
   func resetDefaultTokensPair() {
-    if KNGeneralProvider.shared.isEthereum {
+    switch KNGeneralProvider.shared.currentChain  {
+    case .eth:
       self.from = KNSupportedTokenStorage.shared.ethToken
       self.to = KNSupportedTokenStorage.shared.kncToken
-    } else {
+    case .bsc:
       self.from = KNSupportedTokenStorage.shared.bnbToken
       self.to = KNSupportedTokenStorage.shared.busdToken
+    case .polygon:
+      self.from = KNSupportedTokenStorage.shared.maticToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
+    
   }
 
   // MARK: Update data

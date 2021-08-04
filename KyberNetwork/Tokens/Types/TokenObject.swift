@@ -129,8 +129,12 @@ class TokenObject: Object {
     return self.address.lowercased() == Constants.bnbAddress.lowercased()
   }
   
+  var isMatic: Bool {
+    return self.address.lowercased() == Constants.maticAddress.lowercased()
+  }
+  
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB
+    return self.isETH || self.isBNB || self.isMatic
   }
 
     var isWETH: Bool {

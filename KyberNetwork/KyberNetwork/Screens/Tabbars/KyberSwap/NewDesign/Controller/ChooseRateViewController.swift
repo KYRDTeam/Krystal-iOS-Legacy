@@ -127,23 +127,6 @@ class ChooseRateViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-//    self.kyberRateLabel.text = self.viewModel.kyberRateText
-//    self.uniRateLabel.text = self.viewModel.uniRateText
-//    if !self.viewModel.isDeposit {
-//      self.feeUniLabel.text = self.viewModel.uniFeeText
-//      self.feeKyberLabel.text = self.viewModel.kyberFeeText
-//    } else {
-//      self.feeUniLabel.isHidden = true
-//      self.feeKyberLabel.isHidden = true
-//      self.feeUniTitleLabel.isHidden = true
-//      self.feeKyberTitleLabel.isHidden = true
-//    }
-//    if !KNGeneralProvider.shared.isEthereum {
-//      self.firstPlatformIconImage.image = UIImage(named: "pancake_icon")
-//      self.secondPlatformIconImage.image = UIImage(named: "pancake_icon")
-//      self.firstplatformNameLabel.text = "PancakeSwap v1"
-//      self.secondPlatformLabel.text = "PancakeSwap v2"
-//    }
     
     let nib = UINib(nibName: ChooseRateTableViewCell.className, bundle: nil)
     self.platformTableView.register(
@@ -156,16 +139,6 @@ class ChooseRateViewController: KNBaseViewController {
     self.popupHeightContraint.constant = self.viewModel.popupHeight
   }
 
-  @IBAction func chooseRateButtonTapped(_ sender: UIButton) {
-    if sender.tag == 0 {
-      let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
-      self.delegate?.chooseRateViewController(self, didSelect: key)
-    } else {
-      let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
-      self.delegate?.chooseRateViewController(self, didSelect: key)
-    }
-    self.dismiss(animated: true, completion: nil)
-  }
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }

@@ -45,17 +45,6 @@ class OverviewCoordinator: NSObject, Coordinator {
     return viewController
   }()
   
-  lazy var marketViewController: OverviewMarketViewController = {
-    let controller = OverviewMarketViewController()
-    controller.delegate = self
-    return controller
-  }()
-  
-  lazy var assetsViewController: OverviewAssetsViewController = {
-    let controller = OverviewAssetsViewController()
-    controller.delegate = self
-    return controller
-  }()
   
   lazy var depositViewController: OverviewDepositViewController = {
     let controller = OverviewDepositViewController()
@@ -128,24 +117,32 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
-}
-
-extension OverviewCoordinator: OverviewTokenListViewDelegate {
-  func overviewTokenListView(_ controller: OverviewViewController, run event: OverviewTokenListViewEvent) {
-    switch event {
-    case .select(token: let token):
-      self.openChartView(token: token)
-    case .buy(token: let token):
-      self.openSwapView(token: token, isBuy: true)
-    case .sell(token: let token):
-      self.openSwapView(token: token, isBuy: false)
-    case .transfer(token: let token):
-      self.openSendTokenView(token)
-    }
+  
+  func openQRCodeScreen() {
+    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return }
+    let qrcodeCoordinator = KNWalletQRCodeCoordinator(
+      navigationController: self.navigationController,
+      walletObject: walletObject
+    )
+    qrcodeCoordinator.start()
+    self.qrCodeCoordinator = qrcodeCoordinator
   }
   
-  func overviewMarketViewController(_ controller: OverviewMarketViewController, didSelect token: Token) {
-    self.openChartView(token: token)
+  func openAddTokenScreen() {
+    let tokenCoordinator = AddTokenCoordinator(navigationController: self.navigationController, session: self.session)
+    tokenCoordinator.start()
+    self.addTokenCoordinator = tokenCoordinator
+  }
+  
+  func openHistoryScreen() {
+    self.historyCoordinator = nil
+    self.historyCoordinator = KNHistoryCoordinator(
+      navigationController: self.navigationController,
+      session: self.session
+    )
+    self.historyCoordinator?.delegate = self
+    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+    self.historyCoordinator?.start()
   }
 }
 
@@ -209,11 +206,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       if let fromToken = token {
         return fromToken.toObject()
       }
-      if KNGeneralProvider.shared.isEthereum {
-        return KNSupportedTokenStorage.shared.ethToken
-      } else {
-        return KNSupportedTokenStorage.shared.bnbToken
-      }
+      return KNGeneralProvider.shared.quoteTokenObject
     }()
     self.sendCoordinator = nil
     let coordinator = KNSendTokenViewCoordinator(
@@ -229,57 +222,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   
   fileprivate func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
-  }
-}
-
-extension OverviewCoordinator: OverviewContainerViewControllerDelegate {
-  func overviewContainerViewController(_ controller: OverviewContainerViewController, run event: OverviewContainerViewEvent) {
-    switch event {
-    case .send:
-      self.openSendTokenView(nil)
-    case .receive:
-      self.openQRCodeScreen()
-    case .addCustomToken:
-      self.openAddTokenScreen()
-    case .krytal:
-      self.openKrytalView()
-    case .notifications:
-      let coordinator = NotificationCoordinator(navigationController: self.navigationController)
-      coordinator.start()
-      self.notificationsCoordinator = coordinator
-    case .selectedCurrency(type: let type):
-//      self.currentCurrencyType = type
-    break
-    case .changeHideBalanceStatus(status: let status):
-      self.delegate?.overviewCoordinatorDidChangeHideBalanceStatus(status)
-    }
-  }
-  
-  func openQRCodeScreen() {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return }
-    let qrcodeCoordinator = KNWalletQRCodeCoordinator(
-      navigationController: self.navigationController,
-      walletObject: walletObject
-    )
-    qrcodeCoordinator.start()
-    self.qrCodeCoordinator = qrcodeCoordinator
-  }
-  
-  func openAddTokenScreen() {
-    let tokenCoordinator = AddTokenCoordinator(navigationController: self.navigationController, session: self.session)
-    tokenCoordinator.start()
-    self.addTokenCoordinator = tokenCoordinator
-  }
-  
-  func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
   }
 }
 

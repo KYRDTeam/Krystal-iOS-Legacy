@@ -61,10 +61,8 @@ class EarnOverviewViewController: KNBaseViewController {
       UserDefaults.standard.set(true, forKey: "earn-tutorial")
     }
     if self.depositViewController.viewModel.totalValueBigInt == BigInt(0) {
-      if KNGeneralProvider.shared.isEthereum {
-        if self.firstTimeLoaded == false {
-          self.delegate?.earnOverviewViewControllerDidSelectExplore(self)
-        }
+      if self.firstTimeLoaded == false {
+        self.delegate?.earnOverviewViewControllerDidSelectExplore(self)
       }
     }
     self.firstTimeLoaded = true
@@ -82,7 +80,7 @@ class EarnOverviewViewController: KNBaseViewController {
     guard self.isViewLoaded else {
       return
     }
-    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
   }
 
@@ -100,8 +98,9 @@ class EarnOverviewViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = {
-      let secondPopup = SwitchChainWalletsListViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)

@@ -84,7 +84,7 @@ class KConfirmSendViewController: KNBaseViewController {
     self.cancelButton.rounded(radius: 16)
     self.amountToSendTextLabel.text = NSLocalizedString("amount.to.send", value: "Amount To Transfer", comment: "")
     self.transactionFeeTextLabel.text = NSLocalizedString("Maximum gas fee", value: "Transaction Fee", comment: "")
-    let chain = KNGeneralProvider.shared.isEthereum ? "Ethereum" : "Binance Smart Chain"
+    let chain = KNGeneralProvider.shared.chainName
     self.warningMessage.text = "Please sure that this address supports \(chain) network. You will lose your assets if this address doesn't support \(chain) compatible retrieval"
   }
 

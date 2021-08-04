@@ -257,8 +257,12 @@ struct TokenData: Codable, Equatable {
     return self.symbol == "BNB"
   }
   
+  var isMatic: Bool {
+    return self.symbol == "MATIC"
+  }
+  
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB
+    return self.isETH || self.isBNB || self.isMatic
   }
 
   func getBalanceBigInt() -> BigInt {
@@ -284,6 +288,6 @@ struct LendingPlatformData: Codable {
   }
   
   var compondPrefix: String {
-    return KNGeneralProvider.shared.isEthereum ? "c" : "v"
+    return KNGeneralProvider.shared.currentChain == .eth ? "c" : "v"
   }
 }

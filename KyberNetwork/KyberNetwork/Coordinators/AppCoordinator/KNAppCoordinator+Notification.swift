@@ -263,7 +263,7 @@ extension KNAppCoordinator {
     let updateEarn = self.earnCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
     let updateInvest = self.investCoordinator?.appCoordinatorUpdateTransaction(transaction) ?? false
     if !(updateOverview || updateExchange || updateEarn || updateInvest) {
-      guard transaction.isEth == KNGeneralProvider.shared.isEthereum else {
+      guard transaction.chain == KNGeneralProvider.shared.currentChain else {
         return
       }
       if transaction.state == .done {

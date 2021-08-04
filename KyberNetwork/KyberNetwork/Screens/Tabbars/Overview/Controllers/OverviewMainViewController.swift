@@ -349,9 +349,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
 
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
-    self.currentChainLabel.text = KNGeneralProvider.shared.isEthereum ? "ETH" : "BSC"
+    self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -373,8 +373,9 @@ class OverviewMainViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = {
-      let secondPopup = SwitchChainWalletsListViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
@@ -462,10 +463,7 @@ class OverviewMainViewController: KNBaseViewController {
       return
     }
     self.updateUISwitchChain()
-    if !KNGeneralProvider.shared.isEthereum && self.viewModel.currentMode == .supply {
-      self.viewModel.currentMode = .asset(rightMode: .value)
-      self.reloadUI()
-    }
+    self.reloadUI()
   }
   
   func coordinatorDidUpdateNewSession(_ session: KNSession) {

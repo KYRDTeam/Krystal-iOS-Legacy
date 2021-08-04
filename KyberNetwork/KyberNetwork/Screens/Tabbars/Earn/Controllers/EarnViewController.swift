@@ -152,6 +152,10 @@ class EarnViewModel {
     let selected = self.platformDataSource.first { $0.isSelected == true }
     return selected?.platform ?? ""
   }
+  
+  var isCompound: Bool {
+    return self.selectedPlatform == "Compound" || KNGeneralProvider.shared.currentChain == .bsc
+  }
 
   var minDestQty: BigInt {
     return self.amountBigInt
@@ -236,7 +240,7 @@ class EarnViewModel {
     let comp = self.tokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
-    let symbol = KNGeneralProvider.shared.isEthereum ? "COMP" : "XVS"
+    let symbol = KNGeneralProvider.shared.compoundSymbol
     let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
     return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(comp?.name ?? "") (supply or borrow).\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
@@ -249,7 +253,7 @@ class EarnViewModel {
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
     if self.tokenData.isETH || self.tokenData.isBNB { fee += self.amountBigInt }
-    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
 }
@@ -419,7 +423,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   fileprivate func updateInforMessageUI() {
-    if self.viewModel.selectedPlatform == "Compound" || !KNGeneralProvider.shared.isEthereum {
+    if self.viewModel.isCompound {
       self.compInfoLabel.text = self.viewModel.displayCompInfo
       self.compInfoMessageContainerView.isHidden = false
       self.sendButtonTopContraint.constant = 150

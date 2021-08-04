@@ -20,6 +20,8 @@ public struct Constants {
 
   public static let krystalProxyAddress = KNEnvironment.default == .ropsten ? "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a" : "0x70270C228c5B4279d1578799926873aa72446CcD"
   public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
+  public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
+  
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let customBalanceStoreFileName = "-custom-balance.data"
@@ -41,7 +43,7 @@ public struct Constants {
   public static let acceptedTermKey = "accepted-terms-key"
   public static let lendingTokensStoreFileName = "lending-tokens.data"
   public static let platformWallet = KNEnvironment.default == .production ? "0x5250b8202AEBca35328E2c217C687E894d70Cd31" : "0x5250b8202AEBca35328E2c217C687E894d70Cd31"
-  public static let currentChainSaveKey = "current-chain-save-key"
+  public static let currentChainSaveFileName = "current-chain-save-key.data"
   public static let disableTokenStoreFileName = "disable-token.data"
   public static let deleteTokenStoreFileName = "delete-token.data"
 
@@ -110,8 +112,36 @@ public struct Constants {
     apiEtherscanEndpoint: "https://api-testnet.bscscan.com/"
   )
   
+  public static let polygonMainnetPRC = CustomRPC(
+    chainID: 137,
+    name: "MaticMainnet",
+    symbol: "MaticMainnet",
+    endpoint: "https://rpc-mainnet.maticvigil.com",
+    endpointKyber: "https://rpc-mainnet.maticvigil.com",
+    endpointAlchemy: "https://rpc-mainnet.maticvigil.com",
+    etherScanEndpoint: "https://polygonscan.com/",
+    ensAddress: "",
+    wrappedAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a",
+    apiEtherscanEndpoint: "https://api.polygonscan.com/"
+  )
+  
+  public static let polygonRoptenPRC = CustomRPC(
+    chainID: 80001,
+    name: "MaticRopsten",
+    symbol: "MaticRopsten",
+    endpoint: "https://rpc-mumbai.maticvigil.com/",
+    endpointKyber: "https://rpc-mumbai.maticvigil.com/",
+    endpointAlchemy: "https://rpc-mumbai.maticvigil.com/",
+    etherScanEndpoint: "https://mumbai.polygonscan.com/",
+    ensAddress: "",
+    wrappedAddress: "0xB8C6Ed80688a2674623D89A0AaBD3a87507B1868",
+    apiEtherscanEndpoint: "https://api.polygonscan.com"
+  )
+  
+  
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
 }
 
 public struct UnitConfiguration {

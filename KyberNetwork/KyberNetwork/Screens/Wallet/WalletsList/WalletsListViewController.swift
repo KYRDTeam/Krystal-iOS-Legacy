@@ -153,8 +153,8 @@ class WalletsListViewController: KNBaseViewController {
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
-    guard KNGeneralProvider.shared.isEthereum else {
-      self.showTopBannerView(message: "WalletConnect for BSC will be supported soon")
+    guard KNGeneralProvider.shared.currentChain == .eth else {
+      self.showTopBannerView(message: "WalletConnect for \(KNGeneralProvider.shared.chainName) will be supported soon")
       return
     }
     self.dismiss(animated: true) {
