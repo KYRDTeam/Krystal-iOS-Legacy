@@ -191,6 +191,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.usdValueLabel.text = self.viewModel.displayUSDValue
     self.platformIconImageView.image = KNGeneralProvider.shared.chainIconImage
+    self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.toToken.symbol)
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
