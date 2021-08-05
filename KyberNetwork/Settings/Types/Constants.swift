@@ -117,7 +117,7 @@ public struct Constants {
     name: "MaticMainnet",
     symbol: "MaticMainnet",
     endpoint: "https://rpc-mainnet.maticvigil.com",
-    endpointKyber: "https://rpc-mainnet.maticvigil.com",
+    endpointKyber: "https://polygon.dmm.exchange/v1/mainnet/geth?appId=prod-krystal-ios",
     endpointAlchemy: "https://rpc-mainnet.maticvigil.com",
     etherScanEndpoint: "https://polygonscan.com/",
     ensAddress: "",
