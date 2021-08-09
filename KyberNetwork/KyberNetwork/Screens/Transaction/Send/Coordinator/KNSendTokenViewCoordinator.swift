@@ -65,7 +65,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     navigationController: UINavigationController,
     session: KNSession,
     balances: [String: Balance],
-    from: TokenObject = KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken : KNSupportedTokenStorage.shared.bnbToken
+    from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     ) {
     self.navigationController = navigationController
     self.session = session

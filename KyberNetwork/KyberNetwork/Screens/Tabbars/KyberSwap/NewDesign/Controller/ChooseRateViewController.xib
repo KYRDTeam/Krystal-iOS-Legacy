@@ -32,7 +32,7 @@
                     <rect key="frame" x="0.0" y="565" width="414" height="331"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Rate and Gas fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZS-eY-4Jj">
-                            <rect key="frame" x="92.000000000000014" y="30" width="230.33333333333337" height="23.666666666666671"/>
+                            <rect key="frame" x="90.666666666666686" y="30" width="233" height="23.666666666666671"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>

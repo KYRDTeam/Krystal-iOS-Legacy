@@ -57,7 +57,7 @@ struct EarnConfirmViewModel {
 
   var feeETHString: String {
     let string: String = self.transactionFee.displayRate(decimals: 18)
-    return "\(string) ETH"
+    return "\(string) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   var feeUSDString: String {
@@ -89,7 +89,8 @@ struct EarnConfirmViewModel {
   
   var displayCompInfo: String {
     let apy = String(format: "%.6f", self.platform.distributionSupplyRate * 100.0)
-    return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\n\nOnce redeemed, COMP token can be swapped to any token."
+    let symbol = KNGeneralProvider.shared.compoundSymbol
+    return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(self.platform.name) (supply or borrow).\n\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
 }
 
@@ -181,6 +182,7 @@ class EarnConfirmViewController: KNBaseViewController {
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.token.symbol)
     self.usdValueLabel.text = self.viewModel.displayUSDValue
+    self.platformIconImageView.image = KNGeneralProvider.shared.compoundImageIcon
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
@@ -211,7 +213,7 @@ class EarnConfirmViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       let historyTransaction = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.toTokenSym, transactionDescription: "\(self.viewModel.amountString) -> \(self.viewModel.toAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction.toSignTransactionObject())
       historyTransaction.transactionSuccessDescription = "\(self.viewModel.amountString) with \(self.viewModel.netAPYString.dropFirst()) APY"
-      let earnTokenString = self.viewModel.platform.isCompound ? "c" + self.viewModel.token.symbol : "a" + self.viewModel.token.symbol
+      let earnTokenString = self.viewModel.platform.isCompound ? self.viewModel.platform.compondPrefix + self.viewModel.token.symbol : "a" + self.viewModel.token.symbol
       historyTransaction.earnTransactionSuccessDescription = "You’ve received \(earnTokenString) token because you supplied \(self.viewModel.token.symbol) in \(self.viewModel.platform.name). Simply by holding \(earnTokenString) token, you will earn interest."
       self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
     }

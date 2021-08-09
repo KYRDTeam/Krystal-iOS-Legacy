@@ -119,7 +119,7 @@ class EarnSwapViewModel {
   }
   
   var allTokenBalanceString: String {
-    if self.fromTokenData.symbol == "ETH" {
+    if self.fromTokenData.isQuoteToken {
       let balance = self.fromTokenData.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
@@ -162,7 +162,7 @@ class EarnSwapViewModel {
     default:
       break
     }
-    return "\(feeString) ETH (\(typeString))"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken) (\(typeString))"
   }
   //TODO: can be improve with extension
   var gasFeeString: String {
@@ -330,7 +330,9 @@ class EarnSwapViewModel {
     } else {
       let max = rates.max { (left, right) -> Bool in
         if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
-          return leftBigInt < rightBigInt
+          let leftValue = self.amountToBigInt * leftBigInt - self.gasPrice * BigInt(left.estimatedGas)
+          let rightValue = self.amountToBigInt * rightBigInt - self.gasPrice * BigInt(right.estimatedGas)
+          return leftValue < rightValue
         } else {
           return false
         }
@@ -425,8 +427,9 @@ class EarnSwapViewModel {
     let comp = self.toTokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
+    let symbol = KNGeneralProvider.shared.currentChain == .bsc ? "XVS" : "COMP"
     let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
-    return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\nOnce redeemed, COMP token can be swapped to any token."
+    return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(comp?.name ?? "") (supply or borrow).\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
   
   var equivalentUSDAmount: BigInt? {
@@ -449,9 +452,13 @@ class EarnSwapViewModel {
   
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
-    if self.fromTokenData.isETH { fee += self.amountFromBigInt }
-    let ethBal = BalanceStorage.shared.getBalanceETHBigInt()
+    if self.fromTokenData.isQuoteToken { fee += self.amountFromBigInt }
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
+  }
+  
+  var isCompound: Bool {
+    return self.selectedPlatform == "Compound" || KNGeneralProvider.shared.currentChain == .bsc
   }
 }
 
@@ -570,7 +577,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateInforMessageUI() {
-    if self.viewModel.selectedPlatform == "Compound" {
+    if self.viewModel.isCompound {
       self.compInfoLabel.text = self.viewModel.displayCompInfo
       self.compInfoMessageContainerView.isHidden = false
       self.sendButtonTopContraint.constant = 150
@@ -682,10 +689,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func setUpChangeRateButton() {
-    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform), let url = URL(string: rate.platformIcon) else {
+    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform)  else {
       self.changeRateButton.setImage(nil, for: .normal)
       return
     }
+    let url = URL(string: rate.platformIcon)
     self.changeRateButton.kf.setImage(with: url, for: .normal, completionHandler: { result in
       switch result {
       case .success(let image):
@@ -710,7 +718,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = KNGeneralProvider.shared.isEthereum ? String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), self.viewModel.refPriceDiffText) : String(format: "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised(), self.viewModel.refPriceDiffText)
+    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     self.showTopBannerView(
       with: "",
       message: message,
@@ -777,15 +785,15 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
     self.fromAmountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSendAllETH: self.viewModel.fromTokenData.isETH)
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSendAllETH: self.viewModel.fromTokenData.isQuoteToken)
 //    self.updateTokensView()
     self.updateViewAmountDidChange()
     self.updateAllRates()
     if sender as? KSwapViewController != self {
-      if self.viewModel.fromTokenData.isETH {
+      if self.viewModel.fromTokenData.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+          message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
           time: 1.5
         )
       }
@@ -885,7 +893,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   
   fileprivate func updateUITokenDidChange(_ token: TokenData) {
     self.fromTokenButton.setTitle(token.symbol.uppercased(), for: .normal)
-    self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", token.symbol.uppercased())
+    self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", self.viewModel.toTokenData.symbol.uppercased())
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -899,6 +907,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
+    guard !self.viewModel.fromTokenData.isQuoteToken else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
     if self.viewModel.fromTokenData.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token.toObject())
@@ -914,6 +926,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
+    self.updateUIBalanceDidChange()
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
@@ -959,7 +972,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorUpdateSelectedToken(_ token: TokenData) {
     self.viewModel.showingRevertRate = false
     self.viewModel.updateFromToken(token)
-    self.updateUITokenDidChange(token)
+    self.updateUITokenDidChange(self.viewModel.fromTokenData)
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
@@ -1113,8 +1126,8 @@ extension EarnSwapViewController: UITextFieldDelegate {
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.gasFeeBigInt
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient ETH for transaction", comment: ""),
+          message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
         )
         return true
       }

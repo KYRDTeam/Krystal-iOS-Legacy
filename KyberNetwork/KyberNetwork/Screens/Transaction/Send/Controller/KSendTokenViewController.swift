@@ -252,15 +252,15 @@ class KSendTokenViewController: KNBaseViewController {
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
     self.viewModel.isSendAllBalanace = true
     self.amountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.amountTextField.text ?? "", forSendAllETH: self.viewModel.from.isETH)
+    self.viewModel.updateAmount(self.amountTextField.text ?? "", forSendAllETH: self.viewModel.from.isQuote)
     self.amountTextField.resignFirstResponder()
     self.amountTextField.textColor = self.viewModel.amountTextColor
     self.shouldUpdateEstimatedGasLimit(nil)
     if sender as? KSendTokenViewController != self {
-      if self.viewModel.from.isETH {
+      if self.viewModel.from.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+          message:"A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
           time: 1.5
         )
       }
@@ -296,7 +296,7 @@ class KSendTokenViewController: KNBaseViewController {
     if !isConfirming && self.isViewDisappeared { return false }
     if isConfirming {
       guard self.viewModel.isHavingEnoughETHForFee else {
-        let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+        let quoteToken = KNGeneralProvider.shared.quoteToken
         let fee = self.viewModel.ethFeeBigInt
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
@@ -354,8 +354,9 @@ class KSendTokenViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = {
-      let secondPopup = SwitchChainWalletsListViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
@@ -400,7 +401,7 @@ extension KSendTokenViewController {
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
   }
 }

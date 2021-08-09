@@ -9,26 +9,211 @@ import TrustCore
 import JavaScriptKit
 import CryptoSwift
 
+enum ChainType: Codable {
+  enum Key: CodingKey {
+    case rawValue
+  }
+  
+  enum CodingError: Error {
+    case unknownValue
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Key.self)
+    let rawValue = try container.decode(Int.self, forKey: .rawValue)
+    switch rawValue {
+    case 0:
+      self = .eth
+    case 1:
+      self = .bsc
+    case 2:
+      self = .polygon
+    default:
+      throw CodingError.unknownValue
+    }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Key.self)
+    switch self {
+    case .eth:
+      try container.encode(0, forKey: .rawValue)
+    case .bsc:
+      try container.encode(1, forKey: .rawValue)
+    case .polygon:
+      try container.encode(2, forKey: .rawValue)
+    }
+  }
+  
+  case eth
+  case bsc
+  case polygon
+}
 //swiftlint:disable file_length
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
   
-  var isEthereum: Bool {
+  var currentChain: ChainType {
     didSet {
-      UserDefaults.standard.set(self.isEthereum, forKey: Constants.currentChainSaveKey)
+      Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
     }
   }
   
   var customRPC: CustomRPC {
-    return self.isEthereum ? KNEnvironment.default.ethRPC : KNEnvironment.default.bscRPC
+    switch self.currentChain {
+    case .eth:
+      return KNEnvironment.default.ethRPC
+    case .bsc:
+      return KNEnvironment.default.bscRPC
+    case .polygon:
+      return KNEnvironment.default.maticRPC
+    }
   }
   
   var currentWeb3: Web3Swift = Web3Swift()
   
   var quoteToken: String {
-    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
-    return quoteToken
+    switch self.currentChain {
+    case .eth:
+      return "ETH"
+    case .bsc:
+      return "BNB"
+    case .polygon:
+      return "MATIC"
+    }
+  }
+  
+  var chainPath: String {
+    switch self.currentChain {
+    case .eth:
+      return "/ethereum"
+    case .bsc:
+      return "/bsc"
+    case .polygon:
+      return "/polygon"
+    }
+  }
+  
+  var quoteTokenObject: TokenObject {
+    switch self.currentChain {
+    case .eth:
+      return KNSupportedTokenStorage.shared.ethToken
+    case .bsc:
+      return KNSupportedTokenStorage.shared.bnbToken
+    case .polygon:
+      return KNSupportedTokenStorage.shared.maticToken
+    }
+  }
+  
+  var quoteTokenPrice: TokenPrice? {
+    switch self.currentChain {
+    case .eth:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.ethAddress)
+    case .bsc:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.bnbAddress)
+    case .polygon:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
+    }
+  }
+  
+  var chainIconImage: UIImage? {
+    switch self.currentChain {
+    case .eth:
+      return UIImage(named: "chain_eth_icon")
+    case .bsc:
+      return UIImage(named: "chain_bsc_icon")
+    case .polygon:
+      return UIImage(named: "chain_polygon_big_icon")
+    }
+  }
+  
+  var proxyAddress: String {
+    switch self.currentChain {
+    case .eth:
+      return Constants.krystalProxyAddress.lowercased()
+    case .bsc:
+      return Constants.krystalProxyAddressBSC.lowercased()
+    case .polygon:
+      return Constants.krystalProxyAddressMatic.lowercased()
+    }
+  }
+  
+  var compoundSymbol: String {
+    switch self.currentChain {
+    case .eth:
+      return "COMP"
+    case .bsc:
+      return "XVS"
+    case .polygon:
+      return "COMP"
+    }
+  }
+  
+  var compoundImageIcon: UIImage? {
+    switch self.currentChain {
+    case .eth:
+      return UIImage(named: "comp_icon")
+    case .bsc:
+      return UIImage(named: "venus_icon")
+    case .polygon:
+      return UIImage(named: "comp_icon")
+    }
+  }
+  
+  var tokenType: String {
+    switch self.currentChain {
+    case .eth:
+      return "ERC20"
+    case .bsc:
+      return "BEP20"
+    case .polygon:
+      return "ERC20"
+    }
+  }
+  
+  var apiKey: String {
+    switch self.currentChain {
+    case .eth:
+      return KNSecret.etherscanAPIKey
+    case .bsc:
+      return KNSecret.bscscanAPIKey
+    case .polygon:
+      return KNSecret.polygonscanAPIKey
+    }
+  }
+  
+  var lendingDistributionPlatform: String {
+    switch self.currentChain {
+    case .eth:
+      return "Compound"
+    case .bsc:
+      return "Venus"
+    case .polygon:
+      return ""
+    }
+  }
+  
+  var chainName: String {
+    switch self.currentChain {
+    case .eth:
+      return "Ethereum"
+    case .bsc:
+      return "Binance Smart Chain"
+    case .polygon:
+      return "Polygon"
+    }
+  }
+  
+  var priceAlertMessage: String {
+    switch self.currentChain {
+    case .eth:
+      return "There.is.a.difference.between.the.estimated.price"
+    case .bsc:
+      return "There.is.a.difference.between.the.estimated.price.bsc"
+    case .polygon:
+      return "There.is.a.difference.between.the.estimated.price.matic"
+    }
   }
 
   var web3Swift: Web3Swift {
@@ -63,7 +248,15 @@ class KNGeneralProvider {
   }
 
   var networkAddress: Address {
-    let address = KNGeneralProvider.shared.isEthereum ? Constants.krystalProxyAddress.lowercased() : Constants.krystalProxyAddressBSC.lowercased()
+    var address = ""
+    switch self.currentChain {
+    case .eth:
+      address = Constants.krystalProxyAddress.lowercased()
+    case .bsc:
+      address = Constants.krystalProxyAddressBSC.lowercased()
+    case .polygon:
+      address = Constants.krystalProxyAddressMatic.lowercased()
+    }
     return Address(string: address)!
   }
 
@@ -72,10 +265,10 @@ class KNGeneralProvider {
   }
 
   init() {
-    if let saved = UserDefaults.standard.object(forKey: Constants.currentChainSaveKey) as? Bool {
-      self.isEthereum = saved
+    if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
+      self.currentChain = saved
     } else {
-      self.isEthereum = true
+      self.currentChain = .eth
     }
   }
 

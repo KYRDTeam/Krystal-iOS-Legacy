@@ -16,14 +16,16 @@ class SwitchChainViewController: KNBaseViewController {
   
   @IBOutlet weak var ethCheckMarkIcon: UIImageView!
   @IBOutlet weak var bscCheckMarkIcon: UIImageView!
-  var isEthChainSelected: Bool
-  var completionHandler: () -> Void = { }
+  @IBOutlet weak var maticCheckMarkIcon: UIImageView!
+  
+  var selectedChain: ChainType
+  var completionHandler: (ChainType) -> Void = { selected in }
   @IBOutlet weak var nextButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
   
   
   init() {
-    self.isEthChainSelected = KNGeneralProvider.shared.isEthereum
+    self.selectedChain = KNGeneralProvider.shared.currentChain
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -43,28 +45,35 @@ class SwitchChainViewController: KNBaseViewController {
   }
   
   fileprivate func updateSelectedChainUI() {
-    self.ethCheckMarkIcon.isHidden = !self.isEthChainSelected
-    self.bscCheckMarkIcon.isHidden = self.isEthChainSelected
-    let enableNextButton = self.isEthChainSelected != KNGeneralProvider.shared.isEthereum
+    self.ethCheckMarkIcon.isHidden = !(self.selectedChain == .eth)
+    self.bscCheckMarkIcon.isHidden = !(self.selectedChain == .bsc)
+    self.maticCheckMarkIcon.isHidden = !(self.selectedChain == .polygon)
+    
+    let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
     self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
     
   }
   
   @IBAction func ethButtonTapped(_ sender: UIButton) {
-    self.isEthChainSelected = true
+    self.selectedChain = .eth
     self.updateSelectedChainUI()
   }
   
   @IBAction func bscButtonTapped(_ sender: UIButton) {
-    self.isEthChainSelected = false
+    self.selectedChain = .bsc
+    self.updateSelectedChainUI()
+  }
+  
+  @IBAction func polygonButtonTapped(_ sender: UIButton) {
+    self.selectedChain = .polygon
     self.updateSelectedChainUI()
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     
     self.dismiss(animated: true, completion: {
-      self.completionHandler()
+      self.completionHandler(self.selectedChain)
     })
   }
   

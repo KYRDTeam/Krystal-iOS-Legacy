@@ -94,7 +94,7 @@ class GasFeeSelectorPopupViewModel {
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let fee = gasPrice * self.gasLimit
     let feeString: String = fee.displayRate(decimals: 18)
-    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    let quoteToken = KNGeneralProvider.shared.quoteToken
     return "~ \(feeString) \(quoteToken)"
   }
 
@@ -310,7 +310,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.slippageRateSectionHeighContraint.constant = 0
       self.slippageSectionContainerView.isHidden = true
     }
-    self.useChiContainerView.isHidden = !KNGeneralProvider.shared.isEthereum
+    self.useChiContainerView.isHidden = true
   }
 
   func updateMinRateCustomErrorShown(_ isShown: Bool) {

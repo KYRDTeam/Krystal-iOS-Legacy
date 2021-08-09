@@ -67,8 +67,8 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       NSLocalizedString("share", value: "Share", comment: ""),
       for: .normal
     )
-    let token = KNGeneralProvider.shared.isEthereum ? "ERC20" : "BEP20"
-    let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    let token = KNGeneralProvider.shared.tokenType
+    let quoteToken = KNGeneralProvider.shared.quoteToken.uppercased()
     let attributedString = NSMutableAttributedString(string: "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds", attributes: [
       .font: UIFont.Kyber.regular(with: 14),
       .foregroundColor: UIColor.Kyber.SWWhiteTextColor,

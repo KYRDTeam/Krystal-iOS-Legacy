@@ -97,7 +97,7 @@ class EarnViewModel {
   }
   
   var allTokenBalanceString: String {
-    if self.tokenData.symbol == "ETH" {
+    if self.tokenData.isQuoteToken {
       let balance = self.tokenData.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
@@ -140,7 +140,7 @@ class EarnViewModel {
     default:
       break
     }
-    return "\(feeString) ETH (\(typeString))"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken) (\(typeString))"
   }
   //TODO: can be improve with extension
   var gasFeeString: String {
@@ -151,6 +151,10 @@ class EarnViewModel {
   var selectedPlatform: String {
     let selected = self.platformDataSource.first { $0.isSelected == true }
     return selected?.platform ?? ""
+  }
+  
+  var isCompound: Bool {
+    return self.selectedPlatform == "Compound" || KNGeneralProvider.shared.currentChain == .bsc
   }
 
   var minDestQty: BigInt {
@@ -236,8 +240,9 @@ class EarnViewModel {
     let comp = self.tokenData.lendingPlatforms.first { item -> Bool in
       return item.isCompound
     }
+    let symbol = KNGeneralProvider.shared.compoundSymbol
     let apy = String(format: "%.2f", (comp?.distributionSupplyRate ?? 0.03) * 100.0)
-    return "You will automatically earn COMP token (\(apy)% APY) for interacting with Compound (supply or borrow).\nOnce redeemed, COMP token can be swapped to any token."
+    return "You will automatically earn \(symbol) token (\(apy)% APY) for interacting with \(comp?.name ?? "") (supply or borrow).\nOnce redeemed, \(symbol) token can be swapped to any token."
   }
   
   var gasFeeBigInt: BigInt {
@@ -247,8 +252,8 @@ class EarnViewModel {
   
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
-    if self.tokenData.isETH { fee += self.amountBigInt }
-    let ethBal = BalanceStorage.shared.getBalanceETHBigInt()
+    if self.tokenData.isETH || self.tokenData.isBNB { fee += self.amountBigInt }
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
 }
@@ -413,11 +418,12 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   fileprivate func updateAllowance() {
+    
     self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.tokenData))
   }
   
   fileprivate func updateInforMessageUI() {
-    if self.viewModel.selectedPlatform == "Compound" {
+    if self.viewModel.isCompound {
       self.compInfoLabel.text = self.viewModel.displayCompInfo
       self.compInfoMessageContainerView.isHidden = false
       self.sendButtonTopContraint.constant = 150
@@ -462,15 +468,15 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func keyboardSendAllButtonPressed(_ sender: Any) {
     self.viewModel.isEarnAllBalanace = true
     self.fromAmountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", forSendAllETH: self.viewModel.tokenData.symbol == "ETH")
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", forSendAllETH: self.viewModel.tokenData.isQuoteToken)
     self.fromAmountTextField.resignFirstResponder()
     self.updateGasLimit()
     
     if sender as? EarnViewController != self {
-      if self.viewModel.tokenData.symbol == "ETH" {
+      if self.viewModel.tokenData.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+          message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
           time: 1.5
         )
       }
@@ -599,6 +605,10 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
+    guard !self.viewModel.tokenData.isQuoteToken else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
     if self.viewModel.tokenData.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true)
@@ -640,6 +650,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
+    self.updateUIBalanceDidChange()
   }
   
   fileprivate func checkUpdateApproveButton() {
@@ -744,8 +755,8 @@ extension EarnViewController: UITextFieldDelegate {
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.gasFeeBigInt
         self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient ETH for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more ETH or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient ETH for transaction", comment: ""),
+          message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
         )
         return true
       }

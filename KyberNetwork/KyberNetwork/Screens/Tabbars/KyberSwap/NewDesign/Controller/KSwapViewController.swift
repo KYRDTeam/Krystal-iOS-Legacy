@@ -245,10 +245,11 @@ class KSwapViewController: KNBaseViewController {
 
   fileprivate func setUpChangeRateButton() {
     
-    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform), let url = URL(string: rate.platformIcon) else {
+    guard let rate = self.viewModel.getCurrentRateObj(platform: self.viewModel.currentFlatform) else {
       self.changeRateButton.setImage(nil, for: .normal)
       return
     }
+    let url = URL(string: rate.platformIcon)
     self.changeRateButton.kf.setImage(with: url, for: .normal, completionHandler: { result in
       switch result {
       case .success(let image):
@@ -343,7 +344,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = KNGeneralProvider.shared.isEthereum ? String(format: "There.is.a.difference.between.the.estimated.price".toBeLocalised(), self.viewModel.refPriceDiffText) : String(format: "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised(), self.viewModel.refPriceDiffText)
+    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     self.showTopBannerView(
       with: "",
       message: message,
@@ -371,14 +372,14 @@ class KSwapViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
     self.fromAmountTextField.text = self.viewModel.allFromTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSwapAllETH: self.viewModel.from.isETH)
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSwapAllETH: self.viewModel.from.isQuote)
     self.updateTokensView()
     self.updateViewAmountDidChange()
     if sender as? KSwapViewController != self {
-      if self.viewModel.from.isETH {
+      if self.viewModel.from.isQuote {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+          message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
           time: 1.5
         )
       }
@@ -395,15 +396,16 @@ class KSwapViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = {
-      let secondPopup = SwitchChainWalletsListViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.isEthereum ? UIImage(named: "chain_eth_icon") : UIImage(named: "chain_bsc_icon")
+    let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.setUpGasFeeView()
   }
@@ -505,7 +507,7 @@ class KSwapViewController: KNBaseViewController {
       return true
     }
     if isConfirming {
-      let quoteToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+      let quoteToken = KNGeneralProvider.shared.quoteToken
       guard self.viewModel.isHavingEnoughETHForFee else {
         let fee = self.viewModel.feeBigInt
         self.showWarningTopBannerMessage(
@@ -847,6 +849,10 @@ extension KSwapViewController {
   }
 
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
+    guard !self.viewModel.from.isQuoteToken else {
+      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
     if self.viewModel.from.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token)

@@ -55,7 +55,7 @@ class AddTokenViewController: KNBaseViewController {
     self.addressField.attributedPlaceholder = NSAttributedString(string: "Smart contract", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
     self.symbolField.attributedPlaceholder = NSAttributedString(string: "Token symbol", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
     self.decimalsField.attributedPlaceholder = NSAttributedString(string: "Decimals", attributes: [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWPlaceHolder])
-    self.blockchainField.text = KNGeneralProvider.shared.isEthereum ? "Ethereum" : "Binance Smart Chain"
+    self.blockchainField.text = KNGeneralProvider.shared.chainName
   }
   
   fileprivate func updateUI(_ token: Token) {

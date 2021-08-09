@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -232,18 +232,18 @@ You - Friend</string>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5Z-cG-pvv">
-                                            <rect key="frame" x="215" y="9" width="52" height="28"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="u5Z-cG-pvv">
+                                            <rect key="frame" x="215" y="0.0" width="52" height="46"/>
                                             <string key="text">Pending
 Vol. (ETH)</string>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2kZ-Iw-cwd">
-                                            <rect key="frame" x="271.5" y="9" width="56.5" height="28"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="2kZ-Iw-cwd">
+                                            <rect key="frame" x="271.5" y="0.0" width="56.5" height="46"/>
                                             <string key="text">Confirmed
-Vol. (ETH)</string>
+Vol. (ETHHHHH)</string>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -258,14 +258,20 @@ Vol. (ETH)</string>
                                     <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="2kZ-Iw-cwd" secondAttribute="trailing" constant="7" id="1Fh-bj-XmQ"/>
+                                        <constraint firstItem="u5Z-cG-pvv" firstAttribute="top" secondItem="PvJ-o2-7Ok" secondAttribute="top" id="9Zi-z4-rnH"/>
                                         <constraint firstAttribute="height" constant="46" id="ADa-Tq-BIQ"/>
                                         <constraint firstAttribute="trailing" secondItem="Ule-G4-q2d" secondAttribute="trailing" constant="175" id="EOG-C5-xCF"/>
+                                        <constraint firstItem="2kZ-Iw-cwd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u5Z-cG-pvv" secondAttribute="trailing" constant="3" id="Eyx-KR-32E"/>
                                         <constraint firstAttribute="trailing" secondItem="bp8-HE-V26" secondAttribute="trailing" constant="124" id="S9P-eJ-4A9"/>
                                         <constraint firstItem="2kZ-Iw-cwd" firstAttribute="centerY" secondItem="PvJ-o2-7Ok" secondAttribute="centerY" id="Tlf-Q9-TXZ"/>
+                                        <constraint firstItem="2kZ-Iw-cwd" firstAttribute="top" secondItem="PvJ-o2-7Ok" secondAttribute="top" id="UVl-tN-jup"/>
+                                        <constraint firstAttribute="bottom" secondItem="u5Z-cG-pvv" secondAttribute="bottom" id="akF-DV-ygi"/>
                                         <constraint firstAttribute="trailing" secondItem="u5Z-cG-pvv" secondAttribute="trailing" constant="68" id="gHS-EN-YzC"/>
                                         <constraint firstItem="bp8-HE-V26" firstAttribute="centerY" secondItem="PvJ-o2-7Ok" secondAttribute="centerY" id="i40-6v-O9O"/>
                                         <constraint firstItem="G3l-Fa-Asu" firstAttribute="leading" secondItem="PvJ-o2-7Ok" secondAttribute="leading" constant="15" id="jif-pQ-kcO"/>
+                                        <constraint firstItem="u5Z-cG-pvv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bp8-HE-V26" secondAttribute="trailing" constant="3" id="rSZ-D7-oB1"/>
                                         <constraint firstItem="Ule-G4-q2d" firstAttribute="centerY" secondItem="PvJ-o2-7Ok" secondAttribute="centerY" id="uy1-vI-u7l"/>
+                                        <constraint firstAttribute="bottom" secondItem="2kZ-Iw-cwd" secondAttribute="bottom" id="w3p-Y6-c9s"/>
                                         <constraint firstItem="G3l-Fa-Asu" firstAttribute="centerY" secondItem="PvJ-o2-7Ok" secondAttribute="centerY" id="wDq-3Q-dyf"/>
                                         <constraint firstItem="u5Z-cG-pvv" firstAttribute="centerY" secondItem="PvJ-o2-7Ok" secondAttribute="centerY" id="zcd-n1-7W0"/>
                                     </constraints>

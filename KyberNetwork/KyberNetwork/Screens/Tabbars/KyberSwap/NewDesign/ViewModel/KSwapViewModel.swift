@@ -85,20 +85,11 @@ class KSwapViewModel {
   }
 
   var isUseGasToken: Bool {
-    if !KNGeneralProvider.shared.isEthereum {
-      return false
-    }
-    var data: [String: Bool] = [:]
-    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
-      data = saved
-    } else {
-      return false
-    }
-    return data[self.wallet.address.description] ?? false
+    return false
   }
 
   var allFromTokenBalanceString: String {
-    if self.from.isETH || self.from.isBNB {
+    if self.from.isQuoteToken {
       let balance = self.from.getBalanceBigInt()
       if balance <= self.feeBigInt { return "0" }
       let fee = self.allETHBalanceFee
@@ -350,7 +341,7 @@ class KSwapViewModel {
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
     if self.from.isETH || self.from.isBNB { fee += self.amountFromBigInt }
-    let ethBal = KNGeneralProvider.shared.isEthereum ? BalanceStorage.shared.getBalanceETHBigInt() : BalanceStorage.shared.getBalanceBNBBigInt()
+    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
 
@@ -364,7 +355,7 @@ class KSwapViewModel {
   }
 
   var gasFeeString: NSAttributedString {
-    let sourceToken = KNGeneralProvider.shared.isEthereum ? "ETH" : "BNB"
+    let sourceToken = KNGeneralProvider.shared.quoteToken
     let fee = self.gasPrice * self.estimateGasLimit
     let feeString: String = fee.displayRate(decimals: 18)
     var typeString = ""
@@ -404,13 +395,18 @@ class KSwapViewModel {
   }
 
   func resetDefaultTokensPair() {
-    if KNGeneralProvider.shared.isEthereum {
+    switch KNGeneralProvider.shared.currentChain  {
+    case .eth:
       self.from = KNSupportedTokenStorage.shared.ethToken
       self.to = KNSupportedTokenStorage.shared.kncToken
-    } else {
+    case .bsc:
       self.from = KNSupportedTokenStorage.shared.bnbToken
       self.to = KNSupportedTokenStorage.shared.busdToken
+    case .polygon:
+      self.from = KNSupportedTokenStorage.shared.maticToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
+    
   }
 
   // MARK: Update data
@@ -617,13 +613,16 @@ class KSwapViewModel {
     let rates = self.swapRates.3
     if rates.count == 1 {
       let dict = rates.first
-      if let platformString = dict?.rate {
+      if let platformString = dict?.platform {
         self.currentFlatform = platformString
       }
     } else {
+      //MAX RETUN = destAmount * price - gasFee
       let max = rates.max { (left, right) -> Bool in
         if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
-          return leftBigInt < rightBigInt
+          let leftValue = self.amountToBigInt * leftBigInt - self.gasPrice * BigInt(left.estimatedGas)
+          let rightValue = self.amountToBigInt * rightBigInt - self.gasPrice * BigInt(right.estimatedGas)
+          return leftValue < rightValue
         } else {
           return false
         }
