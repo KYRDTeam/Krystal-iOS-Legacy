@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -236,7 +236,7 @@
                                         <constraint firstAttribute="height" constant="38" id="RFe-Bu-Dq4"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
-                                    <state key="normal" title="Send">
+                                    <state key="normal" title="Transfer">
                                         <color key="titleColor" name="buttonTextColor"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
@@ -352,6 +352,10 @@
                                 </button>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="chain_eth_icon" translatesAutoresizingMaskIntoConstraints="NO" id="uhh-Fg-Eh4">
                                     <rect key="frame" x="7" y="4" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="4gv-KN-Cz8"/>
+                                        <constraint firstAttribute="width" constant="24" id="Ol5-Qs-OtH"/>
+                                    </constraints>
                                 </imageView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="chain_switch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="d43-dn-elL">
                                     <rect key="frame" x="71" y="6" width="20" height="20"/>

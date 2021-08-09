@@ -152,12 +152,12 @@ class ApproveTokenViewController: KNBaseViewController {
     self.cancelButton.rounded(radius: 16)
     self.approveButton.rounded(radius: 16)
     self.descriptionLabel.text = self.viewModel.subTitleText
-    let address = KNGeneralProvider.shared.isEthereum ? Constants.krystalProxyAddress.lowercased() : Constants.krystalProxyAddressBSC.lowercased()
+    let address = KNGeneralProvider.shared.proxyAddress
     self.contractAddressLabel.text = address
   }
 
   @IBAction func approveButtonTapped(_ sender: UIButton) {
-    let ethBalance = KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken.getBalanceBigInt() : KNSupportedTokenStorage.shared.bnbToken.getBalanceBigInt()
+    let ethBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     guard self.viewModel.getFee() < ethBalance else {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),

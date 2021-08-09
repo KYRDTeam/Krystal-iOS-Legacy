@@ -144,7 +144,7 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
     //TODO: temp use token realm object for swap atm, support custom token
-    let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? (KNGeneralProvider.shared.isEthereum ? KNSupportedTokenStorage.shared.ethToken : KNSupportedTokenStorage.shared.bnbToken)
+    let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? KNGeneralProvider.shared.quoteTokenObject
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isBuy)
     self.tabbarController.selectedIndex = 1
     

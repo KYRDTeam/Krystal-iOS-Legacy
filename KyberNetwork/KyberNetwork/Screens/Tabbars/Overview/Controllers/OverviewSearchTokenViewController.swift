@@ -59,10 +59,13 @@ class OverviewSearchTokenViewModel {
   }
   
   var recommendTags: [String] {
-    if KNGeneralProvider.shared.isEthereum {
+    switch KNGeneralProvider.shared.currentChain {
+    case .eth:
       return ["ETH", "USDC", "USDT", "WBTC", "DAI", "UNI", "LINK", "AAVE"]
-    } else {
+    case .bsc:
       return ["BNB", "BUSD", "CAKE", "USDT", "BTCB", "ETH", "USDC", "SAFEMOON"]
+    default:
+      return []
     }
   }
 }

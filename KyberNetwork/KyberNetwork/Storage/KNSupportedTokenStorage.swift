@@ -58,7 +58,7 @@ class KNSupportedTokenStorage {
   var kncToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "KNC"
-    } ?? Token(name: "KyberNetwork", symbol: "WETH", address: "0xdd974d5c2e2928dea5f71b9825b8b646686bd200", decimals: 18, logo: "knc")
+    } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0xdefa4e8a7bcba345f687a2f1456f5edd9ce97202", decimals: 18, logo: "knc")
     return token.toObject()
   }
   
@@ -72,7 +72,21 @@ class KNSupportedTokenStorage {
   var busdToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "BUSD"
-    } ?? Token(name: "BUSD", symbol: "BUSD", address: "0xa2d2b501e6788158da07fa7e14dee9f2c5a01054", decimals: 18, logo: "")
+    } ?? Token(name: "BUSD", symbol: "BUSD", address: "0xe9e7cea3dedca5984780bafc599bd69add087d56", decimals: 18, logo: "")
+    return token.toObject()
+  }
+  
+  var maticToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "MATIC"
+    } ?? Token(name: "MATIC", symbol: "MATIC", address: "0xcccccccccccccccccccccccccccccccccccccccc", decimals: 18, logo: "bnb")
+    return token.toObject()
+  }
+  
+  var usdcToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "USDC"
+    } ?? Token(name: "USDC", symbol: "USDC", address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", decimals: 6, logo: "")
     return token.toObject()
   }
 
@@ -295,7 +309,7 @@ class KNSupportedTokenStorage {
   }
 
   func migrationCustomTokenIfNeeded() {
-    guard KNGeneralProvider.shared.isEthereum, Storage.isFileExistAtPath(Constants.customTokenStoreFileName) else {
+    guard KNGeneralProvider.shared.currentChain == .eth, Storage.isFileExistAtPath(Constants.customTokenStoreFileName) else {
       return
     }
     let token = Storage.retrieve(Constants.customTokenStoreFileName, as: [Token].self) ?? []
@@ -338,4 +352,5 @@ class KNSupportedTokenStorage {
       return addresses.contains(token.address.lowercased())
     }
   }
+  
 }

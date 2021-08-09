@@ -194,7 +194,7 @@ class KNAppCoordinator: NSObject, Coordinator {
               let data = try decoder.decode(LoginToken.self, from: resp.data)
               Storage.store(data, as: self.session.wallet.address.description + Constants.loginTokenStoreFileName)
             } catch let error {
-              print("[Login] \(error.localizedDescription)")
+              print("[Login][Error] \(error.localizedDescription)")
             }
           }
         }

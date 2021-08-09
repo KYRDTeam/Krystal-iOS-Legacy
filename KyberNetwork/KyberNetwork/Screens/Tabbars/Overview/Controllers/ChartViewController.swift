@@ -60,7 +60,7 @@ class ChartViewModel {
   var diffPercent: Double {
     switch self.periodType {
     case .oneDay:
-      return self.detailInfo?.markets[self.currency]?.priceChange24H ?? 0
+      return self.detailInfo?.markets[self.currency]?.priceChange24HPercentage ?? 0
     case .sevenDay:
       return self.detailInfo?.markets[self.currency]?.priceChange7DPercentage ?? 0
     case .oneMonth:
@@ -315,6 +315,7 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.periodType = type
     self.loadChartData()
     self.updateUIPeriodSelectButtons()
+    self.updateUITokenInfo()
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -422,7 +423,6 @@ class ChartViewController: KNBaseViewController {
         return "\(month)/\(year)"
       }
     }
-    self.updateUITokenInfo()
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
@@ -432,6 +432,9 @@ class ChartViewController: KNBaseViewController {
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
+    self.chartView.removeAllSeries()
+    self.chartView.add(self.viewModel.series)
+    self.updateUIChartInfo()
   }
 }
 

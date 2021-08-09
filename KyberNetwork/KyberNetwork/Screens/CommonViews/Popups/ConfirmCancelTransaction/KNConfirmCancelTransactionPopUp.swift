@@ -20,7 +20,7 @@ struct KNConfirmCancelTransactionViewModel {
       return gasPrice * KNGasConfiguration.transferETHGasLimitDefault
     }()
     let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
-    return "\(feeString) ETH"
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
 }
 

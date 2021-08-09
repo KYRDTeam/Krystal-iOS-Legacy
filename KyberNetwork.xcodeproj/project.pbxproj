@@ -488,12 +488,6 @@
 		C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */; };
 		C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */; };
 		C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F749125DCD213008B21F7 /* OverviewCoordinator.swift */; };
-		C31F749725DCDA50008B21F7 /* OverviewContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F749525DCDA4F008B21F7 /* OverviewContainerViewController.swift */; };
-		C31F749825DCDA50008B21F7 /* OverviewContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F749625DCDA4F008B21F7 /* OverviewContainerViewController.xib */; };
-		C31F749D25DCDAAA008B21F7 /* OverviewAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F749B25DCDAAA008B21F7 /* OverviewAssetsViewController.swift */; };
-		C31F749E25DCDAAA008B21F7 /* OverviewAssetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F749C25DCDAAA008B21F7 /* OverviewAssetsViewController.xib */; };
-		C31F74A325DCEC58008B21F7 /* OverviewMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F74A125DCEC58008B21F7 /* OverviewMarketViewController.swift */; };
-		C31F74A425DCEC58008B21F7 /* OverviewMarketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74A225DCEC58008B21F7 /* OverviewMarketViewController.xib */; };
 		C31F74A925DCEDA0008B21F7 /* OverviewDepositViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F74A725DCEDA0008B21F7 /* OverviewDepositViewController.swift */; };
 		C31F74AA25DCEDA0008B21F7 /* OverviewDepositViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74A825DCEDA0008B21F7 /* OverviewDepositViewController.xib */; };
 		C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F74AD25DD3211008B21F7 /* OverviewMarketTableViewCell.swift */; };
@@ -1231,12 +1225,6 @@
 		C31F152823F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpeedUpCustomGasSelectViewController.xib; sourceTree = "<group>"; };
 		C31F152B23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedUpCustomGasSelectViewModel.swift; sourceTree = "<group>"; };
 		C31F749125DCD213008B21F7 /* OverviewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewCoordinator.swift; sourceTree = "<group>"; };
-		C31F749525DCDA4F008B21F7 /* OverviewContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewContainerViewController.swift; sourceTree = "<group>"; };
-		C31F749625DCDA4F008B21F7 /* OverviewContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewContainerViewController.xib; sourceTree = "<group>"; };
-		C31F749B25DCDAAA008B21F7 /* OverviewAssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewAssetsViewController.swift; sourceTree = "<group>"; };
-		C31F749C25DCDAAA008B21F7 /* OverviewAssetsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAssetsViewController.xib; sourceTree = "<group>"; };
-		C31F74A125DCEC58008B21F7 /* OverviewMarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMarketViewController.swift; sourceTree = "<group>"; };
-		C31F74A225DCEC58008B21F7 /* OverviewMarketViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewMarketViewController.xib; sourceTree = "<group>"; };
 		C31F74A725DCEDA0008B21F7 /* OverviewDepositViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDepositViewController.swift; sourceTree = "<group>"; };
 		C31F74A825DCEDA0008B21F7 /* OverviewDepositViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewDepositViewController.xib; sourceTree = "<group>"; };
 		C31F74AD25DD3211008B21F7 /* OverviewMarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMarketTableViewCell.swift; sourceTree = "<group>"; };
@@ -3708,12 +3696,6 @@
 		C31F748F25DCD1EC008B21F7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C31F749525DCDA4F008B21F7 /* OverviewContainerViewController.swift */,
-				C31F749625DCDA4F008B21F7 /* OverviewContainerViewController.xib */,
-				C31F749B25DCDAAA008B21F7 /* OverviewAssetsViewController.swift */,
-				C31F749C25DCDAAA008B21F7 /* OverviewAssetsViewController.xib */,
-				C31F74A125DCEC58008B21F7 /* OverviewMarketViewController.swift */,
-				C31F74A225DCEC58008B21F7 /* OverviewMarketViewController.xib */,
 				C31F74A725DCEDA0008B21F7 /* OverviewDepositViewController.swift */,
 				C31F74A825DCEDA0008B21F7 /* OverviewDepositViewController.xib */,
 				C3377ACD25E650B00035A18D /* ChartViewController.swift */,
@@ -4301,7 +4283,6 @@
 			files = (
 				C311AAD5269D86AD0082A728 /* OverviewChangeCurrencyViewController.xib in Resources */,
 				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
-				C31F74A425DCEC58008B21F7 /* OverviewMarketViewController.xib in Resources */,
 				C3F71C91261AB0FF00285935 /* ClaimRewardViewController.xib in Resources */,
 				C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */,
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
@@ -4336,7 +4317,6 @@
 				C3012CC4269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.xib in Resources */,
 				C3EEA45C2671EF840011DB97 /* OverviewMainViewCell.xib in Resources */,
 				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
-				C31F749E25DCDAAA008B21F7 /* OverviewAssetsViewController.xib in Resources */,
 				C3F08B582620AD9200DA6FCB /* TermsAndConditionsViewController.xib in Resources */,
 				C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
@@ -4370,7 +4350,6 @@
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
 				C37CC094245803CA0081FB32 /* Roboto-Regular.ttf in Resources */,
-				C31F749825DCDA50008B21F7 /* OverviewContainerViewController.xib in Resources */,
 				C3EE06C1267A15E50090B432 /* Karla-ExtraBoldItalic.ttf in Resources */,
 				C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */,
 				25931F1020AEE85200BAC774 /* KNBackUpWalletViewController.xib in Resources */,
@@ -4813,7 +4792,6 @@
 				29AD8A041F93D6CD008E10E7 /* Constants.swift in Sources */,
 				254BB353211D9A5500B8E75D /* KConfirmSendViewModel.swift in Sources */,
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
-				C31F749D25DCDAAA008B21F7 /* OverviewAssetsViewController.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
@@ -4866,7 +4844,6 @@
 				29358DA91F79FD1C00925D61 /* CALayer.swift in Sources */,
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				29FA00CE201CA64E002F7DC5 /* DappCommand.swift in Sources */,
-				C31F74A325DCEC58008B21F7 /* OverviewMarketViewController.swift in Sources */,
 				C32656AD266F546100C69561 /* ActionController.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
@@ -4915,7 +4892,6 @@
 				771AA94E1FF971CD00D25403 /* DappAction.swift in Sources */,
 				25369F0B20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.swift in Sources */,
 				C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */,
-				C31F749725DCDA50008B21F7 /* OverviewContainerViewController.swift in Sources */,
 				255B88C4222E36E100D23189 /* DateFormatterUtil.swift in Sources */,
 				25EE4A7420C54F2F00E2282F /* KNAddNewWalletCoordinator.swift in Sources */,
 				C37F04CB2639697800D62E43 /* GetDecimals.swift in Sources */,

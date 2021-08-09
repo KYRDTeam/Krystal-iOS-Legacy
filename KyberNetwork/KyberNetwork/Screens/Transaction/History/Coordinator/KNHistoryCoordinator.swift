@@ -288,13 +288,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   }
   
   fileprivate func openSendTokenView() {
-    let from: TokenObject = {
-      if KNGeneralProvider.shared.isEthereum {
-        return KNSupportedTokenStorage.shared.ethToken
-      } else {
-        return KNSupportedTokenStorage.shared.bnbToken
-      }
-    }()
+    let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,

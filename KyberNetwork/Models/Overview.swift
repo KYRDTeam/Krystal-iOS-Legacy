@@ -18,18 +18,7 @@ struct OverviewData: Codable {
     let address, symbol, name: String
     let decimals: Int
     let logo: String
-    let usd: Double
-    let usdMarketCap, usd24HVol: Int
-    let usd24HChange, usd24HChangePercentage: Double
     let quotes: [String: Quote]
-
-    enum CodingKeys: String, CodingKey {
-        case address, symbol, name, decimals, logo, usd, usdMarketCap
-        case usd24HVol = "usd24hVol"
-        case usd24HChange = "usd24hChange"
-        case usd24HChangePercentage = "usd24hChangePercentage"
-        case quotes
-    }
 }
 
 // MARK: - Quote
@@ -54,18 +43,17 @@ struct TokenDetailResponse: Codable {
 
 // MARK: - Result
 struct TokenDetailInfo: Codable {
-    let address, symbol, name: String
-    let decimals: Int
-    let logo: String
-    let resultDescription: String
-    let links: Links
-    let markets: [String: Market]
+  let address, symbol, name: String
+  let decimals: Int
+  let logo, resultDescription: String
+  let links: Links
+  let markets: [String: Market]
 
-    enum CodingKeys: String, CodingKey {
-        case address, symbol, name, decimals, logo
-        case resultDescription = "description"
-        case links, markets
-    }
+  enum CodingKeys: String, CodingKey {
+    case address, symbol, name, decimals, logo
+    case resultDescription = "description"
+    case links, markets
+  }
 }
 
 // MARK: - Links
@@ -78,12 +66,8 @@ struct Links: Codable {
 struct Market: Codable {
     let symbol: String
     let price, priceChange24H, priceChange1HPercentage, priceChange24HPercentage: Double
-    let priceChange7DPercentage, priceChange30DPercentage: Double
-    let priceChange200DPercentage: Double
-    let priceChange1YPercentage: Double
-    let marketCap: Double
-    let marketCapChange24H, marketCapChange24HPercentage: Double
-    let volume24H: Int
+    let priceChange7DPercentage, priceChange30DPercentage, priceChange200DPercentage, priceChange1YPercentage: Double
+    let marketCap, marketCapChange24H, marketCapChange24HPercentage, volume24H: Double
     let high24H, low24H, ath, athChangePercentage: Double
     let athDate: Int
     let atl, atlChangePercentage: Double

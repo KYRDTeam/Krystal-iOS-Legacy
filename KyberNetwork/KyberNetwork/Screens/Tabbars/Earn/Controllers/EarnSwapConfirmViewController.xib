@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -50,7 +50,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a79-HH-A7a">
-                    <rect key="frame" x="0.0" y="7" width="375" height="650"/>
+                    <rect key="frame" x="0.0" y="7" width="375" height="660"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earning Confirm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KzO-Qn-B8b">
                             <rect key="frame" x="115" y="27" width="145" height="23.5"/>
@@ -390,7 +390,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
                         <constraint firstItem="cDz-69-rpb" firstAttribute="top" secondItem="d1G-2x-iKW" secondAttribute="bottom" constant="30" id="KAJ-L4-z0g"/>
                         <constraint firstAttribute="trailing" secondItem="cDz-69-rpb" secondAttribute="trailing" constant="37" id="KvK-TK-q7X"/>
                         <constraint firstAttribute="trailing" secondItem="jfX-iL-zQ0" secondAttribute="trailing" constant="37" id="Kxg-Lb-bi8"/>
-                        <constraint firstAttribute="height" constant="650" id="RL4-jN-r9n"/>
+                        <constraint firstAttribute="height" constant="660" id="RL4-jN-r9n"/>
                         <constraint firstItem="KzO-Qn-B8b" firstAttribute="top" secondItem="a79-HH-A7a" secondAttribute="top" constant="27" id="SfW-xX-NIN"/>
                         <constraint firstItem="jfX-iL-zQ0" firstAttribute="leading" secondItem="Dmz-cu-jOk" secondAttribute="trailing" constant="32" id="UE2-8u-Ysi"/>
                         <constraint firstAttribute="trailing" secondItem="kLU-e0-5mU" secondAttribute="trailing" constant="37" id="W24-vW-IBi"/>

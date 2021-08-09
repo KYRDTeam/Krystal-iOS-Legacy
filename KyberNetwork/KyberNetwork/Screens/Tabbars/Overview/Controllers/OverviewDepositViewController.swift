@@ -8,6 +8,28 @@
 import UIKit
 import BigInt
 
+enum CurrencyType {
+  case eth
+  case usd
+  case btc
+  
+  func toString() -> String {
+    switch self {
+    case .eth:
+      return "eth"
+    case .usd:
+      return "usd"
+    case .btc:
+      return "btc"
+    }
+  }
+}
+
+protocol OverviewViewController: class {
+  func viewControllerDidChangeCurrencyType(_ controller: OverviewViewController, type: CurrencyType)
+  func coordinatorDidUpdateDidUpdateTokenList()
+}
+
 class OverviewDepositViewModel {
   var dataSource: [String: [OverviewDepositCellViewModel]] = [:]
   var sectionKeys: [String] = []

@@ -158,8 +158,18 @@ extension KNExchangeTokenCoordinator {
     self.navigationController.popToRootViewController(animated: true)
     let otherToken: TokenObject = token.isETH ? KNSupportedTokenStorage.shared.kncToken : KNSupportedTokenStorage.shared.ethToken
     let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
+    let otherTokenMatic: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
-    self.rootViewController.coordinatorUpdateSelectedToken(KNGeneralProvider.shared.isEthereum ? otherToken : otherTokenBsc, isSource: isReceived, isWarningShown: true)
+    var selectToken = KNSupportedTokenStorage.shared.ethToken
+    switch KNGeneralProvider.shared.currentChain {
+    case .eth:
+      selectToken = otherToken
+    case .bsc:
+      selectToken = otherTokenBsc
+    case .polygon:
+      selectToken = otherTokenMatic
+    }
+    self.rootViewController.coordinatorUpdateSelectedToken(selectToken, isSource: isReceived, isWarningShown: true)
     self.rootViewController.tabBarController?.selectedIndex = 1
   }
 
@@ -1047,13 +1057,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func openSendTokenView() {
-    let from: TokenObject = {
-      if KNGeneralProvider.shared.isEthereum {
-        return KNSupportedTokenStorage.shared.ethToken
-      } else {
-        return KNSupportedTokenStorage.shared.bnbToken
-      }
-    }()
+    let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       session: self.session,

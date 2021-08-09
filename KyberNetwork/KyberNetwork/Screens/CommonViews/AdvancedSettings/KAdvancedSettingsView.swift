@@ -155,7 +155,7 @@ class KAdvancedSettingsViewModel: NSObject {
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let fee = gasPrice * self.gasLimit
     let feeString: String = fee.displayRate(decimals: 18)
-    return "~ \(feeString) ETH"
+    return "~ \(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   func updateGasPrices(fast: BigInt, medium: BigInt, slow: BigInt, superFast: BigInt) {

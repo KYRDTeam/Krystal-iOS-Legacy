@@ -128,6 +128,14 @@ class TokenObject: Object {
   var isBNB: Bool {
     return self.address.lowercased() == Constants.bnbAddress.lowercased()
   }
+  
+  var isMatic: Bool {
+    return self.address.lowercased() == Constants.maticAddress.lowercased()
+  }
+  
+  var isQuoteToken: Bool {
+    return self.isETH || self.isBNB || self.isMatic
+  }
 
     var isWETH: Bool {
       return self.symbol == "WETH"
@@ -135,11 +143,6 @@ class TokenObject: Object {
 
     var isWBTC: Bool {
       return self.symbol == "WBTC"
-    }
-
-    var symbolLODisplay: String {
-      if self.isETH || self.isWETH { return "ETH*" }
-      return self.symbol
     }
 
     var isPromoToken: Bool {
