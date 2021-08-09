@@ -89,7 +89,7 @@ class KSwapViewModel {
   }
 
   var allFromTokenBalanceString: String {
-    if self.from.isETH || self.from.isBNB {
+    if self.from.isQuoteToken {
       let balance = self.from.getBalanceBigInt()
       if balance <= self.feeBigInt { return "0" }
       let fee = self.allETHBalanceFee

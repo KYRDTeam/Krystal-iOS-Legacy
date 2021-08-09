@@ -97,7 +97,7 @@ class EarnViewModel {
   }
   
   var allTokenBalanceString: String {
-    if self.tokenData.symbol == "ETH" {
+    if self.tokenData.isQuoteToken {
       let balance = self.tokenData.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
@@ -468,15 +468,15 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func keyboardSendAllButtonPressed(_ sender: Any) {
     self.viewModel.isEarnAllBalanace = true
     self.fromAmountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", forSendAllETH: self.viewModel.tokenData.symbol == "ETH")
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", forSendAllETH: self.viewModel.tokenData.isQuoteToken)
     self.fromAmountTextField.resignFirstResponder()
     self.updateGasLimit()
     
     if sender as? EarnViewController != self {
-      if self.viewModel.tokenData.symbol == "ETH" {
+      if self.viewModel.tokenData.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
-          message: NSLocalizedString("a.small.amount.of.eth.is.used.for.transaction.fee", value: "A small amount of ETH will be used for transaction fee", comment: ""),
+          message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
           time: 1.5
         )
       }

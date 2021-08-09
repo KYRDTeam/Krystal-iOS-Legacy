@@ -31,7 +31,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var allTokenBalanceString: String {
-    if self.from.isETH  || self.from.isBNB {
+    if self.from.isQuoteToken {
       let balance = self.from.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
@@ -219,13 +219,13 @@ class KNSendTokenViewModel: NSObject {
 
   var unconfirmTransaction: UnconfirmedTransaction {
     let transferType: TransferType = {
-      if self.from.isETH || self.from.isBNB {
+      if self.from.isQuoteToken {
         return TransferType.ether(destination: self.address)
       }
       return TransferType.token(self.from)
     }()
     let amount: BigInt = {
-      if self.from.isETH || self.from.isBNB {
+      if self.from.isQuoteToken {
         // eth needs to minus some fee
         if !self.isSendAllBalanace { return self.amountBigInt } // not send all balance
         let balance = self.from.getBalanceBigInt()
