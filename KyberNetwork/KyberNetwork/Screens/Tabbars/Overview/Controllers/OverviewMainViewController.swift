@@ -60,6 +60,8 @@ enum CurrencyMode: Int {
   case usd = 0
   case eth
   case btc
+  case bnb
+  case matic
   
   func symbol() -> String {
     switch self {
@@ -69,6 +71,25 @@ enum CurrencyMode: Int {
       return "₿"
     case .eth:
       return "⧫"
+    case .bnb:
+      return ""
+    case .matic:
+      return ""
+    }
+  }
+  
+  func suffixSymbol() -> String {
+    switch self {
+    case .usd:
+      return ""
+    case .btc:
+      return ""
+    case .eth:
+      return ""
+    case .bnb:
+      return " BNB"
+    case .matic:
+      return " MATIC"
     }
   }
   
@@ -80,6 +101,10 @@ enum CurrencyMode: Int {
       return "usd"
     case .btc:
       return "btc"
+    case .bnb:
+      return "bnb"
+    case .matic:
+      return "matic"
     }
   }
   
@@ -91,7 +116,15 @@ enum CurrencyMode: Int {
       return 2
     case .btc:
       return 5
+    case .bnb:
+      return 4
+    case .matic:
+      return 4
     }
+  }
+  
+  var isQuoteCurrency: Bool {
+    return self == .eth || self == .bnb || self == .matic
   }
 }
 
@@ -161,7 +194,7 @@ class OverviewMainViewModel {
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
-      let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+      let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
       self.displayTotalValues["all"] = displayTotalString
     case .supply:
       let supplyBalance = BalanceStorage.shared.getSupplyBalances()
@@ -181,13 +214,13 @@ class OverviewMainViewModel {
           sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
         })
         models[key] = sectionModels
-        let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+        let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
         self.displayTotalValues[key] = displayTotalSection
         total += totalSection
       }
       self.dataSource = models
       self.displayDataSource = models
-      self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+      self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -245,7 +278,7 @@ class OverviewMainViewModel {
       return "********"
     }
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
-    return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber())
+    return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
 
   var displayHideBalanceImage: UIImage {
@@ -461,6 +494,9 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else {
       return
+    }
+    if self.viewModel.currencyMode.isQuoteCurrency {
+      self.viewModel.currencyMode = KNGeneralProvider.shared.quoteCurrency
     }
     self.updateUISwitchChain()
     self.reloadUI()

@@ -84,6 +84,17 @@ class KNGeneralProvider {
     }
   }
   
+  var quoteCurrency: CurrencyMode {
+    switch self.currentChain {
+    case .eth:
+      return .eth
+    case .bsc:
+      return .bnb
+    case .polygon:
+      return .matic
+    }
+  }
+  
   var chainPath: String {
     switch self.currentChain {
     case .eth:

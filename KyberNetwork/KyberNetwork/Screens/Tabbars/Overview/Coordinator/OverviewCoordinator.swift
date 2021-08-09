@@ -73,7 +73,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   fileprivate func openChartView(token: Token) {
-    let viewModel = ChartViewModel(token: token, currency: self.currentCurrencyType.toString())
+    let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.pushViewController(controller, animated: true)
@@ -114,6 +114,9 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func appCoordinatorDidUpdateChain() {
+    if self.currentCurrencyType.isQuoteCurrency {
+      self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
+    }
     self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }

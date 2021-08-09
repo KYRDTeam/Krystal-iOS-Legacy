@@ -19,11 +19,13 @@ class ChartViewModel {
   var chartData: [[Double]]?
   var chartOriginTimeStamp: Double = 0
   var currency: String
+  let currencyMode: CurrencyMode
   var isFaved: Bool
   
-  init(token: Token, currency: String) {
+  init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
-    self.currency = currency
+    self.currencyMode = currencyMode
+    self.currency = currencyMode.toString()
     self.isFaved = KNSupportedTokenStorage.shared.getFavedStatusWithAddress(token.address)
   }
   
@@ -50,7 +52,7 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    return "\(self.detailInfo?.markets[self.currency]?.price ?? 0)"
+    return String(format: "%.6f", self.detailInfo?.markets[self.currency]?.price ?? 0)
   }
 
   var display24hVol: String {
@@ -88,23 +90,11 @@ class ChartViewModel {
   
   var displayUSDBalance: String {
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
-    var price = 0.0
-    if self.currency == "eth" {
-      price = rate.eth
-    } else if self.currency == "btc" {
-      price = rate.btc
-    } else {
-      price = rate.usd
-    }
+    var price = self.token.getTokenLastPrice(self.currencyMode)
+    
     let rateBigInt = BigInt(price * pow(10.0, 18.0))
     let valueBigInt = balanceBigInt * rateBigInt / BigInt(10).power(18)
-    if self.currency == "eth" {
-      return valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + " ETH"
-    } else if self.currency == "btc" {
-      return valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + " BTC"
-    } else {
-      return "$" + valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6))
-    }
+    return self.currencyMode.symbol() + valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + self.currencyMode.suffixSymbol()
   }
   
   var marketCap: Double {
@@ -112,13 +102,7 @@ class ChartViewModel {
   }
   
   var displayMarketCap: String {
-    if self.currency == "eth" {
-      return "\(self.formatPoints(self.marketCap)) ETH"
-    } else if self.currency == "btc" {
-      return "\(self.formatPoints(self.marketCap)) BTC"
-    } else {
-      return "$\(self.formatPoints(self.marketCap))"
-    }
+    return self.currencyMode.symbol() + "\(self.formatPoints(self.marketCap))" + self.currencyMode.suffixSymbol()
   }
   
   var displayAllTimeHigh: String {
