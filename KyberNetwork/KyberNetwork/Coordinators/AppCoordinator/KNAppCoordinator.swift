@@ -310,21 +310,15 @@ extension KNAppCoordinator {
     if KNAppTracker.shouldShowAuthenticate() {
       self.authenticationCoordinator.start()
     }
-//    self.balanceTabCoordinator?.appCoordinatorWillEnterForeground()
-    self.exchangeCoordinator?.appCoordinatorWillEnterForeground()
   }
 
   func appDidEnterBackground() {
     self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
     self.loadBalanceCoordinator?.pause()
-//    self.balanceTabCoordinator?.appCoordinatorDidEnterBackground()
-    self.exchangeCoordinator?.appCoordinatorDidEnterBackground()
   }
 
   func appWillTerminate() {
-//    self.balanceTabCoordinator?.appCoordinatorWillTerminate()
-    self.exchangeCoordinator?.appCoordinatorWillTerminate()
   }
 
   func appDidReceiveLocalNotification(transactionHash: String) {

@@ -11,6 +11,7 @@ import QRCodeReaderViewController
 import WalletConnect
 import MBProgressHUD
 import JSONRPCKit
+import WalletConnectSwift
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -219,24 +220,6 @@ extension KNExchangeTokenCoordinator {
       return true
     }
     return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
-  }
-
-  func appCoordinatorWillTerminate() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationWillTerminate()
-    }
-  }
-
-  func appCoordinatorWillEnterForeground() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationWillEnterForeground()
-    }
-  }
-
-  func appCoordinatorDidEnterBackground() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationDidEnterBackground()
-    }
   }
   
   func appCoordinatorDidUpdateChain() {
@@ -1222,7 +1205,7 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let session = WCSession.from(string: result) else {
+      guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
           with: "Invalid session".toBeLocalised(),
           message: "Your session is invalid, please try with another QR code".toBeLocalised(),
@@ -1230,11 +1213,29 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-      let controller = KNWalletConnectViewController(
-        wcSession: session,
-        knSession: self.session
-      )
-      self.navigationController.present(controller, animated: true, completion: nil)
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          let pkString = data.hexString
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            knSession: self.session,
+            pk: pkString
+          )
+          DispatchQueue.main.async {
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
     }
   }
 }

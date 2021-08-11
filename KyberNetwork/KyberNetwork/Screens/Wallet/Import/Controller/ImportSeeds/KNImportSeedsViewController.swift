@@ -100,7 +100,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       if words.count == self.numberWords {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
-          seeds: words.map({ return String($0) }),
+          seeds: words.map({ return try! String($0) }),
           name: self.walletNameTextField.text
         )
       } else {

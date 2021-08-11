@@ -3,8 +3,7 @@ PODS:
   - APIKit (3.2.1):
     - Result (~> 3.0)
   - BetterSegmentedControl (1.0)
-  - BigInt (3.1.0):
-    - SipHash (~> 1.2)
+  - BigInt (4.0.0)
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
@@ -138,8 +137,8 @@ PODS:
     - Realm (= 3.19.1)
   - Result (3.2.4)
   - SAMKeychain (1.5.3)
+  - secp256k1.swift (0.1.4)
   - SeedStackViewController (0.5.1)
-  - SipHash (1.2.2)
   - Starscream (3.1.1)
   - StatefulViewController (3.0)
   - SwiftChart (1.0.1)
@@ -162,11 +161,23 @@ PODS:
     - CryptoSwift
     - PromiseKit
     - Starscream
+  - WalletConnectSwift (1.5.0):
+    - CryptoSwift (~> 1.4)
+    - Starscream (~> 3.1)
+  - Web3 (0.4.2):
+    - Web3/Core (= 0.4.2)
+    - Web3/HTTPExtension (= 0.4.2)
+  - Web3/Core (0.4.2):
+    - BigInt (~> 4.0)
+    - CryptoSwift (~> 1.0)
+    - secp256k1.swift (~> 0.1)
+  - Web3/HTTPExtension (0.4.2):
+    - Web3/Core
 
 DEPENDENCIES:
   - APIKit (~> 3.2.1)
   - BetterSegmentedControl (= 1.0)
-  - BigInt (~> 3.1.0)
+  - BigInt (~> 4.0)
   - Charts
   - CryptoSwift
   - Eureka (~> 5.3.0)
@@ -199,6 +210,8 @@ DEPENDENCIES:
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
   - WalletConnect (from `https://github.com/trustwallet/wallet-connect-swift`)
+  - WalletConnectSwift
+  - Web3
 
 SPEC REPOS:
   trunk:
@@ -239,8 +252,8 @@ SPEC REPOS:
     - RealmSwift
     - Result
     - SAMKeychain
+    - secp256k1.swift
     - SeedStackViewController
-    - SipHash
     - Starscream
     - StatefulViewController
     - SwiftChart
@@ -251,6 +264,8 @@ SPEC REPOS:
     - TrezorCrypto
     - TrustCore
     - TrustKeystore
+    - WalletConnectSwift
+    - Web3
 
 EXTERNAL SOURCES:
   WalletConnect:
@@ -265,7 +280,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   BetterSegmentedControl: 92555f980e4273ec414d6187acc5b811659a9abf
-  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   CryptoSwift: 0bc800a7e6a24c4fc9ebeab97d44b0d5f73a78bd
   Eureka: e6d720290c56bb23333ad1a0e020b2a98a0e9a43
@@ -299,8 +314,8 @@ SPEC CHECKSUMS:
   RealmSwift: 1302b0ab60f3105a2b214a735eeb0938607cf16b
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SeedStackViewController: 4d37c51ec4b0a47daf563ce8f692fde2b703955b
-  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
   SwiftChart: ba767a678d568a5ee22d419e146a0582865e1aff
@@ -312,7 +327,9 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
   WalletConnect: c5be4e3ed9efbefb8480ab27e1766d4549a92709
+  WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
+  Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 072e81dc9e7b37273de5c3691c47d5331d61b7d7
+PODFILE CHECKSUM: 701afeddf0b432904794b2c051c320a2640c3e4a
 
 COCOAPODS: 1.10.1

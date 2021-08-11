@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 target 'KyberNetwork' do
   use_frameworks!
 
-  pod 'BigInt', '~> 3.1.0'
+  pod 'BigInt', '~> 4.0'
   pod 'JSONRPCKit', '~> 3.0.0' #:git=> 'https://github.com/bricklife/JSONRPCKit.git'
   pod 'APIKit', '~> 3.2.1'
   pod 'Eureka', '~> 5.3.0'
@@ -44,6 +44,8 @@ target 'KyberNetwork' do
   pod 'BetterSegmentedControl', '1.0'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'TagListView', '~> 1.0'
+  pod 'WalletConnectSwift'
+  pod 'Web3'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

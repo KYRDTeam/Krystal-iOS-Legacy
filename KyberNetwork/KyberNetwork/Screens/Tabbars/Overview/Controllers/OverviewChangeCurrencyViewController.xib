@@ -80,7 +80,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CHANGE CURRENCY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MI8-4F-Zmc">
-                            <rect key="frame" x="94" y="41" width="187" height="23.5"/>
+                            <rect key="frame" x="87.5" y="41" width="200" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -100,7 +100,7 @@
                                             </constraints>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="USD" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDv-wh-0kX">
-                                            <rect key="frame" x="24" y="0.0" width="31" height="50"/>
+                                            <rect key="frame" x="24" y="0.0" width="33.5" height="50"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -137,7 +137,7 @@
                                             </constraints>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="ETH" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p5X-HU-4gW">
-                                            <rect key="frame" x="24" y="0.0" width="28" height="50"/>
+                                            <rect key="frame" x="24" y="0.0" width="31" height="50"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -174,7 +174,7 @@
                                             </constraints>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="BTC" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Feb-QH-Whb">
-                                            <rect key="frame" x="24" y="0.0" width="28" height="50"/>
+                                            <rect key="frame" x="24" y="0.0" width="32" height="50"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
