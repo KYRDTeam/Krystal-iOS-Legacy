@@ -57,7 +57,7 @@ extension UIImage {
     var compressingValue: CGFloat = 1.0
     var imageData: Data?
     while needCompress && compressingValue > 0.0 {
-      if let data = UIImageJPEGRepresentation(self, compressingValue) {
+      if let data = self.jpegData(compressionQuality: compressingValue) {
         if CGFloat(data.count) < sizeInBytes {
           needCompress = false
           imageData = data
@@ -68,7 +68,7 @@ extension UIImage {
         return self
       }
     }
-    guard let data = imageData ?? UIImageJPEGRepresentation(self, 0.0) else { return self }
+    guard let data = imageData ?? self.jpegData(compressionQuality: 0.0) else { return self }
     return UIImage(data: data)
   }
 }

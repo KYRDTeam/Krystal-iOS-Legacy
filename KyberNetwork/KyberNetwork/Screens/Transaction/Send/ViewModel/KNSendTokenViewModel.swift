@@ -82,10 +82,10 @@ class KNSendTokenViewModel: NSObject {
   var tokenButtonAttributedText: NSAttributedString {
     // only have symbol and logo
     let attributedString = NSMutableAttributedString()
-    let symbolAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 22),
-      NSAttributedStringKey.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
-      NSAttributedStringKey.kern: 0.0,
+    let symbolAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 22),
+      NSAttributedString.Key.foregroundColor: UIColor(red: 29, green: 48, blue: 58),
+      NSAttributedString.Key.kern: 0.0,
     ]
     attributedString.append(NSAttributedString(string: "\(self.from.symbol.prefix(8))", attributes: symbolAttributes))
     return attributedString
@@ -144,17 +144,17 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var placeHolderEnterAddress: NSAttributedString {
-    let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    let attributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedString.Key.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
     ]
     return NSAttributedString(string: "Recipient Address/ENS", attributes: attributes)
   }
 
   var placeHolderAmount: NSAttributedString {
-    let attributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
+    let attributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedString.Key.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
     ]
     return NSAttributedString(string: "0", attributes: attributes)
   }

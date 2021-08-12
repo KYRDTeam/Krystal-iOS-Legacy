@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
 
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
     do {
       let keystore = try EtherKeystore()
@@ -72,14 +72,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     self.coordinator.appWillTerminate()
   }
 
-  func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplicationExtensionPointIdentifier) -> Bool {
-    if extensionPointIdentifier == UIApplicationExtensionPointIdentifier.keyboard {
+  func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+    if extensionPointIdentifier == UIApplication.ExtensionPointIdentifier.keyboard {
       return false
     }
     return true
   }
 
-  func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     return true
   }
 

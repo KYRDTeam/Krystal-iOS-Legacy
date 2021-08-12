@@ -38,9 +38,9 @@ class EarnOverviewViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.exploreButton.rounded(radius: 16)
-    self.addChildViewController(self.depositViewController)
+    self.addChild(self.depositViewController)
     self.contentView.addSubview(self.depositViewController.view)
-    self.depositViewController.didMove(toParentViewController: self)
+    self.depositViewController.didMove(toParent: self)
     self.depositViewController.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
     self.depositViewController.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
     self.depositViewController.view.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true

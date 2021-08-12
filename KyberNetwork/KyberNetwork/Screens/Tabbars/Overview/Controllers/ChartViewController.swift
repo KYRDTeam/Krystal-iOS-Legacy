@@ -128,7 +128,7 @@ class ChartViewModel {
     let string = NSMutableAttributedString(attributedString: attributedString)
     string.addAttributes([
       NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor") as Any,
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
     ], range: NSRange(location: 0, length: attributedString.length)
     )
     return string
@@ -166,13 +166,13 @@ class ChartViewModel {
     let date = Date(timeIntervalSince1970: timestamp * 0.001)
     let dateFormater = DateFormatterUtil.shared.chartViewDateFormatter
     let dateString = dateFormater.string(from: date)
-    let normalAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 10),
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+    let normalAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 10),
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
-    let boldAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoBold(with: 10),
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+    let boldAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoBold(with: 10),
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
     let priceBigInt = BigInt(price * pow(10.0, 18.0))
 //    let volumeBigInt = BigInt(volume * pow(10.0, 18.0))

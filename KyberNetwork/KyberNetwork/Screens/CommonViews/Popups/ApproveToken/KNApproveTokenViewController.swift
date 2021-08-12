@@ -59,13 +59,13 @@ class KNApproveTokenViewController: KNBaseViewController {
     self.addressContainerView.rounded(radius: 4.0)
     self.addressTextLabel.attributedText = {
       let attributedString = NSMutableAttributedString()
-      let normalAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
-        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+      let normalAttributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: UIColor(red: 158, green: 161, blue: 170),
+        NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
       ]
-      let highlightAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
-        NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
+      let highlightAttributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+        NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
       ]
       attributedString.append(NSAttributedString(string: "Addr ", attributes: normalAttributes))
       attributedString.append(NSAttributedString(string: self.userAddress, attributes: highlightAttributes))

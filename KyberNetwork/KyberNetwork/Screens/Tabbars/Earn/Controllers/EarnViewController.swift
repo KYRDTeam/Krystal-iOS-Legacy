@@ -210,13 +210,13 @@ class EarnViewModel {
   }
   
   var hintSwapNowText: NSAttributedString {
-    let normalAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor(named: "normalTextColor"),
+    let normalAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor"),
     ]
-    let orangeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor(named: "buttonBackgroundColor"),
+    let orangeAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.foregroundColor: UIColor(named: "buttonBackgroundColor"),
     ]
     let text  = String(format: "If you don’t have %@, please ".toBeLocalised(), self.tokenData.symbol.uppercased())
     let attributedText = NSMutableAttributedString()

@@ -132,14 +132,14 @@ class KNNewContactViewController: KNBaseViewController {
       string: "name".toBeLocalised(),
       attributes: [
         NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWTextFieldPlaceHolderColor,
-        NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+        NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
       ]
     )
     self.addressTextField.attributedPlaceholder = NSAttributedString(
       string: "address".toBeLocalised(),
       attributes: [
         NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWTextFieldPlaceHolderColor,
-        NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
+        NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
       ]
     )
     self.doneButton.rounded(radius: 16)

@@ -6,6 +6,7 @@ import BigInt
 /// Implementation of Ethereum's RLP encoding.
 ///
 /// - SeeAlso: https://github.com/ethereum/wiki/wiki/RLP
+/*
 public struct RLP {
     /// Encodes an element as RLP data.
     ///
@@ -75,93 +76,94 @@ public struct RLP {
         return encoded
     }
 
-    static func encodeList(_ elements: [Any]) -> Data? {
-        var encodedData = Data()
-        for el in elements {
-            guard let encoded = encode(el) else {
-                return nil
-            }
-            encodedData.append(encoded)
-        }
+//    static func encodeList(_ elements: [Any]) -> Data? {
+//        var encodedData = Data()
+//        for el in elements {
+//            guard let encoded = encode(el) else {
+//                return nil
+//            }
+//            encodedData.append(encoded)
+//        }
+//
+//        var encoded = encodeHeader(size: UInt64(encodedData.count), smallTag: 0xc0, largeTag: 0xf7)
+//        encoded.append(encodedData)
+//        return encoded
+//    }
 
-        var encoded = encodeHeader(size: UInt64(encodedData.count), smallTag: 0xc0, largeTag: 0xf7)
-        encoded.append(encodedData)
-        return encoded
-    }
-
-    static func encodeHeader(size: UInt64, smallTag: UInt8, largeTag: UInt8) -> Data {
-        if size < 56 {
-            return try! Data([smallTag + UInt8(size)])
-        }
-
-        let sizeData = putint(size)
-        var encoded = Data()
-        encoded.append(largeTag + UInt8(sizeData.count))
-        encoded.append(contentsOf: sizeData)
-        return encoded
-    }
-
-    /// Returns the representation of an integer using the least number of bytes needed.
-    static func putint(_ i: UInt64) -> Data {
-        switch i {
-        case 0 ..< (1 << 8):
-            return try! Data([UInt8(i)])
-        case 0 ..< (1 << 16):
-            return try! Data([
-                UInt8(i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        case 0 ..< (1 << 24):
-            return try! Data([
-                UInt8(i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        case 0 ..< (1 << 32):
-            return try! Data([
-                UInt8(i >> 24),
-                UInt8(truncatingIfNeeded: i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        case 0 ..< (1 << 40):
-            return try! Data([
-                UInt8(i >> 32),
-                UInt8(truncatingIfNeeded: i >> 24),
-                UInt8(truncatingIfNeeded: i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        case 0 ..< (1 << 48):
-            return try! Data([
-                UInt8(i >> 40),
-                UInt8(truncatingIfNeeded: i >> 32),
-                UInt8(truncatingIfNeeded: i >> 24),
-                UInt8(truncatingIfNeeded: i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        case 0 ..< (1 << 56):
-            return try! Data([
-                UInt8(i >> 48),
-                UInt8(truncatingIfNeeded: i >> 40),
-                UInt8(truncatingIfNeeded: i >> 32),
-                UInt8(truncatingIfNeeded: i >> 24),
-                UInt8(truncatingIfNeeded: i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        default:
-            return try! Data([
-                UInt8(i >> 56),
-                UInt8(truncatingIfNeeded: i >> 48),
-                UInt8(truncatingIfNeeded: i >> 40),
-                UInt8(truncatingIfNeeded: i >> 32),
-                UInt8(truncatingIfNeeded: i >> 24),
-                UInt8(truncatingIfNeeded: i >> 16),
-                UInt8(truncatingIfNeeded: i >> 8),
-                UInt8(truncatingIfNeeded: i),
-            ])
-        }
-    }
+//    static func encodeHeader(size: UInt64, smallTag: UInt8, largeTag: UInt8) -> Data {
+//        if size < 56 {
+//            return Data(bytes: [smallTag + UInt8(size)])
+//        }
+//
+//        let sizeData = putint(size)
+//        var encoded = Data()
+//        encoded.append(largeTag + UInt8(sizeData.count))
+//        encoded.append(contentsOf: sizeData)
+//        return encoded
+//    }
+//
+//    /// Returns the representation of an integer using the least number of bytes needed.
+//    static func putint(_ i: UInt64) -> Data {
+//        switch i {
+//        case 0 ..< (1 << 8):
+//            return Data(bytes: [UInt8(i)])
+//        case 0 ..< (1 << 16):
+//            return Data(bytes: [
+//                UInt8(i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        case 0 ..< (1 << 24):
+//            return Data(bytes: [
+//                UInt8(i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        case 0 ..< (1 << 32):
+//            return Data(bytes: [
+//                UInt8(i >> 24),
+//                UInt8(truncatingIfNeeded: i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        case 0 ..< (1 << 40):
+//            return Data(bytes: [
+//                UInt8(i >> 32),
+//                UInt8(truncatingIfNeeded: i >> 24),
+//                UInt8(truncatingIfNeeded: i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        case 0 ..< (1 << 48):
+//            return Data(bytes: [
+//                UInt8(i >> 40),
+//                UInt8(truncatingIfNeeded: i >> 32),
+//                UInt8(truncatingIfNeeded: i >> 24),
+//                UInt8(truncatingIfNeeded: i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        case 0 ..< (1 << 56):
+//            return Data(bytes: [
+//                UInt8(i >> 48),
+//                UInt8(truncatingIfNeeded: i >> 40),
+//                UInt8(truncatingIfNeeded: i >> 32),
+//                UInt8(truncatingIfNeeded: i >> 24),
+//                UInt8(truncatingIfNeeded: i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        default:
+//            return Data(bytes: [
+//                UInt8(i >> 56),
+//                UInt8(truncatingIfNeeded: i >> 48),
+//                UInt8(truncatingIfNeeded: i >> 40),
+//                UInt8(truncatingIfNeeded: i >> 32),
+//                UInt8(truncatingIfNeeded: i >> 24),
+//                UInt8(truncatingIfNeeded: i >> 16),
+//                UInt8(truncatingIfNeeded: i >> 8),
+//                UInt8(truncatingIfNeeded: i),
+//            ])
+//        }
+//    }
 }
+*/

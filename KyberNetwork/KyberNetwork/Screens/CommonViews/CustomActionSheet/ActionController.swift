@@ -248,9 +248,9 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
         if let headerSpec = headerSpec, let _ = headerData {
             switch headerSpec {
             case .cellClass:
-              collectionView.register(HeaderViewType.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ReusableViewIds.Header.rawValue)
+              collectionView.register(HeaderViewType.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableViewIds.Header.rawValue)
             case .nibFile(let nibName, let bundle, _):
-                collectionView.register(UINib(nibName: nibName, bundle: bundle), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ReusableViewIds.Header.rawValue)
+              collectionView.register(UINib(nibName: nibName, bundle: bundle), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableViewIds.Header.rawValue)
             }
         }
         
@@ -258,9 +258,9 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
         if let headerSpec = sectionHeaderSpec {
             switch headerSpec {
             case .cellClass:
-                collectionView.register(SectionHeaderViewType.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ReusableViewIds.SectionHeader.rawValue)
+              collectionView.register(SectionHeaderViewType.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableViewIds.SectionHeader.rawValue)
             case .nibFile(let nibName, let bundle, _):
-                collectionView.register(UINib(nibName: nibName, bundle: bundle), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ReusableViewIds.SectionHeader.rawValue)
+              collectionView.register(UINib(nibName: nibName, bundle: bundle), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReusableViewIds.SectionHeader.rawValue)
             }
         }
         
@@ -403,7 +403,7 @@ open class ActionController<ActionViewType: UICollectionViewCell, ActionDataType
     }
 
     open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
+      if kind == UICollectionView.elementKindSectionHeader {
             if (indexPath as NSIndexPath).section == 0 && hasHeader() {
                 let reusableview = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ReusableViewIds.Header.rawValue, for: indexPath) as? HeaderViewType
                 onConfigureHeader?(reusableview!, headerData!)

@@ -56,7 +56,7 @@ extension KNBaseViewController {
     maskLayer.backgroundColor = UIColor.black.cgColor
     maskLayer.path = path
 
-    maskLayer.fillRule = kCAFillRuleEvenOdd
+    maskLayer.fillRule = CAShapeLayerFillRule.evenOdd
     overlayView.layer.mask = maskLayer
     overlayView.clipsToBounds = true
 

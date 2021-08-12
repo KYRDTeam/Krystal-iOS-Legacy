@@ -12,16 +12,16 @@ enum ConfirmationError: LocalizedError {
 
 extension UIViewController {
     func displaySuccess(title: String? = .none, message: String? = .none) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+      let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alertController.popoverPresentationController?.sourceView = self.view
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: UIAlertActionStyle.default, handler: nil))
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: UIAlertAction.Style.default, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
 
     func displayError(error: Error) {
-        let alertController = UIAlertController(title: error.prettyError, message: "", preferredStyle: UIAlertControllerStyle.alert)
+      let alertController = UIAlertController(title: error.prettyError, message: "", preferredStyle: UIAlertController.Style.alert)
         alertController.popoverPresentationController?.sourceView = self.view
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: UIAlertActionStyle.default, handler: nil))
+      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: UIAlertAction.Style.default, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
 
@@ -29,7 +29,7 @@ extension UIViewController {
         title: String? = .none,
         message: String? = .none,
         okTitle: String = NSLocalizedString("ok", value: "OK", comment: ""),
-        okStyle: UIAlertActionStyle = .default,
+      okStyle: UIAlertAction.Style = .default,
         completion: @escaping (Result<Void, ConfirmationError>) -> Void
     ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

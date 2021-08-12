@@ -13,10 +13,10 @@ class KNImportJSONViewController: KNBaseViewController {
   weak var delegate: KNImportJSONViewControllerDelegate?
   fileprivate var jsonData: String = ""
 
-  lazy var buttonAttributes: [NSAttributedStringKey: Any] = {
+  lazy var buttonAttributes: [NSAttributedString.Key: Any] = {
     return [
-      NSAttributedStringKey.foregroundColor: UIColor(named: "normalTextColor")!,
-      NSAttributedStringKey.kern: 0.0,
+      NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
+      NSAttributedString.Key.kern: 0.0,
     ]
   }()
 

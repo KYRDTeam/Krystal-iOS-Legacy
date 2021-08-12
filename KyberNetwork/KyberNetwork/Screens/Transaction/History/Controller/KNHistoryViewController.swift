@@ -267,14 +267,14 @@ struct KNHistoryViewModel {
     return tokenMatched && matchedType
   }
 
-  var normalAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.white,
+  var normalAttributes: [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedString.Key.foregroundColor: UIColor.white,
   ]
 
-  var selectedAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.foregroundColor: UIColor.Kyber.enygold,
+  var selectedAttributes: [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedString.Key.foregroundColor: UIColor.Kyber.enygold,
   ]
 
   mutating func updateFilters(_ filters: KNTransactionFilter) {
@@ -459,7 +459,7 @@ class KNHistoryViewController: KNBaseViewController {
     let nib = UINib(nibName: KNHistoryTransactionCollectionViewCell.className, bundle: nil)
     self.transactionCollectionView.register(nib, forCellWithReuseIdentifier: KNHistoryTransactionCollectionViewCell.cellID)
     let headerNib = UINib(nibName: KNTransactionCollectionReusableView.className, bundle: nil)
-    self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
+    self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
 
@@ -626,7 +626,7 @@ extension KNHistoryViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch kind {
-    case UICollectionElementKindSectionHeader:
+    case UICollectionView.elementKindSectionHeader:
       let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: KNTransactionCollectionReusableView.viewID, for: indexPath) as! KNTransactionCollectionReusableView
       headerView.updateView(with: self.viewModel.header(for: indexPath.section))
       return headerView
