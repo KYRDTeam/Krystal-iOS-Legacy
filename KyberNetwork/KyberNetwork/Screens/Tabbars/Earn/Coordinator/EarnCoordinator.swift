@@ -443,7 +443,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }

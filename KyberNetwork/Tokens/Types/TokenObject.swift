@@ -197,6 +197,11 @@ class TokenObject: Object {
     var symbolAndNameID: String {
       return self.symbol + " " + self.name.replacingOccurrences(of: " ", with: "").lowercased()
     }
+  
+  var placeholderValue: BigInt {
+    let value = Int(0.001 * pow(10.0, Double(self.decimals)))
+    return BigInt(value)
+  }
 
   /**
    Clone object to use in another realm

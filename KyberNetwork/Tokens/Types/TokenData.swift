@@ -299,6 +299,11 @@ struct TokenData: Codable, Equatable {
   func toObject() -> TokenObject {
     return TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: "")
   }
+  
+  var placeholderValue: BigInt {
+    let value = Int(0.001 * pow(10.0, Double(self.decimals)))
+    return BigInt(value)
+  }
 }
 
 struct LendingPlatformData: Codable {

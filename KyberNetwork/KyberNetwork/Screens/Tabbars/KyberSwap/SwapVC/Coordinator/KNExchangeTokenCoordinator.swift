@@ -867,7 +867,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }
@@ -889,7 +889,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
@@ -950,7 +950,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = amount.isZero ? "1000000000000000" : amount.description
+    let amt = amount.isZero ? from.placeholderValue.description : amount.description
     provider.request(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let gasLimitString = json["gasLimit"] as? String, let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
