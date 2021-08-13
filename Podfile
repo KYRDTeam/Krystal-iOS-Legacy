@@ -28,9 +28,8 @@ target 'KyberNetwork' do
   pod 'SAMKeychain', '~> 1.5.3'
   pod 'IQKeyboardManager', '~> 6.5'
   pod 'SwiftMessages', '~> 5.0.1'
-  pod 'SwiftChart'
+  pod 'SwiftChart', :git => 'https://github.com/gpbl/SwiftChart.git'
   pod 'JdenticonSwift', '~> 0.0.1'
-  pod 'MSCircularSlider', '~> 1.2.2'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
   pod 'Starscream', '~> 3.1'
@@ -41,7 +40,6 @@ target 'KyberNetwork' do
   pod 'Charts'
   pod 'FreshchatSDK'
   pod 'FSPagerView'
-  pod 'BetterSegmentedControl', '1.0'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'TagListView', '~> 1.0'
   pod 'WalletConnectSwift'

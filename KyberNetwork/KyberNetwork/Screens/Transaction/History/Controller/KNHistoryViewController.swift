@@ -2,7 +2,7 @@
 
 import UIKit
 import SwipeCellKit
-import BetterSegmentedControl
+
 
 //swiftlint:disable file_length
 enum KNHistoryViewEvent {

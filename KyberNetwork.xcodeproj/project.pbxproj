@@ -115,8 +115,6 @@
 		25696F4E20BD162F002CC53F /* XibViewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F4D20BD162F002CC53F /* XibViewLoader.swift */; };
 		25696F5520BD2B72002CC53F /* KNDataDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F5420BD2B72002CC53F /* KNDataDetailsView.xib */; };
 		25696F5720BD2B81002CC53F /* KNDataDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F5620BD2B81002CC53F /* KNDataDetailsView.swift */; };
-		25696F5E20BE6B4E002CC53F /* KNSetGasPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F5C20BE6B4E002CC53F /* KNSetGasPriceViewController.swift */; };
-		25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F5D20BE6B4E002CC53F /* KNSetGasPriceViewController.xib */; };
 		25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6120BE8973002CC53F /* KNSetSlippageRateViewController.swift */; };
 		25696F6420BE8973002CC53F /* KNSetSlippageRateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25696F6220BE8973002CC53F /* KNSetSlippageRateViewController.xib */; };
 		25696F6820BE9EB6002CC53F /* KNSearchTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25696F6620BE9EB6002CC53F /* KNSearchTokenViewController.swift */; };
@@ -576,7 +574,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
 		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
 		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
@@ -831,8 +829,6 @@
 		25696F4D20BD162F002CC53F /* XibViewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibViewLoader.swift; sourceTree = "<group>"; };
 		25696F5420BD2B72002CC53F /* KNDataDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNDataDetailsView.xib; sourceTree = "<group>"; };
 		25696F5620BD2B81002CC53F /* KNDataDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNDataDetailsView.swift; sourceTree = "<group>"; };
-		25696F5C20BE6B4E002CC53F /* KNSetGasPriceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSetGasPriceViewController.swift; sourceTree = "<group>"; };
-		25696F5D20BE6B4E002CC53F /* KNSetGasPriceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSetGasPriceViewController.xib; sourceTree = "<group>"; };
 		25696F6120BE8973002CC53F /* KNSetSlippageRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSetSlippageRateViewController.swift; sourceTree = "<group>"; };
 		25696F6220BE8973002CC53F /* KNSetSlippageRateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSetSlippageRateViewController.xib; sourceTree = "<group>"; };
 		25696F6620BE9EB6002CC53F /* KNSearchTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSearchTokenViewController.swift; sourceTree = "<group>"; };
@@ -1966,7 +1962,6 @@
 				25682B7120EE0685009738C4 /* Details */,
 				25BA01CC20BFEB2C00053863 /* StatusView */,
 				25696F6020BE88E3002CC53F /* SetSlippageRate */,
-				25696F5B20BE6B33002CC53F /* SetGasPrice */,
 				25DBB57F205FB9080020F19D /* Status */,
 			);
 			path = Transaction;
@@ -2074,15 +2069,6 @@
 				25696F5620BD2B81002CC53F /* KNDataDetailsView.swift */,
 			);
 			path = DataDetailsView;
-			sourceTree = "<group>";
-		};
-		25696F5B20BE6B33002CC53F /* SetGasPrice */ = {
-			isa = PBXGroup;
-			children = (
-				25696F5C20BE6B4E002CC53F /* KNSetGasPriceViewController.swift */,
-				25696F5D20BE6B4E002CC53F /* KNSetGasPriceViewController.xib */,
-			);
-			path = SetGasPrice;
 			sourceTree = "<group>";
 		};
 		25696F6020BE88E3002CC53F /* SetSlippageRate */ = {
@@ -4299,7 +4285,6 @@
 				C3FA3D982591AB3E00E17B47 /* ChooseRateViewController.xib in Resources */,
 				C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */,
 				C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */,
-				25696F5F20BE6B4E002CC53F /* KNSetGasPriceViewController.xib in Resources */,
 				25929C8C20DA5CC10045CFA3 /* SFCompactDisplay-Thin.otf in Resources */,
 				C3F71CA1261C084C00285935 /* EarnTutorialViewController.xib in Resources */,
 				25929C6120DA5C760045CFA3 /* SF-Pro-Display-UltralightItalic.otf in Resources */,
@@ -4669,7 +4654,6 @@
 				"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/APIKit/APIKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/BetterSegmentedControl/BetterSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -4688,7 +4672,6 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MSCircularSlider/MSCircularSlider.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
@@ -4717,7 +4700,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/APIKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BetterSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
@@ -4736,7 +4718,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSCircularSlider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
@@ -4804,7 +4785,7 @@
 				C680C11D2382755900A621CB /* KNAppstoreRatingManager.swift in Sources */,
 				C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* (null) in Sources */,
+				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
@@ -5053,7 +5034,6 @@
 				296AF9A71F736EC70058AF78 /* RPCServers.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
 				25682B7A20EE09C8009738C4 /* KNTransactionDetailsViewModel.swift in Sources */,
-				25696F5E20BE6B4E002CC53F /* KNSetGasPriceViewController.swift in Sources */,
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,

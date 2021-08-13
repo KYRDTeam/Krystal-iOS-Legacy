@@ -41,7 +41,6 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
-  fileprivate var setGasPriceVC: KNSetGasPriceViewController?
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
@@ -517,8 +516,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.getGasLimit(from: from, to: to, amount: amount, tx: raw)
     case .showQRCode:
       self.showWalletQRCode()
-    case .setGasPrice(let gasPrice, let gasLimit):
-      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
     case .confirmSwap(let data, let tx, let hasRateWarning, let platform, let rawTransaction, let minDestAmount):
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { (result) in
@@ -1027,18 +1024,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.qrcodeCoordinator?.start()
   }
 
-  fileprivate func openSetGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
-    let setGasPriceVC: KNSetGasPriceViewController = {
-      let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
-      let controller = KNSetGasPriceViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.setGasPriceVC = setGasPriceVC
-    self.navigationController.pushViewController(setGasPriceVC, animated: true)
-  }
-
   fileprivate func openSendTokenView() {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
@@ -1104,16 +1089,6 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
       } else if case .add(let token) = event {
         self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
       }
-    }
-  }
-}
-
-// MARK: Set gas price
-extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
-  func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
-    self.navigationController.popViewController(animated: true) {
-      self.setGasPriceVC = nil
-      self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
     }
   }
 }

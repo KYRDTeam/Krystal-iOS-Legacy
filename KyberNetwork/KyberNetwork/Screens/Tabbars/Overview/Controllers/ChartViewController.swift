@@ -9,7 +9,6 @@ import UIKit
 import SwiftChart
 import BigInt
 
-
 class ChartViewModel {
   var dataSource: [(x: Double, y: Double)] = []
   var xLabels: [Double] = []

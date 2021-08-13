@@ -9,9 +9,6 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-//  case estimateRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool) //TODO: remove to apply new get rate procedure
-//  case estimateGas(from: TokenObject, to: TokenObject, amount: BigInt, gasPrice: BigInt, hint: String)
-  case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])

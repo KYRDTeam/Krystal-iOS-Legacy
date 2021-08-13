@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import BetterSegmentedControl
 import SwipeCellKit
 
 enum KNListWalletsViewEvent {
