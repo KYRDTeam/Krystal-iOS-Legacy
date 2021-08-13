@@ -829,6 +829,7 @@ extension KSwapViewController {
     self.updateExchangeRateField()
     self.setUpChangeRateButton()
     self.updateUIRefPrice()
+    self.updateUIMinReceiveAmount()
   }
 
   func coordinatorFailUpdateRates() {
