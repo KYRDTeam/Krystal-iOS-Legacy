@@ -298,16 +298,15 @@ extension OverviewCoordinator: QRCodeReaderDelegate {
         let result = self.session.keystore.exportPrivateKey(account: account)
         switch result {
         case .success(let data):
-          let pkString = data.hexString
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            knSession: self.session,
-            pk: pkString
-          )
           DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
             self.navigationController.present(controller, animated: true, completion: nil)
           }
-          
         case .failure(_):
           self.navigationController.showTopBannerView(
             with: "Private Key Error",
