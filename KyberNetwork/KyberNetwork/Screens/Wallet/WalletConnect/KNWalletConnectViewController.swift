@@ -43,28 +43,36 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.connectToWC()
+    DispatchQueue.global(qos: .background).async {
+      self.connectToWC()
+    }
+    
     let address = self.knSession.wallet.address.description
     self.addressLabel.text = "\(address.prefix(12))...\(address.suffix(10))"
     self.urlLabel.text = ""
     self.connectionStatusLabel.text = ""
-
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.updateUIConnectStatusLabel()
+    self.updateWCInfo()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.disconnectWC()
+    
   }
   
   private func configureServer() {
       server = Server(delegate: self)
       server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey))
       server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey))
-      if let oldSessionObject = UserDefaults.standard.object(forKey: sessionKey) as? Data,
-          let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
-          try? server.reconnect(to: session)
-      }
+//      if let oldSessionObject = UserDefaults.standard.object(forKey: sessionKey) as? Data,
+//          let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
+//          try? server.reconnect(to: session)
+//      }
   }
   
   func connectToWC() {
@@ -93,6 +101,9 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
 
   func updateWCInfo() {
+    guard self.isViewLoaded, self.isConnected else {
+      return
+    }
     if let url = session.dAppInfo.peerMeta.icons.first {
       self.logoImageView.setImage(with: url, placeholder: nil)
     }
@@ -102,8 +113,15 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   func connectionStatusUpdated(_ connected: Bool) {
     self.isConnected = connected
-    self.connectionStatusLabel.text = connected ? "Online" : "Offline"
-    self.connectionStatusLabel.textColor = connected ? UIColor.Kyber.green : UIColor.Kyber.red
+    guard self.isViewLoaded else {
+      return
+    }
+    self.updateUIConnectStatusLabel()
+  }
+  
+  func updateUIConnectStatusLabel() {
+    self.connectionStatusLabel.text = self.isConnected ? "Online" : "Offline"
+    self.connectionStatusLabel.textColor = self.isConnected ? UIColor.Kyber.green : UIColor.Kyber.red
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -282,7 +300,7 @@ extension KNWalletConnectViewController: ServerDelegate {
                                             url: URL(string: "https://safe.gnosis.io")!)
         let walletInfo = Session.WalletInfo(approved: true,
                                             accounts: [privateKey.address.hex(eip55: true)],
-                                            chainId: 4,
+                                            chainId: KNGeneralProvider.shared.customRPC.chainID,
                                             peerId: UUID().uuidString,
                                             peerMeta: walletMeta)
         onMainThread {
