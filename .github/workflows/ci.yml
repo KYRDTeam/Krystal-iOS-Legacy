@@ -21,13 +21,35 @@ jobs:
     runs-on: ubuntu-18.04
     outputs:
       current_branch: ${{ steps.current_branch.outputs.value }}
+      commit_tag: ${{ steps.commit_tag.outputs.value }}
+      version_tag: ${{ steps.version_tag.outputs.value }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Extract branch
         shell: bash
         id: current_branch
         run: |
           BRANCH="${GITHUB_REF#refs/heads/}"
+          if [[ "$GITHUB_REF" =~ refs/tags ]]; then
+            raw=$(git branch -r --contains ${{ github.ref }})
+            BRANCH=${raw/origin\/}
+          fi
           echo "::set-output name=value::$BRANCH"
+
+      - name: Get Git Commit Tag
+        shell: bash
+        id: commit_tag
+        run: |
+          COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
+          echo "::set-output name=value::$COMMIT_HASH"
+          
+      - name: Get version tag
+        id: version_tag
+        run: |
+          [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
+          echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
 
   build-ios:
     needs:
