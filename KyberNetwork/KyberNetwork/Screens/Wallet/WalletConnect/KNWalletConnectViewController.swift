@@ -324,21 +324,8 @@ class SendTransactionHandler: BaseHandler {
         do {
           let dict = try request.parameter(of: [String: String].self, at: 0)
 
-          let gas = try? EthereumQuantity(ethereumValue: .string(dict["gas"] ?? ""))
-          let value = try? EthereumQuantity(ethereumValue: .string(dict["value"] ?? ""))
-          let data = try! EthereumData(ethereumValue: .string(dict["data"] ?? ""))
-          let from = try? EthereumAddress(ethereumValue: .string(dict["from"] ?? ""))
-          let to = try? EthereumAddress(ethereumValue: .string(dict["to"] ?? ""))
           self.getLatestNonce { nonceInt in
-            let nonce = EthereumQuantity(quantity: BigUInt(nonceInt))
             let gasPriceBigInt = KNGasCoordinator.shared.standardKNGas
-            let gasPrice = EthereumQuantity(quantity: BigUInt(gasPriceBigInt))
-            let transaction = EthereumTransaction(nonce: nonce, gasPrice: gasPrice, gas: gas, from: from, to: to, value: value, data: data)
-            
-            guard transaction.from == self.privateKey.address else {
-                self.sever.send(.reject(request))
-                return
-            }
 
             self.askToAsyncSign(request: request, message: dict.description) {
               guard let signTx = self.buildSignTransaction(dict: dict, nonce: nonceInt, gasPrice: gasPriceBigInt) else {

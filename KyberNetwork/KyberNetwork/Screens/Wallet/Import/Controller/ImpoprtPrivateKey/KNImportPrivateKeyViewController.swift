@@ -121,8 +121,10 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       if sender.tag == 1 {
         self.enterPrivateKeyTextField.text = string
         self.updateNextButton()
+      } else {
+        self.refCodeField.text = string
       }
-      self.refCodeField.text = string
+      
     }
   }
   
