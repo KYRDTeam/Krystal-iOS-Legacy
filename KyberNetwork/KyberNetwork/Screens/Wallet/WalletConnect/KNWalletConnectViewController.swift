@@ -7,6 +7,7 @@ import QRCodeReaderViewController
 import Starscream
 import Web3
 import WalletConnectSwift
+import TrustCore
 
 class KNWalletConnectViewController: KNBaseViewController {
 
@@ -66,13 +67,10 @@ class KNWalletConnectViewController: KNBaseViewController {
   }
   
   private func configureServer() {
-      server = Server(delegate: self)
-      server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey))
-      server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey))
-//      if let oldSessionObject = UserDefaults.standard.object(forKey: sessionKey) as? Data,
-//          let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
-//          try? server.reconnect(to: session)
-//      }
+    server = Server(delegate: self)
+    server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
+    server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
+    server.register(handler: SendTransactionHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
   }
   
   func connectToWC() {
@@ -138,6 +136,21 @@ class KNWalletConnectViewController: KNBaseViewController {
     }))
     self.present(alert, animated: true, completion: nil)
   }
+
+  func getLatestNonce(completion: @escaping (Int) -> Void) {
+    guard let provider = self.knSession.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let res):
+        completion(res)
+      case .failure:
+        self.getLatestNonce(completion: completion)
+      }
+    }
+  }
 }
 
 extension Response {
@@ -150,11 +163,13 @@ class BaseHandler: RequestHandler {
     weak var controller: UIViewController!
     weak var sever: Server!
     weak var privateKey: EthereumPrivateKey!
+  weak var session: KNSession!
 
-    init(for controller: UIViewController, server: Server, privateKey: EthereumPrivateKey) {
+  init(for controller: UIViewController, server: Server, privateKey: EthereumPrivateKey, session: KNSession) {
         self.controller = controller
         self.sever = server
         self.privateKey = privateKey
+    self.session = session
     }
 
     func canHandle(request: Request) -> Bool {
@@ -181,6 +196,65 @@ class BaseHandler: RequestHandler {
                                              onCancel: onCancel)
         }
     }
+  
+  func askToAsyncSign(request: Request, message: String, sign: @escaping () -> Void) {
+      let onSign = {
+          sign()
+      }
+      let onCancel = {
+          self.sever.send(.reject(request))
+      }
+      DispatchQueue.main.async {
+          UIAlertController.showShouldSign(from: self.controller,
+                                           title: "Request to sign a message",
+                                           message: message,
+                                           onSign: onSign,
+                                           onCancel: onCancel)
+      }
+  }
+
+  func getLatestNonce(completion: @escaping (Int) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let res):
+        completion(res)
+      case .failure:
+        self.getLatestNonce(completion: completion)
+      }
+    }
+  }
+
+  func buildSignTransaction(dict: [String: String], nonce: Int, gasPrice: BigInt) -> SignTransaction? {
+    guard
+      let gasLimit = BigInt(dict["gas"]?.drop0x ?? "", radix: 16),
+      let value = BigInt(dict["value"]?.drop0x ?? "", radix: 16),
+      let to = dict["to"]
+    else
+    {
+      return nil
+    }
+    let data = Data(hex: dict["data"]?.drop0x ?? "")
+    
+    if case let .real(account) = self.session.wallet.type {
+      return SignTransaction(
+        value: value,
+        account: account,
+        to: Address(string: to),
+        nonce: nonce,
+        data: data,
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        chainID: KNGeneralProvider.shared.customRPC.chainID
+      )
+    } else {
+      //TODO: handle watch wallet type
+      return nil
+    }
+  }
 }
 
 class PersonalSignHandler: BaseHandler {
@@ -230,12 +304,64 @@ class SignTransactionHandler: BaseHandler {
                 self.sever.send(.reject(request))
                 return
             }
-
             askToSign(request: request, message: transaction.description) {
-                let signedTx = try! transaction.sign(with: self.privateKey, chainId: 4)
+              let signedTx = try! transaction.sign(with: self.privateKey, chainId: EthereumQuantity(quantity: BigUInt(KNGeneralProvider.shared.customRPC.chainID)))
                 let (r, s, v) = (signedTx.r, signedTx.s, signedTx.v)
                 return r.hex() + s.hex().dropFirst(2) + String(v.quantity, radix: 16)
             }
+        } catch {
+            self.sever.send(.invalid(request))
+        }
+    }
+}
+
+class SendTransactionHandler: BaseHandler {
+    override func canHandle(request: Request) -> Bool {
+        return request.method == "eth_sendTransaction"
+    }
+
+    override func handle(request: Request) {
+        do {
+          let dict = try request.parameter(of: [String: String].self, at: 0)
+
+          let gas = try? EthereumQuantity(ethereumValue: .string(dict["gas"] ?? ""))
+          let value = try? EthereumQuantity(ethereumValue: .string(dict["value"] ?? ""))
+          let data = try! EthereumData(ethereumValue: .string(dict["data"] ?? ""))
+          let from = try? EthereumAddress(ethereumValue: .string(dict["from"] ?? ""))
+          let to = try? EthereumAddress(ethereumValue: .string(dict["to"] ?? ""))
+          self.getLatestNonce { nonceInt in
+            let nonce = EthereumQuantity(quantity: BigUInt(nonceInt))
+            let gasPriceBigInt = KNGasCoordinator.shared.standardKNGas
+            let gasPrice = EthereumQuantity(quantity: BigUInt(gasPriceBigInt))
+            let transaction = EthereumTransaction(nonce: nonce, gasPrice: gasPrice, gas: gas, from: from, to: to, value: value, data: data)
+            
+            guard transaction.from == self.privateKey.address else {
+                self.sever.send(.reject(request))
+                return
+            }
+
+            self.askToAsyncSign(request: request, message: transaction.description) {
+              guard let signTx = self.buildSignTransaction(dict: dict, nonce: nonceInt, gasPrice: gasPriceBigInt) else {
+                return
+              }
+              self.session.externalProvider?.signTransactionData(from: signTx, completion: { result in
+                switch result {
+                case .success(let signedData):
+                  KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+                    switch sendResult {
+                    case .success(let hash):
+                      print(hash)
+                      self.sever.send(.signature(hash, for: request))
+                    case .failure(let error):
+                      UIAlertController.showFailedError(from: self.controller, message: error.description)
+                    }
+                  })
+                case .failure:
+                  UIAlertController.showFailedError(from: self.controller, message: "Fail")
+                }
+              })
+            }
+          }
         } catch {
             self.sever.send(.invalid(request))
         }
@@ -259,6 +385,11 @@ extension UIAlertController {
         let alert = UIAlertController(title: "Failed to connect", message: nil, preferredStyle: .alert)
         controller.present(alert.withCloseButton(), animated: true)
     }
+  
+  static func showFailedError(from controller: UIViewController, message: String) {
+      let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+      controller.present(alert.withCloseButton(), animated: true)
+  }
 
     static func showDisconnected(from controller: UIViewController) {
         let alert = UIAlertController(title: "Did disconnect", message: nil, preferredStyle: .alert)
@@ -307,7 +438,7 @@ extension KNWalletConnectViewController: ServerDelegate {
             UIAlertController.showShouldStart(from: self, clientName: session.dAppInfo.peerMeta.name, onStart: {
                 completion(walletInfo)
             }, onClose: {
-                completion(Session.WalletInfo(approved: false, accounts: [], chainId: 4, peerId: "", peerMeta: walletMeta))
+                completion(Session.WalletInfo(approved: false, accounts: [], chainId: KNGeneralProvider.shared.customRPC.chainID, peerId: "", peerMeta: walletMeta))
             })
         }
     }

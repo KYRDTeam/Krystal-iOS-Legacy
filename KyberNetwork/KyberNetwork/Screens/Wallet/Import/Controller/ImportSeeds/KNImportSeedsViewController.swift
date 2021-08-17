@@ -118,7 +118,13 @@ class KNImportSeedsViewController: KNBaseViewController {
   
   @IBAction func pasteButtonTapped(_ sender: UIButton) {
     if let string = UIPasteboard.general.string {
-      self.refCodeField.text = string
+      if sender.tag == 1 {
+        self.seedsTextField.text = string
+        self.updateWordsCount()
+      } else {
+        self.refCodeField.text = string
+      }
+      
     }
   }
   
