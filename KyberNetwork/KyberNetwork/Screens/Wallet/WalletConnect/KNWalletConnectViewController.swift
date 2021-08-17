@@ -340,7 +340,7 @@ class SendTransactionHandler: BaseHandler {
                 return
             }
 
-            self.askToAsyncSign(request: request, message: transaction.description) {
+            self.askToAsyncSign(request: request, message: dict.description) {
               guard let signTx = self.buildSignTransaction(dict: dict, nonce: nonceInt, gasPrice: gasPriceBigInt) else {
                 return
               }
