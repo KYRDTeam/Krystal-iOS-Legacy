@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 target 'KyberNetwork' do
   use_frameworks!
 
-  pod 'BigInt', '~> 3.1.0'
+  pod 'BigInt', '~> 4.0'
   pod 'JSONRPCKit', '~> 3.0.0' #:git=> 'https://github.com/bricklife/JSONRPCKit.git'
   pod 'APIKit', '~> 3.2.1'
   pod 'Eureka', '~> 5.3.0'
@@ -28,9 +28,8 @@ target 'KyberNetwork' do
   pod 'SAMKeychain', '~> 1.5.3'
   pod 'IQKeyboardManager', '~> 6.5'
   pod 'SwiftMessages', '~> 5.0.1'
-  pod 'SwiftChart'
+  pod 'SwiftChart', :git => 'https://github.com/gpbl/SwiftChart.git'
   pod 'JdenticonSwift', '~> 0.0.1'
-  pod 'MSCircularSlider', '~> 1.2.2'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
   pod 'Starscream', '~> 3.1'
@@ -41,9 +40,10 @@ target 'KyberNetwork' do
   pod 'Charts'
   pod 'FreshchatSDK'
   pod 'FSPagerView'
-  pod 'BetterSegmentedControl', '1.0'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'TagListView', '~> 1.0'
+  pod 'WalletConnectSwift'
+  pod 'Web3'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
@@ -66,6 +66,9 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+    end
     if ['TrustKeystore'].include? target.name
       target.build_configurations.each do |config|
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'

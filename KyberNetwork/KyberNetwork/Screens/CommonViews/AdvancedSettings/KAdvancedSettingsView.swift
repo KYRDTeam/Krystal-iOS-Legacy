@@ -93,15 +93,15 @@ class KAdvancedSettingsViewModel: NSObject {
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
-    let gasPriceAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.mirage,
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let gasPriceAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.mirage,
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
-    let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.grayChateau,
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 12),
-      NSAttributedStringKey.kern: 0.0,
+    let feeAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.grayChateau,
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 12),
+      NSAttributedString.Key.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))

@@ -15,7 +15,7 @@ class KNOpenSettingsAllowCamera {
         preferredStyle: .actionSheet
       )
       alertController.addAction(UIAlertAction(title: "Open Settings".toBeLocalised(), style: .default, handler: { _ in
-        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
           return
         }
         UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)

@@ -108,15 +108,15 @@ class GasFeeSelectorPopupViewModel {
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
-    let gasPriceAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(named: "textWhiteColor")!,
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 16),
-      NSAttributedStringKey.kern: 0.0,
+    let gasPriceAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 16),
+      NSAttributedString.Key.kern: 0.0,
     ]
-    let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(named: "normalTextColor")!,
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 12),
-      NSAttributedStringKey.kern: 0.0,
+    let feeAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 12),
+      NSAttributedString.Key.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))

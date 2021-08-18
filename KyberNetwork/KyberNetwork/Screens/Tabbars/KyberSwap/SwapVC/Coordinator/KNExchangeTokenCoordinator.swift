@@ -11,6 +11,7 @@ import QRCodeReaderViewController
 import WalletConnect
 import MBProgressHUD
 import JSONRPCKit
+import WalletConnectSwift
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -40,7 +41,6 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
-  fileprivate var setGasPriceVC: KNSetGasPriceViewController?
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
@@ -219,24 +219,6 @@ extension KNExchangeTokenCoordinator {
       return true
     }
     return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
-  }
-
-  func appCoordinatorWillTerminate() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationWillTerminate()
-    }
-  }
-
-  func appCoordinatorWillEnterForeground() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationWillEnterForeground()
-    }
-  }
-
-  func appCoordinatorDidEnterBackground() {
-    if let topVC = self.navigationController.topViewController?.presentedViewController as? KNWalletConnectViewController {
-      topVC.applicationDidEnterBackground()
-    }
   }
   
   func appCoordinatorDidUpdateChain() {
@@ -534,8 +516,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.getGasLimit(from: from, to: to, amount: amount, tx: raw)
     case .showQRCode:
       self.showWalletQRCode()
-    case .setGasPrice(let gasPrice, let gasLimit):
-      self.openSetGasPrice(gasPrice: gasPrice, estGasLimit: gasLimit)
     case .confirmSwap(let data, let tx, let hasRateWarning, let platform, let rawTransaction, let minDestAmount):
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { (result) in
@@ -884,7 +864,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }
@@ -906,7 +886,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
@@ -967,7 +947,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = amount.isZero ? "1000000000000000" : amount.description
+    let amt = amount.isZero ? from.placeholderValue.description : amount.description
     provider.request(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let gasLimitString = json["gasLimit"] as? String, let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
@@ -1044,18 +1024,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.qrcodeCoordinator?.start()
   }
 
-  fileprivate func openSetGasPrice(gasPrice: BigInt, estGasLimit: BigInt) {
-    let setGasPriceVC: KNSetGasPriceViewController = {
-      let viewModel = KNSetGasPriceViewModel(gasPrice: gasPrice, estGasLimit: estGasLimit)
-      let controller = KNSetGasPriceViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.setGasPriceVC = setGasPriceVC
-    self.navigationController.pushViewController(setGasPriceVC, animated: true)
-  }
-
   fileprivate func openSendTokenView() {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
@@ -1121,16 +1089,6 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
       } else if case .add(let token) = event {
         self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
       }
-    }
-  }
-}
-
-// MARK: Set gas price
-extension KNExchangeTokenCoordinator: KNSetGasPriceViewControllerDelegate {
-  func setGasPriceViewControllerDidReturn(gasPrice: BigInt?) {
-    self.navigationController.popViewController(animated: true) {
-      self.setGasPriceVC = nil
-      self.rootViewController.coordinatorExchangeTokenDidUpdateGasPrice(gasPrice)
     }
   }
 }
@@ -1222,7 +1180,7 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let session = WCSession.from(string: result) else {
+      guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
           with: "Invalid session".toBeLocalised(),
           message: "Your session is invalid, please try with another QR code".toBeLocalised(),
@@ -1230,11 +1188,29 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-      let controller = KNWalletConnectViewController(
-        wcSession: session,
-        knSession: self.session
-      )
-      self.navigationController.present(controller, animated: true, completion: nil)
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
     }
   }
 }

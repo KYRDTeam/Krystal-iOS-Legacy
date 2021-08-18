@@ -78,15 +78,15 @@ class SpeedUpCustomGasSelectViewModel {
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
-    let gasPriceAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
-      NSAttributedStringKey.font: UIFont.Kyber.latoBold(with: 12),
-      NSAttributedStringKey.kern: 0.0,
+    let gasPriceAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+      NSAttributedString.Key.font: UIFont.Kyber.latoBold(with: 12),
+      NSAttributedString.Key.kern: 0.0,
     ]
-    let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 10),
-      NSAttributedStringKey.kern: 0.0,
+    let feeAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 10),
+      NSAttributedString.Key.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(string: gasPriceString, attributes: gasPriceAttributes))

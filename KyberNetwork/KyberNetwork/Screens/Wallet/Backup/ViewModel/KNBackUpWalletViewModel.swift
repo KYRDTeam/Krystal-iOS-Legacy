@@ -41,13 +41,13 @@ class KNBackUpWalletViewModel {
     if wordID > self.seeds.count { return NSMutableAttributedString() }
     let word: String = self.seeds[wordID - 1]
     let attributedString: NSMutableAttributedString = {
-      let idAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor.white,
-        NSAttributedStringKey.kern: 0.0,
+      let idAttributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: UIColor.white,
+        NSAttributedString.Key.kern: 0.0,
       ]
-      let wordAttributes: [NSAttributedStringKey: Any] = [
-        NSAttributedStringKey.foregroundColor: UIColor.white,
-        NSAttributedStringKey.kern: 0.0,
+      let wordAttributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: UIColor.white,
+        NSAttributedString.Key.kern: 0.0,
       ]
       let attributedString = NSMutableAttributedString()
       attributedString.append(NSAttributedString(string: "\(wordID).", attributes: idAttributes))
@@ -87,13 +87,13 @@ class KNBackUpWalletViewModel {
 
   var backUpDescAttributedString: NSMutableAttributedString {
     if self.currentWordIndex > 0 { return NSMutableAttributedString() }
-    let regularttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let regularttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
-    let boldAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let boldAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.bold(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     let listOfWords = NSLocalizedString("we.will.give.you.a.list.of.random.words", value: "We will give you a list of 12 random words. Please", comment: "")
@@ -124,9 +124,9 @@ class KNBackUpWalletViewModel {
   }()
 
   lazy var testingBackUpDescText: NSMutableAttributedString = {
-    let regularttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let regularttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
     let attributedString = NSMutableAttributedString()
     let key = "make.sure.you.have.written.down.all.your.backup.words"

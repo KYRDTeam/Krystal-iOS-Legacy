@@ -7,7 +7,7 @@ extension UIButton {
     let text = self.titleLabel?.text ?? ""
     if text.isEmpty { return }
     let attributedString = NSMutableAttributedString(string: text)
-    attributedString.addAttribute(NSAttributedStringKey.kern, value: value, range: NSRange(location: 0, length: text.count))
+    attributedString.addAttribute(NSAttributedString.Key.kern, value: value, range: NSRange(location: 0, length: text.count))
     self.setAttributedTitle(attributedString, for: .normal)
   }
 
@@ -15,7 +15,7 @@ extension UIButton {
     with url: URL,
     placeHolder: UIImage?,
     size: CGSize? = nil,
-    state: UIControlState = .normal
+    state: UIControl.State = .normal
     ) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
       self.setImage(cachedImg.resizeImage(to: size), for: .normal)
@@ -40,7 +40,7 @@ extension UIButton {
     with string: String,
     placeHolder: UIImage?,
     size: CGSize? = nil,
-    state: UIControlState = .normal
+    state: UIControl.State = .normal
     ) {
     self.setImage(placeHolder?.resizeImage(to: size), for: state)
     guard let url = URL(string: string) else { return }
@@ -55,7 +55,7 @@ extension UIButton {
   func setTokenImage(
     token: TokenObject,
     size: CGSize? = nil,
-    state: UIControlState = .normal
+    state: UIControl.State = .normal
     ) {
     if !token.isSupported {
       self.setImage(UIImage(named: "default_token"), for: .normal)

@@ -522,16 +522,16 @@ class PendingHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
     return NSLocalizedString("From", value: "From", comment: "") + ": \(self.transaction.from.prefix(12))...\(self.transaction.from.suffix(8))"
   }
 
-  let normalTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(red: 182, green: 186, blue: 185),
-    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.kern: 0.0,
+  let normalTextAttributes: [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.foregroundColor: UIColor(red: 182, green: 186, blue: 185),
+    NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedString.Key.kern: 0.0,
   ]
 
-  let highlightedTextAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
-    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.kern: 0.0,
+  let highlightedTextAttributes: [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.foregroundColor: UIColor(red: 90, green: 94, blue: 103),
+    NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedString.Key.kern: 0.0,
   ]
 
   var descriptionLabelAttributedString: NSAttributedString {

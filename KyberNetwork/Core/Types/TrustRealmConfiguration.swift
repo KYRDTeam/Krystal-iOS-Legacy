@@ -37,7 +37,7 @@ struct RealmConfiguration {
       return config
     }
 
-    static func globalConfiguration(for chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
+    static func globalConfiguration(for chainID: Int = 1) -> Realm.Configuration {
       var config = Realm.Configuration()
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
       config.schemaVersion = 12
@@ -60,26 +60,4 @@ struct RealmConfiguration {
       return config
     }
 
-  static func kyberGOConfiguration(for userID: Int, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
-    var config = Realm.Configuration()
-    config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-kybergo-\(userID)-\(chainID).realm")
-    config.schemaVersion = 12
-    config.migrationBlock = { migration, oldVersion in
-      switch oldVersion {
-      case 0:
-          migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-            new?["internalType"] = TransactionType.normal.rawValue
-          }
-          migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-            new?["internalType"] = TransactionType.normal.rawValue
-          }
-      case 1:
-        migration.enumerateObjects(ofType: "KNOrderObject") { (_, new) in
-          new?["side_trade"] = nil
-        }
-      default: break
-      }
-    }
-    return config
-  }
 }

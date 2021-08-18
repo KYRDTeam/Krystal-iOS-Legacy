@@ -79,13 +79,13 @@ class WithdrawConfirmPopupViewModel: WithdrawAndClaimConfirmPopupViewModel {
   var displayBalance: NSAttributedString {
     let balanceString = self.balanceBigInt.string(decimals: self.balance.decimals, minFractionDigits: 0, maxFractionDigits: 5)
     let rateString = String(format: "%.2f", self.balance.supplyRate * 100)
-    let amountAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 14),
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+    let amountAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
-    let apyAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 12),
-      NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
+    let apyAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 12),
+      NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: "\(balanceString) \(self.balance.symbol) ", attributes: amountAttributes))

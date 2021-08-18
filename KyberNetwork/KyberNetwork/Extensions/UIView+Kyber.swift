@@ -8,14 +8,14 @@ extension UIView {
     self.translatesAutoresizingMaskIntoConstraints = false
     superView.addConstraints(NSLayoutConstraint.constraints(
       withVisualFormat: "H:|-0-[subview]-0-|",
-      options: NSLayoutFormatOptions(),
+      options: NSLayoutConstraint.FormatOptions(),
       metrics: nil,
       views: ["subview": self]
       )
     )
     superView.addConstraints(NSLayoutConstraint.constraints(
       withVisualFormat: "V:|-0-[subview]-0-|",
-      options: NSLayoutFormatOptions(),
+      options: NSLayoutConstraint.FormatOptions(),
       metrics: nil,
       views: ["subview": self]
       )

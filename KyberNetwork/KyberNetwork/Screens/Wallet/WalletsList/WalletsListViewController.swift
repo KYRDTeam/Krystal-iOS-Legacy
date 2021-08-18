@@ -153,10 +153,6 @@ class WalletsListViewController: KNBaseViewController {
   }
 
   @IBAction func connectWalletButtonTapped(_ sender: UIButton) {
-    guard KNGeneralProvider.shared.currentChain == .eth else {
-      self.showTopBannerView(message: "WalletConnect for \(KNGeneralProvider.shared.chainName) will be supported soon")
-      return
-    }
     self.dismiss(animated: true) {
       self.delegate?.walletsListViewController(self, run: .connectWallet)
     }

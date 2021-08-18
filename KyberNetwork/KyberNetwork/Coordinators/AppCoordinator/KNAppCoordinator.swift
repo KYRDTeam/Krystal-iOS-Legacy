@@ -229,11 +229,11 @@ extension KNAppCoordinator {
 //    }
 
     UITabBarItem.appearance().setTitleTextAttributes(
-      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.tabbarNormal, NSAttributedStringKey.font: UIFont.Kyber.latoRegular(with: 10)],
+      [NSAttributedString.Key.foregroundColor: UIColor.Kyber.tabbarNormal, NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 10)],
       for: .normal
     )
     UITabBarItem.appearance().setTitleTextAttributes(
-      [NSAttributedStringKey.foregroundColor: UIColor.Kyber.SWYellow],
+      [NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWYellow],
       for: .selected
     )
 
@@ -310,21 +310,15 @@ extension KNAppCoordinator {
     if KNAppTracker.shouldShowAuthenticate() {
       self.authenticationCoordinator.start()
     }
-//    self.balanceTabCoordinator?.appCoordinatorWillEnterForeground()
-    self.exchangeCoordinator?.appCoordinatorWillEnterForeground()
   }
 
   func appDidEnterBackground() {
     self.splashScreenCoordinator.stop()
     KNSession.pauseInternalSession()
     self.loadBalanceCoordinator?.pause()
-//    self.balanceTabCoordinator?.appCoordinatorDidEnterBackground()
-    self.exchangeCoordinator?.appCoordinatorDidEnterBackground()
   }
 
   func appWillTerminate() {
-//    self.balanceTabCoordinator?.appCoordinatorWillTerminate()
-    self.exchangeCoordinator?.appCoordinatorWillTerminate()
   }
 
   func appDidReceiveLocalNotification(transactionHash: String) {

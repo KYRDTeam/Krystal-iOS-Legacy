@@ -372,15 +372,15 @@ class KSwapViewModel {
       break
     }
     
-    let gasPriceAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(named: "textWhiteColor")!,
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let gasPriceAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
-    let feeAttributes: [NSAttributedStringKey: Any] = [
-      NSAttributedStringKey.foregroundColor: UIColor(named: "normalTextColor")!,
-      NSAttributedStringKey.font: UIFont.Kyber.regular(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+    let feeAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
     
     let attributedString = NSMutableAttributedString()

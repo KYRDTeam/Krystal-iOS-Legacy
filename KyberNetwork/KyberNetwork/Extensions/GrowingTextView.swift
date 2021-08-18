@@ -29,7 +29,7 @@ class GrowingTextView: UITextView {
     }
 
     private func commonInit() {
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToBottom), name: .UITextViewTextDidChange, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(scrollToBottom), name: UITextView.textDidChangeNotification, object: nil)
     }
 
     override var contentSize: CGSize {
