@@ -326,7 +326,7 @@ class SendTransactionHandler: BaseHandler {
 
           self.getLatestNonce { nonceInt in
             let gasPriceBigInt = KNGasCoordinator.shared.standardKNGas
-            let value = BigInt(dict["value"]?.drop0x ?? "", radix: 16)?.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4)
+            let value = BigInt(dict["value"]?.drop0x ?? "", radix: 16)?.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)
             let description = "\(value ?? "---") \(KNGeneralProvider.shared.quoteToken) to \(dict["to"] ?? "---")"
             self.askToAsyncSign(request: request, message: description) {
               guard let signTx = self.buildSignTransaction(dict: dict, nonce: nonceInt, gasPrice: gasPriceBigInt) else {
