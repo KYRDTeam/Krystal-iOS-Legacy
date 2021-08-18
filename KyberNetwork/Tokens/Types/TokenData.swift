@@ -45,7 +45,7 @@ class Token: Codable, Equatable, Hashable {
   }
   
   func getTokenPrice() -> TokenPrice {
-    let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address) ?? TokenPrice(dictionary: [:])
+    let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address) ?? TokenPrice(address: self.address, quotes: [:])
     return price
   }
   
@@ -58,6 +58,10 @@ class Token: Codable, Equatable, Hashable {
       return price.eth
     case .btc:
       return price.btc
+    case .bnb:
+      return price.bnb
+    case .matic:
+      return price.matic
     }
   }
   
@@ -70,6 +74,10 @@ class Token: Codable, Equatable, Hashable {
       return price.eth24hChange
     case .btc:
       return price.btc24hChange
+    case .bnb:
+      return price.bnb24hChange
+    case .matic:
+      return price.matic24hChange
     }
   }
   
@@ -122,22 +130,30 @@ class TokenPrice: Codable {
   var btcMarketCap: Double
   var btc24hVol: Double
   var btc24hChange: Double
+  var bnb: Double
+  var bnbMarketCap: Double
+  var bnb24hVol: Double
+  var bnb24hChange: Double
+  var matic: Double
+  var maticMarketCap: Double
+  var matic24hVol: Double
+  var matic24hChange: Double
 
-  init(dictionary: JSONDictionary) {
-    self.address = (dictionary["address"] as? String ?? "").lowercased()
-    self.usd = dictionary["usd"] as? Double ?? 0.0
-    self.usdMarketCap = dictionary["usd_market_cap"] as? Double ?? 0.0
-    self.usd24hVol = dictionary["usd_24h_vol"] as? Double ?? 0.0
-    self.usd24hChange = dictionary["usd_24h_change"] as? Double ?? 0.0
-    self.eth = dictionary["eth"] as? Double ?? 0.0
-    self.ethMarketCap = dictionary["eth_market_cap"] as? Double ?? 0.0
-    self.eth24hVol = dictionary["eth_24h_vol"] as? Double ?? 0.0
-    self.eth24hChange = dictionary["eth_24h_change"] as? Double ?? 0.0
-    self.btc = dictionary["btc"] as? Double ?? 0.0
-    self.btcMarketCap = dictionary["btc_market_cap"] as? Double ?? 0.0
-    self.btc24hVol = dictionary["btc_24h_vol"] as? Double ?? 0.0
-    self.btc24hChange = dictionary["btc_24h_change"] as? Double ?? 0.0
-  }
+//  init(dictionary: JSONDictionary) {
+//    self.address = (dictionary["address"] as? String ?? "").lowercased()
+//    self.usd = dictionary["usd"] as? Double ?? 0.0
+//    self.usdMarketCap = dictionary["usd_market_cap"] as? Double ?? 0.0
+//    self.usd24hVol = dictionary["usd_24h_vol"] as? Double ?? 0.0
+//    self.usd24hChange = dictionary["usd_24h_change"] as? Double ?? 0.0
+//    self.eth = dictionary["eth"] as? Double ?? 0.0
+//    self.ethMarketCap = dictionary["eth_market_cap"] as? Double ?? 0.0
+//    self.eth24hVol = dictionary["eth_24h_vol"] as? Double ?? 0.0
+//    self.eth24hChange = dictionary["eth_24h_change"] as? Double ?? 0.0
+//    self.btc = dictionary["btc"] as? Double ?? 0.0
+//    self.btcMarketCap = dictionary["btc_market_cap"] as? Double ?? 0.0
+//    self.btc24hVol = dictionary["btc_24h_vol"] as? Double ?? 0.0
+//    self.btc24hChange = dictionary["btc_24h_change"] as? Double ?? 0.0
+//  }
   
   init(address: String, quotes: [String: Quote]) {
     self.address = address
@@ -156,6 +172,16 @@ class TokenPrice: Codable {
     self.btcMarketCap = quotes["btc"]?.marketCap ?? 0.0
     self.btc24hVol = quotes["btc"]?.volume24H ?? 0.0
     self.btc24hChange = quotes["btc"]?.price24HChangePercentage ?? 0.0
+    
+    self.bnb = quotes["bnb"]?.price ?? 0.0
+    self.bnbMarketCap = quotes["bnb"]?.marketCap ?? 0.0
+    self.bnb24hVol = quotes["bnb"]?.volume24H ?? 0.0
+    self.bnb24hChange = quotes["bnb"]?.price24HChangePercentage ?? 0.0
+    
+    self.matic = quotes["matic"]?.price ?? 0.0
+    self.maticMarketCap = quotes["matic"]?.marketCap ?? 0.0
+    self.matic24hVol = quotes["matic"]?.volume24H ?? 0.0
+    self.matic24hChange = quotes["matic"]?.price24HChangePercentage ?? 0.0
   }
 }
 
@@ -272,6 +298,11 @@ struct TokenData: Codable, Equatable {
   
   func toObject() -> TokenObject {
     return TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: "")
+  }
+  
+  var placeholderValue: BigInt {
+    let value = Int(0.001 * pow(10.0, Double(self.decimals)))
+    return BigInt(value)
   }
 }
 

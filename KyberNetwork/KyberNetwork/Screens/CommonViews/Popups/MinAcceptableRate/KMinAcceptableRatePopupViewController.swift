@@ -6,27 +6,27 @@ struct KMinAcceptableRatePopupViewModel {
   let minRate: String
   let symbol: String
 
-  var titleAttributes: [NSAttributedStringKey: Any] {
+  var titleAttributes: [NSAttributedString.Key: Any] {
     return [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 16),
-      NSAttributedStringKey.kern: 0.0,
+      NSAttributedString.Key.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 16),
+      NSAttributedString.Key.kern: 0.0,
     ]
   }
 
-  var descAttributes: [NSAttributedStringKey: Any] {
+  var descAttributes: [NSAttributedString.Key: Any] {
     return [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
-      NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+      NSAttributedString.Key.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+      NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
   }
 
-  var highlightedAttributes: [NSAttributedStringKey: Any] {
+  var highlightedAttributes: [NSAttributedString.Key: Any] {
     return [
-      NSAttributedStringKey.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
-      NSAttributedStringKey.font: UIFont.Kyber.bold(with: 14),
-      NSAttributedStringKey.kern: 0.0,
+      NSAttributedString.Key.foregroundColor: UIColor(red: 46, green: 57, blue: 87),
+      NSAttributedString.Key.font: UIFont.Kyber.bold(with: 14),
+      NSAttributedString.Key.kern: 0.0,
     ]
   }
 

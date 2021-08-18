@@ -5,22 +5,11 @@ import WalletConnect
 import BigInt
 import QRCodeReaderViewController
 import Starscream
+import Web3
+import WalletConnectSwift
+import TrustCore
 
 class KNWalletConnectViewController: KNBaseViewController {
-
-  let kTransferPrefix = "a9059cbb"
-  let kApprovePrefix = "095ea7b3"
-  let kTradeWithHintPrefix = "29589f61"
-
-  let clientMeta = WCPeerMeta(name: "WalletConnect SDK", url: "https://github.com/TrustWallet/wallet-connect-swift")
-  fileprivate var wcSession: WCSession
-  let knSession: KNSession
-  fileprivate var interactor: WCInteractor?
-  fileprivate var shouldRecover: Bool = false
-  fileprivate var isShowLoading: Bool = false
-
-  private var backgroundTaskId: UIBackgroundTaskIdentifier?
-  private weak var backgroundTimer: Timer?
 
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var logoImageView: UIImageView!
@@ -31,11 +20,22 @@ class KNWalletConnectViewController: KNBaseViewController {
   @IBOutlet weak var urlLabel: UILabel!
   @IBOutlet weak var addressTextLabel: UILabel!
   @IBOutlet weak var addressLabel: UILabel!
-
-  init(wcSession: WCSession, knSession: KNSession) {
-    self.wcSession = wcSession
+  
+  var server: Server!
+  var session: Session!
+  var privateKey: EthereumPrivateKey!
+  let knSession: KNSession
+  let sessionKey = "sessionKey"
+  var wcURL: WCURL!
+  var isConnected = false
+  
+  init(wcURL: WCURL, knSession: KNSession, pk: String) {
+    self.wcURL = wcURL
     self.knSession = knSession
+    self.privateKey = try! EthereumPrivateKey(
+      privateKey: .init(hex: pk))
     super.init(nibName: KNWalletConnectViewController.className, bundle: nil)
+    self.configureServer()
   }
 
   required init?(coder: NSCoder) {
@@ -44,233 +44,86 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    DispatchQueue.global(qos: .background).async {
+      self.connectToWC()
+    }
+    
     let address = self.knSession.wallet.address.description
     self.addressLabel.text = "\(address.prefix(12))...\(address.suffix(10))"
     self.urlLabel.text = ""
     self.connectionStatusLabel.text = ""
-    self.connect(session: self.wcSession)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.updateUIConnectStatusLabel()
+    self.updateWCInfo()
   }
 
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    self.interactor?.killSession().cauterize()
-    self.shouldRecover = false
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.disconnectWC()
+    
   }
-
-  //swiftlint:disable function_body_length
-  func connect(session: WCSession) {
-    if !self.isShowLoading {
-      self.displayLoading(text: "Connecting...", animated: true)
-      self.isShowLoading = true
-    }
-    let interactor = WCInteractor(session: self.wcSession, meta: self.clientMeta, uuid: UIDevice.current.identifierForVendor ?? UUID())
-    if interactor.state == .connected {
-      self.interactor?.killSession().cauterize()
-      self.interactor?.disconnect()
-    }
-    let accounts = [self.knSession.wallet.address.description]
-    let chainId = KNGeneralProvider.shared.customRPC.chainID
-
-    interactor.killSession().cauterize()
-
-    interactor.onError = { [weak self] error in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      let alert = UIAlertController(title: "Error", message: "Do you want to re-connect?", preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
-        guard let session = self?.wcSession else { return }
-        self?.connect(session: session)
-      }))
-      alert.addAction(UIAlertAction(title: "Scan QR Code", style: .default, handler: { action in
-        self?.scanQRCodeButtonPressed(action)
-      }))
-      alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-      self?.present(alert, animated: true, completion: nil)
-    }
-
-    interactor.onSessionRequest = { [weak self] (id, peerParam) in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      let peer = peerParam.peerMeta
-      let message = [peer.description, peer.url].joined(separator: "\n")
-      self?.nameTextLabel.text = peer.name
-      self?.urlLabel.text = peer.url
-      self?.logoImageView.setImage(with: peer.icons.first ?? "", placeholder: nil)
-      let alert = UIAlertController(title: peer.name, message: message, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
-        self?.interactor?.rejectSession().cauterize()
-        self?.interactor?.killSession().cauterize()
-        self?.shouldRecover = false
-      }))
-      alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
-        self?.interactor?.approveSession(accounts: accounts, chainId: chainId).cauterize()
-      }))
-      self?.show(alert, sender: nil)
-    }
-
-    interactor.onDisconnect = { [weak self] (error) in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      self?.connectionStatusUpdated(self?.interactor?.state == .connected)
-      guard let err = error as? WSError, err.code == 1000 else {
-        if self?.shouldRecover == true {
-          self?.reconnectIfNeeded(nil)
-        }
+  
+  private func configureServer() {
+    server = Server(delegate: self)
+    server.register(handler: PersonalSignHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
+    server.register(handler: SignTransactionHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
+    server.register(handler: SendTransactionHandler(for: self, server: server, privateKey: privateKey, session: self.knSession))
+  }
+  
+  func connectToWC() {
+    do {
+      try self.server.connect(to: self.wcURL)
+    } catch {
         return
-      }
-      self?.interactor?.killSession().cauterize()
-      self?.shouldRecover = false
     }
-
-    interactor.eth.onSign = { [weak self] (id, payload) in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      let alert = UIAlertController(title: "Sign data".toBeLocalised(), message: payload.message, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
-        self?.interactor?.rejectRequest(id: id, message: "User canceled").cauterize()
-      }))
-      alert.addAction(UIAlertAction(title: "Sign", style: .default, handler: { _ in
-        self?.signEth(id: id, payload: payload)
-      }))
-      self?.present(alert, animated: true, completion: nil)
-    }
-
-    interactor.eth.onTransaction = { [weak self] (id, event, transaction) in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      let data = try! JSONEncoder().encode(transaction)
-      self?.sendTransaction(id, data: data)
-    }
-
-    interactor.connect().done { [weak self] connected in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      self?.connectionStatusUpdated(connected)
-    }.catch { [weak self] error in
-      if self?.isShowLoading == true {
-        self?.isShowLoading = false
-        self?.hideLoading()
-      }
-      self?.displayError(error: error)
-    }
-
-    self.interactor = interactor
   }
-
-  fileprivate func sendTransaction(_ id: Int64, data: Data) {
-    guard let provider = self.knSession.externalProvider else {
+  
+  func disconnectWC() {
+    guard self.isConnected else {
       return
     }
-    guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? JSONDictionary, let json = jsonData else {
-      return
-    }
-    guard let from = json["from"] as? String, let to = json["to"] as? String,
-      let value = (json["value"] as? String ?? "").fullBigInt(decimals: 0),
-      from.lowercased() == self.knSession.wallet.address.description.lowercased() else {
-      return
-    }
-
-    let message: String = {
-      if let msg = self.tryParseTransactionData(json) { return msg }
-      if
-         Constants.krystalProxyAddress.lowercased() == to.lowercased() {
-        return "Interact with Kyber Network Proxy: transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to). Please check your transaction details carefully."
-      }
-      if let token = KNSupportedTokenStorage.shared.supportedTokens.first(where: { return $0.contract.lowercased() == to.lowercased() }) {
-        if value.isZero { return "Interact with \(token.symbol) contract. Please check your transaction details carefully." }
-        return "Interact with \(token.symbol): transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to). Please check your transaction details carefully."
-      }
-      return "Transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to). Please check your transaction details carefully."
-    }()
-    let alert = UIAlertController(title: "Approve transaction", message: message, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Reject", style: .destructive, handler: { _ in
-      self.interactor?.rejectRequest(id: id, message: "User cancelled").cauterize()
-    }))
-    alert.addAction(UIAlertAction(title: "Approve", style: .default, handler: { _ in
-      self.displayLoading(text: "Submitting...", animated: true)
-      provider.sendTxWalletConnect(txData: json) { [weak self] result in
-        guard let `self` = self else { return }
-        self.hideLoading()
-        switch result {
-        case .success(let txHash):
-          if let txID = txHash {
-            self.interactor?.approveRequest(id: id, result: txID).cauterize()
-            self.addTransactionToPendingListIfNeeded(
-              json: json,
-              hash: txID,
-              nonce: provider.minTxCount - 1
-            )
-            self.showTopBannerView(with: "Broadcasted", message: "Your transaction has been broadcasted successfully!", time: 2.0) {
-              self.openSafari(with: KNGeneralProvider.shared.customRPC.etherScanEndpoint + "tx/\(txID)")
-            }
-          } else {
-            self.interactor?.rejectRequest(id: id, message: "Something went wrong, please try again").cauterize()
-            self.showTopBannerView(with: "Error", message: "Something went wrong, please try again", time: 1.5)
+    try! server.disconnect(from: session)
+  }
+  
+  func onMainThread(_ closure: @escaping () -> Void) {
+      if Thread.isMainThread {
+          closure()
+      } else {
+          DispatchQueue.main.async {
+              closure()
           }
-        case .failure(let error):
-          self.interactor?.rejectRequest(id: id, message: error.prettyError).cauterize()
-          self.displayError(error: error)
-        }
       }
-    }))
-    self.present(alert, animated: true, completion: nil)
   }
 
-  func approve(accounts: [String], chainId: Int) {
-    self.interactor?.approveSession(accounts: accounts, chainId: chainId).done {
-      print("<== approveSession done")
-    }.catch { [weak self] error in
-      self?.displayError(error: error)
+  func updateWCInfo() {
+    guard self.isViewLoaded, self.isConnected else {
+      return
     }
-  }
-
-  func signEth(id: Int64, payload: WCEthereumSignPayload) {
-    let signData: Data = {
-        switch payload {
-        case .sign(let data, _):
-            return data
-        case .personalSign(let data, _):
-            let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
-            return prefix + data
-        case .signTypeData(_, let data, _):
-            return data
-        }
-    }()
-    if case .real(let account) = self.knSession.wallet.type {
-      self.displayLoading(text: "Signing...", animated: true)
-      let result = self.knSession.keystore.signMessage(signData, for: account)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        self.hideLoading()
-        switch result {
-        case .success(let data):
-          self.interactor?.approveRequest(id: id, result: data.hexEncoded).cauterize()
-        case .failure(let error):
-          self.interactor?.rejectRequest(id: id, message: error.prettyError).cauterize()
-          self.displayError(error: error)
-        }
-      }
+    if let url = session.dAppInfo.peerMeta.icons.first {
+      self.logoImageView.setImage(with: url, placeholder: nil)
     }
+    self.urlLabel.text = session.dAppInfo.peerMeta.url.absoluteString
+    self.nameTextLabel.text = session.dAppInfo.peerMeta.name
   }
 
   func connectionStatusUpdated(_ connected: Bool) {
-    self.connectionStatusLabel.text = connected ? "Online" : "Offline"
-    self.connectionStatusLabel.textColor = connected ? UIColor.Kyber.green : UIColor.Kyber.red
+    self.isConnected = connected
+    guard self.isViewLoaded else {
+      return
+    }
+    self.updateUIConnectStatusLabel()
+  }
+  
+  func updateUIConnectStatusLabel() {
+    self.connectionStatusLabel.text = self.isConnected ? "Online" : "Offline"
+    self.connectionStatusLabel.textColor = self.isConnected ? UIColor.Kyber.green : UIColor.Kyber.red
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    if self.interactor?.state != .connected {
+    if !self.isConnected {
       self.dismiss(animated: true, completion: nil)
       return
     }
@@ -278,238 +131,324 @@ class KNWalletConnectViewController: KNBaseViewController {
     let alert = UIAlertController(title: "Disconnect session?", message: "Do you want to disconnect this session?", preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     alert.addAction(UIAlertAction(title: "Disconnect", style: .default, handler: { _ in
+      self.disconnectWC()
       self.dismiss(animated: true, completion: nil)
     }))
     self.present(alert, animated: true, completion: nil)
   }
 
-  @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
-    if interactor?.state == .connected {
-      let alert = UIAlertController(title: "Disconnect current session?", message: "Do you want to disconnect your current session and start a new one?", preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-      alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
-        self.interactor?.killSession().cauterize()
-        self.interactor?.disconnect()
-        let qrCode = QRCodeReaderViewController()
-        qrCode.delegate = self
-        self.present(qrCode, animated: true, completion: nil)
-      }))
-      self.present(alert, animated: true, completion: nil)
+  func getLatestNonce(completion: @escaping (Int) -> Void) {
+    guard let provider = self.knSession.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let res):
+        completion(res)
+      case .failure:
+        self.getLatestNonce(completion: completion)
+      }
+    }
+  }
+}
+
+extension Response {
+    static func signature(_ signature: String, for request: Request) -> Response {
+        return try! Response(url: request.url, value: signature, id: request.id!)
+    }
+}
+
+class BaseHandler: RequestHandler {
+    weak var controller: UIViewController!
+    weak var sever: Server!
+    weak var privateKey: EthereumPrivateKey!
+  weak var session: KNSession!
+
+  init(for controller: UIViewController, server: Server, privateKey: EthereumPrivateKey, session: KNSession) {
+        self.controller = controller
+        self.sever = server
+        self.privateKey = privateKey
+    self.session = session
+    }
+
+    func canHandle(request: Request) -> Bool {
+        return false
+    }
+
+    func handle(request: Request) {
+        // to override
+    }
+
+    func askToSign(request: Request, message: String, sign: @escaping () -> String) {
+        let onSign = {
+            let signature = sign()
+            self.sever.send(.signature(signature, for: request))
+        }
+        let onCancel = {
+            self.sever.send(.reject(request))
+        }
+        DispatchQueue.main.async {
+            UIAlertController.showShouldSign(from: self.controller,
+                                             title: "Request to sign a message",
+                                             message: message,
+                                             onSign: onSign,
+                                             onCancel: onCancel)
+        }
+    }
+  
+  func askToAsyncSign(request: Request, message: String, sign: @escaping () -> Void) {
+      let onSign = {
+          sign()
+      }
+      let onCancel = {
+          self.sever.send(.reject(request))
+      }
+      DispatchQueue.main.async {
+          UIAlertController.showShouldSign(from: self.controller,
+                                           title: "Request to sign a message",
+                                           message: message,
+                                           onSign: onSign,
+                                           onCancel: onCancel)
+      }
+  }
+
+  func getLatestNonce(completion: @escaping (Int) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let res):
+        completion(res)
+      case .failure:
+        self.getLatestNonce(completion: completion)
+      }
+    }
+  }
+
+  func buildSignTransaction(dict: [String: String], nonce: Int, gasPrice: BigInt) -> SignTransaction? {
+    guard
+      let gasLimit = BigInt(dict["gas"]?.drop0x ?? "", radix: 16),
+      let value = BigInt(dict["value"]?.drop0x ?? "", radix: 16),
+      let to = dict["to"]
+    else
+    {
+      return nil
+    }
+    let data = Data(hex: dict["data"]?.drop0x ?? "")
+    
+    if case let .real(account) = self.session.wallet.type {
+      return SignTransaction(
+        value: value,
+        account: account,
+        to: Address(string: to),
+        nonce: nonce,
+        data: data,
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        chainID: KNGeneralProvider.shared.customRPC.chainID
+      )
     } else {
-      let qrCode = QRCodeReaderViewController()
-      qrCode.delegate = self
-      self.present(qrCode, animated: true, completion: nil)
-    }
-  }
-
-  fileprivate func tryParseTransactionData(_ json: JSONDictionary) -> String? {
-    let data = (json["data"] as? String ?? "").drop0x
-    let to = (json["to"] as? String ?? "").lowercased()
-    let value = (json["value"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
-    if data.isEmpty {
-      return "Transfer \(value.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)) ETH to \(to)"
-    }
-    if data.starts(with: kApprovePrefix),
-      let token = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == to }) {
-      let address = data.substring(to: 72).substring(from: 32).add0x.lowercased()
-      let contractName: String = {
-        if Constants.krystalProxyAddress.lowercased() == address {
-          return "Kyber Network Proxy"
-        }
-        return address
-      }()
-      return "You need to grant permission for \(contractName) to interact with \(token.symbol)"
-    }
-    if data.starts(with: kTransferPrefix),
-      let token = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == to }) {
-      let address = data.substring(to: 72).substring(from: 32).add0x.lowercased()
-      let amount = data.substring(from: 72).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
-      return "Transfer \(amount.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 6))) \(token.symbol) to \(address)"
-    }
-    if data.starts(with: kTradeWithHintPrefix),
-      Constants.krystalProxyAddress.lowercased() == to {
-      // swap
-      let fromToken = data.substring(to: 8 + 64).substring(from: 8 + 24).add0x.lowercased()
-      let fromAmount = data.substring(to: 8 + 64 * 2).substring(from: 8 + 64).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
-      let toToken = data.substring(to: 8 + 64 * 3).substring(from: 8 + 24 + 64 * 2).add0x.lowercased()
-      guard let from = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == fromToken }),
-        let to = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == toToken }) else {
-          return nil
-      }
-      return "Swap \(fromAmount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: min(6, from.decimals))) \(from.symbol) to \(to.symbol)"
-    }
-    return nil
-  }
-
-  fileprivate func addTransactionToPendingListIfNeeded(json: JSONDictionary, hash: String, nonce: Int, type: TransactionType = .normal) {
-    let data = (json["data"] as? String ?? "").drop0x
-    let value = (json["value"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
-    let gasLimit: String = {
-      let gasBigInt = (json["gasLimit"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
-      return gasBigInt.string(decimals: 0, minFractionDigits: 0, maxFractionDigits: 0).removeGroupSeparator()
-    }()
-    let gasPrice: String = {
-      let gasBigInt = (json["gasPrice"] as? String ?? "").fullBigInt(decimals: 0) ?? BigInt(0)
-      return gasBigInt.string(decimals: 0, minFractionDigits: 0, maxFractionDigits: 0).removeGroupSeparator()
-    }()
-    let to = (json["to"] as? String ?? "").lowercased()
-    let from = json["from"] as? String ?? ""
-    if data.isEmpty || data.starts(with: kTransferPrefix) {
-      // transfer
-      let (token, amount, toAddr): (TokenObject, BigInt, String) = {
-        guard !data.isEmpty, let token = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == to }) else {
-          return (KNSupportedTokenStorage.shared.ethToken, value, to)
-        }
-        let address = data.substring(to: 72).substring(from: 32).add0x.lowercased()
-        let amount = data.substring(from: 72).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
-        return (token, amount, address)
-      }()
-      let localised = LocalizedOperationObject(
-        from: token.contract,
-        to: "",
-        contract: nil,
-        type: "transfer",
-        value: amount.fullString(decimals: token.decimals),
-        symbol: token.symbol,
-        name: token.name,
-        decimals: token.decimals
-      )
-      let tx = Transaction(
-        id: hash,
-        blockNumber: 0,
-        from: from,
-        to: toAddr,
-        value: amount.fullString(decimals: token.decimals),
-        gas: gasLimit,
-        gasPrice: gasPrice,
-        gasUsed: gasLimit,
-        nonce: "\(nonce)",
-        date: Date(),
-        localizedOperations: [localised],
-        state: .pending,
-        type: type
-      )
-      self.knSession.addNewPendingTransaction(tx)
-    } else if data.starts(with: kTradeWithHintPrefix) {
-      // swap
-      guard Constants.krystalProxyAddress.lowercased() == to else {
-        return
-      }
-      // swap
-      let fromToken = data.substring(to: 8 + 64).substring(from: 8 + 24).add0x.lowercased()
-      let fromAmount = data.substring(to: 8 + 64 * 2).substring(from: 8 + 64).add0x.fullBigInt(decimals: 0) ?? BigInt(0)
-      let toToken = data.substring(to: 8 + 64 * 3).substring(from: 8 + 24 + 64 * 2).add0x.lowercased()
-      guard let tokenFrom = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == fromToken }),
-        let tokenTo = self.knSession.tokenStorage.tokens.first(where: { return $0.contract.lowercased() == toToken }) else {
-          return
-      }
-      let minRate: BigInt = {
-        let rate = data.substring(to: 8 + 64 * 6).substring(from: 8 + 64 * 5).add0x
-        return (rate.fullBigInt(decimals: 0) ?? BigInt(0)) / BigInt(10).power(18 - tokenTo.decimals)
-      }()
-      // expected min amount
-      let expectedAmount = fromAmount * minRate / BigInt(10).power(tokenFrom.decimals)
-      let localObject = LocalizedOperationObject(
-        from: tokenFrom.contract,
-        to: tokenTo.contract,
-        contract: nil,
-        type: "exchange",
-        value: expectedAmount.fullString(decimals: tokenTo.decimals),
-        symbol: tokenFrom.symbol,
-        name: tokenTo.symbol,
-        decimals: tokenTo.decimals
-      )
-      let tx = Transaction(
-        id: hash,
-        blockNumber: 0,
-        from: from,
-        to: to,
-        value: fromAmount.fullString(decimals: tokenFrom.decimals),
-        gas: gasLimit,
-        gasPrice: gasPrice,
-        gasUsed: gasLimit,
-        nonce: "\(nonce)",
-        date: Date(),
-        localizedOperations: [localObject],
-        state: .pending,
-        type: type
-      )
-      self.knSession.addNewPendingTransaction(tx)
-    }
-  }
-
-  @objc func reconnectIfNeeded(_ sender: Any?) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      if self.interactor?.state == .connected { return }
-      if !self.isShowLoading {
-        self.isShowLoading = true
-        self.displayLoading(text: "Connecting...", animated: true)
-      }
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        self.interactor?.connect().done { [weak self] connected in
-          if self?.isShowLoading == true {
-            self?.isShowLoading = false
-            self?.hideLoading()
-          }
-          self?.connectionStatusUpdated(connected)
-        }.catch { [weak self] _ in
-          if self?.isShowLoading == true {
-            self?.isShowLoading = false
-            self?.hideLoading()
-          }
-          self?.showAlertCannotReconnect()
-        }
-      }
-    }
-  }
-
-  fileprivate func showAlertCannotReconnect() {
-    let alert = UIAlertController(title: "Reconnect failed", message: "Do you want to reconnect again", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { _ in
-      self.reconnectIfNeeded(nil)
-    }))
-    self.present(alert, animated: true, completion: nil)
-  }
-}
-
-extension KNWalletConnectViewController {
-  func applicationWillTerminate() {
-    self.interactor?.killSession().cauterize()
-  }
-
-  func applicationDidEnterBackground() {
-    if self.interactor?.state != .connected { return }
-    self.interactor?.pause()
-    self.shouldRecover = true
-  }
-
-  func applicationWillEnterForeground() {
-    if !self.shouldRecover { return }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.reconnectIfNeeded(nil)
+      //TODO: handle watch wallet type
+      return nil
     }
   }
 }
 
-extension KNWalletConnectViewController: QRCodeReaderDelegate {
-  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
-    reader.dismiss(animated: true, completion: nil)
+class PersonalSignHandler: BaseHandler {
+    override func canHandle(request: Request) -> Bool {
+        return request.method == "personal_sign"
+    }
+
+    override func handle(request: Request) {
+        do {
+            let messageBytes = try request.parameter(of: String.self, at: 0)
+            let address = try request.parameter(of: String.self, at: 1)
+
+            guard address == privateKey.address.hex(eip55: true) else {
+                sever.send(.reject(request))
+                return
+            }
+
+            let decodedMessage = String(data: Data(hex: messageBytes), encoding: .utf8) ?? messageBytes
+
+            askToSign(request: request, message: decodedMessage) {
+                let personalMessageData = self.personalMessageData(messageData: Data(hex: messageBytes))
+                let (v, r, s) = try! self.privateKey.sign(message: .init(hex: personalMessageData.toHexString()))
+                return "0x" + r.toHexString() + s.toHexString() + String(v + 27, radix: 16) // v in [0, 1]
+            }
+        } catch {
+            sever.send(.invalid(request))
+            return
+        }
+    }
+
+    private func personalMessageData(messageData: Data) -> Data {
+        let prefix = "\u{19}Ethereum Signed Message:\n"
+        let prefixData = (prefix + String(messageData.count)).data(using: .ascii)!
+        return prefixData + messageData
+    }
+}
+
+class SignTransactionHandler: BaseHandler {
+    override func canHandle(request: Request) -> Bool {
+        return request.method == "eth_signTransaction"
+    }
+
+    override func handle(request: Request) {
+        do {
+            let transaction = try request.parameter(of: EthereumTransaction.self, at: 0)
+            guard transaction.from == privateKey.address else {
+                self.sever.send(.reject(request))
+                return
+            }
+            askToSign(request: request, message: transaction.description) {
+              let signedTx = try! transaction.sign(with: self.privateKey, chainId: EthereumQuantity(quantity: BigUInt(KNGeneralProvider.shared.customRPC.chainID)))
+                let (r, s, v) = (signedTx.r, signedTx.s, signedTx.v)
+                return r.hex() + s.hex().dropFirst(2) + String(v.quantity, radix: 16)
+            }
+        } catch {
+            self.sever.send(.invalid(request))
+        }
+    }
+}
+
+class SendTransactionHandler: BaseHandler {
+    override func canHandle(request: Request) -> Bool {
+        return request.method == "eth_sendTransaction"
+    }
+
+    override func handle(request: Request) {
+        do {
+          let dict = try request.parameter(of: [String: String].self, at: 0)
+
+          self.getLatestNonce { nonceInt in
+            let gasPriceBigInt = KNGasCoordinator.shared.standardKNGas
+            let value = BigInt(dict["value"]?.drop0x ?? "", radix: 16)?.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)
+            let description = "\(value ?? "---") \(KNGeneralProvider.shared.quoteToken) to \(dict["to"] ?? "---")"
+            self.askToAsyncSign(request: request, message: description) {
+              guard let signTx = self.buildSignTransaction(dict: dict, nonce: nonceInt, gasPrice: gasPriceBigInt) else {
+                return
+              }
+              self.session.externalProvider?.signTransactionData(from: signTx, completion: { result in
+                switch result {
+                case .success(let signedData):
+                  KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+                    switch sendResult {
+                    case .success(let hash):
+                      print(hash)
+                      self.sever.send(.signature(hash, for: request))
+                    case .failure(let error):
+                      UIAlertController.showFailedError(from: self.controller, message: error.description)
+                    }
+                  })
+                case .failure:
+                  UIAlertController.showFailedError(from: self.controller, message: "Fail")
+                }
+              })
+            }
+          }
+        } catch {
+            self.sever.send(.invalid(request))
+        }
+    }
+}
+
+extension UIAlertController {
+    func withCloseButton(title: String = "Close", onClose: (() -> Void)? = nil ) -> UIAlertController {
+        addAction(UIAlertAction(title: title, style: .cancel) { _ in onClose?() } )
+        return self
+    }
+
+    static func showShouldStart(from controller: UIViewController, clientName: String, onStart: @escaping () -> Void, onClose: @escaping (() -> Void)) {
+        let alert = UIAlertController(title: "Request to start a session", message: clientName, preferredStyle: .alert)
+        let startAction = UIAlertAction(title: "Start", style: .default) { _ in onStart() }
+        alert.addAction(startAction)
+        controller.present(alert.withCloseButton(onClose: onClose), animated: true)
+    }
+
+    static func showFailedToConnect(from controller: UIViewController) {
+        let alert = UIAlertController(title: "Failed to connect", message: nil, preferredStyle: .alert)
+        controller.present(alert.withCloseButton(), animated: true)
+    }
+  
+  static func showFailedError(from controller: UIViewController, message: String) {
+      let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+      controller.present(alert.withCloseButton(), animated: true)
   }
 
-  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
-    reader.dismiss(animated: true) {
-      guard let newSession = WCSession.from(string: result) else {
-        self.showTopBannerView(
-          with: "Invalid session".toBeLocalised(),
-          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
-          time: 1.5
-        )
-        return
-      }
-      self.interactor?.killSession().cauterize()
-      self.wcSession = newSession
-      self.connect(session: newSession)
+    static func showDisconnected(from controller: UIViewController) {
+        let alert = UIAlertController(title: "Did disconnect", message: nil, preferredStyle: .alert)
+        controller.present(alert.withCloseButton(), animated: true)
     }
-  }
+
+    static func showShouldSign(from controller: UIViewController, title: String, message: String, onSign: @escaping () -> Void, onCancel: @escaping () -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let startAction = UIAlertAction(title: "Sign", style: .default) { _ in onSign() }
+        alert.addAction(startAction)
+        controller.present(alert.withCloseButton(title: "Reject", onClose: onCancel), animated: true)
+    }
+}
+
+extension EthereumTransaction {
+    var description: String {
+        return """
+        to: \(String(describing: to!.hex(eip55: true))),
+        value: \(String(describing: value!.hex())),
+        gasPrice: \(String(describing: gasPrice!.hex())),
+        gas: \(String(describing: gas!.hex())),
+        data: \(data.hex()),
+        nonce: \(String(describing: nonce!.hex()))
+        """
+    }
+}
+
+extension KNWalletConnectViewController: ServerDelegate {
+    func server(_ server: Server, didFailToConnect url: WCURL) {
+        onMainThread {
+            UIAlertController.showFailedToConnect(from: self)
+        }
+    }
+
+    func server(_ server: Server, shouldStart session: Session, completion: @escaping (Session.WalletInfo) -> Void) {
+        let walletMeta = Session.ClientMeta(name: "Test Wallet",
+                                            description: nil,
+                                            icons: [],
+                                            url: URL(string: "https://safe.gnosis.io")!)
+        let walletInfo = Session.WalletInfo(approved: true,
+                                            accounts: [privateKey.address.hex(eip55: true)],
+                                            chainId: KNGeneralProvider.shared.customRPC.chainID,
+                                            peerId: UUID().uuidString,
+                                            peerMeta: walletMeta)
+        onMainThread {
+            UIAlertController.showShouldStart(from: self, clientName: session.dAppInfo.peerMeta.name, onStart: {
+                completion(walletInfo)
+            }, onClose: {
+                completion(Session.WalletInfo(approved: false, accounts: [], chainId: KNGeneralProvider.shared.customRPC.chainID, peerId: "", peerMeta: walletMeta))
+            })
+        }
+    }
+
+    func server(_ server: Server, didConnect session: Session) {
+        self.session = session
+        let sessionData = try! JSONEncoder().encode(session)
+        UserDefaults.standard.set(sessionData, forKey: sessionKey)
+        onMainThread {
+          self.connectionStatusUpdated(true)
+          self.updateWCInfo()
+        }
+    }
+
+    func server(_ server: Server, didDisconnect session: Session) {
+        UserDefaults.standard.removeObject(forKey: sessionKey)
+        onMainThread {
+          self.connectionStatusUpdated(false)
+        }
+    }
+
+    func server(_ server: Server, didUpdate session: Session) {
+        // no-op
+    }
 }

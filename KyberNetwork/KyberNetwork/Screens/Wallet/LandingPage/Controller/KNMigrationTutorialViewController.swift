@@ -118,8 +118,8 @@ class KNMigrationTutorialViewModel {
     let lineSpacing: CGFloat = 2
     let paragraphSpacing: CGFloat = 12
     let bullet: String = "\u{2022}"
-    let bulletAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.foregroundColor: UIColor.Kyber.orange, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20)]
-    let textAttributes: [NSAttributedStringKey: Any] = [
+    let bulletAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.Kyber.orange, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20)]
+    let textAttributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.Kyber.regular(with: 14),
       .foregroundColor: UIColor(red: 20, green: 25, blue: 39),
       .kern: 0.0,
@@ -143,7 +143,7 @@ class KNMigrationTutorialViewModel {
       let attributedString = NSMutableAttributedString(string: formattedString)
 
       attributedString.addAttributes(
-        [NSAttributedStringKey.paragraphStyle: paragraphStyle],
+        [NSAttributedString.Key.paragraphStyle: paragraphStyle],
         range: NSRange(location: 0, length: attributedString.length)
       )
 
@@ -222,7 +222,7 @@ class KNMigrationTutorialViewController: KNBaseViewController {
     self.stepIndicatorLabel.rounded(radius: self.stepIndicatorLabel.frame.size.height / 2)
     self.finalStepContent2Label.attributedText = self.viewModel.optionalContentString
     self.finalStepBottomLabel.attributedText = self.viewModel.bottomContactText
-    self.view.sendSubview(toBack: self.finalStepContainerView)
+    self.view.sendSubviewToBack(self.finalStepContainerView)
     self.headerContainerView.applyGradient(with: UIColor.Kyber.headerColors)
     self.pageControl.numberOfPages = self.viewModel.step1DataSource.keys.count
     self.pageControl.setFillColor(UIColor.Kyber.orange, for: .selected)
@@ -257,7 +257,7 @@ class KNMigrationTutorialViewController: KNBaseViewController {
 
   fileprivate func moveBackMainStep() {
     if self.viewModel.currentStep == 3 {
-      self.view.bringSubview(toFront: self.pagerContainerView)
+      self.view.bringSubviewToFront(self.pagerContainerView)
     }
     self.viewModel.currentStep -= 1
     self.refreshUI()
@@ -291,7 +291,7 @@ class KNMigrationTutorialViewController: KNBaseViewController {
     self.viewModel.currentStep += 1
     if self.viewModel.currentStep == 3 {
       self.nextButton.isEnabled = false
-      self.view.bringSubview(toFront: self.finalStepContainerView)
+      self.view.bringSubviewToFront(self.finalStepContainerView)
     }
     self.refreshUI()
     if self.viewModel.currentStep < 3 {

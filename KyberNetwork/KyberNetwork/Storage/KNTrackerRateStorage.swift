@@ -24,21 +24,23 @@ class KNTrackerRateStorage {
     if KNEnvironment.default != .ropsten {
       return Storage.retrieve(KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName, as: [TokenPrice].self) ?? []
     } else {
-      if let json = KNJSONLoaderUtil.jsonDataFromFile(with: "tokens_price") as? [String: JSONDictionary] {
-        var result: [TokenPrice] = []
-        json.keys.forEach { (key) in
-          var dict = json[key]
-          dict?["address"] = key
-          if let notNil = dict {
-            let price = TokenPrice(dictionary: notNil)
-            result.append(price)
-          }
-        }
-        return result
-
-      } else {
-        return []
-      }
+//      if let json = KNJSONLoaderUtil.jsonDataFromFile(with: "tokens_price") as? [String: JSONDictionary] {
+//        var result: [TokenPrice] = []
+//        json.keys.forEach { (key) in
+//          var dict = json[key]
+//          dict?["address"] = key
+//          if let notNil = dict {
+//            let price = TokenPrice(dictionary: notNil)
+//            result.append(price)
+//          }
+//        }
+//        return result
+//
+//      } else {
+//        return []
+//      }
+      //TODO: create new default price
+      return []
     }
   }
   
@@ -63,6 +65,10 @@ class KNTrackerRateStorage {
       return price.eth
     case .btc:
       return price.btc
+    case .bnb:
+      return price.bnb
+    case .matic:
+      return price.matic
     }
   }
 
@@ -87,6 +93,16 @@ class KNTrackerRateStorage {
         saved.btc24hVol = item.btc24hVol
         saved.btcMarketCap = item.btcMarketCap
         saved.btc24hChange = item.btc24hChange
+        
+        saved.bnb = item.bnb
+        saved.bnb24hVol = item.bnb24hVol
+        saved.bnbMarketCap = item.bnbMarketCap
+        saved.bnb24hChange = item.bnb24hChange
+        
+        saved.matic = item.matic
+        saved.matic24hVol = item.matic24hVol
+        saved.maticMarketCap = item.maticMarketCap
+        saved.matic24hChange = item.matic24hChange
       } else {
         self.allPrices.append(item)
       }

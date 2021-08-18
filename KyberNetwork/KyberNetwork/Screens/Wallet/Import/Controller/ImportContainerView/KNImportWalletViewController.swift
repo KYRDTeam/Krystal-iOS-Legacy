@@ -162,7 +162,7 @@ class KNImportWalletViewController: KNBaseViewController {
     self.scrollView.delegate = self
     for id in 0..<viewControllers.count {
       let viewController = viewControllers[id]
-      self.addChildViewController(viewController)
+      self.addChild(viewController)
       self.scrollView.addSubview(viewController.view)
       let originX: CGFloat = CGFloat(id) * width
       viewController.view.frame = CGRect(
@@ -171,7 +171,7 @@ class KNImportWalletViewController: KNBaseViewController {
         width: width,
         height: height
       )
-      viewController.didMove(toParentViewController: self)
+      viewController.didMove(toParent: self)
     }
     self.updateUIWithCurrentPage(0)
   }

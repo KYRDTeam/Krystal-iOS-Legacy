@@ -100,7 +100,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       if words.count == self.numberWords {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
-          seeds: words.map({ return String($0) }),
+          seeds: words.map({ return try! String($0) }),
           name: self.walletNameTextField.text
         )
       } else {
@@ -118,7 +118,13 @@ class KNImportSeedsViewController: KNBaseViewController {
   
   @IBAction func pasteButtonTapped(_ sender: UIButton) {
     if let string = UIPasteboard.general.string {
-      self.refCodeField.text = string
+      if sender.tag == 1 {
+        self.seedsTextField.text = string
+        self.updateWordsCount()
+      } else {
+        self.refCodeField.text = string
+      }
+      
     }
   }
   

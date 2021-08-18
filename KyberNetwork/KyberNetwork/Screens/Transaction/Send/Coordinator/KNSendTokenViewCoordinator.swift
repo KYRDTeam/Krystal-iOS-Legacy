@@ -8,7 +8,7 @@ import Moya
 import APIKit
 import MBProgressHUD
 import QRCodeReaderViewController
-import WalletConnect
+import WalletConnectSwift
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
@@ -569,7 +569,7 @@ extension KNSendTokenViewCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let session = WCSession.from(string: result) else {
+      guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
           with: "Invalid session".toBeLocalised(),
           message: "Your session is invalid, please try with another QR code".toBeLocalised(),
@@ -577,11 +577,29 @@ extension KNSendTokenViewCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-      let controller = KNWalletConnectViewController(
-        wcSession: session,
-        knSession: self.session
-      )
-      self.navigationController.present(controller, animated: true, completion: nil)
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
     }
   }
 }

@@ -41,7 +41,7 @@ extension NSObject {
     }
     let config: SwiftMessages.Config = {
       var config = SwiftMessages.Config()
-      config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+      config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar.rawValue)
       config.duration = time == -1 ? .forever : .seconds(seconds: time)
       config.dimMode = .gray(interactive: true)
       config.interactiveHide = true
@@ -71,7 +71,7 @@ extension NSObject {
     let config: SwiftMessages.Config = {
       var config = SwiftMessages.defaultConfig
       config.presentationStyle = .bottom
-      config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+      config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar.rawValue)
       config.duration = time == -1 ? .forever : .seconds(seconds: time)
       config.dimMode = .gray(interactive: true)
       config.interactiveHide = true

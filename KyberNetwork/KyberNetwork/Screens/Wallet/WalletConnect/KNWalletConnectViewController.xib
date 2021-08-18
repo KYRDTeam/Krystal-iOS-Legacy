@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -58,16 +58,13 @@
                                 <action selector="backButtonPressed:" destination="-1" eventType="touchUpInside" id="ugq-Nb-CEW"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFj-vk-WaS">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFj-vk-WaS">
                             <rect key="frame" x="352" y="37" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="YzV-X9-2wb"/>
                                 <constraint firstAttribute="width" constant="46" id="zig-vf-mGC"/>
                             </constraints>
                             <state key="normal" image="wallet_connect_icon_white"/>
-                            <connections>
-                                <action selector="scanQRCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="ZNT-39-Slp"/>
-                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.039215686270000001" green="0.29411764709999999" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -83,7 +80,7 @@
                         <constraint firstAttribute="trailing" secondItem="TFj-vk-WaS" secondAttribute="trailing" constant="16" id="xKG-M4-cUS"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Krystal" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPt-HO-3RI">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPt-HO-3RI">
                     <rect key="frame" x="20" y="214" width="374" height="19.5"/>
                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

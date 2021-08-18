@@ -16,6 +16,7 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   @IBOutlet weak var usdButton: UIButton!
   @IBOutlet weak var ethButton: UIButton!
   @IBOutlet weak var btcButton: UIButton!
+  @IBOutlet weak var quoteTokenLabel: UILabel!
   
   var selected: CurrencyMode = .usd
   var completeHandle: ((CurrencyMode) -> Void)?
@@ -33,8 +34,13 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    self.quoteTokenLabel.text = KNGeneralProvider.shared.quoteCurrency.toString().uppercased()
     self.updateUI()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
   }
   
   fileprivate func updateUI() {
@@ -49,7 +55,7 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
     
     self.ethButton.rounded(
       color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.selected == .eth ? selectedWidth : normalWidth,
+      width: self.selected == KNGeneralProvider.shared.quoteCurrency ? selectedWidth : normalWidth,
       radius: 8
     )
     
@@ -61,10 +67,17 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   }
 
   @IBAction func currencyTypeButtonTapped(_ sender: UIButton) {
-    guard let type = CurrencyMode(rawValue: sender.tag) else {
-      return
+    switch sender.tag {
+    case 0:
+      self.selected = .usd
+    case 1:
+      self.selected = KNGeneralProvider.shared.quoteCurrency
+    case 2:
+      self.selected = .btc
+    default:
+      self.selected = .usd
     }
-    self.selected = type
+
     self.updateUI()
     
   }

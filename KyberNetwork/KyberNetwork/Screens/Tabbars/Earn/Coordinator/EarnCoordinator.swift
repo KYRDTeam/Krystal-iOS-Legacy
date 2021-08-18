@@ -15,6 +15,7 @@ import WalletConnect
 import MBProgressHUD
 import APIKit
 import JSONRPCKit
+import WalletConnectSwift
 
 protocol NavigationBarDelegate: class {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController)
@@ -442,7 +443,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
-    let amt = srcAmount.isZero ? "1000000000000000" : srcAmount.description
+    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
 
     provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
       guard let `self` = self else { return }
@@ -954,7 +955,7 @@ extension EarnCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let session = WCSession.from(string: result) else {
+      guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
           with: "Invalid session".toBeLocalised(),
           message: "Your session is invalid, please try with another QR code".toBeLocalised(),
@@ -962,11 +963,29 @@ extension EarnCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-      let controller = KNWalletConnectViewController(
-        wcSession: session,
-        knSession: self.session
-      )
-      self.navigationController.present(controller, animated: true, completion: nil)
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
     }
   }
 }

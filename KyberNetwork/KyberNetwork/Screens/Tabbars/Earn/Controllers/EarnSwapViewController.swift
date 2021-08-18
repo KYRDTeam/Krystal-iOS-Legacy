@@ -857,6 +857,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.setUpChangeRateButton()
     self.updateUIRefPrice()
     self.updateInputFieldsUI()
+    self.updateUIMinReceiveAmount()
   }
 
   func coordinatorFailUpdateRates() {

@@ -146,10 +146,10 @@ struct KNTransactionDetailsViewModel {
     return attachment
   }()
 
-  lazy var textAttributes: [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
-    NSAttributedStringKey.font: UIFont.Kyber.medium(with: 14),
-    NSAttributedStringKey.kern: 0.0,
+  lazy var textAttributes: [NSAttributedString.Key: Any] = [
+    NSAttributedString.Key.foregroundColor: UIColor(red: 20, green: 25, blue: 39),
+    NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
+    NSAttributedString.Key.kern: 0.0,
   ]
 
   var addressTextDisplay: String? {

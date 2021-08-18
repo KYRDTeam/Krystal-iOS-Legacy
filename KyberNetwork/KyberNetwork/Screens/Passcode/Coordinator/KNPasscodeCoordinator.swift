@@ -31,7 +31,7 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
     self.type = type
     super.init()
     if case .authenticate(let isUpdating) = self.type, !isUpdating {
-      self.window.windowLevel = UIWindowLevelStatusBar + 1.0
+      self.window.windowLevel = UIWindow.Level.statusBar + 1.0
       self.window.rootViewController = self.passcodeViewController
       self.window.isHidden = true
     }
