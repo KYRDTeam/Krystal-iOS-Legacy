@@ -19,7 +19,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+=======
+	<string>4</string>
+>>>>>>> develop
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

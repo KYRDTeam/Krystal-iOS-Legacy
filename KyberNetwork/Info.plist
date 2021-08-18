@@ -121,7 +121,11 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+=======
+	<string>4</string>
+>>>>>>> develop
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
