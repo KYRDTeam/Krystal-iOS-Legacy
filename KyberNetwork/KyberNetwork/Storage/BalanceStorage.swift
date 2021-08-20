@@ -12,6 +12,7 @@ class BalanceStorage {
   static let shared = BalanceStorage()
   private var supportedTokenBalances: [TokenBalance] = []
   private var allLendingBalance: [LendingPlatformBalance] = []
+  private var nftBalance: [NFTSection] = []
   private var distributionBalance: LendingDistributionBalance?
   private var wallet: Wallet?
   
@@ -45,6 +46,7 @@ class BalanceStorage {
       self.supportedTokenBalances = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
       self.allLendingBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
+      self.nftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
       DispatchQueue.main.async {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       }
@@ -164,5 +166,17 @@ class BalanceStorage {
   
   func getTotalBalance(_ currency: CurrencyMode) -> BigInt {
     return self.getTotalAssetBalanceUSD(currency) + self.getTotalSupplyBalance(currency)
+  }
+  
+  func getAllNFTBalance() -> [NFTSection] {
+    return self.nftBalance
+  }
+  
+  func setNFTBalance(_ balance: [NFTSection]) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    self.nftBalance = balance
+    Storage.store(self.nftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
   }
 }

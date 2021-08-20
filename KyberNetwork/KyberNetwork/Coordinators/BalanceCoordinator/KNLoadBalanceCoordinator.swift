@@ -46,6 +46,7 @@ class KNLoadBalanceCoordinator {
       self.loadAllTokenBalance()
     } else {
       self.loadTokenBalancesFromApi()
+      self.loadNFTBalance()
     }
     
   }
@@ -258,6 +259,8 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
+  
+  
 
   func loadBalanceForCustomToken() {
 //    let tokens = KNSupportedTokenStorage.shared.getCustomToken()
@@ -306,6 +309,27 @@ class KNLoadBalanceCoordinator {
         }
       case .failure(let error):
         print("[LoadBalance] \(error.localizedDescription)")
+      }
+    }
+  }
+
+  func loadNFTBalance() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(NftResponse.self, from: resp.data)
+          print("[LoadNFT] \(data)")
+          BalanceStorage.shared.setNFTBalance(data.balances)
+          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+
+        } catch let error {
+          print("[LoadNFT] \(error.localizedDescription)")
+        }
+      case .failure(let error):
+        print("[LoadNFT] \(error.localizedDescription)")
       }
     }
   }

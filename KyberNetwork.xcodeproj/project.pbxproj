@@ -538,6 +538,8 @@
 		C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */; };
 		C347DA3F25C03144000D6E81 /* EarnMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */; };
 		C347DA4025C03144000D6E81 /* EarnMenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */; };
+		C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */; };
+		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
 		C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D21C255E95A900B166E0 /* TransitionDelegate.swift */; };
 		C360D222255E9AEE00B166E0 /* KNBottomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */; };
 		C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */; };
@@ -1274,6 +1276,8 @@
 		C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuViewController.xib; sourceTree = "<group>"; };
 		C347DA3D25C03144000D6E81 /* EarnMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnMenuTableViewCell.swift; sourceTree = "<group>"; };
 		C347DA3E25C03144000D6E81 /* EarnMenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EarnMenuTableViewCell.xib; sourceTree = "<group>"; };
+		C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewNFTTableViewCell.swift; sourceTree = "<group>"; };
+		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
 		C360D21C255E95A900B166E0 /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBottomPopupViewController.swift; sourceTree = "<group>"; };
 		C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBottomPopupViewController.xib; sourceTree = "<group>"; };
@@ -3717,6 +3721,8 @@
 				C3EEA45A2671EF840011DB97 /* OverviewMainViewCell.xib */,
 				C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */,
 				C3012CC2269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.xib */,
+				C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */,
+				C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4282,6 +4288,7 @@
 				C3EE06C7267A15E50090B432 /* Karla-ExtraLight.ttf in Resources */,
 				25929C8E20DA5CC10045CFA3 /* SFCompactText-RegularItalic.otf in Resources */,
 				255C98902122E22A0087B3E2 /* KSendTokenViewController.xib in Resources */,
+				C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */,
 				C3FA3D982591AB3E00E17B47 /* ChooseRateViewController.xib in Resources */,
 				C33CCB2E23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib in Resources */,
 				C3A241A52567BEB50073703C /* WalletListTableViewCell.xib in Resources */,
@@ -5119,6 +5126,7 @@
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
+				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

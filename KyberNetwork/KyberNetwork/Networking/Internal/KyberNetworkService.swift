@@ -875,6 +875,7 @@ enum KrytalService {
   case getOverviewMarket(addresses: [String], quotes: [String])
   case getTokenDetail(address: String)
   case getChartData(address: String, quote: String, from: Int)
+  case getNTFBalance(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -957,6 +958,8 @@ extension KrytalService: TargetType {
       return "/v1/token/tokenDetails"
     case .getChartData:
       return "/v1/market/priceSeries"
+    case .getNTFBalance:
+      return "/v1/account/nftBalances"
     }
   }
 
@@ -1154,6 +1157,11 @@ extension KrytalService: TargetType {
         "token": address,
         "quoteCurrency": quote,
         "from": from
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getNTFBalance(address: let address):
+      let json: JSONDictionary = [
+        "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

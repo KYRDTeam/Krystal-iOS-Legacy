@@ -97,3 +97,41 @@ struct ChartDataResponse: Codable {
     let timestamp: Int
     let prices: [[Double]]
 }
+
+// MARK: - NftResponse
+struct NftResponse: Codable {
+    let timestamp: Int
+    let balances: [NFTSection]
+}
+
+// MARK: - Balance
+struct NFTSection: Codable {
+    let collectionName, collectionAddress, collectionSymbol: String
+    let collectionLogo: String
+    let items: [NFTItem]
+}
+
+// MARK: - Item
+struct NFTItem: Codable {
+    let tokenID, tokenBalance: String
+    let tokenURL: String
+    let externalData: ExternalData
+
+    enum CodingKeys: String, CodingKey {
+        case tokenID, tokenBalance
+        case tokenURL = "tokenUrl"
+        case externalData
+    }
+}
+
+// MARK: - ExternalData
+struct ExternalData: Codable {
+    let name, externalDataDescription: String
+    let image: String
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case externalDataDescription = "description"
+        case image
+    }
+}

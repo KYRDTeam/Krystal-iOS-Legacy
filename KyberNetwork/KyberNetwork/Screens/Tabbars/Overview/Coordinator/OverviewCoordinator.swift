@@ -449,6 +449,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
       }))
       
+      let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
+      actionController.addAction(Action(ActionData(title: "NFT", image: UIImage()), style: nftType, handler: { _ in
+        controller.coordinatorDidSelectMode(.nft)
+      }))
+      
       self.navigationController.present(actionController, animated: true, completion: nil)
     case .walletConfig(currency: let currency):
       let actionController = KrystalActionSheetController()

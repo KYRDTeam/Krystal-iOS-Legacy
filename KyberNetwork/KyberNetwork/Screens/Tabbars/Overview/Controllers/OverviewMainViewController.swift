@@ -28,6 +28,7 @@ enum ViewMode: Equatable {
   case asset(rightMode: RightMode)
   case supply
   case favourite(rightMode: RightMode)
+  case nft
   
   public static func == (lhs: ViewMode, rhs: ViewMode) -> Bool {
     switch (lhs, rhs) {
@@ -38,6 +39,8 @@ enum ViewMode: Equatable {
     case ( .supply, .supply):
       return true
     case ( .favourite, .favourite):
+      return true
+    case ( .nft, .nft):
       return true
     default:
       return false
@@ -137,11 +140,14 @@ class OverviewMainViewModel {
   var currentMode: ViewMode = .asset(rightMode: .value)
   var dataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
+  var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
+  var displayNFTHeader: [(String, String)] = []
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
   var hideBalanceStatus: Bool = true
   var marketSortType: MarketSortType = .rightSide(des: true)
   var currencyMode: CurrencyMode = .usd
+  var hiddenSections = Set<Int>()
   
   init(session: KNSession) {
     self.session = session
@@ -153,6 +159,8 @@ class OverviewMainViewModel {
       return self.displayDataSource[""]?.isEmpty ?? true
     case .supply:
       return self.displayHeader.isEmpty
+    case .nft:
+       return false
     }
   }
 
@@ -181,6 +189,8 @@ class OverviewMainViewModel {
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
       self.displayTotalValues = [:]
+      self.displayNFTHeader = []
+      self.displayNFTDataSource = [:]
     case .asset(let mode):
       let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
@@ -196,6 +206,8 @@ class OverviewMainViewModel {
       self.displayDataSource = ["": models]
       let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
       self.displayTotalValues["all"] = displayTotalString
+      self.displayNFTHeader = []
+      self.displayNFTDataSource = [:]
     case .supply:
       let supplyBalance = BalanceStorage.shared.getSupplyBalances()
       self.displayHeader = supplyBalance.0
@@ -221,6 +233,8 @@ class OverviewMainViewModel {
       self.dataSource = models
       self.displayDataSource = models
       self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+      self.displayNFTHeader = []
+      self.displayNFTDataSource = [:]
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -239,6 +253,32 @@ class OverviewMainViewModel {
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
       self.displayTotalValues = [:]
+      self.displayNFTHeader = []
+      self.displayNFTDataSource = [:]
+    case .nft:
+      self.dataSource = [:]
+      self.displayDataSource = [:]
+      self.displayHeader = []
+      self.displayNFTDataSource = [:]
+      let nftSections = BalanceStorage.shared.getAllNFTBalance()
+      
+      self.displayNFTHeader = nftSections.map({ item in
+        var viewModels: [OverviewNFTCellViewModel] = []
+        if !item.items.isEmpty {
+          if item.items.count <= 2 {
+            viewModels.append(OverviewNFTCellViewModel(item1: item.items[safeIndex: 0], item2: item.items[safeIndex: 1]))
+          } else {
+            let chucked = item.items.chunked(into: 2)
+            let vm = chucked.map { slided in
+              return OverviewNFTCellViewModel(item1: slided[safeIndex: 0], item2: slided[safeIndex: 1])
+            }
+            viewModels.append(contentsOf: vm)
+          }
+        }
+
+        self.displayNFTDataSource[item.collectionName] = viewModels
+        return (item.collectionName, item.collectionLogo)
+      })
     }
   }
 
@@ -295,6 +335,8 @@ class OverviewMainViewModel {
       return "Supply"
     case .favourite:
       return "Favourite"
+    case .nft:
+      return "NFT"
     }
   }
 }
@@ -352,6 +394,12 @@ class OverviewMainViewController: KNBaseViewController {
     self.tableView.register(
       nibEmpty,
       forCellReuseIdentifier: OverviewEmptyTableViewCell.kCellID
+    )
+    
+    let nibNFT = UINib(nibName: OverviewNFTTableViewCell.className, bundle: nil)
+    self.tableView.register(
+      nibNFT,
+      forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
     )
     
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
@@ -450,13 +498,41 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.reloadAllData()
     self.reloadUI()
   }
-  
+
   @IBAction func notificationsButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .notifications)
   }
 
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
+  }
+  
+  @objc func sectionButtonTapped(sender: UIButton) {
+    print("Button Clicked \(sender.tag)")
+    let section = sender.tag
+    
+    func indexPathsForSection() -> [IndexPath] {
+      var indexPaths = [IndexPath]()
+      let key = self.viewModel.displayNFTHeader[section].0
+      if let range = self.viewModel.displayNFTDataSource[key]?.count {
+        for row in 0..<range {
+          indexPaths.append(IndexPath(row: row,
+                                      section: section))
+        }
+      }
+
+      return indexPaths
+    }
+    
+    if self.viewModel.hiddenSections.contains(section) {
+        self.viewModel.hiddenSections.remove(section)
+        self.tableView.insertRows(at: indexPathsForSection(),
+                                  with: .fade)
+    } else {
+        self.viewModel.hiddenSections.insert(section)
+        self.tableView.deleteRows(at: indexPathsForSection(),
+                                  with: .fade)
+    }
   }
 
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -531,14 +607,26 @@ extension OverviewMainViewController: UITableViewDataSource {
     guard !self.viewModel.isEmpty() else {
       return 1
     }
-    return self.viewModel.numberOfSections
+    if self.viewModel.currentMode == .nft {
+      return self.viewModel.displayNFTHeader.count
+    } else {
+      return self.viewModel.numberOfSections
+    }
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     guard !self.viewModel.isEmpty() else {
       return 1
     }
-    return self.viewModel.getViewModelsForSection(section).count
+    if self.viewModel.currentMode == .nft {
+      if self.viewModel.hiddenSections.contains(section) {
+          return 0
+      }
+      let key = self.viewModel.displayNFTHeader[section].0
+      return self.viewModel.displayNFTDataSource[key]?.count ?? 0
+    } else {
+      return self.viewModel.getViewModelsForSection(section).count
+    }
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -571,6 +659,11 @@ extension OverviewMainViewController: UITableViewDataSource {
         cell.titleLabel.text = "Your token list is empty"
         cell.button1.isHidden = true
         cell.button2.isHidden = true
+      case .nft:
+        cell.imageIcon.image = UIImage()
+        cell.titleLabel.text = "Your NFT list is empty"
+        cell.button1.isHidden = true
+        cell.button2.isHidden = true
       }
       return cell
     }
@@ -588,7 +681,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
       }
       return cell
-    default:
+    case .supply:
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewDepositTableViewCell.kCellID,
         for: indexPath
@@ -597,41 +690,82 @@ extension OverviewMainViewController: UITableViewDataSource {
       cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
       cell.updateCell(cellModel)
       return cell
+    case .nft:
+      let cell = tableView.dequeueReusableCell(
+        withIdentifier: OverviewNFTTableViewCell.kCellID,
+        for: indexPath
+      ) as! OverviewNFTTableViewCell
+      let key = self.viewModel.displayNFTHeader[indexPath.section].0
+      if let viewModel = self.viewModel.displayNFTDataSource[key]?[indexPath.row] {
+        cell.updateCell(viewModel)
+      }
+      
+      return cell
     }
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
-    guard self.viewModel.currentMode == .supply else {
+    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft else {
       return nil
     }
-    guard !self.viewModel.displayHeader.isEmpty else {
+    guard !self.viewModel.displayHeader.isEmpty || !self.viewModel.displayNFTHeader.isEmpty else {
       return nil
     }
     guard !self.viewModel.isEmpty() else {
       return nil
     }
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-    view.backgroundColor = .clear
-    let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
-    titleLabel.center.y = view.center.y
-    titleLabel.text = self.viewModel.displayHeader[section]
-    titleLabel.font = UIFont.Kyber.regular(with: 18)
-    titleLabel.textColor = UIColor(named: "textWhiteColor")
-    view.addSubview(titleLabel)
-    
-    let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
-    valueLabel.text = self.viewModel.getTotalValueForSection(section)
-    valueLabel.font = UIFont.Kyber.regular(with: 18)
-    valueLabel.textAlignment = .right
-    valueLabel.textColor = UIColor(named: "textWhiteColor")
-    view.addSubview(valueLabel)
+    if self.viewModel.currentMode == .nft {
+      let sectionItem = self.viewModel.displayNFTHeader[section]
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+      view.backgroundColor = .clear
+      
+      let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
+      icon.center.y = view.center.y
+      icon.setImage(with: sectionItem.1, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
+      view.addSubview(icon)
+      
+      let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 100, height: 40))
+      titleLabel.center.y = view.center.y
+      titleLabel.text = sectionItem.0
+      titleLabel.font = UIFont.Kyber.regular(with: 18)
+      titleLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(titleLabel)
+      
+      let arrowIcon = UIImageView(frame: CGRect(x: tableView.frame.size.width - 27 - 24, y: 0, width: 24, height: 24))
+      arrowIcon.image = UIImage(named: "arrow_down_template")
+      arrowIcon.tintColor = UIColor(named: "textWhiteColor")
+      view.addSubview(arrowIcon)
+      
+      let button = UIButton(frame: view.frame)
+      button.tag = section
+      button.addTarget(self, action: #selector(sectionButtonTapped), for: .touchUpInside)
+      view.addSubview(button)
+      
+      return view
+    } else {
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+      view.backgroundColor = .clear
+      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
+      titleLabel.center.y = view.center.y
+      titleLabel.text = self.viewModel.displayHeader[section]
+      titleLabel.font = UIFont.Kyber.regular(with: 18)
+      titleLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(titleLabel)
+      
+      let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
+      valueLabel.text = self.viewModel.getTotalValueForSection(section)
+      valueLabel.font = UIFont.Kyber.regular(with: 18)
+      valueLabel.textAlignment = .right
+      valueLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(valueLabel)
 
-    return view
+      return view
+    }
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard self.viewModel.currentMode == .supply else {
+    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft else {
       return 0
     }
     return 40
@@ -642,6 +776,9 @@ extension OverviewMainViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard !self.viewModel.isEmpty() else {
+      return
+    }
+    guard self.viewModel.currentMode != .nft else {
       return
     }
     let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
@@ -667,10 +804,12 @@ extension OverviewMainViewController: UITableViewDelegate {
       return 400
     }
     switch self.viewModel.currentMode {
-    case .asset, .market:
+    case .asset, .market, .favourite:
       return OverviewMainViewCell.kCellHeight
-    default:
+    case.supply:
       return OverviewDepositTableViewCell.kCellHeight
+    case .nft:
+      return OverviewNFTTableViewCell.kCellHeight
     }
   }
 }
