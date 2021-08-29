@@ -26,6 +26,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
+  fileprivate var nftItem: NFTItem = NFTItem(tokenID: "", tokenBalance: "", tokenURL: "", externalData: ExternalData(name: "", externalDataDescription: "", image: ""))
+  fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -43,6 +45,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     controller.delegate = self
     return controller
   }()
+  
+  var sendNFTController: SendNFTViewController?
 
   fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
   fileprivate(set) var confirmVC: KConfirmSendViewController?
@@ -72,13 +76,30 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     self.balances = balances
     self.from = from
   }
+  
+  init(
+    navigationController: UINavigationController,
+    session: KNSession,
+    nftItem: NFTItem,
+    nftCategory: NFTSection
+  ) {
+    self.navigationController = navigationController
+    self.session = session
+    self.nftItem = nftItem
+    self.nftCategory = nftCategory
+    self.from = KNGeneralProvider.shared.quoteTokenObject
+  }
 
-  func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true)
-    self.rootViewController.coordinatorUpdateBalances(self.balances)
-
-    let isPromo = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) != nil
-    self.rootViewController.coordinatorUpdateIsPromoWallet(isPromo)
+  func start(sendNFT: Bool = false) {
+    if sendNFT {
+      let controller = SendNFTViewController(viewModel: SendNFTViewModel(item: self.nftItem, category: self.nftCategory))
+      controller.delegate = self
+      self.sendNFTController = controller
+      self.navigationController.pushViewController(controller, animated: true)
+    } else {
+      self.navigationController.pushViewController(self.rootViewController, animated: true)
+      self.rootViewController.coordinatorUpdateBalances(self.balances)
+    }
   }
 
   func stop() {
@@ -143,7 +164,7 @@ extension KNSendTokenViewCoordinator {
 
 // MARK: Send Token View Controller Delegate
 extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
-  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent) {
+  func kSendTokenViewController(_ controller: KNBaseViewController, run event: KSendTokenViewEvent) {
     switch event {
     case .back:
       self.stop()
@@ -211,6 +232,25 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
+    case .sendNFT(item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, to: let to, ens: let ens):
+      let vm = ConfirmSendNFTViewModel(nftItem: item, nftCategory: category, gasPrice: gasPrice, gasLimit: gasLimit, address: to, ens: ens)
+      let vc = ConfirmSendNFTViewController(viewModel: vm)
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
+    case .estimateGasLimitTransferNFT(to: let to, item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, isERC721: let isERC721):
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.getEstimateGasLimitForTransferNFT(to: to, categoryAddress: category.collectibleAddress, tokenID: item.tokenID, gasPrice: gasPrice, gasLimit: gasLimit, isERC721: isERC721) { result in
+        if case .success(let gasLimit) = result {
+          self.sendNFTController?.coordinatorUpdateEstimatedGasLimit(
+            gasLimit
+          )
+          self.gasPriceSelector?.coordinatorDidUpdateGasLimit(gasLimit)
+        } else {
+          self.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()
+        }
+      }
     }
   }
 
@@ -302,9 +342,10 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
 
 // MARK: Confirm Transaction Delegate
 extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
-  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent) {
-    if case .confirm(let type, let historyTransaction) = event, case .transfer(let transaction) = type {
-      controller.dismiss(animated: true) {
+  func kConfirmSendViewController(_ controller: KNBaseViewController, run event: KConfirmViewEvent) {
+    switch event {
+    case .confirm(let type, let historyTransaction):
+      if case .transfer(let transaction) = type {
         guard self.session.externalProvider != nil else {
           return
         }
@@ -312,11 +353,48 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
-    } else {
+    case .cancel:
       controller.dismiss(animated: true) {
         self.confirmVC = nil
       }
+    case .confirmNFT(nftItem: let nftItem, nftCategory: let nftCategory, gasPrice: let gasPrice, gasLimit: let gasLimit, address: let address, historyTransaction: let historyTransaction):
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: gasLimit, gasPrice: gasPrice, isERC721: !(KNGeneralProvider.shared.currentChain == .eth)) { [weak self] sendResult in
+        guard let `self` = self else { return }
+        switch sendResult {
+        case .success(let result):
+          historyTransaction.hash = result.0
+          historyTransaction.time = Date()
+          historyTransaction.nonce = provider.minTxCount
+          historyTransaction.transactionObject = result.1.toSignTransactionObject()
+          provider.minTxCount += 1
+          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+          self.openTransactionStatusPopUp(transaction: historyTransaction)
+        case .failure(let error):
+          self.confirmVC?.resetActionButtons()
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: error,
+            userInfo: nil
+          )
+        }
+      }
     }
+    
+//    if case .confirm(let type, let historyTransaction) = event, case .transfer(let transaction) = type {
+//      controller.dismiss(animated: true) {
+//        guard self.session.externalProvider != nil else {
+//          return
+//        }
+//        self.didConfirmTransfer(transaction, historyTransaction: historyTransaction)
+//        self.confirmVC = nil
+//        self.navigationController.displayLoading()
+//      }
+//    } else {
+      
+//    }
   }
 }
 
@@ -455,7 +533,11 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
-      self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+      if self.sendNFTController != nil {
+        self.sendNFTController?.coordinatorDidUpdateGasPriceType(type, value: value)
+      } else {
+        self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+      }
     case .helpPressed:
       self.navigationController.showBottomBannerView(
         message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),

@@ -30,3 +30,25 @@ struct GetERC20SymbolDecode: Web3Request {
     return .script(command: run)
   }
 }
+
+struct GetERC721NameEncode: Web3Request {
+  typealias Response = String
+
+  static let abi = "{\"constant\":true,\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}"
+
+  var type: Web3RequestType {
+      let run = "web3.eth.abi.encodeFunctionCall(\(GetERC721NameEncode.abi),[])"
+      return .script(command: run)
+  }
+}
+
+struct GetERC721SymbolDecode: Web3Request {
+  typealias Response = String
+  
+  let data: String
+  
+  var type: Web3RequestType {
+    let run = "web3.eth.abi.decodeParameter('string', '\(data)')"
+    return .script(command: run)
+  }
+}

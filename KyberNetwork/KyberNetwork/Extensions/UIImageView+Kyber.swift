@@ -3,9 +3,21 @@
 import UIKit
 
 extension UIImageView {
-  func setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false) {
+  func setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
-      self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+      if let needTofit = fitSize {
+        let widthRatio = needTofit.width / cachedImg.size.width
+        if widthRatio < 1 {
+          let imageWidth = widthRatio * cachedImg.size.width
+          let imageHeight = widthRatio * cachedImg.size.height
+          self.image = cachedImg.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+        } else {
+          self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+        }
+      } else {
+        self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+      }
+
       self.layoutIfNeeded()
       return
     }
@@ -16,20 +28,32 @@ extension UIImageView {
       if error == nil, let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
           UIImage.imageCache.setObject(image, forKey: url as AnyObject)
-          self.image = applyNoir ? image.resizeImage(to: size)?.noir : image.resizeImage(to: size)
+          if let needTofit = fitSize {
+            let widthRatio = needTofit.width / image.size.width
+            if widthRatio > 1 {
+              let imageWidth = widthRatio * image.size.width
+              let imageHeight = widthRatio * image.size.height
+              self.image = image.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+            } else {
+              self.image = applyNoir ? image.resizeImage(to: size)?.noir : image.resizeImage(to: size)
+            }
+          } else {
+            self.image = applyNoir ? image.resizeImage(to: size)?.noir : image.resizeImage(to: size)
+          }
+          
           self.layoutIfNeeded()
         }
       }
     }.resume()
   }
 
-  func setImage(with urlString: String, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false) {
+  func setImage(with urlString: String, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil) {
     guard let url = URL(string: urlString) else {
       self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
       self.layoutIfNeeded()
       return
     }
-    self.setImage(with: url, placeholder: placeholder, size: size, applyNoir: applyNoir)
+    self.setImage(with: url, placeholder: placeholder, size: size, applyNoir: applyNoir, fitSize: fitSize)
   }
 
   func setTokenImage(

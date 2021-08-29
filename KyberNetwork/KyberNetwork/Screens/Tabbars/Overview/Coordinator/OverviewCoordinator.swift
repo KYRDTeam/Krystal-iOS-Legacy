@@ -440,6 +440,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
         controller.coordinatorDidSelectMode(.asset(rightMode: .value))
       }))
+      let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
+      actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
+        controller.coordinatorDidSelectMode(.nft)
+      }))
       let marketType = mode == .market(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
       actionController.addAction(Action(ActionData(title: "Show Market", image: UIImage(named: "market_actionsheet_icon")!), style: marketType, handler: { _ in
         controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
@@ -449,10 +453,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
       }))
       
-      let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "NFT", image: UIImage()), style: nftType, handler: { _ in
-        controller.coordinatorDidSelectMode(.nft)
-      }))
+      
       
       self.navigationController.present(actionController, animated: true, completion: nil)
     case .walletConfig(currency: let currency):
@@ -586,6 +587,15 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         break
       }
       self.navigationController.present(actionController, animated: true, completion: nil)
+    case .addNFT:
+      let vc = OverviewAddNFTViewController()
+      vc.delegate = self
+      self.navigationController.pushViewController(vc, animated: true)
+    case .openNFTDetail(item: let item, category: let category):
+      let viewModel = OverviewNFTDetailViewModel(item: item, category: category)
+      let vc = OverviewNFTDetailViewController(viewModel: viewModel)
+      vc.delegate = self
+      self.navigationController.pushViewController(vc, animated: true)
     }
   }
 }
@@ -593,5 +603,76 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
   func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
     self.openChartView(token: token)
+  }
+}
+
+extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
+  func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {
+    switch event {
+    case .done(address: let address, id: let id):
+      controller.displayLoading()
+      guard let provider = self.session.externalProvider else {
+        self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+        controller.hideLoading()
+        return
+      }
+      provider.getNFTBalance(for: address, id: id) { result in
+        controller.hideLoading()
+        switch result {
+        case .success(let bigInt):
+          let balance = Balance(value: bigInt)
+          if balance.isZero {
+            let alertController = KNPrettyAlertController(
+              title: "",
+              message: "You are not owner of this collection. So you can't add it",
+              secondButtonTitle: "Try again",
+              firstButtonTitle: "Back",
+              secondButtonAction: {
+                
+              },
+              firstButtonAction: {
+                self.navigationController.popViewController(animated: true)
+              }
+            )
+          } else {
+            KNGeneralProvider.shared.getERC721Name(address: address) { nameResult in
+              switch nameResult {
+              case.success(let name):
+                print(name)
+                let nftItem = NFTItem(tokenID: id, tokenBalance: "1", tokenURL: "", externalData: ExternalData(name: "", externalDataDescription: "", image: ""))
+                let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                
+                let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "Can not save this item"
+                self.navigationController.showTopBannerView(message: msg)
+              default:
+                break
+              }
+            }
+          }
+          NSLog("---- Balance: Fetch nft balance for contract \(address.description) successfully: \(bigInt.shortString(decimals: 0))")
+        case .failure(let error):
+          
+          NSLog("---- Balance: Fetch nft balance failed with error: \(error.description). ----")
+        }
+      }
+    }
+  }
+}
+
+extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
+  func overviewNFTDetailViewController(_ controller: OverviewNFTDetailViewController, run event: OverviewNFTDetailEvent) {
+    switch event {
+    case .sendItem(item: let item, category: let category):
+      self.sendCoordinator = nil
+      let coordinator = KNSendTokenViewCoordinator(
+        navigationController: self.navigationController,
+        session: self.session,
+        nftItem: item,
+        nftCategory: category
+      )
+      coordinator.delegate = self
+      coordinator.start(sendNFT: true)
+      self.sendCoordinator = coordinator
+    }
   }
 }

@@ -1,14 +1,16 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)
   case cancel
+  case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, historyTransaction: InternalHistoryTransaction)
 }
 
 protocol KConfirmSendViewControllerDelegate: class {
-  func kConfirmSendViewController(_ controller: KConfirmSendViewController, run event: KConfirmViewEvent)
+  func kConfirmSendViewController(_ controller: KNBaseViewController, run event: KConfirmViewEvent)
 }
 
 class KConfirmSendViewController: KNBaseViewController {

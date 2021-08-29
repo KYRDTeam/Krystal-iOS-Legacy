@@ -19,10 +19,12 @@ enum KSendTokenViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
   case openHistory
   case openWalletsList
+  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, ens: String?)
+  case estimateGasLimitTransferNFT(to: String,item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, isERC721: Bool)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
-  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent)
+  func kSendTokenViewController(_ controller: KNBaseViewController, run event: KSendTokenViewEvent)
 }
 
 //swiftlint:disable file_length

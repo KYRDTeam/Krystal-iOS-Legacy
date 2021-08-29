@@ -25,6 +25,7 @@ public struct Constants {
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
+  public static let customNftBalanceStoreFileName = "_custom_nft.data"
   public static let customBalanceStoreFileName = "-custom-balance.data"
   public static let favedTokenStoreFileName = "faved_token.data"
   public static let lendingBalanceStoreFileName = "-lending-balance.data"

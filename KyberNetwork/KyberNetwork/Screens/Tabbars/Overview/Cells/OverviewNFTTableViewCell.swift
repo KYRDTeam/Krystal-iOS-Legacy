@@ -54,6 +54,8 @@ class OverviewNFTTableViewCell: UITableViewCell {
       self.tokenName2.text = notNil2.externalData.name
       self.tokenId2.text = "#" + notNil2.tokenID
     }
+    
+    self.viewModel = viewModel
   }
   
   @IBAction func item1Tapped(_ sender: UIButton) {

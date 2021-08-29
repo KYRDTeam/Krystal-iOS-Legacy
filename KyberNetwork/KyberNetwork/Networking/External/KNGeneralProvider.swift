@@ -340,6 +340,33 @@ class KNGeneralProvider {
       }
     }
   }
+  
+  func getNFTBalance(for address: String, id: String, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    self.getNFTBalanceEncodeData(for: address, id: id) { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: contract, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let balance):
+                self.getNFTBalanceDecodeData(from: balance, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 
   func getTokenSymbol(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getSymbolEncodeData { [weak self] encodeResult in
@@ -356,6 +383,33 @@ class KNGeneralProvider {
               switch result {
               case .success(let symbol):
                 self.getTokenSymbolDecodeData(from: symbol, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  func getERC721Name(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.getERC721NameEncodeData { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: address, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let symbol):
+                self.getERC721NameDecodeData(from: symbol, completion: completion)
               case .failure(let error):
                 completion(.failure(AnyError(error)))
               }
@@ -936,6 +990,18 @@ extension KNGeneralProvider {
     }
   }
   
+  fileprivate func getNFTBalanceEncodeData(for address: String, id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC721BalanceEncode(address: address, id: id)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
   fileprivate func getSymbolEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20SymbolEncode()
     self.web3Swift.request(request: request) { result in
@@ -947,8 +1013,20 @@ extension KNGeneralProvider {
       }
     }
   }
+  
+  fileprivate func getERC721NameEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC721NameEncode()
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 
-  fileprivate func getDecimalsEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+  func getDecimalsEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20DecimalsEncode()
     self.web3Swift.request(request: request) { result in
       switch result {
@@ -1080,9 +1158,38 @@ extension KNGeneralProvider {
       }
     }
   }
+
+  fileprivate func getNFTBalanceDecodeData(from balance: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    if balance == "0x" {
+      // Fix: Can not decode 0x to uint
+      completion(.success(BigInt(0)))
+      return
+    }
+    let request = GetERC721BalanceDecode(data: balance)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(BigInt(res) ?? BigInt()))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
   
   fileprivate func getTokenSymbolDecodeData(from symbol: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20SymbolDecode(data: symbol)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+
+  fileprivate func getERC721NameDecodeData(from symbol: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC721SymbolDecode(data: symbol)
     self.web3Swift.request(request: request) { result in
       switch result {
       case .success(let res):

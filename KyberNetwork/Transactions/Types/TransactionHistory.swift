@@ -386,3 +386,18 @@ struct EtherscanTransaction: Codable, Equatable {
         case input, contractAddress, cumulativeGasUsed, gasUsed, confirmations
     }
 }
+
+// MARK: - NFTHistoryResponse
+struct NFTHistoryResponse: Codable {
+    let status, message: String
+    let result: [NFTTransaction]
+}
+
+// MARK: - Result
+struct NFTTransaction: Codable {
+    let blockNumber, timeStamp, hash, nonce: String
+    let blockHash, from, contractAddress, to: String
+    let tokenID, tokenName, tokenSymbol, tokenDecimal: String
+    let transactionIndex, gas, gasPrice, gasUsed: String
+    let cumulativeGasUsed, input, confirmations: String
+}

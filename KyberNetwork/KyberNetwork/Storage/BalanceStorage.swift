@@ -13,6 +13,7 @@ class BalanceStorage {
   private var supportedTokenBalances: [TokenBalance] = []
   private var allLendingBalance: [LendingPlatformBalance] = []
   private var nftBalance: [NFTSection] = []
+  private var customNftBalance: [NFTSection] = []
   private var distributionBalance: LendingDistributionBalance?
   private var wallet: Wallet?
   
@@ -47,6 +48,7 @@ class BalanceStorage {
       self.allLendingBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
       self.nftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
+      self.customNftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
       DispatchQueue.main.async {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       }
@@ -109,7 +111,7 @@ class BalanceStorage {
         lendingSymbols.append(balance.interestBearingTokenSymbol.lowercased())
       }
     }
-    
+
     tokens.forEach { (token) in
       guard token.getBalanceBigInt() > BigInt(0), !lendingSymbols.contains(token.symbol.lowercased()) else {
         return
@@ -169,14 +171,49 @@ class BalanceStorage {
   }
   
   func getAllNFTBalance() -> [NFTSection] {
-    return self.nftBalance
+    return self.nftBalance + self.customNftBalance
   }
   
   func setNFTBalance(_ balance: [NFTSection]) {
     guard let unwrapped = self.wallet else {
       return
     }
+    let allSectionAddress = self.nftBalance.map { item in
+      return item.collectibleAddress.lowercased()
+    }
+    let customSectionAddress = self.customNftBalance.map { item in
+      return item.collectibleAddress.lowercased()
+    }
+    let duplicateAddress = customSectionAddress.filter { item in
+      return allSectionAddress.contains(item)
+    }
+
+    if !duplicateAddress.isEmpty {
+      duplicateAddress.forEach { item in
+        if let idx = customSectionAddress.firstIndex(of: item) {
+          self.customNftBalance.remove(at: idx)
+        }
+      }
+      Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+    }
+
     self.nftBalance = balance
     Storage.store(self.nftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+  }
+  
+  func setCustomNFT(_ balance: NFTSection) -> Bool {
+    guard let unwrapped = self.wallet else {
+      return false
+    }
+    let duplicateSection = self.nftBalance.first { item in
+      return item.collectibleAddress.lowercased() == balance.collectibleAddress.lowercased()
+    }
+    if duplicateSection != nil {
+      return false
+    } else {
+      self.customNftBalance.append(balance)
+      Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+      return true
+    }
   }
 }

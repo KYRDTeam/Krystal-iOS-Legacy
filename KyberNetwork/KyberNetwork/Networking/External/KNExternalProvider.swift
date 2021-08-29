@@ -67,6 +67,15 @@ class KNExternalProvider {
       completion: completion
     )
   }
+  
+  public func getNFTBalance(for contract: String, id: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    KNGeneralProvider.shared.getNFTBalance(
+      for: self.account.address.description,
+      id: id,
+      contract: contract,
+      completion: completion
+    )
+  }
 
   // MARK: Transaction
   func getTransactionCount(completion: @escaping (Result<Int, AnyError>) -> Void) {
@@ -113,6 +122,42 @@ class KNExternalProvider {
             completion(.failure(error))
           }
         })
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  //TODO: build signTx param first
+  func transferNFT(from: String, to: String, item: NFTItem, category: NFTSection, gasLimit: BigInt, gasPrice: BigInt, isERC721: Bool, completion: @escaping (Result<(String, SignTransaction), AnyError>) -> Void) {
+    self.getTransactionCount { [weak self] txCountResult in
+      guard let `self` = self else { return }
+      switch txCountResult {
+      case .success:
+        self.requestDataForNFTTransfer(from: from, to: to, tokenID: item.tokenID, isERC721: isERC721) { dataResult in
+          switch dataResult {
+          case .success(let data):
+            let signTx = SignTransaction(value: BigInt(0), account: self.account, to: Address(string: category.collectibleAddress), nonce: self.minTxCount, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: KNGeneralProvider.shared.customRPC.chainID)
+            self.signTransactionData(from: signTx, completion: { signResult in
+              switch signResult {
+              case .success(let signData):
+                KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in
+                  guard let `self` = self else { return }
+                  if case .success(let hash) = result {
+                    self.minTxCount += 1
+                    completion(.success((hash, signData.1)))
+                  }
+                  if case .failure(let error) = result {
+                    completion(.failure(error))
+                  }
+                })
+              case .failure(let error):
+                completion(.failure(error))
+              }
+            })
+          case .failure(let error):
+            completion(.failure(error))
+          }
+        }
       case .failure(let error):
         completion(.failure(error))
       }
@@ -414,6 +459,26 @@ class KNExternalProvider {
     }
   }
 
+  func getEstimateGasLimitForTransferNFT(to: String, categoryAddress: String, tokenID: String, gasPrice: BigInt, gasLimit: BigInt, isERC721: Bool, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    self.requestDataForNFTTransfer(from: self.account.address.description, to: to, tokenID: tokenID, isERC721: isERC721) { result in
+      switch result {
+      case .success(let data):
+        KNExternalProvider.estimateGasLimit(
+          from: self.account.address.description,
+          to: categoryAddress,
+          gasPrice: gasPrice,
+          value: BigInt(0),
+          data: data,
+          defaultGasLimit: KNGasConfiguration.transferTokenGasLimitDefault,
+          isSwap: false,
+          completion: completion
+        )
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+
   func getEstimateGasLimit(for exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let value: BigInt = exchangeTransaction.from.isETH ? exchangeTransaction.amount : BigInt(0)
 
@@ -491,6 +556,8 @@ class KNExternalProvider {
 
     self.signTransactionData(from: signTransaction, completion: completion)
   }
+  
+  
 
   private func signTransactionData(from exchange: KNDraftExchangeTransaction, nonce: Int, data: Data, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
     let signTransaction: SignTransaction = SignTransaction(
@@ -555,6 +622,18 @@ class KNExternalProvider {
       return
     }
     self.web3Swift.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to?.description ?? "")) { (result) in
+      switch result {
+      case .success(let res):
+        let data = Data(hex: res.drop0x)
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  func requestDataForNFTTransfer(from: String, to: String, tokenID: String, isERC721: Bool, completion: @escaping (Result<Data, AnyError>) -> Void) {
+    self.web3Swift.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, isERC721Format: isERC721)) { (result) in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)

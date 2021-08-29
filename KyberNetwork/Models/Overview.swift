@@ -106,8 +106,8 @@ struct NftResponse: Codable {
 
 // MARK: - Balance
 struct NFTSection: Codable {
-    let collectionName, collectionAddress, collectionSymbol: String
-    let collectionLogo: String
+    let collectibleName, collectibleAddress, collectibleSymbol: String
+    let collectibleLogo: String
     let items: [NFTItem]
 }
 

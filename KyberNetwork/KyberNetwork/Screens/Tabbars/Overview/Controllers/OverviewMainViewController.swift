@@ -21,6 +21,8 @@ enum OverviewMainViewEvent {
   case claim(balance: LendingDistributionBalance)
   case depositMore
   case changeRightMode(current: ViewMode)
+  case addNFT
+  case openNFTDetail(item: NFTItem, category: NFTSection)
 }
 
 enum ViewMode: Equatable {
@@ -141,7 +143,7 @@ class OverviewMainViewModel {
   var dataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
-  var displayNFTHeader: [(String, String)] = []
+  var displayNFTHeader: [NFTSection] = []
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
   var hideBalanceStatus: Bool = true
@@ -160,7 +162,7 @@ class OverviewMainViewModel {
     case .supply:
       return self.displayHeader.isEmpty
     case .nft:
-       return false
+      return self.displayNFTHeader.isEmpty
     }
   }
 
@@ -261,8 +263,8 @@ class OverviewMainViewModel {
       self.displayHeader = []
       self.displayNFTDataSource = [:]
       let nftSections = BalanceStorage.shared.getAllNFTBalance()
-      
-      self.displayNFTHeader = nftSections.map({ item in
+      self.displayNFTHeader = nftSections
+      nftSections.forEach({ item in
         var viewModels: [OverviewNFTCellViewModel] = []
         if !item.items.isEmpty {
           if item.items.count <= 2 {
@@ -276,8 +278,7 @@ class OverviewMainViewModel {
           }
         }
 
-        self.displayNFTDataSource[item.collectionName] = viewModels
-        return (item.collectionName, item.collectionLogo)
+        self.displayNFTDataSource[item.collectibleName] = viewModels
       })
     }
   }
@@ -513,7 +514,7 @@ class OverviewMainViewController: KNBaseViewController {
     
     func indexPathsForSection() -> [IndexPath] {
       var indexPaths = [IndexPath]()
-      let key = self.viewModel.displayNFTHeader[section].0
+      let key = self.viewModel.displayNFTHeader[section].collectibleName
       if let range = self.viewModel.displayNFTDataSource[key]?.count {
         for row in 0..<range {
           indexPaths.append(IndexPath(row: row,
@@ -622,7 +623,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       if self.viewModel.hiddenSections.contains(section) {
           return 0
       }
-      let key = self.viewModel.displayNFTHeader[section].0
+      let key = self.viewModel.displayNFTHeader[section].collectibleName
       return self.viewModel.displayNFTDataSource[key]?.count ?? 0
     } else {
       return self.viewModel.getViewModelsForSection(section).count
@@ -660,10 +661,14 @@ extension OverviewMainViewController: UITableViewDataSource {
         cell.button1.isHidden = true
         cell.button2.isHidden = true
       case .nft:
-        cell.imageIcon.image = UIImage()
-        cell.titleLabel.text = "Your NFT list is empty"
-        cell.button1.isHidden = true
+        cell.imageIcon.image = UIImage(named: "empty_nft")
+        cell.titleLabel.text = "You have not any NFT"
+        cell.button1.isHidden = false
         cell.button2.isHidden = true
+        cell.button1.setTitle("Add NFT", for: .normal)
+        cell.action = {
+          self.delegate?.overviewMainViewController(self, run: .addNFT)
+        }
       }
       return cell
     }
@@ -695,11 +700,14 @@ extension OverviewMainViewController: UITableViewDataSource {
         withIdentifier: OverviewNFTTableViewCell.kCellID,
         for: indexPath
       ) as! OverviewNFTTableViewCell
-      let key = self.viewModel.displayNFTHeader[indexPath.section].0
+      let key = self.viewModel.displayNFTHeader[indexPath.section].collectibleName
       if let viewModel = self.viewModel.displayNFTDataSource[key]?[indexPath.row] {
         cell.updateCell(viewModel)
       }
-      
+      cell.completeHandle = { item in
+        self.delegate?.overviewMainViewController(self, run: .openNFTDetail(item: item, category: self.viewModel.displayNFTHeader[indexPath.section]))
+        
+      }
       return cell
     }
   }
@@ -722,12 +730,12 @@ extension OverviewMainViewController: UITableViewDataSource {
       
       let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
       icon.center.y = view.center.y
-      icon.setImage(with: sectionItem.1, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
+      icon.setImage(with: sectionItem.collectibleLogo, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
       view.addSubview(icon)
       
-      let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 100, height: 40))
+      let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
       titleLabel.center.y = view.center.y
-      titleLabel.text = sectionItem.0
+      titleLabel.text = sectionItem.collectibleName
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
