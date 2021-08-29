@@ -134,6 +134,23 @@ extension KNTransactionCoordinator {
         group.leave()
       }
     )
+    
+    group.enter()
+    let lastNFTInternalTx = Int(EtherscanTransactionStorage.shared.getCurrentNFTTransactionStartBlock()) ?? 0
+    self.fetchNFTTransactions(
+      forAddress: self.wallet.address.description,
+      startBlock: lastNFTInternalTx,
+      completion: { result in
+        if case .success(let transactions) = result {
+          if lastBlockInternalTx == 0 {
+            EtherscanTransactionStorage.shared.setNFTTransaction(transactions)
+          } else {
+            EtherscanTransactionStorage.shared.appendNFTTransactions(transactions)
+          }
+        }
+        group.leave()
+      }
+    )
 
     group.enter()
     let lastBlockAllTx = Int(EtherscanTransactionStorage.shared.getCurrentTransactionStartBlock()) ?? 0
@@ -253,6 +270,38 @@ extension KNTransactionCoordinator {
             }
           case .failure(let error):
             if isDebug { print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
+            completion?(.failure(AnyError(error)))
+          }
+        }
+      }
+    }
+  }
+  
+  fileprivate func fetchNFTTransactions(forAddress address: String, startBlock: Int, completion: ((Result<[NFTTransaction], AnyError>) -> Void)?) {
+    if isDebug { print("---- NFT Transactions: Fetching ----") }
+    let provider = MoyaProvider<KNEtherScanService>()
+    let service = KNEtherScanService.getNFTTransaction(address: address, startBlock: startBlock)
+    DispatchQueue.global(qos: .background).async {
+      provider.request(service) { result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let response):
+            do {
+              _ = try response.filterSuccessfulStatusCodes()
+              let decoder = JSONDecoder()
+              do {
+                let result = try decoder.decode(NFTHistoryResponse.self, from: response.data)
+                completion?(.success(result.result))
+              } catch let error {
+                completion?(.failure(AnyError(error)))
+              }
+
+            } catch let error {
+              if isDebug { print("---- NFT Transactions: Parse result failed with error: \(error.prettyError) ----") }
+              completion?(.failure(AnyError(error)))
+            }
+          case .failure(let error):
+            if isDebug { print("---- NFT Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }

@@ -33,6 +33,7 @@ public struct Constants {
   public static let customTokenStoreFileName = "custom-token.data"
   public static let etherscanTokenTransactionsStoreFileName = "-etherscan-token-transaction.data"
   public static let etherscanInternalTransactionsStoreFileName = "-etherscan-internal-transaction.data"
+  public static let etherscanNFTTransactionsStoreFileName = "-etherscan-nft-transaction.data"
   public static let etherscanTransactionsStoreFileName = "-etherscan-transaction.data"
   public static let customFilterOptionFileName = "custom-filter-option.data"
   public static let marketingAssetsStoreFileName = "marketing-assets.data"

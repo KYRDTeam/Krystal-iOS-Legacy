@@ -297,7 +297,7 @@ class OverviewMainViewModel {
   }
   
   var displayPageTotalValue: String {
-    guard self.currentMode != .market(rightMode: .ch24), self.currentMode != .favourite(rightMode: .ch24) else {
+    guard self.currentMode != .market(rightMode: .ch24), self.currentMode != .favourite(rightMode: .ch24), self.currentMode != .nft else {
       return ""
     }
     guard !self.hideBalanceStatus else {

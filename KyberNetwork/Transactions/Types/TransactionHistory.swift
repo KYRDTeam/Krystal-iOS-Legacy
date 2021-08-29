@@ -202,6 +202,12 @@ enum HistoryModelType: Codable {
       self = .contractInteraction
     case 9:
       self = .selfTransfer
+    case 10:
+      self = .createNFT
+    case 11:
+      self = .transferNFT
+    case 12:
+      self = .receiveNFT
     default:
       throw CodingError.unknownValue
     }
@@ -230,9 +236,15 @@ enum HistoryModelType: Codable {
       try container.encode(8, forKey: .rawValue)
     case .selfTransfer:
       try container.encode(9, forKey: .rawValue)
+    case .createNFT:
+      try container.encode(10, forKey: .rawValue)
+    case .transferNFT:
+      try container.encode(11, forKey: .rawValue)
+    case .receiveNFT:
+      try container.encode(12, forKey: .rawValue)
     }
   }
-  
+
   case swap
   case withdraw
   case transferETH
@@ -243,6 +255,9 @@ enum HistoryModelType: Codable {
   case earn
   case contractInteraction
   case selfTransfer
+  case createNFT
+  case transferNFT
+  case receiveNFT
 
   static func typeFromInput(_ input: String) -> HistoryModelType {
     guard !input.isEmpty, input != "0x"  else {
@@ -261,6 +276,10 @@ enum HistoryModelType: Codable {
       return .transferToken
     case "0xcf512b53", "0x12342114", "0xae591d54", "0x7a6c0dfe":
       return .swap
+    case "0x42842e0e":
+      return .transferNFT
+    case "0xd0def521":
+      return .createNFT
     default:
       return .contractInteraction
     }
@@ -300,6 +319,7 @@ struct HistoryTransaction: Codable {
   let transacton: [EtherscanTransaction]
   let internalTransactions: [EtherscanInternalTransaction]
   let tokenTransactions: [EtherscanTokenTransaction]
+  let nftTransaction: [NFTTransaction]
   let wallet: String
 
   var date: Date {
@@ -389,15 +409,19 @@ struct EtherscanTransaction: Codable, Equatable {
 
 // MARK: - NFTHistoryResponse
 struct NFTHistoryResponse: Codable {
-    let status, message: String
+    let status: String
     let result: [NFTTransaction]
 }
 
 // MARK: - Result
-struct NFTTransaction: Codable {
+struct NFTTransaction: Codable, Equatable {
     let blockNumber, timeStamp, hash, nonce: String
     let blockHash, from, contractAddress, to: String
     let tokenID, tokenName, tokenSymbol, tokenDecimal: String
     let transactionIndex, gas, gasPrice, gasUsed: String
     let cumulativeGasUsed, input, confirmations: String
+  
+  static func == (lhs: NFTTransaction, rhs: NFTTransaction) -> Bool {
+    return lhs.hash == rhs.hash
+  }
 }

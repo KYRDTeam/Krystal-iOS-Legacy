@@ -8,6 +8,7 @@ enum KNEtherScanService {
   case getListTransactions(address: String, startBlock: Int)
   case getListTokenTransactions(address: String, startBlock: Int)
   case getListInternalTransactions(address: String, startBlock: Int)
+  case getNFTTransaction(address: String, startBlock: Int)
 }
 
 extension KNEtherScanService: TargetType {
@@ -25,6 +26,10 @@ extension KNEtherScanService: TargetType {
     case .getListInternalTransactions(let address, let startBlock):
       let key = KNGeneralProvider.shared.apiKey
       let baseURLString = "\(KNGeneralProvider.shared.customRPC.apiEtherscanEndpoint)api?module=account&action=txlistinternal&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(key)"
+      return URL(string: baseURLString)!
+    case .getNFTTransaction(let address, let startBlock):
+      let key = KNGeneralProvider.shared.apiKey
+      let baseURLString = "\(KNGeneralProvider.shared.customRPC.apiEtherscanEndpoint)api?module=account&action=tokennfttx&address=\(address)&startblock=\(startBlock)&sort=desc&apikey=\(key)"
       return URL(string: baseURLString)!
     }
   }
