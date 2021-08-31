@@ -70,7 +70,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AIF-FF-nOA">
-                            <rect key="frame" x="37" y="409.5" width="301" height="92"/>
+                            <rect key="frame" x="37" y="394.5" width="301" height="92"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fee" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ryY-cW-vIe">
                                     <rect key="frame" x="12" y="23" width="100" height="16.5"/>
@@ -131,7 +131,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbB-2p-Xc4">
-                            <rect key="frame" x="37" y="531.5" width="134.5" height="38"/>
+                            <rect key="frame" x="37" y="516.5" width="134.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="c5G-ay-Dkk"/>
@@ -151,7 +151,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QxK-ar-eYp">
-                            <rect key="frame" x="203.5" y="531.5" width="134.5" height="38"/>
+                            <rect key="frame" x="203.5" y="516.5" width="134.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="C1S-8X-QWU"/>
@@ -164,13 +164,6 @@
                                 <action selector="confirmButtonTapped:" destination="-1" eventType="touchUpInside" id="ydd-xI-0Go"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CIg-mf-ulW">
-                            <rect key="frame" x="37" y="153.5" width="301" height="36"/>
-                            <string key="text">Please sure that this address supports Ethereum network. You will lose your assets if this address doesn't support Ethereum compatible retrieval</string>
-                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="10"/>
-                            <color key="textColor" name="warningColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="98i76yuin7uhy643xu…...7uhyt8" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXa-m1-iXe">
                             <rect key="frame" x="77" y="110" width="261" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
@@ -178,7 +171,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWO-s0-9fP">
-                            <rect key="frame" x="113.5" y="199.5" width="148" height="200"/>
+                            <rect key="frame" x="113.5" y="145.5" width="148" height="200"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V73-Yq-y9I">
                                     <rect key="frame" x="0.0" y="0.0" width="148" height="200"/>
@@ -227,10 +220,18 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CIg-mf-ulW">
+                            <rect key="frame" x="37" y="350.5" width="301" height="36"/>
+                            <string key="text">Please sure that this address supports Ethereum network. You will lose your assets if this address doesn't support Ethereum compatible retrieval</string>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="10"/>
+                            <color key="textColor" name="warningColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="O6O-1F-QL5" firstAttribute="leading" secondItem="jgf-X5-GEd" secondAttribute="trailing" constant="8" id="39t-1H-mpU"/>
+                        <constraint firstItem="AIF-FF-nOA" firstAttribute="top" secondItem="CIg-mf-ulW" secondAttribute="bottom" constant="8" id="5zU-pg-1Zl"/>
                         <constraint firstItem="CIg-mf-ulW" firstAttribute="leading" secondItem="RYV-7j-2hw" secondAttribute="leading" constant="37" id="7y5-Fr-8A7"/>
                         <constraint firstItem="ORD-iJ-lmQ" firstAttribute="centerX" secondItem="RYV-7j-2hw" secondAttribute="centerX" id="8Qe-Vt-aJA"/>
                         <constraint firstItem="ozs-9J-mLc" firstAttribute="top" secondItem="jgf-X5-GEd" secondAttribute="bottom" constant="18" id="9S6-wx-0NY"/>
@@ -238,9 +239,9 @@
                         <constraint firstItem="ORD-iJ-lmQ" firstAttribute="top" secondItem="RYV-7j-2hw" secondAttribute="top" constant="40" id="DqL-8j-WtB"/>
                         <constraint firstItem="AIF-FF-nOA" firstAttribute="leading" secondItem="RYV-7j-2hw" secondAttribute="leading" constant="37" id="FfI-dV-shU"/>
                         <constraint firstItem="QxK-ar-eYp" firstAttribute="leading" secondItem="zbB-2p-Xc4" secondAttribute="trailing" constant="32" id="GA5-Ll-zRT"/>
+                        <constraint firstItem="jWO-s0-9fP" firstAttribute="top" secondItem="ozs-9J-mLc" secondAttribute="bottom" id="GxJ-56-BwR"/>
                         <constraint firstItem="jgf-X5-GEd" firstAttribute="leading" secondItem="RYV-7j-2hw" secondAttribute="leading" constant="37" id="I4c-Ov-8b4"/>
                         <constraint firstItem="zbB-2p-Xc4" firstAttribute="top" secondItem="AIF-FF-nOA" secondAttribute="bottom" constant="30" id="Kvn-X8-u8U"/>
-                        <constraint firstItem="jWO-s0-9fP" firstAttribute="top" secondItem="CIg-mf-ulW" secondAttribute="bottom" constant="10" id="LSA-Hd-bpN"/>
                         <constraint firstItem="QxK-ar-eYp" firstAttribute="width" secondItem="zbB-2p-Xc4" secondAttribute="width" id="Mdw-ol-akH"/>
                         <constraint firstItem="jWO-s0-9fP" firstAttribute="centerX" secondItem="RYV-7j-2hw" secondAttribute="centerX" id="P68-PT-Mk8"/>
                         <constraint firstItem="cXa-m1-iXe" firstAttribute="leading" secondItem="jgf-X5-GEd" secondAttribute="trailing" constant="8" id="SLl-dl-1do"/>
@@ -249,10 +250,9 @@
                         <constraint firstItem="jgf-X5-GEd" firstAttribute="top" secondItem="ORD-iJ-lmQ" secondAttribute="bottom" constant="31" id="Z1E-Lr-X8r"/>
                         <constraint firstAttribute="trailing" secondItem="QxK-ar-eYp" secondAttribute="trailing" constant="37" id="ZO7-mv-2cU"/>
                         <constraint firstItem="cXa-m1-iXe" firstAttribute="bottom" secondItem="jgf-X5-GEd" secondAttribute="bottom" id="apA-XC-14s"/>
+                        <constraint firstItem="CIg-mf-ulW" firstAttribute="top" secondItem="jWO-s0-9fP" secondAttribute="bottom" constant="5" id="dmm-jo-X8U"/>
                         <constraint firstItem="zbB-2p-Xc4" firstAttribute="leading" secondItem="RYV-7j-2hw" secondAttribute="leading" constant="37" id="gfO-V7-Zpc"/>
                         <constraint firstAttribute="trailing" secondItem="AIF-FF-nOA" secondAttribute="trailing" constant="37" id="hlo-Ei-ZuO"/>
-                        <constraint firstItem="CIg-mf-ulW" firstAttribute="top" secondItem="ozs-9J-mLc" secondAttribute="bottom" constant="8" symbolic="YES" id="jt4-D1-Mky"/>
-                        <constraint firstItem="AIF-FF-nOA" firstAttribute="top" secondItem="jWO-s0-9fP" secondAttribute="bottom" constant="10" id="lnH-wa-A2r"/>
                         <constraint firstAttribute="trailing" secondItem="CIg-mf-ulW" secondAttribute="trailing" constant="37" id="q25-75-anO"/>
                         <constraint firstItem="O6O-1F-QL5" firstAttribute="top" secondItem="jgf-X5-GEd" secondAttribute="top" id="txr-u6-mVB"/>
                         <constraint firstAttribute="trailing" secondItem="cXa-m1-iXe" secondAttribute="trailing" constant="37" id="xMp-Rx-uAp"/>

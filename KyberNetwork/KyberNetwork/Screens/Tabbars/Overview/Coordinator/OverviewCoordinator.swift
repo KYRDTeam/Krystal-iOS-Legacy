@@ -170,7 +170,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         }
       }
     case .getTokenDetailInfo(address: let address):
-      
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getTokenDetail(address: address)) { (result) in
         switch result {
@@ -200,7 +199,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       self.openCommunityURL("https://twitter.com/\(name)/")
     }
   }
-  
+
   fileprivate func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
   }
@@ -223,7 +222,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     coordinator.start()
     self.sendCoordinator = coordinator
   }
-  
+
   fileprivate func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
@@ -687,7 +686,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 
-                self.navigationController.showTopBannerView(message: "Success \(status ? "register" : "un-register") favorite for \(item.externalData.name)")
+                self.navigationController.showTopBannerView(message: "Successful \(status ? "register" : "un-register") favorite for \(item.externalData.name)")
                 controller.coordinatorDidUpdateFavStatus(status)
               } else if let error = json["error"] as? String {
                 self.navigationController.showTopBannerView(message: error)

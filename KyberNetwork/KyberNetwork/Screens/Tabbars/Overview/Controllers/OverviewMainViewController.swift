@@ -277,8 +277,6 @@ class OverviewMainViewModel {
             viewModels.append(contentsOf: vm)
           }
         }
-        
-
         self.displayNFTDataSource[item.collectibleName] = viewModels
       })
       
@@ -298,6 +296,8 @@ class OverviewMainViewModel {
         }
         self.displayNFTDataSource[favSection.collectibleName] = viewModels
       }
+      let addMoreSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
+      self.displayNFTHeader.append(addMoreSection)
     }
   }
 
@@ -553,6 +553,10 @@ class OverviewMainViewController: KNBaseViewController {
                                   with: .fade)
     }
   }
+  
+  @objc func addNFTButtonTapped(sender: UIButton) {
+    self.delegate?.overviewMainViewController(self, run: .addNFT)
+  }
 
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
     if dec {
@@ -741,9 +745,24 @@ extension OverviewMainViewController: UITableViewDataSource {
       return nil
     }
     if self.viewModel.currentMode == .nft {
+      
       let sectionItem = self.viewModel.displayNFTHeader[section]
+      
+      
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
       view.backgroundColor = .clear
+      
+      guard sectionItem.collectibleSymbol != "ADDMORE" else {
+        let button = UIButton(frame: view.frame.inset(by: UIEdgeInsets(top: 0, left: 37, bottom: 3, right: 37)))
+        
+        button.setTitle("Add NFT", for: .normal)
+        button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
+        button.setTitleColor(UIColor(named: "normalTextColor")!, for: .normal)
+        button.titleLabel?.font = UIFont.Kyber.regular(with: 16)
+        button.addTarget(self, action: #selector(addNFTButtonTapped(sender:)), for: .touchUpInside)
+        view.addSubview(button)
+        return view
+      }
       
       let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
       icon.center.y = view.center.y
