@@ -79,7 +79,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.assetImageView.setImage(with: self.viewModel.iconURL, placeholder: nil, fitSize: self.assetImageView.frame.size)
+    self.assetImageView.setImage(with: self.viewModel.iconURL, placeholder: UIImage(named: "placeholder_nft_item")!, fitSize: self.assetImageView.frame.size)
   }
   
   func coordinatorDidUpdateFavStatus(_ status: Bool) {

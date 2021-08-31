@@ -46,13 +46,13 @@ class OverviewNFTTableViewCell: UITableViewCell {
     self.container2.isHidden = viewModel.item2 == nil
     
     if let notNil1 = viewModel.item1 {
-      self.icon1.setImage(with: notNil1.externalData.image, placeholder: nil, size: nil, applyNoir: false)
+      self.icon1.setImage(with: notNil1.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
       self.tokenName1.text = notNil1.externalData.name
       self.tokenId1.text = "#" + notNil1.tokenID
     }
     
     if let notNil2 = viewModel.item2 {
-      self.icon2.setImage(with: notNil2.externalData.image, placeholder: nil, size: nil, applyNoir: false)
+      self.icon2.setImage(with: notNil2.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
       self.tokenName2.text = notNil2.externalData.name
       self.tokenId2.text = "#" + notNil2.tokenID
     }

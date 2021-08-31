@@ -769,7 +769,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       if sectionItem.collectibleSymbol == "FAV" {
         icon.image = UIImage(named: "fav_section_icon")
       } else {
-        icon.setImage(with: sectionItem.collectibleLogo, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
+        icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
       }
       
       view.addSubview(icon)
