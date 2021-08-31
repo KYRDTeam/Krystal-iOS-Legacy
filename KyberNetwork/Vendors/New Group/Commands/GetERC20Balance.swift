@@ -78,3 +78,27 @@ struct GetERC721BalanceDecode: Web3Request {
         return .script(command: run)
     }
 }
+
+struct GetERC1155OwnerOfEncode: Web3Request {
+    typealias Response = String
+
+    static let abi = "{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}"
+
+  let id: String
+
+    var type: Web3RequestType {
+        let run = "web3.eth.abi.encodeFunctionCall(\(GetERC1155OwnerOfEncode.abi), [\"\(id)\"])"
+        return .script(command: run)
+    }
+}
+
+struct GetERC1155OwnerOfDecode: Web3Request {
+    typealias Response = String
+
+    let data: String
+
+    var type: Web3RequestType {
+        let run = "web3.eth.abi.decodeParameter('address', '\(data)')"
+        return .script(command: run)
+    }
+}

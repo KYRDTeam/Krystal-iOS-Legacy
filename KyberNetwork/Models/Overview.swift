@@ -132,6 +132,14 @@ class NFTItem: Codable {
     self.externalData = ExternalData(name: "", externalDataDescription: "", image: "")
     self.favorite = false
   }
+  
+  init(name: String, tokenID: String) {
+    self.tokenID = tokenID
+    self.tokenBalance = "1"
+    self.tokenURL = ""
+    self.externalData = ExternalData(name: name, externalDataDescription: "", image: "")
+    self.favorite = false
+  }
 }
 
 // MARK: - ExternalData

@@ -342,6 +342,7 @@ class KNGeneralProvider {
   }
   
   func getNFTBalance(for address: String, id: String, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    
     self.getNFTBalanceEncodeData(for: address, id: id) { [weak self] encodeResult in
       guard let `self` = self else { return }
       switch encodeResult {
@@ -437,6 +438,33 @@ class KNGeneralProvider {
               switch result {
               case .success(let decimals):
                 self.getTokenDecimalsDecodeData(from: decimals, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  func getOwnerOf(address: String, id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    self.getOwnerOfEncodeData(id: id) { [weak self] encodeResult in
+      guard let `self` = self else { return }
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: address, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let data):
+                self.getOwnerOfDecodeData(from: data, completion: completion)
               case .failure(let error):
                 completion(.failure(AnyError(error)))
               }
@@ -1026,6 +1054,18 @@ extension KNGeneralProvider {
       }
     }
   }
+  
+  fileprivate func getOwnerOfEncodeData(id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC1155OwnerOfEncode(id: id)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 
   fileprivate func getSymbolEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20SymbolEncode()
@@ -1239,6 +1279,18 @@ extension KNGeneralProvider {
   
   fileprivate func getTokenDecimalsDecodeData(from decimals: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20DecimalsDecode(data: decimals)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  fileprivate func getOwnerOfDecodeData(from data: String, completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetERC1155OwnerOfDecode(data: data)
     self.web3Swift.request(request: request) { result in
       switch result {
       case .success(let res):
