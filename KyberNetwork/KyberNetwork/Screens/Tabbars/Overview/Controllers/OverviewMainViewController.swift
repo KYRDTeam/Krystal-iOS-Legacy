@@ -296,8 +296,10 @@ class OverviewMainViewModel {
         }
         self.displayNFTDataSource[favSection.collectibleName] = viewModels
       }
-      let addMoreSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
-      self.displayNFTHeader.append(addMoreSection)
+      if !self.displayNFTHeader.isEmpty {
+        let addMoreSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
+        self.displayNFTHeader.append(addMoreSection)
+      }
     }
   }
 
@@ -700,7 +702,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         withIdentifier: OverviewMainViewCell.kCellID,
         for: indexPath
       ) as! OverviewMainViewCell
-      
+
       let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
       cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
       cell.updateCell(cellModel)

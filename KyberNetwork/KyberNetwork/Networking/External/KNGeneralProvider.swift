@@ -447,7 +447,32 @@ class KNGeneralProvider {
         completion(.failure(error))
       }
     }
-    
+  }
+  
+  func getSupportInterface(address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    self.getSupportInterfaceEncodeData { encodeResult in
+      switch encodeResult {
+      case .success(let data):
+        let request = EtherServiceAlchemyRequest(
+          batch: BatchFactory().create(CallRequest(to: address, data: data))
+        )
+        DispatchQueue.global().async {
+          Session.send(request) { [weak self] result in
+            guard let `self` = self else { return }
+            DispatchQueue.main.async {
+              switch result {
+              case .success(let value):
+                self.getSupportInterfaceDecodeData(from: value, completion: completion)
+              case .failure(let error):
+                completion(.failure(AnyError(error)))
+              }
+            }
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
   }
 
   func getMutipleERC20Balances(for address: Address, tokens: [Address], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
@@ -1037,6 +1062,18 @@ extension KNGeneralProvider {
       }
     }
   }
+  
+  func getSupportInterfaceEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
+    let request = GetSupportInterfaceEncode()
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let data):
+        completion(.success(data))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
 
   fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
@@ -1202,6 +1239,18 @@ extension KNGeneralProvider {
   
   fileprivate func getTokenDecimalsDecodeData(from decimals: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20DecimalsDecode(data: decimals)
+    self.web3Swift.request(request: request) { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  fileprivate func getSupportInterfaceDecodeData(from value: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    let request = GetSupportInterfaceDecode(data: value)
     self.web3Swift.request(request: request) { result in
       switch result {
       case .success(let res):

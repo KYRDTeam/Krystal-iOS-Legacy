@@ -361,26 +361,37 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
       guard let provider = self.session.externalProvider else {
         return
       }
-      provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: gasLimit, gasPrice: gasPrice, isERC721: !(KNGeneralProvider.shared.currentChain == .eth)) { [weak self] sendResult in
-        guard let `self` = self else { return }
-        switch sendResult {
-        case .success(let result):
-          historyTransaction.hash = result.0
-          historyTransaction.time = Date()
-          historyTransaction.nonce = provider.minTxCount
-          historyTransaction.transactionObject = result.1.toSignTransactionObject()
-          provider.minTxCount += 1
-          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-          self.openTransactionStatusPopUp(transaction: historyTransaction)
+      self.navigationController.displayLoading()
+      KNGeneralProvider.shared.getSupportInterface(address: nftCategory.collectibleAddress) { interfaceResult in
+        switch interfaceResult {
+        case .success(let isERC721):
+          provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: gasLimit, gasPrice: gasPrice, isERC721: isERC721) { [weak self] sendResult in
+            guard let `self` = self else { return }
+            self.navigationController.hideLoading()
+            switch sendResult {
+            case .success(let result):
+              historyTransaction.hash = result.0
+              historyTransaction.time = Date()
+              historyTransaction.nonce = provider.minTxCount
+              historyTransaction.transactionObject = result.1.toSignTransactionObject()
+              provider.minTxCount += 1
+              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+              self.openTransactionStatusPopUp(transaction: historyTransaction)
+            case .failure(let error):
+              self.confirmVC?.resetActionButtons()
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: error,
+                userInfo: nil
+              )
+            }
+          }
         case .failure(let error):
-          self.confirmVC?.resetActionButtons()
-          KNNotificationUtil.postNotification(
-            for: kTransactionDidUpdateNotificationKey,
-            object: error,
-            userInfo: nil
-          )
+          self.navigationController.hideLoading()
+          self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
         }
       }
+      
     }
     
 //    if case .confirm(let type, let historyTransaction) = event, case .transfer(let transaction) = type {

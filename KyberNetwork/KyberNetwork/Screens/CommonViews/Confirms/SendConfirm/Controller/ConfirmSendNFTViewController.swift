@@ -110,6 +110,10 @@ class ConfirmSendNFTViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupUI()
+    
+    //trick fix
+    KNGeneralProvider.shared.getDecimalsEncodeData { result in
+    }
   }
 
   fileprivate func setupUI() {

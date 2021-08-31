@@ -33,3 +33,26 @@ struct ContractNFTTransfer: Web3Request {
     return .script(command: run)
   }
 }
+
+struct GetSupportInterfaceEncode: Web3Request {
+  typealias Response = String
+
+  static let abi = "{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}"
+
+  var type: Web3RequestType {
+      let erc721ID = "0x5b5e139f"
+      let run = "web3.eth.abi.encodeFunctionCall(\(GetSupportInterfaceEncode.abi),[\"\(erc721ID)\"])"
+      return .script(command: run)
+  }
+}
+
+struct GetSupportInterfaceDecode: Web3Request {
+  typealias Response = Bool
+  
+  let data: String
+  
+  var type: Web3RequestType {
+    let run = "web3.eth.abi.decodeParameter('bool', '\(data)')"
+    return .script(command: run)
+  }
+}

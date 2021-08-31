@@ -27,7 +27,6 @@ class OverviewAddNFTViewController: KNBaseViewController {
     super.viewDidLoad()
     //trick fix
     KNGeneralProvider.shared.getDecimalsEncodeData { result in
-      
     }
   }
   
