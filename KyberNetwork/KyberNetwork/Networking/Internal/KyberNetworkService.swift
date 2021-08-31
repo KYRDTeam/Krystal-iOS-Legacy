@@ -876,6 +876,7 @@ enum KrytalService {
   case getTokenDetail(address: String)
   case getChartData(address: String, quote: String, from: Int)
   case getNTFBalance(address: String)
+  case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
 }
 
 extension KrytalService: TargetType {
@@ -960,12 +961,14 @@ extension KrytalService: TargetType {
       return "/v1/market/priceSeries"
     case .getNTFBalance:
       return "/v1/account/nftBalances"
+    case .registerNFTFavorite:
+      return "/v1/account/registerFavoriteNft"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login:
+    case .registerReferrer, .login, .registerNFTFavorite:
       return .post
     default:
       return .get
@@ -1164,6 +1167,15 @@ extension KrytalService: TargetType {
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .registerNFTFavorite(address: let address, collectibleAddress: let collectibleAddress, tokenID: let tokenID, favorite: let favorite, signature: let signature):
+      let json: JSONDictionary = [
+        "address": address,
+        "collectibleAddress": collectibleAddress,
+        "tokenID": tokenID,
+        "favorite": favorite ? "1" : "0",
+        "signature": signature,
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
 

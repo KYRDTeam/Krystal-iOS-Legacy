@@ -26,7 +26,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
-  fileprivate var nftItem: NFTItem = NFTItem(tokenID: "", tokenBalance: "", tokenURL: "", externalData: ExternalData(name: "", externalDataDescription: "", image: ""))
+  fileprivate var nftItem: NFTItem = NFTItem()
   fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description

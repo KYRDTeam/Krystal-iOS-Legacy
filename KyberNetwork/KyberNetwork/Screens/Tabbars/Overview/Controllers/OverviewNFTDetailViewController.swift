@@ -10,6 +10,7 @@ import TagListView
 
 enum OverviewNFTDetailEvent {
   case sendItem(item: NFTItem, category: NFTSection)
+  case favoriteItem(item: NFTItem, category: NFTSection, status: Bool)
 }
 
 struct OverviewNFTDetailViewModel {
@@ -31,6 +32,14 @@ struct OverviewNFTDetailViewModel {
   var description: String {
     return self.item.externalData.externalDataDescription
   }
+  
+  var isFaved: Bool {
+    return self.item.favorite
+  }
+  
+  var displayFavStatusImage: UIImage? {
+    return self.isFaved ? UIImage(named: "fav_star_icon") : UIImage(named: "unFav_star_icon")
+  }
 }
 
 protocol OverviewNFTDetailViewControllerDelegate: class {
@@ -44,6 +53,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   @IBOutlet weak var subTitleLabel: UILabel!
   @IBOutlet weak var tagView: TagListView!
   @IBOutlet weak var descriptionLabel: UILabel!
+  @IBOutlet weak var favButton: UIButton!
   
   let viewModel: OverviewNFTDetailViewModel
   weak var delegate: OverviewNFTDetailViewControllerDelegate?
@@ -59,12 +69,12 @@ class OverviewNFTDetailViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    
+
     self.titleLabel.text = self.viewModel.title
     self.subTitleLabel.text = self.viewModel.title
     self.tagView.addTags(self.viewModel.tags)
     self.descriptionLabel.text = self.viewModel.description
+    self.favButton.setImage(self.viewModel.displayFavStatusImage, for: .normal)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -72,20 +82,34 @@ class OverviewNFTDetailViewController: KNBaseViewController {
     self.assetImageView.setImage(with: self.viewModel.iconURL, placeholder: nil, fitSize: self.assetImageView.frame.size)
   }
   
+  func coordinatorDidUpdateFavStatus(_ status: Bool) {
+    self.viewModel.item.favorite = status
+    self.favButton.setImage(self.viewModel.displayFavStatusImage, for: .normal)
+  }
+  
   @IBAction func tranferButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewNFTDetailViewController(self, run: .sendItem(item: self.viewModel.item, category: self.viewModel.category))
   }
   
   @IBAction func linkButtonTapped(_ sender: UIButton) {
-  }
-  
-  @IBAction func shareButtonTapped(_ sender: UIButton) {
     let viewModel = OverviewShareNFTViewModel(item: self.viewModel.item, category: self.viewModel.category.collectibleName)
     let vc = OverviewShareNFTViewController(viewModel: viewModel)
     self.navigationController?.pushViewController(vc, animated: true)
   }
   
+  @IBAction func shareButtonTapped(_ sender: UIButton) {
+    self.navigationController?.openSafari(with: "https://defi.krystal.app/nfts/\(self.viewModel.category.collectibleAddress)/\(self.viewModel.item.tokenID)")
+  }
+  
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
+  }
+  
+  @IBAction func favoriteButtonTapped(_ sender: UIButton) {
+    self.delegate?.overviewNFTDetailViewController(self, run: .favoriteItem(item: self.viewModel.item, category: self.viewModel.category, status: !self.viewModel.isFaved))
+  }
+  
+  @IBAction func etherscanButtonTapped(_ sender: UIButton) {
+    self.navigationController?.openSafari(with: "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.viewModel.category.collectibleAddress)")
   }
 }

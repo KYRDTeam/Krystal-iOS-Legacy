@@ -10,6 +10,8 @@ import UIKit
 struct OverviewNFTCellViewModel {
   let item1: NFTItem?
   let item2: NFTItem?
+  let category1: NFTSection?
+  let category2: NFTSection?
   
 }
 
@@ -28,7 +30,7 @@ class OverviewNFTTableViewCell: UITableViewCell {
   @IBOutlet weak var container2: UIView!
   
   var viewModel: OverviewNFTCellViewModel?
-  var completeHandle: ((NFTItem) -> Void)?
+  var completeHandle: ((NFTItem, NFTSection) -> Void)?
   
   
   override func awakeFromNib() {
@@ -63,12 +65,12 @@ class OverviewNFTTableViewCell: UITableViewCell {
       return
     }
     if sender.tag == 0 {
-      if let unwrap = notNil.item1 {
-        block(unwrap)
+      if let unwrap = notNil.item1, let unwrapCategory = notNil.category1 {
+        block(unwrap, unwrapCategory)
       }
     } else {
-      if let unwrap = notNil.item2 {
-        block(unwrap)
+      if let unwrap = notNil.item2, let unwrapCategory = notNil.category2 {
+        block(unwrap, unwrapCategory)
       }
     }
   }

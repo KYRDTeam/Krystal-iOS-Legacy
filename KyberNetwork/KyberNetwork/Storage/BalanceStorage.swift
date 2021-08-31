@@ -216,4 +216,17 @@ class BalanceStorage {
       return true
     }
   }
+  
+  func getAllFavedItems() -> [(NFTItem, NFTSection)] {
+    var result: [(NFTItem, NFTSection)] = []
+    
+    self.getAllNFTBalance().forEach { section in
+      section.items.forEach { item in
+        if item.favorite {
+          result.append((item, section))
+        }
+      }
+    }
+    return result
+  }
 }

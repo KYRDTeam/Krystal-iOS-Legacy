@@ -639,9 +639,8 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
               switch nameResult {
               case.success(let name):
                 print(name)
-                let nftItem = NFTItem(tokenID: id, tokenBalance: "1", tokenURL: "", externalData: ExternalData(name: "", externalDataDescription: "", image: ""))
+                let nftItem = NFTItem()
                 let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
-                
                 let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "Can not save this item"
                 self.navigationController.showTopBannerView(message: msg)
               default:
@@ -673,6 +672,36 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
       coordinator.delegate = self
       coordinator.start(sendNFT: true)
       self.sendCoordinator = coordinator
+    case .favoriteItem(item: let item, category: let category, status: let status):
+      if case .real(let account) = self.session.wallet.type {
+        let data = Data(item.tokenID.utf8)
+        let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+        let sendData = prefix + data
+        
+        let result = self.session.keystore.signMessage(sendData, for: account)
+        switch result {
+        case .success(let signedData):
+          print("[Send favorite nft] success")
+          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+          provider.request(.registerNFTFavorite(address: self.session.wallet.address.description, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+            if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+              if let isSuccess = json["success"] as? Bool, isSuccess {
+                
+                self.navigationController.showTopBannerView(message: "Success \(status ? "register" : "un-register") favorite for \(item.externalData.name)")
+                controller.coordinatorDidUpdateFavStatus(status)
+              } else if let error = json["error"] as? String {
+                self.navigationController.showTopBannerView(message: error)
+              } else {
+                self.navigationController.showTopBannerView(message: "Fail to register favorite for \(item.externalData.name)")
+              }
+            }
+          }
+        case .failure(let error):
+          print("[Send favorite nft] \(error.localizedDescription)")
+        }
+      } else {
+        self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+      }
     }
   }
 }

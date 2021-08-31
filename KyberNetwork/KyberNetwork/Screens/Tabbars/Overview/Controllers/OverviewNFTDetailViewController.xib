@@ -20,6 +20,7 @@
             <connections>
                 <outlet property="assetImageView" destination="uMG-8P-csI" id="ZeA-hX-N8B"/>
                 <outlet property="descriptionLabel" destination="HZ8-Iy-5Zj" id="yby-GH-efe"/>
+                <outlet property="favButton" destination="QIT-fo-Bv7" id="hPs-BZ-eqN"/>
                 <outlet property="subTitleLabel" destination="Jfv-OY-pgN" id="mnl-Op-bUs"/>
                 <outlet property="tagView" destination="khH-97-sp4" id="mN8-ST-1Zb"/>
                 <outlet property="titleLabel" destination="uKq-2T-FeO" id="jJ7-Su-BVc"/>
@@ -61,6 +62,9 @@
                                 <constraint firstAttribute="width" constant="32" id="l1K-zx-auB"/>
                             </constraints>
                             <state key="normal" image="unFav_star_icon"/>
+                            <connections>
+                                <action selector="favoriteButtonTapped:" destination="-1" eventType="touchUpInside" id="2Ke-fJ-wht"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -134,7 +138,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-uH-QXg">
-                            <rect key="frame" x="115.5" y="532.5" width="38" height="39"/>
+                            <rect key="frame" x="89.5" y="532.5" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="39" id="811-f8-Ssj"/>
@@ -153,7 +157,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ik3-8t-xJQ">
-                            <rect key="frame" x="168.5" y="532.5" width="38" height="39"/>
+                            <rect key="frame" x="142.5" y="532.5" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="IPv-U5-oD0"/>
@@ -172,7 +176,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fE9-83-Dsu">
-                            <rect key="frame" x="221.5" y="532.5" width="38" height="39"/>
+                            <rect key="frame" x="195.5" y="532.5" width="38" height="39"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="38" id="pTs-Vp-RJQ"/>
@@ -190,16 +194,36 @@
                                 <action selector="shareButtonTapped:" destination="-1" eventType="touchUpInside" id="mAx-8N-DRN"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="341-gK-wtH">
+                            <rect key="frame" x="248.5" y="532.5" width="38" height="39"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="39" id="OgA-QG-HGV"/>
+                                <constraint firstAttribute="width" constant="38" id="wqu-Qp-rZg"/>
+                            </constraints>
+                            <color key="tintColor" name="textWhiteColor"/>
+                            <state key="normal" image="etherscan_actionsheet_icon"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="19"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="etherscanButtonTapped:" destination="-1" eventType="touchUpInside" id="2ct-ag-3Vf"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="uMG-8P-csI" firstAttribute="top" secondItem="Rah-gZ-IhV" secondAttribute="top" id="1oE-FT-msL"/>
                         <constraint firstItem="khH-97-sp4" firstAttribute="top" secondItem="Jfv-OY-pgN" secondAttribute="bottom" constant="8" id="CaS-Qb-fKc"/>
                         <constraint firstItem="fE9-83-Dsu" firstAttribute="centerY" secondItem="7X0-uH-QXg" secondAttribute="centerY" id="KbK-R7-gtp"/>
-                        <constraint firstItem="Ik3-8t-xJQ" firstAttribute="centerX" secondItem="Rah-gZ-IhV" secondAttribute="centerX" id="LAB-gu-Kum"/>
+                        <constraint firstItem="Ik3-8t-xJQ" firstAttribute="centerX" secondItem="Rah-gZ-IhV" secondAttribute="centerX" constant="-26" id="LAB-gu-Kum"/>
                         <constraint firstItem="HZ8-Iy-5Zj" firstAttribute="leading" secondItem="Rah-gZ-IhV" secondAttribute="leading" constant="37" id="M0q-mm-xTB"/>
                         <constraint firstAttribute="trailing" secondItem="khH-97-sp4" secondAttribute="trailing" constant="37" id="NBN-wB-jc7"/>
                         <constraint firstItem="khH-97-sp4" firstAttribute="leading" secondItem="Rah-gZ-IhV" secondAttribute="leading" constant="37" id="O16-2e-Zhq"/>
                         <constraint firstItem="uMG-8P-csI" firstAttribute="leading" secondItem="Na9-ox-F8X" secondAttribute="leading" id="P0a-Wr-EOU"/>
+                        <constraint firstItem="341-gK-wtH" firstAttribute="centerY" secondItem="fE9-83-Dsu" secondAttribute="centerY" id="RPC-Uq-Dqb"/>
                         <constraint firstItem="Jfv-OY-pgN" firstAttribute="leading" secondItem="Rah-gZ-IhV" secondAttribute="leading" constant="37" id="bIM-lv-d8a"/>
                         <constraint firstItem="fE9-83-Dsu" firstAttribute="leading" secondItem="Ik3-8t-xJQ" secondAttribute="trailing" constant="15" id="c9X-RO-Nmd"/>
                         <constraint firstItem="uMG-8P-csI" firstAttribute="centerX" secondItem="Rah-gZ-IhV" secondAttribute="centerX" id="dH6-iT-YIl"/>
@@ -207,6 +231,7 @@
                         <constraint firstItem="Ik3-8t-xJQ" firstAttribute="leading" secondItem="7X0-uH-QXg" secondAttribute="trailing" constant="15" id="hSx-l9-I69"/>
                         <constraint firstAttribute="bottom" secondItem="Ik3-8t-xJQ" secondAttribute="bottom" constant="46" id="mvg-25-1Tf"/>
                         <constraint firstItem="HZ8-Iy-5Zj" firstAttribute="top" secondItem="khH-97-sp4" secondAttribute="bottom" constant="18" id="o5A-SI-zcS"/>
+                        <constraint firstItem="341-gK-wtH" firstAttribute="leading" secondItem="fE9-83-Dsu" secondAttribute="trailing" constant="15" id="p5x-ve-To4"/>
                         <constraint firstAttribute="trailing" secondItem="HZ8-Iy-5Zj" secondAttribute="trailing" constant="37" id="q4l-wI-wAQ"/>
                         <constraint firstItem="Ik3-8t-xJQ" firstAttribute="centerY" secondItem="7X0-uH-QXg" secondAttribute="centerY" id="qhG-AR-Uu9"/>
                         <constraint firstItem="Ik3-8t-xJQ" firstAttribute="top" secondItem="HZ8-Iy-5Zj" secondAttribute="bottom" constant="29" id="vXg-LM-JTf"/>
@@ -237,6 +262,7 @@
     </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
+        <image name="etherscan_actionsheet_icon" width="22" height="22"/>
         <image name="open_link_icon_blue" width="14" height="14"/>
         <image name="share_actionsheet_icon" width="24" height="24"/>
         <image name="transfer_invest_icon" width="32" height="32"/>

@@ -268,18 +268,36 @@ class OverviewMainViewModel {
         var viewModels: [OverviewNFTCellViewModel] = []
         if !item.items.isEmpty {
           if item.items.count <= 2 {
-            viewModels.append(OverviewNFTCellViewModel(item1: item.items[safeIndex: 0], item2: item.items[safeIndex: 1]))
+            viewModels.append(OverviewNFTCellViewModel(item1: item.items[safeIndex: 0], item2: item.items[safeIndex: 1], category1: item, category2: item))
           } else {
             let chucked = item.items.chunked(into: 2)
             let vm = chucked.map { slided in
-              return OverviewNFTCellViewModel(item1: slided[safeIndex: 0], item2: slided[safeIndex: 1])
+              return OverviewNFTCellViewModel(item1: slided[safeIndex: 0], item2: slided[safeIndex: 1], category1: item, category2: item)
             }
             viewModels.append(contentsOf: vm)
           }
         }
+        
 
         self.displayNFTDataSource[item.collectibleName] = viewModels
       })
+      
+      let favedItems = BalanceStorage.shared.getAllFavedItems()
+      if !favedItems.isEmpty {
+        let favSection = NFTSection(collectibleName: "Favorite NFT", collectibleAddress: "", collectibleSymbol: "FAV", collectibleLogo: "", items: [])
+        self.displayNFTHeader.insert(favSection, at: 0)
+        var viewModels: [OverviewNFTCellViewModel] = []
+        if favedItems.count <= 2 {
+          viewModels.append(OverviewNFTCellViewModel(item1: favedItems[safeIndex: 0]?.0, item2: favedItems[safeIndex: 1]?.0, category1: favedItems[safeIndex: 0]?.1, category2: favedItems[safeIndex: 1]?.1))
+        } else {
+          let chucked = favedItems.chunked(into: 2)
+          let vm = chucked.map { slided in
+            return OverviewNFTCellViewModel(item1: slided[safeIndex: 0]?.0, item2: slided[safeIndex: 1]?.0, category1: slided[safeIndex: 0]?.1, category2: slided[safeIndex: 1]?.1)
+          }
+          viewModels.append(contentsOf: vm)
+        }
+        self.displayNFTDataSource[favSection.collectibleName] = viewModels
+      }
     }
   }
 
@@ -704,9 +722,8 @@ extension OverviewMainViewController: UITableViewDataSource {
       if let viewModel = self.viewModel.displayNFTDataSource[key]?[indexPath.row] {
         cell.updateCell(viewModel)
       }
-      cell.completeHandle = { item in
-        self.delegate?.overviewMainViewController(self, run: .openNFTDetail(item: item, category: self.viewModel.displayNFTHeader[indexPath.section]))
-        
+      cell.completeHandle = { item, category in
+        self.delegate?.overviewMainViewController(self, run: .openNFTDetail(item: item, category: category))
       }
       return cell
     }
@@ -730,7 +747,12 @@ extension OverviewMainViewController: UITableViewDataSource {
       
       let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
       icon.center.y = view.center.y
-      icon.setImage(with: sectionItem.collectibleLogo, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
+      if sectionItem.collectibleSymbol == "FAV" {
+        icon.image = UIImage(named: "fav_section_icon")
+      } else {
+        icon.setImage(with: sectionItem.collectibleLogo, placeholder: nil, size: CGSize(width: 32, height: 32), applyNoir: false)
+      }
+      
       view.addSubview(icon)
       
       let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
