@@ -169,7 +169,7 @@ extension ConfirmSendNFTViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 600
+    return 650
   }
 
   func getPopupContentView() -> UIView {

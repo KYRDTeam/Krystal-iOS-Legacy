@@ -44,7 +44,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYV-7j-2hw">
-                    <rect key="frame" x="0.0" y="58" width="375" height="600"/>
+                    <rect key="frame" x="0.0" y="58" width="375" height="650"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-X5-GEd">
                             <rect key="frame" x="37" y="94.5" width="32" height="32"/>
@@ -243,7 +243,7 @@
                         <constraint firstItem="jWO-s0-9fP" firstAttribute="centerX" secondItem="RYV-7j-2hw" secondAttribute="centerX" id="P68-PT-Mk8"/>
                         <constraint firstItem="cXa-m1-iXe" firstAttribute="leading" secondItem="jgf-X5-GEd" secondAttribute="trailing" constant="8" id="SLl-dl-1do"/>
                         <constraint firstAttribute="trailing" secondItem="ozs-9J-mLc" secondAttribute="trailing" constant="37" id="T0E-dE-diG"/>
-                        <constraint firstAttribute="height" constant="600" id="TBW-pq-0ck"/>
+                        <constraint firstAttribute="height" constant="650" id="TBW-pq-0ck"/>
                         <constraint firstItem="jgf-X5-GEd" firstAttribute="top" secondItem="ORD-iJ-lmQ" secondAttribute="bottom" constant="31" id="Z1E-Lr-X8r"/>
                         <constraint firstAttribute="trailing" secondItem="QxK-ar-eYp" secondAttribute="trailing" constant="37" id="ZO7-mv-2cU"/>
                         <constraint firstItem="cXa-m1-iXe" firstAttribute="bottom" secondItem="jgf-X5-GEd" secondAttribute="bottom" id="apA-XC-14s"/>
