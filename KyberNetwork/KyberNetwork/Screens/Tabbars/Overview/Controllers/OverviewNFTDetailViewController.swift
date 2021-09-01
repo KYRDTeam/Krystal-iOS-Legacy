@@ -111,7 +111,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   }
   
   @IBAction func shareButtonTapped(_ sender: UIButton) {
-    self.navigationController?.openSafari(with: "https://dev-krystal.knstats.com/nft?collectibleAddress=\(self.viewModel.category.collectibleAddress)&tokenID=\(self.viewModel.item.tokenID)?chainId=\(KNGeneralProvider.shared.customRPC.chainID)")
+    self.navigationController?.openSafari(with: "https://defi.krystal.app/nft?collectibleAddress=\(self.viewModel.category.collectibleAddress)&tokenID=\(self.viewModel.item.tokenID)?chainId=\(KNGeneralProvider.shared.customRPC.chainID)")
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {

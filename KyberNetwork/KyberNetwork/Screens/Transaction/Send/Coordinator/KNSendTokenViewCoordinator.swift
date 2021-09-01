@@ -33,18 +33,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
-  lazy var rootViewController: KSendTokenViewController = {
-    let address = self.session.wallet.address.description
-    let viewModel = KNSendTokenViewModel(
-      from: self.from,
-      balances: self.balances,
-      currentAddress: address
-    )
-    let controller = KSendTokenViewController(viewModel: viewModel)
-    controller.loadViewIfNeeded()
-    controller.delegate = self
-    return controller
-  }()
+  var rootViewController: KSendTokenViewController?
   
   var sendNFTController: SendNFTViewController?
 
@@ -62,7 +51,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   }()
 
   deinit {
-    self.rootViewController.removeObserveNotification()
+    self.rootViewController?.removeObserveNotification()
   }
 
   init(
@@ -97,8 +86,18 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.sendNFTController = controller
       self.navigationController.pushViewController(controller, animated: true)
     } else {
-      self.navigationController.pushViewController(self.rootViewController, animated: true)
-      self.rootViewController.coordinatorUpdateBalances(self.balances)
+      let address = self.session.wallet.address.description
+      let viewModel = KNSendTokenViewModel(
+        from: self.from,
+        balances: self.balances,
+        currentAddress: address
+      )
+      let controller = KSendTokenViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      self.navigationController.pushViewController(controller, animated: true)
+      self.rootViewController = controller
+      self.rootViewController?.coordinatorUpdateBalances(self.balances)
     }
   }
 
@@ -111,12 +110,12 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
 extension KNSendTokenViewCoordinator {
   func coordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
     balances.forEach { self.balances[$0.key] = $0.value }
-    self.rootViewController.coordinatorUpdateBalances(self.balances)
+    self.rootViewController?.coordinatorUpdateBalances(self.balances)
     self.searchTokensVC?.updateBalances(self.balances)
   }
 
   func coordinatorShouldOpenSend(from token: TokenObject) {
-    self.rootViewController.coordinatorDidUpdateSendToken(token, balance: self.balances[token.contract])
+    self.rootViewController?.coordinatorDidUpdateSendToken(token, balance: self.balances[token.contract])
   }
 
   func coordinatorTokenObjectListDidUpdate(_ tokenObjects: [TokenObject]) {
@@ -124,7 +123,7 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorGasPriceCachedDidUpdate() {
-    self.rootViewController.coordinatorUpdateGasPriceCached()
+    self.rootViewController?.coordinatorUpdateGasPriceCached()
     self.gasPriceSelector?.coordinatorDidUpdateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -134,11 +133,11 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorOpenSendView(to address: String) {
-    self.rootViewController.coordinatorSend(to: address)
+    self.rootViewController?.coordinatorSend(to: address)
   }
 
   func coordinatorDidUpdateTrackerRate() {
-    self.rootViewController.coordinatorUpdateTrackerRate()
+    self.rootViewController?.coordinatorUpdateTrackerRate()
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -150,15 +149,15 @@ extension KNSendTokenViewCoordinator {
   }
   
   func coordinatorDidUpdatePendingTx() {
-    self.rootViewController.coordinatorDidUpdatePendingTx()
+    self.rootViewController?.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
-    self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.rootViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
   }
 
   func appCoordinatorDidUpdateChain() {
-    self.rootViewController.coordinatorDidUpdateChain()
+    self.rootViewController?.coordinatorDidUpdateChain()
   }
 }
 
@@ -200,7 +199,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
             time: 2.0
           )
         } else {
-          self.rootViewController.coordinatorDidValidateTransferTransaction()
+          self.rootViewController?.coordinatorDidValidateTransferTransaction()
         }
       }
     case .send(let transaction, let ens):
@@ -248,7 +247,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           )
           self.gasPriceSelector?.coordinatorDidUpdateGasLimit(gasLimit)
         } else {
-          self.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()
+          self.rootViewController?.coordinatorFailedToUpdateEstimateGasLimit()
         }
       }
     }
@@ -273,14 +272,14 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     provider.getEstimateGasLimit(
     for: transaction) { [weak self] result in
       if case .success(let gasLimit) = result {
-        self?.rootViewController.coordinatorUpdateEstimatedGasLimit(
+        self?.rootViewController?.coordinatorUpdateEstimatedGasLimit(
           gasLimit,
           from: transaction.transferType.tokenObject(),
           address: transaction.to?.description ?? ""
         )
         self?.gasPriceSelector?.coordinatorDidUpdateGasLimit(gasLimit)
       } else {
-        self?.rootViewController.coordinatorFailedToUpdateEstimateGasLimit()
+        self?.rootViewController?.coordinatorFailedToUpdateEstimateGasLimit()
       }
     }
   }
@@ -332,7 +331,7 @@ extension KNSendTokenViewCoordinator: KNSearchTokenViewControllerDelegate {
       self.searchTokensVC = nil
       if case .select(let token) = event {
         let balance = self.balances[token.contract]
-        self.rootViewController.coordinatorDidUpdateSendToken(token, balance: balance)
+        self.rootViewController?.coordinatorDidUpdateSendToken(token, balance: balance)
       } else if case .add(let token) = event {
         self.delegate?.sendTokenCoordinatorDidSelectAddToken(token)
       }
@@ -415,7 +414,7 @@ extension KNSendTokenViewCoordinator {
     guard let provider = self.session.externalProvider else {
       return
     }
-    self.rootViewController.coordinatorSendTokenUserDidConfirmTransaction()
+    self.rootViewController?.coordinatorSendTokenUserDidConfirmTransaction()
     // send transaction request
     provider.transfer(transaction: transaction, completion: { [weak self] sendResult in
       guard let `self` = self else { return }
@@ -460,7 +459,7 @@ extension KNSendTokenViewCoordinator: KNNewContactViewControllerDelegate {
   func newContactViewController(_ controller: KNNewContactViewController, run event: KNNewContactViewEvent) {
     self.navigationController.popViewController(animated: true) {
       if case .send(let address) = event {
-        self.rootViewController.coordinatorSend(to: address)
+        self.rootViewController?.coordinatorSend(to: address)
       }
     }
   }
@@ -470,9 +469,9 @@ extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
   func listContactViewController(_ controller: KNListContactViewController, run event: KNListContactViewEvent) {
     self.navigationController.popViewController(animated: true) {
       if case .select(let contact) = event {
-        self.rootViewController.coordinatorDidSelectContact(contact)
+        self.rootViewController?.coordinatorDidSelectContact(contact)
       } else if case .send(let address) = event {
-        self.rootViewController.coordinatorSend(to: address)
+        self.rootViewController?.coordinatorSend(to: address)
       }
     }
   }
@@ -547,7 +546,7 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       if self.sendNFTController != nil {
         self.sendNFTController?.coordinatorDidUpdateGasPriceType(type, value: value)
       } else {
-        self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+        self.rootViewController?.coordinatorDidUpdateGasPriceType(type, value: value)
       }
     case .helpPressed:
       self.navigationController.showBottomBannerView(
