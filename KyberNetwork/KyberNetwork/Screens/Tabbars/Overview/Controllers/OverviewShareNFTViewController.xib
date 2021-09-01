@@ -121,6 +121,12 @@
                                         <constraint firstItem="S3y-Or-zlM" firstAttribute="top" secondItem="s6S-ul-uWz" secondAttribute="bottom" constant="22" id="hDW-m5-fm0"/>
                                         <constraint firstAttribute="bottom" secondItem="D96-RB-Vp5" secondAttribute="bottom" constant="31" id="r8j-OI-REs"/>
                                     </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="16"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" name="mainViewBgColor"/>
