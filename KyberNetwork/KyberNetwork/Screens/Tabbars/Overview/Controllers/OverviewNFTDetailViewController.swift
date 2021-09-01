@@ -62,6 +62,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   @IBOutlet weak var tagView: TagListView!
   @IBOutlet weak var descriptionLabel: UILabel!
   @IBOutlet weak var favButton: UIButton!
+  var isLoadedImage: Bool = false
   
   let viewModel: OverviewNFTDetailViewModel
   weak var delegate: OverviewNFTDetailViewControllerDelegate?
@@ -87,7 +88,11 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.assetImageView.setImage(with: self.viewModel.iconURL, placeholder: UIImage(named: "placeholder_nft_item")!, fitSize: self.assetImageView.frame.size)
+    if !self.isLoadedImage {
+      self.assetImageView.setImage(with: self.viewModel.iconURL, placeholder: UIImage(named: "placeholder_nft_item")!, fitSize: self.assetImageView.frame.size)
+      self.isLoadedImage = true
+    }
+    
   }
   
   func coordinatorDidUpdateFavStatus(_ status: Bool) {
