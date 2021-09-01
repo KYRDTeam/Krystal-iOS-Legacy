@@ -242,10 +242,31 @@ class SendNFTViewController: KNBaseViewController {
     self.viewModel.updateEstimatedGasLimit(gasLimit)
     self.updateGasFeeUI()
   }
+  
+  func coordinatorUpdateGasPriceCached() {
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
+    self.updateGasFeeUI()
+  }
 
   func coordinatorFailedToUpdateEstimateGasLimit() {
     DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds60) {
       self.shouldUpdateEstimatedGasLimit(nil)
+    }
+  }
+  
+  func coordinatorDidSelectContact(_ contact: KNContact) {
+    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
+    self.viewModel.updateAddress(contact.address)
+    self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
+    KNContactStorage.shared.updateLastUsed(contact: contact)
+  }
+  
+  func coordinatorSend(to address: String) {
+    let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
+    self.viewModel.updateAddress(address)
+    self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
+    if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
+      KNContactStorage.shared.updateLastUsed(contact: contact)
     }
   }
 

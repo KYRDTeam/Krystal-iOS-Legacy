@@ -121,7 +121,6 @@ class KSendTokenViewController: KNBaseViewController {
     self.setupTokenView()
     self.setupRecentContact()
     self.setupAddressTextField()
-    self.setupSendButton()
 
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.updateGasFeeUI()
@@ -169,13 +168,6 @@ class KSendTokenViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.ensAddressDidTapped(_:)))
     self.ensAddressLabel.addGestureRecognizer(tapGesture)
     self.ensAddressLabel.isUserInteractionEnabled = true
-  }
-
-  fileprivate func setupSendButton() {
-    self.sendButton.setTitle(
-      NSLocalizedString("Transfer Now", value: "Transfer Now", comment: ""),
-      for: .normal
-    )
   }
 
   @objc func tokenBalanceLabelTapped(_ sender: Any) {

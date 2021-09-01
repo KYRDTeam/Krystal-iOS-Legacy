@@ -124,6 +124,7 @@ extension KNSendTokenViewCoordinator {
 
   func coordinatorGasPriceCachedDidUpdate() {
     self.rootViewController?.coordinatorUpdateGasPriceCached()
+    self.sendNFTController?.coordinatorUpdateGasPriceCached()
     self.gasPriceSelector?.coordinatorDidUpdateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -470,8 +471,10 @@ extension KNSendTokenViewCoordinator: KNListContactViewControllerDelegate {
     self.navigationController.popViewController(animated: true) {
       if case .select(let contact) = event {
         self.rootViewController?.coordinatorDidSelectContact(contact)
+        self.sendNFTController?.coordinatorDidSelectContact(contact)
       } else if case .send(let address) = event {
         self.rootViewController?.coordinatorSend(to: address)
+        self.sendNFTController?.coordinatorSend(to: address)
       }
     }
   }
