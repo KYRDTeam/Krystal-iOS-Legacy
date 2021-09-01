@@ -45,7 +45,6 @@ class OverviewShareNFTViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.name
     self.nameLabel.text = self.viewModel.name
     self.subNameLabel.text = self.viewModel.category
-    self.assetContainer.rounded(radius: 16)
   }
   
   override func viewWillAppear(_ animated: Bool) {
