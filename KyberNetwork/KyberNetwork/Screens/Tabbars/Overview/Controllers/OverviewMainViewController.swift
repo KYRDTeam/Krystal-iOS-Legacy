@@ -297,7 +297,7 @@ class OverviewMainViewModel {
         self.displayNFTDataSource[favSection.collectibleName] = viewModels
       }
       if !self.displayNFTHeader.isEmpty {
-        let addMoreSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
+        let addMoreSection = NFTSection(collectibleName: "add-more-krystal", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
         self.displayNFTHeader.append(addMoreSection)
       }
     }
