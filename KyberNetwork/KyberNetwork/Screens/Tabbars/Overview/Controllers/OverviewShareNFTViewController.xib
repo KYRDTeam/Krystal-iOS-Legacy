@@ -21,6 +21,7 @@
             <connections>
                 <outlet property="assetContainer" destination="Rg5-2m-beD" id="MuY-dl-Cki"/>
                 <outlet property="assetImageView" destination="S3y-Or-zlM" id="ZfT-P7-Ozi"/>
+                <outlet property="imageContainer" destination="F2p-Zc-4dI" id="u9W-AQ-vPP"/>
                 <outlet property="nameLabel" destination="f4x-OH-9rN" id="ryA-d5-Chp"/>
                 <outlet property="subNameLabel" destination="D96-RB-Vp5" id="hkX-Se-EG7"/>
                 <outlet property="titleLabel" destination="0gO-wz-rIv" id="Nom-8L-rCf"/>
