@@ -163,7 +163,7 @@ class SendNFTViewController: KNBaseViewController {
   }
   
   func updateUINFTItem() {
-    self.nftImageView.setImage(with: self.viewModel.item.externalData.image, placeholder: nil, size: nil, applyNoir: false)
+    self.nftImageView.setImage(with: self.viewModel.item.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
     self.nftNameLabel.text = self.viewModel.item.externalData.name
     self.nftIDLabel.text = "#" + self.viewModel.item.tokenID
   }
