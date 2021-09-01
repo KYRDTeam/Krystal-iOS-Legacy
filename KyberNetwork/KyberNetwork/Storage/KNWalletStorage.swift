@@ -21,7 +21,7 @@ class KNWalletStorage {
     return self.realm.objects(KNWalletObject.self)
       .filter { return !$0.address.isEmpty }
   }
-  
+
   var watchWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
       return object.isWatchWallet
@@ -62,10 +62,11 @@ class KNWalletStorage {
     if self.realm == nil { return }
     if realm.objects(KNWalletObject.self).isInvalidated { return }
     self.realm.beginWrite()
-    let objs = realm.objects(KNWalletObject.self).filter { (object) -> Bool in
-      return object.address.lowercased() == wallet.address.lowercased()
+    
+    if let obj = self.get(forPrimaryKey: wallet.address) {
+      self.realm.delete(obj)
     }
-    self.realm.delete(objs)
+    
     try! self.realm.commitWrite()
   }
 

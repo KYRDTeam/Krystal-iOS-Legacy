@@ -187,6 +187,11 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
 
   fileprivate func showDeleteWallet(_ wallet: KNWalletObject) {
     guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      if wallet.address.lowercased() == self.session.wallet.address.description.lowercased(), let next = self.session.keystore.wallets.last {
+        self.listWalletsViewControllerDidSelectWallet(next)
+      }
+      KNWalletStorage.shared.delete(wallet: wallet)
+      self.rootViewController.coordinatorDidUpdateWalletsList()
       return
     }
     self.listWalletsViewControllerDidSelectRemoveWallet(wal)
