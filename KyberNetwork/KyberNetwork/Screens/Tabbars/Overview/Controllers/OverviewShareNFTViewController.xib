@@ -123,7 +123,7 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
                             <constraints>
                                 <constraint firstItem="F2p-Zc-4dI" firstAttribute="top" secondItem="Rg5-2m-beD" secondAttribute="top" constant="18" id="DWs-96-Qdc"/>
                                 <constraint firstAttribute="bottom" secondItem="F2p-Zc-4dI" secondAttribute="bottom" constant="18" id="KKW-uh-GNz"/>

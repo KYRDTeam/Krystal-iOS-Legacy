@@ -26,7 +26,11 @@ struct OverviewNFTDetailViewModel {
   }
   
   var tags: [String] {
-    return ["#\(self.item.tokenID)", self.item.externalData.name]
+    var result = ["#\(self.item.tokenID)"]
+    if !self.item.externalData.name.isEmpty {
+      result.append(self.item.externalData.name)
+    }
+    return result
   }
   
   var description: String {
@@ -39,6 +43,10 @@ struct OverviewNFTDetailViewModel {
   
   var displayFavStatusImage: UIImage? {
     return self.isFaved ? UIImage(named: "fav_star_icon") : UIImage(named: "unFav_star_icon")
+  }
+  
+  var subTitle: String {
+    return self.category.collectibleName
   }
 }
 
@@ -71,7 +79,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
     super.viewDidLoad()
 
     self.titleLabel.text = self.viewModel.title
-    self.subTitleLabel.text = self.viewModel.title
+    self.subTitleLabel.text = self.viewModel.subTitle
     self.tagView.addTags(self.viewModel.tags)
     self.descriptionLabel.text = self.viewModel.description
     self.favButton.setImage(self.viewModel.displayFavStatusImage, for: .normal)
