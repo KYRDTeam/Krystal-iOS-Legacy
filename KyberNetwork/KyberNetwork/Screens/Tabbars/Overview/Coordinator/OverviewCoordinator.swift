@@ -702,10 +702,6 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
         }
       }
-      
-      
-      
-      
     }
   }
 }
@@ -738,8 +734,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
           provider.request(.registerNFTFavorite(address: self.session.wallet.address.description, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
-                
-                self.navigationController.showTopBannerView(message: "Successful \(status ? "register" : "un-register") favorite for \(item.externalData.name)")
+                self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorite" : "Remove from your favorite" ))
                 controller.coordinatorDidUpdateFavStatus(status)
               } else if let error = json["error"] as? String {
                 self.navigationController.showTopBannerView(message: error)
