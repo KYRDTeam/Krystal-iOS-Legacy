@@ -77,11 +77,14 @@
                     <rect key="frame" x="0.0" y="113" width="375" height="691"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rg5-2m-beD">
-                            <rect key="frame" x="0.0" y="22" width="375" height="445"/>
+                            <rect key="frame" x="0.0" y="22" width="375" height="533"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F2p-Zc-4dI">
-                                    <rect key="frame" x="18" y="18" width="339" height="409"/>
+                                    <rect key="frame" x="18" y="18" width="339" height="497"/>
                                     <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_share_nft" translatesAutoresizingMaskIntoConstraints="NO" id="N6J-D4-4PU">
+                                            <rect key="frame" x="0.0" y="0.0" width="339" height="497"/>
+                                        </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="krystal_banner" translatesAutoresizingMaskIntoConstraints="NO" id="nlF-AR-Zfe">
                                             <rect key="frame" x="27" y="17" width="120" height="36"/>
                                         </imageView>
@@ -89,19 +92,19 @@
                                             <rect key="frame" x="278" y="12" width="48" height="48"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S3y-Or-zlM">
-                                            <rect key="frame" x="0.0" y="82" width="339" height="227"/>
+                                            <rect key="frame" x="0.0" y="82" width="339" height="315"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" priority="100" constant="227" id="ZZS-a0-9pN"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4x-OH-9rN">
-                                            <rect key="frame" x="34" y="331" width="30" height="24"/>
+                                            <rect key="frame" x="34" y="419" width="30" height="24"/>
                                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D96-RB-Vp5">
-                                            <rect key="frame" x="34" y="359" width="22.5" height="19"/>
+                                            <rect key="frame" x="34" y="447" width="22.5" height="19"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -110,12 +113,16 @@
                                     <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstItem="nlF-AR-Zfe" firstAttribute="top" secondItem="F2p-Zc-4dI" secondAttribute="top" constant="17" id="1xT-vM-j6G"/>
+                                        <constraint firstItem="N6J-D4-4PU" firstAttribute="top" secondItem="F2p-Zc-4dI" secondAttribute="top" id="8kR-s5-kUU"/>
                                         <constraint firstItem="D96-RB-Vp5" firstAttribute="leading" secondItem="f4x-OH-9rN" secondAttribute="leading" id="E4i-4J-WWT"/>
                                         <constraint firstItem="D96-RB-Vp5" firstAttribute="top" secondItem="f4x-OH-9rN" secondAttribute="bottom" constant="4" id="EKq-1G-0NY"/>
+                                        <constraint firstAttribute="bottom" secondItem="N6J-D4-4PU" secondAttribute="bottom" id="Efk-vr-e04"/>
                                         <constraint firstItem="s6S-ul-uWz" firstAttribute="top" secondItem="F2p-Zc-4dI" secondAttribute="top" constant="12" id="HlX-N8-DT5"/>
                                         <constraint firstAttribute="trailing" secondItem="s6S-ul-uWz" secondAttribute="trailing" constant="13" id="Whi-m1-11T"/>
                                         <constraint firstItem="f4x-OH-9rN" firstAttribute="leading" secondItem="F2p-Zc-4dI" secondAttribute="leading" constant="34" id="YUP-db-bJ5"/>
                                         <constraint firstItem="f4x-OH-9rN" firstAttribute="top" secondItem="S3y-Or-zlM" secondAttribute="bottom" constant="22" id="aFR-hv-X6H"/>
+                                        <constraint firstItem="N6J-D4-4PU" firstAttribute="leading" secondItem="F2p-Zc-4dI" secondAttribute="leading" id="aGx-RD-50R"/>
+                                        <constraint firstAttribute="trailing" secondItem="N6J-D4-4PU" secondAttribute="trailing" id="ekQ-3r-emU"/>
                                         <constraint firstItem="S3y-Or-zlM" firstAttribute="leading" secondItem="F2p-Zc-4dI" secondAttribute="leading" id="fLn-bg-NU4"/>
                                         <constraint firstAttribute="trailing" secondItem="S3y-Or-zlM" secondAttribute="trailing" id="fic-Wm-fYb"/>
                                         <constraint firstItem="nlF-AR-Zfe" firstAttribute="leading" secondItem="F2p-Zc-4dI" secondAttribute="leading" constant="27" id="gTn-7n-Abl"/>
@@ -139,7 +146,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-Uv-a3P">
-                            <rect key="frame" x="142" y="489" width="91" height="39"/>
+                            <rect key="frame" x="142" y="577" width="91" height="39"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGD-Ve-9Ac">
                                     <rect key="frame" x="0.0" y="0.0" width="38" height="39"/>
@@ -222,6 +229,7 @@
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
+        <image name="background_share_nft" width="340" height="497"/>
         <image name="download_icon" width="24" height="24"/>
         <image name="krystal_banner" width="120" height="36"/>
         <image name="nft_qr_code" width="48" height="48"/>

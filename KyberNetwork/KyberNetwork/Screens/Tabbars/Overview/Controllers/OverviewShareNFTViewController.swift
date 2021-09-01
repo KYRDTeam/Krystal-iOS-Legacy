@@ -47,7 +47,6 @@ class OverviewShareNFTViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.name
     self.nameLabel.text = self.viewModel.name
     self.subNameLabel.text = self.viewModel.category
-    self.imageContainer.backgroundColor = UIColor(patternImage: UIImage(named: "background_share_nft")!)
   }
   
   override func viewWillAppear(_ animated: Bool) {
