@@ -3,7 +3,7 @@
 import UIKit
 
 extension UIImageView {
-  func setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil) {
+  func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
       if let needTofit = fitSize {
         let widthRatio = needTofit.width / cachedImg.size.width

@@ -350,6 +350,7 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
           return
         }
         self.didConfirmTransfer(transaction, historyTransaction: historyTransaction)
+        controller.dismiss(animated: true, completion: nil)
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
@@ -377,6 +378,7 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
               provider.minTxCount += 1
               EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
               self.openTransactionStatusPopUp(transaction: historyTransaction)
+              controller.dismiss(animated: true, completion: nil)
             case .failure(let error):
               self.confirmVC?.resetActionButtons()
               KNNotificationUtil.postNotification(

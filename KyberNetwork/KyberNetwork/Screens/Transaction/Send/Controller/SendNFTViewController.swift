@@ -161,7 +161,7 @@ class SendNFTViewController: KNBaseViewController {
     self.setupRecentContact()
     self.updateUINFTItem()
   }
-  
+
   func updateUINFTItem() {
     self.nftImageView.setImage(with: self.viewModel.item.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
     self.nftNameLabel.text = self.viewModel.item.externalData.name
