@@ -535,7 +535,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func updateUIWalletList() {
-    self.walletNameLabel.text = self.viewModel.session.wallet.address.description
+    self.walletNameLabel.text = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
   }
 
   fileprivate func reloadUI() {

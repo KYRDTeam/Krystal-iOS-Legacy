@@ -78,6 +78,13 @@ class KNSendTokenViewModel: NSObject {
   var navTitle: String {
     return "transfer".toBeLocalised().uppercased()
   }
+  
+  var walletName: String {
+    let wallet = KNWalletStorage.shared.wallets.first { obj in
+      return self.currentWalletAddress.lowercased() == obj.address.lowercased()
+    }
+    return wallet?.name ?? "---"
+  }
 
   var tokenButtonAttributedText: NSAttributedString {
     // only have symbol and logo

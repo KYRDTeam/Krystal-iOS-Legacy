@@ -161,7 +161,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.setupTokensView()
     self.setupContinueButton()
@@ -659,7 +659,7 @@ extension KSwapViewController {
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
     self.updateViewAmountDidChange()
-    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.updateUIPendingTxIndicatorView()
     self.view.layoutIfNeeded()

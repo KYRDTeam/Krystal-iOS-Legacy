@@ -107,7 +107,7 @@ class EarnOverviewViewController: KNBaseViewController {
   }
   
   fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
-    self.walletListButton.setTitle(wallet.address.description, for: .normal)
+    self.walletListButton.setTitle(wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
