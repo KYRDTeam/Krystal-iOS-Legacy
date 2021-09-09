@@ -131,13 +131,13 @@ lane :build do
       }
     }
   )
-  
+
   # sentry 
   sentry_upload_dsym(
     auth_token: sentry_token,
     org_slug: org_slug,
     project_slug: project_slug,
-    api_host: sentry_url
+    url: sentry_url
   )
 end
 
