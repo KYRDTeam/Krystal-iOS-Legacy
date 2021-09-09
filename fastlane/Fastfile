@@ -37,6 +37,7 @@ lane :all do
   install_profiles
   update_project
   build
+  sentry_upload
 end
 
 # prepare_keychain create a tmp keychain and install 
@@ -131,15 +132,16 @@ lane :build do
       }
     }
   )
+end
 
-  # sentry 
+lane :sentry_upload do 
   sentry_upload_dsym(
     auth_token: sentry_token,
     org_slug: org_slug,
     project_slug: project_slug,
     url: sentry_url
   )
-end
+end 
 
 # bump_build_number increment xcodeproject's build number 
 # this lane will be call at the end of build phase (after deploy to OTA success)
