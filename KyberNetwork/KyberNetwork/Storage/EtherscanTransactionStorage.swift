@@ -209,7 +209,7 @@ class EtherscanTransactionStorage {
     }
   }
 
-  func generateKrytalTransactionModel() {
+  func generateKrytalTransactionModel(completion: @escaping () -> Void) {
     guard let unwrapped = self.wallet else {
       return
     }
@@ -275,6 +275,7 @@ class EtherscanTransactionStorage {
     
     self.historyTransactionModel = historyModel
     Storage.store(self.historyTransactionModel, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyTransactionsStoreFileName)
+    completion()
     DispatchQueue.main.async {
       KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
       newestTxs.forEach { (item) in

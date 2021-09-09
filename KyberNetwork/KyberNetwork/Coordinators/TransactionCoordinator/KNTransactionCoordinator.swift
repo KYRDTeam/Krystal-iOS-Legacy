@@ -10,6 +10,7 @@ import BigInt
 import TrustKeystore
 import TrustCore
 import Moya
+import Sentry
 
 class KNTransactionCoordinator {
 
@@ -74,13 +75,7 @@ class KNTransactionCoordinator {
 extension KNTransactionCoordinator {
   func startUpdatingCompletedTransactions() {
     self.tokenTxTimer?.invalidate()
-//    if KNAppTracker.transactionLoadState(for: self.wallet.address) != .done {
-//      self.initialFetchERC20TokenTransactions(
-//        forAddress: self.wallet.address,
-//        page: 1,
-//        completion: nil
-//      )
-//    }
+
     self.loadEtherscanTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds60,
@@ -100,7 +95,12 @@ extension KNTransactionCoordinator {
   }
 
   func loadEtherscanTransactions() {
+    let tx = SentrySDK.startTransaction(
+      name: "load-transaction-history-request",
+      operation: "load-transaction-history-operation"
+    )
     let group = DispatchGroup()
+    let span1 = tx.startChild(operation: "load-token-tx-history")
     group.enter()
     let startBlockToken = Int(EtherscanTransactionStorage.shared.getCurrentTokenTransactionStartBlock()) ?? 0
     self.fetchListERC20TokenTransactions(
@@ -114,11 +114,13 @@ extension KNTransactionCoordinator {
             EtherscanTransactionStorage.shared.appendTokenTransactions(transactions)
           }
         }
+        span1.finish()
         group.leave()
       }
     )
 
     group.enter()
+    let span2 = tx.startChild(operation: "load-internal-tx-history")
     let lastBlockInternalTx = Int(EtherscanTransactionStorage.shared.getCurrentInternalTransactionStartBlock()) ?? 0
     self.fetchInternalTransactions(
       forAddress: self.wallet.address.description,
@@ -131,11 +133,13 @@ extension KNTransactionCoordinator {
             EtherscanTransactionStorage.shared.appendInternalTransactions(transactions)
           }
         }
+        span2.finish()
         group.leave()
       }
     )
     
     group.enter()
+    let span3 = tx.startChild(operation: "load-nft-tx-history")
     let lastNFTInternalTx = Int(EtherscanTransactionStorage.shared.getCurrentNFTTransactionStartBlock()) ?? 0
     self.fetchNFTTransactions(
       forAddress: self.wallet.address.description,
@@ -148,11 +152,13 @@ extension KNTransactionCoordinator {
             EtherscanTransactionStorage.shared.appendNFTTransactions(transactions)
           }
         }
+        span3.finish()
         group.leave()
       }
     )
 
     group.enter()
+    let span4 = tx.startChild(operation: "load-all-tx-history")
     let lastBlockAllTx = Int(EtherscanTransactionStorage.shared.getCurrentTransactionStartBlock()) ?? 0
     self.fetchAllTransactions(
       forAddress: self.wallet.address.description,
@@ -165,12 +171,17 @@ extension KNTransactionCoordinator {
             EtherscanTransactionStorage.shared.appendTransactions(transactions)
           }
         }
+        span4.finish()
         group.leave()
       }
     )
     group.notify(queue: .global()) {
 //      KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded()
-      EtherscanTransactionStorage.shared.generateKrytalTransactionModel()
+      let span5 = tx.startChild(operation: "generate-model-history")
+      EtherscanTransactionStorage.shared.generateKrytalTransactionModel {
+        span5.finish()
+        tx.finish()
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import Result
 import TrustKeystore
 import TrustCore
 import Moya
+import Sentry
 
 class KNLoadBalanceCoordinator {
 
@@ -21,8 +22,6 @@ class KNLoadBalanceCoordinator {
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
-
-
   
 
   deinit {
@@ -39,14 +38,43 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadAllBalances() {
-    self.loadLendingBalances()
-    self.loadLendingDistributionBalance()
+    let tx = SentrySDK.startTransaction(
+      name: "load-balance-request",
+      operation: "load-balance-operation"
+    )
+    let group = DispatchGroup()
+    group.enter()
+    let span1 = tx.startChild(operation: "load-lending-balances")
+    self.loadLendingBalances { success in
+      span1.finish()
+      group.leave()
+    }
+    group.enter()
+    let span2 = tx.startChild(operation: "load-lending-distribution-balances")
+    self.loadLendingDistributionBalance { success in
+      span2.finish()
+      group.leave()
+    }
     if KNEnvironment.default == .ropsten {
       self.loadBalanceForCustomToken()
       self.loadAllTokenBalance()
     } else {
-      self.loadTokenBalancesFromApi()
-      self.loadNFTBalance()
+      group.enter()
+      let span3 = tx.startChild(operation: "load-token-balances")
+      self.loadTokenBalancesFromApi { success in
+        span3.finish()
+        group.leave()
+      }
+      group.enter()
+      let span4 = tx.startChild(operation: "load-nft-balances")
+      self.loadNFTBalance { success in
+        span4.finish()
+        group.leave()
+      }
+    }
+    
+    group.notify(queue: .global()) {
+      tx.finish()
     }
     
   }
@@ -285,7 +313,7 @@ class KNLoadBalanceCoordinator {
 //    }
   }
   
-  func loadTokenBalancesFromApi() {
+  func loadTokenBalancesFromApi(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getBalances(address: self.session.wallet.address.description)) { (result) in
       switch result {
@@ -303,17 +331,19 @@ class KNLoadBalanceCoordinator {
           BalanceStorage.shared.setBalances(balances)
           KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded(tokens)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-
+          completion(true)
         } catch let error {
           print("[LoadBalance] \(error.localizedDescription)")
+          completion(false)
         }
       case .failure(let error):
         print("[LoadBalance] \(error.localizedDescription)")
+        completion(false)
       }
     }
   }
 
-  func loadNFTBalance() {
+  func loadNFTBalance(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
       switch result {
@@ -324,17 +354,19 @@ class KNLoadBalanceCoordinator {
           print("[LoadNFT] \(data)")
           BalanceStorage.shared.setNFTBalance(data.balances)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-
+          completion(true)
         } catch let error {
           print("[LoadNFT] \(error.localizedDescription)")
+          completion(false)
         }
       case .failure(let error):
         print("[LoadNFT] \(error.localizedDescription)")
+        completion(false)
       }
     }
   }
 
-  func loadLendingBalances() {
+  func loadLendingBalances(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getLendingBalance(address: self.session.wallet.address.description)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
@@ -351,20 +383,22 @@ class KNLoadBalanceCoordinator {
         }
         BalanceStorage.shared.setLendingBalances(balances)
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+        completion(true)
       } else {
-        self.loadLendingBalances()
+        self.loadLendingBalances(completion: completion)
       }
     }
   }
 
-  func loadLendingDistributionBalance() {
+  func loadLendingDistributionBalance(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.address.description)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)
+        completion(true)
       } else {
-        self.loadLendingDistributionBalance()
+        self.loadLendingDistributionBalance(completion: completion)
       }
     }
   }

@@ -69,7 +69,9 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   func start() {
     if EtherscanTransactionStorage.shared.getHistoryTransactionModel().isEmpty {
       DispatchQueue.global(qos: .background).async {
-        EtherscanTransactionStorage.shared.generateKrytalTransactionModel()
+        EtherscanTransactionStorage.shared.generateKrytalTransactionModel {
+          //TODO: fill placeholder
+        }
       }
     }
     

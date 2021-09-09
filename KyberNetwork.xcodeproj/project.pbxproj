@@ -4723,6 +4723,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SAMKeychain/SAMKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/SeedStackViewController/StackViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftChart/SwiftChart.framework",
@@ -4769,6 +4770,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SAMKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StackViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StatefulViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftChart.framework",
@@ -5429,7 +5431,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -5462,7 +5464,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
