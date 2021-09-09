@@ -44,12 +44,23 @@ jobs:
         run: |
           COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
           echo "::set-output name=value::$COMMIT_HASH"
-          
+
       - name: Get version tag
         id: version_tag
         run: |
           [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
           echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
+
+      # This step will automatically run if any of the previous steps fail.
+      # DO NOT CHANGE IT
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure
 
   build-ios:
     needs:
@@ -76,6 +87,11 @@ jobs:
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+      # sentry environments
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      ORG_SLUG: ${{ secrets.ORG_SLUG }}
+      PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
+      SENTRY_URL: ${{ secrets.SENTRY_URL }}
 
     steps:
       - name: Checkout
@@ -86,6 +102,10 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
+          
+      - name: Setup Sentry CLI
+        shell: bash
+        run: curl -sL https://sentry.io/get-cli/ | bash
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
@@ -188,4 +208,15 @@ jobs:
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
-          bundle-install-path: 'vendor/bundle'
+          bundle-install-path: "vendor/bundle"
+
+      # This step will automatically run if any of the previous steps fail.
+      # DO NOT CHANGE IT
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure

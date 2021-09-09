@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# This script is created to send a notification to Telegram 
+# when a job failed. 
+# This script should be run on GitHub Actions because It needs some
+# GitHub's environment variables. 
+# Refer: https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
+#
+# Author: @vietanhduong
+#
+# Environments required:
+# * TELEGRAM_TOKEN: Telegram bot token. You can get it at @botfather.
+# * TELEGRAM_GROUP_ID: A group where you want to send notification. 
+#   It could be a Group ID or a Channel ID.
+
+set -eo pipefail
+
+err() {
+  echo -e "ERR: $*" >&2
+}
+
+info() {
+  echo -e "INFO: $*"
+}
+
+# Make sure 'jq' already installed
+if ! command -v "jq" &> /dev/null; then 
+  err "please install jq first!" && exit 1
+fi
+
+# Verify telegram token
+if [[ -z "$TELEGRAM_TOKEN" ]]; then 
+  err "TELEGRAM_TOKEN is required" && exit 1
+fi
+
+# Verify telegram group id
+if [[ -z "$TELEGRAM_GROUP_ID" ]]; then 
+  err "TELEGRAM_GROUP_ID is required" && exit 1
+fi
+
+# Message template:
+# ❌ [REPO_NAME]: Some jobs were NOT successful. [View workflow run](link to workflow)
+# Information
+# ---
+# Repo: [REPO_NAME]
+# Job: [GITHUB_JOB]
+# Commit: [GITHUB_SHA]
+TELEGRAM_BASE_URL="https://api.telegram.org"
+GITHUB_BASE_URL="https://github.com/$GITHUB_REPOSITORY"
+
+workflow_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$RUN_ID"
+
+# Extract repo name
+# e.g: vietanhduong/repo-name -> output: repo-name
+IFS='/' read -ra _tmp <<< "$GITHUB_REPOSITORY"
+repo_name="${_tmp[${#_tmp[*]} - 1]}"
+
+title="❌ *$repo_name*: Some jobs were *NOT* successful. [View workflow]($workflow_url)"
+info="*Information*\n---\n*Repo*: \`$repo_name\`\n*Job*: \` $GITHUB_JOB\`"
+
+git=""
+if [[ "$GITHUB_EVENT_NAME" = "pull_request" ]]; then 
+  pr_number=$(echo "$GITHUB_REF" | awk 'BEGIN { FS = "/" } ; { print $3 }')
+  pr_url="$GITHUB_BASE_URL/pull/$pr_number"
+  git="*PR*: [#$pr_number]($pr_url)"
+else 
+  commit_url="$GITHUB_BASE_URL/commit/$GITHUB_SHA"
+  short_commit="$(echo "$GITHUB_SHA" | head -c7)"
+  git="*Commit:* [$short_commit]($commit_url)"
+fi
+
+message="$title\n$info\n$git"
+payload="{\"chat_id\": \"$TELEGRAM_GROUP_ID\", \"text\": \"$message\", \"parse_mode\": \"Markdown\"}"
+CODE=$(curl -sSL -XPOST -o /dev/null -H "Content-Type: application/json" -w "%{http_code}" -d "$payload" "$TELEGRAM_BASE_URL/bot$TELEGRAM_TOKEN/sendMessage")
+
+if [[ ! "$CODE" = 20* ]]; then 
+  err "Notify to Telegram failed with code: $CODE"
+  exit 1
+fi
+
+exit 0

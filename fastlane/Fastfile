@@ -26,13 +26,18 @@ dev_profile_path = ENV["DEV_PROFILE_PATH"]
 krystal_dev_profile_path = ENV["KRYSTAL_DEV_PROFILE_PATH"]
 ad_hoc_profile_path = ENV["AD_HOC_PROFILE_PATH"]
 ext_ad_hoc_profile_path = ENV["EXT_AD_HOC_PROFILE_PATH"]
-
+# sentry
+sentry_token = ENV["SENTRY_TOKEN"]
+org_slug = ENV["ORG_SLUG"]
+project_slug = ENV["PROJECT_SLUG"]
+sentry_url = ENV["SENTRY_URL"]
 
 lane :all do
   prepare_keychain
   install_profiles
   update_project
   build
+  sentry_upload
 end
 
 # prepare_keychain create a tmp keychain and install 
@@ -108,6 +113,7 @@ end
 # build build ipa and export by ad-hoc method
 # output path: base_repo/archives/KyberSwap.ipa
 lane :build do
+  # build app
   @tid = bundle_id + ".KrystalNotificationServiceExtension" 
   build_app(
     workspace: "KyberNetwork.xcworkspace",
@@ -127,6 +133,15 @@ lane :build do
     }
   )
 end
+
+lane :sentry_upload do 
+  sentry_upload_dsym(
+    auth_token: sentry_token,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    url: sentry_url
+  )
+end 
 
 # bump_build_number increment xcodeproject's build number 
 # this lane will be call at the end of build phase (after deploy to OTA success)
