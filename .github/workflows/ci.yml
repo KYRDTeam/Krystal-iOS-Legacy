@@ -87,6 +87,11 @@ jobs:
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+      # sentry environments
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      ORG_SLUG: ${{ secrets.ORG_SLUG }}
+      PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
+      SENTRY_URL: ${{ secrets.SENTRY_URL }}
 
     steps:
       - name: Checkout
