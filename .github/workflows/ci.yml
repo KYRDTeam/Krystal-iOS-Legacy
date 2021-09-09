@@ -97,6 +97,10 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
+          
+      - name: Setup Sentry CLI
+        shell: bash
+        run: curl -sL https://sentry.io/get-cli/ | bash
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
