@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       options.dsn = "https://1b458eab2f25425a8e6472f00d5c7a54@sentry-v2.knstats.com/33"
       options.debug = true // Enabled debug when first installing is always helpful
       options.tracesSampleRate = 1.0
+      options.environment = KNEnvironment.default.displayName
     }
 
     return true
