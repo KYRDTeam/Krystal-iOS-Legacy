@@ -55,22 +55,18 @@ class KNLoadBalanceCoordinator {
       span2.finish()
       group.leave()
     }
-    if KNEnvironment.default == .ropsten {
-      self.loadBalanceForCustomToken()
-      self.loadAllTokenBalance()
-    } else {
-      group.enter()
-      let span3 = tx.startChild(operation: "load-token-balances")
-      self.loadTokenBalancesFromApi { success in
-        span3.finish()
-        group.leave()
-      }
-      group.enter()
-      let span4 = tx.startChild(operation: "load-nft-balances")
-      self.loadNFTBalance { success in
-        span4.finish()
-        group.leave()
-      }
+    
+    group.enter()
+    let span3 = tx.startChild(operation: "load-token-balances")
+    self.loadTokenBalancesFromApi { success in
+      span3.finish()
+      group.leave()
+    }
+    group.enter()
+    let span4 = tx.startChild(operation: "load-nft-balances")
+    self.loadNFTBalance { success in
+      span4.finish()
+      group.leave()
     }
     
     group.notify(queue: .global()) {

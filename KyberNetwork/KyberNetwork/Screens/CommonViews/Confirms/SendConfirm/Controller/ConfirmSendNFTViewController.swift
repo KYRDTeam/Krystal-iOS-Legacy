@@ -15,14 +15,18 @@ class ConfirmSendNFTViewModel {
   let gasLimit: BigInt
   let ens: String?
   let address: String
+  let amount: Int
+  let supportERC721: Bool
   
-  init(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, ens: String?) {
+  init(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, ens: String?, amount: Int, supportERC721: Bool) {
     self.nftItem = nftItem
     self.nftCategory = nftCategory
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
     self.address = address
     self.ens = ens
+    self.amount = amount
+    self.supportERC721 = supportERC721
   }
   
   var addressToIcon: UIImage? {
@@ -90,6 +94,8 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   @IBOutlet weak var nftImageView: UIImageView!
   @IBOutlet weak var nftNameLabel: UILabel!
   @IBOutlet weak var nftIDLabel: UILabel!
+  @IBOutlet weak var amountTitleLabel: UILabel!
+  @IBOutlet weak var amountLabel: UILabel!
   
   weak var delegate: KConfirmSendViewControllerDelegate?
   fileprivate let viewModel: ConfirmSendNFTViewModel
@@ -128,10 +134,13 @@ class ConfirmSendNFTViewController: KNBaseViewController {
     gasPriceTextLabel.text = viewModel.transactionGasPriceString
     self.confirmButton.rounded(radius: 16)
     self.cancelButton.rounded(radius: 16)
-    
+
     let chain = KNGeneralProvider.shared.chainName
     self.warningMessage.text = "Please sure that this address supports \(chain) network. You will lose your assets if this address doesn't support \(chain) compatible retrieval"
     self.updateUINFTItem()
+    self.amountTitleLabel.isHidden = self.viewModel.supportERC721
+    self.amountLabel.isHidden = self.viewModel.supportERC721
+    self.amountLabel.text = self.viewModel.supportERC721 ? "" : "\(self.viewModel.amount)"
   }
   
   func updateUINFTItem() {
@@ -149,7 +158,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
       let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "NFT", toSymbol: nil, transactionDescription: "Tranfering \(self.viewModel.nftItem.externalData.name)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0))
       historyTransaction.transactionSuccessDescription = "Tranfer successfull \(self.viewModel.nftItem.externalData.name)"
       
-      self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(nftItem: self.viewModel.nftItem, nftCategory: self.viewModel.nftCategory, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, address: self.viewModel.address, historyTransaction: historyTransaction))
+      self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(nftItem: self.viewModel.nftItem, nftCategory: self.viewModel.nftCategory, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, address: self.viewModel.address, amount: self.viewModel.amount, isSupportERC721: self.viewModel.supportERC721, historyTransaction: historyTransaction))
     })
   }
   

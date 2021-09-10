@@ -22,10 +22,13 @@ class SendNFTViewModel {
   
   let item: NFTItem
   let category: NFTSection
+  var selectedBalance: Int = 0
+  let isSupportERC721: Bool
   
-  init(item: NFTItem, category: NFTSection) {
+  init(item: NFTItem, category: NFTSection, supportERC721: Bool) {
     self.item = item
     self.category = category
+    self.isSupportERC721 = supportERC721
   }
   
   func updateAddress(_ address: String) {
@@ -42,7 +45,7 @@ class SendNFTViewModel {
       self.isUsingEns = ensAddr != nil
     }
   }
-  
+
   var displayAddress: String? {
     if self.address == nil { return self.addressString }
     if let contact = KNContactStorage.shared.contacts.first(where: { self.addressString.lowercased() == $0.address.lowercased() }) {
@@ -50,7 +53,7 @@ class SendNFTViewModel {
     }
     return self.addressString
   }
-  
+
   var displayEnsMessage: String? {
     if self.addressString.isEmpty { return nil }
     if self.address == nil { return "Invalid address or your ens is not mapped yet" }
@@ -120,6 +123,10 @@ class SendNFTViewModel {
   func updateEstimatedGasLimit(_ gasLimit: BigInt) {
     self.gasLimit = gasLimit
   }
+  
+  var displayTotalBalance: String {
+    return "NFT Balance: \(self.item.balanceInt)"
+  }
 }
 
 class SendNFTViewController: KNBaseViewController {
@@ -139,7 +146,11 @@ class SendNFTViewController: KNBaseViewController {
   @IBOutlet weak var nftImageView: UIImageView!
   @IBOutlet weak var nftNameLabel: UILabel!
   @IBOutlet weak var nftIDLabel: UILabel!
-  
+  @IBOutlet weak var amountTextField: UITextField!
+  @IBOutlet weak var amountContainerView: UIView!
+  @IBOutlet weak var amountTitleView: UILabel!
+  @IBOutlet weak var balanceLabel: UILabel!
+  @IBOutlet weak var addressTitleTopContraint: NSLayoutConstraint!
   
   fileprivate let viewModel: SendNFTViewModel
   weak var delegate: KSendTokenViewControllerDelegate?
@@ -160,6 +171,22 @@ class SendNFTViewController: KNBaseViewController {
     self.updateUIEnsMessage()
     self.setupRecentContact()
     self.updateUINFTItem()
+    self.updateAmountViews()
+  }
+  
+  func updateAmountViews() {
+    if self.viewModel.isSupportERC721 {
+      self.addressTitleTopContraint.constant = 40
+      self.amountContainerView.isHidden = true
+      self.amountTitleView.isHidden = true
+      self.balanceLabel.isHidden = true
+    } else {
+      self.addressTitleTopContraint.constant = 150
+      self.amountContainerView.isHidden = false
+      self.amountTitleView.isHidden = false
+      self.balanceLabel.isHidden = false
+      self.balanceLabel.text = self.viewModel.displayTotalBalance
+    }
   }
 
   func updateUINFTItem() {
@@ -184,7 +211,7 @@ class SendNFTViewController: KNBaseViewController {
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
     if self.viewModel.address == nil { return }
 
-    let event = KSendTokenViewEvent.estimateGasLimitTransferNFT(to: self.viewModel.addressString,item: self.viewModel.item, category: self.viewModel.category , gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, isERC721: !(KNGeneralProvider.shared.currentChain == .eth))
+    let event = KSendTokenViewEvent.estimateGasLimitTransferNFT(to: self.viewModel.addressString,item: self.viewModel.item, category: self.viewModel.category , gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, amount: self.viewModel.selectedBalance, isERC721: self.viewModel.isSupportERC721)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
   
@@ -222,8 +249,15 @@ class SendNFTViewController: KNBaseViewController {
         )
         return true
       }
+      guard self.viewModel.selectedBalance <= self.viewModel.item.balanceInt else {
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: "Amount is too big"
+        )
+        return true
+      }
     }
-    
+
     return false
   }
 
@@ -298,10 +332,15 @@ class SendNFTViewController: KNBaseViewController {
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     
-    let event = KSendTokenViewEvent.sendNFT(item: self.viewModel.item, category: self.viewModel.category, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, to: self.viewModel.addressString, ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil)
+    let event = KSendTokenViewEvent.sendNFT(item: self.viewModel.item, category: self.viewModel.category, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, to: self.viewModel.addressString, amount: self.viewModel.selectedBalance, ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil, isERC721: self.viewModel.isSupportERC721)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
   
+  @IBAction func maxButtonTapped(_ sender: UIButton) {
+    self.viewModel.selectedBalance = self.viewModel.item.balanceInt
+    self.amountTextField.text = "\(self.viewModel.selectedBalance)"
+  }
+
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
     self.viewModel.updateSelectedGasPriceType(type)
     self.viewModel.updateGasPrice(value)
@@ -420,56 +459,54 @@ extension SendNFTViewController: KNContactTableViewDelegate {
 extension SendNFTViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     textField.text = ""
-    self.viewModel.updateAddress("")
-    self.updateUIAddressQRCode()
-    self.getEnsAddressFromName("")
+    if textField == amountTextField {
+      self.viewModel.selectedBalance = 0
+    } else {
+      self.viewModel.updateAddress("")
+      self.updateUIAddressQRCode()
+      self.getEnsAddressFromName("")
+    }
+
     self.shouldUpdateEstimatedGasLimit(nil)
     return false
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text
-    self.viewModel.updateAddress(text)
-    self.updateUIEnsMessage()
-    self.getEnsAddressFromName(text)
+    if textField == amountTextField {
+      if let number = Int(text), number > 0 {
+        textField.text = "\(number)"
+        self.viewModel.selectedBalance = number
+      } else {
+        textField .text = ""
+        self.viewModel.selectedBalance = 0
+      }
+    } else {
+      textField.text = text
+      self.viewModel.updateAddress(text)
+      self.updateUIEnsMessage()
+      self.getEnsAddressFromName(text)
+    }
+    
     self.view.layoutIfNeeded()
     return false
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    self.addressTextField.text = self.viewModel.addressString
+    if textField == amountTextField {
+      self.amountTextField.text = self.viewModel.selectedBalance == 0 ? "" : "\(self.viewModel.selectedBalance)"
+    } else {
+      self.addressTextField.text = self.viewModel.addressString
+    }
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.updateUIAddressQRCode()
-    self.getEnsAddressFromName(self.viewModel.addressString)
+    if textField == amountTextField {
+      
+    } else {
+      self.updateUIAddressQRCode()
+      self.getEnsAddressFromName(self.viewModel.addressString)
+    }
     self.shouldUpdateEstimatedGasLimit(nil)
   }
-
-//  fileprivate func getEnsAddressFromName(_ name: String) {
-//    if Address(string: name) != nil { return }
-//    if !name.contains(".") {
-//      self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-//      self.updateUIAddressQRCode()
-//      return
-//    }
-//    DispatchQueue.main.async {
-//      KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
-//        guard let `self` = self else { return }
-//        DispatchQueue.main.async {
-//          if name != self.viewModel.addressString { return }
-//          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
-//            self.viewModel.updateAddressFromENS(name, ensAddr: address)
-//          } else {
-//            self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-//            DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
-//              self.getEnsAddressFromName(self.viewModel.addressString)
-//            }
-//          }
-//          self.updateUIAddressQRCode()
-//        }
-//      }
-//    }
-//  }
 }

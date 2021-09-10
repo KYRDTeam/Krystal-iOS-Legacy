@@ -6,7 +6,7 @@ import BigInt
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)
   case cancel
-  case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, historyTransaction: InternalHistoryTransaction)
+  case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, amount: Int, isSupportERC721: Bool, historyTransaction: InternalHistoryTransaction)
 }
 
 protocol KConfirmSendViewControllerDelegate: class {

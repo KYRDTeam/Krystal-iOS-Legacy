@@ -140,6 +140,10 @@ class NFTItem: Codable {
     self.externalData = ExternalData(name: name, externalDataDescription: "", image: "")
     self.favorite = false
   }
+  
+  var balanceInt: Int {
+    return Int(self.tokenBalance) ?? 0
+  }
 }
 
 // MARK: - ExternalData

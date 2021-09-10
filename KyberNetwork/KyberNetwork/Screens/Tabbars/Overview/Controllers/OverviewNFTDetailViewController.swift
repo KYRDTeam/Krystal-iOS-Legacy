@@ -78,7 +78,9 @@ class OverviewNFTDetailViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    //trick fix
+    KNGeneralProvider.shared.getDecimalsEncodeData { result in
+    }
     self.titleLabel.text = self.viewModel.title
     self.subTitleLabel.text = self.viewModel.subTitle
     self.tagView.addTags(self.viewModel.tags)

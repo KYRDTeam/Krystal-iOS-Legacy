@@ -707,19 +707,34 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
 }
 
 extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
+  fileprivate func presentSendNFTView(item: NFTItem,category: NFTSection, supportERC721: Bool) {
+    self.sendCoordinator = nil
+    let coordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      nftItem: item,
+      supportERC721: supportERC721,
+      nftCategory: category
+    )
+    coordinator.delegate = self
+    coordinator.start(sendNFT: true)
+    self.sendCoordinator = coordinator
+  }
+  
   func overviewNFTDetailViewController(_ controller: OverviewNFTDetailViewController, run event: OverviewNFTDetailEvent) {
     switch event {
     case .sendItem(item: let item, category: let category):
-      self.sendCoordinator = nil
-      let coordinator = KNSendTokenViewCoordinator(
-        navigationController: self.navigationController,
-        session: self.session,
-        nftItem: item,
-        nftCategory: category
-      )
-      coordinator.delegate = self
-      coordinator.start(sendNFT: true)
-      self.sendCoordinator = coordinator
+      
+      self.navigationController.displayLoading()
+      KNGeneralProvider.shared.getSupportInterface(address: category.collectibleAddress) { interfaceResult in
+        self.navigationController.hideLoading()
+        switch interfaceResult {
+        case .success(let isERC721):
+          self.presentSendNFTView(item: item, category: category, supportERC721: isERC721)
+        case .failure(_):
+          self.navigationController.showErrorTopBannerMessage(message: "Can not get support interface for collection")
+        }
+      }
     case .favoriteItem(item: let item, category: let category, status: let status):
       if case .real(let account) = self.session.wallet.type {
         let data = Data(item.tokenID.utf8)
