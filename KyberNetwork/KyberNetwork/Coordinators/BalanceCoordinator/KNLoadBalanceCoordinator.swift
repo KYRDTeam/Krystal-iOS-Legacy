@@ -69,6 +69,13 @@ class KNLoadBalanceCoordinator {
       group.leave()
     }
     
+    group.enter()
+    let span5 = tx.startChild(operation: "load-custom-nft-balances")
+    self.loadCustomNFTBalane { success in
+      span5.finish()
+      group.leave()
+    }
+    
     group.notify(queue: .global()) {
       tx.finish()
     }
@@ -396,6 +403,62 @@ class KNLoadBalanceCoordinator {
       } else {
         self.loadLendingDistributionBalance(completion: completion)
       }
+    }
+  }
+  
+  func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    
+    let group = DispatchGroup()
+    let customSection = BalanceStorage.shared.getCustomNFT()
+    
+    customSection.forEach { sectionItem in
+      sectionItem.items.forEach { nftItem in
+        group.enter()
+        KNGeneralProvider.shared.getSupportInterface(address: sectionItem.collectibleAddress) { interfaceResult in
+          switch interfaceResult {
+          case .success(let erc721):
+            if erc721 {
+              KNGeneralProvider.shared.getOwnerOf(address: sectionItem.collectibleAddress, id: nftItem.tokenID) { ownerResult in
+                switch ownerResult {
+                case .success(let owner):
+                  if owner.lowercased() == self.session.wallet.address.description.lowercased() {
+                    //do nothing
+                  } else {
+                    BalanceStorage.shared.removeCustomNFT(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID)
+                  }
+                default:
+                  break
+                }
+                group.leave()
+              }
+            } else {
+              provider.getNFTBalance(for: sectionItem.collectibleAddress, id: nftItem.tokenID) { result in
+                switch result {
+                case .success(let bigInt):
+                  let balance = Balance(value: bigInt)
+                  if balance.isZero {
+                    BalanceStorage.shared.removeCustomNFT(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID)
+                  }
+                default:
+                  break
+                }
+                group.leave()
+              }
+            }
+          case .failure(_):
+            group.leave()
+          }
+        }
+        
+      }
+    }
+    
+    group.notify(queue: .main) {
+      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+      completion(true)
     }
   }
   

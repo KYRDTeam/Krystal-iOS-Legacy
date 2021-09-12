@@ -201,19 +201,52 @@ class BalanceStorage {
     Storage.store(self.nftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
   }
   
+  func getCustomNFT() -> [NFTSection] {
+    return self.customNftBalance
+  }
+  
   func setCustomNFT(_ balance: NFTSection) -> Bool {
     guard let unwrapped = self.wallet else {
       return false
     }
-    let duplicateSection = self.nftBalance.first { item in
+    if var duplicateSection = self.nftBalance.first { item in
       return item.collectibleAddress.lowercased() == balance.collectibleAddress.lowercased()
-    }
-    if duplicateSection != nil {
+    } {
+      let currentIDs = duplicateSection.items.map { item in
+        return item.tokenID
+      }
+      if let newItem = balance.items.first, !currentIDs.contains(newItem.tokenID) {
+        duplicateSection.items.append(newItem)
+        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+      }
       return false
     } else {
       self.customNftBalance.append(balance)
       Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
       return true
+    }
+  }
+  
+  func removeCustomNFT(categoryAddress: String, itemID: String) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    if var category = self.nftBalance.first(where: { item in
+      return item.collectibleAddress.lowercased() == categoryAddress.lowercased()
+    }) {
+      if let index = category.items.firstIndex(where: { nftItem in
+        return nftItem.tokenID == itemID
+      }) {
+        category.items.remove(at: index)
+        if category.items.isEmpty {
+          if let sectionIndex = self.customNftBalance.firstIndex(where: { sectionItem in
+            return sectionItem.collectibleAddress.lowercased() == category.collectibleAddress.lowercased()
+          }) {
+            self.customNftBalance.remove(at: sectionIndex)
+          }
+        }
+        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+      }
     }
   }
   
