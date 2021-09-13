@@ -46,16 +46,25 @@
                                                     <constraint firstAttribute="height" constant="116" id="kQB-v8-lKa"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rdC-RV-i0V">
-                                                <rect key="frame" x="18" y="140" width="24" height="16.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rdC-RV-i0V">
+                                                <rect key="frame" x="18" y="140" width="94.5" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                 <color key="textColor" name="textWhiteColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AI2-yS-EIF">
                                                 <rect key="frame" x="18" y="162.5" width="24.5" height="14.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="14.5" id="jMf-xe-lEW"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="x2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A31-Yi-yWz">
+                                                <rect key="frame" x="117.5" y="140" width="15.5" height="16.5"/>
+                                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                <color key="textColor" name="textWhiteColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -67,10 +76,14 @@
                                             <constraint firstAttribute="bottom" secondItem="RgO-iq-zHV" secondAttribute="bottom" id="Uyk-c1-6Rj"/>
                                             <constraint firstAttribute="trailing" secondItem="RgO-iq-zHV" secondAttribute="trailing" id="XyT-Cv-7p5"/>
                                             <constraint firstItem="rdC-RV-i0V" firstAttribute="top" secondItem="dMd-l4-V7D" secondAttribute="bottom" constant="8" symbolic="YES" id="b2m-Vc-itw"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="AI2-yS-EIF" secondAttribute="bottom" constant="5" id="dvx-EL-vyP"/>
                                             <constraint firstAttribute="trailing" secondItem="dMd-l4-V7D" secondAttribute="trailing" constant="16" id="e5G-sH-4rt"/>
                                             <constraint firstItem="AI2-yS-EIF" firstAttribute="leading" secondItem="fYN-ii-4zy" secondAttribute="leading" constant="18" id="eqc-Sq-jQ8"/>
                                             <constraint firstItem="dMd-l4-V7D" firstAttribute="leading" secondItem="fYN-ii-4zy" secondAttribute="leading" constant="16" id="ikb-BO-XqQ"/>
                                             <constraint firstItem="dMd-l4-V7D" firstAttribute="top" secondItem="fYN-ii-4zy" secondAttribute="top" constant="16" id="mBo-7X-oFf"/>
+                                            <constraint firstItem="A31-Yi-yWz" firstAttribute="top" secondItem="rdC-RV-i0V" secondAttribute="top" id="oxQ-JM-8UF"/>
+                                            <constraint firstItem="A31-Yi-yWz" firstAttribute="leading" secondItem="rdC-RV-i0V" secondAttribute="trailing" constant="5" id="u2k-J5-VSk"/>
+                                            <constraint firstItem="A31-Yi-yWz" firstAttribute="trailing" secondItem="dMd-l4-V7D" secondAttribute="trailing" id="uEf-so-hDI"/>
                                             <constraint firstItem="RgO-iq-zHV" firstAttribute="leading" secondItem="fYN-ii-4zy" secondAttribute="leading" id="vap-UT-pNo"/>
                                         </constraints>
                                     </view>
@@ -105,32 +118,45 @@
                                                     <constraint firstAttribute="height" constant="116" id="FSM-Qd-es9"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2i-1e-GH5">
-                                                <rect key="frame" x="18" y="140" width="24" height="16.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="NFT NFT NFT NFT NFT NFT NFT NFT NFT NFT NFT" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2i-1e-GH5">
+                                                <rect key="frame" x="18" y="140" width="94.5" height="34.5"/>
                                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                 <color key="textColor" name="textWhiteColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGu-eo-YFo">
-                                                <rect key="frame" x="18" y="162.5" width="24.5" height="14.5"/>
+                                                <rect key="frame" x="18" y="180.5" width="24.5" height="14.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="14.5" id="874-hX-w9D"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="x2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X7T-nA-cgA">
+                                                <rect key="frame" x="117.5" y="140" width="15.5" height="16.5"/>
+                                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                <color key="textColor" name="textWhiteColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" name="popupBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="mIp-ig-9hL" firstAttribute="top" secondItem="rTI-X5-Ccj" secondAttribute="top" id="1Xw-xb-BLp"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="YGu-eo-YFo" secondAttribute="bottom" constant="5" id="BE9-Ve-hxV"/>
+                                            <constraint firstItem="X7T-nA-cgA" firstAttribute="trailing" secondItem="xQg-RT-EHs" secondAttribute="trailing" id="IAP-Tm-EUc"/>
                                             <constraint firstAttribute="trailing" secondItem="xQg-RT-EHs" secondAttribute="trailing" constant="16" id="SIK-Ah-wcE"/>
                                             <constraint firstItem="mIp-ig-9hL" firstAttribute="leading" secondItem="rTI-X5-Ccj" secondAttribute="leading" id="U9w-pB-3wf"/>
                                             <constraint firstItem="xQg-RT-EHs" firstAttribute="leading" secondItem="rTI-X5-Ccj" secondAttribute="leading" constant="16" id="cGN-hh-AuU"/>
                                             <constraint firstItem="YGu-eo-YFo" firstAttribute="leading" secondItem="rTI-X5-Ccj" secondAttribute="leading" constant="18" id="cad-Vt-uAR"/>
+                                            <constraint firstItem="X7T-nA-cgA" firstAttribute="leading" secondItem="d2i-1e-GH5" secondAttribute="trailing" constant="5" id="fC8-66-JDj"/>
                                             <constraint firstAttribute="bottom" secondItem="mIp-ig-9hL" secondAttribute="bottom" id="gHm-IF-Fjw"/>
                                             <constraint firstItem="d2i-1e-GH5" firstAttribute="top" secondItem="xQg-RT-EHs" secondAttribute="bottom" constant="8" symbolic="YES" id="hMI-du-Mos"/>
                                             <constraint firstItem="xQg-RT-EHs" firstAttribute="top" secondItem="rTI-X5-Ccj" secondAttribute="top" constant="16" id="hvb-Jf-4a9"/>
                                             <constraint firstAttribute="trailing" secondItem="mIp-ig-9hL" secondAttribute="trailing" id="k4o-zj-l4U"/>
                                             <constraint firstItem="d2i-1e-GH5" firstAttribute="leading" secondItem="rTI-X5-Ccj" secondAttribute="leading" constant="18" id="muL-wN-DHr"/>
                                             <constraint firstItem="YGu-eo-YFo" firstAttribute="top" secondItem="d2i-1e-GH5" secondAttribute="bottom" constant="6" id="nGr-sV-iBp"/>
+                                            <constraint firstItem="X7T-nA-cgA" firstAttribute="top" secondItem="d2i-1e-GH5" secondAttribute="top" id="qiF-uY-qiz"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -161,6 +187,8 @@
                 <outlet property="container2" destination="rTI-X5-Ccj" id="N2w-SG-FG8"/>
                 <outlet property="icon1" destination="dMd-l4-V7D" id="4eY-uY-u2i"/>
                 <outlet property="icon2" destination="xQg-RT-EHs" id="Hwg-8G-Wbs"/>
+                <outlet property="tokenBalance1" destination="A31-Yi-yWz" id="chr-wk-cfc"/>
+                <outlet property="tokenBalance2" destination="X7T-nA-cgA" id="M0e-fH-zvb"/>
                 <outlet property="tokenId1" destination="AI2-yS-EIF" id="GDh-Dl-mxy"/>
                 <outlet property="tokenId2" destination="YGu-eo-YFo" id="9WL-Sf-qDs"/>
                 <outlet property="tokenName1" destination="rdC-RV-i0V" id="xih-AY-eco"/>

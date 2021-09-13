@@ -441,6 +441,8 @@ class KNLoadBalanceCoordinator {
                   let balance = Balance(value: bigInt)
                   if balance.isZero {
                     BalanceStorage.shared.removeCustomNFT(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID)
+                  } else {
+                    BalanceStorage.shared.updateCustomNFTBalance(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID, balance: bigInt.description)
                   }
                 default:
                   break
@@ -457,6 +459,7 @@ class KNLoadBalanceCoordinator {
     }
     
     group.notify(queue: .main) {
+      BalanceStorage.shared.saveCustomNFT()
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       completion(true)
     }

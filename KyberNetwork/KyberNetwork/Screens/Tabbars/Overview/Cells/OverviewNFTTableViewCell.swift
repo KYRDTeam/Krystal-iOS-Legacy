@@ -23,11 +23,13 @@ class OverviewNFTTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenName1: UILabel!
   @IBOutlet weak var tokenId1: UILabel!
   @IBOutlet weak var container1: UIView!
+  @IBOutlet weak var tokenBalance1: UILabel!
   
   @IBOutlet weak var icon2: UIImageView!
   @IBOutlet weak var tokenName2: UILabel!
   @IBOutlet weak var tokenId2: UILabel!
   @IBOutlet weak var container2: UIView!
+  @IBOutlet weak var tokenBalance2: UILabel!
   
   var viewModel: OverviewNFTCellViewModel?
   var completeHandle: ((NFTItem, NFTSection) -> Void)?
@@ -49,12 +51,22 @@ class OverviewNFTTableViewCell: UITableViewCell {
       self.icon1.setImage(with: notNil1.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
       self.tokenName1.text = notNil1.externalData.name
       self.tokenId1.text = "#" + notNil1.tokenID
+      if notNil1.balanceInt > 1 {
+        self.tokenBalance1.text = "x\(notNil1.balanceInt)"
+      } else {
+        self.tokenBalance1.text = ""
+      }
     }
     
     if let notNil2 = viewModel.item2 {
       self.icon2.setImage(with: notNil2.externalData.image, placeholder: UIImage(named: "placeholder_nft_item")!, size: nil, applyNoir: false)
       self.tokenName2.text = notNil2.externalData.name
       self.tokenId2.text = "#" + notNil2.tokenID
+      if notNil2.balanceInt > 1 {
+        self.tokenBalance2.text = "x\(notNil2.balanceInt)"
+      } else {
+        self.tokenBalance2.text = ""
+      }
     }
     
     self.viewModel = viewModel
@@ -74,5 +86,4 @@ class OverviewNFTTableViewCell: UITableViewCell {
       }
     }
   }
-  
 }

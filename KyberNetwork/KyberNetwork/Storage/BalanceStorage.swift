@@ -217,12 +217,12 @@ class BalanceStorage {
       }
       if let newItem = balance.items.first, !currentIDs.contains(newItem.tokenID) {
         duplicateSection.items.append(newItem)
-        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
       }
       return false
     } else {
       self.customNftBalance.append(balance)
-      Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+      Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
       return true
     }
   }
@@ -231,7 +231,7 @@ class BalanceStorage {
     guard let unwrapped = self.wallet else {
       return
     }
-    if var category = self.nftBalance.first(where: { item in
+    if var category = self.customNftBalance.first(where: { item in
       return item.collectibleAddress.lowercased() == categoryAddress.lowercased()
     }) {
       if let index = category.items.firstIndex(where: { nftItem in
@@ -245,9 +245,28 @@ class BalanceStorage {
             self.customNftBalance.remove(at: sectionIndex)
           }
         }
-        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+        Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
       }
     }
+  }
+  
+  func updateCustomNFTBalance(categoryAddress: String, itemID: String, balance: String) {
+    if let category = self.customNftBalance.first(where: { item in
+      return item.collectibleAddress.lowercased() == categoryAddress.lowercased()
+    }) {
+      if let nftItem = category.items.first(where: { nftItem in
+        return nftItem.tokenID == itemID
+      }) {
+        nftItem.tokenBalance = balance
+      }
+    }
+  }
+  
+  func saveCustomNFT() {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    Storage.store(self.customNftBalance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
   }
   
   func getAllFavedItems() -> [(NFTItem, NFTSection)] {
