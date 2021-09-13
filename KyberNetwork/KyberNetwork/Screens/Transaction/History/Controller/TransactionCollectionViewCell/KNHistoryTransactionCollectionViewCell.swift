@@ -175,7 +175,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Mint \(tx.tokenName)"
       }
-      return ""
+      return "Mint NFT"
     case .transferNFT:
       if self.isError {
         return "--/--"
@@ -183,7 +183,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Transfer \(tx.tokenName)"
       }
-      return ""
+      return "Transer NFT"
     case .receiveNFT:
       if self.isError {
         return "--/--"
@@ -191,7 +191,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Receive \(tx.tokenName)"
       }
-      return ""
+      return "Receive NFT"
     }
   }
   
@@ -286,20 +286,14 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
     case .selfTransfer:
       return ""
     case .createNFT:
-      if let tx = self.data.nftTransaction.first {
-        return  "Mint : \(tx.tokenName)"
-      }
-      return "Mint NFT"
+      return ""
     case .transferNFT:
-      if let tx = self.data.nftTransaction.first {
-        return  "Transfer : \(tx.tokenName)"
-      }
-      return "Transfer NFT"
+      return ""
     case .receiveNFT:
       if let tx = self.data.nftTransaction.first {
         return "From: \(tx.from)"
       }
-      return "Receive NFT"
+      return ""
     }
   }
   
