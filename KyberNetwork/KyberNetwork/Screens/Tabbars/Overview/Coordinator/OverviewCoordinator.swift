@@ -633,6 +633,7 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
                     case.success(let name):
                       let nftItem = NFTItem(name: name, tokenID: id)
                       let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftItem.tokenBalance = "1"
                       let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
                       self.navigationController.showTopBannerView(message: msg)
                     default:
@@ -683,6 +684,7 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
                     case.success(let name):
                       let nftItem = NFTItem(name: name, tokenID: id)
                       let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftItem.tokenBalance = bigInt.description
                       let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
                       self.navigationController.showTopBannerView(message: msg)
                     default:
