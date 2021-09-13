@@ -633,7 +633,7 @@ class KNExternalProvider {
   }
   
   func requestDataForNFTTransfer(from: String, to: String, tokenID: String, amount: Int, isERC721: Bool, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    self.web3Swift.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: 1, isERC721Format: isERC721)) { (result) in
+    self.web3Swift.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
