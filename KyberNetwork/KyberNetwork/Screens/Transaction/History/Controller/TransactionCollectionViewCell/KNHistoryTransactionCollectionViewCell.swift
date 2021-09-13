@@ -299,7 +299,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "From: \(tx.from)"
       }
-      return ""
+      return "Receive NFT"
     }
   }
   
