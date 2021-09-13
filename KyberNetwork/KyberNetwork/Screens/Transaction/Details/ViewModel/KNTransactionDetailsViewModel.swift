@@ -247,7 +247,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
     case .createNFT:
-      return UIImage()
+      return UIImage(named: "history_receive_icon")!
     case .transferNFT:
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:

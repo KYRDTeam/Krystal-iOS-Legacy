@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -53,7 +53,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEz-EF-0bU">
-                            <rect key="frame" x="136" y="68" width="103" height="21"/>
+                            <rect key="frame" x="134.5" y="68" width="106.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -167,7 +167,7 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ax8-sR-6CT">
-                                    <rect key="frame" x="297" y="-0.5" width="41" height="29"/>
+                                    <rect key="frame" x="298" y="-0.5" width="40" height="29"/>
                                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
                                     <state key="normal" title="MORE">
                                         <color key="titleColor" name="buttonBackgroundColor"/>
@@ -240,14 +240,17 @@
                                         <constraint firstAttribute="height" constant="116" id="bB6-en-dHq"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCx-wv-grc">
-                                    <rect key="frame" x="18" y="140" width="24" height="16.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCx-wv-grc">
+                                    <rect key="frame" x="18" y="140" width="112" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ST-5D-zjG">
                                     <rect key="frame" x="18" y="162.5" width="24.5" height="14"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="14" id="vyK-7v-nh5"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -257,12 +260,14 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="PCT-tI-ALi" secondAttribute="bottom" id="8UI-4V-yAU"/>
                                 <constraint firstItem="PCT-tI-ALi" firstAttribute="top" secondItem="GLE-eq-zOR" secondAttribute="top" id="8kB-am-zcQ"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5ST-5D-zjG" secondAttribute="bottom" constant="5" id="Atm-gW-r0I"/>
                                 <constraint firstAttribute="height" constant="200" id="Bwb-W9-r9J"/>
                                 <constraint firstItem="WCx-wv-grc" firstAttribute="top" secondItem="gXK-hS-ScH" secondAttribute="bottom" constant="8" symbolic="YES" id="DIM-Bn-UBF"/>
                                 <constraint firstAttribute="width" constant="148" id="EkL-zW-pEa"/>
                                 <constraint firstItem="5ST-5D-zjG" firstAttribute="leading" secondItem="GLE-eq-zOR" secondAttribute="leading" constant="18" id="IJh-1y-94d"/>
                                 <constraint firstItem="WCx-wv-grc" firstAttribute="leading" secondItem="GLE-eq-zOR" secondAttribute="leading" constant="18" id="MRa-1p-Sn8"/>
                                 <constraint firstItem="gXK-hS-ScH" firstAttribute="top" secondItem="GLE-eq-zOR" secondAttribute="top" constant="16" id="OdH-ct-Lfs"/>
+                                <constraint firstAttribute="trailing" secondItem="WCx-wv-grc" secondAttribute="trailing" constant="18" id="Xo7-4e-wRV"/>
                                 <constraint firstAttribute="trailing" secondItem="PCT-tI-ALi" secondAttribute="trailing" id="Xpe-uc-1pI"/>
                                 <constraint firstItem="5ST-5D-zjG" firstAttribute="top" secondItem="WCx-wv-grc" secondAttribute="bottom" constant="6" id="YMo-qb-1cb"/>
                                 <constraint firstAttribute="trailing" secondItem="gXK-hS-ScH" secondAttribute="trailing" constant="16" id="ZHP-LR-EJO"/>
