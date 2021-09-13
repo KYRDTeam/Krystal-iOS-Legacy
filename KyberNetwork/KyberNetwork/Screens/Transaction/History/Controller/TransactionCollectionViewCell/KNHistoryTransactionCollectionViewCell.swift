@@ -244,6 +244,9 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       }
       let amountFrom = fromValue * BigInt(10).power(18) / BigInt(10).power(fromDecimal)
       let amountTo = toValue * BigInt(10).power(18) / BigInt(10).power(toDecimal)
+      guard !amountFrom.isZero else {
+        return ""
+      }
       let rate = amountTo * BigInt(10).power(18) / amountFrom
       let rateString = rate.displayRate(decimals: 18)
       return "1 \(fromSymbol) = \(rateString) \(toSymbol)"
