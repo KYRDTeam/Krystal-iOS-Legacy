@@ -193,7 +193,7 @@ class EtherscanTransactionStorage {
   
   func getNFTTransactionsWithHash(_ hash: String) -> [NFTTransaction] {
     return self.nftTransaction.filter { (item) -> Bool in
-      return item.hash == hash
+      return item.hash.lowercased() == hash.lowercased()
     }
   }
 
