@@ -246,6 +246,12 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return UIImage(named: "history_contract_interaction_icon")!
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
+    case .createNFT:
+      return UIImage(named: "history_receive_icon")!
+    case .transferNFT:
+      return UIImage(named: "history_send_icon")!
+    case .receiveNFT:
+      return UIImage(named: "history_receive_icon")!
     }
   }
   
@@ -280,6 +286,12 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .selfTransfer:
       return "Wallet".toBeLocalised()
+    case .createNFT:
+      return "Application".toBeLocalised()
+    case .transferNFT:
+      return "Wallet".toBeLocalised()
+    case .receiveNFT:
+      return "Wallet".toBeLocalised()
     }
   }
   
@@ -304,6 +316,12 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     case .contractInteraction:
       return "Application".toBeLocalised()
     case .selfTransfer:
+      return "Wallet".toBeLocalised()
+    case .createNFT:
+      return "Wallet".toBeLocalised()
+    case .transferNFT:
+      return "Wallet".toBeLocalised()
+    case .receiveNFT:
       return "Wallet".toBeLocalised()
     }
   }
@@ -347,9 +365,9 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "swap".toBeLocalised().uppercased()
     case .withdraw:
       return "withdraw".toBeLocalised().uppercased()
-    case .transferETH, .transferToken:
+    case .transferETH, .transferToken, .transferNFT:
       return "transfer".toBeLocalised().uppercased()
-    case .receiveETH, .receiveToken:
+    case .receiveETH, .receiveToken, .receiveNFT:
       return "receive".toBeLocalised().uppercased()
     case .allowance:
       return "allowance".toBeLocalised().uppercased()
@@ -359,6 +377,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return ""
     case .selfTransfer:
       return "self".toBeLocalised().uppercased()
+    case .createNFT:
+      return "mint"
     }
   }
   
@@ -431,6 +451,12 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .selfTransfer:
       return "Wallet".toBeLocalised()
+    case .createNFT:
+      return "Application".toBeLocalised()
+    case .transferNFT:
+      return "Wallet".toBeLocalised()
+    case .receiveNFT:
+      return "Wallet".toBeLocalised()
     }
   }
   
@@ -455,6 +481,12 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
     case .contractInteraction:
       return "Application".toBeLocalised()
     case .selfTransfer:
+      return "Wallet".toBeLocalised()
+    case .createNFT:
+      return "Wallet".toBeLocalised()
+    case .transferNFT:
+      return "Wallet".toBeLocalised()
+    case .receiveNFT:
       return "Wallet".toBeLocalised()
     }
   }

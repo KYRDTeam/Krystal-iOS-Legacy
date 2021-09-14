@@ -24,6 +24,8 @@ public struct Constants {
   
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
+  public static let nftBalanceStoreFileName = "_nft.data"
+  public static let customNftBalanceStoreFileName = "_custom_nft.data"
   public static let customBalanceStoreFileName = "-custom-balance.data"
   public static let favedTokenStoreFileName = "faved_token.data"
   public static let lendingBalanceStoreFileName = "-lending-balance.data"
@@ -31,6 +33,7 @@ public struct Constants {
   public static let customTokenStoreFileName = "custom-token.data"
   public static let etherscanTokenTransactionsStoreFileName = "-etherscan-token-transaction.data"
   public static let etherscanInternalTransactionsStoreFileName = "-etherscan-internal-transaction.data"
+  public static let etherscanNFTTransactionsStoreFileName = "-etherscan-nft-transaction.data"
   public static let etherscanTransactionsStoreFileName = "-etherscan-transaction.data"
   public static let customFilterOptionFileName = "custom-filter-option.data"
   public static let marketingAssetsStoreFileName = "marketing-assets.data"
@@ -46,6 +49,8 @@ public struct Constants {
   public static let currentChainSaveFileName = "current-chain-save-key.data"
   public static let disableTokenStoreFileName = "disable-token.data"
   public static let deleteTokenStoreFileName = "delete-token.data"
+  public static let hideBalanceKey = "hide_balance_key"
+  public static let viewModeStoreFileName = "view-mode.data"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,

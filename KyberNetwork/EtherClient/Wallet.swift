@@ -40,4 +40,10 @@ extension Wallet: Equatable {
     static func == (lhs: Wallet, rhs: Wallet) -> Bool {
         return lhs.type == rhs.type
     }
+  
+  func getWalletObject() -> KNWalletObject? {
+    return KNWalletStorage.shared.wallets.first { obj in
+      return self.address.description.lowercased() == obj.address.lowercased()
+    }
+  }
 }

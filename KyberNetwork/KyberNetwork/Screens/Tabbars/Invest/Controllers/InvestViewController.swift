@@ -135,7 +135,7 @@ extension InvestViewController: FSPagerViewDataSource {
     let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
     let url = URL(string: self.viewModel.bannerDataSource[index].imageURL)
     cell.imageView?.kf.setImage(with: url)
-    cell.imageView?.contentMode = .scaleToFill
+    cell.imageView?.contentMode = .scaleAspectFit
     cell.imageView?.clipsToBounds = true
     return cell
   }

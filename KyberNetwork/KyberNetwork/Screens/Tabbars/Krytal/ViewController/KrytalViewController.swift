@@ -35,7 +35,7 @@ class KrytalViewModel {
   
   var displayWalletString: String {
     guard let unwrapped = self.wallet else { return "" }
-    return unwrapped.address.description
+    return unwrapped.getWalletObject()?.name ?? "---"
   }
   
   var displayIntroAttributedString: NSAttributedString {

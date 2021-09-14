@@ -375,7 +375,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateUIWalletSelectButton() {
-    self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
 
   fileprivate func updateGasFeeUI() {

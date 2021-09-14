@@ -44,6 +44,7 @@ target 'KyberNetwork' do
   pod 'TagListView', '~> 1.0'
   pod 'WalletConnectSwift'
   pod 'Web3'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

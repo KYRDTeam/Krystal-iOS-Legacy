@@ -2,7 +2,7 @@
 
 import UIKit
 import Moya
-
+import Sentry
 import Firebase
 import OneSignal
 import AppTrackingTransparency
@@ -47,6 +47,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
+    
+    SentrySDK.start { options in
+      options.dsn = KNSecret.sentryURL
+      options.debug = true // Enabled debug when first installing is always helpful
+      options.tracesSampleRate = 1.0
+      options.environment = KNEnvironment.default.displayName
+    }
 
     return true
   }

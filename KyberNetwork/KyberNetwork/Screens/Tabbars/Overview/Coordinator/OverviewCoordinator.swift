@@ -170,7 +170,6 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         }
       }
     case .getTokenDetailInfo(address: let address):
-      
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getTokenDetail(address: address)) { (result) in
         switch result {
@@ -200,7 +199,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       self.openCommunityURL("https://twitter.com/\(name)/")
     }
   }
-  
+
   fileprivate func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
   }
@@ -223,7 +222,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     coordinator.start()
     self.sendCoordinator = coordinator
   }
-  
+
   fileprivate func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
@@ -440,6 +439,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
         controller.coordinatorDidSelectMode(.asset(rightMode: .value))
       }))
+      let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
+      actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
+        controller.coordinatorDidSelectMode(.nft)
+      }))
       let marketType = mode == .market(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
       actionController.addAction(Action(ActionData(title: "Show Market", image: UIImage(named: "market_actionsheet_icon")!), style: marketType, handler: { _ in
         controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
@@ -448,6 +451,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Favorites", image: UIImage(named: "favorites_actionsheet_icon")!), style: favType, handler: { _ in
         controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
       }))
+      
+      
       
       self.navigationController.present(actionController, animated: true, completion: nil)
     case .walletConfig(currency: let currency):
@@ -581,6 +586,15 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         break
       }
       self.navigationController.present(actionController, animated: true, completion: nil)
+    case .addNFT:
+      let vc = OverviewAddNFTViewController()
+      vc.delegate = self
+      self.navigationController.pushViewController(vc, animated: true)
+    case .openNFTDetail(item: let item, category: let category):
+      let viewModel = OverviewNFTDetailViewModel(item: item, category: category)
+      let vc = OverviewNFTDetailViewController(viewModel: viewModel)
+      vc.delegate = self
+      self.navigationController.pushViewController(vc, animated: true)
     }
   }
 }
@@ -588,5 +602,170 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
   func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
     self.openChartView(token: token)
+  }
+}
+
+extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
+  func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {
+    switch event {
+    case .done(address: let address, id: let id):
+      controller.displayLoading()
+      guard let provider = self.session.externalProvider else {
+        self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+        controller.hideLoading()
+        return
+      }
+      //trick fix
+      KNGeneralProvider.shared.getDecimalsEncodeData { result in
+      }
+      
+      KNGeneralProvider.shared.getSupportInterface(address: address) { interfaceResult in
+        switch interfaceResult {
+        case .success(let erc721):
+          if erc721 {
+            KNGeneralProvider.shared.getOwnerOf(address: address, id: id) { ownerResult in
+              controller.hideLoading()
+              switch ownerResult {
+              case .success(let owner):
+                if owner.lowercased() == self.session.wallet.address.description.lowercased() {
+                  KNGeneralProvider.shared.getERC721Name(address: address) { nameResult in
+                    switch nameResult {
+                    case.success(let name):
+                      let nftItem = NFTItem(name: name, tokenID: id)
+                      let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftItem.tokenBalance = "1"
+                      let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
+                      self.navigationController.showTopBannerView(message: msg)
+                    default:
+                      break
+                    }
+                  }
+                } else {
+                  let alertController = KNPrettyAlertController(
+                    title: "",
+                    message: "You are not owner of this collection. So you can't add it",
+                    secondButtonTitle: "Try again",
+                    firstButtonTitle: "Back",
+                    secondButtonAction: {
+                    },
+                    firstButtonAction: {
+                      self.navigationController.popViewController(animated: true)
+                    }
+                  )
+                  self.navigationController.present(alertController, animated: true, completion: nil)
+                }
+              case .failure(let error):
+                controller.hideLoading()
+                self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
+              }
+            }
+          } else {
+            provider.getNFTBalance(for: address, id: id) { result in
+              controller.hideLoading()
+              switch result {
+              case .success(let bigInt):
+                let balance = Balance(value: bigInt)
+                if balance.isZero {
+                  let alertController = KNPrettyAlertController(
+                    title: "",
+                    message: "You are not owner of this collection. So you can't add it",
+                    secondButtonTitle: "Try again",
+                    firstButtonTitle: "Back",
+                    secondButtonAction: {
+                    },
+                    firstButtonAction: {
+                      self.navigationController.popViewController(animated: true)
+                    }
+                  )
+                  self.navigationController.present(alertController, animated: true, completion: nil)
+                } else {
+                  KNGeneralProvider.shared.getERC721Name(address: address) { nameResult in
+                    switch nameResult {
+                    case.success(let name):
+                      let nftItem = NFTItem(name: name, tokenID: id)
+                      let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftItem.tokenBalance = bigInt.description
+                      let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
+                      self.navigationController.showTopBannerView(message: msg)
+                    default:
+                      break
+                    }
+                  }
+                }
+                NSLog("---- Balance: Fetch nft balance for contract \(address.description) successfully: \(bigInt.shortString(decimals: 0))")
+              case .failure(let error):
+                
+                NSLog("---- Balance: Fetch nft balance failed with error: \(error.description). ----")
+              }
+            }
+          }
+        case .failure(let error):
+          controller.hideLoading()
+          self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
+        }
+      }
+    }
+  }
+}
+
+extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
+  fileprivate func presentSendNFTView(item: NFTItem,category: NFTSection, supportERC721: Bool) {
+    self.sendCoordinator = nil
+    let coordinator = KNSendTokenViewCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      nftItem: item,
+      supportERC721: supportERC721,
+      nftCategory: category
+    )
+    coordinator.delegate = self
+    coordinator.start(sendNFT: true)
+    self.sendCoordinator = coordinator
+  }
+  
+  func overviewNFTDetailViewController(_ controller: OverviewNFTDetailViewController, run event: OverviewNFTDetailEvent) {
+    switch event {
+    case .sendItem(item: let item, category: let category):
+      
+      self.navigationController.displayLoading()
+      KNGeneralProvider.shared.getSupportInterface(address: category.collectibleAddress) { interfaceResult in
+        self.navigationController.hideLoading()
+        switch interfaceResult {
+        case .success(let isERC721):
+          self.presentSendNFTView(item: item, category: category, supportERC721: isERC721)
+        case .failure(_):
+          self.navigationController.showErrorTopBannerMessage(message: "Can not get support interface for collection")
+        }
+      }
+    case .favoriteItem(item: let item, category: let category, status: let status):
+      if case .real(let account) = self.session.wallet.type {
+        let data = Data(item.tokenID.utf8)
+        let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+        let sendData = prefix + data
+        
+        let result = self.session.keystore.signMessage(sendData, for: account)
+        switch result {
+        case .success(let signedData):
+          print("[Send favorite nft] success")
+          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+          provider.request(.registerNFTFavorite(address: self.session.wallet.address.description, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+            if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+              if let isSuccess = json["success"] as? Bool, isSuccess {
+                self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))
+                controller.coordinatorDidUpdateFavStatus(status)
+              } else if let error = json["error"] as? String {
+                self.navigationController.showTopBannerView(message: error)
+              } else {
+                self.navigationController.showTopBannerView(message: "Fail to register favorite for \(item.externalData.name)")
+              }
+            }
+          }
+        case .failure(let error):
+          print("[Send favorite nft] \(error.localizedDescription)")
+        }
+      } else {
+        self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+      }
+    }
   }
 }

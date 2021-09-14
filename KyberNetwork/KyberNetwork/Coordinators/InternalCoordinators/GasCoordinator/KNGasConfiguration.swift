@@ -63,6 +63,6 @@ public struct KNGasConfiguration {
   }
 
   static func calculateDefaultGasLimitTransfer(token: TokenObject) -> BigInt {
-    return token.isETH || token.isBNB ? transferETHGasLimitDefault : transferTokenGasLimitDefault
+    return token.isQuote ? transferETHGasLimitDefault : transferTokenGasLimitDefault
   }
 }

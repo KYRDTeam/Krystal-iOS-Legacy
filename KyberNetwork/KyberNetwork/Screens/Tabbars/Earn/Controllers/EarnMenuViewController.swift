@@ -84,7 +84,7 @@ class EarnMenuViewController: KNBaseViewController {
   }
   
   fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
-    self.walletsSelectButton.setTitle(wallet.address.description, for: .normal)
+    self.walletsSelectButton.setTitle(wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {

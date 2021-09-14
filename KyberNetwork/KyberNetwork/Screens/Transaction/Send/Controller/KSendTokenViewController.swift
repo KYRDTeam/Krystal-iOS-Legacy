@@ -19,10 +19,12 @@ enum KSendTokenViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
   case openHistory
   case openWalletsList
+  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool)
+  case estimateGasLimitTransferNFT(to: String,item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
-  func kSendTokenViewController(_ controller: KSendTokenViewController, run event: KSendTokenViewEvent)
+  func kSendTokenViewController(_ controller: KNBaseViewController, run event: KSendTokenViewEvent)
 }
 
 //swiftlint:disable file_length
@@ -119,7 +121,6 @@ class KSendTokenViewController: KNBaseViewController {
     self.setupTokenView()
     self.setupRecentContact()
     self.setupAddressTextField()
-    self.setupSendButton()
 
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.updateGasFeeUI()
@@ -133,7 +134,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.currentWalletAddress, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.walletName, for: .normal)
   }
 
   fileprivate func setupTokenView() {
@@ -167,13 +168,6 @@ class KSendTokenViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.ensAddressDidTapped(_:)))
     self.ensAddressLabel.addGestureRecognizer(tapGesture)
     self.ensAddressLabel.isUserInteractionEnabled = true
-  }
-
-  fileprivate func setupSendButton() {
-    self.sendButton.setTitle(
-      NSLocalizedString("Transfer Now", value: "Transfer Now", comment: ""),
-      for: .normal
-    )
   }
 
   @objc func tokenBalanceLabelTapped(_ sender: Any) {

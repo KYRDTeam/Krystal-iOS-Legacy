@@ -234,8 +234,8 @@ struct KNHistoryViewModel {
   }
 
   fileprivate func isCompletedTransactionIncluded(_ tx: HistoryTransaction) -> Bool {
-    let matchedTransfer = (tx.type == .transferETH || tx.type == .transferToken) && self.filters.isSend
-    let matchedReceive = ( tx.type == .receiveETH || tx.type == .receiveToken) && self.filters.isReceive
+    let matchedTransfer = (tx.type == .transferETH || tx.type == .transferToken || tx.type == .transferNFT) && self.filters.isSend
+    let matchedReceive = ( tx.type == .receiveETH || tx.type == .receiveToken || tx.type == .receiveNFT || tx.type == .createNFT) && self.filters.isReceive
     let matchedSwap = tx.type == .swap && self.filters.isSwap
     let matchedAppprove = tx.type == .allowance && self.filters.isApprove
     let matchedWithdraw = tx.type == .withdraw && self.filters.isWithdraw

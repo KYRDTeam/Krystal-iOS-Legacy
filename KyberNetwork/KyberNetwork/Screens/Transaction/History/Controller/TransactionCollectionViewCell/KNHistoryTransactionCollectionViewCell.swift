@@ -168,6 +168,30 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return "- \(valueString) \(KNGeneralProvider.shared.quoteToken)"
       }
       return ""
+    case .createNFT:
+      if self.isError {
+        return "--/--"
+      }
+      if let tx = self.data.nftTransaction.first {
+        return "Mint \(tx.tokenName)"
+      }
+      return "Mint NFT"
+    case .transferNFT:
+      if self.isError {
+        return "--/--"
+      }
+      if let tx = self.data.nftTransaction.first {
+        return "Transfer \(tx.tokenName)"
+      }
+      return "Transer NFT"
+    case .receiveNFT:
+      if self.isError {
+        return "--/--"
+      }
+      if let tx = self.data.nftTransaction.first {
+        return "Receive \(tx.tokenName)"
+      }
+      return "Receive NFT"
     }
   }
   
@@ -220,6 +244,9 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       }
       let amountFrom = fromValue * BigInt(10).power(18) / BigInt(10).power(fromDecimal)
       let amountTo = toValue * BigInt(10).power(18) / BigInt(10).power(toDecimal)
+      guard !amountFrom.isZero else {
+        return ""
+      }
       let rate = amountTo * BigInt(10).power(18) / amountFrom
       let rateString = rate.displayRate(decimals: 18)
       return "1 \(fromSymbol) = \(rateString) \(toSymbol)"
@@ -261,6 +288,15 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return self.data.transacton.first?.to ?? ""
     case .selfTransfer:
       return ""
+    case .createNFT:
+      return ""
+    case .transferNFT:
+      return ""
+    case .receiveNFT:
+      if let tx = self.data.nftTransaction.first {
+        return "From: \(tx.from)"
+      }
+      return ""
     }
   }
   
@@ -286,6 +322,12 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "CONTRACT INTERACT"
     case .selfTransfer:
       return "SELF"
+    case .createNFT:
+      return "MINT"
+    case .transferNFT:
+      return "TRANSFER"
+    case .receiveNFT:
+      return "RECEIVED"
     }
   }
 
@@ -321,6 +363,12 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return UIImage(named: "history_contract_interaction_icon")!
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
+    case .createNFT:
+      return UIImage(named: "history_receive_icon")!
+    case .transferNFT:
+      return UIImage(named: "history_send_icon")!
+    case .receiveNFT:
+      return UIImage(named: "history_receive_icon")!
     }
   }
 
@@ -399,6 +447,12 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return "CONTRACT INTERACT"
     case .selfTransfer:
       return "SELF"
+    case .createNFT:
+      return "MINT"
+    case .transferNFT:
+      return "TRANSFER"
+    case .receiveNFT:
+      return "RECEIVED"
     }
   }
 
@@ -428,6 +482,12 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return UIImage(named: "history_contract_interaction_icon")!
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
+    case .createNFT:
+      return UIImage(named: "history_receive_icon")!
+    case .transferNFT:
+      return UIImage(named: "history_send_icon")!
+    case .receiveNFT:
+      return UIImage(named: "history_receive_icon")!
     }
   }
 
