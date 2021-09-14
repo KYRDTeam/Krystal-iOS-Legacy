@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -37,7 +37,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-wz-rIv">
-                            <rect key="frame" x="169.5" y="63.5" width="36" height="23.5"/>
+                            <rect key="frame" x="169" y="63.5" width="37.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -102,13 +102,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4x-OH-9rN">
-                                            <rect key="frame" x="34" y="419.5" width="30" height="23.5"/>
+                                            <rect key="frame" x="34" y="419.5" width="31.5" height="23.5"/>
                                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="----" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D96-RB-Vp5">
-                                            <rect key="frame" x="34" y="447" width="22.5" height="19"/>
+                                            <rect key="frame" x="34" y="447" width="25" height="19"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -221,7 +221,7 @@
             <constraints>
                 <constraint firstItem="3pW-ky-TMw" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="9Ml-kA-rFG"/>
                 <constraint firstItem="3pW-ky-TMw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Jki-Y9-nVg"/>
-                <constraint firstItem="0f7-WL-c2N" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="VC0-95-G8n"/>
+                <constraint firstItem="0f7-WL-c2N" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="VC0-95-G8n"/>
                 <constraint firstItem="0f7-WL-c2N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hOe-SX-V1d"/>
                 <constraint firstItem="0f7-WL-c2N" firstAttribute="top" secondItem="3pW-ky-TMw" secondAttribute="bottom" id="iqU-FI-jYQ"/>
                 <constraint firstItem="3pW-ky-TMw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qpW-X9-rdO"/>

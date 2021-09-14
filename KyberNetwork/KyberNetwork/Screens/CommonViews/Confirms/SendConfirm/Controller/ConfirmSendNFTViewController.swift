@@ -96,6 +96,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   @IBOutlet weak var nftIDLabel: UILabel!
   @IBOutlet weak var amountTitleLabel: UILabel!
   @IBOutlet weak var amountLabel: UILabel!
+  @IBOutlet weak var nftContainerView: UIView!
   
   weak var delegate: KConfirmSendViewControllerDelegate?
   fileprivate let viewModel: ConfirmSendNFTViewModel
@@ -141,6 +142,8 @@ class ConfirmSendNFTViewController: KNBaseViewController {
     self.amountTitleLabel.isHidden = self.viewModel.supportERC721
     self.amountLabel.isHidden = self.viewModel.supportERC721
     self.amountLabel.text = self.viewModel.supportERC721 ? "" : "\(self.viewModel.amount)"
+    
+    self.nftContainerView.dropShadow(color: UIColor.black, offSet: CGSize(width: -1, height: 1), radius: 16)
   }
   
   func updateUINFTItem() {
