@@ -20,17 +20,24 @@ struct ContractNFTTransfer: Web3Request {
   
   static let abiERC721 = "{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}"
   
-  static let abiERC1155 = "{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}"
+  static let abiERC1155 = "{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}"
+  
   
   let from: String
   let to: String
   let tokenID: String
+  let amount: Int
   
   let isERC721Format: Bool
   
   var type: Web3RequestType {
-    let run = "web3.eth.abi.encodeFunctionCall(\(isERC721Format ? ContractNFTTransfer.abiERC721 : ContractNFTTransfer.abiERC1155), [\"\(from)\", \"\(to)\", \"\(tokenID)\"])"
-    return .script(command: run)
+    if isERC721Format {
+      let run = "web3.eth.abi.encodeFunctionCall(\(ContractNFTTransfer.abiERC721), [\"\(from)\", \"\(to)\", \"\(tokenID)\"])"
+      return .script(command: run)
+    } else {
+      let run = "web3.eth.abi.encodeFunctionCall(\(ContractNFTTransfer.abiERC1155), [\"\(from)\", \"\(to)\", \"\(tokenID)\", \"\(amount)\", \"0x\"])"
+      return .script(command: run)
+    }
   }
 }
 

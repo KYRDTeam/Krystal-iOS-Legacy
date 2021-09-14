@@ -274,11 +274,11 @@ enum HistoryModelType: Codable {
       return .earn
     case "0xa9059cbb":
       return .transferToken
-    case "0xcf512b53", "0x12342114", "0xae591d54", "0x7a6c0dfe":
+    case "0xcf512b53", "0x12342114", "0xae591d54", "0x7a6c0dfe", "0x2db897d0":
       return .swap
-    case "0x42842e0e":
+    case "0x42842e0e", "0xf242432a":
       return .transferNFT
-    case "0xd0def521":
+    case "0xd0def521", "0x731133e9":
       return .createNFT
     default:
       return .contractInteraction

@@ -11,7 +11,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -86,7 +86,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rah-gZ-IhV">
-                    <rect key="frame" x="0.0" y="113" width="375" height="651"/>
+                    <rect key="frame" x="0.0" y="113" width="375" height="631"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uMG-8P-csI">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
@@ -249,7 +249,7 @@
                 <constraint firstItem="iFV-zF-Kok" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="Xhd-4G-6wT"/>
                 <constraint firstItem="Rah-gZ-IhV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mV0-lk-R1N"/>
                 <constraint firstItem="Rah-gZ-IhV" firstAttribute="top" secondItem="iFV-zF-Kok" secondAttribute="bottom" id="tmH-L7-qSe"/>
-                <constraint firstItem="Rah-gZ-IhV" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="yQ0-m2-gy5"/>
+                <constraint firstItem="Rah-gZ-IhV" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" constant="-20" id="yQ0-m2-gy5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="28" y="112.44377811094454"/>

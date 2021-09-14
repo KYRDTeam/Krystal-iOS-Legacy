@@ -437,7 +437,7 @@ extension KNAppCoordinator {
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
-    self.session.tokenStorage.addKyberSupportedTokens()
+//    self.session.tokenStorage.addKyberSupportedTokens()
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
 //    self.balanceTabCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)

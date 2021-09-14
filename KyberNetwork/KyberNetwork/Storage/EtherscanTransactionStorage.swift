@@ -193,7 +193,7 @@ class EtherscanTransactionStorage {
   
   func getNFTTransactionsWithHash(_ hash: String) -> [NFTTransaction] {
     return self.nftTransaction.filter { (item) -> Bool in
-      return item.hash == hash
+      return item.hash.lowercased() == hash.lowercased()
     }
   }
 
@@ -209,7 +209,7 @@ class EtherscanTransactionStorage {
     }
   }
 
-  func generateKrytalTransactionModel() {
+  func generateKrytalTransactionModel(completion: @escaping () -> Void) {
     guard let unwrapped = self.wallet else {
       return
     }
@@ -275,6 +275,7 @@ class EtherscanTransactionStorage {
     
     self.historyTransactionModel = historyModel
     Storage.store(self.historyTransactionModel, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyTransactionsStoreFileName)
+    completion()
     DispatchQueue.main.async {
       KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
       newestTxs.forEach { (item) in

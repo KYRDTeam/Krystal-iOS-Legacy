@@ -138,6 +138,9 @@ PODS:
   - SAMKeychain (1.5.3)
   - secp256k1.swift (0.1.4)
   - SeedStackViewController (0.5.1)
+  - Sentry (7.2.8):
+    - Sentry/Core (= 7.2.8)
+  - Sentry/Core (7.2.8)
   - Starscream (3.1.1)
   - StatefulViewController (3.0)
   - SwiftChart (1.0.1)
@@ -197,6 +200,7 @@ DEPENDENCIES:
   - RealmSwift (~> 3.19.0)
   - SAMKeychain (~> 1.5.3)
   - SeedStackViewController
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.2.8`)
   - Starscream (~> 3.1)
   - StatefulViewController (~> 3.0)
   - SwiftChart (from `https://github.com/gpbl/SwiftChart.git`)
@@ -262,12 +266,18 @@ SPEC REPOS:
     - Web3
 
 EXTERNAL SOURCES:
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.2.8
   SwiftChart:
     :git: https://github.com/gpbl/SwiftChart.git
   WalletConnect:
     :git: https://github.com/trustwallet/wallet-connect-swift
 
 CHECKOUT OPTIONS:
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.2.8
   SwiftChart:
     :commit: 4949a94090641ca85b8133129f7a7b2230694788
     :git: https://github.com/gpbl/SwiftChart.git
@@ -313,6 +323,7 @@ SPEC CHECKSUMS:
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SeedStackViewController: 4d37c51ec4b0a47daf563ce8f692fde2b703955b
+  Sentry: f315ca2086f72f825b1b2e0cdebe81b44131cbd2
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
   SwiftChart: 6ed8c61f3731cc32e3cb92858dba339d08ddac87
@@ -327,6 +338,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 9c76d7c6e5a2bd3b96a24890b5e7e326a5653bd8
+PODFILE CHECKSUM: 8375f5a968b19fb6fa75e322ef561536debacf49
 
 COCOAPODS: 1.10.1

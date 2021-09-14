@@ -19,8 +19,8 @@ enum KSendTokenViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
   case openHistory
   case openWalletsList
-  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, ens: String?)
-  case estimateGasLimitTransferNFT(to: String,item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, isERC721: Bool)
+  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool)
+  case estimateGasLimitTransferNFT(to: String,item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -134,7 +134,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.currentWalletAddress, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.walletName, for: .normal)
   }
 
   fileprivate func setupTokenView() {

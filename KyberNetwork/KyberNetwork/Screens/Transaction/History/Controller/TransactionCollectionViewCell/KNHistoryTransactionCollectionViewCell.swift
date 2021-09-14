@@ -175,7 +175,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Mint \(tx.tokenName)"
       }
-      return ""
+      return "Mint NFT"
     case .transferNFT:
       if self.isError {
         return "--/--"
@@ -183,7 +183,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Transfer \(tx.tokenName)"
       }
-      return ""
+      return "Transer NFT"
     case .receiveNFT:
       if self.isError {
         return "--/--"
@@ -191,7 +191,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       if let tx = self.data.nftTransaction.first {
         return "Receive \(tx.tokenName)"
       }
-      return ""
+      return "Receive NFT"
     }
   }
   
@@ -244,6 +244,9 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       }
       let amountFrom = fromValue * BigInt(10).power(18) / BigInt(10).power(fromDecimal)
       let amountTo = toValue * BigInt(10).power(18) / BigInt(10).power(toDecimal)
+      guard !amountFrom.isZero else {
+        return ""
+      }
       let rate = amountTo * BigInt(10).power(18) / amountFrom
       let rateString = rate.displayRate(decimals: 18)
       return "1 \(fromSymbol) = \(rateString) \(toSymbol)"
@@ -361,7 +364,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
     case .createNFT:
-      return UIImage()
+      return UIImage(named: "history_receive_icon")!
     case .transferNFT:
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
@@ -480,7 +483,7 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
     case .selfTransfer:
       return UIImage(named: "history_send_icon")!
     case .createNFT:
-      return UIImage()
+      return UIImage(named: "history_receive_icon")!
     case .transferNFT:
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:

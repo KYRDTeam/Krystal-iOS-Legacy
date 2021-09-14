@@ -108,12 +108,13 @@ struct NftResponse: Codable {
 struct NFTSection: Codable {
     let collectibleName, collectibleAddress, collectibleSymbol: String
     let collectibleLogo: String
-    let items: [NFTItem]
+    var items: [NFTItem]
 }
 
 // MARK: - Item
 class NFTItem: Codable {
-  let tokenID, tokenBalance: String
+  let tokenID: String
+  var tokenBalance: String
   let tokenURL: String
   let externalData: ExternalData
   var favorite: Bool
@@ -139,6 +140,10 @@ class NFTItem: Codable {
     self.tokenURL = ""
     self.externalData = ExternalData(name: name, externalDataDescription: "", image: "")
     self.favorite = false
+  }
+  
+  var balanceInt: Int {
+    return Int(self.tokenBalance) ?? 0
   }
 }
 

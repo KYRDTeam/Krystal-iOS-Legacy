@@ -25,7 +25,7 @@ enum OverviewMainViewEvent {
   case openNFTDetail(item: NFTItem, category: NFTSection)
 }
 
-enum ViewMode: Equatable {
+enum ViewMode: Equatable, Codable {
   case market(rightMode: RightMode)
   case asset(rightMode: RightMode)
   case supply
@@ -48,9 +48,100 @@ enum ViewMode: Equatable {
       return false
     }
   }
+  
+  enum CodingKeys: CodingKey {
+    case market, asset, supply, favourite, nft
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    switch self {
+    case .market(rightMode: let rightMode):
+      try container.encode(rightMode, forKey: .market)
+    case .asset(rightMode: let rightMode):
+      try container.encode(rightMode, forKey: .market)
+    case .supply:
+      try container.encode(true, forKey: .supply)
+    case .favourite(rightMode: let rightMode):
+      try container.encode(rightMode, forKey: .favourite)
+    case .nft:
+      try container.encode(true, forKey: .nft)
+    }
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let key = container.allKeys.first
+    switch key {
+    case .market:
+      let mode = try container.decode(
+        RightMode.self,
+        forKey: .market
+      )
+      self = .market(rightMode: mode)
+    case .asset:
+      let mode = try container.decode(
+        RightMode.self,
+        forKey: .asset
+      )
+      self = .asset(rightMode: mode)
+    case .supply:
+      self = .supply
+    case .favourite:
+      let mode = try container.decode(
+        RightMode.self,
+        forKey: .favourite
+      )
+      self = .favourite(rightMode: mode)
+    case .nft:
+      self = .nft
+    default:
+      throw DecodingError.dataCorrupted(
+        DecodingError.Context(
+          codingPath: container.codingPath,
+          debugDescription: "Unabled to decode enum."
+        )
+      )
+    }
+  }
 }
 
-enum RightMode {
+enum RightMode: Codable {
+  enum Key: CodingKey {
+    case rawValue
+  }
+  
+  enum CodingError: Error {
+    case unknownValue
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Key.self)
+    let rawValue = try container.decode(Int.self, forKey: .rawValue)
+    switch rawValue {
+    case 0:
+      self = .lastPrice
+    case 1:
+      self = .value
+    case 2:
+      self = .ch24
+    default:
+      throw CodingError.unknownValue
+    }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Key.self)
+    switch self {
+    case .lastPrice:
+      try container.encode(0, forKey: .rawValue)
+    case .value:
+      try container.encode(1, forKey: .rawValue)
+    case .ch24:
+      try container.encode(2, forKey: .rawValue)
+    }
+  }
+  
   case lastPrice
   case value
   case ch24
@@ -139,14 +230,22 @@ protocol OverviewMainViewControllerDelegate: class {
 
 class OverviewMainViewModel {
   fileprivate var session: KNSession!
-  var currentMode: ViewMode = .asset(rightMode: .value)
+  var currentMode: ViewMode = Storage.retrieve(Constants.viewModeStoreFileName, as: ViewMode.self) ?? .asset(rightMode: .value) {
+    didSet {
+      Storage.store(self.currentMode, as: Constants.viewModeStoreFileName)
+    }
+  }
   var dataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
   var displayNFTHeader: [NFTSection] = []
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
-  var hideBalanceStatus: Bool = true
+  var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
+    didSet {
+      UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
+    }
+  }
   var marketSortType: MarketSortType = .rightSide(des: true)
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
@@ -436,7 +535,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func updateUIWalletList() {
-    self.walletNameLabel.text = self.viewModel.session.wallet.address.description
+    self.walletNameLabel.text = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
   }
 
   fileprivate func reloadUI() {

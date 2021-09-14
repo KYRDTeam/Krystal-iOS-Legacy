@@ -119,7 +119,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBAction func pasteButtonTapped(_ sender: UIButton) {
     if let string = UIPasteboard.general.string {
       if sender.tag == 1 {
-        self.enterPrivateKeyTextField.text = string
+        self.enterPrivateKeyTextField.text = string.drop0x
         self.updateNextButton()
       } else {
         self.refCodeField.text = string
@@ -142,6 +142,9 @@ extension KNImportPrivateKeyViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     textField.text = text
     if textField == self.enterPrivateKeyTextField {
+      if text.hasPrefix("0x") {
+        textField.text = string.drop0x
+      }
       self.updateNextButton()
     }
     return false
@@ -155,7 +158,7 @@ extension KNImportPrivateKeyViewController: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      self.enterPrivateKeyTextField.text = result
+      self.enterPrivateKeyTextField.text = result.drop0x
       self.updateNextButton()
     }
   }

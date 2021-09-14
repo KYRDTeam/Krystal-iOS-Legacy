@@ -651,7 +651,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     guard self.isViewLoaded else {
       return
     }
-    self.walletsSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
 
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool, token: TokenObject? = nil) {
