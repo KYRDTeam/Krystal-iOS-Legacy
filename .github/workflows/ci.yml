@@ -66,10 +66,10 @@ jobs:
       matrix: 
         include:
           - app_name: "Krystal: Develop"
-            ota_url: ${{ secrets.DEV_OTA_URL }}
+            ota_key: "DEV_OTA_URL"
             bump_build: true
           - app_name: "Krystal: Staging"
-            ota_url: ${{ secrets.STG_OTA_URL }}
+            ota_key: "STG_OTA_URL"
             bump_build: false
             
     runs-on: macos-latest
@@ -149,7 +149,7 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         env:
-          OTA_URL: ${{ matrix.ota_url }}
+          OTA_URL: ${{ secrets[matrix.ota_key] }}
           APP_NAME: ${{ matrix.app_name }}
           OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
           OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
