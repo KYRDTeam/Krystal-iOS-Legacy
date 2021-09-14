@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     
     SentrySDK.start { options in
-      options.dsn = "https://1b458eab2f25425a8e6472f00d5c7a54@sentry-v2.knstats.com/33"
+      options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
       options.tracesSampleRate = 1.0
       options.environment = KNEnvironment.default.displayName
