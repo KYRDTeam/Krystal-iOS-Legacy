@@ -4,10 +4,7 @@ on:
   push:
     branches:
       - ci
-      - develop
-  pull_request:
-    branches:
-      - master
+      - main 
 
 env:
   LANG: en_US.UTF-8
@@ -65,6 +62,16 @@ jobs:
   build-ios:
     needs:
       - prepare
+    strategy:
+      matrix: 
+        include:
+          - app_name: "Krystal: Develop"
+            ota_key: "DEV_OTA_URL"
+            bump_build: true
+          - app_name: "Krystal: Staging"
+            ota_key: "STG_OTA_URL"
+            bump_build: false
+            
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
@@ -141,54 +148,33 @@ jobs:
 
       - name: Deploy to OTA Server
         shell: bash
+        env:
+          OTA_URL: ${{ secrets[matrix.ota_key] }}
+          APP_NAME: ${{ matrix.app_name }}
+          OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
+          OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
         run: |
-          # ota configure variable
-          DEV_OTA_URL="${{ secrets.DEV_OTA_URL }}"
-          STG_OTA_URL="${{ secrets.STG_OTA_URL }}"
-
-          OTA_URL="$DEV_OTA_URL"
-          APP_SUFFIX="Develop"
-
-          # deploy to Staging OTA server if event 
-          # that trigger workflow is `pull_request`
-          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            OTA_URL="$STG_OTA_URL"
-            APP_SUFFIX="Staging"
-          fi
-
-          OTA_ROBOT_EMAIL="${{ secrets.OTA_ROBOT_EMAIL }}"
-          OTA_ROBOT_PASSWORD="${{ secrets.OTA_ROBOT_PASSWORD }}"
-
+          # Get access token
           TOKEN=$(curl -sSL -H "Content-Type: application/json" -d "{\"email\": \"$OTA_ROBOT_EMAIL\", \"password\": \"$OTA_ROBOT_PASSWORD\"}"  $OTA_URL/api/v1/users/login | jq -r .access_token)
 
-          # upload ipa to OTA server
+          # Upload iOS file 
           OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -H "Authorization: token $TOKEN" $OTA_URL/api/v1/storages/upload | jq -r .object_id)
 
-          # upload icon
+          # Upload app icon
           APP_ICON=$(curl -sSfL -F "file=@./KyberNetwork/Assets.xcassets/AppIcon.appiconset/Krystal_icon_60@3x.png" -H "Authorization: token $TOKEN" $OTA_URL/api/v1/storages/upload | jq -r .object_key)
 
-          # prepare metadata
-          REPO_URL="https://github.com/${{ github.repository }}" 
-          METADATA="{\"repo\": \"$REPO_URL\", \"commit\": \"$GITHUB_SHA\", \"app_icon\": \"$APP_ICON\"}"
+          # Prepare metadata
+          METADATA="{\"repo\": \"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\", \"commit\": \"$GITHUB_SHA\", \"app_icon\": \"$APP_ICON\"}"
 
-          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            # extract PR number
-            PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-            METADATA="{\"repo\": \"$REPO_URL\", \"pr_number\": \"$PR_NUMBER\", \"app_icon\": \"$APP_ICON\"}"
-          fi
-
-          # set default app name
-          APP_NAME="Krystal: $APP_SUFFIX"
-
-          # extract build 
+          # Extract build number
           BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
           BUILD=${BUILD:-1}
 
-          # extract version
+          # Extract version
           VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
           VERSION=${VERSION:-1.0.0}
 
-          # upload profile
+          # Upload to OTA Server
           CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
                   -o /dev/null -w "%{http_code}" \
                   -H "Authorization: token $TOKEN" \
@@ -204,7 +190,7 @@ jobs:
           git config --global user.email 'vietanhduong@users.noreply.github.com'
 
       - name: Bump Build number
-        if: needs.prepare.outputs.current_branch == 'develop'
+        if: matrix.bump_build 
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
