@@ -121,7 +121,7 @@
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -181,7 +181,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Sending QR Code to your contacts</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Your data will be used to improve and personalize your experience</string>
+	<string>Your data will be used for debugging and performance monitoring. Krystal does not collect your personal information and does not share your data externally in any way.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-ThinItalic.ttf</string>

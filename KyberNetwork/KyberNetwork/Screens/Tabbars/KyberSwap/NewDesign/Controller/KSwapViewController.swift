@@ -80,8 +80,10 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var minReceivedAmount: UILabel!
+  @IBOutlet weak var rateTimerView: SRCountdownTimer!
   
-  fileprivate var estRateTimer: Timer?
+  
+//  fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
@@ -118,17 +120,17 @@ class KSwapViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
     self.isErrorMessageEnabled = true
     // start update est rate
-    self.estRateTimer?.invalidate()
+//    self.estRateTimer?.invalidate()
     self.updateAllRates()
     self.updateAllowance()
-    self.estRateTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds30,
-      repeats: true,
-      block: { [weak self] _ in
-        guard let `self` = self else { return }
-        self.updateAllRates()
-      }
-    )
+//    self.estRateTimer = Timer.scheduledTimer(
+//      withTimeInterval: KNLoadingInterval.seconds30,
+//      repeats: true,
+//      block: { [weak self] _ in
+//        guard let `self` = self else { return }
+//        self.updateAllRates()
+//      }
+//    )
 
     // start update est gas limit
     self.estGasLimitTimer?.invalidate()
@@ -154,8 +156,8 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.estRateTimer?.invalidate()
-    self.estRateTimer = nil
+//    self.estRateTimer?.invalidate()
+//    self.estRateTimer = nil
     self.estGasLimitTimer?.invalidate()
     self.estGasLimitTimer = nil
   }
@@ -171,6 +173,30 @@ class KSwapViewController: KNBaseViewController {
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateUIRefPrice()
     self.updateUIPendingTxIndicatorView()
+    self.setupRateTimer()
+  }
+  
+  fileprivate func setupRateTimer() {
+    self.rateTimerView.lineWidth = 2
+    self.rateTimerView.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.rateTimerView.labelFont = UIFont.Kyber.regular(with: 10)
+    self.rateTimerView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.rateTimerView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.rateTimerView.delegate = self
+  }
+
+  fileprivate func startRateTimer() {
+    guard !self.viewModel.amountFrom.isEmpty else {
+      return
+    }
+    if self.rateTimerView.isHidden {
+      self.rateTimerView.pause()
+    }
+    self.rateTimerView.start(beginingValue: 15, interval: 1)
+  }
+
+  fileprivate func stopRateTimer() {
+    self.rateTimerView.pause()
   }
 
   fileprivate func setupTokensView() {
@@ -662,6 +688,7 @@ extension KSwapViewController {
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.updateUIPendingTxIndicatorView()
+    self.stopRateTimer()
     self.view.layoutIfNeeded()
   }
 
@@ -754,6 +781,7 @@ extension KSwapViewController {
     self.updateAllowance()
     self.updateAllRates()
     self.updateUIMinReceiveAmount()
+    self.stopRateTimer()
     self.view.layoutIfNeeded()
   }
 
@@ -970,6 +998,7 @@ extension KSwapViewController {
     self.updateViewAmountDidChange()
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
+    self.stopRateTimer()
   }
 }
 
@@ -1040,6 +1069,26 @@ extension KSwapViewController: UITextFieldDelegate {
     self.updateAllRates()
     self.updateExchangeRateField()
     self.updateUIMinReceiveAmount()
+    self.startRateTimer()
     self.view.layoutIfNeeded()
+  }
+}
+
+extension KSwapViewController: SRCountdownTimerDelegate {
+  @objc func timerDidStart(sender: SRCountdownTimer) {
+    sender.isHidden = false
+  }
+
+  @objc func timerDidPause(sender: SRCountdownTimer) {
+    sender.isHidden = true
+  }
+
+  @objc func timerDidResume(sender: SRCountdownTimer) {
+  }
+
+  @objc func timerDidEnd(sender: SRCountdownTimer, elapsedTime: TimeInterval) {
+    sender.isHidden = true
+    self.updateAllRates()
+    self.startRateTimer()
   }
 }

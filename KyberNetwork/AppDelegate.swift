@@ -12,6 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
 
+  
+  
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
     do {
@@ -40,22 +42,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
           FirebaseApp.configure()
+          self.setupSentry()
         }
       }
     } else {
       FirebaseApp.configure()
+      self.setupSentry()
     }
-    
+
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
-    
+    return true
+  }
+  
+  fileprivate func setupSentry() {
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
       options.tracesSampleRate = 1.0
       options.environment = KNEnvironment.default.displayName
     }
-
-    return true
   }
 
   func applicationWillResignActive(_ application: UIApplication) {

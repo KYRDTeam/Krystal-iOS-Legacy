@@ -82,7 +82,7 @@ class Token: Codable, Equatable, Hashable {
   }
   
   static func == (lhs: Token, rhs: Token) -> Bool {
-    return lhs.address.lowercased() == rhs.address.lowercased()
+    return lhs.address.lowercased() == rhs.address.lowercased() && lhs.decimals == rhs.decimals && lhs.symbol == rhs.symbol
   }
   
   func hash(into hasher: inout Hasher) {
