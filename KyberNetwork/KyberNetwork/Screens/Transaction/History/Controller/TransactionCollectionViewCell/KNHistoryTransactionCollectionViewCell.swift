@@ -208,7 +208,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       var fromDecimal = 0
       var toDecimal = 0
       if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
-        return transaction.from.lowercased() == self.data.wallet
+        return (transaction.from.lowercased() == self.data.wallet) && (transaction.to.lowercased() != self.data.wallet)
       } {
         let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
         fromValue = valueBigInt

@@ -87,6 +87,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
+  var keyboardTimer: Timer? = nil
 
   init(viewModel: KSwapViewModel) {
     self.viewModel = viewModel
@@ -314,6 +315,7 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateEstimatedGasLimit()
     self.updateUIMinReceiveAmount()
+    self.stopRateTimer()
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
@@ -1004,7 +1006,14 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-    self.updateViewAmountDidChange()
+
+    self.keyboardTimer?.invalidate()
+    self.keyboardTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(KSwapViewController.keyboardPauseTyping),
+            userInfo: ["textField": textField],
+            repeats: false)
 
     return false
   }
@@ -1021,7 +1030,6 @@ extension KSwapViewController: UITextFieldDelegate {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
     }
-    self.startRateTimer()
   }
 
   fileprivate func updateInputFieldsUI() {
@@ -1036,7 +1044,10 @@ extension KSwapViewController: UITextFieldDelegate {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
   }
   
-  
+  @objc func keyboardPauseTyping(timer: Timer) {
+    self.startRateTimer()
+    self.updateViewAmountDidChange()
+  }
 
   fileprivate func updateViewAmountDidChange() {
     self.updateInputFieldsUI()
