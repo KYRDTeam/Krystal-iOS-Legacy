@@ -399,7 +399,7 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateViewAmountDidChange()
     if sender as? KSwapViewController != self {
-      if self.viewModel.from.isQuote {
+      if self.viewModel.from.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
           message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
