@@ -850,7 +850,7 @@ enum KrytalService {
   case getBestPath(src: String, dst: String, srcAmount: String)
   case getHint(path: [JSONDictionary])
   case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
-  case getAllRates(src: String, dst: String, srcAmount: String)
+  case getAllRates(src: String, dst: String, amount: String, focusSrc: Bool)
   case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
   case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
   case getGasPrice
@@ -999,12 +999,16 @@ extension KrytalService: TargetType {
         "isCaching": isCaching,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllRates(let src, let dst, let srcAmount):
-      let json: JSONDictionary = [
+    case .getAllRates(let src, let dst, let amount, let focusSrc):
+      var json: JSONDictionary = [
         "src": src,
-        "dest": dst,
-        "srcAmount": srcAmount,
+        "dest": dst
       ]
+      if focusSrc {
+        json["srcAmount"] = amount
+      } else {
+        json["destAmount"] = amount
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildSwapTx(let address, let src, let dst, let srcAmount, let minDstAmount, let gasPrice, let nonce, let hint, let useGasToken):
       let json: JSONDictionary = [

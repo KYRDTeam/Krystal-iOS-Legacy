@@ -16,7 +16,7 @@ enum KSwapViewEvent {
   case updateRate(rate: Double)
   case openHistory
   case openWalletsList
-  case getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt)
+  case getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt)
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
@@ -440,31 +440,15 @@ class KSwapViewController: KNBaseViewController {
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
   }
 
-//  fileprivate func updateEstimatedRate(showError: Bool = false) {
-//    let event = KSwapViewEvent.estimateRate(
-//      from: self.viewModel.from,
-//      to: self.viewModel.to,
-//      amount: self.viewModel.amountToEstimate,
-//      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform),
-//      showError: showError
-//    )
-//    self.delegate?.kSwapViewController(self, run: event)
-//  }
-
   fileprivate func updateAllRates() {
-    let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, srcAmount: self.viewModel.amountFromBigInt)
+    let amt = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
+    let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, amount: amt, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.kSwapViewController(self, run: event)
   }
-  
+
   fileprivate func updateRefPrice() {
     self.delegate?.kSwapViewController(self, run: .getRefPrice(from: self.viewModel.from, to: self.viewModel.to))
   }
-
-//  fileprivate func updateReferencePrice() {
-//    KNRateCoordinator.shared.currentSymPair = (self.viewModel.from.symbol, self.viewModel.to.symbol)
-//    let event = KSwapViewEvent.referencePrice(from: self.viewModel.from, to: self.viewModel.to)
-//    self.delegate?.kSwapViewController(self, run: event)
-//  }
 
   fileprivate func updateEstimatedGasLimit() {
     let event = KSwapViewEvent.getGasLimit(
@@ -812,19 +796,6 @@ extension KSwapViewController {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
 //    self.updateExchangeRateField()
   }
-
-//  func coordinatorUpdateProdCachedRates() {
-//    self.viewModel.updateProdCachedRate()
-////    self.updateExchangeRateField()
-//  }
-//
-//  func coordinatorUpdateComparedRateFromNode(from: TokenObject, to: TokenObject, rate: BigInt) {
-//    if self.viewModel.from == from, self.viewModel.to == to {
-//      self.viewModel.updateProdCachedRate(rate)
-////      self.updateExchangeRateField()
-//    }
-//  }
-
   /*
    - gasPrice: new gas price after user finished selected gas price from set gas price view
    */
@@ -970,7 +941,7 @@ extension KSwapViewController {
     self.viewModel.updateRefPrice(from: from, to: to, change: change, source: source)
     self.updateUIRefPrice()
   }
-  
+
   func coordinatorUpdateIsUseGasToken(_ state: Bool) {
   }
 
@@ -981,12 +952,12 @@ extension KSwapViewController {
       time: 2.0
     )
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
   }
-  
+
   func coordinatorDidUpdateChain() {
     self.updateUISwitchChain()
     self.viewModel.resetDefaultTokensPair()

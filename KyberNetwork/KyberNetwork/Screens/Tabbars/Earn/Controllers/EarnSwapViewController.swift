@@ -1161,7 +1161,8 @@ extension EarnSwapViewController: UITextFieldDelegate {
   }
   
   fileprivate func updateAllRates() {
-    let event = EarnViewEvent.getAllRates(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, srcAmount: self.viewModel.amountFromBigInt)
+    let amount = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
+    let event = EarnViewEvent.getAllRates(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, amount: amount, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.earnViewController(self, run: event)
   }
 }

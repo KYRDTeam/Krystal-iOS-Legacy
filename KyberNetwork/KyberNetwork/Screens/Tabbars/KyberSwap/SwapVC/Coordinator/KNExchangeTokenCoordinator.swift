@@ -560,8 +560,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
-    case .getAllRates(let from, let to, let srcAmount):
-      self.getAllRates(from: from, to: to, srcAmount: srcAmount)
+    case .getAllRates(let from, let to, let srcAmount, let focusSrc):
+      self.getAllRates(from: from, to: to, amount: srcAmount, focusSrc: focusSrc)
     case .openChooseRate(let from, let to, let rates, let gasPrice):
       let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice)
       let vc = ChooseRateViewController(viewModel: viewModel)
@@ -860,19 +860,19 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //    }
 //  }
 
-  func getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt) {
+  func getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
+    let amt = amount.isZero ? from.placeholderValue.description : amount.description
 
-    provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
+    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(RateResponse.self, from: resp.data)
-          self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: srcAmount, rates: data.rates)
+          self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: data.rates)
         } catch let error {
           self.rootViewController.coordinatorFailUpdateRates()
         }

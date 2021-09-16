@@ -521,15 +521,11 @@ class KSwapViewModel {
     var allRates: [JSONDictionary] = []
     self.swapRates.3.forEach { (element) in
       if element.platform == self.currentFlatform {
-//        var mutable = element
-//        mutable["estimatedGas"] = Double(gasLimit)
-//        allRates.append(mutable)
         element.estimatedGas = Int(gasLimit)
       } else {
 //        allRates.append(element)
       }
     }
-//    self.updateSwapRates(from: from, to: to, amount: amount, rates: allRates)
   }
 
   func getDefaultGasLimit(for from: TokenObject, to: TokenObject) -> BigInt {

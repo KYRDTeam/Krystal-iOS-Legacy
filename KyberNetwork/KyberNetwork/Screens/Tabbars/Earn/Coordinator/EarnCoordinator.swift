@@ -339,8 +339,8 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       self.navigationController.pushViewController(controller, animated: true)
       controller.coordinatorUpdateTokenBalance(self.balances)
       self.earnSwapViewController = controller
-    case .getAllRates(from: let from, to: let to, srcAmount: let srcAmount):
-      self.getAllRates(from: from, to: to, srcAmount: srcAmount)
+    case .getAllRates(from: let from, to: let to, amount: let amount, focusSrc: let focusSrc):
+      self.getAllRates(from: from, to: to, amount: amount, focusSrc: focusSrc)
     case .openChooseRate(from: let from, to: let to, rates: let rates, gasPrice: let gasPrice):
       let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, isDeposit: true)
       let vc = ChooseRateViewController(viewModel: viewModel)
@@ -439,19 +439,19 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     }
   }
   
-  func getAllRates(from: TokenData, to: TokenData, srcAmount: BigInt) {
+  func getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
-    let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
+    let amt = amount.isZero ? from.placeholderValue.description : amount.description
 
-    provider.request(.getAllRates(src: src, dst: dest, srcAmount: amt)) { [weak self] result in
+    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(RateResponse.self, from: resp.data)
-          self.earnSwapViewController?.coordinatorDidUpdateRates(from: from, to: to, srcAmount: srcAmount, rates: data.rates)
+          self.earnSwapViewController?.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: data.rates)
         } catch let error {
           self.earnSwapViewController?.coordinatorFailUpdateRates()
         }
