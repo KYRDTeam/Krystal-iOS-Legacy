@@ -349,6 +349,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
     self.balanceLabelTapped(sender)
+    self.startRateTimer()
   }
 
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
