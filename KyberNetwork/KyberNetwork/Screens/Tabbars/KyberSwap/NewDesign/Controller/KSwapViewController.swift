@@ -1019,6 +1019,7 @@ extension KSwapViewController: UITextFieldDelegate {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
     }
+    self.startRateTimer()
   }
 
   fileprivate func updateInputFieldsUI() {
@@ -1040,7 +1041,6 @@ extension KSwapViewController: UITextFieldDelegate {
     self.updateAllRates()
     self.updateExchangeRateField()
     self.updateUIMinReceiveAmount()
-    self.startRateTimer()
     self.view.layoutIfNeeded()
   }
 }
