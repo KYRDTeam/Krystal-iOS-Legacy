@@ -983,6 +983,7 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.isSwapAllBalance = false
     self.updateViewAmountDidChange()
     self.updateEstimatedGasLimit()
+    self.stopRateTimer()
     return false
   }
 
