@@ -46,6 +46,7 @@
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="minReceivedAmount" destination="nsk-dq-Pgz" id="2NG-Nz-AG8"/>
                 <outlet property="pendingTxIndicatorView" destination="9cQ-df-sfG" id="Aen-Do-U4N"/>
+                <outlet property="rateTimerView" destination="zIN-Er-xzM" id="ePL-E9-T7B"/>
                 <outlet property="rateWarningLabel" destination="n4X-Ab-mqq" id="wtj-48-xCO"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
                 <outlet property="slippageLabel" destination="nrV-j9-Z3y" id="QPP-Fw-5Xf"/>
@@ -205,6 +206,9 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="hqo-As-hi1"/>
+                                    </connections>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNB-lE-CZa">
                                     <rect key="frame" x="231" y="0.0" width="62" height="42"/>
@@ -274,6 +278,9 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="hZl-bH-Via"/>
+                                    </connections>
                                 </textField>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="o0m-V4-Jak">
                                     <rect key="frame" x="275" y="18" width="10" height="6"/>
@@ -469,6 +476,14 @@
                                 <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="foI-dG-kSD"/>
                             </connections>
                         </button>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIN-Er-xzM" customClass="SRCountdownTimer" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                            <rect key="frame" x="318" y="161.5" width="20" height="20"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="TCR-8S-UYN"/>
+                                <constraint firstAttribute="width" constant="20" id="UxL-pP-yvO"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -490,6 +505,7 @@
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="B8a-1M-INI"/>
                         <constraint firstItem="LBy-ze-Tit" firstAttribute="leading" secondItem="J0n-7n-8cR" secondAttribute="leading" id="CNR-zk-t41"/>
                         <constraint firstItem="5ww-el-4Y6" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="DIR-oa-WTC"/>
+                        <constraint firstItem="EfQ-Sl-42G" firstAttribute="top" secondItem="zIN-Er-xzM" secondAttribute="bottom" constant="10" id="DzF-Lx-Zyw"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" id="EAT-X0-g3Q"/>
                         <constraint firstItem="aW5-gN-sdQ" firstAttribute="leading" secondItem="uFr-Qm-RNC" secondAttribute="trailing" constant="3" id="EqS-Ob-DTB"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="leading" secondItem="IWS-1b-dbc" secondAttribute="leading" id="GiH-y5-70V"/>
@@ -525,6 +541,7 @@
                         <constraint firstItem="J0n-7n-8cR" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="50" id="tjO-8m-ZhP"/>
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="tra-DG-fOD"/>
                         <constraint firstItem="LBy-ze-Tit" firstAttribute="top" secondItem="J0n-7n-8cR" secondAttribute="bottom" constant="12" id="z7g-rB-PVn"/>
+                        <constraint firstItem="zIN-Er-xzM" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="zuq-mO-avp"/>
                     </constraints>
                 </scrollView>
             </subviews>

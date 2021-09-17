@@ -59,7 +59,7 @@ enum ViewMode: Equatable, Codable {
     case .market(rightMode: let rightMode):
       try container.encode(rightMode, forKey: .market)
     case .asset(rightMode: let rightMode):
-      try container.encode(rightMode, forKey: .market)
+      try container.encode(rightMode, forKey: .asset)
     case .supply:
       try container.encode(true, forKey: .supply)
     case .favourite(rightMode: let rightMode):

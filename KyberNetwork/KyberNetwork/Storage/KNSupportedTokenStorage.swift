@@ -218,11 +218,6 @@ class KNSupportedTokenStorage {
     
     self.deletedTokens.append(token)
     Storage.store(self.self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
-//    guard let index = self.customTokens.firstIndex(where: { (token) -> Bool in
-//      return token.address.lowercased() == address.lowercased()
-//    }) else { return }
-//    self.customTokens.remove(at: index)
-//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
   
   func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {

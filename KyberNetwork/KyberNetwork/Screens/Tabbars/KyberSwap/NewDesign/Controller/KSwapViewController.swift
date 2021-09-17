@@ -16,7 +16,7 @@ enum KSwapViewEvent {
   case updateRate(rate: Double)
   case openHistory
   case openWalletsList
-  case getAllRates(from: TokenObject, to: TokenObject, srcAmount: BigInt)
+  case getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt)
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
@@ -80,11 +80,14 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var minReceivedAmount: UILabel!
+  @IBOutlet weak var rateTimerView: SRCountdownTimer!
   
-  fileprivate var estRateTimer: Timer?
+  
+//  fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
+  var keyboardTimer: Timer? = nil
 
   init(viewModel: KSwapViewModel) {
     self.viewModel = viewModel
@@ -118,17 +121,17 @@ class KSwapViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
     self.isErrorMessageEnabled = true
     // start update est rate
-    self.estRateTimer?.invalidate()
+//    self.estRateTimer?.invalidate()
     self.updateAllRates()
     self.updateAllowance()
-    self.estRateTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds30,
-      repeats: true,
-      block: { [weak self] _ in
-        guard let `self` = self else { return }
-        self.updateAllRates()
-      }
-    )
+//    self.estRateTimer = Timer.scheduledTimer(
+//      withTimeInterval: KNLoadingInterval.seconds30,
+//      repeats: true,
+//      block: { [weak self] _ in
+//        guard let `self` = self else { return }
+//        self.updateAllRates()
+//      }
+//    )
 
     // start update est gas limit
     self.estGasLimitTimer?.invalidate()
@@ -154,8 +157,8 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.estRateTimer?.invalidate()
-    self.estRateTimer = nil
+//    self.estRateTimer?.invalidate()
+//    self.estRateTimer = nil
     self.estGasLimitTimer?.invalidate()
     self.estGasLimitTimer = nil
   }
@@ -171,6 +174,30 @@ class KSwapViewController: KNBaseViewController {
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateUIRefPrice()
     self.updateUIPendingTxIndicatorView()
+    self.setupRateTimer()
+  }
+  
+  fileprivate func setupRateTimer() {
+    self.rateTimerView.lineWidth = 2
+    self.rateTimerView.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.rateTimerView.labelFont = UIFont.Kyber.regular(with: 10)
+    self.rateTimerView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.rateTimerView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.rateTimerView.delegate = self
+  }
+
+  fileprivate func startRateTimer() {
+    guard !self.viewModel.amountFrom.isEmpty || !self.viewModel.amountTo.isEmpty else {
+      return
+    }
+    if self.rateTimerView.isHidden {
+      self.rateTimerView.pause()
+    }
+    self.rateTimerView.start(beginingValue: 15, interval: 1)
+  }
+
+  fileprivate func stopRateTimer() {
+    self.rateTimerView.pause()
   }
 
   fileprivate func setupTokensView() {
@@ -288,6 +315,7 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateEstimatedGasLimit()
     self.updateUIMinReceiveAmount()
+    self.stopRateTimer()
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
@@ -323,6 +351,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
     self.balanceLabelTapped(sender)
+    self.startRateTimer()
   }
 
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
@@ -373,7 +402,7 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateViewAmountDidChange()
     if sender as? KSwapViewController != self {
-      if self.viewModel.from.isQuote {
+      if self.viewModel.from.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
           message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
@@ -414,31 +443,15 @@ class KSwapViewController: KNBaseViewController {
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
   }
 
-//  fileprivate func updateEstimatedRate(showError: Bool = false) {
-//    let event = KSwapViewEvent.estimateRate(
-//      from: self.viewModel.from,
-//      to: self.viewModel.to,
-//      amount: self.viewModel.amountToEstimate,
-//      hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform),
-//      showError: showError
-//    )
-//    self.delegate?.kSwapViewController(self, run: event)
-//  }
-
   fileprivate func updateAllRates() {
-    let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, srcAmount: self.viewModel.amountFromBigInt)
+    let amt = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
+    let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, amount: amt, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.kSwapViewController(self, run: event)
   }
-  
+
   fileprivate func updateRefPrice() {
     self.delegate?.kSwapViewController(self, run: .getRefPrice(from: self.viewModel.from, to: self.viewModel.to))
   }
-
-//  fileprivate func updateReferencePrice() {
-//    KNRateCoordinator.shared.currentSymPair = (self.viewModel.from.symbol, self.viewModel.to.symbol)
-//    let event = KSwapViewEvent.referencePrice(from: self.viewModel.from, to: self.viewModel.to)
-//    self.delegate?.kSwapViewController(self, run: event)
-//  }
 
   fileprivate func updateEstimatedGasLimit() {
     let event = KSwapViewEvent.getGasLimit(
@@ -662,6 +675,7 @@ extension KSwapViewController {
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.updateUIPendingTxIndicatorView()
+    self.stopRateTimer()
     self.view.layoutIfNeeded()
   }
 
@@ -754,6 +768,7 @@ extension KSwapViewController {
     self.updateAllowance()
     self.updateAllRates()
     self.updateUIMinReceiveAmount()
+    self.stopRateTimer()
     self.view.layoutIfNeeded()
   }
 
@@ -784,19 +799,6 @@ extension KSwapViewController {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
 //    self.updateExchangeRateField()
   }
-
-//  func coordinatorUpdateProdCachedRates() {
-//    self.viewModel.updateProdCachedRate()
-////    self.updateExchangeRateField()
-//  }
-//
-//  func coordinatorUpdateComparedRateFromNode(from: TokenObject, to: TokenObject, rate: BigInt) {
-//    if self.viewModel.from == from, self.viewModel.to == to {
-//      self.viewModel.updateProdCachedRate(rate)
-////      self.updateExchangeRateField()
-//    }
-//  }
-
   /*
    - gasPrice: new gas price after user finished selected gas price from set gas price view
    */
@@ -942,7 +944,7 @@ extension KSwapViewController {
     self.viewModel.updateRefPrice(from: from, to: to, change: change, source: source)
     self.updateUIRefPrice()
   }
-  
+
   func coordinatorUpdateIsUseGasToken(_ state: Bool) {
   }
 
@@ -953,12 +955,12 @@ extension KSwapViewController {
       time: 2.0
     )
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
   }
-  
+
   func coordinatorDidUpdateChain() {
     self.updateUISwitchChain()
     self.viewModel.resetDefaultTokensPair()
@@ -970,6 +972,7 @@ extension KSwapViewController {
     self.updateViewAmountDidChange()
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
+    self.stopRateTimer()
   }
 }
 
@@ -982,12 +985,15 @@ extension KSwapViewController: UITextFieldDelegate {
     self.viewModel.isSwapAllBalance = false
     self.updateViewAmountDidChange()
     self.updateEstimatedGasLimit()
+    self.stopRateTimer()
     return false
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
+    
+    
     if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     let double: Double = {
@@ -1002,7 +1008,15 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-    self.updateViewAmountDidChange()
+    
+    self.stopRateTimer()
+    self.keyboardTimer?.invalidate()
+    self.keyboardTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(KSwapViewController.keyboardPauseTyping),
+            userInfo: ["textField": textField],
+            repeats: false)
 
     return false
   }
@@ -1033,7 +1047,10 @@ extension KSwapViewController: UITextFieldDelegate {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
   }
   
-  
+  @objc func keyboardPauseTyping(timer: Timer) {
+    self.startRateTimer()
+    self.updateViewAmountDidChange()
+  }
 
   fileprivate func updateViewAmountDidChange() {
     self.updateInputFieldsUI()
@@ -1041,5 +1058,24 @@ extension KSwapViewController: UITextFieldDelegate {
     self.updateExchangeRateField()
     self.updateUIMinReceiveAmount()
     self.view.layoutIfNeeded()
+  }
+}
+
+extension KSwapViewController: SRCountdownTimerDelegate {
+  @objc func timerDidStart(sender: SRCountdownTimer) {
+    sender.isHidden = false
+  }
+
+  @objc func timerDidPause(sender: SRCountdownTimer) {
+    sender.isHidden = true
+  }
+
+  @objc func timerDidResume(sender: SRCountdownTimer) {
+  }
+
+  @objc func timerDidEnd(sender: SRCountdownTimer, elapsedTime: TimeInterval) {
+    sender.isHidden = true
+    self.updateAllRates()
+    self.startRateTimer()
   }
 }
