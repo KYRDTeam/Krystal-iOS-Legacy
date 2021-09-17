@@ -87,7 +87,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate var estGasLimitTimer: Timer?
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
-  var keyboardTimer: Timer? = nil
+  var keyboardTimer: Timer?
 
   init(viewModel: KSwapViewModel) {
     self.viewModel = viewModel
@@ -896,7 +896,7 @@ extension KSwapViewController {
       if self.viewModel.isFocusingFromAmount {
         if self.viewModel.isSwapAllBalance {
           let balance = self.viewModel.from.getBalanceBigInt()
-          if !self.viewModel.from.isETH { return balance } // token, no need minus fee
+          if !self.viewModel.from.isQuoteToken { return balance } // token, no need minus fee
           let fee = self.viewModel.allETHBalanceFee
           return max(BigInt(0), balance - fee)
         }
