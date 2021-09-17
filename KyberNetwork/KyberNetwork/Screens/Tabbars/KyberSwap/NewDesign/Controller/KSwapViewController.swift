@@ -187,7 +187,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func startRateTimer() {
-    guard !self.viewModel.amountFrom.isEmpty else {
+    guard !self.viewModel.amountFrom.isEmpty || !self.viewModel.amountTo.isEmpty else {
       return
     }
     if self.rateTimerView.isHidden {
@@ -992,6 +992,8 @@ extension KSwapViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
+    
+    
     if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     let double: Double = {
@@ -1006,7 +1008,8 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-
+    
+    self.stopRateTimer()
     self.keyboardTimer?.invalidate()
     self.keyboardTimer = Timer.scheduledTimer(
             timeInterval: 1,
