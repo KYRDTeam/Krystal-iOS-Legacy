@@ -255,7 +255,11 @@ struct KNHistoryViewModel {
     } else {
       if transactionToken.isEmpty {
         if tx.type == .allowance, let approveTx = tx.transacton.first, let token = KNSupportedTokenStorage.shared.getTokenWith(address: approveTx.to) {
-          return self.filters.tokens.contains(token.symbol)
+          if matchedType {
+            return self.filters.tokens.contains(token.symbol)
+          } else {
+            return false
+          }
         } else {
           tokenMatched = true
         }
