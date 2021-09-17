@@ -65,6 +65,10 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return transaction.from.lowercased() == self.data.wallet
     }
     if !outTxs.isEmpty, let outTx = outTxs.first {
+      var valueBigInt = BigInt(0)
+      outTxs.forEach { item in
+        valueBigInt += BigInt(item.value) ?? BigInt(0)
+      }
 
       var allValues: [BigInt] = []
       outTxs.forEach { item in
