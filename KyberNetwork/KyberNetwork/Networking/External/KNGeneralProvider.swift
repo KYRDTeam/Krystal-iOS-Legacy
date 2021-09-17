@@ -50,6 +50,7 @@ enum ChainType: Codable {
   case polygon
 }
 //swiftlint:disable file_length
+//swiftlint:disable type_body_length
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
@@ -98,10 +99,19 @@ class KNGeneralProvider {
   var chainPath: String {
     switch self.currentChain {
     case .eth:
+      if KNEnvironment.default == .ropsten {
+        return "/ropsten"
+      }
       return "/ethereum"
     case .bsc:
+      if KNEnvironment.default == .ropsten {
+        return "/bsctestnet"
+      }
       return "/bsc"
     case .polygon:
+      if KNEnvironment.default == .ropsten {
+        return "/mumbai"
+      }
       return "/polygon"
     }
   }

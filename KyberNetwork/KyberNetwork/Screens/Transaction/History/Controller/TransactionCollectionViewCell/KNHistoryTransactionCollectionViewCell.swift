@@ -135,7 +135,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return transaction.from.lowercased() == self.data.wallet
       } {
         let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
-        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(outTx.tokenDecimal) ?? 6)
+        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
         return "- \(valueString) \(outTx.tokenSymbol)"
       }
       return ""
@@ -144,7 +144,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return transaction.to.lowercased() == self.data.wallet
       }) {
         let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
-        let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(inTx.tokenDecimal) ?? 6)
+        let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
         return "+ \(valueString) \(inTx.tokenSymbol)"
       }
       return ""
