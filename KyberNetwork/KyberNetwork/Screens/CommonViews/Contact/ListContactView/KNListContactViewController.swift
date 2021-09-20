@@ -98,16 +98,17 @@ extension KNListContactViewController: KNContactTableViewDelegate {
     case .select(let contact):
       self.delegate?.listContactViewController(self, run: .select(contact: contact))
     case .delete(let contact):
-      let alertController = UIAlertController(
-        title: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
-        message: "",
-        preferredStyle: .actionSheet
-      )
-      alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
-        KNContactStorage.shared.delete(contacts: [contact])
-      }))
-      alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-      self.present(alertController, animated: true, completion: nil)
+        let alertController = KNPrettyAlertController(
+          title: "Delete".toBeLocalised(),
+          message: NSLocalizedString("do.you.want.to.delete.this.contact", value: "Do you want to delete this contact?", comment: ""),
+          secondButtonTitle: "OK".toBeLocalised(),
+          firstButtonTitle: "Cancel".toBeLocalised(),
+          secondButtonAction: {
+            KNContactStorage.shared.delete(contacts: [contact])
+          },
+          firstButtonAction: nil
+        )
+        self.present(alertController, animated: true, completion: nil)
     case .edit(let contact):
       self.openNewContact(address: contact.address)
     case .send(let address):
