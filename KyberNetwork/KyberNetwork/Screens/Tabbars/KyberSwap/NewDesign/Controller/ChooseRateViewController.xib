@@ -29,16 +29,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ea6-aD-2tI">
-                    <rect key="frame" x="0.0" y="565" width="414" height="331"/>
+                    <rect key="frame" x="0.0" y="300" width="414" height="600"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Rate and Gas fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZS-eY-4Jj">
-                            <rect key="frame" x="90.666666666666686" y="30" width="233" height="23.666666666666671"/>
+                            <rect key="frame" x="92.000000000000014" y="30" width="230.33333333333337" height="23.666666666666671"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4gh-Xi-lQw">
-                            <rect key="frame" x="37" y="88.666666666666643" width="340" height="207.33333333333337"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4gh-Xi-lQw">
+                            <rect key="frame" x="37" y="88.666666666666714" width="340" height="476.33333333333326"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="MNn-40-2AI"/>
@@ -53,7 +53,7 @@
                         <constraint firstItem="gZS-eY-4Jj" firstAttribute="top" secondItem="ea6-aD-2tI" secondAttribute="top" constant="30" id="PWH-Ac-Q5R"/>
                         <constraint firstAttribute="bottom" secondItem="4gh-Xi-lQw" secondAttribute="bottom" constant="35" id="Xxc-Aq-484"/>
                         <constraint firstAttribute="trailing" secondItem="4gh-Xi-lQw" secondAttribute="trailing" constant="37" id="hTJ-Fn-6N2"/>
-                        <constraint firstAttribute="height" constant="331" id="mbD-HK-qgf"/>
+                        <constraint firstAttribute="height" constant="600" id="mbD-HK-qgf"/>
                         <constraint firstItem="4gh-Xi-lQw" firstAttribute="leading" secondItem="ea6-aD-2tI" secondAttribute="leading" constant="37" id="rnJ-gJ-Yl6"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -70,7 +70,7 @@
             <constraints>
                 <constraint firstItem="ea6-aD-2tI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="11c-5Q-rDw"/>
                 <constraint firstItem="ea6-aD-2tI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="X16-Xw-vbc"/>
-                <constraint firstItem="ea6-aD-2tI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="565" id="zJv-W1-qs5"/>
+                <constraint firstItem="ea6-aD-2tI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="300" id="zJv-W1-qs5"/>
             </constraints>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="U31-Zq-ry5" appends="YES" id="TA2-8R-ibp"/>

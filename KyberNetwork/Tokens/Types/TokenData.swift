@@ -138,22 +138,6 @@ class TokenPrice: Codable {
   var maticMarketCap: Double
   var matic24hVol: Double
   var matic24hChange: Double
-
-//  init(dictionary: JSONDictionary) {
-//    self.address = (dictionary["address"] as? String ?? "").lowercased()
-//    self.usd = dictionary["usd"] as? Double ?? 0.0
-//    self.usdMarketCap = dictionary["usd_market_cap"] as? Double ?? 0.0
-//    self.usd24hVol = dictionary["usd_24h_vol"] as? Double ?? 0.0
-//    self.usd24hChange = dictionary["usd_24h_change"] as? Double ?? 0.0
-//    self.eth = dictionary["eth"] as? Double ?? 0.0
-//    self.ethMarketCap = dictionary["eth_market_cap"] as? Double ?? 0.0
-//    self.eth24hVol = dictionary["eth_24h_vol"] as? Double ?? 0.0
-//    self.eth24hChange = dictionary["eth_24h_change"] as? Double ?? 0.0
-//    self.btc = dictionary["btc"] as? Double ?? 0.0
-//    self.btcMarketCap = dictionary["btc_market_cap"] as? Double ?? 0.0
-//    self.btc24hVol = dictionary["btc_24h_vol"] as? Double ?? 0.0
-//    self.btc24hChange = dictionary["btc_24h_change"] as? Double ?? 0.0
-//  }
   
   init(address: String, quotes: [String: Quote]) {
     self.address = address

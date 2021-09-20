@@ -41,7 +41,8 @@ class ChooseRateViewModel {
   }
   
   var popupHeight: CGFloat {
-    return CGFloat(125 + self.data.count * 115)
+    let height = CGFloat(125 + self.data.count * 115)
+    return height < 600.0 ? height : 600.0
   }
 
 //  var uniRateText: String {

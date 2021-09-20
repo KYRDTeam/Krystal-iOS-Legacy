@@ -61,23 +61,30 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   
   func generateSwapAmountString() -> String {
     var result = ""
-    if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+    let outTxs = self.data.tokenTransactions.filter { (transaction) -> Bool in
       return transaction.from.lowercased() == self.data.wallet
-    } {
-      let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(outTx.tokenDecimal) ?? 6)
+    }
+    if !outTxs.isEmpty, let outTx = outTxs.first {
+
+      var allValues: [BigInt] = []
+      outTxs.forEach { item in
+        let itemValue = BigInt(item.value) ?? BigInt(0)
+        allValues.append(itemValue)
+      }
+      let valueBigInt = allValues.max() ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       result += "\(valueString) \(outTx.tokenSymbol) -> "
     } else if let sendEthTx = self.data.transacton.first {
       let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 6)
       result += "\(valueString) \(KNGeneralProvider.shared.quoteToken) -> "
     }
-    
+
     if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
       return transaction.to.lowercased() == self.data.wallet
     }) {
       let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(inTx.tokenDecimal) ?? 6)
+      let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       result += "\(valueString) \(inTx.tokenSymbol)"
     }
     
@@ -131,7 +138,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return transaction.from.lowercased() == self.data.wallet
       } {
         let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
-        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(outTx.tokenDecimal) ?? 6)
+        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
         return "- \(valueString) \(outTx.tokenSymbol)"
       }
       return ""
@@ -140,7 +147,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return transaction.to.lowercased() == self.data.wallet
       }) {
         let valueBigInt = BigInt(inTx.value) ?? BigInt(0)
-        let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: Int(inTx.tokenDecimal) ?? 6)
+        let valueString = valueBigInt.string(decimals: Int(inTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
         return "+ \(valueString) \(inTx.tokenSymbol)"
       }
       return ""
@@ -194,7 +201,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "Receive NFT"
     }
   }
-  
+
   var transactionDetailsString: String {
     switch self.data.type {
     case .swap:
@@ -207,21 +214,26 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       var toSymbol = ""
       var fromDecimal = 0
       var toDecimal = 0
-      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
-        return (transaction.from.lowercased() == self.data.wallet) && (transaction.to.lowercased() != self.data.wallet)
-      } {
-        let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
+      let outTxs = self.data.tokenTransactions.filter { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      }
+      if !outTxs.isEmpty, let outTx = outTxs.first {
+        var allValues: [BigInt] = []
+        outTxs.forEach { item in
+          let itemValue = BigInt(item.value) ?? BigInt(0)
+          allValues.append(itemValue)
+        }
+        let valueBigInt = allValues.max() ?? BigInt(0)
         fromValue = valueBigInt
         fromSymbol = outTx.tokenSymbol
         fromDecimal = Int(outTx.tokenDecimal) ?? 0
-        
       } else if let sendEthTx = self.data.transacton.first {
         let valueBigInt = BigInt(sendEthTx.value) ?? BigInt(0)
         fromValue = valueBigInt
         fromSymbol = KNGeneralProvider.shared.quoteToken
         fromDecimal = 18
       }
-      
+
       if let inTx = self.data.tokenTransactions.first(where: { (transaction) -> Bool in
         return transaction.to.lowercased() == self.data.wallet
       }) {
@@ -230,7 +242,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         toSymbol = inTx.tokenSymbol
         toDecimal = Int(inTx.tokenDecimal) ?? 0
       }
-      
+
       if let receiveEthTx = self.data.internalTransactions.first(where: { (transaction) -> Bool in
         return transaction.to.lowercased() == self.data.wallet
       }) {
