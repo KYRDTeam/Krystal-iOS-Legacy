@@ -65,10 +65,13 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return transaction.from.lowercased() == self.data.wallet
     }
     if !outTxs.isEmpty, let outTx = outTxs.first {
-      var valueBigInt = BigInt(0)
+
+      var allValues: [BigInt] = []
       outTxs.forEach { item in
-        valueBigInt += BigInt(item.value) ?? BigInt(0)
+        let itemValue = BigInt(item.value) ?? BigInt(0)
+        allValues.append(itemValue)
       }
+      let valueBigInt = allValues.max() ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       result += "\(valueString) \(outTx.tokenSymbol) -> "
     } else if let sendEthTx = self.data.transacton.first {

@@ -386,7 +386,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.filterButton.rounded(radius: 10)
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
     self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
-    self.swapNowButton.rounded(color: UIColor.Kyber.SWButtonBlueColor, width: 1, radius: self.swapNowButton.frame.size.height / 2)
+    self.swapNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.swapNowButton.frame.size.height / 2)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = 1
   }
