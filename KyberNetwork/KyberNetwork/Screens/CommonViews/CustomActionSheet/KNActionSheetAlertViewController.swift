@@ -60,15 +60,15 @@ extension KNActionSheetAlertViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "actionInfoCell")
         let containViewWidth = UIScreen.main.bounds.size.width - 37*2
         let containWiew = UIView(frame: CGRect(x: 37, y: 12, width: containViewWidth, height: 42))
-        containWiew.backgroundColor = UIColor.Kyber.charcoalGrey
+        containWiew.backgroundColor = UIColor(named: "navButtonBgColor")!
         containWiew.rounded(radius: 16)
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: containViewWidth, height: 42))
-        label.textColor = UIColor.white
+        label.textColor = UIColor(named: "textWhiteColor")!
         label.textAlignment = .center
         label.text = action.title
         containWiew.addSubview(label)
         cell.addSubview(containWiew)
-        cell.backgroundColor = UIColor.Kyber.elivation3
+        cell.backgroundColor = UIColor(named: "investButtonBgColor")!
         cell.selectionStyle = .none
         return cell
     }
@@ -89,7 +89,7 @@ extension KNActionSheetAlertViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: CGFloat(headerHeight)))
-        view.backgroundColor = UIColor.Kyber.elivation3
+        view.backgroundColor = UIColor(named: "investButtonBgColor")!
         return view
     }
 

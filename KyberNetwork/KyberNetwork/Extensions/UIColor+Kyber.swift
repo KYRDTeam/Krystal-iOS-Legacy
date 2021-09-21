@@ -44,8 +44,6 @@ extension UIColor {
     static var info = UIColor(hex: "17a2b8")
     static var warning = UIColor(hex: "ffc107")
     static var danger = UIColor(hex: "dc3545")
-    static var charcoalGrey = UIColor(hex: "4b4f4e")
-    static var elivation3 = UIColor(hex: "292d2c")
 
     static var shamrock = UIColor(red: 49, green: 203, blue: 158) // green
     static var mirage = UIColor(red: 20, green: 25, blue: 39) //
