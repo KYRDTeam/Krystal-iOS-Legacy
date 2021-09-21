@@ -126,7 +126,7 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var gasFeeLabel: UILabel!
   @IBOutlet weak var gasFeeEstUSDLabel: UILabel!
   @IBOutlet weak var cancelButton: UIButton!
-  @IBOutlet weak var approveButton: UIButton!
+  @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   let viewModel: ApproveTokenViewModel
@@ -150,13 +150,13 @@ class ApproveTokenViewController: KNBaseViewController {
     self.gasFeeLabel.text = self.viewModel.getFeeString()
     self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
     self.cancelButton.rounded(radius: 16)
-    self.approveButton.rounded(radius: 16)
+    self.confirmButton.rounded(radius: 16)
     self.descriptionLabel.text = self.viewModel.subTitleText
     let address = KNGeneralProvider.shared.proxyAddress
     self.contractAddressLabel.text = address
   }
 
-  @IBAction func approveButtonTapped(_ sender: UIButton) {
+  @IBAction func confirmButtonTapped(_ sender: UIButton) {
     let ethBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     guard self.viewModel.getFee() < ethBalance else {
       self.showWarningTopBannerMessage(
