@@ -614,7 +614,7 @@ class OverviewMainViewController: KNBaseViewController {
       self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      
+      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_name", customAttributes: nil)
     } else if sender.tag == 2 {
       if case let .ch24(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .ch24(des: !dec)
@@ -626,6 +626,7 @@ class OverviewMainViewController: KNBaseViewController {
       self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_24h", customAttributes: nil)
     } else if sender.tag == 3 {
       if case let .vol(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .vol(des: !dec)
@@ -637,6 +638,7 @@ class OverviewMainViewController: KNBaseViewController {
       self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_vol", customAttributes: nil)
     } else {
       if case let .price(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .price(des: !dec)
@@ -648,6 +650,7 @@ class OverviewMainViewController: KNBaseViewController {
       self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
     }
     self.viewModel.reloadAllData()
     self.reloadUI()
