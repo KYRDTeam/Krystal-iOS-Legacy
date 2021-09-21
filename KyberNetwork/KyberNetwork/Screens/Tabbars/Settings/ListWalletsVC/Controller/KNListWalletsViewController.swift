@@ -165,7 +165,7 @@ extension KNListWalletsViewController: UITableViewDelegate {
     }))
     action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
 
-    let alertController = KNActionSheetAlertViewController(title: "This is title", actions: action)
+    let alertController = KNActionSheetAlertViewController(title: "", actions: action)
     self.present(alertController, animated: true, completion: nil)
   }
 }
