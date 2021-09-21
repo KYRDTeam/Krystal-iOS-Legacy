@@ -151,23 +151,21 @@ extension KNListWalletsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     let wallet = self.viewModel.wallet(at: indexPath.row)
-    let alertController = UIAlertController(
-      title: "",
-      message: NSLocalizedString("Choose your action", value: "Choose your action", comment: ""),
-      preferredStyle: .actionSheet
-    )
+    var action = [UIAlertAction]()
     if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
-      alertController.addAction(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
+      action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
         self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
       }))
     }
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
+    action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
       self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
     }))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
+    action.append(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
       self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
     }))
-    alertController.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+    action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+
+    let alertController = KNActionSheetAlertViewController(title: "This is title", actions: action)
     self.present(alertController, animated: true, completion: nil)
   }
 }
