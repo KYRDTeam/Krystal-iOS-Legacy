@@ -18,13 +18,13 @@ class KNActionSheetAlertViewController: KNBaseViewController {
     let maintitle: String
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var backgroundView: UIView!
+    
     init(title: String, actions: [UIAlertAction]) {
         self.maintitle = title
         self.actions = actions
         super.init(nibName: KNActionSheetAlertViewController.className, bundle: nil)
         self.modalPresentationStyle = .custom
-//        self.transitioningDelegate = transitor
     }
 
     required init?(coder: NSCoder) {
@@ -34,23 +34,19 @@ class KNActionSheetAlertViewController: KNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
-        // Do any additional setup after loading the view.
     }
-
+    
     func configUI() {
         self.tableView.rounded(radius: 16)
         tableView.isScrollEnabled = false
         self.tableViewHeightConstraint.constant = CGFloat(self.actions.count * rowHeight + headerHeight * 2)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+        backgroundView.addGestureRecognizer(tapGesture)
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func tapOutside() {
+        self.dismiss(animated: true, completion: nil)
     }
-    */
 
 }
 

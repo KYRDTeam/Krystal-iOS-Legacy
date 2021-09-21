@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNActionSheetAlertViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="0kH-Lh-kOx" id="7Vc-QB-enD"/>
                 <outlet property="tableView" destination="WAc-lp-Sdt" id="Ry2-XC-FW8"/>
                 <outlet property="tableViewHeightConstraint" destination="swX-bD-10p" id="v3H-A1-qHu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -33,13 +34,21 @@
                         <outlet property="delegate" destination="-1" id="iVU-IS-Xof"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0kH-Lh-kOx">
+                    <rect key="frame" x="0.0" y="44" width="414" height="543"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.35999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="WAc-lp-Sdt" secondAttribute="bottom" id="CHO-wO-DD9"/>
+                <constraint firstItem="0kH-Lh-kOx" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="QMj-XJ-aEn"/>
+                <constraint firstItem="WAc-lp-Sdt" firstAttribute="top" secondItem="0kH-Lh-kOx" secondAttribute="bottom" id="RXU-dU-qGF"/>
+                <constraint firstItem="0kH-Lh-kOx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WCs-gZ-d0W"/>
                 <constraint firstItem="WAc-lp-Sdt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="f6H-Bp-HXE"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WAc-lp-Sdt" secondAttribute="trailing" id="l2X-p0-GwJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0kH-Lh-kOx" secondAttribute="trailing" id="q6f-3P-QGp"/>
             </constraints>
             <point key="canvasLocation" x="132" y="132"/>
         </view>
