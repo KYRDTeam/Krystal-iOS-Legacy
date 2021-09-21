@@ -72,8 +72,8 @@ class OverviewMainCellViewModel {
   var displaySubTitleDetail: String {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
-      let price = token.getTokenLastPrice(self.currency)
-      return self.currency.symbol() + String(format: "%.4f", price)
+      let vol = token.getVol(self.currency)
+      return "Vol: " + self.formatPoints(vol)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -94,17 +94,8 @@ class OverviewMainCellViewModel {
   var displayAccessoryTitle: String {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
-      switch mode {
-      case .ch24:
-        let change24 = token.getTokenChange24(self.currency)
-        return String(format: "%.2f", change24) + "%"
-      case .lastPrice:
-        let price = token.getTokenLastPrice(self.currency)
-        return self.currency.symbol() + String(format: "%.4f", price)
-      default:
-        return ""
-      }
-      
+      let price = token.getTokenLastPrice(self.currency)
+      return self.currency.symbol() + String(format: "%.2f", price)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -113,7 +104,6 @@ class OverviewMainCellViewModel {
       case .value:
         let rateBigInt = BigInt(token.getTokenLastPrice(self.currency) * pow(10.0, 18.0))
         let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-        
         let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return self.currency.symbol() + valueString
       case .ch24:
@@ -148,12 +138,43 @@ class OverviewMainCellViewModel {
       return self.currency.symbol() + String(format: "%.2f", price)
     }
   }
+  
+  var displayAccessoryTextColor: UIColor? {
+    switch self.mode {
+    case .market, .search:
+      return UIColor(named: "textWhiteColor")
+    default:
+      return self.displayAccessoryColor
+    }
+  }
 
   var displayAccessoryColor: UIColor? {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
+      switch mode {
+      case .ch24:
+        let change24 = token.getTokenChange24(self.currency)
+        if change24 == 0 {
+          return UIColor(named: "investButtonBgColor")
+        } else {
+          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+        }
+      default:
+        let change24 = token.getTokenChange24(self.currency)
+        let cap = token.getMarketCap(self.currency)
+        if cap == 0 {
+          return UIColor(named: "investButtonBgColor")
+        } else {
+          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+        }
+      }
       let change24 = token.getTokenChange24(self.currency)
-      return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+      if change24 == 0 {
+        return UIColor(named: "investButtonBgColor")
+      } else {
+        return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+      }
+      
     case .asset(token: let token, rightMode: let mode):
       let change24 = token.getTokenChange24(self.currency)
       return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
@@ -164,35 +185,90 @@ class OverviewMainCellViewModel {
       return UIColor(named: "buttonBackgroundColor")
     }
   }
+
+  var displayDetailBox: String {
+    switch self.mode {
+    case .market(token: let token, rightMode: let mode):
+      switch mode {
+      case .ch24:
+        let change24 = token.getTokenChange24(self.currency)
+        if change24 == 0 {
+          return "---"
+        }
+        return String(format: "%.2f", change24) + "%"
+      default:
+        let mc = token.getMarketCap(self.currency)
+        if mc == 0 {
+          return "---"
+        }
+        return self.formatPoints(mc)
+      }
+    case .search(token: let token):
+      let change24 = token.getTokenChange24(self.currency)
+      return String(format: "%.2f", change24) + "%"
+    default:
+      return ""
+    }
+  }
   
+  func formatPoints(_ number: Double) -> String {
+    let thousand = number / 1000
+    let million = number / 1000000
+    let billion = number / 1000000000
+    
+    if billion >= 1.0 {
+      return "\(round(billion*10)/10)B"
+    } else if million >= 1.0 {
+      return "\(round(million*10)/10)M"
+    } else if thousand >= 1.0 {
+      return ("\(round(thousand*10/10))K")
+    } else {
+      return "\(Int(number))"
+    }
+  }
 }
 
 class OverviewMainViewCell: UITableViewCell {
   
   static let kCellID: String = "OverviewMainViewCell"
-  static let kCellHeight: CGFloat = 60
+  static let kCellHeight: CGFloat = 70
   
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenLabel: UILabel!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
   @IBOutlet weak var tokenValueLabel: UILabel!
-  var action: (() -> ())?
+  @IBOutlet weak var change24Button: UIButton!
   
+  var action: (() -> ())?
+  var viewModel: OverviewMainCellViewModel?
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
+    self.change24Button.rounded(radius: 6)
   }
   
   func updateCell(_ viewModel: OverviewMainCellViewModel) {
+    self.viewModel = viewModel
     self.iconImageView.setSymbolImage(symbol: viewModel.displayTitle)
     self.tokenLabel.text = viewModel.displayTitle
     self.tokenBalanceLabel.text = viewModel.displaySubTitleDetail
     self.tokenValueLabel.text = viewModel.displayAccessoryTitle
-    self.tokenValueLabel.textColor = viewModel.displayAccessoryColor
+    self.tokenValueLabel.textColor = viewModel.displayAccessoryTextColor
+    self.change24Button.isHidden = viewModel.displayDetailBox.isEmpty
+    self.change24Button.setTitle(viewModel.displayDetailBox, for: .normal)
+    self.change24Button.backgroundColor = viewModel.displayAccessoryColor
   }
   
   @IBAction func tapOnRightSide(_ sender: Any) {
-    (self.action ?? {})()
+    if let unwrap = self.viewModel, unwrap.displayDetailBox.isEmpty {
+      (self.action ?? {})()
+    }
+  }
+  
+  @IBAction func tapAccessoryBox(_ sender: UIButton) {
+    if let unwrap = self.viewModel, !unwrap.displayDetailBox.isEmpty {
+      (self.action ?? {})()
+    }
   }
   
 }

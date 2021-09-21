@@ -80,6 +80,38 @@ class Token: Codable, Equatable, Hashable {
       return price.matic24hChange
     }
   }
+
+  func getVol(_ mode: CurrencyMode) -> Double {
+    let price = self.getTokenPrice()
+    switch mode {
+    case .usd:
+      return price.usd24hVol
+    case .eth:
+      return price.eth24hVol
+    case .btc:
+      return price.btc24hVol
+    case .bnb:
+      return price.bnb24hVol
+    case .matic:
+      return price.matic24hVol
+    }
+  }
+  
+  func getMarketCap(_ mode: CurrencyMode) -> Double {
+    let price = self.getTokenPrice()
+    switch mode {
+    case .usd:
+      return price.usdMarketCap
+    case .eth:
+      return price.ethMarketCap
+    case .btc:
+      return price.btcMarketCap
+    case .bnb:
+      return price.bnbMarketCap
+    case .matic:
+      return price.maticMarketCap
+    }
+  }
   
   static func == (lhs: Token, rhs: Token) -> Bool {
     return lhs.address.lowercased() == rhs.address.lowercased() && lhs.decimals == rhs.decimals && lhs.symbol == rhs.symbol
