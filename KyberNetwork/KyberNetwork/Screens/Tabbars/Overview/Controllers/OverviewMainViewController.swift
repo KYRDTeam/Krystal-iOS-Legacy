@@ -129,7 +129,7 @@ enum RightMode: Codable {
       throw CodingError.unknownValue
     }
   }
-  
+
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
@@ -149,7 +149,9 @@ enum RightMode: Codable {
 
 enum MarketSortType {
   case name(des: Bool)
-  case rightSide(des: Bool)
+  case ch24(des: Bool)
+  case vol(des: Bool)
+  case price(des: Bool)
 }
 
 enum CurrencyMode: Int {
@@ -246,7 +248,7 @@ class OverviewMainViewModel {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
     }
   }
-  var marketSortType: MarketSortType = .rightSide(des: true)
+  var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
   
@@ -272,15 +274,12 @@ class OverviewMainViewModel {
         switch self.marketSortType {
         case .name(des: let des):
           return des ? left.symbol > right.symbol : left.symbol < right.symbol
-        case .rightSide(des: let des):
-          switch mode {
-          case .ch24:
-            return des ? left.getTokenChange24(self.currencyMode) > right.getTokenChange24(self.currencyMode) : left.getTokenChange24(self.currencyMode) < right.getTokenChange24(self.currencyMode)
-          case .lastPrice:
-            return des ? left.getTokenLastPrice(self.currencyMode) > right.getTokenLastPrice(self.currencyMode) : left.getTokenLastPrice(self.currencyMode) < right.getTokenLastPrice(self.currencyMode)
-          default:
-            return false
-          }
+        case .ch24(des: let des):
+          return des ? left.getTokenChange24(self.currencyMode) > right.getTokenChange24(self.currencyMode) : left.getTokenChange24(self.currencyMode) < right.getTokenChange24(self.currencyMode)
+        case .vol(des: let des):
+          return des ? left.getVol(self.currencyMode) > right.getVol(self.currencyMode) : left.getVol(self.currencyMode) < right.getVol(self.currencyMode)
+        case .price(des: let des):
+          return des ? left.getTokenLastPrice(self.currencyMode) > right.getTokenLastPrice(self.currencyMode) : left.getTokenLastPrice(self.currencyMode) < right.getTokenLastPrice(self.currencyMode)
         }
       }
       self.displayHeader = []
@@ -341,8 +340,12 @@ class OverviewMainViewModel {
         switch self.marketSortType {
         case .name(des: let des):
           return des ? left.symbol > right.symbol : left.symbol < right.symbol
-        case .rightSide(des: let des):
+        case .ch24(des: let des):
           return des ? left.getTokenPrice().usd24hChange > right.getTokenPrice().usd24hChange : left.getTokenPrice().usd24hChange < right.getTokenPrice().usd24hChange
+        case .vol(des: let des):
+          return des ? left.getVol(self.currencyMode) > right.getVol(self.currencyMode) : left.getVol(self.currencyMode) < right.getVol(self.currencyMode)
+        case .price(des: let des):
+          return des ? left.getTokenLastPrice(self.currencyMode) > right.getTokenLastPrice(self.currencyMode) : left.getTokenLastPrice(self.currencyMode) < right.getTokenLastPrice(self.currencyMode)
         }
       }.filter { (token) -> Bool in
         return KNSupportedTokenStorage.shared.getFavedStatusWithAddress(token.address)
@@ -478,6 +481,10 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var sortingContainerView: UIView!
   @IBOutlet weak var sortMarketByNameButton: UIButton!
   @IBOutlet weak var sortMarketByCh24Button: UIButton!
+  
+  @IBOutlet weak var sortMarketByPrice: UIButton!
+  @IBOutlet weak var sortMarketByVol: UIButton!
+  
   @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var rightModeSortLabel: UILabel!
@@ -605,15 +612,42 @@ class OverviewMainViewController: KNBaseViewController {
         self.updateUIForIndicatorView(button: sender, dec: true)
       }
       self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      
     } else if sender.tag == 2 {
-      if case let .rightSide(dec) = self.viewModel.marketSortType {
-        self.viewModel.marketSortType = .rightSide(des: !dec)
+      if case let .ch24(dec) = self.viewModel.marketSortType {
+        self.viewModel.marketSortType = .ch24(des: !dec)
         self.updateUIForIndicatorView(button: sender, dec: !dec)
       } else {
-        self.viewModel.marketSortType = .rightSide(des: true)
+        self.viewModel.marketSortType = .ch24(des: true)
         self.updateUIForIndicatorView(button: sender, dec: true)
       }
       self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+    } else if sender.tag == 3 {
+      if case let .vol(dec) = self.viewModel.marketSortType {
+        self.viewModel.marketSortType = .vol(des: !dec)
+        self.updateUIForIndicatorView(button: sender, dec: !dec)
+      } else {
+        self.viewModel.marketSortType = .vol(des: true)
+        self.updateUIForIndicatorView(button: sender, dec: true)
+      }
+      self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+    } else {
+      if case let .price(dec) = self.viewModel.marketSortType {
+        self.viewModel.marketSortType = .price(des: !dec)
+        self.updateUIForIndicatorView(button: sender, dec: !dec)
+      } else {
+        self.viewModel.marketSortType = .price(des: true)
+        self.updateUIForIndicatorView(button: sender, dec: true)
+      }
+      self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
     }
     self.viewModel.reloadAllData()
     self.reloadUI()
@@ -668,27 +702,10 @@ class OverviewMainViewController: KNBaseViewController {
       button.setImage(img, for: .normal)
     }
   }
-  
-  fileprivate func updateUIForSortingRightView() {
-    switch self.viewModel.currentMode {
-    case .market(rightMode: let mode):
-      switch mode {
-      case .ch24:
-        self.rightModeSortLabel.text = "24h chg%"
-      case .lastPrice:
-        self.rightModeSortLabel.text = "Price"
-      default:
-        self.rightModeSortLabel.text = ""
-      }
-    default:
-      self.rightModeSortLabel.text = ""
-    }
-  }
 
   func coordinatorDidSelectMode(_ mode: ViewMode) {
     self.viewModel.currentMode = mode
     self.reloadUI()
-    self.updateUIForSortingRightView()
   }
   
   func coordinatorDidUpdateChain() {

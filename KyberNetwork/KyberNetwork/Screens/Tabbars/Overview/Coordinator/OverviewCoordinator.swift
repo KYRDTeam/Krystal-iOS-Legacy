@@ -547,6 +547,18 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .depositMore:
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: "")
     case .changeRightMode(current: let current):
+      guard current != .market(rightMode: .lastPrice) else {
+        if case .market(let mode) = current {
+          switch mode {
+          case .lastPrice:
+            controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
+          default:
+            controller.coordinatorDidSelectMode(.market(rightMode: .lastPrice))
+          }
+        }
+        return
+      }
+      
       let actionController = KrystalActionSheetController()
       actionController.headerData = "Display Data"
       
