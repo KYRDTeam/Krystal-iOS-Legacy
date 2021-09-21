@@ -74,6 +74,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   fileprivate func openChartView(token: Token) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
@@ -451,9 +452,6 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Favorites", image: UIImage(named: "favorites_actionsheet_icon")!), style: favType, handler: { _ in
         controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
       }))
-      
-      
-      
       self.navigationController.present(actionController, animated: true, completion: nil)
     case .walletConfig(currency: let currency):
       let actionController = KrystalActionSheetController()
@@ -551,8 +549,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         if case .market(let mode) = current {
           switch mode {
           case .lastPrice:
+            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_24h", customAttributes: nil)
             controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
           default:
+            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_cap", customAttributes: nil)
             controller.coordinatorDidSelectMode(.market(rightMode: .lastPrice))
           }
         }
