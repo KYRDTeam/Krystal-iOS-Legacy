@@ -155,7 +155,7 @@ class OverviewMainCellViewModel {
       case .ch24:
         let change24 = token.getTokenChange24(self.currency)
         if change24 == 0 {
-          return UIColor(named: "investButtonBgColor")
+          return UIColor.clear
         } else {
           return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
         }
@@ -163,18 +163,11 @@ class OverviewMainCellViewModel {
         let change24 = token.getTokenChange24(self.currency)
         let cap = token.getMarketCap(self.currency)
         if cap == 0 {
-          return UIColor(named: "investButtonBgColor")
+          return UIColor.clear
         } else {
           return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
         }
       }
-      let change24 = token.getTokenChange24(self.currency)
-      if change24 == 0 {
-        return UIColor(named: "investButtonBgColor")
-      } else {
-        return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
-      }
-      
     case .asset(token: let token, rightMode: let mode):
       let change24 = token.getTokenChange24(self.currency)
       return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
@@ -257,6 +250,13 @@ class OverviewMainViewCell: UITableViewCell {
     self.change24Button.isHidden = viewModel.displayDetailBox.isEmpty
     self.change24Button.setTitle(viewModel.displayDetailBox, for: .normal)
     self.change24Button.backgroundColor = viewModel.displayAccessoryColor
+    if viewModel.displayDetailBox == "---" {
+      self.change24Button.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
+      self.change24Button.contentHorizontalAlignment = .right
+    } else {
+      self.change24Button.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      self.change24Button.contentHorizontalAlignment = .center
+    }
   }
   
   @IBAction func tapOnRightSide(_ sender: Any) {
@@ -270,5 +270,4 @@ class OverviewMainViewCell: UITableViewCell {
       (self.action ?? {})()
     }
   }
-  
 }
