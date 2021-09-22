@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class SwitchChainViewController: KNBaseViewController {
   
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
@@ -17,6 +16,7 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var ethCheckMarkIcon: UIImageView!
   @IBOutlet weak var bscCheckMarkIcon: UIImageView!
   @IBOutlet weak var maticCheckMarkIcon: UIImageView!
+  @IBOutlet weak var avalancheCheckMarkIcon: UIImageView!
   
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
@@ -48,6 +48,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.ethCheckMarkIcon.isHidden = !(self.selectedChain == .eth)
     self.bscCheckMarkIcon.isHidden = !(self.selectedChain == .bsc)
     self.maticCheckMarkIcon.isHidden = !(self.selectedChain == .polygon)
+    self.avalancheCheckMarkIcon.isHidden = !(self.selectedChain == .avalanche)
     
     let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
@@ -70,6 +71,11 @@ class SwitchChainViewController: KNBaseViewController {
     self.updateSelectedChainUI()
   }
   
+  @IBAction func avalancheButtonTapped(_ sender: UIButton) {
+    self.selectedChain = .avalanche
+    self.updateSelectedChainUI()
+  }
+
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     
     self.dismiss(animated: true, completion: {

@@ -133,6 +133,10 @@ class TokenObject: Object {
     return self.address.lowercased() == Constants.maticAddress.lowercased()
   }
   
+  var isAvax: Bool {
+    return self.address.lowercased() == Constants.avaxAddress.lowercased()
+  }
+  
   var isQuoteToken: Bool {
     return self.isETH || self.isBNB || self.isMatic
   }

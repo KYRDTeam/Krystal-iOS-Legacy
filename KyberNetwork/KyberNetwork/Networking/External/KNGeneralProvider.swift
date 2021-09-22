@@ -28,6 +28,8 @@ enum ChainType: Codable {
       self = .bsc
     case 2:
       self = .polygon
+    case 3:
+      self = .avalanche
     default:
       throw CodingError.unknownValue
     }
@@ -42,12 +44,15 @@ enum ChainType: Codable {
       try container.encode(1, forKey: .rawValue)
     case .polygon:
       try container.encode(2, forKey: .rawValue)
+    case .avalanche:
+      try container.encode(3, forKey: .rawValue)
     }
   }
   
   case eth
   case bsc
   case polygon
+  case avalanche
 }
 //swiftlint:disable file_length
 //swiftlint:disable type_body_length
@@ -69,6 +74,8 @@ class KNGeneralProvider {
       return KNEnvironment.default.bscRPC
     case .polygon:
       return KNEnvironment.default.maticRPC
+    case .avalanche:
+      return KNEnvironment.default.avalancheRPC
     }
   }
   
@@ -82,6 +89,8 @@ class KNGeneralProvider {
       return "BNB"
     case .polygon:
       return "MATIC"
+    case .avalanche:
+      return "AVAX"
     }
   }
   
@@ -93,6 +102,8 @@ class KNGeneralProvider {
       return .bnb
     case .polygon:
       return .matic
+    case .avalanche:
+      return .avax
     }
   }
   
@@ -113,6 +124,8 @@ class KNGeneralProvider {
         return "/mumbai"
       }
       return "/polygon"
+    case .avalanche:
+      return "/avalanche"
     }
   }
   
@@ -124,6 +137,8 @@ class KNGeneralProvider {
       return KNSupportedTokenStorage.shared.bnbToken
     case .polygon:
       return KNSupportedTokenStorage.shared.maticToken
+    case .avalanche:
+      return KNSupportedTokenStorage.shared.avaxToken
     }
   }
   
@@ -135,6 +150,8 @@ class KNGeneralProvider {
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.bnbAddress)
     case .polygon:
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
+    case .avalanche:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
     }
   }
   
@@ -146,6 +163,8 @@ class KNGeneralProvider {
       return UIImage(named: "chain_bsc_icon")
     case .polygon:
       return UIImage(named: "chain_polygon_big_icon")
+    case .avalanche:
+      return UIImage(named: "chain_avax_icon")
     }
   }
   
@@ -157,6 +176,8 @@ class KNGeneralProvider {
       return Constants.krystalProxyAddressBSC.lowercased()
     case .polygon:
       return Constants.krystalProxyAddressMatic.lowercased()
+    case .avalanche:
+      return Constants.krystalProxyAddressAvax.lowercased()
     }
   }
   
@@ -168,6 +189,8 @@ class KNGeneralProvider {
       return "XVS"
     case .polygon:
       return "COMP"
+    case .avalanche:
+      return "" //TODO: wait for compound symbol
     }
   }
   
@@ -179,6 +202,8 @@ class KNGeneralProvider {
       return UIImage(named: "venus_icon")
     case .polygon:
       return UIImage(named: "comp_icon")
+    case .avalanche:
+      return UIImage(named: "") //TODO: wait for compound icon
     }
   }
   
@@ -190,6 +215,8 @@ class KNGeneralProvider {
       return "BEP20"
     case .polygon:
       return "ERC20"
+    case .avalanche:
+      return "ARC20"
     }
   }
   
@@ -201,6 +228,8 @@ class KNGeneralProvider {
       return KNSecret.bscscanAPIKey
     case .polygon:
       return KNSecret.polygonscanAPIKey
+    case .avalanche:
+      return "" //TODO: wait for avalance api key
     }
   }
   
@@ -211,6 +240,8 @@ class KNGeneralProvider {
     case .bsc:
       return "Venus"
     case .polygon:
+      return ""
+    case .avalanche:
       return ""
     }
   }
@@ -223,6 +254,8 @@ class KNGeneralProvider {
       return "Binance Smart Chain"
     case .polygon:
       return "Polygon"
+    case .avalanche:
+      return "Avalanche"
     }
   }
   
@@ -234,6 +267,8 @@ class KNGeneralProvider {
       return "There.is.a.difference.between.the.estimated.price.bsc"
     case .polygon:
       return "There.is.a.difference.between.the.estimated.price.matic"
+    case .avalanche:
+      return "There.is.a.difference.between.the.estimated.price.matic" //TODO: wait for avalance
     }
   }
 
@@ -277,6 +312,8 @@ class KNGeneralProvider {
       address = Constants.krystalProxyAddressBSC.lowercased()
     case .polygon:
       address = Constants.krystalProxyAddressMatic.lowercased()
+    case .avalanche:
+      address = Constants.krystalProxyAddressAvax.lowercased()
     }
     return Address(string: address)!
   }

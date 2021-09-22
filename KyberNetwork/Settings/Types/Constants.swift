@@ -21,7 +21,8 @@ public struct Constants {
   public static let krystalProxyAddress = KNEnvironment.default == .ropsten ? "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a" : "0x70270C228c5B4279d1578799926873aa72446CcD"
   public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
   public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
-  
+  public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
+
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -143,10 +144,36 @@ public struct Constants {
     apiEtherscanEndpoint: "https://api.polygonscan.com"
   )
   
+  public static let avalancheRoptenPRC = CustomRPC(
+    chainID: 43113,
+    name: "Avalanche FUJI C-Chain",
+    symbol: "AVAX",
+    endpoint: "https://api.avax-test.network/ext/bc/C/rpc/",
+    endpointKyber: "https://api.avax-test.network/ext/bc/C/rpc/",
+    endpointAlchemy: "https://api.avax-test.network/ext/bc/C/rpc/",
+    etherScanEndpoint: "https://cchain.explorer.avax-test.network/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+  
+  public static let avalancheMainnetPRC = CustomRPC(
+    chainID: 43114,
+    name: "Avalanche Mainnet C-Chain",
+    symbol: "AVAX",
+    endpoint: "https://api.avax.network/ext/bc/C/rpc/",
+    endpointKyber: "https://api.avax.network/ext/bc/C/rpc/",
+    endpointAlchemy: "https://api.avax.network/ext/bc/C/rpc/",
+    etherScanEndpoint: "https://cchain.explorer.avax.network/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
   
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
+  public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 }
 
 public struct UnitConfiguration {
