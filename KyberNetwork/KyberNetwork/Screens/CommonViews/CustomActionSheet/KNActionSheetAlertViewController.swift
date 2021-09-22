@@ -65,6 +65,7 @@ extension KNActionSheetAlertViewController: UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: containViewWidth, height: 42))
         label.textColor = UIColor(named: "textWhiteColor")!
         label.textAlignment = .center
+        label.font = UIFont.Kyber.regular(with: 16)
         label.text = action.title
         containWiew.addSubview(label)
         cell.addSubview(containWiew)
