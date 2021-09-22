@@ -25,7 +25,12 @@ class KNSearchTokenTableViewCell: UITableViewCell {
 
   func updateCell(with token: TokenObject, isExistToken: Bool) {
     self.token = token
-    self.iconImageView.setSymbolImage(symbol: token.symbol, size: iconImageView.frame.size)
+    if token.isCustom {
+        //If token is a custom one, don't use the icon of supported token (use the default token icon) to prevent scam/trash token
+        self.iconImageView.image = UIImage(named: "default_token")!
+    } else {
+        self.iconImageView.setSymbolImage(symbol: token.symbol, size: iconImageView.frame.size)
+    }
     self.tokenSymbolLabel.text = "\(token.symbol.prefix(8))"
     let balText: String = {
       let value = token.getBalanceBigInt().string(
