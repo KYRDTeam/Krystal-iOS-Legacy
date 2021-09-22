@@ -227,13 +227,23 @@ class KNSupportedTokenStorage {
     token.decimals = decimal
     Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
-  
+
   func getAllTokenObject() -> [TokenObject] {
-    return self.allTokens.map { (token) -> TokenObject in
-      return token.toObject()
+    return self.getListedTokenObject() + self.getCustomTokenObject()
+  }
+
+  func getListedTokenObject() -> [TokenObject] {
+    return self.supportedToken.map { (token) -> TokenObject in
+        return token.toObject()
     }
   }
-  
+
+  func getCustomTokenObject() -> [TokenObject] {
+    return self.getCustomToken().map { (token) -> TokenObject in
+        return token.toObject(isCustom:true)
+    }
+  }
+
   func getETH() -> Token {
     return self.supportedToken.first { (item) -> Bool in
       return item.symbol == "ETH"
