@@ -68,7 +68,7 @@ enum ViewMode: Equatable, Codable {
       try container.encode(true, forKey: .nft)
     }
   }
-  
+
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let key = container.allKeys.first
@@ -152,6 +152,7 @@ enum MarketSortType {
   case ch24(des: Bool)
   case vol(des: Bool)
   case price(des: Bool)
+  case cap(des: Bool)
 }
 
 enum CurrencyMode: Int {
@@ -280,6 +281,8 @@ class OverviewMainViewModel {
           return des ? left.getVol(self.currencyMode) > right.getVol(self.currencyMode) : left.getVol(self.currencyMode) < right.getVol(self.currencyMode)
         case .price(des: let des):
           return des ? left.getTokenLastPrice(self.currencyMode) > right.getTokenLastPrice(self.currencyMode) : left.getTokenLastPrice(self.currencyMode) < right.getTokenLastPrice(self.currencyMode)
+        case .cap(des: let des):
+          return des ? left.getMarketCap(self.currencyMode) > right.getMarketCap(self.currencyMode) : left.getMarketCap(self.currencyMode) < right.getMarketCap(self.currencyMode)
         }
       }
       self.displayHeader = []
@@ -346,6 +349,8 @@ class OverviewMainViewModel {
           return des ? left.getVol(self.currencyMode) > right.getVol(self.currencyMode) : left.getVol(self.currencyMode) < right.getVol(self.currencyMode)
         case .price(des: let des):
           return des ? left.getTokenLastPrice(self.currencyMode) > right.getTokenLastPrice(self.currencyMode) : left.getTokenLastPrice(self.currencyMode) < right.getTokenLastPrice(self.currencyMode)
+        case .cap(des: let des):
+          return des ? left.getMarketCap(self.currencyMode) > right.getMarketCap(self.currencyMode) : left.getMarketCap(self.currencyMode) < right.getMarketCap(self.currencyMode)
         }
       }.filter { (token) -> Bool in
         return KNSupportedTokenStorage.shared.getFavedStatusWithAddress(token.address)
@@ -488,6 +493,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var rightModeSortLabel: UILabel!
+  @IBOutlet var sortButtons: [UIButton]!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   
@@ -553,6 +559,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.updateUIHideBalanceButton()
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24)
     self.updateUIWalletList()
+    self.updateCh24Button()
     self.tableView.reloadData()
   }
 
@@ -560,6 +567,49 @@ class OverviewMainViewController: KNBaseViewController {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
+  }
+  
+  fileprivate func updateCh24Button() {
+    if case .market(let rightMode) = self.viewModel.currentMode {
+      switch rightMode {
+      case .ch24:
+        self.sortMarketByCh24Button.tag = 2
+        self.rightModeSortLabel.text = "24h"
+      default:
+        self.sortMarketByCh24Button.tag = 5
+        self.rightModeSortLabel.text = "Cap"
+      }
+    }
+    self.updateUISortBar()
+  }
+
+  fileprivate func updateUISortBar() {
+    var selectedTypeTag = 0
+    var selectedDes = false
+    switch self.viewModel.marketSortType {
+    case .name(des: let des):
+      selectedTypeTag = 1
+      selectedDes = des
+    case .vol(des: let des):
+      selectedTypeTag = 3
+      selectedDes = des
+    case .price(des: let des):
+      selectedTypeTag = 4
+      selectedDes = des
+    case .ch24(des: let des):
+      selectedTypeTag = 2
+      selectedDes = des
+    case .cap(des: let des):
+      selectedTypeTag = 5
+      selectedDes = des
+    }
+    self.sortButtons.forEach { button in
+      if button.tag == selectedTypeTag {
+        self.updateUIForIndicatorView(button: button, dec: selectedDes)
+      } else {
+        button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      }
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -588,7 +638,7 @@ class OverviewMainViewController: KNBaseViewController {
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   @IBAction func hideBalanceButtonTapped(_ sender: UIButton) {
     self.viewModel.hideBalanceStatus = !self.viewModel.hideBalanceStatus
     self.reloadUI()
@@ -606,50 +656,37 @@ class OverviewMainViewController: KNBaseViewController {
     if sender.tag == 1 {
       if case let .name(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .name(des: !dec)
-        self.updateUIForIndicatorView(button: sender, dec: !dec)
       } else {
         self.viewModel.marketSortType = .name(des: true)
-        self.updateUIForIndicatorView(button: sender, dec: true)
       }
-      self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_name", customAttributes: nil)
     } else if sender.tag == 2 {
       if case let .ch24(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .ch24(des: !dec)
-        self.updateUIForIndicatorView(button: sender, dec: !dec)
       } else {
         self.viewModel.marketSortType = .ch24(des: true)
-        self.updateUIForIndicatorView(button: sender, dec: true)
       }
-      self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_24h", customAttributes: nil)
     } else if sender.tag == 3 {
       if case let .vol(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .vol(des: !dec)
-        self.updateUIForIndicatorView(button: sender, dec: !dec)
       } else {
         self.viewModel.marketSortType = .vol(des: true)
-        self.updateUIForIndicatorView(button: sender, dec: true)
       }
-      self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByPrice.setImage(UIImage(named: "sort_none_icon"), for: .normal)
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_vol", customAttributes: nil)
-    } else {
+    } else  if sender.tag == 4 {
       if case let .price(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .price(des: !dec)
-        self.updateUIForIndicatorView(button: sender, dec: !dec)
       } else {
         self.viewModel.marketSortType = .price(des: true)
-        self.updateUIForIndicatorView(button: sender, dec: true)
       }
-      self.sortMarketByNameButton.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByCh24Button.setImage(UIImage(named: "sort_none_icon"), for: .normal)
-      self.sortMarketByVol.setImage(UIImage(named: "sort_none_icon"), for: .normal)
+      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_price", customAttributes: nil)
+    } else  if sender.tag == 5 {
+      if case let .cap(dec) = self.viewModel.marketSortType {
+        self.viewModel.marketSortType = .cap(des: !dec)
+      } else {
+        self.viewModel.marketSortType = .cap(des: true)
+      }
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
     }
     self.viewModel.reloadAllData()
