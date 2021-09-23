@@ -44,6 +44,7 @@
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
                 <outlet property="gasFeeLabel" destination="3H6-w2-t6j" id="NPf-4J-IeU"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
+                <outlet property="loadingView" destination="hcc-rk-ckO" id="Urf-gI-Qgl"/>
                 <outlet property="minReceivedAmount" destination="nsk-dq-Pgz" id="2NG-Nz-AG8"/>
                 <outlet property="pendingTxIndicatorView" destination="9cQ-df-sfG" id="Aen-Do-U4N"/>
                 <outlet property="rateTimerView" destination="zIN-Er-xzM" id="ePL-E9-T7B"/>
@@ -465,6 +466,22 @@
                                 <action selector="warningRateButtonTapped:" destination="-1" eventType="touchUpInside" id="X4v-Ga-Oo3"/>
                             </connections>
                         </button>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIN-Er-xzM" customClass="SRCountdownTimer" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                            <rect key="frame" x="318" y="161.5" width="20" height="20"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="TCR-8S-UYN"/>
+                                <constraint firstAttribute="width" constant="20" id="UxL-pP-yvO"/>
+                            </constraints>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hcc-rk-ckO" customClass="SRCountdownTimer" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                            <rect key="frame" x="73" y="240" width="20" height="20"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="pCi-Fl-YRx"/>
+                                <constraint firstAttribute="height" constant="20" id="vMd-ER-XfA"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ww-el-4Y6">
                             <rect key="frame" x="229" y="239" width="29" height="22"/>
                             <constraints>
@@ -476,14 +493,6 @@
                                 <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="foI-dG-kSD"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIN-Er-xzM" customClass="SRCountdownTimer" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
-                            <rect key="frame" x="318" y="161.5" width="20" height="20"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="20" id="TCR-8S-UYN"/>
-                                <constraint firstAttribute="width" constant="20" id="UxL-pP-yvO"/>
-                            </constraints>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -515,8 +524,10 @@
                         <constraint firstItem="ThL-2a-mea" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="8" symbolic="YES" id="JX3-bP-9es"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="centerY" secondItem="Hag-Sy-it8" secondAttribute="centerY" id="Jvq-ue-lr2"/>
                         <constraint firstItem="zVq-fT-O6e" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" constant="22" id="KUk-g9-nAA"/>
+                        <constraint firstItem="hcc-rk-ckO" firstAttribute="leading" secondItem="WYb-EV-F1u" secondAttribute="leading" constant="36" id="LC0-50-WgL"/>
                         <constraint firstItem="8mR-fc-0KZ" firstAttribute="centerY" secondItem="XaR-wf-YRm" secondAttribute="centerY" id="LV9-M6-j2w"/>
                         <constraint firstItem="Hag-Sy-it8" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="LZp-9G-FgP"/>
+                        <constraint firstItem="hcc-rk-ckO" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="Lm6-MY-V1l"/>
                         <constraint firstItem="nrV-j9-Z3y" firstAttribute="centerY" secondItem="J0n-7n-8cR" secondAttribute="centerY" id="Mgp-Ip-seq"/>
                         <constraint firstItem="CrP-t5-bir" firstAttribute="leading" secondItem="uFr-Qm-RNC" secondAttribute="leading" id="O1K-Yc-J8o"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="O7R-4m-ncb"/>
@@ -524,7 +535,7 @@
                         <constraint firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" constant="37" id="Pz0-JN-ret"/>
                         <constraint firstAttribute="trailing" secondItem="8mR-fc-0KZ" secondAttribute="trailing" constant="38" id="QiN-HF-SF5"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="centerX" secondItem="P3a-OW-m6C" secondAttribute="centerX" id="R3t-iN-2fH"/>
-                        <constraint firstItem="9PL-XD-kXQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5ww-el-4Y6" secondAttribute="trailing" constant="5" id="Re9-9B-PJc"/>
+                        <constraint firstItem="9PL-XD-kXQ" firstAttribute="leading" secondItem="5ww-el-4Y6" secondAttribute="trailing" constant="5" id="Re9-9B-PJc"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="width" secondItem="Hag-Sy-it8" secondAttribute="width" priority="999" id="RfS-tT-Ftm"/>
                         <constraint firstItem="zVq-fT-O6e" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="50" id="Rk2-Na-5TW"/>
                         <constraint firstItem="n4X-Ab-mqq" firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" id="TRP-JH-nyg"/>
@@ -533,7 +544,7 @@
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="top" secondItem="XaR-wf-YRm" secondAttribute="bottom" constant="26" id="dhd-15-ko2"/>
                         <constraint firstItem="3H6-w2-t6j" firstAttribute="centerY" secondItem="zVq-fT-O6e" secondAttribute="centerY" id="dv9-Ca-WIt"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="e8i-07-pYd"/>
-                        <constraint firstItem="5ww-el-4Y6" firstAttribute="leading" secondItem="WYb-EV-F1u" secondAttribute="trailing" constant="7" id="jlR-x2-mXn"/>
+                        <constraint firstItem="5ww-el-4Y6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WYb-EV-F1u" secondAttribute="trailing" constant="7" id="jlR-x2-mXn"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="leading" secondItem="Hag-Sy-it8" secondAttribute="trailing" constant="15" id="jn6-YJ-OmP"/>
                         <constraint firstItem="nsk-dq-Pgz" firstAttribute="centerY" secondItem="LBy-ze-Tit" secondAttribute="centerY" id="jsT-KX-Zhn"/>
                         <constraint firstItem="nsk-dq-Pgz" firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" id="lmh-oY-dt7"/>
