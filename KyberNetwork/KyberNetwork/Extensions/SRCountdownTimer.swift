@@ -47,7 +47,7 @@ public class SRCountdownTimer: UIView {
     // use minutes and seconds for presentation
     public var useMinutesAndSecondsRepresentation = false
     public var moveClockWise = true
-
+    public var shouldKeepAnimate = false
     private var timer: Timer?
     private var beginingValue: Int = 1
     private var totalTime: TimeInterval = 1
@@ -225,6 +225,8 @@ public class SRCountdownTimer: UIView {
             if computedCounterValue != currentCounterValue {
                 currentCounterValue = computedCounterValue
             }
+        } else if self.shouldKeepAnimate {
+            start(beginingValue: self.beginingValue)
         } else {
             end()
         }
