@@ -26,7 +26,7 @@ struct KrystalHistoryTransaction: Codable, Equatable {
   let gasCostQuote: Double
   let type: String
   let nonce: Int
-  let extraData: ExtraData
+  let extraData: ExtraData?
 
   static func == (lhs: KrystalHistoryTransaction, rhs: KrystalHistoryTransaction) -> Bool {
     return lhs.hash == rhs.hash && lhs.blockNumber == rhs.blockNumber && lhs.timestamp == rhs.timestamp && lhs.from == rhs.from && lhs.to == rhs.to && lhs.status == rhs.status && lhs.value == rhs.value && lhs.type == rhs.type && lhs.nonce == rhs.nonce

@@ -25,7 +25,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   
   var fromIconSymbol: String {
     if self.historyItem.type == "Swap" {
-      return self.historyItem.extraData.sendToken?.symbol ?? ""
+      return self.historyItem.extraData?.sendToken?.symbol ?? ""
     } else if historyItem.type == "Received" {
       return ""
     } else if historyItem.type == "Transfer" {
@@ -39,7 +39,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   
   var toIconSymbol: String {
     if self.historyItem.type == "Swap" {
-      return self.historyItem.extraData.receiveToken?.symbol ?? ""
+      return self.historyItem.extraData?.receiveToken?.symbol ?? ""
     } else if historyItem.type == "Received" {
       return ""
     } else if historyItem.type == "Transfer" {
@@ -61,24 +61,24 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
         return "--/--"
       }
       var result = ""
-      let sendValueBigInt = BigInt(self.historyItem.extraData.sendValue ?? "") ?? BigInt(0)
-      let sendValueString = sendValueBigInt.string(decimals: self.historyItem.extraData.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      result += "\(sendValueString) \(self.historyItem.extraData.sendToken?.symbol ?? "") -> "
-      let valueBigInt = BigInt(self.historyItem.extraData.receiveValue ?? "") ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: self.historyItem.extraData.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      result += "\(valueString) \(self.historyItem.extraData.receiveToken?.symbol ?? "")"
+      let sendValueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
+      let sendValueString = sendValueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+      result += "\(sendValueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "") -> "
+      let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+      result += "\(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
       
       return result
     } else if historyItem.type == "Received" {
-      let valueBigInt = BigInt(self.historyItem.extraData.receiveValue ?? "") ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: self.historyItem.extraData.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      return "+ \(valueString) \(self.historyItem.extraData.receiveToken?.symbol ?? "")"
+      let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+      return "+ \(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
     } else if historyItem.type == "Transfer" {
-      let valueBigInt = BigInt(self.historyItem.extraData.sendValue ?? "") ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: self.historyItem.extraData.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      return "+ \(valueString) \(self.historyItem.extraData.sendToken?.symbol ?? "")"
+      let valueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+      return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
-      return self.historyItem.extraData.token?.name ?? ""
+      return self.historyItem.extraData?.token?.name ?? ""
     } else {
       return "--/--"
     }
@@ -89,16 +89,16 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       if self.isError {
         return ""
       }
-      let sendValueBigInt = BigInt(self.historyItem.extraData.sendValue ?? "") ?? BigInt(0)
-      let valueBigInt = BigInt(self.historyItem.extraData.receiveValue ?? "") ?? BigInt(0)
+      let sendValueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
+      let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
       guard !sendValueBigInt.isZero else {
         return ""
       }
-      let amountFrom = sendValueBigInt * BigInt(10).power(18) / BigInt(10).power(self.historyItem.extraData.sendToken?.decimals ?? 18)
-      let amountTo = valueBigInt * BigInt(10).power(18) / BigInt(10).power(self.historyItem.extraData.receiveToken?.decimals ?? 18)
+      let amountFrom = sendValueBigInt * BigInt(10).power(18) / BigInt(10).power(self.historyItem.extraData?.sendToken?.decimals ?? 18)
+      let amountTo = valueBigInt * BigInt(10).power(18) / BigInt(10).power(self.historyItem.extraData?.receiveToken?.decimals ?? 18)
       let rate = amountTo * BigInt(10).power(18) / amountFrom
       let rateString = rate.displayRate(decimals: 18)
-      return "1 \(self.historyItem.extraData.sendToken?.symbol ?? "") = \(rateString) \(self.historyItem.extraData.receiveToken?.symbol ?? "")"
+      return "1 \(self.historyItem.extraData?.sendToken?.symbol ?? "") = \(rateString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
     } else if historyItem.type == "Received" {
       return "From: \(self.historyItem.from)"
     } else if historyItem.type == "Transfer" {

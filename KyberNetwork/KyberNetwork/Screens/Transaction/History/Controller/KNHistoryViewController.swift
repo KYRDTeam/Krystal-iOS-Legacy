@@ -296,13 +296,13 @@ struct KNHistoryViewModel {
     
     var tokenMatched = true
     var transactionToken: [String] = []
-    if let sym = tx.extraData.token?.symbol {
+    if let sym = tx.extraData?.token?.symbol {
       transactionToken.append(sym)
     }
-    if let sym = tx.extraData.sendToken?.symbol {
+    if let sym = tx.extraData?.sendToken?.symbol {
       transactionToken.append(sym)
     }
-    if let sym = tx.extraData.receiveToken?.symbol {
+    if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
     tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
