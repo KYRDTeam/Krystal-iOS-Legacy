@@ -587,6 +587,7 @@
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FDF26FAE7500021DF8A /* KNEnvironment+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FDE26FAE7500021DF8A /* KNEnvironment+Kyber.swift */; };
+		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
 		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
 		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
@@ -1339,6 +1340,7 @@
 		C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTutorialPagerCell.swift; sourceTree = "<group>"; };
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
 		C39D3FDE26FAE7500021DF8A /* KNEnvironment+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KNEnvironment+Kyber.swift"; sourceTree = "<group>"; };
+		C39D3FE026FB33610021DF8A /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		C3A241992567AD610073703C /* WalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsListViewController.swift; sourceTree = "<group>"; };
 		C3A2419A2567AD610073703C /* WalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletsListViewController.xib; sourceTree = "<group>"; };
 		C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListTableViewCell.swift; sourceTree = "<group>"; };
@@ -3188,6 +3190,7 @@
 				C3ED1DD72616F7540024970C /* Notifications.swift */,
 				C3ED1E2C261871F80024970C /* LoginInfo.swift */,
 				C36C5C6F26AEC4BB00A3711C /* Overview.swift */,
+				C39D3FE026FB33610021DF8A /* History.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4964,6 +4967,7 @@
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
 				25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
+				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,

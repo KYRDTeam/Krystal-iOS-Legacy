@@ -225,7 +225,6 @@ class KNSupportedTokenStorage {
   }
   
   func deleteCustomToken(_ token: Token) {
-    
     guard !self.deletedTokens.contains(token) else {
       return
     }

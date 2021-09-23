@@ -52,6 +52,7 @@ public struct Constants {
   public static let deleteTokenStoreFileName = "delete-token.data"
   public static let hideBalanceKey = "hide_balance_key"
   public static let viewModeStoreFileName = "view-mode.data"
+  public static let historyKrystalTransactionsStoreFileName = "-krystal-history-transaction.data"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,
@@ -161,9 +162,9 @@ public struct Constants {
     chainID: 43114,
     name: "Avalanche Mainnet C-Chain",
     symbol: "AVAX",
-    endpoint: "https://api.avax.network/ext/bc/C/rpc/",
-    endpointKyber: "https://api.avax.network/ext/bc/C/rpc/",
-    endpointAlchemy: "https://api.avax.network/ext/bc/C/rpc/",
+    endpoint: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
+    endpointKyber: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
+    endpointAlchemy: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
     ensAddress: "",
     wrappedAddress: "",

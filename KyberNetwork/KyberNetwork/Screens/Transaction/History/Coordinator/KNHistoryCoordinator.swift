@@ -74,7 +74,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
         }
       }
     }
-    
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()
@@ -105,6 +104,35 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {
+    guard KNGeneralProvider.shared.currentChain != .avalanche else {
+      if showLoading { self.navigationController.displayLoading() }
+      DispatchQueue.global(qos: .background).async {
+        let dates: [String] = {
+          let dates = EtherscanTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
+          var uniqueDates = [String]()
+          dates.forEach({
+            if !uniqueDates.contains($0) { uniqueDates.append($0) }
+          })
+          return uniqueDates
+        }()
+        let sectionData: [String: [KrystalHistoryTransaction]] = {
+          var data: [String: [KrystalHistoryTransaction]] = [:]
+          EtherscanTransactionStorage.shared.getKrystalTransaction().forEach { tx in
+            var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
+            trans.append(tx)
+            data[self.dateFormatter.string(from: tx.date)] = trans
+          }
+          return data
+        }()
+        
+        DispatchQueue.main.async {
+          if showLoading { self.navigationController.hideLoading() }
+          self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
+        }
+      }
+      return
+    }
+    
     if showLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
       let dates: [String] = {
@@ -253,6 +281,10 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       coordinator.start()
       self.txDetailsCoordinator = coordinator
     case .selectCompletedTransaction(data: let data):
+      let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
+      coordinator.start()
+      self.txDetailsCoordinator = coordinator
+    case .selectCompletedKrystalTransaction(data: let data):
       let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
       coordinator.start()
       self.txDetailsCoordinator = coordinator

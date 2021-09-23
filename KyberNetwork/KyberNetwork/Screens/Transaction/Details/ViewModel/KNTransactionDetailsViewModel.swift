@@ -565,3 +565,93 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
     return "---"
   }
 }
+
+struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
+  let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm:ss ZZZZ"
+    return formatter
+  }()
+  
+  var displayTxStatus: String {
+    return self.data.isError ? "Failed".toBeLocalised().paddingString() : "Success".toBeLocalised().paddingString()
+  }
+  
+  var displayTxStatusColor: UIColor {
+    return self.data.isError ? UIColor.Kyber.SWRed : UIColor.Kyber.SWGreen
+  }
+  
+  var displayTxTypeString: String {
+    return self.data.transactionTypeString
+  }
+  
+  var displayDateString: String {
+    let date = Date(timeIntervalSince1970: Double(self.data.historyItem.timestamp))
+    return self.dateFormatter.string(from: date)
+  }
+  
+  var displayAmountString: String {
+    return self.data.displayedAmountString
+  }
+  
+  var displayFromAddress: String {
+    return self.data.historyItem.from
+  }
+  
+  var displayToAddress: String {
+    return self.data.historyItem.to
+  }
+  
+  var displayGasFee: String {
+    let gasPrice = BigInt(self.data.historyItem.gasPrice) ?? BigInt(0)
+    let gasLimit = BigInt(self.data.historyItem.gasLimit)
+    let fee = gasPrice * gasLimit
+    return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
+  }
+  
+  var displayHash: String {
+    return self.data.historyItem.hash
+  }
+  
+  var fromIconSymbol: String {
+    return self.data.fromIconSymbol
+  }
+
+  var toIconSymbol: String {
+    return self.data.toIconSymbol
+  }
+  
+  var fromFieldTitle: String {
+    if self.data.historyItem.type == "Swap" {
+      return "Wallet".toBeLocalised()
+    } else if self.data.historyItem.type == "Received" {
+      return "From Wallet".toBeLocalised()
+    } else if self.data.historyItem.type == "Transfer" {
+      return "Wallet".toBeLocalised()
+    } else if self.data.historyItem.type == "Approval" {
+      return "Wallet".toBeLocalised()
+    } else {
+      return "Wallet".toBeLocalised()
+    }
+  }
+  
+  var toFieldTitle: String {
+    if self.data.historyItem.type == "Swap" {
+      return "Application".toBeLocalised()
+    } else if self.data.historyItem.type == "Received" {
+      return "To Wallet".toBeLocalised()
+    } else if self.data.historyItem.type == "Transfer" {
+      return "To Wallet".toBeLocalised()
+    } else if self.data.historyItem.type == "Approval" {
+      return "Application".toBeLocalised()
+    } else {
+      return "Application".toBeLocalised()
+    }
+  }
+  
+  var transactionTypeImage: UIImage {
+    return self.data.transactionTypeImage
+  }
+  
+  let data: CompletedKrystalHistoryTransactionViewModel
+}

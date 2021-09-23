@@ -35,6 +35,18 @@ class KNTransactionDetailsCoordinator: Coordinator {
     controller.loadViewIfNeeded()
     controller.delegate = self
   }
+  
+  init(
+    navigationController: UINavigationController,
+    data: CompletedKrystalHistoryTransactionViewModel
+    ) {
+    self.navigationController = navigationController
+    let viewModel = KrystalTransactionDetailViewModel(data: data)
+    let controller = KNTransactionDetailsViewController(viewModel: viewModel)
+    self.rootViewController = controller
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+  }
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)

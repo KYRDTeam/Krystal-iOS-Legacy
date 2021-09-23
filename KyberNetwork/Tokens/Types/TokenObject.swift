@@ -138,7 +138,7 @@ class TokenObject: Object {
   }
   
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }
 
     var isWETH: Bool {
