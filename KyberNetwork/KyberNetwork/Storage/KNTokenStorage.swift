@@ -11,27 +11,6 @@ class KNTokenStorage {
 
   init(realm: Realm) {
     self.realm = realm
-    self.addKyberSupportedTokens()
-  }
-
-  func addKyberSupportedTokens() {
-    // update balance
-    let supportedTokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
-    let tokenObjects = supportedTokens.map({ return $0.clone() })
-    tokenObjects.forEach { tokenObject in
-      if let token = self.tokens.first(where: { $0.contract == tokenObject.contract }) {
-        tokenObject.value = token.value
-      }
-    }
-    self.add(tokens: tokenObjects)
-    // new list of supported has been updated, update list of tokens in the wallet
-    for token in self.tokens {
-      if token.isSupported, supportedTokens.first(where: { $0.contract == token.contract }) == nil {
-        self.realm.beginWrite()
-        token.isSupported = false
-        try! self.realm.commitWrite()
-      }
-    }
   }
 
   var tokens: [TokenObject] {
