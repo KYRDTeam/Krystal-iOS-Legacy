@@ -90,20 +90,20 @@ class KNBackUpWalletViewModel {
     let regularttributes: [NSAttributedString.Key: Any] = [
       NSAttributedString.Key.font: UIFont.Kyber.medium(with: 14),
       NSAttributedString.Key.kern: 0.0,
+    ] 
+    let highlightAttribute: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: UIColor(named: "warningColor")!
     ]
-    let boldAttributes: [NSAttributedString.Key: Any] = [
-      NSAttributedString.Key.font: UIFont.Kyber.bold(with: 14),
-      NSAttributedString.Key.kern: 0.0,
-    ]
+      
     let attributedString = NSMutableAttributedString()
     let listOfWords = NSLocalizedString("we.will.give.you.a.list.of.random.words", value: "We will give you a list of 12 random words. Please", comment: "")
     attributedString.append(NSAttributedString(string: "\(listOfWords) ", attributes: regularttributes))
     let writeDownOnPaper = NSLocalizedString("write.them.down.on.paper", value: "write them down on paper", comment: "")
-    attributedString.append(NSAttributedString(string: "\(writeDownOnPaper) ", attributes: boldAttributes))
+    attributedString.append(NSAttributedString(string: "\(writeDownOnPaper) ", attributes: highlightAttribute))
     let keepSafe = NSLocalizedString("and.keep.safe.this.paper.key", value: "and keep safe.\n\nThis paper key is", comment: "")
     attributedString.append(NSAttributedString(string: "\(keepSafe) ", attributes: regularttributes))
     let theOnlyWay = NSLocalizedString("the.only.way", value: "the only way", comment: "")
-    attributedString.append(NSAttributedString(string: "\(theOnlyWay) ", attributes: boldAttributes))
+    attributedString.append(NSAttributedString(string: "\(theOnlyWay) ", attributes: highlightAttribute))
     let restoreText = "to restore your Wallet if you lose your device or forget your password."
     attributedString.append(NSAttributedString(string: restoreText, attributes: regularttributes))
     return attributedString
