@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -23,6 +23,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EarnMenuViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="currentChainIcon" destination="M7y-ef-pr0" id="EY4-mj-VhC"/>
+                <outlet property="emptyView" destination="8pN-Cc-kAW" id="lXO-Pn-cfb"/>
                 <outlet property="mainInfoTitle" destination="jSG-mf-L9y" id="HZV-du-9vP"/>
                 <outlet property="menuTableView" destination="PZ6-PZ-AYR" id="ddw-Cj-WaT"/>
                 <outlet property="pendingTxIndicatorView" destination="698-Yp-2Cp" id="vZk-gK-pLd"/>
@@ -40,7 +41,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-Gi-nXw">
-                            <rect key="frame" x="51" y="66" width="48" height="21"/>
+                            <rect key="frame" x="51" y="66" width="46.5" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -180,7 +181,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSG-mf-L9y">
-                    <rect key="frame" x="37" y="143" width="301" height="65.5"/>
+                    <rect key="frame" x="37" y="143" width="301" height="67.5"/>
                     <string key="text">Select the token you wish to supply to earn interest. Interest rate may change as per market dynamics.
 </string>
                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
@@ -188,7 +189,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PZ6-PZ-AYR">
-                    <rect key="frame" x="37" y="231.5" width="301" height="415.5"/>
+                    <rect key="frame" x="37" y="233.5" width="301" height="413.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="gnw-14-QJA"/>
@@ -196,13 +197,13 @@
                     </connections>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pud-pD-ziz">
-                    <rect key="frame" x="291.5" y="207.5" width="31.5" height="19"/>
+                    <rect key="frame" x="296" y="209.5" width="27" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qh0-kL-esV">
-                    <rect key="frame" x="325" y="210.5" width="25" height="25"/>
+                    <rect key="frame" x="325" y="212.5" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="PDB-RN-euf"/>
                         <constraint firstAttribute="height" constant="25" id="kL4-ae-0HG"/>
@@ -213,16 +214,40 @@
                         <action selector="helpButtonTapped:" destination="-1" eventType="touchUpInside" id="2XS-6i-0oW"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8pN-Cc-kAW">
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FwY-Pj-ebK">
+                            <rect key="frame" x="159" y="267.5" width="57" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_earn_icon" translatesAutoresizingMaskIntoConstraints="NO" id="VUq-4h-F2a">
+                            <rect key="frame" x="141.5" y="117.5" width="92" height="125"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="VUq-4h-F2a" firstAttribute="centerX" secondItem="8pN-Cc-kAW" secondAttribute="centerX" id="Jza-Rl-wMx"/>
+                        <constraint firstItem="FwY-Pj-ebK" firstAttribute="centerX" secondItem="8pN-Cc-kAW" secondAttribute="centerX" id="Oe4-2B-MW9"/>
+                        <constraint firstItem="FwY-Pj-ebK" firstAttribute="centerY" secondItem="8pN-Cc-kAW" secondAttribute="centerY" id="Prm-dJ-hDY"/>
+                        <constraint firstItem="FwY-Pj-ebK" firstAttribute="top" secondItem="VUq-4h-F2a" secondAttribute="bottom" constant="25" id="fTi-ct-SJB"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="ztD-1o-LWC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7YK-kg-DVu"/>
+                <constraint firstItem="8pN-Cc-kAW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E95-dl-12P"/>
                 <constraint firstItem="jSG-mf-L9y" firstAttribute="top" secondItem="ztD-1o-LWC" secondAttribute="bottom" constant="30" id="ETE-bm-hIw"/>
                 <constraint firstItem="ztD-1o-LWC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="F3G-fY-OKg"/>
                 <constraint firstItem="PZ6-PZ-AYR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="JgI-gu-pq2"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="PZ6-PZ-AYR" secondAttribute="trailing" constant="37" id="LmN-9S-xKS"/>
                 <constraint firstItem="PZ6-PZ-AYR" firstAttribute="top" secondItem="pud-pD-ziz" secondAttribute="bottom" constant="5" id="M8i-Nm-30j"/>
+                <constraint firstItem="8pN-Cc-kAW" firstAttribute="top" secondItem="ztD-1o-LWC" secondAttribute="bottom" id="MgE-4N-Enm"/>
+                <constraint firstItem="8pN-Cc-kAW" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="Mo8-oP-mzO"/>
                 <constraint firstItem="jSG-mf-L9y" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="NlD-4J-Dm5"/>
                 <constraint firstItem="pud-pD-ziz" firstAttribute="trailing" secondItem="PZ6-PZ-AYR" secondAttribute="trailing" constant="-15" id="R1O-Ib-jdr"/>
                 <constraint firstItem="Qh0-kL-esV" firstAttribute="top" secondItem="pud-pD-ziz" secondAttribute="top" constant="3" id="Xbd-LU-753"/>
@@ -231,6 +256,7 @@
                 <constraint firstItem="ztD-1o-LWC" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="h8N-5L-Y48"/>
                 <constraint firstItem="PZ6-PZ-AYR" firstAttribute="top" secondItem="jSG-mf-L9y" secondAttribute="bottom" constant="23" id="kIp-c3-OTO"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="PZ6-PZ-AYR" secondAttribute="bottom" constant="20" id="sng-Mo-1Vt"/>
+                <constraint firstItem="8pN-Cc-kAW" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="yl3-my-rwY"/>
             </constraints>
             <point key="canvasLocation" x="-20" y="86.806596701649184"/>
         </view>
@@ -268,6 +294,7 @@
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
+        <image name="empty_earn_icon" width="92" height="125"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="more_info_icon" width="14" height="14"/>
         <namedColor name="buttonBackgroundColor">
@@ -278,6 +305,9 @@
         </namedColor>
         <namedColor name="navButtonBgColor">
             <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

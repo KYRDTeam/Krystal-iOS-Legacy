@@ -18,6 +18,12 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var maticCheckMarkIcon: UIImageView!
   @IBOutlet weak var avalancheCheckMarkIcon: UIImageView!
   
+  @IBOutlet weak var ethSelectBgView: UIView!
+  @IBOutlet weak var bscSelectBgView: UIView!
+  @IBOutlet weak var maticSelectBgView: UIView!
+  @IBOutlet weak var avalancheSelectBgView: UIView!
+  
+  
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
   @IBOutlet weak var nextButton: UIButton!
@@ -50,6 +56,11 @@ class SwitchChainViewController: KNBaseViewController {
     self.maticCheckMarkIcon.isHidden = !(self.selectedChain == .polygon)
     self.avalancheCheckMarkIcon.isHidden = !(self.selectedChain == .avalanche)
     
+    self.ethSelectBgView.isHidden = !(self.selectedChain == .eth)
+    self.bscSelectBgView.isHidden = !(self.selectedChain == .bsc)
+    self.maticSelectBgView.isHidden = !(self.selectedChain == .polygon)
+    self.avalancheSelectBgView.isHidden = !(self.selectedChain == .avalanche)
+
     let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
     self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
@@ -86,7 +97,7 @@ class SwitchChainViewController: KNBaseViewController {
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
