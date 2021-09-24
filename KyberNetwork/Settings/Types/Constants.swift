@@ -163,7 +163,7 @@ public struct Constants {
     name: "Avalanche Mainnet C-Chain",
     symbol: "AVAX",
     endpoint: "https://api.avax.network/ext/bc/C/rpc",
-    endpointKyber: "https://api.avax.network/ext/bc/C/rpc",
+    endpointKyber: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
     endpointAlchemy: "https://api.avax.network/ext/bc/C/rpc",
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
     ensAddress: "",
