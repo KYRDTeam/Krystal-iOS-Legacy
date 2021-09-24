@@ -201,7 +201,7 @@ jobs:
           git config --global user.email 'vietanhduong@users.noreply.github.com'
 
       - name: Bump Build number
-        if: matrix.bump_build 
+        if: matrix.bump_build && needs.prepare.outputs.current_branch != 'ci'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
