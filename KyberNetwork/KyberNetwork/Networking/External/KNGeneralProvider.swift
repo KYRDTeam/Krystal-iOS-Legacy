@@ -268,7 +268,7 @@ class KNGeneralProvider {
     case .polygon:
       return "There.is.a.difference.between.the.estimated.price.matic"
     case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.matic" //TODO: wait for avalance
+      return "There.is.a.difference.between.the.estimated.price.avalanche"
     }
   }
 

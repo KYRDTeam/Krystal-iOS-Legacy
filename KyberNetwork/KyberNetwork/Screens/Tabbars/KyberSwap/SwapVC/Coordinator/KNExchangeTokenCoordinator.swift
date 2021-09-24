@@ -158,8 +158,8 @@ extension KNExchangeTokenCoordinator {
     self.navigationController.popToRootViewController(animated: true)
     let otherToken: TokenObject = token.isETH ? KNSupportedTokenStorage.shared.kncToken : KNSupportedTokenStorage.shared.ethToken
     let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
-    let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.maticToken
-    let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.avaxToken
+    let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
+    let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
     var selectToken = KNSupportedTokenStorage.shared.ethToken
     switch KNGeneralProvider.shared.currentChain {
