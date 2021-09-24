@@ -193,7 +193,8 @@ class KSwapViewController: KNBaseViewController {
     if self.rateTimerView.isHidden {
       self.rateTimerView.pause()
     }
-    self.rateTimerView.start(beginingValue: 15, interval: 1)
+    let interval = KNGeneralProvider.shared.currentChain == .eth ? 15 : 8
+    self.rateTimerView.start(beginingValue: interval, interval: 1)
   }
 
   fileprivate func stopRateTimer() {
