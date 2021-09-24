@@ -63,7 +63,6 @@
                             <constraint firstAttribute="width" constant="80" id="voF-ms-leF"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                        <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <state key="normal" title="+19.91%">
                             <color key="titleColor" name="mainViewBgColor"/>
                         </state>
