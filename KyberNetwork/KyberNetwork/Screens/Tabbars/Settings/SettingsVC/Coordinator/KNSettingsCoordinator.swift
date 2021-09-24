@@ -268,43 +268,41 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     guard let wallet = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == walletObj.address.lowercased() }) else { return }
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      let alertController = UIAlertController(
-        title: NSLocalizedString("export.at.your.own.risk", value: "Export at your own risk!", comment: ""),
-        message: nil,
-        preferredStyle: .actionSheet
-      )
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-        style: .default,
-        handler: { _ in
-          self.backupKeystore(wallet: wallet)
+        var action = [UIAlertAction]()
+        action.append(UIAlertAction(
+            title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
+            style: .default,
+            handler: { _ in
+              self.backupKeystore(wallet: wallet)
+            }
+          ))
+        action.append(UIAlertAction(
+            title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+            style: .default,
+            handler: { _ in
+              self.backupPrivateKey(wallet: wallet)
+              self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
+            }
+          ))
+        if case .real(let account) = wallet.type, case .success = self.session.keystore.exportMnemonics(account: account) {
+            action.append(UIAlertAction(
+              title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
+              style: .default,
+              handler: { _ in
+                self.backupMnemonic(wallet: wallet)
+                self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
+              }
+            ))
         }
-      ))
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
-        style: .default,
-        handler: { _ in
-          self.backupPrivateKey(wallet: wallet)
-          self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
-        }
-      ))
-      if case .real(let account) = wallet.type, case .success = self.session.keystore.exportMnemonics(account: account) {
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
-          style: .default,
-          handler: { _ in
-            self.backupMnemonic(wallet: wallet)
-            self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
-          }
-        ))
-      }
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
-        style: .cancel,
-        handler: nil)
-      )
-      self.navigationController.hideLoading()
-      self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
+        action.append(UIAlertAction(
+            title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
+            style: .cancel,
+            handler: nil)
+          )
+        
+        let alertController = KNActionSheetAlertViewController(title: "", actions: action)
+        self.navigationController.hideLoading()
+        self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
     }
   }
 

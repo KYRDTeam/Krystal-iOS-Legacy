@@ -135,18 +135,23 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
   }
 
   fileprivate func listWalletsViewControllerDidSelectRemoveWallet(_ wallet: Wallet) {
-    let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-      if self.navigationController.topViewController is KNEditWalletViewController {
-        self.navigationController.popViewController(animated: true, completion: {
+    let alertController = KNPrettyAlertController(
+      title: "Delete".toBeLocalised(),
+      message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""),
+      secondButtonTitle: "OK".toBeLocalised(),
+      firstButtonTitle: "Cancel".toBeLocalised(),
+      secondButtonAction: {
+        if self.navigationController.topViewController is KNEditWalletViewController {
+          self.navigationController.popViewController(animated: true, completion: {
+            self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
+          })
+        } else {
           self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-        })
-      } else {
-        self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wallet)
-      }
-    }))
-    self.navigationController.topViewController?.present(alert, animated: true, completion: nil)
+        }
+      },
+      firstButtonAction: nil
+    )
+    self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
   }
 }
 
