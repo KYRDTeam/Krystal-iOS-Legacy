@@ -1,14 +1,10 @@
-name: CI Build
+name: iOS Manual Trigger
 
 on:
   workflow_dispatch:
-    inputs:
-      pr_number:
-        description: PR Number
-        required: true
       
 concurrency: 
-  group: pr-build-${{ github.event.inputs.pr_number }}
+  group: manual-${{ github.ref}}
   cancel-in-progress: true
 
 env:
@@ -67,18 +63,6 @@ jobs:
   build-ios:
     needs:
       - prepare
-    strategy:
-      matrix: 
-        include:
-          - app_name: "Krystal: Develop"
-            env: dev
-            ota_key: DEV_OTA_URL
-            bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            bump_build: false
-            
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
@@ -144,7 +128,7 @@ jobs:
       - name: Setup environments
         shell: bash
         env:
-          ENV: ${{ matrix.env }}
+          ENV: stg 
         run: |
           cp /Users/runner/privates/environments/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
@@ -161,8 +145,8 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         env:
-          OTA_URL: ${{ secrets[matrix.ota_key] }}
-          APP_NAME: ${{ matrix.app_name }}
+          OTA_URL: ${{ secrets.MANUAL_OTA_URL }}
+          APP_NAME: "Krystal: Manual (Stg)"
           OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
           OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
         run: .github/deploy 
@@ -173,7 +157,6 @@ jobs:
           git config --global user.email 'vietanhduong@users.noreply.github.com'
 
       - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch != 'ci'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
