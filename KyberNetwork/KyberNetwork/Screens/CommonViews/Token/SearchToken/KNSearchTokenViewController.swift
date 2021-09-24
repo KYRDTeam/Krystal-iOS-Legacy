@@ -62,6 +62,11 @@ class KNSearchTokenViewModel {
     }()
 
     self.displayedTokens.sort { (token0, token1) -> Bool in
+        //priority token with positive banlance higher
+        let balance0 = token0.getBalanceBigInt()
+        let balance1 = token1.getBalanceBigInt()
+        if balance0 == 0 && balance1 > 0 { return false }
+        if balance0 > 0 && balance1 == 0 { return true }
         // category by priority listed token over the custom token
         if token0.isCustom && !token1.isCustom { return false }
         if !token0.isCustom && token1.isCustom { return true }
@@ -80,8 +85,6 @@ class KNSearchTokenViewModel {
         if !isContain0 && isContain1 { return false }
 
         // sort by balance
-        let balance0 = token0.getBalanceBigInt()
-        let balance1 = token1.getBalanceBigInt()
         return balance0 * BigInt(10).power(18 - token0.decimals) > balance1 * BigInt(10).power(18 - token1.decimals)
     }
   }
