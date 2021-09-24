@@ -421,8 +421,9 @@ extension KNTransactionCoordinator {
     self.pendingTxTimer?.invalidate()
     self.pendingTxTimer = nil
     self.shouldCheckInternalHistory()
+    let interval: TimeInterval = KNGeneralProvider.shared.currentChain == .eth ? 15.0 : 8.0
     self.pendingTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds30,
+      withTimeInterval: interval,
       repeats: true,
       block: { [weak self] timer in
         guard let `self` = self else { return }
