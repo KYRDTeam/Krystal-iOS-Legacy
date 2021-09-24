@@ -6,6 +6,10 @@ on:
       - ci
       - main 
 
+concurrency: 
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 env:
   LANG: en_US.UTF-8
   # base64 service account credentials
