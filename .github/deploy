@@ -5,7 +5,6 @@
 # Author: @vietanhduong
 #
 # Environments required:
-# Environments required:
 # * OTA_URL: URL to the specified OTA. 
 # * OTA_ROBOT_EMAIL: Email of the robot account.
 # * OTA_ROBOT_EMAIL: Password of the robot account.
