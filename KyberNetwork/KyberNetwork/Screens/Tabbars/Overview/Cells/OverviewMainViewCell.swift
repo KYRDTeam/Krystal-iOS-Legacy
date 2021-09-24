@@ -188,13 +188,14 @@ class OverviewMainCellViewModel {
         if change24 == 0 {
           return "---"
         }
-        return String(format: "%.2f", change24) + "%"
+        let prefix = change24 > 0 ? "+" : ""
+        return prefix + String(format: "%.2f", change24) + "%"
       default:
         let mc = token.getMarketCap(self.currency)
         if mc == 0 {
           return "---"
         }
-        return self.formatPoints(mc)
+        return self.currency.symbol() + self.formatPoints(mc)
       }
     case .search(token: let token):
       let change24 = token.getTokenChange24(self.currency)
