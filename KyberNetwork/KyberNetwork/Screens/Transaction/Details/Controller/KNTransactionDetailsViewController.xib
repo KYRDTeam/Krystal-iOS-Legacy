@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -85,7 +85,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SWAP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yeI-gk-FZh">
-                    <rect key="frame" x="73" y="135" width="51.5" height="21"/>
+                    <rect key="frame" x="57" y="135" width="51.5" height="21"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
@@ -106,7 +106,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="+1000 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="78P-qm-FQ2">
-                    <rect key="frame" x="73" y="181.5" width="90.5" height="21"/>
+                    <rect key="frame" x="57" y="181.5" width="90.5" height="21"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
@@ -129,14 +129,14 @@
                     </constraints>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="knc" translatesAutoresizingMaskIntoConstraints="NO" id="vI3-oR-0I3">
-                    <rect key="frame" x="41" y="135" width="16" height="16"/>
+                    <rect key="frame" x="25" y="135" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="ExF-s9-2iR"/>
                         <constraint firstAttribute="height" constant="16" id="lFx-X6-mrV"/>
                     </constraints>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="QVd-6V-QCl">
-                    <rect key="frame" x="51" y="140" width="16" height="16"/>
+                    <rect key="frame" x="35" y="140" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="E5T-ae-Qva"/>
                         <constraint firstAttribute="height" constant="16" id="bbd-td-Yzk"/>
@@ -187,8 +187,8 @@
                         <constraint firstItem="ZEQ-L1-jkW" firstAttribute="leading" secondItem="IMl-fo-icc" secondAttribute="trailing" constant="10" id="xcS-QQ-uQq"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monday, June 25th 2018, 17:40:19 UTC+07:00" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOc-Ne-3sf">
-                    <rect key="frame" x="73" y="158" width="292.5" height="16.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monday, June 25th 2018, 17:40:19 UTC+07:00" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QOc-Ne-3sf">
+                    <rect key="frame" x="57" y="158" width="313" height="16.5"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                     <color key="textColor" red="0.35294117650000001" green="0.36862745099999999" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -312,12 +312,13 @@
                 <constraint firstItem="78P-qm-FQ2" firstAttribute="leading" secondItem="yeI-gk-FZh" secondAttribute="leading" id="DU0-UY-d8F"/>
                 <constraint firstItem="78P-qm-FQ2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="Gjc-hF-h1a"/>
                 <constraint firstItem="cUE-W5-etN" firstAttribute="top" secondItem="4zG-ff-J0x" secondAttribute="top" constant="5" id="GkH-WW-wCw"/>
-                <constraint firstItem="vI3-oR-0I3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="41" id="LO4-t4-Cgr"/>
+                <constraint firstItem="vI3-oR-0I3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="25" id="LO4-t4-Cgr"/>
                 <constraint firstItem="VN3-Is-K3F" firstAttribute="top" secondItem="78P-qm-FQ2" secondAttribute="bottom" constant="30.5" id="LcL-Fv-x9r"/>
                 <constraint firstItem="QVd-6V-QCl" firstAttribute="leading" secondItem="vI3-oR-0I3" secondAttribute="leading" constant="10" id="LlN-D3-f3Q"/>
                 <constraint firstItem="vI3-oR-0I3" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="Mmq-CV-9wq"/>
                 <constraint firstItem="Ru1-yf-zjf" firstAttribute="centerY" secondItem="4zG-ff-J0x" secondAttribute="centerY" id="NZu-Vi-Kbm"/>
                 <constraint firstItem="FMD-kw-hmP" firstAttribute="centerY" secondItem="8Lb-nd-CTG" secondAttribute="centerY" id="Pgd-De-iJy"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="QOc-Ne-3sf" secondAttribute="trailing" constant="5" id="Plj-0s-1Ci"/>
                 <constraint firstItem="yeI-gk-FZh" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="QdQ-fb-uoi"/>
                 <constraint firstItem="Ru1-yf-zjf" firstAttribute="trailing" secondItem="2G4-Wi-3zn" secondAttribute="trailing" id="SU8-5U-f47"/>
                 <constraint firstItem="8Lb-nd-CTG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="TNg-hT-Lpn"/>

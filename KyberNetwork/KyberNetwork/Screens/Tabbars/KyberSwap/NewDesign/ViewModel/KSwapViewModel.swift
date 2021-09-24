@@ -405,8 +405,10 @@ class KSwapViewModel {
     case .polygon:
       self.from = KNSupportedTokenStorage.shared.maticToken
       self.to = KNSupportedTokenStorage.shared.usdcToken
+    case .avalanche:
+      self.from = KNSupportedTokenStorage.shared.avaxToken
+      self.to = KNSupportedTokenStorage.shared.usdceToken
     }
-    
   }
 
   // MARK: Update data

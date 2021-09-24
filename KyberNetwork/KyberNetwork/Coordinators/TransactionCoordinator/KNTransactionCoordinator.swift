@@ -94,7 +94,37 @@ extension KNTransactionCoordinator {
     self.tokenTxTimer = nil
   }
 
+  fileprivate func loadKrystalHistory() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
+    let lastBlockInt = Int(lastBlock) ?? 0
+    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: lastBlock)) { result in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(HistoryResponse.self, from: resp.data)
+          let history = data.transactions
+          if lastBlockInt == 0 {
+            EtherscanTransactionStorage.shared.setKrystalTransaction(history)
+          } else {
+            EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+          }
+          print("[GetHistoryTransaction][Success]")
+        } catch let error {
+          print("[GetHistoryTransaction][Error] \(error.localizedDescription)")
+        }
+      } else {
+        
+      }
+    }
+  }
+
   func loadEtherscanTransactions() {
+    guard KNGeneralProvider.shared.currentChain != .avalanche else {
+      self.loadKrystalHistory()
+      return
+    }
+    
     let tx = SentrySDK.startTransaction(
       name: "load-transaction-history-request",
       operation: "load-transaction-history-operation"

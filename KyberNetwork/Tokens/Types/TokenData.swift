@@ -62,6 +62,8 @@ class Token: Codable, Equatable, Hashable {
       return price.bnb
     case .matic:
       return price.matic
+    case .avax:
+      return price.avax
     }
   }
   
@@ -78,6 +80,8 @@ class Token: Codable, Equatable, Hashable {
       return price.bnb24hChange
     case .matic:
       return price.matic24hChange
+    case .avax:
+      return price.avax24hChange
     }
   }
 
@@ -170,6 +174,10 @@ class TokenPrice: Codable {
   var maticMarketCap: Double
   var matic24hVol: Double
   var matic24hChange: Double
+  var avax: Double
+  var avaxMarketCap: Double
+  var avax24hVol: Double
+  var avax24hChange: Double
   
   init(address: String, quotes: [String: Quote]) {
     self.address = address
@@ -198,6 +206,11 @@ class TokenPrice: Codable {
     self.maticMarketCap = quotes["matic"]?.marketCap ?? 0.0
     self.matic24hVol = quotes["matic"]?.volume24H ?? 0.0
     self.matic24hChange = quotes["matic"]?.price24HChangePercentage ?? 0.0
+    
+    self.avax = quotes["avax"]?.price ?? 0.0
+    self.avaxMarketCap = quotes["avax"]?.marketCap ?? 0.0
+    self.avax24hVol = quotes["avax"]?.volume24H ?? 0.0
+    self.avax24hChange = quotes["avax"]?.price24HChangePercentage ?? 0.0
   }
 }
 
@@ -303,8 +316,12 @@ struct TokenData: Codable, Equatable {
     return self.symbol == "MATIC"
   }
   
+  var isAvax: Bool {
+    return self.symbol == "AVAX"
+  }
+  
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }
 
   func getBalanceBigInt() -> BigInt {

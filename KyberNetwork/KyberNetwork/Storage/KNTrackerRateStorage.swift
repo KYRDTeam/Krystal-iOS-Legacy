@@ -69,6 +69,8 @@ class KNTrackerRateStorage {
       return price.bnb
     case .matic:
       return price.matic
+    case .avax:
+      return price.avax
     }
   }
 

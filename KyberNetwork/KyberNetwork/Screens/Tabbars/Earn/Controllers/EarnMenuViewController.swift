@@ -23,6 +23,7 @@ class EarnMenuViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet var warningContainerView: UIView!
   @IBOutlet weak var mainInfoTitle: UILabel!
+  @IBOutlet weak var emptyView: UIView!
   
   
   let viewModel: EarnMenuViewModel
@@ -73,6 +74,7 @@ class EarnMenuViewController: KNBaseViewController {
     self.isViewSetup = true
     self.updateUIPendingTxIndicatorView()
     self.updateUISwitchChain()
+    self.updateUIEmptyView()
   }
 
   fileprivate func updateUISwitchChain() {
@@ -124,10 +126,17 @@ class EarnMenuViewController: KNBaseViewController {
     self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
   }
   
+  fileprivate func updateUIEmptyView() {
+    if self.isViewLoaded {
+      self.emptyView.isHidden = !self.viewModel.dataSource.isEmpty
+    }
+  }
+  
   func coordinatorDidUpdateLendingToken(_ tokens: [TokenData]) {
     self.viewModel.dataSource = tokens.map { EarnMenuTableViewCellViewModel(token: $0) }.sorted(by: { (left, right) -> Bool in
       return left.supplyRate > right.supplyRate
     })
+    self.updateUIEmptyView()
     if self.isViewSetup {
       DispatchQueue.main.async {
         self.menuTableView.reloadData()

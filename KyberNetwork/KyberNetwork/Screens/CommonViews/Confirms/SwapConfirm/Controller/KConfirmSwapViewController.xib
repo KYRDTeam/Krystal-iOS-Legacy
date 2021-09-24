@@ -108,7 +108,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $3,4324 USD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkf-4M-ngk">
-                            <rect key="frame" x="242" y="125" width="96" height="17"/>
+                            <rect key="frame" x="237" y="125" width="96" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
@@ -236,7 +236,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999999999 ETH" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-f9-d1J">
-                            <rect key="frame" x="203.5" y="101" width="134.5" height="21"/>
+                            <rect key="frame" x="203.5" y="101" width="129.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" red="0.92549019607843142" green="0.92941176470588238" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -283,7 +283,6 @@
                         <constraint firstItem="JeZ-f9-d1J" firstAttribute="centerY" secondItem="ptv-4N-PR6" secondAttribute="centerY" id="7cz-Wj-wtJ"/>
                         <constraint firstItem="NUm-Ao-hb7" firstAttribute="leading" secondItem="zHU-yy-HMd" secondAttribute="leading" id="9P9-nJ-iVq"/>
                         <constraint firstItem="f9G-Wm-HE7" firstAttribute="leading" secondItem="8qy-Pn-0xm" secondAttribute="trailing" constant="8" symbolic="YES" id="AKg-76-OLv"/>
-                        <constraint firstAttribute="trailing" secondItem="JeZ-f9-d1J" secondAttribute="trailing" constant="37" id="ATz-qw-W8W"/>
                         <constraint firstItem="oE1-zv-9df" firstAttribute="top" secondItem="gkk-HI-Saw" secondAttribute="bottom" constant="27" id="Acd-wk-gwF"/>
                         <constraint firstItem="gkf-4M-ngk" firstAttribute="trailing" secondItem="JeZ-f9-d1J" secondAttribute="trailing" id="F7M-A3-BNi"/>
                         <constraint firstItem="hUo-Ag-Pu8" firstAttribute="top" secondItem="sBz-hH-uvn" secondAttribute="top" constant="40" id="Fpl-Cw-y2J"/>

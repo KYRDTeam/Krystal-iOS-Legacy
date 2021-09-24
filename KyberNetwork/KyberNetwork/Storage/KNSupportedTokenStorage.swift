@@ -83,10 +83,24 @@ class KNSupportedTokenStorage {
     return token.toObject()
   }
   
+  var avaxToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "AVAX"
+    } ?? Token(name: "AVAX", symbol: "AVAX", address: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", decimals: 18, logo: "avax")
+    return token.toObject()
+  }
+  
   var usdcToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "USDC"
     } ?? Token(name: "USDC", symbol: "USDC", address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", decimals: 6, logo: "")
+    return token.toObject()
+  }
+  
+  var usdceToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "USDC.e"
+    } ?? Token(name: "USDC.e", symbol: "USDC.e", address: "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664", decimals: 6, logo: "")
     return token.toObject()
   }
 
@@ -211,7 +225,6 @@ class KNSupportedTokenStorage {
   }
   
   func deleteCustomToken(_ token: Token) {
-    
     guard !self.deletedTokens.contains(token) else {
       return
     }
