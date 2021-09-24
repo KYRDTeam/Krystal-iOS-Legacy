@@ -84,16 +84,16 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="698-Yp-2Cp">
-                            <rect key="frame" x="326" y="60.5" width="16" height="16"/>
-                            <color key="backgroundColor" red="0.97647058819999999" green="0.34901960780000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="352" y="63.5" width="6" height="6"/>
+                            <color key="backgroundColor" name="secondaryColor"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="16" id="MJH-lr-Xnu"/>
-                                <constraint firstAttribute="height" constant="16" id="Sci-Mc-HgL"/>
+                                <constraint firstAttribute="width" constant="6" id="MJH-lr-Xnu"/>
+                                <constraint firstAttribute="height" constant="6" id="Sci-Mc-HgL"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
+                                    <integer key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
@@ -163,12 +163,12 @@
                         <constraint firstItem="hjs-AV-lyC" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="DKj-Qe-RHh"/>
                         <constraint firstItem="QS9-Af-9Vz" firstAttribute="leading" secondItem="J4n-mQ-C4h" secondAttribute="trailing" constant="12" id="Lcj-bt-wpy"/>
                         <constraint firstItem="QS9-Af-9Vz" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="QsB-uH-xd7"/>
-                        <constraint firstItem="698-Yp-2Cp" firstAttribute="top" secondItem="hjs-AV-lyC" secondAttribute="top" id="RNe-LZ-HQq"/>
+                        <constraint firstItem="698-Yp-2Cp" firstAttribute="top" secondItem="hjs-AV-lyC" secondAttribute="top" constant="3" id="RNe-LZ-HQq"/>
                         <constraint firstAttribute="bottom" secondItem="KOL-Gi-nXw" secondAttribute="bottom" constant="26" id="W7A-1k-gyT"/>
-                        <constraint firstItem="698-Yp-2Cp" firstAttribute="leading" secondItem="hjs-AV-lyC" secondAttribute="leading" id="W91-Zn-Atj"/>
                         <constraint firstItem="0SB-dF-3eM" firstAttribute="leading" secondItem="ztD-1o-LWC" secondAttribute="leading" constant="23" id="cHB-X5-gmI"/>
                         <constraint firstItem="KOL-Gi-nXw" firstAttribute="centerY" secondItem="0SB-dF-3eM" secondAttribute="centerY" id="dvf-fE-Yz1"/>
                         <constraint firstItem="hjs-AV-lyC" firstAttribute="centerY" secondItem="J4n-mQ-C4h" secondAttribute="centerY" id="hpO-pv-CMO"/>
+                        <constraint firstItem="698-Yp-2Cp" firstAttribute="trailing" secondItem="hjs-AV-lyC" secondAttribute="trailing" id="jrp-l6-1C5"/>
                         <constraint firstItem="hjs-AV-lyC" firstAttribute="leading" secondItem="QS9-Af-9Vz" secondAttribute="trailing" constant="6" id="kf4-gI-F0N"/>
                         <constraint firstAttribute="trailing" secondItem="hjs-AV-lyC" secondAttribute="trailing" constant="17" id="sdp-AB-n7d"/>
                     </constraints>
@@ -278,6 +278,9 @@
         </namedColor>
         <namedColor name="navButtonBgColor">
             <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="secondaryColor">
+            <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
