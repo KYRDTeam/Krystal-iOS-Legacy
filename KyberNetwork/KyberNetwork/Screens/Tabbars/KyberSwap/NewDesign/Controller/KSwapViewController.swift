@@ -630,12 +630,14 @@ extension KSwapViewController {
       self.approveButtonWidthContraint.priority = UILayoutPriority(rawValue: 250)
       self.continueButton.isEnabled = false
       self.continueButton.alpha = 0.2
-      if self.viewModel.approvingToken == nil {
-        self.approveButton.isEnabled = true
-        self.approveButton.alpha = 1
-      } else {
+      
+      if let approveToken = self.viewModel.approvingToken, approveToken.isEqual(self.viewModel.from) {
+        // only disable approveButton when current approvingToken is source token
         self.approveButton.isEnabled = false
         self.approveButton.alpha = 0.2
+      } else {
+        self.approveButton.isEnabled = true
+        self.approveButton.alpha = 1
       }
     } else {
       self.approveButtonLeftPaddingContraint.constant = 0
