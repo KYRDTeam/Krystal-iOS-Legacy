@@ -98,6 +98,8 @@ class Token: Codable, Equatable, Hashable {
       return price.bnb24hVol
     case .matic:
       return price.matic24hVol
+    case .avax:
+      return price.avax24hVol
     }
   }
   
@@ -114,6 +116,8 @@ class Token: Codable, Equatable, Hashable {
       return price.bnbMarketCap
     case .matic:
       return price.maticMarketCap
+    case .avax:
+      return price.avaxMarketCap
     }
   }
   
