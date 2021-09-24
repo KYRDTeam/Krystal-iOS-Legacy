@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# This script is used to upload a build to a specified OTA.
+#
+# Author: @vietanhduong
+#
+# Environments required:
+# * OTA_URL: URL to the specified OTA. 
+# * OTA_ROBOT_EMAIL: Email of the robot account.
+# * OTA_ROBOT_EMAIL: Password of the robot account.
+# * APP_NAME: Application name when display.
+
+set -eo pipefail
+
+err() {
+  echo -e "ERR: $*" >&2
+}
+
+info() {
+  echo -e "INFO: $*"
+}
+
+required() {
+  if [[ -z "${!1}" ]]; then 
+      err "$1 is required" && exit 1
+  fi
+}
+
+# Verify required environments 
+required "OTA_URL"
+required "OTA_ROBOT_EMAIL"
+required "OTA_ROBOT_PASSWORD"
+required "APP_NAME"
+
+# Get access token
+TOKEN=$(curl -sSL -H "Content-Type: application/json" -d "{\"email\": \"$OTA_ROBOT_EMAIL\", \"password\": \"$OTA_ROBOT_PASSWORD\"}"  "$OTA_URL/api/v1/users/login" | jq -r .access_token)
+
+# Upload iOS file 
+OBJECT_ID=$(curl -sSfL -F "file=@./archives/KyberSwap.ipa" -H "Authorization: token $TOKEN" "$OTA_URL/api/v1/storages/upload" | jq -r .object_id)
+
+# Upload app icon
+APP_ICON=$(curl -sSfL -F "file=@./KyberNetwork/Assets.xcassets/AppIcon.appiconset/Krystal_icon_60@3x.png" -H "Authorization: token $TOKEN" "$OTA_URL/api/v1/storages/upload" | jq -r .object_key)
+
+# Prepare metadata
+METADATA="{\"repo\": \"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\", \"commit\": \"$GITHUB_SHA\", \"app_icon\": \"$APP_ICON\"}"
+
+# Extract build number
+BUILD=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'CURRENT_PROJECT_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+BUILD=${BUILD:-1}
+
+# Extract version
+VERSION=$(cat KyberNetwork.xcodeproj/project.pbxproj | grep -m1 'MARKETING_VERSION' | cut -d'=' -f2 | tr -d ';' | tr -d ' ')
+VERSION=${VERSION:-1.0.0}
+
+# Upload to OTA Server
+CODE=$(curl -sSfL -XPOST -H "Content-Type: application/json" \
+        -o /dev/null -w "%{http_code}" \
+        -H "Authorization: token $TOKEN" \
+        -d "{\"bundle_id\": \"$APPLE_BUNDLE_ID\", \"app_name\": \"$APP_NAME\", \"object_id\": $OBJECT_ID, \"build\": $BUILD, \"version\": \"$VERSION\", \"metadata\": $METADATA}" \
+        "$OTA_URL/api/v1/profiles/ios")
+
+# stop CI if upload to OTA server failed
+[[ "$CODE" == 20* ]] || exit 1
