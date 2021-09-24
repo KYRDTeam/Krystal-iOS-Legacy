@@ -24,8 +24,8 @@ class EarnMenuViewController: KNBaseViewController {
   @IBOutlet var warningContainerView: UIView!
   @IBOutlet weak var mainInfoTitle: UILabel!
   @IBOutlet weak var emptyView: UIView!
-  
-  
+  @IBOutlet weak var noDataLabel: UILabel!
+
   let viewModel: EarnMenuViewModel
   weak var delegate: EarnMenuViewControllerDelegate?
   fileprivate var isViewSetup: Bool = false
@@ -67,6 +67,7 @@ class EarnMenuViewController: KNBaseViewController {
       .foregroundColor: UIColor(named: "buttonBackgroundColor")
     ], range: NSRange(location: 39, length: 13))
     self.mainInfoTitle.attributedText = attributedString
+    self.noDataLabel.text = KNGeneralProvider.shared.currentChain == .avalanche ? "Coming soon" : "No data"
   }
   
   override func viewWillAppear(_ animated: Bool) {
