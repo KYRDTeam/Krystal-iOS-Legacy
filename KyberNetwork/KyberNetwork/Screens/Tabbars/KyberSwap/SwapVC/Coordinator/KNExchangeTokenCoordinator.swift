@@ -146,13 +146,7 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorUSDRateDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt) {
     self.rootViewController.coordinatorTrackerRateDidUpdate()
     self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
-//    self.confirmSwapVC?.coordinatorUpdateCurrentMarketRate()
   }
-
-//  func appCoordinatorUpdateExchangeTokenRates() {
-////    self.rootViewController.coordinatorUpdateProdCachedRates()
-//    self.confirmSwapVC?.coordinatorUpdateCurrentMarketRate()
-//  }
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
@@ -232,102 +226,6 @@ extension KNExchangeTokenCoordinator {
 
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
-//  fileprivate func didConfirmSendExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction) {
-//    self.rootViewController.coordinatorExchangeTokenUserDidConfirmTransaction()
-//    KNNotificationUtil.postNotification(for: kTransactionDidUpdateNotificationKey)
-//    var fee = BigInt(0)
-//    if let gasPrice = exchangeTransaction.gasPrice, let gasLimit = exchangeTransaction.gasLimit {
-//      fee = gasPrice * gasLimit
-//    }
-//    self.session.externalProvider?.getAllowance(token: exchangeTransaction.from) { [weak self] getAllowanceResult in
-//      guard let `self` = self else { return }
-//      switch getAllowanceResult {
-//      case .success(let res):
-//        if res >= exchangeTransaction.amount {
-//          self.sendExchangeTransaction(exchangeTransaction)
-//        } else {
-//          self.sendApproveForExchangeTransaction(exchangeTransaction, remain: res)
-//        }
-//      case .failure(let error):
-//        self.promoConfirmSwapVC?.resetActionButtons()
-//        KNNotificationUtil.postNotification(
-//          for: kTransactionDidUpdateNotificationKey,
-//          object: error,
-//          userInfo: nil
-//        )
-//        KNCrashlyticsUtil.logCustomEvent(withName: "swapconfirm_broadcast_failed",
-//                                         customAttributes: [
-//                                          "token_pair": "\(exchangeTransaction.from.name)/\(exchangeTransaction.to.name)",
-//                                          "amount": exchangeTransaction.amount.displayRate(decimals: exchangeTransaction.from.decimals),
-//                                          "current_rate": exchangeTransaction.expectedRate.displayRate(decimals: 18),
-//                                          "min_rate": exchangeTransaction.minRate?.displayRate(decimals: 18) ?? "",
-//                                          "tx_fee": fee.displayRate(decimals: 18),
-//                                          "error_text": error.description,
-//          ]
-//        )
-//      }
-//    }
-//  }
-
-//  fileprivate func sendExchangeTransaction(_ exchage: KNDraftExchangeTransaction) {
-//    guard let provider = self.session.externalProvider else {
-//      return
-//    }
-//    var fee = BigInt(0)
-//    if let gasPrice = exchage.gasPrice, let gasLimit = exchage.gasLimit {
-//      fee = gasPrice * gasLimit
-//    }
-//    provider.exchange(exchange: exchage) { [weak self] result in
-//      guard let `self` = self else { return }
-//      switch result {
-//      case .success(let txHash):
-//        self.sendUserTxHashIfNeeded(txHash)
-//        let transaction = exchage.toTransaction(
-//          hash: txHash,
-//          fromAddr: self.session.wallet.address,
-//          toAddr: provider.networkAddress,
-//          nounce: provider.minTxCount - 1
-//        )
-//        //Init internal tx
-//
-//
-//        self.session.addNewPendingTransaction(transaction)
-//        if KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.session.wallet.address.description) == nil {
-//          if self.confirmSwapVC != nil {
-//            self.navigationController.popViewController(animated: true, completion: {
-//              self.confirmSwapVC = nil
-//              self.openTransactionStatusPopUp(transaction: transaction)
-//            })
-//          }
-//        } else {
-//          // promo code
-//          if self.promoConfirmSwapVC != nil {
-//            self.navigationController.popViewController(animated: true, completion: {
-//              self.promoConfirmSwapVC = nil
-//              self.openTransactionStatusPopUp(transaction: transaction)
-//            })
-//          }
-//        }
-//      case .failure(let error):
-//        KNNotificationUtil.postNotification(
-//          for: kTransactionDidUpdateNotificationKey,
-//          object: error,
-//          userInfo: nil
-//        )
-//        KNCrashlyticsUtil.logCustomEvent(withName: "swapconfirm_broadcast_failed",
-//                                         customAttributes: [
-//                                          "token_pair": "\(exchage.from.name)/\(exchage.to.name)",
-//                                          "amount": exchage.amount.displayRate(decimals: exchage.from.decimals),
-//                                          "current_rate": exchage.expectedRate.displayRate(decimals: 18),
-//                                          "min_rate": exchage.minRate?.displayRate(decimals: 18) ?? "",
-//                                          "tx_fee": fee.displayRate(decimals: 18),
-//                                          "error_text": error.description,
-//          ]
-//        )
-//      }
-//    }
-//  }
-
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
     let controller = KNTransactionStatusPopUp(transaction: transaction)
     controller.delegate = self
@@ -335,60 +233,6 @@ extension KNExchangeTokenCoordinator {
     self.transactionStatusVC = controller
   }
 
-//  fileprivate func sendUserTxHashIfNeeded(_ txHash: String) {
-//    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-//    let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
-//    provider.request(.sendTxHash(authToken: accessToken, txHash: txHash)) { result in
-//      switch result {
-//      case .success(let resp):
-//        do {
-//          _ = try resp.filterSuccessfulStatusCodes()
-//          let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-//          let success = json["success"] as? Bool ?? false
-//          let message = json["message"] as? String ?? "Unknown"
-//          if success {
-//            KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_send_tx_hash_success", customAttributes: nil)
-//          } else {
-//            KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_send_tx_hash_failure", customAttributes: ["error": message])
-//          }
-//        } catch {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_send_tx_hash_failure", customAttributes: nil)
-//        }
-//      case .failure:
-//        KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_send_tx_hash_failure", customAttributes: nil)
-//      }
-//    }
-//  }
-
-//  fileprivate func sendApproveForExchangeTransaction(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt) {
-//    guard let provider = self.session.externalProvider else {
-//      return
-//    }
-//    self.resetAllowanceForExchangeTransactionIfNeeded(exchangeTransaction, remain: remain) { [weak self] resetResult in
-//      guard let `self` = self else { return }
-//      switch resetResult {
-//      case .success:
-//        provider.sendApproveERC20Token(exchangeTransaction: exchangeTransaction) { [weak self] result in
-//          switch result {
-//          case .success:
-//            self?.sendExchangeTransaction(exchangeTransaction)
-//          case .failure(let error):
-//            KNNotificationUtil.postNotification(
-//              for: kTransactionDidUpdateNotificationKey,
-//              object: error,
-//              userInfo: nil
-//            )
-//          }
-//        }
-//      case .failure(let error):
-//        KNNotificationUtil.postNotification(
-//          for: kTransactionDidUpdateNotificationKey,
-//          object: error,
-//          userInfo: nil
-//        )
-//      }
-//    }
-//  }
   //TODO: remove later
   fileprivate func resetAllowanceForExchangeTransactionIfNeeded(_ exchangeTransaction: KNDraftExchangeTransaction, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     guard let provider = self.session.externalProvider else {
@@ -437,30 +281,19 @@ extension KNExchangeTokenCoordinator {
   }
 }
 
-// MARK: Promo Confirm transaction
-//extension KNExchangeTokenCoordinator: KNPromoSwapConfirmViewControllerDelegate {
-//  func promoCodeSwapConfirmViewControllerDidBack() {
-//    self.navigationController.popViewController(animated: true) {
-//      self.promoConfirmSwapVC = nil
-//    }
-//  }
-//
-//  func promoCodeSwapConfirmViewController(_ controller: KNPromoSwapConfirmViewController, transaction: KNDraftExchangeTransaction, destAddress: String, hint: String) {
-//    self.didConfirmSendExchangeTransaction(transaction)
-//  }
-//}
-
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
     }
+    self.navigationController.displayLoading()
     provider.signTransactionData(from: signTransaction) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let signedData):
         KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+          self.navigationController.hideLoading()
           switch sendResult {
           case .success(let hash):
             provider.minTxCount += 1
@@ -598,8 +431,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       guard let provider = self.session.externalProvider else {
         return
       }
+      self.navigationController.displayLoading()
       provider.getTransactionCount { [weak self] result in
         guard let `self` = self else { return }
+        self.navigationController.hideLoading()
         switch result {
         case .success(let res):
           self.rootViewController.coordinatorSuccessUpdateLatestNonce(nonce: res)
@@ -705,79 +540,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.navigationController.present(self.confirmSwapVC!, animated: true, completion: nil)
   }
 
-  // Update compared rate from node when prod cached failed to load
-  // This rate is to compare with current rate to show warning
-//  fileprivate func updateComparedEstimateRate(from: TokenObject, to: TokenObject, hint: String) {
-//    // Using default amount equivalent to 0.5 ETH
-//    let amount: BigInt = {
-//      if from.isETH { return BigInt(10).power(from.decimals) / BigInt(2) }
-//      if let rate = KNRateCoordinator.shared.ethRate(for: from), !rate.rate.isZero {
-//        let ethAmount = BigInt(10).power(from.decimals) / BigInt(2)
-//        let amount = ethAmount * BigInt(10).power(to.decimals) / rate.rate
-//        return amount
-//      }
-//      return BigInt(10).power(from.decimals / 2)
-//    }()
-//    self.getExpectedExchangeRate(from: from, to: to, amount: amount, hint: hint) { [weak self] result in
-//      if case .success(let data) = result, !data.0.isZero {
-//        self?.rootViewController.coordinatorUpdateComparedRateFromNode(
-//          from: from,
-//          to: to,
-//          rate: data.0
-//        )
-//      }
-//    }
-//  }
-
-//  fileprivate func updateReferencePrice(from: TokenObject, to: TokenObject) {
-//    KNRateCoordinator.shared.updateReferencePrice(fromSym: from.symbol, toSym: to.symbol)
-//  }
-
-  // Call contract to get estimate rate with src, dest, srcAmount
-//  fileprivate func updateEstimatedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", showError: Bool, withKyber: Bool = false, completion: ((Error?) -> Void)? = nil) {
-//    self.getExpectedExchangeRate(from: from, to: to, amount: amount, hint: hint, withKyber: withKyber) { [weak self] result in
-//      guard let `self` = self else { return }
-//      switch result {
-//      case .success(let data):
-//        self.rootViewController.coordinatorDidUpdateEstimateRate(
-//          from: from,
-//          to: to,
-//          amount: amount,
-//          rate: data.0,
-//          slippageRate: data.1
-//        )
-//        completion?(nil)
-//      case .failure(let error):
-//        if showError && !withKyber {
-//          if case let err as APIKit.SessionTaskError = error.error, case .connectionError = err {
-//            self.navigationController.showErrorTopBannerMessage(
-//              with: NSLocalizedString("error", value: "Error", comment: ""),
-//              message: NSLocalizedString("please.check.your.internet.connection", value: "Please check your internet connection", comment: ""),
-//              time: 1.5
-//            )
-//          } else {
-//            self.navigationController.showErrorTopBannerMessage(
-//              with: NSLocalizedString("error", value: "Error", comment: ""),
-//              message: NSLocalizedString("can.not.update.exchange.rate", comment: "Can not update exchange rate"),
-//              time: 1.5
-//            )
-//          }
-//          self.rootViewController.coordinatorDidUpdateEstimateRate(
-//            from: from,
-//            to: to,
-//            amount: amount,
-//            rate: BigInt(0),
-//            slippageRate: BigInt(0)
-//          )
-//        }
-//        if withKyber {
-//          self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
-//        }
-//        completion?(error)
-//      }
-//    }
-//  }
-
   fileprivate func getExpectedExchangeRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: ((Result<(BigInt, BigInt), AnyError>) -> Void)? = nil) {
     guard let provider = self.session.externalProvider else {
       return
@@ -810,59 +572,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
-//  func updateExpectedRateWithKyberIfNeeded(from: TokenObject, to: TokenObject, amount: BigInt, hint: String, showError: Bool) {
-//    if hint.isEmpty || hint == "0x" {
-//      self.updateExpectedRateFromAPIIfNeeded(from: from, to: to, amount: amount, showError: showError)
-//    } else {
-//      DispatchQueue.main.async {
-//        self.updateEstimatedRate(from: from, to: to, amount: amount, hint: hint, showError: showError, withKyber: true)
-//      }
-//    }
-//  }
-
-//  func updateExpectedRateFromAPIIfNeeded(from: TokenObject, to: TokenObject, amount: BigInt, showError: Bool) {
-//    let src = from.contract.lowercased()
-//    let dest = to.contract.lowercased()
-//    let amt = amount.description
-//
-//    DispatchQueue.global(qos: .background).async {
-//      let provider = MoyaProvider<KNTrackerService>(plugins: [MoyaCacheablePlugin()])
-//      provider.request(.getExpectedRate(src: src, dest: dest, amount: amt)) { [weak self] result in
-//        guard let `self` = self else { return }
-//        if case .success(let resp) = result,
-//          let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
-//          (json["error"] as? Bool ?? false) == false,
-//          let rate = json["expectedRate"] as? String,
-//          let rateBigInt = rate.fullBigInt(decimals: 0) {
-//          if let timestamp = json["timestamp"] as? NSNumber, Date().timeIntervalSince1970 - timestamp.doubleValue > 60.0 {
-//            KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_get_expected_rate_from_node_success", customAttributes: nil)
-//            DispatchQueue.main.async {
-//              self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
-//            }
-//            return
-//          }
-//          var estRate = rateBigInt / BigInt(10).power(18 - to.decimals)
-//          // reduce rate amount with platform fee
-//          estRate = estRate * BigInt(10000 - KNAppTracker.getPlatformFee(source: from.addressObj, dest: to.addressObj)) / BigInt(10000)
-//          DispatchQueue.main.async {
-//            self.rootViewController.coordinatorDidUpdateEstimateRate(
-//              from: from,
-//              to: to,
-//              amount: amount,
-//              rate: estRate,
-//              slippageRate: estRate * BigInt(97) / BigInt(100)
-//            )
-//          }
-//        } else {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "kbswap_get_expected_rate_from_node_failure", customAttributes: nil)
-//          DispatchQueue.main.async {
-//            self.updateEstimatedRate(from: from, to: to, amount: amount, showError: showError)
-//          }
-//        }
-//      }
-//    }
-//  }
-
   func getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
@@ -890,9 +599,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
-
+    self.navigationController.displayLoading()
     provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
+      self.navigationController.hideLoading()
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let rateBigInt = BigInt(rate) {
         self.rootViewController.coordinatorDidUpdateExpectedRate(from: from, to: to, amount: srcAmount, rate: rateBigInt)
       } else {
@@ -903,8 +613,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
   func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.navigationController.displayLoading()
     provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
+      self.navigationController.hideLoading()
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
