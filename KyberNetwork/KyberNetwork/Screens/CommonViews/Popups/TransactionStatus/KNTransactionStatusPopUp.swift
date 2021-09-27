@@ -168,8 +168,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
       } else {
-        self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
-        self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+        self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
 
       self.view.layoutSubviews()
