@@ -829,7 +829,11 @@ extension OverviewMainViewController: UITableViewDataSource {
       case .asset:
         cell.imageIcon.image = UIImage(named: "empty_asset_icon")
         cell.titleLabel.text = "Your balance is empty"
-        cell.button1.isHidden = true
+        cell.button1.isHidden = KNGeneralProvider.shared.currentChain != .eth
+        cell.button1.setTitle("Buy ETH", for: .normal)
+        cell.action = {
+            self.navigationController?.openSafari(with: "https://krystal.app/buy-crypto.html")
+        }
         cell.button2.isHidden = true
       case .favourite:
         cell.imageIcon.image = UIImage(named: "empty_fav_token")
