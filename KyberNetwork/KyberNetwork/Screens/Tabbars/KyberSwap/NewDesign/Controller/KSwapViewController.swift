@@ -187,14 +187,15 @@ class KSwapViewController: KNBaseViewController {
     self.rateTimerView.delegate = self
   }
     
-    fileprivate func setupLoadingView() {
-      self.loadingView.lineWidth = 2
-      self.loadingView.lineColor = UIColor(named: "buttonBackgroundColor")!
-      self.loadingView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
-      self.loadingView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
-      self.loadingView.shouldKeepAnimate = true
-      self.loadingView.delegate = self
-    }
+  fileprivate func setupLoadingView() {
+    self.loadingView.lineWidth = 2
+    self.loadingView.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.loadingView.isLoadingIndicator = true
+    self.loadingView.isLabelHidden = true
+    self.loadingView.delegate = self
+  }
 
   fileprivate func startRateTimer() {
     guard !self.viewModel.amountFrom.isEmpty || !self.viewModel.amountTo.isEmpty else {
@@ -361,7 +362,6 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
     self.balanceLabelTapped(sender)
-    self.startRateTimer()
   }
 
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
@@ -454,8 +454,11 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func updateAllRates() {
-    self.exchangeRateLabel.text = "Rate:"
-    self.loadingView.start(beginingValue: 1)
+    DispatchQueue.main.async {
+      self.stopRateTimer()
+      self.exchangeRateLabel.text = "Rate:"
+      self.loadingView.start(beginingValue: 1)
+    }
     let amt = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
     let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, amount: amt, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.kSwapViewController(self, run: event)
@@ -621,6 +624,7 @@ extension KSwapViewController {
   fileprivate func updateExchangeRateField() {
     self.loadingView.end()
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.startRateTimer()
   }
 
   fileprivate func updateAllowance() {
@@ -1061,7 +1065,6 @@ extension KSwapViewController: UITextFieldDelegate {
   }
   
   @objc func keyboardPauseTyping(timer: Timer) {
-    self.startRateTimer()
     self.updateViewAmountDidChange()
   }
 
@@ -1080,6 +1083,9 @@ extension KSwapViewController: SRCountdownTimerDelegate {
   }
 
   @objc func timerDidPause(sender: SRCountdownTimer) {
+      if sender.isEqual(self.loadingView) {
+          return
+      }
     sender.isHidden = true
   }
 
