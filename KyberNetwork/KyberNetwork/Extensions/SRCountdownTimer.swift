@@ -47,7 +47,7 @@ public class SRCountdownTimer: UIView {
     // use minutes and seconds for presentation
     public var useMinutesAndSecondsRepresentation = false
     public var moveClockWise = true
-    public var shouldKeepAnimate = false
+    public var isLoadingIndicator = false
     private var timer: Timer?
     private var beginingValue: Int = 1
     private var totalTime: TimeInterval = 1
@@ -106,16 +106,22 @@ public class SRCountdownTimer: UIView {
 
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-
+        if isLoadingIndicator {
+            self.drawForLoading(rect: rect)
+        } else {
+            self.drawForCountDown(rect: rect)
+        }   
+    }
+    
+    public func drawForCountDown(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         let radius = (rect.width - lineWidth) / 2
-        
         var currentAngle : CGFloat!
         
         if moveClockWise {
-            currentAngle = CGFloat((.pi * 2 * elapsedTime) / totalTime)
-        } else {
             currentAngle = CGFloat(-(.pi * 2 * elapsedTime) / totalTime)
+        } else {
+            currentAngle = CGFloat((.pi * 2 * elapsedTime) / totalTime)
         }
     
         context?.setLineWidth(lineWidth)
@@ -123,24 +129,48 @@ public class SRCountdownTimer: UIView {
         // Main line
         context?.beginPath()
         context?.addArc(
-            center: CGPoint(x: rect.midX, y:rect.midY),
+            center: CGPoint(x: rect.midX, y: rect.midY),
             radius: radius,
             startAngle: currentAngle - .pi / 2,
             endAngle: .pi * 2 - .pi / 2,
-            clockwise: false)
+            clockwise: true)
         context?.setStrokeColor(lineColor.cgColor)
         context?.strokePath()
 
         // Trail line
         context?.beginPath()
         context?.addArc(
-            center: CGPoint(x: rect.midX, y:rect.midY),
+            center: CGPoint(x: rect.midX, y: rect.midY),
             radius: radius,
             startAngle: -.pi / 2,
             endAngle: currentAngle - .pi / 2,
-            clockwise: false)
+            clockwise: true)
         context?.setStrokeColor(trailLineColor.cgColor)
         context?.strokePath()
+    }
+    
+    public func drawForLoading(rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+        let radius = (rect.width - lineWidth) / 2
+        let currentAngle = CGFloat((.pi * 2 * elapsedTime) / totalTime)
+        var startAngle = currentAngle - .pi / 2
+        var endAngle = currentAngle - .pi / 2
+
+        context?.setLineWidth(lineWidth)
+        for index in 1...20 {
+            let alpha = index < 10 ? 1 : min(1.1 -  CGFloat(index-10)/10, 1)
+            endAngle = startAngle - .pi/20
+            context?.beginPath()
+            context?.addArc(
+                center: CGPoint(x: rect.midX, y: rect.midY),
+                radius: radius,
+                startAngle: startAngle,
+                endAngle: endAngle,
+                clockwise: true)
+            context?.setStrokeColor(lineColor.withAlphaComponent(alpha).cgColor)
+            context?.strokePath()
+            startAngle = endAngle
+        }
     }
 
     // MARK: Public methods
@@ -225,7 +255,7 @@ public class SRCountdownTimer: UIView {
             if computedCounterValue != currentCounterValue {
                 currentCounterValue = computedCounterValue
             }
-        } else if self.shouldKeepAnimate {
+        } else if self.isLoadingIndicator {
             start(beginingValue: self.beginingValue)
         } else {
             end()
