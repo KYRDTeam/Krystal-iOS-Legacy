@@ -81,6 +81,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
+  @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
   
   
 //  fileprivate var estRateTimer: Timer?
@@ -657,7 +658,13 @@ extension KSwapViewController {
   }
 
   fileprivate func updateUIMinReceiveAmount() {
-    self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
+    if self.viewModel.isFocusingFromAmount {
+      self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
+      self.minReceivedAmountTitleLabel.text = "Minimum recieved"
+    } else {
+      self.minReceivedAmount.text = self.viewModel.displayMaxSoldAmount
+      self.minReceivedAmountTitleLabel.text = "Maximum sold"
+    }
   }
 }
 
