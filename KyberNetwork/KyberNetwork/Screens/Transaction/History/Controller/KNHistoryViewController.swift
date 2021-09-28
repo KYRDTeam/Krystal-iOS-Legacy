@@ -261,9 +261,11 @@ struct KNHistoryViewModel {
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
     let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
     let matchedAppprove = (tx.type == "Approval") && self.filters.isApprove
+    let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
+    let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedContractInteraction = (tx.type == "") && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction
-    
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw
+
     var tokenMatched = true
     var transactionToken: [String] = []
     if let sym = tx.extraData?.token?.symbol {
@@ -276,7 +278,7 @@ struct KNHistoryViewModel {
       transactionToken.append(sym)
     }
     tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
-    
+
     return matchedType && tokenMatched
   }
 
