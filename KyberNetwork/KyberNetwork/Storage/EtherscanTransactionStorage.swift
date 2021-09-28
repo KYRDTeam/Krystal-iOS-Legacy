@@ -366,20 +366,6 @@ class EtherscanTransactionStorage {
   }
 
   func getEtherscanToken() -> [Token] {
-    guard KNGeneralProvider.shared.currentChain != .avalanche else {
-      return KNSupportedTokenStorage.shared.allTokens
-    }
-    var tokenSet = Set<Token>()
-    let eth = KNGeneralProvider.shared.quoteTokenObject.toToken()
-    tokenSet.insert(eth)
-    self.tokenTransactions.forEach { (transaction) in
-      let token = Token(name: transaction.tokenName, symbol: transaction.tokenSymbol, address: transaction.contractAddress, decimals: Int(transaction.tokenDecimal) ?? 0, logo: transaction.tokenSymbol)
-      tokenSet.insert(token)
-    }
-    return Array(tokenSet).sorted { (left, right) -> Bool in
-      return left.symbol > right.symbol
-    }
+    return KNSupportedTokenStorage.shared.allTokens
   }
-  
-  
 }

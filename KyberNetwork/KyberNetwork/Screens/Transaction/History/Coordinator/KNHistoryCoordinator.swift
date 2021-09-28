@@ -104,49 +104,19 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {
-    guard KNGeneralProvider.shared.currentChain != .avalanche else {
-      if showLoading { self.navigationController.displayLoading() }
-      DispatchQueue.global(qos: .background).async {
-        let dates: [String] = {
-          let dates = EtherscanTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
-          var uniqueDates = [String]()
-          dates.forEach({
-            if !uniqueDates.contains($0) { uniqueDates.append($0) }
-          })
-          return uniqueDates
-        }()
-        let sectionData: [String: [KrystalHistoryTransaction]] = {
-          var data: [String: [KrystalHistoryTransaction]] = [:]
-          EtherscanTransactionStorage.shared.getKrystalTransaction().forEach { tx in
-            var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
-            trans.append(tx)
-            data[self.dateFormatter.string(from: tx.date)] = trans
-          }
-          return data
-        }()
-        
-        DispatchQueue.main.async {
-          if showLoading { self.navigationController.hideLoading() }
-          self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
-        }
-      }
-      return
-    }
-    
     if showLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
       let dates: [String] = {
-        let dates = EtherscanTransactionStorage.shared.getHistoryTransactionModel().map { return self.dateFormatter.string(from: $0.date) }
+        let dates = EtherscanTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
         var uniqueDates = [String]()
         dates.forEach({
           if !uniqueDates.contains($0) { uniqueDates.append($0) }
         })
         return uniqueDates
       }()
-
-      let sectionData: [String: [HistoryTransaction]] = {
-        var data: [String: [HistoryTransaction]] = [:]
-        EtherscanTransactionStorage.shared.getHistoryTransactionModel().forEach { tx in
+      let sectionData: [String: [KrystalHistoryTransaction]] = {
+        var data: [String: [KrystalHistoryTransaction]] = [:]
+        EtherscanTransactionStorage.shared.getKrystalTransaction().forEach { tx in
           var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
           trans.append(tx)
           data[self.dateFormatter.string(from: tx.date)] = trans
@@ -155,7 +125,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       }()
       DispatchQueue.main.async {
         if showLoading { self.navigationController.hideLoading() }
-        self.rootViewController.coordinatorDidUpdateCompletedTransaction(sections: dates, data: sectionData)
+        self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
       }
     }
   }
@@ -222,31 +192,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     self.navigationController.present(controller, animated: true, completion: nil)
     self.transactionStatusVC = controller
   }
-
-//  fileprivate func sendUserTxHashIfNeeded(_ txHash: String) {
-//    guard let accessToken = IEOUserStorage.shared.user?.accessToken else { return }
-//    let provider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
-//    provider.request(.sendTxHash(authToken: accessToken, txHash: txHash)) { result in
-//      switch result {
-//      case .success(let resp):
-//        do {
-//          _ = try resp.filterSuccessfulStatusCodes()
-//          let json = try resp.mapJSON(failsOnEmptyData: false) as? JSONDictionary ?? [:]
-//          let success = json["success"] as? Bool ?? false
-//          let message = json["message"] as? String ?? "Unknown"
-//          if success {
-//            KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_tx_hash_sent_success", customAttributes: nil)
-//          } else {
-//            KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_tx_hash_sent_failure", customAttributes: ["error": message])
-//          }
-//        } catch {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_tx_hash_sent_failure", customAttributes: nil)
-//        }
-//      case .failure:
-//        KNCrashlyticsUtil.logCustomEvent(withName: "txhistory_tx_hash_sent_failure", customAttributes: nil)
-//      }
-//    }
-//  }
 }
 
 extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {

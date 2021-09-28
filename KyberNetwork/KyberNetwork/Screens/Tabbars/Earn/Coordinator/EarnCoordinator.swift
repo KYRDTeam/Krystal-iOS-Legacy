@@ -106,8 +106,6 @@ class EarnCoordinator: NSObject, Coordinator {
           let addresses = result.map { (dict) -> String in
             return dict["address"] as? String ?? ""
           }.map { $0.lowercased() }
-          //Find tokens object with loaded address
-          //TODO: improve with struct data type
           var lendingTokensData: [TokenData] = []
           let lendingTokens = KNSupportedTokenStorage.shared.findTokensWithAddresses(addresses: addresses)
           //Get token decimal to init token data
