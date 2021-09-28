@@ -95,7 +95,7 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       let price = token.getTokenLastPrice(self.currency)
-      return self.currency.symbol() + String(format: "%.2f", price)
+      return self.currency.symbol() + String(format: "%.\(self.currency.decimalNumber())f", price)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -111,7 +111,7 @@ class OverviewMainCellViewModel {
         return String(format: "%.2f", change24) + "%"
       case .lastPrice:
         let price = token.getTokenLastPrice(self.currency)
-        return self.currency.symbol() + String(format: "%.2f", price)
+        return self.currency.symbol() + String(format: "%.\(self.currency.decimalNumber())f", price)
       }
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {

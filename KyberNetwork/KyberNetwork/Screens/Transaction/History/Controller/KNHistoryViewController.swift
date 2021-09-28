@@ -255,7 +255,7 @@ struct KNHistoryViewModel {
     }
     return isTokenIncluded
   }
-  
+
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
     let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
