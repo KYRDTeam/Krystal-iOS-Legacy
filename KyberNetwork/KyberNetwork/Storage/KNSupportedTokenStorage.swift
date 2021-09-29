@@ -20,6 +20,14 @@ class KNSupportedTokenStorage {
   var allFullToken: [Token] {
     return self.supportedToken + self.customTokens
   }
+  /// Tokens used for manage screen, only deactive listed tokens and all custom tokens.
+  var manageToken: [Token] {
+    let disableListedTokens = self.supportedToken.filter { token in
+        // Only get deactive tokens
+        return !self.getTokenActiveStatus(token)
+    }
+    return disableListedTokens.sorted(by: { $0.getBalanceBigInt() > $1.getBalanceBigInt()}) + self.getFullCustomToken().sorted(by: { $0.getBalanceBigInt() > $1.getBalanceBigInt()})
+  }
   
   static let shared = KNSupportedTokenStorage()
 
@@ -224,6 +232,33 @@ class KNSupportedTokenStorage {
     }
   }
   
+  func changeAllTokensActiveStatus(isActive: Bool) {
+    self.disableTokens.removeAll()
+    if !isActive {
+      self.disableTokens.append(contentsOf: manageToken)
+    }
+    Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+  }
+  
+  func activeStatus() -> Bool {
+    if disableTokens.isEmpty {
+      // all tokens are active
+      return true
+    }
+    
+    if manageToken.count == disableTokens.count {
+      // all tokens are deactive
+      return false
+    }
+    
+    if manageToken.count / 2 > disableTokens.count {
+      // more than half of manage token are active
+      return true
+    }
+    // more than half of manage token are deactive
+    return false
+  }
+  
   func deleteCustomToken(_ token: Token) {
     guard !self.deletedTokens.contains(token) else {
       return
@@ -385,3 +420,4 @@ class KNSupportedTokenStorage {
   }
   
 }
+
