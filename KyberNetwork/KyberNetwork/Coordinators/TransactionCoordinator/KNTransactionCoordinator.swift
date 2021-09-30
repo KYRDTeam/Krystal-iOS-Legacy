@@ -120,7 +120,9 @@ extension KNTransactionCoordinator {
   }
 
   func loadEtherscanTransactions() {
-    self.loadKrystalHistory()
+    DispatchQueue.global(qos: .background).async {
+      self.loadKrystalHistory()
+    }
   }
 
   func fetchListERC20TokenTransactions(

@@ -24,7 +24,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   }
   
   var fromIconSymbol: String {
-    if self.historyItem.type == "Swap" || self.historyItem.type == "Supply" || self.historyItem.type == "Withdraw" {
+    if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.sendToken?.symbol ?? ""
     } else if historyItem.type == "Received" {
       return ""
@@ -38,7 +38,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   }
   
   var toIconSymbol: String {
-    if self.historyItem.type == "Swap" || self.historyItem.type == "Supply" || self.historyItem.type == "Withdraw" {
+    if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.receiveToken?.symbol ?? ""
     } else if historyItem.type == "Received" {
       return ""
@@ -56,7 +56,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   }
   
   var displayedAmountString: String {
-    if self.historyItem.type == "Swap" || self.historyItem.type == "Supply" || self.historyItem.type == "Withdraw" {
+    if self.historyItem.isSwapTokenType {
       if self.isError {
         return "--/--"
       }
@@ -85,7 +85,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   }
   
   var transactionDetailsString: String {
-    if self.historyItem.type == "Swap" || self.historyItem.type == "Supply" || self.historyItem.type == "Withdraw" {
+    if self.historyItem.isSwapTokenType {
       if self.isError {
         return ""
       }
@@ -134,7 +134,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   }
   
   var transactionTypeImage: UIImage {
-    if self.historyItem.type == "Swap" || self.historyItem.type == "Supply" || self.historyItem.type == "Withdraw" {
+    if self.historyItem.isSwapTokenType {
       return UIImage()
     } else if historyItem.type == "Received" {
       return UIImage(named: "history_receive_icon")!
