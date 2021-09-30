@@ -167,9 +167,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if self.transaction.type == .withdraw {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
-      } else {
-        self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
+      } else if self.transaction.type == .swap {
+        self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+      } else {
+        self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
 
       self.view.layoutSubviews()
