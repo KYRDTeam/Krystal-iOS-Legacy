@@ -50,7 +50,9 @@ class KSwapViewModel {
       let dict = self.swapRates.3.first { (element) -> Bool in
         return element.platform == self.currentFlatform
       }
-      self.estimateGasLimit = BigInt(dict?.estimatedGas ?? 0)
+      if self.estimateGasLimit == KNGasConfiguration.exchangeTokensGasLimitDefault {
+        self.estimateGasLimit = BigInt(dict?.estimatedGas ?? 0)
+      }
     }
   }
   var remainApprovedAmount: (TokenObject, BigInt)?
@@ -699,6 +701,7 @@ class KSwapViewModel {
   }
 
   func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
+    //TODO: override gas limit 
     guard
       let value = BigInt(object.value.drop0x, radix: 16),
       let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),

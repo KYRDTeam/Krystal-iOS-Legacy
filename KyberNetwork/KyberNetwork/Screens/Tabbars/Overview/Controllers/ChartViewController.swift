@@ -83,7 +83,6 @@ class ChartViewModel {
   
   var diplayBalance: String {
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
-    
     return balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + " \(self.token.symbol.uppercased())"
   }
   

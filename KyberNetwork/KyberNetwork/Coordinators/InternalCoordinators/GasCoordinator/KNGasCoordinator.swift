@@ -39,6 +39,7 @@ class KNGasCoordinator {
   }
 
   var maxKNGas: BigInt = KNGasConfiguration.gasPriceMax
+  var basePrice: String = ""
 
   fileprivate var knGasPriceFetchTimer: Timer?
   fileprivate var isLoadingGasPrice: Bool = false
@@ -156,6 +157,7 @@ class KNGasCoordinator {
     let stringFast: String = data["fast"] as? String ?? ""
     let updateFastKNGas = stringFast.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? self.fastKNGas
     self.fastKNGas = min(updateFastKNGas, self.maxKNGas)
+    self.basePrice = dataJSON["basePrice"] as? String ?? ""
     KNNotificationUtil.postNotification(for: kGasPriceDidUpdateNotificationKey)
     self.lastGasPriceLoadedSuccessTimeStamp = Date().timeIntervalSince1970
     self.saveGasValues()

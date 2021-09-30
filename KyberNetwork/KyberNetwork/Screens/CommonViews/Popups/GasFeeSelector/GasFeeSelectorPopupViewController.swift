@@ -61,6 +61,12 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var isSwapOption: Bool = true
   fileprivate(set) var isUseGasToken: Bool
   fileprivate(set) var isContainSippageSectionOption: Bool
+  fileprivate(set) var isAdvancedMode: Bool = false
+
+  var advancedGasLimit: String = ""
+  var advancedMaxPriorityFee: String = ""
+  var advancedMaxFee: String = ""
+  var advancedNonce: String = ""
 
   init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false, isContainSlippageSection: Bool = true) {
     self.isSwapOption = isSwapOption
@@ -218,6 +224,15 @@ class GasFeeSelectorPopupViewModel {
       return BigInt(0)
     }
   }
+  
+  var selectedGasPriceValue: BigInt {
+    return self.valueForSelectedType(type: self.selectedType)
+  }
+  
+  var displayMaxPriorityFee: String {
+    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    return ""
+  }
 }
 
 enum GasFeeSelectorPopupViewEvent {
@@ -266,15 +281,19 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customRateContainerView: UIView!
 
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
-
-  @IBOutlet weak var useChiTitleLabel: UILabel!
-  @IBOutlet weak var useChiSwitch: UISwitch!
-  @IBOutlet weak var useChiDescription: UILabel!
   @IBOutlet weak var sendSwapDivideLineView: UIView!
   @IBOutlet weak var slippageRateSectionHeighContraint: NSLayoutConstraint!
   @IBOutlet weak var slippageSectionContainerView: UIView!
-  @IBOutlet weak var useChiContainerView: UIView!
+  @IBOutlet weak var segmentedControl: SegmentedControl!
+  @IBOutlet weak var advancedModeContainerView: UIView!
+  @IBOutlet weak var popupContainerHeightContraint: NSLayoutConstraint!
   
+  @IBOutlet weak var advancedGasLimitField: UITextField!
+  @IBOutlet weak var advancedPriorityFeeField: UITextField!
+  @IBOutlet weak var advancedMaxFeeField: UITextField!
+  @IBOutlet weak var advancedNonceField: UITextField!
+  @IBOutlet weak var equivalentPriorityETHFeeLabel: UILabel!
+  @IBOutlet weak var equivalentMaxETHFeeLabel: UILabel!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -299,7 +318,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
-    self.useChiSwitch.isOn = self.viewModel.isUseGasToken
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
@@ -310,7 +328,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.slippageRateSectionHeighContraint.constant = 0
       self.slippageSectionContainerView.isHidden = true
     }
-    self.useChiContainerView.isHidden = true
+    self.setupSegmentedControl()
+    segmentedControl.highlightSelectedSegment()
+    self.updateUIForMode(true)
+    self.advancedGasLimitField.text = self.viewModel.gasLimit.description
   }
 
   func updateMinRateCustomErrorShown(_ isShown: Bool) {
@@ -350,6 +371,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.updateMinRateCustomErrorShown(!self.isMinRateValid)
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
+  }
+
+  fileprivate func setupSegmentedControl() {
+    segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
   }
 
   fileprivate func updateGasPriceUIs() {
@@ -392,6 +417,21 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
+  }
+
+  fileprivate func updateUIForMode(_ isInit: Bool = false) {
+    self.advancedModeContainerView.isHidden = !self.viewModel.isAdvancedMode
+    if !isInit {
+      UIView.animate(withDuration: 0.2) {
+        if self.viewModel.isAdvancedMode {
+          self.contentViewTopContraint.constant -= 230
+          self.popupContainerHeightContraint.constant += 230
+        } else {
+          self.contentViewTopContraint.constant += 230
+          self.popupContainerHeightContraint.constant -= 230
+        }
+      }
+    }
   }
 
   @IBAction func gasFeeButtonTapped(_ sender: UIButton) {
@@ -438,16 +478,30 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   func coordinatorDidUpdateUseGasTokenState(_ status: Bool) {
-    if self.useChiSwitch.isOn != status {
-      self.useChiSwitch.isOn = status
-    }
+    //TODO: remove all gas token logic
   }
 
-  @IBAction func switchChangedValue(_ sender: UISwitch) {
-    self.dismiss(animated: true) {
-      self.delegate?.gasFeeSelectorPopupViewController(self, run: .useChiStatusChanged(status: sender.isOn))
+  @IBAction func segmentedControlDidChange(_ sender: UISegmentedControl) {
+    segmentedControl.underlinePosition()
+    self.viewModel.isAdvancedMode = sender.selectedSegmentIndex == 1
+    self.updateUIForMode()
+  }
+  
+  @IBAction func gasLimitChgAmountButtonTapped(_ sender: UIButton) {
+    let isIncrease = sender.tag == 1
+    var currentGasLimit = Int(self.advancedGasLimitField.text ?? "") ?? 0
+    if isIncrease {
+      currentGasLimit += 1000
+      self.viewModel.advancedGasLimit = String(currentGasLimit)
+    } else {
+      currentGasLimit -= 1000
+    }
+    if currentGasLimit > 0 {
+      self.viewModel.advancedGasLimit = String(currentGasLimit)
+      self.advancedGasLimitField.text = String(currentGasLimit)
     }
   }
+  
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
@@ -467,15 +521,29 @@ extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
 extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    let number = text.replacingOccurrences(of: ",", with: ".")
-    let value: Double? = number.isEmpty ? 0 : Double(number)
-    let maxMinRatePercent: Double = 100.0
-    if let val = value, val >= 0, val <= maxMinRatePercent {
-      textField.text = text
-      self.viewModel.updateMinRateType(.custom(value: val))
-      self.updateMinRateUIs()
-      self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+    if textField == self.advancedGasLimitField {
+      self.viewModel.advancedGasLimit = text
+      return true
+    } else if textField == self.advancedPriorityFeeField {
+      self.viewModel.advancedMaxPriorityFee = text
+      return true
+    } else if textField == self.advancedMaxFeeField {
+      self.viewModel.advancedMaxFee = text
+      return true
+    } else if textField == self.advancedNonceField {
+      self.viewModel.advancedNonce = text
+      return true
+    } else {
+      let number = text.replacingOccurrences(of: ",", with: ".")
+      let value: Double? = number.isEmpty ? 0 : Double(number)
+      let maxMinRatePercent: Double = 100.0
+      if let val = value, val >= 0, val <= maxMinRatePercent {
+        textField.text = text
+        self.viewModel.updateMinRateType(.custom(value: val))
+        self.updateMinRateUIs()
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      }
+      return false
     }
-    return false
   }
 }
