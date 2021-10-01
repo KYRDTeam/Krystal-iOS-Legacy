@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import SwipeCellKit
 
 enum OverviewMainViewEvent {
   case send
@@ -261,7 +262,7 @@ class OverviewMainViewModel {
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
-  
+  var isHidingSmallAssetsToken = false
   init(session: KNSession) {
     self.session = session
   }
@@ -304,9 +305,18 @@ class OverviewMainViewModel {
       self.displayNFTHeader = []
       self.displayNFTDataSource = [:]
     case .asset(let mode):
-      let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
+      var assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
       }
+        
+      if self.isHidingSmallAssetsToken {
+        assetTokens = assetTokens.filter({ token in
+          let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
+          let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
+          return valueBigInt > BigInt(0)
+        })
+      }
+        
       self.displayHeader = []
       self.displayTotalValues = [:]
       var total = BigInt(0)
@@ -348,7 +358,7 @@ class OverviewMainViewModel {
       self.displayNFTHeader = []
       self.displayNFTDataSource = [:]
     case .favourite(let mode):
-      let marketToken = KNSupportedTokenStorage.shared.allTokens.sorted { (left, right) -> Bool in
+      let marketToken = KNSupportedTokenStorage.shared.allActiveTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
         case .name(des: let des):
           return des ? left.symbol > right.symbol : left.symbol < right.symbol
@@ -427,10 +437,32 @@ class OverviewMainViewModel {
     guard !self.displayHeader.isEmpty else {
       return self.displayDataSource[""] ?? []
     }
-    
+
     let key = self.displayHeader[section]
     return self.displayDataSource[key] ?? []
   }
+  
+  func numberOfRowsInSection(section: Int) -> Int {
+    guard !self.isEmpty() else {
+      return 1
+    }
+
+    switch self.currentMode {
+      case .nft:
+        if self.hiddenSections.contains(section) {
+            return 0
+        }
+        let key = self.displayNFTHeader[section].collectibleName
+        return self.displayNFTDataSource[key]?.count ?? 0
+      case .asset:
+        // + 1 row for hide/show small asset cell
+        return self.getViewModelsForSection(section).count + 1
+      default:
+        return self.getViewModelsForSection(section).count
+    }
+
+  }
+  
   
   var displayPageTotalValue: String {
     guard self.currentMode != .market(rightMode: .ch24), self.currentMode != .favourite(rightMode: .ch24), self.currentMode != .nft else {
@@ -803,82 +835,95 @@ extension OverviewMainViewController: UITableViewDataSource {
       return self.viewModel.numberOfSections
     }
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard !self.viewModel.isEmpty() else {
-      return 1
-    }
-    if self.viewModel.currentMode == .nft {
-      if self.viewModel.hiddenSections.contains(section) {
-          return 0
+    return self.viewModel.numberOfRowsInSection(section: section)
+  }
+
+  func emptyCell(indexPath: IndexPath) -> OverviewEmptyTableViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: OverviewEmptyTableViewCell.kCellID,
+      for: indexPath
+    ) as! OverviewEmptyTableViewCell
+    switch self.viewModel.currentMode {
+    case .asset:
+      cell.imageIcon.image = UIImage(named: "empty_asset_icon")
+      cell.titleLabel.text = "Your balance is empty"
+      cell.button1.isHidden = KNGeneralProvider.shared.currentChain != .eth
+      cell.button1.setTitle("+ Buy ETH", for: .normal)
+      cell.action = {
+          self.navigationController?.openSafari(with: "https://krystal.app/buy-crypto.html")
       }
-      let key = self.viewModel.displayNFTHeader[section].collectibleName
-      return self.viewModel.displayNFTDataSource[key]?.count ?? 0
-    } else {
-      return self.viewModel.getViewModelsForSection(section).count
+      cell.button2.isHidden = true
+    case .favourite:
+      cell.imageIcon.image = UIImage(named: "empty_fav_token")
+      cell.titleLabel.text = "No Favourite Token yet"
+      cell.button1.isHidden = true
+      cell.button2.isHidden = true
+    case .supply:
+      cell.imageIcon.image = UIImage(named: "deposit_empty_icon")
+      cell.titleLabel.text = "You've not supplied any token to earn interest"
+      cell.button1.isHidden = false
+      cell.button2.isHidden = false
+      cell.action = {
+        self.delegate?.overviewMainViewController(self, run: .depositMore)
+      }
+    case .market:
+      cell.imageIcon.image = UIImage(named: "empty_token_token")
+      cell.titleLabel.text = "Your token list is empty"
+      cell.button1.isHidden = true
+      cell.button2.isHidden = true
+    case .nft:
+      cell.imageIcon.image = UIImage(named: "empty_nft")
+      cell.titleLabel.text = "You have not any NFT"
+      cell.button1.isHidden = false
+      cell.button2.isHidden = true
+      cell.button1.setTitle("Add NFT", for: .normal)
+      cell.action = {
+        self.delegate?.overviewMainViewController(self, run: .addNFT)
+      }
     }
+    return cell
+  }
+
+  func tokenInfoCell(indexPath: IndexPath) -> OverviewMainViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: OverviewMainViewCell.kCellID,
+      for: indexPath
+    ) as! OverviewMainViewCell
+
+    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
+    cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+    cell.updateCell(cellModel)
+    cell.action = {
+      self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
+    }
+    cell.delegate = self
+    return cell
+  }
+  
+  func showOrHideSmallValueTokenCell() -> UITableViewCell {
+    let cell = UITableViewCell(style: .default, reuseIdentifier: "showOrHideSmallValueTokenCell")
+    cell.backgroundColor = UIColor(named: "mainViewBgColor")
+    cell.textLabel?.textColor = UIColor(named: "buttonBackgroundColor")
+    cell.textLabel?.text = self.viewModel.isHidingSmallAssetsToken ? "Show all Tokens".toBeLocalised() : "Hide small asset".toBeLocalised()
+    cell.textLabel?.textAlignment = .center
+    cell.textLabel?.font = UIFont.Kyber.regular(with: 14)
+    cell.selectionStyle = .none
+    return cell
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard !self.viewModel.isEmpty() else {
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewEmptyTableViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewEmptyTableViewCell
-      switch self.viewModel.currentMode {
-      case .asset:
-        cell.imageIcon.image = UIImage(named: "empty_asset_icon")
-        cell.titleLabel.text = "Your balance is empty"
-        cell.button1.isHidden = KNGeneralProvider.shared.currentChain != .eth
-        cell.button1.setTitle("+ Buy ETH", for: .normal)
-        cell.action = {
-            self.navigationController?.openSafari(with: "https://krystal.app/buy-crypto.html")
-        }
-        cell.button2.isHidden = true
-      case .favourite:
-        cell.imageIcon.image = UIImage(named: "empty_fav_token")
-        cell.titleLabel.text = "No Favourite Token yet"
-        cell.button1.isHidden = true
-        cell.button2.isHidden = true
-      case .supply:
-        cell.imageIcon.image = UIImage(named: "deposit_empty_icon")
-        cell.titleLabel.text = "You've not supplied any token to earn interest"
-        cell.button1.isHidden = false
-        cell.button2.isHidden = false
-        cell.action = {
-          self.delegate?.overviewMainViewController(self, run: .depositMore)
-        }
-      case .market:
-        cell.imageIcon.image = UIImage(named: "empty_token_token")
-        cell.titleLabel.text = "Your token list is empty"
-        cell.button1.isHidden = true
-        cell.button2.isHidden = true
-      case .nft:
-        cell.imageIcon.image = UIImage(named: "empty_nft")
-        cell.titleLabel.text = "You have not any NFT"
-        cell.button1.isHidden = false
-        cell.button2.isHidden = true
-        cell.button1.setTitle("Add NFT", for: .normal)
-        cell.action = {
-          self.delegate?.overviewMainViewController(self, run: .addNFT)
-        }
-      }
-      return cell
+      return emptyCell(indexPath: indexPath)
     }
+    
     switch self.viewModel.currentMode {
-    case .asset, .market, .favourite:
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: OverviewMainViewCell.kCellID,
-        for: indexPath
-      ) as! OverviewMainViewCell
-
-      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-      cell.updateCell(cellModel)
-      cell.action = {
-        self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
-      }
-      return cell
+    case .asset:
+        let isLastCell = indexPath.row == self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
+        return isLastCell ? showOrHideSmallValueTokenCell() : tokenInfoCell(indexPath: indexPath)
+    case .market, .favourite:
+        return tokenInfoCell(indexPath: indexPath)
     case .supply:
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewDepositTableViewCell.kCellID,
@@ -918,14 +963,10 @@ extension OverviewMainViewController: UITableViewDataSource {
     if self.viewModel.currentMode == .nft {
       
       let sectionItem = self.viewModel.displayNFTHeader[section]
-      
-      
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
       view.backgroundColor = .clear
-      
       guard sectionItem.collectibleSymbol != "ADDMORE" else {
         let button = UIButton(frame: view.frame.inset(by: UIEdgeInsets(top: 0, left: 37, bottom: 3, right: 37)))
-        
         button.setTitle("Add NFT", for: .normal)
         button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
         button.setTitleColor(UIColor(named: "normalTextColor")!, for: .normal)
@@ -934,7 +975,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         view.addSubview(button)
         return view
       }
-      
+
       let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
       icon.center.y = view.center.y
       if sectionItem.collectibleSymbol == "FAV" {
@@ -942,26 +983,26 @@ extension OverviewMainViewController: UITableViewDataSource {
       } else {
         icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
       }
-      
+
       view.addSubview(icon)
-      
+
       let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
       titleLabel.center.y = view.center.y
       titleLabel.text = sectionItem.collectibleName
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
-      
+
       let arrowIcon = UIImageView(frame: CGRect(x: tableView.frame.size.width - 27 - 24, y: 0, width: 24, height: 24))
       arrowIcon.image = UIImage(named: "arrow_down_template")
       arrowIcon.tintColor = UIColor(named: "textWhiteColor")
       view.addSubview(arrowIcon)
-      
+
       let button = UIButton(frame: view.frame)
       button.tag = section
       button.addTarget(self, action: #selector(sectionButtonTapped), for: .touchUpInside)
       view.addSubview(button)
-      
+
       return view
     } else {
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
@@ -972,7 +1013,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
-      
+
       let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
       valueLabel.text = self.viewModel.getTotalValueForSection(section)
       valueLabel.font = UIFont.Kyber.regular(with: 18)
@@ -999,6 +1040,12 @@ extension OverviewMainViewController: UITableViewDelegate {
       return
     }
     guard self.viewModel.currentMode != .nft else {
+      return
+    }
+    
+    guard indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1 else {
+      self.viewModel.isHidingSmallAssetsToken = !self.viewModel.isHidingSmallAssetsToken
+      self.reloadUI()
       return
     }
     let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
@@ -1038,5 +1085,56 @@ extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
     self.totalBalanceContainerView.alpha = alpha
+  }
+}
+
+extension OverviewMainViewController: SwipeTableViewCellDelegate {
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard orientation == .right else {
+      return nil
+    }
+
+    switch self.viewModel.currentMode {
+    case .asset:
+      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
+      guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
+      // hide action
+      let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
+        KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
+        self.reloadUI()
+      }
+      hideAction.title = "Hide".toBeLocalised().uppercased()
+      hideAction.textColor = UIColor(named: "normalTextColor")
+      hideAction.font = UIFont.Kyber.medium(with: 12)
+      let bgImg = UIImage(named: "history_cell_edit_bg")!
+      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
+      hideAction.backgroundColor = UIColor(patternImage: resized)
+        
+      // soft delete action for custom token
+      let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
+        KNSupportedTokenStorage.shared.deleteCustomToken(token)
+        self.reloadUI()
+      }
+      deleteAction.title = "Delete".toBeLocalised().uppercased()
+      deleteAction.textColor = UIColor(named: "normalTextColor")
+      deleteAction.font = UIFont.Kyber.medium(with: 12)
+      deleteAction.backgroundColor = UIColor(patternImage: resized)
+      
+      if KNSupportedTokenStorage.shared.getActiveCustomToken().contains(token) {
+        return [hideAction, deleteAction]
+      }
+      return [hideAction]
+    default:
+      return nil
+    }
+  }
+
+  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    var options = SwipeOptions()
+    options.expansionStyle = .selection
+    options.minimumButtonWidth = 90
+    options.maximumButtonWidth = 90
+
+    return options
   }
 }
