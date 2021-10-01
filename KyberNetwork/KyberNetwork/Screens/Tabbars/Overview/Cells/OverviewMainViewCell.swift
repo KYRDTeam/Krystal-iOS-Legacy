@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import SwipeCellKit
 
 enum OverviewMainCellMode {
   case market(token: Token, rightMode: RightMode)
@@ -224,10 +225,10 @@ class OverviewMainCellViewModel {
   }
 }
 
-class OverviewMainViewCell: UITableViewCell {
+class OverviewMainViewCell: SwipeTableViewCell {
   
   static let kCellID: String = "OverviewMainViewCell"
-  static let kCellHeight: CGFloat = 70
+  static let kCellHeight: CGFloat = 60
   
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenLabel: UILabel!
