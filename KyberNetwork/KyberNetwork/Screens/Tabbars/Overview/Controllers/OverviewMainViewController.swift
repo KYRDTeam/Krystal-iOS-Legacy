@@ -313,7 +313,8 @@ class OverviewMainViewModel {
         assetTokens = assetTokens.filter({ token in
           let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
           let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-          return valueBigInt > BigInt(0)
+          let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+          return valueString != "0"
         })
       }
         
@@ -906,7 +907,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     let cell = UITableViewCell(style: .default, reuseIdentifier: "showOrHideSmallValueTokenCell")
     cell.backgroundColor = UIColor(named: "mainViewBgColor")
     cell.textLabel?.textColor = UIColor(named: "buttonBackgroundColor")
-    cell.textLabel?.text = self.viewModel.isHidingSmallAssetsToken ? "Show all Tokens".toBeLocalised() : "Hide small asset".toBeLocalised()
+    cell.textLabel?.text = self.viewModel.isHidingSmallAssetsToken ? "Show all assets".toBeLocalised() : "Hide small assets".toBeLocalised()
     cell.textLabel?.textAlignment = .center
     cell.textLabel?.font = UIFont.Kyber.regular(with: 14)
     cell.selectionStyle = .none
