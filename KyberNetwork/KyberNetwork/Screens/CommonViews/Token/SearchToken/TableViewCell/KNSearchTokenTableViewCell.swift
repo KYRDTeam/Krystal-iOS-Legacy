@@ -14,6 +14,8 @@ class KNSearchTokenTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenSymbolLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var addButton: UIButton!
+  @IBOutlet weak var tickIcon: UIImageView!
+  
   weak var delegate: KNSearchTokenTableViewCellDelegate?
   var token: TokenObject?
 
@@ -32,6 +34,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
         self.iconImageView.setSymbolImage(symbol: token.symbol, size: iconImageView.frame.size)
     }
     self.tokenSymbolLabel.text = "\(token.symbol.prefix(8))"
+    self.tickIcon.isHidden = token.volumn < Constants.hightVolAmount || token.isCustom
     let balText: String = {
       let value = token.getBalanceBigInt().string(
         decimals: token.decimals,

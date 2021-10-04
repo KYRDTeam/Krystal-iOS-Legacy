@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -40,20 +40,20 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bs2-7M-3Jc">
-                        <rect key="frame" x="45" y="11.5" width="34.5" height="21"/>
+                        <rect key="frame" x="45" y="11.5" width="31.5" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="3,123.31" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h28-7P-YHQ">
-                        <rect key="frame" x="233.5" y="11.5" width="70.5" height="21"/>
+                        <rect key="frame" x="242.5" y="11.5" width="61.5" height="21"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xx4-mr-5b3">
-                        <rect key="frame" x="261" y="10" width="43" height="24"/>
+                        <rect key="frame" x="261" y="9.5" width="43" height="25"/>
                         <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                         <inset key="contentEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
                         <state key="normal" title="Add">
@@ -63,6 +63,13 @@
                             <action selector="tapAddButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="2Mn-9B-oa0"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="A12-ab-I0E">
+                        <rect key="frame" x="78.5" y="11.5" width="17" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="SUa-yg-cjv"/>
+                            <constraint firstAttribute="width" constant="17" id="kXU-Sk-agu"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
@@ -73,11 +80,13 @@
                     <constraint firstAttribute="trailing" secondItem="NfA-dG-PfF" secondAttribute="trailing" id="Dfl-OU-DJj"/>
                     <constraint firstAttribute="trailing" secondItem="h28-7P-YHQ" secondAttribute="trailing" constant="16" id="GF2-Ed-9PS"/>
                     <constraint firstItem="bs2-7M-3Jc" firstAttribute="leading" secondItem="k4w-jK-t1o" secondAttribute="trailing" constant="12" id="IuO-XF-C7v"/>
+                    <constraint firstItem="h28-7P-YHQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="A12-ab-I0E" secondAttribute="trailing" constant="5" id="R3q-9l-FCd"/>
                     <constraint firstItem="bs2-7M-3Jc" firstAttribute="centerY" secondItem="k4w-jK-t1o" secondAttribute="centerY" id="Ry0-x3-lcn"/>
                     <constraint firstItem="k4w-jK-t1o" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="SJ4-NZ-OoN"/>
                     <constraint firstItem="NfA-dG-PfF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Zav-sK-nWq"/>
+                    <constraint firstItem="A12-ab-I0E" firstAttribute="top" secondItem="bs2-7M-3Jc" secondAttribute="top" id="nDc-Aa-g1c"/>
                     <constraint firstAttribute="bottom" secondItem="NfA-dG-PfF" secondAttribute="bottom" id="sR0-3h-SO5"/>
-                    <constraint firstItem="h28-7P-YHQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bs2-7M-3Jc" secondAttribute="trailing" constant="5" id="vCs-MH-dOn"/>
+                    <constraint firstItem="A12-ab-I0E" firstAttribute="leading" secondItem="bs2-7M-3Jc" secondAttribute="trailing" constant="2" id="yub-Mt-TwY"/>
                     <constraint firstAttribute="trailing" secondItem="xx4-mr-5b3" secondAttribute="trailing" constant="16" id="zLR-bE-5Gy"/>
                 </constraints>
             </tableViewCellContentView>
@@ -87,15 +96,17 @@
                 <outlet property="addButton" destination="xx4-mr-5b3" id="Yju-64-7mr"/>
                 <outlet property="balanceLabel" destination="h28-7P-YHQ" id="dDM-x0-kEZ"/>
                 <outlet property="iconImageView" destination="k4w-jK-t1o" id="48g-Lp-86H"/>
+                <outlet property="tickIcon" destination="A12-ab-I0E" id="PUb-1F-fgL"/>
                 <outlet property="tokenSymbolLabel" destination="bs2-7M-3Jc" id="42G-L3-ihG"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="116.94152923538232"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="blueTick_icon" width="24" height="24"/>
         <image name="eth" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">
-            <color red="0.11400000005960464" green="0.91399997472763062" blue="0.71399998664855957" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
