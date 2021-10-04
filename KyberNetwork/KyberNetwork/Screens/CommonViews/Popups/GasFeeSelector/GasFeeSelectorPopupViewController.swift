@@ -16,6 +16,12 @@ enum KNSelectedGasPriceType: Int {
   case custom
 }
 
+enum AdvancedInputError {
+  case none
+  case high
+  case low
+}
+
 extension KNSelectedGasPriceType {
   func displayString() -> String {
     switch self {
@@ -63,10 +69,10 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var isContainSippageSectionOption: Bool
   fileprivate(set) var isAdvancedMode: Bool = false
 
-  var advancedGasLimit: String = ""
-  var advancedMaxPriorityFee: String = ""
-  var advancedMaxFee: String = ""
-  var advancedNonce: String = ""
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
+  var advancedNonce: String?
 
   init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false, isContainSlippageSection: Bool = true) {
     self.isSwapOption = isSwapOption
@@ -224,14 +230,117 @@ class GasFeeSelectorPopupViewModel {
       return BigInt(0)
     }
   }
-  
+
   var selectedGasPriceValue: BigInt {
     return self.valueForSelectedType(type: self.selectedType)
   }
-  
+
+  var maxPriorityFeeBigInt: BigInt {
+    if let unwrap = self.advancedMaxPriorityFee {
+      let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+      return value
+    } else {
+      let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+      let priorityFeeBigInt = self.selectedGasPriceValue - baseFeeBigInt
+      return priorityFeeBigInt
+    }
+  }
+
   var displayMaxPriorityFee: String {
-    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-    return ""
+    if let unwrap =  self.advancedMaxPriorityFee {
+      return unwrap
+    } else {
+      return self.maxPriorityFeeBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+    }
+  }
+
+  var advancedGasLimitBigInt: BigInt {
+    if let unwrap = self.advancedGasLimit {
+      return BigInt(unwrap) ?? BigInt(0)
+    } else {
+      return self.gasLimit
+    }
+  }
+
+  var displayGasLimit: String {
+    if let unwrap =  self.advancedGasLimit {
+      return unwrap
+    } else {
+      return self.advancedGasLimitBigInt.description
+    }
+  }
+
+  var displayEquivalentPriorityETHFee: String {
+    let value = self.advancedGasLimitBigInt * self.maxPriorityFeeBigInt
+    return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
+  }
+
+  var maxGasFeeBigInt: BigInt {
+    if let unwrap = self.advancedMaxFee {
+      return unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    } else {
+      return self.selectedGasPriceValue
+    }
+  }
+
+  var displayMaxGasFee: String {
+    if  let unwrap = self.advancedMaxFee {
+      return unwrap
+    } else {
+      return self.maxGasFeeBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
+    }
+  }
+  
+  var displayEquivalentMaxETHFee: String {
+    let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
+    return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
+  }
+  
+  var maxPriorityErrorStatus: AdvancedInputError {
+    guard let unwrap = self.advancedMaxPriorityFee, !unwrap.isEmpty else {
+      return .none
+    }
+    let baseFeeDouble = KNGasCoordinator.shared.basePrice.doubleValue
+    let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
+    let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
+    let maxPriorityDouble = self.advancedMaxPriorityFee?.doubleValue ?? 0
+    if maxPriorityDouble < lowerLimit {
+      return .low
+    } else if maxPriorityDouble > (1.5 * upperLimit) {
+      return .high
+    } else {
+      return .none
+    }
+  }
+
+  var maxFeeErrorStatus: AdvancedInputError {
+    guard let unwrap = self.advancedMaxFee, !unwrap.isEmpty else {
+      return .none
+    }
+    let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - 5.0
+    let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue * 1.5
+    let maxFeeDouble = self.advancedMaxFee?.doubleValue ?? 0
+    if maxFeeDouble < lowerLimit {
+      return .low
+    } else if maxFeeDouble > upperLimit {
+      return .high
+    } else {
+      return .none
+    }
+  }
+
+  var hasChanged: Bool {
+    return (self.advancedGasLimit != nil) || (self.advancedMaxPriorityFee != nil) || (self.advancedMaxFee != nil)
+  }
+
+  var isAllAdvancedSettingsValid: Bool {
+    if self.maxFeeErrorStatus == .none,
+       self.maxPriorityErrorStatus == .none,
+       self.hasChanged {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
@@ -241,6 +350,7 @@ enum GasFeeSelectorPopupViewEvent {
   case minRatePercentageChanged(percent: CGFloat)
   case helpPressed
   case useChiStatusChanged(status: Bool)
+  case updateAdvancedSetting(gasLimit: String, maxPriorityFee: String, maxFee: String)
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -294,6 +404,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var advancedNonceField: UITextField!
   @IBOutlet weak var equivalentPriorityETHFeeLabel: UILabel!
   @IBOutlet weak var equivalentMaxETHFeeLabel: UILabel!
+  @IBOutlet weak var maxPriorityFeeErrorLabel: UILabel!
+  @IBOutlet weak var maxFeeErrorLabel: UILabel!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -331,7 +443,45 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.setupSegmentedControl()
     segmentedControl.highlightSelectedSegment()
     self.updateUIForMode(true)
-    self.advancedGasLimitField.text = self.viewModel.gasLimit.description
+    self.updateUIAdvancedSetting()
+  }
+
+  fileprivate func updateUIAdvancedSetting() {
+    self.advancedGasLimitField.text = self.viewModel.displayGasLimit
+    self.advancedPriorityFeeField.text = self.viewModel.displayMaxPriorityFee
+    self.equivalentPriorityETHFeeLabel.text = self.viewModel.displayEquivalentPriorityETHFee
+    self.advancedMaxFeeField.text = self.viewModel.displayMaxGasFee
+    self.equivalentMaxETHFeeLabel.text = self.viewModel.displayEquivalentMaxETHFee
+
+    switch self.viewModel.maxPriorityErrorStatus {
+    case .low:
+      self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
+      self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
+      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+    case .high:
+      self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
+      self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
+      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+    case .none:
+      self.maxPriorityFeeErrorLabel.text = ""
+      self.advancedPriorityFeeField.textColor = UIColor(named: "textWhiteColor")
+      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "normalTextColor")
+    }
+
+    switch self.viewModel.maxFeeErrorStatus {
+    case .low:
+      self.maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
+      self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
+      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+    case .high:
+      self.maxFeeErrorLabel.text = "Max Fee is higher than necessary"
+      self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
+      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+    case .none:
+      self.maxFeeErrorLabel.text = ""
+      self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
+      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
+    }
   }
 
   func updateMinRateCustomErrorShown(_ isShown: Bool) {
@@ -455,7 +605,15 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: {
+      if let gasLimit = self.advancedGasLimitField.text,
+         let maxPriorityFee = self.advancedPriorityFeeField.text,
+         let maxFee = self.advancedMaxFeeField.text,
+         self.viewModel.isAdvancedMode,
+         self.viewModel.isAllAdvancedSettingsValid {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
+      }
+    })
   }
 
   @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
@@ -492,16 +650,42 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     var currentGasLimit = Int(self.advancedGasLimitField.text ?? "") ?? 0
     if isIncrease {
       currentGasLimit += 1000
-      self.viewModel.advancedGasLimit = String(currentGasLimit)
     } else {
       currentGasLimit -= 1000
     }
     if currentGasLimit > 0 {
       self.viewModel.advancedGasLimit = String(currentGasLimit)
-      self.advancedGasLimitField.text = String(currentGasLimit)
     }
+    self.updateUIAdvancedSetting()
   }
   
+  @IBAction func maxPriorityFeeChangeAmountButtonTapped(_ sender: UIButton) {
+    let isIncrease = sender.tag == 1
+    var currentValue = self.advancedPriorityFeeField.text?.doubleValue ?? 0.0
+    if isIncrease {
+      currentValue += 0.5
+    } else {
+      currentValue -= 0.5
+    }
+    if currentValue > 0 {
+      self.viewModel.advancedMaxPriorityFee = String(currentValue)
+    }
+    self.updateUIAdvancedSetting()
+  }
+
+  @IBAction func maxGasFeeChangeAmountButtonTapped(_ sender: UIButton) {
+    let isIncrease = sender.tag == 1
+    var currentValue = self.advancedMaxFeeField.text?.doubleValue ?? 0.0
+    if isIncrease {
+      currentValue += 0.5
+    } else {
+      currentValue -= 0.5
+    }
+    if currentValue > 0 {
+      self.viewModel.advancedMaxFee = String(currentValue)
+    }
+    self.updateUIAdvancedSetting()
+  }
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
@@ -521,21 +705,30 @@ extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
 extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+    let number = text.replacingOccurrences(of: ",", with: ".")
+    let value: Double? = number.isEmpty ? 0 : Double(number)
     if textField == self.advancedGasLimitField {
-      self.viewModel.advancedGasLimit = text
-      return true
+      if value != nil {
+        self.viewModel.advancedGasLimit = text
+        self.updateUIAdvancedSetting()
+      }
+      return false
     } else if textField == self.advancedPriorityFeeField {
-      self.viewModel.advancedMaxPriorityFee = text
-      return true
+      if value != nil {
+        self.viewModel.advancedMaxPriorityFee = text
+        self.updateUIAdvancedSetting()
+      }
+      return false
     } else if textField == self.advancedMaxFeeField {
-      self.viewModel.advancedMaxFee = text
-      return true
+      if value != nil {
+        self.viewModel.advancedMaxFee = text
+        self.updateUIAdvancedSetting()
+      }
+      return false
     } else if textField == self.advancedNonceField {
       self.viewModel.advancedNonce = text
       return true
     } else {
-      let number = text.replacingOccurrences(of: ",", with: ".")
-      let value: Double? = number.isEmpty ? 0 : Double(number)
       let maxMinRatePercent: Double = 100.0
       if let val = value, val >= 0, val <= maxMinRatePercent {
         textField.text = text

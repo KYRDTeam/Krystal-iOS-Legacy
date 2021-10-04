@@ -470,7 +470,6 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
               toAddr: signTransaction.to!,
               nounce: signTransaction.nonce
             )
-            
             internalHistoryTransaction.hash = hash
             internalHistoryTransaction.nonce = signTransaction.nonce
             internalHistoryTransaction.time = Date()
@@ -1259,11 +1258,6 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       guard let provider = self.session.externalProvider else {
         return
       }
-//      if self.isApprovedGasToken() {
-//        self.saveUseGasTokenState(status)
-//        self.rootViewController.coordinatorUpdateIsUseGasToken(status)
-//        return
-//      }
       if status {
         var gasTokenAddressString = ""
         if KNEnvironment.default == .ropsten {
@@ -1303,6 +1297,8 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
         self.saveUseGasTokenState(status)
         self.rootViewController.coordinatorUpdateIsUseGasToken(status)
       }
+    case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
+      self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     default:
       break
     }

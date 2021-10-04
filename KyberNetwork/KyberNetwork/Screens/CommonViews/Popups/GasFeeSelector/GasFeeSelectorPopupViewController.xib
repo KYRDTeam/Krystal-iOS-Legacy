@@ -43,6 +43,8 @@
                 <outlet property="fasGasValueLabel" destination="yuB-hX-ocX" id="2V5-AJ-RWh"/>
                 <outlet property="fastEstimateFeeLabel" destination="NQX-fI-x3c" id="l1T-Fo-atP"/>
                 <outlet property="gasFeeGweiTextLabel" destination="9So-gt-dfF" id="V2M-29-IfL"/>
+                <outlet property="maxFeeErrorLabel" destination="Z2k-IH-dwE" id="2Mg-zq-0vz"/>
+                <outlet property="maxPriorityFeeErrorLabel" destination="nN6-wO-tfn" id="bt2-lQ-uhG"/>
                 <outlet property="mediumGasButton" destination="Vc9-xF-y4O" id="WX9-Sh-6qG"/>
                 <outlet property="mediumGasValueLabel" destination="954-Oy-OlJ" id="D3c-sC-fT0"/>
                 <outlet property="popupContainerHeightContraint" destination="ZJ7-Lq-sPg" id="ZNp-jE-0wJ"/>
@@ -180,7 +182,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select higher gas price to accelerate your transaction processing time" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-kS-rjU">
-                                    <rect key="frame" x="0.0" y="154.5" width="336" height="14.5"/>
+                                    <rect key="frame" x="0.0" y="141" width="336" height="28"/>
                                     <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="12"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -548,6 +550,9 @@
                                                         <constraint firstAttribute="height" constant="21" id="o8M-60-D3B"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <connections>
+                                                        <action selector="maxPriorityFeeChangeAmountButtonTapped:" destination="-1" eventType="touchUpInside" id="NLf-Ss-457"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1d5-0V-Tf1">
                                                     <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
@@ -555,6 +560,9 @@
                                                         <constraint firstAttribute="height" constant="21" id="QNq-mx-aq2"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <connections>
+                                                        <action selector="maxPriorityFeeChangeAmountButtonTapped:" destination="-1" eventType="touchUpInside" id="6lq-1Z-hLY"/>
+                                                    </connections>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adjust_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ylu-jY-ZM0">
                                                     <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
@@ -633,6 +641,9 @@
                                                         <constraint firstAttribute="height" constant="21" id="DLm-Nt-9rk"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <connections>
+                                                        <action selector="maxGasFeeChangeAmountButtonTapped:" destination="-1" eventType="touchUpInside" id="DhP-YF-VUm"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Noe-pE-dch">
                                                     <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
@@ -640,6 +651,9 @@
                                                         <constraint firstAttribute="height" constant="21" id="ysF-wI-8gz"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <connections>
+                                                        <action selector="maxGasFeeChangeAmountButtonTapped:" destination="-1" eventType="touchUpInside" id="AKa-o3-T7v"/>
+                                                    </connections>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adjust_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jgn-VQ-ccX">
                                                     <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
@@ -893,16 +907,31 @@
                                         <constraint firstItem="BSR-68-Vvt" firstAttribute="top" secondItem="6rF-bB-xEG" secondAttribute="top" id="y5x-yz-up4"/>
                                     </constraints>
                                 </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nN6-wO-tfn">
+                                    <rect key="frame" x="37" y="201" width="199.5" height="14"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                    <color key="textColor" name="textRedColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2k-IH-dwE">
+                                    <rect key="frame" x="37" y="304" width="199.5" height="14"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                    <color key="textColor" name="textRedColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" name="popupBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="5Bo-Ke-v54" secondAttribute="trailing" constant="37" id="1uL-dz-Lr9"/>
+                                <constraint firstItem="nN6-wO-tfn" firstAttribute="top" secondItem="hHH-lv-AFf" secondAttribute="bottom" constant="8" symbolic="YES" id="3JP-Lo-S2k"/>
                                 <constraint firstItem="cKe-M6-VP2" firstAttribute="top" secondItem="hHH-lv-AFf" secondAttribute="bottom" constant="30" id="ADQ-Jt-Yzv"/>
                                 <constraint firstItem="IEN-jO-Gfh" firstAttribute="top" secondItem="UYb-fq-7jQ" secondAttribute="bottom" constant="12" id="Bjy-qf-zwN"/>
                                 <constraint firstAttribute="trailing" secondItem="eXL-VL-rRm" secondAttribute="trailing" constant="37" id="DF6-17-EVi"/>
                                 <constraint firstItem="YhK-og-OKC" firstAttribute="top" secondItem="5Bo-Ke-v54" secondAttribute="bottom" constant="30" id="DbF-6h-v48"/>
+                                <constraint firstItem="Z2k-IH-dwE" firstAttribute="top" secondItem="UMa-CY-ZVZ" secondAttribute="bottom" constant="8" symbolic="YES" id="Euc-rW-G1f"/>
                                 <constraint firstItem="6rF-bB-xEG" firstAttribute="top" secondItem="eXL-VL-rRm" secondAttribute="bottom" constant="30" id="IwZ-dX-Mxt"/>
                                 <constraint firstItem="kmx-ah-2wt" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="JWz-ou-8yP"/>
+                                <constraint firstItem="nN6-wO-tfn" firstAttribute="leading" secondItem="hHH-lv-AFf" secondAttribute="leading" id="Jih-IO-zpi"/>
                                 <constraint firstAttribute="trailing" secondItem="6rF-bB-xEG" secondAttribute="trailing" constant="37" id="MQa-PH-wSJ"/>
                                 <constraint firstItem="XKt-Lg-6jW" firstAttribute="top" secondItem="IEN-jO-Gfh" secondAttribute="bottom" constant="30" id="MYu-Ni-uHo"/>
                                 <constraint firstItem="UYb-fq-7jQ" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="NjW-4R-7My"/>
@@ -922,6 +951,7 @@
                                 <constraint firstItem="XKt-Lg-6jW" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="lW3-Gw-8Y0"/>
                                 <constraint firstItem="UYb-fq-7jQ" firstAttribute="top" secondItem="Oyl-HO-RJ0" secondAttribute="top" constant="17" id="nQV-3o-0JJ"/>
                                 <constraint firstAttribute="trailing" secondItem="UMa-CY-ZVZ" secondAttribute="trailing" constant="37" id="rra-lg-S34"/>
+                                <constraint firstItem="Z2k-IH-dwE" firstAttribute="leading" secondItem="UMa-CY-ZVZ" secondAttribute="leading" id="su5-RX-fIS"/>
                                 <constraint firstItem="hHH-lv-AFf" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="uAf-03-bCD"/>
                                 <constraint firstItem="eXL-VL-rRm" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="yWh-9l-sS7"/>
                                 <constraint firstItem="YhK-og-OKC" firstAttribute="centerY" secondItem="kmx-ah-2wt" secondAttribute="centerY" id="zGd-B1-pir"/>
@@ -993,6 +1023,9 @@
         </namedColor>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textRedColor">
+            <color red="0.9570000171661377" green="0.33300000429153442" blue="0.19599999487400055" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

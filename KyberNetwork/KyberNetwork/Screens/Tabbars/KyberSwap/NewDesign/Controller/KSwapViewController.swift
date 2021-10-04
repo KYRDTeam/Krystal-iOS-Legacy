@@ -315,7 +315,9 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateEstimatedGasLimit()
     self.updateUIMinReceiveAmount()
+    self.viewModel.resetAdvancedSettings()
     self.stopRateTimer()
+    self.setUpGasFeeView()
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
@@ -749,7 +751,6 @@ extension KSwapViewController {
       return !isSource
     }()
 
-    
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
@@ -763,6 +764,7 @@ extension KSwapViewController {
       )
     }
     self.viewModel.gasPriceSelectedAmount = ("", "")
+    self.viewModel.resetAdvancedSettings()
     self.updateApproveButton()
     //TODO: reset only swap button on screen, can be optimize with
     self.updateUIForSendApprove(isShowApproveButton: false)
@@ -771,6 +773,7 @@ extension KSwapViewController {
     self.updateAllRates()
     self.updateUIMinReceiveAmount()
     self.stopRateTimer()
+    self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
 
@@ -975,6 +978,14 @@ extension KSwapViewController {
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
     self.stopRateTimer()
+  }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.setUpGasFeeView()
   }
 }
 

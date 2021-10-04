@@ -61,6 +61,10 @@ class KSwapViewModel {
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
   var showingRevertRate: Bool = false
+  
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -370,8 +374,8 @@ class KSwapViewModel {
       typeString = "regular".toBeLocalised().uppercased()
     case .slow:
       typeString = "slow".toBeLocalised().uppercased()
-    default:
-      break
+    case .custom:
+      typeString = "advanced".uppercased()
     }
     
     let gasPriceAttributes: [NSAttributedString.Key: Any] = [
@@ -397,7 +401,7 @@ class KSwapViewModel {
   }
 
   func resetDefaultTokensPair() {
-    switch KNGeneralProvider.shared.currentChain  {
+    switch KNGeneralProvider.shared.currentChain {
     case .eth:
       self.from = KNSupportedTokenStorage.shared.ethToken
       self.to = KNSupportedTokenStorage.shared.kncToken
@@ -489,6 +493,13 @@ class KSwapViewModel {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.estimateGasLimit = customGasLimit
+      }
     default: break
     }
   }
@@ -519,15 +530,16 @@ class KSwapViewModel {
 
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     if from == self.from, to == self.to, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.amountFromBigInt) {
-      self.estimateGasLimit = gasLimit
+      if let customGasLimitString = self.advancedGasLimit, let customGasLimit = BigInt(customGasLimitString), customGasLimit > gasLimit {
+        return
+      } else {
+        self.estimateGasLimit = gasLimit
+        self.resetAdvancedSettings()
+      }
     }
-
-    var allRates: [JSONDictionary] = []
     self.swapRates.3.forEach { (element) in
       if element.platform == self.currentFlatform {
         element.estimatedGas = Int(gasLimit)
-      } else {
-//        allRates.append(element)
       }
     }
   }
@@ -725,6 +737,15 @@ class KSwapViewModel {
     } else {
       //TODO: handle watch wallet type
       return nil
+    }
+  }
+
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
     }
   }
 }

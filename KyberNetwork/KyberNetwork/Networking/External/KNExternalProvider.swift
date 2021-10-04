@@ -556,8 +556,6 @@ class KNExternalProvider {
 
     self.signTransactionData(from: signTransaction, completion: completion)
   }
-  
-  
 
   private func signTransactionData(from exchange: KNDraftExchangeTransaction, nonce: Int, data: Data, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
     let signTransaction: SignTransaction = SignTransaction(
@@ -631,7 +629,7 @@ class KNExternalProvider {
       }
     }
   }
-  
+
   func requestDataForNFTTransfer(from: String, to: String, tokenID: String, amount: Int, isERC721: Bool, completion: @escaping (Result<Data, AnyError>) -> Void) {
     self.web3Swift.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
       switch result {
