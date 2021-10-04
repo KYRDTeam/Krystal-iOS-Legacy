@@ -171,6 +171,7 @@ extension CustomTokenListViewController: SwipeTableViewCellDelegate {
   func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
     var options = SwipeOptions()
     options.expansionStyle = .selection
+    options.backgroundColor = UIColor(named: "mainViewBgColor")
     options.minimumButtonWidth = 90
     options.maximumButtonWidth = 90
 
