@@ -3,17 +3,19 @@
 import Foundation
 
 public struct Constants {
-    public static let keychainKeyPrefix = "com.kyberswap.ios"
-    public static let transactionIsLost = "is_lost"
-    public static let transactionIsCancel = "is_cancel"
-    public static let isDoneShowQuickTutorialForBalanceView = "balance_tutorial_done"
-    public static let isDoneShowQuickTutorialForSwapView = "swap_tutorial_done"
-    public static let isDoneShowQuickTutorialForLimitOrderView = "lo_tutorial_done"
-    public static let isDoneShowQuickTutorialForHistoryView = "history_tutorial_done"
-    public static let kisShowQuickTutorialForLongPendingTx = "kisShowQuickTutorialForLongPendingTx"
-    public static let klimitNumberOfTransactionInDB = 1000
-    public static let animationDuration = 0.5
-    public static let useGasTokenDataKey = "use_gas_token_data_key"
+  public static let keychainKeyPrefix = "com.kyberswap.ios"
+  public static let transactionIsLost = "is_lost"
+  public static let transactionIsCancel = "is_cancel"
+  public static let isDoneShowQuickTutorialForBalanceView = "balance_tutorial_done"
+  public static let isDoneShowQuickTutorialForSwapView = "swap_tutorial_done"
+  public static let isDoneShowQuickTutorialForLimitOrderView = "lo_tutorial_done"
+  public static let isDoneShowQuickTutorialForHistoryView = "history_tutorial_done"
+  public static let kisShowQuickTutorialForLongPendingTx = "kisShowQuickTutorialForLongPendingTx"
+  public static let klimitNumberOfTransactionInDB = 1000
+  public static let animationDuration = 0.5
+  /// Value in USD to validate if current token should display blue tick or not
+  public static let hightVolAmount = 100000.0
+  public static let useGasTokenDataKey = "use_gas_token_data_key"
   
   public static let oneSignalAppID = KNEnvironment.default == .ropsten ? "361e7815-4da2-41c9-ba0a-d35add5a58ef" : "0487532e-7b19-415b-91a1-2a285b0b8382"
   public static let gasTokenAddress = KNEnvironment.default == .ropsten ? "0x0000000000b3F879cb30FE243b4Dfee438691c04" : "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
