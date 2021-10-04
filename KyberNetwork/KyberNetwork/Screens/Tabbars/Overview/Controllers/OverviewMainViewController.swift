@@ -1109,7 +1109,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       let bgImg = UIImage(named: "history_cell_edit_bg")!
       let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
       hideAction.backgroundColor = UIColor(patternImage: resized)
-        
+
       // soft delete action for custom token
       let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
         KNSupportedTokenStorage.shared.deleteCustomToken(token)
@@ -1131,10 +1131,10 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
 
   func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
     var options = SwipeOptions()
-    options.expansionStyle = .selection
+    options.transitionStyle = .reveal
+    options.backgroundColor = UIColor(named: "mainViewBgColor")
     options.minimumButtonWidth = 90
     options.maximumButtonWidth = 90
-
     return options
   }
 }
