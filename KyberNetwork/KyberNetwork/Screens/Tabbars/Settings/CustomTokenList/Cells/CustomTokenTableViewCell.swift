@@ -13,9 +13,6 @@ struct CustomTokenCellViewModel {
   let balance: String
 }
 
-/// Value in USD to validate if current token should display blue tick or not
-let hightVolAmount = 100000.0
-
 class CustomTokenTableViewCell: SwipeTableViewCell {
     static let kCellID: String = "CustomTokenTableViewCell"
     static let kCellHeight: CGFloat = 60
@@ -28,12 +25,17 @@ class CustomTokenTableViewCell: SwipeTableViewCell {
     var onUpdateActiveStatus: (() -> Void)?
 
     func updateCell(_ viewModel: CustomTokenCellViewModel) {
+      let isCustomToken = KNSupportedTokenStorage.shared.getFullCustomToken().contains(viewModel.token)
       self.viewModel = viewModel
-      self.imageIcon.setSymbolImage(symbol: viewModel.token.symbol, size: CGSize(width: 17, height: 17))
+      if isCustomToken {
+        self.imageIcon.image = UIImage(named: "default_token")!
+      } else {
+        self.imageIcon.setSymbolImage(symbol: viewModel.token.symbol, size: CGSize(width: 17, height: 17))
+      }
       self.tokenNameLabel.text = viewModel.token.symbol.uppercased()
       self.balanceLabel.text = viewModel.balance
       self.statusSwitch.isOn = KNSupportedTokenStorage.shared.getTokenActiveStatus(viewModel.token)
-      self.tickIcon.isHidden = viewModel.token.getVol(.usd) < hightVolAmount || KNSupportedTokenStorage.shared.getFullCustomToken().contains(viewModel.token)
+      self.tickIcon.isHidden = viewModel.token.getVol(.usd) < Constants.hightVolAmount || isCustomToken
     }
 
     @IBAction func switchChangedValue(_ sender: UISwitch) {
