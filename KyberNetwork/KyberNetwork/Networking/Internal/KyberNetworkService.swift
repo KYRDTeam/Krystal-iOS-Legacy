@@ -1189,6 +1189,9 @@ extension KrytalService: TargetType {
       ]
       if !lastBlock.isEmpty {
         json["fromBlock"] = lastBlock
+      } else {
+        json["offset"] = "0"
+        json["limit"] = "20"
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

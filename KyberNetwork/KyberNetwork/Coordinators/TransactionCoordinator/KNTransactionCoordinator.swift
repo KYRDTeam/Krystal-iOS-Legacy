@@ -78,12 +78,12 @@ extension KNTransactionCoordinator {
 
     self.loadEtherscanTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds60,
+      withTimeInterval: KNLoadingInterval.minutes2,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
         if self.isLoadingEnabled {
-          self.loadEtherscanTransactions()
+          self.loadEtherscanTransactions(isInit: !EtherscanTransactionStorage.shared.isSavedKrystalHistory())
         }
       }
     )
@@ -94,18 +94,17 @@ extension KNTransactionCoordinator {
     self.tokenTxTimer = nil
   }
 
-  fileprivate func loadKrystalHistory() {
+  fileprivate func loadKrystalHistory(isInit: Bool = false) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
-    let lastBlockInt = Int(lastBlock) ?? 0
-    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: lastBlock)) { result in
+    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(HistoryResponse.self, from: resp.data)
           let history = data.transactions
-          if lastBlockInt == 0 {
-            EtherscanTransactionStorage.shared.setKrystalTransaction(history)
+          if lastBlock.isEmpty || isInit {
+            EtherscanTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
           } else {
             EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
           }
@@ -119,9 +118,9 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func loadEtherscanTransactions() {
+  func loadEtherscanTransactions(isInit: Bool = false) {
     DispatchQueue.global(qos: .background).async {
-      self.loadKrystalHistory()
+      self.loadKrystalHistory(isInit: isInit)
     }
   }
 
