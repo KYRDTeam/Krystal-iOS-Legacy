@@ -76,6 +76,13 @@ class KNLoadBalanceCoordinator {
       group.leave()
     }
     
+    group.enter()
+    let span6 = tx.startChild(operation: "load-liquidity-pool")
+    self.loadLiquidityPool { success in
+      span6.finish()
+      group.leave()
+    }
+    
     group.notify(queue: .global()) {
       tx.finish()
     }
@@ -406,11 +413,32 @@ class KNLoadBalanceCoordinator {
     }
   }
   
+  func loadLiquidityPool(completion:  @escaping (Bool) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let address = self.session.wallet.address.description
+    let chain = KNGeneralProvider.shared.chainName
+    provider.request(.getLiquidityPool(address: address, chain: chain)) { (result) in
+      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
+        var poolArray: [LiquidityPoolModel] = []
+        for item in balances {
+          if let poolJSON = item["token"] as? JSONDictionary, let tokensJSON = item["underlying"] as? [JSONDictionary] {
+            let lpmodel = LiquidityPoolModel(poolJSON: poolJSON, tokensJSON: tokensJSON)
+            poolArray.append(lpmodel)
+          }
+        }
+        BalanceStorage.shared.setLiquidityPools(poolArray)
+        completion(true)
+      } else {
+        completion(false)
+      }
+    }
+  }
+
   func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
     }
-    
+
     let group = DispatchGroup()
     let customSection = BalanceStorage.shared.getCustomNFT()
     
