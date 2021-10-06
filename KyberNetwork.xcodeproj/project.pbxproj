@@ -451,6 +451,8 @@
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
+		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
+		7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
@@ -1200,6 +1202,8 @@
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
+		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
+		7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityPoolModel.swift; sourceTree = "<group>"; };
 		87FA1153388F27F599C430B8 /* Pods-TrustTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustTests/Pods-TrustTests.debug.xcconfig"; sourceTree = "<group>"; };
 		88401C14158F6CE1B2A8A18D /* Pods-KyberNetworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkTests/Pods-KyberNetworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3228,6 +3232,8 @@
 				29C0FCE4200EBAF6004A13CB /* TokenType.swift */,
 				C3F367B825C3CC58003207B7 /* TokenData.swift */,
 				C316809B25E785B700D0D887 /* TokenChartData.swift */,
+				7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */,
+				7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -4985,6 +4991,7 @@
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
+				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
@@ -5035,6 +5042,7 @@
 				C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
 				C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */,
+				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,
 				C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
