@@ -21,6 +21,12 @@ final class StringFormatter {
         formatter.isLenient = true
         return formatter
     }()
+  
+  func currencyString(value: Double, decimals: Int) -> String {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = decimals
+    return formatter.string(from: NSNumber(value: value)) ?? ""
+  }
     /// Converts a Decimal to a `currency String`.
     ///
     /// - Parameters:
