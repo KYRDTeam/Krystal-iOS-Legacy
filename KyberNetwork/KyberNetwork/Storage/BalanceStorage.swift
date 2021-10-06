@@ -12,6 +12,7 @@ class BalanceStorage {
   static let shared = BalanceStorage()
   private var supportedTokenBalances: [TokenBalance] = []
   private var allLendingBalance: [LendingPlatformBalance] = []
+  private var allLiquidityPool: [LiquidityPoolModel] = []
   private var nftBalance: [NFTSection] = []
   private var customNftBalance: [NFTSection] = []
   private var distributionBalance: LendingDistributionBalance?
@@ -46,6 +47,7 @@ class BalanceStorage {
     DispatchQueue.global(qos: .background).async {
       self.supportedTokenBalances = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
       self.allLendingBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
+      self.allLiquidityPool = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
       self.nftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.customNftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
@@ -83,6 +85,14 @@ class BalanceStorage {
     }
     self.distributionBalance = balance
     Storage.store(balance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName)
+  }
+  
+  func setLiquidityPools(_ liquidityPools: [LiquidityPoolModel]) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    self.allLiquidityPool = liquidityPools
+    Storage.store(liquidityPools, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.liquidityPoolStoreFileName)
   }
 
   func balanceETH() -> String {
@@ -164,6 +174,65 @@ class BalanceStorage {
     }
     
     return (sectionKeys, balanceDict)
+  }
+
+  func getLiquidityPools(currency: CurrencyMode) -> ([String], [String : [Any]]) {
+    var poolDict: [String : [Any]] = [:]
+    var allSymbol: [String] = []
+
+    self.allLiquidityPool.forEach { poolModel in
+      if !allSymbol.contains(poolModel.poolSymbol) {
+        allSymbol.append(poolModel.poolSymbol)
+      }
+    }
+
+    allSymbol.forEach { symbol in
+      var currentPoolPairTokens: [[LPTokenModel]] = []
+      self.allLiquidityPool.forEach { poolModel in
+        if poolModel.poolSymbol == symbol {
+          currentPoolPairTokens.append(poolModel.lpTokenArray)
+        }
+      }
+      currentPoolPairTokens = currentPoolPairTokens.sorted { pair1, pair2 in
+        var totalPair1 = 0.0
+        pair1.forEach { lpmodel in
+          totalPair1 += lpmodel.getTokenValue(currency)
+        }
+        
+        var totalPair2 = 0.0
+        pair2.forEach { lpmodel in
+          totalPair2 += lpmodel.getTokenValue(currency)
+        }
+        return totalPair1 > totalPair2
+      }
+      poolDict[symbol] = currentPoolPairTokens
+    }
+
+    allSymbol = allSymbol.sorted { key1, key2 in
+      var totalSection1 = 0.0
+      poolDict[key1]?.forEach({ (item) in
+        if let poolPairToken = item as? [LPTokenModel] {
+          poolPairToken.forEach { token in
+            //add total value of each token in current pair
+            totalSection1 += token.getTokenValue(currency)
+          }
+        }
+      })
+      
+      var totalSection2 = 0.0
+      poolDict[key2]?.forEach({ (item) in
+        if let poolPairToken = item as? [LPTokenModel] {
+          poolPairToken.forEach { token in
+            //add total value of each token in current pair
+            totalSection2 += token.getTokenValue(currency)
+          }
+        }
+      })
+
+      return totalSection1 > totalSection2
+    }
+
+    return (allSymbol, poolDict)
   }
   
   func getTotalBalance(_ currency: CurrencyMode) -> BigInt {
