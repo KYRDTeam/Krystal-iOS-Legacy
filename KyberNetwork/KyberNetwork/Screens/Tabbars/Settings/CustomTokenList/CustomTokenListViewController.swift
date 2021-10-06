@@ -142,6 +142,11 @@ extension CustomTokenListViewController: UITableViewDataSource {
 
 extension CustomTokenListViewController: SwipeTableViewCellDelegate {
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    let currentToken = self.viewModel.dataSource[indexPath.row].token
+    // only allow edit action when current token is custom
+    guard KNSupportedTokenStorage.shared.getFullCustomToken().contains(currentToken) else {
+      return nil
+    }
     guard orientation == .right else {
       return nil
     }

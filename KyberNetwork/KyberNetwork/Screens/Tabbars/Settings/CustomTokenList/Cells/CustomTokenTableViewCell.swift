@@ -11,6 +11,10 @@ import SwipeCellKit
 struct CustomTokenCellViewModel {
   let token: Token
   let balance: String
+  var isHighVol: Bool {
+    let isCustomToken = KNSupportedTokenStorage.shared.getFullCustomToken().contains(self.token)
+    return self.token.getVol(.usd) >= Constants.hightVolAmount && !isCustomToken
+  }
 }
 
 class CustomTokenTableViewCell: SwipeTableViewCell {
@@ -35,7 +39,7 @@ class CustomTokenTableViewCell: SwipeTableViewCell {
       self.tokenNameLabel.text = viewModel.token.symbol.uppercased()
       self.balanceLabel.text = viewModel.balance
       self.statusSwitch.isOn = KNSupportedTokenStorage.shared.getTokenActiveStatus(viewModel.token)
-      self.tickIcon.isHidden = viewModel.token.getVol(.usd) < Constants.hightVolAmount || isCustomToken
+      self.tickIcon.isHidden = !viewModel.isHighVol
     }
 
     @IBAction func switchChangedValue(_ sender: UISwitch) {
