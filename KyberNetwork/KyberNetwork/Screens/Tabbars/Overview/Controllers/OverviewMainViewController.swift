@@ -313,8 +313,10 @@ class OverviewMainViewModel {
         assetTokens = assetTokens.filter({ token in
           let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
           let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-          let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
-          return valueString != "0"
+          if let doubleValue = Double(valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())) {
+            return doubleValue > 0
+          }
+          return true
         })
       }
         
