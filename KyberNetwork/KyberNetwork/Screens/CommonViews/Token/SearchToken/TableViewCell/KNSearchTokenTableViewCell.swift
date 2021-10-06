@@ -34,7 +34,7 @@ class KNSearchTokenTableViewCell: UITableViewCell {
         self.iconImageView.setSymbolImage(symbol: token.symbol, size: iconImageView.frame.size)
     }
     self.tokenSymbolLabel.text = "\(token.symbol.prefix(8))"
-    self.tickIcon.isHidden = token.volumn < Constants.hightVolAmount || token.isCustom
+    self.tickIcon.isHidden = !token.isHighVolumn
     let balText: String = {
       let value = token.getBalanceBigInt().string(
         decimals: token.decimals,

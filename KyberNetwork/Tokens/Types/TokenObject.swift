@@ -273,6 +273,10 @@ extension TokenObject {
     return Date().timeIntervalSince(date) >= 0
   }
   
+  var isHighVolumn: Bool {
+    return self.volumn >= Constants.hightVolAmount && !self.isCustom
+  }
+  
   func toTokenData() -> TokenData {
     return TokenData(address: self.address, name: self.name, symbol: self.symbol, decimals: self.decimals, lendingPlatforms: [])
   }
