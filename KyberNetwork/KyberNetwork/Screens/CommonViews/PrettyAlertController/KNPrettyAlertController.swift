@@ -9,6 +9,7 @@ class KNPrettyAlertController: KNBaseViewController {
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet var backgroundView: UIView!
 
   let mainTitle: String?
   let isWarning: Bool
@@ -45,6 +46,10 @@ class KNPrettyAlertController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    configUI()
+  }
+  
+  func configUI() {
     self.containerView.rounded()
     self.secondButton.rounded(radius: 16)
     self.firstButton.rounded(radius: 16)
@@ -82,6 +87,13 @@ class KNPrettyAlertController: KNBaseViewController {
     }
     self.gradientButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
     self.gradientButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    backgroundView.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc func tapOutside() {
+      self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func yesButtonTapped(_ sender: UIButton) {

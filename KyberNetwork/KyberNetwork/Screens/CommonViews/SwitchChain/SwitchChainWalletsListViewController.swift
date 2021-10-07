@@ -31,8 +31,9 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
+  @IBOutlet var backgroundView: UIView!
+
   let kContactTableViewCellID: String = "kContactTableViewCellID"
-  
   let transitor = TransitionDelegate()
   let viewModel: SwitchChainWalletsListViewModel
   
@@ -56,8 +57,14 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
     self.walletsTableView.delegate = self
     self.walletsTableView.dataSource = self
     self.titleLabel.text = self.viewModel.title
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    backgroundView.addGestureRecognizer(tapGesture)
   }
-  
+
+  @objc func tapOutside() {
+      self.dismiss(animated: true, completion: nil)
+  }
+
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
       KNGeneralProvider.shared.currentChain = self.viewModel.selectedChain

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsAndConditionsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="acceptTermTextView" destination="CNq-3m-cNP" id="Bt0-KI-uAo"/>
+                <outlet property="backgroundView" destination="IEF-MU-UpU" id="n2L-8d-jBD"/>
                 <outlet property="checkBoxButton" destination="UzJ-IU-9Wk" id="jTr-It-DLQ"/>
                 <outlet property="contentView" destination="fV3-RJ-AlE" id="20q-T5-pO0"/>
                 <outlet property="contentViewTopContraint" destination="KoA-3g-Iac" id="HGT-zP-oo2"/>
@@ -73,7 +74,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                     </subviews>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="grk-gB-eq9" firstAttribute="top" secondItem="CNq-3m-cNP" secondAttribute="bottom" constant="24" id="3uB-60-fSZ"/>
@@ -97,13 +98,21 @@
                         <outletCollection property="gestureRecognizers" destination="53f-PU-Qfa" appends="YES" id="4kU-dR-wzJ"/>
                     </connections>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IEF-MU-UpU">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="465"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fV3-RJ-AlE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BxJ-bR-zrN"/>
+                <constraint firstItem="IEF-MU-UpU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="DjB-R0-etg"/>
                 <constraint firstItem="fV3-RJ-AlE" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="465" id="KoA-3g-Iac"/>
+                <constraint firstItem="IEF-MU-UpU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="bxe-mJ-isX"/>
+                <constraint firstItem="fV3-RJ-AlE" firstAttribute="top" secondItem="IEF-MU-UpU" secondAttribute="bottom" id="dAM-Ab-qNd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="IEF-MU-UpU" secondAttribute="trailing" id="kUh-1a-AiR"/>
                 <constraint firstItem="fV3-RJ-AlE" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="pb7-pY-8ks"/>
             </constraints>
             <connections>
@@ -125,6 +134,9 @@
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
