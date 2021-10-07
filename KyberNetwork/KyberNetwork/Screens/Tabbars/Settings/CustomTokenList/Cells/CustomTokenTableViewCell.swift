@@ -12,8 +12,11 @@ struct CustomTokenCellViewModel {
   let token: Token
   let balance: String
   var isHighVol: Bool {
-    let isCustomToken = KNSupportedTokenStorage.shared.getFullCustomToken().contains(self.token)
-    return self.token.getVol(.usd) >= Constants.hightVolAmount && !isCustomToken
+    return self.token.getVol(.usd) >= Constants.hightVolAmount && !self.isCustomToken
+  }
+  
+  var isCustomToken: Bool {
+    return KNSupportedTokenStorage.shared.getFullCustomToken().contains(self.token)
   }
 }
 
@@ -26,7 +29,7 @@ class CustomTokenTableViewCell: SwipeTableViewCell {
     @IBOutlet weak var statusSwitch: UISwitch!
     @IBOutlet weak var tickIcon: UIImageView!
     var viewModel: CustomTokenCellViewModel?
-    var onUpdateActiveStatus: (() -> Void)?
+    var onUpdateActiveStatus: ((Bool) -> Void)?
 
     func updateCell(_ viewModel: CustomTokenCellViewModel) {
       let isCustomToken = KNSupportedTokenStorage.shared.getFullCustomToken().contains(viewModel.token)
@@ -45,7 +48,7 @@ class CustomTokenTableViewCell: SwipeTableViewCell {
     @IBAction func switchChangedValue(_ sender: UISwitch) {
       if let notNil = self.viewModel, let onUpdateActiveStatus = onUpdateActiveStatus {
         KNSupportedTokenStorage.shared.setTokenActiveStatus(token: notNil.token, status: sender.isOn)
-        onUpdateActiveStatus()
+        onUpdateActiveStatus(sender.isOn)
       }
     }
 }

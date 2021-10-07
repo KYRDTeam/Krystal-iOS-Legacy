@@ -262,7 +262,8 @@ class OverviewMainViewModel {
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
-  var isHidingSmallAssetsToken = false
+  var isHidingSmallAssetsToken = true
+
   init(session: KNSession) {
     self.session = session
   }
@@ -276,6 +277,24 @@ class OverviewMainViewModel {
     case .nft:
       return self.displayNFTHeader.isEmpty
     }
+  }
+  
+  func filterSmallAssetTokens(tokens: [Token]) -> [Token] {
+    let filteredTokens = tokens.filter({ token in
+      let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
+      let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
+      if let doubleValue = Double(valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())) {
+        return doubleValue > 0
+      }
+      return true
+    })
+    return filteredTokens
+  }
+
+  func shouldShowHideButton() -> Bool {
+    let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens()
+    let filteredTokens = filterSmallAssetTokens(tokens: assetTokens)
+    return assetTokens.count != filteredTokens.count
   }
 
   func reloadAllData() {
@@ -310,16 +329,9 @@ class OverviewMainViewModel {
       }
         
       if self.isHidingSmallAssetsToken {
-        assetTokens = assetTokens.filter({ token in
-          let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
-          let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-          if let doubleValue = Double(valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())) {
-            return doubleValue > 0
-          }
-          return true
-        })
+        assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
       }
-        
+
       self.displayHeader = []
       self.displayTotalValues = [:]
       var total = BigInt(0)
@@ -909,7 +921,12 @@ extension OverviewMainViewController: UITableViewDataSource {
     let cell = UITableViewCell(style: .default, reuseIdentifier: "showOrHideSmallValueTokenCell")
     cell.backgroundColor = UIColor(named: "mainViewBgColor")
     cell.textLabel?.textColor = UIColor(named: "buttonBackgroundColor")
-    cell.textLabel?.text = self.viewModel.isHidingSmallAssetsToken ? "Show all assets".toBeLocalised() : "Hide small assets".toBeLocalised()
+    if self.viewModel.shouldShowHideButton() {
+      cell.textLabel?.text = self.viewModel.isHidingSmallAssetsToken ? "Show all assets".toBeLocalised() : "Hide small assets".toBeLocalised()
+    } else {
+      cell.textLabel?.text = ""
+    }
+    
     cell.textLabel?.textAlignment = .center
     cell.textLabel?.font = UIFont.Kyber.regular(with: 14)
     cell.selectionStyle = .none
@@ -1104,6 +1121,13 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       // hide action
       let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
         KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
+        let params: [String : Any] = [
+          "token_name": token.name,
+          "token_address": token.address,
+          "token_disable": true,
+          "screen_name": "OverviewMainViewController",
+        ]
+        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
         self.reloadUI()
       }
       hideAction.title = "Hide".toBeLocalised().uppercased()
@@ -1116,6 +1140,12 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       // soft delete action for custom token
       let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
         KNSupportedTokenStorage.shared.deleteCustomToken(token)
+        let params: [String : Any] = [
+          "token_name": token.name,
+          "token_address": token.address,
+          "screen_name": "OverviewMainViewController",
+        ]
+        KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
         self.reloadUI()
       }
       deleteAction.title = "Delete".toBeLocalised().uppercased()

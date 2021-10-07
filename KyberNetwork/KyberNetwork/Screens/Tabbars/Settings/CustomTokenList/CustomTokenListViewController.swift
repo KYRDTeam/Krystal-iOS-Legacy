@@ -37,6 +37,11 @@ class CustomTokenListViewModel {
 
   func changeAllTokensActiveStatus() {
     KNSupportedTokenStorage.shared.changeAllTokensActiveStatus(isActive: !currentActiveStatus)
+    if currentActiveStatus {
+      KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_select_all", customAttributes: nil)
+    } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_deselect_all", customAttributes: nil)
+    }
   }
 }
 
@@ -130,10 +135,28 @@ extension CustomTokenListViewController: UITableViewDataSource {
       withIdentifier: CustomTokenTableViewCell.kCellID,
       for: indexPath
     ) as! CustomTokenTableViewCell
-
-    cell.updateCell(self.viewModel.dataSource[indexPath.row])
-    cell.onUpdateActiveStatus = {
-      self.updateSelectAllButtonTitle()
+    let viewModel = self.viewModel.dataSource[indexPath.row]
+    cell.updateCell(viewModel)
+    cell.onUpdateActiveStatus = { isActive in
+      let token = self.viewModel.dataSource[indexPath.row].token
+      let params: [String : Any] = [
+        "token_name": token.name,
+        "token_address": token.address,
+        "token_disable": isActive,
+        "screen_name": "CustomTokenListViewController",
+      ]
+      if let searchText = self.searchTextField.text, !searchText.isEmpty {
+        KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_search", customAttributes: params)
+      } else {
+        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
+      }
+      
+      if !viewModel.isCustomToken {
+        self.updateUI()
+      } else {
+        self.updateSelectAllButtonTitle()
+      }
+      
     }
     cell.delegate = self
     return cell
@@ -152,6 +175,11 @@ extension CustomTokenListViewController: SwipeTableViewCellDelegate {
     }
     let token = self.viewModel.dataSource[indexPath.row].token
     let edit = SwipeAction(style: .default, title: nil) { (_, _) in
+      let params: [String : Any] = [
+        "token_name": token.name,
+        "token_address": token.address
+      ]
+      KNCrashlyticsUtil.logCustomEvent(withName: "token_edit", customAttributes: params)
       self.delegate?.customTokenListViewController(self, run: .edit(token: token))
     }
     edit.hidesWhenSelected = true
@@ -163,6 +191,12 @@ extension CustomTokenListViewController: SwipeTableViewCellDelegate {
     edit.backgroundColor = UIColor(patternImage: resized)
 
     let delete = SwipeAction(style: .default, title: nil) { _, _ in
+      let params: [String : Any] = [
+        "token_name": token.name,
+        "token_address": token.address,
+        "screen_name": "CustomTokenListViewController",
+      ]
+      KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
       self.delegate?.customTokenListViewController(self, run: .delete(token: token))
     }
     delete.title = "Delete".toBeLocalised().uppercased()
