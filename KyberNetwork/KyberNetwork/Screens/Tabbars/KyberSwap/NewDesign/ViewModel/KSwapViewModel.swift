@@ -739,6 +739,11 @@ class KSwapViewModel {
       return nil
     }
   }
+  
+  func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
+    return nil
+    
+  }
 
   func resetAdvancedSettings() {
     self.advancedGasLimit = nil
