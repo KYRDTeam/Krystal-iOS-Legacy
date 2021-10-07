@@ -96,7 +96,7 @@ extension KNTransactionCoordinator {
   fileprivate func loadKrystalHistory(isInit: Bool = false) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
-    var isLoadAll = !lastBlock.isEmpty
+
     provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
@@ -105,10 +105,6 @@ extension KNTransactionCoordinator {
           let history = data.transactions
           if lastBlock.isEmpty || isInit {
             EtherscanTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
-            if !isLoadAll {
-                self.loadKrystalHistory(isInit: true)
-                isLoadAll = true
-            }
           } else {
             EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
           }
