@@ -103,10 +103,17 @@ extension KNTransactionCoordinator {
         do {
           let data = try decoder.decode(HistoryResponse.self, from: resp.data)
           let history = data.transactions
+          var needReloadUI = false
           if lastBlock.isEmpty || isInit {
             EtherscanTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
+            needReloadUI = true
           } else {
-            EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+            needReloadUI = EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+          }
+          if needReloadUI {
+            DispatchQueue.main.async {
+              KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
+            }
           }
           print("[GetHistoryTransaction][Success]")
         } catch let error {

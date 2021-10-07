@@ -99,9 +99,9 @@ class EtherscanTransactionStorage {
     }
   }
 
-  func appendKrystalTransaction(_ txs: [KrystalHistoryTransaction]) {
+  func appendKrystalTransaction(_ txs: [KrystalHistoryTransaction]) -> Bool {
     guard let unwrapped = self.wallet else {
-      return
+      return false
     }
     var newTx: [KrystalHistoryTransaction] = []
     txs.forEach { item in
@@ -110,13 +110,13 @@ class EtherscanTransactionStorage {
       }
     }
     guard !newTx.isEmpty else {
-      return
+      return false
     }
     self.krystalHistoryTransaction = newTx + self.krystalHistoryTransaction
     if self.isSavedKrystalHistory() { //Has data of first block
       Storage.store(self.krystalHistoryTransaction, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
     }
-    
+    return true
   }
 
   func appendTokenTransactions(_ transactions: [EtherscanTokenTransaction]) {
