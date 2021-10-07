@@ -81,6 +81,8 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
+  @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
+  
   @IBOutlet weak var loadingView: SRCountdownTimer!
   
 //  fileprivate var estRateTimer: Timer?
@@ -674,7 +676,13 @@ extension KSwapViewController {
   }
 
   fileprivate func updateUIMinReceiveAmount() {
-    self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
+    if self.viewModel.isFocusingFromAmount {
+      self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
+      self.minReceivedAmountTitleLabel.text = "Minimum recieved"
+    } else {
+      self.minReceivedAmount.text = self.viewModel.displayMaxSoldAmount
+      self.minReceivedAmountTitleLabel.text = "Maximum sold"
+    }
   }
 }
 
@@ -1011,8 +1019,6 @@ extension KSwapViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
-    
-    
     if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     let double: Double = {

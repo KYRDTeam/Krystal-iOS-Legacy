@@ -35,6 +35,10 @@ struct KrystalHistoryTransaction: Codable, Equatable {
   var date: Date {
     return Date(timeIntervalSince1970: Double(self.timestamp))
   }
+  
+  var isSwapTokenType: Bool {
+    return self.type == "Swap" || self.type == "Supply" || self.type == "Withdraw"
+  }
 }
 
 // MARK: - ExtraData

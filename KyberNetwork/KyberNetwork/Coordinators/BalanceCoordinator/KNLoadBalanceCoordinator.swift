@@ -290,8 +290,6 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
-  
-  
 
   func loadBalanceForCustomToken() {
 //    let tokens = KNSupportedTokenStorage.shared.getCustomToken()
@@ -324,7 +322,6 @@ class KNLoadBalanceCoordinator {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(BalancesResponse.self, from: resp.data)
-          print("[LoadBalance] \(data)")
           let balances = data.balances.map { (data) -> TokenBalance in
             return TokenBalance(address: data.token.address, balance: data.balance)
           }

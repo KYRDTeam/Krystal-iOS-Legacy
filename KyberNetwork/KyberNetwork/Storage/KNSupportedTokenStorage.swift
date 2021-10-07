@@ -313,16 +313,29 @@ class KNSupportedTokenStorage {
       return
     }
     let all = self.allFullToken
+    let customs = self.customTokens
     var unknown: [Token] = []
+    var duplicated: [Token] = []
     tokens.forEach { token in
       if !all.contains(token) {
         unknown.append(token)
+      } else {
+        if customs.contains(token) && self.supportedToken.contains(token) {
+          duplicated.append(token)
+        }
       }
     }
     guard !unknown.isEmpty else {
       return
     }
     self.customTokens.append(contentsOf: unknown)
+    if !duplicated.isEmpty {
+      duplicated.forEach { item in
+        if let idx = customTokens.firstIndex(of: item) {
+          self.customTokens.remove(at: idx)
+        }
+      }
+    }
     Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
 

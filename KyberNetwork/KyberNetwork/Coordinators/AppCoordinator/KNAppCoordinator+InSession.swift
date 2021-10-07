@@ -268,6 +268,6 @@ extension KNAppCoordinator {
     self.tokenBalancesDidUpdateNotification(nil)
     self.exchangeRateTokenDidUpdateNotification(nil)
     self.tokenObjectListDidUpdate(nil)
-    self.tokenTransactionListDidUpdate(nil)
+//    self.tokenTransactionListDidUpdate(nil)
   }
 }

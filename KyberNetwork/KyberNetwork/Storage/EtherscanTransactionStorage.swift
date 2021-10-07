@@ -28,9 +28,13 @@ class EtherscanTransactionStorage {
     self.krystalHistoryTransaction = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName, as: [KrystalHistoryTransaction].self) ?? []
     
     self.internalHistoryTransactions = []
-//    DispatchQueue.global(qos: .background).async {
-//      self.generateKrytalTransactionModel()
-//    }
+  }
+  
+  func isSavedKrystalHistory() -> Bool {
+    guard let unwrapped = self.wallet else {
+      return false
+    }
+    return Storage.isFileExistAtPath(unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
   }
   
   func setTokenTransactions(_ transactions: [EtherscanTokenTransaction]) {
@@ -85,17 +89,19 @@ class EtherscanTransactionStorage {
     return self.krystalHistoryTransaction
   }
 
-  func setKrystalTransaction(_ txs: [KrystalHistoryTransaction]) {
+  func setKrystalTransaction(_ txs: [KrystalHistoryTransaction], isSave: Bool = true) {
     guard let unwrapped = self.wallet else {
       return
     }
     self.krystalHistoryTransaction = txs
-    Storage.store(self.krystalHistoryTransaction, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+    if isSave {
+      Storage.store(self.krystalHistoryTransaction, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+    }
   }
-  
-  func appendKrystalTransaction(_ txs: [KrystalHistoryTransaction]) {
+
+  func appendKrystalTransaction(_ txs: [KrystalHistoryTransaction]) -> Bool {
     guard let unwrapped = self.wallet else {
-      return
+      return false
     }
     var newTx: [KrystalHistoryTransaction] = []
     txs.forEach { item in
@@ -104,10 +110,13 @@ class EtherscanTransactionStorage {
       }
     }
     guard !newTx.isEmpty else {
-      return
+      return false
     }
     self.krystalHistoryTransaction = newTx + self.krystalHistoryTransaction
-    Storage.store(self.krystalHistoryTransaction, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+    if self.isSavedKrystalHistory() { //Has data of first block
+      Storage.store(self.krystalHistoryTransaction, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName)
+    }
+    return true
   }
 
   func appendTokenTransactions(_ transactions: [EtherscanTokenTransaction]) {
@@ -218,7 +227,11 @@ class EtherscanTransactionStorage {
   }
   
   func getKrystalHistoryTransactionStartBlock() -> String {
-    return "\(self.krystalHistoryTransaction.first?.blockNumber ?? 0)"
+    if let blockNo = self.krystalHistoryTransaction.first?.blockNumber {
+      return "\(blockNo)"
+    } else {
+      return ""
+    }
   }
 
   func getInternalTransactionsWithHash(_ hash: String) -> [EtherscanInternalTransaction] {
@@ -366,20 +379,6 @@ class EtherscanTransactionStorage {
   }
 
   func getEtherscanToken() -> [Token] {
-    guard KNGeneralProvider.shared.currentChain != .avalanche else {
-      return KNSupportedTokenStorage.shared.allTokens
-    }
-    var tokenSet = Set<Token>()
-    let eth = KNGeneralProvider.shared.quoteTokenObject.toToken()
-    tokenSet.insert(eth)
-    self.tokenTransactions.forEach { (transaction) in
-      let token = Token(name: transaction.tokenName, symbol: transaction.tokenSymbol, address: transaction.contractAddress, decimals: Int(transaction.tokenDecimal) ?? 0, logo: transaction.tokenSymbol)
-      tokenSet.insert(token)
-    }
-    return Array(tokenSet).sorted { (left, right) -> Bool in
-      return left.symbol > right.symbol
-    }
+    return KNSupportedTokenStorage.shared.allTokens
   }
-  
-  
 }

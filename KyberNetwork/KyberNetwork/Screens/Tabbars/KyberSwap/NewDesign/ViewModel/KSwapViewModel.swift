@@ -334,10 +334,18 @@ class KSwapViewModel {
     return self.amountToBigInt * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
+  var maxAmtSold: BigInt {
+    return self.amountFromBigInt * BigInt(10000.0 + self.minRatePercent * 100.0) / BigInt(10000.0)
+  }
+
   var displayMinDestAmount: String {
     return self.minDestQty.string(decimals: self.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.to.symbol
   }
-  
+
+  var displayMaxSoldAmount: String {
+    return self.maxAmtSold.string(decimals: self.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.from.symbol
+  }
+
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
     if self.from.isETH || self.from.isBNB { fee += self.amountFromBigInt }
