@@ -13,8 +13,8 @@ class KNSupportedTokenStorage {
   private var disableTokens: [Token]
   private var deletedTokens: [Token]
   
-  var allTokens: [Token] {
-    return self.supportedToken + self.getCustomToken()
+  var allActiveTokens: [Token] {
+    return self.getActiveSupportedToken() + self.getActiveCustomToken()
   }
   
   var allFullToken: [Token] {
@@ -46,7 +46,7 @@ class KNSupportedTokenStorage {
   }
   
   var marketTokens: [Token] {
-    return self.supportedToken
+    return self.getActiveSupportedToken()
   }
 
   var ethToken: TokenObject {
@@ -135,13 +135,13 @@ class KNSupportedTokenStorage {
   }
 
   func getTokenWith(address: String) -> Token? {
-    return self.allTokens.first { (token) -> Bool in
+    return self.allActiveTokens.first { (token) -> Bool in
       return token.address.lowercased() == address.lowercased()
     }
   }
 
   func getTokenWith(symbol: String) -> Token? {
-    return self.allTokens.first { (token) -> Bool in
+    return self.allFullToken.first { (token) -> Bool in
       return token.symbol.lowercased() == symbol.lowercased()
     }
   }
@@ -174,7 +174,7 @@ class KNSupportedTokenStorage {
   }
 
   func isTokenSaved(_ token: Token) -> Bool {
-    let tokens = self.allTokens
+    let tokens = self.allActiveTokens
     let saved = tokens.first { (item) -> Bool in
       return item.address.lowercased() == token.address.lowercased()
     }
@@ -182,8 +182,14 @@ class KNSupportedTokenStorage {
     return saved != nil
   }
 
-  func getCustomToken() -> [Token] {
+  func getActiveCustomToken() -> [Token] {
     return self.customTokens.filter { token in
+      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
+    }
+  }
+  
+  func getActiveSupportedToken() -> [Token] {
+    return self.supportedToken.filter { token in
       return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
     }
   }
@@ -281,13 +287,17 @@ class KNSupportedTokenStorage {
   }
 
   func getListedTokenObject() -> [TokenObject] {
-    return self.supportedToken.map { (token) -> TokenObject in
+    let activeTokens = self.supportedToken.filter { token in
+        // Only get active tokens
+        return self.getTokenActiveStatus(token)
+    }
+    return activeTokens.map { (token) -> TokenObject in
         return token.toObject()
     }
   }
 
   func getCustomTokenObject() -> [TokenObject] {
-    return self.getCustomToken().map { (token) -> TokenObject in
+    return self.getActiveCustomToken().map { (token) -> TokenObject in
         return token.toObject(isCustom:true)
     }
   }
@@ -396,7 +406,7 @@ class KNSupportedTokenStorage {
   
   func getAssetTokens() -> [Token] {
     var result: [Token] = []
-    let tokens = KNSupportedTokenStorage.shared.allTokens
+    let tokens = KNSupportedTokenStorage.shared.allActiveTokens
     let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
     var lendingSymbols: [String] = []
     lendingBalances.forEach { (lendingPlatform) in
@@ -414,7 +424,7 @@ class KNSupportedTokenStorage {
   }
   
   func findTokensWithAddresses(addresses: [String]) -> [Token] {
-    return self.allTokens.filter { (token) -> Bool in
+    return self.allActiveTokens.filter { (token) -> Bool in
       return addresses.contains(token.address.lowercased())
     }
   }
