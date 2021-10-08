@@ -379,6 +379,6 @@ class EtherscanTransactionStorage {
   }
 
   func getEtherscanToken() -> [Token] {
-    return KNSupportedTokenStorage.shared.allTokens
+    return KNSupportedTokenStorage.shared.allActiveTokens
   }
 }
