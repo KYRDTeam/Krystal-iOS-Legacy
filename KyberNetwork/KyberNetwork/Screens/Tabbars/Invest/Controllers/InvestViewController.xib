@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,7 +39,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDv-4z-Mbz">
-                            <rect key="frame" x="154" y="63.5" width="67.5" height="23.5"/>
+                            <rect key="frame" x="152" y="63.5" width="71" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -155,7 +155,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfa-xw-Nn8">
-                                            <rect key="frame" x="9.5" y="57" width="53" height="14"/>
+                                            <rect key="frame" x="9.5" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -215,7 +215,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IkA-JV-agg">
-                                            <rect key="frame" x="9" y="57" width="53" height="14"/>
+                                            <rect key="frame" x="9" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -256,8 +256,8 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMw-Jh-Cwr">
                                             <rect key="frame" x="9.5" y="15" width="53" height="32"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="deposit_invest_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S2B-NJ-DD8">
-                                                    <rect key="frame" x="13.5" y="3" width="26" height="26"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="reward_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S2B-NJ-DD8">
+                                                    <rect key="frame" x="10.5" y="0.0" width="32" height="32"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -274,8 +274,8 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYW-HX-J6b">
-                                            <rect key="frame" x="9.5" y="57" width="53" height="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYW-HX-J6b">
+                                            <rect key="frame" x="9.5" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -290,15 +290,34 @@
                                                 <action selector="depositButtonTapped:" destination="-1" eventType="touchUpInside" id="OBK-9X-CQh"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AD7-wn-JVw">
+                                            <rect key="frame" x="44" y="14" width="14" height="14"/>
+                                            <color key="backgroundColor" name="secondaryColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="7Et-ia-U6p"/>
+                                                <constraint firstAttribute="width" constant="14" id="soX-g6-eVC"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="8"/>
+                                            <color key="textColor" name="textWhiteColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="7"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="CGZ-SJ-NBg" secondAttribute="bottom" id="2Js-5P-nej"/>
+                                        <constraint firstItem="AD7-wn-JVw" firstAttribute="top" secondItem="S2B-NJ-DD8" secondAttribute="top" constant="-1" id="3Pq-JA-iwX"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="top" secondItem="vMw-Jh-Cwr" secondAttribute="bottom" constant="10" id="A73-tM-Fs3"/>
                                         <constraint firstItem="vMw-Jh-Cwr" firstAttribute="top" secondItem="DvY-De-rNa" secondAttribute="top" constant="15" id="C2K-Cv-PXz"/>
                                         <constraint firstItem="CGZ-SJ-NBg" firstAttribute="leading" secondItem="DvY-De-rNa" secondAttribute="leading" id="KEc-33-nVW"/>
                                         <constraint firstItem="CGZ-SJ-NBg" firstAttribute="top" secondItem="DvY-De-rNa" secondAttribute="top" id="Tiw-yw-HyU"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="leading" secondItem="vMw-Jh-Cwr" secondAttribute="leading" id="V75-ib-6or"/>
+                                        <constraint firstItem="AD7-wn-JVw" firstAttribute="trailing" secondItem="S2B-NJ-DD8" secondAttribute="trailing" constant="6" id="ZOu-FQ-KJL"/>
                                         <constraint firstItem="vMw-Jh-Cwr" firstAttribute="centerX" secondItem="DvY-De-rNa" secondAttribute="centerX" id="syP-ri-eyF"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="trailing" secondItem="vMw-Jh-Cwr" secondAttribute="trailing" id="wTx-lu-VZT"/>
                                         <constraint firstAttribute="trailing" secondItem="CGZ-SJ-NBg" secondAttribute="trailing" id="ySI-q7-DFH"/>
@@ -314,7 +333,7 @@
                                     <rect key="frame" x="263.5" y="0.0" width="71.5" height="90"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTu-yY-Glt">
-                                            <rect key="frame" x="9" y="57" width="53" height="28"/>
+                                            <rect key="frame" x="9" y="57" width="53" height="29"/>
                                             <string key="text">Krystal
 Points </string>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
@@ -379,7 +398,7 @@ Points </string>
                             </constraints>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Supported Platforms" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2x5-5e-wSb">
-                            <rect key="frame" x="20" y="400" width="186" height="23.5"/>
+                            <rect key="frame" x="20" y="400" width="190" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -441,8 +460,8 @@ Points </string>
     <resources>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
-        <image name="deposit_invest_icon" width="26" height="26"/>
         <image name="krytal_invest_icon" width="24" height="21"/>
+        <image name="reward_icon" width="32" height="32"/>
         <image name="swap_inverst_icon" width="32" height="32"/>
         <image name="transfer_invest_icon" width="32" height="32"/>
         <namedColor name="investButtonBgColor">
@@ -450,6 +469,9 @@ Points </string>
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="secondaryColor">
+            <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
