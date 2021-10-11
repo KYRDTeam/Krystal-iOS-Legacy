@@ -184,7 +184,7 @@ class KNSupportedTokenStorage {
 
   func getActiveCustomToken() -> [Token] {
     return self.customTokens.filter { token in
-      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
+      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token) && !token.symbol.isEmpty
     }
   }
   
@@ -196,7 +196,7 @@ class KNSupportedTokenStorage {
   
   func getFullCustomToken() -> [Token] {
     return self.customTokens.filter { token in
-      return !self.getTokenDeleteStatus(token)
+      return !self.getTokenDeleteStatus(token) && !token.symbol.isEmpty
     }
   }
 
