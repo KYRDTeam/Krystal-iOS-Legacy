@@ -423,6 +423,7 @@ class KNLoadBalanceCoordinator {
         for item in balances {
           if let poolJSON = item["token"] as? JSONDictionary, let tokensJSON = item["underlying"] as? [JSONDictionary] {
             let lpmodel = LiquidityPoolModel(poolJSON: poolJSON, tokensJSON: tokensJSON)
+            lpmodel.poolSymbol = item["project"] as? String ?? "Liquidity Pool"
             poolArray.append(lpmodel)
           }
         }
