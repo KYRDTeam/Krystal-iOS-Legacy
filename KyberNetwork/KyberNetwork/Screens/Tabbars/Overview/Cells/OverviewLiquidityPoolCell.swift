@@ -29,6 +29,20 @@ class OverviewLiquidityPoolViewModel {
     }
     return pairTokens[1].token.symbol
   }
+  
+  func firstTokenLogo() -> String {
+    guard !pairTokens.isEmpty else {
+      return ""
+    }
+    return pairTokens[0].token.logo
+  }
+
+  func secondTokenLogo() -> String {
+    guard pairTokens.count > 1 else {
+      return ""
+    }
+    return pairTokens[1].token.logo
+  }
 
   func firstTokenValue() -> String {
     guard !pairTokens.isEmpty else {
@@ -78,8 +92,18 @@ class OverviewLiquidityPoolCell: UITableViewCell {
   }
 
   func updateCell(_ viewModel: OverviewLiquidityPoolViewModel) {
-    self.firstTokenIcon.setSymbolImage(symbol: viewModel.firstTokenSymbol())
-    self.secondTokenIcon.setSymbolImage(symbol: viewModel.secondTokenSymbol())
+    if viewModel.firstTokenLogo().isEmpty {
+      self.firstTokenIcon.setSymbolImage(symbol: viewModel.firstTokenSymbol())
+    } else {
+      self.firstTokenIcon.setImage(with: viewModel.firstTokenLogo(), placeholder: UIImage(named: "default_token")!)
+    }
+    
+    if viewModel.secondTokenLogo().isEmpty {
+      self.secondTokenIcon.setSymbolImage(symbol: viewModel.secondTokenSymbol())
+    } else {
+      self.secondTokenIcon.setImage(with: viewModel.secondTokenLogo(), placeholder: UIImage(named: "default_token")!)
+    }
+    
     self.firstTokenValueLabel.text = viewModel.firstTokenValue()
     self.secondTokenValueLabel.text = viewModel.secondTokenValue()
     self.balanceLabel.text = viewModel.balanceValue()
