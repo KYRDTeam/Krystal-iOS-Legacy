@@ -62,12 +62,4 @@ extension SignTransaction {
   }
 }
 
-struct EIP1559Transaction {
-  let chainID: String
-  let nonce: String
-  let gasLimit: String
-  let maxInclusionFeePerGas: String
-  let maxGasFee: String
-  let toAddress: String
-  let data: String
-}
+

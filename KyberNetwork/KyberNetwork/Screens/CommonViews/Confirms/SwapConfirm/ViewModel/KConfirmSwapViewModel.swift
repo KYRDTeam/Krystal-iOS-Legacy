@@ -7,13 +7,14 @@ struct KConfirmSwapViewModel {
 
   let transaction: KNDraftExchangeTransaction
   let ethBalance: BigInt
-  let signTransaction: SignTransaction
+  let signTransaction: SignTransaction?
   let hasRateWarning: Bool
   let platform: String
   let rawTransaction: TxObject
   let minDestAmount: BigInt
+  let eip1559Transaction: EIP1559Transaction?
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
+  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction?, eip1559Tx: EIP1559Transaction?, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
     self.transaction = transaction
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
@@ -21,6 +22,7 @@ struct KConfirmSwapViewModel {
     self.platform = platform
     self.rawTransaction = rawTransaction
     self.minDestAmount = minDestAmount
+    self.eip1559Transaction = eip1559Tx
   }
 
   var titleString: String {
@@ -34,11 +36,6 @@ struct KConfirmSwapViewModel {
 
   var equivalentUSDAmount: BigInt? {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.to.address) else { return nil }
-//    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.to) {
-//      let expectedReceive = self.transaction.expectedReceive
-//      return usdRate.rate * expectedReceive / BigInt(10).power(self.transaction.to.decimals)
-//    }
-//    return nil
     let usd = self.transaction.expectedReceive * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.to.decimals)
     return usd
   }

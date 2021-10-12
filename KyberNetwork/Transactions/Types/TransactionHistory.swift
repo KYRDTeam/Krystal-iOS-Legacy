@@ -298,10 +298,11 @@ class InternalHistoryTransaction: Codable {
   let transactionDetailDescription: String
   var transactionSuccessDescription: String?
   var earnTransactionSuccessDescription: String?
-  var transactionObject: SignTransactionObject
+  var transactionObject: SignTransactionObject?
+  var eip1559Transaction: EIP1559Transaction?
   let chain: ChainType
 
-  init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String, transactionObj: SignTransactionObject) {
+  init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String, transactionObj: SignTransactionObject?, eip1559Tx: EIP1559Transaction?) {
     self.type = type
     self.state = state
     self.fromSymbol = fromSymbol
@@ -309,6 +310,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionDescription = transactionDescription
     self.transactionDetailDescription = transactionDetailDescription
     self.transactionObject = transactionObj
+    self.eip1559Transaction = eip1559Tx
     self.chain = KNGeneralProvider.shared.currentChain
   }
 }

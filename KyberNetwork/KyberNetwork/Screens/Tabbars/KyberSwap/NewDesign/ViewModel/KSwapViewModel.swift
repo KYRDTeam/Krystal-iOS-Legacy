@@ -343,7 +343,7 @@ class KSwapViewModel {
   var displayMinDestAmount: String {
     return self.minDestQty.string(decimals: self.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.to.symbol
   }
-  
+
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
     if self.from.isETH || self.from.isBNB { fee += self.amountFromBigInt }
@@ -597,7 +597,7 @@ class KSwapViewModel {
       return ""
     }
   }
-  
+
   func getCurrentRateObj(platform: String) -> Rate? {
     let rateDict = self.swapRates.3.first { (element) -> Bool in
       return platform == element.platform
@@ -741,8 +741,43 @@ class KSwapViewModel {
   }
   
   func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
-    return nil
-    
+    let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.estimateGasLimit
+    let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
+    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let maxGasFeeDefault = gasPrice
+    let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    if let advancedGasStr = self.advancedGasLimit,
+       let gasLimit = BigInt(advancedGasStr),
+       let priorityFeeString = self.advancedMaxPriorityFee,
+       let priorityFee = BigInt(priorityFeeString),
+       let maxGasFeeString = self.advancedMaxFee,
+       let maxGasFee = BigInt(maxGasFeeString) {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
+    } else {
+      
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
+    }
   }
 
   func resetAdvancedSettings() {
@@ -752,5 +787,9 @@ class KSwapViewModel {
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
+  }
+  
+  var isUseEIP1559: Bool {
+    return KNGeneralProvider.shared.currentChain == .eth //TODO: determine more detail later
   }
 }

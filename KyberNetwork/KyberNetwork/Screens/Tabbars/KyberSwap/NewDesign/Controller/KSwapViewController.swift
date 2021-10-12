@@ -10,6 +10,7 @@ import Kingfisher
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
+  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
@@ -722,7 +723,7 @@ extension KSwapViewController {
       amount: amount,
       gasLimit: gasLimit
     )
-    
+
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
   }
@@ -895,7 +896,7 @@ extension KSwapViewController {
 
   func coordinatorSuccessUpdateEncodedTx(object: TxObject) {
     self.hideLoading()
-    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return }
+    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return } //TODO: eip1559 refactor
     let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount {
@@ -927,7 +928,13 @@ extension KSwapViewController {
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
-    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+    if self.viewModel.isUseEIP1559 {
+      guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
+      print(signTx)
+      self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(data: exchange, eip1559tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+    } else {
+      self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+    }
   }
 
   func coordinatorFailUpdateEncodedTx() {
@@ -1005,8 +1012,7 @@ extension KSwapViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
-    
-    
+
     if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     let double: Double = {

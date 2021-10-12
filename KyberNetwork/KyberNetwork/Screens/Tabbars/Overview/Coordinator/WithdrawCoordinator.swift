@@ -297,8 +297,8 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
         let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
-        let speedupTx = transaction.transactionObject.toSpeedupTransaction(account: account, gasPrice: newValue)
-        speedupTx.send(provider: provider) { (result) in
+        let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) //TODO: add case eip1559
+        speedupTx?.send(provider: provider) { (result) in
           switch result {
           case .success(let hash):
             savedTx?.hash = hash
@@ -331,12 +331,12 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
 extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let cancelTx = transaction.transactionObject.toCancelTransaction(account: account)
+      let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) //TODO: add case eip1559
       let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
       saved?.state = .cancel
       saved?.type = .transferETH
       saved?.transactionSuccessDescription = "-0 ETH"
-      cancelTx.send(provider: provider) { (result) in
+      cancelTx?.send(provider: provider) { (result) in
         switch result {
         case .success(let hash):
           saved?.hash = hash
@@ -521,7 +521,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                               blockchainProvider.minTxCount += 1
                               let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
                               self.session.addNewPendingTransaction(tx)
-                              let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject())
+                              let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil) //TODO: add case eip1559
                               historyTransaction.hash = hash
                               historyTransaction.time = Date()
                               historyTransaction.nonce = transaction.nonce

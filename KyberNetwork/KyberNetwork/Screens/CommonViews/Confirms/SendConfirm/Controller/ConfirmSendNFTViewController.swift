@@ -158,7 +158,7 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
-      let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "NFT", toSymbol: nil, transactionDescription: "Tranfering \(self.viewModel.nftItem.externalData.name)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0))
+      let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "NFT", toSymbol: nil, transactionDescription: "Tranfering \(self.viewModel.nftItem.externalData.name)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0), eip1559Tx: nil)
       historyTransaction.transactionSuccessDescription = "Tranfer successfull \(self.viewModel.nftItem.externalData.name)"
       
       self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(nftItem: self.viewModel.nftItem, nftCategory: self.viewModel.nftCategory, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, address: self.viewModel.address, amount: self.viewModel.amount, isSupportERC721: self.viewModel.supportERC721, historyTransaction: historyTransaction))

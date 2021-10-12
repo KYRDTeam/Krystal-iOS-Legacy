@@ -680,8 +680,8 @@ extension EarnCoordinator: SpeedUpCustomGasSelectDelegate {
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
         let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
-        let speedupTx = transaction.transactionObject.toSpeedupTransaction(account: account, gasPrice: newValue)
-        speedupTx.send(provider: provider) { (result) in
+        let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) //TODO: add case eip1559
+        speedupTx?.send(provider: provider) { (result) in
           switch result {
           case .success(let hash):
             savedTx?.hash = hash
@@ -757,12 +757,12 @@ extension EarnCoordinator: SpeedUpCustomGasSelectDelegate {
 extension EarnCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let cancelTx = transaction.transactionObject.toCancelTransaction(account: account)
+      let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) //TODO: add case eip1559
       let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
       saved?.state = .cancel
       saved?.type = .transferETH
       saved?.transactionSuccessDescription = "-0 ETH"
-      cancelTx.send(provider: provider) { (result) in
+      cancelTx?.send(provider: provider) { (result) in
         switch result {
         case .success(let hash):
           saved?.hash = hash

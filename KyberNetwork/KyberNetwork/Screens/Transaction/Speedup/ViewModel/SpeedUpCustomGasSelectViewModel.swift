@@ -68,7 +68,7 @@ class SpeedUpCustomGasSelectViewModel {
 
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let fee: BigInt? = {
-      guard let gasLimit = BigInt(self.transaction.transactionObject.gasLimit)
+      guard let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") //TODO: add case eip1559
         else { return nil }
       return gasPrice * gasLimit
     }()
@@ -96,8 +96,8 @@ class SpeedUpCustomGasSelectViewModel {
 
   var currentTransactionFeeETHString: String {
     let fee: BigInt? = {
-      guard let gasPrice = BigInt(self.transaction.transactionObject.gasPrice),
-        let gasLimit = BigInt(self.transaction.transactionObject.gasLimit)
+      guard let gasPrice = BigInt(self.transaction.transactionObject?.gasPrice ?? ""), //TODO: add case eip1559
+        let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") //TODO: add case eip1559
         else { return nil }
       return gasPrice * gasLimit
     }()
@@ -127,7 +127,7 @@ class SpeedUpCustomGasSelectViewModel {
   func getNewTransactionFeeETH() -> BigInt {
     let gasPrice = getNewTransactionGasPriceETH()
     let fee: BigInt? = {
-      guard let gasLimit = BigInt(self.transaction.transactionObject.gasLimit) else { return nil }
+      guard let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") else { return nil } //TODO: add case eip1559
       return gasPrice * gasLimit
     }()
     return fee ?? BigInt(0)
@@ -139,7 +139,7 @@ class SpeedUpCustomGasSelectViewModel {
 
   func isNewGasPriceValid() -> Bool {
     let newValue = getNewTransactionGasPriceETH()
-    let oldValue = BigInt(self.transaction.transactionObject.gasPrice) ?? BigInt(0)
+    let oldValue = BigInt(self.transaction.transactionObject?.gasPrice ?? "") ?? BigInt(0) //TODO: add case eip1559
     return newValue > ( oldValue * BigInt(11) / BigInt (10) )
   }
 }

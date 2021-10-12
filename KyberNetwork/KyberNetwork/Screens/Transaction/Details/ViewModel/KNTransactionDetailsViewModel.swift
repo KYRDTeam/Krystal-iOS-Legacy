@@ -391,15 +391,15 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayFromAddress: String {
-    return self.transaction.transactionObject.from
+    return self.transaction.transactionObject?.from ?? "" //TODO: add case eip1559
   }
   
   var displayToAddress: String {
-    return self.transaction.transactionObject.to ?? ""
+    return self.transaction.transactionObject?.to ?? "" //TODO: add case eip1559
   }
   
   var displayGasFee: String {
-    guard let gasPrice = BigInt(self.transaction.transactionObject.gasPrice), let gasLimit = BigInt(self.transaction.transactionObject.gasLimit) else {
+    guard let gasPrice = BigInt(self.transaction.transactionObject?.gasPrice ?? ""), let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") else { //TODO: add case eip1559
       return ""
     }
     let fee = gasPrice * gasLimit

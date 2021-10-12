@@ -595,6 +595,18 @@ class KNExternalProvider {
     }
   }
 
+  func signContractGenericEIP1559Transaction(_ transaction: EIP1559Transaction) -> Data? {
+    let result = self.keystore.exportPrivateKey(account: self.account)
+    guard case .success(let data) = result else { return nil }
+    return transaction.signContractGenericWithPK(data)
+  }
+
+  func signTransferEIP1559Transaction(_ transaction: EIP1559Transaction) -> Data? {
+    let result = self.keystore.exportPrivateKey(account: self.account)
+    guard case .success(let data) = result else { return nil }
+    return transaction.signTransferWithPK(data)
+  }
+
   // MARK: Web3Swift Encode/Decode data
   func getExchangeTransactionDecode(_ data: String, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     let request = KNExchangeEventDataDecode(data: data)
