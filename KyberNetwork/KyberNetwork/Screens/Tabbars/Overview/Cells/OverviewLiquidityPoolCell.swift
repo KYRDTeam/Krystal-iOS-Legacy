@@ -49,7 +49,7 @@ class OverviewLiquidityPoolViewModel {
       return ""
     }
     let tokenModel = pairTokens[0]
-    return tokenModel.getBalanceBigInt(self.currency).string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + firstTokenSymbol()
+    return tokenModel.getBalanceBigInt().string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + firstTokenSymbol()
   }
   
   func secondTokenValue() -> String {
@@ -57,7 +57,7 @@ class OverviewLiquidityPoolViewModel {
       return ""
     }
     let tokenModel = pairTokens[1]
-    return tokenModel.getBalanceBigInt(self.currency).string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + secondTokenSymbol()
+    return tokenModel.getBalanceBigInt().string(decimals: tokenModel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(tokenModel.token.decimals, 5)) + " " + secondTokenSymbol()
   }
   
   func balanceValue() -> String {
