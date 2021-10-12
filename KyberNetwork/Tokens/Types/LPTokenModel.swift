@@ -77,7 +77,7 @@ class LPTokenModel: Codable {
   }
 
 
-  func getBalanceBigInt(_ currency: CurrencyMode) -> BigInt {
+  func getBalanceBigInt() -> BigInt {
     return BigInt(self.balance) ?? BigInt(0)
   }
   
