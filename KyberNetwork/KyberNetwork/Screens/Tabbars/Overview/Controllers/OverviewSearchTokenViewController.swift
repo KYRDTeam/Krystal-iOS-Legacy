@@ -23,7 +23,7 @@ class OverviewSearchTokenViewModel {
       return
     }
     
-    var tokens = KNSupportedTokenStorage.shared.allTokens
+    var tokens = KNSupportedTokenStorage.shared.allActiveTokens
     tokens = tokens.filter({ (item) -> Bool in
       return item.symbol.lowercased().contains(self.searchText.lowercased())
     })
@@ -180,7 +180,7 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
 
 extension OverviewSearchTokenViewController: TagListViewDelegate {
   func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-    let tokens = KNSupportedTokenStorage.shared.allTokens
+    let tokens = KNSupportedTokenStorage.shared.allActiveTokens
     if let found = tokens.first(where: { (token) -> Bool in
       return token.symbol.lowercased() == title.lowercased()
     }) {

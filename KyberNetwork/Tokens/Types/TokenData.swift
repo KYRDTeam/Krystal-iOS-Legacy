@@ -38,6 +38,7 @@ class Token: Codable, Equatable, Hashable {
   func toObject(isCustom: Bool = false) -> TokenObject {
     let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
     tokenObject.isCustom = isCustom
+    tokenObject.volumn = self.getVol(.usd)
     return tokenObject
   }
   

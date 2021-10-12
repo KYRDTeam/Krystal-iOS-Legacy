@@ -103,7 +103,7 @@ class BalanceStorage {
   
   func getTotalAssetBalanceUSD(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
-    let tokens = KNSupportedTokenStorage.shared.allTokens
+    let tokens = KNSupportedTokenStorage.shared.allActiveTokens
     let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
     var lendingSymbols: [String] = []
     lendingBalances.forEach { (lendingPlatform) in
