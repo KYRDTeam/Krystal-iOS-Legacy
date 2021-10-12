@@ -195,15 +195,25 @@ class BalanceStorage {
       }
       currentPoolPairTokens = currentPoolPairTokens.sorted { pair1, pair2 in
         var totalPair1 = 0.0
+        var pair1Balance = 0.0
         pair1.forEach { lpmodel in
           totalPair1 += lpmodel.getTokenValue(currency)
+          pair1Balance += Double(lpmodel.getBalanceBigInt().string(decimals: lpmodel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(lpmodel.token.decimals, 5))) ?? 0
         }
         
         var totalPair2 = 0.0
+        var pair2Balance = 0.0
         pair2.forEach { lpmodel in
           totalPair2 += lpmodel.getTokenValue(currency)
+          pair2Balance += Double(lpmodel.getBalanceBigInt().string(decimals: lpmodel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(lpmodel.token.decimals, 5))) ?? 0
         }
-        return totalPair1 > totalPair2
+        
+        if totalPair1 != totalPair2 {
+          return totalPair1 > totalPair2
+        } else {
+          return pair1Balance > pair2Balance
+        }
+        
       }
       poolDict[symbol] = currentPoolPairTokens
     }
