@@ -181,18 +181,26 @@ class BalanceStorage {
     var allProject: [String] = []
 
     self.allLiquidityPool.forEach { poolModel in
-      if !allProject.contains(poolModel.project) {
+      let element = allProject.first { project in
+        project.lowercased() == poolModel.project.lowercased()
+      }
+      
+      if element == nil {
+        // only add project if `allProject` doesn't contain it < with case sensitive checked >
         allProject.append(poolModel.project)
       }
+
     }
 
     allProject.forEach { project in
       var currentPoolPairTokens: [[LPTokenModel]] = []
+      // add all pair of current pool project
       self.allLiquidityPool.forEach { poolModel in
-        if poolModel.project == project {
+        if poolModel.project.lowercased() == project.lowercased() {
           currentPoolPairTokens.append(poolModel.lpTokenArray)
         }
       }
+      // sort all pair in current pool project first by value then by balance
       currentPoolPairTokens = currentPoolPairTokens.sorted { pair1, pair2 in
         var totalPair1 = 0.0
         var pair1Balance = 0.0
@@ -215,12 +223,13 @@ class BalanceStorage {
         }
         
       }
-      poolDict[project] = currentPoolPairTokens
+      // add sorted list pair tokens with current pool project key
+      poolDict[project.lowercased()] = currentPoolPairTokens
     }
 
     allProject = allProject.sorted { key1, key2 in
       var totalSection1 = 0.0
-      poolDict[key1]?.forEach({ (item) in
+      poolDict[key1.lowercased()]?.forEach({ (item) in
         if let poolPairToken = item as? [LPTokenModel] {
           poolPairToken.forEach { token in
             //add total value of each token in current pair
@@ -230,7 +239,7 @@ class BalanceStorage {
       })
       
       var totalSection2 = 0.0
-      poolDict[key2]?.forEach({ (item) in
+      poolDict[key2.lowercased()]?.forEach({ (item) in
         if let poolPairToken = item as? [LPTokenModel] {
           poolPairToken.forEach { token in
             //add total value of each token in current pair

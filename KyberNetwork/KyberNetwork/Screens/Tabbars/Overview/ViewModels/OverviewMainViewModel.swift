@@ -385,7 +385,7 @@ class OverviewMainViewModel {
           var sectionModels: [OverviewLiquidityPoolViewModel] = []
           //value for total balance of current pool
           var totalSection = 0.0
-          data[key]?.forEach({ (item) in
+          data[key.lowercased()]?.forEach({ (item) in
             if let poolPairToken = item as? [LPTokenModel] {
               poolPairToken.forEach { token in
                 //add total value of each token in current pair
