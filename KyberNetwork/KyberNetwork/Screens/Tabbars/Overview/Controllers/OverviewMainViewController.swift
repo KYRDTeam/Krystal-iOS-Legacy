@@ -29,16 +29,19 @@ enum OverviewMainViewEvent {
 enum ViewMode: Equatable, Codable {
   case market(rightMode: RightMode)
   case asset(rightMode: RightMode)
+  case showLiquidityPool
   case supply
   case favourite(rightMode: RightMode)
   case nft
-  
+
   public static func == (lhs: ViewMode, rhs: ViewMode) -> Bool {
     switch (lhs, rhs) {
     case ( .market, .market):
       return true
     case ( .asset, .asset):
       return true
+    case ( .showLiquidityPool, .showLiquidityPool):
+        return true
     case ( .supply, .supply):
       return true
     case ( .favourite, .favourite):
@@ -51,7 +54,7 @@ enum ViewMode: Equatable, Codable {
   }
   
   enum CodingKeys: CodingKey {
-    case market, asset, supply, favourite, nft
+    case market, asset, showLiquidityPool, supply, favourite, nft
   }
   
   func encode(to encoder: Encoder) throws {
@@ -67,6 +70,8 @@ enum ViewMode: Equatable, Codable {
       try container.encode(rightMode, forKey: .favourite)
     case .nft:
       try container.encode(true, forKey: .nft)
+    case .showLiquidityPool:
+        try container.encode(true, forKey: .showLiquidityPool)
     }
   }
 
@@ -88,6 +93,8 @@ enum ViewMode: Equatable, Codable {
       self = .asset(rightMode: mode)
     case .supply:
       self = .supply
+    case .showLiquidityPool:
+        self = .showLiquidityPool
     case .favourite:
       let mode = try container.decode(
         RightMode.self,
@@ -252,6 +259,9 @@ class OverviewMainViewModel {
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
   var displayNFTHeader: [NFTSection] = []
+  
+  var displayLPDataSource: [String: [OverviewLiquidityPoolViewModel]] = [:]
+  
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
@@ -272,7 +282,7 @@ class OverviewMainViewModel {
     switch self.currentMode {
     case .asset, .market, .favourite:
       return self.displayDataSource[""]?.isEmpty ?? true
-    case .supply:
+    case .supply, .showLiquidityPool:
       return self.displayHeader.isEmpty
     case .nft:
       return self.displayNFTHeader.isEmpty
@@ -372,6 +382,37 @@ class OverviewMainViewModel {
       self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
       self.displayNFTHeader = []
       self.displayNFTDataSource = [:]
+    case .showLiquidityPool:
+        let liquidityPoolData = BalanceStorage.shared.getLiquidityPools(currency: self.currencyMode)
+        self.displayHeader = liquidityPoolData.0
+        let data = liquidityPoolData.1
+        var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
+        var total = 0.0
+        let currencyFormatter = StringFormatter()
+        self.displayHeader.forEach { (key) in
+          var sectionModels: [OverviewLiquidityPoolViewModel] = []
+          //value for total balance of current pool
+          var totalSection = 0.0
+          data[key]?.forEach({ (item) in
+            if let poolPairToken = item as? [LPTokenModel] {
+              poolPairToken.forEach { token in
+                //add total value of each token in current pair
+                totalSection += token.getTokenValue(self.currencyMode)
+              }
+              sectionModels.append(OverviewLiquidityPoolViewModel(currency: self.currencyMode, pairToken: poolPairToken))
+            }
+          })
+
+          models[key] = sectionModels
+          let displayTotalSection = self.currencyMode.symbol() + currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
+
+          self.displayTotalValues[key] = displayTotalSection
+          total += totalSection
+        }
+        self.displayLPDataSource = models
+        self.displayTotalValues["all"] = self.currencyMode.symbol() + currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
+        self.displayNFTHeader = []
+        self.displayNFTDataSource = [:]
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allActiveTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -461,23 +502,24 @@ class OverviewMainViewModel {
     guard !self.isEmpty() else {
       return 1
     }
+    guard !self.hiddenSections.contains(section) else {
+        return 0
+    }
 
     switch self.currentMode {
       case .nft:
-        if self.hiddenSections.contains(section) {
-            return 0
-        }
         let key = self.displayNFTHeader[section].collectibleName
         return self.displayNFTDataSource[key]?.count ?? 0
       case .asset:
         // + 1 row for hide/show small asset cell
         return self.getViewModelsForSection(section).count + 1
+      case .showLiquidityPool:
+        let key = self.displayHeader[section]
+        return self.displayLPDataSource[key]?.count ?? 0
       default:
         return self.getViewModelsForSection(section).count
     }
-
   }
-  
   
   var displayPageTotalValue: String {
     guard self.currentMode != .market(rightMode: .ch24), self.currentMode != .favourite(rightMode: .ch24), self.currentMode != .nft else {
@@ -517,6 +559,8 @@ class OverviewMainViewModel {
       return "Market"
     case .supply:
       return "Supply"
+    case .showLiquidityPool:
+        return "Liquidity Pool"
     case .favourite:
       return "Favourite"
     case .nft:
@@ -577,6 +621,12 @@ class OverviewMainViewController: KNBaseViewController {
     self.tableView.register(
       nibSupply,
       forCellReuseIdentifier: OverviewDepositTableViewCell.kCellID
+    )
+    
+    let nibLiquidityPool = UINib(nibName: OverviewLiquidityPoolCell.className, bundle: nil)
+    self.tableView.register(
+      nibLiquidityPool,
+      forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
     
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
@@ -883,6 +933,11 @@ extension OverviewMainViewController: UITableViewDataSource {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .depositMore)
       }
+    case .showLiquidityPool:
+      cell.imageIcon.image = UIImage(named: "liquidity_pool_empty_icon")
+      cell.titleLabel.text = "You don't have any liquidity pool".toBeLocalised()
+      cell.button1.isHidden = true
+      cell.button2.isHidden = true
     case .market:
       cell.imageIcon.image = UIImage(named: "empty_token_token")
       cell.titleLabel.text = "Your token list is empty"
@@ -953,6 +1008,16 @@ extension OverviewMainViewController: UITableViewDataSource {
       cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
       cell.updateCell(cellModel)
       return cell
+    case .showLiquidityPool:
+      let cell = tableView.dequeueReusableCell(
+        withIdentifier: OverviewLiquidityPoolCell.kCellID,
+        for: indexPath
+      ) as! OverviewLiquidityPoolCell
+        let key = self.viewModel.displayHeader[indexPath.section]
+        if let viewModel = self.viewModel.displayLPDataSource[key]?[indexPath.row] {
+          cell.updateCell(viewModel)
+        }
+      return cell
     case .nft:
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewNFTTableViewCell.kCellID,
@@ -971,7 +1036,7 @@ extension OverviewMainViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
-    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft else {
+    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
       return nil
     }
     guard !self.viewModel.displayHeader.isEmpty || !self.viewModel.displayNFTHeader.isEmpty else {
@@ -981,7 +1046,6 @@ extension OverviewMainViewController: UITableViewDataSource {
       return nil
     }
     if self.viewModel.currentMode == .nft {
-      
       let sectionItem = self.viewModel.displayNFTHeader[section]
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
       view.backgroundColor = .clear
@@ -1017,12 +1081,10 @@ extension OverviewMainViewController: UITableViewDataSource {
       arrowIcon.image = UIImage(named: "arrow_down_template")
       arrowIcon.tintColor = UIColor(named: "textWhiteColor")
       view.addSubview(arrowIcon)
-
       let button = UIButton(frame: view.frame)
       button.tag = section
       button.addTarget(self, action: #selector(sectionButtonTapped), for: .touchUpInside)
       view.addSubview(button)
-
       return view
     } else {
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
@@ -1046,7 +1108,7 @@ extension OverviewMainViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft else {
+    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
       return 0
     }
     return 40
@@ -1059,7 +1121,7 @@ extension OverviewMainViewController: UITableViewDelegate {
     guard !self.viewModel.isEmpty() else {
       return
     }
-    guard self.viewModel.currentMode != .nft else {
+    guard self.viewModel.currentMode != .nft, self.viewModel.currentMode != .showLiquidityPool else {
       return
     }
     
@@ -1095,6 +1157,8 @@ extension OverviewMainViewController: UITableViewDelegate {
       return OverviewMainViewCell.kCellHeight
     case.supply:
       return OverviewDepositTableViewCell.kCellHeight
+    case.showLiquidityPool:
+        return OverviewLiquidityPoolCell.kCellHeight
     case .nft:
       return OverviewNFTTableViewCell.kCellHeight
     }
