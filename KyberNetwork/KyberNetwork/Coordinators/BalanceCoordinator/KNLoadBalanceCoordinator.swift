@@ -421,9 +421,9 @@ class KNLoadBalanceCoordinator {
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
         var poolArray: [LiquidityPoolModel] = []
         for item in balances {
-          if let poolJSON = item["token"] as? JSONDictionary, let tokensJSON = item["underlying"] as? [JSONDictionary] {
+          if let poolJSON = item["token"] as? JSONDictionary, let tokensJSON = item["underlying"] as? [JSONDictionary], let project = item["project"] as? String {
             let lpmodel = LiquidityPoolModel(poolJSON: poolJSON, tokensJSON: tokensJSON)
-            lpmodel.poolSymbol = item["project"] as? String ?? "Liquidity Pool"
+            lpmodel.project = project
             poolArray.append(lpmodel)
           }
         }
