@@ -176,20 +176,20 @@ class BalanceStorage {
     return (sectionKeys, balanceDict)
   }
 
-  func getLiquidityPools(currency: CurrencyMode) -> ([String], [String : [Any]]) {
-    var poolDict: [String : [Any]] = [:]
-    var allSymbol: [String] = []
+  func getLiquidityPools(currency: CurrencyMode) -> ([String], [String: [Any]]) {
+    var poolDict: [String: [Any]] = [:]
+    var allProject: [String] = []
 
     self.allLiquidityPool.forEach { poolModel in
-      if !allSymbol.contains(poolModel.poolSymbol) {
-        allSymbol.append(poolModel.poolSymbol)
+      if !allProject.contains(poolModel.project) {
+        allProject.append(poolModel.project)
       }
     }
 
-    allSymbol.forEach { symbol in
+    allProject.forEach { project in
       var currentPoolPairTokens: [[LPTokenModel]] = []
       self.allLiquidityPool.forEach { poolModel in
-        if poolModel.poolSymbol == symbol {
+        if poolModel.project == project {
           currentPoolPairTokens.append(poolModel.lpTokenArray)
         }
       }
@@ -215,10 +215,10 @@ class BalanceStorage {
         }
         
       }
-      poolDict[symbol] = currentPoolPairTokens
+      poolDict[project] = currentPoolPairTokens
     }
 
-    allSymbol = allSymbol.sorted { key1, key2 in
+    allProject = allProject.sorted { key1, key2 in
       var totalSection1 = 0.0
       poolDict[key1]?.forEach({ (item) in
         if let poolPairToken = item as? [LPTokenModel] {
@@ -242,7 +242,7 @@ class BalanceStorage {
       return totalSection1 > totalSection2
     }
 
-    return (allSymbol, poolDict)
+    return (allProject, poolDict)
   }
   
   func getTotalBalance(_ currency: CurrencyMode) -> BigInt {
