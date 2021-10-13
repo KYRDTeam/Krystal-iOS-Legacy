@@ -522,6 +522,14 @@ extension KSendTokenViewController {
     self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
   }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
 }
 
 // MARK: UITextFieldDelegate

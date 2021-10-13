@@ -115,7 +115,7 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var advancedSettingsHeight: CGFloat {
-    return self.isSwapOption ? 504 : 250
+    return self.isSwapOption ? 504 : 320
   }
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {

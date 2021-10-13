@@ -92,7 +92,7 @@ class KNExternalProvider {
     }
   }
 
-  func transfer(transaction: UnconfirmedTransaction, completion: @escaping (Result<(String, SignTransaction), AnyError>) -> Void) {
+  func transfer(transaction: UnconfirmedTransaction, completion: @escaping (Result<(String, SignTransaction?, EIP1559Transaction?), AnyError>) -> Void) {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
@@ -101,23 +101,41 @@ class KNExternalProvider {
           guard let `self` = self else { return }
           switch dataResult {
           case .success(let data):
-            self.signTransactionData(from: transaction, nonce: self.minTxCount, data: data, completion: { signResult in
-              switch signResult {
-              case .success(let signData):
-                KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in
-                  guard let `self` = self else { return }
-                  if case .success(let hash) = result {
+            if transaction.maxInclusionFeePerGas != nil,
+                transaction.maxGasFee != nil {
+              if let eip1559Tx = transaction.toEIP1559Transaction(nonceInt: self.minTxCount, data: data, fromAddress: self.account.address.description),
+                  let data = self.signContractGenericEIP1559Transaction(eip1559Tx) {
+                print("[EIP1559] send tx \(eip1559Tx)")
+                print("[EIP1559] hex tx \(data.hexString)")
+                KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+                  switch sendResult {
+                  case .success(let hash):
                     self.minTxCount += 1
-                    completion(.success((hash, signData.1)))
-                  }
-                  if case .failure(let error) = result {
+                    completion(.success((hash, nil, eip1559Tx)))
+                  case .failure(let error):
                     completion(.failure(error))
                   }
                 })
-              case .failure(let error):
-                completion(.failure(error))
               }
-            })
+            } else {
+              self.signTransactionData(from: transaction, nonce: self.minTxCount, data: data, completion: { signResult in
+                switch signResult {
+                case .success(let signData):
+                  KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in
+                    guard let `self` = self else { return }
+                    if case .success(let hash) = result {
+                      self.minTxCount += 1
+                      completion(.success((hash, signData.1, nil)))
+                    }
+                    if case .failure(let error) = result {
+                      completion(.failure(error))
+                    }
+                  })
+                case .failure(let error):
+                  completion(.failure(error))
+                }
+              })
+            }
           case .failure(let error):
             completion(.failure(error))
           }

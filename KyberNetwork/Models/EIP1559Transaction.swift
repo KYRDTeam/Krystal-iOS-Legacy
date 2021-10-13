@@ -69,22 +69,22 @@ struct EIP1559Transaction: Codable {
       chainID: self.chainID,
       nonce: self.nonce,
       gasLimit: self.gasLimit,
-      maxInclusionFeePerGas: self.maxInclusionFeePerGas,
-      maxGasFee: cancelGas.hexEncoded.hexSigned2Complement,
+      maxInclusionFeePerGas: cancelGas.hexEncoded.hexSigned2Complement,
+      maxGasFee: self.maxGasFee,
       toAddress: self.toAddress,
-      fromAddress: self.fromAddress,
-      data: self.data,
-      value: self.value
+      fromAddress: self.toAddress,
+      data: "",
+      value: "00"
     )
   }
-  
+
   func toSpeedupTransaction(gasPrice: BigInt) -> EIP1559Transaction {
     return EIP1559Transaction(
       chainID: self.chainID,
       nonce: self.nonce,
       gasLimit: self.gasLimit,
-      maxInclusionFeePerGas: self.maxInclusionFeePerGas,
-      maxGasFee: gasPrice.hexEncoded.hexSigned2Complement,
+      maxInclusionFeePerGas: gasPrice.hexEncoded.hexSigned2Complement,
+      maxGasFee: self.maxGasFee,
       toAddress: self.toAddress,
       fromAddress: self.fromAddress,
       data: self.data,
@@ -94,16 +94,14 @@ struct EIP1559Transaction: Codable {
   
   fileprivate func gasPriceForCancelTransaction() -> BigInt {
     guard
-      let currentGasPrice = BigInt(self.maxGasFee.drop0x, radix: 16)
+      let currentGasPrice = BigInt(self.maxInclusionFeePerGas.drop0x, radix: 16)
     else
     {
       return KNGasConfiguration.gasPriceMax
     }
-    let gasPrice = max(currentGasPrice * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18), KNGasConfiguration.gasPriceMax)
+    let gasPrice = currentGasPrice * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18)
     return gasPrice
   }
-  
-  
 }
 
 

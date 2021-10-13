@@ -317,6 +317,10 @@ class KNGeneralProvider {
     }
     return Address(string: address)!
   }
+  
+  var isUseEIP1559: Bool {
+    return KNGeneralProvider.shared.currentChain == .eth //TODO: determine more detail later
+  }
 
   var wrapperAddress: Address {
     return Address(string: self.customRPC.wrappedAddress)!
