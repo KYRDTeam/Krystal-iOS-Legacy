@@ -8,6 +8,7 @@
 import UIKit
 
 class LiquidityPoolModel: Codable {
+  var project: String = "Liquidity Pool"
   var poolAdress: String
   var poolSymbol: String
   var poolName: String
