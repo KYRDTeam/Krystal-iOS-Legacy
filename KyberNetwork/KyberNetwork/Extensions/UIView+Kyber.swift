@@ -189,5 +189,16 @@ extension UIView {
       layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
       layer.shouldRasterize = true
       layer.rasterizationScale = scale ? UIScreen.main.scale : 1
-    }
+  }
+  
+  func roundWithCustomCorner(corners: UIRectCorner, radius: CGFloat) {
+    let path = UIBezierPath(roundedRect: self.bounds,
+                            byRoundingCorners: corners,
+                            cornerRadii: CGSize(width: radius, height:  radius))
+
+    let maskLayer = CAShapeLayer()
+
+    maskLayer.path = path.cgPath
+    self.layer.mask = maskLayer
+  }
 }
