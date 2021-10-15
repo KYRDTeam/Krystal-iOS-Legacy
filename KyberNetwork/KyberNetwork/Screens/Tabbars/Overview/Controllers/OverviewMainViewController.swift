@@ -530,15 +530,19 @@ extension OverviewMainViewController: UITableViewDataSource {
     } else {
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
       view.backgroundColor = .clear
-      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: 100, height: 40))
+      let rightTextString = self.viewModel.getTotalValueForSection(section)
+      let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
+      
+      
+      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
       titleLabel.center.y = view.center.y
       titleLabel.text = self.viewModel.displayHeader[section]
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
 
-      let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
-      valueLabel.text = self.viewModel.getTotalValueForSection(section)
+      let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - rightLabelWidth - 35, y: 0, width: rightLabelWidth, height: 40))
+      valueLabel.text = rightTextString
       valueLabel.font = UIFont.Kyber.regular(with: 18)
       valueLabel.textAlignment = .right
       valueLabel.textColor = UIColor(named: "textWhiteColor")
