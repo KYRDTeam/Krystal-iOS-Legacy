@@ -9,6 +9,7 @@ import UIKit
 
 class ToggleTokenCell: UITableViewCell {
   static let kCellID: String = "ToggleTokenCell"
+  var onValueChanged: ((Bool) -> Void)?
   override func awakeFromNib() {
       super.awakeFromNib()
       // Initialization code
@@ -20,7 +21,10 @@ class ToggleTokenCell: UITableViewCell {
       // Configure the view for the selected state
   }
     
-  @IBAction func onToggleButtonTapped(_ sender: Any) {
-    
+  @IBAction func onToggleButtonTapped(_ sender: UISwitch) {
+    guard let onValueChanged = onValueChanged else {
+      return
+    }
+    onValueChanged(sender.isOn)
   }
 }
