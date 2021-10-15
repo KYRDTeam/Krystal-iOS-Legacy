@@ -113,6 +113,11 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator = coordinator
   }
   
+  fileprivate func openRewardView() {
+    let coordinator = RewardCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.start()
+  }
+  
   func openHistoryScreen() {
     self.historyCoordinator = nil
     self.historyCoordinator = KNHistoryCoordinator(
@@ -154,8 +159,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.navigationController.tabBarController?.selectedIndex = 1
     case .transfer:
       self.openSendTokenView()
-    case .deposit:
-      self.navigationController.tabBarController?.selectedIndex = 3
+    case .reward:
+      self.openRewardView()
     case .krytal:
       self.openKrytalView()
     }
