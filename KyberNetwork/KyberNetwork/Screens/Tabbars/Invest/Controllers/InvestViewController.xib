@@ -287,7 +287,7 @@
                                                 <color key="titleColor" name="textWhiteColor"/>
                                             </state>
                                             <connections>
-                                                <action selector="depositButtonTapped:" destination="-1" eventType="touchUpInside" id="OBK-9X-CQh"/>
+                                                <action selector="rewardButtonTapped:" destination="-1" eventType="touchUpInside" id="h5d-xn-N9z"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AD7-wn-JVw">
