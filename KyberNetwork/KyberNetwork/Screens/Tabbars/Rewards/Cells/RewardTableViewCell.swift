@@ -12,6 +12,8 @@ class RewardTableViewCell: UITableViewCell {
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
   @IBOutlet weak var bgView: UIView!
+  @IBOutlet weak var tokenImageView: UIImageView!
+  
   var shouldRoundTopBGView = false
   override func awakeFromNib() {
       super.awakeFromNib()
@@ -29,5 +31,15 @@ class RewardTableViewCell: UITableViewCell {
 
       // Configure the view for the selected state
   }
-    
+  
+  func updateCell(model: KNRewardModel) {
+    let formatter = StringFormatter()
+    tokenBalanceLabel.text = formatter.currencyString(value: model.amount, symbol: model.rewardSymbol) + " " + model.rewardSymbol
+    if model.rewardImage.isEmpty {
+      tokenImageView.setSymbolImage(symbol: model.rewardSymbol)
+    } else {
+      tokenImageView.setImage(with: model.rewardImage, placeholder: UIImage(named: "default_token")!)
+    }
+    valueLabel.text = "$" + formatter.currencyString(value: model.value, symbol: model.symbol)
+  }
 }

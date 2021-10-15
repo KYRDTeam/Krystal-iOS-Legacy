@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -70,6 +70,7 @@
             <connections>
                 <outlet property="bgView" destination="fj7-8J-ueh" id="nJX-sB-Zed"/>
                 <outlet property="tokenBalanceLabel" destination="75A-zP-hek" id="QaX-8B-D4p"/>
+                <outlet property="tokenImageView" destination="8fn-OP-B0o" id="UTf-62-V1s"/>
                 <outlet property="valueLabel" destination="CII-xF-kYH" id="Kn6-hw-YRN"/>
             </connections>
             <point key="canvasLocation" x="126.81159420289856" y="143.30357142857142"/>
