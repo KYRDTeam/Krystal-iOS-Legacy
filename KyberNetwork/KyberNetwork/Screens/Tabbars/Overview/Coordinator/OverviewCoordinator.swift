@@ -440,6 +440,12 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
         controller.coordinatorDidSelectMode(.asset(rightMode: .value))
       }))
+        
+      let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
+      actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
+        controller.coordinatorDidSelectMode(.showLiquidityPool)
+      }))
+        
       let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
       actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
         controller.coordinatorDidSelectMode(.nft)

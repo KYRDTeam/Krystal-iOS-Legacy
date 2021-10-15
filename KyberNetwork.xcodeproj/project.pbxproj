@@ -449,6 +449,11 @@
 		77E0E773201FAD06009B4B31 /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
+		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
+		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
+		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
+		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
+		7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
@@ -1196,6 +1201,11 @@
 		77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
+		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
+		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
+		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
+		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
+		7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityPoolModel.swift; sourceTree = "<group>"; };
 		87FA1153388F27F599C430B8 /* Pods-TrustTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustTests/Pods-TrustTests.debug.xcconfig"; sourceTree = "<group>"; };
 		88401C14158F6CE1B2A8A18D /* Pods-KyberNetworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkTests/Pods-KyberNetworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3224,6 +3234,8 @@
 				29C0FCE4200EBAF6004A13CB /* TokenType.swift */,
 				C3F367B825C3CC58003207B7 /* TokenData.swift */,
 				C316809B25E785B700D0D887 /* TokenChartData.swift */,
+				7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */,
+				7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -3559,6 +3571,14 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
+		7EC4C6E927168A4900486C00 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		9A0F00B2D545197C8F7691C2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3703,6 +3723,7 @@
 		C31F748D25DCD1C2008B21F7 /* Overview */ = {
 			isa = PBXGroup;
 			children = (
+				7EC4C6E927168A4900486C00 /* ViewModels */,
 				C31F749025DCD1F6008B21F7 /* Cells */,
 				C31F748F25DCD1EC008B21F7 /* Controllers */,
 				C31F748E25DCD1E2008B21F7 /* Coordinator */,
@@ -3766,6 +3787,8 @@
 				C3012CC2269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.xib */,
 				C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */,
 				C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */,
+				7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */,
+				7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4319,6 +4342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C311AAD5269D86AD0082A728 /* OverviewChangeCurrencyViewController.xib in Resources */,
+				7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */,
 				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
 				C3F71C91261AB0FF00285935 /* ClaimRewardViewController.xib in Resources */,
 				C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */,
@@ -4851,6 +4875,7 @@
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
+				7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */,
 				255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */,
 				C60BB88E23959794006FE37D /* KNGetAddressFromResolverRequest.swift in Sources */,
 				25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */,
@@ -4918,6 +4943,7 @@
 				299B5E471FD2C87F0051361C /* ConfigureTransactionError.swift in Sources */,
 				C3F367BE25C3F63E003207B7 /* EarnSelectTableViewCell.swift in Sources */,
 				25BA01CE20BFEBA700053863 /* KNTransactionStatusView.swift in Sources */,
+				7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */,
 				2546C6D7221185640076E52B /* TransactionItemState.swift in Sources */,
 				25F96F7B215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.swift in Sources */,
 				257A37A5205D187100E86794 /* KNTransactionStatusViewController.swift in Sources */,
@@ -4977,6 +5003,7 @@
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
+				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
@@ -5027,6 +5054,7 @@
 				C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
 				C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */,
+				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,
 				C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
