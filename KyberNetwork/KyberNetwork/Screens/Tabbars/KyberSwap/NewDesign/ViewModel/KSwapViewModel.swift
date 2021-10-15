@@ -765,7 +765,6 @@ class KSwapViewModel {
         value: object.value.drop0x.hexSigned2Complement
       )
     } else {
-      
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
         nonce: object.nonce.hexSigned2Complement,

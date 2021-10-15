@@ -609,6 +609,7 @@
 		C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */; };
 		C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911025638DE700F57756 /* Lato-Light.ttf */; };
 		C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */; };
+		C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BA31FC27184367008E8DF6 /* GasPrice.swift */; };
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
 		C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */; };
 		C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3BBC56325FB4ACE004E1FB6 /* InvestViewController.xib */; };
@@ -1365,6 +1366,7 @@
 		C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C3A6911025638DE700F57756 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C3BA31FC27184367008E8DF6 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
 		C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestViewController.swift; sourceTree = "<group>"; };
 		C3BBC56325FB4ACE004E1FB6 /* InvestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvestViewController.xib; sourceTree = "<group>"; };
@@ -3198,6 +3200,7 @@
 				C36C5C6F26AEC4BB00A3711C /* Overview.swift */,
 				C39D3FE026FB33610021DF8A /* History.swift */,
 				C30F78E5271414AD00E3233D /* EIP1559Transaction.swift */,
+				C3BA31FC27184367008E8DF6 /* GasPrice.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4977,6 +4980,7 @@
 				C3ED1DDC2617027B0024970C /* Date+Kyber.swift in Sources */,
 				C3EDDCC225C1829400A99CC8 /* EarnViewController.swift in Sources */,
 				25CC0ACD2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift in Sources */,
+				C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */,
 				25BE329C209096E800D760FB /* KNListWalletsViewController.swift in Sources */,
 				25682B7D20EE0A36009738C4 /* KNTransactionDetailsCoordinator.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,

@@ -564,7 +564,6 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
                   userInfo: nil
                 )
               }
-              
             case .failure(let error):
               self.navigationController.showTopBannerView(message: error.description)
             }

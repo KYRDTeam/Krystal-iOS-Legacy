@@ -16,7 +16,8 @@ struct EarnSwapConfirmViewModel {
   let toAmount: BigInt
   let gasPrice: BigInt
   let gasLimit: BigInt
-  let transaction: SignTransaction
+  let transaction: SignTransaction?
+  let eip1559Transaction: EIP1559Transaction?
   let rawTransaction: TxObject
   
   var toAmountString: String {
@@ -200,11 +201,11 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      let transactionHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.toToken.symbol, toSymbol: self.viewModel.earnTokenSymbol, transactionDescription: "\(self.viewModel.toAmountString) -> \(self.viewModel.earnAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction.toSignTransactionObject(), eip1559Tx: nil) //TODO: add case eip1559
+      let transactionHistory = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.toToken.symbol, toSymbol: self.viewModel.earnTokenSymbol, transactionDescription: "\(self.viewModel.toAmountString) -> \(self.viewModel.earnAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction?.toSignTransactionObject(), eip1559Tx: self.viewModel.eip1559Transaction)
       transactionHistory.transactionSuccessDescription = "\(self.viewModel.earnAmountString) with \(self.viewModel.netAPYString) APY"
       let earnTokenString = self.viewModel.platform.isCompound ? self.viewModel.platform.compondPrefix + self.viewModel.toToken.symbol : "a" + self.viewModel.toToken.symbol
       transactionHistory.earnTransactionSuccessDescription = "You’ve received \(earnTokenString) token because you supplied \(self.viewModel.toToken.symbol) in \(self.viewModel.platform.name). Simply by holding \(earnTokenString) token, you will earn interest."
-      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.toAmountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: transactionHistory)
+      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, eip1559Transaction: self.viewModel.eip1559Transaction, amount: self.viewModel.toAmountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: transactionHistory)
     }
   }
   

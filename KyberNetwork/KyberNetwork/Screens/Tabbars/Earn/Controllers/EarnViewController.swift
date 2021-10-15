@@ -22,6 +22,10 @@ class EarnViewModel {
   fileprivate(set) var wallet: Wallet
   var remainApprovedAmount: (TokenData, BigInt)?
   var approvingToken: TokenObject?
+  
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
 
   init(data: TokenData, wallet: Wallet) {
     self.tokenData = data
@@ -116,6 +120,13 @@ class EarnViewModel {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
     default: return
     }
   }
@@ -195,6 +206,45 @@ class EarnViewModel {
       return nil
     }
   }
+  
+  func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
+    let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.gasLimit
+    let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
+    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let maxGasFeeDefault = gasPrice
+    let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    if let advancedGasStr = self.advancedGasLimit,
+       let gasLimit = BigInt(advancedGasStr),
+       let priorityFeeString = self.advancedMaxPriorityFee,
+       let priorityFee = BigInt(priorityFeeString),
+       let maxGasFeeString = self.advancedMaxFee,
+       let maxGasFee = BigInt(maxGasFeeString) {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
+    } else {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
+    }
+  }
 
   var selectedPlatformData: LendingPlatformData {
     let selected = self.selectedPlatform
@@ -262,7 +312,7 @@ enum EarnViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double)
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
-  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool, rawTransaction: TxObject)
+  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt)
@@ -288,6 +338,7 @@ protocol AbstractEarnViewControler: class {
   func coordinatorUpdateIsUseGasToken(_ state: Bool)
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat)
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt)
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String)
 }
 
 class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
@@ -581,12 +632,10 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
-    guard let tx = self.viewModel.buildSignSwapTx(txObject) else {
-      self.navigationController?.showErrorTopBannerMessage(with: "Can not build transaction".toBeLocalised())
-      return
-    }
+    let tx = self.viewModel.buildSignSwapTx(txObject)
+    let eip1559Tx = self.viewModel.buildEIP1559Tx(txObject)
     
-    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, isSwap: false,rawTransaction: txObject)
+    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, eip1559Transaction: eip1559Tx, isSwap: false,rawTransaction: txObject)
     self.delegate?.earnViewController(self, run: event)
   }
   
@@ -651,6 +700,14 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUIPendingTxIndicatorView()
     self.checkUpdateApproveButton()
     self.updateUIBalanceDidChange()
+  }
+  
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
   }
   
   fileprivate func checkUpdateApproveButton() {

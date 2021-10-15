@@ -14,7 +14,8 @@ struct EarnConfirmViewModel {
   let amount: BigInt
   let gasPrice: BigInt
   let gasLimit: BigInt
-  let transaction: SignTransaction
+  let transaction: SignTransaction?
+  let eip1559Transaction: EIP1559Transaction?
   let rawTransaction: TxObject
   
   var amountString: String {
@@ -95,7 +96,7 @@ struct EarnConfirmViewModel {
 }
 
 protocol EarnConfirmViewControllerDelegate: class {
-  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction)
+  func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction)
 }
 
 class EarnConfirmViewController: KNBaseViewController {
@@ -211,11 +212,11 @@ class EarnConfirmViewController: KNBaseViewController {
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      let historyTransaction = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.toTokenSym, transactionDescription: "\(self.viewModel.amountString) -> \(self.viewModel.toAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction.toSignTransactionObject(), eip1559Tx: nil) //TODO: add case eip1559
+      let historyTransaction = InternalHistoryTransaction(type: .earn, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.toTokenSym, transactionDescription: "\(self.viewModel.amountString) -> \(self.viewModel.toAmountString)", transactionDetailDescription: "", transactionObj: self.viewModel.transaction?.toSignTransactionObject(), eip1559Tx: self.viewModel.eip1559Transaction)
       historyTransaction.transactionSuccessDescription = "\(self.viewModel.amountString) with \(self.viewModel.netAPYString.dropFirst()) APY"
       let earnTokenString = self.viewModel.platform.isCompound ? self.viewModel.platform.compondPrefix + self.viewModel.token.symbol : "a" + self.viewModel.token.symbol
       historyTransaction.earnTransactionSuccessDescription = "You’ve received \(earnTokenString) token because you supplied \(self.viewModel.token.symbol) in \(self.viewModel.platform.name). Simply by holding \(earnTokenString) token, you will earn interest."
-      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
+      self.delegate?.earnConfirmViewController(self, didConfirm: self.viewModel.transaction, eip1559Transaction: self.viewModel.eip1559Transaction, amount: self.viewModel.amountString, netAPY: self.viewModel.netAPYString, platform: self.viewModel.platform, historyTransaction: historyTransaction)
     }
     
   }

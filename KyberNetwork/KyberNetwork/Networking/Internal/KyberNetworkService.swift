@@ -878,6 +878,7 @@ enum KrytalService {
   case getNTFBalance(address: String)
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
+  case getGasPrice2
 }
 
 extension KrytalService: TargetType {
@@ -966,6 +967,8 @@ extension KrytalService: TargetType {
       return "/v1/account/registerFavoriteNft"
     case .getTransactionsHistory:
       return "/v1/account/transactions"
+    case .getGasPrice2:
+      return "/v1/gasPrice"
     }
   }
 
@@ -1191,6 +1194,8 @@ extension KrytalService: TargetType {
         json["fromBlock"] = lastBlock
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getGasPrice2:
+      return .requestPlain
     }
   }
 
@@ -1217,6 +1222,7 @@ enum CoinGeckoService {
   case getPriceETH
   case getPriceTokens(addresses: [String])
 }
+
 /*
 extension CoinGeckoService: TargetType {
   var baseURL: URL {

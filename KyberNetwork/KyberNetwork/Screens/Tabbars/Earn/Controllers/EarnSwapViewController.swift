@@ -8,7 +8,7 @@
 import UIKit
 import BigInt
 import TrustCore
-
+//swiftlint:disable file_length
 class EarnSwapViewModel {
   fileprivate var fromTokenData: TokenData
   fileprivate var toTokenData: TokenData
@@ -23,6 +23,10 @@ class EarnSwapViewModel {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
+  
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
   
   var swapRates: (String, String, BigInt, [Rate]) = ("", "", BigInt(0), [])
   var currentFlatform: String = "Kyber" {
@@ -138,6 +142,13 @@ class EarnSwapViewModel {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
     default: return
     }
   }
@@ -216,6 +227,45 @@ class EarnSwapViewModel {
     } else {
       //TODO: handle watch wallet type
       return nil
+    }
+  }
+  
+  func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
+    let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.gasLimit
+    let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
+    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let maxGasFeeDefault = gasPrice
+    let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    if let advancedGasStr = self.advancedGasLimit,
+       let gasLimit = BigInt(advancedGasStr),
+       let priorityFeeString = self.advancedMaxPriorityFee,
+       let priorityFee = BigInt(priorityFeeString),
+       let maxGasFeeString = self.advancedMaxFee,
+       let maxGasFee = BigInt(maxGasFeeString) {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
+    } else {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: object.nonce.hexSigned2Complement,
+        gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
+        toAddress: object.to,
+        fromAddress: object.from,
+        data: object.data,
+        value: object.value.drop0x.hexSigned2Complement
+      )
     }
   }
 
@@ -826,11 +876,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
-    guard let tx = self.viewModel.buildSignSwapTx(txObject) else {
-      self.navigationController?.showErrorTopBannerMessage(with: "Can not build transaction".toBeLocalised())
-      return
-    }
-
+    let tx = self.viewModel.buildSignSwapTx(txObject)
+    let eip1559Tx = self.viewModel.buildEIP1559Tx(txObject)
     let event = EarnViewEvent.confirmTx(
       fromToken: self.viewModel.fromTokenData,
       toToken: self.viewModel.toTokenData,
@@ -840,6 +887,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       gasPrice: self.viewModel.gasPrice,
       gasLimit: self.viewModel.gasLimit,
       transaction: tx,
+      eip1559Transaction: eip1559Tx,
       isSwap: true,
       rawTransaction: txObject
     )
@@ -1003,6 +1051,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       self.updateUIWalletSelectButton()
       self.updateUIPendingTxIndicatorView()
     }
+  }
+  
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    
   }
 }
 
