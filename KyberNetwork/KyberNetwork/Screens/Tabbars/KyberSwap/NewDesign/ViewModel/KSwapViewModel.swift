@@ -345,6 +345,14 @@ class KSwapViewModel {
   var displayMaxSoldAmount: String {
     return self.maxAmtSold.string(decimals: self.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.from.symbol
   }
+  
+  var displayExpectedReceiveValue: String {
+    return self.isFocusingFromAmount ? self.displayMinDestAmount : self.displayMaxSoldAmount
+  }
+
+  var displayExpectedReceiveTitle: String {
+    return self.isFocusingFromAmount ? "Minimum received" : "Maximum sold"
+  }
 
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
