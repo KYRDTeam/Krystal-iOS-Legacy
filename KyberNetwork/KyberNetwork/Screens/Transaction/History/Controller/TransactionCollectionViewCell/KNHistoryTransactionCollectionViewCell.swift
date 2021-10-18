@@ -118,14 +118,13 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
     } else if historyItem.type == "Transfer" {
       return "TRANSFER"
     } else if historyItem.type == "Approval" {
-      return "APPROVED"
+      return "APPROVAL"
     } else if self.historyItem.type == "Supply" {
       return "SUPPLY"
     } else if self.historyItem.type == "Withdraw" {
       return "WITHDRAW"
-    }
-    else {
-      return "CONTRACT INTERACT"
+    } else {
+      return "CONTRACT INTERACTION"
     }
   }
   
@@ -146,9 +145,9 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return UIImage(named: "history_contract_interaction_icon")!
     }
   }
-  
+
   var displayTime: String {
-    let date = Date(timeIntervalSince1970: Double(self.historyItem.timestamp) ?? 0)
+    let date = Date(timeIntervalSince1970: Double(self.historyItem.timestamp))
     return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: date)
   }
   
