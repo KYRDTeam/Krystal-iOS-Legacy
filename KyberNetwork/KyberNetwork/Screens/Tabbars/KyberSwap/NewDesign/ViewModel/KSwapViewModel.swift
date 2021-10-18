@@ -741,9 +741,9 @@ class KSwapViewModel {
   }
   
   func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
+    guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.estimateGasLimit
     let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
-    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
     let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded

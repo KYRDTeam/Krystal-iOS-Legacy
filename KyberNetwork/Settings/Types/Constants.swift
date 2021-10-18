@@ -53,6 +53,7 @@ public struct Constants {
   public static let hideBalanceKey = "hide_balance_key"
   public static let viewModeStoreFileName = "view-mode.data"
   public static let historyKrystalTransactionsStoreFileName = "-krystal-history-transaction.data"
+  public static let gasPriceStoreFileName = "-gas_price.data"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,

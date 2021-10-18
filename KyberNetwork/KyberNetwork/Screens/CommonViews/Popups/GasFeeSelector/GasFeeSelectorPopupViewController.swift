@@ -59,6 +59,11 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var slow: BigInt = KNGasCoordinator.shared.lowKNGas
   fileprivate(set) var superFast: BigInt = KNGasCoordinator.shared.superFastKNGas
 
+  fileprivate(set) var priorityFast: BigInt? = KNGasCoordinator.shared.fastPriorityFee
+  fileprivate(set) var priorityMedium: BigInt? = KNGasCoordinator.shared.standardPriorityFee
+  fileprivate(set) var prioritySlow: BigInt? = KNGasCoordinator.shared.lowPriorityFee
+  fileprivate(set) var prioritySuperFast: BigInt? = KNGasCoordinator.shared.superFastPriorityFee
+
   fileprivate(set) var selectedType: KNSelectedGasPriceType
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
   fileprivate(set) var currentRate: Double
@@ -185,6 +190,11 @@ class GasFeeSelectorPopupViewModel {
     self.medium = medium
     self.slow = slow
     self.superFast = superFast
+    
+    self.priorityFast = KNGasCoordinator.shared.fastPriorityFee
+    self.priorityMedium = KNGasCoordinator.shared.standardPriorityFee
+    self.prioritySlow = KNGasCoordinator.shared.lowPriorityFee
+    self.prioritySuperFast = KNGasCoordinator.shared.superFastPriorityFee
   }
 
   func updateSelectedType(_ type: KNSelectedGasPriceType) {
@@ -230,9 +240,28 @@ class GasFeeSelectorPopupViewModel {
       return BigInt(0)
     }
   }
+  
+  func valueForPrioritySelectedType(type: KNSelectedGasPriceType) -> BigInt {
+    switch type {
+    case .superFast:
+      return self.prioritySuperFast ?? BigInt(0)
+    case .fast:
+      return self.priorityFast ?? BigInt(0)
+    case .medium:
+      return self.priorityMedium ?? BigInt(0)
+    case .slow:
+      return self.prioritySlow ?? BigInt(0)
+    default:
+      return BigInt(0)
+    }
+  }
 
   var selectedGasPriceValue: BigInt {
     return self.valueForSelectedType(type: self.selectedType)
+  }
+  
+  var selectedPriorityFeeValue: BigInt {
+    return self.valueForPrioritySelectedType(type: self.selectedType)
   }
 
   var maxPriorityFeeBigInt: BigInt {
@@ -240,8 +269,7 @@ class GasFeeSelectorPopupViewModel {
       let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
       return value
     } else {
-      let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-      let priorityFeeBigInt = self.selectedGasPriceValue - baseFeeBigInt
+      let priorityFeeBigInt = self.selectedPriorityFeeValue
       return priorityFeeBigInt
     }
   }
@@ -290,17 +318,17 @@ class GasFeeSelectorPopupViewModel {
       return self.maxGasFeeBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
     }
   }
-  
+
   var displayEquivalentMaxETHFee: String {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
     return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
   }
-  
+
   var maxPriorityErrorStatus: AdvancedInputError {
     guard let unwrap = self.advancedMaxPriorityFee, !unwrap.isEmpty else {
       return .none
     }
-    let baseFeeDouble = KNGasCoordinator.shared.basePrice.doubleValue
+    let baseFeeDouble = KNGasCoordinator.shared.baseFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue ?? 0
     let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
     let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
     let maxPriorityDouble = self.advancedMaxPriorityFee?.doubleValue ?? 0

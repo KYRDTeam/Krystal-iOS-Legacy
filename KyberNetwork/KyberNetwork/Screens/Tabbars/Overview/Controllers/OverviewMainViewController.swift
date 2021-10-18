@@ -230,7 +230,7 @@ enum CurrencyMode: Int {
       return 4
     }
   }
-  
+
   var isQuoteCurrency: Bool {
     return self == .eth || self == .bnb || self == .matic
   }

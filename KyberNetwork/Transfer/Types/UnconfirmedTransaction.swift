@@ -17,7 +17,7 @@ struct UnconfirmedTransaction {
   
   let maxInclusionFeePerGas: String?
   let maxGasFee: String?
-  
+
   func toEIP1559Transaction(nonceInt: Int, data: Data?, fromAddress: String) -> EIP1559Transaction? {
     func valueToSend(_ transaction: UnconfirmedTransaction) -> BigInt {
       return transaction.transferType.isETHTransfer() ? transaction.value : BigInt(0)
@@ -55,5 +55,3 @@ struct UnconfirmedTransaction {
     )
   }
 }
-
-

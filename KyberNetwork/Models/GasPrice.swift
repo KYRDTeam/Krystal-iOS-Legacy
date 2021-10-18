@@ -9,17 +9,18 @@ import Foundation
 
 // MARK: - GasPriceResponse
 struct GasPriceResponse: Codable {
-    let timestamp: Int
-    let gasPrice, priorityFee: GasPrice
-    let baseFee: String
+  let timestamp: Int
+  let gasPrice: GasPrice
+  let priorityFee: GasPrice?
+  let baseFee: String?
 }
 
 // MARK: - GasPrice
 struct GasPrice: Codable {
-    let fast, standard, low, gasPriceDefault: String
-
-    enum CodingKeys: String, CodingKey {
-        case fast, standard, low
-        case gasPriceDefault = "default"
-    }
+  let fast, standard, low, gasPriceDefault: String
+  
+  enum CodingKeys: String, CodingKey {
+    case fast, standard, low
+    case gasPriceDefault = "default"
+  }
 }

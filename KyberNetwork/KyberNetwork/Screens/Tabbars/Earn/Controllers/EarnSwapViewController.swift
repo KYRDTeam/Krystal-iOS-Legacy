@@ -233,7 +233,7 @@ class EarnSwapViewModel {
   func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
     let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.gasLimit
     let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
-    let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
     let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded

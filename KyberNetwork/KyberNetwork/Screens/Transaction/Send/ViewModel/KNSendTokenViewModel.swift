@@ -262,7 +262,7 @@ class KNSendTokenViewModel: NSObject {
           maxGasFee: maxGasFeeString
         )
       } else {
-        let baseFeeBigInt = KNGasCoordinator.shared.basePrice.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+        let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
         let priorityFeeBigIntDefault = self.gasPrice - baseFeeBigInt
         return UnconfirmedTransaction(
           transferType: transferType,
