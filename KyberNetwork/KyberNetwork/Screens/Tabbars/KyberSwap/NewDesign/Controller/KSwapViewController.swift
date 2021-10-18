@@ -459,12 +459,7 @@ class KSwapViewController: KNBaseViewController {
       srcAmount: self.viewModel.amountToEstimate,
       rawTx: self.viewModel.buildRawSwapTx()
     )
-    //Dismiss event call if the same parameter call within 5 sec
-//    if let previousEvent = self.previousCallEvent, previousEvent == event, Date().timeIntervalSince1970 - self.previousCallTimeStamp < 5 {
-//      return
-//    }
-//    self.previousCallEvent = event
-//    self.previousCallTimeStamp = Date().timeIntervalSince1970
+
     self.delegate?.kSwapViewController(self, run: event)
   }
 
@@ -1030,7 +1025,6 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.updateAllRates()
     self.updateEstimatedGasLimit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
