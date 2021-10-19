@@ -879,6 +879,7 @@ enum KrytalService {
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
   case getLiquidityPool(address: String, chain: String)
+  case getRewards(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -969,6 +970,8 @@ extension KrytalService: TargetType {
       return "/v1/account/transactions"
     case .getLiquidityPool:
       return "/v1/account/poolBalances"
+    case .getRewards:
+      return "/v1/account/rewards"
     }
   }
 
@@ -1201,6 +1204,11 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "address": address,
         "chain": chain
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getRewards(address: let address):
+      let json: JSONDictionary = [
+        "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
