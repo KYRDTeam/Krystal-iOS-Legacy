@@ -1117,7 +1117,7 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .buildClaimTx(address: let address, nonce: let nonce):
       let json: JSONDictionary = [
-        "lendingPlatform": "Compound",
+        "lendingPlatform": KNGeneralProvider.shared.lendingDistributionPlatform,
         "address": address,
         "gasPrice": KNGasCoordinator.shared.fastKNGas.description,
         "nonce": nonce

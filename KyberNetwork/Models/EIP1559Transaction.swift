@@ -91,7 +91,7 @@ struct EIP1559Transaction: Codable {
       value: self.value
     )
   }
-  
+
   fileprivate func gasPriceForCancelTransaction() -> BigInt {
     guard
       let currentGasPrice = BigInt(self.maxInclusionFeePerGas.drop0x, radix: 16)

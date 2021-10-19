@@ -20,6 +20,10 @@ class WithdrawViewModel {
   var isBearingTokenApproved: Bool = true
   var isUseGasToken: Bool = false
   var approvingTokenAddress: String?
+  
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
 
   init(platform: String, session: KNSession, balance: LendingBalance) {
     self.platform = platform
@@ -64,6 +68,13 @@ class WithdrawViewModel {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
     default: return
     }
   }
@@ -90,12 +101,12 @@ class WithdrawViewModel {
     }
     return "\(feeString) \(KNGeneralProvider.shared.quoteToken) (\(typeString))"
   }
-  
+
   var gasFeeString: String {
     self.updateSelectedGasPriceType(self.selectedGasPriceType)
     return self.formatFeeStringFor(gasPrice: self.gasPrice)
   }
-  
+
   var displayTitle: String {
     return "Withdraw".toBeLocalised() + " " + self.balance.symbol.uppercased()
   }
@@ -133,7 +144,7 @@ class WithdrawViewModel {
 
 enum WithdrawViewEvent {
   case getWithdrawableAmount(platform: String, userAddress: String, tokenAddress: String)
-  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool, historyTransaction: InternalHistoryTransaction)
+  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?, historyTransaction: InternalHistoryTransaction)
   case updateGasLimit(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
   case checkAllowance(tokenAddress: String)
   case sendApprove(tokenAddress: String, remain: BigInt, symbol: String)
@@ -216,10 +227,39 @@ class WithdrawViewController: KNBaseViewController {
   
   fileprivate func buildTx() {
     let description = "\(self.viewModel.displayAmount) \(self.viewModel.balance.interestBearingTokenSymbol) -> \(self.viewModel.displayAmount) \(self.viewModel.balance.symbol)"
-    let historyTransaction = InternalHistoryTransaction(type: .withdraw, state: .pending, fromSymbol: self.viewModel.balance.symbol, toSymbol: self.viewModel.balance.interestBearingTokenSymbol, transactionDescription: description, transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "",from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0), eip1559Tx: nil) //TODO: add case eip1559
+    let historyTransaction = InternalHistoryTransaction(
+      type: .withdraw,
+      state: .pending,
+      fromSymbol: self.viewModel.balance.symbol,
+      toSymbol: self.viewModel.balance.interestBearingTokenSymbol,
+      transactionDescription: description, transactionDetailDescription: "",
+      transactionObj: SignTransactionObject(
+        value: "",
+        from: "",
+        to: "",
+        nonce: 0,
+        data: Data(),
+        gasPrice: "",
+        gasLimit: "",
+        chainID: 0),
+      eip1559Tx: nil
+    )
     historyTransaction.transactionSuccessDescription = "\(self.viewModel.displayAmount) \(self.viewModel.balance.symbol)"
     
-    self.delegate?.withdrawViewController(self, run: .buildWithdrawTx(platform: self.viewModel.platform, token: self.viewModel.balance.address, amount: self.viewModel.amountBigInt.description, gasPrice: self.viewModel.gasPrice.description, useGasToken: true, historyTransaction: historyTransaction))
+    self.delegate?.withdrawViewController(
+      self,
+      run: .buildWithdrawTx(
+        platform: self.viewModel.platform,
+        token: self.viewModel.balance.address,
+        amount: self.viewModel.amountBigInt.description,
+        gasPrice: self.viewModel.gasPrice.description,
+        useGasToken: true,
+        advancedGasLimit: self.viewModel.advancedGasLimit,
+        advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+        advancedMaxGas: self.viewModel.advancedMaxFee,
+        historyTransaction: historyTransaction
+      )
+    )
   }
   
   fileprivate func loadAllowance() {
@@ -315,7 +355,15 @@ class WithdrawViewController: KNBaseViewController {
   func coordinatorUpdateIsUseGasToken(_ status: Bool) {
     self.viewModel.isUseGasToken = status
   }
-  
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateUIFee()
+  }
+
   @IBAction func withdrawButtonTapped(_ sender: UIButton) {
     if self.viewModel.isBearingTokenApproved {
       guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else { return }

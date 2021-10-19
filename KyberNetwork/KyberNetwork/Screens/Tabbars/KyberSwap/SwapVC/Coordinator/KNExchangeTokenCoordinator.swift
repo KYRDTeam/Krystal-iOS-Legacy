@@ -1114,30 +1114,6 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
   }
 }
 
-//extension KNExchangeTokenCoordinator: KNListNotificationViewControllerDelegate {
-//  func listNotificationViewController(_ controller: KNListNotificationViewController, run event: KNListNotificationViewEvent) {
-//    switch event {
-//    case .openSwap(let from, let to):
-//      self.navigationController.popViewController(animated: true) {
-//        self.appCoordinatorPushNotificationOpenSwap(from: from, to: to)
-//      }
-//    case .openManageOrder:
-////      if IEOUserStorage.shared.user == nil { return }
-//      self.delegate?.exchangeTokenCoordinatorOpenManageOrder()
-//    case .openSetting:
-//      self.openNotificationSettingScreen()
-//    }
-//  }
-//}
-//
-//extension KNExchangeTokenCoordinator: KNNotificationSettingViewControllerDelegate {
-//  func notificationSettingViewControllerDidApply(_ controller: KNNotificationSettingViewController) {
-//    self.navigationController.popViewController(animated: true) {
-//      self.showSuccessTopBannerMessage(message: "Updated subscription tokens".toBeLocalised())
-//    }
-//  }
-//}
-
 extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {

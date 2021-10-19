@@ -111,6 +111,45 @@ extension TxObject {
       return nil
     }
   }
+  
+  func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?) -> EIP1559Transaction? {
+    guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
+    let gasLimitDefault = BigInt(self.gasLimit.drop0x, radix: 16) ?? BigInt(0)
+    let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16) ?? BigInt(0)
+    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let maxGasFeeDefault = gasPrice
+    let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    if let advancedGasStr = advancedGasLimit,
+       let gasLimit = BigInt(advancedGasStr),
+       let priorityFeeString = advancedPriorityFee,
+       let priorityFee = BigInt(priorityFeeString),
+       let maxGasFeeString = advancedMaxGas,
+       let maxGasFee = BigInt(maxGasFeeString) {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: self.nonce.hexSigned2Complement,
+        gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
+        toAddress: self.to,
+        fromAddress: self.from,
+        data: self.data,
+        value: self.value.drop0x.hexSigned2Complement
+        )
+    } else {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: self.nonce.hexSigned2Complement,
+        gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
+        toAddress: self.to,
+        fromAddress: self.from,
+        data: self.data,
+        value: self.value.drop0x.hexSigned2Complement
+      )
+    }
+  }
 }
 
 enum InternalTransactionState: Codable {
