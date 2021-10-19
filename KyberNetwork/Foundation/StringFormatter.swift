@@ -22,11 +22,33 @@ final class StringFormatter {
         return formatter
     }()
   
-  func currencyString(value: Double, decimals: Int) -> String {
+    func currencyString(value: Double, symbol: String) -> String {
+      var maxDigits = 2
+      if symbol.lowercased() == "usd" {
+        maxDigits = 2
+      } else if symbol.lowercased() == "matic" {
+        maxDigits = 2
+      } else if symbol.lowercased() == "btc" {
+        maxDigits = 5
+      } else if symbol.lowercased() == "eth" {
+        maxDigits = 4
+      } else if symbol.lowercased() == "bnb" {
+        maxDigits = 3
+      } else if symbol.lowercased() == "avax" {
+        maxDigits = 4
+      }
+      
+      let formatter = NumberFormatter()
+      formatter.maximumFractionDigits = maxDigits
+      return formatter.string(from: NSNumber(value: value)) ?? ""
+    }
+
+    func currencyString(value: Double, decimals: Int) -> String {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = decimals
     return formatter.string(from: NSNumber(value: value)) ?? ""
   }
+
     /// Converts a Decimal to a `currency String`.
     ///
     /// - Parameters:
