@@ -11,17 +11,18 @@ struct KConfirmSwapViewModel {
   let hasRateWarning: Bool
   let platform: String
   let rawTransaction: TxObject
-  let minDestAmount: BigInt
+  let minReceiveAmount: String
+  let minReceiveTitle: String
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
-    self.transaction = transaction
-    self.ethBalance = ethBalance
-    self.signTransaction = signTransaction
-    self.hasRateWarning = hasRateWarning
-    self.platform = platform
-    self.rawTransaction = rawTransaction
-    self.minDestAmount = minDestAmount
-  }
+//  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
+//    self.transaction = transaction
+//    self.ethBalance = ethBalance
+//    self.signTransaction = signTransaction
+//    self.hasRateWarning = hasRateWarning
+//    self.platform = platform
+//    self.rawTransaction = rawTransaction
+//    self.minDestAmount = minDestAmount
+//  }
 
   var titleString: String {
     return "\(self.transaction.from.symbol) ➞ \(self.transaction.to.symbol)"
@@ -34,11 +35,6 @@ struct KConfirmSwapViewModel {
 
   var equivalentUSDAmount: BigInt? {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.to.address) else { return nil }
-//    if let usdRate = KNRateCoordinator.shared.usdRate(for: self.transaction.to) {
-//      let expectedReceive = self.transaction.expectedReceive
-//      return usdRate.rate * expectedReceive / BigInt(10).power(self.transaction.to.decimals)
-//    }
-//    return nil
     let usd = self.transaction.expectedReceive * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.to.decimals)
     return usd
   }
@@ -72,11 +68,6 @@ struct KConfirmSwapViewModel {
     let minRate = self.transaction.minRate ?? BigInt(0)
     return minRate.displayRate(decimals: 18)
   }
-  
-  var displayMinDestAmount: String {
-    return self.minDestAmount.string(decimals: self.transaction.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.transaction.to.symbol
-  }
-  
 
   var transactionFee: BigInt {
     let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas

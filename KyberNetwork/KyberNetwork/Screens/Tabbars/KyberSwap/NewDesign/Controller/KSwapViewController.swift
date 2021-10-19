@@ -9,7 +9,7 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
@@ -26,15 +26,6 @@ enum KSwapViewEvent {
   case signAndSendTx(tx: SignTransaction)
   case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, rawTx: RawSwapTransaction)
   case getRefPrice(from: TokenObject, to: TokenObject)
-
-//  static public func == (left: KSwapViewEvent, right: KSwapViewEvent) -> Bool {
-//    switch (left, right) {
-//    case let (.getGasLimit(fromL, toL, amountL, hintL), .getGasLimit(fromR, toR, amountR, hintR)):
-//      return fromL == fromR && toL == toR && amountL == amountR && hintL == hintR
-//    default:
-//      return false //Not implement
-//    }
-//  }
 }
 
 protocol KSwapViewControllerDelegate: class {
@@ -122,18 +113,9 @@ class KSwapViewController: KNBaseViewController {
     super.viewDidAppear(animated)
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
     self.isErrorMessageEnabled = true
-    // start update est rate
-//    self.estRateTimer?.invalidate()
+
     self.updateAllRates()
     self.updateAllowance()
-//    self.estRateTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.seconds30,
-//      repeats: true,
-//      block: { [weak self] _ in
-//        guard let `self` = self else { return }
-//        self.updateAllRates()
-//      }
-//    )
 
     // start update est gas limit
     self.estGasLimitTimer?.invalidate()
@@ -477,12 +459,7 @@ class KSwapViewController: KNBaseViewController {
       srcAmount: self.viewModel.amountToEstimate,
       rawTx: self.viewModel.buildRawSwapTx()
     )
-    //Dismiss event call if the same parameter call within 5 sec
-//    if let previousEvent = self.previousCallEvent, previousEvent == event, Date().timeIntervalSince1970 - self.previousCallTimeStamp < 5 {
-//      return
-//    }
-//    self.previousCallEvent = event
-//    self.previousCallTimeStamp = Date().timeIntervalSince1970
+
     self.delegate?.kSwapViewController(self, run: event)
   }
 
@@ -676,13 +653,8 @@ extension KSwapViewController {
   }
 
   fileprivate func updateUIMinReceiveAmount() {
-    if self.viewModel.isFocusingFromAmount {
-      self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
-      self.minReceivedAmountTitleLabel.text = "Minimum recieved"
-    } else {
-      self.minReceivedAmount.text = self.viewModel.displayMaxSoldAmount
-      self.minReceivedAmountTitleLabel.text = "Maximum sold"
-    }
+    self.minReceivedAmount.text = self.viewModel.displayExpectedReceiveValue
+    self.minReceivedAmountTitleLabel.text = self.viewModel.displayExpectedReceiveTitle
   }
 }
 
@@ -949,7 +921,7 @@ extension KSwapViewController {
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
-    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)))
   }
 
   func coordinatorFailUpdateEncodedTx() {
@@ -1053,7 +1025,6 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.updateAllRates()
     self.updateEstimatedGasLimit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()

@@ -20,6 +20,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var expectedRateLabel: UILabel!
   @IBOutlet weak var minAcceptableRateValueButton: UIButton!
+  @IBOutlet weak var minReceivedTitle: UILabel!
 
   @IBOutlet weak var transactionFeeETHLabel: UILabel!
   @IBOutlet weak var transactionFeeUSDLabel: UILabel!
@@ -65,7 +66,8 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
     self.expectedRateLabel.addLetterSpacing()
-    self.minAcceptableRateValueButton.setTitle(self.viewModel.displayMinDestAmount, for: .normal)
+    self.minAcceptableRateValueButton.setTitle(self.viewModel.minReceiveAmount, for: .normal)
+    self.minReceivedTitle.text = self.viewModel.minReceiveTitle
     self.minAcceptableRateValueButton.setTitleColor(
       self.viewModel.warningMinAcceptableRateMessage == nil ? UIColor(red: 245, green: 246, blue: 249) : UIColor(red: 250, green: 101, blue: 102),
       for: .normal
@@ -129,7 +131,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
-    
+
     let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: self.viewModel.signTransaction.toSignTransactionObject())
     internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
     self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction, internalHistoryTransaction: internalHistory)

@@ -525,7 +525,7 @@ class KNExternalProvider {
           if !isSwap && !data.isEmpty { // Add buffer for transfer token only
             limit += 20000
           }
-          return isSwap ? limit : min(limit, defaultGasLimit)
+          return limit
         }()
         NSLog("------ Estimate gas used: \(gasLimit.fullString(units: .wei)) ------")
         completion(.success(gasLimit))
