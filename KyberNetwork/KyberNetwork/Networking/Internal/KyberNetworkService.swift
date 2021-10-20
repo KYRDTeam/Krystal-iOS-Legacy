@@ -879,8 +879,8 @@ enum KrytalService {
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
   case getLiquidityPool(address: String, chain: String)
-  case getRewards(address: String)
-  case getClaimRewards(address: String)
+  case getRewards(address: String, accessToken: String)
+  case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
 }
 
@@ -1212,12 +1212,12 @@ extension KrytalService: TargetType {
         "chain": chain
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getRewards(address: let address):
+    case .getRewards(address: let address, _):
       let json: JSONDictionary = [
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getClaimRewards(address: let address):
+    case .getClaimRewards(address: let address, _):
       let json: JSONDictionary = [
         "address": address
       ]
@@ -1233,6 +1233,10 @@ extension KrytalService: TargetType {
   var headers: [String: String]? {
     switch self {
     case .getReferralOverview( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getRewards( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getClaimRewards( _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
     case .getRewardHistory(_ , _, _ , _ , _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
