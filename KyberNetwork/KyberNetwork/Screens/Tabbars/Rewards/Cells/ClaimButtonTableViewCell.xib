@@ -8,11 +8,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Karla-Bold.ttf">
-            <string>Karla-Bold</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -26,29 +21,34 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THu-c2-Ml6">
                         <rect key="frame" x="12" y="0.0" width="304" height="90"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim All" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4n6-m3-uJS">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDc-rs-s97">
                                 <rect key="frame" x="25" y="18" width="254" height="38"/>
                                 <color key="backgroundColor" name="buttonBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="oMO-P3-Q9J"/>
+                                    <constraint firstAttribute="height" constant="38" id="OZE-Qc-KrZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
-                                <color key="textColor" name="buttonTextColor"/>
-                                <nil key="highlightedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Claim All">
+                                    <fontDescription key="titleFontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
+                                    <color key="baseForegroundColor" name="mainViewBgColor"/>
+                                </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="19"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                            </label>
+                                <connections>
+                                    <action selector="onClaimButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="YyD-gR-1js"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="innerContainerBgColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="4n6-m3-uJS" secondAttribute="trailing" constant="25" id="Htl-ig-cIm"/>
-                            <constraint firstItem="4n6-m3-uJS" firstAttribute="top" secondItem="THu-c2-Ml6" secondAttribute="top" constant="18" id="RZO-pa-PDp"/>
-                            <constraint firstItem="4n6-m3-uJS" firstAttribute="leading" secondItem="THu-c2-Ml6" secondAttribute="leading" constant="25" id="Vn9-cG-zFP"/>
-                            <constraint firstAttribute="bottom" secondItem="4n6-m3-uJS" secondAttribute="bottom" constant="34" id="pIi-DV-dGh"/>
+                            <constraint firstAttribute="bottom" secondItem="sDc-rs-s97" secondAttribute="bottom" constant="34" id="15M-j1-Z2p"/>
+                            <constraint firstItem="sDc-rs-s97" firstAttribute="top" secondItem="THu-c2-Ml6" secondAttribute="top" constant="18" id="Esi-aO-BQE"/>
+                            <constraint firstAttribute="trailing" secondItem="sDc-rs-s97" secondAttribute="trailing" constant="25" id="oOU-6b-fFX"/>
+                            <constraint firstItem="sDc-rs-s97" firstAttribute="leading" secondItem="THu-c2-Ml6" secondAttribute="leading" constant="25" id="tpa-e1-F7a"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -63,7 +63,6 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="bgView" destination="THu-c2-Ml6" id="ZoN-mJ-dmD"/>
-                <outlet property="claimButton" destination="4n6-m3-uJS" id="xZa-JG-hGI"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="147.99107142857142"/>
         </tableViewCell>
@@ -71,9 +70,6 @@
     <resources>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="buttonTextColor">
-            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="innerContainerBgColor">
             <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

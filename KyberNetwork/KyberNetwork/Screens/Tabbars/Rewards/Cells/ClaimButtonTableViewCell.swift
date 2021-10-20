@@ -10,13 +10,15 @@ import UIKit
 class ClaimButtonTableViewCell: UITableViewCell {
   static let kCellID: String = "ClaimButtonTableViewCell"
   @IBOutlet weak var bgView: UIView!
-  @IBOutlet weak var claimButton: UILabel!
-  
+  var onClaimButtonTapped: (() -> Void)?
   override func awakeFromNib() {
     super.awakeFromNib()
-   
   }
-  
+
+  @IBAction func onClaimButtonTapped(_ sender: Any) {
+    guard let onClaimButtonTapped = onClaimButtonTapped else { return }
+    onClaimButtonTapped()
+  }
   override func layoutSubviews() {
     bgView.roundWithCustomCorner(corners: [.bottomRight, .bottomLeft], radius: 16)
   }
@@ -26,5 +28,5 @@ class ClaimButtonTableViewCell: UITableViewCell {
 
     // Configure the view for the selected state
   }
-    
+  
 }
