@@ -22,7 +22,7 @@ final class StringFormatter {
         return formatter
     }()
   
-    func currencyString(value: Double, symbol: String) -> String {
+    static func currencyString(value: Double, symbol: String) -> String {
       var maxDigits = 2
       if symbol.lowercased() == "usd" {
         maxDigits = 2
