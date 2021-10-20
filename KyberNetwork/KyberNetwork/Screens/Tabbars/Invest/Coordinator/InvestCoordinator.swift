@@ -23,6 +23,7 @@ class InvestCoordinator: Coordinator {
   var balances: [String: Balance] = [:]
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
+  var rewardCoordinator: RewardCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -116,6 +117,7 @@ class InvestCoordinator: Coordinator {
   fileprivate func openRewardView() {
     let coordinator = RewardCoordinator(navigationController: self.navigationController, session: self.session)
     coordinator.start()
+    self.rewardCoordinator = coordinator
   }
   
   func openHistoryScreen() {
@@ -140,6 +142,7 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
