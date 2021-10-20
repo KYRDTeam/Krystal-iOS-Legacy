@@ -111,6 +111,15 @@ extension TxObject {
       return nil
     }
   }
+  
+  func newTxObjectWithNonce(nonce: Int) -> TxObject {
+    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: self.gasPrice, nonce: String(nonce), gasLimit: self.gasLimit)
+  }
+  
+  func newTxObjectWithGasPrice(gasPrice: BigInt) -> TxObject {
+    let gasPriceString = gasPrice.hexEncoded
+    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: gasPriceString, nonce: self.nonce, gasLimit: self.gasLimit)
+  }
 }
 
 enum InternalTransactionState: Codable {
