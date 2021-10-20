@@ -33,13 +33,12 @@ class RewardTableViewCell: UITableViewCell {
   }
   
   func updateCell(model: KNRewardModel) {
-    let formatter = StringFormatter()
-    tokenBalanceLabel.text = formatter.currencyString(value: model.amount, symbol: model.rewardSymbol) + " " + model.rewardSymbol
+    tokenBalanceLabel.text = StringFormatter.currencyString(value: model.amount, symbol: model.rewardSymbol) + " " + model.rewardSymbol
     if model.rewardImage.isEmpty {
       tokenImageView.setSymbolImage(symbol: model.rewardSymbol)
     } else {
       tokenImageView.setImage(with: model.rewardImage, placeholder: UIImage(named: "default_token")!)
     }
-    valueLabel.text = "$" + formatter.currencyString(value: model.value, symbol: model.symbol)
+    valueLabel.text = "$" + StringFormatter.currencyString(value: model.value, symbol: model.symbol)
   }
 }
