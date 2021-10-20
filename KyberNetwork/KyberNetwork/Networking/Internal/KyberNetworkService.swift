@@ -880,6 +880,8 @@ enum KrytalService {
   case getTransactionsHistory(address: String, lastBlock: String)
   case getLiquidityPool(address: String, chain: String)
   case getRewards(address: String)
+  case getClaimRewards(address: String)
+  case checkEligibleWallet(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -972,6 +974,10 @@ extension KrytalService: TargetType {
       return "/v1/account/poolBalances"
     case .getRewards:
       return "/v1/account/rewards"
+    case .getClaimRewards:
+      return "/v1/account/claimRewards"
+    case .checkEligibleWallet:
+      return "/v1/account/eligible"
     }
   }
 
@@ -1207,6 +1213,16 @@ extension KrytalService: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getRewards(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getClaimRewards(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .checkEligibleWallet(address: let address):
       let json: JSONDictionary = [
         "address": address
       ]
