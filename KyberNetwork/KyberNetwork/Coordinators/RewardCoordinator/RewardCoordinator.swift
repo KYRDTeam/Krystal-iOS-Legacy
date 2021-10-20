@@ -15,19 +15,16 @@ class RewardCoordinator: Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
-  
+  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   lazy var rootViewController: RewardsViewController = {
     let controller = RewardsViewController()
     controller.delegate = self
     return controller
   }()
 
-  var claimRewardController: ClaimRewardsController?
-
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
     loadRewards()
-    loadClaimRewards(shouldShowPopup: false)
   }
 
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
@@ -39,13 +36,20 @@ class RewardCoordinator: Coordinator {
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
     let controller = KNTransactionStatusPopUp(transaction: transaction)
     controller.delegate = self
-    self.claimRewardController?.present(controller, animated: true, completion: nil)
+    self.rootViewController.present(controller, animated: true, completion: nil)
+    self.transactionStatusVC = controller
   }
   
   func loadRewards() {
+    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        self.loadRewards()
+      }
+      return
+    }
      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
      let address = self.session.wallet.address.description
-     provider.request(.getRewards(address: address)) { (result) in
+    provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
        if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
          var rewardModels: [KNRewardModel] = []
          if let rewards = json["claimableRewards"] as? [JSONDictionary] {
@@ -71,14 +75,20 @@ class RewardCoordinator: Coordinator {
        } else {
 
        }
-     }
+    }
   }
 
   func loadClaimRewards(shouldShowPopup: Bool = false) {
+    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        self.loadClaimRewards(shouldShowPopup: shouldShowPopup)
+      }
+      return
+    }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.address.description
 
-    provider.request(.getClaimRewards(address: address)) { (result) in
+    provider.request(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
         if let txJson = json["claimTx"] as? JSONDictionary,
            let from = txJson["from"] as? String,
@@ -89,7 +99,6 @@ class RewardCoordinator: Coordinator {
            let nonce = txJson["nonce"] as? String,
            let gasLimitString = txJson["gasLimit"] as? String {
           self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
-          
           let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
           self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
         }
@@ -116,22 +125,18 @@ class RewardCoordinator: Coordinator {
       return
     }
     KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
-//      controller.hideLoading()
       switch sendResult {
       case .success(let hash):
           print(hash)
           provider.minTxCount += 1
           let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
           self.session.addNewPendingTransaction(tx)
-          let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject())
+          let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: tx.from, toSymbol: tx.to, transactionDescription: "Claim-Reward", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject())
           historyTransaction.hash = hash
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-//          controller.dismiss(animated: true) {
           self.openTransactionStatusPopUp(transaction: historyTransaction)
-//          }
-        
       case .failure(let error):
         self.navigationController.showTopBannerView(message: error.localizedDescription)
       }
@@ -182,6 +187,15 @@ class RewardCoordinator: Coordinator {
       }
     }
   }
+
+  func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
+      self.transactionStatusVC?.updateView(with: tx)
+      self.loadRewards()
+      return true
+    }
+    return false
+  }
 }
 
 extension RewardCoordinator: RewardsViewControllerDelegate {
@@ -195,7 +209,6 @@ extension RewardCoordinator: RewardsViewControllerDelegate {
 
     let claimPopupViewController = ClaimRewardsController(viewModel: viewModel)
     claimPopupViewController.delegate = self
-    self.claimRewardController = claimPopupViewController
     self.rootViewController.present(claimPopupViewController, animated: true, completion: nil)
   }
 }
@@ -206,15 +219,16 @@ extension RewardCoordinator: ClaimRewardsControllerDelegate {
     guard let provider = self.session.externalProvider else {
       return
     }
-    
-    self.checkEligibleWallet { isEligible in
-      if isEligible {
-        self.getLatestNonce { (nonce) in
-          let newTxObject = txObject.newTxObjectWithNonce(nonce: provider.minTxCount)
-          if let transaction = newTxObject.convertToSignTransaction(wallet: self.session.wallet) {
-            self.getEstimateGasLimit(transaction: transaction)
-          } else {
-            self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+    controller.dismiss(animated: true) {
+      self.checkEligibleWallet { isEligible in
+        if isEligible {
+          self.getLatestNonce { (nonce) in
+            let newTxObject = txObject.newTxObjectWithNonce(nonce: provider.minTxCount)
+            if let transaction = newTxObject.convertToSignTransaction(wallet: self.session.wallet) {
+              self.getEstimateGasLimit(transaction: transaction)
+            } else {
+              self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
+            }
           }
         }
       }
@@ -224,6 +238,6 @@ extension RewardCoordinator: ClaimRewardsControllerDelegate {
 
 extension RewardCoordinator: KNTransactionStatusPopUpDelegate {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
-    
+    print("")
   }
 }
