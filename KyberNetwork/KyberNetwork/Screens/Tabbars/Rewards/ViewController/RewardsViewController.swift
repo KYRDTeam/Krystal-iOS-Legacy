@@ -138,7 +138,7 @@ extension RewardsViewController: UITableViewDataSource {
       withIdentifier: ToggleTokenCell.kCellID
     ) as! ToggleTokenCell
     cell.onValueChanged = { isOn in
-      self.viewModel.isShowingDetails = isOn
+      self.viewModel.isShowingDetails = !isOn
       self.updateUI()
     }
     return cell
