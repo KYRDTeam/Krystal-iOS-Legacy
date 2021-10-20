@@ -20,7 +20,9 @@ class ClaimButtonTableViewCell: UITableViewCell {
     onClaimButtonTapped()
   }
   override func layoutSubviews() {
-    bgView.roundWithCustomCorner(corners: [.bottomRight, .bottomLeft], radius: 16)
+    DispatchQueue.main.async {
+      self.bgView.roundWithCustomCorner(corners: [.bottomRight, .bottomLeft], radius: 16)
+    }
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {

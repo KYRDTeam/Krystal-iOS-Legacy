@@ -113,7 +113,8 @@ extension TxObject {
   }
   
   func newTxObjectWithNonce(nonce: Int) -> TxObject {
-    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: self.gasPrice, nonce: String(nonce), gasLimit: self.gasLimit)
+    let nonceString = BigInt(nonce).hexEncoded
+    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: self.gasPrice, nonce: nonceString, gasLimit: self.gasLimit)
   }
   
   func newTxObjectWithGasPrice(gasPrice: BigInt) -> TxObject {

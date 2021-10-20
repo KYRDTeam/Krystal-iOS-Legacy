@@ -21,10 +21,15 @@ class RewardTableViewCell: UITableViewCell {
   }
   
   override func layoutSubviews() {
+    super.layoutSubviews()
     if shouldRoundTopBGView {
-      bgView.roundWithCustomCorner(corners: [.topRight, .topLeft], radius: 16)
+      DispatchQueue.main.async {
+        self.bgView.roundWithCustomCorner(corners: [.topRight, .topLeft], radius: 16)
+      }
     }
   }
+  
+
 
   override func setSelected(_ selected: Bool, animated: Bool) {
       super.setSelected(selected, animated: animated)
