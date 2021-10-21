@@ -20,6 +20,13 @@ class RewardsViewControllerViewModel {
   var shouldDisableClaim = false
   var supportedChains: [Int] = []
   
+  
+  func totalBalanceString() -> String {
+    guard let model = rewardDetailDisplayDataSource.last else {
+      return "--/--"
+    }
+    return "+ " + StringFormatter.amountString(value: model.amount) + " " + model.rewardSymbol
+  }
   func updateFilterDataSourceIfNeed() {
     if rewardDataSource.isEmpty {
       return
@@ -114,8 +121,8 @@ class RewardsViewController: KNBaseViewController {
     // check current chain is in supported chain or not ? if not then show popup switch chain
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
       let alertController = KNPrettyAlertController(
-        title: "Please switch to BSC to claim rewards".toBeLocalised(),
-        message: "",
+        title: "",
+        message: "Please switch to BSC to claim rewards".toBeLocalised(),
         secondButtonTitle: "OK".toBeLocalised(),
         firstButtonTitle: "Cancel".toBeLocalised(),
         secondButtonAction: {
