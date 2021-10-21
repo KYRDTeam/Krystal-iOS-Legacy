@@ -25,7 +25,7 @@ class RewardDetailCell: UITableViewCell {
   }
     
   func updateCell(model: KNRewardModel) {
-    valueLabel.text = "+ " + StringFormatter.currencyString(value: model.amount, symbol: model.rewardSymbol) + " " + model.rewardSymbol
+    valueLabel.text = "+ " + StringFormatter.amountString(value: model.amount) + " " + model.rewardSymbol
     let date = Date(timeIntervalSince1970: TimeInterval(model.timestamp))
     dateTimeLabel.text = DateFormatterUtil.shared.rewardDateTimeFormatter.string(from: date)
     sourceLabel.text = model.source

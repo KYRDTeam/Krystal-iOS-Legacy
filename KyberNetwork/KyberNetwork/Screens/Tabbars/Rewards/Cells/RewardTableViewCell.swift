@@ -38,7 +38,7 @@ class RewardTableViewCell: UITableViewCell {
   }
   
   func updateCell(model: KNRewardModel) {
-    tokenBalanceLabel.text = StringFormatter.currencyString(value: model.amount, symbol: model.rewardSymbol) + " " + model.rewardSymbol
+    tokenBalanceLabel.text = StringFormatter.amountString(value: model.amount) + " " + model.rewardSymbol
     if model.rewardImage.isEmpty {
       tokenImageView.setSymbolImage(symbol: model.rewardSymbol)
     } else {
