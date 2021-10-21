@@ -1392,7 +1392,7 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
           }
         }
       }
-      
+
       if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
@@ -1411,7 +1411,6 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
           }
         })
       }
-      
     } else {
       self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
     }

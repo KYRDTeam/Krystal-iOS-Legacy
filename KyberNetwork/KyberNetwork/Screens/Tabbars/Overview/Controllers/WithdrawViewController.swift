@@ -114,7 +114,7 @@ class WithdrawViewModel {
   var transactionFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
-  
+
   var feeETHString: String {
     let string: String = self.transactionFee.displayRate(decimals: 18)
     return "\(string) \(KNGeneralProvider.shared.quoteToken)"
