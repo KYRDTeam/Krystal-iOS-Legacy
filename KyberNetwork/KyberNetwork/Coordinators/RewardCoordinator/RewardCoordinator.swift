@@ -169,10 +169,13 @@ class RewardCoordinator: Coordinator {
           provider.minTxCount += 1
           let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
           self.session.addNewPendingTransaction(tx)
-          let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: tx.from, toSymbol: tx.to, transactionDescription: "Claim-Reward", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject())
+          let description = self.rootViewController.viewModel.totalBalanceString()
+          let detailDescription = tx.to
+          let historyTransaction = InternalHistoryTransaction(type: .claimReward, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: description, transactionDetailDescription: detailDescription, transactionObj: transaction.toSignTransactionObject())
           historyTransaction.hash = hash
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce
+          
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.claimRewardController?.dismiss(animated: true, completion: {
             self.openTransactionStatusPopUp(transaction: historyTransaction)
