@@ -339,6 +339,11 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return "Receive \(tx.tokenName)"
       }
       return "Receive NFT"
+    case .claimReward:
+//        if let tx = self.data.internalTransactions.first {
+//          return "+ \(tx.tokenName)"
+//        }
+      return "Claim Reward - Amount"
     }
   }
 
@@ -449,6 +454,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return "From: \(tx.from)"
       }
       return ""
+    case .claimReward:
+      return "Claim reward to adress"
     }
   }
   
@@ -480,6 +487,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "TRANSFER"
     case .receiveNFT:
       return "RECEIVED"
+    case .claimReward:
+      return "CLAIM REWARD"
     }
   }
 
@@ -521,6 +530,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .claimReward:
+      return UIImage(named: "history_claim_reward_icon")!
     }
   }
 
@@ -605,6 +616,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return "TRANSFER"
     case .receiveNFT:
       return "RECEIVED"
+    case .claimReward:
+      return "CLAIM REWARD"
     }
   }
 
@@ -640,6 +653,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .claimReward:
+      return UIImage(named: "history_claim_reward_icon")!
     }
   }
 
