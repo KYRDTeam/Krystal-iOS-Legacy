@@ -19,7 +19,12 @@ class RewardsViewControllerViewModel {
     if section == 0 {
       return rewardDataSource.isEmpty ? 0 : rewardDataSource.count + 1
     } else if isShowingDetails {
-      return rewardDetailDataSource.isEmpty ? 0 : rewardDetailDataSource.count + 1
+      if rewardDataSource.isEmpty {
+        return rewardDetailDataSource.isEmpty ? 0 : rewardDetailDataSource.count + 1
+      } else {
+        return rewardDetailDataSource.isEmpty ? 0 : rewardDetailDataSource.count
+      }
+      
     } else {
       return 1
     }
@@ -29,7 +34,8 @@ class RewardsViewControllerViewModel {
     if indexPath.section == 0 {
       return rewardDataSource[indexPath.row]
     } else {
-      return rewardDetailDataSource[indexPath.row - 1]
+      let index = rewardDataSource.isEmpty ? indexPath.row : indexPath.row - 1
+      return rewardDetailDataSource[index]
     }
   }
 }
@@ -160,7 +166,11 @@ extension RewardsViewController: UITableViewDataSource {
     if indexPath.section == 0 {
       return indexPath.row == self.viewModel.rewardDataSource.count ? claimButtonCell() : rewardCell(indexPath)
     } else {
-      return indexPath.row == 0 ? toggleRewardDetailCell() : rewardDetailCell(indexPath)
+      if self.viewModel.rewardDataSource.isEmpty {
+        return rewardDetailCell(indexPath)
+      } else {
+        return indexPath.row == 0 ? toggleRewardDetailCell() : rewardDetailCell(indexPath)
+      }
     }
   }
 
