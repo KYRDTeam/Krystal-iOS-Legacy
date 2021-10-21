@@ -16,6 +16,7 @@ class RewardCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
+
   lazy var rootViewController: RewardsViewController = {
     let controller = RewardsViewController()
     controller.delegate = self
@@ -52,31 +53,34 @@ class RewardCoordinator: Coordinator {
      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
      let address = self.session.wallet.address.description
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
-       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
-         var rewardModels: [KNRewardModel] = []
-         if let rewards = json["claimableRewards"] as? [JSONDictionary] {
-           rewardModels = rewards.map({ item in
-             return KNRewardModel(json: item)
-           })
-         }
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:]{
+          var rewardModels: [KNRewardModel] = []
+          if let rewards = json["claimableRewards"] as? [JSONDictionary] {
+            rewardModels = rewards.map({ item in
+              return KNRewardModel(json: item)
+            })
+          }
 
-         var rewardDetailModel: [KNRewardModel] = []
-         if let rewardDetails = json["rewards"] as? [JSONDictionary] {
-           rewardDetailModel = rewardDetails.map({ item in
-             return KNRewardModel(json: item)
-           })
-         }
+          var rewardDetailModel: [KNRewardModel] = []
+          if let rewardDetails = json["rewards"] as? [JSONDictionary] {
+            rewardDetailModel = rewardDetails.map({ item in
+              return KNRewardModel(json: item)
+            })
+          }
 
-         var supportedChains: [Int] = []
-         if let chainArrays = json["supportedChainIDs"] as? [Int] {
-           supportedChains = chainArrays
-         }
+          var supportedChains: [Int] = []
+          if let chainArrays = json["supportedChainIDs"] as? [Int] {
+            supportedChains = chainArrays
+          }
 
-//         Storage.store(data.overview, as: self.session.wallet.address.description + Constants.referralOverviewStoreFileName)
-         self.rootViewController.coordinatorDidUpdateRewards(rewards: rewardModels, rewardDetails: rewardDetailModel, supportedChain: supportedChains)
-       } else {
-
-       }
+ //         Storage.store(data.overview, as: self.session.wallet.address.description + Constants.referralOverviewStoreFileName)
+          self.rootViewController.coordinatorDidUpdateRewards(rewards: rewardModels, rewardDetails: rewardDetailModel, supportedChain: supportedChains)
+        }
+      case .failure(let error):
+        print("[Get rewards] \(error.localizedDescription)")
+      }
     }
   }
 
@@ -91,25 +95,29 @@ class RewardCoordinator: Coordinator {
     let address = self.session.wallet.address.description
 
     provider.request(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
-      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
-        if let txJson = json["claimTx"] as? JSONDictionary,
-           let from = txJson["from"] as? String,
-           let to = txJson["to"] as? String,
-           let value = txJson["value"] as? String,
-           let dataString = txJson["data"] as? String,
-           let gasPrice = txJson["gasPrice"] as? String,
-           let nonce = txJson["nonce"] as? String,
-           let gasLimitString = txJson["gasLimit"] as? String {
-          self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
-          let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
-          self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let txJson = json["claimTx"] as? JSONDictionary,
+             let from = txJson["from"] as? String,
+             let to = txJson["to"] as? String,
+             let value = txJson["value"] as? String,
+             let dataString = txJson["data"] as? String,
+             let gasPrice = txJson["gasPrice"] as? String,
+             let nonce = txJson["nonce"] as? String,
+             let gasLimitString = txJson["gasLimit"] as? String {
+            self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
+            let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
+            self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
+          }
         }
-      } else {
-
+        
+      case .failure(let error):
+        print("[Claim reward] \(error.localizedDescription)")
       }
     }
   }
-  
+
   func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.address.description
