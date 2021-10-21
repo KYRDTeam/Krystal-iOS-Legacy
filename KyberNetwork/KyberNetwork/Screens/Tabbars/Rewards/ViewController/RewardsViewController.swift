@@ -173,6 +173,7 @@ extension RewardsViewController: UITableViewDataSource {
       for: indexPath
     ) as! RewardDetailCell
     cell.updateCell(model: self.viewModel.dataModelAtIndex(indexPath))
+    cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor(named: "mainViewBgColor") : UIColor(named: "buttonTextColor")
     return cell
   }
 
