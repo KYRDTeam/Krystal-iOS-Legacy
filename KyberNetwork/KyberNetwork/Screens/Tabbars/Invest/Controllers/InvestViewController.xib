@@ -290,34 +290,15 @@
                                                 <action selector="rewardButtonTapped:" destination="-1" eventType="touchUpInside" id="h5d-xn-N9z"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AD7-wn-JVw">
-                                            <rect key="frame" x="44" y="14" width="14" height="14"/>
-                                            <color key="backgroundColor" name="secondaryColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="14" id="7Et-ia-U6p"/>
-                                                <constraint firstAttribute="width" constant="14" id="soX-g6-eVC"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="8"/>
-                                            <color key="textColor" name="textWhiteColor"/>
-                                            <nil key="highlightedColor"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="7"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="CGZ-SJ-NBg" secondAttribute="bottom" id="2Js-5P-nej"/>
-                                        <constraint firstItem="AD7-wn-JVw" firstAttribute="top" secondItem="S2B-NJ-DD8" secondAttribute="top" constant="-1" id="3Pq-JA-iwX"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="top" secondItem="vMw-Jh-Cwr" secondAttribute="bottom" constant="10" id="A73-tM-Fs3"/>
                                         <constraint firstItem="vMw-Jh-Cwr" firstAttribute="top" secondItem="DvY-De-rNa" secondAttribute="top" constant="15" id="C2K-Cv-PXz"/>
                                         <constraint firstItem="CGZ-SJ-NBg" firstAttribute="leading" secondItem="DvY-De-rNa" secondAttribute="leading" id="KEc-33-nVW"/>
                                         <constraint firstItem="CGZ-SJ-NBg" firstAttribute="top" secondItem="DvY-De-rNa" secondAttribute="top" id="Tiw-yw-HyU"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="leading" secondItem="vMw-Jh-Cwr" secondAttribute="leading" id="V75-ib-6or"/>
-                                        <constraint firstItem="AD7-wn-JVw" firstAttribute="trailing" secondItem="S2B-NJ-DD8" secondAttribute="trailing" constant="6" id="ZOu-FQ-KJL"/>
                                         <constraint firstItem="vMw-Jh-Cwr" firstAttribute="centerX" secondItem="DvY-De-rNa" secondAttribute="centerX" id="syP-ri-eyF"/>
                                         <constraint firstItem="mYW-HX-J6b" firstAttribute="trailing" secondItem="vMw-Jh-Cwr" secondAttribute="trailing" id="wTx-lu-VZT"/>
                                         <constraint firstAttribute="trailing" secondItem="CGZ-SJ-NBg" secondAttribute="trailing" id="ySI-q7-DFH"/>
@@ -469,9 +450,6 @@ Points </string>
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="secondaryColor">
-            <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
