@@ -442,8 +442,8 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-
-    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc)) { [weak self] result in
+    let address = self.session.wallet.address.description
+    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
