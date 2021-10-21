@@ -218,6 +218,8 @@ enum HistoryModelType: Codable {
       self = .transferNFT
     case 12:
       self = .receiveNFT
+    case 13:
+      self = .claimReward
     default:
       throw CodingError.unknownValue
     }
@@ -252,6 +254,8 @@ enum HistoryModelType: Codable {
       try container.encode(11, forKey: .rawValue)
     case .receiveNFT:
       try container.encode(12, forKey: .rawValue)
+    case .claimReward:
+      try container.encode(13, forKey: .rawValue)
     }
   }
 
@@ -268,6 +272,7 @@ enum HistoryModelType: Codable {
   case createNFT
   case transferNFT
   case receiveNFT
+  case claimReward
 
   static func typeFromInput(_ input: String) -> HistoryModelType {
     guard !input.isEmpty, input != "0x"  else {
@@ -290,6 +295,8 @@ enum HistoryModelType: Codable {
       return .transferNFT
     case "0xd0def521", "0x731133e9":
       return .createNFT
+    case "0x70ef85ea":
+      return .claimReward
     default:
       return .contractInteraction
     }
