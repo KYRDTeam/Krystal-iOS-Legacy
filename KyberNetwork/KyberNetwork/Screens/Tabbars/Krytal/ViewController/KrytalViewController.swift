@@ -169,13 +169,6 @@ class KrytalViewController: KNBaseViewController {
       self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
     })
   }
-  
-  @IBAction func claimRewardButtonTapped(_ sender: UIButton) {
-    guard let unwrapped = self.viewModel.overview else {
-      return
-    }
-//    self.delegate?.krytalViewController(self, run: .claim(amount: unwrapped.claimablePoint))
-  }
 }
 
 extension KrytalViewController: UITableViewDataSource {
