@@ -14,7 +14,8 @@ class ClaimRewardsViewModel {
   var totalTokenSymbol: String
   var totalTokensValue: String
   var tokenIconURL: String
-
+  var shouldDisableClaimButton = false
+  
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
@@ -80,6 +81,7 @@ class ClaimRewardsController: KNBaseViewController {
   @IBOutlet weak var tokenValue: UILabel!
   @IBOutlet weak var bgView: UIView!
   
+  @IBOutlet weak var countdownTimer: SRCountdownTimer!
   weak var delegate: ClaimRewardsControllerDelegate?
   
   let transitor = TransitionDelegate()
@@ -99,11 +101,30 @@ class ClaimRewardsController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     updateUI()
+    setupTimer()
+  }
+  
+  fileprivate func setupTimer() {
+    self.countdownTimer.lineWidth = 2
+    self.countdownTimer.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.countdownTimer.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.countdownTimer.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.countdownTimer.isLoadingIndicator = true
+    self.countdownTimer.isLabelHidden = true
+    self.countdownTimer.isHidden = true
   }
 
   func updateUI() {
     self.cancelButton.rounded(radius: 16)
     self.claimRewardButton.rounded(radius: 16)
+    self.claimRewardButton.isEnabled = !self.viewModel.shouldDisableClaimButton
+    if self.viewModel.shouldDisableClaimButton {
+      self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.5)
+    } else {
+      self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!
+    }
+    
+    
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     bgView.addGestureRecognizer(tapGesture)
     
@@ -118,6 +139,16 @@ class ClaimRewardsController: KNBaseViewController {
     self.ethFeeLabel.text = self.viewModel.feeETHString
     self.usdFeeLabel.text = self.viewModel.feeUSDString
     self.transactionGasPriceLabel.text = self.viewModel.transactionGasPriceString
+  }
+  
+  func showLoading() {
+    self.countdownTimer.isHidden = false
+    self.countdownTimer.start(beginingValue: 1)
+  }
+  
+  func stopLoading() {
+    self.countdownTimer.isHidden = true
+    self.countdownTimer.stopRotating()
   }
   
   fileprivate func isAccountUseGasToken() -> Bool {

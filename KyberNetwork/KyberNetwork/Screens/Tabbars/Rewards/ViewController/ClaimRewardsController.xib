@@ -24,6 +24,7 @@
                 <outlet property="claimRewardButton" destination="1t8-pQ-E1u" id="5l8-fE-uAE"/>
                 <outlet property="contentView" destination="nfw-fY-RPi" id="7CT-2G-hel"/>
                 <outlet property="contentViewTopContraint" destination="jfS-YA-FdL" id="POf-vR-uCl"/>
+                <outlet property="countdownTimer" destination="B3e-si-v8w" id="6sq-Da-5YZ"/>
                 <outlet property="ethFeeLabel" destination="oXB-hd-Lux" id="3MH-wt-7pS"/>
                 <outlet property="titleLabel" destination="Que-YQ-D1V" id="f19-o6-MsB"/>
                 <outlet property="tokenBalance" destination="DbW-km-XEG" id="YgR-y9-YFG"/>
@@ -170,6 +171,14 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3e-si-v8w" customClass="SRCountdownTimer" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                            <rect key="frame" x="228" y="341" width="12" height="12"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="12" id="eTy-eD-W7E"/>
+                                <constraint firstAttribute="width" constant="12" id="u20-Mk-bEh"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
@@ -188,9 +197,11 @@
                         <constraint firstItem="oGA-6f-LzF" firstAttribute="top" secondItem="IDu-E7-zFz" secondAttribute="bottom" constant="6.5" id="VEn-n7-fhI"/>
                         <constraint firstItem="Que-YQ-D1V" firstAttribute="top" secondItem="nfw-fY-RPi" secondAttribute="top" constant="40" id="cpl-kn-grH"/>
                         <constraint firstItem="iau-Wu-BYl" firstAttribute="top" secondItem="oGA-6f-LzF" secondAttribute="bottom" constant="45" id="ecN-H2-QGZ"/>
+                        <constraint firstItem="B3e-si-v8w" firstAttribute="leading" secondItem="1t8-pQ-E1u" secondAttribute="leading" constant="5" id="gbD-po-kPd"/>
                         <constraint firstAttribute="trailing" secondItem="1t8-pQ-E1u" secondAttribute="trailing" constant="37" id="iwi-oj-mIH"/>
                         <constraint firstAttribute="trailing" secondItem="oGA-6f-LzF" secondAttribute="trailing" constant="37" id="tfP-VW-vCU"/>
                         <constraint firstItem="1t8-pQ-E1u" firstAttribute="centerY" secondItem="etO-AH-86i" secondAttribute="centerY" id="uHg-aK-zf2"/>
+                        <constraint firstItem="B3e-si-v8w" firstAttribute="centerY" secondItem="1t8-pQ-E1u" secondAttribute="centerY" id="xp0-ke-fE0"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvp-w8-lvi">
@@ -210,7 +221,7 @@
                 <constraint firstItem="hvp-w8-lvi" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="yDL-xA-oXU"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hvp-w8-lvi" secondAttribute="trailing" id="zKC-DC-n3o"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="81"/>
+            <point key="canvasLocation" x="1149" y="-31"/>
         </view>
     </objects>
     <resources>
