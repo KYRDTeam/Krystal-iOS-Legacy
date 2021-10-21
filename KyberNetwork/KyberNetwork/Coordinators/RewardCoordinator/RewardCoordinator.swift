@@ -43,6 +43,12 @@ class RewardCoordinator: Coordinator {
     self.transactionStatusVC = controller
   }
   
+  func updateLoginToken(_ completion: @escaping (Bool) -> Void) {
+    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+      appDelegate.coordinator.doLogin(completion)
+    }
+  }
+  
   func loadRewards() {
     guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -55,7 +61,7 @@ class RewardCoordinator: Coordinator {
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
       switch result {
       case .success(let data):
-        if let json = try? data.mapJSON() as? JSONDictionary ?? [:]{
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           var rewardModels: [KNRewardModel] = []
           if let rewards = json["claimableRewards"] as? [JSONDictionary] {
             rewardModels = rewards.map({ item in
@@ -80,6 +86,17 @@ class RewardCoordinator: Coordinator {
         }
       case .failure(let error):
         print("[Get rewards] \(error.localizedDescription)")
+        if error.code / 100 == 4 {
+          // case error 4xx mean login token is expired, need update it
+          self.updateLoginToken { completed in
+            if completed {
+              // recall loadRewards when new login token is updated
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.loadRewards()
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -114,6 +131,17 @@ class RewardCoordinator: Coordinator {
         
       case .failure(let error):
         print("[Claim reward] \(error.localizedDescription)")
+        if error.code / 100 == 4 {
+          // case error 4xx mean login token is expired, need update it
+          self.updateLoginToken { completed in
+            if completed {
+              // recall loadRewards when new login token is updated
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.loadClaimRewards(shouldShowPopup: shouldShowPopup)
+              }
+            }
+          }
+        }
       }
     }
   }
