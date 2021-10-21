@@ -138,6 +138,7 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {

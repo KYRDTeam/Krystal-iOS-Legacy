@@ -240,6 +240,11 @@ class RewardCoordinator: Coordinator {
     }
     return false
   }
+  
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
+    self.session = session
+    loadRewards()
+  }
 }
 
 extension RewardCoordinator: RewardsViewControllerDelegate {
