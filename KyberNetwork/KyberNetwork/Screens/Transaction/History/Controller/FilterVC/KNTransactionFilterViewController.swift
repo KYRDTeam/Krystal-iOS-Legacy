@@ -12,6 +12,7 @@ struct KNTransactionFilter: Codable {
   let isWithdraw: Bool
   let isTrade: Bool
   let isContractInteraction: Bool
+  let isClaimReward: Bool
   let tokens: [String]
 }
 
@@ -25,6 +26,7 @@ class KNTransactionFilterViewModel {
   var isApprove: Bool = false
   var isWithdraw: Bool = false
   var isContractInteraction: Bool = false
+  var isClaimReward: Bool = false
   private(set) var tokens: [String] = []
   private(set) var supportedTokens: [String] = []
   private(set) var isSelectAll: Bool = true
@@ -40,6 +42,7 @@ class KNTransactionFilterViewModel {
     self.isWithdraw = filter.isWithdraw
     self.isTrade = filter.isTrade
     self.isContractInteraction = filter.isContractInteraction
+    self.isClaimReward = filter.isClaimReward
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
@@ -106,6 +109,7 @@ class KNTransactionFilterViewModel {
     self.isWithdraw = true
     self.isTrade = true
     self.isContractInteraction = true
+    self.isClaimReward = true
     self.tokens = self.supportedTokens
     self.isSelectAll = true
     self.isSeeMore = false
@@ -142,7 +146,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var withdrawButton: UIButton!
   @IBOutlet weak var tradeButton: UIButton!
   @IBOutlet weak var contractInteractionButton: UIButton!
-  
+  @IBOutlet weak var claimRewardButton: UIButton!
   @IBOutlet weak var selectButton: UIButton!
   @IBOutlet weak var tokenTextLabel: UILabel!
   @IBOutlet weak var tokensTableView: UITableView!
@@ -304,6 +308,14 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.contractInteractionButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
       
+      if self.viewModel.isClaimReward {
+        self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
+        self.claimRewardButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+      } else {
+        self.claimRewardButton.backgroundColor = UIColor(named: "navButtonBgColor")
+        self.claimRewardButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      }
+      
       if let date = self.viewModel.from {
         self.fromDatePicker.setDate(date, animated: false)
         self.fromDatePickerDidChange(self.fromDatePicker)
@@ -371,6 +383,12 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.updateUI(isUpdatingTokens: false)
   }
   
+  
+  @IBAction func claimRewardButtonTapped(_ sender: Any) {
+    self.viewModel.isClaimReward = !self.viewModel.isClaimReward
+    self.updateUI(isUpdatingTokens: false)
+  }
+  
   // See more/less
   @IBAction func tokensActionButtonPressed(_ sender: Any) {
     self.viewModel.isSeeMore = !self.viewModel.isSeeMore
@@ -415,6 +433,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
       isWithdraw: self.viewModel.isWithdraw,
       isTrade: self.viewModel.isTrade,
       isContractInteraction: self.viewModel.isContractInteraction,
+      isClaimReward: self.viewModel.isClaimReward,
       tokens: self.viewModel.tokens
     )
     self.navigationController?.popViewController(animated: true, completion: {

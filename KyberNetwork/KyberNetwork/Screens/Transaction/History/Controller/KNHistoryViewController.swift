@@ -71,6 +71,7 @@ struct KNHistoryViewModel {
       isWithdraw: true,
       isTrade: true,
       isContractInteraction: true,
+      isClaimReward: true,
       tokens: tokens.map({ return $0.symbol })
     )
     self.updateDisplayingData()
@@ -92,6 +93,7 @@ struct KNHistoryViewModel {
       isWithdraw: true,
       isTrade: true,
       isContractInteraction: true,
+      isClaimReward: true,
       tokens: tokens.map({ return $0.symbol })
     )
     self.updateDisplayingData()
