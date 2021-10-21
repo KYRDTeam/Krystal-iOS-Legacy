@@ -11,22 +11,33 @@ import BigInt
 class RewardsViewControllerViewModel {
   var rewardDataSource: [KNRewardModel] = []
   var rewardDetailDataSource: [KNRewardModel] = []
-  var isShowingDetails = true
+  var rewardDetailDisplayDataSource: [KNRewardModel] = []
+  var isShowingDetails = true {
+    didSet {
+      updateFilterDataSourceIfNeed()
+    }
+  }
   var shouldDisableClaim = false
   var supportedChains: [Int] = []
+  
+  func updateFilterDataSourceIfNeed() {
+    if rewardDataSource.isEmpty {
+      return
+    }
+    if isShowingDetails {
+      self.rewardDetailDisplayDataSource = self.rewardDetailDataSource
+    } else {
+      self.rewardDetailDisplayDataSource = self.rewardDetailDataSource.filter({ rewardModel in
+        return rewardModel.status != "claimed"
+      })
+    }
+  }
 
   func numberOfRows(section: Int) -> Int {
     if section == 0 {
       return rewardDataSource.isEmpty ? 0 : rewardDataSource.count + 1
-    } else if isShowingDetails {
-      if rewardDataSource.isEmpty {
-        return rewardDetailDataSource.isEmpty ? 0 : rewardDetailDataSource.count + 1
-      } else {
-        return rewardDetailDataSource.isEmpty ? 0 : rewardDetailDataSource.count
-      }
-      
     } else {
-      return 1
+      return rewardDetailDisplayDataSource.isEmpty ? 0 : rewardDataSource.isEmpty ? rewardDetailDisplayDataSource.count : rewardDetailDisplayDataSource.count + 1
     }
   }
   
@@ -35,7 +46,7 @@ class RewardsViewControllerViewModel {
       return rewardDataSource[indexPath.row]
     } else {
       let index = rewardDataSource.isEmpty ? indexPath.row : indexPath.row - 1
-      return rewardDetailDataSource[index]
+      return rewardDetailDisplayDataSource[index]
     }
   }
 }
@@ -71,7 +82,7 @@ class RewardsViewController: KNBaseViewController {
   }
 
   func updateUI() {
-    emptyView.isHidden = !(self.viewModel.rewardDataSource.isEmpty && self.viewModel.rewardDetailDataSource.isEmpty)
+    emptyView.isHidden = !(self.viewModel.rewardDataSource.isEmpty && self.viewModel.rewardDetailDisplayDataSource.isEmpty)
     self.tableView.reloadData()
   }
 
@@ -87,6 +98,8 @@ class RewardsViewController: KNBaseViewController {
   func coordinatorDidUpdateRewards(rewards: [KNRewardModel], rewardDetails: [KNRewardModel], supportedChain: [Int]) {
     self.viewModel.rewardDataSource = rewards
     self.viewModel.rewardDetailDataSource = rewardDetails
+    self.viewModel.rewardDetailDisplayDataSource = rewardDetails
+    self.viewModel.updateFilterDataSourceIfNeed()
     self.viewModel.supportedChains = supportedChain
     self.updateUI()
   }
