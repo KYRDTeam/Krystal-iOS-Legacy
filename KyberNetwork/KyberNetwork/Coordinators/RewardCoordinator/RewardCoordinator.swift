@@ -21,6 +21,8 @@ class RewardCoordinator: Coordinator {
     controller.delegate = self
     return controller
   }()
+  
+  var claimRewardController: ClaimRewardsController?
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
@@ -136,7 +138,9 @@ class RewardCoordinator: Coordinator {
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-          self.openTransactionStatusPopUp(transaction: historyTransaction)
+          self.claimRewardController?.dismiss(animated: true, completion: {
+            self.openTransactionStatusPopUp(transaction: historyTransaction)
+          })
       case .failure(let error):
         self.navigationController.showTopBannerView(message: error.localizedDescription)
       }
@@ -192,6 +196,10 @@ class RewardCoordinator: Coordinator {
     if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       self.loadRewards()
+      if tx.state == .done {
+        self.rootViewController.viewModel.shouldDisableClaim = false
+        self.rootViewController.updateUI()
+      }
       return true
     }
     return false
@@ -209,6 +217,7 @@ extension RewardCoordinator: RewardsViewControllerDelegate {
 
     let claimPopupViewController = ClaimRewardsController(viewModel: viewModel)
     claimPopupViewController.delegate = self
+    self.claimRewardController = claimPopupViewController
     self.rootViewController.present(claimPopupViewController, animated: true, completion: nil)
   }
 }
@@ -219,16 +228,20 @@ extension RewardCoordinator: ClaimRewardsControllerDelegate {
     guard let provider = self.session.externalProvider else {
       return
     }
-    controller.dismiss(animated: true) {
-      self.checkEligibleWallet { isEligible in
-        if isEligible {
-          self.getLatestNonce { (nonce) in
-            let newTxObject = txObject.newTxObjectWithNonce(nonce: provider.minTxCount)
-            if let transaction = newTxObject.convertToSignTransaction(wallet: self.session.wallet) {
-              self.getEstimateGasLimit(transaction: transaction)
-            } else {
-              self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
-            }
+    self.rootViewController.viewModel.shouldDisableClaim = true
+    self.rootViewController.updateUI()
+    controller.viewModel.shouldDisableClaimButton = true
+    controller.updateUI()
+    controller.showLoading()
+
+    self.checkEligibleWallet { isEligible in
+      if isEligible {
+        self.getLatestNonce { (nonce) in
+          let newTxObject = txObject.newTxObjectWithNonce(nonce: provider.minTxCount)
+          if let transaction = newTxObject.convertToSignTransaction(wallet: self.session.wallet) {
+            self.getEstimateGasLimit(transaction: transaction)
+          } else {
+            self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
           }
         }
       }
