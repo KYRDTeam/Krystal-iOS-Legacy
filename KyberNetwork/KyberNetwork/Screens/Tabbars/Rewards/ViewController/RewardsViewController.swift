@@ -113,15 +113,30 @@ class RewardsViewController: KNBaseViewController {
   func claimRewardsButtonTapped() {
     // check current chain is in supported chain or not ? if not then show popup switch chain
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
-      let popup = SwitchChainViewController()
-      popup.completionHandler = { selected in
-        KNGeneralProvider.shared.currentChain = selected
-        self.claimRewards()
-      }
-      self.present(popup, animated: true, completion: nil)
+      let alertController = KNPrettyAlertController(
+        title: "Please switch to BSC to claim rewards".toBeLocalised(),
+        message: "",
+        secondButtonTitle: "OK".toBeLocalised(),
+        firstButtonTitle: "Cancel".toBeLocalised(),
+        secondButtonAction: {
+          self.showPopupSwitchChain()
+        },
+        firstButtonAction: nil
+      )
+      alertController.popupHeight = 220
+      self.present(alertController, animated: true, completion: nil)
     } else {
       claimRewards()
     }
+  }
+  
+  func showPopupSwitchChain() {
+    let popup = SwitchChainViewController()
+    popup.completionHandler = { selected in
+      KNGeneralProvider.shared.currentChain = selected
+      self.claimRewards()
+    }
+    self.present(popup, animated: true, completion: nil)
   }
   
   func claimRewards() {

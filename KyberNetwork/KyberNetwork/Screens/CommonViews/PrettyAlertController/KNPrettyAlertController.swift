@@ -20,7 +20,7 @@ class KNPrettyAlertController: KNBaseViewController {
   let firstButtonAction: (() -> Void)?
   var gradientButton: UIButton!
   let transitor = TransitionDelegate()
-  
+  var popupHeight: CGFloat = 300
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -97,17 +97,11 @@ class KNPrettyAlertController: KNBaseViewController {
   }
 
   @IBAction func yesButtonTapped(_ sender: UIButton) {
-    if let action = self.secondButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: self.secondButtonAction)
   }
 
   @IBAction func noButtonTapped(_ sender: UIButton) {
-    if let action = self.firstButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: self.firstButtonAction)
   }
 }
 
@@ -117,7 +111,7 @@ extension KNPrettyAlertController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 300
+    return self.popupHeight
   }
 
   func getPopupContentView() -> UIView {
