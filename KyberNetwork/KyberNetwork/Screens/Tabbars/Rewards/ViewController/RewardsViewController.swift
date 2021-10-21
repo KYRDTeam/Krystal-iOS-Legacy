@@ -12,6 +12,7 @@ class RewardsViewControllerViewModel {
   var rewardDataSource: [KNRewardModel] = []
   var rewardDetailDataSource: [KNRewardModel] = []
   var isShowingDetails = true
+  var shouldDisableClaim = false
   var supportedChains: [Int] = []
 
   func numberOfRows(section: Int) -> Int {
@@ -45,6 +46,7 @@ class RewardsViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   var delegate: RewardsViewControllerDelegate?
   let viewModel: RewardsViewControllerViewModel = RewardsViewControllerViewModel()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configUI()
@@ -127,6 +129,7 @@ extension RewardsViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(
       withIdentifier: ClaimButtonTableViewCell.kCellID
     ) as! ClaimButtonTableViewCell
+    cell.setClaimButtonState(isEnabled: !self.viewModel.shouldDisableClaim)
     cell.onClaimButtonTapped = {
       self.claimRewardsButtonTapped()
     }
