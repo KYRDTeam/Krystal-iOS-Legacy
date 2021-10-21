@@ -76,7 +76,8 @@ class RewardsViewController: KNBaseViewController {
   }
 
   @IBAction func emptyButtonTapped(_ sender: Any) {
-
+    //move to trade screen
+    self.navigationController?.tabBarController?.selectedIndex = 1
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
