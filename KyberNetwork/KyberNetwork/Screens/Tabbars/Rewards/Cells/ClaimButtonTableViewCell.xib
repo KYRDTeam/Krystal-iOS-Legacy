@@ -63,6 +63,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="bgView" destination="THu-c2-Ml6" id="ZoN-mJ-dmD"/>
+                <outlet property="claimButton" destination="sDc-rs-s97" id="lBb-hK-P5G"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="147.99107142857142"/>
         </tableViewCell>
