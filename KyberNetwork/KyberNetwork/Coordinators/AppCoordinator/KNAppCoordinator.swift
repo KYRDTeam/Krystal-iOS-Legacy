@@ -173,7 +173,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     }
   }
   
-  func doLogin() {
+  func doLogin(_ completion: @escaping (Bool) -> Void) {
     guard case .real(let account) = self.session.wallet.type else {
       return
     }
@@ -194,13 +194,17 @@ class KNAppCoordinator: NSObject, Coordinator {
             do {
               let data = try decoder.decode(LoginToken.self, from: resp.data)
               Storage.store(data, as: self.session.wallet.address.description + Constants.loginTokenStoreFileName)
+              completion(true)
             } catch let error {
               print("[Login][Error] \(error.localizedDescription)")
+              completion(false)
             }
+          } else {
+            completion(false)
           }
         }
       case .failure(let error):
-        self.doLogin()
+        self.doLogin(completion)
       }
     }
   }
