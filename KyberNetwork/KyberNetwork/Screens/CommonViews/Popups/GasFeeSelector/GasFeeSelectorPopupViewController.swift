@@ -462,6 +462,14 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customRateTextField: UITextField!
   @IBOutlet weak var customRateContainerView: UIView!
 
+  @IBOutlet weak var advancedStillProceedIfRateGoesDownTextLabel: UILabel!
+  @IBOutlet weak var advancedThreePercentButton: UIButton!
+  @IBOutlet weak var advancedThreePercentTextLabel: UILabel!
+  @IBOutlet weak var advancedCustomButton: UIButton!
+  @IBOutlet weak var advancedCustomTextLabel: UILabel!
+  @IBOutlet weak var advancedCustomRateTextField: UITextField!
+  @IBOutlet weak var advancedCustomRateContainerView: UIView!
+
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
   @IBOutlet weak var sendSwapDivideLineView: UIView!
   @IBOutlet weak var slippageRateSectionHeighContraint: NSLayoutConstraint!
@@ -562,6 +570,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   func updateMinRateCustomErrorShown(_ isShown: Bool) {
     let borderColor = isShown ? UIColor.Kyber.strawberry : UIColor.clear
     self.customRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
+    self.advancedCustomRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
   }
 
   var isMinRateValid: Bool {
@@ -594,6 +603,32 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     )
     self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage"
     self.updateMinRateCustomErrorShown(!self.isMinRateValid)
+    
+    self.advancedStillProceedIfRateGoesDownTextLabel.text = String(
+      format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
+      self.viewModel.pairToken
+    )
+    
+    self.advancedCustomButton.rounded(
+      color: UIColor(named: "buttonBackgroundColor")!,
+      width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
+      radius: self.advancedCustomButton.frame.height / 2.0
+    )
+    
+    self.advancedThreePercentButton.rounded(
+      color: UIColor(named: "buttonBackgroundColor")!,
+      width: self.viewModel.minRateTypeInt == 0 ? selectedWidth : normalWidth,
+      radius: self.threePercentButton.frame.height / 2.0
+    )
+    
+    self.advancedCustomButton.rounded(
+      color: UIColor(named: "buttonBackgroundColor")!,
+      width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
+      radius: self.advancedCustomButton.frame.height / 2.0
+    )
+    self.advancedCustomRateTextField.isEnabled = self.viewModel.minRateTypeInt == 2
+    
+    
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
   }
@@ -646,18 +681,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   fileprivate func updateUIForMode(_ isInit: Bool = false) {
     self.advancedModeContainerView.isHidden = !self.viewModel.isAdvancedMode
-//    if !isInit {
-//      UIView.animate(withDuration: 0.2) {
-//        if self.viewModel.isAdvancedMode {
-//          self.contentViewTopContraint.constant -= 230
-//          self.popupContainerHeightContraint.constant += 230
-//        } else {
-//          self.contentViewTopContraint.constant += 230
-//          self.popupContainerHeightContraint.constant -= 230
-//        }
-//      }
-//    }
-    
   }
 
   fileprivate func updateUIForMainGasFee() {
@@ -823,7 +846,8 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     } else {
       let maxMinRatePercent: Double = 100.0
       if let val = value, val >= 0, val <= maxMinRatePercent {
-        textField.text = text
+        self.advancedCustomRateTextField.text = text
+        self.customRateTextField.text = text
         self.viewModel.updateMinRateType(.custom(value: val))
         self.updateMinRateUIs()
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
