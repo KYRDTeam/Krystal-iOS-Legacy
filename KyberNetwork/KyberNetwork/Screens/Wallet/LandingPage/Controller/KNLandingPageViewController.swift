@@ -3,7 +3,6 @@
 import UIKit
 
 enum KNLandingPageViewEvent {
-  case openPromoCode
   case openCreateWallet
   case openImportWallet
   case openTermAndCondition
