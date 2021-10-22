@@ -119,25 +119,23 @@ class KNAppCoordinator: NSObject, Coordinator {
   @discardableResult
   func showBackupWalletIfNeeded() -> Bool {
     guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
-    guard let _ = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
+    guard let walletObj = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
       return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased()
     }) else {
       return false
     }
     if self.keystore.wallets.count > 1 {
-      let alert = KNPrettyAlertController(
-        title: nil,
-        message: "Wallet.must.be.backed.up".toBeLocalised(),
-        secondButtonTitle: "backup".toBeLocalised(),
-        firstButtonTitle: "Later".toBeLocalised(),
-        secondButtonAction: {
-          self.tabbarController = nil
-          self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
-          self.addCoordinator(self.landingPageCoordinator)
-          self.landingPageCoordinator.start()
-        },
-        firstButtonAction: nil)
-      self.overviewTabCoordinator?.navigationController.present(alert, animated: true, completion: {
+      let controller = OverviewWarningBackupViewController {
+        self.tabbarController = nil
+        self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
+        self.addCoordinator(self.landingPageCoordinator)
+        self.landingPageCoordinator.start()
+      } alreadyAction: {
+        let walletObject = walletObj.clone()
+        walletObject.isBackedUp = true
+        KNWalletStorage.shared.add(wallets: [walletObject])
+      }
+      self.overviewTabCoordinator?.navigationController.present(controller, animated: true, completion: {
       })
       return false
     } else {
@@ -147,7 +145,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       return true
     }
   }
-  
+
   func sendRefCode(_ code: String) {
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
@@ -253,58 +251,6 @@ extension KNAppCoordinator {
     KNSession.pauseInternalSession()
     KNSession.resumeInternalSession()
     self.loadBalanceCoordinator?.resume()
-//    KNVersionControlManager.shouldShowUpdateApp { (shouldShow, isForced, title, subtitle) in
-//      if !shouldShow { return }
-//      if !isForced {
-//        let alert = KNPrettyAlertController(
-//          title: (title ?? "Update available!").toBeLocalised(),
-//          message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
-//          secondButtonTitle: "Update".toBeLocalised(),
-//          firstButtonTitle: "cancel".toBeLocalised(),
-//          secondButtonAction: {
-//            KNCrashlyticsUtil.logCustomEvent(
-//              withName: "update_alert_update_tapped",
-//              customAttributes: nil
-//            )
-//            DispatchQueue.main.async {
-//              self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1521778973")
-//            }
-//          }, firstButtonAction: {
-//            KNCrashlyticsUtil.logCustomEvent(
-//              withName: "update_alert_cancel_tapped",
-//              customAttributes: nil
-//            )
-//          }
-//        )
-//        DispatchQueue.main.async {
-//          self.navigationController.present(alert, animated: true, completion: nil)
-//        }
-//      } else {
-//        KNCrashlyticsUtil.logCustomEvent(
-//          withName: "force_update",
-//          customAttributes: ["cur_version": Bundle.main.versionNumber ?? ""]
-//        )
-//        let alert = KNPrettyAlertController(
-//          title: (title ?? "Update available!").toBeLocalised(),
-//          message: (subtitle ?? "New version is available for updating. Click to update now!").toBeLocalised(),
-//          secondButtonTitle: nil,
-//          firstButtonTitle: "Update".toBeLocalised(),
-//          secondButtonAction: nil,
-//          firstButtonAction: {
-//            KNCrashlyticsUtil.logCustomEvent(
-//              withName: "update_alert_update_tapped",
-//              customAttributes: nil
-//            )
-//            DispatchQueue.main.async {
-//              self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1521778973")
-//            }
-//          }
-//        )
-//        DispatchQueue.main.async {
-//          self.navigationController.present(alert, animated: true, completion: nil)
-//        }
-//      }
-//    }
     KNNotificationUtil.postNotification(for: "viewDidBecomeActive")
   }
 

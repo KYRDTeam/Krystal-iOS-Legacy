@@ -7,7 +7,7 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   func landingPageCoordinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
-  
+
   func landingPageCoordinator(import wallet: Wallet) {
     if self.tabbarController == nil {
       self.startNewSession(with: wallet)
