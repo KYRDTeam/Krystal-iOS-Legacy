@@ -70,7 +70,7 @@ class RewardsViewController: KNBaseViewController {
   @IBOutlet weak var emptyLabel: UILabel!
 
   var session: KNSession?
-  var delegate: RewardsViewControllerDelegate?
+  weak var delegate: RewardsViewControllerDelegate?
   let viewModel: RewardsViewControllerViewModel = RewardsViewControllerViewModel()
 
   override func viewDidLoad() {
