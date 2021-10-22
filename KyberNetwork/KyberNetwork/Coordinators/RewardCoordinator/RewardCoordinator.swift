@@ -9,6 +9,9 @@ import UIKit
 import Moya
 import BigInt
 import Result
+import APIKit
+import JSONRPCKit
+import MBProgressHUD
 
 class RewardCoordinator: Coordinator {
   fileprivate var session: KNSession
@@ -56,9 +59,14 @@ class RewardCoordinator: Coordinator {
       }
       return
     }
-     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-     let address = self.session.wallet.address.description
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let address = self.session.wallet.address.description
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -175,7 +183,6 @@ class RewardCoordinator: Coordinator {
           historyTransaction.hash = hash
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce
-          
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.claimRewardController?.dismiss(animated: true, completion: {
             self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -193,24 +200,23 @@ class RewardCoordinator: Coordinator {
     KNGeneralProvider.shared.getEstimateGasLimit(transaction: transaction) { (result) in
       switch result {
       case .success:
-          provider.signTransactionData(from: transaction) { [weak self] result in
-          guard let `self` = self else { return }
-          switch result {
-          case .success(let signedData):
-              self.sendSignedTransactionData(signedData.0, transaction: transaction)
-          case .failure:
-              print("Error")
-//            controller.hideLoading()
-          }
+        provider.signTransactionData(from: transaction) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let signedData):
+            self.sendSignedTransactionData(signedData.0, transaction: transaction)
+        case .failure:
+            print("Error")
+        }
         }
       case .failure(let error):
         self.navigationController.hideLoading()
         var errorMessage = "Can not estimate Gas Limit"
-//        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-//          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-//            errorMessage = message
-//          }
-//        }
+        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+            errorMessage = message
+          }
+        }
         self.navigationController.showErrorTopBannerMessage(message: errorMessage)
       }
     }
