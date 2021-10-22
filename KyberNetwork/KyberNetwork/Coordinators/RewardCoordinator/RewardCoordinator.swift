@@ -13,6 +13,8 @@ import APIKit
 import JSONRPCKit
 import MBProgressHUD
 
+let RETRYMAXCOUNT = 5
+
 class RewardCoordinator: Coordinator {
   fileprivate var session: KNSession
   let navigationController: UINavigationController
@@ -56,26 +58,24 @@ class RewardCoordinator: Coordinator {
   }
   
   func handleUpdateLoginTokenForClaimReward() {
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     self.updateLoginToken { completed in
-      if completed {
-        self.claimRetryCount = 0
-        self.loadRewards()
-      } else {
-        self.claimRetryCount += 1
-        self.loadRewards()
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
       }
+      self.claimRetryCount += 1
+      self.loadRewards()
     }
   }
   
   func handleUpdateLoginTokenForClaimRewardDetail() {
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     self.updateLoginToken { completed in
-      if completed {
-        self.claimDetailRetryCount = 0
-        self.loadClaimRewards()
-      } else {
-        self.claimDetailRetryCount += 1
-        self.loadClaimRewards()
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
       }
+      self.claimDetailRetryCount += 1
+      self.loadClaimRewards()
     }
   }
 
@@ -86,7 +86,7 @@ class RewardCoordinator: Coordinator {
     }
 
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
-    if self.claimRetryCount > 5 {
+    if self.claimRetryCount > RETRYMAXCOUNT {
       hud.hide(animated: true)
       return
     }
@@ -107,6 +107,16 @@ class RewardCoordinator: Coordinator {
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          
+          if (json["error"] as? String) != nil {
+            let statusCode = data.statusCode
+            if statusCode / 100 == 4 {
+              // case error 4xx mean login token is expired, need update it
+              self.handleUpdateLoginTokenForClaimReward()
+            }
+            return
+          }
+          
           var rewardModels: [KNRewardModel] = []
           if let rewards = json["claimableRewards"] as? [JSONDictionary] {
             rewardModels = rewards.map({ item in
@@ -126,7 +136,6 @@ class RewardCoordinator: Coordinator {
             supportedChains = chainArrays
           }
 
- //         Storage.store(data.overview, as: self.session.wallet.address.description + Constants.referralOverviewStoreFileName)
           self.rootViewController.coordinatorDidUpdateRewards(rewards: rewardModels, rewardDetails: rewardDetailModel, supportedChain: supportedChains)
         }
       case .failure(let error):
@@ -141,7 +150,7 @@ class RewardCoordinator: Coordinator {
 
   func loadClaimRewards(shouldShowPopup: Bool = false) {
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
-    if self.claimDetailRetryCount > 5 {
+    if self.claimDetailRetryCount > RETRYMAXCOUNT {
       hud.hide(animated: true)
       return
     }
@@ -173,9 +182,15 @@ class RewardCoordinator: Coordinator {
             self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
             let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
             self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
+          } else if (json["error"] as? String) != nil {
+            let statusCode = data.statusCode
+            if statusCode / 100 == 4 {
+              // case error 4xx mean login token is expired, need update it
+              self.handleUpdateLoginTokenForClaimRewardDetail()
+            }
           }
         }
-        
+
       case .failure(let error):
         print("[Claim reward] \(error.localizedDescription)")
         if error.code / 100 == 4 {
