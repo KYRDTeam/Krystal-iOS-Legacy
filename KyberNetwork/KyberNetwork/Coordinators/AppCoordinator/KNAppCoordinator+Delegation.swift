@@ -113,6 +113,13 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  func overviewCoordinatorDidStart() {
+    if self.isFirstLoad {
+      self.showBackupWalletIfNeeded()
+      self.isFirstLoad = false
+    }
+  }
+  
   func overviewCoordinatorDidSelectExportWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectExportWallet()

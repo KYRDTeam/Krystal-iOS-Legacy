@@ -22,6 +22,7 @@ enum OverviewMainViewEvent {
   case changeRightMode(current: ViewMode)
   case addNFT
   case openNFTDetail(item: NFTItem, category: NFTSection)
+  case didAppear
 }
 
 enum ViewMode: Equatable, Codable {

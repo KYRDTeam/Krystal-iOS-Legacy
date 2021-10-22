@@ -23,6 +23,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectRenameWallet()
   func overviewCoordinatorDidSelectExportWallet()
   func overviewCoordinatorDidSelectDeleteWallet()
+  func overviewCoordinatorDidStart()
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -72,7 +73,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   func stop() {
   }
-  
+
   fileprivate func openChartView(token: Token) {
     KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
@@ -613,6 +614,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       let vc = OverviewNFTDetailViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
+    case .didAppear:
+      self.delegate?.overviewCoordinatorDidStart()
     }
   }
 }

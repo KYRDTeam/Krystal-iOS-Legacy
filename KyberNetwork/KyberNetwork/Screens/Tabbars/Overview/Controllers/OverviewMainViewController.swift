@@ -88,6 +88,7 @@ class OverviewMainViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateUISwitchChain()
+    self.delegate?.overviewMainViewController(self, run: .didAppear)
   }
 
   fileprivate func updateUIHideBalanceButton() {
@@ -456,6 +457,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       ) as! OverviewLiquidityPoolCell
         let key = self.viewModel.displayHeader[indexPath.section]
         if let viewModel = self.viewModel.displayLPDataSource[key]?[indexPath.row] {
+          viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
           cell.updateCell(viewModel)
         }
       return cell

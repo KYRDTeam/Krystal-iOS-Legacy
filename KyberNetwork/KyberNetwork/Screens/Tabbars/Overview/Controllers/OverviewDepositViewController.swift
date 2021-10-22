@@ -158,6 +158,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    self.viewModel.hideBalanceStatus = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey)
     self.viewModel.reloadAllData()
     self.reloadUI()
   }

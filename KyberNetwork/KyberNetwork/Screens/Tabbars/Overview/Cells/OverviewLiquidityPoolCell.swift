@@ -11,6 +11,7 @@ import BigInt
 class OverviewLiquidityPoolViewModel {
   let currency: CurrencyMode
   let pairTokens: [LPTokenModel]
+  var hideBalanceStatus: Bool = true
   init(currency: CurrencyMode, pairToken: [LPTokenModel]) {
     self.currency = currency
     self.pairTokens = pairToken
@@ -45,6 +46,9 @@ class OverviewLiquidityPoolViewModel {
   }
 
   func firstTokenValue() -> String {
+    guard !self.hideBalanceStatus else {
+      return "********" + " " + firstTokenSymbol()
+    }
     guard !pairTokens.isEmpty else {
       return ""
     }
@@ -53,6 +57,9 @@ class OverviewLiquidityPoolViewModel {
   }
   
   func secondTokenValue() -> String {
+    guard !self.hideBalanceStatus else {
+      return "********" + " " + secondTokenSymbol()
+    }
     guard pairTokens.count > 1 else {
       return ""
     }
@@ -61,6 +68,9 @@ class OverviewLiquidityPoolViewModel {
   }
   
   func balanceValue() -> String {
+    guard !self.hideBalanceStatus else {
+      return "********"
+    }
     var total = 0.0
     for tokenModel in pairTokens {
       total += tokenModel.getTokenValue(self.currency)

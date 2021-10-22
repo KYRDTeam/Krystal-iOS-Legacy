@@ -53,6 +53,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
+  var isFirstLoad: Bool = true
 
   init(
     navigationController: UINavigationController = UINavigationController(),
@@ -73,9 +74,9 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func start() {
     self.addMissingWalletObjects()
-    guard !self.showBackupWalletIfNeeded() else {
-      return
-    }
+//    guard !self.showBackupWalletIfNeeded() else {
+//      return
+//    }
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -115,7 +116,8 @@ class KNAppCoordinator: NSObject, Coordinator {
     }
   }
 
-  fileprivate func showBackupWalletIfNeeded() -> Bool {
+  @discardableResult
+  func showBackupWalletIfNeeded() -> Bool {
     guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
     guard let _ = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
       return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased()
@@ -135,7 +137,7 @@ class KNAppCoordinator: NSObject, Coordinator {
           self.landingPageCoordinator.start()
         },
         firstButtonAction: nil)
-      self.navigationController.present(alert, animated: true, completion: {
+      self.overviewTabCoordinator?.navigationController.present(alert, animated: true, completion: {
       })
       return false
     } else {
