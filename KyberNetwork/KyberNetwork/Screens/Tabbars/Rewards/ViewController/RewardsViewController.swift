@@ -154,6 +154,8 @@ class RewardsViewController: KNBaseViewController {
   
   func showPopupSwitchChain() {
     let popup = SwitchChainViewController()
+    popup.selectedChain = .bsc
+    popup.nextButtonTitle = "Confirm"
     popup.completionHandler = { selected in
       KNGeneralProvider.shared.currentChain = selected
       self.claimRewards()
