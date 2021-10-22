@@ -157,8 +157,13 @@ class RewardsViewController: KNBaseViewController {
     popup.selectedChain = .bsc
     popup.nextButtonTitle = "Confirm"
     popup.completionHandler = { selected in
+      KNGeneralProvider.shared.currentChain = selected
+      var selectedAddress = ""
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        selectedAddress = appDelegate.coordinator.session.wallet.address.description
+      }
+      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
       if selected == .bsc {
-        KNGeneralProvider.shared.currentChain = selected
         self.claimRewards()
       }
     }
