@@ -157,8 +157,10 @@ class RewardsViewController: KNBaseViewController {
     popup.selectedChain = .bsc
     popup.nextButtonTitle = "Confirm"
     popup.completionHandler = { selected in
-      KNGeneralProvider.shared.currentChain = selected
-      self.claimRewards()
+      if selected == .bsc {
+        KNGeneralProvider.shared.currentChain = selected
+        self.claimRewards()
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }
