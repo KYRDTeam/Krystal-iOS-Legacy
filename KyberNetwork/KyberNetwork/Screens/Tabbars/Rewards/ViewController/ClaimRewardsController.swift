@@ -176,8 +176,9 @@ class ClaimRewardsController: KNBaseViewController {
   }
 
   @IBAction func claimButtonTapped(_ sender: Any) {
-    //TODO check if balance > fee
-    if self.viewModel.totalTokenBalance > self.viewModel.transactionFee.hexEncoded.doubleValue {
+    //check if balance > fee
+    guard let quoteToken = KNSupportedTokenStorage.shared.getTokenWith(symbol: KNGeneralProvider.shared.quoteToken) else {return}
+    if quoteToken.getBalanceBigInt() > self.viewModel.transactionFee {
       self.delegate?.didClaimRewards(self, txObject: self.viewModel.txObject)
     }
   }
