@@ -20,6 +20,7 @@ class RewardCoordinator: Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
+  var currentHash = ""
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate var claimRetryCount = 0
   fileprivate var claimDetailRetryCount = 0
@@ -220,7 +221,7 @@ class RewardCoordinator: Coordinator {
     KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
       switch sendResult {
       case .success(let hash):
-          print(hash)
+          self.currentHash = hash
           provider.minTxCount += 1
           let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
           self.session.addNewPendingTransaction(tx)
@@ -285,7 +286,7 @@ class RewardCoordinator: Coordinator {
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
-    if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
+    if !self.currentHash.isEmpty && self.currentHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       self.loadRewards()
       if tx.state == .done {
