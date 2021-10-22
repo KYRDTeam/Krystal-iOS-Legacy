@@ -15,9 +15,8 @@ class ClaimRewardsViewModel {
   var totalTokensValue: String
   var tokenIconURL: String
   var shouldDisableClaimButton = false
-  
+
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
-  
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   private(set) var session: KNSession
@@ -56,7 +55,6 @@ class ClaimRewardsViewModel {
     self.tokenIconURL = tokenIconURL
     self.gasLimit = gasLimit
     self.session = session
-    
     // reset gas price
     let newTxObject = txObject.newTxObjectWithGasPrice(gasPrice: self.gasPrice)
     self.txObject = newTxObject
@@ -80,10 +78,9 @@ class ClaimRewardsController: KNBaseViewController {
   @IBOutlet weak var claimRewardButton: UIButton!
   @IBOutlet weak var tokenValue: UILabel!
   @IBOutlet weak var bgView: UIView!
-  
   @IBOutlet weak var countdownTimer: SRCountdownTimer!
+
   weak var delegate: ClaimRewardsControllerDelegate?
-  
   let transitor = TransitionDelegate()
   let viewModel: ClaimRewardsViewModel
 
@@ -123,13 +120,12 @@ class ClaimRewardsController: KNBaseViewController {
     } else {
       self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!
     }
-    
-    
+
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     bgView.addGestureRecognizer(tapGesture)
-    
+
     tokenValue.text = self.viewModel.totalTokensValue
-    tokenBalance.text = StringFormatter.currencyString(value: self.viewModel.totalTokenBalance, symbol: self.viewModel.totalTokenSymbol) + " " + self.viewModel.totalTokenSymbol
+    tokenBalance.text = StringFormatter.amountString(value: self.viewModel.totalTokenBalance) + " " + self.viewModel.totalTokenSymbol
     if self.viewModel.tokenIconURL.isEmpty {
       tokenIcon.setSymbolImage(symbol: self.viewModel.totalTokenSymbol)
     } else {
@@ -145,21 +141,20 @@ class ClaimRewardsController: KNBaseViewController {
     self.countdownTimer.isHidden = false
     self.countdownTimer.start(beginingValue: 1)
   }
-  
+
   func stopLoading() {
     self.countdownTimer.isHidden = true
     self.countdownTimer.stopRotating()
   }
-  
+
   fileprivate func isAccountUseGasToken() -> Bool {
-    return true
-//    var data: [String: Bool] = [:]
-//    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
-//      data = saved
-//    } else {
-//      return false
-//    }
-//    return data[self.session.wallet.address.description] ?? false
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data[self.viewModel.session.wallet.address.description] ?? false
   }
 
   @IBAction func selectGasPriceButtonTapped(_ sender: Any) {
@@ -190,7 +185,6 @@ class ClaimRewardsController: KNBaseViewController {
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
-
 
 }
 
