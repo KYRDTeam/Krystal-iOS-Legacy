@@ -156,7 +156,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      if self.transaction.type == .earn {
+      if self.transaction.type == .claimReward {
+        self.firstButton.isHidden = true
+        self.secondButton.isHidden = true
+      } else if self.transaction.type == .earn {
         self.firstButton.setTitle("New Supply".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Back to earn".toBeLocalised().capitalized, for: .normal)
         self.firstButtonTopContraint.constant = 160
