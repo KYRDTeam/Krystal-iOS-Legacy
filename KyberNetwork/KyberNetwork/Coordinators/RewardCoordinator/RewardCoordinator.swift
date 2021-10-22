@@ -19,6 +19,8 @@ class RewardCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
+  fileprivate var claimRetryCount = 0
+  fileprivate var claimDetailRetryCount = 0
 
   lazy var rootViewController: RewardsViewController = {
     let controller = RewardsViewController()
@@ -52,16 +54,43 @@ class RewardCoordinator: Coordinator {
     }
   }
   
-  func loadRewards() {
-    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+  func handleUpdateLoginTokenForClaimReward() {
+    self.updateLoginToken { completed in
+      if completed {
+        self.claimRetryCount = 0
+        self.loadRewards()
+      } else {
+        self.claimRetryCount += 1
         self.loadRewards()
       }
+    }
+  }
+  
+  func handleUpdateLoginTokenForClaimRewardDetail() {
+    self.updateLoginToken { completed in
+      if completed {
+        self.claimDetailRetryCount = 0
+        self.loadClaimRewards()
+      } else {
+        self.claimDetailRetryCount += 1
+        self.loadClaimRewards()
+      }
+    }
+  }
+  
+  func loadRewards() {
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    if self.claimRetryCount > 5 {
+      hud.hide(animated: true)
+      return
+    }
+    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+      self.handleUpdateLoginTokenForClaimReward()
       return
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.address.description
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    
     
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
@@ -96,24 +125,20 @@ class RewardCoordinator: Coordinator {
         print("[Get rewards] \(error.localizedDescription)")
         if error.code / 100 == 4 {
           // case error 4xx mean login token is expired, need update it
-          self.updateLoginToken { completed in
-            if completed {
-              // recall loadRewards when new login token is updated
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                self.loadRewards()
-              }
-            }
-          }
+          self.handleUpdateLoginTokenForClaimReward()
         }
       }
     }
   }
 
   func loadClaimRewards(shouldShowPopup: Bool = false) {
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    if self.claimDetailRetryCount > 5 {
+      hud.hide(animated: true)
+      return
+    }
     guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-        self.loadClaimRewards(shouldShowPopup: shouldShowPopup)
-      }
+      self.handleUpdateLoginTokenForClaimRewardDetail()
       return
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
@@ -141,14 +166,7 @@ class RewardCoordinator: Coordinator {
         print("[Claim reward] \(error.localizedDescription)")
         if error.code / 100 == 4 {
           // case error 4xx mean login token is expired, need update it
-          self.updateLoginToken { completed in
-            if completed {
-              // recall loadRewards when new login token is updated
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                self.loadClaimRewards(shouldShowPopup: shouldShowPopup)
-              }
-            }
-          }
+          self.handleUpdateLoginTokenForClaimRewardDetail()
         }
       }
     }
