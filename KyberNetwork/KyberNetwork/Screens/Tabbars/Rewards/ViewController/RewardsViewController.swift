@@ -22,7 +22,7 @@ class RewardsViewControllerViewModel {
   
   
   func totalBalanceString() -> String {
-    guard let model = rewardDetailDisplayDataSource.last else {
+    guard let model = rewardDataSource.first else {
       return "--/--"
     }
     return "+ " + StringFormatter.amountString(value: model.amount) + " " + model.rewardSymbol
