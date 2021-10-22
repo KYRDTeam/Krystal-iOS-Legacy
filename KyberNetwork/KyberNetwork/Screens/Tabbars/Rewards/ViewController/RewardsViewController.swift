@@ -63,17 +63,32 @@ protocol RewardsViewControllerDelegate: class {
   func showClaimRewardVC(_ controller: RewardsViewController, model: KNRewardModel, txObject: TxObject)
 }
 
-
 class RewardsViewController: KNBaseViewController {
   @IBOutlet weak var emptyView: UIView!
   @IBOutlet weak var emptyButton: UIButton!
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var emptyLabel: UILabel!
+
+  var session: KNSession?
   var delegate: RewardsViewControllerDelegate?
   let viewModel: RewardsViewControllerViewModel = RewardsViewControllerViewModel()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     configUI()
+  }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    guard case .real(let account) = self.session?.wallet.type else {
+      // current wallet is watch wallet
+      emptyView.isHidden = false
+      emptyLabel.text = "You are using watch wallet".toBeLocalised()
+      emptyButton.isHidden = true
+      return
+    }
+    
+    emptyButton.isHidden = false
+    emptyLabel.text = "You don't have any reward".toBeLocalised()
   }
 
   func configUI() {

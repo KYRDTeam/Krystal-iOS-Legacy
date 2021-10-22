@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RewardsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="emptyButton" destination="nuz-yv-khk" id="fOO-7d-sFX"/>
+                <outlet property="emptyLabel" destination="dmy-xM-oZ9" id="n4U-rG-e1s"/>
                 <outlet property="emptyView" destination="SYa-MS-onI" id="HP3-KQ-aRk"/>
                 <outlet property="tableView" destination="qha-uO-L9h" id="eof-gb-oYT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
