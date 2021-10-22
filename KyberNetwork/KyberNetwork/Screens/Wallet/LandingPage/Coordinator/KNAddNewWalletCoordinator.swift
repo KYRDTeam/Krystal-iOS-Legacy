@@ -152,6 +152,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       let walletObject = KNWalletObject(
         address: wallet.address.description,
         name: name ?? "Untitled",
+        isBackedUp: true,
         isWatchWallet: isWatchWallet
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
