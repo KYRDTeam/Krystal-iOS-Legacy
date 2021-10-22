@@ -78,13 +78,13 @@ class RewardCoordinator: Coordinator {
       }
     }
   }
-  
+
   func loadRewards() {
     guard case .real(let account) = self.session.wallet.type else {
       //watch wallet dont'show reward
       return
     }
-    
+
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     if self.claimRetryCount > 5 {
       hud.hide(animated: true)
@@ -99,8 +99,7 @@ class RewardCoordinator: Coordinator {
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.address.description
-    
-    
+
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
         hud.hide(animated: true)
@@ -147,6 +146,9 @@ class RewardCoordinator: Coordinator {
       return
     }
     guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       self.handleUpdateLoginTokenForClaimRewardDetail()
       return
     }
@@ -154,6 +156,9 @@ class RewardCoordinator: Coordinator {
     let address = self.session.wallet.address.description
 
     provider.request(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
