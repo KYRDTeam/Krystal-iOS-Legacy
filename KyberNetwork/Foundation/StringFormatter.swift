@@ -47,6 +47,7 @@ final class StringFormatter {
     let formatter = NumberFormatter()
     // rule amount round upto 4 digits
     formatter.maximumFractionDigits = 4
+    formatter.roundingMode = .floor
     return formatter.string(from: NSNumber(value: value)) ?? ""
   }
 
