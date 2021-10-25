@@ -74,9 +74,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func start() {
     self.addMissingWalletObjects()
-//    guard !self.showBackupWalletIfNeeded() else {
-//      return
-//    }
+
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -124,7 +122,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     }) else {
       return false
     }
-    if self.keystore.wallets.count > 1 {
+    if self.keystore.wallets.count >= 1 {
       let controller = OverviewWarningBackupViewController {
         self.tabbarController = nil
         self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
