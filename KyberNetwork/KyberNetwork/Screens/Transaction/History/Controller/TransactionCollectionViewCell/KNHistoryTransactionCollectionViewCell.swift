@@ -79,7 +79,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
       return self.historyItem.extraData?.token?.name ?? ""
-    } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.token?.decimals {
+    } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.receiveToken?.decimals {
       guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
       return receiveValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: 4)
     } else {
