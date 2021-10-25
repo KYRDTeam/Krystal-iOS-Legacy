@@ -13,7 +13,7 @@ enum KSwapViewEvent {
   case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
+  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case updateRate(rate: Double)
   case openHistory
   case openWalletsList
@@ -27,15 +27,6 @@ enum KSwapViewEvent {
   case signAndSendTx(tx: SignTransaction)
   case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, rawTx: RawSwapTransaction)
   case getRefPrice(from: TokenObject, to: TokenObject)
-
-//  static public func == (left: KSwapViewEvent, right: KSwapViewEvent) -> Bool {
-//    switch (left, right) {
-//    case let (.getGasLimit(fromL, toL, amountL, hintL), .getGasLimit(fromR, toR, amountR, hintR)):
-//      return fromL == fromR && toL == toR && amountL == amountR && hintL == hintR
-//    default:
-//      return false //Not implement
-//    }
-//  }
 }
 
 protocol KSwapViewControllerDelegate: class {
@@ -552,11 +543,15 @@ class KSwapViewController: KNBaseViewController {
       gasLimit: self.viewModel.estimateGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       pair: "\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)",
-      minRatePercent: self.viewModel.minRatePercent
+      minRatePercent: self.viewModel.minRatePercent,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
     )
     self.delegate?.kSwapViewController(self, run: event)
   }
-  
+
   fileprivate func checkUpdateApproveButton() {
     guard let token = self.viewModel.approvingToken else {
       return
@@ -931,9 +926,24 @@ extension KSwapViewController {
     if self.viewModel.isUseEIP1559 {
       guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
       print(signTx)
-      self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(data: exchange, eip1559tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+      self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(
+        data: exchange, eip1559tx: signTx,
+        hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty,
+        platform: self.viewModel.currentFlatform,
+        rawTransaction: object,
+        minReceiveDest: self.viewModel.minDestQty
+      )
+      )
     } else {
-      self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: self.viewModel.minDestQty))
+      self.delegate?.kSwapViewController(self, run: .confirmSwap(
+        data: exchange,
+        tx: signTx,
+        hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty,
+        platform: self.viewModel.currentFlatform,
+        rawTransaction: object,
+        minReceiveDest: self.viewModel.minDestQty
+      )
+      )
     }
   }
 

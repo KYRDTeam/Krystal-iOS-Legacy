@@ -557,7 +557,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
     case .quickTutorial(let step, let pointsAndRadius):
       self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
-    case .openGasPriceSelect(let gasLimit, let type, let pair, let percent):
+    case .openGasPriceSelect(let gasLimit, let type, let pair, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
@@ -566,6 +566,11 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         superFast: KNGasCoordinator.shared.superFastKNGas
       )
       viewModel.updatePairToken(pair)
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
+      
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
       self.gasFeeSelectorVC = vc

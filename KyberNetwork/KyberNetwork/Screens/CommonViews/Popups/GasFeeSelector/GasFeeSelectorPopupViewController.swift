@@ -103,7 +103,13 @@ class GasFeeSelectorPopupViewModel {
       }
     }
   }
-  var advancedNonce: String?
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedType = .custom
+      }
+    }
+  }
 
   init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false, isContainSlippageSection: Bool = true) {
     self.isSwapOption = isSwapOption
@@ -358,13 +364,16 @@ class GasFeeSelectorPopupViewModel {
     guard let unwrap = self.advancedMaxPriorityFee, !unwrap.isEmpty else {
       return .none
     }
-    let baseFeeDouble = KNGasCoordinator.shared.baseFee?.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue ?? 0
-    let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
-    let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - baseFeeDouble
-    let maxPriorityDouble = self.advancedMaxPriorityFee?.doubleValue ?? 0
-    if maxPriorityDouble < lowerLimit {
+
+    let lowerLimit = KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
+    let upperLimit = KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)
+    let maxPriorityBigInt = self.advancedMaxPriorityFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    if lowerLimit.isZero || upperLimit.isZero {
+      return .none
+    }
+    if maxPriorityBigInt < lowerLimit {
       return .low
-    } else if maxPriorityDouble > (1.5 * upperLimit) {
+    } else if maxPriorityBigInt > (BigInt(2) * upperLimit) {
       return .high
     } else {
       return .none
@@ -477,7 +486,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var advancedModeContainerView: UIScrollView!
   @IBOutlet weak var popupContainerHeightContraint: NSLayoutConstraint!
-  
+
   @IBOutlet weak var advancedGasLimitField: UITextField!
   @IBOutlet weak var advancedPriorityFeeField: UITextField!
   @IBOutlet weak var advancedMaxFeeField: UITextField!
@@ -488,6 +497,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var maxFeeErrorLabel: UILabel!
   @IBOutlet weak var mainGasFeeLabel: UILabel!
   @IBOutlet weak var mainEquivalentUSDLabel: UILabel!
+  @IBOutlet weak var estGasFeeLabelTopContraint: NSLayoutConstraint!
 
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -522,14 +532,21 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.slippageRateSectionHeighContraint.constant = 0
       self.slippageSectionContainerView.isHidden = true
     }
+    self.segmentedControl.selectedSegmentIndex = self.viewModel.selectedType == .custom ? 1 : 0
+    self.viewModel.isAdvancedMode = self.viewModel.selectedType == .custom
     self.setupSegmentedControl()
     segmentedControl.highlightSelectedSegment()
-    self.updateUIForMode(true)
+    self.updateUIForMode()
     self.updateUIAdvancedSetting()
     self.updateUIForMainGasFee()
   }
 
   fileprivate func updateUIAdvancedSetting() {
+    guard KNGeneralProvider.shared.isUseEIP1559 else {
+      self.segmentedControl.isHidden = true
+      self.estGasFeeLabelTopContraint.constant = 26.0
+      return
+    }
     self.advancedGasLimitField.text = self.viewModel.displayGasLimit
     self.advancedPriorityFeeField.text = self.viewModel.displayMaxPriorityFee
     self.equivalentPriorityETHFeeLabel.text = self.viewModel.displayEquivalentPriorityETHFee
@@ -679,7 +696,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.contentView.layoutSubviews()
   }
 
-  fileprivate func updateUIForMode(_ isInit: Bool = false) {
+  fileprivate func updateUIForMode() {
     self.advancedModeContainerView.isHidden = !self.viewModel.isAdvancedMode
   }
 
@@ -751,7 +768,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.viewModel.isAdvancedMode = sender.selectedSegmentIndex == 1
     self.updateUIForMode()
     self.updateGasPriceUIs()
-    print("[Debug] \(self.advancedModeContainerView.contentSize)")
   }
   
   @IBAction func gasLimitChgAmountButtonTapped(_ sender: UIButton) {

@@ -65,6 +65,7 @@ class KSwapViewModel {
   var advancedGasLimit: String?
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
+  var advancedNonce: String?
 
   init(wallet: Wallet,
        from: TokenObject,
@@ -713,7 +714,6 @@ class KSwapViewModel {
   }
 
   func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
-    //TODO: override gas limit 
     guard
       let value = BigInt(object.value.drop0x, radix: 16),
       let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),

@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -45,6 +45,7 @@
                 <outlet property="customTextLabel" destination="7yM-FW-Nx3" id="peD-Mu-a8z"/>
                 <outlet property="equivalentMaxETHFeeLabel" destination="k4U-JA-mWc" id="3SK-UU-lpa"/>
                 <outlet property="equivalentPriorityETHFeeLabel" destination="cwN-tk-Gv5" id="NUJ-IV-aS1"/>
+                <outlet property="estGasFeeLabelTopContraint" destination="wWB-1j-68N" id="NAx-3h-FZb"/>
                 <outlet property="estimateFeeNoteLabel" destination="VDd-kS-rjU" id="RTQ-5e-AwK"/>
                 <outlet property="fasGasButton" destination="2bT-Y1-i9l" id="N17-rk-OZk"/>
                 <outlet property="fasGasValueLabel" destination="yuB-hX-ocX" id="2V5-AJ-RWh"/>
@@ -83,8 +84,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pr0-U8-kSa">
                     <rect key="frame" x="0.0" y="170" width="414" height="650"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction/Gas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5QM-Uq-ScQ">
-                            <rect key="frame" x="128.5" y="20" width="157.5" height="23.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5QM-Uq-ScQ">
+                            <rect key="frame" x="113.5" y="20" width="187" height="23.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="23.5" id="9bj-9f-pyX"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -984,18 +988,27 @@
                         </scrollView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated GAS fee (Gwei)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2A-pM-8RD">
                             <rect key="frame" x="114.5" y="125.5" width="185" height="19"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="19" id="YbW-aK-c8y"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.035 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcp-UN-gH9">
                             <rect key="frame" x="135" y="159.5" width="144" height="38"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="yHn-Ms-V2x"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="32"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $ 120,876" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cz1-gs-clU">
                             <rect key="frame" x="162" y="207.5" width="90" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="fcl-tg-Dja"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
@@ -1010,21 +1023,21 @@
                         <constraint firstAttribute="trailing" secondItem="HRe-IQ-JxG" secondAttribute="trailing" constant="39" id="42f-Dz-eao"/>
                         <constraint firstAttribute="trailing" secondItem="lCT-HM-5yV" secondAttribute="trailing" constant="39" id="4B1-hB-1UW"/>
                         <constraint firstItem="5QM-Uq-ScQ" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="BWh-9t-epR"/>
-                        <constraint firstItem="l2A-pM-8RD" firstAttribute="top" secondItem="YmJ-Yg-s8A" secondAttribute="bottom" constant="25" id="Q05-0L-Ch1"/>
                         <constraint firstItem="HRe-IQ-JxG" firstAttribute="leading" secondItem="YmJ-Yg-s8A" secondAttribute="leading" id="Qed-By-MZE"/>
                         <constraint firstItem="gyw-K5-8ty" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" id="Xaa-kN-QNb"/>
                         <constraint firstItem="cz1-gs-clU" firstAttribute="top" secondItem="gcp-UN-gH9" secondAttribute="bottom" constant="10" id="ZDm-kM-5dD"/>
                         <constraint firstAttribute="height" constant="650" id="ZJ7-Lq-sPg"/>
                         <constraint firstItem="YmJ-Yg-s8A" firstAttribute="top" secondItem="5QM-Uq-ScQ" secondAttribute="bottom" constant="26" id="Zx2-o5-Ri4"/>
-                        <constraint firstItem="HRe-IQ-JxG" firstAttribute="top" secondItem="YmJ-Yg-s8A" secondAttribute="bottom" constant="150" id="cxj-yF-vzG"/>
-                        <constraint firstItem="gyw-K5-8ty" firstAttribute="top" secondItem="YmJ-Yg-s8A" secondAttribute="bottom" constant="150" id="fmm-YZ-J4a"/>
                         <constraint firstAttribute="trailing" secondItem="gyw-K5-8ty" secondAttribute="trailing" id="hgj-Em-Fe6"/>
                         <constraint firstItem="gcp-UN-gH9" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="i1a-xj-kVu"/>
+                        <constraint firstItem="gyw-K5-8ty" firstAttribute="top" secondItem="cz1-gs-clU" secondAttribute="bottom" constant="21" id="k2D-JI-CTj"/>
                         <constraint firstItem="gcp-UN-gH9" firstAttribute="top" secondItem="l2A-pM-8RD" secondAttribute="bottom" constant="15" id="mUY-ld-D7M"/>
                         <constraint firstItem="HRe-IQ-JxG" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="nrm-T2-1nb"/>
                         <constraint firstItem="lCT-HM-5yV" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="oyh-lL-p51"/>
                         <constraint firstAttribute="bottom" secondItem="gyw-K5-8ty" secondAttribute="bottom" id="qwZ-lY-xIs"/>
+                        <constraint firstItem="l2A-pM-8RD" firstAttribute="top" secondItem="5QM-Uq-ScQ" secondAttribute="bottom" constant="82" id="wWB-1j-68N"/>
                         <constraint firstItem="cz1-gs-clU" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="zaH-ni-kNn"/>
+                        <constraint firstItem="HRe-IQ-JxG" firstAttribute="top" secondItem="cz1-gs-clU" secondAttribute="bottom" constant="21" id="zrX-ky-ivz"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="9TY-M9-cX4" appends="YES" id="NEF-gA-F3G"/>
