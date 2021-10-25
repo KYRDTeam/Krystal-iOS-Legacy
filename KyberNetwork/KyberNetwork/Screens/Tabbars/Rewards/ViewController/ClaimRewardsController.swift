@@ -116,7 +116,7 @@ class ClaimRewardsController: KNBaseViewController {
     self.claimRewardButton.rounded(radius: 16)
     self.claimRewardButton.isEnabled = !self.viewModel.shouldDisableClaimButton
     if self.viewModel.shouldDisableClaimButton {
-      self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.5)
+      self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
     } else {
       self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")!
     }

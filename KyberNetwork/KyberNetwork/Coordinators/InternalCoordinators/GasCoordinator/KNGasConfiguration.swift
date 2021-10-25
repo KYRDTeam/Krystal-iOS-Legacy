@@ -18,7 +18,7 @@ public struct KNGasConfiguration {
   static let propyGasLimitDefault = BigInt(884_000)
   static let promotionTokenGasLimitDefault = BigInt(884_000)
   static let trueUSDTokenGasLimitDefault = BigInt(870_000)
-  static let claimRewardGasLimitDefault = BigInt(1_140_000)
+  static let claimRewardGasLimitDefault = BigInt(120_000)
 
   static let gasPriceDefault: BigInt = EtherNumberFormatter.full.number(from: "50", units: UnitConfiguration.gasPriceUnit)!
   static let gasPriceMin: BigInt = EtherNumberFormatter.full.number(from: "20", units: UnitConfiguration.gasPriceUnit)!

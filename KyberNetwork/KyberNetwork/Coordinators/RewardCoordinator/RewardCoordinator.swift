@@ -253,8 +253,15 @@ class RewardCoordinator: Coordinator {
         switch result {
         case .success(let signedData):
             self.sendSignedTransactionData(signedData.0, transaction: transaction)
-        case .failure:
-            print("Error")
+        case .failure(let error):
+            self.navigationController.hideLoading()
+            var errorMessage = "Can not sign transaction data"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
         }
       case .failure(let error):
