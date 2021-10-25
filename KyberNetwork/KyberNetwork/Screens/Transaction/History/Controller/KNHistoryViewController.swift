@@ -187,7 +187,7 @@ struct KNHistoryViewModel {
     }
     return nil
   }
-  
+
   mutating func updateDisplayingKrystalData() {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
@@ -257,13 +257,14 @@ struct KNHistoryViewModel {
   }
 
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
+    
     let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
     let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
     let matchedAppprove = (tx.type == "Approval") && self.filters.isApprove
     let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
-    let matchedContractInteraction = (tx.type == "") && self.filters.isContractInteraction
+    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw
 
     var tokenMatched = true
@@ -277,8 +278,19 @@ struct KNHistoryViewModel {
     if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
-    tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
-
+    if transactionToken.isEmpty {
+      if self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
+        tokenMatched = true
+      } else {
+        tokenMatched = false
+      }
+    } else {
+      if transactionToken.count > self.filters.tokens.count {
+        tokenMatched = Set(self.filters.tokens).isSubset(of: Set(transactionToken))
+      } else {
+        tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
+      }
+    }
     return matchedType && tokenMatched
   }
 

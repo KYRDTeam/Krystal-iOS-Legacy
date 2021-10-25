@@ -43,13 +43,6 @@ class KNTransactionFilterViewModel {
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
-//    self.supportedTokens.sort { (t0, t1) -> Bool in
-//      let isContain0 = self.tokens.contains(t0)
-//      let isContain1 = self.tokens.contains(t1)
-//      if isContain0 && !isContain1 { return true }
-//      if !isContain0 && isContain1 { return false }
-//      return t0 < t1
-//    }
   }
 
   func updateFrom(date: Date?) {
