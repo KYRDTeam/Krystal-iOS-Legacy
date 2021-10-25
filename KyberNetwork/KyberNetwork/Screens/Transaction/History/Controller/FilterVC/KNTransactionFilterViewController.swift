@@ -135,7 +135,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var withdrawButton: UIButton!
   @IBOutlet weak var tradeButton: UIButton!
   @IBOutlet weak var contractInteractionButton: UIButton!
-  
+
   @IBOutlet weak var selectButton: UIButton!
   @IBOutlet weak var tokenTextLabel: UILabel!
   @IBOutlet weak var tokensTableView: UITableView!
@@ -315,6 +315,17 @@ class KNTransactionFilterViewController: KNBaseViewController {
           return CGFloat(numberRows) * self.tokensTableView.rowHeight
         }()
         self.tokensTableView.reloadData()
+      }
+      if self.viewModel.supportedTokens.isEmpty {
+        self.tokenTextLabel.isHidden = true
+        self.selectButton.isHidden = true
+        self.tokensTableView.isHidden = true
+        self.tokensViewActionButton.isHidden = true
+      } else {
+        self.tokenTextLabel.isHidden = false
+        self.selectButton.isHidden = false
+        self.tokensTableView.isHidden = false
+        self.tokensViewActionButton.isHidden = false
       }
       self.view.layoutIfNeeded()
     }
