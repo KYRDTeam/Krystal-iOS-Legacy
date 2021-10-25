@@ -76,7 +76,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
     } else if historyItem.type == "Transfer" {
       let valueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
+      return "- \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
       return self.historyItem.extraData?.token?.name ?? ""
     } else {
