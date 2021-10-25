@@ -40,6 +40,7 @@ final class StringFormatter {
       
       let formatter = NumberFormatter()
       formatter.maximumFractionDigits = maxDigits
+      formatter.roundingMode = .halfDown
       return formatter.string(from: NSNumber(value: value)) ?? ""
     }
   
@@ -47,13 +48,14 @@ final class StringFormatter {
     let formatter = NumberFormatter()
     // rule amount round upto 4 digits
     formatter.maximumFractionDigits = 4
-    formatter.roundingMode = .floor
+    formatter.roundingMode = .halfDown
     return formatter.string(from: NSNumber(value: value)) ?? ""
   }
 
-    func currencyString(value: Double, decimals: Int) -> String {
+  func currencyString(value: Double, decimals: Int) -> String {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = decimals
+    formatter.roundingMode = .halfDown
     return formatter.string(from: NSNumber(value: value)) ?? ""
   }
 
