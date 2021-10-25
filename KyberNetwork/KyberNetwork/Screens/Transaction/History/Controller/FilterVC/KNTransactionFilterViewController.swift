@@ -431,6 +431,15 @@ class KNTransactionFilterViewController: KNBaseViewController {
       self.delegate?.transactionFilterViewController(self, apply: filter)
     })
   }
+
+  @IBAction func tapFromTextField(_ sender: UITapGestureRecognizer) {
+    self.fromTextField.becomeFirstResponder()
+  }
+  
+  @IBAction func tapToTextField(_ sender: UITapGestureRecognizer) {
+    self.toTextField.becomeFirstResponder()
+  }
+  
 }
 
 extension KNTransactionFilterViewController: UITableViewDelegate {
