@@ -79,6 +79,9 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
       return self.historyItem.extraData?.token?.name ?? ""
+    } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.token?.decimals {
+      guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
+      return receiveValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: 4)
     } else {
       return "--/--"
     }
@@ -123,6 +126,8 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return "SUPPLY"
     } else if self.historyItem.type == "Withdraw" {
       return "WITHDRAW"
+    } else if self.historyItem.type == "ClaimReward" {
+      return "CLAIM REWARD"
     } else {
       return "CONTRACT INTERACTION"
     }
@@ -141,6 +146,8 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return UIImage(named: "history_send_icon")!
     } else if historyItem.type == "Approval" {
       return UIImage(named: "history_approve_icon")!
+    } else if historyItem.type == "ClaimReward" {
+      return UIImage(named: "history_claim_reward_icon")!
     } else {
       return UIImage(named: "history_contract_interaction_icon")!
     }
