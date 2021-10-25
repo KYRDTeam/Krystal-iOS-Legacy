@@ -239,13 +239,18 @@ class KNSupportedTokenStorage {
   }
   
   func changeAllTokensActiveStatus(isActive: Bool) {
+    // check if there is any disable token which is supported token
+    let disabledSupportedTokens = self.disableTokens.filter { token in
+      return self.supportedToken.contains(token)
+    }
     self.disableTokens.removeAll()
     if !isActive {
+      self.disableTokens.append(contentsOf: disabledSupportedTokens)
       self.disableTokens.append(contentsOf: manageToken)
     }
     Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
   }
-  
+
   func activeStatus() -> Bool {
     if disableTokens.isEmpty {
       // all tokens are active
