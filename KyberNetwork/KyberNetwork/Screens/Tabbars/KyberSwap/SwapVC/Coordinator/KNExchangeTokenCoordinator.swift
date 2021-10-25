@@ -570,7 +570,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       viewModel.advancedMaxPriorityFee = advancedPriorityFee
       viewModel.advancedMaxFee = advancedMaxFee
       viewModel.advancedNonce = advancedNonce
-      
+
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
       self.gasFeeSelectorVC = vc
@@ -619,10 +619,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
       self.getExpectedRate(from: from, to: to, srcAmount: srcAmount, hint: hint)
     case .getLatestNonce:
-      guard let provider = self.session.externalProvider else {
-        return
-      }
-      provider.getTransactionCount { [weak self] result in
+      self.getLatestNonce { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let res):
@@ -977,6 +974,20 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.historyCoordinator?.delegate = self
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.historyCoordinator?.start()
+  }
+  
+  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { [weak self] result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
   }
 }
 
