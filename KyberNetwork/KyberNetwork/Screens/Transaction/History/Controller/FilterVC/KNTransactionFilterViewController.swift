@@ -321,11 +321,17 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.selectButton.isHidden = true
         self.tokensTableView.isHidden = true
         self.tokensViewActionButton.isHidden = true
+        self.separatorViews.forEach { view in
+          view.isHidden = true
+        }
       } else {
         self.tokenTextLabel.isHidden = false
         self.selectButton.isHidden = false
         self.tokensTableView.isHidden = false
         self.tokensViewActionButton.isHidden = false
+        self.separatorViews.forEach { view in
+          view.isHidden = false
+        }
       }
       self.view.layoutIfNeeded()
     }
