@@ -335,7 +335,7 @@ extension RewardCoordinator: ClaimRewardsControllerDelegate {
     self.checkEligibleWallet { isEligible in
       if isEligible {
         self.getLatestNonce { (nonce) in
-          let newTxObject = txObject.newTxObjectWithNonce(nonce: provider.minTxCount)
+          let newTxObject = txObject.newTxObjectWithNonce(nonce: nonce)
           if let transaction = newTxObject.convertToSignTransaction(wallet: self.session.wallet) {
             self.getEstimateGasLimit(transaction: transaction)
           } else {

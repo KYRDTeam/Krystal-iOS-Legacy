@@ -19,7 +19,7 @@ class ClaimButtonTableViewCell: UITableViewCell {
 
   func setClaimButtonState(isEnabled: Bool) {
     self.claimButton.isEnabled = isEnabled
-    self.claimButton.backgroundColor = isEnabled ? UIColor(named: "buttonBackgroundColor")! : UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.5)
+    self.claimButton.backgroundColor = isEnabled ? UIColor(named: "buttonBackgroundColor")! : UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
   }
 
   @IBAction func onClaimButtonTapped(_ sender: Any) {
