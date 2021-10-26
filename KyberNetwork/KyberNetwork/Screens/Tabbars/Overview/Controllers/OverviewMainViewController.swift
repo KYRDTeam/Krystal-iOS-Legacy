@@ -567,7 +567,7 @@ extension OverviewMainViewController: UITableViewDelegate {
   func isShowOrHideAssetRow(indexPath: IndexPath) -> Bool {
     switch self.viewModel.currentMode {
     case .asset:
-      return indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
+      return indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section)
     default:
       return false
     }
