@@ -22,7 +22,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   var index: Int {
     return 0
   }
-  
+
   var fromIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.sendToken?.symbol ?? ""
@@ -36,7 +36,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return ""
     }
   }
-  
+
   var toIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.receiveToken?.symbol ?? ""
@@ -109,7 +109,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return self.historyItem.to
     }
   }
-  
+
   var transactionTypeString: String {
     if self.historyItem.type == "Swap" {
       return "SWAP"
