@@ -347,10 +347,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       }
       return "Receive NFT"
     case .claimReward:
-//        if let tx = self.data.internalTransactions.first {
-//          return "+ \(tx.tokenName)"
-//        }
-      return "Claim Reward - Amount"
+      return "Claim Reward"
     }
   }
 
@@ -462,7 +459,7 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       }
       return ""
     case .claimReward:
-      return "Claim reward to adress"
+      return "Claim reward"
     }
   }
   
