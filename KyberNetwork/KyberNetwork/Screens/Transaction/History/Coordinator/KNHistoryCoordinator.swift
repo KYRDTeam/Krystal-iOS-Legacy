@@ -110,7 +110,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
         return data
       }()
       DispatchQueue.main.async {
-        if showLoading { self.navigationController.hideLoading() }
+        self.navigationController.hideLoading()
         self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
       }
     }
@@ -187,7 +187,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.stop()
     case .cancelTransaction(let transaction):
       self.openTransactionCancelConfirmPopUpFor(transaction: transaction)
-      
     case .speedUpTransaction(let transaction):
       self.openTransactionSpeedUpViewController(transaction: transaction)
     case .quickTutorial(let pointsAndRadius):
@@ -223,6 +222,9 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       } else {
         self.navigationController.tabBarController?.selectedIndex = 1
       }
+    case .reloadAllData:
+      self.navigationController.displayLoading()
+      self.session.transacionCoordinator?.loadEtherscanTransactions(isInit: true)
     }
   }
 

@@ -17,6 +17,7 @@ enum KNHistoryViewEvent {
   case openKyberWalletPage
   case openWalletsListPopup
   case swap
+  case reloadAllData
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -378,7 +379,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var swapNowButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
-  
+  private let refreshControl = UIRefreshControl()
   
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
@@ -408,12 +409,6 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func showQuickTutorial() {
-//    let collectionViewOrigin = self.transactionCollectionView.frame.origin
-//    let collectionViewSize = self.transactionCollectionView.frame.size
-//    let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
-//    self.delegate?.historyViewController(self, run: event)
-//    self.animateReviewCellActionForTutorial()
-//    self.viewModel.isShowingQuickTutorial = true
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -516,7 +511,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
-
+    self.refreshControl.tintColor = .lightGray
+    self.refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+    self.transactionCollectionView.refreshControl = self.refreshControl
     self.updateUIWhenDataDidChange()
   }
 
@@ -584,6 +581,15 @@ class KNHistoryViewController: KNBaseViewController {
   
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
+  }
+  
+  @objc private func refreshData(_ sender: Any) {
+    guard !self.viewModel.isShowingPending else { return }
+    self.refreshControl.endRefreshing()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.delegate?.historyViewController(self, run: .reloadAllData)
+    }
+    
   }
 }
 
