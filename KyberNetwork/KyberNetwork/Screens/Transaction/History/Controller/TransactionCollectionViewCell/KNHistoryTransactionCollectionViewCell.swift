@@ -22,7 +22,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
   var index: Int {
     return 0
   }
-  
+
   var fromIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.sendToken?.symbol ?? ""
@@ -36,7 +36,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return ""
     }
   }
-  
+
   var toIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.receiveToken?.symbol ?? ""
@@ -76,7 +76,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
     } else if historyItem.type == "Transfer" {
       let valueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
+      return "- \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
       return self.historyItem.extraData?.token?.name ?? ""
     } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
@@ -112,7 +112,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return self.historyItem.to
     }
   }
-  
+
   var transactionTypeString: String {
     if self.historyItem.type == "Swap" {
       return "SWAP"

@@ -38,13 +38,13 @@
                     <rect key="frame" x="0.0" y="267" width="375" height="300"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nam urna leo, interdum eu pretium a, lorem viverra imperdiet arcu. Curabitur interdum, enim a varius semper." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leR-UV-syU">
-                            <rect key="frame" x="21" y="78.5" width="333" height="56.5"/>
+                            <rect key="frame" x="21" y="88.5" width="333" height="56"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWN-4D-kOE">
-                            <rect key="frame" x="36" y="177" width="139.5" height="38"/>
+                            <rect key="frame" x="36" y="186.5" width="139.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="Aaf-ZQ-6h5"/>
@@ -58,14 +58,14 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5U-te-ZY2">
-                            <rect key="frame" x="141.5" y="33" width="92.5" height="23.5"/>
+                            <rect key="frame" x="147" y="43" width="81.5" height="23.5"/>
                             <color key="tintColor" name="textRedColor"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmr-vR-Vc9">
-                            <rect key="frame" x="199.5" y="177" width="139.5" height="38"/>
+                            <rect key="frame" x="199.5" y="186.5" width="139.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="Uaf-6D-wkL"/>
@@ -82,7 +82,7 @@
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="leR-UV-syU" firstAttribute="leading" secondItem="BsK-bO-fJV" secondAttribute="leading" constant="21" id="1Av-z1-rAf"/>
-                        <constraint firstItem="c5U-te-ZY2" firstAttribute="top" secondItem="BsK-bO-fJV" secondAttribute="top" constant="33" id="Hpb-KU-lEY"/>
+                        <constraint firstItem="c5U-te-ZY2" firstAttribute="top" secondItem="BsK-bO-fJV" secondAttribute="top" constant="43" id="Hpb-KU-lEY"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="c5U-te-ZY2" secondAttribute="trailing" constant="21" id="J7i-bN-3ii"/>
                         <constraint firstItem="c5U-te-ZY2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BsK-bO-fJV" secondAttribute="leading" constant="21" id="Ky3-XV-noL"/>
                         <constraint firstAttribute="trailing" secondItem="leR-UV-syU" secondAttribute="trailing" constant="21" id="RfL-U2-9EG"/>

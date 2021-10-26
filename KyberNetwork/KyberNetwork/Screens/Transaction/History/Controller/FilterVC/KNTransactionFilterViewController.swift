@@ -46,13 +46,6 @@ class KNTransactionFilterViewModel {
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
-//    self.supportedTokens.sort { (t0, t1) -> Bool in
-//      let isContain0 = self.tokens.contains(t0)
-//      let isContain1 = self.tokens.contains(t1)
-//      if isContain0 && !isContain1 { return true }
-//      if !isContain0 && isContain1 { return false }
-//      return t0 < t1
-//    }
   }
 
   func updateFrom(date: Date?) {
@@ -335,6 +328,23 @@ class KNTransactionFilterViewController: KNBaseViewController {
         }()
         self.tokensTableView.reloadData()
       }
+      if self.viewModel.supportedTokens.isEmpty {
+        self.tokenTextLabel.isHidden = true
+        self.selectButton.isHidden = true
+        self.tokensTableView.isHidden = true
+        self.tokensViewActionButton.isHidden = true
+        self.separatorViews.forEach { view in
+          view.isHidden = true
+        }
+      } else {
+        self.tokenTextLabel.isHidden = false
+        self.selectButton.isHidden = false
+        self.tokensTableView.isHidden = false
+        self.tokensViewActionButton.isHidden = false
+        self.separatorViews.forEach { view in
+          view.isHidden = false
+        }
+      }
       self.view.layoutIfNeeded()
     }
   }
@@ -440,6 +450,15 @@ class KNTransactionFilterViewController: KNBaseViewController {
       self.delegate?.transactionFilterViewController(self, apply: filter)
     })
   }
+
+  @IBAction func tapFromTextField(_ sender: UITapGestureRecognizer) {
+    self.fromTextField.becomeFirstResponder()
+  }
+  
+  @IBAction func tapToTextField(_ sender: UITapGestureRecognizer) {
+    self.toTextField.becomeFirstResponder()
+  }
+  
 }
 
 extension KNTransactionFilterViewController: UITableViewDelegate {

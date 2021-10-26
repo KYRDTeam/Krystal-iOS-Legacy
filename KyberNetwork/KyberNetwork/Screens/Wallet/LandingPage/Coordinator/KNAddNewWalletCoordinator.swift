@@ -103,7 +103,7 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
     guard let wallet = wallet else { return }
     self.navigationController.dismiss(animated: true) {
       var isWatchWallet = false
@@ -113,6 +113,7 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
       let walletObject = KNWalletObject(
         address: wallet.address.description,
         name: name ?? "Untitled",
+        isBackedUp: isBackUp,
         isWatchWallet: isWatchWallet
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
@@ -151,6 +152,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       let walletObject = KNWalletObject(
         address: wallet.address.description,
         name: name ?? "Untitled",
+        isBackedUp: true,
         isWatchWallet: isWatchWallet
       )
       KNWalletStorage.shared.add(wallets: [walletObject])

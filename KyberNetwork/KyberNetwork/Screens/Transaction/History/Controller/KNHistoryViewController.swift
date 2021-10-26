@@ -17,6 +17,7 @@ enum KNHistoryViewEvent {
   case openKyberWalletPage
   case openWalletsListPopup
   case swap
+  case reloadAllData
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -189,7 +190,7 @@ struct KNHistoryViewModel {
     }
     return nil
   }
-  
+
   mutating func updateDisplayingKrystalData() {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
@@ -259,6 +260,7 @@ struct KNHistoryViewModel {
   }
 
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
+    
     let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
     let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
@@ -266,7 +268,7 @@ struct KNHistoryViewModel {
     let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == "") && self.filters.isContractInteraction
+    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
     var tokenMatched = true
@@ -280,8 +282,19 @@ struct KNHistoryViewModel {
     if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
-    tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
-
+    if transactionToken.isEmpty {
+      if self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
+        tokenMatched = true
+      } else {
+        tokenMatched = false
+      }
+    } else {
+      if transactionToken.count > self.filters.tokens.count {
+        tokenMatched = Set(self.filters.tokens).isSubset(of: Set(transactionToken))
+      } else {
+        tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
+      }
+    }
     return matchedType && tokenMatched
   }
 
@@ -369,7 +382,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var swapNowButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
-  
+  private let refreshControl = UIRefreshControl()
   
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
@@ -399,12 +412,6 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func showQuickTutorial() {
-//    let collectionViewOrigin = self.transactionCollectionView.frame.origin
-//    let collectionViewSize = self.transactionCollectionView.frame.size
-//    let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
-//    self.delegate?.historyViewController(self, run: event)
-//    self.animateReviewCellActionForTutorial()
-//    self.viewModel.isShowingQuickTutorial = true
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -507,7 +514,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
-
+    self.refreshControl.tintColor = .lightGray
+    self.refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+    self.transactionCollectionView.refreshControl = self.refreshControl
     self.updateUIWhenDataDidChange()
   }
 
@@ -575,6 +584,15 @@ class KNHistoryViewController: KNBaseViewController {
   
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
+  }
+  
+  @objc private func refreshData(_ sender: Any) {
+    guard !self.viewModel.isShowingPending else { return }
+    self.refreshControl.endRefreshing()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.delegate?.historyViewController(self, run: .reloadAllData)
+    }
+    
   }
 }
 

@@ -7,7 +7,7 @@ extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
   func landingPageCoordinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
-  
+
   func landingPageCoordinator(import wallet: Wallet) {
     if self.tabbarController == nil {
       self.startNewSession(with: wallet)
@@ -113,6 +113,13 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  func overviewCoordinatorDidStart() {
+    if self.isFirstLoad {
+      self.showBackupWalletIfNeeded()
+      self.isFirstLoad = false
+    }
+  }
+  
   func overviewCoordinatorDidSelectExportWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectExportWallet()

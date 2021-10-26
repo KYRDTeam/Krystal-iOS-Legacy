@@ -47,9 +47,11 @@ class OverviewDepositViewModel {
     allBalances.forEach { (item) in
       var balances: [OverviewDepositLendingBalanceCellViewModel] = []
       item.balances.forEach { (balanceItem) in
-        let viewModel = OverviewDepositLendingBalanceCellViewModel(balance: balanceItem)
-        viewModel.hideBalanceStatus = self.hideBalanceStatus
-        balances.append(viewModel)
+        if !balanceItem.hasSmallAmount {
+          let viewModel = OverviewDepositLendingBalanceCellViewModel(balance: balanceItem)
+          viewModel.hideBalanceStatus = self.hideBalanceStatus
+          balances.append(viewModel)
+        }
       }
       if !balances.isEmpty {
         self.dataSource[item.name] = balances
@@ -158,6 +160,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    self.viewModel.hideBalanceStatus = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey)
     self.viewModel.reloadAllData()
     self.reloadUI()
   }

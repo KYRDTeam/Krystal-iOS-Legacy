@@ -156,6 +156,7 @@ class WithdrawViewController: KNBaseViewController {
   @IBOutlet weak var withdrawableAmountLabel: UILabel!
   @IBOutlet weak var tokenButton: UIButton!
   @IBOutlet weak var transactionGasPriceLabel: UILabel!
+  var keyboardTimer: Timer?
   
   let transitor = TransitionDelegate()
   let viewModel: WithdrawViewModel
@@ -343,6 +344,11 @@ class WithdrawViewController: KNBaseViewController {
     self.dismiss(animated: true, completion: nil)
   }
   
+  @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
+    self.amountFIeld.resignFirstResponder()
+  }
+  
+  
   func coordinatorDidUpdatePendingTx() {
     self.checkUpdateApproveButton()
   }
@@ -394,7 +400,14 @@ extension WithdrawViewController: UITextFieldDelegate {
     let cleanedText = text.cleanStringToNumber()
     if textField == self.amountFIeld, cleanedText.amountBigInt(decimals: self.viewModel.balance.decimals) == nil { return false }
     textField.text = cleanedText
-        self.viewModel.amount = cleanedText
+    self.viewModel.amount = cleanedText
+    self.keyboardTimer?.invalidate()
+    self.keyboardTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(WithdrawViewController.keyboardPauseTyping),
+            userInfo: ["textField": textField],
+            repeats: false)
     return false
   }
 
@@ -438,5 +451,9 @@ extension WithdrawViewController: UITextFieldDelegate {
       return true
     }
     return false
+  }
+  
+  @objc func keyboardPauseTyping(timer: Timer) {
+    self.updateGasLimit()
   }
 }

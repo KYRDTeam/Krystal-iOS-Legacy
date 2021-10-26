@@ -46,13 +46,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }()
 
   var txDetailsCoordinator: KNTransactionDetailsCoordinator?
-//  lazy var txDetailsCoordinator: KNTransactionDetailsCoordinator = {
-//    return KNTransactionDetailsCoordinator(
-//      navigationController: self.navigationController,
-//      transaction: nil,
-//      currentWallet: self.currentWallet
-//    )
-//  }()
 
   var speedUpViewController: SpeedUpCustomGasSelectViewController?
 
@@ -67,13 +60,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    if EtherscanTransactionStorage.shared.getHistoryTransactionModel().isEmpty {
-      DispatchQueue.global(qos: .background).async {
-        EtherscanTransactionStorage.shared.generateKrytalTransactionModel {
-          //TODO: fill placeholder
-        }
-      }
-    }
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()
@@ -124,7 +110,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
         return data
       }()
       DispatchQueue.main.async {
-        if showLoading { self.navigationController.hideLoading() }
+        self.navigationController.hideLoading()
         self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
       }
     }
@@ -201,7 +187,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.stop()
     case .cancelTransaction(let transaction):
       self.openTransactionCancelConfirmPopUpFor(transaction: transaction)
-      
     case .speedUpTransaction(let transaction):
       self.openTransactionSpeedUpViewController(transaction: transaction)
     case .quickTutorial(let pointsAndRadius):
@@ -210,8 +195,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       let urlString = "\(self.etherScanURL)address/\(self.session.wallet.address.description)"
       self.rootViewController.openSafari(with: urlString)
     case .openKyberWalletPage:
-//      let urlString = "\(self.enjinScanURL)eth/address/\(self.session.wallet.address.description)"
-//      self.rootViewController.openSafari(with: urlString)
     break
     case .openWalletsListPopup:
       let viewModel = WalletsListViewModel(
@@ -239,6 +222,9 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       } else {
         self.navigationController.tabBarController?.selectedIndex = 1
       }
+    case .reloadAllData:
+      self.navigationController.displayLoading()
+      self.session.transacionCoordinator?.loadEtherscanTransactions(isInit: true)
     }
   }
 

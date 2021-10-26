@@ -117,6 +117,7 @@
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="wjD-qU-sVR" secondAttribute="trailing" constant="12" id="Awa-Jp-xtX"/>
                                 <constraint firstItem="4eQ-jx-ONb" firstAttribute="leading" secondItem="TrJ-az-hN9" secondAttribute="leading" constant="12" id="EPC-go-plI"/>
@@ -126,6 +127,9 @@
                                 <constraint firstAttribute="bottom" secondItem="4eQ-jx-ONb" secondAttribute="bottom" id="muL-84-jzF"/>
                                 <constraint firstItem="4eQ-jx-ONb" firstAttribute="top" secondItem="TrJ-az-hN9" secondAttribute="top" id="yAR-RL-Kuh"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="uHT-bB-rKT" appends="YES" id="5xJ-NO-zvU"/>
+                            </connections>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pxz-bZ-Bop">
                             <rect key="frame" x="20" y="604" width="335" height="1"/>
@@ -161,6 +165,7 @@
                                 </textField>
                             </subviews>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="FtQ-XI-CHX"/>
                                 <constraint firstAttribute="trailing" secondItem="jeN-11-PlK" secondAttribute="trailing" constant="12" id="N4j-cj-Td3"/>
@@ -170,6 +175,9 @@
                                 <constraint firstAttribute="bottom" secondItem="SjL-4y-uiz" secondAttribute="bottom" id="pcI-vA-w9y"/>
                                 <constraint firstItem="SjL-4y-uiz" firstAttribute="leading" secondItem="4wa-DK-Evy" secondAttribute="leading" constant="12" id="sNc-z1-Say"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="VFU-XZ-h7h" appends="YES" id="Fxf-vP-Eg0"/>
+                            </connections>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8a-mb-4Ax">
                             <rect key="frame" x="109" y="165" width="68.5" height="36"/>
@@ -483,6 +491,16 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="136.80000000000001" y="195.20239880059972"/>
         </view>
+        <tapGestureRecognizer id="VFU-XZ-h7h">
+            <connections>
+                <action selector="tapFromTextField:" destination="-1" id="qWY-kQ-lno"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="uHT-bB-rKT">
+            <connections>
+                <action selector="tapToTextField:" destination="-1" id="lWZ-Jz-gu9"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>

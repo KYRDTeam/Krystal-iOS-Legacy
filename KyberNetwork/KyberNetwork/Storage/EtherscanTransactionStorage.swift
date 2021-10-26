@@ -379,6 +379,22 @@ class EtherscanTransactionStorage {
   }
 
   func getEtherscanToken() -> [Token] {
-    return KNSupportedTokenStorage.shared.allActiveTokens
+    var tokenSet = Set<Token>()
+
+    self.krystalHistoryTransaction.forEach { transaction in
+      if let token = transaction.extraData?.receiveToken, !token.symbol.isEmpty {
+        tokenSet.insert(token)
+      }
+      if let token = transaction.extraData?.sendToken, !token.symbol.isEmpty {
+        tokenSet.insert(token)
+      }
+      if let token = transaction.extraData?.token, !token.symbol.isEmpty {
+        tokenSet.insert(token)
+      }
+    }
+
+    return Array(tokenSet).sorted { (left, right) -> Bool in
+      return left.symbol > right.symbol
+    }
   }
 }

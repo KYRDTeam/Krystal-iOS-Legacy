@@ -22,6 +22,7 @@ enum OverviewMainViewEvent {
   case changeRightMode(current: ViewMode)
   case addNFT
   case openNFTDetail(item: NFTItem, category: NFTSection)
+  case didAppear
 }
 
 enum ViewMode: Equatable, Codable {
@@ -329,7 +330,7 @@ class OverviewMainViewModel {
       var assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
       }
-        
+
       if self.isHidingSmallAssetsToken {
         assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
       }
@@ -358,11 +359,14 @@ class OverviewMainViewModel {
         var totalSection = BigInt(0)
         data[key]?.forEach({ (item) in
           if let lendingBalance = item as? LendingBalance {
-            totalSection += lendingBalance.getValueBigInt(self.currencyMode)
+            if !lendingBalance.hasSmallAmount {
+              totalSection += lendingBalance.getValueBigInt(self.currencyMode)
+              sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
+            }
           } else if let distributionBalance = item as? LendingDistributionBalance {
             totalSection += distributionBalance.getValueBigInt(self.currencyMode)
+            sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
           }
-          sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
         })
         models[key] = sectionModels
         let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()

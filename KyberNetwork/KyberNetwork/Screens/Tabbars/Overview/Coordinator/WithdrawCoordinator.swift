@@ -170,9 +170,13 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: 0, useGasToken: useGasToken)) { [weak self] (result) in
+      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
-        if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txObj = json["txObject"] as? [String: String], let gasLimitString = txObj["gasLimit"], let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
+        if case .success(let resp) = result,
+            let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+            let txObj = json["txObject"] as? [String: String],
+            let gasLimitString = txObj["gasLimit"],
+            let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
           self.withdrawViewController?.coordinatorDidUpdateGasLimit(gasLimit)
         } else {
           self.withdrawViewController?.coordinatorFailUpdateGasLimit()
@@ -210,7 +214,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       self.gasPriceSelectVC = vc
     }
   }
-  
+
   func getLatestNonce(completion: @escaping (Int) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
