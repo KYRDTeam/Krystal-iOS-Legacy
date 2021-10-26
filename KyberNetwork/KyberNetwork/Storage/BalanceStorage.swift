@@ -135,6 +135,29 @@ class BalanceStorage {
     return total
   }
   
+  func getTotalLiquidityPoolUSD(_ currency: CurrencyMode) -> BigInt {
+    let liquidityPoolData = self.getLiquidityPools(currency: currency)
+    let data = liquidityPoolData.1
+    var total = 0.0
+    
+    let keysArray = liquidityPoolData.0
+    
+    keysArray.forEach { (key) in
+      var totalSection = 0.0
+      data[key.lowercased()]?.forEach({ (item) in
+        if let poolPairToken = item as? [LPTokenModel] {
+          poolPairToken.forEach { token in
+            //add total value of each token in current pair
+            totalSection += token.getTokenValue(currency)
+          }
+        }
+      })
+      total += totalSection
+    }
+    
+    return BigInt(total * pow(10.0, 18.0))
+  }
+  
   func getTotalSupplyBalance(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
     let allBalances: [LendingPlatformBalance] = self.getAllLendingBalances()
@@ -255,7 +278,7 @@ class BalanceStorage {
   }
   
   func getTotalBalance(_ currency: CurrencyMode) -> BigInt {
-    return self.getTotalAssetBalanceUSD(currency) + self.getTotalSupplyBalance(currency)
+    return self.getTotalAssetBalanceUSD(currency) + self.getTotalSupplyBalance(currency) + self.getTotalLiquidityPoolUSD(currency)
   }
   
   func getAllNFTBalance() -> [NFTSection] {
