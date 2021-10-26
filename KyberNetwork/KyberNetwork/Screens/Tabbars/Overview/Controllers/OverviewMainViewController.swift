@@ -561,6 +561,16 @@ extension OverviewMainViewController: UITableViewDataSource {
 }
 
 extension OverviewMainViewController: UITableViewDelegate {
+  
+  func isShowOrHideAssetRow(indexPath: IndexPath) -> Bool {
+    switch self.viewModel.currentMode {
+    case .asset:
+      return indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
+    default:
+      return false
+    }
+  }
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard !self.viewModel.isEmpty() else {
@@ -569,7 +579,7 @@ extension OverviewMainViewController: UITableViewDelegate {
     guard self.viewModel.currentMode != .nft, self.viewModel.currentMode != .showLiquidityPool else {
       return
     }
-    guard indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1 else {
+    guard !isShowOrHideAssetRow(indexPath: indexPath) else {
       self.viewModel.isHidingSmallAssetsToken = !self.viewModel.isHidingSmallAssetsToken
       self.reloadUI()
       return

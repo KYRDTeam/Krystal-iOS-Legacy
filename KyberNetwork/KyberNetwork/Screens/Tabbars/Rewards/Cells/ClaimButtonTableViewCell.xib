@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="90" id="KGk-i7-Jjw" customClass="ClaimButtonTableViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="328" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="328" height="90"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THu-c2-Ml6">
+                        <rect key="frame" x="12" y="0.0" width="304" height="90"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDc-rs-s97">
+                                <rect key="frame" x="25" y="18" width="254" height="38"/>
+                                <color key="backgroundColor" name="buttonBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="OZE-Qc-KrZ"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Claim All">
+                                    <fontDescription key="titleFontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
+                                    <color key="baseForegroundColor" name="buttonTextColor"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="19"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onClaimButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="YyD-gR-1js"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="innerContainerBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="sDc-rs-s97" secondAttribute="bottom" constant="34" id="15M-j1-Z2p"/>
+                            <constraint firstItem="sDc-rs-s97" firstAttribute="top" secondItem="THu-c2-Ml6" secondAttribute="top" constant="18" id="Esi-aO-BQE"/>
+                            <constraint firstAttribute="trailing" secondItem="sDc-rs-s97" secondAttribute="trailing" constant="25" id="oOU-6b-fFX"/>
+                            <constraint firstItem="sDc-rs-s97" firstAttribute="leading" secondItem="THu-c2-Ml6" secondAttribute="leading" constant="25" id="tpa-e1-F7a"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstItem="THu-c2-Ml6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="XdZ-GW-fRy"/>
+                    <constraint firstAttribute="bottom" secondItem="THu-c2-Ml6" secondAttribute="bottom" id="YNd-qy-rKf"/>
+                    <constraint firstAttribute="trailing" secondItem="THu-c2-Ml6" secondAttribute="trailing" constant="12" id="aEe-aL-a8y"/>
+                    <constraint firstItem="THu-c2-Ml6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="qFI-yC-mJd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="bgView" destination="THu-c2-Ml6" id="ZoN-mJ-dmD"/>
+                <outlet property="claimButton" destination="sDc-rs-s97" id="lBb-hK-P5G"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="147.99107142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="innerContainerBgColor">
+            <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

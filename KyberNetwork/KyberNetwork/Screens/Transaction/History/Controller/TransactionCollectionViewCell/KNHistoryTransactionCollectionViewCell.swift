@@ -79,6 +79,9 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return "+ \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
     } else if historyItem.type == "Approval" {
       return self.historyItem.extraData?.token?.name ?? ""
+    } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
+      guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
+      return "+" + " " + receiveValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: 4) + " \(symbol)"
     } else {
       return "--/--"
     }
@@ -123,6 +126,8 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return "SUPPLY"
     } else if self.historyItem.type == "Withdraw" {
       return "WITHDRAW"
+    } else if self.historyItem.type == "ClaimReward" {
+      return "CLAIM REWARD"
     } else {
       return "CONTRACT INTERACTION"
     }
@@ -141,6 +146,8 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
       return UIImage(named: "history_send_icon")!
     } else if historyItem.type == "Approval" {
       return UIImage(named: "history_approve_icon")!
+    } else if historyItem.type == "ClaimReward" {
+      return UIImage(named: "history_claim_reward_icon")!
     } else {
       return UIImage(named: "history_contract_interaction_icon")!
     }
@@ -339,6 +346,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return "Receive \(tx.tokenName)"
       }
       return "Receive NFT"
+    case .claimReward:
+      return "Claim Reward"
     }
   }
 
@@ -449,6 +458,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
         return "From: \(tx.from)"
       }
       return ""
+    case .claimReward:
+      return "Claim reward"
     }
   }
   
@@ -480,6 +491,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "TRANSFER"
     case .receiveNFT:
       return "RECEIVED"
+    case .claimReward:
+      return "CLAIM REWARD"
     }
   }
 
@@ -521,6 +534,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .claimReward:
+      return UIImage(named: "history_claim_reward_icon")!
     }
   }
 
@@ -605,6 +620,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return "TRANSFER"
     case .receiveNFT:
       return "RECEIVED"
+    case .claimReward:
+      return "CLAIM REWARD"
     }
   }
 
@@ -640,6 +657,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .claimReward:
+      return UIImage(named: "history_claim_reward_icon")!
     }
   }
 
