@@ -879,6 +879,9 @@ enum KrytalService {
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
   case getLiquidityPool(address: String, chain: String)
+  case getRewards(address: String, accessToken: String)
+  case getClaimRewards(address: String, accessToken: String)
+  case checkEligibleWallet(address: String)
 }
 
 extension KrytalService: TargetType {
@@ -969,6 +972,12 @@ extension KrytalService: TargetType {
       return "/v1/account/transactions"
     case .getLiquidityPool:
       return "/v1/account/poolBalances"
+    case .getRewards:
+      return "/v1/account/rewards"
+    case .getClaimRewards:
+      return "/v1/account/claimRewards"
+    case .checkEligibleWallet:
+      return "/v1/account/eligible"
     }
   }
 
@@ -1205,12 +1214,31 @@ extension KrytalService: TargetType {
         "chain": chain
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getRewards(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getClaimRewards(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .checkEligibleWallet(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 
   var headers: [String: String]? {
     switch self {
     case .getReferralOverview( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getRewards( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getClaimRewards( _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
     case .getRewardHistory(_ , _, _ , _ , _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]

@@ -252,6 +252,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .claimReward:
+      return UIImage(named: "history_claim_reward_icon")!
     }
   }
   
@@ -292,6 +294,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .receiveNFT:
       return "Wallet".toBeLocalised()
+    case .claimReward:
+      return "ClaimReward-Wallet".toBeLocalised()
     }
   }
   
@@ -323,6 +327,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .receiveNFT:
       return "Wallet".toBeLocalised()
+    case .claimReward:
+      return "ClaimReward-Wallet".toBeLocalised()
     }
   }
   
@@ -379,6 +385,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "self".toBeLocalised().uppercased()
     case .createNFT:
       return "mint"
+    case .claimReward:
+      return "claimReward".toBeLocalised().uppercased()
     }
   }
   
@@ -457,6 +465,8 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .receiveNFT:
       return "Wallet".toBeLocalised()
+    case .claimReward:
+      return "ClaimReward-Wallet".toBeLocalised()
     }
   }
   
@@ -488,6 +498,8 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "Wallet".toBeLocalised()
     case .receiveNFT:
       return "Wallet".toBeLocalised()
+    case .claimReward:
+      return "ClaimReward-Wallet".toBeLocalised()
     }
   }
   

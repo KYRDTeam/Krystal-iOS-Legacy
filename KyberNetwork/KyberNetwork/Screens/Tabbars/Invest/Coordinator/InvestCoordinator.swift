@@ -23,6 +23,7 @@ class InvestCoordinator: Coordinator {
   var balances: [String: Balance] = [:]
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
+  var rewardCoordinator: RewardCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -113,6 +114,12 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator = coordinator
   }
   
+  fileprivate func openRewardView() {
+    let coordinator = RewardCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.start()
+    self.rewardCoordinator = coordinator
+  }
+  
   func openHistoryScreen() {
     self.historyCoordinator = nil
     self.historyCoordinator = KNHistoryCoordinator(
@@ -131,10 +138,12 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
@@ -154,8 +163,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.navigationController.tabBarController?.selectedIndex = 1
     case .transfer:
       self.openSendTokenView()
-    case .deposit:
-      self.navigationController.tabBarController?.selectedIndex = 3
+    case .reward:
+      self.openRewardView()
     case .krytal:
       self.openKrytalView()
     }

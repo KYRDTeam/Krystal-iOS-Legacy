@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -28,6 +28,7 @@
                 <outlet property="applyButton" destination="l0F-xE-5oP" id="R1F-iZ-xhX"/>
                 <outlet property="approveButton" destination="gLc-gI-luH" id="5JS-Qo-Fz9"/>
                 <outlet property="bottomPaddingForButtonConstraint" destination="ucd-lP-i41" id="C7Y-WP-rrs"/>
+                <outlet property="claimRewardButton" destination="YVW-aJ-91q" id="M60-sL-Ks3"/>
                 <outlet property="contractInteractionButton" destination="AHl-Ss-t5i" id="CY1-ik-cJs"/>
                 <outlet property="fromTextField" destination="SjL-4y-uiz" id="ax1-zq-l9n"/>
                 <outlet property="headerContainerView" destination="c5L-Rn-ihd" id="CR2-a2-PvM"/>
@@ -131,7 +132,7 @@
                             </connections>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pxz-bZ-Bop">
-                            <rect key="frame" x="20" y="552" width="335" height="1"/>
+                            <rect key="frame" x="20" y="604" width="335" height="1"/>
                             <color key="backgroundColor" name="separatorColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="KOz-fL-vzZ"/>
@@ -144,7 +145,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7uq-tZ-DF7">
-                            <rect key="frame" x="20" y="297" width="335" height="1"/>
+                            <rect key="frame" x="20" y="349" width="335" height="1"/>
                             <color key="backgroundColor" name="separatorColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="QS5-FI-vS8"/>
@@ -199,13 +200,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="if6-e1-R9s">
-                            <rect key="frame" x="20" y="318" width="48" height="21"/>
+                            <rect key="frame" x="20" y="370" width="48" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0F-xE-5oP">
-                            <rect key="frame" x="194.5" y="583" width="160.5" height="38"/>
+                            <rect key="frame" x="194.5" y="635" width="160.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="d8W-eV-j2Y"/>
@@ -219,7 +220,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERQ-5G-6yC">
-                            <rect key="frame" x="293" y="306" width="62" height="29"/>
+                            <rect key="frame" x="293" y="358" width="62" height="29"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
                             <state key="normal" title="Select All">
                                 <color key="titleColor" name="buttonBackgroundColor"/>
@@ -256,7 +257,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdb-Tn-2wK">
-                            <rect key="frame" x="156.5" y="501" width="62" height="29"/>
+                            <rect key="frame" x="156.5" y="553" width="62" height="29"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
                             <state key="normal" title="See more">
                                 <color key="titleColor" name="buttonBackgroundColor"/>
@@ -266,7 +267,7 @@
                             </connections>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="61g-Ey-lNd">
-                            <rect key="frame" x="20" y="354" width="335" height="132"/>
+                            <rect key="frame" x="20" y="406" width="335" height="132"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="132" id="qc2-C1-SEp"/>
@@ -353,7 +354,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5qk-ar-Jae">
-                            <rect key="frame" x="20" y="583" width="160.5" height="38"/>
+                            <rect key="frame" x="20" y="635" width="160.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="tiC-Bn-BeA"/>
@@ -367,12 +368,14 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AHl-Ss-t5i">
-                            <rect key="frame" x="197.5" y="217" width="122" height="36"/>
+                            <rect key="frame" x="197.5" y="217" width="133" height="36"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="UZ2-Ko-oNg"/>
+                                <constraint firstAttribute="width" constant="133" id="u1x-vr-w99"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <state key="normal" title="  Contract Interaction  ">
                                 <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -386,11 +389,34 @@
                                 <action selector="contractInteractionButtonPressed:" destination="-1" eventType="touchUpInside" id="OhT-f1-tKj"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YVW-aJ-91q">
+                            <rect key="frame" x="20" y="269" width="96" height="36"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="96" id="B6R-k6-we5"/>
+                                <constraint firstAttribute="height" constant="36" id="xBo-pR-tM6"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                            <state key="normal" title="Claim Reward">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="claimRewardButtonTapped:" destination="-1" eventType="touchUpInside" id="Q7u-3a-jkO"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Cdb-Tn-2wK" firstAttribute="top" secondItem="61g-Ey-lNd" secondAttribute="bottom" constant="15" id="0dl-C0-mNS"/>
                         <constraint firstItem="TrJ-az-hN9" firstAttribute="leading" secondItem="4wa-DK-Evy" secondAttribute="trailing" constant="30" id="0eD-bq-fzm"/>
+                        <constraint firstItem="7uq-tZ-DF7" firstAttribute="top" secondItem="YVW-aJ-91q" secondAttribute="bottom" constant="44" id="60H-eR-NBg"/>
                         <constraint firstAttribute="trailing" secondItem="Pxz-bZ-Bop" secondAttribute="trailing" constant="20" id="79L-Gq-FnA"/>
                         <constraint firstItem="l0F-xE-5oP" firstAttribute="leading" secondItem="5qk-ar-Jae" secondAttribute="trailing" constant="14" id="83G-wQ-YAn"/>
                         <constraint firstAttribute="trailing" secondItem="XIv-Nj-ULc" secondAttribute="trailing" constant="20" id="8FY-ip-Ogx"/>
@@ -400,6 +426,7 @@
                         <constraint firstItem="9av-Jz-r19" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" symbolic="YES" id="B7R-aH-3e0"/>
                         <constraint firstItem="AHl-Ss-t5i" firstAttribute="leading" secondItem="EkI-B8-sBF" secondAttribute="trailing" constant="20" id="BPR-MN-uIb"/>
                         <constraint firstItem="Pxz-bZ-Bop" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="BfH-Mt-2zn"/>
+                        <constraint firstItem="YVW-aJ-91q" firstAttribute="leading" secondItem="9av-Jz-r19" secondAttribute="leading" id="C0w-sm-Yd9"/>
                         <constraint firstItem="Pxz-bZ-Bop" firstAttribute="top" secondItem="Cdb-Tn-2wK" secondAttribute="bottom" constant="22" id="Eqn-Rk-SGb"/>
                         <constraint firstItem="Cdb-Tn-2wK" firstAttribute="centerX" secondItem="3xY-JY-b3T" secondAttribute="centerX" id="FQ7-jF-m3E"/>
                         <constraint firstItem="5qk-ar-Jae" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="Gv7-XI-Q4W"/>
@@ -424,7 +451,6 @@
                         <constraint firstAttribute="trailing" secondItem="7uq-tZ-DF7" secondAttribute="trailing" constant="20" id="ca3-iy-VuZ"/>
                         <constraint firstItem="o8a-mb-4Ax" firstAttribute="width" secondItem="QDY-eY-qXH" secondAttribute="width" id="d7S-4c-B4Y"/>
                         <constraint firstItem="9av-Jz-r19" firstAttribute="width" secondItem="QDY-eY-qXH" secondAttribute="width" id="dlh-Kj-oFN"/>
-                        <constraint firstItem="7uq-tZ-DF7" firstAttribute="top" secondItem="9av-Jz-r19" secondAttribute="bottom" constant="44" id="eFj-vX-n5f"/>
                         <constraint firstItem="azj-Gr-GRt" firstAttribute="centerY" secondItem="QDY-eY-qXH" secondAttribute="centerY" id="eUk-I5-QKe"/>
                         <constraint firstItem="fYD-bx-AVY" firstAttribute="top" secondItem="XIv-Nj-ULc" secondAttribute="bottom" constant="8" symbolic="YES" id="fBX-v5-KNM"/>
                         <constraint firstItem="SCj-tK-RPY" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" symbolic="YES" id="fUK-Fv-wsE"/>
@@ -445,6 +471,7 @@
                         <constraint firstItem="EkI-B8-sBF" firstAttribute="width" secondItem="9av-Jz-r19" secondAttribute="width" id="vjk-gq-bYE"/>
                         <constraint firstItem="61g-Ey-lNd" firstAttribute="top" secondItem="if6-e1-R9s" secondAttribute="bottom" constant="15" id="w97-7F-jP0"/>
                         <constraint firstItem="EkI-B8-sBF" firstAttribute="centerY" secondItem="9av-Jz-r19" secondAttribute="centerY" id="yrR-oX-9fX"/>
+                        <constraint firstItem="YVW-aJ-91q" firstAttribute="top" secondItem="9av-Jz-r19" secondAttribute="bottom" constant="16" id="ytY-St-Kog"/>
                         <constraint firstItem="o8a-mb-4Ax" firstAttribute="centerY" secondItem="QDY-eY-qXH" secondAttribute="centerY" id="zFn-Ns-m2n"/>
                         <constraint firstAttribute="trailing" secondItem="ERQ-5G-6yC" secondAttribute="trailing" constant="20" symbolic="YES" id="zSN-59-yK9"/>
                     </constraints>

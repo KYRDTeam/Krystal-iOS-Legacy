@@ -66,4 +66,11 @@ class DateFormatterUtil {
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z"
     return formatter
   }()
+  
+  lazy var rewardDateTimeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.timeStyle = .short
+    formatter.dateFormat = "HH:mm a dd MMM yyyy"
+    return formatter
+  }()
 }
