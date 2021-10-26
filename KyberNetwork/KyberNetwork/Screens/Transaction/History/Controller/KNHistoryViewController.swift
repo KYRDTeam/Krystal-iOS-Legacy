@@ -268,7 +268,7 @@ struct KNHistoryViewModel {
     let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == "") && self.filters.isContractInteraction
+    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
     var tokenMatched = true
