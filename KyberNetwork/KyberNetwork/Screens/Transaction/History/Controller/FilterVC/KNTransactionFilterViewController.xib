@@ -360,12 +360,14 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AHl-Ss-t5i">
-                            <rect key="frame" x="197.5" y="217" width="122" height="36"/>
+                            <rect key="frame" x="197.5" y="217" width="133" height="36"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="UZ2-Ko-oNg"/>
+                                <constraint firstAttribute="width" constant="133" id="u1x-vr-w99"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <state key="normal" title="  Contract Interaction  ">
                                 <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -380,12 +382,14 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YVW-aJ-91q">
-                            <rect key="frame" x="20" y="269" width="157.5" height="36"/>
+                            <rect key="frame" x="20" y="269" width="96" height="36"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
+                                <constraint firstAttribute="width" constant="96" id="B6R-k6-we5"/>
                                 <constraint firstAttribute="height" constant="36" id="xBo-pR-tM6"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <state key="normal" title="Claim Reward">
                                 <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -417,7 +421,6 @@
                         <constraint firstItem="YVW-aJ-91q" firstAttribute="leading" secondItem="9av-Jz-r19" secondAttribute="leading" id="C0w-sm-Yd9"/>
                         <constraint firstItem="Pxz-bZ-Bop" firstAttribute="top" secondItem="Cdb-Tn-2wK" secondAttribute="bottom" constant="22" id="Eqn-Rk-SGb"/>
                         <constraint firstItem="Cdb-Tn-2wK" firstAttribute="centerX" secondItem="3xY-JY-b3T" secondAttribute="centerX" id="FQ7-jF-m3E"/>
-                        <constraint firstItem="YVW-aJ-91q" firstAttribute="trailing" secondItem="EkI-B8-sBF" secondAttribute="trailing" id="Gur-GP-JSG"/>
                         <constraint firstItem="5qk-ar-Jae" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="Gv7-XI-Q4W"/>
                         <constraint firstItem="fYD-bx-AVY" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" symbolic="YES" id="H1g-2j-VoV"/>
                         <constraint firstAttribute="trailing" secondItem="61g-Ey-lNd" secondAttribute="trailing" constant="20" symbolic="YES" id="IAW-Hi-d0g"/>
