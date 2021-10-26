@@ -330,7 +330,7 @@ class OverviewMainViewModel {
       var assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
       }
-        
+
       if self.isHidingSmallAssetsToken {
         assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
       }

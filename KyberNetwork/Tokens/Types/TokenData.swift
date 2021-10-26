@@ -272,7 +272,7 @@ struct LendingBalance: Codable {
 
   var hasSmallAmount: Bool {
     guard let balanceBigInt = BigInt(self.supplyBalance) else { return true }
-    let limit = BigInt(0.000001 * pow(10.0, Double(self.decimals)))
+    let limit = BigInt(0.00001 * pow(10.0, Double(self.decimals)))
     return balanceBigInt < limit
   }
 }
