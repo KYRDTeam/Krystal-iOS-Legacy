@@ -140,6 +140,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           return "Successfully earned".toBeLocalised()
         } else if self.transaction.type == .withdraw {
           return "Successfully withdraw".toBeLocalised()
+        } else if self.transaction.type == .claimReward {
+          return "Claim reward successfully".toBeLocalised()
         } else if self.transaction.type == .contractInteraction {
           return "Successfully claim".toBeLocalised()
         }
