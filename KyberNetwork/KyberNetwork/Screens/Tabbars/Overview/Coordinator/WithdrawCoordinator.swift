@@ -368,7 +368,6 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
   fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
     provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
-      self.navigationController.hideLoading()
       switch approveResult {
       case .success:
         if address.lowercased() == Constants.gasTokenAddress.lowercased() {
@@ -389,7 +388,6 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
   }
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
-    self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
       return
     }
