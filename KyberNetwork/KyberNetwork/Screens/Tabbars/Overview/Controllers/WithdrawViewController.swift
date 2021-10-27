@@ -247,7 +247,7 @@ class WithdrawViewController: KNBaseViewController {
       toAddress: self.viewModel.toAddress
     ))
   }
-  
+
   fileprivate func updateUIforWithdrawButton() {
     guard self.isViewLoaded, self.viewModel.balance.requiresApproval else {
       return
@@ -296,7 +296,7 @@ class WithdrawViewController: KNBaseViewController {
   }
   
   func coordinatorDidUpdateAllowance(token: String, allowance: BigInt) {
-    if allowance.isZero {
+    if allowance.isZero || allowance < self.viewModel.withdrawableAmountBigInt {
       self.viewModel.isBearingTokenApproved = false
     } else {
       self.viewModel.isBearingTokenApproved = true
