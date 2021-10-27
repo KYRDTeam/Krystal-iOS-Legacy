@@ -591,7 +591,7 @@ class KNHistoryViewController: KNBaseViewController {
       self.refreshControl.endRefreshing()
       return
     }
-    guard !self.refreshControl.isRefreshing else { return }
+    guard self.refreshControl.isRefreshing else { return }
     self.delegate?.historyViewController(self, run: .reloadAllData)
   }
 }
