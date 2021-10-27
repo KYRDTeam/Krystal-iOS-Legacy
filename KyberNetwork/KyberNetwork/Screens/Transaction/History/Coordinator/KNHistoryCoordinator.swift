@@ -223,7 +223,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
         self.navigationController.tabBarController?.selectedIndex = 1
       }
     case .reloadAllData:
-      self.navigationController.displayLoading()
       self.session.transacionCoordinator?.loadEtherscanTransactions(isInit: true)
     }
   }

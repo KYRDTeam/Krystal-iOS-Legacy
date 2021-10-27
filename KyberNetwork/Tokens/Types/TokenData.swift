@@ -246,6 +246,7 @@ struct LendingBalance: Codable {
   let interestBearingTokenAddress: String
   let interestBearingTokenDecimal: Int
   let interestBearningTokenBalance: String
+  let requiresApproval: Bool
   
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
@@ -262,6 +263,7 @@ struct LendingBalance: Codable {
     self.interestBearingTokenAddress = dictionary["interestBearingTokenAddress"] as? String ?? ""
     self.interestBearingTokenDecimal = dictionary["interestBearingTokenDecimal"] as? Int ?? 0
     self.interestBearningTokenBalance = dictionary["interestBearingTokenBalance"] as? String ?? ""
+    self.requiresApproval = dictionary["requiresApproval"] as? Bool ?? true
   }
   
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
