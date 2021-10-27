@@ -15,6 +15,9 @@ class ClaimButtonTableViewCell: UITableViewCell {
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    self.claimButton.titleLabel?.font = UIFont.Kyber.bold(with: 15)
+    self.claimButton.setTitleColor(UIColor(named: "buttonTextColor"), for: .normal)
+    self.claimButton.setTitle("Claim All", for: .normal)
   }
 
   func setClaimButtonState(isEnabled: Bool) {
