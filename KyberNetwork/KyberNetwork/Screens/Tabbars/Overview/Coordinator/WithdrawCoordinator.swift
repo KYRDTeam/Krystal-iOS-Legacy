@@ -155,7 +155,6 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                     self.navigationController.showErrorTopBannerMessage(message: errorMessage)
                   }
                 }
-                
               } else {
                 controller.hideLoading()
                 self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
@@ -176,17 +175,18 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
             let txObj = json["txObject"] as? [String: String],
             let gasLimitString = txObj["gasLimit"],
+            let to = txObj["to"],
             let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
-          self.withdrawViewController?.coordinatorDidUpdateGasLimit(gasLimit)
+          self.withdrawViewController?.coordinatorDidUpdateGasLimit(value: gasLimit, toAddress: to)
         } else {
           self.withdrawViewController?.coordinatorFailUpdateGasLimit()
         }
       }
-    case .checkAllowance(tokenAddress: let tokenAddress):
+    case .checkAllowance(tokenAddress: let tokenAddress, toAddress: let to):
       guard let provider = self.session.externalProvider, let address = Address(string: tokenAddress) else {
         return
       }
-      provider.getAllowance(tokenAddress: address) { [weak self] getAllowanceResult in
+      provider.getAllowance(tokenAddress: address, toAddress: Address(string: to)) { [weak self] getAllowanceResult in
         guard let `self` = self else { return }
         switch getAllowanceResult {
         case .success(let res):
@@ -195,8 +195,11 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
           self.withdrawViewController?.coordinatorDidFailUpdateAllowance(token: tokenAddress)
         }
       }
-    case .sendApprove(tokenAddress: let tokenAddress, remain: let remain, symbol: let symbol):
-      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol))
+    case .sendApprove(tokenAddress: let tokenAddress, remain: let remain, symbol: let symbol, toAddress: let toAddress):
+      let vm = ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol)
+      vm.toAddress = toAddress
+      let vc = ApproveTokenViewController(viewModel: vm)
+
       vc.delegate = self
       controller.present(vc, animated: true, completion: nil)
     case .openGasPriceSelect(gasLimit: let gasLimit, selectType: let selectType):
@@ -363,16 +366,8 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool) {
-    self.navigationController.displayLoading()
-    guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
-      return
-    }
-    provider.sendApproveERCTokenAddress(
-      for: tokenAddress,
-      value: BigInt(2).power(256) - BigInt(1),
-      gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
-      self.navigationController.hideLoading()
+  fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
         if address.lowercased() == Constants.gasTokenAddress.lowercased() {
@@ -391,9 +386,34 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
       }
     }
   }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
+    guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
+      return
+    }
+    guard remain.isZero else {
+      self.resetAllowanceBeforeSend(provider, tokenAddress, toAddress, address)
+      return
+    }
+    self.sendApprove(provider, tokenAddress, toAddress, address)
+  }
 
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
-    
+  }
+
+  fileprivate func resetAllowanceBeforeSend(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.sendApprove(provider, tokenAddress, toAddress, address)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+      }
+    }
   }
 }
 
@@ -408,8 +428,6 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         icon: UIImage(named: "help_icon_large") ?? UIImage(),
         time: 10
       )
-    case .minRatePercentageChanged(let percent):
-      break
     case .useChiStatusChanged(let status):
       guard let provider = self.session.externalProvider else {
         return

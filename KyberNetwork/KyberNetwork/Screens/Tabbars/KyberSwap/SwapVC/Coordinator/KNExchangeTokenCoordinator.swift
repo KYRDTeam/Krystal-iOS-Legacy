@@ -1083,7 +1083,7 @@ extension KNExchangeTokenCoordinator: ChooseRateViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool) {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
       return

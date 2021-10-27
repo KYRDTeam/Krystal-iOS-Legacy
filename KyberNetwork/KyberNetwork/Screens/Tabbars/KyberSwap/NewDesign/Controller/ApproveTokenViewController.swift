@@ -19,12 +19,14 @@ protocol ApproveTokenViewModel {
   var address: String { get }
   var state: Bool { get }
   var symbol: String { get }
+  var toAddress: String? { get }
 }
 
 class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   let token: TokenObject?
   let remain: BigInt
   var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
+  var toAddress: String?
 
   func getGasLimit() -> BigInt {
     if let gasApprove = self.token?.gasApproveDefault { return gasApprove }
@@ -72,12 +74,14 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
 }
 
 class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
+  
   var token: TokenObject?
   let address: String
   let remain: BigInt
   var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
   let state: Bool
   let symbol: String
+  var toAddress: String?
 
   init(address: String, remain: BigInt, state: Bool, symbol: String) {
     self.address = address
@@ -115,7 +119,7 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
 
 protocol ApproveTokenViewControllerDelegate: class {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt)
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool)
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?)
 }
 
 class ApproveTokenViewController: KNBaseViewController {
@@ -152,7 +156,7 @@ class ApproveTokenViewController: KNBaseViewController {
     self.cancelButton.rounded(radius: 16)
     self.confirmButton.rounded(radius: 16)
     self.descriptionLabel.text = self.viewModel.subTitleText
-    let address = KNGeneralProvider.shared.proxyAddress
+    let address = self.viewModel.toAddress ?? KNGeneralProvider.shared.proxyAddress
     self.contractAddressLabel.text = address
   }
 
@@ -169,7 +173,7 @@ class ApproveTokenViewController: KNBaseViewController {
       if let token = self.viewModel.token {
         self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain)
       } else {
-        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state)
+        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress)
       }
     })
   }

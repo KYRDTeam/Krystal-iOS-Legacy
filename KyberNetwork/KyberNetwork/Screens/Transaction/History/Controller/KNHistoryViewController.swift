@@ -587,12 +587,12 @@ class KNHistoryViewController: KNBaseViewController {
   }
   
   @objc private func refreshData(_ sender: Any) {
-    guard !self.viewModel.isShowingPending else { return }
-    self.refreshControl.endRefreshing()
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.delegate?.historyViewController(self, run: .reloadAllData)
+    guard !self.viewModel.isShowingPending else {
+      self.refreshControl.endRefreshing()
+      return
     }
-    
+    guard self.refreshControl.isRefreshing else { return }
+    self.delegate?.historyViewController(self, run: .reloadAllData)
   }
 }
 
@@ -623,6 +623,7 @@ extension KNHistoryViewController {
   }
   
   func coordinatorDidUpdateCompletedKrystalTransaction(sections: [String], data: [String: [KrystalHistoryTransaction]]) {
+    self.refreshControl.endRefreshing()
     self.viewModel.update(completedKrystalTxData: data, completedKrystalTxHeaders: sections)
     self.viewModel.update(completedTxData: [:], completedTxHeaders: [])
     self.transactionCollectionView.reloadData()
