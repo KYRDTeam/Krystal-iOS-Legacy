@@ -431,8 +431,9 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
-    self.overviewTabCoordinator?.appCoordinatorDidUpdateTokenList()
+    self.overviewTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    self.investCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {

@@ -56,6 +56,10 @@ class InvestCoordinator: Coordinator {
     otherTokensBalance.forEach { self.balances[$0.key] = $0.value }
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: self.balances)
   }
+
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+  }
   
   fileprivate func loadMarketAssets() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
