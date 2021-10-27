@@ -155,7 +155,6 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                     self.navigationController.showErrorTopBannerMessage(message: errorMessage)
                   }
                 }
-                
               } else {
                 controller.hideLoading()
                 self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
@@ -367,16 +366,8 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
-    self.navigationController.displayLoading()
-    guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
-      return
-    }
-    provider.sendApproveERCTokenAddress(
-      for: tokenAddress,
-      value: BigInt(2).power(256) - BigInt(1),
-      gasPrice: KNGasCoordinator.shared.defaultKNGas,
-      toAddress: toAddress) { approveResult in
+  fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       self.navigationController.hideLoading()
       switch approveResult {
       case .success:
@@ -396,8 +387,35 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
       }
     }
   }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
+    self.navigationController.displayLoading()
+    guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
+      return
+    }
+    guard remain.isZero else {
+      self.resetAllowanceBeforeSend(provider, tokenAddress, toAddress, address)
+      return
+    }
+    self.sendApprove(provider, tokenAddress, toAddress, address)
+  }
 
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
+  }
+
+  fileprivate func resetAllowanceBeforeSend(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+      switch approveResult {
+      case .success:
+        self.sendApprove(provider, tokenAddress, toAddress, address)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(
+          with: NSLocalizedString("error", value: "Error", comment: ""),
+          message: error.localizedDescription,
+          time: 1.5
+        )
+      }
+    }
   }
 }
 

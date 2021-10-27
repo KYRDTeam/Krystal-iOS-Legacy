@@ -856,7 +856,6 @@ extension KSwapViewController {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token)
     } else {
-      //TODO: need to check more to avoid lagging ui
       self.updateUIForSendApprove(isShowApproveButton: false)
     }
   }

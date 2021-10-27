@@ -21,6 +21,7 @@ class WithdrawViewModel {
   var isUseGasToken: Bool = false
   var approvingTokenAddress: String?
   var toAddress: String = ""
+  var remainApproveAmt: BigInt = BigInt(0)
 
   init(platform: String, session: KNSession, balance: LendingBalance) {
     self.platform = platform
@@ -233,15 +234,18 @@ class WithdrawViewController: KNBaseViewController {
 
   fileprivate func sendApprove() {
     guard !self.viewModel.toAddress.isEmpty else {
-      self.displayLoading()
       self.updateGasLimit()
       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-        self.hideLoading()
         self.sendApprove()
       }
       return
     }
-    self.delegate?.withdrawViewController(self, run: .sendApprove(tokenAddress: self.viewModel.balance.interestBearingTokenAddress.lowercased(), remain: BigInt(0), symbol: self.viewModel.balance.interestBearingTokenSymbol, toAddress: self.viewModel.toAddress))
+    self.delegate?.withdrawViewController(self, run: .sendApprove(
+      tokenAddress: self.viewModel.balance.interestBearingTokenAddress.lowercased(),
+      remain: self.viewModel.remainApproveAmt,
+      symbol: self.viewModel.balance.interestBearingTokenSymbol,
+      toAddress: self.viewModel.toAddress
+    ))
   }
   
   fileprivate func updateUIforWithdrawButton() {
@@ -263,7 +267,7 @@ class WithdrawViewController: KNBaseViewController {
       }
     }
   }
-  
+
   fileprivate func updateGasLimit() {
     self.delegate?.withdrawViewController(self, run: .updateGasLimit(platform: self.viewModel.platform, token: self.viewModel.balance.address, amount: self.viewModel.amountBigInt.description, gasPrice: self.viewModel.gasPrice.description, useGasToken: true))
   }
@@ -297,6 +301,7 @@ class WithdrawViewController: KNBaseViewController {
     } else {
       self.viewModel.isBearingTokenApproved = true
     }
+    self.viewModel.remainApproveAmt = allowance
     self.updateUIforWithdrawButton()
   }
 
