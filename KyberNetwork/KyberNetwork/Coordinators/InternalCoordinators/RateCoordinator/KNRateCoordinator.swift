@@ -280,7 +280,7 @@ class KNRateCoordinator {
       name: "load-token-price-request",
       operation: "load-token-price-operation"
     )
-    let tokenAddress = KNSupportedTokenStorage.shared.allTokens.map { (token) -> String in
+    let tokenAddress = KNSupportedTokenStorage.shared.allActiveTokens.map { (token) -> String in
       return token.address
     }
     let addressesTrucked = tokenAddress.chunked(into: 25)

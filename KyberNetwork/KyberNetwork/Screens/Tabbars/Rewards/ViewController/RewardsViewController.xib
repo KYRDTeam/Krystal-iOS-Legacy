@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RewardsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="emptyButton" destination="nuz-yv-khk" id="fOO-7d-sFX"/>
+                <outlet property="emptyLabel" destination="dmy-xM-oZ9" id="n4U-rG-e1s"/>
+                <outlet property="emptyView" destination="SYa-MS-onI" id="HP3-KQ-aRk"/>
+                <outlet property="tableView" destination="qha-uO-L9h" id="eof-gb-oYT"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JCH-1S-XIW">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rewards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbS-qQ-2h9">
+                            <rect key="frame" x="172" y="68" width="70" height="21"/>
+                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBj-5Q-Fhm">
+                            <rect key="frame" x="16" y="60.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="D5a-fs-fx9"/>
+                                <constraint firstAttribute="height" constant="36" id="kQV-nL-7fz"/>
+                            </constraints>
+                            <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="zWX-YB-FJn"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="113" id="2f4-GG-aJ7"/>
+                        <constraint firstItem="QbS-qQ-2h9" firstAttribute="top" secondItem="JCH-1S-XIW" secondAttribute="top" constant="68" id="V8x-vu-BsV"/>
+                        <constraint firstItem="pBj-5Q-Fhm" firstAttribute="centerY" secondItem="QbS-qQ-2h9" secondAttribute="centerY" id="gAE-Sr-yAy"/>
+                        <constraint firstItem="QbS-qQ-2h9" firstAttribute="centerX" secondItem="JCH-1S-XIW" secondAttribute="centerX" id="pKO-gN-a3E"/>
+                        <constraint firstItem="pBj-5Q-Fhm" firstAttribute="leading" secondItem="JCH-1S-XIW" secondAttribute="leading" constant="16" id="v02-vt-yuf"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qha-uO-L9h">
+                    <rect key="frame" x="0.0" y="113" width="414" height="749"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="HWh-a8-Nib"/>
+                        <outlet property="delegate" destination="-1" id="uk4-9X-y5a"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SYa-MS-onI">
+                    <rect key="frame" x="0.0" y="113" width="414" height="749"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_reward_icon" translatesAutoresizingMaskIntoConstraints="NO" id="FJf-uj-jNN">
+                            <rect key="frame" x="149" y="60" width="116" height="131"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuz-yv-khk">
+                            <rect key="frame" x="97.5" y="270" width="219" height="37"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="tintColor" name="normalTextColor"/>
+                            <inset key="contentEdgeInsets" minX="40" minY="9" maxX="40" maxY="9"/>
+                            <inset key="imageEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Trade to get reward">
+                                <color key="titleColor" name="normalTextColor"/>
+                            </state>
+                            <connections>
+                                <action selector="emptyButtonTapped:" destination="-1" eventType="touchUpInside" id="MZN-3N-pa2"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmy-xM-oZ9">
+                            <rect key="frame" x="113" y="214" width="188" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="FJf-uj-jNN" firstAttribute="centerX" secondItem="SYa-MS-onI" secondAttribute="centerX" id="47g-iF-cG8"/>
+                        <constraint firstItem="dmy-xM-oZ9" firstAttribute="top" secondItem="FJf-uj-jNN" secondAttribute="bottom" constant="23" id="Dyp-U1-H7Q"/>
+                        <constraint firstItem="FJf-uj-jNN" firstAttribute="top" secondItem="SYa-MS-onI" secondAttribute="top" constant="60" id="Nnb-Br-Tst"/>
+                        <constraint firstItem="nuz-yv-khk" firstAttribute="top" secondItem="dmy-xM-oZ9" secondAttribute="bottom" constant="37" id="PWf-1G-lgb"/>
+                        <constraint firstItem="dmy-xM-oZ9" firstAttribute="centerX" secondItem="SYa-MS-onI" secondAttribute="centerX" id="c7M-KD-ytZ"/>
+                        <constraint firstItem="nuz-yv-khk" firstAttribute="centerX" secondItem="SYa-MS-onI" secondAttribute="centerX" id="yDZ-DZ-T0R"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="SYa-MS-onI" secondAttribute="bottom" id="2nE-kw-oHu"/>
+                <constraint firstItem="JCH-1S-XIW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3hW-pC-Gpp"/>
+                <constraint firstItem="JCH-1S-XIW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="88H-50-93c"/>
+                <constraint firstItem="qha-uO-L9h" firstAttribute="top" secondItem="JCH-1S-XIW" secondAttribute="bottom" id="HYf-c2-Uy5"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="SYa-MS-onI" secondAttribute="trailing" id="auE-iS-O8o"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JCH-1S-XIW" secondAttribute="trailing" id="eJE-Cy-rd4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="qha-uO-L9h" secondAttribute="bottom" id="lMj-Bj-s3r"/>
+                <constraint firstItem="SYa-MS-onI" firstAttribute="top" secondItem="JCH-1S-XIW" secondAttribute="bottom" id="m8k-LN-Ygb"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qha-uO-L9h" secondAttribute="trailing" id="o7W-cr-nIx"/>
+                <constraint firstItem="qha-uO-L9h" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rzN-n6-k2j"/>
+                <constraint firstItem="SYa-MS-onI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="shu-Bz-DHt"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="79.6875"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <image name="empty_reward_icon" width="116" height="131"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

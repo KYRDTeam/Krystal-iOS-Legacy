@@ -21,6 +21,44 @@ final class StringFormatter {
         formatter.isLenient = true
         return formatter
     }()
+  
+    static func currencyString(value: Double, symbol: String) -> String {
+      var maxDigits = 2
+      if symbol.lowercased() == "usd" {
+        maxDigits = 2
+      } else if symbol.lowercased() == "matic" {
+        maxDigits = 2
+      } else if symbol.lowercased() == "btc" {
+        maxDigits = 5
+      } else if symbol.lowercased() == "eth" {
+        maxDigits = 4
+      } else if symbol.lowercased() == "bnb" {
+        maxDigits = 3
+      } else if symbol.lowercased() == "avax" {
+        maxDigits = 4
+      }
+      
+      let formatter = NumberFormatter()
+      formatter.maximumFractionDigits = maxDigits
+      formatter.roundingMode = .floor
+      return formatter.string(from: NSNumber(value: value)) ?? ""
+    }
+  
+  static func amountString(value: Double) -> String {
+    let formatter = NumberFormatter()
+    // rule amount round upto 4 digits
+    formatter.maximumFractionDigits = 4
+    formatter.roundingMode = .floor
+    return formatter.string(from: NSNumber(value: value)) ?? ""
+  }
+
+  func currencyString(value: Double, decimals: Int) -> String {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = decimals
+    formatter.roundingMode = .floor
+    return formatter.string(from: NSNumber(value: value)) ?? ""
+  }
+
     /// Converts a Decimal to a `currency String`.
     ///
     /// - Parameters:

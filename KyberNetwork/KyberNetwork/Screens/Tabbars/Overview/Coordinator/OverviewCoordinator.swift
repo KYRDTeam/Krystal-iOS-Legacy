@@ -23,6 +23,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectRenameWallet()
   func overviewCoordinatorDidSelectExportWallet()
   func overviewCoordinatorDidSelectDeleteWallet()
+  func overviewCoordinatorDidStart()
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -72,7 +73,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   func stop() {
   }
-  
+
   fileprivate func openChartView(token: Token) {
     KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
@@ -94,6 +95,10 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
   
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+  }
+
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorDidUpdateNewSession(session)
@@ -440,6 +445,12 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
         controller.coordinatorDidSelectMode(.asset(rightMode: .value))
       }))
+        
+      let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
+      actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
+        controller.coordinatorDidSelectMode(.showLiquidityPool)
+      }))
+        
       let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
       actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
         controller.coordinatorDidSelectMode(.nft)
@@ -607,6 +618,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       let vc = OverviewNFTDetailViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
+    case .didAppear:
+      self.delegate?.overviewCoordinatorDidStart()
     }
   }
 }

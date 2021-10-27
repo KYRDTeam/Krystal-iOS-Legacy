@@ -24,7 +24,8 @@ class TokenObject: Object {
   @objc dynamic var isQuote: Bool = false
   @objc dynamic var isGasFixed: Bool = false
   @objc dynamic var quotePriority: Int = 0
-
+  /// volumn in 24h by usd
+  @objc dynamic var volumn: Double = 0.0
     convenience init(
         contract: String = "",
         name: String = "",
@@ -270,6 +271,10 @@ extension TokenObject {
   var isListed: Bool {
     let date = Date(timeIntervalSince1970: self.listingTime)
     return Date().timeIntervalSince(date) >= 0
+  }
+  
+  var isHighVolumn: Bool {
+    return self.volumn >= Constants.hightVolAmount && !self.isCustom
   }
   
   func toTokenData() -> TokenData {

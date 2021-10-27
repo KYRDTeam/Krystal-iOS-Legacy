@@ -431,15 +431,14 @@ extension KNAppCoordinator {
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
-    self.overviewTabCoordinator?.appCoordinatorDidUpdateTokenList()
+    self.overviewTabCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
     self.earnCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+    self.investCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
 
   @objc func tokenObjectListDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
-//    self.session.tokenStorage.addKyberSupportedTokens()
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
-//    self.balanceTabCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.settingsCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
   }
@@ -447,7 +446,6 @@ extension KNAppCoordinator {
   @objc func gasPriceCachedDidUpdate(_ sender: Any?) {
     if self.session == nil { return }
     self.exchangeCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
-//    self.balanceTabCoordinator?.appCoordinatorGasPriceCachedDidUpdate()
   }
 
   @objc func openExchangeTokenView(_ sender: Any?) {

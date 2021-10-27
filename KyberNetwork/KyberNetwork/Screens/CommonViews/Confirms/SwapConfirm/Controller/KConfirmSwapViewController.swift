@@ -21,6 +21,7 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBOutlet weak var expectedRateLabel: UILabel!
   @IBOutlet weak var minAcceptableRateValueButton: UIButton!
+  @IBOutlet weak var minReceivedTitle: UILabel!
 
   @IBOutlet weak var transactionFeeETHLabel: UILabel!
   @IBOutlet weak var transactionFeeUSDLabel: UILabel!
@@ -66,7 +67,8 @@ class KConfirmSwapViewController: KNBaseViewController {
 
     self.expectedRateLabel.text = self.viewModel.displayEstimatedRate
     self.expectedRateLabel.addLetterSpacing()
-    self.minAcceptableRateValueButton.setTitle(self.viewModel.displayMinDestAmount, for: .normal)
+    self.minAcceptableRateValueButton.setTitle(self.viewModel.minReceiveAmount, for: .normal)
+    self.minReceivedTitle.text = self.viewModel.minReceiveTitle
     self.minAcceptableRateValueButton.setTitleColor(
       self.viewModel.warningMinAcceptableRateMessage == nil ? UIColor(red: 245, green: 246, blue: 249) : UIColor(red: 250, green: 101, blue: 102),
       for: .normal

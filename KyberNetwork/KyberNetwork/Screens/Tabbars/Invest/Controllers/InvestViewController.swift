@@ -29,7 +29,7 @@ enum InvestViewEvent {
   case openLink(url: String)
   case swap
   case transfer
-  case deposit
+  case reward
   case krytal
 }
 
@@ -82,15 +82,15 @@ class InvestViewController: KNBaseViewController {
   @IBAction func transferButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .transfer)
   }
-  
-  @IBAction func depositButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .deposit)
+
+  @IBAction func rewardButtonTapped(_ sender: Any) {
+    self.delegate?.investViewController(self, run: .reward)
   }
 
   @IBAction func krytalButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .krytal)
   }
-  
+
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
@@ -100,7 +100,7 @@ class InvestViewController: KNBaseViewController {
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   func coordinatorDidUpdateMarketingAssets(_ assets: [Asset]) {
     self.viewModel.dataSource = assets
     guard self.isViewLoaded else { return }

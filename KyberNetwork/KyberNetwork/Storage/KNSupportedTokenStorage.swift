@@ -13,12 +13,20 @@ class KNSupportedTokenStorage {
   private var disableTokens: [Token]
   private var deletedTokens: [Token]
   
-  var allTokens: [Token] {
-    return self.supportedToken + self.getCustomToken()
+  var allActiveTokens: [Token] {
+    return self.getActiveSupportedToken() + self.getActiveCustomToken()
   }
   
   var allFullToken: [Token] {
     return self.supportedToken + self.customTokens
+  }
+  /// Tokens used for manage screen, only deactive listed tokens and all custom tokens.
+  var manageToken: [Token] {
+    let disableListedTokens = self.supportedToken.filter { token in
+        // Only get deactive tokens
+        return !self.getTokenActiveStatus(token)
+    }
+    return disableListedTokens.sorted(by: { $0.getBalanceBigInt() > $1.getBalanceBigInt()}) + self.getFullCustomToken().sorted(by: { $0.getBalanceBigInt() > $1.getBalanceBigInt()})
   }
   
   static let shared = KNSupportedTokenStorage()
@@ -38,7 +46,7 @@ class KNSupportedTokenStorage {
   }
   
   var marketTokens: [Token] {
-    return self.supportedToken
+    return self.getActiveSupportedToken()
   }
 
   var ethToken: TokenObject {
@@ -127,13 +135,13 @@ class KNSupportedTokenStorage {
   }
 
   func getTokenWith(address: String) -> Token? {
-    return self.allTokens.first { (token) -> Bool in
+    return self.allActiveTokens.first { (token) -> Bool in
       return token.address.lowercased() == address.lowercased()
     }
   }
 
   func getTokenWith(symbol: String) -> Token? {
-    return self.allTokens.first { (token) -> Bool in
+    return self.allFullToken.first { (token) -> Bool in
       return token.symbol.lowercased() == symbol.lowercased()
     }
   }
@@ -166,7 +174,7 @@ class KNSupportedTokenStorage {
   }
 
   func isTokenSaved(_ token: Token) -> Bool {
-    let tokens = self.allTokens
+    let tokens = self.allActiveTokens
     let saved = tokens.first { (item) -> Bool in
       return item.address.lowercased() == token.address.lowercased()
     }
@@ -174,15 +182,21 @@ class KNSupportedTokenStorage {
     return saved != nil
   }
 
-  func getCustomToken() -> [Token] {
+  func getActiveCustomToken() -> [Token] {
     return self.customTokens.filter { token in
+      return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token) && !token.symbol.isEmpty
+    }
+  }
+  
+  func getActiveSupportedToken() -> [Token] {
+    return self.supportedToken.filter { token in
       return self.getTokenActiveStatus(token) && !self.getTokenDeleteStatus(token)
     }
   }
   
   func getFullCustomToken() -> [Token] {
     return self.customTokens.filter { token in
-      return !self.getTokenDeleteStatus(token)
+      return !self.getTokenDeleteStatus(token) && !token.symbol.isEmpty
     }
   }
 
@@ -224,6 +238,38 @@ class KNSupportedTokenStorage {
     }
   }
   
+  func changeAllTokensActiveStatus(isActive: Bool) {
+    // check if there is any disable token which is supported token
+    let disabledSupportedTokens = self.disableTokens.filter { token in
+      return self.supportedToken.contains(token)
+    }
+    self.disableTokens.removeAll()
+    if !isActive {
+      self.disableTokens.append(contentsOf: disabledSupportedTokens)
+      self.disableTokens.append(contentsOf: manageToken)
+    }
+    Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+  }
+
+  func activeStatus() -> Bool {
+    if disableTokens.isEmpty {
+      // all tokens are active
+      return true
+    }
+    
+    if manageToken.count == disableTokens.count {
+      // all tokens are deactive
+      return false
+    }
+    
+    if manageToken.count / 2 > disableTokens.count {
+      // more than half of manage token are active
+      return true
+    }
+    // more than half of manage token are deactive
+    return false
+  }
+  
   func deleteCustomToken(_ token: Token) {
     guard !self.deletedTokens.contains(token) else {
       return
@@ -240,13 +286,27 @@ class KNSupportedTokenStorage {
     token.decimals = decimal
     Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
-  
+
   func getAllTokenObject() -> [TokenObject] {
-    return self.allTokens.map { (token) -> TokenObject in
-      return token.toObject()
+    return self.getListedTokenObject() + self.getCustomTokenObject()
+  }
+
+  func getListedTokenObject() -> [TokenObject] {
+    let activeTokens = self.supportedToken.filter { token in
+        // Only get active tokens
+        return self.getTokenActiveStatus(token)
+    }
+    return activeTokens.map { (token) -> TokenObject in
+        return token.toObject()
     }
   }
-  
+
+  func getCustomTokenObject() -> [TokenObject] {
+    return self.getActiveCustomToken().map { (token) -> TokenObject in
+        return token.toObject(isCustom:true)
+    }
+  }
+
   func getETH() -> Token {
     return self.supportedToken.first { (item) -> Bool in
       return item.symbol == "ETH"
@@ -303,16 +363,29 @@ class KNSupportedTokenStorage {
       return
     }
     let all = self.allFullToken
+    let customs = self.customTokens
     var unknown: [Token] = []
+    var duplicated: [Token] = []
     tokens.forEach { token in
       if !all.contains(token) {
         unknown.append(token)
+      } else {
+        if customs.contains(token) && self.supportedToken.contains(token) {
+          duplicated.append(token)
+        }
       }
     }
     guard !unknown.isEmpty else {
       return
     }
     self.customTokens.append(contentsOf: unknown)
+    if !duplicated.isEmpty {
+      duplicated.forEach { item in
+        if let idx = customTokens.firstIndex(of: item) {
+          self.customTokens.remove(at: idx)
+        }
+      }
+    }
     Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
 
@@ -338,7 +411,7 @@ class KNSupportedTokenStorage {
   
   func getAssetTokens() -> [Token] {
     var result: [Token] = []
-    let tokens = KNSupportedTokenStorage.shared.allTokens
+    let tokens = KNSupportedTokenStorage.shared.allActiveTokens
     let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
     var lendingSymbols: [String] = []
     lendingBalances.forEach { (lendingPlatform) in
@@ -356,9 +429,10 @@ class KNSupportedTokenStorage {
   }
   
   func findTokensWithAddresses(addresses: [String]) -> [Token] {
-    return self.allTokens.filter { (token) -> Bool in
+    return self.allActiveTokens.filter { (token) -> Bool in
       return addresses.contains(token.address.lowercased())
     }
   }
   
 }
+

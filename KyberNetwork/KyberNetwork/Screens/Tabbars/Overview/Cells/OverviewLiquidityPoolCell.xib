@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OverviewLiquidityPoolCell" rowHeight="85" id="KGk-i7-Jjw" customClass="OverviewLiquidityPoolCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4sf-c3-7MA">
+                        <rect key="frame" x="18" y="8" width="284" height="69"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="knc" translatesAutoresizingMaskIntoConstraints="NO" id="7QX-TN-vvU">
+                                <rect key="frame" x="27" y="31" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="8dG-Ms-oN7"/>
+                                    <constraint firstAttribute="width" constant="24" id="Vcv-Iv-VWj"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="Hy8-Lg-pY6">
+                                <rect key="frame" x="15" y="14" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="YWP-J9-ZXF"/>
+                                    <constraint firstAttribute="width" constant="24" id="aqj-Eo-BM2"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="3.56 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EIN-2P-iFP">
+                                <rect key="frame" x="64" y="14" width="62" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$25,000.5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ksP-eE-epW">
+                                <rect key="frame" x="191.5" y="14" width="72.5" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="12,654.25 USDT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zqG-uS-vaI">
+                                <rect key="frame" x="64" y="36" width="109" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="toolbarBgColor"/>
+                        <constraints>
+                            <constraint firstItem="EIN-2P-iFP" firstAttribute="top" secondItem="Hy8-Lg-pY6" secondAttribute="top" id="6vG-sQ-3Bm"/>
+                            <constraint firstItem="Hy8-Lg-pY6" firstAttribute="top" secondItem="4sf-c3-7MA" secondAttribute="top" constant="14" id="7Xs-QH-Ahq"/>
+                            <constraint firstItem="zqG-uS-vaI" firstAttribute="leading" secondItem="EIN-2P-iFP" secondAttribute="leading" id="DSd-mx-WLS"/>
+                            <constraint firstItem="7QX-TN-vvU" firstAttribute="leading" secondItem="Hy8-Lg-pY6" secondAttribute="leading" constant="12" id="F80-Eg-eyn"/>
+                            <constraint firstItem="EIN-2P-iFP" firstAttribute="leading" secondItem="Hy8-Lg-pY6" secondAttribute="trailing" constant="25" id="FJZ-Aw-298"/>
+                            <constraint firstItem="7QX-TN-vvU" firstAttribute="top" secondItem="Hy8-Lg-pY6" secondAttribute="top" constant="17" id="Nk3-Gr-DEx"/>
+                            <constraint firstItem="Hy8-Lg-pY6" firstAttribute="leading" secondItem="4sf-c3-7MA" secondAttribute="leading" constant="15" id="bdq-hh-dPz"/>
+                            <constraint firstItem="zqG-uS-vaI" firstAttribute="bottom" secondItem="7QX-TN-vvU" secondAttribute="bottom" id="d9z-1a-shG"/>
+                            <constraint firstItem="ksP-eE-epW" firstAttribute="centerY" secondItem="EIN-2P-iFP" secondAttribute="centerY" id="ytc-DM-y4G"/>
+                            <constraint firstAttribute="trailing" secondItem="ksP-eE-epW" secondAttribute="trailing" constant="20" id="zB0-Cc-CLe"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstItem="4sf-c3-7MA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="OFF-sd-hPX"/>
+                    <constraint firstAttribute="trailing" secondItem="4sf-c3-7MA" secondAttribute="trailing" constant="18" id="PMe-t8-YAt"/>
+                    <constraint firstItem="4sf-c3-7MA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="rk1-0V-KdD"/>
+                    <constraint firstAttribute="bottom" secondItem="4sf-c3-7MA" secondAttribute="bottom" constant="8" id="w4m-sH-4Qm"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="balanceLabel" destination="ksP-eE-epW" id="sYH-4H-bW8"/>
+                <outlet property="cellBackgroundView" destination="4sf-c3-7MA" id="IMC-i5-EGg"/>
+                <outlet property="firstTokenIcon" destination="Hy8-Lg-pY6" id="c5i-0z-Kx0"/>
+                <outlet property="firstTokenValueLabel" destination="EIN-2P-iFP" id="Xlp-FQ-HHk"/>
+                <outlet property="secondTokenIcon" destination="7QX-TN-vvU" id="4FI-HH-Bgp"/>
+                <outlet property="secondTokenValueLabel" destination="zqG-uS-vaI" id="d8g-7n-nOV"/>
+            </connections>
+            <point key="canvasLocation" x="140.57971014492756" y="86.71875"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="eth" width="32" height="32"/>
+        <image name="knc" width="36" height="36"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="toolbarBgColor">
+            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

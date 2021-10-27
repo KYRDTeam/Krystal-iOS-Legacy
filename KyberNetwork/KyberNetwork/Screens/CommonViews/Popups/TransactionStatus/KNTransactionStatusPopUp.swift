@@ -140,6 +140,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           return "Successfully earned".toBeLocalised()
         } else if self.transaction.type == .withdraw {
           return "Successfully withdraw".toBeLocalised()
+        } else if self.transaction.type == .claimReward {
+          return "Claim reward successfully".toBeLocalised()
         } else if self.transaction.type == .contractInteraction {
           return "Successfully claim".toBeLocalised()
         }
@@ -156,7 +158,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      if self.transaction.type == .earn {
+      if self.transaction.type == .claimReward {
+        self.firstButton.isHidden = true
+        self.secondButton.isHidden = true
+      } else if self.transaction.type == .earn {
         self.firstButton.setTitle("New Supply".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Back to earn".toBeLocalised().capitalized, for: .normal)
         self.firstButtonTopContraint.constant = 160
@@ -167,9 +172,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if self.transaction.type == .withdraw {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
-      } else {
-        self.firstButton.setTitle("transfer".toBeLocalised().capitalized, for: .normal)
+      } else if self.transaction.type == .swap {
+        self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+      } else {
+        self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
 
       self.view.layoutSubviews()

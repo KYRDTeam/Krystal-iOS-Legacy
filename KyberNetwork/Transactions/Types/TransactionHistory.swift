@@ -112,6 +112,14 @@ extension TxObject {
     }
   }
   
+  func newTxObjectWithNonce(nonce: Int) -> TxObject {
+    let nonceString = BigInt(nonce).hexEncoded
+    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: self.gasPrice, nonce: nonceString, gasLimit: self.gasLimit)
+  }
+  
+  func newTxObjectWithGasPrice(gasPrice: BigInt) -> TxObject {
+    let gasPriceString = gasPrice.hexEncoded
+    return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: gasPriceString, nonce: self.nonce, gasLimit: self.gasLimit)
   func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?) -> EIP1559Transaction? {
     guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(self.gasLimit.drop0x, radix: 16) ?? BigInt(0)
@@ -247,6 +255,8 @@ enum HistoryModelType: Codable {
       self = .transferNFT
     case 12:
       self = .receiveNFT
+    case 13:
+      self = .claimReward
     default:
       throw CodingError.unknownValue
     }
@@ -281,6 +291,8 @@ enum HistoryModelType: Codable {
       try container.encode(11, forKey: .rawValue)
     case .receiveNFT:
       try container.encode(12, forKey: .rawValue)
+    case .claimReward:
+      try container.encode(13, forKey: .rawValue)
     }
   }
 
@@ -297,6 +309,7 @@ enum HistoryModelType: Codable {
   case createNFT
   case transferNFT
   case receiveNFT
+  case claimReward
 
   static func typeFromInput(_ input: String) -> HistoryModelType {
     guard !input.isEmpty, input != "0x"  else {
@@ -319,6 +332,8 @@ enum HistoryModelType: Codable {
       return .transferNFT
     case "0xd0def521", "0x731133e9":
       return .createNFT
+    case "0x70ef85ea":
+      return .claimReward
     default:
       return .contractInteraction
     }

@@ -40,7 +40,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UUg-NH-uqh">
-                    <rect key="frame" x="0.0" y="267" width="375" height="400"/>
+                    <rect key="frame" x="0.0" y="230" width="375" height="437"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mkX-Uy-4zc">
                             <rect key="frame" x="149" y="38" width="77.5" height="23.5"/>
@@ -49,7 +49,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6g-JK-yXd">
-                            <rect key="frame" x="37" y="315" width="301" height="38"/>
+                            <rect key="frame" x="37" y="352.5" width="301" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="33L-EA-WhD"/>
@@ -62,26 +62,27 @@
                                 <action selector="confirmButtonPressed:" destination="-1" eventType="touchUpInside" id="GST-Kg-Ooa"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will create a new wallet for you to transfer and receive tokens. Same wallet can be used on both chains ETH and BSC." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rv2-pO-lJc">
-                            <rect key="frame" x="37" y="72.5" width="301" height="56.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rv2-pO-lJc">
+                            <rect key="frame" x="37" y="72.5" width="301" height="94"/>
+                            <string key="text">This will create a new wallet for you to transfer and receive token. Same wallet can be on both chains Ethereum, Binance Smart Chain, Polygon and Avalanche.</string>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your wallet details are securely stored on this device. Only you can access them." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mKn-9w-xrr">
-                            <rect key="frame" x="37" y="150" width="301" height="33"/>
+                            <rect key="frame" x="37" y="187.5" width="301" height="33"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste your Referral Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QF3-47-FdY">
-                            <rect key="frame" x="37" y="211" width="301" height="19"/>
+                            <rect key="frame" x="37" y="248.5" width="301" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCt-2N-iOr">
-                            <rect key="frame" x="37" y="243" width="301" height="42"/>
+                            <rect key="frame" x="37" y="280.5" width="301" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2uD-j5-XKo">
                                     <rect key="frame" x="16" y="0.0" width="196" height="42"/>
@@ -160,7 +161,7 @@
                         <constraint firstAttribute="trailing" secondItem="I6g-JK-yXd" secondAttribute="trailing" constant="37" id="rbt-he-YpG"/>
                         <constraint firstAttribute="trailing" secondItem="mKn-9w-xrr" secondAttribute="trailing" constant="37" id="tse-bJ-5kf"/>
                         <constraint firstItem="mKn-9w-xrr" firstAttribute="top" secondItem="Rv2-pO-lJc" secondAttribute="bottom" constant="21" id="y6w-1R-5sr"/>
-                        <constraint firstAttribute="height" constant="400" id="zuX-yu-jEb"/>
+                        <constraint firstAttribute="height" constant="437" id="zuX-yu-jEb"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="00H-n5-4UM" appends="YES" id="Eh4-T3-bk5"/>
@@ -171,7 +172,7 @@
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="UUg-NH-uqh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="267" id="6gt-mv-QQ9"/>
+                <constraint firstItem="UUg-NH-uqh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="230" id="6gt-mv-QQ9"/>
                 <constraint firstItem="UUg-NH-uqh" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Fvn-oa-rQv"/>
                 <constraint firstItem="UUg-NH-uqh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="pUW-9j-zqC"/>
             </constraints>

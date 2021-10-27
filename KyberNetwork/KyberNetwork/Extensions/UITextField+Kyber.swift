@@ -10,4 +10,8 @@ extension UITextField {
     attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.Kyber.latoRegular(with: 14), range: NSRange(location: 0, length: (self.placeholder ?? "").count))
     self.attributedPlaceholder = attributedString
   }
+  
+  func setPlaceholder (text: String, color: UIColor) {
+    self.attributedPlaceholder = NSAttributedString(string: text, attributes: [NSAttributedString.Key.foregroundColor: color])
+  }
 }

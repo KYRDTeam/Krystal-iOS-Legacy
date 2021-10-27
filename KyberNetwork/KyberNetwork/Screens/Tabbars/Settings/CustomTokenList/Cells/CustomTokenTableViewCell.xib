@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,26 +24,26 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="knc" translatesAutoresizingMaskIntoConstraints="NO" id="Vqe-IX-OwR">
-                        <rect key="frame" x="35" y="6" width="17" height="17"/>
+                        <rect key="frame" x="30" y="12" width="24" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="17" id="9Mi-9F-GmW"/>
-                            <constraint firstAttribute="width" constant="17" id="j81-IQ-4tT"/>
+                            <constraint firstAttribute="height" constant="24" id="9Mi-9F-GmW"/>
+                            <constraint firstAttribute="width" constant="24" id="j81-IQ-4tT"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jle-LT-1K6">
-                        <rect key="frame" x="65" y="2" width="34.5" height="21"/>
+                        <rect key="frame" x="67" y="7" width="34.5" height="21"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="82,499.85" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwC-7R-ZGP">
-                        <rect key="frame" x="65" y="25" width="72" height="19"/>
+                        <rect key="frame" x="67" y="30" width="72" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0qX-jz-tnc">
-                        <rect key="frame" x="251" y="12.5" width="51" height="31"/>
+                        <rect key="frame" x="246" y="12.5" width="51" height="31"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="31" id="bOt-EW-RuZ"/>
@@ -55,18 +55,27 @@
                             <action selector="switchChangedValue:" destination="KGk-i7-Jjw" eventType="valueChanged" id="Gpn-PV-LqD"/>
                         </connections>
                     </switch>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Tcm-W0-8OX">
+                        <rect key="frame" x="104.5" y="5.5" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="Voe-r1-QA3"/>
+                            <constraint firstAttribute="height" constant="24" id="iUi-jf-CKa"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="jle-LT-1K6" firstAttribute="leading" secondItem="Vqe-IX-OwR" secondAttribute="trailing" constant="13" id="1Pi-TM-hGD"/>
-                    <constraint firstItem="Vqe-IX-OwR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="35" id="2QS-7f-fFk"/>
+                    <constraint firstItem="Vqe-IX-OwR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="2QS-7f-fFk"/>
                     <constraint firstItem="NwC-7R-ZGP" firstAttribute="top" secondItem="jle-LT-1K6" secondAttribute="bottom" constant="2" id="DPr-Cl-QDF"/>
                     <constraint firstItem="NwC-7R-ZGP" firstAttribute="leading" secondItem="jle-LT-1K6" secondAttribute="leading" id="GbZ-hz-3du"/>
-                    <constraint firstItem="0qX-jz-tnc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jle-LT-1K6" secondAttribute="trailing" constant="10" id="Ihs-mg-nEO"/>
-                    <constraint firstAttribute="trailing" secondItem="0qX-jz-tnc" secondAttribute="trailing" constant="20" id="Py3-pi-Z8Q"/>
-                    <constraint firstItem="Vqe-IX-OwR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="YAY-Ds-fFT"/>
+                    <constraint firstAttribute="trailing" secondItem="0qX-jz-tnc" secondAttribute="trailing" constant="25" id="Py3-pi-Z8Q"/>
+                    <constraint firstItem="Tcm-W0-8OX" firstAttribute="centerY" secondItem="jle-LT-1K6" secondAttribute="centerY" id="SGC-Hg-ach"/>
+                    <constraint firstItem="Vqe-IX-OwR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="YAY-Ds-fFT"/>
                     <constraint firstItem="0qX-jz-tnc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="bLG-eC-CiP"/>
-                    <constraint firstItem="jle-LT-1K6" firstAttribute="bottom" secondItem="Vqe-IX-OwR" secondAttribute="bottom" id="i7W-Ts-CCc"/>
+                    <constraint firstItem="Tcm-W0-8OX" firstAttribute="leading" secondItem="jle-LT-1K6" secondAttribute="trailing" constant="3" id="fVv-gx-K1s"/>
+                    <constraint firstItem="jle-LT-1K6" firstAttribute="top" secondItem="Vqe-IX-OwR" secondAttribute="top" constant="-5" id="lUw-Zr-dDx"/>
+                    <constraint firstItem="0qX-jz-tnc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tcm-W0-8OX" secondAttribute="trailing" constant="10" id="x5M-a5-rin"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -75,12 +84,14 @@
                 <outlet property="balanceLabel" destination="NwC-7R-ZGP" id="PrK-iO-i8I"/>
                 <outlet property="imageIcon" destination="Vqe-IX-OwR" id="BEY-Fj-Y1j"/>
                 <outlet property="statusSwitch" destination="0qX-jz-tnc" id="YCL-6b-Bea"/>
+                <outlet property="tickIcon" destination="Tcm-W0-8OX" id="6iO-Jm-9eL"/>
                 <outlet property="tokenNameLabel" destination="jle-LT-1K6" id="IX2-hd-h76"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="53.571428571428569"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="blueTick_icon" width="24" height="24"/>
         <image name="knc" width="36" height="36"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

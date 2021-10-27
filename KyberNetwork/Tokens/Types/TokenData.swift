@@ -35,8 +35,11 @@ class Token: Codable, Equatable, Hashable {
     return self.symbol == "ETH"
   }
   
-  func toObject() -> TokenObject {
-    return TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
+  func toObject(isCustom: Bool = false) -> TokenObject {
+    let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
+    tokenObject.isCustom = isCustom
+    tokenObject.volumn = self.getVol(.usd)
+    return tokenObject
   }
   
   func getBalanceBigInt() -> BigInt {
@@ -122,7 +125,7 @@ class Token: Codable, Equatable, Hashable {
   }
   
   static func == (lhs: Token, rhs: Token) -> Bool {
-    return lhs.address.lowercased() == rhs.address.lowercased() && lhs.decimals == rhs.decimals && lhs.symbol == rhs.symbol
+    return lhs.address.lowercased() == rhs.address.lowercased() && lhs.decimals == rhs.decimals
   }
   
   func hash(into hasher: inout Hasher) {
@@ -243,6 +246,7 @@ struct LendingBalance: Codable {
   let interestBearingTokenAddress: String
   let interestBearingTokenDecimal: Int
   let interestBearningTokenBalance: String
+  let requiresApproval: Bool
   
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
@@ -259,12 +263,19 @@ struct LendingBalance: Codable {
     self.interestBearingTokenAddress = dictionary["interestBearingTokenAddress"] as? String ?? ""
     self.interestBearingTokenDecimal = dictionary["interestBearingTokenDecimal"] as? Int ?? 0
     self.interestBearningTokenBalance = dictionary["interestBearingTokenBalance"] as? String ?? ""
+    self.requiresApproval = dictionary["requiresApproval"] as? Bool ?? true
   }
   
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
     let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.supplyBalance) ?? BigInt(0)
     return balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(self.decimals)
+  }
+
+  var hasSmallAmount: Bool {
+    guard let balanceBigInt = BigInt(self.supplyBalance) else { return true }
+    let limit = BigInt(0.00001 * pow(10.0, Double(self.decimals)))
+    return balanceBigInt < limit
   }
 }
 

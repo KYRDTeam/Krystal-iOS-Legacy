@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import SwipeCellKit
 
 enum OverviewMainCellMode {
   case market(token: Token, rightMode: RightMode)
@@ -95,7 +96,8 @@ class OverviewMainCellViewModel {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
       let price = token.getTokenLastPrice(self.currency)
-      return self.currency.symbol() + String(format: "%.2f", price)
+      let priceBigInt = BigInt(price * pow(10.0, 18.0))
+      return self.currency.symbol() + priceBigInt.displayRate(decimals: 18)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
@@ -111,7 +113,8 @@ class OverviewMainCellViewModel {
         return String(format: "%.2f", change24) + "%"
       case .lastPrice:
         let price = token.getTokenLastPrice(self.currency)
-        return self.currency.symbol() + String(format: "%.2f", price)
+        let priceBigInt = BigInt(price * pow(10.0, 18.0))
+        return self.currency.symbol() + priceBigInt.displayRate(decimals: 18)
       }
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
@@ -222,10 +225,10 @@ class OverviewMainCellViewModel {
   }
 }
 
-class OverviewMainViewCell: UITableViewCell {
+class OverviewMainViewCell: SwipeTableViewCell {
   
   static let kCellID: String = "OverviewMainViewCell"
-  static let kCellHeight: CGFloat = 70
+  static let kCellHeight: CGFloat = 60
   
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var tokenLabel: UILabel!

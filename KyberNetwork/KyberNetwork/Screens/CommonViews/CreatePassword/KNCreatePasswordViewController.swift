@@ -122,7 +122,7 @@ extension KNCreatePasswordViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 433
+    return 450
   }
 
   func getPopupContentView() -> UIView {

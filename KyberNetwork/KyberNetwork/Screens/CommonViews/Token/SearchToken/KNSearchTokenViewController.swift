@@ -60,20 +60,32 @@ class KNSearchTokenViewModel {
         return true
       })
     }()
+
     self.displayedTokens.sort { (token0, token1) -> Bool in
-      let isFav0 = KNAppTracker.isTokenFavourite(token0.contract.lowercased())
-      let isFav1 = KNAppTracker.isTokenFavourite(token1.contract.lowercased())
-      if isFav0 && !isFav1 { return true }
-      if !isFav0 && isFav1 { return false }
-      if token0.isSupported && !token1.isSupported { return true }
-      if token1.isSupported && !token0.isSupported { return false }
-      let isContain0 = token0.symbol.lowercased().contains(self.searchedText.lowercased())
-      let isContain1 = token1.symbol.lowercased().contains(self.searchedText.lowercased())
-      if isContain0 && !isContain1 { return true }
-      if !isContain0 && isContain1 { return false }
-      let balance0 = token0.getBalanceBigInt()
-      let balance1 = token1.getBalanceBigInt()
-      return balance0 * BigInt(10).power(18 - token0.decimals) > balance1 * BigInt(10).power(18 - token1.decimals)
+        //priority token with positive banlance higher
+        let balance0 = token0.getBalanceBigInt()
+        let balance1 = token1.getBalanceBigInt()
+        if balance0 == 0 && balance1 > 0 { return false }
+        if balance0 > 0 && balance1 == 0 { return true }
+        // category by priority listed token over the custom token
+        if token0.isCustom && !token1.isCustom { return false }
+        if !token0.isCustom && token1.isCustom { return true }
+        // category by favorite
+        let isFav0 = KNAppTracker.isTokenFavourite(token0.contract.lowercased())
+        let isFav1 = KNAppTracker.isTokenFavourite(token1.contract.lowercased())
+        if isFav0 && !isFav1 { return true }
+        if !isFav0 && isFav1 { return false }
+        // category by supported
+        if token0.isSupported && !token1.isSupported { return true }
+        if token1.isSupported && !token0.isSupported { return false }
+        // category by keyword searched
+        let isContain0 = token0.symbol.lowercased().contains(self.searchedText.lowercased())
+        let isContain1 = token1.symbol.lowercased().contains(self.searchedText.lowercased())
+        if isContain0 && !isContain1 { return true }
+        if !isContain0 && isContain1 { return false }
+
+        // sort by balance
+        return balance0 * BigInt(10).power(18 - token0.decimals) > balance1 * BigInt(10).power(18 - token1.decimals)
     }
   }
 

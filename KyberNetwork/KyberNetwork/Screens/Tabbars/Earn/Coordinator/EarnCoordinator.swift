@@ -106,8 +106,6 @@ class EarnCoordinator: NSObject, Coordinator {
           let addresses = result.map { (dict) -> String in
             return dict["address"] as? String ?? ""
           }.map { $0.lowercased() }
-          //Find tokens object with loaded address
-          //TODO: improve with struct data type
           var lendingTokensData: [TokenData] = []
           let lendingTokens = KNSupportedTokenStorage.shared.findTokensWithAddresses(addresses: addresses)
           //Get token decimal to init token data
@@ -471,8 +469,8 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-
-    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc)) { [weak self] result in
+    let address = self.session.wallet.address.description
+    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
@@ -889,7 +887,7 @@ extension EarnCoordinator: ChooseRateViewControllerDelegate {
 }
 
 extension EarnCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool) {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
       return

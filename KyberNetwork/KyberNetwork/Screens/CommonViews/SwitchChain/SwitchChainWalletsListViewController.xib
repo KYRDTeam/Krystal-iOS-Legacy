@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,6 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwitchChainWalletsListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="Zbi-cz-xSz" id="zuU-s8-N0Y"/>
                 <outlet property="contentView" destination="EGp-ZY-9Jx" id="nXt-pV-Aoa"/>
                 <outlet property="contentViewTopContraint" destination="7SR-cc-rJU" id="iZE-6y-TE1"/>
                 <outlet property="titleLabel" destination="7Sy-GM-5kx" id="0B1-Er-pnu"/>
@@ -63,7 +64,7 @@
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CL6-Sl-5kH">
                             <rect key="frame" x="37" y="323" width="143" height="38"/>
-                            <color key="backgroundColor" name="popupBackgroundColor"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="7m9-de-CPQ"/>
                             </constraints>
@@ -82,7 +83,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="jlI-Bm-BD6" firstAttribute="top" secondItem="URN-YH-RzQ" secondAttribute="bottom" constant="42" id="015-Oj-nVH"/>
@@ -100,14 +101,22 @@
                         <constraint firstItem="7Sy-GM-5kx" firstAttribute="top" secondItem="EGp-ZY-9Jx" secondAttribute="top" constant="51" id="yLK-0r-9m3"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zbi-cz-xSz">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="217"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Zbi-cz-xSz" secondAttribute="trailing" id="0OR-sK-SgO"/>
                 <constraint firstItem="EGp-ZY-9Jx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="217" id="7SR-cc-rJU"/>
+                <constraint firstItem="EGp-ZY-9Jx" firstAttribute="top" secondItem="Zbi-cz-xSz" secondAttribute="bottom" id="7xo-FV-Ya1"/>
+                <constraint firstItem="Zbi-cz-xSz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="CPQ-gC-rAy"/>
                 <constraint firstItem="EGp-ZY-9Jx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="kF9-C5-n5g"/>
                 <constraint firstItem="EGp-ZY-9Jx" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="nV6-40-5A0"/>
+                <constraint firstItem="Zbi-cz-xSz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="sqZ-pX-Wze"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="70.614692653673174"/>
         </view>
@@ -119,8 +128,8 @@
         <namedColor name="buttonTextColor">
             <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="mainViewBgColor">
-            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="navButtonBgColor">
+            <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>

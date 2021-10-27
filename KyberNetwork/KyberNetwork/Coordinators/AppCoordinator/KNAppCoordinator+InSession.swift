@@ -116,7 +116,8 @@ extension KNAppCoordinator {
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     
 //    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-    self.doLogin()
+    self.doLogin { completed in
+    }
   }
 
   func stopAllSessions() {
@@ -186,7 +187,9 @@ extension KNAppCoordinator {
       )
       self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(
       )
-      self.doLogin()
+
+      self.doLogin { completed in
+      }
       if isLoading { self.navigationController.hideLoading() }
     }
   }
@@ -268,6 +271,6 @@ extension KNAppCoordinator {
     self.tokenBalancesDidUpdateNotification(nil)
     self.exchangeRateTokenDidUpdateNotification(nil)
     self.tokenObjectListDidUpdate(nil)
-    self.tokenTransactionListDidUpdate(nil)
+//    self.tokenTransactionListDidUpdate(nil)
   }
 }

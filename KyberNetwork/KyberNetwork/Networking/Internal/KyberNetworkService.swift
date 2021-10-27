@@ -850,7 +850,7 @@ enum KrytalService {
   case getBestPath(src: String, dst: String, srcAmount: String)
   case getHint(path: [JSONDictionary])
   case getExpectedRate(src: String, dst: String, srcAmount: String, hint: String, isCaching: Bool)
-  case getAllRates(src: String, dst: String, amount: String, focusSrc: Bool)
+  case getAllRates(src: String, dst: String, amount: String, focusSrc: Bool, userAddress: String)
   case buildSwapTx(address: String, src: String, dst: String, srcAmount: String, minDstAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
   case getGasLimit(src: String, dst: String, srcAmount: String, hint: String)
   case getGasPrice
@@ -878,6 +878,10 @@ enum KrytalService {
   case getNTFBalance(address: String)
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
+  case getLiquidityPool(address: String, chain: String)
+  case getRewards(address: String, accessToken: String)
+  case getClaimRewards(address: String, accessToken: String)
+  case checkEligibleWallet(address: String)
   case getGasPrice2
 }
 
@@ -967,6 +971,14 @@ extension KrytalService: TargetType {
       return "/v1/account/registerFavoriteNft"
     case .getTransactionsHistory:
       return "/v1/account/transactions"
+    case .getLiquidityPool:
+      return "/v1/account/poolBalances"
+    case .getRewards:
+      return "/v1/account/rewards"
+    case .getClaimRewards:
+      return "/v1/account/claimRewards"
+    case .checkEligibleWallet:
+      return "/v1/account/eligible"
     case .getGasPrice2:
       return "/v1/gasPrice"
     }
@@ -1005,10 +1017,12 @@ extension KrytalService: TargetType {
         "isCaching": isCaching,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllRates(let src, let dst, let amount, let focusSrc):
+    case .getAllRates(let src, let dst, let amount, let focusSrc, let userAddress):
       var json: JSONDictionary = [
         "src": src,
-        "dest": dst
+        "dest": dst,
+        "userAddress": userAddress,
+        "platformWallet": Constants.platformWallet
       ]
       if focusSrc {
         json["srcAmount"] = amount
@@ -1192,7 +1206,31 @@ extension KrytalService: TargetType {
       ]
       if !lastBlock.isEmpty {
         json["fromBlock"] = lastBlock
+      } else {
+        json["offset"] = "0"
+        json["limit"] = "20"
       }
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLiquidityPool(address: let address, chain: let chain):
+      let json: JSONDictionary = [
+        "address": address,
+        "chain": chain
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getRewards(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getClaimRewards(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .checkEligibleWallet(address: let address):
+      let json: JSONDictionary = [
+        "address": address
+      ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice2:
       return .requestPlain
@@ -1202,6 +1240,10 @@ extension KrytalService: TargetType {
   var headers: [String: String]? {
     switch self {
     case .getReferralOverview( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getRewards( _ , let accessToken):
+      return ["Authorization" : "Bearer \(accessToken)"]
+    case .getClaimRewards( _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
     case .getRewardHistory(_ , _, _ , _ , _ , let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]

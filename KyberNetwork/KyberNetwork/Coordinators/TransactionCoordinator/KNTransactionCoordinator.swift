@@ -75,15 +75,14 @@ class KNTransactionCoordinator {
 extension KNTransactionCoordinator {
   func startUpdatingCompletedTransactions() {
     self.tokenTxTimer?.invalidate()
-
     self.loadEtherscanTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
-      withTimeInterval: KNLoadingInterval.seconds60,
+      withTimeInterval: KNLoadingInterval.minutes2,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
         if self.isLoadingEnabled {
-          self.loadEtherscanTransactions()
+          self.loadEtherscanTransactions(isInit: !EtherscanTransactionStorage.shared.isSavedKrystalHistory())
         }
       }
     )
@@ -94,20 +93,27 @@ extension KNTransactionCoordinator {
     self.tokenTxTimer = nil
   }
 
-  fileprivate func loadKrystalHistory() {
+  fileprivate func loadKrystalHistory(isInit: Bool = false) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
-    let lastBlockInt = Int(lastBlock) ?? 0
-    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: lastBlock)) { result in
+
+    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(HistoryResponse.self, from: resp.data)
           let history = data.transactions
-          if lastBlockInt == 0 {
-            EtherscanTransactionStorage.shared.setKrystalTransaction(history)
+          var needReloadUI = false
+          if lastBlock.isEmpty || isInit {
+            EtherscanTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
+            needReloadUI = true
           } else {
-            EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+            needReloadUI = EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+          }
+          if needReloadUI {
+            DispatchQueue.main.async {
+              KNNotificationUtil.postNotification(for: kTokenTransactionListDidUpdateNotificationKey)
+            }
           }
           print("[GetHistoryTransaction][Success]")
         } catch let error {
@@ -119,99 +125,9 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func loadEtherscanTransactions() {
-    guard KNGeneralProvider.shared.currentChain != .avalanche else {
-      self.loadKrystalHistory()
-      return
-    }
-    
-    let tx = SentrySDK.startTransaction(
-      name: "load-transaction-history-request",
-      operation: "load-transaction-history-operation"
-    )
-    let group = DispatchGroup()
-    let span1 = tx.startChild(operation: "load-token-tx-history")
-    group.enter()
-    let startBlockToken = Int(EtherscanTransactionStorage.shared.getCurrentTokenTransactionStartBlock()) ?? 0
-    self.fetchListERC20TokenTransactions(
-      forAddress: self.wallet.address.description,
-      startBlock: startBlockToken,
-      completion: { result in
-        if case .success(let transactions) = result {
-          if startBlockToken == 0 {
-            EtherscanTransactionStorage.shared.setTokenTransactions(transactions)
-          } else {
-            EtherscanTransactionStorage.shared.appendTokenTransactions(transactions)
-          }
-        }
-        span1.finish()
-        group.leave()
-      }
-    )
-
-    group.enter()
-    let span2 = tx.startChild(operation: "load-internal-tx-history")
-    let lastBlockInternalTx = Int(EtherscanTransactionStorage.shared.getCurrentInternalTransactionStartBlock()) ?? 0
-    self.fetchInternalTransactions(
-      forAddress: self.wallet.address.description,
-      startBlock: lastBlockInternalTx,
-      completion: { result in
-        if case .success(let transactions) = result {
-          if lastBlockInternalTx == 0 {
-            EtherscanTransactionStorage.shared.setInternalTransactions(transactions)
-          } else {
-            EtherscanTransactionStorage.shared.appendInternalTransactions(transactions)
-          }
-        }
-        span2.finish()
-        group.leave()
-      }
-    )
-    
-    group.enter()
-    let span3 = tx.startChild(operation: "load-nft-tx-history")
-    let lastNFTInternalTx = Int(EtherscanTransactionStorage.shared.getCurrentNFTTransactionStartBlock()) ?? 0
-    self.fetchNFTTransactions(
-      forAddress: self.wallet.address.description,
-      startBlock: lastNFTInternalTx,
-      completion: { result in
-        if case .success(let transactions) = result {
-          if lastBlockInternalTx == 0 {
-            EtherscanTransactionStorage.shared.setNFTTransaction(transactions)
-          } else {
-            EtherscanTransactionStorage.shared.appendNFTTransactions(transactions)
-          }
-        }
-        span3.finish()
-        group.leave()
-      }
-    )
-
-    group.enter()
-    let span4 = tx.startChild(operation: "load-all-tx-history")
-    let lastBlockAllTx = Int(EtherscanTransactionStorage.shared.getCurrentTransactionStartBlock()) ?? 0
-    self.fetchAllTransactions(
-      forAddress: self.wallet.address.description,
-      startBlock: lastBlockAllTx,
-      completion: { result in
-        if case .success(let transactions) = result {
-          if lastBlockAllTx == 0 {
-            EtherscanTransactionStorage.shared.setTransactions(transactions)
-          } else {
-            EtherscanTransactionStorage.shared.appendTransactions(transactions)
-          }
-        }
-        span4.finish()
-        group.leave()
-      }
-    )
-    group.notify(queue: .global()) {
-//      KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded()
-      let span5 = tx.startChild(operation: "generate-model-history")
-      EtherscanTransactionStorage.shared.generateKrytalTransactionModel {
-        span5.finish()
-        tx.finish()
-      }
+  func loadEtherscanTransactions(isInit: Bool = false) {
+    DispatchQueue.global(qos: .background).async {
+      self.loadKrystalHistory(isInit: isInit)
     }
   }
 

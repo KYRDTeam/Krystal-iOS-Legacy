@@ -23,7 +23,7 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var maticSelectBgView: UIView!
   @IBOutlet weak var avalancheSelectBgView: UIView!
   
-  
+  var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
   @IBOutlet weak var nextButton: UIButton!
@@ -48,6 +48,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.updateSelectedChainUI()
     self.cancelButton.rounded(radius: 16)
     self.nextButton.rounded(radius: 16)
+    self.nextButton.setTitle(self.nextButtonTitle, for: .normal)
   }
   
   fileprivate func updateSelectedChainUI() {

@@ -20,6 +20,11 @@ class ChartViewModel {
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
+  var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
+    didSet {
+      UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
+    }
+  }
   
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -82,6 +87,9 @@ class ChartViewModel {
   }
   
   var diplayBalance: String {
+    guard !self.hideBalanceStatus else {
+      return "********"
+    }
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
     return balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + " \(self.token.symbol.uppercased())"
   }

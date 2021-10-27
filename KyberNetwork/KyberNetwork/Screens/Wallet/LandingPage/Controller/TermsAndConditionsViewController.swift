@@ -8,16 +8,17 @@
 import UIKit
 
 class TermsAndConditionsViewController: KNBaseViewController {
-  
   @IBOutlet weak var acceptTermTextView: UITextView!
   @IBOutlet weak var checkBoxButton: UIButton!
   @IBOutlet weak var nextButton: UIButton!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var backgroundView: UIView!
+  
   let transitor = TransitionDelegate()
   var isAccepted: Bool = false
   var nextAction: (() -> ())?
-  
+
   init() {
     super.init(nibName: TermsAndConditionsViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
@@ -27,10 +28,10 @@ class TermsAndConditionsViewController: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     self.checkBoxButton.rounded(radius: 2)
     self.nextButton.rounded(radius: 16)
     self.updateUI()
@@ -46,19 +47,24 @@ class TermsAndConditionsViewController: KNBaseViewController {
     attributionString.addAttribute(.link, value: "https://files.krystal.app/terms.pdf", range: NSRange(location: 9, length: 12))
     attributionString.addAttribute(.link, value: "https://files.krystal.app/privacy.pdf", range: NSRange(location: 25, length: 15))
     self.acceptTermTextView.linkTextAttributes = linkAttributes
-    
     self.acceptTermTextView.attributedText = attributionString
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    backgroundView.addGestureRecognizer(tapGesture)
   }
-  
+
+  @objc func tapOutside() {
+      self.dismiss(animated: true, completion: nil)
+  }
+
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
   @IBAction func checkBoxButtonTapped(_ sender: Any) {
     self.isAccepted = !isAccepted
     self.updateUI()
   }
-  
+
   @IBAction func nextButtonTapped(_ sender: Any) {
     self.dismiss(animated: true) {
       UserDefaults.standard.set(true, forKey: Constants.acceptedTermKey)
@@ -66,10 +72,8 @@ class TermsAndConditionsViewController: KNBaseViewController {
         action()
       }
     }
-    
-    
   }
-  
+
   fileprivate func updateUI() {
     if self.isAccepted {
       self.checkBoxButton.setImage(UIImage(named: "filter_check_icon"), for: .normal)

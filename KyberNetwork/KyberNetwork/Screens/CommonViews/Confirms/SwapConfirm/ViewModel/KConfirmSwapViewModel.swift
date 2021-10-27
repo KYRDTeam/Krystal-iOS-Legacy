@@ -11,6 +11,8 @@ struct KConfirmSwapViewModel {
   let hasRateWarning: Bool
   let platform: String
   let rawTransaction: TxObject
+  let minReceiveAmount: String
+  let minReceiveTitle: String
   let minDestAmount: BigInt
   let eip1559Transaction: EIP1559Transaction?
 
@@ -69,11 +71,6 @@ struct KConfirmSwapViewModel {
     let minRate = self.transaction.minRate ?? BigInt(0)
     return minRate.displayRate(decimals: 18)
   }
-  
-  var displayMinDestAmount: String {
-    return self.minDestAmount.string(decimals: self.transaction.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.transaction.to.symbol
-  }
-  
 
   var transactionFee: BigInt {
     let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas

@@ -9,7 +9,7 @@ import Moya
 
 protocol KNCreateWalletCoordinatorDelegate: class {
   func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet)
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?)
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool)
   func createWalletCoordinatorDidClose()
   func createWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -79,7 +79,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     let account: Account! = {
       if case .real(let acc) = wallet.type { return acc }
       // Failed to get account from wallet, show enter name
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name)
+      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, isBackUp: false)
       fatalError("Wallet type is not real wallet")
     }()
 
@@ -100,7 +100,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
       self.navigationController.pushViewController(backUpVC, animated: true)
     } else {
       // Failed to get seeds result, temporary open create name for wallet
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name)
+      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, isBackUp: false)
       fatalError("Can not get seeds from account")
     }
   }
@@ -139,7 +139,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
       isBackedUp: true
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, isBackUp: true)
   }
 
   func backupWalletViewControllerDidConfirmSkipWallet() {
@@ -150,7 +150,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
       isBackedUp: false
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name)
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, isBackUp: false)
   }
   
   fileprivate func openQRCode(_ controller: UIViewController) {

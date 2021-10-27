@@ -30,6 +30,7 @@
                 <outlet property="expectedRateLabel" destination="gkk-HI-Saw" id="4Cf-YN-6he"/>
                 <outlet property="fromAmountLabel" destination="ptv-4N-PR6" id="UIk-MJ-11r"/>
                 <outlet property="minAcceptableRateValueButton" destination="c2k-AU-AQn" id="nty-Ax-9rq"/>
+                <outlet property="minReceivedTitle" destination="oao-ep-AZ6" id="aOQ-wZ-3Fh"/>
                 <outlet property="rateTopContraint" destination="z5G-Zb-uwa" id="vAJ-qg-4Re"/>
                 <outlet property="rateWarningLabel" destination="NUm-Ao-hb7" id="8AW-3Z-Jyu"/>
                 <outlet property="reserveRountingContainerTopConstraint" destination="OKq-sZ-cWv" id="ir4-qJ-IWO"/>

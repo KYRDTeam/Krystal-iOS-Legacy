@@ -377,10 +377,10 @@ class KNExternalProvider {
     )
   }
 
-  func getAllowance(tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  func getAllowance(tokenAddress: Address, toAddress: Address? = nil, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: self.account.address,
-      networkAddress: self.networkAddress,
+      networkAddress: toAddress ?? self.networkAddress,
       tokenAddress: tokenAddress,
       completion: completion
     )
@@ -417,14 +417,18 @@ class KNExternalProvider {
     }
   }
 
-  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    var address: Address?
+    if let unwrap = toAddress {
+      address = Address(string: unwrap)
+    }
     KNGeneralProvider.shared.approve(
       tokenAddress: tokenAddress,
       value: value,
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: self.networkAddress,
+      networkAddress: address ?? self.networkAddress,
       gasPrice: gasPrice
     ) { [weak self] result in
         guard let `self` = self else { return }
@@ -437,7 +441,6 @@ class KNExternalProvider {
         }
     }
   }
-
 
   // MARK: Rate
   func getExpectedRate(from: TokenObject, to: TokenObject, amount: BigInt, hint: String = "", withKyber: Bool = false, completion: @escaping (Result<(BigInt, BigInt), AnyError>) -> Void) {
@@ -543,7 +546,7 @@ class KNExternalProvider {
           if !isSwap && !data.isEmpty { // Add buffer for transfer token only
             limit += 20000
           }
-          return isSwap ? limit : min(limit, defaultGasLimit)
+          return limit
         }()
         NSLog("------ Estimate gas used: \(gasLimit.fullString(units: .wei)) ------")
         completion(.success(gasLimit))

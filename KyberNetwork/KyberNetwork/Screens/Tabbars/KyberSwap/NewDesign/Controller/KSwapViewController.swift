@@ -9,6 +9,7 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
+//  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: BigInt)
   case showQRCode
@@ -73,7 +74,9 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
+  @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
   
+  @IBOutlet weak var loadingView: SRCountdownTimer!
   
 //  fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
@@ -112,18 +115,9 @@ class KSwapViewController: KNBaseViewController {
     super.viewDidAppear(animated)
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
     self.isErrorMessageEnabled = true
-    // start update est rate
-//    self.estRateTimer?.invalidate()
+
     self.updateAllRates()
     self.updateAllowance()
-//    self.estRateTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.seconds30,
-//      repeats: true,
-//      block: { [weak self] _ in
-//        guard let `self` = self else { return }
-//        self.updateAllRates()
-//      }
-//    )
 
     // start update est gas limit
     self.estGasLimitTimer?.invalidate()
@@ -167,6 +161,7 @@ class KSwapViewController: KNBaseViewController {
     self.updateUIRefPrice()
     self.updateUIPendingTxIndicatorView()
     self.setupRateTimer()
+    self.setupLoadingView()
   }
   
   fileprivate func setupRateTimer() {
@@ -176,6 +171,16 @@ class KSwapViewController: KNBaseViewController {
     self.rateTimerView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
     self.rateTimerView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
     self.rateTimerView.delegate = self
+  }
+    
+  fileprivate func setupLoadingView() {
+    self.loadingView.lineWidth = 2
+    self.loadingView.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.loadingView.isLoadingIndicator = true
+    self.loadingView.isLabelHidden = true
+    self.loadingView.delegate = self
   }
 
   fileprivate func startRateTimer() {
@@ -345,7 +350,6 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func maxAmountButtonTapped(_ sender: UIButton) {
     self.balanceLabelTapped(sender)
-    self.startRateTimer()
   }
 
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
@@ -438,6 +442,11 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func updateAllRates() {
+    DispatchQueue.main.async {
+      self.stopRateTimer()
+      self.exchangeRateLabel.text = "Rate:"
+      self.loadingView.start(beginingValue: 1)
+    }
     let amt = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
     let event = KSwapViewEvent.getAllRates(from: self.viewModel.from, to: self.viewModel.to, amount: amt, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.kSwapViewController(self, run: event)
@@ -454,12 +463,7 @@ class KSwapViewController: KNBaseViewController {
       srcAmount: self.viewModel.amountToEstimate,
       rawTx: self.viewModel.buildRawSwapTx()
     )
-    //Dismiss event call if the same parameter call within 5 sec
-//    if let previousEvent = self.previousCallEvent, previousEvent == event, Date().timeIntervalSince1970 - self.previousCallTimeStamp < 5 {
-//      return
-//    }
-//    self.previousCallEvent = event
-//    self.previousCallTimeStamp = Date().timeIntervalSince1970
+
     self.delegate?.kSwapViewController(self, run: event)
   }
 
@@ -605,7 +609,9 @@ extension KSwapViewController {
   }
 
   fileprivate func updateExchangeRateField() {
+    self.loadingView.end()
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
+    self.startRateTimer()
   }
 
   fileprivate func updateAllowance() {
@@ -655,7 +661,8 @@ extension KSwapViewController {
   }
 
   fileprivate func updateUIMinReceiveAmount() {
-    self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
+    self.minReceivedAmount.text = self.viewModel.displayExpectedReceiveValue
+    self.minReceivedAmountTitleLabel.text = self.viewModel.displayExpectedReceiveTitle
   }
 }
 
@@ -858,7 +865,6 @@ extension KSwapViewController {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token)
     } else {
-      //TODO: need to check more to avoid lagging ui
       self.updateUIForSendApprove(isShowApproveButton: false)
     }
   }
@@ -945,6 +951,7 @@ extension KSwapViewController {
       )
       )
     }
+//    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)))
   }
 
   func coordinatorFailUpdateEncodedTx() {
@@ -1057,7 +1064,6 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.updateAllRates()
     self.updateEstimatedGasLimit()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       _ = self.showWarningDataInvalidIfNeeded()
@@ -1077,7 +1083,6 @@ extension KSwapViewController: UITextFieldDelegate {
   }
   
   @objc func keyboardPauseTyping(timer: Timer) {
-    self.startRateTimer()
     self.updateViewAmountDidChange()
   }
 
@@ -1096,6 +1101,9 @@ extension KSwapViewController: SRCountdownTimerDelegate {
   }
 
   @objc func timerDidPause(sender: SRCountdownTimer) {
+      if sender.isEqual(self.loadingView) {
+          return
+      }
     sender.isHidden = true
   }
 
@@ -1104,6 +1112,9 @@ extension KSwapViewController: SRCountdownTimerDelegate {
 
   @objc func timerDidEnd(sender: SRCountdownTimer, elapsedTime: TimeInterval) {
     sender.isHidden = true
+    if sender.isEqual(self.loadingView) {
+        return
+    }
     self.updateAllRates()
     self.startRateTimer()
   }

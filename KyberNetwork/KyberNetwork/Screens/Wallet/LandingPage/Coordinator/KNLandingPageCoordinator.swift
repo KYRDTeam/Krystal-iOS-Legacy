@@ -42,15 +42,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  lazy var promoCodeCoordinator: KNPromoCodeCoordinator = {
-    let coordinator = KNPromoCodeCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
-    )
-    coordinator.delegate = self
-    return coordinator
-  }()
-
   lazy var createWalletCoordinator: KNCreateWalletCoordinator = {
     let coordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
@@ -139,9 +130,9 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true) {
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool) {
     // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled")
+    let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled", isBackedUp: isBackUp)
     KNWalletStorage.shared.add(wallets: [walletObject])
     if addToContact {
       let contact = KNContact(
@@ -166,8 +157,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
-    case .openPromoCode:
-      self.promoCodeCoordinator.start()
     case .openCreateWallet:
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
@@ -223,7 +212,7 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
-    self.addNewWallet(wallet, isCreate: false, name: name)
+    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true)
   }
 
   func importWalletCoordinatorDidClose() {
@@ -263,21 +252,9 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
     }
   }
 
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?) {
+  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
     guard let wallet = wallet else { return }
-    self.addNewWallet(wallet, isCreate: true, name: name)
-  }
-}
-
-extension KNLandingPageCoordinator: KNPromoCodeCoordinatorDelegate {
-  func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
-    KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
-      address: wallet.address.description,
-      destinationToken: destinationToken ?? "",
-      destAddress: destAddress,
-      expiredTime: expiredDate
-    )
-    self.addNewWallet(wallet, isCreate: false, name: name, addToContact: false)
+    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp)
   }
 }
 

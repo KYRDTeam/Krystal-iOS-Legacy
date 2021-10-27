@@ -12,7 +12,7 @@ class KNWalletObject: Object {
   @objc dynamic var isWatchWallet: Bool = false
   @objc dynamic var date: Date = Date()
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = true, isWatchWallet: Bool = false) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false) {
     self.init()
     self.address = address
     self.name = name
@@ -22,7 +22,7 @@ class KNWalletObject: Object {
     self.isWatchWallet = isWatchWallet
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = true, isWatchWallet: Bool) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool) {
     self.init()
     self.address = address
     self.name = name

@@ -9,6 +9,7 @@ class KNPrettyAlertController: KNBaseViewController {
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet var backgroundView: UIView!
 
   let mainTitle: String?
   let isWarning: Bool
@@ -19,7 +20,7 @@ class KNPrettyAlertController: KNBaseViewController {
   let firstButtonAction: (() -> Void)?
   var gradientButton: UIButton!
   let transitor = TransitionDelegate()
-  
+  var popupHeight: CGFloat = 300
   init(title: String?,
        isWarning: Bool = false,
        message: String,
@@ -45,6 +46,10 @@ class KNPrettyAlertController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    configUI()
+  }
+  
+  func configUI() {
     self.containerView.rounded()
     self.secondButton.rounded(radius: 16)
     self.firstButton.rounded(radius: 16)
@@ -82,20 +87,21 @@ class KNPrettyAlertController: KNBaseViewController {
     }
     self.gradientButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
     self.gradientButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    backgroundView.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc func tapOutside() {
+      self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func yesButtonTapped(_ sender: UIButton) {
-    if let action = self.secondButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: self.secondButtonAction)
   }
 
   @IBAction func noButtonTapped(_ sender: UIButton) {
-    if let action = self.firstButtonAction {
-      action()
-    }
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: self.firstButtonAction)
   }
 }
 
@@ -105,7 +111,7 @@ extension KNPrettyAlertController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 300
+    return self.popupHeight
   }
 
   func getPopupContentView() -> UIView {

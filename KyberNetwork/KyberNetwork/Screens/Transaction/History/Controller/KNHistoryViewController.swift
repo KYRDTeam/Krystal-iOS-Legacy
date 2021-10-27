@@ -17,6 +17,7 @@ enum KNHistoryViewEvent {
   case openKyberWalletPage
   case openWalletsListPopup
   case swap
+  case reloadAllData
 }
 
 protocol KNHistoryViewControllerDelegate: class {
@@ -71,6 +72,7 @@ struct KNHistoryViewModel {
       isWithdraw: true,
       isTrade: true,
       isContractInteraction: true,
+      isClaimReward: true,
       tokens: tokens.map({ return $0.symbol })
     )
     self.updateDisplayingData()
@@ -92,6 +94,7 @@ struct KNHistoryViewModel {
       isWithdraw: true,
       isTrade: true,
       isContractInteraction: true,
+      isClaimReward: true,
       tokens: tokens.map({ return $0.symbol })
     )
     self.updateDisplayingData()
@@ -121,8 +124,7 @@ struct KNHistoryViewModel {
 
   var isEmptyStateHidden: Bool {
     if self.isShowingPending { return !self.displayingPendingTxHeaders.isEmpty }
-    if KNGeneralProvider.shared.currentChain == .avalanche { return !self.displayingCompletedKrystalTxHeaders.isEmpty }
-    return !self.displayingCompletedTxHeaders.isEmpty
+    return !self.displayingCompletedKrystalTxHeaders.isEmpty
   }
 
   var emptyStateIconName: String {
@@ -153,15 +155,13 @@ struct KNHistoryViewModel {
 
   var numberSections: Int {
     if self.isShowingPending { return self.displayingPendingTxHeaders.count }
-    if KNGeneralProvider.shared.currentChain == .avalanche { return self.displayingCompletedKrystalTxHeaders.count }
-    return self.displayingCompletedTxHeaders.count
+    return self.displayingCompletedKrystalTxHeaders.count
   }
 
   func header(for section: Int) -> String {
     let header: String = {
       if self.isShowingPending { return self.displayingPendingTxHeaders[section] }
-      if KNGeneralProvider.shared.currentChain == .avalanche { return self.displayingCompletedKrystalTxHeaders[section] }
-      return self.displayingCompletedTxHeaders[section]
+      return self.displayingCompletedKrystalTxHeaders[section]
     }()
     return header
   }
@@ -171,19 +171,13 @@ struct KNHistoryViewModel {
     if self.isShowingPending {
       return self.displayingPendingTxData[header]?.count ?? 0
     } else {
-      if KNGeneralProvider.shared.currentChain == .avalanche { return self.displayingCompletedKrystalTxData[header]?.count ?? 0 }
-      return self.displayingCompletedTxData[header]?.count ?? 0
+      return self.displayingCompletedKrystalTxData[header]?.count ?? 0
     }
   }
 
   func completedTransaction(for row: Int, at section: Int) -> AbstractHistoryTransactionViewModel? {
     let header = self.header(for: section)
-    if KNGeneralProvider.shared.currentChain == .avalanche {
-      if let trans = self.displayingCompletedKrystalTxData[header], trans.count >= row {
-        return trans[row]
-      }
-    }
-    if let trans = self.displayingCompletedTxData[header], trans.count >= row {
+    if let trans = self.displayingCompletedKrystalTxData[header], trans.count >= row {
       return trans[row]
     }
     return nil
@@ -196,7 +190,7 @@ struct KNHistoryViewModel {
     }
     return nil
   }
-  
+
   mutating func updateDisplayingKrystalData() {
     let fromDate = self.filters.from ?? Date().addingTimeInterval(-200.0 * 360.0 * 24.0 * 60.0 * 60.0)
     let toDate = self.filters.to ?? Date().addingTimeInterval(24.0 * 60.0 * 60.0)
@@ -243,28 +237,7 @@ struct KNHistoryViewModel {
     }
 
     if isCompleted {
-      guard KNGeneralProvider.shared.currentChain != .avalanche else {
-        self.updateDisplayingKrystalData()
-        return
-      }
-      let displayHeaders: [String] = {
-        let data = self.completedTxHeaders.filter({
-          let date = self.dateFormatter.date(from: $0) ?? Date()
-          return date >= fromDate && date <= toDate
-        })
-        return data
-      }()
-      self.displayingCompletedTxData = [:]
-      displayHeaders.forEach { (header) in
-        let items = self.completedTxData[header]?.filter({ return self.isCompletedTransactionIncluded($0) }).enumerated().map { (item) -> CompletedHistoryTransactonViewModel in
-          return CompletedHistoryTransactonViewModel(data: item.1, index: item.0)
-        } ?? []
-        self.displayingCompletedTxData[header] = items
-      }
-      let filtered = displayHeaders.filter { (header) -> Bool in
-        return !(self.displayingCompletedTxData[header]?.isEmpty ?? false)
-      }
-      self.displayingCompletedTxHeaders = filtered
+      self.updateDisplayingKrystalData()
     }
   }
 
@@ -285,15 +258,19 @@ struct KNHistoryViewModel {
     }
     return isTokenIncluded
   }
-  
+
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
+    
     let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
     let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
     let matchedAppprove = (tx.type == "Approval") && self.filters.isApprove
-    let matchedContractInteraction = (tx.type == "") && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction
-    
+    let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
+    let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
+    let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
+    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
+
     var tokenMatched = true
     var transactionToken: [String] = []
     if let sym = tx.extraData?.token?.symbol {
@@ -305,8 +282,19 @@ struct KNHistoryViewModel {
     if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
-    tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
-    
+    if transactionToken.isEmpty {
+      if self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
+        tokenMatched = true
+      } else {
+        tokenMatched = false
+      }
+    } else {
+      if transactionToken.count > self.filters.tokens.count {
+        tokenMatched = Set(self.filters.tokens).isSubset(of: Set(transactionToken))
+      } else {
+        tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
+      }
+    }
     return matchedType && tokenMatched
   }
 
@@ -394,7 +382,7 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var swapNowButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
-  
+  private let refreshControl = UIRefreshControl()
   
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
@@ -424,12 +412,6 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func showQuickTutorial() {
-//    let collectionViewOrigin = self.transactionCollectionView.frame.origin
-//    let collectionViewSize = self.transactionCollectionView.frame.size
-//    let event = KNHistoryViewEvent.quickTutorial(pointsAndRadius: [(CGPoint(x: collectionViewOrigin.x + collectionViewSize.width - 77 * 1.5, y: collectionViewOrigin.y + 30 + 44), 115)])
-//    self.delegate?.historyViewController(self, run: event)
-//    self.animateReviewCellActionForTutorial()
-//    self.viewModel.isShowingQuickTutorial = true
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -532,7 +514,9 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: KNTransactionCollectionReusableView.viewID)
     self.transactionCollectionView.delegate = self
     self.transactionCollectionView.dataSource = self
-
+    self.refreshControl.tintColor = .lightGray
+    self.refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+    self.transactionCollectionView.refreshControl = self.refreshControl
     self.updateUIWhenDataDidChange()
   }
 
@@ -601,6 +585,15 @@ class KNHistoryViewController: KNBaseViewController {
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
   }
+  
+  @objc private func refreshData(_ sender: Any) {
+    guard !self.viewModel.isShowingPending else {
+      self.refreshControl.endRefreshing()
+      return
+    }
+    guard self.refreshControl.isRefreshing else { return }
+    self.delegate?.historyViewController(self, run: .reloadAllData)
+  }
 }
 
 extension KNHistoryViewController {
@@ -630,6 +623,7 @@ extension KNHistoryViewController {
   }
   
   func coordinatorDidUpdateCompletedKrystalTransaction(sections: [String], data: [String: [KrystalHistoryTransaction]]) {
+    self.refreshControl.endRefreshing()
     self.viewModel.update(completedKrystalTxData: data, completedKrystalTxHeaders: sections)
     self.viewModel.update(completedTxData: [:], completedTxHeaders: [])
     self.transactionCollectionView.reloadData()
@@ -648,16 +642,9 @@ extension KNHistoryViewController: UICollectionViewDelegate {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
       self.delegate?.historyViewController(self, run: .selectPendingTransaction(transaction: transaction.internalTransaction))
     } else {
-      guard KNGeneralProvider.shared.currentChain != .avalanche else {
-        if let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) as? CompletedKrystalHistoryTransactionViewModel {
-          self.delegate?.historyViewController(self, run: .selectCompletedKrystalTransaction(data: transaction))
-        }
-        return
+      if let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) as? CompletedKrystalHistoryTransactionViewModel {
+        self.delegate?.historyViewController(self, run: .selectCompletedKrystalTransaction(data: transaction))
       }
-      guard let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) as? CompletedHistoryTransactonViewModel else {
-        return
-      }
-      self.delegate?.historyViewController(self, run: .selectCompletedTransaction(data: transaction))
     }
   }
 }
