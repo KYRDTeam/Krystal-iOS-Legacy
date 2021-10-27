@@ -20,7 +20,7 @@ protocol KNTransactionStatusPopUpDelegate: class {
 }
 
 /// lead and trail constraint to superview of first and second button
-let buttonLeftRightPadding = 61.0
+let buttonLeftRightPadding = CGFloat(61.0)
 
 class KNTransactionStatusPopUp: KNBaseViewController {
 
@@ -174,7 +174,6 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.contentViewTopContraint.constant -= 160
         self.earnMessageLabel.text = self.transaction.earnTransactionSuccessDescription
         self.buttonsDistanceConstraint.constant = 2 * buttonLeftRightPadding - UIScreen.main.bounds.size.width
-        
       } else if self.transaction.type == .withdraw {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
