@@ -95,6 +95,10 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
   
+  func appCoordinatorTokensTransactionsDidUpdate() {
+    self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
+  }
+
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorDidUpdateNewSession(session)
