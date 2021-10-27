@@ -19,6 +19,9 @@ protocol KNTransactionStatusPopUpDelegate: class {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent)
 }
 
+/// lead and trail constraint to superview of first and second button
+let buttonLeftRightPadding = 61.0
+
 class KNTransactionStatusPopUp: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
@@ -35,6 +38,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var contentViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var earnMessageLabel: UILabel!
   
+  @IBOutlet weak var buttonsDistanceConstraint: NSLayoutConstraint!
   // Broadcast
   @IBOutlet weak var loadingImageView: UIImageView!
   // 32 if broadcasting, 104 if done/failed
@@ -169,6 +173,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.contentViewHeightContraint.constant += 160
         self.contentViewTopContraint.constant -= 160
         self.earnMessageLabel.text = self.transaction.earnTransactionSuccessDescription
+        self.buttonsDistanceConstraint.constant = 2 * buttonLeftRightPadding - UIScreen.main.bounds.size.width
+        
       } else if self.transaction.type == .withdraw {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
