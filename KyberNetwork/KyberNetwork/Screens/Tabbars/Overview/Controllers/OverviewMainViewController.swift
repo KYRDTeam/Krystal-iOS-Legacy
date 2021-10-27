@@ -567,7 +567,7 @@ extension OverviewMainViewController: UITableViewDelegate {
   func isShowOrHideAssetRow(indexPath: IndexPath) -> Bool {
     switch self.viewModel.currentMode {
     case .asset:
-      return indexPath.row < self.viewModel.numberOfRowsInSection(section: indexPath.section)
+      return indexPath.row == self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
     default:
       return false
     }
@@ -581,7 +581,9 @@ extension OverviewMainViewController: UITableViewDelegate {
     guard self.viewModel.currentMode != .nft, self.viewModel.currentMode != .showLiquidityPool else {
       return
     }
+    // if current mode is assets then check if user tap on show or hide row
     guard !isShowOrHideAssetRow(indexPath: indexPath) else {
+      // user tap on show or hide row
       self.viewModel.isHidingSmallAssetsToken = !self.viewModel.isHidingSmallAssetsToken
       self.reloadUI()
       return
