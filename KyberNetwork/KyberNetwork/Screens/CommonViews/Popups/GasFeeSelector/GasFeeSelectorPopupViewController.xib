@@ -978,6 +978,7 @@
                                     </constraints>
                                 </view>
                             </subviews>
+                            <color key="backgroundColor" name="popupBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Oyl-HO-RJ0" secondAttribute="trailing" id="G4L-EW-qY8"/>
                                 <constraint firstAttribute="bottom" secondItem="Oyl-HO-RJ0" secondAttribute="bottom" id="Oxe-BO-gKm"/>

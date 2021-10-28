@@ -227,7 +227,7 @@ class RewardCoordinator: Coordinator {
           self.session.addNewPendingTransaction(tx)
           let description = self.rootViewController.viewModel.totalBalanceString()
           let detailDescription = tx.to
-          let historyTransaction = InternalHistoryTransaction(type: .claimReward, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: description, transactionDetailDescription: detailDescription, transactionObj: transaction.toSignTransactionObject())
+        let historyTransaction = InternalHistoryTransaction(type: .claimReward, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: description, transactionDetailDescription: detailDescription, transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
           historyTransaction.hash = hash
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce

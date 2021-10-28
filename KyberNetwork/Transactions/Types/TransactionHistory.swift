@@ -120,6 +120,8 @@ extension TxObject {
   func newTxObjectWithGasPrice(gasPrice: BigInt) -> TxObject {
     let gasPriceString = gasPrice.hexEncoded
     return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: gasPriceString, nonce: self.nonce, gasLimit: self.gasLimit)
+  }
+
   func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?) -> EIP1559Transaction? {
     guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(self.gasLimit.drop0x, radix: 16) ?? BigInt(0)
@@ -356,7 +358,15 @@ class InternalHistoryTransaction: Codable {
   var eip1559Transaction: EIP1559Transaction?
   let chain: ChainType
 
-  init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String, transactionObj: SignTransactionObject?, eip1559Tx: EIP1559Transaction?) {
+  init(
+    type: HistoryModelType,
+    state: InternalTransactionState,
+    fromSymbol: String?,
+    toSymbol: String?,
+    transactionDescription: String,
+    transactionDetailDescription: String,
+    transactionObj: SignTransactionObject?,
+    eip1559Tx: EIP1559Transaction?) {
     self.type = type
     self.state = state
     self.fromSymbol = fromSymbol

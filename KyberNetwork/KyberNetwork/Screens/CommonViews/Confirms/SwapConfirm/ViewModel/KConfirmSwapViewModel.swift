@@ -13,18 +13,28 @@ struct KConfirmSwapViewModel {
   let rawTransaction: TxObject
   let minReceiveAmount: String
   let minReceiveTitle: String
-  let minDestAmount: BigInt
   let eip1559Transaction: EIP1559Transaction?
 
-  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction?, eip1559Tx: EIP1559Transaction?, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
+  init(
+    transaction: KNDraftExchangeTransaction,
+    ethBalance: BigInt,
+    signTransaction: SignTransaction?,
+    eip1559Tx: EIP1559Transaction?,
+    hasRateWarning: Bool,
+    platform: String,
+    rawTransaction: TxObject,
+    minReceiveAmount: String,
+    minReceiveTitle: String
+  ) {
     self.transaction = transaction
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
     self.hasRateWarning = hasRateWarning
     self.platform = platform
     self.rawTransaction = rawTransaction
-    self.minDestAmount = minDestAmount
     self.eip1559Transaction = eip1559Tx
+    self.minReceiveAmount = minReceiveAmount
+    self.minReceiveTitle = minReceiveTitle
   }
 
   var titleString: String {
