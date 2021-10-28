@@ -197,7 +197,7 @@ class EarnCoordinator: NSObject, Coordinator {
     self.withdrawCoordinator?.coordinatorDidUpdatePendingTx()
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
-  
+
   func appCoodinatorDidOpenEarnView(tokenAddress: String) {
     guard let token = self.lendingTokens.first(where: { (item) -> Bool in
       return item.address.lowercased() == tokenAddress.lowercased()
@@ -243,7 +243,7 @@ extension EarnCoordinator: EarnMenuViewControllerDelegate {
 extension EarnCoordinator: EarnViewControllerDelegate {
   func earnViewController(_ controller: AbstractEarnViewControler, run event: EarnViewEvent) {
     switch event {
-    case .openGasPriceSelect(let gasLimit, let selectType, let isSwap, let percent):
+    case .openGasPriceSelect(let gasLimit, let selectType, let isSwap, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: isSwap)
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
@@ -251,6 +251,10 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         slow: KNGasCoordinator.shared.lowKNGas,
         superFast: KNGasCoordinator.shared.superFastKNGas
       )
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
@@ -268,7 +272,11 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                         hint: "",
                         useGasToken: false
       )) { (result) in
-        if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let txObj = json["txObject"] as? [String: String], let gasLimitString = txObj["gasLimit"], let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
+        if case .success(let resp) = result,
+            let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
+            let txObj = json["txObject"] as? [String: String],
+            let gasLimitString = txObj["gasLimit"],
+            let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
           controller.coordinatorDidUpdateGasLimit(gasLimit, platform: platform, tokenAdress: dest)
         } else {
           controller.coordinatorFailUpdateGasLimit()

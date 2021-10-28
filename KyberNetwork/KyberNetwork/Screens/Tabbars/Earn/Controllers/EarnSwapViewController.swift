@@ -24,9 +24,37 @@ class EarnSwapViewModel {
   fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
   
-  var advancedGasLimit: String?
-  var advancedMaxPriorityFee: String?
-  var advancedMaxFee: String?
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
   
   var swapRates: (String, String, BigInt, [Rate]) = ("", "", BigInt(0), [])
   var currentFlatform: String = "Kyber" {
@@ -778,7 +806,16 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.earnViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, isSwap: true, minRatePercent: self.viewModel.minRatePercent))
+    self.delegate?.earnViewController(self, run: .openGasPriceSelect(
+      gasLimit: self.viewModel.gasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      isSwap: true,
+      minRatePercent: self.viewModel.minRatePercent,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
+    ))
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -1052,9 +1089,21 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       self.updateUIPendingTxIndicatorView()
     }
   }
-  
+
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
-    
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
+
+  func coordinatorSuccessSendTransaction() {
+    self.viewModel.advancedGasLimit = nil
+    self.viewModel.advancedMaxPriorityFee = nil
+    self.viewModel.advancedMaxFee = nil
+    self.viewModel.updateSelectedGasPriceType(.medium)
+    self.updateGasFeeUI()
   }
 }
 

@@ -214,7 +214,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.openNewContact(address: address, ens: ens)
     case .contactSelectMore:
       self.openListContactsView()
-    case .openGasPriceSelect(let gasLimit, let selectType):
+    case .openGasPriceSelect(let gasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType)
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
@@ -222,6 +222,10 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         slow: KNGasCoordinator.shared.lowKNGas,
         superFast: KNGasCoordinator.shared.superFastKNGas
       )
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
 
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
@@ -416,6 +420,7 @@ extension KNSendTokenViewCoordinator {
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
         self.openTransactionStatusPopUp(transaction: historyTransaction)
+        self.rootViewController?.coordinatorSuccessSendTransaction()
       case .failure(let error):
         self.confirmVC?.resetActionButtons()
         KNNotificationUtil.postNotification(
@@ -424,6 +429,7 @@ extension KNSendTokenViewCoordinator {
           userInfo: nil
         )
         self.navigationController.showTopBannerView(message: error.description, time: 3)
+        self.navigationController.hideLoading()
       }
     })
   }

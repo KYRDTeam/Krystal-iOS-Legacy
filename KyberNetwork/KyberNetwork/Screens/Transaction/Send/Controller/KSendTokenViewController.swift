@@ -16,7 +16,7 @@ enum KSendTokenViewEvent {
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
   case contactSelectMore
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
+  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
   case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool)
@@ -188,7 +188,14 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType))
+    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(
+      gasLimit: self.viewModel.gasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
+    ))
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
@@ -502,18 +509,18 @@ extension KSendTokenViewController {
     self.updateAmountFieldUIForTransferAllIfNeeded()
     self.updateGasFeeUI()
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.currentWalletAddress = wallet.address.description
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else { return }
     self.updateUISwitchChain()
@@ -528,6 +535,14 @@ extension KSendTokenViewController {
     self.viewModel.advancedMaxPriorityFee = maxPriorityFee
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
+
+  func coordinatorSuccessSendTransaction() {
+    self.viewModel.advancedGasLimit = nil
+    self.viewModel.advancedMaxPriorityFee = nil
+    self.viewModel.advancedMaxFee = nil
+    self.viewModel.updateSelectedGasPriceType(.medium)
     self.updateGasFeeUI()
   }
 }

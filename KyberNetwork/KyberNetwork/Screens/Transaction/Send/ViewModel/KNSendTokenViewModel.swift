@@ -26,9 +26,37 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var isUsingEns: Bool = false
   var isSendAllBalanace: Bool = false
 
-  var advancedGasLimit: String?
-  var advancedMaxPriorityFee: String?
-  var advancedMaxFee: String?
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
 
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit

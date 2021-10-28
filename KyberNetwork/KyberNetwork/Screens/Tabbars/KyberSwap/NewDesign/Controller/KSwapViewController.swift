@@ -957,7 +957,7 @@ extension KSwapViewController {
   }
 
   func coordinatorSuccessSendTransaction() {
-    print("[Debug] send success")
+    self.resetAdvancedSetting()
     self.hideLoading()
   }
 
@@ -1006,6 +1006,14 @@ extension KSwapViewController {
     self.viewModel.advancedMaxPriorityFee = maxPriorityFee
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
+    self.setUpGasFeeView()
+  }
+  
+  func resetAdvancedSetting() {
+    self.viewModel.advancedGasLimit = nil
+    self.viewModel.advancedMaxPriorityFee = nil
+    self.viewModel.advancedMaxFee = nil
+    self.viewModel.updateSelectedGasPriceType(.medium)
     self.setUpGasFeeView()
   }
 }

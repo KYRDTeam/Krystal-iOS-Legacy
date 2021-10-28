@@ -321,7 +321,7 @@ class SendNFTViewController: KNBaseViewController {
   }
   
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType))
+    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, advancedGasLimit: nil, advancedPriorityFee: nil, advancedMaxFee: nil, advancedNonce: nil)) //TODO: handle eip1559 for nft transfer
   }
   
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {

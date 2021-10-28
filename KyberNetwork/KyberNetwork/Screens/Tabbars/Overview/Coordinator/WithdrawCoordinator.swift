@@ -127,7 +127,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                             historyTransaction.nonce = nonce
                             historyTransaction.eip1559Transaction = transaction
                             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-
+                            self.withdrawViewController?.coordinatorSuccessSendTransaction()
                             controller.dismiss(animated: true) {
                               self.openTransactionStatusPopUp(transaction: historyTransaction)
                             }
@@ -192,7 +192,6 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                       self.navigationController.showErrorTopBannerMessage(message: errorMessage)
                     }
                   }
-                  
                 } else {
                   controller.hideLoading()
                   self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
@@ -241,7 +240,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
 
       vc.delegate = self
       controller.present(vc, animated: true, completion: nil)
-    case .openGasPriceSelect(gasLimit: let gasLimit, selectType: let selectType):
+    case .openGasPriceSelect(let gasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: 3, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: false)
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
@@ -249,6 +248,10 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         slow: KNGasCoordinator.shared.lowKNGas,
         superFast: KNGasCoordinator.shared.superFastKNGas
       )
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
 
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
@@ -376,7 +379,6 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
                     userInfo: nil
                   )
                 }
-                
               case .failure(let error):
                 self.navigationController.showTopBannerView(message: error.description)
               }
