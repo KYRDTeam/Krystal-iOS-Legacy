@@ -35,8 +35,9 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var rightModeSortLabel: UILabel!
   @IBOutlet var sortButtons: [UIButton]!
-  
+  @IBOutlet weak var filterSectionViewHeight: NSLayoutConstraint!
   @IBOutlet weak var totalBalanceContainerViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   weak var delegate: OverviewMainViewControllerDelegate?
   
   let viewModel: OverviewMainViewModel
@@ -107,6 +108,11 @@ class OverviewMainViewController: KNBaseViewController {
     self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
     self.updateUIHideBalanceButton()
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24)
+    DispatchQueue.main.async {
+      self.filterSectionViewHeight.constant = self.viewModel.currentMode != .market(rightMode: .ch24) ? 60 : 96
+      self.tableViewTopConstraint.constant = self.viewModel.currentMode != .market(rightMode: .ch24) ? 60 : 96
+    }
+    
     self.updateUIWalletList()
     self.updateCh24Button()
     UIView.transition(with: self.tableView, duration: 0.35, options: animation) {
@@ -166,7 +172,7 @@ class OverviewMainViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    self.reloadUI()
+    self.reloadUI(.transitionCrossDissolve)
   }
 
   @IBAction func sendButtonTapped(_ sender: UIButton) {
@@ -560,7 +566,7 @@ extension OverviewMainViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
-      return 0
+      return 0.01
     }
     return 40
   }
@@ -632,7 +638,7 @@ extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let alpha = scrollView.contentOffset.y <= 0 ? pow(abs(scrollView.contentOffset.y) / 200.0, 4)  : 0.0
     self.totalBalanceContainerView.alpha = alpha
-    self.totalBalanceContainerViewHeight.constant = abs(scrollView.contentOffset.y) - 10
+    self.totalBalanceContainerViewHeight.constant = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) - 10 : 0
   }
 }
 
