@@ -31,7 +31,22 @@ class KNSearchTokenViewModel {
   var displayedTokens: [TokenObject] = []
 
   init(supportedTokens: [TokenObject]) {
-    self.supportedTokens = supportedTokens.sorted(by: { return $0.symbol < $1.symbol })
+    var filteredSupportTokens: [TokenObject] = []
+
+    supportedTokens.forEach { tokenData in
+      let addressArray = filteredSupportTokens.map { token in
+        return token.address
+      }
+      
+      guard !addressArray.contains(tokenData.address) else {
+        return
+      }
+      
+      filteredSupportTokens.append(tokenData)
+    }
+    
+    
+    self.supportedTokens = filteredSupportTokens.sorted(by: { return $0.symbol < $1.symbol })
     self.searchedText = ""
     self.displayedTokens = self.supportedTokens
   }
