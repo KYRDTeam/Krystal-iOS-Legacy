@@ -134,15 +134,22 @@ class EarnMenuViewController: KNBaseViewController {
   }
   
   func coordinatorDidUpdateLendingToken(_ tokens: [TokenData]) {
-    self.viewModel.dataSource = tokens.map { EarnMenuTableViewCellViewModel(token: $0) }.sorted(by: { (left, right) -> Bool in
+    var filteredTokensArray:[TokenData] = []
+    tokens.forEach { tokenData in
+      if !filteredTokensArray.contains(tokenData) {
+        filteredTokensArray.append(tokenData)
+      }
+    }
+
+    self.viewModel.dataSource = filteredTokensArray.map { EarnMenuTableViewCellViewModel(token: $0) }.sorted(by: { (left, right) -> Bool in
       return left.supplyRate > right.supplyRate
     })
+
     self.updateUIEmptyView()
     if self.isViewSetup {
       DispatchQueue.main.async {
         self.menuTableView.reloadData()
       }
-      
     }
   }
 
