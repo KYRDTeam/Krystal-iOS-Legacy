@@ -154,7 +154,7 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var advancedSettingsHeight: CGFloat {
-    return 650
+    return 600
   }
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
@@ -360,12 +360,12 @@ class GasFeeSelectorPopupViewModel {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
     return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
   }
-  
+
   var advancedNonceErrorStatus: AdvancedInputError {
     guard let unwrap = self.advancedNonce, !unwrap.isEmpty else {
       return .none
     }
-    
+
     let nonceInt = Int(unwrap) ?? 0
     if nonceInt >= self.currentNonce {
       return .none
@@ -431,7 +431,7 @@ class GasFeeSelectorPopupViewModel {
   var displayMainEstGasFee: String {
     return String(self.formatFeeStringFor(gasPrice: self.maxGasFeeBigInt, gasLimit: self.advancedGasLimitBigInt).dropFirst())
   }
-  
+
   var displayMainEquivalentUSD: String {
     if let usdRate = KNGeneralProvider.shared.quoteTokenPrice?.usd {
       let fee = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
@@ -447,7 +447,7 @@ enum GasFeeSelectorPopupViewEvent {
   case infoPressed
   case gasPriceChanged(type: KNSelectedGasPriceType, value: BigInt)
   case minRatePercentageChanged(percent: CGFloat)
-  case helpPressed
+  case helpPressed(tag: Int)
   case useChiStatusChanged(status: Bool)
   case updateAdvancedSetting(gasLimit: String, maxPriorityFee: String, maxFee: String)
   case updateAdvancedNonce(nonce: String)
@@ -765,7 +765,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
-    self.delegate?.gasFeeSelectorPopupViewController(self, run: .helpPressed)
+    self.delegate?.gasFeeSelectorPopupViewController(self, run: .helpPressed(tag: sender.tag))
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
@@ -789,7 +789,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     //TODO: handle new implementation
     self.customRateTextField.resignFirstResponder()
   }
-
 
   func coordinatorDidUpdateGasLimit(_ value: BigInt) {
     self.viewModel.updateGasLimit(value: value)
@@ -821,7 +820,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.updateUIForMode()
     self.updateGasPriceUIs()
   }
-  
+
   @IBAction func gasLimitChgAmountButtonTapped(_ sender: UIButton) {
     let isIncrease = sender.tag == 1
     var currentGasLimit = Int(self.advancedGasLimitField.text ?? "") ?? 0

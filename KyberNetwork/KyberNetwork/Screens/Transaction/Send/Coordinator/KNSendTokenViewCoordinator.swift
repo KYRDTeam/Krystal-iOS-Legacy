@@ -532,9 +532,20 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       } else {
         self.rootViewController?.coordinatorDidUpdateGasPriceType(type, value: value)
       }
-    case .helpPressed:
+    case .helpPressed(let tag):
+      var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
+      switch tag {
+      case 1:
+        message = "gas.limit.help".toBeLocalised()
+      case 2:
+        message = "max.priority.fee.help".toBeLocalised()
+      case 3:
+        message = "max.fee.help".toBeLocalised()
+      default:
+        break
+      }
       self.navigationController.showBottomBannerView(
-        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
+        message: message,
         icon: UIImage(named: "help_icon_large") ?? UIImage(),
         time: 10
       )

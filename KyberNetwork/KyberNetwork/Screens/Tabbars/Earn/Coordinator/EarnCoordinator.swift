@@ -16,7 +16,7 @@ import MBProgressHUD
 import APIKit
 import JSONRPCKit
 import WalletConnectSwift
-
+//swiftlint:disable file_length
 protocol NavigationBarDelegate: class {
   func viewControllerDidSelectHistory(_ controller: KNBaseViewController)
   func viewControllerDidSelectWallets(_ controller: KNBaseViewController)
@@ -529,9 +529,20 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         return
       }
       viewController.coordinatorDidUpdateGasPriceType(type, value: value)
-    case .helpPressed:
+    case .helpPressed(let tag):
+      var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
+      switch tag {
+      case 1:
+        message = "gas.limit.help".toBeLocalised()
+      case 2:
+        message = "max.priority.fee.help".toBeLocalised()
+      case 3:
+        message = "max.fee.help".toBeLocalised()
+      default:
+        break
+      }
       self.navigationController.showBottomBannerView(
-        message: "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised(),
+        message: message,
         icon: UIImage(named: "help_icon_large") ?? UIImage(),
         time: 10
       )
