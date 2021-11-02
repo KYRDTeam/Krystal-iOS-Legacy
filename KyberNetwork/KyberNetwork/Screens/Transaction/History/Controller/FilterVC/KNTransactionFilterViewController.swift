@@ -145,9 +145,8 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var tokensTableView: UITableView!
   @IBOutlet weak var tokensTableViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var tokensViewActionButton: UIButton!
-
-  @IBOutlet weak var resetButton: UIButton!
-  @IBOutlet weak var applyButton: UIButton!
+  @IBOutlet weak var toDateTimeView: UIView!
+  @IBOutlet weak var fromDateTimeView: UIView!
   @IBOutlet weak var bottomPaddingForButtonConstraint: NSLayoutConstraint!
 
   @IBOutlet var separatorViews: [UIView]!
@@ -203,7 +202,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navTitleLabel.text = "Filter".toBeLocalised()
+    self.navTitleLabel.text = "History Filter".toBeLocalised()
     self.timeTextLabel.text = "Time".toBeLocalised()
     
     self.transactionTypeTextLabel.text = "Transaction Type".toBeLocalised()
@@ -211,12 +210,6 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.receiveButton.setTitle(NSLocalizedString("receive", value: "Receive", comment: ""), for: .normal)
     self.swapButton.setTitle(NSLocalizedString("swap", value: "Swap", comment: ""), for: .normal)
     self.tokenTextLabel.text = "Token".toBeLocalised()
-    self.resetButton.rounded(
-      radius: 16
-    )
-    self.resetButton.setTitle("Reset".toBeLocalised(), for: .normal)
-    self.applyButton.setTitle(NSLocalizedString("apply", value: "Apply", comment: ""), for: .normal)
-    self.applyButton.rounded(radius: 16)
 
     let nib = UINib(nibName: KNTransactionFilterTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kFilterTokensTableViewCellID)
@@ -234,8 +227,23 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.bottomPaddingForButtonConstraint.constant = 24.0 + self.bottomPaddingSafeArea()
 
     self.updateUI()
+    self.configUI()
   }
 
+  fileprivate func configUI() {
+    self.fromDateTimeView.rounded(radius: 16)
+    self.toDateTimeView.rounded(radius: 16)
+
+    self.fromTextField.attributedPlaceholder = NSAttributedString(
+      string: "From",
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!]
+    )
+
+    self.toTextField.attributedPlaceholder = NSAttributedString(
+      string: "To",
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!]
+    )
+  }
 
   fileprivate func updateUI(isUpdatingTokens: Bool = true) {
     UIView.animate(withDuration: 0.16) {
@@ -300,7 +308,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.contractInteractionButton.backgroundColor = UIColor(named: "navButtonBgColor")
         self.contractInteractionButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
-      
+
       if self.viewModel.isClaimReward {
         self.claimRewardButton.backgroundColor = UIColor(named: "buttonBackgroundColor")
         self.claimRewardButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
@@ -308,7 +316,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.claimRewardButton.backgroundColor = UIColor(named: "navButtonBgColor")
         self.claimRewardButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
-      
+
       if let date = self.viewModel.from {
         self.fromDatePicker.setDate(date, animated: false)
         self.fromDatePickerDidChange(self.fromDatePicker)
@@ -387,18 +395,17 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.viewModel.isTrade = !self.viewModel.isTrade
     self.updateUI(isUpdatingTokens: false)
   }
-  
+
   @IBAction func contractInteractionButtonPressed(_ sender: UIButton) {
     self.viewModel.isContractInteraction = !self.viewModel.isContractInteraction
     self.updateUI(isUpdatingTokens: false)
   }
-  
-  
+
   @IBAction func claimRewardButtonTapped(_ sender: Any) {
     self.viewModel.isClaimReward = !self.viewModel.isClaimReward
     self.updateUI(isUpdatingTokens: false)
   }
-  
+
   // See more/less
   @IBAction func tokensActionButtonPressed(_ sender: Any) {
     self.viewModel.isSeeMore = !self.viewModel.isSeeMore
@@ -454,11 +461,11 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBAction func tapFromTextField(_ sender: UITapGestureRecognizer) {
     self.fromTextField.becomeFirstResponder()
   }
-  
+
   @IBAction func tapToTextField(_ sender: UITapGestureRecognizer) {
     self.toTextField.becomeFirstResponder()
   }
-  
+
 }
 
 extension KNTransactionFilterViewController: UITableViewDelegate {
