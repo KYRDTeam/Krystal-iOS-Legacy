@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -57,6 +57,7 @@
                 <outlet property="maxPriorityFeeErrorLabel" destination="nN6-wO-tfn" id="bt2-lQ-uhG"/>
                 <outlet property="mediumGasButton" destination="Vc9-xF-y4O" id="WX9-Sh-6qG"/>
                 <outlet property="mediumGasValueLabel" destination="954-Oy-OlJ" id="D3c-sC-fT0"/>
+                <outlet property="nonceErrorLabel" destination="biE-fA-35t" id="8vc-rb-eXI"/>
                 <outlet property="popupContainerHeightContraint" destination="ZJ7-Lq-sPg" id="ZNp-jE-0wJ"/>
                 <outlet property="regularEstimateFeeLabel" destination="4g0-zy-tVO" id="RPf-Sj-bBm"/>
                 <outlet property="segmentedControl" destination="YmJ-Yg-s8A" id="Rgh-OZ-x84"/>
@@ -743,6 +744,9 @@
                                                                 <constraint firstAttribute="height" constant="21" id="YHU-9H-c2h"/>
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <connections>
+                                                                <action selector="customNonceChangeButtonTapped:" destination="-1" eventType="touchUpInside" id="xAs-AJ-HRw"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mrf-t6-4ik">
                                                             <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
@@ -750,6 +754,9 @@
                                                                 <constraint firstAttribute="height" constant="21" id="3SV-z8-yzu"/>
                                                             </constraints>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <connections>
+                                                                <action selector="customNonceChangeButtonTapped:" destination="-1" eventType="touchUpInside" id="7lI-Se-ZsB"/>
+                                                            </connections>
                                                         </button>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adjust_icon" translatesAutoresizingMaskIntoConstraints="NO" id="UMc-di-X34">
                                                             <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
@@ -938,11 +945,18 @@
                                             <color key="textColor" name="textRedColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biE-fA-35t">
+                                            <rect key="frame" x="166" y="407" width="199.5" height="14"/>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                            <color key="textColor" name="textRedColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" name="popupBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="5Bo-Ke-v54" secondAttribute="trailing" constant="37" id="1uL-dz-Lr9"/>
                                         <constraint firstItem="nN6-wO-tfn" firstAttribute="top" secondItem="hHH-lv-AFf" secondAttribute="bottom" constant="8" symbolic="YES" id="3JP-Lo-S2k"/>
+                                        <constraint firstItem="biE-fA-35t" firstAttribute="leading" secondItem="YhK-og-OKC" secondAttribute="leading" id="8V7-fg-ZEP"/>
                                         <constraint firstItem="cKe-M6-VP2" firstAttribute="top" secondItem="hHH-lv-AFf" secondAttribute="bottom" constant="30" id="ADQ-Jt-Yzv"/>
                                         <constraint firstItem="IEN-jO-Gfh" firstAttribute="top" secondItem="UYb-fq-7jQ" secondAttribute="bottom" constant="12" id="Bjy-qf-zwN"/>
                                         <constraint firstAttribute="trailing" secondItem="eXL-VL-rRm" secondAttribute="trailing" constant="37" id="DF6-17-EVi"/>
@@ -968,6 +982,7 @@
                                         <constraint firstItem="5Bo-Ke-v54" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="aat-BR-U3z"/>
                                         <constraint firstItem="IEN-jO-Gfh" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="fdJ-yR-QV5"/>
                                         <constraint firstItem="cKe-M6-VP2" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="i6g-1w-csz"/>
+                                        <constraint firstItem="biE-fA-35t" firstAttribute="top" secondItem="YhK-og-OKC" secondAttribute="bottom" constant="8" symbolic="YES" id="lI5-aW-VkO"/>
                                         <constraint firstItem="XKt-Lg-6jW" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="lW3-Gw-8Y0"/>
                                         <constraint firstItem="UYb-fq-7jQ" firstAttribute="top" secondItem="Oyl-HO-RJ0" secondAttribute="top" constant="17" id="nQV-3o-0JJ"/>
                                         <constraint firstAttribute="trailing" secondItem="UMa-CY-ZVZ" secondAttribute="trailing" constant="37" id="rra-lg-S34"/>

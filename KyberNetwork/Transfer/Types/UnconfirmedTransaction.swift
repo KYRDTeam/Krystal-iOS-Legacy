@@ -40,7 +40,7 @@ struct UnconfirmedTransaction {
     let priorityFeeBigInt = priorityFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
     let maxGasFeeBigInt = maxGasFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
-    let nonceBigInt = BigInt(nonceInt).hexEncoded
+    let nonceBigInt = self.nonce?.hexEncoded ?? BigInt(nonceInt).hexEncoded
 
     return EIP1559Transaction(
       chainID: chainID.hexSigned2Complement,

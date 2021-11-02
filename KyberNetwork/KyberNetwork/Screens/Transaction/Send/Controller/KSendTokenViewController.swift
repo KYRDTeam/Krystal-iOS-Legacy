@@ -537,6 +537,10 @@ extension KSendTokenViewController {
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.updateGasFeeUI()
   }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
 
   func coordinatorSuccessSendTransaction() {
     self.viewModel.advancedGasLimit = nil

@@ -265,6 +265,11 @@ class EarnSwapViewModel {
     let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    var nonce = object.nonce.hexSigned2Complement
+    if let customNonceString = self.advancedNonce, let nonceInt = Int(customNonceString) {
+      let nonceBigInt = BigInt(nonceInt)
+      nonce = nonceBigInt.hexEncoded.hexSigned2Complement
+    }
     if let advancedGasStr = self.advancedGasLimit,
        let gasLimit = BigInt(advancedGasStr),
        let priorityFeeString = self.advancedMaxPriorityFee,
@@ -273,7 +278,7 @@ class EarnSwapViewModel {
        let maxGasFee = BigInt(maxGasFeeString) {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: object.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
@@ -285,7 +290,7 @@ class EarnSwapViewModel {
     } else {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: object.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
@@ -1104,6 +1109,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.viewModel.advancedMaxFee = nil
     self.viewModel.updateSelectedGasPriceType(.medium)
     self.updateGasFeeUI()
+  }
+
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
   }
 }
 

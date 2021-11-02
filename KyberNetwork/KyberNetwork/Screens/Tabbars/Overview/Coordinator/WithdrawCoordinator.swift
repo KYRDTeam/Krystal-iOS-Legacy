@@ -95,7 +95,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
           self.withdrawViewController?.coodinatorFailUpdateWithdrawableAmount()
         }
       }
-    case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxGas: let advancedMaxGas, historyTransaction: let historyTransaction):
+    case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxGas: let advancedMaxGas, advancedNonce: let advancedNonce, historyTransaction: let historyTransaction):
       guard let blockchainProvider = self.session.externalProvider else {
         self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
         return
@@ -110,7 +110,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
             do {
               let data = try decoder.decode(TransactionResponse.self, from: resp.data)
               if KNGeneralProvider.shared.isUseEIP1559 {
-                if let transaction = data.txObject.convertToEIP1559Transaction(advancedGasLimit: advancedGasLimit, advancedPriorityFee: advancedPriorityFee, advancedMaxGas: advancedMaxGas) {
+                if let transaction = data.txObject.convertToEIP1559Transaction(advancedGasLimit: advancedGasLimit, advancedPriorityFee: advancedPriorityFee, advancedMaxGas: advancedMaxGas, advancedNonce: advancedNonce) {
                   KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: transaction) { result in
                     switch result {
                     case .success:
@@ -255,6 +255,9 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
 
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
+      self.getLatestNonce { nonce in
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      }
       self.withdrawViewController?.present(vc, animated: true, completion: nil)
       self.gasPriceSelectVC = vc
     }
@@ -551,6 +554,8 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
       self.withdrawViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      self.withdrawViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
     default:
       break
     }
@@ -596,7 +601,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
       }
     }
   }
-  
+
   func withdrawConfirmPopupViewControllerDidSelectSecondButton(_ controller: WithdrawConfirmPopupViewController, balance: LendingBalance?) {
     if controller == self.claimViewController {
       guard let blockchainProvider = self.session.externalProvider else {
@@ -612,7 +617,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
               switch result {
               case .success(let txObj):
                 if KNGeneralProvider.shared.isUseEIP1559 {
-                  if let transaction = txObj.convertToEIP1559Transaction(advancedGasLimit: nil, advancedPriorityFee: nil, advancedMaxGas: nil) {
+                  if let transaction = txObj.convertToEIP1559Transaction(advancedGasLimit: nil, advancedPriorityFee: nil, advancedMaxGas: nil, advancedNonce: nil) { //TODO: binding advanced setting
                     KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: transaction) { result in
                       switch result {
                       case .success:

@@ -272,8 +272,13 @@ class KNSendTokenViewModel: NSObject {
       }
       return self.isSendAllBalanace ? self.from.getBalanceBigInt() : self.amountBigInt
     }()
-    
+
     if KNGeneralProvider.shared.isUseEIP1559 {
+      var nonce: BigInt? = nil
+      if let customNonce = self.advancedNonce, let customNonceInt = Int(customNonce) {
+        let customNonceBigInt = BigInt(customNonceInt)
+        nonce = customNonceBigInt
+      }
       if let advancedGasStr = self.advancedGasLimit,
          let gasLimit = BigInt(advancedGasStr),
          let priorityFeeString = self.advancedMaxPriorityFee,
@@ -285,7 +290,7 @@ class KNSendTokenViewModel: NSObject {
           data: nil,
           gasLimit: gasLimit,
           gasPrice: self.gasPrice,
-          nonce: .none,
+          nonce: nonce,
           maxInclusionFeePerGas: priorityFeeString,
           maxGasFee: maxGasFeeString
         )
@@ -299,7 +304,7 @@ class KNSendTokenViewModel: NSObject {
           data: nil,
           gasLimit: self.gasLimit,
           gasPrice: self.gasPrice,
-          nonce: .none,
+          nonce: nonce,
           maxInclusionFeePerGas: priorityFeeBigIntDefault.description,
           maxGasFee: self.gasPrice.description
         )

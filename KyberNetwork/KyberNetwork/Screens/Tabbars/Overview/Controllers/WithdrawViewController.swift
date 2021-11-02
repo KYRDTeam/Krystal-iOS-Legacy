@@ -174,7 +174,7 @@ class WithdrawViewModel {
 
 enum WithdrawViewEvent {
   case getWithdrawableAmount(platform: String, userAddress: String, tokenAddress: String)
-  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?, historyTransaction: InternalHistoryTransaction)
+  case buildWithdrawTx(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?, advancedNonce: String?, historyTransaction: InternalHistoryTransaction)
   case updateGasLimit(platform: String, token: String, amount: String, gasPrice: String, useGasToken: Bool)
   case checkAllowance(tokenAddress: String, toAddress: String)
   case sendApprove(tokenAddress: String, remain: BigInt, symbol: String, toAddress: String)
@@ -291,6 +291,7 @@ class WithdrawViewController: KNBaseViewController {
         advancedGasLimit: self.viewModel.advancedGasLimit,
         advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
         advancedMaxGas: self.viewModel.advancedMaxFee,
+        advancedNonce: self.viewModel.advancedNonce,
         historyTransaction: historyTransaction
       )
     )
@@ -414,6 +415,10 @@ class WithdrawViewController: KNBaseViewController {
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.updateUIFee()
+  }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
   }
   
   func coordinatorSuccessSendTransaction() {

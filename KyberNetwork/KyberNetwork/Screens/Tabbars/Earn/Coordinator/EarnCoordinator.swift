@@ -28,7 +28,7 @@ protocol EarnCoordinatorDelegate: class {
   func earnCoordinatorDidSelectManageWallet()
   func earnCoordinatorDidSelectAddToken(_ token: TokenObject)
 }
-
+//swiftlint:disable function_body_length
 class EarnCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
@@ -160,7 +160,6 @@ class EarnCoordinator: NSObject, Coordinator {
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
-    print("[Debug] wallet \(self.session.wallet.address.description)")
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     self.menuViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     self.earnViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
@@ -257,6 +256,9 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       viewModel.advancedNonce = advancedNonce
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
+      self.getLatestNonce { nonce in
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      }
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getGasLimit(let platform, let src, let dest, let amount, let minDestAmount, let gasPrice, let isSwap):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
@@ -586,6 +588,11 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         return
       }
       viewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      guard let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler else {
+        return
+      }
+      viewController.coordinatorDidUpdateAdvancedNonce(nonce)
     default:
       break
     }
@@ -632,6 +639,9 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
           self.transactionStatusVC?.earnAmountString = amount
           self.transactionStatusVC?.netAPYEarnString = netAPY
           self.transactionStatusVC?.earnPlatform = platform
+ 
+          self.earnViewController?.coordinatorSuccessSendTransaction()
+          self.earnSwapViewController?.coordinatorSuccessSendTransaction()
         case .failure(let error):
           self.navigationController.showTopBannerView(message: error.description)
         }
@@ -1170,21 +1180,13 @@ extension EarnCoordinator: WithdrawCoordinatorDelegate {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
   }
   
-  func withdrawCoordinatorDidSelectAddWallet() {
-    
-  }
+  func withdrawCoordinatorDidSelectAddWallet() {}
   
-  func withdrawCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    
-  }
+  func withdrawCoordinatorDidSelectWallet(_ wallet: Wallet) {}
   
-  func withdrawCoordinatorDidSelectManageWallet() {
-    
-  }
+  func withdrawCoordinatorDidSelectManageWallet() {}
   
-  func withdrawCoordinatorDidSelectHistory() {
-    
-  }
+  func withdrawCoordinatorDidSelectHistory() {}
   
   func withdrawCoordinatorDidSelectEarnMore(balance: LendingBalance) {
     guard let token = self.lendingTokens.first(where: { (item) -> Bool in
@@ -1195,6 +1197,4 @@ extension EarnCoordinator: WithdrawCoordinatorDelegate {
     }
     self.openEarnViewController(token: token)
   }
-  
-  
 }

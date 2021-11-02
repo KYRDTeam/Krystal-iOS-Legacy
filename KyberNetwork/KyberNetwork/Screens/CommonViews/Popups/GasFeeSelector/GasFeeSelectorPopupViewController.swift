@@ -81,6 +81,7 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var isUseGasToken: Bool
   fileprivate(set) var isContainSippageSectionOption: Bool
   fileprivate(set) var isAdvancedMode: Bool = false
+  var currentNonce: Int = -1
 
   var advancedGasLimit: String? {
     didSet {
@@ -223,7 +224,7 @@ class GasFeeSelectorPopupViewModel {
     self.medium = medium
     self.slow = slow
     self.superFast = superFast
-    
+
     self.priorityFast = KNGasCoordinator.shared.fastPriorityFee
     self.priorityMedium = KNGasCoordinator.shared.standardPriorityFee
     self.prioritySlow = KNGasCoordinator.shared.lowPriorityFee
@@ -359,6 +360,19 @@ class GasFeeSelectorPopupViewModel {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
     return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
   }
+  
+  var advancedNonceErrorStatus: AdvancedInputError {
+    guard let unwrap = self.advancedNonce, !unwrap.isEmpty else {
+      return .none
+    }
+    
+    let nonceInt = Int(unwrap) ?? 0
+    if nonceInt >= self.currentNonce {
+      return .none
+    } else {
+      return .low
+    }
+  }
 
   var maxPriorityErrorStatus: AdvancedInputError {
     guard let unwrap = self.advancedMaxPriorityFee, !unwrap.isEmpty else {
@@ -399,6 +413,10 @@ class GasFeeSelectorPopupViewModel {
   var hasChanged: Bool {
     return (self.advancedGasLimit != nil) || (self.advancedMaxPriorityFee != nil) || (self.advancedMaxFee != nil)
   }
+  
+  var hasNonceChaned: Bool {
+    return self.advancedNonce != nil
+  }
 
   var isAllAdvancedSettingsValid: Bool {
     if self.maxFeeErrorStatus == .none,
@@ -432,6 +450,7 @@ enum GasFeeSelectorPopupViewEvent {
   case helpPressed
   case useChiStatusChanged(status: Bool)
   case updateAdvancedSetting(gasLimit: String, maxPriorityFee: String, maxFee: String)
+  case updateAdvancedNonce(nonce: String)
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -498,6 +517,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var mainGasFeeLabel: UILabel!
   @IBOutlet weak var mainEquivalentUSDLabel: UILabel!
   @IBOutlet weak var estGasFeeLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var nonceErrorLabel: UILabel!
 
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -539,6 +559,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.updateUIForMode()
     self.updateUIAdvancedSetting()
     self.updateUIForMainGasFee()
+    self.updateUIForCustomNonce()
   }
 
   fileprivate func updateUIAdvancedSetting() {
@@ -620,32 +641,31 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     )
     self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage"
     self.updateMinRateCustomErrorShown(!self.isMinRateValid)
-    
+
     self.advancedStillProceedIfRateGoesDownTextLabel.text = String(
       format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
       self.viewModel.pairToken
     )
-    
+
     self.advancedCustomButton.rounded(
       color: UIColor(named: "buttonBackgroundColor")!,
       width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
       radius: self.advancedCustomButton.frame.height / 2.0
     )
-    
+
     self.advancedThreePercentButton.rounded(
       color: UIColor(named: "buttonBackgroundColor")!,
       width: self.viewModel.minRateTypeInt == 0 ? selectedWidth : normalWidth,
       radius: self.threePercentButton.frame.height / 2.0
     )
-    
+
     self.advancedCustomButton.rounded(
       color: UIColor(named: "buttonBackgroundColor")!,
       width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
       radius: self.advancedCustomButton.frame.height / 2.0
     )
     self.advancedCustomRateTextField.isEnabled = self.viewModel.minRateTypeInt == 2
-    
-    
+
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
   }
@@ -705,6 +725,28 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.mainEquivalentUSDLabel.text = self.viewModel.displayMainEquivalentUSD
   }
 
+  fileprivate func updateUIForCustomNonce() {
+    guard self.viewModel.currentNonce != -1 else {
+      self.advancedNonceField.text = ""
+      self.nonceErrorLabel.isHidden = true
+      return
+    }
+    guard let customNonce = self.viewModel.advancedNonce else {
+      self.advancedNonceField.text = "\(self.viewModel.currentNonce)"
+      self.nonceErrorLabel.isHidden = true
+      return
+    }
+    self.advancedNonceField.text = customNonce
+    switch self.viewModel.advancedNonceErrorStatus {
+    case .low:
+      self.nonceErrorLabel.isHidden = false
+      self.nonceErrorLabel.text = "Nonce is too low"
+    default:
+      self.nonceErrorLabel.isHidden = true
+      self.nonceErrorLabel.text = ""
+    }
+  }
+
   @IBAction func gasFeeButtonTapped(_ sender: UIButton) {
     let selectType = KNSelectedGasPriceType(rawValue: sender.tag)!
     self.viewModel.updateSelectedType(selectType)
@@ -735,6 +777,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
          self.viewModel.isAllAdvancedSettingsValid {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
       }
+      if let nonceString = self.advancedNonceField.text,
+         self.viewModel.hasNonceChaned,
+         self.viewModel.advancedNonceErrorStatus == .none {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: nonceString))
+      }
     })
   }
 
@@ -761,6 +808,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   func coordinatorDidUpdateUseGasTokenState(_ status: Bool) {
     //TODO: remove all gas token logic
+  }
+
+  func coordinatorDidUpdateCurrentNonce(_ nonce: Int) {
+    self.viewModel.currentNonce = nonce
+    self.updateUIForCustomNonce()
   }
 
   @IBAction func segmentedControlDidChange(_ sender: UISegmentedControl) {
@@ -814,6 +866,20 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.updateUIAdvancedSetting()
     self.updateUIForMainGasFee()
   }
+
+  @IBAction func customNonceChangeButtonTapped(_ sender: UIButton) {
+    let isIncrease = sender.tag == 1
+    var currentValue = Int(self.advancedNonceField.text ?? "") ?? 0
+    if isIncrease {
+      currentValue += 1
+    } else {
+      currentValue -= 1
+    }
+    if currentValue > 0 {
+      self.viewModel.advancedNonce = String(currentValue)
+    }
+    self.updateUIForCustomNonce()
+  }
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
@@ -858,7 +924,8 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
       return false
     } else if textField == self.advancedNonceField {
       self.viewModel.advancedNonce = text
-      return true
+      self.updateUIForCustomNonce()
+      return false
     } else {
       let maxMinRatePercent: Double = 100.0
       if let val = value, val >= 0, val <= maxMinRatePercent {

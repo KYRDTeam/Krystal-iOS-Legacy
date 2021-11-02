@@ -122,13 +122,18 @@ extension TxObject {
     return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: gasPriceString, nonce: self.nonce, gasLimit: self.gasLimit)
   }
 
-  func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?) -> EIP1559Transaction? {
+  func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?, advancedNonce: String?) -> EIP1559Transaction? {
     guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(self.gasLimit.drop0x, radix: 16) ?? BigInt(0)
     let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16) ?? BigInt(0)
     let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    var nonce = self.nonce.hexSigned2Complement
+    if let customNonceString = advancedNonce, let nonceInt = Int(customNonceString) {
+      let nonceBigInt = BigInt(nonceInt)
+      nonce = nonceBigInt.hexEncoded.hexSigned2Complement
+    }
     if let advancedGasStr = advancedGasLimit,
        let gasLimit = BigInt(advancedGasStr),
        let priorityFeeString = advancedPriorityFee,
@@ -137,7 +142,7 @@ extension TxObject {
        let maxGasFee = BigInt(maxGasFeeString) {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: self.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
@@ -149,7 +154,7 @@ extension TxObject {
     } else {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: self.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,

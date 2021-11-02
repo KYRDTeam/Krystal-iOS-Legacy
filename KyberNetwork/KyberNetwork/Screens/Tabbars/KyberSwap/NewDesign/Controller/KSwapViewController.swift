@@ -932,13 +932,13 @@ extension KSwapViewController {
       guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
       print(signTx)
       self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(
-        data: exchange, eip1559tx: signTx,
+        data: exchange,
+        eip1559tx: signTx,
         hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
         minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
-      )
-      )
+      ))
     } else {
       self.delegate?.kSwapViewController(self, run: .confirmSwap(
         data: exchange,
@@ -1008,11 +1008,16 @@ extension KSwapViewController {
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.setUpGasFeeView()
   }
-  
+
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
+
   func resetAdvancedSetting() {
     self.viewModel.advancedGasLimit = nil
     self.viewModel.advancedMaxPriorityFee = nil
     self.viewModel.advancedMaxFee = nil
+    self.viewModel.advancedNonce = nil
     self.viewModel.updateSelectedGasPriceType(.medium)
     self.setUpGasFeeView()
   }
@@ -1049,7 +1054,7 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-    
+
     self.stopRateTimer()
     self.keyboardTimer?.invalidate()
     self.keyboardTimer = Timer.scheduledTimer(

@@ -421,6 +421,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       vc.delegate = self
       self.gasFeeSelectorVC = vc
       self.navigationController.present(vc, animated: true, completion: nil)
+      self.getLatestNonce { result in
+        switch result {
+        case .success(let nonce):
+          vc.coordinatorDidUpdateCurrentNonce(nonce)
+        case .failure(let error):
+          self.navigationController.showErrorTopBannerMessage(message: error.description)
+        }
+      }
     case .updateRate(let rate):
       self.gasFeeSelectorVC?.coordinatorDidUpdateMinRate(rate)
     case .openHistory:
@@ -768,7 +776,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           amount: amount,
           gasLimit: estimate
         )
-        
         self.gasFeeSelectorVC?.coordinatorDidUpdateGasLimit(estimate)
       }
     }
@@ -825,12 +832,12 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
     self.historyCoordinator?.start()
   }
-  
+
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
     }
-    provider.getTransactionCount { [weak self] result in
+    provider.getTransactionCount { result in
       switch result {
       case .success(let res):
         completion(.success(res))
@@ -1038,6 +1045,8 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
       self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      self.rootViewController.coordinatorDidUpdateAdvancedNonce(nonce)
     default:
       break
     }

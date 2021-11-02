@@ -763,6 +763,11 @@ class KSwapViewModel {
     let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    var nonce = object.nonce.hexSigned2Complement
+    if let customNonceString = self.advancedNonce, let nonceInt = Int(customNonceString) {
+      let nonceBigInt = BigInt(nonceInt)
+      nonce = nonceBigInt.hexEncoded.hexSigned2Complement
+    }
     if let advancedGasStr = self.advancedGasLimit,
        let gasLimit = BigInt(advancedGasStr),
        let priorityFeeString = self.advancedMaxPriorityFee,
@@ -771,7 +776,7 @@ class KSwapViewModel {
        let maxGasFee = BigInt(maxGasFeeString) {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: object.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
@@ -783,7 +788,7 @@ class KSwapViewModel {
     } else {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
-        nonce: object.nonce.hexSigned2Complement,
+        nonce: nonce,
         gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
         maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
         maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
@@ -803,7 +808,7 @@ class KSwapViewModel {
       self.selectedGasPriceType = .medium
     }
   }
-  
+
   var isUseEIP1559: Bool {
     return KNGeneralProvider.shared.currentChain == .eth //TODO: determine more detail later
   }

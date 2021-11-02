@@ -226,9 +226,18 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       viewModel.advancedMaxPriorityFee = advancedPriorityFee
       viewModel.advancedMaxFee = advancedMaxFee
       viewModel.advancedNonce = advancedNonce
-
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
+      
+      self.getLatestNonce { result in
+        switch result {
+        case .success(let nonce):
+          vc.coordinatorDidUpdateCurrentNonce(nonce)
+        case .failure(let error):
+          self.navigationController.showErrorTopBannerMessage(message: error.description)
+        }
+      }
+
       self.navigationController.present(vc, animated: true, completion: nil)
       self.gasPriceSelector = vc
     case .openHistory:
@@ -332,6 +341,20 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     controller.delegate = self
     self.navigationController.pushViewController(controller, animated: true)
   }
+  
+  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 }
 
 // MARK: Search Token Delegate
@@ -410,7 +433,6 @@ extension KNSendTokenViewCoordinator {
       self.navigationController.hideLoading()
       switch sendResult {
       case .success(let result):
-        //TODO: replace realm object implement
 
         historyTransaction.hash = result.0
         historyTransaction.time = Date()
@@ -518,6 +540,8 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       )
     case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
       self.rootViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      self.rootViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
     default:
       break
     }
