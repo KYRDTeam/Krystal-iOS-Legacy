@@ -36,7 +36,6 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var rightModeSortLabel: UILabel!
   @IBOutlet var sortButtons: [UIButton]!
   
-  @IBOutlet weak var totalBalanceContainerViewHeight: NSLayoutConstraint!
   weak var delegate: OverviewMainViewControllerDelegate?
   
   let viewModel: OverviewMainViewModel
@@ -52,37 +51,37 @@ class OverviewMainViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
       forCellReuseIdentifier: OverviewMainViewCell.kCellID
     )
-
+    
     let nibSupply = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibSupply,
       forCellReuseIdentifier: OverviewDepositTableViewCell.kCellID
     )
-
+    
     let nibLiquidityPool = UINib(nibName: OverviewLiquidityPoolCell.className, bundle: nil)
     self.tableView.register(
       nibLiquidityPool,
       forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
-
+    
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibEmpty,
       forCellReuseIdentifier: OverviewEmptyTableViewCell.kCellID
     )
-
+    
     let nibNFT = UINib(nibName: OverviewNFTTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibNFT,
       forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
     )
-
+    
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
   }
 
@@ -100,7 +99,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.walletNameLabel.text = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
   }
 
-  fileprivate func reloadUI(_ animation: UIView.AnimationOptions = .transitionFlipFromLeft) {
+  fileprivate func reloadUI() {
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
     self.totalValueLabel.text = self.viewModel.displayTotalValue
@@ -109,10 +108,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24)
     self.updateUIWalletList()
     self.updateCh24Button()
-    UIView.transition(with: self.tableView, duration: 0.35, options: animation) {
-      self.tableView.reloadData()
-    }
-    
+    self.tableView.reloadData()
   }
 
   fileprivate func updateUISwitchChain() {
@@ -120,7 +116,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.currentChainIcon.image = icon
     self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
   }
-
+  
   fileprivate func updateCh24Button() {
     if case .market(let rightMode) = self.viewModel.currentMode {
       switch rightMode {
@@ -589,7 +585,7 @@ extension OverviewMainViewController: UITableViewDelegate {
     guard !isShowOrHideAssetRow(indexPath: indexPath) else {
       // user tap on show or hide row
       self.viewModel.isHidingSmallAssetsToken = !self.viewModel.isHidingSmallAssetsToken
-      self.reloadUI(.transitionCrossDissolve)
+      self.reloadUI()
       return
     }
     let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
@@ -628,11 +624,9 @@ extension OverviewMainViewController: UITableViewDelegate {
 }
 
 extension OverviewMainViewController: UIScrollViewDelegate {
-  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let alpha = scrollView.contentOffset.y <= 0 ? pow(abs(scrollView.contentOffset.y) / 200.0, 4)  : 0.0
+    let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
     self.totalBalanceContainerView.alpha = alpha
-    self.totalBalanceContainerViewHeight.constant = abs(scrollView.contentOffset.y) - 10
   }
 }
 

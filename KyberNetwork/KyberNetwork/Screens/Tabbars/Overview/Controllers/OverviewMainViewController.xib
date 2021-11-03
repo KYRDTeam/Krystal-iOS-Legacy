@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -34,7 +34,6 @@
                 <outlet property="sortingContainerView" destination="DeA-0M-bg5" id="P6U-8o-Lob"/>
                 <outlet property="tableView" destination="EhA-J1-X3N" id="mmO-HQ-8TB"/>
                 <outlet property="totalBalanceContainerView" destination="g7y-sy-lYU" id="olM-D2-frT"/>
-                <outlet property="totalBalanceContainerViewHeight" destination="3iM-J3-2mT" id="kRn-9j-TQe"/>
                 <outlet property="totalBalanceLabel" destination="ZXL-MS-g3w" id="Roi-u0-Qrx"/>
                 <outlet property="totalPageValueLabel" destination="XVo-h3-Re9" id="6is-s7-Yoo"/>
                 <outlet property="totalValueLabel" destination="ZXL-MS-g3w" id="6Rh-Yb-eje"/>
@@ -338,7 +337,6 @@
                             </subviews>
                             <color key="backgroundColor" name="popupBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="190" id="3iM-J3-2mT"/>
                                 <constraint firstItem="vWx-JP-Fbd" firstAttribute="leading" secondItem="J7B-Hl-hw0" secondAttribute="leading" constant="21" id="4yW-1u-geS"/>
                                 <constraint firstItem="22d-pN-OWF" firstAttribute="leading" secondItem="ZXL-MS-g3w" secondAttribute="trailing" constant="13" id="7Az-lm-nLT"/>
                                 <constraint firstAttribute="trailing" secondItem="3OP-4u-72e" secondAttribute="trailing" constant="10" id="Fz7-cH-Xhb"/>
@@ -367,6 +365,7 @@
                     <constraints>
                         <constraint firstItem="J7B-Hl-hw0" firstAttribute="leading" secondItem="JJN-7P-Ebt" secondAttribute="leading" constant="12" id="Apv-IR-8DD"/>
                         <constraint firstAttribute="height" constant="200" id="Qgu-I9-7bD"/>
+                        <constraint firstItem="JJN-7P-Ebt" firstAttribute="bottom" secondItem="J7B-Hl-hw0" secondAttribute="bottom" constant="5" id="RfA-bm-7O8"/>
                         <constraint firstItem="JJN-7P-Ebt" firstAttribute="trailing" secondItem="J7B-Hl-hw0" secondAttribute="trailing" constant="12" id="kMg-d9-AL0"/>
                         <constraint firstItem="J7B-Hl-hw0" firstAttribute="top" secondItem="JJN-7P-Ebt" secondAttribute="top" constant="5" id="vXa-Aa-Bwy"/>
                     </constraints>
