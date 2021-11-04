@@ -260,6 +260,7 @@ class OverviewMainViewModel {
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
   var displayNFTHeader: [NFTSection] = []
+  var summaryDataSource: [String] = []
   var displayLPDataSource: [String: [OverviewLiquidityPoolViewModel]] = [:]
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
@@ -488,7 +489,18 @@ class OverviewMainViewModel {
   }
 
   var numberOfSections: Int {
-    return self.displayHeader.isEmpty ? 1 : self.displayHeader.count
+    if self.overviewMode == .summary {
+      return 1
+    }
+
+    guard !self.isEmpty() else {
+      return 1
+    }
+    if self.currentMode == .nft {
+      return self.displayNFTHeader.count
+    } else {
+      return self.displayHeader.isEmpty ? 1 : self.displayHeader.count
+    }
   }
 
   func getViewModelsForSection(_ section: Int) -> [OverviewMainCellViewModel] {
@@ -499,8 +511,11 @@ class OverviewMainViewModel {
     let key = self.displayHeader[section]
     return self.displayDataSource[key] ?? []
   }
-  
+
   func numberOfRowsInSection(section: Int) -> Int {
+    if self.overviewMode == .summary {
+      return 5
+    }
     guard !self.isEmpty() else {
       return 1
     }
@@ -520,6 +535,26 @@ class OverviewMainViewModel {
       return self.displayLPDataSource[key]?.count ?? 0
     default:
         return self.getViewModelsForSection(section).count
+    }
+  }
+
+  func heightForRowAt(_ indexPath: IndexPath) -> CGFloat {
+    if self.overviewMode == .summary {
+      return 80
+    }
+    
+    guard !self.isEmpty() else {
+      return 400
+    }
+    switch self.currentMode {
+    case .asset, .market, .favourite:
+      return OverviewMainViewCell.kCellHeight
+    case.supply:
+      return OverviewDepositTableViewCell.kCellHeight
+    case.showLiquidityPool:
+        return OverviewLiquidityPoolCell.kCellHeight
+    case .nft:
+      return OverviewNFTTableViewCell.kCellHeight
     }
   }
   
