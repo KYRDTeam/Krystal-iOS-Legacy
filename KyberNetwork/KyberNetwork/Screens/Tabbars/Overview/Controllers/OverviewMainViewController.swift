@@ -16,72 +16,70 @@ protocol OverviewMainViewControllerDelegate: class {
 class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var totalBalanceContainerView: UIView!
-  @IBOutlet weak var currentWalletLabel: UILabel!
-  @IBOutlet weak var totalBalanceLabel: UILabel!
-  @IBOutlet weak var hideBalanceButton: UIButton!
   @IBOutlet weak var notificationButton: UIButton!
   @IBOutlet weak var searchButton: UIButton!
   @IBOutlet weak var totalPageValueLabel: UILabel!
   @IBOutlet weak var currentPageNameLabel: UILabel!
-  @IBOutlet weak var totalValueLabel: UILabel!
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var currentChainLabel: UILabel!
   @IBOutlet weak var sortingContainerView: UIView!
+  @IBOutlet weak var totatlInfoView: UIView!
   @IBOutlet weak var sortMarketByNameButton: UIButton!
   @IBOutlet weak var sortMarketByCh24Button: UIButton!
   @IBOutlet weak var sortMarketByPrice: UIButton!
   @IBOutlet weak var sortMarketByVol: UIButton!
-  @IBOutlet weak var walletListButton: UIButton!
-  @IBOutlet weak var walletNameLabel: UILabel!
   @IBOutlet weak var rightModeSortLabel: UILabel!
   @IBOutlet var sortButtons: [UIButton]!
-  
+  @IBOutlet weak var infoCollectionView: UICollectionView!
   weak var delegate: OverviewMainViewControllerDelegate?
-  
+
   let viewModel: OverviewMainViewModel
-  
+
   init(viewModel: OverviewMainViewModel) {
     self.viewModel = viewModel
     super.init(nibName: OverviewMainViewController.className, bundle: nil)
   }
-  
+
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
       forCellReuseIdentifier: OverviewMainViewCell.kCellID
     )
-    
+
     let nibSupply = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibSupply,
       forCellReuseIdentifier: OverviewDepositTableViewCell.kCellID
     )
-    
+
     let nibLiquidityPool = UINib(nibName: OverviewLiquidityPoolCell.className, bundle: nil)
     self.tableView.register(
       nibLiquidityPool,
       forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
-    
+
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibEmpty,
       forCellReuseIdentifier: OverviewEmptyTableViewCell.kCellID
     )
-    
+
     let nibNFT = UINib(nibName: OverviewNFTTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibNFT,
       forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
     )
-    
+
+    let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
+    self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
+
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
   }
 
@@ -91,24 +89,15 @@ class OverviewMainViewController: KNBaseViewController {
     self.delegate?.overviewMainViewController(self, run: .didAppear)
   }
 
-  fileprivate func updateUIHideBalanceButton() {
-    self.hideBalanceButton.setImage(self.viewModel.displayHideBalanceImage, for: .normal)
-  }
-  
-  fileprivate func updateUIWalletList() {
-    self.walletNameLabel.text = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
-  }
-
   fileprivate func reloadUI() {
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-    self.totalValueLabel.text = self.viewModel.displayTotalValue
     self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-    self.updateUIHideBalanceButton()
-    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24)
-    self.updateUIWalletList()
+    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.updateCh24Button()
     self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
 
   fileprivate func updateUISwitchChain() {
@@ -116,7 +105,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.currentChainIcon.image = icon
     self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
   }
-  
+
   fileprivate func updateCh24Button() {
     if case .market(let rightMode) = self.viewModel.currentMode {
       switch rightMode {
@@ -165,18 +154,6 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
   }
 
-  @IBAction func sendButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .send)
-  }
-  
-  @IBAction func receiveButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .receive)
-  }
-  
-  @IBAction func walletsListButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .selectListWallet)
-  }
-  
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
@@ -187,19 +164,10 @@ class OverviewMainViewController: KNBaseViewController {
     self.present(popup, animated: true, completion: nil)
   }
 
-  @IBAction func hideBalanceButtonTapped(_ sender: UIButton) {
-    self.viewModel.hideBalanceStatus = !self.viewModel.hideBalanceStatus
-    self.reloadUI()
-  }
-
   @IBAction func toolbarOptionButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .changeMode(current: self.viewModel.currentMode))
   }
 
-  @IBAction func walletOptionButtonTapped(_ sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .walletConfig(currency: self.viewModel.currencyMode))
-  }
-  
   @IBAction func sortingButtonTapped(_ sender: UIButton) {
     if sender.tag == 1 {
       if case let .name(dec) = self.viewModel.marketSortType {
@@ -248,11 +216,10 @@ class OverviewMainViewController: KNBaseViewController {
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
   }
-  
+
   @objc func sectionButtonTapped(sender: UIButton) {
     print("Button Clicked \(sender.tag)")
     let section = sender.tag
-    
     func indexPathsForSection() -> [IndexPath] {
       var indexPaths = [IndexPath]()
       let key = self.viewModel.displayNFTHeader[section].collectibleName
@@ -265,7 +232,7 @@ class OverviewMainViewController: KNBaseViewController {
 
       return indexPaths
     }
-    
+
     if self.viewModel.hiddenSections.contains(section) {
         self.viewModel.hiddenSections.remove(section)
         self.tableView.insertRows(at: indexPathsForSection(),
@@ -276,7 +243,7 @@ class OverviewMainViewController: KNBaseViewController {
                                   with: .fade)
     }
   }
-  
+
   @objc func addNFTButtonTapped(sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .addNFT)
   }
@@ -295,7 +262,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.currentMode = mode
     self.reloadUI()
   }
-  
+
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else {
       return
@@ -306,28 +273,34 @@ class OverviewMainViewController: KNBaseViewController {
     self.updateUISwitchChain()
     self.reloadUI()
   }
-  
+
   func coordinatorDidUpdateNewSession(_ session: KNSession) {
     self.viewModel.session = session
     guard self.isViewLoaded else { return }
-    self.updateUIWalletList()
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-    self.totalValueLabel.text = self.viewModel.displayTotalValue
     self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
-  
+
   func coordinatorDidUpdateDidUpdateTokenList() {
     guard self.isViewLoaded else { return }
     self.viewModel.reloadAllData()
     self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-    self.totalValueLabel.text = self.viewModel.displayTotalValue
     self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
-  
+
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {
     self.viewModel.currencyMode = mode
     self.reloadUI()
+  }
+
+  func overviewModeDidChanged(isSummary: Bool) {
+    self.viewModel.overviewMode = isSummary ? .summary : .overview
+    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+    self.tableView.reloadData()
   }
 }
 
@@ -413,7 +386,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.delegate = self
     return cell
   }
-  
+
   func showOrHideSmallValueTokenCell() -> UITableViewCell {
     let cell = UITableViewCell(style: .default, reuseIdentifier: "showOrHideSmallValueTokenCell")
     cell.backgroundColor = UIColor(named: "mainViewBgColor")
@@ -423,18 +396,18 @@ extension OverviewMainViewController: UITableViewDataSource {
     } else {
       cell.textLabel?.text = ""
     }
-    
+
     cell.textLabel?.textAlignment = .center
     cell.textLabel?.font = UIFont.Kyber.regular(with: 14)
     cell.selectionStyle = .none
     return cell
   }
 
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  func overviewTableViewCell(indexPath: IndexPath) -> UITableViewCell {
     guard !self.viewModel.isEmpty() else {
       return emptyCell(indexPath: indexPath)
     }
-    
+
     switch self.viewModel.currentMode {
     case .asset:
         let isLastCell = indexPath.row == self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
@@ -476,9 +449,21 @@ extension OverviewMainViewController: UITableViewDataSource {
       return cell
     }
   }
-  
+
+  func summaryCell(indexPath: IndexPath) -> UITableViewCell {
+    return emptyCell(indexPath: indexPath)
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    switch self.viewModel.overviewMode {
+    case .overview:
+      return overviewTableViewCell(indexPath: indexPath)
+    case .summary:
+        return summaryCell(indexPath: indexPath)
+    }
+  }
+
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    
     guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
       return nil
     }
@@ -534,8 +519,6 @@ extension OverviewMainViewController: UITableViewDataSource {
       view.backgroundColor = .clear
       let rightTextString = self.viewModel.getTotalValueForSection(section)
       let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
-      
-      
       let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
       titleLabel.center.y = view.center.y
       titleLabel.text = self.viewModel.displayHeader[section]
@@ -563,7 +546,7 @@ extension OverviewMainViewController: UITableViewDataSource {
 }
 
 extension OverviewMainViewController: UITableViewDelegate {
-  
+
   func isShowOrHideAssetRow(indexPath: IndexPath) -> Bool {
     switch self.viewModel.currentMode {
     case .asset:
@@ -572,7 +555,7 @@ extension OverviewMainViewController: UITableViewDelegate {
       return false
     }
   }
-  
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard !self.viewModel.isEmpty() else {
@@ -625,9 +608,32 @@ extension OverviewMainViewController: UITableViewDelegate {
 
 extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard scrollView != self.infoCollectionView else {
+      return
+    }
     let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
     self.totalBalanceContainerView.alpha = alpha
   }
+
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    guard scrollView == self.infoCollectionView else {
+      return
+    }
+    let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+
+    if actualPosition.x < 0 {
+      DispatchQueue.main.async {
+        self.infoCollectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
+        self.overviewModeDidChanged(isSummary: true)
+      }
+    } else {
+      DispatchQueue.main.async {
+        self.infoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
+        self.overviewModeDidChanged(isSummary: false)
+      }
+    }
+  }
+
 }
 
 extension OverviewMainViewController: SwipeTableViewCellDelegate {
@@ -643,7 +649,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       // hide action
       let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
         KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
-        let params: [String : Any] = [
+        let params: [String: Any] = [
           "token_name": token.name,
           "token_address": token.address,
           "token_disable": true,
@@ -662,7 +668,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       // soft delete action for custom token
       let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
         KNSupportedTokenStorage.shared.deleteCustomToken(token)
-        let params: [String : Any] = [
+        let params: [String: Any] = [
           "token_name": token.name,
           "token_address": token.address,
           "screen_name": "OverviewMainViewController",
@@ -674,7 +680,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
       deleteAction.textColor = UIColor(named: "normalTextColor")
       deleteAction.font = UIFont.Kyber.medium(with: 12)
       deleteAction.backgroundColor = UIColor(patternImage: resized)
-      
+
       if KNSupportedTokenStorage.shared.getActiveCustomToken().contains(token) {
         return [hideAction, deleteAction]
       }
@@ -691,5 +697,45 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
     options.minimumButtonWidth = 90
     options.maximumButtonWidth = 90
     return options
+  }
+}
+
+extension OverviewMainViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 2
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(
+    withReuseIdentifier: OverviewTotalInfoCell.cellID,
+    for: indexPath
+    ) as! OverviewTotalInfoCell
+
+    let walletName = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
+
+    cell.updateCell(walletName: walletName, totalValue: self.viewModel.displayTotalValue, shouldShowAction: indexPath.item == 0)
+
+    cell.walletListButtonTapped = {
+      self.delegate?.overviewMainViewController(self, run: .selectListWallet)
+    }
+
+    cell.hideBalanceButtonTapped = {
+      self.viewModel.hideBalanceStatus = !self.viewModel.hideBalanceStatus
+      self.reloadUI()
+    }
+
+    cell.walletOptionButtonTapped = {
+      self.delegate?.overviewMainViewController(self, run: .walletConfig(currency: self.viewModel.currencyMode))
+    }
+
+    cell.receiveButtonTapped = {
+      self.delegate?.overviewMainViewController(self, run: .receive)
+    }
+
+    cell.transferButtonTapped = {
+      self.delegate?.overviewMainViewController(self, run: .send)
+    }
+
+    return cell
   }
 }
