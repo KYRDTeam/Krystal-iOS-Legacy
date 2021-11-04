@@ -29,6 +29,7 @@
                 <outlet property="sortMarketByVol" destination="BUf-ej-KPK" id="yD8-O8-X66"/>
                 <outlet property="sortingContainerView" destination="DeA-0M-bg5" id="P6U-8o-Lob"/>
                 <outlet property="tableView" destination="EhA-J1-X3N" id="mmO-HQ-8TB"/>
+                <outlet property="tableViewTopConstraint" destination="QFk-Ne-gec" id="mXX-6v-5yr"/>
                 <outlet property="totalBalanceContainerView" destination="g7y-sy-lYU" id="olM-D2-frT"/>
                 <outlet property="totalPageValueLabel" destination="XVo-h3-Re9" id="6is-s7-Yoo"/>
                 <outlet property="totatlInfoView" destination="HuO-ub-YO7" id="iwc-kz-RV9"/>
@@ -286,7 +287,7 @@
                                     <rect key="frame" x="71" y="6" width="20" height="20"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8HD-f0-AMK">
-                                    <rect key="frame" x="38" y="9" width="21" height="14"/>
+                                    <rect key="frame" x="38" y="9" width="23" height="14"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>

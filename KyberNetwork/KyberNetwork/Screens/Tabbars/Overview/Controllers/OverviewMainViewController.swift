@@ -31,6 +31,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var rightModeSortLabel: UILabel!
   @IBOutlet var sortButtons: [UIButton]!
   @IBOutlet weak var infoCollectionView: UICollectionView!
+  @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   weak var delegate: OverviewMainViewControllerDelegate?
 
   let viewModel: OverviewMainViewModel
@@ -75,6 +76,12 @@ class OverviewMainViewController: KNBaseViewController {
     self.tableView.register(
       nibNFT,
       forCellReuseIdentifier: OverviewNFTTableViewCell.kCellID
+    )
+    
+    let nibSummary = UINib(nibName: OverviewSummaryCell.className, bundle: nil)
+    self.tableView.register(
+      nibSummary,
+      forCellReuseIdentifier: OverviewSummaryCell.kCellID
     )
 
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
@@ -300,20 +307,14 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+    self.tableViewTopConstraint.constant = isSummary ? -120 : 0
     self.tableView.reloadData()
   }
 }
 
 extension OverviewMainViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    guard !self.viewModel.isEmpty() else {
-      return 1
-    }
-    if self.viewModel.currentMode == .nft {
-      return self.viewModel.displayNFTHeader.count
-    } else {
-      return self.viewModel.numberOfSections
-    }
+    self.viewModel.numberOfSections
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -402,6 +403,16 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.selectionStyle = .none
     return cell
   }
+  
+  func summaryCell(indexPath: IndexPath) -> OverviewSummaryCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: OverviewSummaryCell.kCellID,
+      for: indexPath
+    ) as! OverviewSummaryCell
+
+//    let cellModel = self.viewModel.summaryDataSource[indexPath.row]
+    return cell
+  }
 
   func overviewTableViewCell(indexPath: IndexPath) -> UITableViewCell {
     guard !self.viewModel.isEmpty() else {
@@ -450,16 +461,12 @@ extension OverviewMainViewController: UITableViewDataSource {
     }
   }
 
-  func summaryCell(indexPath: IndexPath) -> UITableViewCell {
-    return emptyCell(indexPath: indexPath)
-  }
-
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch self.viewModel.overviewMode {
     case .overview:
       return overviewTableViewCell(indexPath: indexPath)
     case .summary:
-        return summaryCell(indexPath: indexPath)
+      return summaryCell(indexPath: indexPath)
     }
   }
 
@@ -590,19 +597,7 @@ extension OverviewMainViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    guard !self.viewModel.isEmpty() else {
-      return 400
-    }
-    switch self.viewModel.currentMode {
-    case .asset, .market, .favourite:
-      return OverviewMainViewCell.kCellHeight
-    case.supply:
-      return OverviewDepositTableViewCell.kCellHeight
-    case.showLiquidityPool:
-        return OverviewLiquidityPoolCell.kCellHeight
-    case .nft:
-      return OverviewNFTTableViewCell.kCellHeight
-    }
+    return self.viewModel.heightForRowAt(indexPath)
   }
 }
 
