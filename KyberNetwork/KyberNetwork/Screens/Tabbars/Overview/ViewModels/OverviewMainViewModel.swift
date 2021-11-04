@@ -25,6 +25,11 @@ enum OverviewMainViewEvent {
   case didAppear
 }
 
+enum OverviewMode {
+  case overview
+  case summary
+}
+
 enum ViewMode: Equatable, Codable {
   case market(rightMode: RightMode)
   case asset(rightMode: RightMode)
@@ -250,6 +255,7 @@ class OverviewMainViewModel {
       Storage.store(self.currentMode, as: Constants.viewModeStoreFileName)
     }
   }
+  var overviewMode: OverviewMode = .overview
   var dataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
