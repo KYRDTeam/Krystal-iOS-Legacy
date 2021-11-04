@@ -146,7 +146,7 @@ class KNExternalProvider {
     }
   }
   //TODO: build signTx param first
-  func transferNFT(from: String, to: String, item: NFTItem, category: NFTSection, gasLimit: BigInt, gasPrice: BigInt, amount: Int, isERC721: Bool, completion: @escaping (Result<(String, SignTransaction), AnyError>) -> Void) {
+  func transferNFT(from: String, to: String, item: NFTItem, category: NFTSection, gasLimit: BigInt, gasPrice: BigInt, amount: Int, isERC721: Bool, advancedPriorityFee: String?, advancedMaxfee: String?, advancedNonce: String?, completion: @escaping (Result<(String, SignTransaction?, EIP1559Transaction?), AnyError>) -> Void) {
     self.getTransactionCount { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
@@ -154,24 +154,59 @@ class KNExternalProvider {
         self.requestDataForNFTTransfer(from: from, to: to, tokenID: item.tokenID, amount: amount, isERC721: isERC721) { dataResult in
           switch dataResult {
           case .success(let data):
-            let signTx = SignTransaction(value: BigInt(0), account: self.account, to: Address(string: category.collectibleAddress), nonce: self.minTxCount, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: KNGeneralProvider.shared.customRPC.chainID)
-            self.signTransactionData(from: signTx, completion: { signResult in
-              switch signResult {
-              case .success(let signData):
-                KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in
+            if let unwrapPriorityFee = advancedPriorityFee,
+               let priorityFeeBigInt = unwrapPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+               let unwrapMaxFee = advancedMaxfee,
+               let maxFeeBigInt = unwrapMaxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+              var nonce = self.minTxCount
+              if let customNonce = advancedNonce, let customNonceInt = Int(customNonce) {
+                nonce = customNonceInt
+              }
+              let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+              let eip1559Tx = EIP1559Transaction(
+                chainID: chainID.hexSigned2Complement,
+                nonce: BigInt(nonce).hexEncoded.hexSigned2Complement,
+                gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+                maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
+                maxGasFee: maxFeeBigInt.hexEncoded.hexSigned2Complement,
+                toAddress: to,
+                fromAddress: from,
+                data: data.hexEncoded,
+                value: "0x"
+              )
+              
+              if let signedData = self.signContractGenericEIP1559Transaction(eip1559Tx) {
+                KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { [weak self] result in
                   guard let `self` = self else { return }
                   if case .success(let hash) = result {
                     self.minTxCount += 1
-                    completion(.success((hash, signData.1)))
+                    completion(.success((hash, nil, eip1559Tx)))
                   }
                   if case .failure(let error) = result {
                     completion(.failure(error))
                   }
                 })
-              case .failure(let error):
-                completion(.failure(error))
               }
-            })
+            } else {
+              let signTx = SignTransaction(value: BigInt(0), account: self.account, to: Address(string: category.collectibleAddress), nonce: self.minTxCount, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: KNGeneralProvider.shared.customRPC.chainID)
+              self.signTransactionData(from: signTx, completion: { signResult in
+                switch signResult {
+                case .success(let signData):
+                  KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in
+                    guard let `self` = self else { return }
+                    if case .success(let hash) = result {
+                      self.minTxCount += 1
+                      completion(.success((hash, signData.1, nil)))
+                    }
+                    if case .failure(let error) = result {
+                      completion(.failure(error))
+                    }
+                  })
+                case .failure(let error):
+                  completion(.failure(error))
+                }
+              })
+            }
           case .failure(let error):
             completion(.failure(error))
           }

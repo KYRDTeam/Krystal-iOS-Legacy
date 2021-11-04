@@ -18,7 +18,12 @@ class ConfirmSendNFTViewModel {
   let amount: Int
   let supportERC721: Bool
   
-  init(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, ens: String?, amount: Int, supportERC721: Bool) {
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
+  var advancedNonce: String?
+  
+  init(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, ens: String?, amount: Int, supportERC721: Bool, advancedGasLimit: String?, advancedMaxPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
     self.nftItem = nftItem
     self.nftCategory = nftCategory
     self.gasPrice = gasPrice
@@ -27,6 +32,10 @@ class ConfirmSendNFTViewModel {
     self.ens = ens
     self.amount = amount
     self.supportERC721 = supportERC721
+    self.advancedGasLimit = advancedGasLimit
+    self.advancedMaxPriorityFee = advancedMaxPriorityFee
+    self.advancedMaxFee = advancedMaxFee
+    self.advancedNonce = advancedNonce
   }
   
   var addressToIcon: UIImage? {
@@ -158,10 +167,41 @@ class ConfirmSendNFTViewController: KNBaseViewController {
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
-      let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "NFT", toSymbol: nil, transactionDescription: "Tranfering \(self.viewModel.nftItem.externalData.name)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0), eip1559Tx: nil)
+      let historyTransaction = InternalHistoryTransaction(
+        type: .transferToken,
+        state: .pending,
+        fromSymbol: "NFT",
+        toSymbol: nil,
+        transactionDescription: "Tranfering \(self.viewModel.nftItem.externalData.name)",
+        transactionDetailDescription: "",
+        transactionObj: SignTransactionObject(
+          value: "",
+          from: "",
+          to: "",
+          nonce: 0,
+          data: Data(),
+          gasPrice: "",
+          gasLimit: "",
+          chainID: 0
+        ),
+        eip1559Tx: nil
+      )
       historyTransaction.transactionSuccessDescription = "Tranfer successfull \(self.viewModel.nftItem.externalData.name)"
       
-      self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(nftItem: self.viewModel.nftItem, nftCategory: self.viewModel.nftCategory, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, address: self.viewModel.address, amount: self.viewModel.amount, isSupportERC721: self.viewModel.supportERC721, historyTransaction: historyTransaction))
+      self.delegate?.kConfirmSendViewController(self, run: .confirmNFT(
+        nftItem: self.viewModel.nftItem,
+        nftCategory: self.viewModel.nftCategory,
+        gasPrice: self.viewModel.gasPrice,
+        gasLimit: self.viewModel.gasLimit,
+        address: self.viewModel.address,
+        amount: self.viewModel.amount,
+        isSupportERC721: self.viewModel.supportERC721,
+        historyTransaction: historyTransaction,
+        advancedGasLimit: self.viewModel.advancedGasLimit,
+        advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+        advancedMaxFee: self.viewModel.advancedMaxFee,
+        advancedNonce: self.viewModel.advancedNonce
+      ))
     })
   }
   

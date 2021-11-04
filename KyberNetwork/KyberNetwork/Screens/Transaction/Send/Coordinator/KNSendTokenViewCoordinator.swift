@@ -250,8 +250,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
-    case .sendNFT(item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, to: let to, amount: let amount, ens: let ens, isERC721: let isSupportERC721):
-      let vm = ConfirmSendNFTViewModel(nftItem: item, nftCategory: category, gasPrice: gasPrice, gasLimit: gasLimit, address: to, ens: ens, amount: amount, supportERC721: isSupportERC721)
+    case .sendNFT(item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, to: let to, amount: let amount, ens: let ens, isERC721: let isSupportERC721, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxFee: let advancedMaxFee, advancedNonce: let advancedNonce):
+      let vm = ConfirmSendNFTViewModel(nftItem: item, nftCategory: category, gasPrice: gasPrice, gasLimit: gasLimit, address: to, ens: ens, amount: amount, supportERC721: isSupportERC721, advancedGasLimit: advancedGasLimit, advancedMaxPriorityFee: advancedPriorityFee, advancedMaxFee: advancedMaxFee, advancedNonce: advancedNonce)
       let vc = ConfirmSendNFTViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
@@ -390,11 +390,15 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
       controller.dismiss(animated: true) {
         self.confirmVC = nil
       }
-    case .confirmNFT(nftItem: let nftItem, nftCategory: let nftCategory, gasPrice: let gasPrice, gasLimit: let gasLimit, address: let address, amount: let amount, isSupportERC721: let isSupportERC721, historyTransaction: let historyTransaction):
+    case .confirmNFT(nftItem: let nftItem, nftCategory: let nftCategory, gasPrice: let gasPrice, gasLimit: let gasLimit, address: let address, amount: let amount, isSupportERC721: let isSupportERC721, historyTransaction: let historyTransaction, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxFee: let advancedMaxFee, advancedNonce: let advancedNonce):
       guard let provider = self.session.externalProvider else {
         return
       }
-      provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: gasLimit, gasPrice: gasPrice, amount: amount, isERC721: isSupportERC721) { [weak self] sendResult in
+      var paramGasLimit = gasLimit
+      if let unwrap = advancedGasLimit, let customGasLimit = BigInt(unwrap) {
+        paramGasLimit = customGasLimit
+      }
+      provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: paramGasLimit, gasPrice: gasPrice, amount: amount, isERC721: isSupportERC721, advancedPriorityFee: advancedPriorityFee, advancedMaxfee: advancedMaxFee, advancedNonce: advancedNonce) { [weak self] sendResult in
         guard let `self` = self else { return }
         self.navigationController.hideLoading()
         switch sendResult {
@@ -402,7 +406,8 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
           historyTransaction.hash = result.0
           historyTransaction.time = Date()
           historyTransaction.nonce = provider.minTxCount
-          historyTransaction.transactionObject = result.1.toSignTransactionObject()
+          historyTransaction.transactionObject = result.1?.toSignTransactionObject()
+          historyTransaction.eip1559Transaction = result.2
           provider.minTxCount += 1
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -550,9 +555,17 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
         time: 10
       )
     case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
-      self.rootViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      if self.sendNFTController != nil {
+        self.sendNFTController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      } else {
+        self.rootViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      }
     case .updateAdvancedNonce(nonce: let nonce):
-      self.rootViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
+      if self.sendNFTController != nil {
+        self.sendNFTController?.coordinatorDidUpdateAdvancedNonce(nonce)
+      } else {
+        self.rootViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
+      }
     default:
       break
     }

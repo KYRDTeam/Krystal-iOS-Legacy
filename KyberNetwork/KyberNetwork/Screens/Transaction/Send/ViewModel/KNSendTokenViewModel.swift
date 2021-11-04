@@ -305,8 +305,8 @@ class KNSendTokenViewModel: NSObject {
           gasLimit: self.gasLimit,
           gasPrice: self.gasPrice,
           nonce: nonce,
-          maxInclusionFeePerGas: priorityFeeBigIntDefault.description,
-          maxGasFee: self.gasPrice.description
+          maxInclusionFeePerGas: priorityFeeBigIntDefault.shortString(units: UnitConfiguration.gasPriceUnit),
+          maxGasFee: self.gasPrice.shortString(units: UnitConfiguration.gasPriceUnit)
         )
       }
     } else {

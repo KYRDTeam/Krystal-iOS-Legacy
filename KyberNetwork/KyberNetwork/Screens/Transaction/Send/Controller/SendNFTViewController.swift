@@ -7,7 +7,6 @@
 
 import UIKit
 import QRCodeReaderViewController
-//import TrustKeystore
 import TrustCore
 import BigInt
 
@@ -15,22 +14,54 @@ class SendNFTViewModel {
   fileprivate(set) var addressString: String = ""
   var address: Address?
   fileprivate(set) var isUsingEns: Bool = false
-  
+
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
+  
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
   
   let item: NFTItem
   let category: NFTSection
   var selectedBalance: Int = 0
   let isSupportERC721: Bool
-  
+
   init(item: NFTItem, category: NFTSection, supportERC721: Bool) {
     self.item = item
     self.category = category
     self.isSupportERC721 = supportERC721
   }
-  
+
   func updateAddress(_ address: String) {
     self.addressString = address
     self.address = Address(string: address)
@@ -38,7 +69,7 @@ class SendNFTViewModel {
       self.isUsingEns = false
     }
   }
-  
+
   func updateAddressFromENS(_ ens: String, ensAddr: Address?) {
     if ens == self.addressString {
       self.address = ensAddr
@@ -303,6 +334,18 @@ class SendNFTViewController: KNBaseViewController {
       KNContactStorage.shared.updateLastUsed(contact: contact)
     }
   }
+  
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
@@ -315,15 +358,22 @@ class SendNFTViewController: KNBaseViewController {
     }()
     self.present(qrcodeReaderVC, animated: true, completion: nil)
   }
-  
+
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
-  
+
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, advancedGasLimit: nil, advancedPriorityFee: nil, advancedMaxFee: nil, advancedNonce: nil)) //TODO: handle eip1559 for nft transfer
+    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(
+      gasLimit: self.viewModel.gasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
+    ))
   }
-  
+
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
     self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
   }
@@ -332,8 +382,42 @@ class SendNFTViewController: KNBaseViewController {
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     
-    let event = KSendTokenViewEvent.sendNFT(item: self.viewModel.item, category: self.viewModel.category, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, to: self.viewModel.addressString, amount: self.viewModel.selectedBalance, ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil, isERC721: self.viewModel.isSupportERC721)
-    self.delegate?.kSendTokenViewController(self, run: event)
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+      let priorityFeeBigIntDefault = self.viewModel.gasPrice - baseFeeBigInt
+      
+      let event = KSendTokenViewEvent.sendNFT(
+        item: self.viewModel.item,
+        category: self.viewModel.category,
+        gasPrice: self.viewModel.gasPrice,
+        gasLimit: self.viewModel.gasLimit,
+        to: self.viewModel.addressString,
+        amount: self.viewModel.selectedBalance,
+        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil,
+        isERC721: self.viewModel.isSupportERC721,
+        advancedGasLimit: self.viewModel.advancedGasLimit,
+        advancedPriorityFee: self.viewModel.advancedMaxPriorityFee != nil ? self.viewModel.advancedMaxPriorityFee : priorityFeeBigIntDefault.shortString(units: UnitConfiguration.gasPriceUnit) ,
+        advancedMaxFee: self.viewModel.advancedMaxFee != nil ? self.viewModel.advancedMaxFee : self.viewModel.gasPrice.shortString(units: UnitConfiguration.gasPriceUnit),
+        advancedNonce: self.viewModel.advancedNonce
+      )
+      self.delegate?.kSendTokenViewController(self, run: event)
+    } else {
+      let event = KSendTokenViewEvent.sendNFT(
+        item: self.viewModel.item,
+        category: self.viewModel.category,
+        gasPrice: self.viewModel.gasPrice,
+        gasLimit: self.viewModel.gasLimit,
+        to: self.viewModel.addressString,
+        amount: self.viewModel.selectedBalance,
+        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil,
+        isERC721: self.viewModel.isSupportERC721,
+        advancedGasLimit: nil,
+        advancedPriorityFee: nil,
+        advancedMaxFee: nil,
+        advancedNonce: nil
+      )
+      self.delegate?.kSendTokenViewController(self, run: event)
+    }
   }
   
   @IBAction func maxButtonTapped(_ sender: UIButton) {
@@ -368,7 +452,7 @@ extension SendNFTViewController: QRCodeReaderDelegate {
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
   }
-  
+
   fileprivate func getEnsAddressFromName(_ name: String) {
     if Address(string: name) != nil { return }
     if !name.contains(".") {
