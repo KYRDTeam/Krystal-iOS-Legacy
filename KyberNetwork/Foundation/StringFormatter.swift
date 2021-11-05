@@ -3,47 +3,54 @@
 import UIKit
 
 final class StringFormatter {
-    /// currencyFormatter of a `StringFormatter` to represent curent locale.
-    private lazy var currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.currencySymbol = ""
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .currencyAccounting
-        formatter.isLenient = true
-        return formatter
-    }()
-    /// decimalFormatter of a `StringFormatter` to represent curent locale.
-    private lazy var decimalFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = ""
-        formatter.isLenient = true
-        return formatter
-    }()
-  
-    static func currencyString(value: Double, symbol: String) -> String {
-      var maxDigits = 2
-      if symbol.lowercased() == "usd" {
-        maxDigits = 2
-      } else if symbol.lowercased() == "matic" {
-        maxDigits = 2
-      } else if symbol.lowercased() == "btc" {
-        maxDigits = 5
-      } else if symbol.lowercased() == "eth" {
-        maxDigits = 4
-      } else if symbol.lowercased() == "bnb" {
-        maxDigits = 3
-      } else if symbol.lowercased() == "avax" {
-        maxDigits = 4
-      }
-      
+  /// currencyFormatter of a `StringFormatter` to represent curent locale.
+  private lazy var currencyFormatter: NumberFormatter = {
       let formatter = NumberFormatter()
-      formatter.maximumFractionDigits = maxDigits
-      formatter.roundingMode = .floor
-      return formatter.string(from: NSNumber(value: value)) ?? ""
+      formatter.currencySymbol = ""
+      formatter.minimumFractionDigits = 2
+      formatter.maximumFractionDigits = 2
+      formatter.numberStyle = .currencyAccounting
+      formatter.isLenient = true
+      return formatter
+  }()
+  /// decimalFormatter of a `StringFormatter` to represent curent locale.
+  private lazy var decimalFormatter: NumberFormatter = {
+      let formatter = NumberFormatter()
+      formatter.numberStyle = .decimal
+      formatter.groupingSeparator = ""
+      formatter.isLenient = true
+      return formatter
+  }()
+
+  static func percentString(value: Double) -> String {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 2
+    formatter.numberStyle = .percent
+    return formatter.string(from: NSNumber(value: value)) ?? ""
+  }
+
+  static func currencyString(value: Double, symbol: String) -> String {
+    var maxDigits = 2
+    if symbol.lowercased() == "usd" {
+      maxDigits = 2
+    } else if symbol.lowercased() == "matic" {
+      maxDigits = 2
+    } else if symbol.lowercased() == "btc" {
+      maxDigits = 5
+    } else if symbol.lowercased() == "eth" {
+      maxDigits = 4
+    } else if symbol.lowercased() == "bnb" {
+      maxDigits = 3
+    } else if symbol.lowercased() == "avax" {
+      maxDigits = 4
     }
-  
+
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = maxDigits
+    formatter.roundingMode = .floor
+    return formatter.string(from: NSNumber(value: value)) ?? ""
+  }
+
   static func amountString(value: Double) -> String {
     let formatter = NumberFormatter()
     // rule amount round upto 4 digits
