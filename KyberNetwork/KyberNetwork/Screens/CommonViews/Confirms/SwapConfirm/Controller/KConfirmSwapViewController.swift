@@ -141,7 +141,6 @@ class KConfirmSwapViewController: KNBaseViewController {
       let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: nil, eip1559Tx: unwrap)
       internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
       
-      //TODO: handle tx for cancel/speedup
       self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
     }
   }

@@ -58,11 +58,11 @@ class SpeedUpCustomGasSelectViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
-    self.navigationTitleLabel.text = "Customize Gas".toBeLocalised()
-    self.mainTextTitle.text = "Select.higher.tx.fee.to.accelerate".toBeLocalised()
-    self.gasPriceWarningMessageLabel.text = "your.gas.must.be.10.percent.higher".toBeLocalised()
-    self.currentFeeLabel.text = "Current fee".toBeLocalised()
-    self.newFeeLabel.text = "New fee".toBeLocalised()
+    self.navigationTitleLabel.text = self.viewModel.navigationTitle
+    self.mainTextTitle.text = self.viewModel.mainTextTitle
+    self.gasPriceWarningMessageLabel.text = self.viewModel.gasPriceWarningText
+    self.currentFeeLabel.text = self.viewModel.currentFeeTitle
+    self.newFeeLabel.text = self.viewModel.newFeeTitle
     self.doneButton.setTitle("done".toBeLocalised(), for: .normal)
 
     self.currentFeeLabel.text = self.viewModel.currentTransactionFeeETHString

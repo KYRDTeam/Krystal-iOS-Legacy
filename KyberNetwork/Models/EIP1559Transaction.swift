@@ -64,13 +64,15 @@ struct EIP1559Transaction: Codable {
   }
   
   func toCancelTransaction() -> EIP1559Transaction {
+    let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
     let cancelGas = self.gasPriceForCancelTransaction()
+    let maxGasFee = baseFeeBigInt + cancelGas
     return EIP1559Transaction(
       chainID: self.chainID,
       nonce: self.nonce,
       gasLimit: self.gasLimit,
       maxInclusionFeePerGas: cancelGas.hexEncoded.hexSigned2Complement,
-      maxGasFee: self.maxGasFee,
+      maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
       toAddress: self.toAddress,
       fromAddress: self.toAddress,
       data: "",
@@ -79,12 +81,14 @@ struct EIP1559Transaction: Codable {
   }
 
   func toSpeedupTransaction(gasPrice: BigInt) -> EIP1559Transaction {
+    let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+    let maxGasFee = baseFeeBigInt + gasPrice
     return EIP1559Transaction(
       chainID: self.chainID,
       nonce: self.nonce,
       gasLimit: self.gasLimit,
       maxInclusionFeePerGas: gasPrice.hexEncoded.hexSigned2Complement,
-      maxGasFee: self.maxGasFee,
+      maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
       toAddress: self.toAddress,
       fromAddress: self.fromAddress,
       data: self.data,
