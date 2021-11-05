@@ -94,6 +94,13 @@ class BalanceStorage {
     self.allLiquidityPool = liquidityPools
     Storage.store(liquidityPools, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.liquidityPoolStoreFileName)
   }
+  
+  func saveSummaryChainModels(_ summaryChainsModels: [KNSummaryChainModel]) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    Storage.store(summaryChainsModels, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName)
+  }
 
   func balanceETH() -> String {
     return self.balanceForAddress("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")?.balance ?? ""
@@ -197,6 +204,14 @@ class BalanceStorage {
     }
     
     return (sectionKeys, balanceDict)
+  }
+  
+  func getSummaryChainModels() -> [KNSummaryChainModel] {
+    guard let unwrapped = self.wallet else {
+      return []
+    }
+    
+    return Storage.retrieve(KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
   }
 
   func getLiquidityPools(currency: CurrencyMode) -> ([String], [String: [Any]]) {
