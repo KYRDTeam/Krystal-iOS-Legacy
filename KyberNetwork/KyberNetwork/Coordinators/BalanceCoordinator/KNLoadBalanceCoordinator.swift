@@ -83,6 +83,13 @@ class KNLoadBalanceCoordinator {
       group.leave()
     }
     
+    group.enter()
+    let span7 = tx.startChild(operation: "load-total-balance")
+    self.loadTotalBalance { success in
+      span7.finish()
+      group.leave()
+    }
+    
     group.notify(queue: .global()) {
       tx.finish()
     }
@@ -350,6 +357,23 @@ class KNLoadBalanceCoordinator {
     }
   }
 
+  func loadTotalBalance(completion: @escaping (Bool) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getTotalBalance(address: self.session.wallet.address.description)) { (result) in
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
+        var summaryChains: [KNSummaryChainModel] = []
+        for item in balances {
+          let summaryChainModel = KNSummaryChainModel(json: item)
+          summaryChains.append(summaryChainModel)
+        }
+        BalanceStorage.shared.saveSummaryChainModels(summaryChains)
+        completion(true)
+      } else {
+        completion(false)
+      }
+    }
+  }
+
   func loadNFTBalance(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
@@ -392,6 +416,7 @@ class KNLoadBalanceCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
         completion(true)
       } else {
+        if KNEnvironment.default == .ropsten { return }
         self.loadLendingBalances(completion: completion)
       }
     }
