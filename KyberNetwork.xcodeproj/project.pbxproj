@@ -451,6 +451,7 @@
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
 		7E6F51092733895D002DA0B2 /* OverviewSummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F51072733895D002DA0B2 /* OverviewSummaryCell.xib */; };
+		7E6F510B2733CA69002DA0B2 /* KNSummaryChainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
@@ -1223,6 +1224,7 @@
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
 		7E6F51072733895D002DA0B2 /* OverviewSummaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewSummaryCell.xib; sourceTree = "<group>"; };
+		7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSummaryChainModel.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
@@ -1635,6 +1637,7 @@
 				25D3D3E920F61C110071D599 /* KNTrackerRate.swift */,
 				C32F1F622431ABCD00990706 /* KNMarket.swift */,
 				7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */,
+				7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4996,6 +4999,7 @@
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
 				C3263B0725EDE837005FBB60 /* WithdrawViewController.swift in Sources */,
+				7E6F510B2733CA69002DA0B2 /* KNSummaryChainModel.swift in Sources */,
 				7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */,
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
 				253F50E221E5B40E0068813D /* KNPromoCodeCoordinator.swift in Sources */,
