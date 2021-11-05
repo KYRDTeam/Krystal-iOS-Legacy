@@ -9,8 +9,6 @@ import UIKit
 
 class OverviewSummaryCellViewModel {
   let currency: CurrencyMode
-  let symbol: String
-  let chainName: String
   let value: Double
   let percentage: Double
   
@@ -19,8 +17,6 @@ class OverviewSummaryCellViewModel {
 
   init(dataModel: KNSummaryChainModel, currency: CurrencyMode) {
     self.currency = currency
-    self.symbol = dataModel.chainName
-    self.chainName = dataModel.chainName
     self.chainType = dataModel.chainType()
     self.percentage = dataModel.percentage
     if let unitValueModel = dataModel.quotes[currency.toString()] {
@@ -53,6 +49,21 @@ class OverviewSummaryCellViewModel {
       return UIImage(named: "default_token")!
     }
   }
+  
+  func chainName() -> String {
+    switch self.chainType {
+    case .eth:
+      return "Ethereum"
+    case .bsc:
+      return "BSC"
+    case .polygon:
+      return "Polygon"
+    case .avalanche:
+      return "Avalanche"
+    default:
+      return ""
+    }
+  }
 }
 
 class OverviewSummaryCell: UITableViewCell {
@@ -75,7 +86,7 @@ class OverviewSummaryCell: UITableViewCell {
 
   func updateCell(_ viewModel: OverviewSummaryCellViewModel) {
     self.chainIcon.image = viewModel.chainIconImage()
-    self.chainNameLabel.text = viewModel.chainName
+    self.chainNameLabel.text = viewModel.chainName()
     self.chainValueLabel.text = viewModel.balanceValue()
     self.percentLabel.text = StringFormatter.percentString(value: viewModel.percentage)
   }
