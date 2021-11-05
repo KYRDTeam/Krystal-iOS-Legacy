@@ -156,17 +156,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HuO-ub-YO7">
                                 <rect key="frame" x="12" y="10" width="351" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cc-lm-ZOd">
-                                        <rect key="frame" x="320" y="8" width="24" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="c5k-As-2OI"/>
-                                            <constraint firstAttribute="width" constant="24" id="mpf-55-mlZ"/>
-                                        </constraints>
-                                        <state key="normal" image="option_overview_icon"/>
-                                        <connections>
-                                            <action selector="toolbarOptionButtonTapped:" destination="-1" eventType="touchUpInside" id="8wv-Em-GKw"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assets " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNo-ND-wfP">
                                         <rect key="frame" x="22" y="9.5" width="55.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -179,15 +168,32 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="option_overview_icon" translatesAutoresizingMaskIntoConstraints="NO" id="N26-8n-hPw">
+                                        <rect key="frame" x="320" y="8" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="BCr-8t-eVw"/>
+                                            <constraint firstAttribute="width" constant="24" id="NVB-Zy-rez"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cc-lm-ZOd">
+                                        <rect key="frame" x="0.0" y="0.0" width="351" height="40"/>
+                                        <connections>
+                                            <action selector="toolbarOptionButtonTapped:" destination="-1" eventType="touchUpInside" id="8wv-Em-GKw"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" name="toolbarBgColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="5cc-lm-ZOd" secondAttribute="trailing" constant="7" id="5V0-hY-VXm"/>
+                                    <constraint firstAttribute="trailing" secondItem="5cc-lm-ZOd" secondAttribute="trailing" id="5V0-hY-VXm"/>
                                     <constraint firstItem="XVo-h3-Re9" firstAttribute="leading" secondItem="HNo-ND-wfP" secondAttribute="trailing" constant="9" id="BBE-0G-F7s"/>
-                                    <constraint firstItem="5cc-lm-ZOd" firstAttribute="centerY" secondItem="HuO-ub-YO7" secondAttribute="centerY" id="RwU-dO-k2B"/>
+                                    <constraint firstAttribute="trailing" secondItem="N26-8n-hPw" secondAttribute="trailing" constant="7" id="LYL-OL-cqI"/>
+                                    <constraint firstItem="5cc-lm-ZOd" firstAttribute="leading" secondItem="HuO-ub-YO7" secondAttribute="leading" id="Vcg-e5-Wj1"/>
                                     <constraint firstAttribute="height" constant="40" id="YSx-Gy-d50"/>
+                                    <constraint firstItem="N26-8n-hPw" firstAttribute="centerY" secondItem="5cc-lm-ZOd" secondAttribute="centerY" id="ZB0-vF-XLZ"/>
                                     <constraint firstItem="HNo-ND-wfP" firstAttribute="centerY" secondItem="HuO-ub-YO7" secondAttribute="centerY" id="emk-Gw-wqB"/>
                                     <constraint firstItem="XVo-h3-Re9" firstAttribute="centerY" secondItem="HuO-ub-YO7" secondAttribute="centerY" id="mTT-XE-eDa"/>
+                                    <constraint firstItem="5cc-lm-ZOd" firstAttribute="top" secondItem="HuO-ub-YO7" secondAttribute="top" id="vR9-Qn-D3a"/>
+                                    <constraint firstAttribute="bottom" secondItem="5cc-lm-ZOd" secondAttribute="bottom" id="vfT-Vk-jFT"/>
                                     <constraint firstItem="HNo-ND-wfP" firstAttribute="leading" secondItem="HuO-ub-YO7" secondAttribute="leading" constant="22" id="zLZ-1n-VcA"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -287,7 +293,7 @@
                                     <rect key="frame" x="71" y="6" width="20" height="20"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8HD-f0-AMK">
-                                    <rect key="frame" x="38" y="9" width="23" height="14"/>
+                                    <rect key="frame" x="38" y="9" width="21" height="14"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
