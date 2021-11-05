@@ -8,13 +8,13 @@
 import UIKit
 
 class KNSummaryChainModel: Codable {
-  var chainName: String
+  var chainId: Int
   var usdValue: Double
   var percentage: Double
   var quotes: [String: UnitValueModel]
   
   init(json: JSONDictionary) {
-    self.chainName = json["chainName"] as? String ?? ""
+    self.chainId = json["chainID"] as? Int ?? 0
     self.usdValue = json["usdValue"] as? Double ?? 0.0
     self.percentage = json["percentage"] as? Double ?? 0.0
 
@@ -55,14 +55,17 @@ class KNSummaryChainModel: Codable {
   }
 
   func chainType() -> ChainType {
-    if chainName == "bsc" {
-      return .bsc
-    } else if chainName == "ethereum" {
-      return .eth
-    } else if chainName == "polygon" {
-      return .polygon
-    } else {
-      return .avalanche
+    switch chainId {
+      case 1:
+        return .eth
+      case 56:
+        return .bsc
+      case 137:
+        return .polygon
+      case 43114:
+        return .avalanche
+      default:
+        return .avalanche
     }
   }
 }
