@@ -410,7 +410,8 @@ extension OverviewMainViewController: UITableViewDataSource {
       for: indexPath
     ) as! OverviewSummaryCell
 
-//    let cellModel = self.viewModel.summaryDataSource[indexPath.row]
+    let chainModel = self.viewModel.summaryDataSource[indexPath.row]
+    cell.updateCell(chainModel)
     return cell
   }
 
@@ -471,84 +472,11 @@ extension OverviewMainViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
-      return nil
-    }
-    guard !self.viewModel.displayHeader.isEmpty || !self.viewModel.displayNFTHeader.isEmpty else {
-      return nil
-    }
-    guard !self.viewModel.isEmpty() else {
-      return nil
-    }
-    if self.viewModel.currentMode == .nft {
-      let sectionItem = self.viewModel.displayNFTHeader[section]
-      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-      view.backgroundColor = .clear
-      guard sectionItem.collectibleSymbol != "ADDMORE" else {
-        let button = UIButton(frame: view.frame.inset(by: UIEdgeInsets(top: 0, left: 37, bottom: 3, right: 37)))
-        button.setTitle("Add NFT", for: .normal)
-        button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
-        button.setTitleColor(UIColor(named: "normalTextColor")!, for: .normal)
-        button.titleLabel?.font = UIFont.Kyber.regular(with: 16)
-        button.addTarget(self, action: #selector(addNFTButtonTapped(sender:)), for: .touchUpInside)
-        view.addSubview(button)
-        return view
-      }
-
-      let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
-      icon.center.y = view.center.y
-      if sectionItem.collectibleSymbol == "FAV" {
-        icon.image = UIImage(named: "fav_section_icon")
-      } else {
-        icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
-      }
-
-      view.addSubview(icon)
-
-      let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
-      titleLabel.center.y = view.center.y
-      titleLabel.text = sectionItem.collectibleName
-      titleLabel.font = UIFont.Kyber.regular(with: 18)
-      titleLabel.textColor = UIColor(named: "textWhiteColor")
-      view.addSubview(titleLabel)
-
-      let arrowIcon = UIImageView(frame: CGRect(x: tableView.frame.size.width - 27 - 24, y: 0, width: 24, height: 24))
-      arrowIcon.image = UIImage(named: "arrow_down_template")
-      arrowIcon.tintColor = UIColor(named: "textWhiteColor")
-      view.addSubview(arrowIcon)
-      let button = UIButton(frame: view.frame)
-      button.tag = section
-      button.addTarget(self, action: #selector(sectionButtonTapped), for: .touchUpInside)
-      view.addSubview(button)
-      return view
-    } else {
-      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-      view.backgroundColor = .clear
-      let rightTextString = self.viewModel.getTotalValueForSection(section)
-      let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
-      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
-      titleLabel.center.y = view.center.y
-      titleLabel.text = self.viewModel.displayHeader[section]
-      titleLabel.font = UIFont.Kyber.regular(with: 18)
-      titleLabel.textColor = UIColor(named: "textWhiteColor")
-      view.addSubview(titleLabel)
-
-      let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - rightLabelWidth - 35, y: 0, width: rightLabelWidth, height: 40))
-      valueLabel.text = rightTextString
-      valueLabel.font = UIFont.Kyber.regular(with: 18)
-      valueLabel.textAlignment = .right
-      valueLabel.textColor = UIColor(named: "textWhiteColor")
-      view.addSubview(valueLabel)
-
-      return view
-    }
+    return self.viewModel.viewForHeaderInSection(tableView, section: section, addNFT: #selector(addNFTButtonTapped(sender:)), sectionButtonTapped: #selector(sectionButtonTapped))
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard self.viewModel.currentMode == .supply || self.viewModel.currentMode == .nft || self.viewModel.currentMode == .showLiquidityPool else {
-      return 0
-    }
-    return 40
+    return self.viewModel.heightForHeaderInSection()
   }
 }
 
@@ -603,7 +531,7 @@ extension OverviewMainViewController: UITableViewDelegate {
 
 extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    guard scrollView != self.infoCollectionView else {
+    guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
       return
     }
     let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
@@ -708,7 +636,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
 
     let walletName = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
 
-    cell.updateCell(walletName: walletName, totalValue: self.viewModel.displayTotalValue, shouldShowAction: indexPath.item == 0)
+    cell.updateCell(walletName: walletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, shouldShowAction: indexPath.item == 0)
 
     cell.walletListButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .selectListWallet)

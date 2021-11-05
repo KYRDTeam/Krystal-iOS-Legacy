@@ -260,7 +260,7 @@ class OverviewMainViewModel {
   var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
   var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
   var displayNFTHeader: [NFTSection] = []
-  var summaryDataSource: [String] = []
+  var summaryDataSource: [OverviewSummaryCellViewModel] = []
   var displayLPDataSource: [String: [OverviewLiquidityPoolViewModel]] = [:]
   var displayHeader: [String] = []
   var displayTotalValues: [String: String] = [:]
@@ -288,7 +288,7 @@ class OverviewMainViewModel {
       return self.displayNFTHeader.isEmpty
     }
   }
-  
+
   func filterSmallAssetTokens(tokens: [Token]) -> [Token] {
     let filteredTokens = tokens.filter({ token in
       let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
@@ -307,7 +307,17 @@ class OverviewMainViewModel {
     return assetTokens.count != filteredTokens.count
   }
 
+  func reloadSummaryChainData() {
+    let summaryChainModels = BalanceStorage.shared.getSummaryChainModels()
+    self.summaryDataSource = summaryChainModels.map({ summaryModel in
+      let viewModel = OverviewSummaryCellViewModel(dataModel: summaryModel, currency: self.currencyMode)
+      viewModel.hideBalanceStatus = self.hideBalanceStatus
+      return viewModel
+    })
+  }
+
   func reloadAllData() {
+    reloadSummaryChainData()
     switch self.currentMode {
     case .market(let mode):
       let marketToken = KNSupportedTokenStorage.shared.marketTokens.sorted { (left, right) -> Bool in
@@ -514,7 +524,7 @@ class OverviewMainViewModel {
 
   func numberOfRowsInSection(section: Int) -> Int {
     if self.overviewMode == .summary {
-      return 5
+      return self.summaryDataSource.count
     }
     guard !self.isEmpty() else {
       return 1
@@ -542,7 +552,6 @@ class OverviewMainViewModel {
     if self.overviewMode == .summary {
       return 80
     }
-    
     guard !self.isEmpty() else {
       return 400
     }
@@ -555,6 +564,93 @@ class OverviewMainViewModel {
         return OverviewLiquidityPoolCell.kCellHeight
     case .nft:
       return OverviewNFTTableViewCell.kCellHeight
+    }
+  }
+  
+  func heightForHeaderInSection() -> CGFloat {
+    guard self.overviewMode == .overview else {
+      return 0
+    }
+    guard self.currentMode == .supply || self.currentMode == .nft || self.currentMode == .showLiquidityPool else {
+      return 0
+    }
+    return 40
+  }
+
+  func viewForHeaderInSection(_ tableView: UITableView, section: Int, addNFT: Selector, sectionButtonTapped: Selector) -> UIView? {
+    guard self.overviewMode == .overview else {
+      return nil
+    }
+    guard self.currentMode == .supply || self.currentMode == .nft || self.currentMode == .showLiquidityPool else {
+      return nil
+    }
+    guard !self.displayHeader.isEmpty || !self.displayNFTHeader.isEmpty else {
+      return nil
+    }
+    guard !self.isEmpty() else {
+      return nil
+    }
+    if self.currentMode == .nft {
+      let sectionItem = self.displayNFTHeader[section]
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+      view.backgroundColor = .clear
+      guard sectionItem.collectibleSymbol != "ADDMORE" else {
+        let button = UIButton(frame: view.frame.inset(by: UIEdgeInsets(top: 0, left: 37, bottom: 3, right: 37)))
+        button.setTitle("Add NFT", for: .normal)
+        button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
+        button.setTitleColor(UIColor(named: "normalTextColor")!, for: .normal)
+        button.titleLabel?.font = UIFont.Kyber.regular(with: 16)
+        button.addTarget(self, action: addNFT, for: .touchUpInside)
+        view.addSubview(button)
+        return view
+      }
+
+      let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
+      icon.center.y = view.center.y
+      if sectionItem.collectibleSymbol == "FAV" {
+        icon.image = UIImage(named: "fav_section_icon")
+      } else {
+        icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
+      }
+
+      view.addSubview(icon)
+
+      let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
+      titleLabel.center.y = view.center.y
+      titleLabel.text = sectionItem.collectibleName
+      titleLabel.font = UIFont.Kyber.regular(with: 18)
+      titleLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(titleLabel)
+
+      let arrowIcon = UIImageView(frame: CGRect(x: tableView.frame.size.width - 27 - 24, y: 0, width: 24, height: 24))
+      arrowIcon.image = UIImage(named: "arrow_down_template")
+      arrowIcon.tintColor = UIColor(named: "textWhiteColor")
+      view.addSubview(arrowIcon)
+      let button = UIButton(frame: view.frame)
+      button.tag = section
+      button.addTarget(self, action: sectionButtonTapped, for: .touchUpInside)
+      view.addSubview(button)
+      return view
+    } else {
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+      view.backgroundColor = .clear
+      let rightTextString = self.getTotalValueForSection(section)
+      let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
+      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
+      titleLabel.center.y = view.center.y
+      titleLabel.text = self.displayHeader[section]
+      titleLabel.font = UIFont.Kyber.regular(with: 18)
+      titleLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(titleLabel)
+
+      let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - rightLabelWidth - 35, y: 0, width: rightLabelWidth, height: 40))
+      valueLabel.text = rightTextString
+      valueLabel.font = UIFont.Kyber.regular(with: 18)
+      valueLabel.textAlignment = .right
+      valueLabel.textColor = UIColor(named: "textWhiteColor")
+      view.addSubview(valueLabel)
+
+      return view
     }
   }
   
@@ -582,6 +678,17 @@ class OverviewMainViewModel {
     }
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
     return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+  }
+    
+  var displayTotalSummaryValue: String {
+    guard !self.hideBalanceStatus else {
+      return "********"
+    }
+    var total = 0.0
+    self.summaryDataSource.forEach { data in
+      total += data.value
+    }
+    return self.currencyMode.symbol() + StringFormatter.currencyString(value: total, symbol: self.currencyMode.symbol()) + self.currencyMode.suffixSymbol()
   }
 
   var displayHideBalanceImage: UIImage {
