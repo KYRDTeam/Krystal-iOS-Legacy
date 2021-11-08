@@ -56,16 +56,16 @@ class KNSummaryChainModel: Codable {
 
   func chainType() -> ChainType {
     switch chainId {
-      case 1:
-        return .eth
-      case 56:
-        return .bsc
-      case 137:
-        return .polygon
-      case 43114:
-        return .avalanche
-      default:
-        return .avalanche
+    case Constants.ethMainnetPRC.chainID:
+      return .eth
+    case Constants.bscMainnetPRC.chainID:
+      return .bsc
+    case Constants.polygonMainnetPRC.chainID:
+      return .polygon
+    case Constants.avalancheMainnetPRC.chainID:
+      return .avalanche
+    default:
+      return .avalanche
     }
   }
 }
