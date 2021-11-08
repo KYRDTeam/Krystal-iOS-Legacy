@@ -114,12 +114,8 @@ struct KConfirmSwapViewModel {
   
   var priceImpactValueText: String {
     guard self.priceImpact != -1000.0 else { return "---" }
-    if self.priceImpact > -2.0 {
-      return "---"
-    } else {
-      let displayPercent = "\(self.priceImpact)".prefix(6)
-      return "↓ \(displayPercent)%"
-    }
+    let displayPercent = "\(self.priceImpact)".prefix(6)
+    return "↓ \(displayPercent)%"
   }
   
   var priceImpactValueTextColor: UIColor? {
@@ -130,7 +126,7 @@ struct KConfirmSwapViewModel {
     } else if change <= -2.0 {
       return UIColor(named: "warningColor")
     } else {
-      return UIColor(named: "normalTextColor")
+      return UIColor(named: "textWhiteColor")
     }
   }
   

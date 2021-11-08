@@ -663,12 +663,8 @@ class KSwapViewModel {
 
   var refPriceDiffText: String {
     let change = self.priceImpactValue
-    if change > -2.0 {
-      return "---"
-    } else {
-      let displayPercent = "\(change)".prefix(6)
-      return "↓ \(displayPercent)%"
-    }
+    let displayPercent = "\(change)".prefix(6)
+    return "↓ \(displayPercent)%"
   }
 
   var priceImpactValueTextColor: UIColor? {
@@ -678,7 +674,7 @@ class KSwapViewModel {
     } else if change <= -2.0 {
       return UIColor(named: "warningColor")
     } else {
-      return UIColor(named: "normalTextColor")
+      return UIColor(named: "textWhiteColor")
     }
   }
 
