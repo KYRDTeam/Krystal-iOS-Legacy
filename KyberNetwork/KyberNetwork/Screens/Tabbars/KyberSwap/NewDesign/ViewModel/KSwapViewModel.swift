@@ -662,6 +662,9 @@ class KSwapViewModel {
   }
 
   var refPriceDiffText: String {
+    guard !self.getRefPrice(from: self.from, to: self.to).isEmpty else {
+      return "---"
+    }
     let change = self.priceImpactValue
     let displayPercent = "\(change)".prefix(6)
     return "\(displayPercent)%"

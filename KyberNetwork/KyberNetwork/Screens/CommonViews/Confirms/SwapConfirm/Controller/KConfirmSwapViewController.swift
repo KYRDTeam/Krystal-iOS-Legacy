@@ -173,8 +173,19 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
+    var mes = ""
+    if sender.tag == 1 {
+      if self.viewModel.priceImpact == -1000 {
+        mes = " Missing price impact. This may be due to the low liquidity. Please swap with caution."
+      } else {
+        mes = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactText)
+      }
+      
+    } else {
+      mes = "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised()
+    }
     self.showBottomBannerView(
-      message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
+      message: mes,
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 10
     )
