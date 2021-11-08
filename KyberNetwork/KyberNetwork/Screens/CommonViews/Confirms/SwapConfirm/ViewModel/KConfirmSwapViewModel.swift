@@ -101,7 +101,7 @@ struct KConfirmSwapViewModel {
   }
   
   var reverseRoutingText: String {
-    return String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized)
+    return self.priceImpact > -5 ?String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized) : ""
   }
 
   var warningETHText: String {
@@ -115,7 +115,7 @@ struct KConfirmSwapViewModel {
   var priceImpactValueText: String {
     guard self.priceImpact != -1000.0 else { return "---" }
     let displayPercent = "\(self.priceImpact)".prefix(6)
-    return "↓ \(displayPercent)%"
+    return "\(displayPercent)%"
   }
   
   var priceImpactValueTextColor: UIColor? {
@@ -131,6 +131,6 @@ struct KConfirmSwapViewModel {
   }
   
   var hasPriceImpact: Bool {
-    return self.priceImpact <= -2
+    return self.priceImpact <= -20
   }
 }

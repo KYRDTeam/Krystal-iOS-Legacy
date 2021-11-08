@@ -114,6 +114,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.priceImpactTextLabel.text = self.viewModel.priceImpactText
     self.priceImpactValueLabel.text = self.viewModel.priceImpactValueText
     self.priceImpactValueLabel.textColor = self.viewModel.priceImpactValueTextColor
+    self.reserveRoutingMessageContainer.isHidden = !self.viewModel.priceImpactText.isEmpty
     self.swapAnywayCheckBox.rounded(radius: 2)
     if self.viewModel.hasPriceImpact {
       self.isAccepted = false
@@ -129,10 +130,14 @@ class KConfirmSwapViewController: KNBaseViewController {
   fileprivate func updateUIPriceImpact() {
     guard self.viewModel.hasPriceImpact else { return }
     if self.isAccepted {
+      self.swapAnywayCheckBox.rounded(radius: 2)
+      self.swapAnywayCheckBox.backgroundColor = UIColor(named: "buttonBackgroundColor")
       self.swapAnywayCheckBox.setImage(UIImage(named: "filter_check_icon"), for: .normal)
       self.confirmButton.isEnabled = true
       self.confirmButton.alpha = 1
     } else {
+      self.swapAnywayCheckBox.rounded(color: UIColor.lightGray, width: 1, radius: 2)
+      self.swapAnywayCheckBox.backgroundColor = UIColor.clear
       self.swapAnywayCheckBox.setImage(nil, for: .normal)
       self.confirmButton.isEnabled = false
       self.confirmButton.alpha = 0.5

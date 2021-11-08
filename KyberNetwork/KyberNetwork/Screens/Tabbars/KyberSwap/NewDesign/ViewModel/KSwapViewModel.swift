@@ -664,7 +664,7 @@ class KSwapViewModel {
   var refPriceDiffText: String {
     let change = self.priceImpactValue
     let displayPercent = "\(change)".prefix(6)
-    return "↓ \(displayPercent)%"
+    return "\(displayPercent)%"
   }
 
   var priceImpactValueTextColor: UIColor? {
