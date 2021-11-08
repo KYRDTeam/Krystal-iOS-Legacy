@@ -825,11 +825,11 @@ extension KSwapViewController {
 
   func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
-    self.updateInputFieldsUI()
     self.viewModel.reloadBestPlatform()
     self.updateExchangeRateField()
     self.setUpChangeRateButton()
     self.updateUIRefPrice()
+    self.updateInputFieldsUI()
     self.updateUIMinReceiveAmount()
   }
 
