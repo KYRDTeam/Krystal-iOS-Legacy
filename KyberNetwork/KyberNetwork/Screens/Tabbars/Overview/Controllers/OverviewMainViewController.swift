@@ -307,8 +307,16 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-    self.tableViewTopConstraint.constant = isSummary ? -120 : 0
+    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-120.0) : CGFloat(-90.0)
+    self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
     self.tableView.reloadData()
+  }
+  
+  static var hasSafeArea: Bool {
+      guard #available(iOS 11.0, *), let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top, topPadding > 24 else {
+          return false
+      }
+      return true
   }
 }
 
