@@ -662,23 +662,40 @@ class KSwapViewModel {
   }
 
   var refPriceDiffText: String {
-    guard !self.amountFrom.isEmpty else {
-      return "---"
-    }
-    let refPrice = self.getRefPrice(from: self.from, to: self.to)
-    let price = self.getSwapRate(from: self.from.address.description, to: self.to.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
-    guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
-      return ""
-    }
-    let refPriceDouble = refPrice.doubleValue
-    let priceDouble: Double = Double(priceBigInt) / pow(10.0, 18)
-    let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
-    if change > -5.0 {
+    let change = self.priceImpactValue
+    if change > -2.0 {
       return "---"
     } else {
       let displayPercent = "\(change)".prefix(6)
       return "↓ \(displayPercent)%"
     }
+  }
+
+  var priceImpactValueTextColor: UIColor? {
+    let change = self.priceImpactValue
+    if change <= -5.0 {
+      return UIColor(named: "textRedColor")
+    } else if change <= -2.0 {
+      return UIColor(named: "warningColor")
+    } else {
+      return UIColor(named: "normalTextColor")
+    }
+  }
+
+  var priceImpactValue: Double {
+    guard !self.amountFrom.isEmpty else {
+      return 0
+    }
+    let refPrice = self.getRefPrice(from: self.from, to: self.to)
+    let price = self.getSwapRate(from: self.from.address.description, to: self.to.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
+
+    guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
+      return 0
+    }
+    let refPriceDouble = refPrice.doubleValue
+    let priceDouble: Double = Double(priceBigInt) / pow(10.0, 18)
+    let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
+    return change
   }
 
   @discardableResult

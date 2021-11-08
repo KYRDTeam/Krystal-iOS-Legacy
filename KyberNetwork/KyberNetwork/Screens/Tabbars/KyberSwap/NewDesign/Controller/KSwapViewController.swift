@@ -9,7 +9,7 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
@@ -650,6 +650,7 @@ extension KSwapViewController {
   fileprivate func updateUIRefPrice() {
     let change = self.viewModel.refPriceDiffText
     self.rateWarningLabel.text = change
+    self.rateWarningLabel.textColor = self.viewModel.priceImpactValueTextColor
   }
 
   fileprivate func updateUIMinReceiveAmount() {
@@ -825,10 +826,10 @@ extension KSwapViewController {
 
   func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
-    self.updateInputFieldsUI()
     self.viewModel.reloadBestPlatform()
     self.updateExchangeRateField()
     self.setUpChangeRateButton()
+    self.updateInputFieldsUI()
     self.updateUIRefPrice()
     self.updateUIMinReceiveAmount()
   }
@@ -845,6 +846,7 @@ extension KSwapViewController {
     self.updateInputFieldsUI()
     self.setUpGasFeeView()
     self.updateEstimatedGasLimit()
+    self.updateUIRefPrice()
   }
 
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
@@ -920,7 +922,8 @@ extension KSwapViewController {
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
-    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)))
+    let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
+    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, priceImpact: priceImpactValue, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)))
   }
 
   func coordinatorFailUpdateEncodedTx() {

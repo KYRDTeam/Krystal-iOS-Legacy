@@ -352,13 +352,13 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.getGasLimit(from: from, to: to, amount: amount, tx: raw)
     case .showQRCode:
       self.showWalletQRCode()
-    case .confirmSwap(let data, let tx, let hasRateWarning, let platform, let rawTransaction, let minReceivedData):
+    case .confirmSwap(let data, let tx, let priceImpact, let platform, let rawTransaction, let minReceivedData):
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { (result) in
         self.navigationController.hideLoading()
         switch result {
         case .success:
-          self.showConfirmSwapScreen(data: data, transaction: tx, hasRateWarning: hasRateWarning, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
+          self.showConfirmSwapScreen(data: data, transaction: tx, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
         case .failure(let error):
           var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
@@ -528,10 +528,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
-  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveAmount: String, minReceiveTitle: String) {
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveAmount: String, minReceiveTitle: String) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, hasRateWarning: hasRateWarning, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceiveAmount, minReceiveTitle: minReceiveTitle)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceiveAmount, minReceiveTitle: minReceiveTitle)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self

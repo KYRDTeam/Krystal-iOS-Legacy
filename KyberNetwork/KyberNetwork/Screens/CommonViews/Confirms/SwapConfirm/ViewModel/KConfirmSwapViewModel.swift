@@ -8,21 +8,11 @@ struct KConfirmSwapViewModel {
   let transaction: KNDraftExchangeTransaction
   let ethBalance: BigInt
   let signTransaction: SignTransaction
-  let hasRateWarning: Bool
+  let priceImpact: Double
   let platform: String
   let rawTransaction: TxObject
   let minReceiveAmount: String
   let minReceiveTitle: String
-
-//  init(transaction: KNDraftExchangeTransaction, ethBalance: BigInt, signTransaction: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minDestAmount: BigInt) {
-//    self.transaction = transaction
-//    self.ethBalance = ethBalance
-//    self.signTransaction = signTransaction
-//    self.hasRateWarning = hasRateWarning
-//    self.platform = platform
-//    self.rawTransaction = rawTransaction
-//    self.minDestAmount = minDestAmount
-//  }
 
   var titleString: String {
     return "\(self.transaction.from.symbol) ➞ \(self.transaction.to.symbol)"
@@ -82,11 +72,6 @@ struct KConfirmSwapViewModel {
   }
 
   var feeUSDString: String {
-//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
-//    let usdRate: BigInt = KNRate.rateUSD(from: trackerRate).rate
-//    let value: BigInt = usdRate * self.transactionFee / BigInt(EthereumUnit.ether.rawValue)
-//    let valueString: String = value.displayRate(decimals: 18)
-//    return "~ \(valueString) USD"
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
     let usd = self.transactionFee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String = usd.displayRate(decimals: 18)
@@ -117,5 +102,39 @@ struct KConfirmSwapViewModel {
   
   var reverseRoutingText: String {
     return String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized)
+  }
+
+  var warningETHText: String {
+    return self.warningETHBalanceShown ? "After this swap you will not have enough ETH for further transactions.".toBeLocalised() : ""
+  }
+  
+  var priceImpactText: String {
+    return self.priceImpact > -5 ? "" : "Price impact is high. You may want to reduce your swap amount for a better rate."
+  }
+  
+  var priceImpactValueText: String {
+    guard self.priceImpact != -1000.0 else { return "---" }
+    if self.priceImpact > -2.0 {
+      return "---"
+    } else {
+      let displayPercent = "\(self.priceImpact)".prefix(6)
+      return "↓ \(displayPercent)%"
+    }
+  }
+  
+  var priceImpactValueTextColor: UIColor? {
+    guard self.priceImpact != -1000.0 else { return UIColor(named: "normalTextColor") }
+    let change = self.priceImpact
+    if change <= -5.0 {
+      return UIColor(named: "textRedColor")
+    } else if change <= -2.0 {
+      return UIColor(named: "warningColor")
+    } else {
+      return UIColor(named: "normalTextColor")
+    }
+  }
+  
+  var hasPriceImpact: Bool {
+    return self.priceImpact <= -2
   }
 }
