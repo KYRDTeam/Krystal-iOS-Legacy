@@ -401,6 +401,9 @@
                             <integer key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="5aL-Gg-BL6" appends="YES" id="Yna-Np-Ls6"/>
+                    </connections>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -421,6 +424,7 @@
                 <action selector="tapOutsidePopup:" destination="-1" id="usa-7W-ttj"/>
             </connections>
         </tapGestureRecognizer>
+        <tapGestureRecognizer id="5aL-Gg-BL6"/>
     </objects>
     <resources>
         <image name="arrow_right_blue" width="17" height="14"/>
