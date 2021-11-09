@@ -178,9 +178,8 @@ class KConfirmSwapViewController: KNBaseViewController {
       if self.viewModel.priceImpact == -1000 {
         mes = " Missing price impact. This may be due to the low liquidity. Please swap with caution."
       } else {
-        mes = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactText)
+        mes = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactValueText)
       }
-      
     } else {
       mes = "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised()
     }

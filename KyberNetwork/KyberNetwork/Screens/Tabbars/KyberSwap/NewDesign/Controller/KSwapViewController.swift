@@ -370,8 +370,7 @@ class KSwapViewController: KNBaseViewController {
     } else {
       message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     }
-    
-    
+
     self.showTopBannerView(
       with: "",
       message: message,
