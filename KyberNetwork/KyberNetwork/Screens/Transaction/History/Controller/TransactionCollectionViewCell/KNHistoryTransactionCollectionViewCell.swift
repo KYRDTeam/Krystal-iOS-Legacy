@@ -202,7 +202,6 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   }
   
   var backgroundColor: UIColor {
-//    return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53)
     return UIColor(named: "mainViewBgColor")!
   }
   
@@ -849,9 +848,7 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
     self.transactionAmountLabel.text = model.displayedAmountString
     self.transactionDetailsLabel.text = model.transactionDetailsString
     self.transactionTypeLabel.text = model.transactionTypeString.uppercased()
-    self.transactionStatus.rounded(color: UIColor.Kyber.SWRed, width: 1, radius: 3)
-    self.transactionStatus.setTitleColor(UIColor.Kyber.SWRed, for: .normal)
-    self.transactionStatus.setTitle(model.isError ? "failed" : "", for: .normal)
+    self.transactionStatus.setTitle(model.isError ? "Failed" : "", for: .normal)
     self.transactionStatus.isHidden = !model.isError
     self.hideSwapIcon(!hasFromToIcon)
     self.historyTypeImage.isHidden = hasFromToIcon
