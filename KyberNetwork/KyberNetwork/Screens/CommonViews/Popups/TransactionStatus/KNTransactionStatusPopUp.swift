@@ -19,6 +19,9 @@ protocol KNTransactionStatusPopUpDelegate: class {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent)
 }
 
+/// lead and trail constraint to superview of first and second button
+let buttonLeftRightPadding = CGFloat(38.0)
+
 class KNTransactionStatusPopUp: KNBaseViewController {
 
   @IBOutlet weak var containerView: UIView!
@@ -31,10 +34,12 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var subTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var earnMessageContainerView: UIView!
+  @IBOutlet weak var earnTokenImageView: UIImageView!
   @IBOutlet weak var firstButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var earnMessageLabel: UILabel!
-  
+  @IBOutlet weak var txHashTopConstraintToLoadingImage: NSLayoutConstraint!
+  @IBOutlet weak var buttonsDistanceConstraint: NSLayoutConstraint!
   // Broadcast
   @IBOutlet weak var loadingImageView: UIImageView!
   // 32 if broadcasting, 104 if done/failed
@@ -164,11 +169,14 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if self.transaction.type == .earn {
         self.firstButton.setTitle("New Supply".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Back to earn".toBeLocalised().capitalized, for: .normal)
-        self.firstButtonTopContraint.constant = 160
+        self.firstButtonTopContraint.constant = 164
         self.earnMessageContainerView.isHidden = false
         self.contentViewHeightContraint.constant += 160
+        self.txHashTopConstraintToLoadingImage.constant += 30
         self.contentViewTopContraint.constant -= 160
         self.earnMessageLabel.text = self.transaction.earnTransactionSuccessDescription
+        self.earnTokenImageView.setSymbolImage(symbol: self.transaction.toSymbol)
+        self.buttonsDistanceConstraint.constant = 2 * buttonLeftRightPadding - UIScreen.main.bounds.size.width
       } else if self.transaction.type == .withdraw {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
@@ -273,7 +281,7 @@ extension KNTransactionStatusPopUp: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 292
+    return 332
   }
 
   func getPopupContentView() -> UIView {

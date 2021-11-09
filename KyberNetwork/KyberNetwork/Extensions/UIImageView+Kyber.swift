@@ -90,7 +90,12 @@ extension UIImageView {
     )
   }
   
-  func setSymbolImage(symbol: String, size: CGSize? = nil) {
+  func setSymbolImage(symbol: String?, size: CGSize? = nil) {
+    guard let symbol = symbol else {
+      self.image = UIImage(named: "default_token")!
+      return
+    }
+    
     let icon = symbol.lowercased()
     let image = UIImage(named: icon.lowercased())
     let placeHolderImg = image ?? UIImage(named: "default_token")!
