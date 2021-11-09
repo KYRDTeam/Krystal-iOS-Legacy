@@ -838,6 +838,7 @@ extension KSwapViewController {
     self.setUpChangeRateButton()
     self.updateInputFieldsUI()
     self.updateUIRefPrice()
+    self.updateInputFieldsUI()
     self.updateUIMinReceiveAmount()
   }
 
