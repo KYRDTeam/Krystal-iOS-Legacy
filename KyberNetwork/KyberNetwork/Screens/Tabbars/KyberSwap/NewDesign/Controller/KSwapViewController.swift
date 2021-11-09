@@ -42,21 +42,18 @@ class KSwapViewController: KNBaseViewController {
   weak var delegate: KSwapViewControllerDelegate?
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
-
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
-
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var toTokenButton: UIButton!
-
   @IBOutlet weak var fromAmountTextField: UITextField!
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var toAmountTextField: UITextField!
-
   @IBOutlet weak var exchangeRateLabel: UILabel!
-
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
 
+  @IBOutlet weak var rateBlockerView: UIView!
+  @IBOutlet weak var gasAndFeeBlockerView: UIView!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var gasFeeLabel: UILabel!
@@ -160,8 +157,14 @@ class KSwapViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
     self.setupRateTimer()
     self.setupLoadingView()
+    self.setupHideRateAndFeeViews(shouldHideInfo: true)
   }
-  
+
+  fileprivate func setupHideRateAndFeeViews(shouldHideInfo: Bool) {
+    self.gasAndFeeBlockerView.isHidden = !shouldHideInfo
+    self.rateBlockerView.isHidden = !shouldHideInfo
+  }
+
   fileprivate func setupRateTimer() {
     self.rateTimerView.lineWidth = 2
     self.rateTimerView.lineColor = UIColor(named: "buttonBackgroundColor")!
@@ -1050,8 +1053,10 @@ extension KSwapViewController: UITextFieldDelegate {
     }
 
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    let shouldHideInfo = self.viewModel.expectedReceivedAmountText.isEmpty && self.viewModel.expectedExchangeAmountText.isEmpty
+    self.setupHideRateAndFeeViews(shouldHideInfo: shouldHideInfo)
   }
-  
+
   @objc func keyboardPauseTyping(timer: Timer) {
     self.updateViewAmountDidChange()
   }
