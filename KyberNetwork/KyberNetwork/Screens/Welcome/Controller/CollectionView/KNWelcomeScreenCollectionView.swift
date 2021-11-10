@@ -6,13 +6,14 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   static let height: CGFloat = KNWelcomeScreenCollectionViewCell.height + 20.0
   @IBOutlet weak var collectionView: UICollectionView!
-
   fileprivate let viewModel: KNWelcomeScreenViewModel = KNWelcomeScreenViewModel()
-
   @IBOutlet var pageViews: [UIView]!
   @IBOutlet weak var landingTitle: UILabel!
   @IBOutlet weak var landingDescription: UILabel!
-  
+  @IBOutlet var pageViewWidth: [NSLayoutConstraint]!
+  @IBOutlet weak var paggerViewLeadingConstraint: NSLayoutConstraint!
+  static let paggerWidth = CGFloat(52)
+
   override func commonInit() {
     super.commonInit()
     self.backgroundColor = .clear
@@ -30,7 +31,15 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   fileprivate func updateSelectedPageView(index: Int) {
     self.pageViews.forEach { view in
-      view.backgroundColor = view.tag == index ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "warningBoxBgColor")
+      let isCurrentIndex = view.tag == index
+      view.backgroundColor = isCurrentIndex ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "warningBoxBgColor")
+    }
+
+    self.pageViewWidth.forEach { constraint in
+      guard let identifier = constraint.identifier else {
+        return
+      }
+      constraint.constant = Int(identifier) == index ? 16 : 6
     }
   }
 
