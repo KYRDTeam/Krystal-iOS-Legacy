@@ -458,6 +458,10 @@
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
 		7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */; };
+		7EF114F9273B846D0051A89E /* intro_reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF114F5273B846C0051A89E /* intro_reward.json */; };
+		7EF114FA273B846D0051A89E /* intro_manage.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF114F6273B846C0051A89E /* intro_manage.json */; };
+		7EF114FB273B846D0051A89E /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF114F7273B846C0051A89E /* intro_swap.json */; };
+		7EF114FC273B846D0051A89E /* intro_earn.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF114F8273B846C0051A89E /* intro_earn.json */; };
 		7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43FE27144533006CF502 /* RewardsViewController.swift */; };
 		7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE43FF27144533006CF502 /* RewardsViewController.xib */; };
 		7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE440327156622006CF502 /* RewardTableViewCell.swift */; };
@@ -1226,6 +1230,10 @@
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
 		7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityPoolModel.swift; sourceTree = "<group>"; };
+		7EF114F5273B846C0051A89E /* intro_reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_reward.json; sourceTree = "<group>"; };
+		7EF114F6273B846C0051A89E /* intro_manage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_manage.json; sourceTree = "<group>"; };
+		7EF114F7273B846C0051A89E /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
+		7EF114F8273B846C0051A89E /* intro_earn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_earn.json; sourceTree = "<group>"; };
 		7EFE43FE27144533006CF502 /* RewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsViewController.swift; sourceTree = "<group>"; };
 		7EFE43FF27144533006CF502 /* RewardsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardsViewController.xib; sourceTree = "<group>"; };
 		7EFE440327156622006CF502 /* RewardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTableViewCell.swift; sourceTree = "<group>"; };
@@ -1579,6 +1587,7 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				7E6F5115273A572B002DA0B2 /* LottieJSON */,
 				255C40EC2092DB6200475871 /* Storage */,
 				257740C82057948F003323EB /* Coordinators */,
 				257740C2205793C6003323EB /* Screens */,
@@ -3606,6 +3615,17 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
+		7E6F5115273A572B002DA0B2 /* LottieJSON */ = {
+			isa = PBXGroup;
+			children = (
+				7EF114F8273B846C0051A89E /* intro_earn.json */,
+				7EF114F6273B846C0051A89E /* intro_manage.json */,
+				7EF114F5273B846C0051A89E /* intro_reward.json */,
+				7EF114F7273B846C0051A89E /* intro_swap.json */,
+			);
+			path = LottieJSON;
+			sourceTree = "<group>";
+		};
 		7EC4C6E927168A4900486C00 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -4425,6 +4445,7 @@
 				7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */,
 				C6B4CA2A23CC50190049C843 /* KNTransferConsentViewController.xib in Resources */,
 				C3F71C91261AB0FF00285935 /* ClaimRewardViewController.xib in Resources */,
+				7EF114F9273B846D0051A89E /* intro_reward.json in Resources */,
 				C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */,
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */,
@@ -4602,6 +4623,7 @@
 				C31371ED26035182003D432B /* KrytalViewController.xib in Resources */,
 				C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */,
 				C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */,
+				7EF114FC273B846D0051A89E /* intro_earn.json in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */,
 				C30292F1260317EA001929E1 /* MarketingPartnerCollectionViewCell.xib in Resources */,
@@ -4640,6 +4662,7 @@
 				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
 				C37CC098245803CA0081FB32 /* Roboto-LightItalic.ttf in Resources */,
 				C3EE06C2267A15E50090B432 /* Karla-Medium.ttf in Resources */,
+				7EF114FB273B846D0051A89E /* intro_swap.json in Resources */,
 				25929C9F20DA5CCC0045CFA3 /* SF Compact Font License.rtf in Resources */,
 				C3EE06C9267A15E50090B432 /* Karla-VariableFont_wght.ttf in Resources */,
 				25682B7520EE06CD009738C4 /* KNTransactionDetailsViewController.xib in Resources */,
@@ -4657,6 +4680,7 @@
 				25C45AE220AD75EC00CDA1FF /* KNImportSeedsViewController.xib in Resources */,
 				25929C6A20DA5C760045CFA3 /* SF-Pro-Text-Semibold.otf in Resources */,
 				255A70F0214FB908005D7A6A /* KNEditWalletViewController.xib in Resources */,
+				7EF114FA273B846D0051A89E /* intro_manage.json in Resources */,
 				C32656B6266F55E200C69561 /* KrystalActionSheetCell.xib in Resources */,
 				25929C6320DA5C760045CFA3 /* SF-Pro-Text-Light.otf in Resources */,
 				25929C5820DA5C760045CFA3 /* SF-Pro-Text-MediumItalic.otf in Resources */,
@@ -4863,6 +4887,7 @@
 				"${BUILT_PRODUCTS_DIR}/WalletConnect/WalletConnect.framework",
 				"${BUILT_PRODUCTS_DIR}/WalletConnectSwift/WalletConnectSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Web3/Web3.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 			);
@@ -4910,6 +4935,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnect.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WalletConnectSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
