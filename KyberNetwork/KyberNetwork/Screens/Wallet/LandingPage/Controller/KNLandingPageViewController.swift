@@ -14,9 +14,8 @@ protocol KNLandingPageViewControllerDelegate: class {
 }
 
 class KNLandingPageViewController: KNBaseViewController {
-
+  let collectionViewLeadTrailPadding = CGFloat(20)
   weak var delegate: KNLandingPageViewControllerDelegate?
-
   @IBOutlet weak var welcomeScreenCollectionView: KNWelcomeScreenCollectionView!
   @IBOutlet weak var createWalletButton: UIButton!
   @IBOutlet weak var importWalletButton: UIButton!
@@ -34,9 +33,9 @@ class KNLandingPageViewController: KNBaseViewController {
       for: .normal
     )
     self.importWalletButton.addTextSpacing()
-
     self.createWalletButton.rounded(radius: 16)
     self.importWalletButton.rounded(radius: 16)
+    self.welcomeScreenCollectionView.paggerViewLeadingConstraint.constant = (UIScreen.main.bounds.width - collectionViewLeadTrailPadding * 2 - KNWelcomeScreenCollectionView.paggerWidth) / 2
   }
 
   override func viewDidAppear(_ animated: Bool) {
