@@ -956,7 +956,7 @@ extension KSwapViewController {
       self.delegate?.kSwapViewController(self, run: .confirmSwap(
         data: exchange,
         tx: signTx,
-        priceImpact: priceImpactValue,,
+        priceImpact: priceImpactValue,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
         minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)

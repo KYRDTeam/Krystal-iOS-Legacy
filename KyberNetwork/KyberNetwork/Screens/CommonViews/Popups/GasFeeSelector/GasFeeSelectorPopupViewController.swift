@@ -535,6 +535,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customNonceContainerView: UIView!
   @IBOutlet weak var advancedSlippageContainerView: UIView!
   @IBOutlet weak var advancedSlippageDivideView: UIView!
+  @IBOutlet weak var advancedModeApplyButton: UIButton!
   
 
   let viewModel: GasFeeSelectorPopupViewModel
@@ -632,6 +633,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.slippageSectionContainerView.isHidden = true
       self.advancedSlippageDivideView.isHidden = true
       self.sendSwapDivideLineView.isHidden = true
+      self.advancedModeApplyButton.isHidden = false
     }
   }
 
@@ -812,16 +814,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
          self.viewModel.isAdvancedMode,
          self.viewModel.isAllAdvancedSettingsValid {
         guard !self.viewModel.isSpeedupMode else {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-          }
           return
         }
 
         guard !self.viewModel.isCancelMode else {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-          }
           return
         }
 
@@ -928,6 +924,28 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.viewModel.advancedNonce = String(currentValue)
     }
     self.updateUIForCustomNonce()
+  }
+  
+  @IBAction func applyButtonTapped(_ sender: UIButton) {
+    self.dismiss(animated: true, completion: {
+      if let gasLimit = self.advancedGasLimitField.text,
+         let maxPriorityFee = self.advancedPriorityFeeField.text,
+         let maxFee = self.advancedMaxFeeField.text,
+         self.viewModel.isAdvancedMode,
+         self.viewModel.isAllAdvancedSettingsValid {
+        if self.viewModel.isSpeedupMode {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
+        }
+        
+        if self.viewModel.isCancelMode {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
+        }
+      }
+    })
   }
 }
 

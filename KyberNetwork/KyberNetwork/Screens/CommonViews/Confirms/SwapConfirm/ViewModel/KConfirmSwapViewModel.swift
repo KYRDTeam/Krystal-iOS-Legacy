@@ -20,7 +20,7 @@ struct KConfirmSwapViewModel {
     ethBalance: BigInt,
     signTransaction: SignTransaction?,
     eip1559Tx: EIP1559Transaction?,
-    hasRateWarning: Bool,
+    priceImpact: Double,
     platform: String,
     rawTransaction: TxObject,
     minReceiveAmount: String,
@@ -29,7 +29,7 @@ struct KConfirmSwapViewModel {
     self.transaction = transaction
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
-    self.hasRateWarning = hasRateWarning
+    self.priceImpact = priceImpact
     self.platform = platform
     self.rawTransaction = rawTransaction
     self.eip1559Transaction = eip1559Tx

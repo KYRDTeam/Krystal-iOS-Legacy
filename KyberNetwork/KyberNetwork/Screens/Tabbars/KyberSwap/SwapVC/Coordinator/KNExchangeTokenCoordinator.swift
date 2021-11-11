@@ -509,14 +509,14 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
     case .getRefPrice(let from, let to):
       self.getRefPrice(from: from, to: to)
-    case .confirmEIP1559Swap(data: let data, eip1559tx: let tx, hasRateWarning: let hasRateWarning, platform: let platform, rawTransaction: let rawTransaction, minReceiveDest: let minReceivedData):
+    case .confirmEIP1559Swap(data: let data, eip1559tx: let tx, priceImpact: let priceImpact, platform: let platform, rawTransaction: let rawTransaction, minReceiveDest: let minReceivedData):
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { (result) in
         self.navigationController.hideLoading()
         switch result {
         case .success:
           print("[EIP1559] success est gas")
-          self.showConfirmSwapScreen(data: data, transaction: nil, eip1559: tx, hasRateWarning: hasRateWarning, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
+          self.showConfirmSwapScreen(data: data, transaction: nil, eip1559: tx, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
         case .failure(let error):
           var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
@@ -587,7 +587,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
-  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction?, eip1559: EIP1559Transaction?, priceImpact: priceImpact, platform: String, rawTransaction: TxObject, minReceiveAmount: String, minReceiveTitle: String) {
+  fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction?, eip1559: EIP1559Transaction?, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveAmount: String, minReceiveTitle: String) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
       let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, eip1559Tx: eip1559, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceiveAmount, minReceiveTitle: minReceiveTitle)
