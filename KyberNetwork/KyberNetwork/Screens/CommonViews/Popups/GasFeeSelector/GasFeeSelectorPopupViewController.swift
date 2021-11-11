@@ -82,6 +82,9 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var isContainSippageSectionOption: Bool
   fileprivate(set) var isAdvancedMode: Bool = false
   var currentNonce: Int = -1
+  var isSpeedupMode: Bool = false
+  var isCancelMode: Bool = false
+  var transaction: InternalHistoryTransaction?
 
   var advancedGasLimit: String? {
     didSet {
@@ -121,6 +124,7 @@ class GasFeeSelectorPopupViewModel {
     self.isUseGasToken = isUseGasToken
     self.isContainSippageSectionOption = isContainSlippageSection
   }
+ 
 
   var currentRateDisplay: String {
     return String(format: "%.2f", self.currentRate)
@@ -398,9 +402,12 @@ class GasFeeSelectorPopupViewModel {
     guard let unwrap = self.advancedMaxFee, !unwrap.isEmpty else {
       return .none
     }
-    let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue - 5.0
+    let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+    let lowerLimitBigInt = self.maxPriorityFeeBigInt + baseFee
+    let lowerLimit = lowerLimitBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
     let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue * 1.5
     let maxFeeDouble = self.advancedMaxFee?.doubleValue ?? 0
+
     if maxFeeDouble < lowerLimit {
       return .low
     } else if maxFeeDouble > upperLimit {
@@ -413,14 +420,14 @@ class GasFeeSelectorPopupViewModel {
   var hasChanged: Bool {
     return (self.advancedGasLimit != nil) || (self.advancedMaxPriorityFee != nil) || (self.advancedMaxFee != nil)
   }
-  
+
   var hasNonceChaned: Bool {
     return self.advancedNonce != nil
   }
 
   var isAllAdvancedSettingsValid: Bool {
-    if self.maxFeeErrorStatus == .none,
-       self.maxPriorityErrorStatus == .none,
+    if self.maxFeeErrorStatus == .none || self.maxFeeErrorStatus == .high,
+       self.maxPriorityErrorStatus == .none || self.maxPriorityErrorStatus == .high,
        self.hasChanged {
       return true
     } else {
@@ -451,6 +458,8 @@ enum GasFeeSelectorPopupViewEvent {
   case useChiStatusChanged(status: Bool)
   case updateAdvancedSetting(gasLimit: String, maxPriorityFee: String, maxFee: String)
   case updateAdvancedNonce(nonce: String)
+  case speedupTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
+  case cancelTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -518,6 +527,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var mainEquivalentUSDLabel: UILabel!
   @IBOutlet weak var estGasFeeLabelTopContraint: NSLayoutConstraint!
   @IBOutlet weak var nonceErrorLabel: UILabel!
+  @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet weak var customNonceTitleLabel: UILabel!
+  @IBOutlet weak var customNonceContainerView: UIView!
+  @IBOutlet weak var advancedSlippageContainerView: UIView!
+  @IBOutlet weak var advancedSlippageDivideView: UIView!
+  
 
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -577,12 +592,14 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     switch self.viewModel.maxPriorityErrorStatus {
     case .low:
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
+      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
-      self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
-      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "warningColor")
+      self.advancedPriorityFeeField.textColor = UIColor(named: "warningColor")
+      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxPriorityFeeErrorLabel.text = ""
       self.advancedPriorityFeeField.textColor = UIColor(named: "textWhiteColor")
@@ -592,16 +609,26 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     switch self.viewModel.maxFeeErrorStatus {
     case .low:
       self.maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
+      self.maxFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxFeeErrorLabel.text = "Max Fee is higher than necessary"
-      self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
-      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
+      self.maxFeeErrorLabel.textColor = UIColor(named: "warningColor")
+      self.advancedMaxFeeField.textColor = UIColor(named: "warningColor")
+      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxFeeErrorLabel.text = ""
       self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
+    }
+    
+    if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+      self.titleLabel.text = self.viewModel.isSpeedupMode ? "Speedup Transaction" : "Cancel Transaction"
+      self.advancedSlippageContainerView.isHidden = true
+      self.slippageSectionContainerView.isHidden = true
+      self.advancedSlippageDivideView.isHidden = true
+      self.sendSwapDivideLineView.isHidden = true
     }
   }
 
@@ -726,6 +753,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIForCustomNonce() {
+    guard !(self.viewModel.isSpeedupMode || self.viewModel.isCancelMode) else {
+      self.customNonceTitleLabel.isHidden = true
+      self.customNonceContainerView.isHidden = true
+      self.nonceErrorLabel.isHidden = true
+      return
+    }
     guard self.viewModel.currentNonce != -1 else {
       self.advancedNonceField.text = ""
       self.nonceErrorLabel.isHidden = true
@@ -775,6 +808,20 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
          let maxFee = self.advancedMaxFeeField.text,
          self.viewModel.isAdvancedMode,
          self.viewModel.isAllAdvancedSettingsValid {
+        guard !self.viewModel.isSpeedupMode else {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
+          return
+        }
+
+        guard !self.viewModel.isCancelMode else {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
+          return
+        }
+
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
       }
       if let nonceString = self.advancedNonceField.text,

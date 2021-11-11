@@ -95,6 +95,41 @@ struct EIP1559Transaction: Codable {
       value: self.value
     )
   }
+  
+  func toSpeedupTransaction(gasLimit: String, priorityFee: String, maxGasFee: String) -> EIP1559Transaction {
+    let gasLimitBigInt = BigInt(gasLimit) ?? BigInt(0)
+    let priorityFeeBigInt = priorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let maxGasFeeBigInt = maxGasFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    
+    return EIP1559Transaction(
+      chainID: self.chainID,
+      nonce: self.nonce,
+      gasLimit: gasLimitBigInt.hexEncoded.hexSigned2Complement,
+      maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
+      maxGasFee: maxGasFeeBigInt.hexEncoded.hexSigned2Complement,
+      toAddress: self.toAddress,
+      fromAddress: self.fromAddress,
+      data: self.data,
+      value: self.value
+    )
+  }
+  
+  func toCancelTransaction(gasLimit: String, priorityFee: String, maxGasFee: String) -> EIP1559Transaction {
+    let gasLimitBigInt = BigInt(gasLimit) ?? BigInt(0)
+    let priorityFeeBigInt = priorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    let maxGasFeeBigInt = maxGasFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+    return EIP1559Transaction(
+      chainID: self.chainID,
+      nonce: self.nonce,
+      gasLimit: gasLimitBigInt.hexEncoded.hexSigned2Complement,
+      maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
+      maxGasFee: maxGasFeeBigInt.hexEncoded.hexSigned2Complement,
+      toAddress: self.toAddress,
+      fromAddress: self.toAddress,
+      data: "",
+      value: "00"
+    )
+  }
 
   fileprivate func gasPriceForCancelTransaction() -> BigInt {
     guard

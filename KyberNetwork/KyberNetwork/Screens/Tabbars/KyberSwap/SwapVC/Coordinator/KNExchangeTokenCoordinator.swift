@@ -930,18 +930,70 @@ extension KNExchangeTokenCoordinator: KNTransactionStatusPopUpDelegate {
   }
 
   fileprivate func openTransactionSpeedUpViewController(transaction: InternalHistoryTransaction) {
-    let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
-    let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
-    controller.loadViewIfNeeded()
-    controller.delegate = self
-    navigationController.present(controller, animated: true)
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let eipTx = transaction.eip1559Transaction,
+         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
+         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
+         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
+
+        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
+        viewModel.updateGasPrices(
+          fast: KNGasCoordinator.shared.fastKNGas,
+          medium: KNGasCoordinator.shared.standardKNGas,
+          slow: KNGasCoordinator.shared.lowKNGas,
+          superFast: KNGasCoordinator.shared.superFastKNGas
+        )
+        
+        viewModel.advancedGasLimit = gasLimitBigInt.description
+        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
+        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
+        viewModel.isSpeedupMode = true
+        viewModel.transaction = transaction
+        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+        vc.delegate = self
+        self.gasFeeSelectorVC = vc
+        self.navigationController.present(vc, animated: true, completion: nil)
+      }
+    } else {
+      let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
+      let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      navigationController.present(controller, animated: true)
+    }
   }
 
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
-    let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
-    let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
-    confirmPopup.delegate = self
-    self.navigationController.present(confirmPopup, animated: true, completion: nil)
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let eipTx = transaction.eip1559Transaction,
+         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
+         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
+         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
+
+        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
+        viewModel.updateGasPrices(
+          fast: KNGasCoordinator.shared.fastKNGas,
+          medium: KNGasCoordinator.shared.standardKNGas,
+          slow: KNGasCoordinator.shared.lowKNGas,
+          superFast: KNGasCoordinator.shared.superFastKNGas
+        )
+
+        viewModel.advancedGasLimit = gasLimitBigInt.description
+        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
+        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
+        viewModel.isCancelMode = true
+        viewModel.transaction = transaction
+        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+        vc.delegate = self
+        self.gasFeeSelectorVC = vc
+        self.navigationController.present(vc, animated: true, completion: nil)
+      }
+    } else {
+      let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
+      let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
+      confirmPopup.delegate = self
+      self.navigationController.present(confirmPopup, animated: true, completion: nil)
+    }
   }
 }
 
@@ -1058,6 +1110,50 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.rootViewController.coordinatorDidUpdateAdvancedNonce(nonce)
+    case .speedupTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        savedTx?.state = .speedup
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.description)
+          }
+        })
+      }
+    case .cancelTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        savedTx?.state = .cancel
+        savedTx?.type = .transferETH
+        savedTx?.transactionSuccessDescription = "-0 ETH"
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.description)
+          }
+        })
+      }
     default:
       break
     }
@@ -1307,19 +1403,19 @@ extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
   }
-  
+
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wallet)
   }
-  
+
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.openHistoryScreen()
   }
-  
+
   func sendTokenCoordinatorDidSelectManageWallet() {
     self.delegate?.exchangeTokenCoordinatorDidSelectManageWallet()
   }
-  
+
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddWallet()
   }
