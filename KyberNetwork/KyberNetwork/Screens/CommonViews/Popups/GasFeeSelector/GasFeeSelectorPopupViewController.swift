@@ -292,8 +292,11 @@ class GasFeeSelectorPopupViewModel {
       return self.priorityMedium ?? BigInt(0)
     case .slow:
       return self.prioritySlow ?? BigInt(0)
-    default:
-      return BigInt(0)
+    case .custom:
+      if let unwrap = self.advancedMaxPriorityFee, let priorityFee = BigInt(unwrap) {
+        return priorityFee
+      }
+      return self.valueForPrioritySelectedType(type: .medium)
     }
   }
 
