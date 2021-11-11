@@ -157,7 +157,7 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   fileprivate func setupUI() {
     self.searchTextField.delegate = self
-
+    self.searchTextField.setPlaceholder(text: "Search name or paste address".toBeLocalised(), color: UIColor(named: "normalTextColor")!)
     let nib = UINib(nibName: KNSearchTokenTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kSearchTokenTableViewCellID)
     self.tokensTableView.rowHeight = 40
