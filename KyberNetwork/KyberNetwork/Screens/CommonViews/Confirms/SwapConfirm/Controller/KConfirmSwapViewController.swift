@@ -33,12 +33,16 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var reserveRoutingMessageContainer: UIView!
   @IBOutlet weak var reserveRoutingMessageLabel: UILabel!
-  @IBOutlet weak var reserveRountingContainerTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var rateWarningLabel: UILabel!
-  @IBOutlet weak var rateTopContraint: NSLayoutConstraint!
-  
+
+  @IBOutlet weak var priceImpactValueLabel: UILabel!
+  @IBOutlet weak var swapAnywayCheckBox: UIButton!
+  @IBOutlet weak var swapAnywayContainerView: UIView!
+  @IBOutlet weak var priceImpactTextLabel: UILabel!
+  var isAccepted: Bool = true
+
   fileprivate var viewModel: KConfirmSwapViewModel
   weak var delegate: KConfirmSwapViewControllerDelegate?
   let transitor = TransitionDelegate()
@@ -102,24 +106,50 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
 
     let warningBalShown = self.viewModel.warningETHBalanceShown
-    self.warningETHBalanceLabel.isHidden = !warningBalShown
     self.warningETHBalImageView.isHidden = !warningBalShown
-    self.warningETHBalanceLabel.text = "After this swap you will not have enough ETH for further transactions.".toBeLocalised()
+    self.warningETHBalanceLabel.text = self.viewModel.warningETHText
 
     self.reserveRoutingMessageContainer.isHidden = self.viewModel.hint == "" || self.viewModel.hint == "0x"
-    if !warningBalShown {
-      self.reserveRountingContainerTopConstraint.constant = 23
-    } else {
-      self.reserveRountingContainerTopConstraint.constant = 62.5
-    }
 
     self.reserveRoutingMessageLabel.text = self.viewModel.reverseRoutingText
-    self.rateWarningLabel.isHidden = !self.viewModel.hasRateWarning
-    self.rateTopContraint.constant = self.viewModel.hasRateWarning ? 90.0 : 14.0
-
+    self.priceImpactTextLabel.text = self.viewModel.priceImpactText
+    self.priceImpactValueLabel.text = self.viewModel.priceImpactValueText
+    self.priceImpactValueLabel.textColor = self.viewModel.priceImpactValueTextColor
+    self.reserveRoutingMessageContainer.isHidden = !self.viewModel.priceImpactText.isEmpty
+    self.swapAnywayCheckBox.rounded(radius: 2)
+    if self.viewModel.hasPriceImpact {
+      self.isAccepted = false
+      self.swapAnywayContainerView.isHidden = false
+      self.updateUIPriceImpact()
+    } else {
+      self.swapAnywayContainerView.isHidden = true
+    }
+    
     self.view.layoutIfNeeded()
   }
+  
+  fileprivate func updateUIPriceImpact() {
+    guard self.viewModel.hasPriceImpact else { return }
+    if self.isAccepted {
+      self.swapAnywayCheckBox.rounded(radius: 2)
+      self.swapAnywayCheckBox.backgroundColor = UIColor(named: "buttonBackgroundColor")
+      self.swapAnywayCheckBox.setImage(UIImage(named: "filter_check_icon"), for: .normal)
+      self.confirmButton.isEnabled = true
+      self.confirmButton.alpha = 1
+    } else {
+      self.swapAnywayCheckBox.rounded(color: UIColor.lightGray, width: 1, radius: 2)
+      self.swapAnywayCheckBox.backgroundColor = UIColor.clear
+      self.swapAnywayCheckBox.setImage(nil, for: .normal)
+      self.confirmButton.isEnabled = false
+      self.confirmButton.alpha = 0.5
+    }
+  }
 
+  @IBAction func checkBoxTapped(_ sender: UIButton) {
+    self.isAccepted = !isAccepted
+    self.updateUIPriceImpact()
+  }
+  
   @IBAction func tapMinAcceptableRateValue(_ sender: Any?) {
     guard let message = self.viewModel.warningMinAcceptableRateMessage else { return }
     self.showTopBannerView(
@@ -151,8 +181,18 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
+    var mes = ""
+    if sender.tag == 1 {
+      if self.viewModel.priceImpact == -1000 {
+        mes = " Missing price impact. This may be due to the low liquidity. Please swap with caution."
+      } else {
+        mes = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactValueText)
+      }
+    } else {
+      mes = "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised()
+    }
     self.showBottomBannerView(
-      message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
+      message: mes,
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 10
     )

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,12 +42,14 @@
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
+                <outlet property="gasAndFeeBlockerView" destination="tcx-AV-92n" id="WbX-aY-7ZU"/>
                 <outlet property="gasFeeLabel" destination="3H6-w2-t6j" id="NPf-4J-IeU"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="loadingView" destination="hcc-rk-ckO" id="Urf-gI-Qgl"/>
                 <outlet property="minReceivedAmount" destination="nsk-dq-Pgz" id="2NG-Nz-AG8"/>
                 <outlet property="minReceivedAmountTitleLabel" destination="LBy-ze-Tit" id="vLs-M6-68z"/>
                 <outlet property="pendingTxIndicatorView" destination="9cQ-df-sfG" id="Aen-Do-U4N"/>
+                <outlet property="rateBlockerView" destination="fhC-QI-j4l" id="gWf-zm-XXy"/>
                 <outlet property="rateTimerView" destination="zIN-Er-xzM" id="ePL-E9-T7B"/>
                 <outlet property="rateWarningLabel" destination="n4X-Ab-mqq" id="wtj-48-xCO"/>
                 <outlet property="scrollContainerView" destination="P3a-OW-m6C" id="fpp-S6-VoO"/>
@@ -494,6 +496,14 @@
                                 <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="foI-dG-kSD"/>
                             </connections>
                         </button>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tcx-AV-92n">
+                            <rect key="frame" x="37" y="345" width="301" height="126"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
+                        </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhC-QI-j4l">
+                            <rect key="frame" x="37" y="233.5" width="301" height="24.5"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -511,17 +521,22 @@
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="top" secondItem="J8q-3O-zAd" secondAttribute="bottom" constant="27" id="8i9-jP-3bG"/>
                         <constraint firstAttribute="trailing" secondItem="3H6-w2-t6j" secondAttribute="trailing" constant="50" id="8l0-US-v8C"/>
                         <constraint firstItem="n4X-Ab-mqq" firstAttribute="centerY" secondItem="uFr-Qm-RNC" secondAttribute="centerY" id="9Bg-JB-as9"/>
+                        <constraint firstItem="fhC-QI-j4l" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="9DN-4o-CyH"/>
                         <constraint firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" constant="50" id="9xj-Kd-pj1"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="B8a-1M-INI"/>
                         <constraint firstItem="LBy-ze-Tit" firstAttribute="leading" secondItem="J0n-7n-8cR" secondAttribute="leading" id="CNR-zk-t41"/>
                         <constraint firstItem="5ww-el-4Y6" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="DIR-oa-WTC"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="top" secondItem="zIN-Er-xzM" secondAttribute="bottom" constant="10" id="DzF-Lx-Zyw"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" id="EAT-X0-g3Q"/>
+                        <constraint firstItem="fhC-QI-j4l" firstAttribute="top" secondItem="EfQ-Sl-42G" secondAttribute="bottom" id="Ehc-yW-6ES"/>
                         <constraint firstItem="aW5-gN-sdQ" firstAttribute="leading" secondItem="uFr-Qm-RNC" secondAttribute="trailing" constant="3" id="EqS-Ob-DTB"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="leading" secondItem="IWS-1b-dbc" secondAttribute="leading" id="GiH-y5-70V"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="top" secondItem="EfQ-Sl-42G" secondAttribute="bottom" constant="69.5" id="GrH-Y4-Ruo"/>
                         <constraint firstItem="uFr-Qm-RNC" firstAttribute="leading" secondItem="J0n-7n-8cR" secondAttribute="leading" id="H1u-04-VDA"/>
+                        <constraint firstItem="CrP-t5-bir" firstAttribute="bottom" secondItem="tcx-AV-92n" secondAttribute="bottom" id="H3h-KN-3OI"/>
+                        <constraint firstItem="fhC-QI-j4l" firstAttribute="leading" secondItem="EfQ-Sl-42G" secondAttribute="leading" id="Hte-mv-87K"/>
                         <constraint firstItem="WYb-EV-F1u" firstAttribute="leading" secondItem="EfQ-Sl-42G" secondAttribute="leading" id="Hzp-IA-jnj"/>
+                        <constraint firstItem="tcx-AV-92n" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" id="JOr-d5-QYR"/>
                         <constraint firstItem="ThL-2a-mea" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="8" symbolic="YES" id="JX3-bP-9es"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="centerY" secondItem="Hag-Sy-it8" secondAttribute="centerY" id="Jvq-ue-lr2"/>
                         <constraint firstItem="zVq-fT-O6e" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" constant="22" id="KUk-g9-nAA"/>
@@ -533,6 +548,7 @@
                         <constraint firstItem="CrP-t5-bir" firstAttribute="leading" secondItem="uFr-Qm-RNC" secondAttribute="leading" id="O1K-Yc-J8o"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="O7R-4m-ncb"/>
                         <constraint firstItem="J8q-3O-zAd" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="11" id="Ogu-h8-QQh"/>
+                        <constraint firstItem="tcx-AV-92n" firstAttribute="leading" secondItem="Hag-Sy-it8" secondAttribute="leading" id="OiF-Gz-UIO"/>
                         <constraint firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" constant="37" id="Pz0-JN-ret"/>
                         <constraint firstAttribute="trailing" secondItem="8mR-fc-0KZ" secondAttribute="trailing" constant="38" id="QiN-HF-SF5"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="centerX" secondItem="P3a-OW-m6C" secondAttribute="centerX" id="R3t-iN-2fH"/>
@@ -542,9 +558,11 @@
                         <constraint firstItem="n4X-Ab-mqq" firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" id="TRP-JH-nyg"/>
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="top" secondItem="P3a-OW-m6C" secondAttribute="top" constant="40" id="UeJ-4I-elg"/>
                         <constraint firstAttribute="bottom" secondItem="YJW-Oi-0g6" secondAttribute="bottom" constant="100" id="VK6-Me-ZgZ"/>
+                        <constraint firstItem="tcx-AV-92n" firstAttribute="trailing" secondItem="YJW-Oi-0g6" secondAttribute="trailing" id="bhg-h2-uzB"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="top" secondItem="XaR-wf-YRm" secondAttribute="bottom" constant="26" id="dhd-15-ko2"/>
                         <constraint firstItem="3H6-w2-t6j" firstAttribute="centerY" secondItem="zVq-fT-O6e" secondAttribute="centerY" id="dv9-Ca-WIt"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="e8i-07-pYd"/>
+                        <constraint firstItem="WYb-EV-F1u" firstAttribute="bottom" secondItem="fhC-QI-j4l" secondAttribute="bottom" id="j5h-Wt-IeU"/>
                         <constraint firstItem="5ww-el-4Y6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WYb-EV-F1u" secondAttribute="trailing" constant="7" id="jlR-x2-mXn"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="leading" secondItem="Hag-Sy-it8" secondAttribute="trailing" constant="15" id="jn6-YJ-OmP"/>
                         <constraint firstItem="nsk-dq-Pgz" firstAttribute="centerY" secondItem="LBy-ze-Tit" secondAttribute="centerY" id="jsT-KX-Zhn"/>

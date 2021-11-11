@@ -9,8 +9,8 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
-  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, hasRateWarning: Bool, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
+  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
   case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
@@ -43,21 +43,18 @@ class KSwapViewController: KNBaseViewController {
   weak var delegate: KSwapViewControllerDelegate?
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
-
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var fromTokenButton: UIButton!
-
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var toTokenButton: UIButton!
-
   @IBOutlet weak var fromAmountTextField: UITextField!
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var toAmountTextField: UITextField!
-
   @IBOutlet weak var exchangeRateLabel: UILabel!
-
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
 
+  @IBOutlet weak var rateBlockerView: UIView!
+  @IBOutlet weak var gasAndFeeBlockerView: UIView!
   @IBOutlet weak var continueButton: UIButton!
   @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var gasFeeLabel: UILabel!
@@ -161,8 +158,14 @@ class KSwapViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
     self.setupRateTimer()
     self.setupLoadingView()
+    self.setupHideRateAndFeeViews(shouldHideInfo: true)
   }
-  
+
+  fileprivate func setupHideRateAndFeeViews(shouldHideInfo: Bool) {
+    self.gasAndFeeBlockerView.isHidden = !shouldHideInfo
+    self.rateBlockerView.isHidden = !shouldHideInfo
+  }
+
   fileprivate func setupRateTimer() {
     self.rateTimerView.lineWidth = 2
     self.rateTimerView.lineColor = UIColor(named: "buttonBackgroundColor")!
@@ -367,7 +370,13 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+    var message = ""
+    if self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty {
+      message = " Missing price impact. This may be due to the low liquidity. Please swap with caution."
+    } else {
+      message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+    }
+
     self.showTopBannerView(
       with: "",
       message: message,
@@ -657,6 +666,7 @@ extension KSwapViewController {
   fileprivate func updateUIRefPrice() {
     let change = self.viewModel.refPriceDiffText
     self.rateWarningLabel.text = change
+    self.rateWarningLabel.textColor = self.viewModel.priceImpactValueTextColor
   }
 
   fileprivate func updateUIMinReceiveAmount() {
@@ -833,11 +843,12 @@ extension KSwapViewController {
 
   func coordinatorDidUpdateRates(from: TokenObject, to: TokenObject, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
-    self.updateInputFieldsUI()
     self.viewModel.reloadBestPlatform()
     self.updateExchangeRateField()
     self.setUpChangeRateButton()
+    self.updateInputFieldsUI()
     self.updateUIRefPrice()
+    self.updateInputFieldsUI()
     self.updateUIMinReceiveAmount()
   }
 
@@ -853,6 +864,7 @@ extension KSwapViewController {
     self.updateInputFieldsUI()
     self.setUpGasFeeView()
     self.updateEstimatedGasLimit()
+    self.updateUIRefPrice()
   }
 
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
@@ -928,13 +940,14 @@ extension KSwapViewController {
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
+    let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
     if self.viewModel.isUseEIP1559 {
       guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
       print(signTx)
       self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(
         data: exchange,
         eip1559tx: signTx,
-        hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty,
+        priceImpact: priceImpactValue,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
         minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
@@ -943,7 +956,7 @@ extension KSwapViewController {
       self.delegate?.kSwapViewController(self, run: .confirmSwap(
         data: exchange,
         tx: signTx,
-        hasRateWarning: !self.viewModel.refPriceDiffText.isEmpty,
+        priceImpact: priceImpactValue,,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
         minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
@@ -1090,8 +1103,10 @@ extension KSwapViewController: UITextFieldDelegate {
     }
 
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
+    let shouldHideInfo = self.viewModel.expectedReceivedAmountText.isEmpty && self.viewModel.expectedExchangeAmountText.isEmpty
+    self.setupHideRateAndFeeViews(shouldHideInfo: shouldHideInfo)
   }
-  
+
   @objc func keyboardPauseTyping(timer: Timer) {
     self.updateViewAmountDidChange()
   }

@@ -159,15 +159,15 @@ extension InvestViewController: FSPagerViewDelegate {
 
 extension InvestViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 0.0
+    return 12.0
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets.zero
+    return UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let cellWidth = (collectionView.frame.size.width - 20) / 3
+    let cellWidth = (collectionView.frame.size.width - 24) / 3
     return CGSize(
       width: cellWidth,
       height: MarketingPartnerCollectionViewCell.kMarketingPartnerCellHeight
