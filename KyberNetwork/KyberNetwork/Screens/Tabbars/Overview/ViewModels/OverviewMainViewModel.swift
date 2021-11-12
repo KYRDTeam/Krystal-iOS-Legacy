@@ -681,6 +681,9 @@ class OverviewMainViewModel {
   }
     
   var displayTotalSummaryValue: String {
+    guard let isDefaultValue = self.summaryDataSource.first?.isDefaultValue, isDefaultValue == false else {
+      return "--"
+    }
     guard !self.hideBalanceStatus else {
       return "********"
     }
