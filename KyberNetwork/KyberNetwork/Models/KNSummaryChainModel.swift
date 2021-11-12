@@ -13,6 +13,13 @@ class KNSummaryChainModel: Codable {
   var percentage: Double
   var quotes: [String: UnitValueModel]
   
+  init(chainId: Int, usdValue: Double, percentage: Double, quotes:[String: UnitValueModel]) {
+    self.chainId = chainId
+    self.usdValue = usdValue
+    self.percentage = percentage
+    self.quotes = quotes
+  }
+  
   init(json: JSONDictionary) {
     self.chainId = json["chainID"] as? Int ?? 0
     self.usdValue = json["usdValue"] as? Double ?? 0.0
@@ -56,16 +63,20 @@ class KNSummaryChainModel: Codable {
 
   func chainType() -> ChainType {
     switch chainId {
-    case Constants.ethMainnetPRC.chainID:
+    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
       return .eth
-    case Constants.bscMainnetPRC.chainID:
+    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
       return .bsc
-    case Constants.polygonMainnetPRC.chainID:
+    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
       return .polygon
-    case Constants.avalancheMainnetPRC.chainID:
+    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
       return .avalanche
     default:
       return .avalanche
     }
+  }
+  
+  static func defaultValue(chainId: Int) -> KNSummaryChainModel {
+    return KNSummaryChainModel(chainId: chainId, usdValue: 0, percentage: 0, quotes: [:])
   }
 }
