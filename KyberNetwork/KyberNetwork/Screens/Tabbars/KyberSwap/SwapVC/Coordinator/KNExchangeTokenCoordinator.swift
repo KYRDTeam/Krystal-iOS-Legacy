@@ -291,8 +291,9 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
     guard let data = provider.signContractGenericEIP1559Transaction(eip1559Tx) else {
       return
     }
-
+    self.navigationController.displayLoading()
     KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+      self.navigationController.hideLoading()
       switch sendResult {
       case .success(let hash):
         provider.minTxCount += 1
@@ -312,6 +313,8 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
           if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
             errorMessage = message
+          } else {
+            errorMessage = apiKitError.localizedDescription
           }
         }
         self.navigationController.showErrorTopBannerMessage(
