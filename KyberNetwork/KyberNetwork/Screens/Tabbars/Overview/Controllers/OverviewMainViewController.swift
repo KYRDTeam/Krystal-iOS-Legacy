@@ -311,7 +311,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
     self.tableView.reloadData()
   }
-  
+
   static var hasSafeArea: Bool {
       guard #available(iOS 11.0, *), let topPadding = UIApplication.shared.keyWindow?.safeAreaInsets.top, topPadding > 24 else {
           return false
@@ -501,6 +501,9 @@ extension OverviewMainViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    guard self.viewModel.overviewMode == .overview else {
+      return
+    }
     guard !self.viewModel.isEmpty() else {
       return
     }
