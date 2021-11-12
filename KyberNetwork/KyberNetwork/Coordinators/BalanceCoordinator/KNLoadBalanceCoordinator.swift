@@ -369,6 +369,19 @@ class KNLoadBalanceCoordinator {
         BalanceStorage.shared.saveSummaryChainModels(summaryChains)
         completion(true)
       } else {
+        var summaryChains: [KNSummaryChainModel] = []
+        if KNEnvironment.default != .ropsten {
+          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.bscRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheRoptenPRC.chainID)]
+        } else {
+          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.bscMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheMainnetPRC.chainID)]
+        }
+        BalanceStorage.shared.saveSummaryChainModels(summaryChains)
         completion(false)
       }
     }
