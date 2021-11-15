@@ -39,7 +39,6 @@ class Storage {
   static func store<T: Encodable>(_ object: T, as fileName: String) {
     DispatchQueue.global(qos: .background).async {
       let url = getDocumentsDirectory().appendingPathComponent(fileName, isDirectory: false)
-      
       let encoder = JSONEncoder()
       do {
         let data = try encoder.encode(object)

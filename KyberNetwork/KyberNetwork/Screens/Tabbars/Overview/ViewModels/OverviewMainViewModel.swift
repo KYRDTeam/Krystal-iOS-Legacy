@@ -312,24 +312,17 @@ class OverviewMainViewModel {
     self.reloadSummaryChainData()
   }
 
-  func reloadSummaryChainData(_ summaryChains: [KNSummaryChainModel] = []) {
+  func reloadSummaryChainData() {
     let summaryChainModels = BalanceStorage.shared.getSummaryChainModels()
-    if summaryChains.isEmpty {
-      self.summaryDataSource = summaryChainModels.map({ summaryModel in
-        let viewModel = OverviewSummaryCellViewModel(dataModel: summaryModel, currency: self.currencyMode)
-        viewModel.hideBalanceStatus = self.hideBalanceStatus
-        return viewModel
-      })
-    } else {
-      self.summaryDataSource = summaryChains.map({ summaryModel in
-        let viewModel = OverviewSummaryCellViewModel(dataModel: summaryModel, currency: self.currencyMode)
-        viewModel.hideBalanceStatus = self.hideBalanceStatus
-        return viewModel
-      })
-    }
+    self.summaryDataSource = summaryChainModels.map({ summaryModel in
+      let viewModel = OverviewSummaryCellViewModel(dataModel: summaryModel, currency: self.currencyMode)
+      viewModel.hideBalanceStatus = self.hideBalanceStatus
+      return viewModel
+    })
   }
 
   func reloadAllData() {
+    reloadSummaryChainData()
     switch self.currentMode {
     case .market(let mode):
       let marketToken = KNSupportedTokenStorage.shared.marketTokens.sorted { (left, right) -> Bool in

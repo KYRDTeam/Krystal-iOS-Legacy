@@ -298,13 +298,6 @@ class OverviewMainViewController: KNBaseViewController {
     self.infoCollectionView.reloadData()
   }
 
-  func coordinatorDidUpdateSummary(summaryChains: [KNSummaryChainModel]) {
-    guard self.isViewLoaded else { return }
-    self.viewModel.reloadSummaryChainData(summaryChains)
-    self.tableView.reloadData()
-    self.infoCollectionView.reloadData()
-  }
-
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {
     self.viewModel.updateCurrencyMode(mode: mode)
     self.reloadUI()

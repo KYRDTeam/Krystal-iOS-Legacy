@@ -11,6 +11,7 @@ import BigInt
 class BalanceStorage {
   static let shared = BalanceStorage()
   private var supportedTokenBalances: [TokenBalance] = []
+  private var summaryChainModels: [KNSummaryChainModel] = []
   private var allLendingBalance: [LendingPlatformBalance] = []
   private var allLiquidityPool: [LiquidityPoolModel] = []
   private var nftBalance: [NFTSection] = []
@@ -51,6 +52,8 @@ class BalanceStorage {
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
       self.nftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.customNftBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
+      self.summaryChainModels = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
+
       DispatchQueue.main.async {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       }
@@ -94,11 +97,12 @@ class BalanceStorage {
     self.allLiquidityPool = liquidityPools
     Storage.store(liquidityPools, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.liquidityPoolStoreFileName)
   }
-  
+
   func saveSummaryChainModels(_ summaryChainsModels: [KNSummaryChainModel]) {
     guard let unwrapped = self.wallet else {
       return
     }
+    self.summaryChainModels = summaryChainsModels
     Storage.store(summaryChainsModels, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName)
   }
 
@@ -164,11 +168,11 @@ class BalanceStorage {
     
     return BigInt(total * pow(10.0, 18.0))
   }
-  
+
   func getTotalSupplyBalance(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
     let allBalances: [LendingPlatformBalance] = self.getAllLendingBalances()
-    
+
     allBalances.forEach { (item) in
       item.balances.forEach { (balanceItem) in
         let balance = BigInt(balanceItem.supplyBalance) ?? BigInt(0)
@@ -184,10 +188,10 @@ class BalanceStorage {
       let value = balance * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(otherData.decimal)
       total += value
     }
-    
+
     return total
   }
-  
+
   func getSupplyBalances() -> ([String], [String : [Any]]) {
     var sectionKeys: [String] = []
     var balanceDict: [String : [Any]] = [:]
@@ -207,10 +211,7 @@ class BalanceStorage {
   }
   
   func getSummaryChainModels() -> [KNSummaryChainModel] {
-    guard let unwrapped = self.wallet else {
-      return []
-    }
-    return Storage.retrieve(KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
+    return self.summaryChainModels
   }
 
   func getLiquidityPools(currency: CurrencyMode) -> ([String], [String: [Any]]) {
