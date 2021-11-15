@@ -13,7 +13,7 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
   @IBOutlet var pageViewWidth: [NSLayoutConstraint]!
   @IBOutlet weak var paggerViewLeadingConstraint: NSLayoutConstraint!
   static let paggerWidth = CGFloat(52)
-
+  fileprivate var didShowFirstCell = false
   override func commonInit() {
     super.commonInit()
     self.backgroundColor = .clear
@@ -77,6 +77,7 @@ extension KNWelcomeScreenCollectionView: UIScrollViewDelegate {
 }
 
 extension KNWelcomeScreenCollectionView: UICollectionViewDataSource {
+
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
   }
@@ -92,6 +93,17 @@ extension KNWelcomeScreenCollectionView: UICollectionViewDataSource {
     ) as! KNWelcomeScreenCollectionViewCell
     let data = self.viewModel.welcomeData(at: indexPath.row)
     cell.updateCell(with: data)
+    if !didShowFirstCell && indexPath.row == 0 {
+      cell.playAnimation()
+      didShowFirstCell = true
+    }
     return cell
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    for indexPath in self.collectionView.indexPathsForVisibleItems {
+      let cell = self.collectionView.cellForItem(at: indexPath) as! KNWelcomeScreenCollectionViewCell
+      cell.playAnimation()
+    }
   }
 }

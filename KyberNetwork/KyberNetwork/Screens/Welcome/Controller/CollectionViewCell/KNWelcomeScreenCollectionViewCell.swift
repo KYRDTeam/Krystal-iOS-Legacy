@@ -18,7 +18,9 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
     self.animationView.animation = Animation.named(data.jsonFileName)
     self.animationView.contentMode = .scaleAspectFit
     self.animationView.loopMode = .loop
+  }
+  
+  func playAnimation() {
     self.animationView.play()
-   
   }
 }
