@@ -8,7 +8,7 @@
 import UIKit
 
 class OverviewSummaryCellViewModel {
-  let currency: CurrencyMode
+  var currency: CurrencyMode
   let percentage: Double
   let value: Double
   var hideBalanceStatus: Bool = true
@@ -37,14 +37,14 @@ class OverviewSummaryCellViewModel {
     let currencyFormatter = StringFormatter()
     return self.currency.symbol() + currencyFormatter.currencyString(value: self.value, decimals: self.currency.decimalNumber())
   }
-  
+
   func percentString() -> String {
     guard !self.isDefaultValue else {
       return "--"
     }
     return StringFormatter.percentString(value: self.percentage)
   }
-  
+
   func chainIconImage() -> UIImage {
     switch self.chainType {
     case .eth:
@@ -59,7 +59,7 @@ class OverviewSummaryCellViewModel {
       return UIImage(named: "default_token")!
     }
   }
-  
+
   func chainName() -> String {
     switch self.chainType {
     case .eth:

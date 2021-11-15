@@ -210,7 +210,6 @@ class BalanceStorage {
     guard let unwrapped = self.wallet else {
       return []
     }
-    
     return Storage.retrieve(KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
   }
 

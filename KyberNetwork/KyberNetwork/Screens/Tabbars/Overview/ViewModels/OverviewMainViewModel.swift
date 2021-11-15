@@ -307,7 +307,12 @@ class OverviewMainViewModel {
     return assetTokens.count != filteredTokens.count
   }
 
-  func reloadSummaryChainData(summaryChains: [KNSummaryChainModel]) {
+  func updateCurrencyMode(mode: CurrencyMode) {
+    self.currencyMode = mode
+    self.reloadSummaryChainData()
+  }
+
+  func reloadSummaryChainData(_ summaryChains: [KNSummaryChainModel] = []) {
     let summaryChainModels = BalanceStorage.shared.getSummaryChainModels()
     if summaryChains.isEmpty {
       self.summaryDataSource = summaryChainModels.map({ summaryModel in
@@ -683,6 +688,21 @@ class OverviewMainViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
+
+    guard let isDefaultValue = self.summaryDataSource.first?.isDefaultValue, isDefaultValue == false else {
+      return self.defaultDisplayTotalValue
+    }
+    let currentChainViewModel = self.summaryDataSource.first { viewModel in
+      viewModel.chainType == KNGeneralProvider.shared.currentChain
+    }
+    guard let total = currentChainViewModel?.value else {
+      return self.defaultDisplayTotalValue
+    }
+    let formatter = StringFormatter()
+    return self.currencyMode.symbol() + formatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+  }
+
+  var defaultDisplayTotalValue: String {
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
     return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
