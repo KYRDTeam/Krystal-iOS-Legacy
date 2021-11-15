@@ -13,6 +13,9 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
     self.loadBalanceCoordinator = KNLoadBalanceCoordinator(session: self.session)
+    self.loadBalanceCoordinator?.completedGetTotalBalance = { summaryChains in
+      self.overviewTabCoordinator?.appCoordinatorDidUpdateSummary(summaryChains: summaryChains)
+    }
     self.loadBalanceCoordinator?.resume()
 
     self.tabbarController = KNTabBarController()

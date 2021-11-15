@@ -22,7 +22,7 @@ class KNLoadBalanceCoordinator {
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
-  
+  var completedGetTotalBalance: (([KNSummaryChainModel]) -> Void)?
 
   deinit {
     self.exit()
@@ -367,6 +367,9 @@ class KNLoadBalanceCoordinator {
           summaryChains.append(summaryChainModel)
         }
         BalanceStorage.shared.saveSummaryChainModels(summaryChains)
+        if let completedGetTotalBalance = self.completedGetTotalBalance {
+          completedGetTotalBalance(summaryChains)
+        }
         completion(true)
       } else {
         var summaryChains: [KNSummaryChainModel] = []
@@ -381,7 +384,9 @@ class KNLoadBalanceCoordinator {
                            KNSummaryChainModel.defaultValue(chainId: Constants.polygonMainnetPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.avalancheMainnetPRC.chainID)]
         }
-        BalanceStorage.shared.saveSummaryChainModels(summaryChains)
+        if let completedGetTotalBalance = self.completedGetTotalBalance {
+          completedGetTotalBalance(summaryChains)
+        }
         completion(false)
       }
     }

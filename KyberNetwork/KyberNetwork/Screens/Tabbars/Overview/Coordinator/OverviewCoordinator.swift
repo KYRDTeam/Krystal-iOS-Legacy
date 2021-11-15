@@ -95,6 +95,10 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
   
+  func appCoordinatorDidUpdateSummary(summaryChains: [KNSummaryChainModel]) {
+    self.rootViewController.coordinatorDidUpdateSummary(summaryChains: summaryChains)
+  }
+  
   func appCoordinatorTokensTransactionsDidUpdate() {
     self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }
