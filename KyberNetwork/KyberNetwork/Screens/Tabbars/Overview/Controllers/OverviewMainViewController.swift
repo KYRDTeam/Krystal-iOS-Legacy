@@ -426,6 +426,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     ) as! OverviewSummaryCell
 
     let chainModel = self.viewModel.summaryDataSource[indexPath.row]
+    chainModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
     cell.updateCell(chainModel)
     return cell
   }
