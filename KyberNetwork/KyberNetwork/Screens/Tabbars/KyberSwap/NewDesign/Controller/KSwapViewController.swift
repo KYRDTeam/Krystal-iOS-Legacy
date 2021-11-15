@@ -12,7 +12,6 @@ enum KSwapViewEvent {
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
-  case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
   case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case updateRate(rate: Double)
   case openHistory

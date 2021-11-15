@@ -536,7 +536,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var advancedSlippageContainerView: UIView!
   @IBOutlet weak var advancedSlippageDivideView: UIView!
   @IBOutlet weak var advancedModeApplyButton: UIButton!
-  
 
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -601,8 +600,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
-      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "warningColor")
-      self.advancedPriorityFeeField.textColor = UIColor(named: "warningColor")
+//      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "warningColor")
+//      self.advancedPriorityFeeField.textColor = UIColor(named: "warningColor")
+      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
+      self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxPriorityFeeErrorLabel.text = ""
@@ -626,7 +627,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
     }
-    
+
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
       self.titleLabel.text = self.viewModel.isSpeedupMode ? "Speedup Transaction" : "Cancel Transaction"
       self.advancedSlippageContainerView.isHidden = true
@@ -791,6 +792,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: selectType, value: self.viewModel.valueForSelectedType(type: selectType)))
     self.updateGasPriceUIs()
     self.updateUIForMainGasFee()
+    self.updateUIAdvancedSetting()
   }
 
   @IBAction func customRateButtonTapped(_ sender: UIButton) {

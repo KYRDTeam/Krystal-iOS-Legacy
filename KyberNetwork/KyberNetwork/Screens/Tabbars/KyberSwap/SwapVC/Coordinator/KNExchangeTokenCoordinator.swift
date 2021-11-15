@@ -404,8 +404,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       }
-    case .quickTutorial(let step, let pointsAndRadius):
-      self.openQuickTutorial(controller, step: step, pointsAndRadius: pointsAndRadius)
     case .openGasPriceSelect(let gasLimit, let type, let pair, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
       viewModel.updateGasPrices(
@@ -531,46 +529,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         }
       }
     }
-  }
-
-  fileprivate func openQuickTutorial(_ controller: KSwapViewController, step: Int, pointsAndRadius: [(CGPoint, CGFloat)]) {
-    var attributedString = NSMutableAttributedString()
-    var contentTopOffset: CGFloat = 0.0
-    var nextButtonText = "next".toBeLocalised()
-    switch step {
-    case 1:
-      attributedString = NSMutableAttributedString(string: "Step 1\nSelect tokens you want to swap.".toBeLocalised(), attributes: [
-        .font: UIFont.Kyber.regular(with: 18),
-        .foregroundColor: UIColor(white: 1.0, alpha: 1.0),
-        .kern: 0.0,
-      ])
-      contentTopOffset = 315
-    case 2:
-      attributedString = NSMutableAttributedString(string: "Step 2\nEnter any amount manually or use quick select.".toBeLocalised(), attributes: [
-        .font: UIFont.Kyber.regular(with: 18),
-        .foregroundColor: UIColor(white: 1.0, alpha: 1.0),
-        .kern: 0.0,
-      ])
-      contentTopOffset = 400
-    case 3:
-      attributedString = NSMutableAttributedString(string: "Step 3 (optional)\nAdjust gas fees and slippage".toBeLocalised(), attributes: [
-        .font: UIFont.Kyber.regular(with: 18),
-        .foregroundColor: UIColor(white: 1.0, alpha: 1.0),
-        .kern: 0.0,
-      ])
-      contentTopOffset = 166
-      nextButtonText = "Got It".toBeLocalised()
-    default:
-      break
-    }
-    let overlayer = controller.createOverlay(
-      frame: controller.tabBarController!.view.frame,
-      contentText: attributedString,
-      contentTopOffset: contentTopOffset,
-      pointsAndRadius: pointsAndRadius,
-      nextButtonTitle: nextButtonText
-    )
-    controller.tabBarController!.view.addSubview(overlayer)
   }
 
   fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
