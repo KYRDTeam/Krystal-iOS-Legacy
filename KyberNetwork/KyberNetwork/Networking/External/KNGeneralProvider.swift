@@ -129,13 +129,6 @@ class KNGeneralProvider {
     }
   }
 
-  var allChainPath: String? {
-    if KNEnvironment.default == .ropsten {
-      return "ropsten,bsctestnet,mumbai,fuji"
-    }
-    return nil
-  }
-
   var quoteTokenObject: TokenObject {
     switch self.currentChain {
     case .eth:

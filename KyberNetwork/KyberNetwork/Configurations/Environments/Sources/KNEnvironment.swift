@@ -246,4 +246,11 @@ enum KNEnvironment: Int {
     default: return KNSecret.ropstenKyberNodeURL
     }
   }
+
+  static var allChainPath: String? {
+    if KNEnvironment.default == .ropsten {
+      return "ropsten,bsctestnet,mumbai,fuji"
+    }
+    return nil
+  }
 }
