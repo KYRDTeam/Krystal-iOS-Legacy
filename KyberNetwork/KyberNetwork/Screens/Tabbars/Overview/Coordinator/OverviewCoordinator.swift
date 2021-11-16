@@ -94,7 +94,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateDidUpdateTokenList()
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
-  
+
   func appCoordinatorTokensTransactionsDidUpdate() {
     self.historyCoordinator?.appCoordinatorTokensTransactionsDidUpdate()
   }

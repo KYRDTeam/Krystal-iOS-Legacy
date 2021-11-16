@@ -13,11 +13,11 @@ enum ChainType: Codable {
   enum Key: CodingKey {
     case rawValue
   }
-  
+
   enum CodingError: Error {
     case unknownValue
   }
-  
+
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Key.self)
     let rawValue = try container.decode(Int.self, forKey: .rawValue)
@@ -34,7 +34,7 @@ enum ChainType: Codable {
       throw CodingError.unknownValue
     }
   }
-  
+
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
@@ -59,7 +59,7 @@ enum ChainType: Codable {
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
-  
+
   var currentChain: ChainType {
     didSet {
       Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
@@ -78,7 +78,7 @@ class KNGeneralProvider {
       return KNEnvironment.default.avalancheRPC
     }
   }
-  
+
   var currentWeb3: Web3Swift = Web3Swift()
   
   var quoteToken: String {
@@ -106,7 +106,7 @@ class KNGeneralProvider {
       return .avax
     }
   }
-  
+
   var chainPath: String {
     switch self.currentChain {
     case .eth:
@@ -128,7 +128,7 @@ class KNGeneralProvider {
       return "/avalanche"
     }
   }
-  
+
   var quoteTokenObject: TokenObject {
     switch self.currentChain {
     case .eth:
@@ -141,7 +141,7 @@ class KNGeneralProvider {
       return KNSupportedTokenStorage.shared.avaxToken
     }
   }
-  
+
   var quoteTokenPrice: TokenPrice? {
     switch self.currentChain {
     case .eth:
@@ -154,7 +154,7 @@ class KNGeneralProvider {
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
     }
   }
-  
+
   var chainIconImage: UIImage? {
     switch self.currentChain {
     case .eth:
@@ -167,7 +167,7 @@ class KNGeneralProvider {
       return UIImage(named: "chain_avax_icon")
     }
   }
-  
+
   var proxyAddress: String {
     switch self.currentChain {
     case .eth:
@@ -180,7 +180,7 @@ class KNGeneralProvider {
       return Constants.krystalProxyAddressAvax.lowercased()
     }
   }
-  
+
   var compoundSymbol: String {
     switch self.currentChain {
     case .eth:
@@ -193,7 +193,7 @@ class KNGeneralProvider {
       return "" //TODO: wait for compound symbol
     }
   }
-  
+
   var compoundImageIcon: UIImage? {
     switch self.currentChain {
     case .eth:
@@ -206,7 +206,7 @@ class KNGeneralProvider {
       return UIImage(named: "") //TODO: wait for compound icon
     }
   }
-  
+
   var tokenType: String {
     switch self.currentChain {
     case .eth:
@@ -219,7 +219,7 @@ class KNGeneralProvider {
       return "ARC20"
     }
   }
-  
+
   var apiKey: String {
     switch self.currentChain {
     case .eth:
@@ -232,7 +232,7 @@ class KNGeneralProvider {
       return "" //TODO: wait for avalance api key
     }
   }
-  
+
   var lendingDistributionPlatform: String {
     switch self.currentChain {
     case .eth:
@@ -245,7 +245,7 @@ class KNGeneralProvider {
       return ""
     }
   }
-  
+
   var chainName: String {
     switch self.currentChain {
     case .eth:
@@ -258,7 +258,7 @@ class KNGeneralProvider {
       return "Avalanche"
     }
   }
-  
+
   var priceAlertMessage: String {
     switch self.currentChain {
     case .eth:
@@ -295,7 +295,7 @@ class KNGeneralProvider {
     }
   }
 
-  var web3SwiftAlchemy: Web3Swift  {
+  var web3SwiftAlchemy: Web3Swift {
     if let path = URL(string: self.customRPC.endpointAlchemy + KNEnvironment.default.nodeEndpoint) {
       return Web3Swift(url: path)
     } else {
@@ -391,9 +391,9 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func getNFTBalance(for address: String, id: String, contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    
+
     self.getNFTBalanceEncodeData(for: address, id: id) { [weak self] encodeResult in
       guard let `self` = self else { return }
       switch encodeResult {
@@ -446,7 +446,7 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func getERC721Name(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getERC721NameEncodeData { [weak self] encodeResult in
       guard let `self` = self else { return }
@@ -473,7 +473,7 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func getTokenDecimals(address: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getDecimalsEncodeData { [weak self] encodeResult in
       guard let `self` = self else { return }
@@ -500,7 +500,7 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func getOwnerOf(address: String, id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     self.getOwnerOfEncodeData(id: id) { [weak self] encodeResult in
       guard let `self` = self else { return }
@@ -527,7 +527,7 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func getSupportInterface(address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     self.getSupportInterfaceEncodeData { encodeResult in
       switch encodeResult {
@@ -835,7 +835,7 @@ class KNGeneralProvider {
       }
     }
   }
-  
+
   func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
@@ -1093,7 +1093,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getNFTBalanceEncodeData(for address: String, id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC721BalanceEncode(address: address, id: id)
     self.web3Swift.request(request: request) { result in
@@ -1105,7 +1105,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getOwnerOfEncodeData(id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC1155OwnerOfEncode(id: id)
     self.web3Swift.request(request: request) { result in
@@ -1129,7 +1129,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getERC721NameEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC721NameEncode()
     self.web3Swift.request(request: request) { result in
@@ -1153,7 +1153,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   func getSupportInterfaceEncodeData(completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetSupportInterfaceEncode()
     self.web3Swift.request(request: request) { result in
@@ -1303,7 +1303,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getTokenSymbolDecodeData(from symbol: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20SymbolDecode(data: symbol)
     self.web3Swift.request(request: request) { result in
@@ -1327,7 +1327,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getTokenDecimalsDecodeData(from decimals: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC20DecimalsDecode(data: decimals)
     self.web3Swift.request(request: request) { result in
@@ -1339,7 +1339,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getOwnerOfDecodeData(from data: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC1155OwnerOfDecode(data: data)
     self.web3Swift.request(request: request) { result in
@@ -1351,7 +1351,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   fileprivate func getSupportInterfaceDecodeData(from value: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     let request = GetSupportInterfaceDecode(data: value)
     self.web3Swift.request(request: request) { result in
@@ -1427,7 +1427,7 @@ extension KNGeneralProvider {
       }
     }
   }
-  
+
   func getEstimateGasLimit(transaction: SignTransaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     let request = KNEstimateGasLimitRequest(
       from: transaction.account.address.description,

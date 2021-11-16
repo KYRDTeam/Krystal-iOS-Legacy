@@ -882,6 +882,7 @@ enum KrytalService {
   case getRewards(address: String, accessToken: String)
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
+  case getTotalBalance(address: String,_ chains: String?)
   case getGasPrice2
 }
 
@@ -901,6 +902,8 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
+    case .getTotalBalance:
+      return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -979,6 +982,8 @@ extension KrytalService: TargetType {
       return "/v1/account/claimRewards"
     case .checkEligibleWallet:
       return "/v1/account/eligible"
+    case .getTotalBalance:
+      return "/v1/account/totalBalances"
     case .getGasPrice2:
       return "/v1/gasPrice"
     }
@@ -1231,6 +1236,14 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "address": address
       ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getTotalBalance(address: let address, let chains):
+        var json: JSONDictionary = [
+          "address": address
+        ]
+        if let chains = chains {
+          json["chains"] = chains
+        }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice2:
       return .requestPlain

@@ -45,6 +45,7 @@ target 'KyberNetwork' do
   pod 'WalletConnectSwift'
   pod 'Web3'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
+  pod 'lottie-ios'
   pod 'TrustWalletCore', '~> 2.6.29'
 
   target 'KyberNetworkTests' do

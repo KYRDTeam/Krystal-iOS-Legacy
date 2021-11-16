@@ -34,6 +34,7 @@ public struct Constants {
   public static let lendingBalanceStoreFileName = "-lending-balance.data"
   public static let lendingDistributionBalanceStoreFileName = "-lending-distribution-balance.data"
   public static let liquidityPoolStoreFileName = "-liquidity-pool.data"
+  public static let summaryChainStoreFileName = "-summary-chain.data"
   public static let customTokenStoreFileName = "custom-token.data"
   public static let etherscanTokenTransactionsStoreFileName = "-etherscan-token-transaction.data"
   public static let etherscanInternalTransactionsStoreFileName = "-etherscan-internal-transaction.data"

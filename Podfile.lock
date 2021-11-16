@@ -106,6 +106,7 @@ PODS:
     - Kingfisher/Core (= 5.15.8)
   - Kingfisher/Core (5.15.8)
   - Lokalise (0.8.1)
+  - lottie-ios (3.2.3)
   - MBProgressHUD (1.1.0)
   - Moya (10.0.2):
     - Moya/Core (= 10.0.2)
@@ -200,6 +201,7 @@ DEPENDENCIES:
   - KeychainSwift (~> 13.0.0)
   - Kingfisher (~> 5.13)
   - Lokalise (~> 0.8.1)
+  - lottie-ios
   - MBProgressHUD (~> 1.1.0)
   - Moya (~> 10.0.1)
   - OneSignal (< 4.0, >= 3.0.0)
@@ -248,6 +250,7 @@ SPEC REPOS:
     - KeychainSwift
     - Kingfisher
     - Lokalise
+    - lottie-ios
     - MBProgressHUD
     - Moya
     - nanopb
@@ -320,6 +323,7 @@ SPEC CHECKSUMS:
   KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
   Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   Lokalise: d81f4ccce8cd2c1589bf73bb39fab7781d4f7cbc
+  lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   Moya: 2b0531a9fef318e0bc484030c3db1e6f279ccb66
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -350,6 +354,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 7e7056ffec2d4d1865ae577e704bf59378c39ab0
+PODFILE CHECKSUM: 286524553c359e6bcf22eeaf8325badb6fd443fb
 
 COCOAPODS: 1.10.1

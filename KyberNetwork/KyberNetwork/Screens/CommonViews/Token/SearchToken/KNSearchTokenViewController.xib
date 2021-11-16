@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -36,32 +36,43 @@
                     <rect key="frame" x="0.0" y="167" width="375" height="500"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tvR-nt-YdR">
-                            <rect key="frame" x="0.0" y="90" width="375" height="410"/>
+                            <rect key="frame" x="0.0" y="110" width="375" height="390"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matching tokens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBW-cK-YSw">
-                            <rect key="frame" x="115.5" y="121" width="144.5" height="19"/>
+                            <rect key="frame" x="118" y="141" width="139" height="19"/>
                             <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="puF-0q-Lpg">
-                            <rect key="frame" x="37" y="24" width="301" height="42"/>
+                            <rect key="frame" x="21" y="44" width="333" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vHA-YC-Rnd">
-                                    <rect key="frame" x="20" y="0.0" width="261" height="42"/>
+                                    <rect key="frame" x="20" y="0.0" width="269" height="42"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avN-7d-C1M">
+                                    <rect key="frame" x="294" y="9" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="N9h-Be-mf5"/>
+                                        <constraint firstAttribute="width" constant="24" id="bkM-rG-zyu"/>
+                                    </constraints>
+                                    <color key="tintColor" name="textWhiteColor"/>
+                                    <state key="normal" image="search_blue_icon"/>
+                                </button>
                             </subviews>
-                            <color key="backgroundColor" name="mainViewBgColor"/>
+                            <color key="backgroundColor" name="toolbarBgColor"/>
                             <constraints>
                                 <constraint firstItem="vHA-YC-Rnd" firstAttribute="top" secondItem="puF-0q-Lpg" secondAttribute="top" id="Dgz-JD-6pF"/>
-                                <constraint firstAttribute="trailing" secondItem="vHA-YC-Rnd" secondAttribute="trailing" constant="20" id="NLT-jj-eVZ"/>
+                                <constraint firstAttribute="trailing" secondItem="avN-7d-C1M" secondAttribute="trailing" constant="15" id="FnH-I5-Qik"/>
                                 <constraint firstAttribute="height" constant="42" id="Okd-gm-b1S"/>
+                                <constraint firstItem="avN-7d-C1M" firstAttribute="centerY" secondItem="puF-0q-Lpg" secondAttribute="centerY" id="YUY-jt-7oz"/>
+                                <constraint firstItem="avN-7d-C1M" firstAttribute="leading" secondItem="vHA-YC-Rnd" secondAttribute="trailing" constant="5" id="ZgN-5Y-QSQ"/>
                                 <constraint firstItem="vHA-YC-Rnd" firstAttribute="leading" secondItem="puF-0q-Lpg" secondAttribute="leading" constant="20" id="rdg-Ig-bGo"/>
                                 <constraint firstAttribute="bottom" secondItem="vHA-YC-Rnd" secondAttribute="bottom" id="tYl-1n-q3l"/>
                             </constraints>
@@ -76,15 +87,15 @@
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="puF-0q-Lpg" secondAttribute="trailing" constant="37" id="435-wz-0g6"/>
-                        <constraint firstItem="puF-0q-Lpg" firstAttribute="top" secondItem="pXD-e9-UfM" secondAttribute="top" constant="24" id="6JC-uC-Lkx"/>
+                        <constraint firstAttribute="trailing" secondItem="puF-0q-Lpg" secondAttribute="trailing" constant="21" id="435-wz-0g6"/>
+                        <constraint firstItem="puF-0q-Lpg" firstAttribute="top" secondItem="pXD-e9-UfM" secondAttribute="top" constant="44" id="6JC-uC-Lkx"/>
                         <constraint firstItem="tvR-nt-YdR" firstAttribute="top" secondItem="puF-0q-Lpg" secondAttribute="bottom" constant="24" id="89N-vh-qrP"/>
                         <constraint firstItem="qBW-cK-YSw" firstAttribute="centerX" secondItem="pXD-e9-UfM" secondAttribute="centerX" id="ECf-Sc-Xct"/>
                         <constraint firstItem="tvR-nt-YdR" firstAttribute="leading" secondItem="pXD-e9-UfM" secondAttribute="leading" id="Hbd-1B-5Rr"/>
                         <constraint firstAttribute="height" constant="500" id="Kzg-p7-T1j"/>
                         <constraint firstItem="qBW-cK-YSw" firstAttribute="top" secondItem="puF-0q-Lpg" secondAttribute="bottom" constant="55" id="QgV-Xe-9No"/>
                         <constraint firstAttribute="trailing" secondItem="tvR-nt-YdR" secondAttribute="trailing" id="RaR-Wn-JR7"/>
-                        <constraint firstItem="puF-0q-Lpg" firstAttribute="leading" secondItem="pXD-e9-UfM" secondAttribute="leading" constant="37" id="kUt-4r-ySb"/>
+                        <constraint firstItem="puF-0q-Lpg" firstAttribute="leading" secondItem="pXD-e9-UfM" secondAttribute="leading" constant="21" id="kUt-4r-ySb"/>
                         <constraint firstAttribute="bottom" secondItem="tvR-nt-YdR" secondAttribute="bottom" id="rWm-vg-jKO"/>
                     </constraints>
                     <connections>
@@ -117,11 +128,15 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <namedColor name="mainViewBgColor">
-            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="search_blue_icon" width="16" height="16"/>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="toolbarBgColor">
+            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
