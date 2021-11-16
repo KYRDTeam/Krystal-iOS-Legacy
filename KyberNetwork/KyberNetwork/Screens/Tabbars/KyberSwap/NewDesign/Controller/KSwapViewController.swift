@@ -940,7 +940,7 @@ extension KSwapViewController {
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
     let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
-    if self.viewModel.isUseEIP1559 {
+    if KNGeneralProvider.shared.isUseEIP1559 {
       guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
       print(signTx)
       self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(
