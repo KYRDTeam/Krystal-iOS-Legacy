@@ -75,7 +75,7 @@ jobs:
           - app_name: "Krystal: Manual (stg)"
             env: stg
             ota_key: MANUAL_OTA_URL 
-
+            
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
