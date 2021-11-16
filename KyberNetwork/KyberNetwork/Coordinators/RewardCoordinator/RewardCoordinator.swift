@@ -31,7 +31,7 @@ class RewardCoordinator: Coordinator {
     controller.session = self.session
     return controller
   }()
-  
+
   var claimRewardController: ClaimRewardsController?
 
   func start() {
@@ -51,13 +51,13 @@ class RewardCoordinator: Coordinator {
     self.rootViewController.present(controller, animated: true, completion: nil)
     self.transactionStatusVC = controller
   }
-  
+
   func updateLoginToken(_ completion: @escaping (Bool) -> Void) {
     if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
       appDelegate.coordinator.doLogin(completion)
     }
   }
-  
+
   func handleUpdateLoginTokenForClaimReward() {
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     self.updateLoginToken { completed in
@@ -81,7 +81,7 @@ class RewardCoordinator: Coordinator {
   }
 
   func loadRewards() {
-    guard case .real(let account) = self.session.wallet.type else {
+    guard case .real(_) = self.session.wallet.type else {
       //watch wallet dont'show reward
       return
     }
@@ -108,12 +108,13 @@ class RewardCoordinator: Coordinator {
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
-          
-          if (json["error"] as? String) != nil {
+          if let errorMsg = json["error"] as? String {
             let statusCode = data.statusCode
-            if statusCode / 100 == 4 {
+            if statusCode / 100 == 4 && self.claimRetryCount < RETRYMAXCOUNT {
               // case error 4xx mean login token is expired, need update it
               self.handleUpdateLoginTokenForClaimReward()
+            } else {
+              self.navigationController.showErrorTopBannerMessage(message: errorMsg)
             }
             return
           }
@@ -183,11 +184,13 @@ class RewardCoordinator: Coordinator {
             self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
             let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
             self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
-          } else if (json["error"] as? String) != nil {
+          } else if let errorMsg = json["error"] as? String {
             let statusCode = data.statusCode
-            if statusCode / 100 == 4 {
+            if statusCode / 100 == 4 && self.claimDetailRetryCount < RETRYMAXCOUNT {
               // case error 4xx mean login token is expired, need update it
               self.handleUpdateLoginTokenForClaimRewardDetail()
+            } else {
+              self.navigationController.showErrorTopBannerMessage(message: errorMsg)
             }
           }
         }
@@ -240,7 +243,7 @@ class RewardCoordinator: Coordinator {
       }
     })
   }
-  
+
   func getEstimateGasLimit(transaction: SignTransaction) {
     guard let provider = self.session.externalProvider else {
       return
@@ -276,7 +279,7 @@ class RewardCoordinator: Coordinator {
       }
     }
   }
-  
+
   func getLatestNonce(completion: @escaping (Int) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
@@ -304,7 +307,7 @@ class RewardCoordinator: Coordinator {
     }
     return false
   }
-  
+
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     loadRewards()
@@ -329,10 +332,6 @@ extension RewardCoordinator: RewardsViewControllerDelegate {
 
 extension RewardCoordinator: ClaimRewardsControllerDelegate {
   func didClaimRewards(_ controller: ClaimRewardsController, txObject: TxObject) {
-    // check eligible wallet
-    guard let provider = self.session.externalProvider else {
-      return
-    }
     self.rootViewController.viewModel.shouldDisableClaim = true
     self.rootViewController.updateUI()
     controller.viewModel.shouldDisableClaimButton = true
