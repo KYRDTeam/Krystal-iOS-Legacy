@@ -1,10 +1,13 @@
-name: iOS Manual Trigger
+name: CI Build
 
 on:
-  workflow_dispatch:
-      
+  push:
+    branches:
+      - ci
+      - main 
+
 concurrency: 
-  group: manual-${{ github.ref}}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -63,6 +66,15 @@ jobs:
   build-ios:
     needs:
       - prepare
+    strategy:
+      matrix: 
+        include:
+          - app_name: "Krystal: Manual (dev)"
+            env: dev
+            ota_key: MANUAL_OTA_URL 
+          - app_name: "Krystal: Manual (stg)"
+            env: stg
+            
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
@@ -128,7 +140,7 @@ jobs:
       - name: Setup environments
         shell: bash
         env:
-          ENV: stg 
+          ENV: ${{ matrix.env }}
         run: |
           cp /Users/runner/privates/environments/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
@@ -145,8 +157,8 @@ jobs:
       - name: Deploy to OTA Server
         shell: bash
         env:
-          OTA_URL: ${{ secrets.MANUAL_OTA_URL }}
-          APP_NAME: "Krystal: Manual (Stg)"
+          OTA_URL: ${{ secrets[matrix.ota_key] }}
+          APP_NAME: ${{ matrix.app_name }}
           OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
           OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
         run: .github/deploy 
@@ -155,12 +167,6 @@ jobs:
         run: |
           git config --global user.name 'DevOps'
           git config --global user.email 'vietanhduong@users.noreply.github.com'
-
-      - name: Bump Build number
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: bump_build_number
-          bundle-install-path: "vendor/bundle"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
