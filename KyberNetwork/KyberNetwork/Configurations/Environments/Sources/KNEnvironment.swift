@@ -34,7 +34,7 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .staging
+    return .production
   }
 
   var isMainnet: Bool {
@@ -245,5 +245,12 @@ enum KNEnvironment: Int {
     case .mainnetTest, .production, .staging: return KNSecret.mainnetKyberNodeURL
     default: return KNSecret.ropstenKyberNodeURL
     }
+  }
+
+  static var allChainPath: String? {
+    if KNEnvironment.default == .ropsten {
+      return "ropsten,bsctestnet,mumbai,fuji"
+    }
+    return nil
   }
 }

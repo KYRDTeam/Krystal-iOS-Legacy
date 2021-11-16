@@ -22,7 +22,6 @@ class KNLoadBalanceCoordinator {
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
-  
 
   deinit {
     self.exit()
@@ -80,6 +79,13 @@ class KNLoadBalanceCoordinator {
     let span6 = tx.startChild(operation: "load-liquidity-pool")
     self.loadLiquidityPool { success in
       span6.finish()
+      group.leave()
+    }
+    
+    group.enter()
+    let span7 = tx.startChild(operation: "load-total-balance")
+    self.loadTotalBalance { success in
+      span7.finish()
       group.leave()
     }
     
@@ -350,6 +356,38 @@ class KNLoadBalanceCoordinator {
     }
   }
 
+  func loadTotalBalance(completion: @escaping (Bool) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getTotalBalance(address: self.session.wallet.address.description, KNEnvironment.allChainPath)) { (result) in
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
+        var summaryChains: [KNSummaryChainModel] = []
+        for item in balances {
+          let summaryChainModel = KNSummaryChainModel(json: item)
+          summaryChains.append(summaryChainModel)
+        }
+        BalanceStorage.shared.saveSummaryChainModels(summaryChains)
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+        completion(true)
+      } else {
+        var summaryChains: [KNSummaryChainModel] = []
+        if KNEnvironment.default == .ropsten {
+          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.bscRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonRoptenPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheRoptenPRC.chainID)]
+        } else {
+          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.bscMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonMainnetPRC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheMainnetPRC.chainID)]
+        }
+        BalanceStorage.shared.saveSummaryChainModels(summaryChains)
+        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+        completion(false)
+      }
+    }
+  }
+
   func loadNFTBalance(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
@@ -392,6 +430,7 @@ class KNLoadBalanceCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
         completion(true)
       } else {
+        if KNEnvironment.default == .ropsten { return }
         self.loadLendingBalances(completion: completion)
       }
     }
