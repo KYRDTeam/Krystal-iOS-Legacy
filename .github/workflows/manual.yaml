@@ -1,7 +1,6 @@
 name: CI Manual Build
 
-on:
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 concurrency: 
   group: manual-${{ github.ref }}
