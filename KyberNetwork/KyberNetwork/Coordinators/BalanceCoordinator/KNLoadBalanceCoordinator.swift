@@ -370,7 +370,7 @@ class KNLoadBalanceCoordinator {
         completion(true)
       } else {
         var summaryChains: [KNSummaryChainModel] = []
-        if KNEnvironment.default != .ropsten {
+        if KNEnvironment.default == .ropsten {
           summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethRoptenPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.bscRoptenPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.polygonRoptenPRC.chainID),
