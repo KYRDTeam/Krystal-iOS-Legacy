@@ -1,4 +1,4 @@
-name: CI Build
+name: CI Manual Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - main 
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: manual-${{ github.ref }}
   cancel-in-progress: true
 
 env:
