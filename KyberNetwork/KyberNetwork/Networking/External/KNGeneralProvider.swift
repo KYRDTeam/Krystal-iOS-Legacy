@@ -319,7 +319,7 @@ class KNGeneralProvider {
   }
   
   var isUseEIP1559: Bool {
-    return KNGeneralProvider.shared.currentChain == .eth //TODO: determine more detail later
+    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche
   }
 
   var wrapperAddress: Address {

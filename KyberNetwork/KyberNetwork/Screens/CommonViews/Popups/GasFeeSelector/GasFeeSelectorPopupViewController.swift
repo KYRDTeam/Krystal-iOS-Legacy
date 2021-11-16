@@ -429,9 +429,9 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var isAllAdvancedSettingsValid: Bool {
-    if self.maxFeeErrorStatus == .none || self.maxFeeErrorStatus == .high,
-       self.maxPriorityErrorStatus == .none || self.maxPriorityErrorStatus == .high,
-       self.hasChanged {
+//    if self.maxFeeErrorStatus == .none || self.maxFeeErrorStatus == .high,
+//       self.maxPriorityErrorStatus == .none || self.maxPriorityErrorStatus == .high,
+    if self.hasChanged {
       return true
     } else {
       return false
