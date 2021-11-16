@@ -1,10 +1,7 @@
 name: CI Manual Build
 
 on:
-  push:
-    branches:
-      - ci
-      - main 
+  workflow_dispatch:
 
 concurrency: 
   group: manual-${{ github.ref }}
@@ -75,7 +72,7 @@ jobs:
           - app_name: "Krystal: Manual (stg)"
             env: stg
             ota_key: MANUAL_OTA_URL 
-            
+
     runs-on: macos-latest
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
