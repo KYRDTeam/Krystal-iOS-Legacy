@@ -1,10 +1,7 @@
 name: CI Manual Build
 
 on:
-  push:
-    branches:
-      - ci
-      - main 
+  workflow_dispatch:
 
 concurrency: 
   group: manual-${{ github.ref }}
