@@ -39,7 +39,9 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   @IBOutlet weak var toAddressContainerView: UIView!
   @IBOutlet weak var fromFieldTitleLabel: UILabel!
   @IBOutlet weak var toFIeldTitleLabel: UILabel!
-
+  @IBOutlet weak var statusContainerVIew: UIView!
+  @IBOutlet weak var statusIconImageView: UIImageView!
+  
   init(viewModel: TransactionDetailsViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNTransactionDetailsViewController.className, bundle: nil)
@@ -72,7 +74,9 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     self.feeValueLabel.text = self.viewModel.displayGasFee
     self.txStatusLabel.text = self.viewModel.displayTxStatus
     self.txStatusLabel.textColor = self.viewModel.displayTxStatusColor
-    self.txStatusLabel.rounded(color: self.viewModel.displayTxStatusColor, width: 1, radius: 3)
+    self.statusContainerVIew.backgroundColor = self.viewModel.displayTxStatusColor.withAlphaComponent(0.2)
+    self.statusContainerVIew.rounded(radius: 8)
+    self.statusIconImageView.image = self.viewModel.displayTxIcon
     self.fromAddressLabel.text = self.viewModel.displayFromAddress
     self.toAddressLabel.text = self.viewModel.displayToAddress
     self.transactionDescriptionLabel.text = self.viewModel.displayAmountString

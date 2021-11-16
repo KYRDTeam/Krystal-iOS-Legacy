@@ -32,6 +32,8 @@
                 <outlet property="headerContainerView" destination="Sip-Uk-XhA" id="62T-Of-uWL"/>
                 <outlet property="historyTypeImage" destination="s6m-lC-HOI" id="nxS-It-TGH"/>
                 <outlet property="navigationTitleLabel" destination="Czk-iM-Eaa" id="bYH-WT-WrI"/>
+                <outlet property="statusContainerVIew" destination="1ww-rL-iGB" id="Lif-o1-DNh"/>
+                <outlet property="statusIconImageView" destination="o17-u2-LYS" id="c1x-af-aR2"/>
                 <outlet property="toAddressContainerView" destination="2G4-Wi-3zn" id="BVU-HO-ho0"/>
                 <outlet property="toAddressLabel" destination="IMl-fo-icc" id="ThJ-oI-5gX"/>
                 <outlet property="toFIeldTitleLabel" destination="iT1-GV-hGf" id="bJr-YN-cKy"/>
@@ -109,16 +111,6 @@
                     <rect key="frame" x="57" y="181.5" width="83" height="21"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                     <color key="textColor" name="textWhiteColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmX-c8-BB2">
-                    <rect key="frame" x="300" y="135" width="45" height="16"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="ybc-O9-rrn"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                    <color key="textColor" red="1" green="0.56470588235294117" blue="0.031372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="history_receive_icon" translatesAutoresizingMaskIntoConstraints="NO" id="s6m-lC-HOI">
@@ -298,6 +290,33 @@
                         <action selector="helpButtonTapped:" destination="-1" eventType="touchUpInside" id="h4y-q3-gH1"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ww-rL-iGB">
+                    <rect key="frame" x="265" y="135" width="80" height="22"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="pending_tx_icon" translatesAutoresizingMaskIntoConstraints="NO" id="o17-u2-LYS">
+                            <rect key="frame" x="8" y="3" width="16" height="16"/>
+                        </imageView>
+                        <label opaque="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="745" text="Pending" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmX-c8-BB2">
+                            <rect key="frame" x="27" y="3" width="45" height="16"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="ybc-O9-rrn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <color key="textColor" red="1" green="0.56470588235294117" blue="0.031372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="o17-u2-LYS" firstAttribute="centerY" secondItem="1ww-rL-iGB" secondAttribute="centerY" id="86k-vd-kyA"/>
+                        <constraint firstItem="nmX-c8-BB2" firstAttribute="leading" secondItem="o17-u2-LYS" secondAttribute="trailing" constant="3" id="RXD-O4-tEy"/>
+                        <constraint firstAttribute="height" constant="22" id="VcB-w0-8fX"/>
+                        <constraint firstItem="nmX-c8-BB2" firstAttribute="centerY" secondItem="1ww-rL-iGB" secondAttribute="centerY" id="ido-oK-7kM"/>
+                        <constraint firstAttribute="trailing" secondItem="nmX-c8-BB2" secondAttribute="trailing" constant="8" id="vKW-Zr-XBj"/>
+                        <constraint firstItem="o17-u2-LYS" firstAttribute="leading" secondItem="1ww-rL-iGB" secondAttribute="leading" constant="8" id="xAs-cw-aTR"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
@@ -306,7 +325,6 @@
                 <constraint firstItem="QOc-Ne-3sf" firstAttribute="leading" secondItem="yeI-gk-FZh" secondAttribute="leading" id="5LS-9W-Ksi"/>
                 <constraint firstItem="8Lb-nd-CTG" firstAttribute="top" secondItem="4zG-ff-J0x" secondAttribute="bottom" constant="20" id="5qA-7d-zlq"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2G4-Wi-3zn" secondAttribute="trailing" constant="20" id="64F-zH-yQY"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="nmX-c8-BB2" secondAttribute="trailing" constant="30" id="7xM-3q-WFZ"/>
                 <constraint firstItem="4zG-ff-J0x" firstAttribute="top" secondItem="VN3-Is-K3F" secondAttribute="bottom" constant="20" id="AOB-JL-3A4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Sip-Uk-XhA" secondAttribute="trailing" id="AnC-QU-DRp"/>
                 <constraint firstItem="78P-qm-FQ2" firstAttribute="leading" secondItem="yeI-gk-FZh" secondAttribute="leading" id="DU0-UY-d8F"/>
@@ -317,10 +335,12 @@
                 <constraint firstItem="QVd-6V-QCl" firstAttribute="leading" secondItem="vI3-oR-0I3" secondAttribute="leading" constant="10" id="LlN-D3-f3Q"/>
                 <constraint firstItem="vI3-oR-0I3" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="Mmq-CV-9wq"/>
                 <constraint firstItem="Ru1-yf-zjf" firstAttribute="centerY" secondItem="4zG-ff-J0x" secondAttribute="centerY" id="NZu-Vi-Kbm"/>
+                <constraint firstItem="1ww-rL-iGB" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="OgE-oO-meS"/>
                 <constraint firstItem="FMD-kw-hmP" firstAttribute="centerY" secondItem="8Lb-nd-CTG" secondAttribute="centerY" id="Pgd-De-iJy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="QOc-Ne-3sf" secondAttribute="trailing" constant="5" id="Plj-0s-1Ci"/>
                 <constraint firstItem="yeI-gk-FZh" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="QdQ-fb-uoi"/>
                 <constraint firstItem="Ru1-yf-zjf" firstAttribute="trailing" secondItem="2G4-Wi-3zn" secondAttribute="trailing" id="SU8-5U-f47"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1ww-rL-iGB" secondAttribute="trailing" constant="30" id="Sa9-oT-6od"/>
                 <constraint firstItem="8Lb-nd-CTG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="TNg-hT-Lpn"/>
                 <constraint firstItem="s6m-lC-HOI" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="Wfh-Y1-E5B"/>
                 <constraint firstItem="FMD-kw-hmP" firstAttribute="leading" secondItem="8Lb-nd-CTG" secondAttribute="trailing" constant="67" id="XAC-Ya-6Za"/>
@@ -337,7 +357,6 @@
                 <constraint firstItem="Sip-Uk-XhA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="r0c-eF-9IS"/>
                 <constraint firstItem="VN3-Is-K3F" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="stt-p8-gMK"/>
                 <constraint firstItem="78P-qm-FQ2" firstAttribute="top" secondItem="QOc-Ne-3sf" secondAttribute="bottom" constant="7" id="xTw-Xt-TGy"/>
-                <constraint firstItem="nmX-c8-BB2" firstAttribute="top" secondItem="Sip-Uk-XhA" secondAttribute="bottom" constant="22" id="xYF-1l-I8f"/>
                 <constraint firstItem="VN3-Is-K3F" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="yc1-8A-j0e"/>
                 <constraint firstItem="FMD-kw-hmP" firstAttribute="trailing" secondItem="2G4-Wi-3zn" secondAttribute="trailing" id="yl7-rO-yc6"/>
                 <constraint firstItem="QOc-Ne-3sf" firstAttribute="top" secondItem="yeI-gk-FZh" secondAttribute="bottom" constant="2" id="zTS-un-sDN"/>
@@ -361,6 +380,7 @@
         <image name="history_receive_icon" width="20" height="20"/>
         <image name="knc" width="36" height="36"/>
         <image name="open_link_icon_blue" width="14" height="14"/>
+        <image name="pending_tx_icon" width="16" height="16"/>
         <namedColor name="innerContainerBgColor">
             <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
