@@ -46,8 +46,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     viewController.delegate = self
     return viewController
   }()
-  
-  
+
   lazy var depositViewController: OverviewDepositViewController = {
     let controller = OverviewDepositViewController()
     controller.delegate = self
@@ -196,7 +195,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     case .swap(token: let token):
       self.openSwapView(token: token, isBuy: true)
     case .invest(token: let token):
-      break
+      self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
     case .openEtherscan(address: let address):
       self.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
     case .openWebsite(url: let url):
