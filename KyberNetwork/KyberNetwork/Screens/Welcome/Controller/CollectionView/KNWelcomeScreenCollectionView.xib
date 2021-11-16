@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -22,10 +22,15 @@
                 <outlet property="collectionView" destination="lRH-x0-JuS" id="l0o-He-Cxs"/>
                 <outlet property="landingDescription" destination="wmP-6H-4vT" id="pXn-fe-rDl"/>
                 <outlet property="landingTitle" destination="FBJ-fS-vhx" id="GXY-it-TlE"/>
+                <outlet property="paggerViewLeadingConstraint" destination="JKg-eF-1mQ" id="DIt-UG-FGG"/>
                 <outletCollection property="pageViews" destination="PDs-WK-CMH" collectionClass="NSMutableArray" id="0Pa-eb-xCq"/>
                 <outletCollection property="pageViews" destination="Al1-IT-YoW" collectionClass="NSMutableArray" id="Xee-xz-adQ"/>
                 <outletCollection property="pageViews" destination="LmJ-WD-k7c" collectionClass="NSMutableArray" id="lEi-yK-hED"/>
                 <outletCollection property="pageViews" destination="GBv-So-Qox" collectionClass="NSMutableArray" id="IlP-nZ-Z7W"/>
+                <outletCollection property="pageViewWidth" destination="ZZc-my-bLb" collectionClass="NSMutableArray" id="sGD-Fi-03o"/>
+                <outletCollection property="pageViewWidth" destination="N34-rb-trj" collectionClass="NSMutableArray" id="oK0-r2-01t"/>
+                <outletCollection property="pageViewWidth" destination="KB5-EX-Ohm" collectionClass="NSMutableArray" id="4mX-Nv-7Yo"/>
+                <outletCollection property="pageViewWidth" destination="1Y6-p5-RKJ" collectionClass="NSMutableArray" id="fIv-B3-QMr"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -43,46 +48,46 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Al1-IT-YoW">
-                    <rect key="frame" x="162" y="857" width="21" height="6"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="6" id="IKU-3W-s6m"/>
-                        <constraint firstAttribute="width" constant="21" id="ZZc-my-bLb"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PDs-WK-CMH">
-                    <rect key="frame" x="132" y="857" width="21" height="6"/>
+                    <rect key="frame" x="166.5" y="877" width="16" height="6"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="21" id="N34-rb-trj"/>
+                        <constraint firstAttribute="width" constant="16" identifier="0" id="N34-rb-trj"/>
                         <constraint firstAttribute="height" constant="6" id="yk3-So-C8o"/>
                     </constraints>
                 </view>
+                <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Al1-IT-YoW">
+                    <rect key="frame" x="188.5" y="877" width="6" height="6"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="6" id="IKU-3W-s6m"/>
+                        <constraint firstAttribute="width" constant="6" identifier="1" id="ZZc-my-bLb"/>
+                    </constraints>
+                </view>
                 <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LmJ-WD-k7c">
-                    <rect key="frame" x="192" y="857" width="21" height="6"/>
+                    <rect key="frame" x="200.5" y="877" width="6" height="6"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="6" id="1O8-49-wv9"/>
-                        <constraint firstAttribute="width" constant="21" id="KB5-EX-Ohm"/>
+                        <constraint firstAttribute="width" constant="6" identifier="2" id="KB5-EX-Ohm"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBJ-fS-vhx">
-                    <rect key="frame" x="162" y="30" width="51" height="23.5"/>
+                    <rect key="frame" x="161.5" y="30" width="52" height="23.5"/>
                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GBv-So-Qox">
-                    <rect key="frame" x="222" y="857" width="21" height="6"/>
+                    <rect key="frame" x="212.5" y="877" width="6" height="6"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="21" id="1Y6-p5-RKJ"/>
+                        <constraint firstAttribute="width" constant="6" identifier="3" id="1Y6-p5-RKJ"/>
                         <constraint firstAttribute="height" constant="6" id="ak4-fR-6sy"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap any token to any token at the best rates" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmP-6H-4vT">
-                    <rect key="frame" x="20" y="73.5" width="335" height="42"/>
+                    <rect key="frame" x="20" y="73.5" width="335" height="42.5"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
@@ -91,23 +96,23 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Al1-IT-YoW" firstAttribute="leading" secondItem="PDs-WK-CMH" secondAttribute="trailing" constant="9" id="0YQ-ds-bg3"/>
+                <constraint firstItem="Al1-IT-YoW" firstAttribute="leading" secondItem="PDs-WK-CMH" secondAttribute="trailing" constant="6" id="0YQ-ds-bg3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="wmP-6H-4vT" secondAttribute="trailing" constant="20" id="2Fy-j5-yPH"/>
                 <constraint firstItem="FBJ-fS-vhx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4NT-ax-Zyf"/>
                 <constraint firstItem="wmP-6H-4vT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="Ajz-bB-l0o"/>
-                <constraint firstItem="GBv-So-Qox" firstAttribute="leading" secondItem="LmJ-WD-k7c" secondAttribute="trailing" constant="9" id="F2O-Dt-oZj"/>
+                <constraint firstItem="GBv-So-Qox" firstAttribute="leading" secondItem="LmJ-WD-k7c" secondAttribute="trailing" constant="6" id="F2O-Dt-oZj"/>
                 <constraint firstItem="wmP-6H-4vT" firstAttribute="top" secondItem="FBJ-fS-vhx" secondAttribute="bottom" constant="20" id="FZa-uL-UP4"/>
+                <constraint firstItem="PDs-WK-CMH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="166.5" id="JKg-eF-1mQ"/>
                 <constraint firstItem="lRH-x0-JuS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="150" id="JkU-z3-UuL"/>
                 <constraint firstItem="lRH-x0-JuS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="QHE-HC-vgb"/>
                 <constraint firstItem="GBv-So-Qox" firstAttribute="centerY" secondItem="LmJ-WD-k7c" secondAttribute="centerY" id="RVy-wb-9G2"/>
                 <constraint firstItem="PDs-WK-CMH" firstAttribute="centerY" secondItem="Al1-IT-YoW" secondAttribute="centerY" id="TPC-ES-n98"/>
-                <constraint firstItem="LmJ-WD-k7c" firstAttribute="leading" secondItem="Al1-IT-YoW" secondAttribute="trailing" constant="9" id="U0o-lp-xNZ"/>
+                <constraint firstItem="LmJ-WD-k7c" firstAttribute="leading" secondItem="Al1-IT-YoW" secondAttribute="trailing" constant="6" id="U0o-lp-xNZ"/>
                 <constraint firstItem="FBJ-fS-vhx" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="UDa-WQ-5ah"/>
-                <constraint firstItem="LmJ-WD-k7c" firstAttribute="top" secondItem="lRH-x0-JuS" secondAttribute="bottom" constant="20" id="eyI-K8-KId"/>
+                <constraint firstItem="LmJ-WD-k7c" firstAttribute="top" secondItem="lRH-x0-JuS" secondAttribute="bottom" constant="40" id="eyI-K8-KId"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="lRH-x0-JuS" secondAttribute="trailing" id="lnJ-aq-B2s"/>
                 <constraint firstItem="LmJ-WD-k7c" firstAttribute="centerY" secondItem="Al1-IT-YoW" secondAttribute="centerY" id="qm1-pY-r0b"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="lRH-x0-JuS" secondAttribute="bottom" constant="50" id="sBf-Un-zjU"/>
-                <constraint firstItem="Al1-IT-YoW" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" constant="-15" id="yGp-DM-NI6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="6" y="111"/>

@@ -6,13 +6,14 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   static let height: CGFloat = KNWelcomeScreenCollectionViewCell.height + 20.0
   @IBOutlet weak var collectionView: UICollectionView!
-
   fileprivate let viewModel: KNWelcomeScreenViewModel = KNWelcomeScreenViewModel()
-
   @IBOutlet var pageViews: [UIView]!
   @IBOutlet weak var landingTitle: UILabel!
   @IBOutlet weak var landingDescription: UILabel!
-  
+  @IBOutlet var pageViewWidth: [NSLayoutConstraint]!
+  @IBOutlet weak var paggerViewLeadingConstraint: NSLayoutConstraint!
+  static let paggerWidth = CGFloat(52)
+  fileprivate var didShowFirstCell = false
   override func commonInit() {
     super.commonInit()
     self.backgroundColor = .clear
@@ -30,7 +31,15 @@ class KNWelcomeScreenCollectionView: XibLoaderView {
 
   fileprivate func updateSelectedPageView(index: Int) {
     self.pageViews.forEach { view in
-      view.backgroundColor = view.tag == index ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "warningBoxBgColor")
+      let isCurrentIndex = view.tag == index
+      view.backgroundColor = isCurrentIndex ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "warningBoxBgColor")
+    }
+
+    self.pageViewWidth.forEach { constraint in
+      guard let identifier = constraint.identifier else {
+        return
+      }
+      constraint.constant = Int(identifier) == index ? 16 : 6
     }
   }
 
@@ -68,6 +77,7 @@ extension KNWelcomeScreenCollectionView: UIScrollViewDelegate {
 }
 
 extension KNWelcomeScreenCollectionView: UICollectionViewDataSource {
+
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
   }
@@ -83,6 +93,17 @@ extension KNWelcomeScreenCollectionView: UICollectionViewDataSource {
     ) as! KNWelcomeScreenCollectionViewCell
     let data = self.viewModel.welcomeData(at: indexPath.row)
     cell.updateCell(with: data)
+    if !didShowFirstCell && indexPath.row == 0 {
+      cell.playAnimation()
+      didShowFirstCell = true
+    }
     return cell
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    for indexPath in self.collectionView.indexPathsForVisibleItems {
+      let cell = self.collectionView.cellForItem(at: indexPath) as! KNWelcomeScreenCollectionViewCell
+      cell.playAnimation()
+    }
   }
 }

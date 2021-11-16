@@ -1,14 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-
+import Lottie
 class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
 
   static let cellID: String = "kWelcomeScreenCollectionViewCellID"
-  static let height: CGFloat = 246
+  static let height: CGFloat = 292
 
-  @IBOutlet weak var imageView: UIImageView!
-  
+  @IBOutlet weak var animationView: AnimationView!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -16,6 +15,12 @@ class KNWelcomeScreenCollectionViewCell: UICollectionViewCell {
   }
 
   func updateCell(with data: KNWelcomeScreenViewModel.KNWelcomeData) {
-    self.imageView.image = UIImage(named: data.icon)
+    self.animationView.animation = Animation.named(data.jsonFileName)
+    self.animationView.contentMode = .scaleAspectFit
+    self.animationView.loopMode = .loop
+  }
+  
+  func playAnimation() {
+    self.animationView.play()
   }
 }
