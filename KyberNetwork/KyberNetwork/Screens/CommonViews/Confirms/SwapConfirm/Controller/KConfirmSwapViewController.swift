@@ -124,7 +124,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     } else {
       self.swapAnywayContainerView.isHidden = true
     }
-    
+
     self.view.layoutIfNeeded()
   }
   

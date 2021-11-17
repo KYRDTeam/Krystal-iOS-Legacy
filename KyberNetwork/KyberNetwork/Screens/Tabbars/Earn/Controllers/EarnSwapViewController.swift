@@ -273,9 +273,9 @@ class EarnSwapViewModel {
     if let advancedGasStr = self.advancedGasLimit,
        let gasLimit = BigInt(advancedGasStr),
        let priorityFeeString = self.advancedMaxPriorityFee,
-       let priorityFee = BigInt(priorityFeeString),
+       let priorityFee = priorityFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit),
        let maxGasFeeString = self.advancedMaxFee,
-       let maxGasFee = BigInt(maxGasFeeString) {
+       let maxGasFee = maxGasFeeString.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
       return EIP1559Transaction(
         chainID: chainID.hexSigned2Complement,
         nonce: nonce,

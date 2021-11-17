@@ -77,7 +77,7 @@ struct EarnConfirmViewModel {
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
-  
+
   var usdValueBigInt: BigInt {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return BigInt(0) }
     let usd = self.amount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)

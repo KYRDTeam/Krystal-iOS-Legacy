@@ -83,8 +83,8 @@ struct KConfirmSwapViewModel {
   }
 
   var transactionFee: BigInt {
-    let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    let gasPrice: BigInt = self.transactionGasPrice
+    let gasLimit: BigInt = self.transactionGasLimit
     return gasPrice * gasLimit
   }
 
@@ -108,8 +108,8 @@ struct KConfirmSwapViewModel {
   }
 
   var transactionGasPriceString: String {
-    let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    let gasPrice: BigInt = self.transactionGasPrice
+    let gasLimit: BigInt = self.transactionGasLimit
     let gasPriceText = gasPrice.shortString(
       units: .gwei,
       maxFractionDigits: 1
@@ -123,6 +123,30 @@ struct KConfirmSwapViewModel {
     return self.transaction.hint ?? ""
   }
   
+  var transactionGasPrice: BigInt {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let unwrap = self.eip1559Transaction?.maxGasFee, let gasPrice = BigInt(unwrap.drop0x, radix: 16) {
+        return gasPrice
+      } else {
+        return BigInt(0)
+      }
+    } else {
+      return self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
+    }
+  }
+
+  var transactionGasLimit: BigInt {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let unwrap = self.eip1559Transaction?.gasLimit, let gasLimit = BigInt(unwrap.drop0x, radix: 16) {
+        return gasLimit
+      } else {
+        return BigInt(0)
+      }
+    } else {
+      return self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    }
+  }
+
   var reverseRoutingText: String {
     return self.priceImpact > -5 ? String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized) : ""
   }
