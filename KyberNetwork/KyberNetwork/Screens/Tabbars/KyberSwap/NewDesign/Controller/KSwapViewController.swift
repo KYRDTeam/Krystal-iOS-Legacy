@@ -369,7 +369,7 @@ class KSwapViewController: KNBaseViewController {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
     var message = ""
     if self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty {
-      message = " Missing price impact. This may be due to the low liquidity. Please swap with caution."
+      message = " Missing price impact. Please swap with caution."
     } else {
       message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
     }
