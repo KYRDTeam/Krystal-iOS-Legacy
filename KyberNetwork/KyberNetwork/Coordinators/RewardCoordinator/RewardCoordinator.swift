@@ -110,8 +110,8 @@ class RewardCoordinator: Coordinator {
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let errorMsg = json["error"] as? String {
             let statusCode = data.statusCode
-            if statusCode / 100 == 4 && self.claimRetryCount < RETRYMAXCOUNT {
-              // case error 4xx mean login token is expired, need update it
+            if statusCode == 401 && self.claimRetryCount < RETRYMAXCOUNT {
+              // case error 401 mean login token is expired, need update it
               self.handleUpdateLoginTokenForClaimReward()
             } else {
               self.navigationController.showErrorTopBannerMessage(message: errorMsg)
@@ -142,8 +142,8 @@ class RewardCoordinator: Coordinator {
         }
       case .failure(let error):
         print("[Get rewards] \(error.localizedDescription)")
-        if error.code / 100 == 4 {
-          // case error 4xx mean login token is expired, need update it
+        if error.code == 401 {
+          // case error 401 mean login token is expired, need update it
           self.handleUpdateLoginTokenForClaimReward()
         }
       }
@@ -186,8 +186,8 @@ class RewardCoordinator: Coordinator {
             self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
           } else if let errorMsg = json["error"] as? String {
             let statusCode = data.statusCode
-            if statusCode / 100 == 4 && self.claimDetailRetryCount < RETRYMAXCOUNT {
-              // case error 4xx mean login token is expired, need update it
+            if statusCode == 401 && self.claimDetailRetryCount < RETRYMAXCOUNT {
+              // case error 401 mean login token is expired, need update it
               self.handleUpdateLoginTokenForClaimRewardDetail()
             } else {
               self.navigationController.showErrorTopBannerMessage(message: errorMsg)
@@ -197,8 +197,8 @@ class RewardCoordinator: Coordinator {
 
       case .failure(let error):
         print("[Claim reward] \(error.localizedDescription)")
-        if error.code / 100 == 4 {
-          // case error 4xx mean login token is expired, need update it
+        if error.code == 401 {
+          // case error 401 mean login token is expired, need update it
           self.handleUpdateLoginTokenForClaimRewardDetail()
         }
       }
