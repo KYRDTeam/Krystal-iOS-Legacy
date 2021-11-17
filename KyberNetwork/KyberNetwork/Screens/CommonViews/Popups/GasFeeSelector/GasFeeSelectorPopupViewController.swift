@@ -813,7 +813,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       if let gasLimit = self.advancedGasLimitField.text,
          let maxPriorityFee = self.advancedPriorityFeeField.text,
          let maxFee = self.advancedMaxFeeField.text,
-         self.viewModel.isAdvancedMode,
+         self.viewModel.selectedType == .custom,
          self.viewModel.isAllAdvancedSettingsValid {
         guard !self.viewModel.isSpeedupMode else {
           return
@@ -933,7 +933,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       if let gasLimit = self.advancedGasLimitField.text,
          let maxPriorityFee = self.advancedPriorityFeeField.text,
          let maxFee = self.advancedMaxFeeField.text,
-         self.viewModel.isAdvancedMode,
+         self.viewModel.selectedType == .custom,
          self.viewModel.isAllAdvancedSettingsValid {
         if self.viewModel.isSpeedupMode {
           if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {

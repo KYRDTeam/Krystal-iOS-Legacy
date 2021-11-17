@@ -389,7 +389,7 @@ class KNSendTokenViewModel: NSObject {
       self.isUsingEns = ensAddr != nil
     }
   }
-  
+
   func resetAdvancedSettings() {
     self.advancedGasLimit = nil
     self.advancedMaxPriorityFee = nil

@@ -180,6 +180,15 @@ class EarnSwapViewModel {
     default: return
     }
   }
+
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
   
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
@@ -902,6 +911,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateAmountFieldUIForTransferAllETHIfNeeded()
     self.updateGasFeeUI()
     self.updateGasLimit()
+    self.viewModel.resetAdvancedSettings()
   }
 
   func coordinatorDidUpdateGasLimit(_ value: BigInt, platform: String, tokenAdress: String) {
@@ -1109,6 +1119,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.viewModel.advancedMaxFee = nil
     self.viewModel.updateSelectedGasPriceType(.medium)
     self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {

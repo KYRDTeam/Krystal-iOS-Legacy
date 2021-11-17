@@ -832,6 +832,7 @@ extension KSwapViewController {
     self.viewModel.updateGasPrice(value)
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
+    self.viewModel.resetAdvancedSettings()
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {

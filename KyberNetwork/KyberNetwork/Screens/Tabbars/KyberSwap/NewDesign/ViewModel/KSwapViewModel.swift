@@ -551,7 +551,6 @@ class KSwapViewModel {
         return
       } else {
         self.estimateGasLimit = gasLimit
-        self.resetAdvancedSettings()
       }
     }
     self.swapRates.3.forEach { (element) in

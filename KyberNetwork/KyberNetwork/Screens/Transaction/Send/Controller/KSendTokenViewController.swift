@@ -548,6 +548,7 @@ extension KSendTokenViewController {
     self.viewModel.advancedMaxFee = nil
     self.viewModel.updateSelectedGasPriceType(.medium)
     self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 }
 

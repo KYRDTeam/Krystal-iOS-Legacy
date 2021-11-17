@@ -109,6 +109,15 @@ class WithdrawViewModel {
     }
   }
   
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
+  
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
   }
@@ -395,6 +404,7 @@ class WithdrawViewController: KNBaseViewController {
     self.viewModel.updateGasPrice(value)
     self.updateUIFee()
     self.updateGasLimit()
+    self.viewModel.resetAdvancedSettings()
   }
 
   fileprivate func showErrorMessage() {
@@ -427,6 +437,7 @@ class WithdrawViewController: KNBaseViewController {
     self.viewModel.advancedMaxFee = nil
     self.viewModel.updateSelectedGasPriceType(.medium)
     self.updateUIFee()
+    self.viewModel.resetAdvancedSettings()
   }
 
   @IBAction func withdrawButtonTapped(_ sender: UIButton) {
