@@ -62,9 +62,11 @@
                 <outlet property="fasGasValueLabel" destination="yuB-hX-ocX" id="2V5-AJ-RWh"/>
                 <outlet property="fastEstimateFeeLabel" destination="NQX-fI-x3c" id="l1T-Fo-atP"/>
                 <outlet property="gasFeeGweiTextLabel" destination="9So-gt-dfF" id="V2M-29-IfL"/>
+                <outlet property="gasLimitHelpButton" destination="8TX-cb-fC3" id="WeN-MT-Z2y"/>
                 <outlet property="mainEquivalentUSDLabel" destination="cz1-gs-clU" id="8EB-Ka-KW9"/>
                 <outlet property="mainGasFeeLabel" destination="gcp-UN-gH9" id="BLR-i3-9pP"/>
                 <outlet property="maxFeeErrorLabel" destination="Z2k-IH-dwE" id="2Mg-zq-0vz"/>
+                <outlet property="maxFeeHelpButton" destination="Xpo-gr-H89" id="NHW-QV-04F"/>
                 <outlet property="maxPriorityFeeErrorLabel" destination="nN6-wO-tfn" id="bt2-lQ-uhG"/>
                 <outlet property="mediumGasButton" destination="Vc9-xF-y4O" id="WX9-Sh-6qG"/>
                 <outlet property="mediumGasValueLabel" destination="954-Oy-OlJ" id="D3c-sC-fT0"/>

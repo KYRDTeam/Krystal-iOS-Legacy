@@ -542,7 +542,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var advancedPriorityFeeTItleLabel: UILabel!
   @IBOutlet weak var advancedPriorityFeeHelpButton: UIButton!
   @IBOutlet weak var advancedPriorityFeeContainerView: UIView!
-  
+  @IBOutlet weak var gasLimitHelpButton: UIButton!
+  @IBOutlet weak var maxFeeHelpButton: UIButton!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -599,6 +600,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedPriorityFeeHelpButton.isHidden = true
       self.advancedPriorityFeeContainerView.isHidden = true
       self.maxPriorityFeeErrorLabel.isHidden = true
+      self.gasLimitHelpButton.isHidden = true
+      self.maxFeeHelpButton.isHidden = true
     }
     self.advancedGasLimitField.text = self.viewModel.displayGasLimit
     self.advancedPriorityFeeField.text = self.viewModel.displayMaxPriorityFee
