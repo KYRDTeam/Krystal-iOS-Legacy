@@ -426,11 +426,11 @@ class WithdrawViewController: KNBaseViewController {
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.updateUIFee()
   }
-  
+
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
     self.viewModel.advancedNonce = nonce
   }
-  
+
   func coordinatorSuccessSendTransaction() {
     self.viewModel.advancedGasLimit = nil
     self.viewModel.advancedMaxPriorityFee = nil

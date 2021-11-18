@@ -528,7 +528,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var maxFeeErrorLabel: UILabel!
   @IBOutlet weak var mainGasFeeLabel: UILabel!
   @IBOutlet weak var mainEquivalentUSDLabel: UILabel!
-  @IBOutlet weak var estGasFeeLabelTopContraint: NSLayoutConstraint!
   @IBOutlet weak var nonceErrorLabel: UILabel!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var customNonceTitleLabel: UILabel!
@@ -536,7 +535,15 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var advancedSlippageContainerView: UIView!
   @IBOutlet weak var advancedSlippageDivideView: UIView!
   @IBOutlet weak var advancedModeApplyButton: UIButton!
-
+  @IBOutlet weak var advancedScrollViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var basicContainerViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var estGasFeeTitleLabel: UILabel!
+  @IBOutlet weak var advancedMaxFeeTitleTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var advancedPriorityFeeTItleLabel: UILabel!
+  @IBOutlet weak var advancedPriorityFeeHelpButton: UIButton!
+  @IBOutlet weak var advancedPriorityFeeContainerView: UIView!
+  
+  
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -581,10 +588,17 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIAdvancedSetting() {
-    guard KNGeneralProvider.shared.isUseEIP1559 else {
-      self.segmentedControl.isHidden = true
-      self.estGasFeeLabelTopContraint.constant = 26.0
-      return
+    if !KNGeneralProvider.shared.isUseEIP1559 {
+      self.estGasFeeTitleLabel.isHidden = true
+      self.mainGasFeeLabel.isHidden = true
+      self.mainEquivalentUSDLabel.isHidden = true
+      self.basicContainerViewTopContraint.constant = 20
+      self.advancedScrollViewTopContraint.constant = 20
+      self.advancedMaxFeeTitleTopContraint.constant = 30
+      self.advancedPriorityFeeTItleLabel.isHidden = true
+      self.advancedPriorityFeeHelpButton.isHidden = true
+      self.advancedPriorityFeeContainerView.isHidden = true
+      self.maxPriorityFeeErrorLabel.isHidden = true
     }
     self.advancedGasLimitField.text = self.viewModel.displayGasLimit
     self.advancedPriorityFeeField.text = self.viewModel.displayMaxPriorityFee
@@ -600,8 +614,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
-//      self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "warningColor")
-//      self.advancedPriorityFeeField.textColor = UIColor(named: "warningColor")
       self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)

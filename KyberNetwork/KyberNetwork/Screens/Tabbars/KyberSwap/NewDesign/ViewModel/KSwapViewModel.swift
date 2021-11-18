@@ -747,13 +747,26 @@ class KSwapViewModel {
   func buildSignSwapTx(_ object: TxObject) -> SignTransaction? {
     guard
       let value = BigInt(object.value.drop0x, radix: 16),
-      let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
-      let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
-      let nonce = Int(object.nonce.drop0x, radix: 16)
+      var gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
+      var gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
+      var nonce = Int(object.nonce.drop0x, radix: 16)
     else
     {
       return nil
     }
+    
+    if let unwrap = self.advancedMaxFee, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+      gasPrice = value
+    }
+    
+    if let unwrap = self.advancedGasLimit, let value = BigInt(unwrap) {
+      gasLimit = value
+    }
+    
+    if let unwrap = self.advancedNonce, let value = Int(unwrap) {
+      nonce = value
+    }
+    
     if case let .real(account) = self.wallet.type {
       return SignTransaction(
         value: value,

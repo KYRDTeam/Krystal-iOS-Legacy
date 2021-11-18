@@ -149,7 +149,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                   }
                 }
               } else {
-                if let transaction = data.txObject.convertToSignTransaction(wallet: self.session.wallet) {
+                if let transaction = data.txObject.convertToSignTransaction(wallet: self.session.wallet, advancedGasPrice: advancedMaxGas, advancedGasLimit: advancedGasLimit, advancedNonce: advancedNonce) {
                   KNGeneralProvider.shared.getEstimateGasLimit(transaction: transaction) { (result) in
                     switch result {
                     case .success:

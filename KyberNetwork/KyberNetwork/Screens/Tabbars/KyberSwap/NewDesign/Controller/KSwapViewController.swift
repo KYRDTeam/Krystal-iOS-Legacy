@@ -927,7 +927,8 @@ extension KSwapViewController {
       }()
       return expectedExchange
     }()
-    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
+
+//    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
     let exchange = KNDraftExchangeTransaction(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -935,8 +936,8 @@ extension KSwapViewController {
       maxDestAmount: BigInt(2).power(255),
       expectedRate: rate,
       minRate: self.viewModel.minRate,
-      gasPrice: self.viewModel.gasPrice,
-      gasLimit: gasLimit,
+      gasPrice: signTx.gasPrice,
+      gasLimit: signTx.gasLimit,
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )

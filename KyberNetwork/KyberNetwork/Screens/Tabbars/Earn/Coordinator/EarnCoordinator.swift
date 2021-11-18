@@ -318,12 +318,12 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
             } else {
-              let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction)
+              let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction)
               let controller = EarnConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
@@ -339,17 +339,19 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           }
         }
       } else if let unwrap = eip1559Transaction {
+        let txGasPrice = BigInt(unwrap.maxGasFee, radix: 16) ?? BigInt(0)
+        let txGasLimit = BigInt(unwrap.gasLimit, radix: 16) ?? BigInt(0)
         KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: unwrap) { result in
           self.navigationController.hideLoading()
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
             } else {
-              let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: gasPrice, gasLimit: gasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction)
+              let viewModel = EarnConfirmViewModel(platform: platform, token: toToken, amount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction)
               let controller = EarnConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)

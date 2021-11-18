@@ -310,14 +310,28 @@ class KNSendTokenViewModel: NSObject {
         )
       }
     } else {
+      var txGasPrice = self.gasPrice
+      var txGasLimit = self.gasLimit
+      var txNonce: BigInt? = .none
+      if let unwrap = self.advancedMaxFee, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+        txGasPrice = value
+      }
+      
+      if let unwrap = self.advancedGasLimit, let value = BigInt(unwrap) {
+        txGasLimit = value
+      }
+      
+      if let unwrap = self.advancedNonce, let value = Int(unwrap) {
+        txNonce = BigInt(value)
+      }
       return UnconfirmedTransaction(
         transferType: transferType,
         value: amount,
         to: self.address,
         data: nil,
-        gasLimit: self.gasLimit,
-        gasPrice: self.gasPrice,
-        nonce: .none,
+        gasLimit: txGasLimit,
+        gasPrice: txGasPrice,
+        nonce: txNonce,
         maxInclusionFeePerGas: nil,
         maxGasFee: nil
       )

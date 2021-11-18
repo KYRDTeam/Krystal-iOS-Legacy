@@ -85,15 +85,26 @@ extension SignTransactionObject {
 }
 
 extension TxObject {
-  func convertToSignTransaction(wallet: Wallet) -> SignTransaction? {
+  func convertToSignTransaction(wallet: Wallet, advancedGasPrice: String? = nil, advancedGasLimit: String? = nil, advancedNonce: String? = nil) -> SignTransaction? {
     guard
       let value = BigInt(self.value.drop0x, radix: 16),
-      let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
-      let gasLimit = BigInt(self.gasLimit.drop0x, radix: 16),
-      let nonce = Int(self.nonce.drop0x, radix: 16)
+      var gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
+      var gasLimit = BigInt(self.gasLimit.drop0x, radix: 16),
+      var nonce = Int(self.nonce.drop0x, radix: 16)
     else
     {
       return nil
+    }
+    if let unwrap = advancedGasPrice, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+      gasPrice = value
+    }
+    
+    if let unwrap = advancedGasLimit, let value = BigInt(unwrap) {
+      gasLimit = value
+    }
+    
+    if let unwrap = advancedNonce, let value = Int(unwrap) {
+      nonce = value
     }
     if case let .real(account) = wallet.type {
       return SignTransaction(
