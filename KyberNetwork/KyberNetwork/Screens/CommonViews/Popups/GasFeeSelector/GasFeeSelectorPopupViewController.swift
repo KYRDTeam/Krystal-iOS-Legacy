@@ -534,7 +534,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var customNonceContainerView: UIView!
   @IBOutlet weak var advancedSlippageContainerView: UIView!
   @IBOutlet weak var advancedSlippageDivideView: UIView!
-  @IBOutlet weak var advancedModeApplyButton: UIButton!
   @IBOutlet weak var advancedScrollViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var basicContainerViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
@@ -570,6 +569,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
+    self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
@@ -605,7 +605,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.gasLimitHelpButton.isHidden = true
       self.maxFeeHelpButton.isHidden = true
     }
-    
+
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
       self.firstButton.setTitle("Cancel", for: .normal)
       self.secondButton.setTitle("Confirm", for: .normal)
@@ -656,7 +656,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.slippageSectionContainerView.isHidden = true
       self.advancedSlippageDivideView.isHidden = true
       self.sendSwapDivideLineView.isHidden = true
-      self.advancedModeApplyButton.isHidden = false
     }
   }
 
@@ -832,16 +831,39 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: {
+      
+    })
+  }
+
+  @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
+    //TODO: handle new implementation
+    self.customRateTextField.resignFirstResponder()
+  }
+  
+  @IBAction func firstButtonTapped(_ sender: UIButton) {
+    self.dismiss(animated: true, completion: {
+      
+    })
+  }
+  
+  @IBAction func secondButtonTapped(_ sender: UIButton) {
+    self.dismiss(animated: true, completion: {
       if let gasLimit = self.advancedGasLimitField.text,
          let maxPriorityFee = self.advancedPriorityFeeField.text,
          let maxFee = self.advancedMaxFeeField.text,
          self.viewModel.selectedType == .custom,
          self.viewModel.isAllAdvancedSettingsValid {
         guard !self.viewModel.isSpeedupMode else {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
           return
         }
 
         guard !self.viewModel.isCancelMode else {
+          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+          }
           return
         }
 
@@ -854,12 +876,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       }
     })
   }
-
-  @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
-    //TODO: handle new implementation
-    self.customRateTextField.resignFirstResponder()
-  }
-
+  
   func coordinatorDidUpdateGasLimit(_ value: BigInt) {
     self.viewModel.updateGasLimit(value: value)
     self.updateGasPriceUIs()
@@ -949,7 +966,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     self.updateUIForCustomNonce()
   }
-  
+
   @IBAction func applyButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       if let gasLimit = self.advancedGasLimitField.text,
@@ -962,7 +979,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
           }
         }
-        
+
         if self.viewModel.isCancelMode {
           if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
