@@ -158,7 +158,7 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var advancedSettingsHeight: CGFloat {
-    return 600
+    return 650
   }
 
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
@@ -544,6 +544,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var advancedPriorityFeeContainerView: UIView!
   @IBOutlet weak var gasLimitHelpButton: UIButton!
   @IBOutlet weak var maxFeeHelpButton: UIButton!
+  @IBOutlet weak var firstButton: UIButton!
+  @IBOutlet weak var secondButton: UIButton!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -602,6 +604,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.maxPriorityFeeErrorLabel.isHidden = true
       self.gasLimitHelpButton.isHidden = true
       self.maxFeeHelpButton.isHidden = true
+    }
+    
+    if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+      self.firstButton.setTitle("Cancel", for: .normal)
+      self.secondButton.setTitle("Confirm", for: .normal)
     }
     self.advancedGasLimitField.text = self.viewModel.displayGasLimit
     self.advancedPriorityFeeField.text = self.viewModel.displayMaxPriorityFee
