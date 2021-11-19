@@ -831,7 +831,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: {
-      
     })
   }
 
@@ -839,13 +838,16 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     //TODO: handle new implementation
     self.customRateTextField.resignFirstResponder()
   }
-  
+
   @IBAction func firstButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
-      
+      guard !(self.viewModel.isCancelMode || self.viewModel.isSpeedupMode) else {
+        return
+      }
+      self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: .medium, value: self.viewModel.valueForSelectedType(type: .medium)))
     })
   }
-  
+
   @IBAction func secondButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       if let gasLimit = self.advancedGasLimitField.text,
@@ -965,28 +967,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.viewModel.advancedNonce = String(currentValue)
     }
     self.updateUIForCustomNonce()
-  }
-
-  @IBAction func applyButtonTapped(_ sender: UIButton) {
-    self.dismiss(animated: true, completion: {
-      if let gasLimit = self.advancedGasLimitField.text,
-         let maxPriorityFee = self.advancedPriorityFeeField.text,
-         let maxFee = self.advancedMaxFeeField.text,
-         self.viewModel.selectedType == .custom,
-         self.viewModel.isAllAdvancedSettingsValid {
-        if self.viewModel.isSpeedupMode {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-          }
-        }
-
-        if self.viewModel.isCancelMode {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-          }
-        }
-      }
-    })
   }
 }
 
