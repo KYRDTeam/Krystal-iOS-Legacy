@@ -619,6 +619,50 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.withdrawViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.withdrawViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
+    case .speedupTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        savedTx?.state = .speedup
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.description)
+          }
+        })
+      }
+    case .cancelTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        savedTx?.state = .cancel
+        savedTx?.type = .transferETH
+        savedTx?.transactionSuccessDescription = "-0 ETH"
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.description)
+          }
+        })
+      }
     default:
       break
     }
