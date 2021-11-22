@@ -124,8 +124,8 @@ struct EIP1559Transaction: Codable {
       gasLimit: gasLimitBigInt.hexEncoded.hexSigned2Complement,
       maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
       maxGasFee: maxGasFeeBigInt.hexEncoded.hexSigned2Complement,
-      toAddress: self.toAddress,
-      fromAddress: self.toAddress,
+      toAddress: self.fromAddress,
+      fromAddress: self.fromAddress,
       data: "",
       value: "00"
     )
