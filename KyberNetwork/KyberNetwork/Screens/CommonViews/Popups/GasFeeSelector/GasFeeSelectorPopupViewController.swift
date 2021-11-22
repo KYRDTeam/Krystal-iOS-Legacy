@@ -439,15 +439,18 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var displayMainEstGasFee: String {
-    return String(self.formatFeeStringFor(gasPrice: self.maxGasFeeBigInt, gasLimit: self.advancedGasLimitBigInt).dropFirst())
+    let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+    let fee = baseFee + self.maxPriorityFeeBigInt
+    return String(self.formatFeeStringFor(gasPrice: fee, gasLimit: self.gasLimit).dropFirst())
   }
 
   var displayMainEquivalentUSD: String {
     if let usdRate = KNGeneralProvider.shared.quoteTokenPrice?.usd {
       let fee = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
       let usdAmt = fee * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(18)
+      let valueEth = fee.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
       let value = usdAmt.displayRate(decimals: 18)
-      return "~ $\(value) USD"
+      return "Max fee: \(valueEth) ~ $\(value) USD"
     }
     return ""
   }
@@ -545,7 +548,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var maxFeeHelpButton: UIButton!
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var secondButton: UIButton!
-  
+
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -602,8 +605,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedPriorityFeeHelpButton.isHidden = true
       self.advancedPriorityFeeContainerView.isHidden = true
       self.maxPriorityFeeErrorLabel.isHidden = true
-      self.gasLimitHelpButton.isHidden = true
-      self.maxFeeHelpButton.isHidden = true
     }
 
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {

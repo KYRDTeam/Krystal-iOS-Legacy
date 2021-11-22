@@ -1009,11 +1009,13 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
       switch tag {
       case 1:
-        message = "gas.limit.help".toBeLocalised()
+        message = KNGeneralProvider.shared.isUseEIP1559 ? "gas.limit.help".toBeLocalised() : "gas.limit.legacy.help".toBeLocalised()
       case 2:
         message = "max.priority.fee.help".toBeLocalised()
       case 3:
-        message = "max.fee.help".toBeLocalised()
+        message = KNGeneralProvider.shared.isUseEIP1559 ? "max.fee.help".toBeLocalised() : "gas.price.legacy.help".toBeLocalised()
+      case 4:
+        message = "nonce.help".toBeLocalised()
       default:
         break
       }
