@@ -17,7 +17,7 @@ enum KSwapViewEvent {
   case openHistory
   case openWalletsList
   case getAllRates(from: TokenObject, to: TokenObject, amount: BigInt, focusSrc: Bool)
-  case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt)
+  case openChooseRate(from: TokenObject, to: TokenObject, rates: [Rate], gasPrice: BigInt, amountFrom: String)
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
   case getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String)
@@ -354,7 +354,7 @@ class KSwapViewController: KNBaseViewController {
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
     let rates = self.viewModel.swapRates.3
     if rates.count >= 2 {
-      self.delegate?.kSwapViewController(self, run: .openChooseRate(from: self.viewModel.from, to: self.viewModel.to, rates: rates, gasPrice: self.viewModel.gasPrice))
+      self.delegate?.kSwapViewController(self, run: .openChooseRate(from: self.viewModel.from, to: self.viewModel.to, rates: rates, gasPrice: self.viewModel.gasPrice, amountFrom: self.viewModel.amountFrom))
     }
   }
 

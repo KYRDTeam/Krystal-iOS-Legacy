@@ -398,8 +398,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .getAllRates(let from, let to, let srcAmount, let focusSrc):
       self.getAllRates(from: from, to: to, amount: srcAmount, focusSrc: focusSrc)
-    case .openChooseRate(let from, let to, let rates, let gasPrice):
-      let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice)
+    case .openChooseRate(let from, let to, let rates, let gasPrice, let amountFrom):
+        let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, amountFrom: amountFrom)
       let vc = ChooseRateViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
