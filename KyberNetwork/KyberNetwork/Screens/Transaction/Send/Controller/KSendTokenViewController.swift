@@ -508,6 +508,7 @@ extension KSendTokenViewController {
     self.viewModel.updateGasPrice(value)
     self.updateAmountFieldUIForTransferAllIfNeeded()
     self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 
   func coordinatorDidUpdatePendingTx() {

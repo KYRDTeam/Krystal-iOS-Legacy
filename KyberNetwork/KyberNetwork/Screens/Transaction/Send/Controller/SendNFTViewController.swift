@@ -116,6 +116,7 @@ class SendNFTViewModel {
     self.advancedGasLimit = nil
     self.advancedMaxPriorityFee = nil
     self.advancedMaxFee = nil
+    self.advancedNonce = nil
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
@@ -438,6 +439,7 @@ class SendNFTViewController: KNBaseViewController {
     self.viewModel.updateSelectedGasPriceType(type)
     self.viewModel.updateGasPrice(value)
     self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 }
 

@@ -832,6 +832,7 @@ class KSwapViewModel {
     self.advancedGasLimit = nil
     self.advancedMaxPriorityFee = nil
     self.advancedMaxFee = nil
+    self.advancedNonce = nil
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
