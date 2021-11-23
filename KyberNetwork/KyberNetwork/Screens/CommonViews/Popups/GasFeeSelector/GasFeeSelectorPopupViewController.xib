@@ -484,8 +484,8 @@
                                                         <action selector="gasLimitChgAmountButtonTapped:" destination="-1" eventType="touchUpInside" id="WHE-tE-n8x"/>
                                                     </connections>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wVJ-uZ-xcd">
-                                                    <rect key="frame" x="42" y="0.0" width="60" height="42"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wVJ-uZ-xcd">
+                                                    <rect key="frame" x="42" y="0.0" width="251" height="42"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="pdh-5t-rWX"/>
@@ -520,7 +520,7 @@
                                                 <constraint firstItem="wVJ-uZ-xcd" firstAttribute="top" secondItem="IEN-jO-Gfh" secondAttribute="top" id="aTV-n6-SNh"/>
                                                 <constraint firstItem="wVJ-uZ-xcd" firstAttribute="leading" secondItem="IEN-jO-Gfh" secondAttribute="leading" constant="42" id="c1v-vX-UM9"/>
                                                 <constraint firstAttribute="bottom" secondItem="NOP-XV-sgd" secondAttribute="bottom" id="cdc-Y4-d6u"/>
-                                                <constraint firstItem="X5p-Hy-EHO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wVJ-uZ-xcd" secondAttribute="trailing" id="izc-u9-7MP"/>
+                                                <constraint firstItem="X5p-Hy-EHO" firstAttribute="leading" secondItem="wVJ-uZ-xcd" secondAttribute="trailing" constant="5" id="izc-u9-7MP"/>
                                                 <constraint firstAttribute="height" constant="42" id="jxg-41-tQU"/>
                                                 <constraint firstAttribute="bottom" secondItem="X5p-Hy-EHO" secondAttribute="bottom" id="pRK-qu-YY8"/>
                                             </constraints>
@@ -705,8 +705,8 @@
                                                         <action selector="customNonceChangeButtonTapped:" destination="-1" eventType="touchUpInside" id="xAs-AJ-HRw"/>
                                                     </connections>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bbR-vj-O0z">
-                                                    <rect key="frame" x="42" y="0.0" width="60" height="42"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bbR-vj-O0z">
+                                                    <rect key="frame" x="42" y="0.0" width="251" height="42"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="ry3-ll-Ls6"/>
@@ -738,7 +738,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="bbR-vj-O0z" secondAttribute="bottom" id="7Vc-zb-Cj7"/>
                                                 <constraint firstItem="mGh-bA-1vy" firstAttribute="top" secondItem="YhK-og-OKC" secondAttribute="top" id="Baj-gt-Sxm"/>
                                                 <constraint firstAttribute="bottom" secondItem="Mrf-t6-4ik" secondAttribute="bottom" id="FoD-QQ-R3d"/>
-                                                <constraint firstItem="Mrf-t6-4ik" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bbR-vj-O0z" secondAttribute="trailing" id="GIC-GI-e68"/>
+                                                <constraint firstItem="Mrf-t6-4ik" firstAttribute="leading" secondItem="bbR-vj-O0z" secondAttribute="trailing" constant="5" id="GIC-GI-e68"/>
                                                 <constraint firstItem="mGh-bA-1vy" firstAttribute="leading" secondItem="YhK-og-OKC" secondAttribute="leading" id="NiK-a4-Rfr"/>
                                                 <constraint firstItem="bbR-vj-O0z" firstAttribute="top" secondItem="YhK-og-OKC" secondAttribute="top" id="QYS-JZ-bau"/>
                                                 <constraint firstItem="Mrf-t6-4ik" firstAttribute="top" secondItem="YhK-og-OKC" secondAttribute="top" id="dLb-LZ-21L"/>
