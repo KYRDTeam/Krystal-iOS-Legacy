@@ -139,18 +139,26 @@ extension ChooseRateViewController: UITableViewDataSource {
     cell.updateCell(cellModel)
     cell.saveLabel.isHidden = true
     if self.viewModel.dataSource.count >= 2 {
+      cell.saveLabel.isHidden = indexPath.row != 0
       let firstData = self.viewModel.dataSource[0]
       let secondData = self.viewModel.dataSource[1]
-
-      if let amountFrom = self.viewModel.amountFrom, !amountFrom.isEmpty {
-        cell.saveLabel.isHidden = indexPath.row != 0
+      
+      let firstRateBigInt = BigInt.bigIntFromString(value: firstData.rate.rate)
+      let secondRateBigInt = BigInt.bigIntFromString(value: secondData.rate.rate)
+      
+      if firstRateBigInt.displayRate(decimals: 18) == secondRateBigInt.displayRate(decimals: 18) {
+        // incase first rate and second rate is equal then show "best"
+        cell.saveLabel.text = "Best"
+        cell.saveLabelWidthConstraint.constant = 40
+      } else if let amountFrom = self.viewModel.amountFrom, !amountFrom.isEmpty {
         let amountFromBigInt = amountFrom.shortBigInt(decimals: 18) ?? BigInt(0)
         if let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.viewModel.to.address) {
-          let savedBigInt = (BigInt.bigIntFromString(value: firstData.rate.rate) - BigInt.bigIntFromString(value: secondData.rate.rate)) * amountFromBigInt / BigInt(10).power(18)
+          let savedBigInt = (firstRateBigInt - secondRateBigInt) * amountFromBigInt / BigInt(10).power(18)
           let usd = savedBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
           cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4))"
           cell.saveLabelWidthConstraint.constant = 79
         } else {
+          // incase can not get the price show "Best"
           cell.saveLabel.text = "Best"
           cell.saveLabelWidthConstraint.constant = 40
         }
