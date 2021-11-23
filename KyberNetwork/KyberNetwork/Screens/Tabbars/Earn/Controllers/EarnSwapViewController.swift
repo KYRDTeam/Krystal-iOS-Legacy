@@ -738,7 +738,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
     let rates = self.viewModel.swapRates.3
     if rates.count >= 2 {
-      self.delegate?.earnViewController(self, run: .openChooseRate(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice))
+      self.delegate?.earnViewController(self, run: .openChooseRate(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice, amountFrom: self.viewModel.amountFrom))
     }
   }
   

@@ -27,12 +27,13 @@ class ChooseRateViewModel {
     self.amountFrom = amountFrom
   }
 
-  init(from: TokenData, to: TokenData, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false) {
+  init(from: TokenData, to: TokenData, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false, amountFrom: String) {
     self.data = data
     self.from = from
     self.to = to
     self.gasPrice = gasPrice
     self.isDeposit = isDeposit
+    self.amountFrom = amountFrom
   }
 
   func reloadDataSource() {
@@ -138,13 +139,11 @@ extension ChooseRateViewController: UITableViewDataSource {
     cell.updateCell(cellModel)
     if self.viewModel.dataSource.count >= 2 {
       cell.saveLabel.isHidden = indexPath.row != 0
-      
       let firstData = self.viewModel.dataSource[0]
       let secondData = self.viewModel.dataSource[1]
       
       if let amountFrom = self.viewModel.amountFrom, !amountFrom.isEmpty {
         let amountFromBigInt = amountFrom.shortBigInt(decimals: 18) ?? BigInt(0)
-
         if let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.viewModel.to.address) {
           let savedBigInt = (BigInt.bigIntFromString(value: firstData.rate.rate) - BigInt.bigIntFromString(value: secondData.rate.rate)) * amountFromBigInt / BigInt(10).power(18)
           

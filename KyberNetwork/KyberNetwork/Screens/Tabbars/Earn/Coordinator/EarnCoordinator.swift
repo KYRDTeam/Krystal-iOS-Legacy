@@ -339,8 +339,8 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       self.earnSwapViewController = controller
     case .getAllRates(from: let from, to: let to, amount: let amount, focusSrc: let focusSrc):
       self.getAllRates(from: from, to: to, amount: amount, focusSrc: focusSrc)
-    case .openChooseRate(from: let from, to: let to, rates: let rates, gasPrice: let gasPrice):
-      let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, isDeposit: true)
+    case .openChooseRate(from: let from, to: let to, rates: let rates, gasPrice: let gasPrice, amountFrom : let amountFrom):
+      let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, isDeposit: true, amountFrom: amountFrom)
       let vc = ChooseRateViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
