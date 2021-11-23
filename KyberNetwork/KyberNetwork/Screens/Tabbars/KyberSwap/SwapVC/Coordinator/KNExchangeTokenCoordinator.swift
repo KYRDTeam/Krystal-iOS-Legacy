@@ -584,7 +584,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(RateResponse.self, from: resp.data)
-          self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: data.rates)
+          let sortedRate = data.rates.sorted { rate1, rate2 in
+            return rate1.rate > rate2.rate
+          }
+          self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: sortedRate)
         } catch let error {
           self.rootViewController.coordinatorFailUpdateRates()
         }
