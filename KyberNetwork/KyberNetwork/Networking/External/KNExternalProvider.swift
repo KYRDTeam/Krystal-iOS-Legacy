@@ -174,7 +174,7 @@ class KNExternalProvider {
                 data: data.hexEncoded,
                 value: "0x"
               )
-              
+
               if let signedData = self.signContractGenericEIP1559Transaction(eip1559Tx) {
                 KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { [weak self] result in
                   guard let `self` = self else { return }

@@ -466,6 +466,8 @@ enum GasFeeSelectorPopupViewEvent {
   case updateAdvancedNonce(nonce: String)
   case speedupTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
   case cancelTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
+  case speedupTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
+  case cancelTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -811,7 +813,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBAction func gasFeeButtonTapped(_ sender: UIButton) {
     let selectType = KNSelectedGasPriceType(rawValue: sender.tag)!
     self.viewModel.updateSelectedType(selectType)
-    self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: selectType, value: self.viewModel.valueForSelectedType(type: selectType)))
     self.updateGasPriceUIs()
     self.updateUIForMainGasFee()
     self.updateUIAdvancedSetting()
@@ -851,27 +852,91 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
-      if let gasLimit = self.advancedGasLimitField.text,
-         let maxPriorityFee = self.advancedPriorityFeeField.text,
-         let maxFee = self.advancedMaxFeeField.text,
-         self.viewModel.selectedType == .custom,
-         self.viewModel.isAllAdvancedSettingsValid {
-        guard !self.viewModel.isSpeedupMode else {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        let gasLimit = self.advancedGasLimitField.text ?? ""
+        let maxPriorityFee = self.advancedPriorityFeeField.text ?? ""
+        let maxFee = self.advancedMaxFeeField.text ?? ""
+        if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+          if self.viewModel.isSpeedupMode, let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+            print("[GasSelector][EIP1559][Speedup] \(gasLimit) \(maxPriorityFee) \(maxFee)")
+            return
           }
-          return
-        }
-
-        guard !self.viewModel.isCancelMode else {
-          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+          
+          if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+            print("[GasSelector][EIP1559][Cancel] \(gasLimit) \(maxPriorityFee) \(maxFee)")
+            return
           }
-          return
+        } else {
+          if self.viewModel.selectedType == .custom {
+            if self.viewModel.isAllAdvancedSettingsValid {
+              self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
+            }
+            print("[GasSelector][EIP1559][Select] \(gasLimit) \(maxPriorityFee) \(maxFee)")
+          } else {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: self.viewModel.selectedType, value: self.viewModel.valueForSelectedType(type: self.viewModel.selectedType)))
+            print("[GasSelector][EIP1559][Select] \(self.viewModel.selectedType.rawValue)")
+          }
         }
+      } else {
+        let gasLimit = self.advancedGasLimitField.text ?? ""
+        let maxFee = self.advancedMaxFeeField.text ?? ""
+        if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+          let gasLimitBigInt = BigInt(gasLimit) ?? BigInt(0)
+          let maxFeeBigInt = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+          if self.viewModel.isSpeedupMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransactionLegacy(legacyTransaction: tx.toSpeedupTransaction(gasPrice: maxFeeBigInt.description, gasLimit: gasLimitBigInt.description), original: original))
+            print("[GasSelector][Legacy][Speedup] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
+          }
 
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
+          if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransactionLegacy(legacyTransaction: tx.toCancelTransaction(gasPrice: maxFeeBigInt.description, gasLimit: gasLimitBigInt.description), original: original))
+            print("[GasSelector][Legacy][Cancel] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
+          }
+        } else {
+          if self.viewModel.selectedType == .custom {
+            if self.viewModel.isAllAdvancedSettingsValid {
+              self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: "", maxFee: maxFee))
+            }
+            print("[GasSelector][Legacy][Select] \(gasLimit) \(maxFee)")
+          } else {
+            self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: self.viewModel.selectedType, value: self.viewModel.valueForSelectedType(type: self.viewModel.selectedType)))
+            print("[GasSelector][Legacy][Select] \(self.viewModel.selectedType.rawValue)")
+          }
+        }
       }
+
+//      if let gasLimit = self.advancedGasLimitField.text,
+//         let maxPriorityFee = self.advancedPriorityFeeField.text,
+//         let maxFee = self.advancedMaxFeeField.text,
+//         self.viewModel.selectedType == .custom,
+//         self.viewModel.isAllAdvancedSettingsValid {
+//        guard !self.viewModel.isSpeedupMode else {
+//          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+//            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+//          }
+//          return
+//        }
+//
+//        guard !self.viewModel.isCancelMode else {
+//          if let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
+//            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
+//          }
+//          return
+//        }
+//
+//        self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
+//      } else {
+//        if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+//          
+//          
+//          
+//        } else {
+//          self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: self.viewModel.selectedType, value: self.viewModel.valueForSelectedType(type: self.viewModel.selectedType)))
+//        }
+//      }
+
       if let nonceString = self.advancedNonceField.text,
          self.viewModel.hasNonceChaned,
          self.viewModel.advancedNonceErrorStatus == .none {

@@ -57,6 +57,14 @@ extension SignTransactionObject {
     return gasPrice
   }
   
+  func toSpeedupTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
+    return SignTransactionObject(value: self.value, from: self.from, to: self.to, nonce: self.nonce, data: self.data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID)
+  }
+  
+  func toCancelTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
+    return SignTransactionObject(value: "0", from: self.from, to: self.from, nonce: self.nonce, data: Data(), gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID)
+  }
+  
   func toSpeedupTransaction(account: Account, gasPrice: BigInt) -> SignTransaction {
     return SignTransaction(
       value: BigInt(self.value) ?? BigInt(0),

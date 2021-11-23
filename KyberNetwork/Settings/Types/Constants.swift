@@ -117,7 +117,7 @@ public struct Constants {
     symbol: "RopstenBSC",
     endpoint: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     endpointKyber: "https://data-seed-prebsc-2-s1.binance.org:8545/",
-    endpointAlchemy: "https://data-seed-prebsc-1-s2.binance.org:8545/",
+    endpointAlchemy: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     etherScanEndpoint: "https://testnet.bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x813718C50df497BC136d5d6dfc0E0aDA8AB0C93e",

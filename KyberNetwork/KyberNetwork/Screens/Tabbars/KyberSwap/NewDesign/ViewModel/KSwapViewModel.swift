@@ -838,6 +838,6 @@ class KSwapViewModel {
   }
 
   var isUseEIP1559: Bool {
-    return KNGeneralProvider.shared.currentChain == .eth //TODO: determine more detail later
+    return KNGeneralProvider.shared.isUseEIP1559
   }
 }
