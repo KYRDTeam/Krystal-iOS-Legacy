@@ -450,7 +450,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         do {
           let data = try decoder.decode(RateResponse.self, from: resp.data)
           let sortedRate = data.rates.sorted { rate1, rate2 in
-            return rate1.rate > rate2.rate
+            return BigInt.bigIntFromString(value: rate1.rate)  > BigInt.bigIntFromString(value: rate2.rate)
           }
           self.earnSwapViewController?.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: sortedRate)
         } catch let error {
