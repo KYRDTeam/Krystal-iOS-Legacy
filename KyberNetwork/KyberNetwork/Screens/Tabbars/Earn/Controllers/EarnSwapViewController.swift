@@ -330,9 +330,7 @@ class EarnSwapViewModel {
     } else {
       let max = rates.max { (left, right) -> Bool in
         if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
-          let leftValue = self.amountToBigInt * leftBigInt - self.gasPrice * BigInt(left.estimatedGas)
-          let rightValue = self.amountToBigInt * rightBigInt - self.gasPrice * BigInt(right.estimatedGas)
-          return leftValue < rightValue
+          return leftBigInt < rightBigInt
         } else {
           return false
         }
