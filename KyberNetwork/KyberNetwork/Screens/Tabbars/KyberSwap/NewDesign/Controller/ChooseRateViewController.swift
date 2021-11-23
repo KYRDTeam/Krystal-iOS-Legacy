@@ -149,10 +149,10 @@ extension ChooseRateViewController: UITableViewDataSource {
           let savedBigInt = (BigInt.bigIntFromString(value: firstData.rate.rate) - BigInt.bigIntFromString(value: secondData.rate.rate)) * amountFromBigInt / BigInt(10).power(18)
           let usd = savedBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
           cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4))"
+          cell.saveLabelWidthConstraint.constant = 79
         } else {
-          let firstValue = Double(BigInt.bigIntFromString(value: firstData.rate.rate).string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ?? 0.0
-          let secondValue = Double(BigInt.bigIntFromString(value: secondData.rate.rate).string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4)) ?? 1.0
-          cell.saveLabel.text = "Saved " + StringFormatter.percentString(value: (firstValue - secondValue) / secondValue)
+          cell.saveLabel.text = "Best"
+          cell.saveLabelWidthConstraint.constant = 40
         }
       }
     }

@@ -60,6 +60,7 @@ class ChooseRateTableViewCell: UITableViewCell {
   @IBOutlet weak var gasFeeTitleLabel: UILabel!
   @IBOutlet weak var platformIconImg: UIImageView!
   @IBOutlet weak var saveLabel: UILabel!
+  @IBOutlet weak var saveLabelWidthConstraint: NSLayoutConstraint!
   var cellModel: ChooseRateCellViewModel?
   
   override func awakeFromNib() {

@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -162,6 +162,7 @@
                 <outlet property="platformNameLabel" destination="4AZ-aF-0K3" id="Y53-Fh-Ptx"/>
                 <outlet property="rateLabel" destination="JUa-iq-dzx" id="Mt6-SN-xCW"/>
                 <outlet property="saveLabel" destination="IGg-59-GW4" id="P0b-XP-WvL"/>
+                <outlet property="saveLabelWidthConstraint" destination="wvz-Qq-OK8" id="Jl0-Ne-LG8"/>
             </connections>
             <point key="canvasLocation" x="17" y="54"/>
         </tableViewCell>
