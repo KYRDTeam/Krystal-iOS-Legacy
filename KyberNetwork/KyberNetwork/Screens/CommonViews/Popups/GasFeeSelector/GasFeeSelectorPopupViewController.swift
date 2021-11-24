@@ -841,8 +841,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func tapInsidePopup(_ sender: UITapGestureRecognizer) {
-    //TODO: handle new implementation
-    self.customRateTextField.resignFirstResponder()
+    if sender.location(in: self.contentView).y <= 70 {
+      self.dismiss(animated: true, completion: nil)
+    } else {
+      self.contentView.endEditing(true)
+    }
   }
 
   @IBAction func firstButtonTapped(_ sender: UIButton) {
