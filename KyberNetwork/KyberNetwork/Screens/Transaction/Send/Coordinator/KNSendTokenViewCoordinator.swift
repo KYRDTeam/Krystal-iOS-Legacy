@@ -215,7 +215,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .contactSelectMore:
       self.openListContactsView()
     case .openGasPriceSelect(let gasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
-      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType)
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
         medium: KNGasCoordinator.shared.standardKNGas,

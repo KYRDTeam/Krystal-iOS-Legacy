@@ -581,9 +581,13 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     if self.viewModel.isContainSippageSectionOption {
       self.slippageRateSectionHeighContraint.constant = 160
       self.slippageSectionContainerView.isHidden = false
+      self.advancedSlippageContainerView.isHidden = false
+      self.advancedSlippageDivideView.isHidden = false
     } else {
       self.slippageRateSectionHeighContraint.constant = 0
       self.slippageSectionContainerView.isHidden = true
+      self.advancedSlippageContainerView.isHidden = true
+      self.advancedSlippageDivideView.isHidden = true
     }
     self.segmentedControl.selectedSegmentIndex = self.viewModel.selectedType == .custom ? 1 : 0
     self.viewModel.isAdvancedMode = self.viewModel.selectedType == .custom
@@ -629,7 +633,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
       self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
-      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)
+      self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxPriorityFeeErrorLabel.text = ""
       self.advancedPriorityFeeField.textColor = UIColor(named: "textWhiteColor")
