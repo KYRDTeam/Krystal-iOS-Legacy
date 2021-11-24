@@ -153,9 +153,14 @@ extension ChooseRateViewController: UITableViewDataSource {
       } else if let amountFrom = self.viewModel.amountFrom, !amountFrom.isEmpty {
         let amountFromBigInt = amountFrom.shortBigInt(decimals: 18) ?? BigInt(0)
         if let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.viewModel.to.address) {
-          let savedBigInt = (firstRateBigInt - secondRateBigInt) * amountFromBigInt / BigInt(10).power(18)
-          let usd = savedBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
-          cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 4))"
+          let savedAmountBigInt = (firstRateBigInt - secondRateBigInt) * amountFromBigInt / BigInt(10).power(18)
+          let usd = savedAmountBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+          let usdDoubleValue = Double(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))
+          if usdDoubleValue == 0 {
+            cell.saveLabel.text = "Best"
+          } else {
+            cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))"
+          }
           cell.saveLabelWidthConstraint.constant = 79
         } else {
           // incase can not get the price show "Best"
