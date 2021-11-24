@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
@@ -382,7 +382,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your transaction will revert if the price changes unfavorably by more than this percentage." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdj-ok-rGr">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Your transaction will revert if the price changes unfavorably by more than this percentage." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdj-ok-rGr">
                                     <rect key="frame" x="0.0" y="93" width="336" height="33"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
@@ -1137,6 +1137,7 @@
                         <constraint firstItem="gcp-UN-gH9" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="i1a-xj-kVu"/>
                         <constraint firstItem="gcp-UN-gH9" firstAttribute="top" secondItem="l2A-pM-8RD" secondAttribute="bottom" constant="15" id="mUY-ld-D7M"/>
                         <constraint firstItem="HRe-IQ-JxG" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="nrm-T2-1nb"/>
+                        <constraint firstItem="Fdj-ok-rGr" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="gyw-K5-8ty" secondAttribute="bottom" id="oBf-G8-hdF"/>
                         <constraint firstItem="lCT-HM-5yV" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" constant="39" id="oyh-lL-p51"/>
                         <constraint firstAttribute="bottom" secondItem="gyw-K5-8ty" secondAttribute="bottom" constant="80" id="qwZ-lY-xIs"/>
                         <constraint firstItem="l2A-pM-8RD" firstAttribute="top" secondItem="5QM-Uq-ScQ" secondAttribute="bottom" constant="82" id="wWB-1j-68N"/>

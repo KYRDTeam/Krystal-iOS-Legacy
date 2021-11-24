@@ -405,9 +405,7 @@ class GasFeeSelectorPopupViewModel {
     guard let unwrap = self.advancedMaxFee, !unwrap.isEmpty else {
       return .none
     }
-    let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-    let lowerLimitBigInt = self.maxPriorityFeeBigInt + baseFee
-    let lowerLimit = lowerLimitBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
+    let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
     let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue * 1.5
     let maxFeeDouble = self.advancedMaxFee?.doubleValue ?? 0
 
