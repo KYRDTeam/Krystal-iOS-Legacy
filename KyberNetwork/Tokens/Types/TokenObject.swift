@@ -24,6 +24,8 @@ class TokenObject: Object {
   @objc dynamic var isQuote: Bool = false
   @objc dynamic var isGasFixed: Bool = false
   @objc dynamic var quotePriority: Int = 0
+  /// token tag
+  @objc dynamic var tag: String?
   /// volumn in 24h by usd
   @objc dynamic var volumn: Double = 0.0
     convenience init(

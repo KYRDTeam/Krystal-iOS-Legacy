@@ -14,6 +14,7 @@ class Token: Codable, Equatable, Hashable {
   var symbol: String
   var decimals: Int
   var logo: String
+  var tag: String?
 
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
@@ -21,6 +22,9 @@ class Token: Codable, Equatable, Hashable {
     self.address = (dictionary["address"] as? String ?? "").lowercased()
     self.decimals = dictionary["decimals"] as? Int ?? 0
     self.logo = dictionary["logo"] as? String ?? ""
+    if let tag = dictionary["tag"] as? String, !tag.isEmpty {
+      self.tag = tag
+    }
   }
   
   init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
@@ -39,6 +43,7 @@ class Token: Codable, Equatable, Hashable {
     let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
     tokenObject.isCustom = isCustom
     tokenObject.volumn = self.getVol(.usd)
+    tokenObject.tag = self.tag
     return tokenObject
   }
   
