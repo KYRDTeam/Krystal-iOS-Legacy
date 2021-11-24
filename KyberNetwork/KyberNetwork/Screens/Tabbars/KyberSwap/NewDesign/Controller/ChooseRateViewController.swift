@@ -14,91 +14,47 @@ class ChooseRateViewModel {
   fileprivate(set) var to: TokenData
   fileprivate(set) var gasPrice: BigInt
   fileprivate(set) var isDeposit: Bool
-  
+  fileprivate(set) var amountFrom: String? = ""
+
   var dataSource: [ChooseRateCellViewModel] = []
-  
-  init(from: TokenObject, to: TokenObject, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false) {
+
+  init(from: TokenObject, to: TokenObject, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false, amountFrom: String) {
     self.data = data
     self.from = from.toTokenData()
     self.to = to.toTokenData()
     self.gasPrice = gasPrice
     self.isDeposit = isDeposit
+    self.amountFrom = amountFrom
   }
-  
-  init(from: TokenData, to: TokenData, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false) {
+
+  init(from: TokenData, to: TokenData, data: [Rate], gasPrice: BigInt, isDeposit: Bool = false, amountFrom: String) {
     self.data = data
     self.from = from
     self.to = to
     self.gasPrice = gasPrice
     self.isDeposit = isDeposit
+    self.amountFrom = amountFrom
   }
-  
+
   func reloadDataSource() {
-    self.dataSource = self.data.map({ rate in
+    var max = BigInt(0)
+    if let firstData = self.data.first {
+      max = BigInt.bigIntFromString(value: firstData.rate)
+    }
+    //If there are platforms which is significantly worse than the best, hide them (> 50% worse in term of rate)
+    let filterData = self.data.filter { rate in
+      return BigInt.bigIntFromString(value: rate.rate) >= max * BigInt(0.5 * pow(10.0, 18.0)) / BigInt(10).power(18)
+    }
+    
+    self.dataSource = filterData.map({ rate in
       return ChooseRateCellViewModel(rate: rate, from: self.from, to: self.to, gasPrice: self.gasPrice)
     })
-    
   }
-  
+
   var popupHeight: CGFloat {
     let height = CGFloat(125 + self.data.count * 115)
     return height < 600.0 ? height : 600.0
   }
-
-//  var uniRateText: String {
-//    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
-//    return rateStringFor(platform: key)
-//  }
-//
-//  var kyberRateText: String {
-//    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
-//    return rateStringFor(platform: key)
-//  }
-//
-//  var uniFeeText: String {
-//    let key = KNGeneralProvider.shared.isEthereum ? "Uniswap" : "PancakeSwap v2"
-//    return feeStringFor(platform: key)
-//  }
-//
-//  var kyberFeeText: String {
-//    let key = KNGeneralProvider.shared.isEthereum ? "Kyber Network" : "PancakeSwap v1"
-//    return feeStringFor(platform: key)
-//  }
-//
-//  fileprivate func rateStringFor(platform: String) -> String {
-//    let dict = self.data.first { (element) -> Bool in
-//      if let platformString = element["platform"] as? String {
-//        return platformString == platform
-//      } else {
-//        return false
-//      }
-//    }
-//    if let rateString = dict?["rate"] as? String, let rate = BigInt(rateString) {
-//      return rate.isZero ? "---" : "1 \(self.from.symbol) = \(rate.displayRate(decimals: 18)) \(self.to.symbol)"
-//    } else {
-//      return "---"
-//    }
-//  }
-//
-//  fileprivate func feeStringFor(platform: String) -> String {
-//    let dict = self.data.first { (element) -> Bool in
-//      if let platformString = element["platform"] as? String {
-//        return platformString == platform
-//      } else {
-//        return false
-//      }
-//    }
-//    if let estGasString = dict?["estimatedGas"] as? NSNumber, let estGas = BigInt(estGasString.stringValue) {
-//      let rate = KNTrackerRateStorage.shared.getETHPrice()
-//      let rateUSDDouble = rate?.usd ?? 0
-//      let fee = estGas * gasPrice
-//      let rateBigInt = BigInt(rateUSDDouble * pow(10.0, 18.0))
-//      let feeUSD = fee * rateBigInt / BigInt(10).power(18)
-//      return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken) ~ $\(feeUSD.displayRate(decimals: 18))"
-//    } else {
-//      return "---"
-//    }
-//  }
 }
 
 protocol ChooseRateViewControllerDelegate: class {
@@ -163,17 +119,17 @@ extension ChooseRateViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.viewModel.dataSource.count
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(
       withIdentifier: ChooseRateTableViewCell.kCellID,
       for: indexPath
     ) as! ChooseRateTableViewCell
-    
+
     let cellModel = self.viewModel.dataSource[indexPath.row]
     cellModel.completionHandler = { rate in
       self.delegate?.chooseRateViewController(self, didSelect: rate.platform)
@@ -181,6 +137,39 @@ extension ChooseRateViewController: UITableViewDataSource {
     }
     cellModel.isDeposit = self.viewModel.isDeposit
     cell.updateCell(cellModel)
+    cell.saveLabel.isHidden = true
+    if self.viewModel.dataSource.count >= 2 {
+      cell.saveLabel.isHidden = indexPath.row != 0
+      let firstData = self.viewModel.dataSource[0]
+      let secondData = self.viewModel.dataSource[1]
+      
+      let firstRateBigInt = BigInt.bigIntFromString(value: firstData.rate.rate)
+      let secondRateBigInt = BigInt.bigIntFromString(value: secondData.rate.rate)
+      
+      if firstRateBigInt.displayRate(decimals: 18) == secondRateBigInt.displayRate(decimals: 18) {
+        // incase first rate and second rate is equal then show "best"
+        cell.saveLabel.text = "Best"
+        cell.saveLabelWidthConstraint.constant = 40
+      } else if let amountFrom = self.viewModel.amountFrom, !amountFrom.isEmpty {
+        let amountFromBigInt = amountFrom.shortBigInt(decimals: 18) ?? BigInt(0)
+        if let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.viewModel.to.address) {
+          let savedAmountBigInt = (firstRateBigInt - secondRateBigInt) * amountFromBigInt / BigInt(10).power(18)
+          let usd = savedAmountBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+          let usdDoubleValue = Double(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))
+          if usdDoubleValue == 0 {
+            cell.saveLabel.text = "Best"
+          } else {
+            cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))"
+          }
+          cell.saveLabelWidthConstraint.constant = 79
+        } else {
+          // incase can not get the price show "Best"
+          cell.saveLabel.text = "Best"
+          cell.saveLabelWidthConstraint.constant = 40
+        }
+      }
+    }
+
     return cell
   }
 }

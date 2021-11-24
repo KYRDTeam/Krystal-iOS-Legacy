@@ -339,8 +339,8 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       self.earnSwapViewController = controller
     case .getAllRates(from: let from, to: let to, amount: let amount, focusSrc: let focusSrc):
       self.getAllRates(from: from, to: to, amount: amount, focusSrc: focusSrc)
-    case .openChooseRate(from: let from, to: let to, rates: let rates, gasPrice: let gasPrice):
-      let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, isDeposit: true)
+    case .openChooseRate(from: let from, to: let to, rates: let rates, gasPrice: let gasPrice, amountFrom : let amountFrom):
+      let viewModel = ChooseRateViewModel(from: from, to: to, data: rates, gasPrice: gasPrice, isDeposit: true, amountFrom: amountFrom)
       let vc = ChooseRateViewController(viewModel: viewModel)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
@@ -449,7 +449,10 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(RateResponse.self, from: resp.data)
-          self.earnSwapViewController?.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: data.rates)
+          let sortedRate = data.rates.sorted { rate1, rate2 in
+            return BigInt.bigIntFromString(value: rate1.rate)  > BigInt.bigIntFromString(value: rate2.rate)
+          }
+          self.earnSwapViewController?.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: sortedRate)
         } catch let error {
           self.earnSwapViewController?.coordinatorFailUpdateRates()
         }

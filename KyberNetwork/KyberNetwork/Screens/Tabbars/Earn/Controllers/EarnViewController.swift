@@ -265,7 +265,7 @@ enum EarnViewEvent {
   case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction, isSwap: Bool, rawTransaction: TxObject)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool)
-  case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt)
+  case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt, amountFrom: String)
   case getRefPrice(from: TokenData, to: TokenData)
   case checkAllowance(token: TokenData)
   case sendApprove(token: TokenData, remain: BigInt)
