@@ -648,9 +648,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxFeeErrorLabel.text = "Max Fee is higher than necessary"
-      self.maxFeeErrorLabel.textColor = UIColor(named: "warningColor")
-      self.advancedMaxFeeField.textColor = UIColor(named: "warningColor")
-      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "warningColor")?.withAlphaComponent(0.5)
+      self.maxFeeErrorLabel.textColor = UIColor(named: "textRedColor")
+      self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
+      self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxFeeErrorLabel.text = ""
       self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
