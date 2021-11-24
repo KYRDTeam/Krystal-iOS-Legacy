@@ -321,45 +321,6 @@ class KNSupportedTokenStorage {
       return item.symbol == "KNC"
     } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
   }
-  
-//  func checkAddCustomTokenIfNeeded() {
-//    var unknown: [Token] = []
-//    let all = self.allTokens
-//    guard !all.isEmpty else {
-//      return
-//    }
-//    let etherscanTokens = EtherscanTransactionStorage.shared.getEtherscanToken()
-//    etherscanTokens.forEach { (token) in
-//      if !all.contains(token) {
-//        unknown.append(token)
-//      }
-//    }
-//    guard !unknown.isEmpty else {
-//      return
-//    }
-//    var customTokenCache = self.customTokens
-//    unknown.forEach { (token) in
-//      if !customTokenCache.contains(token) {
-//        customTokenCache.append(token)
-//      }
-//    }
-//
-//    //Check duplicate with support token list
-//    var duplicateToken: [Token] = []
-//    customTokenCache.forEach { (token) in
-//      if self.supportedToken.contains(token) {
-//        duplicateToken.append(token)
-//      }
-//    }
-//    duplicateToken.forEach { (token) in
-//      if let idx = customTokenCache.firstIndex(where: { $0 == token }) {
-//        customTokenCache.remove(at: idx)
-//      }
-//    }
-//
-//    self.customTokens = customTokenCache
-//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
-//  }
 
   func checkAddCustomTokenIfNeeded(_ tokens: [Token]) {
     guard !self.supportedToken.isEmpty else {
