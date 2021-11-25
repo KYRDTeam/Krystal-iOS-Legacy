@@ -42,6 +42,7 @@ class KNSupportedTokenCoordinator {
               if tokenStruct.isEmpty {
                 return
               }
+              KNSupportedTokenStorage.shared.updateNewTagsForSupportedTokens(tokenStruct)
               KNSupportedTokenStorage.shared.updateSupportedTokens(tokenStruct)
               KNNotificationUtil.postNotification(for: kSupportedTokenListDidUpdateNotificationKey)
             } catch let error {
