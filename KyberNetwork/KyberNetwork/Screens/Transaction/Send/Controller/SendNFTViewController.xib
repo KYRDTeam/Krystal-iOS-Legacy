@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -28,6 +28,9 @@
                 <outlet property="balanceLabel" destination="Por-wN-COr" id="77D-uj-0Aj"/>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="rdC-lM-rfi" id="wL3-1S-3Gb"/>
                 <outlet property="ensAddressLabel" destination="gsD-Tm-WVZ" id="WPD-Fd-5m6"/>
+                <outlet property="estGasFeeTitleLabel" destination="oc5-cu-GVr" id="d4e-NR-scS"/>
+                <outlet property="estGasFeeValueLabel" destination="MVC-9s-jfh" id="c07-Q2-s3B"/>
+                <outlet property="gasFeeTittleLabelTopContraint" destination="dFN-T1-pWo" id="LMk-iv-r8f"/>
                 <outlet property="moreContactButton" destination="ax8-sR-6CT" id="lV8-Vk-xTd"/>
                 <outlet property="navTitleLabel" destination="UEz-EF-0bU" id="B6m-iy-Jjw"/>
                 <outlet property="nftIDLabel" destination="5ST-5D-zjG" id="M8o-R3-Rye"/>
@@ -151,7 +154,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p4V-lx-SzU">
-                            <rect key="frame" x="0.0" y="621.5" width="375" height="120"/>
+                            <rect key="frame" x="0.0" y="653.5" width="375" height="120"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENT CONTACT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am2-c9-bJI">
                                     <rect key="frame" x="37" y="6" width="110.5" height="16.5"/>
@@ -209,13 +212,13 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOv-KD-7uX">
-                            <rect key="frame" x="252.5" y="563" width="85.5" height="16.5"/>
+                            <rect key="frame" x="252.5" y="595" width="85.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pj9-NJ-zqy">
-                            <rect key="frame" x="37" y="562.5" width="47" height="17"/>
+                            <rect key="frame" x="37" y="594.5" width="47" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
@@ -346,9 +349,22 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVC-9s-jfh">
+                            <rect key="frame" x="252.5" y="566" width="85.5" height="16.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oc5-cu-GVr">
+                            <rect key="frame" x="37" y="565.5" width="118.5" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="Pj9-NJ-zqy" firstAttribute="top" secondItem="oc5-cu-GVr" secondAttribute="bottom" constant="12" id="1eF-Cu-GHG"/>
                         <constraint firstItem="SOv-KD-7uX" firstAttribute="trailing" secondItem="pDd-uu-8SH" secondAttribute="trailing" id="3Dc-G7-9YL"/>
                         <constraint firstItem="Pj9-NJ-zqy" firstAttribute="leading" secondItem="pDd-uu-8SH" secondAttribute="leading" id="3ol-Cc-c6c"/>
                         <constraint firstItem="pDd-uu-8SH" firstAttribute="centerX" secondItem="Ut7-Gy-SfI" secondAttribute="centerX" id="4Uq-4z-QKR"/>
@@ -358,6 +374,8 @@
                         <constraint firstItem="UUg-vv-acE" firstAttribute="top" secondItem="GLE-eq-zOR" secondAttribute="bottom" constant="150" id="CA1-05-L03"/>
                         <constraint firstItem="GLE-eq-zOR" firstAttribute="top" secondItem="Ut7-Gy-SfI" secondAttribute="top" constant="27" id="Cuv-BZ-MrD"/>
                         <constraint firstItem="gsD-Tm-WVZ" firstAttribute="top" secondItem="Mp7-2b-yfK" secondAttribute="bottom" constant="6" id="EQl-TK-lXj"/>
+                        <constraint firstItem="SOv-KD-7uX" firstAttribute="trailing" secondItem="MVC-9s-jfh" secondAttribute="trailing" id="GBJ-3B-73P"/>
+                        <constraint firstItem="MVC-9s-jfh" firstAttribute="centerY" secondItem="oc5-cu-GVr" secondAttribute="centerY" id="Kfz-nH-CiT"/>
                         <constraint firstItem="p4V-lx-SzU" firstAttribute="top" secondItem="SOv-KD-7uX" secondAttribute="bottom" constant="42" id="Mgf-HN-cPA"/>
                         <constraint firstItem="SOv-KD-7uX" firstAttribute="centerY" secondItem="Pj9-NJ-zqy" secondAttribute="centerY" id="NbO-En-P8A"/>
                         <constraint firstItem="Por-wN-COr" firstAttribute="leading" secondItem="T4D-Og-5bp" secondAttribute="leading" id="OcQ-NM-CDq"/>
@@ -366,9 +384,10 @@
                         <constraint firstItem="fh6-mg-PWa" firstAttribute="top" secondItem="GLE-eq-zOR" secondAttribute="bottom" constant="40" id="WbK-7T-Um0"/>
                         <constraint firstItem="pDd-uu-8SH" firstAttribute="top" secondItem="Mp7-2b-yfK" secondAttribute="bottom" constant="44" id="Wuc-fb-gYo"/>
                         <constraint firstItem="nTh-Tq-xY1" firstAttribute="centerY" secondItem="UUg-vv-acE" secondAttribute="centerY" id="X8W-lJ-mfO"/>
+                        <constraint firstItem="Pj9-NJ-zqy" firstAttribute="leading" secondItem="oc5-cu-GVr" secondAttribute="leading" id="Zbz-LP-sPg"/>
                         <constraint firstAttribute="trailing" secondItem="pDd-uu-8SH" secondAttribute="trailing" constant="37" id="abl-ii-X3P"/>
                         <constraint firstAttribute="trailing" secondItem="Mp7-2b-yfK" secondAttribute="trailing" constant="37" id="d6p-Uh-O54"/>
-                        <constraint firstItem="Pj9-NJ-zqy" firstAttribute="top" secondItem="pDd-uu-8SH" secondAttribute="bottom" constant="22" id="dFN-T1-pWo"/>
+                        <constraint firstItem="Pj9-NJ-zqy" firstAttribute="top" secondItem="pDd-uu-8SH" secondAttribute="bottom" constant="54" id="dFN-T1-pWo"/>
                         <constraint firstAttribute="bottom" secondItem="p4V-lx-SzU" secondAttribute="bottom" constant="32" id="e0w-ew-Xa1"/>
                         <constraint firstAttribute="trailing" secondItem="T4D-Og-5bp" secondAttribute="trailing" constant="37" id="e18-wd-uVp"/>
                         <constraint firstItem="T4D-Og-5bp" firstAttribute="top" secondItem="fh6-mg-PWa" secondAttribute="bottom" constant="12" id="fP0-DK-9Ug"/>

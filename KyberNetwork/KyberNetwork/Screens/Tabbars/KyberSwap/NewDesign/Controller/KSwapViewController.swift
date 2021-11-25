@@ -224,6 +224,10 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setUpGasFeeView() {
+    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
+    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
+    self.gasFeeLabel.attributedText = self.viewModel.gasFeeString
+    self.slippageLabel.text = self.viewModel.slippageString
     if KNGeneralProvider.shared.isUseEIP1559 {
       self.estGasFeeTitleLabel.isHidden = false
       self.estGasFeeValueLabel.isHidden = false
@@ -233,10 +237,6 @@ class KSwapViewController: KNBaseViewController {
       self.estGasFeeValueLabel.isHidden = true
       self.gasFeeTittleLabelTopContraint.constant = 20
     }
-    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
-    self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
-    self.gasFeeLabel.attributedText = self.viewModel.gasFeeString
-    self.slippageLabel.text = self.viewModel.slippageString
   }
 
   fileprivate func updateUIPendingTxIndicatorView() {
