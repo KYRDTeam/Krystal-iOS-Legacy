@@ -46,6 +46,7 @@ final class StringFormatter {
     }
 
     let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = maxDigits
     formatter.roundingMode = .floor
     return formatter.string(from: NSNumber(value: value)) ?? ""
@@ -61,6 +62,7 @@ final class StringFormatter {
 
   func currencyString(value: Double, decimals: Int) -> String {
     let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = decimals
     formatter.roundingMode = .floor
     return formatter.string(from: NSNumber(value: value)) ?? ""
