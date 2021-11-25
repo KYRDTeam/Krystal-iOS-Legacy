@@ -127,6 +127,18 @@ class KNSupportedTokenStorage {
   func getSupportedTokens() -> [Token] {
     return self.supportedToken
   }
+  
+  /// migrate DB add new tag for current supported tokens in DB
+  func updateNewTagsForSupportedTokens(_ tokens: [Token]) {
+    self.supportedToken.forEach { supportedToken in
+      for token in tokens {
+        if token == supportedToken {
+          supportedToken.tag = token.tag
+        }
+      }
+    }
+    Storage.store(self.supportedToken, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
+  }
 
   func updateSupportedTokens(_ tokens: [Token]) {
     guard tokens != self.supportedToken else {
@@ -320,6 +332,17 @@ class KNSupportedTokenStorage {
     return self.supportedToken.first { (item) -> Bool in
       return item.symbol == "KNC"
     } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
+  }
+  /// migrate DB add new tag for current custom tokens in DB
+  func updateNewTagsForCustomTokens(_ tokens: [Token]) {
+    self.customTokens.forEach { customToken in
+      for token in tokens {
+        if token == customToken {
+          customToken.tag = token.tag
+        }
+      }
+    }
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
   }
 
   func checkAddCustomTokenIfNeeded(_ tokens: [Token]) {
