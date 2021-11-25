@@ -218,6 +218,7 @@ class KNSupportedTokenStorage {
     }) {
       self.deletedTokens.remove(at: index)
     }
+    Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
   }
 
   func getTokenActiveStatus(_ token: Token) -> Bool {
@@ -278,7 +279,7 @@ class KNSupportedTokenStorage {
     }
 
     self.deletedTokens.append(token)
-    Storage.store(self.self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+    Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
   }
 
   func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {
@@ -377,7 +378,7 @@ class KNSupportedTokenStorage {
         }
       }
     }
-    guard !unknown.isEmpty else {
+    guard !unknown.isEmpty || !duplicated.isEmpty else {
       return
     }
     self.customTokens.append(contentsOf: unknown)
