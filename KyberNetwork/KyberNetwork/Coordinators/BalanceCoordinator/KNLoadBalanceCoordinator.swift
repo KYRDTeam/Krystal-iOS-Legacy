@@ -342,6 +342,7 @@ class KNLoadBalanceCoordinator {
             return data.token
           }
           BalanceStorage.shared.setBalances(balances)
+          KNSupportedTokenStorage.shared.updateNewTagsForCustomTokens(tokens)
           KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded(tokens)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           completion(true)
