@@ -39,11 +39,14 @@
                 <outlet property="continueButton" destination="YJW-Oi-0g6" id="8t8-Bj-5r4"/>
                 <outlet property="currentChainIcon" destination="LsP-oY-uMF" id="TDC-DU-AI1"/>
                 <outlet property="equivalentUSDValueLabel" destination="ThL-2a-mea" id="xvo-BU-ibi"/>
+                <outlet property="estGasFeeTitleLabel" destination="4hz-Cx-cXe" id="Ikd-4g-vJC"/>
+                <outlet property="estGasFeeValueLabel" destination="CuG-qV-1fX" id="yFL-Uz-gh6"/>
                 <outlet property="exchangeRateLabel" destination="WYb-EV-F1u" id="rUE-lk-LLG"/>
                 <outlet property="fromAmountTextField" destination="FRx-Np-XK9" id="YoV-GF-962"/>
                 <outlet property="fromTokenButton" destination="pNB-lE-CZa" id="d0p-eq-DlN"/>
                 <outlet property="gasAndFeeBlockerView" destination="tcx-AV-92n" id="WbX-aY-7ZU"/>
                 <outlet property="gasFeeLabel" destination="3H6-w2-t6j" id="NPf-4J-IeU"/>
+                <outlet property="gasFeeTittleLabelTopContraint" destination="KUk-g9-nAA" id="HXa-Gr-cER"/>
                 <outlet property="headerContainerView" destination="vbp-fJ-pmC" id="1nh-Jl-Pr7"/>
                 <outlet property="loadingView" destination="hcc-rk-ckO" id="Urf-gI-Qgl"/>
                 <outlet property="minReceivedAmount" destination="nsk-dq-Pgz" id="2NG-Nz-AG8"/>
@@ -195,6 +198,18 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3a-OW-m6C">
                     <rect key="frame" x="0.0" y="113" width="375" height="554"/>
                     <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CuG-qV-1fX">
+                            <rect key="frame" x="239.5" y="370.5" width="85.5" height="16.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hz-Cx-cXe">
+                            <rect key="frame" x="50" y="370" width="118.5" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ $232 USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ThL-2a-mea">
                             <rect key="frame" x="285" y="139.5" width="53" height="12"/>
                             <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="10"/>
@@ -409,59 +424,59 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3H6-w2-t6j">
-                            <rect key="frame" x="239.5" y="367.5" width="85.5" height="16.5"/>
+                            <rect key="frame" x="239.5" y="399.5" width="85.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVq-fT-O6e">
-                            <rect key="frame" x="50" y="367" width="47" height="17"/>
+                            <rect key="frame" x="50" y="399" width="47" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slippage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0n-7n-8cR">
-                            <rect key="frame" x="50" y="396" width="56" height="17"/>
+                            <rect key="frame" x="50" y="428" width="56" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 1.0%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrV-j9-Z3y">
-                            <rect key="frame" x="296" y="396" width="29" height="17"/>
+                            <rect key="frame" x="296" y="428" width="29" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minimum recieved" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBy-ze-Tit">
-                            <rect key="frame" x="50" y="425" width="120.5" height="17"/>
+                            <rect key="frame" x="50" y="457" width="120.5" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Price Impact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFr-Qm-RNC">
-                            <rect key="frame" x="50" y="454" width="80.5" height="16.5"/>
+                            <rect key="frame" x="50" y="486" width="80.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="↓ 8.76%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4X-Ab-mqq">
-                            <rect key="frame" x="271.5" y="454" width="53.5" height="16.5"/>
+                            <rect key="frame" x="271.5" y="486" width="53.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" red="0.97647058823529409" green="0.34901960784313724" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="info_waring_blue_icon" translatesAutoresizingMaskIntoConstraints="NO" id="aW5-gN-sdQ">
-                            <rect key="frame" x="133.5" y="456.5" width="14" height="14"/>
+                            <rect key="frame" x="133.5" y="488.5" width="14" height="14"/>
                             <color key="tintColor" name="normalTextColor"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nsk-dq-Pgz">
-                            <rect key="frame" x="310" y="425" width="15" height="17"/>
+                            <rect key="frame" x="310" y="457" width="15" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CrP-t5-bir">
-                            <rect key="frame" x="50" y="454" width="97.5" height="17"/>
+                            <rect key="frame" x="50" y="486" width="97.5" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="eWG-mo-HpK"/>
                             </constraints>
@@ -497,7 +512,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tcx-AV-92n">
-                            <rect key="frame" x="37" y="345" width="301" height="126"/>
+                            <rect key="frame" x="37" y="345" width="301" height="158"/>
                             <color key="backgroundColor" name="mainViewBgColor"/>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhC-QI-j4l">
@@ -520,6 +535,7 @@
                         <constraint firstItem="ThL-2a-mea" firstAttribute="trailing" secondItem="IWS-1b-dbc" secondAttribute="trailing" id="87i-dr-1GA"/>
                         <constraint firstItem="EfQ-Sl-42G" firstAttribute="top" secondItem="J8q-3O-zAd" secondAttribute="bottom" constant="27" id="8i9-jP-3bG"/>
                         <constraint firstAttribute="trailing" secondItem="3H6-w2-t6j" secondAttribute="trailing" constant="50" id="8l0-US-v8C"/>
+                        <constraint firstItem="4hz-Cx-cXe" firstAttribute="centerY" secondItem="CuG-qV-1fX" secondAttribute="centerY" id="8tO-gS-uGx"/>
                         <constraint firstItem="n4X-Ab-mqq" firstAttribute="centerY" secondItem="uFr-Qm-RNC" secondAttribute="centerY" id="9Bg-JB-as9"/>
                         <constraint firstItem="fhC-QI-j4l" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="9DN-4o-CyH"/>
                         <constraint firstAttribute="trailing" secondItem="nrV-j9-Z3y" secondAttribute="trailing" constant="50" id="9xj-Kd-pj1"/>
@@ -539,7 +555,7 @@
                         <constraint firstItem="tcx-AV-92n" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" id="JOr-d5-QYR"/>
                         <constraint firstItem="ThL-2a-mea" firstAttribute="top" secondItem="IWS-1b-dbc" secondAttribute="bottom" constant="8" symbolic="YES" id="JX3-bP-9es"/>
                         <constraint firstItem="YJW-Oi-0g6" firstAttribute="centerY" secondItem="Hag-Sy-it8" secondAttribute="centerY" id="Jvq-ue-lr2"/>
-                        <constraint firstItem="zVq-fT-O6e" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" constant="22" id="KUk-g9-nAA"/>
+                        <constraint firstItem="zVq-fT-O6e" firstAttribute="top" secondItem="Hag-Sy-it8" secondAttribute="bottom" constant="54" id="KUk-g9-nAA"/>
                         <constraint firstItem="hcc-rk-ckO" firstAttribute="leading" secondItem="WYb-EV-F1u" secondAttribute="leading" constant="36" id="LC0-50-WgL"/>
                         <constraint firstItem="8mR-fc-0KZ" firstAttribute="centerY" secondItem="XaR-wf-YRm" secondAttribute="centerY" id="LV9-M6-j2w"/>
                         <constraint firstItem="Hag-Sy-it8" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="LZp-9G-FgP"/>
@@ -559,6 +575,7 @@
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="top" secondItem="P3a-OW-m6C" secondAttribute="top" constant="40" id="UeJ-4I-elg"/>
                         <constraint firstAttribute="bottom" secondItem="YJW-Oi-0g6" secondAttribute="bottom" constant="100" id="VK6-Me-ZgZ"/>
                         <constraint firstItem="tcx-AV-92n" firstAttribute="trailing" secondItem="YJW-Oi-0g6" secondAttribute="trailing" id="bhg-h2-uzB"/>
+                        <constraint firstItem="3H6-w2-t6j" firstAttribute="trailing" secondItem="CuG-qV-1fX" secondAttribute="trailing" id="bvP-zV-IeR"/>
                         <constraint firstItem="IWS-1b-dbc" firstAttribute="top" secondItem="XaR-wf-YRm" secondAttribute="bottom" constant="26" id="dhd-15-ko2"/>
                         <constraint firstItem="3H6-w2-t6j" firstAttribute="centerY" secondItem="zVq-fT-O6e" secondAttribute="centerY" id="dv9-Ca-WIt"/>
                         <constraint firstItem="9PL-XD-kXQ" firstAttribute="centerY" secondItem="WYb-EV-F1u" secondAttribute="centerY" id="e8i-07-pYd"/>
@@ -570,6 +587,8 @@
                         <constraint firstItem="CrP-t5-bir" firstAttribute="trailing" secondItem="aW5-gN-sdQ" secondAttribute="trailing" id="rrt-l8-H5t"/>
                         <constraint firstItem="J0n-7n-8cR" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="50" id="tjO-8m-ZhP"/>
                         <constraint firstItem="XaR-wf-YRm" firstAttribute="leading" secondItem="P3a-OW-m6C" secondAttribute="leading" constant="37" id="tra-DG-fOD"/>
+                        <constraint firstItem="zVq-fT-O6e" firstAttribute="leading" secondItem="4hz-Cx-cXe" secondAttribute="leading" id="ud4-6B-pFf"/>
+                        <constraint firstItem="zVq-fT-O6e" firstAttribute="top" secondItem="4hz-Cx-cXe" secondAttribute="bottom" constant="12" id="yTh-v9-7UO"/>
                         <constraint firstItem="LBy-ze-Tit" firstAttribute="top" secondItem="J0n-7n-8cR" secondAttribute="bottom" constant="12" id="z7g-rB-PVn"/>
                         <constraint firstItem="zIN-Er-xzM" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="zuq-mO-avp"/>
                     </constraints>

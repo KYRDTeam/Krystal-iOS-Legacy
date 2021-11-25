@@ -72,6 +72,10 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
   
   @IBOutlet weak var loadingView: SRCountdownTimer!
+  @IBOutlet weak var estGasFeeTitleLabel: UILabel!
+  @IBOutlet weak var estGasFeeValueLabel: UILabel!
+  @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  
   
 //  fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
@@ -220,6 +224,16 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setUpGasFeeView() {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      self.estGasFeeTitleLabel.isHidden = false
+      self.estGasFeeValueLabel.isHidden = false
+      self.gasFeeTittleLabelTopContraint.constant = 54
+    } else {
+      self.estGasFeeTitleLabel.isHidden = true
+      self.estGasFeeValueLabel.isHidden = true
+      self.gasFeeTittleLabelTopContraint.constant = 20
+    }
+    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
     self.gasFeeLabel.attributedText = self.viewModel.gasFeeString
     self.slippageLabel.text = self.viewModel.slippageString
