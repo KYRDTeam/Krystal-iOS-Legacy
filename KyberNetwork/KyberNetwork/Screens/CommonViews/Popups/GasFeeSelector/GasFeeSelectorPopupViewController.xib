@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -447,6 +447,9 @@
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YmJ-Yg-s8A" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
                             <rect key="frame" x="39" y="69.5" width="185.5" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="31" id="bje-19-zfz"/>
+                            </constraints>
                             <segments>
                                 <segment title="Basic" width="86.5"/>
                                 <segment title="Advanced" width="98"/>
@@ -1128,6 +1131,7 @@
                         <constraint firstItem="SGu-U2-OIY" firstAttribute="width" secondItem="phV-Kl-vM2" secondAttribute="width" id="PFv-JF-9KT"/>
                         <constraint firstAttribute="bottom" secondItem="SGu-U2-OIY" secondAttribute="bottom" constant="30" id="QO6-O5-P0p"/>
                         <constraint firstItem="HRe-IQ-JxG" firstAttribute="leading" secondItem="YmJ-Yg-s8A" secondAttribute="leading" id="Qed-By-MZE"/>
+                        <constraint firstItem="SGu-U2-OIY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Fdj-ok-rGr" secondAttribute="bottom" constant="5" id="WhZ-b7-Bbs"/>
                         <constraint firstItem="gyw-K5-8ty" firstAttribute="leading" secondItem="pr0-U8-kSa" secondAttribute="leading" id="Xaa-kN-QNb"/>
                         <constraint firstItem="cz1-gs-clU" firstAttribute="top" secondItem="gcp-UN-gH9" secondAttribute="bottom" constant="10" id="ZDm-kM-5dD"/>
                         <constraint firstAttribute="height" constant="650" id="ZJ7-Lq-sPg"/>
