@@ -159,7 +159,7 @@ extension ChooseRateViewController: UITableViewDataSource {
           if usdDoubleValue == 0 {
             cell.saveLabel.text = "Best"
           } else {
-            cell.saveLabel.text = "Saved $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))"
+            cell.saveLabel.text = "Save $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))"
           }
           cell.saveLabelWidthConstraint.constant = 79
         } else {
