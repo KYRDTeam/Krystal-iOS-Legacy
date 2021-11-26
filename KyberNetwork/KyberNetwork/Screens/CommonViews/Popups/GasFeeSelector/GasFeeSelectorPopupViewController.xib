@@ -566,7 +566,7 @@
                                                             </constraints>
                                                             <color key="textColor" name="textWhiteColor"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="-1" id="dc4-mb-6Kf"/>
                                                             </connections>
@@ -664,7 +664,7 @@
                                                             </constraints>
                                                             <color key="textColor" name="textWhiteColor"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="-1" id="JZO-5P-5ez"/>
                                                             </connections>

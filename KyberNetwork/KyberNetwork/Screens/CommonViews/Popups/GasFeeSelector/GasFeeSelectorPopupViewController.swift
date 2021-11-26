@@ -406,7 +406,7 @@ class GasFeeSelectorPopupViewModel {
       return .none
     }
     let lowerLimit = self.valueForSelectedType(type: .slow).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
-    let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue * 1.5
+    let upperLimit = self.valueForSelectedType(type: .superFast).string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1).doubleValue
     let maxFeeDouble = self.advancedMaxFee?.doubleValue ?? 0
 
     if maxFeeDouble < lowerLimit {
