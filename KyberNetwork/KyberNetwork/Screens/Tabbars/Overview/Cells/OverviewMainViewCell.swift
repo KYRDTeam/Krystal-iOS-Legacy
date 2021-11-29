@@ -44,6 +44,24 @@ class OverviewMainCellViewModel {
     }
   }
   
+  var logo: String {
+    switch self.mode {
+    case .market(token: let token, rightMode: _):
+      return token.logo
+    case .asset(token: let token, rightMode: _):
+      return token.logo
+    case .supply(balance: let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        return lendingBalance.logo
+      } else if let distributionBalance = balance as? LendingDistributionBalance {
+        return distributionBalance.logo
+      }
+      return ""
+    case .search(token: let token):
+      return token.symbol
+    }
+  }
+  
   var displayTitle: String {
     switch self.mode {
     case .market(token: let token, rightMode: let mode):
@@ -246,7 +264,7 @@ class OverviewMainViewCell: SwipeTableViewCell {
   
   func updateCell(_ viewModel: OverviewMainCellViewModel) {
     self.viewModel = viewModel
-    self.iconImageView.setSymbolImage(symbol: viewModel.displayTitle)
+    self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.displayTitle)
     self.tokenLabel.text = viewModel.displayTitle
     self.tokenBalanceLabel.text = viewModel.displaySubTitleDetail
     self.tokenValueLabel.text = viewModel.displayAccessoryTitle

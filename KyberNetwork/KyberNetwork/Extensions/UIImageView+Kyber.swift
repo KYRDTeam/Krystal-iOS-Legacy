@@ -121,12 +121,4 @@ extension UIImageView {
       self.setSymbolImage(symbol: symbol)
     }
   }
-
-//  func setTokenImage(with alert: KNAlertObject, size: CGSize? = nil, applyNoir: Bool = false) {
-//     let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(alert.token.lowercased()).png"
-//     let assetImage = UIImage(named: alert.token.lowercased())
-//     let defaultImage = UIImage(named: "default_token")!
-//     let placeholder = assetImage ?? defaultImage
-//     setImage(with: url, placeholder: placeholder, size: size, applyNoir: applyNoir)
-//  }
 }

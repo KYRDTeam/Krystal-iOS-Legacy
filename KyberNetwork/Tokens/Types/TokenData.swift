@@ -247,7 +247,8 @@ struct LendingBalance: Codable {
   let interestBearingTokenDecimal: Int
   let interestBearningTokenBalance: String
   let requiresApproval: Bool
-  
+  let logo: String
+
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
     self.symbol = dictionary["symbol"] as? String ?? ""
@@ -264,8 +265,9 @@ struct LendingBalance: Codable {
     self.interestBearingTokenDecimal = dictionary["interestBearingTokenDecimal"] as? Int ?? 0
     self.interestBearningTokenBalance = dictionary["interestBearingTokenBalance"] as? String ?? ""
     self.requiresApproval = dictionary["requiresApproval"] as? Bool ?? true
+    self.logo = dictionary["logo"] as? String ?? ""
   }
-  
+
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
     let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.supplyBalance) ?? BigInt(0)
@@ -291,7 +293,8 @@ struct LendingDistributionBalance: Codable {
   let decimal: Int
   let current: String
   let unclaimed: String
-  
+  let logo: String
+
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
     self.symbol = dictionary["symbol"] as? String ?? ""
@@ -299,6 +302,7 @@ struct LendingDistributionBalance: Codable {
     self.decimal = dictionary["decimal"] as? Int ?? 0
     self.current = dictionary["current"] as? String ?? ""
     self.unclaimed = dictionary["unclaimed"] as? String ?? ""
+    self.logo = dictionary["logo"] as? String ?? ""
   }
   
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {

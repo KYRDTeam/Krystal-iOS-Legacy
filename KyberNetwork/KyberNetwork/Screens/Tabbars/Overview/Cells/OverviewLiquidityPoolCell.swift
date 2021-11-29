@@ -107,7 +107,7 @@ class OverviewLiquidityPoolCell: UITableViewCell {
     } else {
       self.firstTokenIcon.setImage(with: viewModel.firstTokenLogo(), placeholder: UIImage(named: "default_token")!)
     }
-    
+  
     if viewModel.secondTokenLogo().isEmpty {
       self.secondTokenIcon.setSymbolImage(symbol: viewModel.secondTokenSymbol())
     } else {
