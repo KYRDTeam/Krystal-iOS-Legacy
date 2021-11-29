@@ -278,7 +278,7 @@ extension TokenObject {
   }
   
   func toTokenData() -> TokenData {
-    return TokenData(address: self.address, name: self.name, symbol: self.symbol, decimals: self.decimals, lendingPlatforms: [])
+    return TokenData(address: self.address, name: self.name, symbol: self.symbol, decimals: self.decimals, lendingPlatforms: [], logo: self.iconURL)
   }
   
   func toToken() -> Token {

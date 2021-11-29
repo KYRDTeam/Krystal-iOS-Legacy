@@ -314,27 +314,28 @@ struct TokenData: Codable, Equatable {
   let symbol: String
   let decimals: Int
   let lendingPlatforms: [LendingPlatformData]
+  let logo: String
 
   static func == (lhs: TokenData, rhs: TokenData) -> Bool {
     return lhs.address.lowercased() == rhs.address.lowercased()
   }
-  
+
   var isETH: Bool {
     return self.symbol == "ETH"
   }
-  
+
   var isBNB: Bool {
     return self.symbol == "BNB"
   }
-  
+
   var isMatic: Bool {
     return self.symbol == "MATIC"
   }
-  
+
   var isAvax: Bool {
     return self.symbol == "AVAX"
   }
-  
+
   var isQuoteToken: Bool {
     return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }
@@ -347,7 +348,7 @@ struct TokenData: Codable, Equatable {
   func toObject() -> TokenObject {
     return TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: "")
   }
-  
+
   var placeholderValue: BigInt {
     let value = Int(0.001 * pow(10.0, Double(self.decimals)))
     return BigInt(value)
@@ -365,7 +366,7 @@ struct LendingPlatformData: Codable {
   var isCompound: Bool {
     return self.name == "Compound" || self.name == "Venus"
   }
-  
+
   var compondPrefix: String {
     return KNGeneralProvider.shared.currentChain == .eth ? "c" : "v"
   }
