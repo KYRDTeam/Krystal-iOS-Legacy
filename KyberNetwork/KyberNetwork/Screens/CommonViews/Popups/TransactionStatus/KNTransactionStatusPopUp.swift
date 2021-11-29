@@ -51,11 +51,11 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
   fileprivate(set) var transaction: InternalHistoryTransaction
   let transitor = TransitionDelegate()
-  
+
   var earnAmountString: String?
   var netAPYEarnString: String?
   var earnPlatform: LendingPlatformData?
-  
+
   var withdrawAmount: String?
   var withdrawTokenSym: String?
 
