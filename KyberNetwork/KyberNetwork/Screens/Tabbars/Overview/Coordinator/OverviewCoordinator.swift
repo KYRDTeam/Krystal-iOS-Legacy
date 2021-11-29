@@ -126,7 +126,14 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }
-  
+
+  func appCoordinatorReceiveWallectConnectURI(_ uri: String) {
+    if self.navigationController.tabBarController?.selectedIndex != 0 {
+      self.navigationController.tabBarController?.selectedIndex = 0
+    }
+    self.handleWalletConnectURI(uri, disconnectAfterDisappear: false)
+  }
+
   func openQRCodeScreen() {
     guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
@@ -289,35 +296,40 @@ extension OverviewCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
+      self.handleWalletConnectURI(result)
+    }
+  }
+  
+  func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
+    guard let url = WCURL(result) else {
+      self.navigationController.showTopBannerView(
+        with: "Invalid session".toBeLocalised(),
+        message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+        time: 1.5
+      )
+      return
+    }
+
+    if case .real(let account) = self.session.wallet.type {
+      let result = self.session.keystore.exportPrivateKey(account: account)
+      switch result {
+      case .success(let data):
+        DispatchQueue.main.async {
+          let pkString = data.hexString
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            knSession: self.session,
+            pk: pkString
+          )
+          controller.disconnectAfterDisappear = disconnectAfterDisappear
+          self.navigationController.present(controller, animated: true, completion: nil)
+        }
+      case .failure(_):
         self.navigationController.showTopBannerView(
-          with: "Invalid session".toBeLocalised(),
-          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          with: "Private Key Error",
+          message: "Can not get Private key",
           time: 1.5
         )
-        return
-      }
-
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: "Private Key Error",
-            message: "Can not get Private key",
-            time: 1.5
-          )
-        }
       }
     }
   }
