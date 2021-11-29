@@ -143,7 +143,6 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   let viewModel = OverviewDepositViewModel()
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     let nib = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -164,11 +163,11 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.viewModel.reloadAllData()
     self.reloadUI()
   }
-  
+
   fileprivate func updateUITotalValue() {
     self.totalStringLabel.text = self.viewModel.totalValueString
   }
-  
+
   fileprivate func reloadUI() {
     guard self.isViewLoaded else {
       return
@@ -197,7 +196,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.reloadUI()
     self.updateUITotalValue()
   }
-  
+
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.reloadAllData()
     guard self.isViewLoaded else { return }
@@ -243,7 +242,7 @@ extension OverviewDepositViewController: UITableViewDelegate {
     titleLabel.font = UIFont.Kyber.regular(with: 18)
     titleLabel.textColor = UIColor(named: "textWhiteColor")
     view.addSubview(titleLabel)
-    
+
     let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
     valueLabel.text = self.viewModel.displayTotalValueForSection(section)
     valueLabel.font = UIFont.Kyber.regular(with: 18)
