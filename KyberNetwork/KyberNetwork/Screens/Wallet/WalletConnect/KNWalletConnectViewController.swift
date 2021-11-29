@@ -28,6 +28,7 @@ class KNWalletConnectViewController: KNBaseViewController {
   let sessionKey = "sessionKey"
   var wcURL: WCURL!
   var isConnected = false
+  var disconnectAfterDisappear = true
   
   init(wcURL: WCURL, knSession: KNSession, pk: String) {
     self.wcURL = wcURL
@@ -62,8 +63,9 @@ class KNWalletConnectViewController: KNBaseViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    self.disconnectWC()
-    
+    if self.disconnectAfterDisappear {
+      self.disconnectWC()
+    }
   }
   
   private func configureServer() {
