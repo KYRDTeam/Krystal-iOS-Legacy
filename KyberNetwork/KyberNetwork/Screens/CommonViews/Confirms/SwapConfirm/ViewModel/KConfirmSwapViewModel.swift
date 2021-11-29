@@ -156,7 +156,7 @@ struct KConfirmSwapViewModel {
   }
   
   var priceImpactText: String {
-    guard self.priceImpact != -1000 else { return " Missing price impact. This may be due to the low liquidity. Please swap with caution." }
+    guard self.priceImpact != -1000 else { return " Missing price impact. Please swap with caution." }
     return self.priceImpact > -5 ? "" : "Price impact is high. You may want to reduce your swap amount for a better rate."
   }
   

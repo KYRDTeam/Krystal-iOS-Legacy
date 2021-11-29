@@ -111,9 +111,9 @@ struct KNTransactionDetailsViewModel {
     case .completed:
       return UIColor(red: 0, green: 102, blue: 68)
     case .pending:
-      return  UIColor(red: 255, green: 144, blue: 8)
+      return  UIColor(red: 242, green: 190, blue: 55)
     case .failed, .error:
-      return UIColor(red: 250, green: 101, blue: 102)
+      return UIColor(red: 255, green: 110, blue: 64)
     default:
       return UIColor(red: 20, green: 25, blue: 39)
     }
@@ -208,6 +208,7 @@ struct KNTransactionDetailsViewModel {
 
 protocol TransactionDetailsViewModel {
   var displayTxStatus: String { get }
+  var displayTxIcon: UIImage? { get }
   var displayTxStatusColor: UIColor { get }
   var displayTxTypeString: String { get }
   var displayDateString: String { get }
@@ -224,6 +225,17 @@ protocol TransactionDetailsViewModel {
 }
 
 struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
+  var displayTxIcon: UIImage? {
+    switch self.transaction.state {
+    case .pending, .cancel, .speedup:
+      return UIImage(named: "pending_tx_icon")
+    case .error, .drop:
+      return UIImage(named: "warning_red_icon")
+    case .done:
+      return nil
+    }
+  }
+  
   var transactionTypeImage: UIImage {
     switch self.transaction.type {
     case .swap:
@@ -357,14 +369,14 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   var displayTxStatusColor: UIColor {
     switch self.transaction.state {
     case .pending, .cancel, .speedup:
-      return UIColor(red: 255, green: 144, blue: 8)
+      return UIColor(red: 242, green: 190, blue: 55)
     case .error, .drop:
-      return UIColor.Kyber.SWRed
+      return UIColor(red: 255, green: 110, blue: 64)
     case .done:
       return UIColor.Kyber.SWGreen
     }
   }
-  
+
   var displayTxTypeString: String {
     switch self.transaction.type {
     case .swap:
@@ -420,6 +432,9 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
 }
 
 struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
+  var displayTxIcon: UIImage? {
+    return self.data.isError ? UIImage(named: "warning_red_icon") : nil
+  }
 
   let data: CompletedHistoryTransactonViewModel
 
@@ -469,7 +484,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     }
   }
-  
+
   var toFieldTitle: String {
     switch self.data.data.type {
     case .swap:
@@ -502,7 +517,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     }
   }
-  
+
   var transactionTypeImage: UIImage {
     return self.data.transactionTypeImage
   }
@@ -512,7 +527,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
   }
 
   var displayTxStatusColor: UIColor {
-    return self.data.isError ? UIColor.Kyber.SWRed : UIColor.Kyber.SWGreen
+    return self.data.isError ? UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
   }
 
   var displayTxTypeString: String {
@@ -527,7 +542,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
   var displayAmountString: String {
     return self.data.displayedAmountString
   }
-  
+
   var displayFromAddress: String {
     if let transaction = self.data.data.transacton.first {
       return transaction.from
@@ -579,6 +594,10 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
 }
 
 struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
+  var displayTxIcon: UIImage? {
+    return self.data.isError ? UIImage(named: "warning_red_icon") : nil
+  }
+  
   let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm:ss ZZZZ"
@@ -590,7 +609,7 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayTxStatusColor: UIColor {
-    return self.data.isError ? UIColor.Kyber.SWRed : UIColor.Kyber.SWGreen
+    return self.data.isError ?  UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
   }
   
   var displayTxTypeString: String {

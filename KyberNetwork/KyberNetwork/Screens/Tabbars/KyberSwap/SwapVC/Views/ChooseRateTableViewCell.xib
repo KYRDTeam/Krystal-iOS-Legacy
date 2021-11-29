@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -52,7 +52,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKy-4H-G8t" customClass="RectangularDashedView" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
-                                <rect key="frame" x="44" y="39.5" width="260" height="1"/>
+                                <rect key="frame" x="44" y="39.5" width="255" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="KOW-l2-upN"/>
@@ -79,16 +79,33 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" text="0.03 ETH ~ $54.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6Yz-JL-ccv">
-                                <rect key="frame" x="207.5" y="72" width="96.5" height="14"/>
+                                <rect key="frame" x="202.5" y="72" width="96.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1 ETH = 367.8765 KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JUa-iq-dzx">
-                                <rect key="frame" x="171.5" y="50.5" width="132.5" height="16.5"/>
+                                <rect key="frame" x="166.5" y="50.5" width="132.5" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IGg-59-GW4">
+                                <rect key="frame" x="220" y="8" width="79" height="24"/>
+                                <color key="backgroundColor" name="warningBoxBgColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="2bo-qJ-1oI"/>
+                                    <constraint firstAttribute="width" constant="79" id="wvz-Qq-OK8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="10"/>
+                                <color key="textColor" name="buttonBackgroundColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="iC5-zQ-I0c"/>
@@ -99,7 +116,7 @@
                             <constraint firstItem="6Yz-JL-ccv" firstAttribute="trailing" secondItem="JUa-iq-dzx" secondAttribute="trailing" id="66d-QK-nBZ"/>
                             <constraint firstItem="ypH-gv-yTU" firstAttribute="top" secondItem="pEb-3e-QaC" secondAttribute="top" id="A5t-C5-FWX"/>
                             <constraint firstAttribute="bottom" secondItem="ypH-gv-yTU" secondAttribute="bottom" id="Gad-Tu-iyS"/>
-                            <constraint firstAttribute="trailing" secondItem="nKy-4H-G8t" secondAttribute="trailing" constant="16" id="HX0-yN-z5G"/>
+                            <constraint firstAttribute="trailing" secondItem="nKy-4H-G8t" secondAttribute="trailing" constant="21" id="HX0-yN-z5G"/>
                             <constraint firstItem="0z1-SV-5ej" firstAttribute="top" secondItem="nKy-4H-G8t" secondAttribute="bottom" constant="10" id="JyJ-A6-3vb"/>
                             <constraint firstAttribute="trailing" secondItem="ypH-gv-yTU" secondAttribute="trailing" id="L0L-qG-yYP"/>
                             <constraint firstItem="C9i-bu-BXO" firstAttribute="leading" secondItem="pEb-3e-QaC" secondAttribute="leading" constant="12" id="NRC-ps-DiB"/>
@@ -111,8 +128,10 @@
                             <constraint firstItem="C9i-bu-BXO" firstAttribute="top" secondItem="pEb-3e-QaC" secondAttribute="top" constant="8" id="Xk0-xY-Ngn"/>
                             <constraint firstItem="4AZ-aF-0K3" firstAttribute="leading" secondItem="C9i-bu-BXO" secondAttribute="trailing" constant="8" id="YSa-CQ-VVm"/>
                             <constraint firstItem="0z1-SV-5ej" firstAttribute="top" secondItem="nKy-4H-G8t" secondAttribute="bottom" constant="10" id="dOd-2G-mXc"/>
+                            <constraint firstItem="iC5-zQ-I0c" firstAttribute="trailing" secondItem="IGg-59-GW4" secondAttribute="trailing" constant="21" id="eWE-5p-wB6"/>
                             <constraint firstItem="JUa-iq-dzx" firstAttribute="centerY" secondItem="0z1-SV-5ej" secondAttribute="centerY" id="iKo-vi-WSD"/>
                             <constraint firstItem="JUa-iq-dzx" firstAttribute="trailing" secondItem="nKy-4H-G8t" secondAttribute="trailing" id="k96-vl-Pnh"/>
+                            <constraint firstItem="IGg-59-GW4" firstAttribute="centerY" secondItem="4AZ-aF-0K3" secondAttribute="centerY" id="sJx-4Y-Xij"/>
                             <constraint firstItem="4AZ-aF-0K3" firstAttribute="centerY" secondItem="C9i-bu-BXO" secondAttribute="centerY" id="sKV-Kw-kKF"/>
                             <constraint firstItem="0z1-SV-5ej" firstAttribute="leading" secondItem="nKy-4H-G8t" secondAttribute="leading" id="so4-Eb-ctO"/>
                             <constraint firstItem="6Yz-JL-ccv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Alj-zR-r8I" secondAttribute="trailing" constant="5" id="udu-yS-1UJ"/>
@@ -142,12 +161,17 @@
                 <outlet property="platformIconImg" destination="C9i-bu-BXO" id="Jwk-vL-9eX"/>
                 <outlet property="platformNameLabel" destination="4AZ-aF-0K3" id="Y53-Fh-Ptx"/>
                 <outlet property="rateLabel" destination="JUa-iq-dzx" id="Mt6-SN-xCW"/>
+                <outlet property="saveLabel" destination="IGg-59-GW4" id="P0b-XP-WvL"/>
+                <outlet property="saveLabelWidthConstraint" destination="wvz-Qq-OK8" id="Jl0-Ne-LG8"/>
             </connections>
             <point key="canvasLocation" x="17" y="54"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="kyber_icon_medium" width="24" height="24"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -156,6 +180,9 @@
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="warningBoxBgColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="0.30000001192092896" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

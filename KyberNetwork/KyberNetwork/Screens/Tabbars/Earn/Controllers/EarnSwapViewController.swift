@@ -442,9 +442,7 @@ class EarnSwapViewModel {
     } else {
       let max = rates.max { (left, right) -> Bool in
         if let leftBigInt = BigInt(left.rate), let rightBigInt = BigInt(right.rate) {
-          let leftValue = self.amountToBigInt * leftBigInt - self.gasPrice * BigInt(left.estimatedGas)
-          let rightValue = self.amountToBigInt * rightBigInt - self.gasPrice * BigInt(right.estimatedGas)
-          return leftValue < rightValue
+          return leftBigInt < rightBigInt
         } else {
           return false
         }
@@ -902,7 +900,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
     let rates = self.viewModel.swapRates.3
     if rates.count >= 2 {
-      self.delegate?.earnViewController(self, run: .openChooseRate(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice))
+      self.delegate?.earnViewController(self, run: .openChooseRate(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice, amountFrom: self.viewModel.amountFrom))
     }
   }
   

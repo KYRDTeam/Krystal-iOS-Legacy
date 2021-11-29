@@ -41,4 +41,8 @@ extension BigInt {
   func displayRate(decimals: Int) -> String {
     return KNRateHelper.displayRate(from: self, decimals: decimals)
   }
+
+  static func bigIntFromString(value: String) -> BigInt {
+    return BigInt(stringLiteral: value)
+  }
 }

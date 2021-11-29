@@ -54,14 +54,13 @@ class ChooseRateCellViewModel {
 class ChooseRateTableViewCell: UITableViewCell {
   static let kCellID: String = "ChooseRateTableViewCell"
   static let kCellHeight: CGFloat = 115
-  
   @IBOutlet weak var platformNameLabel: UILabel!
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var maxGasFeeLabel: UILabel!
   @IBOutlet weak var gasFeeTitleLabel: UILabel!
   @IBOutlet weak var platformIconImg: UIImageView!
-  
-  
+  @IBOutlet weak var saveLabel: UILabel!
+  @IBOutlet weak var saveLabelWidthConstraint: NSLayoutConstraint!
   var cellModel: ChooseRateCellViewModel?
   
   override func awakeFromNib() {

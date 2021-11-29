@@ -648,7 +648,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
 
     let walletName = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
 
-    cell.updateCell(walletName: walletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, shouldShowAction: indexPath.item == 0)
+    cell.updateCell(walletName: walletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
 
     cell.walletListButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .selectListWallet)

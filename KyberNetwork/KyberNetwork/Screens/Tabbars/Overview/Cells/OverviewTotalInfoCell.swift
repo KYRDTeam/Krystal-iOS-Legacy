@@ -66,10 +66,12 @@ class OverviewTotalInfoCell: UICollectionViewCell {
     self.totalNetWorthLabel.isHidden = shouldShowAction
   }
 
-  func updateCell(walletName: String, totalValue: String, shouldShowAction: Bool) {
+  func updateCell(walletName: String, totalValue: String, hideBalanceStatus: Bool, shouldShowAction: Bool) {
     self.walletNameLabel.text = walletName
     self.totalValueLabel.text = totalValue
     self.updateUIForActionButtons(shouldShowAction: shouldShowAction)
+    let eyeImage = hideBalanceStatus ? UIImage(named: "hide_eye_icon") : UIImage(named: "show_eye_icon")
+    self.hideBalanceButton.setImage(eyeImage, for: .normal)
   }
 
 }

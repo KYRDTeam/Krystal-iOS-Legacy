@@ -42,6 +42,9 @@ class OverviewSummaryCellViewModel {
     guard !self.isDefaultValue else {
       return "--"
     }
+    guard !self.hideBalanceStatus else {
+      return ""
+    }
     return StringFormatter.percentString(value: self.percentage)
   }
 
