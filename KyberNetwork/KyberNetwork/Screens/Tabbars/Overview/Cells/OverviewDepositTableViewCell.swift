@@ -138,15 +138,14 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
       price = tokenPrice.eth
     case .btc:
       price = tokenPrice.btc
-    
     }
     return self.balanceBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimal)
   }
   
   var currencyType: CurrencyType = .usd
-  
+
   let balance: LendingDistributionBalance
-  
+
   init(balance: LendingDistributionBalance) {
     self.balance = balance
   }
@@ -159,7 +158,6 @@ class OverviewDepositTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenBalanceInfoLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var tokenApyInfo: UILabel!
-  
 
   func updateCell(viewModel: OverviewDepositCellViewModel) {
     self.iconImageView.setSymbolImage(symbol: viewModel.symbol)

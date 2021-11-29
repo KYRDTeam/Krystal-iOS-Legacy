@@ -3,7 +3,7 @@
 import UIKit
 
 extension UIImageView {
-  func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil) {
+  func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil, failCompletion: (() -> Void)? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
       if let needTofit = fitSize {
         let widthRatio = needTofit.width / cachedImg.size.width
@@ -43,6 +43,10 @@ extension UIImageView {
           
           self.layoutIfNeeded()
         }
+      } else {
+        if let failCompletion = failCompletion {
+          failCompletion()
+        }
       }
     }.resume()
   }
@@ -79,17 +83,15 @@ extension UIImageView {
     tokenData: TokenData,
     size: CGSize? = nil
     ) {
-    let icon = tokenData.symbol.lowercased()
-    let image = UIImage(named: icon.lowercased())
-    let placeHolderImg = image ?? UIImage(named: "default_token")!
-    let url = "https://files.kyberswap.com/DesignAssets/tokens/iOS/\(icon).png"
-    self.setImage(
-      with: url,
-      placeholder: placeHolderImg,
-      size: size
-    )
+    guard let url = URL(string: tokenData.logo)  else {
+      self.setSymbolImage(symbol: tokenData.symbol)
+      return
+    }
+    self.setImage(with: url, placeholder: UIImage(named: "default_token"), size: size) {
+      self.setSymbolImage(symbol: tokenData.symbol)
+    }
   }
-  
+
   func setSymbolImage(symbol: String?, size: CGSize? = nil) {
     guard let symbol = symbol else {
       self.image = UIImage(named: "default_token")!

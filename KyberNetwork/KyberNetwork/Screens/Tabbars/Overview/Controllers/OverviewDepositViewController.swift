@@ -137,7 +137,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   @IBOutlet weak var emptyView: UIView!
   @IBOutlet weak var supplyButton: UIButton!
   @IBOutlet weak var borrowButton: UIButton!
-  
+
   weak var container: OverviewViewController?
   weak var delegate: OverviewDepositViewControllerDelegate?
   let viewModel = OverviewDepositViewModel()
@@ -182,7 +182,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   @IBAction func supplyButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewDepositViewController(self, run: .depositMore)
   }
-  
+
   func viewControllerDidChangeCurrencyType(_ controller: OverviewViewController, type: CurrencyType) {
     guard type != self.viewModel.currencyType else {
       return
@@ -190,7 +190,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.viewModel.currencyType = type
     self.reloadUI()
   }
-  
+
   func coordinatorDidUpdateDidUpdateTokenList() {
     guard self.isViewLoaded else { return }
     self.viewModel.reloadAllData()
@@ -203,7 +203,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     guard self.isViewLoaded else { return }
     self.reloadUI()
   }
-  
+
   func containerDidUpdateHideBalanceStatus(_ status: Bool) {
     self.viewModel.hideBalanceStatus = status
     guard self.isViewLoaded else { return }
@@ -257,7 +257,7 @@ extension OverviewDepositViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 40
   }
-  
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositLendingBalanceCellViewModel {
       self.delegate?.overviewDepositViewController(self, run: .withdrawBalance(platform: self.viewModel.sectionKeys[indexPath.section], balance: viewModel.balance))
