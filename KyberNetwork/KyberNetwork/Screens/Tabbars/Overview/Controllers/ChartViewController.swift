@@ -295,7 +295,10 @@ class ChartViewController: KNBaseViewController {
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
-    self.investButton.isHidden = !self.viewModel.canEarn
+    if !self.viewModel.canEarn {
+      self.investButton.removeFromSuperview()
+      self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -368,7 +371,9 @@ class ChartViewController: KNBaseViewController {
     self.priceDiffPercentageLabel.textColor = self.viewModel.displayDiffColor
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
-    self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    if self.viewModel.canEarn {
+      self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    }
   }
 
   fileprivate func loadChartData() {
