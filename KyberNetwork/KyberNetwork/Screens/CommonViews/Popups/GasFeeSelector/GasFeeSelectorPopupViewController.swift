@@ -557,7 +557,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var maxFeeHelpButton: UIButton!
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var secondButton: UIButton!
-
+  @IBOutlet weak var priorityAccessoryLabel: UILabel!
+  @IBOutlet weak var maxFeeAccessoryLabel: UILabel!
+  
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -636,16 +638,19 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is low for current network conditions"
       self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
+      self.priorityAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxPriorityFeeErrorLabel.text = "Max Priority Fee is higher than necessary"
       self.maxPriorityFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedPriorityFeeField.textColor = UIColor(named: "textRedColor")
+      self.priorityAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxPriorityFeeErrorLabel.text = ""
       self.advancedPriorityFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentPriorityETHFeeLabel.textColor = UIColor(named: "normalTextColor")
+      self.priorityAccessoryLabel.textColor = UIColor(named: "textWhiteColor")
     }
 
     switch self.viewModel.maxFeeErrorStatus {
@@ -653,16 +658,19 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.maxFeeErrorLabel.text = "Max Fee is low for current network conditions"
       self.maxFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
+      self.maxFeeAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .high:
       self.maxFeeErrorLabel.text = "Max Fee is higher than necessary"
       self.maxFeeErrorLabel.textColor = UIColor(named: "textRedColor")
       self.advancedMaxFeeField.textColor = UIColor(named: "textRedColor")
+      self.maxFeeAccessoryLabel.textColor = UIColor(named: "textRedColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "textRedColor")?.withAlphaComponent(0.5)
     case .none:
       self.maxFeeErrorLabel.text = ""
       self.advancedMaxFeeField.textColor = UIColor(named: "textWhiteColor")
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
+      self.maxFeeAccessoryLabel.textColor = UIColor(named: "textWhiteColor")
     }
 
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {

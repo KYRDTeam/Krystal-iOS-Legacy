@@ -65,6 +65,7 @@
                 <outlet property="gasLimitHelpButton" destination="8TX-cb-fC3" id="WeN-MT-Z2y"/>
                 <outlet property="mainEquivalentUSDLabel" destination="cz1-gs-clU" id="8EB-Ka-KW9"/>
                 <outlet property="mainGasFeeLabel" destination="gcp-UN-gH9" id="BLR-i3-9pP"/>
+                <outlet property="maxFeeAccessoryLabel" destination="x6m-z2-cEU" id="dAD-AP-lj4"/>
                 <outlet property="maxFeeErrorLabel" destination="Z2k-IH-dwE" id="2Mg-zq-0vz"/>
                 <outlet property="maxFeeHelpButton" destination="Xpo-gr-H89" id="NHW-QV-04F"/>
                 <outlet property="maxPriorityFeeErrorLabel" destination="nN6-wO-tfn" id="bt2-lQ-uhG"/>
@@ -72,6 +73,7 @@
                 <outlet property="mediumGasValueLabel" destination="954-Oy-OlJ" id="D3c-sC-fT0"/>
                 <outlet property="nonceErrorLabel" destination="biE-fA-35t" id="8vc-rb-eXI"/>
                 <outlet property="popupContainerHeightContraint" destination="ZJ7-Lq-sPg" id="ZNp-jE-0wJ"/>
+                <outlet property="priorityAccessoryLabel" destination="xl1-uO-O0s" id="God-EY-SRA"/>
                 <outlet property="regularEstimateFeeLabel" destination="4g0-zy-tVO" id="RPf-Sj-bBm"/>
                 <outlet property="secondButton" destination="SGu-U2-OIY" id="2H6-04-Ry9"/>
                 <outlet property="segmentedControl" destination="YmJ-Yg-s8A" id="Rgh-OZ-x84"/>
@@ -556,7 +558,7 @@
                                                     </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IUn-BG-YMp">
-                                                    <rect key="frame" x="88" y="0.0" width="164.5" height="42"/>
+                                                    <rect key="frame" x="70.5" y="0.0" width="199.5" height="42"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V4S-eH-3BY">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="42"/>
@@ -572,22 +574,30 @@
                                                             </connections>
                                                         </textField>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="~ 0.000654ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwN-tk-Gv5">
-                                                            <rect key="frame" x="70" y="12.5" width="94.5" height="17"/>
+                                                            <rect key="frame" x="105" y="12.5" width="94.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                             <color key="textColor" name="normalTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GWEI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xl1-uO-O0s">
+                                                            <rect key="frame" x="63" y="11.5" width="39" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                                            <color key="textColor" name="textWhiteColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="cwN-tk-Gv5" firstAttribute="leading" secondItem="V4S-eH-3BY" secondAttribute="trailing" constant="10" id="2Nk-qI-tsp"/>
+                                                        <constraint firstItem="cwN-tk-Gv5" firstAttribute="leading" secondItem="V4S-eH-3BY" secondAttribute="trailing" constant="45" id="2Nk-qI-tsp"/>
                                                         <constraint firstItem="V4S-eH-3BY" firstAttribute="leading" secondItem="IUn-BG-YMp" secondAttribute="leading" id="7Jt-Oi-lMo"/>
                                                         <constraint firstItem="V4S-eH-3BY" firstAttribute="leading" secondItem="IUn-BG-YMp" secondAttribute="leading" id="AaJ-xx-mQ2"/>
                                                         <constraint firstAttribute="bottom" secondItem="V4S-eH-3BY" secondAttribute="bottom" id="DVi-pK-f6R"/>
                                                         <constraint firstAttribute="bottom" secondItem="V4S-eH-3BY" secondAttribute="bottom" id="IIz-ai-8hy"/>
+                                                        <constraint firstItem="xl1-uO-O0s" firstAttribute="centerY" secondItem="V4S-eH-3BY" secondAttribute="centerY" id="McX-Fa-d4k"/>
                                                         <constraint firstItem="V4S-eH-3BY" firstAttribute="top" secondItem="IUn-BG-YMp" secondAttribute="top" id="T2B-gd-YKo"/>
                                                         <constraint firstAttribute="trailing" secondItem="cwN-tk-Gv5" secondAttribute="trailing" id="TNq-WD-frv"/>
                                                         <constraint firstItem="V4S-eH-3BY" firstAttribute="top" secondItem="IUn-BG-YMp" secondAttribute="top" id="TcE-yg-Gph"/>
+                                                        <constraint firstItem="xl1-uO-O0s" firstAttribute="leading" secondItem="V4S-eH-3BY" secondAttribute="trailing" constant="3" id="W0R-kS-voG"/>
                                                         <constraint firstItem="cwN-tk-Gv5" firstAttribute="centerY" secondItem="IUn-BG-YMp" secondAttribute="centerY" id="nng-6I-6wV"/>
                                                     </constraints>
                                                 </view>
@@ -648,10 +658,10 @@
                                                     </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsO-er-bxX">
-                                                    <rect key="frame" x="88" y="0.0" width="164.5" height="42"/>
+                                                    <rect key="frame" x="70.5" y="0.0" width="199.5" height="42"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="~ 0.000654ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k4U-JA-mWc">
-                                                            <rect key="frame" x="70" y="12.5" width="94.5" height="17"/>
+                                                            <rect key="frame" x="105" y="12.5" width="94.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                             <color key="textColor" name="normalTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -669,16 +679,24 @@
                                                                 <outlet property="delegate" destination="-1" id="JZO-5P-5ez"/>
                                                             </connections>
                                                         </textField>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GWEI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-z2-cEU">
+                                                            <rect key="frame" x="63" y="11.5" width="39" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                                            <color key="textColor" name="textWhiteColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="k4U-JA-mWc" firstAttribute="leading" secondItem="J07-EO-mOp" secondAttribute="trailing" constant="10" id="3Zr-Vp-zwd"/>
+                                                        <constraint firstItem="k4U-JA-mWc" firstAttribute="leading" secondItem="J07-EO-mOp" secondAttribute="trailing" constant="45" id="3Zr-Vp-zwd"/>
                                                         <constraint firstItem="J07-EO-mOp" firstAttribute="leading" secondItem="zsO-er-bxX" secondAttribute="leading" id="Cur-V7-tHj"/>
+                                                        <constraint firstItem="x6m-z2-cEU" firstAttribute="centerY" secondItem="J07-EO-mOp" secondAttribute="centerY" id="JwZ-lc-C2v"/>
                                                         <constraint firstItem="J07-EO-mOp" firstAttribute="leading" secondItem="zsO-er-bxX" secondAttribute="leading" id="Md5-x4-B75"/>
                                                         <constraint firstItem="J07-EO-mOp" firstAttribute="top" secondItem="zsO-er-bxX" secondAttribute="top" id="NJc-fP-YfK"/>
                                                         <constraint firstAttribute="trailing" secondItem="k4U-JA-mWc" secondAttribute="trailing" id="QVF-cG-wiE"/>
                                                         <constraint firstAttribute="bottom" secondItem="J07-EO-mOp" secondAttribute="bottom" id="Ugz-4Z-iwf"/>
                                                         <constraint firstItem="k4U-JA-mWc" firstAttribute="centerY" secondItem="zsO-er-bxX" secondAttribute="centerY" id="Wrl-1S-Jmd"/>
+                                                        <constraint firstItem="x6m-z2-cEU" firstAttribute="leading" secondItem="J07-EO-mOp" secondAttribute="trailing" constant="3" id="a9k-NK-EsR"/>
                                                         <constraint firstAttribute="bottom" secondItem="J07-EO-mOp" secondAttribute="bottom" id="apC-SH-h8r"/>
                                                         <constraint firstItem="J07-EO-mOp" firstAttribute="top" secondItem="zsO-er-bxX" secondAttribute="top" id="zfK-Lw-8Y0"/>
                                                     </constraints>
