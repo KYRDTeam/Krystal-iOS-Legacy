@@ -34,6 +34,8 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet var sortButtons: [UIButton]!
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var insestView: UIView!
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
@@ -111,7 +113,7 @@ class OverviewMainViewController: KNBaseViewController {
   @objc func refresh(_ sender: AnyObject) {
     self.viewModel.isRefreshingTableView = true
     self.refreshControl.endRefreshing()
-    self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode))
+    self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
   }
 
   func startRefresh() {
@@ -126,7 +128,7 @@ class OverviewMainViewController: KNBaseViewController {
   
   func shouldPullToRefresh() -> Bool {
     guard self.viewModel.overviewMode == .overview else {
-      return false
+      return true
     }
     switch self.viewModel.currentMode {
     case .supply, .asset, .showLiquidityPool:
@@ -349,7 +351,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.updateCurrencyMode(mode: mode)
     self.reloadUI()
   }
-  
+
   func coordinatorPullToRefreshDone() {
     self.viewModel.isRefreshingTableView = false
   }
@@ -358,8 +360,9 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-120.0) : CGFloat(-90.0)
+    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-20.0) : CGFloat(-10.0)
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
+    self.insestView.frame.size.height = isSummary ? CGFloat(0) : CGFloat(80)
     self.tableView.reloadData()
     self.configPullToRefresh()
   }
@@ -463,7 +466,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.selectionStyle = .none
     return cell
   }
-  
+
   func summaryCell(indexPath: IndexPath) -> OverviewSummaryCell {
     let cell = tableView.dequeueReusableCell(
       withIdentifier: OverviewSummaryCell.kCellID,
@@ -595,11 +598,11 @@ extension OverviewMainViewController: UITableViewDelegate {
 
 extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
-      return
-    }
     if scrollView == self.tableView && scrollView.contentOffset.y <= tableViewDefaultContentOffsetYForRefresh && scrollView.contentOffset.y >= tableViewDefaultContentOffsetYForRefresh - 50 {
       self.startRefresh()
+    }
+    guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
+      return
     }
     let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
     self.totalBalanceContainerView.alpha = alpha

@@ -23,7 +23,7 @@ enum OverviewMainViewEvent {
   case addNFT
   case openNFTDetail(item: NFTItem, category: NFTSection)
   case didAppear
-  case pullToRefreshed(current: ViewMode)
+  case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
 }
 
 enum OverviewMode {
