@@ -666,10 +666,10 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
         let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        savedTx?.state = .speedup
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
+            savedTx?.state = .speedup
             savedTx?.hash = hash
             if let unwrapped = savedTx {
               self.openTransactionStatusPopUp(transaction: unwrapped)
@@ -687,12 +687,12 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
         let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        savedTx?.state = .cancel
-        savedTx?.type = .transferETH
-        savedTx?.transactionSuccessDescription = "-0 ETH"
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
+            savedTx?.state = .cancel
+            savedTx?.type = .transferETH
+            savedTx?.transactionSuccessDescription = "-0 ETH"
             savedTx?.hash = hash
             if let unwrapped = savedTx {
               self.openTransactionStatusPopUp(transaction: unwrapped)
@@ -710,11 +710,11 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
         let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        savedTx?.state = .speedup
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
           switch result {
           case .success(let hash):
+            savedTx?.state = .speedup
             savedTx?.hash = hash
             print("GasSelector][Legacy][Speedup][Sent] \(hash)")
             if let unwrapped = savedTx {
@@ -733,13 +733,13 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
         let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        saved?.state = .cancel
-        saved?.type = .transferETH
-        saved?.transactionSuccessDescription = "-0 ETH"
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in
           switch result {
           case .success(let hash):
+            saved?.state = .cancel
+            saved?.type = .transferETH
+            saved?.transactionSuccessDescription = "-0 ETH"
             saved?.hash = hash
             print("GasSelector][Legacy][Cancel][Sent] \(hash)")
             if let unwrapped = saved {
@@ -847,10 +847,11 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
       let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-      saved?.state = .cancel
-      saved?.type = .transferETH
-      saved?.transactionSuccessDescription = "-0 ETH"
+      
       if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
+        saved?.state = .cancel
+        saved?.type = .transferETH
+        saved?.transactionSuccessDescription = "-0 ETH"
         cancelTx.send(provider: provider) { (result) in
           switch result {
           case .success(let hash):
@@ -870,6 +871,9 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
       }
       
       if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
+        saved?.state = .cancel
+        saved?.type = .transferETH
+        saved?.transactionSuccessDescription = "-0 ETH"
         print("[EIP1559] cancel tx \(cancelTx)")
         print("[EIP1559] cancel hex tx \(data.hexString)")
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
