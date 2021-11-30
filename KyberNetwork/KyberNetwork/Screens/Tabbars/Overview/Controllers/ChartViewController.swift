@@ -25,7 +25,8 @@ class ChartViewModel {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
     }
   }
-  
+  let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
+
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
     self.currencyMode = currencyMode
@@ -47,7 +48,7 @@ class ChartViewModel {
       self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
     }
   }
-  
+
   var series: ChartSeries {
     let series = ChartSeries(data: self.dataSource)
     series.area = true
@@ -162,9 +163,7 @@ class ChartViewModel {
   
   func displayChartDetaiInfoAt(index: Int) -> NSAttributedString {
     guard let priceItem = self.chartData?[index],
-//    let volumeItem = self.chartData?.totalVolumes[index],
     let price = priceItem.last,
-//    let volume = volumeItem.last,
     let timestamp = priceItem.first
     else {
       return NSAttributedString()
@@ -181,18 +180,26 @@ class ChartViewModel {
       NSAttributedString.Key.foregroundColor: UIColor.Kyber.SWWhiteTextColor,
     ]
     let priceBigInt = BigInt(price * pow(10.0, 18.0))
-//    let volumeBigInt = BigInt(volume * pow(10.0, 18.0))
+
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: dateString + " ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "$\(priceBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
-//    attributedText.append(NSAttributedString(string: "  Volume" + ": ", attributes: boldAttributes))
-//    attributedText.append(NSAttributedString(string: "$\(volumeBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
+
     return attributedText
   }
   
   var displayFavIcon: UIImage? {
     return self.isFaved ? UIImage(named: "fav_star_icon") : UIImage(named: "unFav_star_icon")
+  }
+  
+  var canEarn: Bool {
+    if let earnTokens = self.lendingTokens {
+      let addresses = earnTokens.map { $0.address.lowercased() }
+      return addresses.contains(self.token.address.lowercased())
+    } else {
+      return false
+    }
   }
 }
 
@@ -288,6 +295,10 @@ class ChartViewController: KNBaseViewController {
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
+    if !self.viewModel.canEarn {
+      self.investButton.removeFromSuperview()
+      self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -360,7 +371,9 @@ class ChartViewController: KNBaseViewController {
     self.priceDiffPercentageLabel.textColor = self.viewModel.displayDiffColor
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
-    self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    if self.viewModel.canEarn {
+      self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    }
   }
 
   fileprivate func loadChartData() {
