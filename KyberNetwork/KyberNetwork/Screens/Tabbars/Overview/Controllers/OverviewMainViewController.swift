@@ -125,6 +125,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   func shouldPullToRefresh() -> Bool {
+    guard self.viewModel.overviewMode == .overview else {
+      return false
+    }
     switch self.viewModel.currentMode {
     case .supply, .asset, .showLiquidityPool:
       return true
@@ -358,6 +361,7 @@ class OverviewMainViewController: KNBaseViewController {
     let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-120.0) : CGFloat(-90.0)
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
     self.tableView.reloadData()
+    self.configPullToRefresh()
   }
 
   static var hasSafeArea: Bool {
