@@ -19,6 +19,9 @@ let kSupportedTokenListDidUpdateNotificationKey = "kSupportedTokenListDidUpdateN
 let kOtherBalanceDidUpdateNotificationKey = "kOtherBalanceDidUpdateNotificationKey"
 let kFavouriteTokensUpdateNotificationKey = "kFavouriteTokensUpdateNotificationKey"
 
+// Pull to refresh key
+let kPullToRefreshNotificationKey = "kPullToRefreshNotificationKey"
+
 // Rate
 let kExchangeTokenRateNotificationKey = "kExchangeTokenRateNotificationKey"
 let kExchangeUSDRateNotificationKey = "kExchangeUSDRateNotificationKey"
