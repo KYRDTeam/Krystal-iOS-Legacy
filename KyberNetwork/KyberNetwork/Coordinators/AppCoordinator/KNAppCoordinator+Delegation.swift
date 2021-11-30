@@ -169,8 +169,8 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
   
-  func overviewCoordinatorDidPullToRefresh(mode: ViewMode) {
-    self.loadBalanceCoordinator?.appCoordinatorRefreshData(mode: mode)
+  func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
+    self.loadBalanceCoordinator?.appCoordinatorRefreshData(mode: mode, overviewMode:overviewMode)
   }
 }
 

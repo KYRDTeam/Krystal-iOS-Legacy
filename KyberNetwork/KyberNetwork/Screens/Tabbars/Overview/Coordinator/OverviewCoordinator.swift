@@ -24,7 +24,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectExportWallet()
   func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
-  func overviewCoordinatorDidPullToRefresh(mode: ViewMode)
+  func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -536,14 +536,14 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     self.navigationController.present(actionController, animated: true, completion: nil)
   }
   
-  func pullToRefresh(mode: ViewMode) {
-    self.delegate?.overviewCoordinatorDidPullToRefresh(mode: mode)
+  func pullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
+    self.delegate?.overviewCoordinatorDidPullToRefresh(mode: mode, overviewMode:overviewMode)
   }
 
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent) {
     switch event {
-    case .pullToRefreshed(current: let mode):
-      self.pullToRefresh(mode: mode)
+    case .pullToRefreshed(current: let mode, overviewMode: let overviewMode):
+      self.pullToRefresh(mode: mode, overviewMode: overviewMode)
     case .changeMode(current: let mode):
       self.changeMode(mode: mode, controller: controller)
     case .walletConfig(currency: let currency):

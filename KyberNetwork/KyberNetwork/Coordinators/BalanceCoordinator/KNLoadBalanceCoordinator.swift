@@ -332,9 +332,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadTotalBalance(completion: @escaping (Bool) -> Void) {
+  func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getTotalBalance(address: self.session.wallet.address.description, KNEnvironment.allChainPath)) { (result) in
+    provider.request(.getTotalBalance(address: self.session.wallet.address.description, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
@@ -509,34 +509,39 @@ class KNLoadBalanceCoordinator {
 }
 
 extension KNLoadBalanceCoordinator {
-  func appCoordinatorRefreshData(mode: ViewMode) {
-    switch mode {
-    case .asset:
-      self.loadTokenBalancesFromApi(forceSync: true) { _ in
+  func appCoordinatorRefreshData(mode: ViewMode, overviewMode: OverviewMode) {
+    if overviewMode == .summary {
+      self.loadTotalBalance(forceSync: true) { _ in
         KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
       }
-    case .showLiquidityPool:
-      self.loadLiquidityPool(forceSync: true) { _ in
-        KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
-      }
-    case .supply:
-      let group = DispatchGroup()
-      group.enter()
-      self.loadLendingBalances(forceSync: true) { _ in
-        group.leave()
-      }
+    } else {
+      switch mode {
+      case .asset:
+        self.loadTokenBalancesFromApi(forceSync: true) { _ in
+          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+        }
+      case .showLiquidityPool:
+        self.loadLiquidityPool(forceSync: true) { _ in
+          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+        }
+      case .supply:
+        let group = DispatchGroup()
+        group.enter()
+        self.loadLendingBalances(forceSync: true) { _ in
+          group.leave()
+        }
 
-      group.enter()
-      self.loadLendingDistributionBalance(forceSync: true) { _ in
-        group.leave()
-      }
+        group.enter()
+        self.loadLendingDistributionBalance(forceSync: true) { _ in
+          group.leave()
+        }
 
-      group.notify(queue: .global()) {
-        KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+        group.notify(queue: .global()) {
+          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+        }
+      default:
+        return
       }
-    default:
-      return
     }
   }
-
 }
