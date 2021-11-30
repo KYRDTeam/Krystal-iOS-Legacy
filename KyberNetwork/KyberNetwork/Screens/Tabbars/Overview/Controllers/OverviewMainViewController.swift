@@ -13,6 +13,8 @@ protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
 }
 
+let tableViewDefaultContentOffsetYForRefresh = CGFloat(-250)
+
 class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var totalBalanceContainerView: UIView!
@@ -33,7 +35,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   weak var delegate: OverviewMainViewControllerDelegate?
-
+  let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
 
   init(viewModel: OverviewMainViewModel) {
@@ -88,6 +90,47 @@ class OverviewMainViewController: KNBaseViewController {
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
 
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
+    self.configPullToRefresh()
+  }
+  
+  func configPullToRefresh() {
+    if shouldPullToRefresh() {
+      let attributes: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+        NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+      ]
+      self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
+      self.refreshControl.tintColor = UIColor(named: "buttonBackgroundColor")
+      self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+      self.tableView.addSubview(refreshControl)
+    } else {
+      self.refreshControl.removeFromSuperview()
+    }
+  }
+
+  @objc func refresh(_ sender: AnyObject) {
+    self.viewModel.isRefreshingTableView = true
+    self.refreshControl.endRefreshing()
+    self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode))
+  }
+
+  func startRefresh() {
+    if shouldPullToRefresh() {
+      if self.viewModel.isRefreshingTableView {
+        return
+      }
+      self.refreshControl.beginRefreshing()
+      self.refresh(self.refreshControl)
+    }
+  }
+  
+  func shouldPullToRefresh() -> Bool {
+    switch self.viewModel.currentMode {
+    case .supply, .asset, .showLiquidityPool:
+      return true
+    default:
+      return false
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -268,6 +311,7 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidSelectMode(_ mode: ViewMode) {
     self.viewModel.currentMode = mode
     self.reloadUI()
+    self.configPullToRefresh()
   }
 
   func coordinatorDidUpdateChain() {
@@ -301,6 +345,10 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {
     self.viewModel.updateCurrencyMode(mode: mode)
     self.reloadUI()
+  }
+  
+  func coordinatorPullToRefreshDone() {
+    self.viewModel.isRefreshingTableView = false
   }
 
   func overviewModeDidChanged(isSummary: Bool) {
@@ -545,6 +593,9 @@ extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
       return
+    }
+    if scrollView == self.tableView && scrollView.contentOffset.y <= tableViewDefaultContentOffsetYForRefresh && scrollView.contentOffset.y >= tableViewDefaultContentOffsetYForRefresh - 50 {
+      self.startRefresh()
     }
     let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
     self.totalBalanceContainerView.alpha = alpha
