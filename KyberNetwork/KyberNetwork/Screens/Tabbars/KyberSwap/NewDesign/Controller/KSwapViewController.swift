@@ -1016,6 +1016,7 @@ extension KSwapViewController {
   }
 
   func coordinatorDidUpdateChain() {
+    self.viewModel.resetAdvancedSettings()
     self.updateUISwitchChain()
     self.viewModel.resetDefaultTokensPair()
     self.fromAmountTextField.text = ""

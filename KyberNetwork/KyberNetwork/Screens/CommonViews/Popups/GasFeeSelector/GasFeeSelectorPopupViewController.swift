@@ -70,6 +70,7 @@ class GasFeeSelectorPopupViewModel {
         self.advancedGasLimit = nil
         self.advancedMaxPriorityFee = nil
         self.advancedMaxFee = nil
+        self.advancedNonce = nil
       }
     }
   }
@@ -362,6 +363,14 @@ class GasFeeSelectorPopupViewModel {
       return self.maxGasFeeBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
     }
   }
+  
+  var displayAdvancedNonce: String {
+    if let unwrap = self.advancedNonce {
+      return unwrap
+    } else {
+      return self.currentNonce == -1 ? "" : "\(self.currentNonce)"
+    }
+  }
 
   var displayEquivalentMaxETHFee: String {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
@@ -620,6 +629,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.equivalentPriorityETHFeeLabel.text = self.viewModel.displayEquivalentPriorityETHFee
     self.advancedMaxFeeField.text = self.viewModel.displayMaxGasFee
     self.equivalentMaxETHFeeLabel.text = self.viewModel.displayEquivalentMaxETHFee
+    self.advancedNonceField.text = self.viewModel.displayAdvancedNonce
 
     switch self.viewModel.maxPriorityErrorStatus {
     case .low:
@@ -853,6 +863,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       return
     }
     self.gasFeeButtonTapped(self.mediumGasButton)
+    
   }
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {

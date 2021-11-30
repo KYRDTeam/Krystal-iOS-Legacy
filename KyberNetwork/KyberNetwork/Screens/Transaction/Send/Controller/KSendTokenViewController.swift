@@ -537,6 +537,7 @@ extension KSendTokenViewController {
 
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else { return }
+    self.viewModel.resetAdvancedSettings()
     self.updateUISwitchChain()
     self.viewModel.resetFromToken()
     self.updateGasFeeUI()
