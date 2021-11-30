@@ -882,7 +882,7 @@ enum KrytalService {
   case getRewards(address: String, accessToken: String)
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
-  case getTotalBalance(address: String,_ chains: String?)
+  case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
 }
 
 extension KrytalService: TargetType {
@@ -1238,9 +1238,10 @@ extension KrytalService: TargetType {
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getTotalBalance(address: let address, let chains):
+      case .getTotalBalance(address: let address, forceSync: let forceSync, let chains):
         var json: JSONDictionary = [
-          "address": address
+          "address": address,
+          "force_sync": forceSync
         ]
         if let chains = chains {
           json["chains"] = chains
