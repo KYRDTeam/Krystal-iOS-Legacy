@@ -21,7 +21,10 @@ extension UIImageView {
       self.layoutIfNeeded()
       return
     }
-    self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
+    DispatchQueue.main.async {
+      self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
+    }
+    
     self.layoutIfNeeded()
     URLSession.shared.dataTask(with: url) { [weak self] (data, _, error) in
       guard let `self` = self else { return }
