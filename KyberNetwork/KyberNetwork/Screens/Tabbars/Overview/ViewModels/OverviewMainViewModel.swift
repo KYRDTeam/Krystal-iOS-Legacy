@@ -362,7 +362,9 @@ class OverviewMainViewModel {
       var total = BigInt(0)
       let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
         total += item.getValueBigInt(self.currencyMode)
-        return OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
+        let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
+        viewModel.tag = item.tag
+        return viewModel
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]

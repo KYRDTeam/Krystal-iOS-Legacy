@@ -35,10 +35,10 @@ class EarnMenuTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenIconImageView: UIImageView!
   @IBOutlet weak var tokenNameLabel: UILabel!
   @IBOutlet weak var apyValueLabel: UILabel!
-  
+
   static let kCellID: String = "EarnMenuTableViewCell"
   static let kCellHeight: CGFloat = 52
-  
+
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code

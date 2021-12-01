@@ -72,7 +72,7 @@ jobs:
             env: stg
             ota_key: MANUAL_OTA_URL 
 
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment

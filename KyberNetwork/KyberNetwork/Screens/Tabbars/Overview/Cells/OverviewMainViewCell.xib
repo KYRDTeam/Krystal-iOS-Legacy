@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -42,15 +42,15 @@
                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$89,003.53" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bjX-su-bMY">
-                        <rect key="frame" x="197" y="4.5" width="93" height="30"/>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$8,999,003.53" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bjX-su-bMY">
+                        <rect key="frame" x="172.5" y="4.5" width="117.5" height="30"/>
                         <gestureRecognizers/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fko-B0-l9s">
-                        <rect key="frame" x="197" y="4.5" width="93" height="30"/>
+                        <rect key="frame" x="172.5" y="4.5" width="117.5" height="30"/>
                         <connections>
                             <action selector="tapOnRightSide:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="V5k-xm-G2J"/>
                         </connections>
@@ -70,11 +70,18 @@
                             <action selector="tapAccessoryBox:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="txc-0R-A9I"/>
                         </connections>
                     </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="XQj-Kb-6Qi">
+                        <rect key="frame" x="102.5" y="7.5" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="7FJ-6h-PMD"/>
+                            <constraint firstAttribute="width" constant="24" id="BKO-4j-AcF"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="fko-B0-l9s" firstAttribute="leading" secondItem="bjX-su-bMY" secondAttribute="leading" id="0EA-oe-ceh"/>
-                    <constraint firstItem="bjX-su-bMY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ppJ-L7-xeq" secondAttribute="trailing" constant="5" id="181-JL-XdT"/>
                     <constraint firstAttribute="trailing" secondItem="bjX-su-bMY" secondAttribute="trailing" constant="30" id="6wg-A4-f2e"/>
+                    <constraint firstItem="fko-B0-l9s" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="XQj-Kb-6Qi" secondAttribute="trailing" constant="5" id="8dL-TO-7Df"/>
                     <constraint firstItem="aaG-gK-iWe" firstAttribute="top" secondItem="bjX-su-bMY" secondAttribute="bottom" id="BT0-rC-j2U"/>
                     <constraint firstItem="ppJ-L7-xeq" firstAttribute="top" secondItem="b02-dF-rWJ" secondAttribute="top" constant="-4" id="BWe-Da-Rsy"/>
                     <constraint firstItem="fko-B0-l9s" firstAttribute="trailing" secondItem="bjX-su-bMY" secondAttribute="trailing" id="McQ-yR-Y9c"/>
@@ -82,7 +89,9 @@
                     <constraint firstItem="fko-B0-l9s" firstAttribute="bottom" secondItem="bjX-su-bMY" secondAttribute="bottom" id="Rp5-bK-wL4"/>
                     <constraint firstItem="YM5-ez-Woj" firstAttribute="top" secondItem="ppJ-L7-xeq" secondAttribute="bottom" constant="4" id="RrH-4M-jeZ"/>
                     <constraint firstItem="YM5-ez-Woj" firstAttribute="leading" secondItem="ppJ-L7-xeq" secondAttribute="leading" id="Spp-DO-E5L"/>
+                    <constraint firstItem="XQj-Kb-6Qi" firstAttribute="centerY" secondItem="ppJ-L7-xeq" secondAttribute="centerY" id="WLP-eF-KGA"/>
                     <constraint firstItem="b02-dF-rWJ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-10" id="Wtl-eu-kVJ"/>
+                    <constraint firstItem="XQj-Kb-6Qi" firstAttribute="leading" secondItem="ppJ-L7-xeq" secondAttribute="trailing" constant="6" id="e7n-4C-FfV"/>
                     <constraint firstItem="b02-dF-rWJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="23" id="oMX-5g-Sas"/>
                     <constraint firstItem="ppJ-L7-xeq" firstAttribute="leading" secondItem="b02-dF-rWJ" secondAttribute="trailing" constant="15" id="qFl-F3-N5B"/>
                     <constraint firstItem="bjX-su-bMY" firstAttribute="centerY" secondItem="ppJ-L7-xeq" secondAttribute="centerY" id="saE-WQ-Ze5"/>
@@ -94,6 +103,7 @@
             <connections>
                 <outlet property="change24Button" destination="aaG-gK-iWe" id="DO9-9N-OtQ"/>
                 <outlet property="iconImageView" destination="b02-dF-rWJ" id="p1y-Ip-vPg"/>
+                <outlet property="tagImageView" destination="XQj-Kb-6Qi" id="HbM-bR-GeG"/>
                 <outlet property="tokenBalanceLabel" destination="YM5-ez-Woj" id="AHn-24-SsJ"/>
                 <outlet property="tokenLabel" destination="ppJ-L7-xeq" id="xEG-tu-NMB"/>
                 <outlet property="tokenValueLabel" destination="bjX-su-bMY" id="NaQ-yG-gGZ"/>
@@ -102,6 +112,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="blueTick_icon" width="24" height="24"/>
         <image name="knc" width="36" height="36"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -16,10 +16,16 @@ enum OverviewMainCellMode {
   case search(token: Token)
 }
 
+let VERIFIED_TAG   = "VERIFIED"
+let PROMOTION_TAG  = "PROMOTION"
+let SCAM_TAG       = "SCAM"
+let UNVERIFIED_TAG = "UNVERIFIED"
+
 class OverviewMainCellViewModel {
   let mode: OverviewMainCellMode
   let currency: CurrencyMode
   var hideBalanceStatus: Bool = true
+  var tag: String?
   init(mode: OverviewMainCellMode, currency: CurrencyMode) {
     self.mode = mode
     self.currency = currency
@@ -39,6 +45,24 @@ class OverviewMainCellViewModel {
       } else {
         return ""
       }
+    case .search(token: let token):
+      return token.symbol
+    }
+  }
+  
+  var logo: String {
+    switch self.mode {
+    case .market(token: let token, rightMode: _):
+      return token.logo
+    case .asset(token: let token, rightMode: _):
+      return token.logo
+    case .supply(balance: let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        return lendingBalance.logo
+      } else if let distributionBalance = balance as? LendingDistributionBalance {
+        return distributionBalance.logo
+      }
+      return ""
     case .search(token: let token):
       return token.symbol
     }
@@ -208,6 +232,20 @@ class OverviewMainCellViewModel {
     }
   }
   
+  var tagImage: UIImage? {
+    guard let tag = self.tag else { return nil }
+    if tag == VERIFIED_TAG {
+      return UIImage(named: "blueTick_icon")
+    } else if tag == PROMOTION_TAG {
+      return UIImage(named: "green-checked-tag-icon")
+    } else if tag == SCAM_TAG {
+      return UIImage(named: "warning-tag-icon")
+    } else if tag == UNVERIFIED_TAG {
+      return nil
+    }
+    return nil
+  }
+  
   func formatPoints(_ number: Double) -> String {
     let thousand = number / 1000
     let million = number / 1000000
@@ -235,7 +273,8 @@ class OverviewMainViewCell: SwipeTableViewCell {
   @IBOutlet weak var tokenBalanceLabel: UILabel!
   @IBOutlet weak var tokenValueLabel: UILabel!
   @IBOutlet weak var change24Button: UIButton!
-  
+  @IBOutlet weak var tagImageView: UIImageView!
+
   var action: (() -> ())?
   var viewModel: OverviewMainCellViewModel?
   override func awakeFromNib() {
@@ -246,7 +285,7 @@ class OverviewMainViewCell: SwipeTableViewCell {
   
   func updateCell(_ viewModel: OverviewMainCellViewModel) {
     self.viewModel = viewModel
-    self.iconImageView.setSymbolImage(symbol: viewModel.displayTitle)
+    self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.displayTitle)
     self.tokenLabel.text = viewModel.displayTitle
     self.tokenBalanceLabel.text = viewModel.displaySubTitleDetail
     self.tokenValueLabel.text = viewModel.displayAccessoryTitle
@@ -260,6 +299,12 @@ class OverviewMainViewCell: SwipeTableViewCell {
     } else {
       self.change24Button.setTitleColor(UIColor(named: "mainViewBgColor"), for: .normal)
       self.change24Button.contentHorizontalAlignment = .center
+    }
+    if let image = viewModel.tagImage {
+      self.tagImageView.image = image
+      self.tagImageView.isHidden = false
+    } else {
+      self.tagImageView.isHidden = true
     }
   }
   

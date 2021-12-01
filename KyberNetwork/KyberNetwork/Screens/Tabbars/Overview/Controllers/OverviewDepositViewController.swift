@@ -137,13 +137,12 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   @IBOutlet weak var emptyView: UIView!
   @IBOutlet weak var supplyButton: UIButton!
   @IBOutlet weak var borrowButton: UIButton!
-  
+
   weak var container: OverviewViewController?
   weak var delegate: OverviewDepositViewControllerDelegate?
   let viewModel = OverviewDepositViewModel()
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     let nib = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -164,11 +163,11 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.viewModel.reloadAllData()
     self.reloadUI()
   }
-  
+
   fileprivate func updateUITotalValue() {
     self.totalStringLabel.text = self.viewModel.totalValueString
   }
-  
+
   fileprivate func reloadUI() {
     guard self.isViewLoaded else {
       return
@@ -182,7 +181,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
   @IBAction func supplyButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewDepositViewController(self, run: .depositMore)
   }
-  
+
   func viewControllerDidChangeCurrencyType(_ controller: OverviewViewController, type: CurrencyType) {
     guard type != self.viewModel.currencyType else {
       return
@@ -190,20 +189,20 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.viewModel.currencyType = type
     self.reloadUI()
   }
-  
+
   func coordinatorDidUpdateDidUpdateTokenList() {
     guard self.isViewLoaded else { return }
     self.viewModel.reloadAllData()
     self.reloadUI()
     self.updateUITotalValue()
   }
-  
+
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.reloadAllData()
     guard self.isViewLoaded else { return }
     self.reloadUI()
   }
-  
+
   func containerDidUpdateHideBalanceStatus(_ status: Bool) {
     self.viewModel.hideBalanceStatus = status
     guard self.isViewLoaded else { return }
@@ -243,7 +242,7 @@ extension OverviewDepositViewController: UITableViewDelegate {
     titleLabel.font = UIFont.Kyber.regular(with: 18)
     titleLabel.textColor = UIColor(named: "textWhiteColor")
     view.addSubview(titleLabel)
-    
+
     let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - 100 - 35, y: 0, width: 100, height: 40))
     valueLabel.text = self.viewModel.displayTotalValueForSection(section)
     valueLabel.font = UIFont.Kyber.regular(with: 18)
@@ -257,7 +256,7 @@ extension OverviewDepositViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 40
   }
-  
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let viewModel = self.viewModel.getDataSourceForSection(indexPath.section)[indexPath.row] as? OverviewDepositLendingBalanceCellViewModel {
       self.delegate?.overviewDepositViewController(self, run: .withdrawBalance(platform: self.viewModel.sectionKeys[indexPath.section], balance: viewModel.balance))
