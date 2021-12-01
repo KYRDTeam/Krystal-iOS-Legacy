@@ -363,7 +363,7 @@ class GasFeeSelectorPopupViewModel {
       return self.maxGasFeeBigInt.string(units: UnitConfiguration.gasPriceUnit, minFractionDigits: 1, maxFractionDigits: 1)
     }
   }
-  
+
   var displayAdvancedNonce: String {
     if let unwrap = self.advancedNonce {
       return unwrap
@@ -428,7 +428,7 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var hasChanged: Bool {
-    return (self.advancedGasLimit != nil) || (self.advancedMaxPriorityFee != nil) || (self.advancedMaxFee != nil)
+    return (self.advancedGasLimit != nil) || (self.advancedMaxPriorityFee != nil) || (self.advancedMaxFee != nil) || (self.advancedNonce != nil)
   }
 
   var hasNonceChaned: Bool {

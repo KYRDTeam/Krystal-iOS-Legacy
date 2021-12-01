@@ -118,7 +118,11 @@ class KNExternalProvider {
                 })
               }
             } else {
-              self.signTransactionData(from: transaction, nonce: self.minTxCount, data: data, completion: { signResult in
+              var txNonce = self.minTxCount
+              if let unwrap = transaction.nonce {
+                txNonce = Int(unwrap)
+              }
+              self.signTransactionData(from: transaction, nonce: txNonce, data: data, completion: { signResult in
                 switch signResult {
                 case .success(let signData):
                   KNGeneralProvider.shared.sendSignedTransactionData(signData.0, completion: { [weak self] result in

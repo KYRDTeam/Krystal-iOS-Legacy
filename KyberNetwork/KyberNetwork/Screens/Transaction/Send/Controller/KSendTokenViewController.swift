@@ -423,16 +423,10 @@ extension KSendTokenViewController {
 // MARK: Update from coordinator
 extension KSendTokenViewController {
   func coordinatorDidUpdateSendToken(_ from: TokenObject, balance: Balance?) {
-    if from.isPromoToken {
-      self.showWarningTopBannerMessage(
-        with: "",
-        message: NSLocalizedString("can.not.transfer.this.token", value: "Can not transfer this token", comment: ""),
-        time: 1.5
-      )
-      return
-    }
     self.viewModel.updateSendToken(from: from, balance: balance)
+    self.viewModel.resetAdvancedSettings()
     self.updateUIFromTokenDidChange()
+    self.updateGasFeeUI()
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {

@@ -205,7 +205,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hz-Cx-cXe">
-                            <rect key="frame" x="50" y="370" width="118.5" height="17"/>
+                            <rect key="frame" x="50" y="370" width="119" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>

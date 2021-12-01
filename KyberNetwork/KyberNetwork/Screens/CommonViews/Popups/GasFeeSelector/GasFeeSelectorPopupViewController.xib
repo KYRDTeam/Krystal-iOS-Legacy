@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -580,7 +580,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GWEI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xl1-uO-O0s">
-                                                            <rect key="frame" x="63" y="11.5" width="39" height="19"/>
+                                                            <rect key="frame" x="63" y="11.5" width="38.5" height="19"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                             <color key="textColor" name="textWhiteColor"/>
                                                             <nil key="highlightedColor"/>
@@ -680,7 +680,7 @@
                                                             </connections>
                                                         </textField>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GWEI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-z2-cEU">
-                                                            <rect key="frame" x="63" y="11.5" width="39" height="19"/>
+                                                            <rect key="frame" x="63" y="11.5" width="38.5" height="19"/>
                                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                             <color key="textColor" name="textWhiteColor"/>
                                                             <nil key="highlightedColor"/>
@@ -988,6 +988,12 @@
                                                 <action selector="helpButtonTapped:" destination="-1" eventType="touchUpInside" id="UAz-jg-CGL"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Nonce:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmx-ah-2wt">
+                                            <rect key="frame" x="37" y="342" width="111" height="19"/>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z01-EZ-HXY">
                                             <rect key="frame" x="156" y="342" width="24" height="24"/>
                                             <constraints>
@@ -999,12 +1005,6 @@
                                                 <action selector="helpButtonTapped:" destination="-1" eventType="touchUpInside" id="xSD-4b-olA"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Nonce:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmx-ah-2wt">
-                                            <rect key="frame" x="37" y="342" width="111" height="19"/>
-                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                            <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" name="popupBackgroundColor"/>
                                     <constraints>
@@ -1012,7 +1012,6 @@
                                         <constraint firstItem="nN6-wO-tfn" firstAttribute="top" secondItem="hHH-lv-AFf" secondAttribute="bottom" constant="8" symbolic="YES" id="3JP-Lo-S2k"/>
                                         <constraint firstItem="kmx-ah-2wt" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="43g-9t-ot5"/>
                                         <constraint firstItem="biE-fA-35t" firstAttribute="leading" secondItem="YhK-og-OKC" secondAttribute="leading" id="8V7-fg-ZEP"/>
-                                        <constraint firstItem="z01-EZ-HXY" firstAttribute="top" secondItem="kmx-ah-2wt" secondAttribute="top" id="92k-8f-eIt"/>
                                         <constraint firstItem="IEN-jO-Gfh" firstAttribute="top" secondItem="UYb-fq-7jQ" secondAttribute="bottom" constant="12" id="Bjy-qf-zwN"/>
                                         <constraint firstAttribute="trailing" secondItem="eXL-VL-rRm" secondAttribute="trailing" constant="37" id="DF6-17-EVi"/>
                                         <constraint firstItem="YhK-og-OKC" firstAttribute="top" secondItem="5Bo-Ke-v54" secondAttribute="bottom" constant="50" id="DbF-6h-v48"/>
@@ -1029,7 +1028,6 @@
                                         <constraint firstItem="UMa-CY-ZVZ" firstAttribute="top" secondItem="cKe-M6-VP2" secondAttribute="bottom" constant="12" id="RIF-4K-gBJ"/>
                                         <constraint firstAttribute="trailing" secondItem="YhK-og-OKC" secondAttribute="trailing" constant="37" id="SM5-0s-PBA"/>
                                         <constraint firstItem="kmx-ah-2wt" firstAttribute="top" secondItem="5Bo-Ke-v54" secondAttribute="bottom" constant="15" id="SUj-Ut-lPp"/>
-                                        <constraint firstItem="z01-EZ-HXY" firstAttribute="leading" secondItem="kmx-ah-2wt" secondAttribute="trailing" constant="8" id="XtZ-uA-eXX"/>
                                         <constraint firstAttribute="height" constant="600" id="Y4c-qe-eb8"/>
                                         <constraint firstItem="hHH-lv-AFf" firstAttribute="top" secondItem="XKt-Lg-6jW" secondAttribute="bottom" constant="12" id="YGD-c1-zFf"/>
                                         <constraint firstItem="YhK-og-OKC" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="YSQ-qk-l3W"/>
@@ -1044,11 +1042,13 @@
                                         <constraint firstItem="biE-fA-35t" firstAttribute="top" secondItem="YhK-og-OKC" secondAttribute="bottom" constant="8" symbolic="YES" id="lI5-aW-VkO"/>
                                         <constraint firstItem="XKt-Lg-6jW" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="lW3-Gw-8Y0"/>
                                         <constraint firstItem="Xpo-gr-H89" firstAttribute="top" secondItem="cKe-M6-VP2" secondAttribute="top" id="lb6-Ex-VHD"/>
+                                        <constraint firstItem="z01-EZ-HXY" firstAttribute="top" secondItem="kmx-ah-2wt" secondAttribute="top" id="mSG-k5-L3y"/>
                                         <constraint firstItem="Xpo-gr-H89" firstAttribute="leading" secondItem="cKe-M6-VP2" secondAttribute="trailing" constant="8" id="nHh-il-INb"/>
                                         <constraint firstItem="UYb-fq-7jQ" firstAttribute="top" secondItem="Oyl-HO-RJ0" secondAttribute="top" constant="17" id="nQV-3o-0JJ"/>
                                         <constraint firstAttribute="trailing" secondItem="UMa-CY-ZVZ" secondAttribute="trailing" constant="37" id="rra-lg-S34"/>
                                         <constraint firstItem="VbE-5D-TkZ" firstAttribute="leading" secondItem="XKt-Lg-6jW" secondAttribute="trailing" constant="8" id="sMp-UQ-ypv"/>
                                         <constraint firstItem="Z2k-IH-dwE" firstAttribute="leading" secondItem="UMa-CY-ZVZ" secondAttribute="leading" id="su5-RX-fIS"/>
+                                        <constraint firstItem="z01-EZ-HXY" firstAttribute="leading" secondItem="kmx-ah-2wt" secondAttribute="trailing" constant="8" symbolic="YES" id="tRq-ck-UAP"/>
                                         <constraint firstItem="hHH-lv-AFf" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="uAf-03-bCD"/>
                                         <constraint firstItem="VbE-5D-TkZ" firstAttribute="top" secondItem="XKt-Lg-6jW" secondAttribute="top" id="ub7-5s-PPV"/>
                                         <constraint firstItem="eXL-VL-rRm" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="yWh-9l-sS7"/>
