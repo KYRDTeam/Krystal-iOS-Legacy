@@ -108,6 +108,13 @@ class SendNFTViewModel {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
     default: return
     }
   }
@@ -228,7 +235,7 @@ class SendNFTViewController: KNBaseViewController {
   
   fileprivate let viewModel: SendNFTViewModel
   weak var delegate: KSendTokenViewControllerDelegate?
-  
+
   init(viewModel: SendNFTViewModel) {
     self.viewModel = viewModel
     super.init(nibName: SendNFTViewController.className, bundle: nil)
@@ -237,7 +244,7 @@ class SendNFTViewController: KNBaseViewController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -247,7 +254,7 @@ class SendNFTViewController: KNBaseViewController {
     self.updateUINFTItem()
     self.updateAmountViews()
   }
-  
+
   func updateAmountViews() {
     if self.viewModel.isSupportERC721 {
       self.addressTitleTopContraint.constant = 40
