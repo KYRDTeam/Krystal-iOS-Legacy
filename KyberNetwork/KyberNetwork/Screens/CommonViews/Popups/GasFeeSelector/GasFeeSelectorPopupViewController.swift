@@ -376,6 +376,18 @@ class GasFeeSelectorPopupViewModel {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
     return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
   }
+  
+  var advancedGasLimitErrorStatus: AdvancedInputError {
+    guard let unwrap = self.advancedGasLimit, !unwrap.isEmpty, let gasLimit = BigInt(unwrap) else {
+      return .none
+    }
+    
+    if gasLimit <= BigInt(21000) {
+      return .low
+    } else {
+      return .none
+    }
+  }
 
   var advancedNonceErrorStatus: AdvancedInputError {
     guard let unwrap = self.advancedNonce, !unwrap.isEmpty else {
@@ -571,6 +583,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var secondButton: UIButton!
   @IBOutlet weak var priorityAccessoryLabel: UILabel!
   @IBOutlet weak var maxFeeAccessoryLabel: UILabel!
+  @IBOutlet weak var gasLimitErrorLabel: UILabel!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -684,6 +697,16 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
       self.maxFeeAccessoryLabel.textColor = UIColor(named: "textWhiteColor")
     }
+    
+    switch self.viewModel.advancedGasLimitErrorStatus {
+    case .low:
+      self.advancedGasLimitField.textColor = UIColor(named: "textRedColor")
+      self.gasLimitErrorLabel.text = "Gas limit is too low"
+    default:
+      self.advancedGasLimitField.textColor = UIColor(named: "textWhiteColor")
+      self.gasLimitErrorLabel.text = ""
+    }
+    self.updateUIForCustomNonce()
 
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
       self.titleLabel.text = self.viewModel.isSpeedupMode ? "Speedup Transaction" : "Cancel Transaction"
@@ -834,9 +857,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.advancedNonceField.text = customNonce
     switch self.viewModel.advancedNonceErrorStatus {
     case .low:
+      self.advancedNonceField.textColor = UIColor(named: "textRedColor")
       self.nonceErrorLabel.isHidden = false
       self.nonceErrorLabel.text = "Nonce is too low"
     default:
+      self.advancedNonceField.textColor = UIColor(named: "textWhiteColor")
       self.nonceErrorLabel.isHidden = true
       self.nonceErrorLabel.text = ""
     }

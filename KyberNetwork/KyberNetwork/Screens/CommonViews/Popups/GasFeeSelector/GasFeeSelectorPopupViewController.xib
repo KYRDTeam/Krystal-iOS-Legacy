@@ -62,6 +62,7 @@
                 <outlet property="fastEstimateFeeLabel" destination="NQX-fI-x3c" id="l1T-Fo-atP"/>
                 <outlet property="firstButton" destination="phV-Kl-vM2" id="Eic-9l-3zI"/>
                 <outlet property="gasFeeGweiTextLabel" destination="9So-gt-dfF" id="V2M-29-IfL"/>
+                <outlet property="gasLimitErrorLabel" destination="4xE-a0-ZhD" id="Az9-D8-VPj"/>
                 <outlet property="gasLimitHelpButton" destination="8TX-cb-fC3" id="WeN-MT-Z2y"/>
                 <outlet property="mainEquivalentUSDLabel" destination="cz1-gs-clU" id="8EB-Ka-KW9"/>
                 <outlet property="mainGasFeeLabel" destination="gcp-UN-gH9" id="BLR-i3-9pP"/>
@@ -1005,6 +1006,12 @@
                                                 <action selector="helpButtonTapped:" destination="-1" eventType="touchUpInside" id="xSD-4b-olA"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolosit amet tabdauyb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xE-a0-ZhD">
+                                            <rect key="frame" x="37" y="98" width="199.5" height="14"/>
+                                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                            <color key="textColor" name="textRedColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" name="popupBackgroundColor"/>
                                     <constraints>
@@ -1021,6 +1028,7 @@
                                         <constraint firstItem="8TX-cb-fC3" firstAttribute="leading" secondItem="UYb-fq-7jQ" secondAttribute="trailing" constant="8" id="LHW-Wl-qKB"/>
                                         <constraint firstAttribute="trailing" secondItem="6rF-bB-xEG" secondAttribute="trailing" constant="37" id="MQa-PH-wSJ"/>
                                         <constraint firstItem="XKt-Lg-6jW" firstAttribute="top" secondItem="IEN-jO-Gfh" secondAttribute="bottom" constant="30" id="MYu-Ni-uHo"/>
+                                        <constraint firstItem="4xE-a0-ZhD" firstAttribute="top" secondItem="IEN-jO-Gfh" secondAttribute="bottom" constant="8" symbolic="YES" id="MbU-gP-7cq"/>
                                         <constraint firstItem="UYb-fq-7jQ" firstAttribute="leading" secondItem="Oyl-HO-RJ0" secondAttribute="leading" constant="37" id="NjW-4R-7My"/>
                                         <constraint firstAttribute="trailing" secondItem="hHH-lv-AFf" secondAttribute="trailing" constant="37" id="POV-xL-Z8y"/>
                                         <constraint firstAttribute="trailing" secondItem="IEN-jO-Gfh" secondAttribute="trailing" constant="37" id="QAB-2O-JXk"/>
@@ -1045,6 +1053,7 @@
                                         <constraint firstItem="z01-EZ-HXY" firstAttribute="top" secondItem="kmx-ah-2wt" secondAttribute="top" id="mSG-k5-L3y"/>
                                         <constraint firstItem="Xpo-gr-H89" firstAttribute="leading" secondItem="cKe-M6-VP2" secondAttribute="trailing" constant="8" id="nHh-il-INb"/>
                                         <constraint firstItem="UYb-fq-7jQ" firstAttribute="top" secondItem="Oyl-HO-RJ0" secondAttribute="top" constant="17" id="nQV-3o-0JJ"/>
+                                        <constraint firstItem="4xE-a0-ZhD" firstAttribute="leading" secondItem="IEN-jO-Gfh" secondAttribute="leading" id="rVO-Ck-U9D"/>
                                         <constraint firstAttribute="trailing" secondItem="UMa-CY-ZVZ" secondAttribute="trailing" constant="37" id="rra-lg-S34"/>
                                         <constraint firstItem="VbE-5D-TkZ" firstAttribute="leading" secondItem="XKt-Lg-6jW" secondAttribute="trailing" constant="8" id="sMp-UQ-ypv"/>
                                         <constraint firstItem="Z2k-IH-dwE" firstAttribute="leading" secondItem="UMa-CY-ZVZ" secondAttribute="leading" id="su5-RX-fIS"/>
@@ -1182,7 +1191,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="Vz5-Kj-JwW" appends="YES" id="DGb-Ue-bOP"/>
             </connections>
-            <point key="canvasLocation" x="140.57971014492756" y="122.20982142857142"/>
+            <point key="canvasLocation" x="138.75" y="122.00704225352113"/>
         </view>
         <tapGestureRecognizer cancelsTouchesInView="NO" id="Vz5-Kj-JwW">
             <connections>
