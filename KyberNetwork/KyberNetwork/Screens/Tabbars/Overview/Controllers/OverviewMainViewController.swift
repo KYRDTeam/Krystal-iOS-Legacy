@@ -126,7 +126,7 @@ class OverviewMainViewController: KNBaseViewController {
       return true
     }
     switch self.viewModel.currentMode {
-    case .supply, .asset, .showLiquidityPool:
+      case .supply, .asset, .showLiquidityPool, .nft:
       return true
     default:
       return false

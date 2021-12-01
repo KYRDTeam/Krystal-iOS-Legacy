@@ -378,9 +378,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadNFTBalance(completion: @escaping (Bool) -> Void) {
+  func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
+    provider.request(.getNTFBalance(address: self.session.wallet.address.description, forceSync: forceSync)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -551,6 +551,10 @@ extension KNLoadBalanceCoordinator {
         }
 
         group.notify(queue: .global()) {
+          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+        }
+      case .nft:
+        self.loadNFTBalance(forceSync: true) { _ in
           KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
         }
       default:

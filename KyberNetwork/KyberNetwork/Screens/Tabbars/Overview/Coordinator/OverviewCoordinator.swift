@@ -537,7 +537,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
   
   func pullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
-    self.delegate?.overviewCoordinatorDidPullToRefresh(mode: mode, overviewMode:overviewMode)
+    self.delegate?.overviewCoordinatorDidPullToRefresh(mode: mode, overviewMode: overviewMode)
   }
 
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent) {
