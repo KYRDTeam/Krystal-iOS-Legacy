@@ -97,12 +97,7 @@ class OverviewMainViewController: KNBaseViewController {
   
   func configPullToRefresh() {
     if shouldPullToRefresh() {
-      let attributes: [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
-        NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
-      ]
-      self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
-      self.refreshControl.tintColor = UIColor(named: "buttonBackgroundColor")
+      self.refreshControl.tintColor = .lightGray
       self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
       self.tableView.addSubview(refreshControl)
     } else {
@@ -360,7 +355,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-20.0) : CGFloat(-10.0)
+    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-15.0) : CGFloat(-10.0)
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
     self.insestView.frame.size.height = isSummary ? CGFloat(0) : CGFloat(80)
     self.tableView.reloadData()
