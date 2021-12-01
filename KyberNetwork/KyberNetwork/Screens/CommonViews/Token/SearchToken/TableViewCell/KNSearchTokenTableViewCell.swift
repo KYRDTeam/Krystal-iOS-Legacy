@@ -18,6 +18,21 @@ class KNSearchTokenTableViewCell: UITableViewCell {
   
   weak var delegate: KNSearchTokenTableViewCellDelegate?
   var token: TokenObject?
+  
+  var tagImage: UIImage? {
+    guard let tag = self.token?.tag else { return nil }
+      if tag == VERIFIED_TAG {
+        return UIImage(named: "blueTick_icon")
+      } else if tag == PROMOTION_TAG {
+        return UIImage(named: "green-checked-tag-icon")
+      } else if tag == SCAM_TAG {
+        return UIImage(named: "warning-tag-icon")
+      } else if tag == UNVERIFIED_TAG {
+        return nil
+      }
+      return nil
+    }
+    
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -34,7 +49,12 @@ class KNSearchTokenTableViewCell: UITableViewCell {
         self.iconImageView.setSymbolImage(symbol: token.symbol, size: iconImageView.frame.size)
     }
     self.tokenSymbolLabel.text = "\(token.symbol.prefix(8))"
-    self.tickIcon.isHidden = !token.isHighVolumn
+    self.tickIcon.isHidden = true
+    if let image = self.tagImage {
+      self.tickIcon.isHidden = false
+      self.tickIcon.image = image
+    }
+    
     let balText: String = {
       let value = token.getBalanceBigInt().string(
         decimals: token.decimals,

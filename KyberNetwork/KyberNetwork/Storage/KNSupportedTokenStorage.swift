@@ -129,7 +129,8 @@ class KNSupportedTokenStorage {
   }
 
   func updateSupportedTokens(_ tokens: [Token]) {
-    guard tokens != self.supportedToken else {
+    
+    guard !self.isEqualTokenArray(array1: tokens, array2: self.supportedToken) else {
       return
     }
     Storage.store(tokens, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
@@ -321,45 +322,18 @@ class KNSupportedTokenStorage {
       return item.symbol == "KNC"
     } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
   }
-  
-//  func checkAddCustomTokenIfNeeded() {
-//    var unknown: [Token] = []
-//    let all = self.allTokens
-//    guard !all.isEmpty else {
-//      return
-//    }
-//    let etherscanTokens = EtherscanTransactionStorage.shared.getEtherscanToken()
-//    etherscanTokens.forEach { (token) in
-//      if !all.contains(token) {
-//        unknown.append(token)
-//      }
-//    }
-//    guard !unknown.isEmpty else {
-//      return
-//    }
-//    var customTokenCache = self.customTokens
-//    unknown.forEach { (token) in
-//      if !customTokenCache.contains(token) {
-//        customTokenCache.append(token)
-//      }
-//    }
-//
-//    //Check duplicate with support token list
-//    var duplicateToken: [Token] = []
-//    customTokenCache.forEach { (token) in
-//      if self.supportedToken.contains(token) {
-//        duplicateToken.append(token)
-//      }
-//    }
-//    duplicateToken.forEach { (token) in
-//      if let idx = customTokenCache.firstIndex(where: { $0 == token }) {
-//        customTokenCache.remove(at: idx)
-//      }
-//    }
-//
-//    self.customTokens = customTokenCache
-//    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
-//  }
+
+  func updateNewDataForCustomTokensIfHave(_ tokens: [Token]) {
+    self.customTokens.forEach { customToken in
+      for token in tokens where token == customToken {
+        customToken.name = token.name
+        customToken.symbol = token.symbol
+        customToken.logo = token.logo
+        customToken.tag = token.tag
+      }
+    }
+    Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
+  }
 
   func checkAddCustomTokenIfNeeded(_ tokens: [Token]) {
     guard !self.supportedToken.isEmpty else {
@@ -435,5 +409,33 @@ class KNSupportedTokenStorage {
     return self.allActiveTokens.filter { (token) -> Bool in
       return addresses.contains(token.address.lowercased())
     }
+  }
+
+  func isEqualTokenArray(array1: [Token], array2: [Token]) -> Bool {
+    if array1.isEmpty && array2.isEmpty {
+      return true
+    }
+
+    if array1.count != array2.count {
+      return false
+    }
+
+    var isEqual = true
+    for index in 0 ..< array1.count {
+      let firstToken = array1[index]
+      let secondToken = array2[index]
+
+      //just 1 param different then we will consider there are updates from api
+      if firstToken.address.lowercased() != secondToken.address.lowercased()
+          || firstToken.decimals != secondToken.decimals
+          || firstToken.name.lowercased() != secondToken.name.lowercased()
+          || firstToken.symbol.lowercased() != secondToken.symbol.lowercased()
+          || firstToken.logo.lowercased() != secondToken.logo.lowercased()
+          || firstToken.tag.lowercased() != secondToken.tag.lowercased() {
+        isEqual = false
+        break
+      }
+    }
+    return isEqual
   }
 }

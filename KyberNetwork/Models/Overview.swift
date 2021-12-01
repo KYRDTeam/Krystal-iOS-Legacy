@@ -48,11 +48,12 @@ struct TokenDetailInfo: Codable {
   let logo, resultDescription: String
   let links: Links
   let markets: [String: Market]
-
+  let tag: String
   enum CodingKeys: String, CodingKey {
     case address, symbol, name, decimals, logo
     case resultDescription = "description"
     case links, markets
+    case tag
   }
 }
 
