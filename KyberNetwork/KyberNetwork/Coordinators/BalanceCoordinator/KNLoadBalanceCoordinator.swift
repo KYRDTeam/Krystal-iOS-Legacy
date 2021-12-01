@@ -104,7 +104,7 @@ class KNLoadBalanceCoordinator {
         self?.loadAllBalances()
       }
     )
-    
+    self.loadAllBalances()
     fetchTotalBalanceTimer?.invalidate()
     fetchTotalBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds60,
@@ -114,7 +114,9 @@ class KNLoadBalanceCoordinator {
 
         })
       })
-    self.loadAllBalances()
+    self?.loadTotalBalance(forceSync: true, completion: { _ in
+
+    })
   }
 
   func pause() {
