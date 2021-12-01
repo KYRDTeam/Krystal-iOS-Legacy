@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -49,6 +49,7 @@
                 <outlet property="contentViewTopContraint" destination="tTm-8d-tWl" id="61J-7V-nJi"/>
                 <outlet property="customButton" destination="4iJ-TM-agK" id="uav-Go-rJu"/>
                 <outlet property="customNonceContainerView" destination="YhK-og-OKC" id="eXB-4X-NdS"/>
+                <outlet property="customNonceHelpButton" destination="z01-EZ-HXY" id="4eB-PZ-zu3"/>
                 <outlet property="customNonceTitleLabel" destination="kmx-ah-2wt" id="4tL-85-nl3"/>
                 <outlet property="customRateContainerView" destination="zXQ-Xy-IlN" id="0nc-ww-E9W"/>
                 <outlet property="customRateTextField" destination="JSC-23-wGp" id="qK8-62-6YB"/>

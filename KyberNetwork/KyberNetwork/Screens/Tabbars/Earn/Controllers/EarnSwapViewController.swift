@@ -1132,6 +1132,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   func coordinatorUpdateSelectedToken(_ token: TokenData) {
+    self.viewModel.resetAdvancedSettings()
     self.viewModel.showingRevertRate = false
     self.viewModel.updateFromToken(token)
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
@@ -1154,6 +1155,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateAllowance()
     self.updateAllRates()
     self.updateUIMinReceiveAmount()
+    self.updateGasFeeUI()
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {

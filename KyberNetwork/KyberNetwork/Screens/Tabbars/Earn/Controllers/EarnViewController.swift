@@ -761,6 +761,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorUpdateSelectedToken(_ token: TokenData) {
+    self.viewModel.resetAdvancedSettings()
     self.viewModel.updateToken(token)
     self.updateUITokenDidChange(token)
     self.fromAmountTextField.text = ""
@@ -768,6 +769,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUIBalanceDidChange()
     self.updateGasLimit()
     self.updateAllowance()
+    self.updateGasFeeUI()
   }
   
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {

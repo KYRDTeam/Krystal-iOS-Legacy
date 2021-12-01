@@ -584,6 +584,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var priorityAccessoryLabel: UILabel!
   @IBOutlet weak var maxFeeAccessoryLabel: UILabel!
   @IBOutlet weak var gasLimitErrorLabel: UILabel!
+  @IBOutlet weak var customNonceHelpButton: UIButton!
   
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
@@ -842,6 +843,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.customNonceTitleLabel.isHidden = true
       self.customNonceContainerView.isHidden = true
       self.nonceErrorLabel.isHidden = true
+      self.customNonceHelpButton.isHidden = true
       return
     }
     guard self.viewModel.currentNonce != -1 else {
