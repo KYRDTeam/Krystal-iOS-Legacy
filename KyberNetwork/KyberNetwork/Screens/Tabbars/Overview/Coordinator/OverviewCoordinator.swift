@@ -24,6 +24,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectExportWallet()
   func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
+  func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -132,6 +133,10 @@ class OverviewCoordinator: NSObject, Coordinator {
       self.navigationController.tabBarController?.selectedIndex = 0
     }
     self.handleWalletConnectURI(uri, disconnectAfterDisappear: false)
+  }
+
+  func appCoordinatorPullToRefreshDone() {
+    self.rootViewController.coordinatorPullToRefreshDone()
   }
 
   func openQRCodeScreen() {
@@ -441,93 +446,108 @@ extension OverviewCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension OverviewCoordinator: OverviewMainViewControllerDelegate {
+  
+  func changeMode(mode: ViewMode, controller: OverviewMainViewController) {
+    let actionController = KrystalActionSheetController()
+    
+    actionController.headerData = "Tokens Data"
+    let supplyType = mode == .supply ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Show Supply", image: UIImage(named: "supply_actionsheet_icon")!), style: supplyType, handler: { _ in
+      controller.coordinatorDidSelectMode(.supply)
+    }))
+    
+    let assetType = mode == .asset(rightMode: .value) ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
+      controller.coordinatorDidSelectMode(.asset(rightMode: .value))
+    }))
+      
+    let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
+      controller.coordinatorDidSelectMode(.showLiquidityPool)
+    }))
+      
+    let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
+      controller.coordinatorDidSelectMode(.nft)
+    }))
+    let marketType = mode == .market(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Show Market", image: UIImage(named: "market_actionsheet_icon")!), style: marketType, handler: { _ in
+      controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
+    }))
+    let favType = mode == .favourite(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
+    actionController.addAction(Action(ActionData(title: "Favorites", image: UIImage(named: "favorites_actionsheet_icon")!), style: favType, handler: { _ in
+      controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
+    }))
+    self.navigationController.present(actionController, animated: true, completion: nil)
+  }
+  
+  func configWallet(currency: CurrencyMode, controller: OverviewMainViewController) {
+    let actionController = KrystalActionSheetController()
+    
+    actionController.headerData = "Wallet Details"
+    
+    actionController.addAction(Action(ActionData(title: "Change Currency", image: UIImage(named: "currency_change_icon")!), style: .default, handler: { _ in
+      let controller = OverviewChangeCurrencyViewController(mode: currency)
+      controller.completeHandle = { mode in
+        self.rootViewController.coordinatorDidUpdateCurrencyMode(mode)
+        self.currentCurrencyType = mode
+      }
+      self.navigationController.present(controller, animated: true, completion: nil)
+    }))
+    
+    actionController.addAction(Action(ActionData(title: "Copy Address", image: UIImage(named: "copy_actionsheet_icon")!), style: .default, handler: { _ in
+      UIPasteboard.general.string = self.session.wallet.address.description
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    }))
+    
+    actionController.addAction(Action(ActionData(title: "Share Address", image: UIImage(named: "share_actionsheet_icon")!), style: .default, handler: { _ in
+      let activityItems: [Any] = {
+        var items: [Any] = []
+        items.append(self.session.wallet.address.description)
+        return items
+      }()
+      let activityViewController = UIActivityViewController(
+        activityItems: activityItems,
+        applicationActivities: nil
+      )
+      activityViewController.popoverPresentationController?.sourceView = controller.view
+      controller.present(activityViewController, animated: true, completion: nil)
+    }))
+    actionController.addAction(Action(ActionData(title: "Rename Wallet", image: UIImage(named: "rename_actionsheet_icon")!), style: .default, handler: { _ in
+      self.delegate?.overviewCoordinatorDidSelectRenameWallet()
+    }))
+    actionController.addAction(Action(ActionData(title: "Show History", image: UIImage(named: "history_actionsheet_icon")!), style: .default, handler: { _ in
+      self.openHistoryScreen()
+    }))
+    actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
+      self.delegate?.overviewCoordinatorDidSelectExportWallet()
+    }))
+    actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
+      self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
+    }))
+    actionController.addAction(Action(ActionData(title: "Etherscan", image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
+      if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(self.session.wallet.address.description)") {
+        self.rootViewController.openSafari(with: url)
+      }
+    }))
+    self.navigationController.present(actionController, animated: true, completion: nil)
+  }
+  
+  func pullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
+    self.delegate?.overviewCoordinatorDidPullToRefresh(mode: mode, overviewMode: overviewMode)
+  }
+
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent) {
     switch event {
+    case .pullToRefreshed(current: let mode, overviewMode: let overviewMode):
+      self.pullToRefresh(mode: mode, overviewMode: overviewMode)
     case .changeMode(current: let mode):
-      let actionController = KrystalActionSheetController()
-      
-      actionController.headerData = "Tokens Data"
-      let supplyType = mode == .supply ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Show Supply", image: UIImage(named: "supply_actionsheet_icon")!), style: supplyType, handler: { _ in
-        controller.coordinatorDidSelectMode(.supply)
-      }))
-      
-      let assetType = mode == .asset(rightMode: .value) ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Show Asset", image: UIImage(named: "asset_actionsheet_icon")!), style: assetType, handler: { _ in
-        controller.coordinatorDidSelectMode(.asset(rightMode: .value))
-      }))
-        
-      let showLPType = mode == .showLiquidityPool ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Show Liquidity Pool", image: UIImage(named: "show_LP_icon")!), style: showLPType, handler: { _ in
-        controller.coordinatorDidSelectMode(.showLiquidityPool)
-      }))
-        
-      let nftType = mode == .nft ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Show NFT", image: UIImage(named: "nft_actionsheet_icon")!), style: nftType, handler: { _ in
-        controller.coordinatorDidSelectMode(.nft)
-      }))
-      let marketType = mode == .market(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Show Market", image: UIImage(named: "market_actionsheet_icon")!), style: marketType, handler: { _ in
-        controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
-      }))
-      let favType = mode == .favourite(rightMode: .ch24) ? ActionStyle.selected : ActionStyle.default
-      actionController.addAction(Action(ActionData(title: "Favorites", image: UIImage(named: "favorites_actionsheet_icon")!), style: favType, handler: { _ in
-        controller.coordinatorDidSelectMode(.favourite(rightMode: .ch24))
-      }))
-      self.navigationController.present(actionController, animated: true, completion: nil)
+      self.changeMode(mode: mode, controller: controller)
     case .walletConfig(currency: let currency):
-      let actionController = KrystalActionSheetController()
-      
-      actionController.headerData = "Wallet Details"
-      
-      actionController.addAction(Action(ActionData(title: "Change Currency", image: UIImage(named: "currency_change_icon")!), style: .default, handler: { _ in
-        let controller = OverviewChangeCurrencyViewController(mode: currency)
-        controller.completeHandle = { mode in
-          self.rootViewController.coordinatorDidUpdateCurrencyMode(mode)
-          self.currentCurrencyType = mode
-        }
-        self.navigationController.present(controller, animated: true, completion: nil)
-      }))
-      
-      actionController.addAction(Action(ActionData(title: "Copy Address", image: UIImage(named: "copy_actionsheet_icon")!), style: .default, handler: { _ in
-        UIPasteboard.general.string = self.session.wallet.address.description
-        let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-        hud.mode = .text
-        hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-        hud.hide(animated: true, afterDelay: 1.5)
-      }))
-      
-      actionController.addAction(Action(ActionData(title: "Share Address", image: UIImage(named: "share_actionsheet_icon")!), style: .default, handler: { _ in
-        let activityItems: [Any] = {
-          var items: [Any] = []
-          items.append(self.session.wallet.address.description)
-          return items
-        }()
-        let activityViewController = UIActivityViewController(
-          activityItems: activityItems,
-          applicationActivities: nil
-        )
-        activityViewController.popoverPresentationController?.sourceView = controller.view
-        controller.present(activityViewController, animated: true, completion: nil)
-      }))
-      actionController.addAction(Action(ActionData(title: "Rename Wallet", image: UIImage(named: "rename_actionsheet_icon")!), style: .default, handler: { _ in
-        self.delegate?.overviewCoordinatorDidSelectRenameWallet()
-      }))
-      actionController.addAction(Action(ActionData(title: "Show History", image: UIImage(named: "history_actionsheet_icon")!), style: .default, handler: { _ in
-        self.openHistoryScreen()
-      }))
-      actionController.addAction(Action(ActionData(title: "Export Wallet", image: UIImage(named: "export_actionsheet_icon")!), style: .default, handler: { _ in
-        self.delegate?.overviewCoordinatorDidSelectExportWallet()
-      }))
-      actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
-        self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
-      }))
-      actionController.addAction(Action(ActionData(title: "Etherscan", image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
-        if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(self.session.wallet.address.description)") {
-          self.rootViewController.openSafari(with: url)
-        }
-      }))
-      self.navigationController.present(actionController, animated: true, completion: nil)
+        self.configWallet(currency: currency, controller: controller)
     case .select(token: let token):
       self.openChartView(token: token)
     case .selectListWallet:

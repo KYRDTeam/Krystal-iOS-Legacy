@@ -5,24 +5,28 @@ import UIKit
 extension UIImageView {
   func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil, failCompletion: (() -> Void)? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
-      if let needTofit = fitSize {
-        let widthRatio = needTofit.width / cachedImg.size.width
-        if widthRatio < 1 {
-          let imageWidth = widthRatio * cachedImg.size.width
-          let imageHeight = widthRatio * cachedImg.size.height
-          self.image = cachedImg.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+      DispatchQueue.main.async {
+        if let needTofit = fitSize {
+          let widthRatio = needTofit.width / cachedImg.size.width
+          if widthRatio < 1 {
+            let imageWidth = widthRatio * cachedImg.size.width
+            let imageHeight = widthRatio * cachedImg.size.height
+            self.image = cachedImg.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+          } else {
+            self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+          }
         } else {
           self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
         }
-      } else {
-        self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
-      }
 
-      self.layoutIfNeeded()
+        self.layoutIfNeeded()
+      }
       return
     }
-    self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
-    self.layoutIfNeeded()
+    DispatchQueue.main.async {
+      self.image = applyNoir ? placeholder?.resizeImage(to: size)?.noir : placeholder?.resizeImage(to: size)
+      self.layoutIfNeeded()
+    }
     URLSession.shared.dataTask(with: url) { [weak self] (data, _, error) in
       guard let `self` = self else { return }
       if error == nil, let data = data, let image = UIImage(data: data) {

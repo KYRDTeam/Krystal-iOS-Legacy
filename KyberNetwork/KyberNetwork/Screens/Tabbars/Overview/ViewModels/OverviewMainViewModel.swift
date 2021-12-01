@@ -23,6 +23,7 @@ enum OverviewMainViewEvent {
   case addNFT
   case openNFTDetail(item: NFTItem, category: NFTSection)
   case didAppear
+  case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
 }
 
 enum OverviewMode {
@@ -273,7 +274,7 @@ class OverviewMainViewModel {
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
   var isHidingSmallAssetsToken = true
-
+  var isRefreshingTableView = false
   init(session: KNSession) {
     self.session = session
   }

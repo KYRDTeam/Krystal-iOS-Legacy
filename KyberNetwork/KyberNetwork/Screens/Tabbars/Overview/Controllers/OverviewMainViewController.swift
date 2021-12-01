@@ -32,8 +32,10 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet var sortButtons: [UIButton]!
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var insestView: UIView!
   weak var delegate: OverviewMainViewControllerDelegate?
-
+  let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
 
   init(viewModel: OverviewMainViewModel) {
@@ -88,6 +90,38 @@ class OverviewMainViewController: KNBaseViewController {
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
 
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
+    self.configPullToRefresh()
+  }
+  
+  func configPullToRefresh() {
+    if shouldPullToRefresh() {
+      self.refreshControl.tintColor = .lightGray
+      self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+      self.tableView.addSubview(refreshControl)
+    } else {
+      self.refreshControl.removeFromSuperview()
+    }
+  }
+
+  @objc func refresh(_ sender: AnyObject) {
+    if self.viewModel.isRefreshingTableView {
+      return
+    }
+    self.refreshControl.beginRefreshing()
+    self.viewModel.isRefreshingTableView = true
+    self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
+  }
+
+  func shouldPullToRefresh() -> Bool {
+    guard self.viewModel.overviewMode == .overview else {
+      return true
+    }
+    switch self.viewModel.currentMode {
+      case .supply, .asset, .showLiquidityPool, .nft:
+      return true
+    default:
+      return false
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -268,6 +302,7 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidSelectMode(_ mode: ViewMode) {
     self.viewModel.currentMode = mode
     self.reloadUI()
+    self.configPullToRefresh()
   }
 
   func coordinatorDidUpdateChain() {
@@ -303,13 +338,20 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
   }
 
+  func coordinatorPullToRefreshDone() {
+    self.viewModel.isRefreshingTableView = false
+    self.refreshControl.endRefreshing()
+  }
+
   func overviewModeDidChanged(isSummary: Bool) {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-120.0) : CGFloat(-90.0)
+    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-15.0) : CGFloat(-10.0)
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
+    self.insestView.frame.size.height = isSummary ? CGFloat(0) : CGFloat(80)
     self.tableView.reloadData()
+    self.configPullToRefresh()
   }
 
   static var hasSafeArea: Bool {
@@ -411,7 +453,7 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.selectionStyle = .none
     return cell
   }
-  
+
   func summaryCell(indexPath: IndexPath) -> OverviewSummaryCell {
     let cell = tableView.dequeueReusableCell(
       withIdentifier: OverviewSummaryCell.kCellID,
