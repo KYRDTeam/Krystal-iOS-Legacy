@@ -13,8 +13,6 @@ protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
 }
 
-let tableViewDefaultContentOffsetYForRefresh = CGFloat(-250)
-
 class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var totalBalanceContainerView: UIView!
@@ -106,21 +104,14 @@ class OverviewMainViewController: KNBaseViewController {
   }
 
   @objc func refresh(_ sender: AnyObject) {
+    if self.viewModel.isRefreshingTableView {
+      return
+    }
+    self.refreshControl.beginRefreshing()
     self.viewModel.isRefreshingTableView = true
-    self.refreshControl.endRefreshing()
     self.delegate?.overviewMainViewController(self, run: .pullToRefreshed(current: self.viewModel.currentMode, overviewMode: self.viewModel.overviewMode))
   }
 
-  func startRefresh() {
-    if shouldPullToRefresh() {
-      if self.viewModel.isRefreshingTableView {
-        return
-      }
-      self.refreshControl.beginRefreshing()
-      self.refresh(self.refreshControl)
-    }
-  }
-  
   func shouldPullToRefresh() -> Bool {
     guard self.viewModel.overviewMode == .overview else {
       return true
@@ -349,6 +340,7 @@ class OverviewMainViewController: KNBaseViewController {
 
   func coordinatorPullToRefreshDone() {
     self.viewModel.isRefreshingTableView = false
+    self.refreshControl.endRefreshing()
   }
 
   func overviewModeDidChanged(isSummary: Bool) {
@@ -593,9 +585,6 @@ extension OverviewMainViewController: UITableViewDelegate {
 
 extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if scrollView == self.tableView && scrollView.contentOffset.y <= tableViewDefaultContentOffsetYForRefresh && scrollView.contentOffset.y >= tableViewDefaultContentOffsetYForRefresh - 50 {
-      self.startRefresh()
-    }
     guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
       return
     }
