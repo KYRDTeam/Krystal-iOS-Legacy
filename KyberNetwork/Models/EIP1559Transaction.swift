@@ -141,6 +141,10 @@ struct EIP1559Transaction: Codable {
     let gasPrice = currentGasPrice * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18)
     return gasPrice
   }
+  
+  func transactionGasPrice() -> BigInt? {
+    return BigInt(self.maxInclusionFeePerGas.drop0x, radix: 16)
+  }
 }
 
 

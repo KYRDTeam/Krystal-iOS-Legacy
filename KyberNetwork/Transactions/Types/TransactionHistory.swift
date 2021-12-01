@@ -90,6 +90,10 @@ extension SignTransactionObject {
       chainID: self.chainID
     )
   }
+  
+  func transactionGasPrice() -> BigInt? {
+    return BigInt(self.gasPrice)
+  }
 }
 
 extension TxObject {

@@ -276,7 +276,7 @@ class GasFeeSelectorPopupViewModel {
     case .slow:
       return self.slow
     case .custom:
-      if let unwrap = self.advancedMaxFee, let gasFee = BigInt(unwrap) {
+      if let unwrap = self.advancedMaxFee, let gasFee = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
         return gasFee
       }
       return self.valueForSelectedType(type: .medium)
@@ -294,7 +294,7 @@ class GasFeeSelectorPopupViewModel {
     case .slow:
       return self.prioritySlow ?? BigInt(0)
     case .custom:
-      if let unwrap = self.advancedMaxPriorityFee, let priorityFee = BigInt(unwrap) {
+      if let unwrap = self.advancedMaxPriorityFee, let priorityFee = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
         return priorityFee
       }
       return self.valueForPrioritySelectedType(type: .medium)
@@ -436,8 +436,6 @@ class GasFeeSelectorPopupViewModel {
   }
 
   var isAllAdvancedSettingsValid: Bool {
-//    if self.maxFeeErrorStatus == .none || self.maxFeeErrorStatus == .high,
-//       self.maxPriorityErrorStatus == .none || self.maxPriorityErrorStatus == .high,
     if self.hasChanged {
       return true
     } else {
@@ -460,6 +458,20 @@ class GasFeeSelectorPopupViewModel {
       return "Max fee: \(valueEth) ~ $\(value) USD"
     }
     return ""
+  }
+
+  var isSpeedupGasValid: Bool {
+    let currentValue = self.selectedGasPriceValue
+    let txGas: BigInt = {
+      if let normalGas = self.transaction?.transactionObject?.transactionGasPrice() {
+        return normalGas
+      } else if let advancedGas = self.transaction?.eip1559Transaction?.transactionGasPrice() {
+        return advancedGas
+      } else {
+        return BigInt(0)
+      }
+    }()
+    return txGas < currentValue
   }
 }
 
@@ -875,6 +887,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {
+    if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
+      guard self.viewModel.isSpeedupGasValid else {
+        self.showSpeedupCancelErrorAlert()
+        return
+      }
+    }
     self.dismiss(animated: true, completion: {
       if KNGeneralProvider.shared.isUseEIP1559 {
         let gasLimit = self.advancedGasLimitField.text ?? ""
@@ -938,6 +956,13 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: nonceString))
       }
     })
+  }
+  
+  func showSpeedupCancelErrorAlert() {
+    self.showWarningTopBannerMessage(
+      with: "Invalid input",
+      message: "Please select higher gas"
+    )
   }
   
   func coordinatorDidUpdateGasLimit(_ value: BigInt) {
