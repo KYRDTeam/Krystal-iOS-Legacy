@@ -103,7 +103,7 @@ class ChartViewModel {
     let valueBigInt = balanceBigInt * rateBigInt / BigInt(10).power(18)
     return self.currencyMode.symbol() + valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + self.currencyMode.suffixSymbol()
   }
-  
+
   var marketCap: Double {
     return self.detailInfo?.markets[self.currency]?.marketCap ?? 0
   }
@@ -144,7 +144,36 @@ class ChartViewModel {
   var headerTitle: String {
     return "\(self.token.symbol.uppercased())/\(self.currency.uppercased())"
   }
+
+  var tagImage: UIImage? {
+    guard let tag = self.detailInfo?.tag else { return nil }
+     if tag == VERIFIED_TAG {
+       return UIImage(named: "blueTick_icon")
+     } else if tag == PROMOTION_TAG {
+       return UIImage(named: "green-checked-tag-icon")
+     } else if tag == SCAM_TAG {
+       return UIImage(named: "warning-tag-icon")
+     } else if tag == UNVERIFIED_TAG {
+       return nil
+     }
+     return nil
+   }
   
+  var tagLabel: String {
+    guard let tag = self.detailInfo?.tag else { return "" }
+     if tag == VERIFIED_TAG {
+       return "Verified Token".toBeLocalised()
+     } else if tag == PROMOTION_TAG {
+       return "New Token".toBeLocalised()
+     } else if tag == SCAM_TAG {
+       return "Untrusted Token".toBeLocalised()
+     } else if tag == UNVERIFIED_TAG {
+       return ""
+     }
+     return ""
+  }
+    
+
   func formatPoints(_ number: Double) -> String {
     let thousand = number / 1000
     let million = number / 1000000
@@ -264,7 +293,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chartDetailLabel: UILabel!
   @IBOutlet weak var noDataLabel: UILabel!
   @IBOutlet weak var favButton: UIButton!
-  
+  @IBOutlet weak var tagImageView: UIImageView!
+  @IBOutlet weak var tagLabel: UILabel!
+  @IBOutlet weak var tagView: UIView!
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -373,6 +404,13 @@ class ChartViewController: KNBaseViewController {
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
     if self.viewModel.canEarn {
       self.investButton.backgroundColor = self.viewModel.displayDiffColor
+    }
+    if let image = self.viewModel.tagImage {
+      self.tagImageView.image = image
+      self.tagLabel.text = self.viewModel.tagLabel
+      self.tagView.isHidden = false
+    } else {
+      self.tagView.isHidden = true
     }
   }
 
