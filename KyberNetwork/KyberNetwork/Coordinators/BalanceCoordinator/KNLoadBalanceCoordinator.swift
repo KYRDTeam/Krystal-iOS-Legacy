@@ -114,7 +114,7 @@ class KNLoadBalanceCoordinator {
 
         })
       })
-    self?.loadTotalBalance(forceSync: true, completion: { _ in
+    self.loadTotalBalance(forceSync: true, completion: { _ in
 
     })
   }
