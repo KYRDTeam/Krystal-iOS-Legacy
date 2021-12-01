@@ -131,7 +131,7 @@ class EarnCoordinator: NSObject, Coordinator {
                 platforms.append(platform)
               }
             }
-            let tokenData = TokenData(address: token.address, name: token.name, symbol: token.symbol, decimals: token.decimals, lendingPlatforms: platforms)
+            let tokenData = TokenData(address: token.address, name: token.name, symbol: token.symbol, decimals: token.decimals, lendingPlatforms: platforms, logo: token.logo)
             lendingTokensData.append(tokenData)
           }
           self.lendingTokens = lendingTokensData

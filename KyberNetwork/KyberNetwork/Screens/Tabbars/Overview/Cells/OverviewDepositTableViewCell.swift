@@ -18,6 +18,7 @@ protocol OverviewDepositCellViewModel {
   func updateCurrencyType(_ type: CurrencyType)
   var hideBalanceStatus: Bool { get set }
   var displayAPY: String { get }
+  var logo: String { get }
 }
 
 class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
@@ -25,7 +26,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
   func updateCurrencyType(_ type: CurrencyType) {
     self.currencyType = type
   }
-  
+
   var currencyType: CurrencyType = .usd
   
   var symbol: String {
@@ -60,9 +61,13 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     let rateString = String(format: "%.2f", self.balance.supplyRate * 100)
     return "\(rateString)%".paddingString()
   }
-  
+
   var balanceBigInt: BigInt {
     return BigInt(self.balance.supplyBalance) ?? BigInt(0)
+  }
+  
+  var logo: String {
+    return self.balance.logo
   }
 
   var valueBigInt: BigInt {
@@ -78,9 +83,9 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     }
     return self.balanceBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimals)
   }
-  
+
   let balance: LendingBalance
-  
+
   init(balance: LendingBalance) {
     self.balance = balance
   }
@@ -119,13 +124,17 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
       return string + " BTC"
     }
   }
-  
+
   var displayAPY: String {
     return ""
   }
   
   var balanceBigInt: BigInt {
     return BigInt(self.balance.unclaimed) ?? BigInt(0)
+  }
+  
+  var logo: String {
+    return ""
   }
   
   var valueBigInt: BigInt {
@@ -138,15 +147,14 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
       price = tokenPrice.eth
     case .btc:
       price = tokenPrice.btc
-    
     }
     return self.balanceBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimal)
   }
   
   var currencyType: CurrencyType = .usd
-  
+
   let balance: LendingDistributionBalance
-  
+
   init(balance: LendingDistributionBalance) {
     self.balance = balance
   }
@@ -159,18 +167,17 @@ class OverviewDepositTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenBalanceInfoLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var tokenApyInfo: UILabel!
-  
 
   func updateCell(viewModel: OverviewDepositCellViewModel) {
-    self.iconImageView.setSymbolImage(symbol: viewModel.symbol)
+    self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.symbol)
     self.tokenBalanceInfoLabel.text = viewModel.displayBalance
     self.valueLabel.text = viewModel.displayValue
     self.tokenApyInfo.text = viewModel.displayAPY
     self.tokenApyInfo.isHidden = viewModel.displayAPY.isEmpty
   }
-  
+
   func updateCell(_ viewModel: OverviewMainCellViewModel) {
-    self.iconImageView.setSymbolImage(symbol: viewModel.tokenSymbol)
+    self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.tokenSymbol)
     self.tokenBalanceInfoLabel.text = viewModel.displayTitle
     self.tokenApyInfo.text = viewModel.displaySubTitleDetail
     self.valueLabel.text = viewModel.displayAccessoryTitle
