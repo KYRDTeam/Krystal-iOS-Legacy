@@ -44,6 +44,7 @@ class KSwapViewModel {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
 
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   var swapRates: (String, String, BigInt, [Rate]) = ("", "", BigInt(0), [])
   var currentFlatform: String = "Kyber" {
     didSet {
@@ -450,6 +451,7 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
   }
 
   func updateWalletObject() {
@@ -466,6 +468,7 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -485,6 +488,7 @@ class KSwapViewModel {
     self.estRate = nil
     self.slippageRate = nil
     self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -548,14 +552,9 @@ class KSwapViewModel {
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
     if from == self.from, to == self.to, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.amountFromBigInt) {
       if let customGasLimitString = self.advancedGasLimit, let customGasLimit = BigInt(customGasLimitString), customGasLimit > gasLimit {
-        return
+        self.baseGasLimit = gasLimit
       } else {
         self.estimateGasLimit = gasLimit
-      }
-    }
-    self.swapRates.3.forEach { (element) in
-      if element.platform == self.currentFlatform {
-        element.estimatedGas = Int(gasLimit)
       }
     }
   }
@@ -630,6 +629,12 @@ class KSwapViewModel {
       return
     }
     self.swapRates = (from.address.lowercased(), to.address.lowercased(), amount, rates)
+
+    self.swapRates.3.forEach { (element) in
+      if element.platform == self.currentFlatform {
+        element.estimatedGas = Int(self.estimateGasLimit)
+      }
+    }
   }
 
   func reloadBestPlatform() {
@@ -845,7 +850,7 @@ class KSwapViewModel {
       return ""
     }
     let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-    let fee = (baseFee + self.selectedPriorityFee) * self.estimateGasLimit
+    let fee = (baseFee + self.selectedPriorityFee) * self.baseGasLimit
     let sourceToken = KNGeneralProvider.shared.quoteToken
     let feeString: String = fee.displayRate(decimals: 18)
     return "\(feeString) \(sourceToken) "
