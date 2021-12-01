@@ -322,13 +322,14 @@ class KNSupportedTokenStorage {
       return item.symbol == "KNC"
     } ?? Token(name: "KyberNetwork", symbol: "KNC", address: "0x7b2810576aa1cce68f2b118cef1f36467c648f92", decimals: 18, logo: "knc")
   }
-  /// migrate DB add new tag for current custom tokens in DB
-  func updateNewTagsForCustomTokens(_ tokens: [Token]) {
+
+  func updateNewDataForCustomTokensIfHave(_ tokens: [Token]) {
     self.customTokens.forEach { customToken in
-      for token in tokens {
-        if token == customToken {
-          customToken.tag = token.tag
-        }
+      for token in tokens where token == customToken {
+        customToken.name = token.name
+        customToken.symbol = token.symbol
+        customToken.logo = token.logo
+        customToken.tag = token.tag
       }
     }
     Storage.store(self.customTokens, as: KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName)
