@@ -19,6 +19,7 @@ class KNLoadBalanceCoordinator {
   var otherTokensBalance: [String: Balance] = [:]
 
   fileprivate var fetchBalanceTimer: Timer?
+  fileprivate var fetchTotalBalanceTimer: Timer?
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
@@ -103,6 +104,16 @@ class KNLoadBalanceCoordinator {
         self?.loadAllBalances()
       }
     )
+    
+    fetchTotalBalanceTimer?.invalidate()
+    fetchTotalBalanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds60,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.loadTotalBalance(forceSync: true, completion: { _ in
+
+        })
+      })
     self.loadAllBalances()
   }
 
@@ -114,6 +125,9 @@ class KNLoadBalanceCoordinator {
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = nil
     isFetchNonSupportedBalance = true
+    
+    fetchTotalBalanceTimer?.invalidate()
+    fetchTotalBalanceTimer = nil
   }
 
   func exit() {
