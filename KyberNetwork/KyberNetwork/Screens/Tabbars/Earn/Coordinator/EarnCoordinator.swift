@@ -776,6 +776,8 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
               self.transactionStatusVC?.earnAmountString = amount
               self.transactionStatusVC?.netAPYEarnString = netAPY
               self.transactionStatusVC?.earnPlatform = platform
+              self.earnViewController?.coordinatorSuccessSendTransaction()
+              self.earnSwapViewController?.coordinatorSuccessSendTransaction()
             case .failure(let error):
               self.navigationController.showTopBannerView(message: error.description)
             }
