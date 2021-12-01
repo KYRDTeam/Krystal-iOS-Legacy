@@ -127,21 +127,10 @@ class KNSupportedTokenStorage {
   func getSupportedTokens() -> [Token] {
     return self.supportedToken
   }
-  
-  /// migrate DB add new tag for current supported tokens in DB
-  func updateNewTagsForSupportedTokens(_ tokens: [Token]) {
-    self.supportedToken.forEach { supportedToken in
-      for token in tokens {
-        if token == supportedToken {
-          supportedToken.tag = token.tag
-        }
-      }
-    }
-    Storage.store(self.supportedToken, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
-  }
 
   func updateSupportedTokens(_ tokens: [Token]) {
-    guard tokens != self.supportedToken else {
+    
+    guard !self.isEqualTokenArray(array1: tokens, array2: self.supportedToken) else {
       return
     }
     Storage.store(tokens, as: KNEnvironment.default.envPrefix + Constants.tokenStoreFileName)
@@ -419,5 +408,33 @@ class KNSupportedTokenStorage {
     return self.allActiveTokens.filter { (token) -> Bool in
       return addresses.contains(token.address.lowercased())
     }
+  }
+
+  func isEqualTokenArray(array1: [Token], array2: [Token]) -> Bool {
+    if array1.isEmpty && array2.isEmpty {
+      return true
+    }
+
+    if array1.count != array2.count {
+      return false
+    }
+
+    var isEqual = true
+    for index in 0 ..< array1.count {
+      let firstToken = array1[index]
+      let secondToken = array2[index]
+
+      //just 1 param different then we will consider there are updates from api
+      if firstToken.address.lowercased() != secondToken.address.lowercased()
+          || firstToken.decimals != secondToken.decimals
+          || firstToken.name.lowercased() != secondToken.name.lowercased()
+          || firstToken.symbol.lowercased() != secondToken.symbol.lowercased()
+          || firstToken.logo.lowercased() != secondToken.logo.lowercased()
+          || firstToken.tag.lowercased() != secondToken.tag.lowercased() {
+        isEqual = false
+        break
+      }
+    }
+    return isEqual
   }
 }

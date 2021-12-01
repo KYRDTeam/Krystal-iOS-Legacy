@@ -14,7 +14,7 @@ class Token: Codable, Equatable, Hashable {
   var symbol: String
   var decimals: Int
   var logo: String
-  var tag: String?
+  var tag: String = ""
 
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
@@ -26,7 +26,7 @@ class Token: Codable, Equatable, Hashable {
       self.tag = tag
     }
   }
-  
+
   init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
     self.name = name
     self.symbol = symbol
@@ -38,7 +38,7 @@ class Token: Codable, Equatable, Hashable {
   var isETH: Bool {
     return self.symbol == "ETH"
   }
-  
+
   func toObject(isCustom: Bool = false) -> TokenObject {
     let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
     tokenObject.isCustom = isCustom
@@ -46,7 +46,7 @@ class Token: Codable, Equatable, Hashable {
     tokenObject.tag = self.tag
     return tokenObject
   }
-  
+
   func getBalanceBigInt() -> BigInt {
     let balance = BalanceStorage.shared.balanceForAddress(self.address)
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
@@ -56,7 +56,7 @@ class Token: Codable, Equatable, Hashable {
     let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address) ?? TokenPrice(address: self.address, quotes: [:])
     return price
   }
-  
+
   func getTokenLastPrice(_ mode: CurrencyMode) -> Double {
     let price = self.getTokenPrice()
     switch mode {
