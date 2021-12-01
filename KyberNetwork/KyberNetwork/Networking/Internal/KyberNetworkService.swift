@@ -1082,14 +1082,14 @@ extension KrytalService: TargetType {
       case .getLendingBalance(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
-        "force_sync": forceSync
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
         "lendingPlatform": lendingPlatform,
-        "force_sync": forceSync
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, token: let token):
@@ -1168,7 +1168,7 @@ extension KrytalService: TargetType {
     case .getBalances(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
-        "force_sync": forceSync
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
@@ -1220,7 +1220,7 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "address": address,
         "chain": chain,
-        "force_sync": forceSync
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getRewards(address: let address, _):
@@ -1241,7 +1241,7 @@ extension KrytalService: TargetType {
       case .getTotalBalance(address: let address, forceSync: let forceSync, let chains):
         var json: JSONDictionary = [
           "address": address,
-          "force_sync": forceSync
+          "forceSync": forceSync
         ]
         if let chains = chains {
           json["chains"] = chains
