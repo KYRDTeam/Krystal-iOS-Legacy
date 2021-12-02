@@ -23,6 +23,7 @@ enum OverviewMainViewEvent {
   case addNFT
   case openNFTDetail(item: NFTItem, category: NFTSection)
   case didAppear
+  case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
 }
 
 enum OverviewMode {
@@ -273,7 +274,7 @@ class OverviewMainViewModel {
   var currencyMode: CurrencyMode = .usd
   var hiddenSections = Set<Int>()
   var isHidingSmallAssetsToken = true
-
+  var isRefreshingTableView = false
   init(session: KNSession) {
     self.session = session
   }
@@ -362,7 +363,9 @@ class OverviewMainViewModel {
       var total = BigInt(0)
       let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
         total += item.getValueBigInt(self.currencyMode)
-        return OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
+        let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
+        viewModel.tag = item.tag
+        return viewModel
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]

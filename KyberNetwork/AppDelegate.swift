@@ -6,6 +6,7 @@ import Sentry
 import Firebase
 import OneSignal
 import AppTrackingTransparency
+import WalletConnectSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -92,6 +93,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    if let scheme = url.scheme,
+       scheme.localizedCaseInsensitiveCompare("krystalwallet") == .orderedSame {
+      var parameters: [String: String] = [:]
+      URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
+        parameters[$0.name] = $0.value
+      }
+      if let uri = parameters["uri"] {
+        self.coordinator.overviewTabCoordinator?.appCoordinatorReceiveWallectConnectURI(uri)
+      }
+    }
+
     return true
   }
 

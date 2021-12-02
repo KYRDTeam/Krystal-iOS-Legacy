@@ -69,7 +69,7 @@ class EarnMenuViewController: KNBaseViewController {
     self.mainInfoTitle.attributedText = attributedString
     self.noDataLabel.text = KNGeneralProvider.shared.currentChain == .avalanche ? "Coming soon" : "No data"
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.isViewSetup = true
@@ -126,7 +126,7 @@ class EarnMenuViewController: KNBaseViewController {
     }
     self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
   }
-  
+
   fileprivate func updateUIEmptyView() {
     if self.isViewLoaded {
       self.emptyView.isHidden = !self.viewModel.dataSource.isEmpty
@@ -153,11 +153,11 @@ class EarnMenuViewController: KNBaseViewController {
       self.updateUIPendingTxIndicatorView()
     }
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorDidUpdateChain() {
     self.updateUISwitchChain()
   }

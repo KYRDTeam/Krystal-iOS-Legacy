@@ -858,8 +858,8 @@ enum KrytalService {
   case getTokenList
   case getLendingOverview
   case buildSwapAndDepositTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, hint: String, useGasToken: Bool)
-  case getLendingBalance(address: String)
-  case getLendingDistributionBalance(lendingPlatform: String, address: String)
+  case getLendingBalance(address: String, forceSync: Bool)
+  case getLendingDistributionBalance(lendingPlatform: String, address: String, forceSync: Bool)
   case getWithdrawableAmount(platform: String, userAddress: String, token: String)
   case buildWithdrawTx(platform: String, userAddress: String, token: String, amount: String, gasPrice: String, nonce: Int, useGasToken: Bool)
   case getMarketingAssets
@@ -871,18 +871,18 @@ enum KrytalService {
   case login(address: String, timestamp: Int, signature: String)
   case getClaimHistory(address: String, accessToken: String)
   case claimReward(address: String, amount: Double, accessToken: String)
-  case getBalances(address: String)
+  case getBalances(address: String, forceSync: Bool)
   case getOverviewMarket(addresses: [String], quotes: [String])
   case getTokenDetail(address: String)
   case getChartData(address: String, quote: String, from: Int)
-  case getNTFBalance(address: String)
+  case getNTFBalance(address: String, forceSync: Bool)
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
-  case getLiquidityPool(address: String, chain: String)
+  case getLiquidityPool(address: String, chain: String, forceSync: Bool)
   case getRewards(address: String, accessToken: String)
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
-  case getTotalBalance(address: String,_ chains: String?)
+  case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
 }
 
 extension KrytalService: TargetType {
@@ -1079,15 +1079,17 @@ extension KrytalService: TargetType {
         "useGasToken": useGasToken,
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getLendingBalance(address: let address):
-      let json: JSONDictionary = [
-        "address": address
-      ]
-      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address):
+      case .getLendingBalance(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
-        "lendingPlatform": lendingPlatform
+        "forceSync": forceSync
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address, forceSync: let forceSync):
+      let json: JSONDictionary = [
+        "address": address,
+        "lendingPlatform": lendingPlatform,
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, token: let token):
@@ -1163,9 +1165,10 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
-    case .getBalances(address: let address):
+    case .getBalances(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
-        "address": address
+        "address": address,
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
@@ -1188,9 +1191,10 @@ extension KrytalService: TargetType {
         "from": from
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getNTFBalance(address: let address):
+      case .getNTFBalance(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
-        "address": address
+        "address": address,
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .registerNFTFavorite(address: let address, collectibleAddress: let collectibleAddress, tokenID: let tokenID, favorite: let favorite, signature: let signature):
@@ -1213,10 +1217,11 @@ extension KrytalService: TargetType {
         json["limit"] = "20"
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getLiquidityPool(address: let address, chain: let chain):
+      case .getLiquidityPool(address: let address, chain: let chain, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
-        "chain": chain
+        "chain": chain,
+        "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getRewards(address: let address, _):
@@ -1234,9 +1239,10 @@ extension KrytalService: TargetType {
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getTotalBalance(address: let address, let chains):
+      case .getTotalBalance(address: let address, forceSync: let forceSync, let chains):
         var json: JSONDictionary = [
-          "address": address
+          "address": address,
+          "forceSync": forceSync
         ]
         if let chains = chains {
           json["chains"] = chains

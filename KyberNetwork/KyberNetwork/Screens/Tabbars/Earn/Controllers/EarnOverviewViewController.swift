@@ -18,19 +18,19 @@ class EarnOverviewViewController: KNBaseViewController {
   @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var currentChainIcon: UIImageView!
-  
+
   weak var delegate: EarnOverviewViewControllerDelegate?
   weak var navigationDelegate: NavigationBarDelegate?
-  
+
   let depositViewController: OverviewDepositViewController
   var wallet: Wallet?
   var firstTimeLoaded: Bool = false
-  
+
   init(_ controller: OverviewDepositViewController) {
     self.depositViewController = controller
     super.init(nibName: EarnOverviewViewController.className, bundle: nil)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -75,7 +75,7 @@ class EarnOverviewViewController: KNBaseViewController {
     }
     self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
   }
-  
+
   fileprivate func updateUISwitchChain() {
     guard self.isViewLoaded else {
       return
@@ -87,7 +87,7 @@ class EarnOverviewViewController: KNBaseViewController {
   @IBAction func exploreButtonTapped(_ sender: UIButton) {
     self.delegate?.earnOverviewViewControllerDidSelectExplore(self)
   }
-  
+
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectHistory(self)
   }
@@ -95,7 +95,7 @@ class EarnOverviewViewController: KNBaseViewController {
   @IBAction func walletListButtonTapped(_ sender: UIButton) {
     self.navigationDelegate?.viewControllerDidSelectWallets(self)
   }
-  
+
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
@@ -105,7 +105,7 @@ class EarnOverviewViewController: KNBaseViewController {
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
     self.walletListButton.setTitle(wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
@@ -127,7 +127,7 @@ class EarnOverviewViewController: KNBaseViewController {
   func coordinatorDidUpdateChain() {
     self.updateUISwitchChain()
   }
-  
+
   func coordinatorDidUpdateHideBalanceStatus(_ status: Bool) {
     self.depositViewController.containerDidUpdateHideBalanceStatus(status)
   }

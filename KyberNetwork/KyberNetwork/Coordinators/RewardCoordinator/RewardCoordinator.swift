@@ -355,6 +355,102 @@ extension RewardCoordinator: ClaimRewardsControllerDelegate {
 
 extension RewardCoordinator: KNTransactionStatusPopUpDelegate {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
-    print("")
+    switch action {
+    case .openLink(let url):
+      self.navigationController.openSafari(with: url)
+    case .speedUp(let tx):
+      self.openTransactionSpeedUpViewController(transaction: tx)
+    case .cancel(let tx):
+      self.openTransactionCancelConfirmPopUpFor(transaction: tx)
+    case .backToInvest:
+      self.navigationController.popToRootViewController(animated: true)
+    case .goToSupport:
+      self.navigationController.openSafari(with: "https://support.krystal.app")
+    default:
+      break
+    }
+  }
+
+  fileprivate func openTransactionSpeedUpViewController(transaction: InternalHistoryTransaction) {
+    let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
+    let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+    navigationController.present(controller, animated: true)
+  }
+
+  fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
+    let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
+    let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
+    confirmPopup.delegate = self
+    self.navigationController.present(confirmPopup, animated: true, completion: nil)
+  }
+}
+
+extension RewardCoordinator: SpeedUpCustomGasSelectDelegate {
+  func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
+    switch event {
+    case .done(let transaction, let newValue):
+      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+        savedTx?.state = .speedup
+        let speedupTx = transaction.transactionObject.toSpeedupTransaction(account: account, gasPrice: newValue)
+        speedupTx.send(provider: provider) { (result) in
+          switch result {
+          case .success(let hash):
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.description)
+          }
+        }
+      } else {
+        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+      }
+    case .invaild:
+      self.navigationController.showErrorTopBannerMessage(
+        with: NSLocalizedString("error", value: "Error", comment: ""),
+        message: "your.gas.must.be.10.percent.higher".toBeLocalised(),
+        time: 1.5
+      )
+    }
+  }
+}
+
+extension RewardCoordinator: KNConfirmCancelTransactionPopUpDelegate {
+  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
+    if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
+      let cancelTx = transaction.transactionObject.toCancelTransaction(account: account)
+      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+      saved?.state = .cancel
+      saved?.type = .transferETH
+      saved?.transactionSuccessDescription = "-0 ETH"
+      cancelTx.send(provider: provider) { (result) in
+        switch result {
+        case .success(let hash):
+          saved?.hash = hash
+          if let unwrapped = saved {
+            self.openTransactionStatusPopUp(transaction: unwrapped)
+            KNNotificationUtil.postNotification(
+              for: kTransactionDidUpdateNotificationKey,
+              object: unwrapped,
+              userInfo: nil
+            )
+          }
+        case .failure(let error):
+          self.navigationController.showTopBannerView(message: error.description)
+        }
+      }
+    } else {
+      self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+    }
   }
 }

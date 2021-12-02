@@ -119,22 +119,22 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
       self.isFirstLoad = false
     }
   }
-  
+
   func overviewCoordinatorDidSelectExportWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectExportWallet()
   }
-  
+
   func overviewCoordinatorDidSelectDeleteWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectDeleteWallet()
   }
-  
+
   func overviewCoordinatorDidSelectRenameWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectRenameWallet()
   }
-  
+
   func overviewCoordinatorDidChangeHideBalanceStatus(_ status: Bool) {
     self.earnCoordinator?.appCoodinatorDidUpdateHideBalanceStatus(status)
   }
@@ -143,31 +143,34 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
   }
-  
+
   func overviewCoordinatorDidSelectDepositMore(tokenAddress: String) {
     self.tabbarController.selectedIndex = 3
     self.earnCoordinator?.appCoodinatorDidOpenEarnView(tokenAddress: tokenAddress)
   }
-  
+
   func overviewCoordinatorDidSelectSwapToken(token: Token, isBuy: Bool) {
     //TODO: temp use token realm object for swap atm, support custom token
     let tokenObject = KNSupportedTokenStorage.shared.get(forPrimaryKey: token.address.lowercased()) ?? KNGeneralProvider.shared.quoteTokenObject
     self.exchangeCoordinator?.appCoordinatorShouldOpenExchangeForToken(tokenObject, isReceived: isBuy)
     self.tabbarController.selectedIndex = 1
-    
   }
-  
+
   func overviewCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }
-  
+
   func overviewCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.restartNewSession(wallet)
   }
-  
+
   func overviewCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
+  func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
+    self.loadBalanceCoordinator?.appCoordinatorRefreshData(mode: mode, overviewMode:overviewMode)
   }
 }
 

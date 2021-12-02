@@ -43,7 +43,7 @@ extension KNAppCoordinator {
       name: openExchangeName,
       object: nil
     )
-    
+
     let newRecevieName = Notification.Name(kNewReceivedTransactionKey)
     NotificationCenter.default.addObserver(
       self,
@@ -51,10 +51,17 @@ extension KNAppCoordinator {
       name: newRecevieName,
       object: nil
     )
-    
   }
 
   func addInternalObserveNotification() {
+    let pullToRefresh = Notification.Name(kPullToRefreshNotificationKey)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(pullToRefreshDone),
+      name: pullToRefresh,
+      object: nil
+    )
+
     let changeChain = Notification.Name(kChangeChainNotificationKey)
     NotificationCenter.default.addObserver(
       self,
@@ -62,7 +69,7 @@ extension KNAppCoordinator {
       name: changeChain,
       object: nil
     )
-    
+
     let rateTokensName = Notification.Name(kExchangeTokenRateNotificationKey)
     NotificationCenter.default.addObserver(
       self,
@@ -129,16 +136,19 @@ extension KNAppCoordinator {
   }
 
   func removeInternalObserveNotification() {
+    
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kPullToRefreshNotificationKey),
+      object: nil
+    )
+
     NotificationCenter.default.removeObserver(
       self,
       name: Notification.Name(kExchangeTokenRateNotificationKey),
       object: nil
     )
-//    NotificationCenter.default.removeObserver(
-//      self,
-//      name: Notification.Name(kProdCachedRateSuccessToLoadNotiKey),
-//      object: nil
-//    )
+
     NotificationCenter.default.removeObserver(
       self,
       name: Notification.Name(kExchangeUSDRateNotificationKey),
@@ -286,146 +296,6 @@ extension KNAppCoordinator {
       self.loadBalanceCoordinator?.loadAllBalances()
       self.session.transacionCoordinator?.loadEtherscanTransactions()
     }
-   
-    
-    //TODO: update status view
-    
-//    let transaction: KNTransaction? = {
-//      if let txHash = sender.object as? String {
-//        return self.session.transactionStorage.getKyberTransaction(forPrimaryKey: txHash)
-//      }
-//      return nil
-//    }()
-//    if let error = sender.object as? AnyError {
-//      self.navigationController.showErrorTopBannerMessage(
-//        with: NSLocalizedString("failed", value: "Failed", comment: ""),
-//        message: error.prettyError,
-//        time: -1
-//      )
-//      KNCrashlyticsUtil.logCustomEvent(withName: "transaction_update_failed", customAttributes: ["info": "no_details"])
-//      let transactions = self.session.transactionStorage.kyberPendingTransactions
-//      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-////      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-//      return
-//    }
-//    guard let trans = transaction else {
-//      if let info = sender.userInfo as? JSONDictionary {
-//        let txHash = sender.object as? String ?? ""
-//        let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
-//        let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
-//        let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
-//        let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(nil, txID: txHash) ?? false
-//        if !( updateExchange || updateLO || updateSettings || updateOverview ) {
-//          var popupMessage = "Your transaction might be lost, dropped or replaced. Please check Etherscan for more information".toBeLocalised()
-//          if let isLost = info["is_lost"] as? TransactionType {
-//            switch isLost {
-//            case .cancel:
-//              popupMessage = "Your cancel transaction might be lost".toBeLocalised()
-//              if self.session.updateFailureTransaction(type: .cancel) { return }
-//            case .speedup:
-//              popupMessage = "Your speedup transaction might be lost".toBeLocalised()
-//              if self.session.updateFailureTransaction(type: .speedup) { return }
-//            default:
-//              popupMessage = "Your transaction might be lost, dropped or replaced. Please check Etherscan for more information".toBeLocalised()
-//            }
-//          } else if let isCancel = info["is_cancel"] as? TransactionType {
-//            switch isCancel {
-//            case .cancel:
-//              popupMessage = "Can not cancel the transaction".toBeLocalised()
-//            case .speedup:
-//              popupMessage = "Can not speed up the transaction".toBeLocalised()
-//            default:
-//              popupMessage = ""
-//            }
-//          }
-//
-//          self.navigationController.showErrorTopBannerMessage(
-//            with: NSLocalizedString("failed", value: "Failed", comment: ""),
-//            message: popupMessage,
-//            time: -1
-//          )
-//        }
-//      }
-//
-//      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-////      self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
-//      return
-//    }
-//
-//    let updateOverview = self.overviewTabCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
-//    let updateExchange = self.exchangeCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
-//    let updateLO = self.limitOrderCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
-//    let updateSettings = self.settingsCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
-//    let updateEarn = self.earnCoordinator?.appCoordinatorUpdateTransaction(trans, txID: trans.id) ?? false
-//
-//    if trans.state == .pending {
-//      // just sent
-//    } else if trans.state == .completed {
-//      if !(  updateExchange || updateLO || updateSettings || updateEarn || updateOverview) {
-//        let message = trans.type == .cancel ? "Your transaction has been cancelled successfully".toBeLocalised() : trans.getDetails()
-//        self.navigationController.showSuccessTopBannerMessage(
-//          with: NSLocalizedString("success", value: "Success", comment: ""),
-//          message: message,
-//          time: -1
-//        )
-//      }
-//      if self.session != nil {
-//        self.session.transacionCoordinator?.forceUpdateNewTransactionsWhenPendingTxCompleted()
-//        if trans.isTransfer, let tokenAddr = trans.getTokenObject()?.contract {
-//          self.loadBalanceCoordinator?.fetchTokenAddressAfterTx(token1: tokenAddr, token2: tokenAddr)
-//        } else if let objc = trans.localizedOperations.first {
-//          self.loadBalanceCoordinator?.fetchTokenAddressAfterTx(token1: objc.from, token2: objc.to)
-//        }
-//      }
-//      if let type = trans.localizedOperations.first?.type {
-//        if type == "transfer" {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "tx_mined_transfer_success",
-//                                           customAttributes: [
-//                                            "token": trans.from,
-//                                            "src_amount": trans.value,
-//            ]
-//          )
-//        } else if type == "exchange" {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "tx_mined_swap_success",
-//                                           customAttributes: [
-//                                            "src_token": trans.from,
-//                                            "des_token": trans.to,
-//                                            "src_amount": trans.getSourceAmount(),
-//                                            "des_amount": trans.getDestinationAmount(),
-//            ]
-//          )
-//        }
-//      }
-//    } else if trans.state == .failed || trans.state == .error {
-//      if !( updateExchange || updateLO || updateSettings) {
-//        self.navigationController.showSuccessTopBannerMessage(
-//          with: NSLocalizedString("failed", value: "Failed", comment: ""),
-//          message: trans.getDetails(),
-//          time: -1
-//        )
-//      }
-//      if let type = trans.localizedOperations.first?.type {
-//        if type == "transfer" {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "tx_mined_transfer_fail",
-//                                           customAttributes: [
-//                                            "token": trans.from,
-//                                            "src_amount": trans.value,
-//                                            "error": trans.getDetails(),
-//            ]
-//          )
-//        } else if type == "exchange" {
-//          KNCrashlyticsUtil.logCustomEvent(withName: "tx_mined_swap_fail",
-//                                           customAttributes: [
-//                                            "src_token": trans.from,
-//                                            "des_token": trans.to,
-//                                            "src_amount": trans.getSourceAmount(),
-//                                            "des_amount": trans.getDestinationAmount(),
-//                                            "error": trans.getDetails(),
-//            ]
-//          )
-//        }
-//      }
-//    }
   }
 
   @objc func tokenTransactionListDidUpdate(_ sender: Any?) {
@@ -496,5 +366,9 @@ extension KNAppCoordinator {
         self.tabbarController.showTopBannerView(message: message)
       }
     }
+  }
+  
+  @objc func pullToRefreshDone() {
+    self.overviewTabCoordinator?.appCoordinatorPullToRefreshDone()
   }
 }

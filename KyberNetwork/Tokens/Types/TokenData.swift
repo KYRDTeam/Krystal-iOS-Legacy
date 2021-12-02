@@ -14,6 +14,7 @@ class Token: Codable, Equatable, Hashable {
   var symbol: String
   var decimals: Int
   var logo: String
+  var tag: String = ""
 
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
@@ -21,8 +22,11 @@ class Token: Codable, Equatable, Hashable {
     self.address = (dictionary["address"] as? String ?? "").lowercased()
     self.decimals = dictionary["decimals"] as? Int ?? 0
     self.logo = dictionary["logo"] as? String ?? ""
+    if let tag = dictionary["tag"] as? String, !tag.isEmpty {
+      self.tag = tag
+    }
   }
-  
+
   init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
     self.name = name
     self.symbol = symbol
@@ -34,14 +38,15 @@ class Token: Codable, Equatable, Hashable {
   var isETH: Bool {
     return self.symbol == "ETH"
   }
-  
+
   func toObject(isCustom: Bool = false) -> TokenObject {
     let tokenObject = TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: self.logo)
     tokenObject.isCustom = isCustom
     tokenObject.volumn = self.getVol(.usd)
+    tokenObject.tag = self.tag
     return tokenObject
   }
-  
+
   func getBalanceBigInt() -> BigInt {
     let balance = BalanceStorage.shared.balanceForAddress(self.address)
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
@@ -51,7 +56,7 @@ class Token: Codable, Equatable, Hashable {
     let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address) ?? TokenPrice(address: self.address, quotes: [:])
     return price
   }
-  
+
   func getTokenLastPrice(_ mode: CurrencyMode) -> Double {
     let price = self.getTokenPrice()
     switch mode {
@@ -247,7 +252,8 @@ struct LendingBalance: Codable {
   let interestBearingTokenDecimal: Int
   let interestBearningTokenBalance: String
   let requiresApproval: Bool
-  
+  let logo: String
+
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
     self.symbol = dictionary["symbol"] as? String ?? ""
@@ -264,8 +270,9 @@ struct LendingBalance: Codable {
     self.interestBearingTokenDecimal = dictionary["interestBearingTokenDecimal"] as? Int ?? 0
     self.interestBearningTokenBalance = dictionary["interestBearingTokenBalance"] as? String ?? ""
     self.requiresApproval = dictionary["requiresApproval"] as? Bool ?? true
+    self.logo = dictionary["logo"] as? String ?? ""
   }
-  
+
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
     let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.supplyBalance) ?? BigInt(0)
@@ -291,7 +298,8 @@ struct LendingDistributionBalance: Codable {
   let decimal: Int
   let current: String
   let unclaimed: String
-  
+  let logo: String
+
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
     self.symbol = dictionary["symbol"] as? String ?? ""
@@ -299,6 +307,7 @@ struct LendingDistributionBalance: Codable {
     self.decimal = dictionary["decimal"] as? Int ?? 0
     self.current = dictionary["current"] as? String ?? ""
     self.unclaimed = dictionary["unclaimed"] as? String ?? ""
+    self.logo = dictionary["logo"] as? String ?? ""
   }
   
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
@@ -314,27 +323,28 @@ struct TokenData: Codable, Equatable {
   let symbol: String
   let decimals: Int
   let lendingPlatforms: [LendingPlatformData]
+  let logo: String
 
   static func == (lhs: TokenData, rhs: TokenData) -> Bool {
     return lhs.address.lowercased() == rhs.address.lowercased()
   }
-  
+
   var isETH: Bool {
     return self.symbol == "ETH"
   }
-  
+
   var isBNB: Bool {
     return self.symbol == "BNB"
   }
-  
+
   var isMatic: Bool {
     return self.symbol == "MATIC"
   }
-  
+
   var isAvax: Bool {
     return self.symbol == "AVAX"
   }
-  
+
   var isQuoteToken: Bool {
     return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }
@@ -347,7 +357,7 @@ struct TokenData: Codable, Equatable {
   func toObject() -> TokenObject {
     return TokenObject(name: self.name, symbol: self.symbol, address: self.address, decimals: self.decimals, logo: "")
   }
-  
+
   var placeholderValue: BigInt {
     let value = Int(0.001 * pow(10.0, Double(self.decimals)))
     return BigInt(value)
@@ -365,7 +375,7 @@ struct LendingPlatformData: Codable {
   var isCompound: Bool {
     return self.name == "Compound" || self.name == "Venus"
   }
-  
+
   var compondPrefix: String {
     return KNGeneralProvider.shared.currentChain == .eth ? "c" : "v"
   }
