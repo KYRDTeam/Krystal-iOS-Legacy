@@ -63,7 +63,6 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var priorityMedium: BigInt? = KNGasCoordinator.shared.standardPriorityFee
   fileprivate(set) var prioritySlow: BigInt? = KNGasCoordinator.shared.lowPriorityFee
   fileprivate(set) var prioritySuperFast: BigInt? = KNGasCoordinator.shared.superFastPriorityFee
-
   fileprivate(set) var selectedType: KNSelectedGasPriceType {
     didSet {
       if self.hasChanged, self.selectedType != .custom {
@@ -74,6 +73,7 @@ class GasFeeSelectorPopupViewModel {
       }
     }
   }
+  fileprivate(set) var previousSelectedType: KNSelectedGasPriceType?
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
   fileprivate(set) var currentRate: Double
   fileprivate(set) var pairToken: String = ""
@@ -90,28 +90,28 @@ class GasFeeSelectorPopupViewModel {
   var advancedGasLimit: String? {
     didSet {
       if self.advancedGasLimit != nil {
-        self.selectedType = .custom
+        self.updateSelectedType(.custom)
       }
     }
   }
   var advancedMaxPriorityFee: String? {
     didSet {
       if self.advancedMaxPriorityFee != nil {
-        self.selectedType = .custom
+        self.updateSelectedType(.custom)
       }
     }
   }
   var advancedMaxFee: String? {
     didSet {
       if self.advancedMaxFee != nil {
-        self.selectedType = .custom
+        self.updateSelectedType(.custom)
       }
     }
   }
   var advancedNonce: String? {
     didSet {
       if self.advancedNonce != nil {
-        self.selectedType = .custom
+        self.updateSelectedType(.custom)
       }
     }
   }
@@ -237,6 +237,11 @@ class GasFeeSelectorPopupViewModel {
   }
 
   func updateSelectedType(_ type: KNSelectedGasPriceType) {
+    if type == .custom && self.selectedType != .custom {
+      self.previousSelectedType = self.selectedType
+    } else if type != .custom && self.selectedType != .custom {
+      self.previousSelectedType = nil
+    }
     self.selectedType = type
   }
 
@@ -297,7 +302,11 @@ class GasFeeSelectorPopupViewModel {
       if let unwrap = self.advancedMaxPriorityFee, let priorityFee = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
         return priorityFee
       }
-      return self.valueForPrioritySelectedType(type: .medium)
+      if let unwrap = self.previousSelectedType {
+        return self.valueForPrioritySelectedType(type: unwrap)
+      } else {
+        return self.valueForPrioritySelectedType(type: .medium)
+      }
     }
   }
 
