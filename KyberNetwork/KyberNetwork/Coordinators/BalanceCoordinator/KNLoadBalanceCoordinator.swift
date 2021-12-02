@@ -532,17 +532,24 @@ extension KNLoadBalanceCoordinator {
         KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
       }
     } else {
+      let group = DispatchGroup()
+      group.enter()
+      self.loadTotalBalance(forceSync: true) { _ in
+        group.leave()
+      }
+
       switch mode {
       case .asset:
+        group.enter()
         self.loadTokenBalancesFromApi(forceSync: true) { _ in
-          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+          group.leave()
         }
       case .showLiquidityPool:
+        group.enter()
         self.loadLiquidityPool(forceSync: true) { _ in
-          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+          group.leave()
         }
       case .supply:
-        let group = DispatchGroup()
         group.enter()
         self.loadLendingBalances(forceSync: true) { _ in
           group.leave()
@@ -552,16 +559,16 @@ extension KNLoadBalanceCoordinator {
         self.loadLendingDistributionBalance(forceSync: true) { _ in
           group.leave()
         }
-
-        group.notify(queue: .global()) {
-          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
-        }
       case .nft:
+        group.enter()
         self.loadNFTBalance(forceSync: true) { _ in
-          KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+          group.leave()
         }
       default:
-        return
+        break
+      }
+      group.notify(queue: .global()) {
+        KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
       }
     }
   }
