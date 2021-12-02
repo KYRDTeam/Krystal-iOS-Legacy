@@ -302,6 +302,7 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidSelectMode(_ mode: ViewMode) {
     self.viewModel.currentMode = mode
     self.reloadUI()
+    self.refreshControl.endRefreshing()
     self.configPullToRefresh()
   }
 
