@@ -242,8 +242,9 @@ extension EarnCoordinator: EarnMenuViewControllerDelegate {
 extension EarnCoordinator: EarnViewControllerDelegate {
   func earnViewController(_ controller: AbstractEarnViewControler, run event: EarnViewEvent) {
     switch event {
-    case .openGasPriceSelect(let gasLimit, let selectType, let isSwap, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
+    case .openGasPriceSelect(let gasLimit, let baseGasLimit, let selectType, let isSwap, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: isSwap)
+      viewModel.baseGasLimit = baseGasLimit
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
         medium: KNGasCoordinator.shared.standardKNGas,
@@ -701,6 +702,8 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
           }
         }
       }
+    case .resetSetting:
+      break
     default:
       break
     }

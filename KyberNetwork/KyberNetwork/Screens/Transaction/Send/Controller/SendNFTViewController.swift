@@ -18,6 +18,7 @@ class SendNFTViewModel {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
   
   var advancedGasLimit: String? {
     didSet {
@@ -127,6 +128,7 @@ class SendNFTViewModel {
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
+    self.gasLimit = self.baseGasLimit
   }
   
   var gasFeeString: String {
@@ -169,7 +171,11 @@ class SendNFTViewModel {
   }
   
   func updateEstimatedGasLimit(_ gasLimit: BigInt) {
-    self.gasLimit = gasLimit
+    if self.selectedGasPriceType == .custom {
+      self.baseGasLimit = gasLimit
+    } else {
+      self.gasLimit = gasLimit
+    }
   }
   
   var displayTotalBalance: String {
@@ -426,6 +432,7 @@ class SendNFTViewController: KNBaseViewController {
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
     self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(
       gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       advancedGasLimit: self.viewModel.advancedGasLimit,
       advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,

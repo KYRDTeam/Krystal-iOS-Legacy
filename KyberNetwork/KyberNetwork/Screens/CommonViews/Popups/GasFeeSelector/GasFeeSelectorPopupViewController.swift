@@ -115,10 +115,13 @@ class GasFeeSelectorPopupViewModel {
       }
     }
   }
+  
+  var baseGasLimit: BigInt
 
   init(isSwapOption: Bool, gasLimit: BigInt, selectType: KNSelectedGasPriceType = .medium, currentRatePercentage: Double = 0.0, isUseGasToken: Bool = false, isContainSlippageSection: Bool = true) {
     self.isSwapOption = isSwapOption
     self.gasLimit = gasLimit
+    self.baseGasLimit = gasLimit
     self.selectedType = selectType == .custom ? .medium : selectType
     self.currentRate = currentRatePercentage
     self.minRateType = currentRatePercentage == 1.0 ? .threePercent : .custom(value: currentRatePercentage)
@@ -284,7 +287,12 @@ class GasFeeSelectorPopupViewModel {
       if let unwrap = self.advancedMaxFee, let gasFee = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
         return gasFee
       }
-      return self.valueForSelectedType(type: .medium)
+      if let unwrap = self.previousSelectedType {
+        return self.valueForSelectedType(type: unwrap)
+      } else {
+        return self.valueForSelectedType(type: .medium)
+      }
+      
     }
   }
 
@@ -508,6 +516,7 @@ enum GasFeeSelectorPopupViewEvent {
   case cancelTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
   case speedupTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
   case cancelTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
+  case resetSetting
 }
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
@@ -918,6 +927,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       })
       return
     }
+    self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.gasFeeButtonTapped(self.mediumGasButton)
     
   }

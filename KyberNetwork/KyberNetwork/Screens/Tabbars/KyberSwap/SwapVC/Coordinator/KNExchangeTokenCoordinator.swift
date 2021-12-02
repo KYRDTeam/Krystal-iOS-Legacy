@@ -404,8 +404,9 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       }
-    case .openGasPriceSelect(let gasLimit, let type, let pair, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
+    case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let pair, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
+      viewModel.baseGasLimit = baseGasLimit
       viewModel.updateGasPrices(
         fast: KNGasCoordinator.shared.fastKNGas,
         medium: KNGasCoordinator.shared.standardKNGas,

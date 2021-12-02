@@ -16,7 +16,7 @@ enum KSendTokenViewEvent {
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
   case contactSelectMore
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
+  case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
   case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
@@ -193,6 +193,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
     self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(
       gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       advancedGasLimit: self.viewModel.advancedGasLimit,
       advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,

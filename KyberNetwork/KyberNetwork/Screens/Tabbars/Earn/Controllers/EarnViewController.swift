@@ -18,6 +18,7 @@ class EarnViewModel {
   
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var wallet: Wallet
   var remainApprovedAmount: (TokenData, BigInt)?
@@ -142,7 +143,7 @@ class EarnViewModel {
     return self.displayBalance.removeGroupSeparator()
   }
   
-  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) { //TODO: can be improve with enum function
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
     self.selectedGasPriceType = type
     switch type {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
@@ -167,6 +168,7 @@ class EarnViewModel {
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
+    self.gasLimit = self.baseGasLimit
   }
   
   func updateGasPrice(_ gasPrice: BigInt) {
@@ -212,7 +214,12 @@ class EarnViewModel {
   @discardableResult
   func updateGasLimit(_ value: BigInt, platform: String, tokenAddress: String) -> Bool {
     if self.selectedPlatform == platform && self.tokenData.address == tokenAddress {
-      self.gasLimit = value
+      if self.selectedGasPriceType == .custom {
+        self.baseGasLimit = value
+      } else {
+        self.gasLimit = value
+      }
+      
       return true
     }
     return false
@@ -401,7 +408,7 @@ class EarnViewModel {
 }
 
 enum EarnViewEvent {
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
+  case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject)
@@ -601,6 +608,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
     self.delegate?.earnViewController(self, run: .openGasPriceSelect(
       gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       isSwap: false,
       minRatePercent: 0,

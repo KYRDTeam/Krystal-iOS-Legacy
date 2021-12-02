@@ -12,7 +12,7 @@ enum KSwapViewEvent {
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
+  case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case updateRate(rate: Double)
   case openHistory
   case openWalletsList
@@ -566,6 +566,7 @@ class KSwapViewController: KNBaseViewController {
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
     let event = KSwapViewEvent.openGasPriceSelect(
       gasLimit: self.viewModel.baseGasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       pair: "\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)",
       minRatePercent: self.viewModel.minRatePercent,

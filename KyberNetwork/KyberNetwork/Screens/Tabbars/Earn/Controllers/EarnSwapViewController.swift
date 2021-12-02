@@ -20,6 +20,7 @@ class EarnSwapViewModel {
   
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
@@ -189,6 +190,7 @@ class EarnSwapViewModel {
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
+    self.gasLimit = self.baseGasLimit
   }
   
   func updateGasPrice(_ gasPrice: BigInt) {
@@ -235,7 +237,12 @@ class EarnSwapViewModel {
   @discardableResult
   func updateGasLimit(_ value: BigInt, platform: String, tokenAddress: String) -> Bool {
     if self.selectedPlatform == platform && self.toTokenData.address.lowercased() == tokenAddress.lowercased() {
-      self.gasLimit = value
+      if self.selectedGasPriceType == .custom {
+        self.baseGasLimit = value
+      } else {
+        self.gasLimit = value
+      }
+      
       return true
     }
     return false
@@ -883,6 +890,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
     self.delegate?.earnViewController(self, run: .openGasPriceSelect(
       gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       isSwap: true,
       minRatePercent: self.viewModel.minRatePercent,
