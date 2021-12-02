@@ -871,6 +871,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     guard let customNonce = self.viewModel.advancedNonce else {
       self.advancedNonceField.text = "\(self.viewModel.currentNonce)"
+      self.advancedNonceField.textColor = UIColor(named: "textWhiteColor")
       self.nonceErrorLabel.isHidden = true
       return
     }
