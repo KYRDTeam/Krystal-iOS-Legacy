@@ -302,6 +302,7 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidSelectMode(_ mode: ViewMode) {
     self.viewModel.currentMode = mode
     self.reloadUI()
+    self.refreshControl.endRefreshing()
     self.configPullToRefresh()
   }
 
@@ -340,7 +341,9 @@ class OverviewMainViewController: KNBaseViewController {
 
   func coordinatorPullToRefreshDone() {
     self.viewModel.isRefreshingTableView = false
-    self.refreshControl.endRefreshing()
+    DispatchQueue.main.async {
+      self.refreshControl.endRefreshing()
+    }
   }
 
   func overviewModeDidChanged(isSummary: Bool) {
