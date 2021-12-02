@@ -119,23 +119,37 @@ class KNAppCoordinator: NSObject, Coordinator {
   func showBackupWalletIfNeeded() -> Bool {
     guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
     guard let walletObj = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
-      return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased()
+      return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased() && !object.isWatchWallet
     }) else {
       return false
     }
     if self.keystore.wallets.count >= 1 {
-      let controller = OverviewWarningBackupViewController {
-        self.tabbarController = nil
-        self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
-        self.addCoordinator(self.landingPageCoordinator)
-        self.landingPageCoordinator.start()
-      } alreadyAction: {
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(_):
+          let controller = OverviewWarningBackupViewController {
+            self.tabbarController = nil
+            self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
+            self.addCoordinator(self.landingPageCoordinator)
+            self.landingPageCoordinator.start()
+          } alreadyAction: {
+            let walletObject = walletObj.clone()
+            walletObject.isBackedUp = true
+            KNWalletStorage.shared.add(wallets: [walletObject])
+          }
+          self.overviewTabCoordinator?.navigationController.present(controller, animated: true, completion: {
+          })
+        default:
+          let walletObject = walletObj.clone()
+          walletObject.isWatchWallet = true
+          KNWalletStorage.shared.add(wallets: [walletObject])
+        }
+      } else {
         let walletObject = walletObj.clone()
-        walletObject.isBackedUp = true
+        walletObject.isWatchWallet = true
         KNWalletStorage.shared.add(wallets: [walletObject])
       }
-      self.overviewTabCoordinator?.navigationController.present(controller, animated: true, completion: {
-      })
       return false
     } else {
       self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
