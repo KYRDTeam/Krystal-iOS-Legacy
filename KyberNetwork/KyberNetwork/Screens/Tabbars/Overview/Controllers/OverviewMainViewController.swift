@@ -340,7 +340,9 @@ class OverviewMainViewController: KNBaseViewController {
 
   func coordinatorPullToRefreshDone() {
     self.viewModel.isRefreshingTableView = false
-    self.refreshControl.endRefreshing()
+    DispatchQueue.main.async {
+      self.refreshControl.endRefreshing()
+    }
   }
 
   func overviewModeDidChanged(isSummary: Bool) {
