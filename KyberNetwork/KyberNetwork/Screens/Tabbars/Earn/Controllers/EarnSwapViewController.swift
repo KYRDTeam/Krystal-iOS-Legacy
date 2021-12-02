@@ -298,7 +298,7 @@ class EarnSwapViewModel {
     let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.gasLimit
     let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
     let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let priorityFeeBigIntDefault = self.selectedPriorityFee
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
     var nonce = object.nonce.hexSigned2Complement

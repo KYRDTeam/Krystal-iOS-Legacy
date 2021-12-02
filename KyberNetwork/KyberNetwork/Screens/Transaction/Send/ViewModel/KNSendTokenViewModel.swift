@@ -297,7 +297,7 @@ class KNSendTokenViewModel: NSObject {
         )
       } else {
         let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-        let priorityFeeBigIntDefault = self.gasPrice - baseFeeBigInt
+        let priorityFeeBigIntDefault = self.selectedPriorityFee
         return UnconfirmedTransaction(
           transferType: transferType,
           value: amount,

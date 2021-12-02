@@ -451,7 +451,7 @@ class SendNFTViewController: KNBaseViewController {
     
     if KNGeneralProvider.shared.isUseEIP1559 {
       let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
-      let priorityFeeBigIntDefault = self.viewModel.gasPrice - baseFeeBigInt
+      let priorityFeeBigIntDefault = self.viewModel.selectedPriorityFee
       
       let event = KSendTokenViewEvent.sendNFT(
         item: self.viewModel.item,

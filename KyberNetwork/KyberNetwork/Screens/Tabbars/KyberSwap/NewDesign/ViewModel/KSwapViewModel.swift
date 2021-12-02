@@ -791,7 +791,7 @@ class KSwapViewModel {
     guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.estimateGasLimit
     let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
-    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let priorityFeeBigIntDefault = self.selectedPriorityFee
     let maxGasFeeDefault = gasPrice
     let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
     var nonce = object.nonce.hexSigned2Complement
