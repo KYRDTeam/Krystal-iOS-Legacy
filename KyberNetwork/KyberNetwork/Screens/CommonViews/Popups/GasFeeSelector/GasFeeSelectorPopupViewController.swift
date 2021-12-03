@@ -930,10 +930,14 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.gasFeeButtonTapped(self.mediumGasButton)
-    
   }
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {
+    guard self.viewModel.selectedGasPriceValue > self.viewModel.selectedPriorityFeeValue else {
+      self.showErrorTopBannerMessage(message: "Max priority fee should be higher than max fee")
+      return
+    }
+
     if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
       guard self.viewModel.isSpeedupGasValid else {
         self.showSpeedupCancelErrorAlert()
@@ -951,7 +955,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
             print("[GasSelector][EIP1559][Speedup] \(gasLimit) \(maxPriorityFee) \(maxFee)")
             return
           }
-          
+
           if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
             print("[GasSelector][EIP1559][Cancel] \(gasLimit) \(maxPriorityFee) \(maxFee)")
@@ -1004,7 +1008,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       }
     })
   }
-  
+
   func showSpeedupCancelErrorAlert() {
     self.showWarningTopBannerMessage(
       with: "Invalid input",
