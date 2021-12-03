@@ -49,7 +49,9 @@ extension UIImageView {
         }
       } else {
         if let failCompletion = failCompletion {
-          failCompletion()
+          DispatchQueue.main.async {
+            failCompletion()
+          }
         }
       }
     }.resume()
