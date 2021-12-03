@@ -389,6 +389,7 @@ class KNSendTokenViewModel: NSObject {
         self.baseGasLimit = gasLimit
       } else {
         self.gasLimit = gasLimit
+        self.baseGasLimit = gasLimit
       }
       
       return true

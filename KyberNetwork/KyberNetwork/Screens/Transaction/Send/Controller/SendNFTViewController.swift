@@ -175,6 +175,7 @@ class SendNFTViewModel {
       self.baseGasLimit = gasLimit
     } else {
       self.gasLimit = gasLimit
+      self.baseGasLimit = gasLimit
     }
   }
   

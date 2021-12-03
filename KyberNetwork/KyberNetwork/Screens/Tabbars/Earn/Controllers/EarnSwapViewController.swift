@@ -241,6 +241,7 @@ class EarnSwapViewModel {
         self.baseGasLimit = value
       } else {
         self.gasLimit = value
+        self.baseGasLimit = value
       }
       
       return true
