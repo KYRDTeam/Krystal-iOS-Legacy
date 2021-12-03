@@ -262,13 +262,13 @@ class KNGeneralProvider {
   var priceAlertMessage: String {
     switch self.currentChain {
     case .eth:
-      return "There.is.a.difference.between.the.estimated.price"
+      return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
     case .bsc:
-      return "There.is.a.difference.between.the.estimated.price.bsc"
+      return "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised()
     case .polygon:
-      return "There.is.a.difference.between.the.estimated.price.matic"
+      return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
     case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.avalanche"
+      return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
     }
   }
 

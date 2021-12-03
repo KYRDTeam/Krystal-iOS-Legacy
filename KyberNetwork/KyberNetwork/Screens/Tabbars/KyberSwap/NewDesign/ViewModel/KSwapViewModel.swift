@@ -555,6 +555,7 @@ class KSwapViewModel {
         self.baseGasLimit = gasLimit
       } else {
         self.estimateGasLimit = gasLimit
+        self.baseGasLimit = gasLimit
       }
     }
   }

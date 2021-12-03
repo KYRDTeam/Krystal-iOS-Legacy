@@ -565,7 +565,7 @@ class KSwapViewController: KNBaseViewController {
 
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
     let event = KSwapViewEvent.openGasPriceSelect(
-      gasLimit: self.viewModel.baseGasLimit,
+      gasLimit: self.viewModel.estimateGasLimit,
       baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       pair: "\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)",
@@ -837,8 +837,8 @@ extension KSwapViewController {
     if let gasPrice = gasPrice {
       self.viewModel.updateGasPrice(gasPrice)
       self.updateFromAmountUIForSwapAllBalanceIfNeeded()
+      self.setUpGasFeeView()
     }
-    self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
 
