@@ -399,7 +399,7 @@ class GasFeeSelectorPopupViewModel {
       return .none
     }
     
-    if gasLimit <= BigInt(21000) {
+    if gasLimit < BigInt(21000) {
       return .low
     } else {
       return .none
