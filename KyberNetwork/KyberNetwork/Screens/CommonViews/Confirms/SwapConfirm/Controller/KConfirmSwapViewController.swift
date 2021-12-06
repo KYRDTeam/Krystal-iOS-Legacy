@@ -35,7 +35,6 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var reserveRoutingMessageLabel: UILabel!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var rateWarningLabel: UILabel!
 
   @IBOutlet weak var priceImpactValueLabel: UILabel!
   @IBOutlet weak var swapAnywayCheckBox: UIButton!

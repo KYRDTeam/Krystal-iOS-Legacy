@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -33,7 +33,6 @@
                 <outlet property="minReceivedTitle" destination="oao-ep-AZ6" id="aOQ-wZ-3Fh"/>
                 <outlet property="priceImpactTextLabel" destination="NUm-Ao-hb7" id="bN1-wU-p6l"/>
                 <outlet property="priceImpactValueLabel" destination="YWV-Xe-gv3" id="WtY-Gy-Kf5"/>
-                <outlet property="rateWarningLabel" destination="NUm-Ao-hb7" id="8AW-3Z-Jyu"/>
                 <outlet property="reserveRoutingMessageContainer" destination="OBt-LS-t3j" id="vH6-Ox-hLL"/>
                 <outlet property="reserveRoutingMessageLabel" destination="Hwk-JP-91t" id="RyT-wG-biG"/>
                 <outlet property="swapAnywayCheckBox" destination="k9v-8f-2N8" id="CfF-rR-8ic"/>
@@ -56,53 +55,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sBz-hH-uvn">
                     <rect key="frame" x="0.0" y="60" width="375" height="600"/>
                     <subviews>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBt-LS-t3j">
-                            <rect key="frame" x="37" y="431" width="301" height="46.5"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9RH-QG-9xu">
-                                    <rect key="frame" x="12" y="11.5" width="24" height="24"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="saving_icon" translatesAutoresizingMaskIntoConstraints="NO" id="1LF-pz-Dvk">
-                                            <rect key="frame" x="4" y="5" width="16" height="14"/>
-                                        </imageView>
-                                    </subviews>
-                                    <color key="backgroundColor" name="buttonBackgroundColor"/>
-                                    <constraints>
-                                        <constraint firstItem="1LF-pz-Dvk" firstAttribute="centerY" secondItem="9RH-QG-9xu" secondAttribute="centerY" id="5ht-5C-PRc"/>
-                                        <constraint firstAttribute="width" constant="24" id="aXw-w1-ahV"/>
-                                        <constraint firstItem="1LF-pz-Dvk" firstAttribute="centerX" secondItem="9RH-QG-9xu" secondAttribute="centerX" id="h0b-p8-lyC"/>
-                                        <constraint firstAttribute="height" constant="24" id="x3s-xs-UnX"/>
-                                    </constraints>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                            <integer key="value" value="12"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve routing is used in this transaction to reduce gas costs" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hwk-JP-91t">
-                                    <rect key="frame" x="44" y="9" width="245" height="28.5"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                                    <color key="textColor" name="buttonBackgroundColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" name="warningBoxBgColor"/>
-                            <constraints>
-                                <constraint firstItem="9RH-QG-9xu" firstAttribute="centerY" secondItem="OBt-LS-t3j" secondAttribute="centerY" id="4JC-lP-vKf"/>
-                                <constraint firstItem="Hwk-JP-91t" firstAttribute="leading" secondItem="9RH-QG-9xu" secondAttribute="trailing" constant="8" id="INh-GD-MSK"/>
-                                <constraint firstAttribute="trailing" secondItem="Hwk-JP-91t" secondAttribute="trailing" constant="12" id="TvW-AM-xah"/>
-                                <constraint firstAttribute="bottom" secondItem="Hwk-JP-91t" secondAttribute="bottom" constant="9" id="nyh-FJ-bO2"/>
-                                <constraint firstItem="9RH-QG-9xu" firstAttribute="leading" secondItem="OBt-LS-t3j" secondAttribute="leading" constant="12" id="o4u-B6-Vic"/>
-                                <constraint firstItem="Hwk-JP-91t" firstAttribute="top" secondItem="OBt-LS-t3j" secondAttribute="top" constant="9" id="rmk-3S-hsD"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="arrow_right_blue" translatesAutoresizingMaskIntoConstraints="NO" id="lVc-Wr-R8E">
                             <rect key="frame" x="179.5" y="98.5" width="16" height="16"/>
                             <constraints>
@@ -345,6 +297,53 @@
                                 <constraint firstAttribute="trailing" secondItem="YPm-Bi-vkB" secondAttribute="trailing" id="xGl-ol-Dul"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBt-LS-t3j">
+                            <rect key="frame" x="37" y="431" width="301" height="46.5"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9RH-QG-9xu">
+                                    <rect key="frame" x="12" y="11.5" width="24" height="24"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="saving_icon" translatesAutoresizingMaskIntoConstraints="NO" id="1LF-pz-Dvk">
+                                            <rect key="frame" x="4" y="5" width="16" height="14"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="buttonBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstItem="1LF-pz-Dvk" firstAttribute="centerY" secondItem="9RH-QG-9xu" secondAttribute="centerY" id="5ht-5C-PRc"/>
+                                        <constraint firstAttribute="width" constant="24" id="aXw-w1-ahV"/>
+                                        <constraint firstItem="1LF-pz-Dvk" firstAttribute="centerX" secondItem="9RH-QG-9xu" secondAttribute="centerX" id="h0b-p8-lyC"/>
+                                        <constraint firstAttribute="height" constant="24" id="x3s-xs-UnX"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="12"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reserve routing is used in this transaction to reduce gas costs" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hwk-JP-91t">
+                                    <rect key="frame" x="44" y="9" width="245" height="28.5"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                    <color key="textColor" name="buttonBackgroundColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" name="warningBoxBgColor"/>
+                            <constraints>
+                                <constraint firstItem="9RH-QG-9xu" firstAttribute="centerY" secondItem="OBt-LS-t3j" secondAttribute="centerY" id="4JC-lP-vKf"/>
+                                <constraint firstItem="Hwk-JP-91t" firstAttribute="leading" secondItem="9RH-QG-9xu" secondAttribute="trailing" constant="8" id="INh-GD-MSK"/>
+                                <constraint firstAttribute="trailing" secondItem="Hwk-JP-91t" secondAttribute="trailing" constant="12" id="TvW-AM-xah"/>
+                                <constraint firstAttribute="bottom" secondItem="Hwk-JP-91t" secondAttribute="bottom" constant="9" id="nyh-FJ-bO2"/>
+                                <constraint firstItem="9RH-QG-9xu" firstAttribute="leading" secondItem="OBt-LS-t3j" secondAttribute="leading" constant="12" id="o4u-B6-Vic"/>
+                                <constraint firstItem="Hwk-JP-91t" firstAttribute="top" secondItem="OBt-LS-t3j" secondAttribute="top" constant="9" id="rmk-3S-hsD"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
@@ -448,7 +447,7 @@
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textRedColor">
-            <color red="0.9570000171661377" green="0.33300000429153442" blue="0.19599999487400055" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
