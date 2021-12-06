@@ -205,10 +205,10 @@ extension KNAppCoordinator {
     if let address = sender.object as? String, let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == address.lowercased() }) {
       self.restartNewSession(wal)
     }
-    self.isFirstUpdateChain = true
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()
     KNSupportedTokenStorage.shared.reloadData()
+    self.isFirstUpdateChain = KNSupportedTokenStorage.shared.allActiveTokens.isEmpty
 
     KNRateCoordinator.shared.pause()
     KNRateCoordinator.shared.resume()
