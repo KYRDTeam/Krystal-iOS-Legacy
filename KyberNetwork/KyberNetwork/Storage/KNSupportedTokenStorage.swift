@@ -431,7 +431,7 @@ class KNSupportedTokenStorage {
           || firstToken.name.lowercased() != secondToken.name.lowercased()
           || firstToken.symbol.lowercased() != secondToken.symbol.lowercased()
           || firstToken.logo.lowercased() != secondToken.logo.lowercased()
-          || firstToken.tag.lowercased() != secondToken.tag.lowercased() {
+          || firstToken.tag?.lowercased() != secondToken.tag?.lowercased() {
         isEqual = false
         break
       }

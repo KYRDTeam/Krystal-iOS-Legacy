@@ -12,7 +12,7 @@ public struct Constants {
   public static let isDoneShowQuickTutorialForHistoryView = "history_tutorial_done"
   public static let kisShowQuickTutorialForLongPendingTx = "kisShowQuickTutorialForLongPendingTx"
   public static let klimitNumberOfTransactionInDB = 1000
-  public static let animationDuration = 0.5
+  public static let animationDuration = 0.3
   /// Value in USD to validate if current token should display blue tick or not
   public static let hightVolAmount = 100000.0
   public static let useGasTokenDataKey = "use_gas_token_data_key"

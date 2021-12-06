@@ -14,7 +14,7 @@ class Token: Codable, Equatable, Hashable {
   var symbol: String
   var decimals: Int
   var logo: String
-  var tag: String = ""
+  var tag: String?
 
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
