@@ -934,7 +934,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {
     guard self.viewModel.selectedGasPriceValue > self.viewModel.selectedPriorityFeeValue else {
-      self.showErrorTopBannerMessage(message: "Max priority fee should be higher than max fee")
+      self.showErrorTopBannerMessage(message: "Max priority fee should be lower than max fee")
       return
     }
 

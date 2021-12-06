@@ -270,11 +270,16 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var fromIconSymbol: String {
-    
+    if self.transaction.state == .cancel {
+      return ""
+    }
     return self.transaction.fromSymbol ?? ""
   }
   
   var toIconSymbol: String {
+    if self.transaction.state == .cancel {
+      return ""
+    }
     return self.transaction.toSymbol ?? ""
   }
   
@@ -405,25 +410,52 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   var displayDateString: String {
     return self.dateFormatter.string(from: self.transaction.time)
   }
-  
+
   var displayAmountString: String {
+    guard self.transaction.state != .cancel else {
+      return "- 0 \(KNGeneralProvider.shared.quoteToken)"
+    }
     return self.transaction.transactionDescription
   }
-  
+
   var displayFromAddress: String {
-    return self.transaction.transactionObject?.from ?? "" //TODO: add case eip1559
-  }
-  
-  var displayToAddress: String {
-    return self.transaction.transactionObject?.to ?? "" //TODO: add case eip1559
-  }
-  
-  var displayGasFee: String {
-    guard let gasPrice = BigInt(self.transaction.transactionObject?.gasPrice ?? ""), let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") else { //TODO: add case eip1559
+    if let fromAddress = self.transaction.transactionObject?.from {
+      return fromAddress
+    } else if let fromAddressEIP = self.transaction.eip1559Transaction?.fromAddress {
+      return fromAddressEIP
+    } else {
       return ""
     }
-    let fee = gasPrice * gasLimit
-    return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
+  }
+
+  var displayToAddress: String {
+    guard self.transaction.state != .cancel else {
+      return self.displayFromAddress
+    }
+    if let toAddress = self.transaction.transactionObject?.to {
+      return toAddress
+    } else if let toAddressEIP = self.transaction.eip1559Transaction?.toAddress {
+      return toAddressEIP
+    } else {
+      return ""
+    }
+  }
+
+  var displayGasFee: String {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      guard let gasPrice = BigInt(self.transaction.eip1559Transaction?.maxGasFee.drop0x ?? "", radix: 16), let gasLimit = BigInt(self.transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) else {
+        return ""
+      }
+      let fee = gasPrice * gasLimit
+      return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
+    } else {
+      guard let gasPrice = BigInt(self.transaction.transactionObject?.gasPrice ?? ""), let gasLimit = BigInt(self.transaction.transactionObject?.gasLimit ?? "") else {
+        return ""
+      }
+      let fee = gasPrice * gasLimit
+      return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
+    }
+    
   }
   
   var displayHash: String {
