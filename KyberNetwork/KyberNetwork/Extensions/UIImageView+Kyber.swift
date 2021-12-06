@@ -5,20 +5,22 @@ import UIKit
 extension UIImageView {
   func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil, failCompletion: (() -> Void)? = nil) {
     if let cachedImg = UIImage.imageCache.object(forKey: url as AnyObject) as? UIImage {
-      if let needTofit = fitSize {
-        let widthRatio = needTofit.width / cachedImg.size.width
-        if widthRatio < 1 {
-          let imageWidth = widthRatio * cachedImg.size.width
-          let imageHeight = widthRatio * cachedImg.size.height
-          self.image = cachedImg.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+      DispatchQueue.main.async {
+        if let needTofit = fitSize {
+          let widthRatio = needTofit.width / cachedImg.size.width
+          if widthRatio < 1 {
+            let imageWidth = widthRatio * cachedImg.size.width
+            let imageHeight = widthRatio * cachedImg.size.height
+            self.image = cachedImg.resizeImage(to: CGSize(width: imageWidth, height: imageHeight))
+          } else {
+            self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
+          }
         } else {
           self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
         }
-      } else {
-        self.image = applyNoir ? cachedImg.resizeImage(to: size)?.noir : cachedImg.resizeImage(to: size)
-      }
 
-      self.layoutIfNeeded()
+        self.layoutIfNeeded()
+      }
       return
     }
     DispatchQueue.main.async {
@@ -47,7 +49,9 @@ extension UIImageView {
         }
       } else {
         if let failCompletion = failCompletion {
-          failCompletion()
+          DispatchQueue.main.async {
+            failCompletion()
+          }
         }
       }
     }.resume()

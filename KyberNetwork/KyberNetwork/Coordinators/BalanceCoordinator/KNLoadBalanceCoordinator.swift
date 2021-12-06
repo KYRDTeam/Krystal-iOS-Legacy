@@ -19,6 +19,7 @@ class KNLoadBalanceCoordinator {
   var otherTokensBalance: [String: Balance] = [:]
 
   fileprivate var fetchBalanceTimer: Timer?
+  fileprivate var fetchTotalBalanceTimer: Timer?
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
@@ -54,7 +55,7 @@ class KNLoadBalanceCoordinator {
       span2.finish()
       group.leave()
     }
-    
+
     group.enter()
     let span3 = tx.startChild(operation: "load-token-balances")
     self.loadTokenBalancesFromApi { success in
@@ -74,25 +75,24 @@ class KNLoadBalanceCoordinator {
       span5.finish()
       group.leave()
     }
-    
+
     group.enter()
     let span6 = tx.startChild(operation: "load-liquidity-pool")
     self.loadLiquidityPool { success in
       span6.finish()
       group.leave()
     }
-    
+
     group.enter()
     let span7 = tx.startChild(operation: "load-total-balance")
     self.loadTotalBalance { success in
       span7.finish()
       group.leave()
     }
-    
+
     group.notify(queue: .global()) {
       tx.finish()
     }
-    
   }
 
   func resume() {
@@ -105,6 +105,18 @@ class KNLoadBalanceCoordinator {
       }
     )
     self.loadAllBalances()
+    fetchTotalBalanceTimer?.invalidate()
+    fetchTotalBalanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds60,
+      repeats: true,
+      block: { [weak self] _ in
+        self?.loadTotalBalance(forceSync: true, completion: { _ in
+
+        })
+      })
+    self.loadTotalBalance(forceSync: true, completion: { _ in
+
+    })
   }
 
   func pause() {
@@ -115,6 +127,9 @@ class KNLoadBalanceCoordinator {
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = nil
     isFetchNonSupportedBalance = true
+    
+    fetchTotalBalanceTimer?.invalidate()
+    fetchTotalBalanceTimer = nil
   }
 
   func exit() {
@@ -271,7 +286,7 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
-  
+
   //MARK:-new balance load implementation
   func loadAllTokenBalance() {
     let tokens = KNSupportedTokenStorage.shared.getSupportedTokens()
@@ -304,32 +319,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadBalanceForCustomToken() {
-//    let tokens = KNSupportedTokenStorage.shared.getCustomToken()
-//    let addresses = tokens.map { (token) -> String in
-//      return token.address
-//    }
-//    let group = DispatchGroup()
-//    addresses.forEach { (addressString) in
-//      guard let address = Address(string: addressString) else { return }
-//      group.enter()
-//      KNGeneralProvider.shared.getTokenBalance(for: self.session.wallet.address, contract: address) { result in
-//        if case .success(let bigInt) = result {
-//          let balance = TokenBalance(address: addressString, balance: bigInt.description)
-//          BalanceStorage.shared.setCustomTokenBalance(balance)
-//        }
-//        group.leave()
-//      }
-//    }
-//    group.notify(queue: .main) {
-//      BalanceStorage.shared.saveCustomTokenBalance()
-//      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-//    }
-  }
-  
-  func loadTokenBalancesFromApi(completion: @escaping (Bool) -> Void) {
+  func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getBalances(address: self.session.wallet.address.description)) { (result) in
+    provider.request(.getBalances(address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -357,9 +349,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadTotalBalance(completion: @escaping (Bool) -> Void) {
+  func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getTotalBalance(address: self.session.wallet.address.description, KNEnvironment.allChainPath)) { (result) in
+    provider.request(.getTotalBalance(address: self.session.wallet.address.description, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
@@ -389,9 +381,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadNFTBalance(completion: @escaping (Bool) -> Void) {
+  func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getNTFBalance(address: self.session.wallet.address.description)) { result in
+    provider.request(.getNTFBalance(address: self.session.wallet.address.description, forceSync: forceSync)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -412,9 +404,9 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadLendingBalances(completion: @escaping (Bool) -> Void) {
+  func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getLendingBalance(address: self.session.wallet.address.description)) { (result) in
+    provider.request(.getLendingBalance(address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
         var balances: [LendingPlatformBalance] = []
         result.forEach { (element) in
@@ -437,11 +429,11 @@ class KNLoadBalanceCoordinator {
     }
   }
 
-  func loadLendingDistributionBalance(completion: @escaping (Bool) -> Void) {
+  func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard !KNGeneralProvider.shared.lendingDistributionPlatform.isEmpty else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
 
-    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.address.description)) { (result) in
+    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)
@@ -452,12 +444,12 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
-  
-  func loadLiquidityPool(completion:  @escaping (Bool) -> Void) {
+
+  func loadLiquidityPool(forceSync: Bool = false, completion:  @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.address.description
     let chain = KNGeneralProvider.shared.chainName
-    provider.request(.getLiquidityPool(address: address, chain: chain)) { (result) in
+    provider.request(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
         var poolArray: [LiquidityPoolModel] = []
         for item in balances {
@@ -482,7 +474,7 @@ class KNLoadBalanceCoordinator {
 
     let group = DispatchGroup()
     let customSection = BalanceStorage.shared.getCustomNFT()
-    
+
     customSection.forEach { sectionItem in
       sectionItem.items.forEach { nftItem in
         group.enter()
@@ -523,15 +515,61 @@ class KNLoadBalanceCoordinator {
             group.leave()
           }
         }
-        
       }
     }
-    
     group.notify(queue: .main) {
       BalanceStorage.shared.saveCustomNFT()
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       completion(true)
     }
   }
-  
+}
+
+extension KNLoadBalanceCoordinator {
+  func appCoordinatorRefreshData(mode: ViewMode, overviewMode: OverviewMode) {
+    if overviewMode == .summary {
+      self.loadTotalBalance(forceSync: true) { _ in
+        KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+      }
+    } else {
+      let group = DispatchGroup()
+      group.enter()
+      self.loadTotalBalance(forceSync: true) { _ in
+        group.leave()
+      }
+
+      switch mode {
+      case .asset:
+        group.enter()
+        self.loadTokenBalancesFromApi(forceSync: true) { _ in
+          group.leave()
+        }
+      case .showLiquidityPool:
+        group.enter()
+        self.loadLiquidityPool(forceSync: true) { _ in
+          group.leave()
+        }
+      case .supply:
+        group.enter()
+        self.loadLendingBalances(forceSync: true) { _ in
+          group.leave()
+        }
+
+        group.enter()
+        self.loadLendingDistributionBalance(forceSync: true) { _ in
+          group.leave()
+        }
+      case .nft:
+        group.enter()
+        self.loadNFTBalance(forceSync: true) { _ in
+          group.leave()
+        }
+      default:
+        break
+      }
+      group.notify(queue: .global()) {
+        KNNotificationUtil.postNotification(for: kPullToRefreshNotificationKey)
+      }
+    }
+  }
 }

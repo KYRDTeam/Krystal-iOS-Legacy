@@ -102,7 +102,7 @@ public struct Constants {
     chainID: 56,
     name: "MainnetBSC",
     symbol: "MainnetBSC",
-    endpoint: "https://bsc-dataseed.binance.org/",
+    endpoint: "https://bsc.krystal.app/v1/mainnet/geth?appId=prod-krystal-ios",
     endpointKyber: "https://bsc-dataseed1.defibit.io/",
     endpointAlchemy: "https://bsc-dataseed1.ninicoin.io/",
     etherScanEndpoint: "https://bscscan.com/",

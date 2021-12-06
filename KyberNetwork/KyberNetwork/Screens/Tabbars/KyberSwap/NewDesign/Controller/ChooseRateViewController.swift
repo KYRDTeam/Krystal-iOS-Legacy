@@ -155,8 +155,8 @@ extension ChooseRateViewController: UITableViewDataSource {
         if let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.viewModel.to.address) {
           let savedAmountBigInt = (firstRateBigInt - secondRateBigInt) * amountFromBigInt / BigInt(10).power(18)
           let usd = savedAmountBigInt * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
-          let usdDoubleValue = Double(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))
-          if usdDoubleValue == 0 {
+          let usdDoubleValue = Double(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)) ?? 0.0
+          if usdDoubleValue < 0.01 {
             cell.saveLabel.text = "Best"
           } else {
             cell.saveLabel.text = "Save $\(usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2))"
