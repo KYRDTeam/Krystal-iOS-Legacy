@@ -1071,7 +1071,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       currentValue -= 0.5
     }
     if currentValue > 0 {
-      self.viewModel.advancedMaxPriorityFee = String(currentValue)
+      self.viewModel.advancedMaxPriorityFee = NumberFormatterUtil.shared.displayPercentage(from: currentValue)
     }
     self.updateUIAdvancedSetting()
     self.updateUIForMainGasFee()
@@ -1086,7 +1086,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       currentValue -= 0.5
     }
     if currentValue > 0 {
-      self.viewModel.advancedMaxFee = String(currentValue)
+      self.viewModel.advancedMaxFee = NumberFormatterUtil.shared.displayPercentage(from: currentValue)
     }
     self.updateUIAdvancedSetting()
     self.updateUIForMainGasFee()

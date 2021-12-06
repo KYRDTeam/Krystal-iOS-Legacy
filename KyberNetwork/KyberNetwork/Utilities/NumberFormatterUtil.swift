@@ -47,7 +47,7 @@ class NumberFormatterUtil {
   }()
 
   func displayPercentage(from number: Double) -> String {
-    return self.percentageFormatter.string(from: NSNumber(value: number)) ?? "0.00"
+    return self.percentageFormatter.string(from: NSNumber(value: number)) ?? ""
   }
 
   func displayAlertPrice(from number: Double) -> String {
