@@ -51,9 +51,21 @@ struct KConfirmSwapViewModel {
     let usd = self.transaction.expectedReceive * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.to.decimals)
     return usd
   }
+  
+  var fromUSDAmount: BigInt? {
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.from.address) else { return nil }
+    let usd = self.transaction.amount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.to.decimals)
+    return usd
+  }
 
   var displayEquivalentUSDAmount: String? {
     guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
+    let value = amount.displayRate(decimals: 18)
+    return "~ $\(value) USD"
+  }
+  
+  var displayFromUSDAmount: String? {
+    guard let amount = self.fromUSDAmount, !amount.isZero else { return nil }
     let value = amount.displayRate(decimals: 18)
     return "~ $\(value) USD"
   }
