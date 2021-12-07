@@ -456,7 +456,13 @@ extension KNSendTokenViewCoordinator {
           object: error,
           userInfo: nil
         )
-        self.navigationController.showTopBannerView(message: error.description, time: 3)
+        var errorMessage = "Something went wrong."
+        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+            errorMessage = message
+          }
+        }
+        self.navigationController.showTopBannerView(message: errorMessage)
         self.navigationController.hideLoading()
       }
     })
@@ -681,7 +687,13 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         })
       }
@@ -704,7 +716,13 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         })
       }
@@ -727,7 +745,13 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         }
       }
@@ -752,7 +776,13 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         }
       }
@@ -809,7 +839,13 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Speedup failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           }
         }
@@ -827,7 +863,13 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Speedup failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           })
         }
@@ -866,7 +908,13 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         }
       }
@@ -890,7 +938,13 @@ extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         })
       }

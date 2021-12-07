@@ -588,11 +588,12 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               viewController.coordinatorUpdateIsUseGasToken(status)
             }
           case .failure(let error):
-            self.navigationController.showErrorTopBannerMessage(
-              with: NSLocalizedString("error", value: "Error", comment: ""),
-              message: error.localizedDescription,
-              time: 1.5
-            )
+            var errorMessage = "Something went wrong. Please try again"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
             viewController.coordinatorUpdateIsUseGasToken(status)
           }
         }
@@ -627,7 +628,13 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         })
       }
@@ -650,7 +657,13 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         })
       }
@@ -673,7 +686,13 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         }
       }
@@ -698,7 +717,13 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
           }
         }
       }
@@ -754,7 +779,17 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
           self.earnViewController?.coordinatorSuccessSendTransaction()
           self.earnSwapViewController?.coordinatorSuccessSendTransaction()
         case .failure(let error):
-          self.navigationController.showTopBannerView(message: error.description)
+          var errorMessage = "Something went wrong. Please try again"
+          if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+            if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+              errorMessage = message
+            }
+          }
+          self.navigationController.showErrorTopBannerMessage(
+            with: "Error",
+            message: errorMessage,
+            time: 1.5
+          )
         }
         self.navigationController.hideLoading()
       })
@@ -782,7 +817,17 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
               self.earnViewController?.coordinatorSuccessSendTransaction()
               self.earnSwapViewController?.coordinatorSuccessSendTransaction()
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Something went wrong. Please try again"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showErrorTopBannerMessage(
+                with: "Error",
+                message: errorMessage,
+                time: 1.5
+              )
             }
           })
         case .failure:
@@ -973,7 +1018,13 @@ extension EarnCoordinator: SpeedUpCustomGasSelectDelegate {
                   )
                 }
               case .failure(let error):
-                self.navigationController.showTopBannerView(message: error.description)
+                var errorMessage = "Speedup failed"
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showTopBannerView(message: errorMessage)
               }
             })
           }
@@ -993,7 +1044,13 @@ extension EarnCoordinator: SpeedUpCustomGasSelectDelegate {
                 }
                 
               case .failure(let error):
-                self.navigationController.showTopBannerView(message: error.description)
+                var errorMessage = "Speedup failed"
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showTopBannerView(message: errorMessage)
               }
             }
           }
@@ -1081,7 +1138,13 @@ extension EarnCoordinator: KNConfirmCancelTransactionPopUpDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Cancel failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           })
         }
@@ -1103,7 +1166,13 @@ extension EarnCoordinator: KNConfirmCancelTransactionPopUpDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Cancel failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           }
         }

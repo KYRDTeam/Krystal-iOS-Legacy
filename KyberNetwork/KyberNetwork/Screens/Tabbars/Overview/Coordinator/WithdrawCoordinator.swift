@@ -174,7 +174,13 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                                 self.openTransactionStatusPopUp(transaction: historyTransaction)
                               }
                             case .failure(let error):
-                              self.navigationController.showTopBannerView(message: error.localizedDescription)
+                              var errorMessage = "Something went wrong."
+                              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                                  errorMessage = message
+                                }
+                              }
+                              self.navigationController.showTopBannerView(message: errorMessage)
                             }
                           })
                         case .failure:
@@ -465,7 +471,13 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
                   )
                 }
               case .failure(let error):
-                self.navigationController.showTopBannerView(message: error.description)
+                var errorMessage = "Speedup failed"
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showTopBannerView(message: errorMessage)
               }
             })
           }
@@ -484,7 +496,13 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
                   )
                 }
               case .failure(let error):
-                self.navigationController.showTopBannerView(message: error.description)
+                var errorMessage = "Speedup failed"
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showTopBannerView(message: errorMessage)
               }
             }
           }
@@ -526,7 +544,13 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Cancel failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           })
         }
@@ -548,7 +572,13 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
                 )
               }
             case .failure(let error):
-              self.navigationController.showTopBannerView(message: error.description)
+              var errorMessage = "Cancel failed"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showTopBannerView(message: errorMessage)
             }
           }
         }
@@ -847,7 +877,13 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                                 self.openTransactionStatusPopUp(transaction: historyTransaction)
                               }
                             case .failure(let error):
-                              self.navigationController.showTopBannerView(message: error.localizedDescription)
+                              var errorMessage = "Can not estimate Gas limit"
+                              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                                  errorMessage = message
+                                }
+                              }
+                              self.navigationController.showTopBannerView(message: errorMessage)
                             }
                           })
                         }
@@ -891,7 +927,13 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                                 }
                               case .failure(let error):
                                 controller.hideLoading()
-                                self.navigationController.showTopBannerView(message: error.localizedDescription)
+                                var errorMessage = "Can not estimate Gas limit"
+                                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                                    errorMessage = message
+                                  }
+                                }
+                                self.navigationController.showTopBannerView(message: errorMessage)
                               }
                             })
                           case .failure:
