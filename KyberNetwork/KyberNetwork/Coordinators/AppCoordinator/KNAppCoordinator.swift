@@ -55,6 +55,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
   var isFirstLoad: Bool = true
+  var isFirstUpdateChain: Bool = true
 
   init(
     navigationController: UINavigationController = UINavigationController(),

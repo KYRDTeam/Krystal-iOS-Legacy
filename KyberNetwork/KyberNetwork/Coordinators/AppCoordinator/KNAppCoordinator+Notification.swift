@@ -215,25 +215,24 @@ extension KNAppCoordinator {
     if let address = sender.object as? String, let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == address.lowercased() }) {
       self.restartNewSession(wal)
     }
-
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()
     KNSupportedTokenStorage.shared.reloadData()
-    
+    self.isFirstUpdateChain = KNSupportedTokenStorage.shared.allActiveTokens.isEmpty
+
     KNRateCoordinator.shared.pause()
     KNRateCoordinator.shared.resume()
     KNTrackerRateStorage.shared.reloadData()
     
     KNGasCoordinator.shared.pause()
     KNGasCoordinator.shared.resume()
-    
+
     self.exchangeCoordinator?.appCoordinatorDidUpdateChain()
     self.overviewTabCoordinator?.appCoordinatorDidUpdateChain()
     self.investCoordinator?.appCoordinatorDidUpdateChain()
     self.earnCoordinator?.appCoordinatorDidUpdateChain()
     self.settingsCoordinator?.appCoordinatorDidUpdateChain()
     self.session.externalProvider?.minTxCount = 0
-    
   }
 
   @objc func tokenBalancesDidUpdateNotification(_ sender: Any?) {
@@ -261,7 +260,7 @@ extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   @objc func transactionStateDidUpdate(_ sender: Notification) {
     guard self.session != nil, let transaction = sender.object as? InternalHistoryTransaction else { return }
-    
+
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.earnCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
@@ -311,6 +310,13 @@ extension KNAppCoordinator {
     let tokenObjects: [TokenObject] = self.session.tokenStorage.tokens
     self.exchangeCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
     self.settingsCoordinator?.appCoordinatorTokenObjectListDidUpdate(tokenObjects)
+
+    if self.isFirstUpdateChain {
+      self.isFirstUpdateChain = false
+      KNRateCoordinator.shared.pause()
+      KNRateCoordinator.shared.resume()
+      KNTrackerRateStorage.shared.reloadData()
+    }
   }
 
   @objc func gasPriceCachedDidUpdate(_ sender: Any?) {
