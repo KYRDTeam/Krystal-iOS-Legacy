@@ -283,7 +283,7 @@ class KNRateCoordinator {
     let tokenAddress = KNSupportedTokenStorage.shared.allActiveTokens.map { (token) -> String in
       return token.address
     }
-    let splitCount = tokenAddress.count > 100 ? tokenAddress.count / 3 : tokenAddress.count
+    let splitCount = tokenAddress.count > 100 ? tokenAddress.count / 3 : 100
     let addressesTrucked = tokenAddress.chunked(into: splitCount)
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var output: [TokenPrice] = []
