@@ -412,7 +412,7 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.showingRevertRate = !self.viewModel.showingRevertRate
     self.updateExchangeRateField()
   }
-  
+
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
@@ -1125,6 +1125,7 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   @objc func keyboardPauseTyping(timer: Timer) {
+    self.updateEstimatedGasLimit()
     self.updateViewAmountDidChange()
   }
 
