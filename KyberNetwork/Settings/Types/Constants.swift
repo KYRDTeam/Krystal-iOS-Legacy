@@ -186,3 +186,12 @@ public struct UnitConfiguration {
     public static let gasPriceUnit: EthereumUnit = .gwei
     public static let gasFeeUnit: EthereumUnit = .ether
 }
+
+public struct DecimalNumber {
+  public static let eth = 4
+  public static let usd = 2
+  public static let btc = 5
+  public static let bnb = 4
+  public static let matic = 4
+  public static let avax = 4
+}
