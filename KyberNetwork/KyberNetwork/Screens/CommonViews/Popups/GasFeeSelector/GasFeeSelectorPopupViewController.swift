@@ -128,7 +128,6 @@ class GasFeeSelectorPopupViewModel {
     self.isUseGasToken = isUseGasToken
     self.isContainSippageSectionOption = isContainSlippageSection
   }
- 
 
   var currentRateDisplay: String {
     return String(format: "%.2f", self.currentRate)

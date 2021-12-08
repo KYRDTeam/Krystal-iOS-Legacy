@@ -871,9 +871,9 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup scre
   fileprivate func openTransactionSpeedUpViewController(transaction: InternalHistoryTransaction) {
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
-        return BigInt(transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
       } else {
-        return BigInt(transaction.transactionObject?.gasLimit ?? "") ?? BigInt(0)
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
       }
     }()
     
@@ -929,9 +929,9 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup scre
     
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
-        return BigInt(transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
       } else {
-        return BigInt(transaction.transactionObject?.gasLimit ?? "") ?? BigInt(0)
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
       }
     }()
     

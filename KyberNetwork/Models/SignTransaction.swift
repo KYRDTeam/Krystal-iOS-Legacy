@@ -19,7 +19,7 @@ public struct SignTransaction {
 
 extension SignTransaction {
   func toSignTransactionObject() -> SignTransactionObject {
-    return SignTransactionObject(value: self.value.description, from: self.account.address.description, to: self.to?.description, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID)
+    return SignTransactionObject(value: self.value.description, from: self.account.address.description, to: self.to?.description, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID, reservedGasLimit: self.gasLimit.description)
   }
   
   func send(provider: KNExternalProvider, completion: @escaping (Result<String, AnyError>) -> Void) {

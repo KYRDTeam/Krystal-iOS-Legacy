@@ -30,6 +30,7 @@ struct SignTransactionObject: Codable {
   let gasPrice: String
   let gasLimit: String
   let chainID: Int
+  let reservedGasLimit: String
 }
 
 extension SignTransactionObject {
@@ -45,7 +46,7 @@ extension SignTransactionObject {
       chainID: self.chainID
     )
   }
-  
+
   func gasPriceForCancelTransaction() -> BigInt {
     guard
       let currentGasPrice = BigInt(self.gasPrice)
@@ -56,15 +57,15 @@ extension SignTransactionObject {
     let gasPrice = max(currentGasPrice * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18), KNGasConfiguration.gasPriceMax)
     return gasPrice
   }
-  
+
   func toSpeedupTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
-    return SignTransactionObject(value: self.value, from: self.from, to: self.to, nonce: self.nonce, data: self.data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID)
+    return SignTransactionObject(value: self.value, from: self.from, to: self.to, nonce: self.nonce, data: self.data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID, reservedGasLimit: gasLimit)
   }
-  
+
   func toCancelTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
-    return SignTransactionObject(value: "0", from: self.from, to: self.from, nonce: self.nonce, data: Data(), gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID)
+    return SignTransactionObject(value: "0", from: self.from, to: self.from, nonce: self.nonce, data: Data(), gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID, reservedGasLimit: gasLimit)
   }
-  
+
   func toSpeedupTransaction(account: Account, gasPrice: BigInt) -> SignTransaction {
     return SignTransaction(
       value: BigInt(self.value) ?? BigInt(0),
@@ -172,7 +173,8 @@ extension TxObject {
         toAddress: self.to,
         fromAddress: self.from,
         data: self.data,
-        value: self.value.drop0x.hexSigned2Complement
+        value: self.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
         )
     } else {
       return EIP1559Transaction(
@@ -184,7 +186,8 @@ extension TxObject {
         toAddress: self.to,
         fromAddress: self.from,
         data: self.data,
-        value: self.value.drop0x.hexSigned2Complement
+        value: self.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
       )
     }
   }

@@ -316,9 +316,9 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
-        return BigInt(transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
       } else {
-        return BigInt(transaction.transactionObject?.gasLimit ?? "") ?? BigInt(0)
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
       }
     }()
     let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: .superFast, currentRatePercentage: 0, isUseGasToken: false)
@@ -374,9 +374,9 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
-        return BigInt(transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
       } else {
-        return BigInt(transaction.transactionObject?.gasLimit ?? "") ?? BigInt(0)
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
       }
     }()
     

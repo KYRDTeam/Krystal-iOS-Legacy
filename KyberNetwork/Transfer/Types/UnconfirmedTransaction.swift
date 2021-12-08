@@ -51,7 +51,8 @@ struct UnconfirmedTransaction {
       toAddress: addressToSend(self)?.description ?? "",
       fromAddress: fromAddress,
       data: data?.hexString ?? "",
-      value: valueToSend(self).hexEncoded.hexSigned2Complement
+      value: valueToSend(self).hexEncoded.hexSigned2Complement,
+      reservedGasLimit: self.gasLimit?.hexEncoded.hexSigned2Complement ?? ""
     )
   }
 }

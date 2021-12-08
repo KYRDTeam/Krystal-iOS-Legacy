@@ -285,7 +285,9 @@ class WithdrawViewController: KNBaseViewController {
         data: Data(),
         gasPrice: "",
         gasLimit: "",
-        chainID: 0),
+        chainID: 0,
+        reservedGasLimit: ""
+      ),
       eip1559Tx: nil
     )
     historyTransaction.transactionSuccessDescription = "\(self.viewModel.displayAmount) \(self.viewModel.balance.symbol)"

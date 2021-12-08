@@ -176,7 +176,8 @@ class KNExternalProvider {
                 toAddress: to,
                 fromAddress: from,
                 data: data.hexEncoded,
-                value: "0x"
+                value: "0x",
+                reservedGasLimit: gasLimit.hexEncoded.hexSigned2Complement
               )
 
               if let signedData = self.signContractGenericEIP1559Transaction(eip1559Tx) {

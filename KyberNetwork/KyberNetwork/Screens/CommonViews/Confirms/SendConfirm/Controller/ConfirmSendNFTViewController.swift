@@ -182,7 +182,8 @@ class ConfirmSendNFTViewController: KNBaseViewController {
           data: Data(),
           gasPrice: "",
           gasLimit: "",
-          chainID: 0
+          chainID: 0,
+          reservedGasLimit: ""
         ),
         eip1559Tx: nil
       )

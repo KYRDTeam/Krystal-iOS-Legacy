@@ -19,6 +19,7 @@ struct EIP1559Transaction: Codable {
   let fromAddress: String
   let data: String
   let value: String
+  let reservedGasLimit: String
 
   func signContractGenericWithPK(_ key: Data) -> Data {
     let input = EthereumSigningInput.with {
@@ -70,13 +71,14 @@ struct EIP1559Transaction: Codable {
     return EIP1559Transaction(
       chainID: self.chainID,
       nonce: self.nonce,
-      gasLimit: self.gasLimit,
+      gasLimit: self.reservedGasLimit,
       maxInclusionFeePerGas: cancelGas.hexEncoded.hexSigned2Complement,
       maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
       toAddress: self.toAddress,
       fromAddress: self.toAddress,
       data: "",
-      value: "00"
+      value: "00",
+      reservedGasLimit: self.reservedGasLimit
     )
   }
 
@@ -86,13 +88,14 @@ struct EIP1559Transaction: Codable {
     return EIP1559Transaction(
       chainID: self.chainID,
       nonce: self.nonce,
-      gasLimit: self.gasLimit,
+      gasLimit: self.reservedGasLimit,
       maxInclusionFeePerGas: gasPrice.hexEncoded.hexSigned2Complement,
       maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
       toAddress: self.toAddress,
       fromAddress: self.fromAddress,
       data: self.data,
-      value: self.value
+      value: self.value,
+      reservedGasLimit: self.reservedGasLimit
     )
   }
   
@@ -110,7 +113,8 @@ struct EIP1559Transaction: Codable {
       toAddress: self.toAddress,
       fromAddress: self.fromAddress,
       data: self.data,
-      value: self.value
+      value: self.value,
+      reservedGasLimit: self.reservedGasLimit
     )
   }
   
@@ -127,7 +131,8 @@ struct EIP1559Transaction: Codable {
       toAddress: self.fromAddress,
       fromAddress: self.fromAddress,
       data: "",
-      value: "00"
+      value: "00",
+      reservedGasLimit: self.reservedGasLimit
     )
   }
 

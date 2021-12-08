@@ -299,7 +299,8 @@ class EarnViewModel {
         toAddress: object.to,
         fromAddress: object.from,
         data: object.data,
-        value: object.value.drop0x.hexSigned2Complement
+        value: object.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
       )
     } else {
       return EIP1559Transaction(
@@ -311,7 +312,8 @@ class EarnViewModel {
         toAddress: object.to,
         fromAddress: object.from,
         data: object.data,
-        value: object.value.drop0x.hexSigned2Complement
+        value: object.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
       )
     }
   }
