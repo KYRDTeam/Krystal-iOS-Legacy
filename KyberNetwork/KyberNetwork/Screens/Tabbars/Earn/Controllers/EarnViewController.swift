@@ -960,13 +960,6 @@ extension EarnViewController: UITextFieldDelegate {
         )
         return true
       }
-      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: "Please wait for transaction is completed"
-        )
-        return true
-      }
     }
     return false
   }

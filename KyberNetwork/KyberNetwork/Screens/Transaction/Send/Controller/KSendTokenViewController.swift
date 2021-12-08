@@ -319,13 +319,6 @@ class KSendTokenViewController: KNBaseViewController {
         )
         return true
       }
-      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: "Please wait for transaction is completed"
-        )
-        return true
-      }
     }
     guard !self.viewModel.amount.isEmpty else {
       self.showWarningTopBannerMessage(

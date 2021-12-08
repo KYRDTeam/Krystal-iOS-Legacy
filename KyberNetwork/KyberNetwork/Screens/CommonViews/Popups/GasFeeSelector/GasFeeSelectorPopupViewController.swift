@@ -1007,8 +1007,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
       if let nonceString = self.advancedNonceField.text,
          self.viewModel.selectedType == .custom,
-         self.viewModel.hasNonceChaned,
-         self.viewModel.advancedNonceErrorStatus == .none {
+         self.viewModel.hasNonceChaned {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: nonceString))
       }
     })
