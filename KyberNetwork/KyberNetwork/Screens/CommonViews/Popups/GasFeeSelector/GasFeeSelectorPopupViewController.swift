@@ -411,10 +411,12 @@ class GasFeeSelectorPopupViewModel {
     }
 
     let nonceInt = Int(unwrap) ?? 0
-    if nonceInt >= self.currentNonce {
-      return .none
-    } else {
+    if nonceInt < self.currentNonce {
       return .low
+    } else if nonceInt > self.currentNonce + 1 {
+      return .high
+    } else {
+      return .none
     }
   }
 
@@ -880,6 +882,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedNonceField.textColor = UIColor(named: "textRedColor")
       self.nonceErrorLabel.isHidden = false
       self.nonceErrorLabel.text = "Nonce is too low"
+    case .high:
+      self.advancedNonceField.textColor = UIColor(named: "textRedColor")
+      self.nonceErrorLabel.isHidden = false
+      self.nonceErrorLabel.text = "Nonce is too high"
     default:
       self.advancedNonceField.textColor = UIColor(named: "textWhiteColor")
       self.nonceErrorLabel.isHidden = true
