@@ -230,17 +230,17 @@ enum CurrencyMode: Int {
   func decimalNumber() -> Int {
     switch self {
     case .eth:
-      return 4
+      return DecimalNumber.eth
     case .usd:
-      return 2
+      return DecimalNumber.usd
     case .btc:
-      return 5
+      return DecimalNumber.btc
     case .bnb:
-      return 4
+      return DecimalNumber.bnb
     case .matic:
-      return 4
+      return DecimalNumber.matic
     case .avax:
-      return 4
+      return DecimalNumber.avax
     }
   }
   
