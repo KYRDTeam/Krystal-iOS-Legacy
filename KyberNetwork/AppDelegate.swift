@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
+          guard !SentrySDK.isEnabled else { return }
           FirebaseApp.configure()
           self.setupSentry()
         }
