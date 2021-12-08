@@ -35,7 +35,7 @@ class KNGasCoordinator {
     if fastKNGas < EtherNumberFormatter.full.number(from: "10", units: UnitConfiguration.gasPriceUnit)! {
       return EtherNumberFormatter.full.number(from: "20", units: UnitConfiguration.gasPriceUnit)!
     }
-    return min(fastKNGas * BigInt(2), self.maxKNGas)
+    return fastKNGas * BigInt(2)
   }
 
   var defaultPriorityFee: BigInt?
