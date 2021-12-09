@@ -456,7 +456,7 @@ extension KNSendTokenViewCoordinator {
           object: error,
           userInfo: nil
         )
-        var errorMessage = "Something went wrong."
+        var errorMessage = error.description
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
           if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
             errorMessage = message

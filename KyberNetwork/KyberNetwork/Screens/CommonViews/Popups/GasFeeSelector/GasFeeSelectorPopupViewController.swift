@@ -426,9 +426,9 @@ class GasFeeSelectorPopupViewModel {
     }
 
     let lowerLimit = KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
-    let upperLimit = KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)
+    let upperLimit = (KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)) * BigInt(2)
     let maxPriorityBigInt = self.advancedMaxPriorityFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
-    if lowerLimit.isZero || upperLimit.isZero {
+    if lowerLimit.isZero && upperLimit.isZero {
       return .none
     }
     if maxPriorityBigInt < lowerLimit {

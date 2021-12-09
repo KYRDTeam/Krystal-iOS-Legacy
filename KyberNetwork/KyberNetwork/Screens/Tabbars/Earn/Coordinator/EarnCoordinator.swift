@@ -588,12 +588,16 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               viewController.coordinatorUpdateIsUseGasToken(status)
             }
           case .failure(let error):
-            var errorMessage = "Something went wrong. Please try again"
+            var errorMessage = error.description
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = message
               }
             }
+            self.navigationController.showErrorTopBannerMessage(
+              with: "Error",
+              message: errorMessage
+            )
             viewController.coordinatorUpdateIsUseGasToken(status)
           }
         }
@@ -779,7 +783,7 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
           self.earnViewController?.coordinatorSuccessSendTransaction()
           self.earnSwapViewController?.coordinatorSuccessSendTransaction()
         case .failure(let error):
-          var errorMessage = "Something went wrong. Please try again"
+          var errorMessage = error.description
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
             if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
               errorMessage = message
@@ -817,7 +821,7 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
               self.earnViewController?.coordinatorSuccessSendTransaction()
               self.earnSwapViewController?.coordinatorSuccessSendTransaction()
             case .failure(let error):
-              var errorMessage = "Something went wrong. Please try again"
+              var errorMessage = error.description
               if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
                 if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                   errorMessage = message

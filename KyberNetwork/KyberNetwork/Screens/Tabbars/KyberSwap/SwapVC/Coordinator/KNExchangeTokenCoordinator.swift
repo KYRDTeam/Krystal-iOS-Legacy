@@ -309,7 +309,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
         }
         self.rootViewController.coordinatorSuccessSendTransaction()
       case .failure(let error):
-        var errorMessage = "Something went wrong. Please try again"
+        var errorMessage = error.description
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
           if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
             errorMessage = message
@@ -349,7 +349,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
             }
             self.rootViewController.coordinatorSuccessSendTransaction()
           case .failure(let error):
-            var errorMessage = "Something went wrong. Please try again"
+            var errorMessage = error.description
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = message
@@ -357,8 +357,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
             }
             self.navigationController.showErrorTopBannerMessage(
               with: "Error",
-              message: errorMessage,
-              time: 1.5
+              message: errorMessage
             )
           }
         })
@@ -1329,7 +1328,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
         self.rootViewController.coordinatorUpdateIsUseGasToken(state)
         self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(state)
       case .failure(let error):
-        var errorMessage = "Something went wrong. Please try again"
+        var errorMessage = error.description
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
           if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
             errorMessage = message
@@ -1361,7 +1360,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
           case .success:
             self.rootViewController.coordinatorSuccessApprove(token: token)
           case .failure(let error):
-            var errorMessage = "Something went wrong. Please try again"
+            var errorMessage = error.description
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = message
