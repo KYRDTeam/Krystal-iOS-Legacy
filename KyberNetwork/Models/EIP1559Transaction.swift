@@ -148,7 +148,7 @@ struct EIP1559Transaction: Codable {
   }
   
   func transactionGasPrice() -> BigInt? {
-    return BigInt(self.maxInclusionFeePerGas.drop0x, radix: 16)
+    return BigInt(self.maxGasFee.drop0x, radix: 16)
   }
 }
 

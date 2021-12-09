@@ -492,15 +492,14 @@ class GasFeeSelectorPopupViewModel {
     let currentValue = self.selectedGasPriceValue
     let txGas: BigInt = {
       if let normalGas = self.transaction?.transactionObject?.transactionGasPrice() {
-        return normalGas
+        return normalGas * BigInt(1.1 * pow(10.0, 18.0)) / BigInt(10).power(18)
       } else if let advancedGas = self.transaction?.eip1559Transaction?.transactionGasPrice() {
-        return advancedGas
+        return advancedGas * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18)
       } else {
         return BigInt(0)
       }
     }()
-    let gasPriceLimit = txGas * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18)
-    return gasPriceLimit <= currentValue
+    return txGas <= currentValue
   }
 }
 
