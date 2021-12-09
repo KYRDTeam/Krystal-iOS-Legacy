@@ -272,10 +272,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NIW-lv-x75">
-                                            <rect key="frame" x="127.33333333333334" y="110" width="25" height="25"/>
+                                            <rect key="frame" x="127.33333333333334" y="110" width="24" height="24"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="25" id="EX6-ze-56H"/>
-                                                <constraint firstAttribute="width" constant="25" id="V5m-Nf-HZd"/>
+                                                <constraint firstAttribute="height" constant="24" id="EX6-ze-56H"/>
+                                                <constraint firstAttribute="width" constant="24" id="V5m-Nf-HZd"/>
                                             </constraints>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="3"/>
                                             <state key="normal" image="help_icon_blue"/>
@@ -337,6 +337,18 @@
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9N-Hh-1NF">
+                                            <rect key="frame" x="94" y="82" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="HH3-f0-4ht"/>
+                                                <constraint firstAttribute="width" constant="24" id="b9g-Hc-ihe"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="3"/>
+                                            <state key="normal" image="help_icon_blue"/>
+                                            <connections>
+                                                <action selector="priceImpactHelpButtonTapped:" destination="-1" eventType="touchUpInside" id="yw9-RX-xqg"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" name="innerContainerBgColor"/>
                                     <constraints>
@@ -364,6 +376,8 @@
                                         <constraint firstItem="AoC-hx-D1X" firstAttribute="trailing" secondItem="Ec2-HH-EyB" secondAttribute="trailing" id="ead-kc-YJp"/>
                                         <constraint firstAttribute="trailing" secondItem="ICX-m0-Ppe" secondAttribute="trailing" constant="25" id="hr3-DN-Vqq"/>
                                         <constraint firstItem="o51-S6-laL" firstAttribute="top" secondItem="tHd-wC-t3m" secondAttribute="bottom" constant="8" id="iaR-SJ-sDc"/>
+                                        <constraint firstItem="W9N-Hh-1NF" firstAttribute="leading" secondItem="jnE-cv-0pc" secondAttribute="trailing" id="kI5-mN-J1c"/>
+                                        <constraint firstItem="W9N-Hh-1NF" firstAttribute="top" secondItem="jnE-cv-0pc" secondAttribute="top" id="nwt-hC-TRg"/>
                                         <constraint firstAttribute="trailing" secondItem="AoC-hx-D1X" secondAttribute="trailing" constant="25" id="oei-aS-Bwm"/>
                                         <constraint firstItem="31r-A7-nQj" firstAttribute="top" secondItem="jnE-cv-0pc" secondAttribute="bottom" constant="8" id="wNv-Ek-xzv"/>
                                     </constraints>
