@@ -1142,6 +1142,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
               )
             }
           case .failure(let error):
+            print(error.description)
             var errorMessage = "Speedup failed"
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {

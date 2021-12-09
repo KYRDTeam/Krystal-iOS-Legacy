@@ -501,7 +501,8 @@ class GasFeeSelectorPopupViewModel {
         return BigInt(0)
       }
     }()
-    return txGas < currentValue
+    let gasPriceLimit = txGas * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18)
+    return gasPriceLimit <= currentValue
   }
 }
 
@@ -1019,7 +1020,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       message: "Please select higher gas"
     )
   }
-  
+
   func coordinatorDidUpdateGasLimit(_ value: BigInt) {
     self.viewModel.updateGasLimit(value: value)
     self.updateGasPriceUIs()
