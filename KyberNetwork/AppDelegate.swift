@@ -40,12 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     })
     
     if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
-          FirebaseApp.configure()
-          self.setupSentry()
-        }
-      }
     } else {
       FirebaseApp.configure()
       self.setupSentry()
@@ -68,6 +62,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
+    if #available(iOS 14, *) {
+      ATTrackingManager.requestTrackingAuthorization { (status) in
+        if status == .authorized {
+          guard !SentrySDK.isEnabled else { return }
+          FirebaseApp.configure()
+          self.setupSentry()
+        }
+      }
+    }
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
   }
