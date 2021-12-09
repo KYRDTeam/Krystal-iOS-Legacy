@@ -1012,9 +1012,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   func showSpeedupCancelErrorAlert() {
+    let message = KNGeneralProvider.shared.isUseEIP1559 ? "The max fee must be 20% higher than the current max fee" : "The max fee must be 10% higher than the current max fee"
     self.showWarningTopBannerMessage(
       with: "Invalid input",
-      message: "Please select higher gas"
+      message: message
     )
   }
 
