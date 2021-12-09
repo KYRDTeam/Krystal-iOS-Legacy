@@ -143,7 +143,6 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    self.searchTextField.becomeFirstResponder()
   }
 
   override func viewWillDisappear(_ animated: Bool) {

@@ -843,11 +843,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     )
     self.delegate?.earnViewController(self, run: event)
   }
-  
+
   func coordinatorFailUpdateTxObject(error: Error) {
     self.navigationController?.showErrorTopBannerMessage(with: error.localizedDescription)
   }
-  
+
   func coordinatorDidUpdateRates(from: TokenData, to: TokenData, srcAmount: BigInt, rates: [Rate]) {
     self.viewModel.updateSwapRates(from: from, to: to, amount: srcAmount, rates: rates)
     self.viewModel.reloadBestPlatform()

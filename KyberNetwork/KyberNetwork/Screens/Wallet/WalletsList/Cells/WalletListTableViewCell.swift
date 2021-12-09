@@ -47,8 +47,4 @@ class WalletListTableViewCell: UITableViewCell {
   @IBAction func copyButtonTapped(_ sender: UIButton) {
     self.delegate?.walletListTableViewCell(self, run: .copy(address: self.viewModel?.walletAddress ?? ""))
   }
-
-  @IBAction func tapCell(_ sender: UIButton) {
-    self.delegate?.walletListTableViewCell(self, run: .select(address: self.viewModel?.walletAddress ?? ""))
-  }
 }

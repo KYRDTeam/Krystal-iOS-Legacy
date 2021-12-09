@@ -108,7 +108,7 @@ class WalletsListViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableViewHeightContraint: NSLayoutConstraint!
-
+  @IBOutlet weak var topBackgroundView: UIView!
   fileprivate var viewModel: WalletsListViewModel
 
   fileprivate let kWalletTableViewCellID: String = "WalletListTableViewCell"
@@ -137,6 +137,8 @@ class WalletsListViewController: KNBaseViewController {
 
     self.walletsTableViewHeightContraint.constant = self.viewModel.walletTableViewHeight
     self.walletTableView.allowsSelection = true
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.topBackgroundView.addGestureRecognizer(tapGesture)
   }
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
@@ -158,7 +160,7 @@ class WalletsListViewController: KNBaseViewController {
     }
   }
 
-  @IBAction func tapView(_ sender: UITapGestureRecognizer) {
+  @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
 }
@@ -200,6 +202,17 @@ extension WalletsListViewController: UITableViewDelegate {
       return 60.0
     }
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let cellViewModel = self.viewModel.dataSource[indexPath.row] as? WalletListTableViewCellViewModel else {
+      return
+    }
+    self.dismiss(animated: true) {
+      if let wallet = self.viewModel.getWalletObject(address: cellViewModel.walletAddress) {
+        self.delegate?.walletsListViewController(self, run: .select(wallet: wallet))
+      }
+    }
+  }
 }
 
 extension WalletsListViewController: WalletListTableViewCellDelegate {
@@ -209,12 +222,8 @@ extension WalletsListViewController: WalletListTableViewCellDelegate {
       if let wallet = self.viewModel.getWalletObject(address: address) {
         self.delegate?.walletsListViewController(self, run: .copy(wallet: wallet))
       }
-    case .select(let address):
-      self.dismiss(animated: true) {
-        if let wallet = self.viewModel.getWalletObject(address: address) {
-          self.delegate?.walletsListViewController(self, run: .select(wallet: wallet))
-        }
-      }
+    default:
+      return
     }
   }
 }

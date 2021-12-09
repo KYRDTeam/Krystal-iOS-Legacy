@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,6 +20,7 @@
                 <outlet property="contentView" destination="uTk-Ha-UYF" id="jSd-qf-3D2"/>
                 <outlet property="contentViewTopContraint" destination="zQU-Am-Qrf" id="PiF-jY-Sry"/>
                 <outlet property="manageWalletButton" destination="16g-oT-S4q" id="nNK-MW-B0N"/>
+                <outlet property="topBackgroundView" destination="S7A-pM-EFL" id="OeK-5B-xo6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletTableView" destination="AbD-5x-c9Z" id="Kf9-LN-SgL"/>
                 <outlet property="walletsTableViewHeightContraint" destination="ukf-hb-yWp" id="GtP-rN-z5d"/>
@@ -110,25 +111,25 @@
                         <constraint firstItem="AbD-5x-c9Z" firstAttribute="leading" secondItem="uTk-Ha-UYF" secondAttribute="leading" id="wwP-G8-Z0W"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-pM-EFL">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="392"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="S7A-pM-EFL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3fx-CD-RHK"/>
+                <constraint firstItem="S7A-pM-EFL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JRr-8g-wEi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="S7A-pM-EFL" secondAttribute="trailing" id="ayH-yT-CC4"/>
                 <constraint firstItem="uTk-Ha-UYF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="e70-xq-fkD"/>
                 <constraint firstAttribute="trailing" secondItem="uTk-Ha-UYF" secondAttribute="trailing" id="kO6-c7-mZO"/>
+                <constraint firstItem="uTk-Ha-UYF" firstAttribute="top" secondItem="S7A-pM-EFL" secondAttribute="bottom" id="s1M-v2-Dff"/>
                 <constraint firstItem="uTk-Ha-UYF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="392" id="zQU-Am-Qrf"/>
             </constraints>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="quZ-zC-BFX" appends="YES" id="JNd-gp-4sE"/>
-            </connections>
             <point key="canvasLocation" x="124.6376811594203" y="93.75"/>
         </view>
-        <tapGestureRecognizer id="quZ-zC-BFX">
-            <connections>
-                <action selector="tapView:" destination="-1" id="aIc-EM-Yfh"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="qr_code_blue_icon" width="20" height="20"/>
