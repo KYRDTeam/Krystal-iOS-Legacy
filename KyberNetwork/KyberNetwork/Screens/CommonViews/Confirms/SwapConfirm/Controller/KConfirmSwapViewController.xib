@@ -118,6 +118,9 @@
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRN-g8-70x">
                                     <rect key="frame" x="50" y="203" width="32" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="mye-pS-zY7"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -388,7 +391,7 @@
                                 <constraint firstAttribute="trailing" secondItem="oE1-zv-9df" secondAttribute="trailing" constant="38" id="5e7-ia-6kr"/>
                                 <constraint firstItem="4hI-jM-AkG" firstAttribute="centerY" secondItem="dDY-qI-vwz" secondAttribute="centerY" id="6my-VP-YoM"/>
                                 <constraint firstItem="zHU-yy-HMd" firstAttribute="leading" secondItem="ARl-Th-1gn" secondAttribute="leading" constant="48" id="7Mv-zN-j1n"/>
-                                <constraint firstItem="gkk-HI-Saw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hRN-g8-70x" secondAttribute="trailing" constant="5" id="9Cb-h7-EbY"/>
+                                <constraint firstItem="gkk-HI-Saw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hRN-g8-70x" secondAttribute="trailing" constant="4" id="9Cb-h7-EbY"/>
                                 <constraint firstItem="hUo-Ag-Pu8" firstAttribute="centerX" secondItem="ARl-Th-1gn" secondAttribute="centerX" id="AHL-ac-DoJ"/>
                                 <constraint firstItem="4hI-jM-AkG" firstAttribute="leading" secondItem="dDY-qI-vwz" secondAttribute="trailing" constant="15" id="Bwa-jK-4wO"/>
                                 <constraint firstItem="lVc-Wr-R8E" firstAttribute="leading" secondItem="ptv-4N-PR6" secondAttribute="trailing" constant="13" id="F2Q-q9-bao"/>
