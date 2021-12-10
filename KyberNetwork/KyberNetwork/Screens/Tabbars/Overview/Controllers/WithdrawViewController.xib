@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -128,15 +128,6 @@
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAJ-29-bDf">
-                                    <rect key="frame" x="116" y="17" width="25" height="25"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="25" id="UBx-tm-Y4g"/>
-                                        <constraint firstAttribute="height" constant="25" id="rLi-sF-5k7"/>
-                                    </constraints>
-                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="3"/>
-                                    <state key="normal" image="help_icon_blue"/>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dv0-tD-REr">
                                     <rect key="frame" x="194.5" y="16" width="92.5" height="19"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
@@ -161,13 +152,11 @@
                                 <constraint firstItem="dv0-tD-REr" firstAttribute="centerY" secondItem="1Kl-RK-m4A" secondAttribute="centerY" id="18l-pU-pUy"/>
                                 <constraint firstItem="EHr-n2-V2z" firstAttribute="top" secondItem="dv0-tD-REr" secondAttribute="bottom" constant="2" id="3du-bC-ZMP"/>
                                 <constraint firstItem="1Kl-RK-m4A" firstAttribute="top" secondItem="mFN-7e-NuY" secondAttribute="top" constant="17" id="DiA-W8-V09"/>
-                                <constraint firstItem="dv0-tD-REr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QAJ-29-bDf" secondAttribute="trailing" constant="10" id="GiF-YM-08l"/>
                                 <constraint firstItem="1Kl-RK-m4A" firstAttribute="leading" secondItem="mFN-7e-NuY" secondAttribute="leading" constant="12" id="QfY-IK-LBz"/>
                                 <constraint firstItem="EHr-n2-V2z" firstAttribute="trailing" secondItem="dv0-tD-REr" secondAttribute="trailing" id="UKu-OE-vIK"/>
                                 <constraint firstAttribute="trailing" secondItem="dv0-tD-REr" secondAttribute="trailing" constant="14" id="Xfe-9M-8Vm"/>
-                                <constraint firstItem="QAJ-29-bDf" firstAttribute="leading" secondItem="1Kl-RK-m4A" secondAttribute="trailing" constant="4" id="ZUD-CB-X27"/>
-                                <constraint firstItem="QAJ-29-bDf" firstAttribute="top" secondItem="1Kl-RK-m4A" secondAttribute="top" id="ZxK-FR-qwi"/>
                                 <constraint firstItem="yHJ-AH-FS7" firstAttribute="top" secondItem="EHr-n2-V2z" secondAttribute="bottom" constant="8" id="bAT-po-8hZ"/>
+                                <constraint firstItem="dv0-tD-REr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1Kl-RK-m4A" secondAttribute="trailing" constant="10" id="h3B-aR-XNY"/>
                                 <constraint firstAttribute="bottom" secondItem="EHr-n2-V2z" secondAttribute="bottom" constant="40" id="hdx-Tg-f8n"/>
                                 <constraint firstItem="EHr-n2-V2z" firstAttribute="trailing" secondItem="yHJ-AH-FS7" secondAttribute="trailing" id="ifY-Tp-x5Z"/>
                             </constraints>
@@ -276,7 +265,6 @@
     </objects>
     <resources>
         <image name="gas_config_icon" width="36" height="36"/>
-        <image name="help_icon_blue" width="14" height="14"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
