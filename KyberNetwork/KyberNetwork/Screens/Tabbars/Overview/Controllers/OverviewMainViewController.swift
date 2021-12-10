@@ -91,6 +91,40 @@ class OverviewMainViewController: KNBaseViewController {
 
     self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
     self.configPullToRefresh()
+    self.configHeaderTapped()
+  }
+
+  func configHeaderTapped() {
+    self.viewModel.didTapAddNFTHeader = {
+      self.delegate?.overviewMainViewController(self, run: .addNFT)
+    }
+
+    self.viewModel.didTapSectionButtonHeader = { sender in
+      print("Button Clicked \(sender.tag)")
+      let section = sender.tag
+      func indexPathsForSection() -> [IndexPath] {
+        var indexPaths = [IndexPath]()
+        let key = self.viewModel.displayNFTHeader[section].collectibleName
+        if let range = self.viewModel.displayNFTDataSource[key]?.count {
+          for row in 0..<range {
+            indexPaths.append(IndexPath(row: row,
+                                        section: section))
+          }
+        }
+
+        return indexPaths
+      }
+
+      if self.viewModel.hiddenSections.contains(section) {
+          self.viewModel.hiddenSections.remove(section)
+          self.tableView.insertRows(at: indexPathsForSection(),
+                                    with: .fade)
+      } else {
+          self.viewModel.hiddenSections.insert(section)
+          self.tableView.deleteRows(at: indexPathsForSection(),
+                                    with: .fade)
+      }
+    }
   }
   
   func configPullToRefresh() {
@@ -256,37 +290,6 @@ class OverviewMainViewController: KNBaseViewController {
 
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
-  }
-
-  @objc func sectionButtonTapped(sender: UIButton) {
-    print("Button Clicked \(sender.tag)")
-    let section = sender.tag
-    func indexPathsForSection() -> [IndexPath] {
-      var indexPaths = [IndexPath]()
-      let key = self.viewModel.displayNFTHeader[section].collectibleName
-      if let range = self.viewModel.displayNFTDataSource[key]?.count {
-        for row in 0..<range {
-          indexPaths.append(IndexPath(row: row,
-                                      section: section))
-        }
-      }
-
-      return indexPaths
-    }
-
-    if self.viewModel.hiddenSections.contains(section) {
-        self.viewModel.hiddenSections.remove(section)
-        self.tableView.insertRows(at: indexPathsForSection(),
-                                  with: .fade)
-    } else {
-        self.viewModel.hiddenSections.insert(section)
-        self.tableView.deleteRows(at: indexPathsForSection(),
-                                  with: .fade)
-    }
-  }
-
-  @objc func addNFTButtonTapped(sender: UIButton) {
-    self.delegate?.overviewMainViewController(self, run: .addNFT)
   }
 
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -526,7 +529,7 @@ extension OverviewMainViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return self.viewModel.viewForHeaderInSection(tableView, section: section, addNFT: #selector(addNFTButtonTapped(sender:)), sectionButtonTapped: #selector(sectionButtonTapped))
+    return self.viewModel.viewForHeaderInSection(tableView, section: section)
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

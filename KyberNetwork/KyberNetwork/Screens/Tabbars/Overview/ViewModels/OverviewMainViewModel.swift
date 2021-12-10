@@ -275,6 +275,8 @@ class OverviewMainViewModel {
   var hiddenSections = Set<Int>()
   var isHidingSmallAssetsToken = true
   var isRefreshingTableView = false
+  var didTapAddNFTHeader: (() -> Void)?
+  var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   init(session: KNSession) {
     self.session = session
   }
@@ -574,7 +576,7 @@ class OverviewMainViewModel {
       return OverviewNFTTableViewCell.kCellHeight
     }
   }
-  
+
   func heightForHeaderInSection() -> CGFloat {
     guard self.overviewMode == .overview else {
       return 0
@@ -585,7 +587,19 @@ class OverviewMainViewModel {
     return 40
   }
 
-  func viewForHeaderInSection(_ tableView: UITableView, section: Int, addNFT: Selector, sectionButtonTapped: Selector) -> UIView? {
+  @objc func addNFTButtonTapped(sender: UIButton) {
+    if let didTapAddNFTHeader = didTapAddNFTHeader {
+      didTapAddNFTHeader()
+    }
+  }
+
+  @objc func sectionButtonTapped(sender: UIButton) {
+    if let didTapSectionButtonHeader = didTapSectionButtonHeader {
+      didTapSectionButtonHeader(sender)
+    }
+  }
+
+  func viewForHeaderInSection(_ tableView: UITableView, section: Int) -> UIView? {
     guard self.overviewMode == .overview else {
       return nil
     }
@@ -608,7 +622,7 @@ class OverviewMainViewModel {
         button.rounded(color: UIColor(named: "normalTextColor")!, width: 1, radius: 16)
         button.setTitleColor(UIColor(named: "normalTextColor")!, for: .normal)
         button.titleLabel?.font = UIFont.Kyber.regular(with: 16)
-        button.addTarget(self, action: addNFT, for: .touchUpInside)
+        button.addTarget(self, action: #selector(addNFTButtonTapped(sender:)), for: .touchUpInside)
         view.addSubview(button)
         return view
       }
@@ -636,7 +650,7 @@ class OverviewMainViewModel {
       view.addSubview(arrowIcon)
       let button = UIButton(frame: view.frame)
       button.tag = section
-      button.addTarget(self, action: sectionButtonTapped, for: .touchUpInside)
+      button.addTarget(self, action: #selector(sectionButtonTapped), for: .touchUpInside)
       view.addSubview(button)
       return view
     } else {
