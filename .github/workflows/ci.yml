@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - ci
-      - main 
+      - main
 
 concurrency: 
   group: ${{ github.ref }}
@@ -107,78 +107,84 @@ jobs:
       ORG_SLUG: ${{ secrets.ORG_SLUG }}
       PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
-
+  
+      # default actor
+      GH_ACTOR: vietanhduong
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.6
-          bundler-cache: true
+      # - name: Setup Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 2.6
+      #     bundler-cache: true
           
-      - name: Setup Sentry CLI
-        shell: bash
-        run: curl -sL https://sentry.io/get-cli/ | bash
+      # - name: Setup Sentry CLI
+      #   shell: bash
+      #   run: curl -sL https://sentry.io/get-cli/ | bash
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCS_SA_CREDENTIAL }}
-          export_default_credentials: true
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@master
+      #   with:
+      #     project_id: ${{ secrets.GCP_PROJECT_ID }}
+      #     service_account_key: ${{ secrets.GCS_SA_CREDENTIAL }}
+      #     export_default_credentials: true
 
-      - name: Setup cache
-        uses: actions/cache@v1
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+      # - name: Setup cache
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
 
-      - name: Get configuration items
-        run: |
-          mkdir -p /Users/runner/privates        
-          gsutil cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
+      # - name: Get configuration items
+      #   run: |
+      #     mkdir -p /Users/runner/privates        
+      #     gsutil cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
-      - name: Setup environments
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          cp /Users/runner/privates/environments/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
+      # - name: Setup environments
+      #   shell: bash
+      #   env:
+      #     ENV: ${{ matrix.env }}
+      #   run: |
+      #     cp /Users/runner/privates/environments/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+      #     cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
 
-      - name: Pods install
-        run: pod install
+      # - name: Pods install
+      #   run: pod install
 
-      - name: Build IPA
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: all
-          bundle-install-path: "vendor/bundle"
+      # - name: Build IPA
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   with:
+      #     lane: all
+      #     bundle-install-path: "vendor/bundle"
 
-      - name: Deploy to OTA Server
-        shell: bash
-        env:
-          OTA_URL: ${{ secrets[matrix.ota_key] }}
-          APP_NAME: ${{ matrix.app_name }}
-          OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
-          OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
-        run: .github/deploy 
+      # - name: Deploy to OTA Server
+      #   shell: bash
+      #   env:
+      #     OTA_URL: ${{ secrets[matrix.ota_key] }}
+      #     APP_NAME: ${{ matrix.app_name }}
+      #     OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
+      #     OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
+      #   run: .github/deploy 
 
       - name: Prepare bump build number
         run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GH_ACTOR"
+          git config user.email "$GH_ACTOR@users.noreply.github.com"
                     
       - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch != 'ci'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
           bundle-install-path: "vendor/bundle"
+
+      - name: Push commit 
+        shell: bash
+        run: | 
+          git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
