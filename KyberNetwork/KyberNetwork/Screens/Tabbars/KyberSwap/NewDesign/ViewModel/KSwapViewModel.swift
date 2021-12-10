@@ -132,8 +132,11 @@ class KSwapViewModel {
 
   var displayEquivalentUSDAmount: String? {
     guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
-    let value = amount.displayRate(decimals: 18)
-    return "~ $\(value) USD"
+    let valueString = amount.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(valueString), doubleValue < 0.01 {
+      return ""
+    }
+    return "~ $\(valueString) USD"
   }
 
   var fromTokenIconName: String {
@@ -683,9 +686,8 @@ class KSwapViewModel {
     guard !self.getRefPrice(from: self.from, to: self.to).isEmpty else {
       return "---"
     }
-    let change = self.priceImpactValue
-    let displayPercent = "\(change)".prefix(6)
-    return "\(displayPercent)%"
+    return StringFormatter.percentString(value: self.priceImpactValue / 100)
+
   }
 
   var priceImpactValueTextColor: UIColor? {
