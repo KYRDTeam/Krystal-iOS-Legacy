@@ -10,9 +10,9 @@ import Kingfisher
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
   case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
+  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
   case showQRCode
-  case quickTutorial(step: Int, pointsAndRadius: [(CGPoint, CGFloat)])
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double)
+  case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case updateRate(rate: Double)
   case openHistory
   case openWalletsList
@@ -72,6 +72,10 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
   
   @IBOutlet weak var loadingView: SRCountdownTimer!
+  @IBOutlet weak var estGasFeeTitleLabel: UILabel!
+  @IBOutlet weak var estGasFeeValueLabel: UILabel!
+  @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  
   
 //  fileprivate var estRateTimer: Timer?
   fileprivate var estGasLimitTimer: Timer?
@@ -220,9 +224,19 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setUpGasFeeView() {
+    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
     self.viewModel.updateSelectedGasPriceType(self.viewModel.selectedGasPriceType)
     self.gasFeeLabel.attributedText = self.viewModel.gasFeeString
     self.slippageLabel.text = self.viewModel.slippageString
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      self.estGasFeeTitleLabel.isHidden = false
+      self.estGasFeeValueLabel.isHidden = false
+      self.gasFeeTittleLabelTopContraint.constant = 54
+    } else {
+      self.estGasFeeTitleLabel.isHidden = true
+      self.estGasFeeValueLabel.isHidden = true
+      self.gasFeeTittleLabelTopContraint.constant = 20
+    }
   }
 
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -313,7 +327,9 @@ class KSwapViewController: KNBaseViewController {
     self.updateTokensView()
     self.updateEstimatedGasLimit()
     self.updateUIMinReceiveAmount()
+    self.viewModel.resetAdvancedSettings()
     self.stopRateTimer()
+    self.setUpGasFeeView()
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
@@ -396,7 +412,7 @@ class KSwapViewController: KNBaseViewController {
     self.viewModel.showingRevertRate = !self.viewModel.showingRevertRate
     self.updateExchangeRateField()
   }
-  
+
   @objc func keyboardSwapAllButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
@@ -536,13 +552,6 @@ class KSwapViewController: KNBaseViewController {
         )
         return true
       }
-      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: "Please wait for transaction is completed"
-        )
-        return true
-      }
     }
     return false
   }
@@ -550,13 +559,18 @@ class KSwapViewController: KNBaseViewController {
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
     let event = KSwapViewEvent.openGasPriceSelect(
       gasLimit: self.viewModel.estimateGasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
       selectType: self.viewModel.selectedGasPriceType,
       pair: "\(self.viewModel.from.symbol)-\(self.viewModel.to.symbol)",
-      minRatePercent: self.viewModel.minRatePercent
+      minRatePercent: self.viewModel.minRatePercent,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
     )
     self.delegate?.kSwapViewController(self, run: event)
   }
-  
+
   fileprivate func checkUpdateApproveButton() {
     guard let token = self.viewModel.approvingToken else {
       return
@@ -727,7 +741,7 @@ extension KSwapViewController {
       amount: amount,
       gasLimit: gasLimit
     )
-    
+
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
   }
@@ -756,7 +770,6 @@ extension KSwapViewController {
       return !isSource
     }()
 
-    
     self.toAmountTextField.text = ""
     self.fromAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
@@ -770,6 +783,7 @@ extension KSwapViewController {
       )
     }
     self.viewModel.gasPriceSelectedAmount = ("", "")
+    self.viewModel.resetAdvancedSettings()
     self.updateApproveButton()
     //TODO: reset only swap button on screen, can be optimize with
     self.updateUIForSendApprove(isShowApproveButton: false)
@@ -778,6 +792,7 @@ extension KSwapViewController {
     self.updateAllRates()
     self.updateUIMinReceiveAmount()
     self.stopRateTimer()
+    self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
 
@@ -815,8 +830,8 @@ extension KSwapViewController {
     if let gasPrice = gasPrice {
       self.viewModel.updateGasPrice(gasPrice)
       self.updateFromAmountUIForSwapAllBalanceIfNeeded()
+      self.setUpGasFeeView()
     }
-    self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
 
@@ -825,6 +840,7 @@ extension KSwapViewController {
     self.viewModel.updateGasPrice(value)
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
+    self.viewModel.resetAdvancedSettings()
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
@@ -900,7 +916,7 @@ extension KSwapViewController {
 
   func coordinatorSuccessUpdateEncodedTx(object: TxObject) {
     self.hideLoading()
-    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return }
+    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return } //TODO: eip1559 refactor
     let rate = self.viewModel.estRate ?? BigInt(0)
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount {
@@ -919,7 +935,8 @@ extension KSwapViewController {
       }()
       return expectedExchange
     }()
-    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
+
+//    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
     let exchange = KNDraftExchangeTransaction(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -927,13 +944,33 @@ extension KSwapViewController {
       maxDestAmount: BigInt(2).power(255),
       expectedRate: rate,
       minRate: self.viewModel.minRate,
-      gasPrice: self.viewModel.gasPrice,
-      gasLimit: gasLimit,
+      gasPrice: signTx.gasPrice,
+      gasLimit: signTx.gasLimit,
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: self.viewModel.from.address, to: self.viewModel.to.address, amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
     )
     let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
-    self.delegate?.kSwapViewController(self, run: .confirmSwap(data: exchange, tx: signTx, priceImpact: priceImpactValue, platform: self.viewModel.currentFlatform, rawTransaction: object, minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)))
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      guard let signTx = self.viewModel.buildEIP1559Tx(object) else { return }
+      print(signTx)
+      self.delegate?.kSwapViewController(self, run: .confirmEIP1559Swap(
+        data: exchange,
+        eip1559tx: signTx,
+        priceImpact: priceImpactValue,
+        platform: self.viewModel.currentFlatform,
+        rawTransaction: object,
+        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
+      ))
+    } else {
+      self.delegate?.kSwapViewController(self, run: .confirmSwap(
+        data: exchange,
+        tx: signTx,
+        priceImpact: priceImpactValue,
+        platform: self.viewModel.currentFlatform,
+        rawTransaction: object,
+        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
+      ))
+    }
   }
 
   func coordinatorFailUpdateEncodedTx() {
@@ -942,7 +979,7 @@ extension KSwapViewController {
   }
 
   func coordinatorSuccessSendTransaction() {
-    print("[Debug] send success")
+    self.resetAdvancedSetting()
     self.hideLoading()
   }
 
@@ -973,6 +1010,7 @@ extension KSwapViewController {
   }
 
   func coordinatorDidUpdateChain() {
+    self.viewModel.resetAdvancedSettings()
     self.updateUISwitchChain()
     self.viewModel.resetDefaultTokensPair()
     self.fromAmountTextField.text = ""
@@ -984,6 +1022,27 @@ extension KSwapViewController {
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
     self.stopRateTimer()
+  }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.setUpGasFeeView()
+  }
+
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
+
+  func resetAdvancedSetting() {
+    self.viewModel.advancedGasLimit = nil
+    self.viewModel.advancedMaxPriorityFee = nil
+    self.viewModel.advancedMaxFee = nil
+    self.viewModel.advancedNonce = nil
+    self.viewModel.updateSelectedGasPriceType(.medium)
+    self.setUpGasFeeView()
   }
 }
 
@@ -1003,6 +1062,7 @@ extension KSwapViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
+
     if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
     if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
     let double: Double = {
@@ -1017,7 +1077,7 @@ extension KSwapViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
     self.viewModel.updateAmount(text, isSource: textField == self.fromAmountTextField)
-    
+
     self.stopRateTimer()
     self.keyboardTimer?.invalidate()
     self.keyboardTimer = Timer.scheduledTimer(
@@ -1058,6 +1118,7 @@ extension KSwapViewController: UITextFieldDelegate {
   }
 
   @objc func keyboardPauseTyping(timer: Timer) {
+    self.updateEstimatedGasLimit()
     self.updateViewAmountDidChange()
   }
 

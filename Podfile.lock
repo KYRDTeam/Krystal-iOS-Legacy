@@ -149,6 +149,7 @@ PODS:
   - SwiftMessages (5.0.1):
     - SwiftMessages/App (= 5.0.1)
   - SwiftMessages/App (5.0.1)
+  - SwiftProtobuf (1.18.0)
   - SwipeCellKit (2.7.1)
   - TagListView (1.4.1)
   - TrezorCrypto (0.0.9)
@@ -160,6 +161,12 @@ PODS:
     - CryptoSwift
     - TrezorCrypto
     - TrustCore
+  - TrustWalletCore (2.6.29):
+    - TrustWalletCore/Core (= 2.6.29)
+  - TrustWalletCore/Core (2.6.29):
+    - TrustWalletCore/Types
+  - TrustWalletCore/Types (2.6.29):
+    - SwiftProtobuf
   - WalletConnect (0.1.0):
     - CryptoSwift
     - PromiseKit
@@ -212,6 +219,7 @@ DEPENDENCIES:
   - TagListView (~> 1.0)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
+  - TrustWalletCore (~> 2.6.29)
   - WalletConnect (from `https://github.com/trustwallet/wallet-connect-swift`)
   - WalletConnectSwift
   - Web3
@@ -260,11 +268,13 @@ SPEC REPOS:
     - StatefulViewController
     - SwiftLint
     - SwiftMessages
+    - SwiftProtobuf
     - SwipeCellKit
     - TagListView
     - TrezorCrypto
     - TrustCore
     - TrustKeystore
+    - TrustWalletCore
     - WalletConnectSwift
     - Web3
 
@@ -333,15 +343,17 @@ SPEC CHECKSUMS:
   SwiftChart: 6ed8c61f3731cc32e3cb92858dba339d08ddac87
   SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
   SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
+  SwiftProtobuf: c3c12645230d9b09c72267e0de89468c5543bd86
   SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
   TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
+  TrustWalletCore: aab344a0f257a97c62115ae0d51d9f7c378ed755
   WalletConnect: c5be4e3ed9efbefb8480ab27e1766d4549a92709
   WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 286524553c359e6bcf22eeaf8325badb6fd443fb
+PODFILE CHECKSUM: 113ae9e1b5d938550c82d5ebf11354006b47a523
 
 COCOAPODS: 1.10.1

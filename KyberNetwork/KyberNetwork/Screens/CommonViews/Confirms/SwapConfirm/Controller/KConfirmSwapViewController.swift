@@ -6,6 +6,7 @@ import UIKit
 
 protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
+  func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
 }
 
@@ -123,7 +124,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     } else {
       self.swapAnywayContainerView.isHidden = true
     }
-    
+
     self.view.layoutIfNeeded()
   }
   
@@ -161,10 +162,17 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBAction func confirmButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
-
-    let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: self.viewModel.signTransaction.toSignTransactionObject())
-    internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
-    self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: self.viewModel.signTransaction, internalHistoryTransaction: internalHistory)
+    if let unwrap = self.viewModel.signTransaction {
+      let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
+      internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
+      self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, signTransaction: unwrap, internalHistoryTransaction: internalHistory)
+    }
+    if let unwrap = self.viewModel.eip1559Transaction {
+      let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: nil, eip1559Tx: unwrap)
+      internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
+      
+      self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
+    }
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

@@ -30,6 +30,7 @@ struct SignTransactionObject: Codable {
   let gasPrice: String
   let gasLimit: String
   let chainID: Int
+  let reservedGasLimit: String
 }
 
 extension SignTransactionObject {
@@ -45,7 +46,7 @@ extension SignTransactionObject {
       chainID: self.chainID
     )
   }
-  
+
   func gasPriceForCancelTransaction() -> BigInt {
     guard
       let currentGasPrice = BigInt(self.gasPrice)
@@ -56,7 +57,15 @@ extension SignTransactionObject {
     let gasPrice = max(currentGasPrice * BigInt(1.2 * pow(10.0, 18.0)) / BigInt(10).power(18), KNGasConfiguration.gasPriceMax)
     return gasPrice
   }
-  
+
+  func toSpeedupTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
+    return SignTransactionObject(value: self.value, from: self.from, to: self.to, nonce: self.nonce, data: self.data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID, reservedGasLimit: gasLimit)
+  }
+
+  func toCancelTransaction(gasPrice: String, gasLimit: String) -> SignTransactionObject {
+    return SignTransactionObject(value: "0", from: self.from, to: self.from, nonce: self.nonce, data: Data(), gasPrice: gasPrice, gasLimit: gasLimit, chainID: self.chainID, reservedGasLimit: gasLimit)
+  }
+
   func toSpeedupTransaction(account: Account, gasPrice: BigInt) -> SignTransaction {
     return SignTransaction(
       value: BigInt(self.value) ?? BigInt(0),
@@ -82,18 +91,33 @@ extension SignTransactionObject {
       chainID: self.chainID
     )
   }
+  
+  func transactionGasPrice() -> BigInt? {
+    return BigInt(self.gasPrice)
+  }
 }
 
 extension TxObject {
-  func convertToSignTransaction(wallet: Wallet) -> SignTransaction? {
+  func convertToSignTransaction(wallet: Wallet, advancedGasPrice: String? = nil, advancedGasLimit: String? = nil, advancedNonce: String? = nil) -> SignTransaction? {
     guard
       let value = BigInt(self.value.drop0x, radix: 16),
-      let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
-      let gasLimit = BigInt(self.gasLimit.drop0x, radix: 16),
-      let nonce = Int(self.nonce.drop0x, radix: 16)
+      var gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
+      var gasLimit = BigInt(self.gasLimit.drop0x, radix: 16),
+      var nonce = Int(self.nonce.drop0x, radix: 16)
     else
     {
       return nil
+    }
+    if let unwrap = advancedGasPrice, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+      gasPrice = value
+    }
+    
+    if let unwrap = advancedGasLimit, let value = BigInt(unwrap) {
+      gasLimit = value
+    }
+    
+    if let unwrap = advancedNonce, let value = Int(unwrap) {
+      nonce = value
     }
     if case let .real(account) = wallet.type {
       return SignTransaction(
@@ -120,6 +144,52 @@ extension TxObject {
   func newTxObjectWithGasPrice(gasPrice: BigInt) -> TxObject {
     let gasPriceString = gasPrice.hexEncoded
     return TxObject(from: self.from, to: self.to, data: self.data, value: self.value, gasPrice: gasPriceString, nonce: self.nonce, gasLimit: self.gasLimit)
+  }
+
+  func convertToEIP1559Transaction(advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxGas: String?, advancedNonce: String?) -> EIP1559Transaction? {
+    guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
+    let gasLimitDefault = BigInt(self.gasLimit.drop0x, radix: 16) ?? BigInt(0)
+    let gasPrice = BigInt(self.gasPrice.drop0x, radix: 16) ?? BigInt(0)
+    let priorityFeeBigIntDefault = gasPrice - baseFeeBigInt
+    let maxGasFeeDefault = gasPrice
+    let chainID = BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded
+    var nonce = self.nonce.hexSigned2Complement
+    if let customNonceString = advancedNonce, let nonceInt = Int(customNonceString) {
+      let nonceBigInt = BigInt(nonceInt)
+      nonce = nonceBigInt.hexEncoded.hexSigned2Complement
+    }
+    if let advancedGasStr = advancedGasLimit,
+       let gasLimit = BigInt(advancedGasStr),
+       let priorityFeeString = advancedPriorityFee,
+       let priorityFee = BigInt(priorityFeeString),
+       let maxGasFeeString = advancedMaxGas,
+       let maxGasFee = BigInt(maxGasFeeString) {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: nonce,
+        gasLimit: gasLimit.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFee.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFee.hexEncoded.hexSigned2Complement,
+        toAddress: self.to,
+        fromAddress: self.from,
+        data: self.data,
+        value: self.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
+        )
+    } else {
+      return EIP1559Transaction(
+        chainID: chainID.hexSigned2Complement,
+        nonce: nonce,
+        gasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement,
+        maxInclusionFeePerGas: priorityFeeBigIntDefault.hexEncoded.hexSigned2Complement,
+        maxGasFee: maxGasFeeDefault.hexEncoded.hexSigned2Complement,
+        toAddress: self.to,
+        fromAddress: self.from,
+        data: self.data,
+        value: self.value.drop0x.hexSigned2Complement,
+        reservedGasLimit: gasLimitDefault.hexEncoded.hexSigned2Complement
+      )
+    }
   }
 }
 
@@ -315,10 +385,19 @@ class InternalHistoryTransaction: Codable {
   let transactionDetailDescription: String
   var transactionSuccessDescription: String?
   var earnTransactionSuccessDescription: String?
-  var transactionObject: SignTransactionObject
+  var transactionObject: SignTransactionObject?
+  var eip1559Transaction: EIP1559Transaction?
   let chain: ChainType
 
-  init(type: HistoryModelType, state: InternalTransactionState, fromSymbol: String?, toSymbol: String?, transactionDescription: String, transactionDetailDescription: String, transactionObj: SignTransactionObject) {
+  init(
+    type: HistoryModelType,
+    state: InternalTransactionState,
+    fromSymbol: String?,
+    toSymbol: String?,
+    transactionDescription: String,
+    transactionDetailDescription: String,
+    transactionObj: SignTransactionObject?,
+    eip1559Tx: EIP1559Transaction?) {
     self.type = type
     self.state = state
     self.fromSymbol = fromSymbol
@@ -326,6 +405,7 @@ class InternalHistoryTransaction: Codable {
     self.transactionDescription = transactionDescription
     self.transactionDetailDescription = transactionDetailDescription
     self.transactionObject = transactionObj
+    self.eip1559Transaction = eip1559Tx
     self.chain = KNGeneralProvider.shared.currentChain
   }
 }

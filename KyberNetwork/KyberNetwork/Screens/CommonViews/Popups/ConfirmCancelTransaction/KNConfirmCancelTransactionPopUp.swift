@@ -16,7 +16,7 @@ struct KNConfirmCancelTransactionViewModel {
 
   var transactionFeeETHString: String {
     let fee: BigInt? = {
-      let gasPrice = self.transaction.transactionObject.gasPriceForCancelTransaction()
+      let gasPrice = self.transaction.transactionObject?.gasPriceForCancelTransaction() ?? BigInt(0) //TODO: add case eip1559
       return gasPrice * KNGasConfiguration.transferETHGasLimitDefault
     }()
     let feeString: String = fee?.displayRate(decimals: 18) ?? "---"

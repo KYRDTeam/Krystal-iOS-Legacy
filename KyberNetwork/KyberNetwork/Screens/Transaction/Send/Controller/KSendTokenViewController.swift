@@ -16,11 +16,11 @@ enum KSendTokenViewEvent {
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
   case contactSelectMore
-  case openGasPriceSelect(gasLimit: BigInt, selectType: KNSelectedGasPriceType)
+  case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
-  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool)
-  case estimateGasLimitTransferNFT(to: String,item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
+  case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
+  case estimateGasLimitTransferNFT(to: String, item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -62,6 +62,9 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var currentChainIcon: UIImageView!
+  @IBOutlet weak var estGasFeeTitleLabel: UILabel!
+  @IBOutlet weak var estGasFeeValueLabel: UILabel!
+  @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -188,7 +191,15 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
-    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType))
+    self.delegate?.kSendTokenViewController(self, run: .openGasPriceSelect(
+      gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
+    ))
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
@@ -241,6 +252,16 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func updateGasFeeUI() {
     self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      self.estGasFeeTitleLabel.isHidden = false
+      self.estGasFeeValueLabel.isHidden = false
+      self.gasFeeTittleLabelTopContraint.constant = 54
+    } else {
+      self.estGasFeeTitleLabel.isHidden = true
+      self.estGasFeeValueLabel.isHidden = true
+      self.gasFeeTittleLabelTopContraint.constant = 20
+    }
+    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -295,13 +316,6 @@ class KSendTokenViewController: KNBaseViewController {
         self.showWarningTopBannerMessage(
           with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
           message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
-        )
-        return true
-      }
-      guard EtherscanTransactionStorage.shared.isContainInsternalSendTransaction() == false else {
-        self.showWarningTopBannerMessage(
-          with: "",
-          message: "Please wait for transaction is completed"
         )
         return true
       }
@@ -403,16 +417,10 @@ extension KSendTokenViewController {
 // MARK: Update from coordinator
 extension KSendTokenViewController {
   func coordinatorDidUpdateSendToken(_ from: TokenObject, balance: Balance?) {
-    if from.isPromoToken {
-      self.showWarningTopBannerMessage(
-        with: "",
-        message: NSLocalizedString("can.not.transfer.this.token", value: "Can not transfer this token", comment: ""),
-        time: 1.5
-      )
-      return
-    }
     self.viewModel.updateSendToken(from: from, balance: balance)
+    self.viewModel.resetAdvancedSettings()
     self.updateUIFromTokenDidChange()
+    self.updateGasFeeUI()
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {
@@ -501,26 +509,49 @@ extension KSendTokenViewController {
     self.viewModel.updateGasPrice(value)
     self.updateAmountFieldUIForTransferAllIfNeeded()
     self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.currentWalletAddress = wallet.address.description
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else { return }
+    self.viewModel.resetAdvancedSettings()
     self.updateUISwitchChain()
     self.viewModel.resetFromToken()
     self.updateGasFeeUI()
     self.tokenBalanceLabel.text = self.viewModel.totalBalanceText
     self.currentTokenButton.setTitle(self.viewModel.tokenButtonText, for: .normal)
+  }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
+
+  func coordinatorSuccessSendTransaction() {
+    self.viewModel.advancedGasLimit = nil
+    self.viewModel.advancedMaxPriorityFee = nil
+    self.viewModel.advancedMaxFee = nil
+    self.viewModel.updateSelectedGasPriceType(.medium)
+    self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 }
 

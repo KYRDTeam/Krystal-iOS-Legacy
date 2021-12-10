@@ -12,7 +12,7 @@ extension NSObject {
     self.showTopBannerView(with: title, message: message, theme: .success, time: time, tapHandler: tapHandler)
   }
 
-  func showErrorTopBannerMessage(with title: String = "", message: String = "", time: TimeInterval = 1.5, tapHandler: (() -> Void)? = nil) {
+  func showErrorTopBannerMessage(with title: String = "", message: String = "", time: TimeInterval = 3, tapHandler: (() -> Void)? = nil) {
     self.showTopBannerView(with: title, message: message, theme: .error, time: time, tapHandler: tapHandler)
   }
 

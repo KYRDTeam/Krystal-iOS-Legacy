@@ -7,12 +7,35 @@ struct KConfirmSwapViewModel {
 
   let transaction: KNDraftExchangeTransaction
   let ethBalance: BigInt
-  let signTransaction: SignTransaction
+  let signTransaction: SignTransaction?
   let priceImpact: Double
   let platform: String
   let rawTransaction: TxObject
   let minReceiveAmount: String
   let minReceiveTitle: String
+  let eip1559Transaction: EIP1559Transaction?
+
+  init(
+    transaction: KNDraftExchangeTransaction,
+    ethBalance: BigInt,
+    signTransaction: SignTransaction?,
+    eip1559Tx: EIP1559Transaction?,
+    priceImpact: Double,
+    platform: String,
+    rawTransaction: TxObject,
+    minReceiveAmount: String,
+    minReceiveTitle: String
+  ) {
+    self.transaction = transaction
+    self.ethBalance = ethBalance
+    self.signTransaction = signTransaction
+    self.priceImpact = priceImpact
+    self.platform = platform
+    self.rawTransaction = rawTransaction
+    self.eip1559Transaction = eip1559Tx
+    self.minReceiveAmount = minReceiveAmount
+    self.minReceiveTitle = minReceiveTitle
+  }
 
   var titleString: String {
     return "\(self.transaction.from.symbol) ➞ \(self.transaction.to.symbol)"
@@ -60,8 +83,8 @@ struct KConfirmSwapViewModel {
   }
 
   var transactionFee: BigInt {
-    let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    let gasPrice: BigInt = self.transactionGasPrice
+    let gasLimit: BigInt = self.transactionGasLimit
     return gasPrice * gasLimit
   }
 
@@ -85,8 +108,8 @@ struct KConfirmSwapViewModel {
   }
 
   var transactionGasPriceString: String {
-    let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    let gasPrice: BigInt = self.transactionGasPrice
+    let gasLimit: BigInt = self.transactionGasLimit
     let gasPriceText = gasPrice.shortString(
       units: .gwei,
       maxFractionDigits: 1
@@ -100,6 +123,30 @@ struct KConfirmSwapViewModel {
     return self.transaction.hint ?? ""
   }
   
+  var transactionGasPrice: BigInt {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let unwrap = self.eip1559Transaction?.maxGasFee, let gasPrice = BigInt(unwrap.drop0x, radix: 16) {
+        return gasPrice
+      } else {
+        return BigInt(0)
+      }
+    } else {
+      return self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
+    }
+  }
+
+  var transactionGasLimit: BigInt {
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      if let unwrap = self.eip1559Transaction?.gasLimit, let gasLimit = BigInt(unwrap.drop0x, radix: 16) {
+        return gasLimit
+      } else {
+        return BigInt(0)
+      }
+    } else {
+      return self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    }
+  }
+
   var reverseRoutingText: String {
     return self.priceImpact > -5 ? String(format: "Your transaction will be routed to %@ for better rate.".toBeLocalised(), self.platform.capitalized) : ""
   }

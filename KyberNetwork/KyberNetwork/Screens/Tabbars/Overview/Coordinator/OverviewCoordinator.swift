@@ -109,7 +109,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
-//    self.rootViewController.coordinatorDidUpdatePendingTx()
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
     self.withdrawCoordinator?.coordinatorDidUpdatePendingTx()
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])

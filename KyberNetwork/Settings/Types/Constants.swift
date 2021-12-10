@@ -12,7 +12,7 @@ public struct Constants {
   public static let isDoneShowQuickTutorialForHistoryView = "history_tutorial_done"
   public static let kisShowQuickTutorialForLongPendingTx = "kisShowQuickTutorialForLongPendingTx"
   public static let klimitNumberOfTransactionInDB = 1000
-  public static let animationDuration = 0.5
+  public static let animationDuration = 0.3
   /// Value in USD to validate if current token should display blue tick or not
   public static let hightVolAmount = 100000.0
   public static let useGasTokenDataKey = "use_gas_token_data_key"
@@ -57,13 +57,14 @@ public struct Constants {
   public static let hideBalanceKey = "hide_balance_key"
   public static let viewModeStoreFileName = "view-mode.data"
   public static let historyKrystalTransactionsStoreFileName = "-krystal-history-transaction.data"
+  public static let gasPriceStoreFileName = "-gas_price.data"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,
     name: "Mainnet",
     symbol: "Mainnet",
     endpoint: "https://mainnet.infura.io/v3/" + KNSecret.infuraKey,
-    endpointKyber: "https://semi-node.kyber.network",
+    endpointKyber: "https://mainnet.infura.io/v3/" + KNSecret.infuraKey,
     endpointAlchemy: "https://eth-mainnet.alchemyapi.io/v2/" + KNSecret.alchemyKey,
     etherScanEndpoint: "https://etherscan.io/",
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
@@ -76,7 +77,7 @@ public struct Constants {
     name: "Ropsten",
     symbol: "Ropsten",
     endpoint: "https://ropsten.infura.io/v3/" + KNSecret.infuraKey,
-    endpointKyber: "https://semi-node.kyber.network",
+    endpointKyber: "https://ropsten.infura.io/v3/" + KNSecret.infuraKey,
     endpointAlchemy: "https://eth-ropsten.alchemyapi.io/v2/" + KNSecret.alchemyRopstenKey,
     etherScanEndpoint: "https://ropsten.etherscan.io/",
     ensAddress: "0x112234455c3a32fd11230c42e7bccd4a84e02010",
@@ -89,7 +90,7 @@ public struct Constants {
     name: "Mainnet",
     symbol: "Mainnet",
     endpoint: "https://mainnet.infura.io/v3/" + KNSecret.infuraKey,
-    endpointKyber: "https://semi-node.kyber.network",
+    endpointKyber: "https://mainnet.infura.io/v3/" + KNSecret.infuraKey,
     endpointAlchemy: "https://eth-mainnet.alchemyapi.io/v2/" + KNSecret.alchemyKey,
     etherScanEndpoint: "https://etherscan.io/",
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
@@ -116,7 +117,7 @@ public struct Constants {
     symbol: "RopstenBSC",
     endpoint: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     endpointKyber: "https://data-seed-prebsc-2-s1.binance.org:8545/",
-    endpointAlchemy: "https://data-seed-prebsc-1-s2.binance.org:8545/",
+    endpointAlchemy: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     etherScanEndpoint: "https://testnet.bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x813718C50df497BC136d5d6dfc0E0aDA8AB0C93e",
@@ -153,9 +154,9 @@ public struct Constants {
     chainID: 43113,
     name: "Avalanche FUJI C-Chain",
     symbol: "AVAX",
-    endpoint: "https://api.avax-test.network/ext/bc/C/rpc/",
-    endpointKyber: "https://api.avax-test.network/ext/bc/C/rpc/",
-    endpointAlchemy: "https://api.avax-test.network/ext/bc/C/rpc/",
+    endpoint: "https://api.avax-test.network/ext/bc/C/rpc",
+    endpointKyber: "https://api.avax-test.network/ext/bc/C/rpc",
+    endpointAlchemy: "https://api.avax-test.network/ext/bc/C/rpc",
     etherScanEndpoint: "https://cchain.explorer.avax-test.network/",
     ensAddress: "",
     wrappedAddress: "",

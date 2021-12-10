@@ -382,54 +382,54 @@ extension Transaction {
   }
 }
 
-extension Transaction {
-  func makeCancelTransaction() -> UnconfirmedTransaction? {
-    guard let address = Address(string: self.from) else {
-      return nil
-    }
-    guard let currentGasPrice = Double(self.gasPrice)  else {
-      return nil
-    }
-    let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceMax)
-    let nouce = BigInt(self.nonce)
-    let unconfirmTx = UnconfirmedTransaction(
-      transferType: .ether(destination: address),
-      value: BigInt(0),
-      to: address,
-      data: nil,
-      gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
-      gasPrice: gasPrice,
-      nonce: nouce
-    )
-    return unconfirmTx
-  }
-
-  func makeSpeedUpTransaction(availableTokens: [TokenObject], gasPrice: BigInt) -> UnconfirmedTransaction? {
-    guard let localizedOperation = self.localizedOperations.first else { return nil }
-    guard let filteredToken = availableTokens.first(where: { (token) -> Bool in
-      return token.symbol == localizedOperation.symbol
-    }) else { return nil }
-    let transferType: TransferType = {
-      if filteredToken.isETH {
-        return TransferType.ether(destination: Address(string: self.to))
-      }
-      return TransferType.token(filteredToken)
-    }()
-    let amount: BigInt = {
-      return self.value.amountBigInt(decimals: localizedOperation.decimals) ?? BigInt(0)
-    }()
-    let gasLimit: BigInt = {
-      return self.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
-    }()
-    let nonce = BigInt(self.nonce)
-    return UnconfirmedTransaction(
-      transferType: transferType,
-      value: amount,
-      to: Address(string: self.to),
-      data: nil,
-      gasLimit: gasLimit,
-      gasPrice: gasPrice,
-      nonce: nonce
-    )
-  }
-}
+//extension Transaction {
+//  func makeCancelTransaction() -> UnconfirmedTransaction? {
+//    guard let address = Address(string: self.from) else {
+//      return nil
+//    }
+//    guard let currentGasPrice = Double(self.gasPrice)  else {
+//      return nil
+//    }
+//    let gasPrice = max(BigInt(currentGasPrice * 1.2), KNGasConfiguration.gasPriceMax)
+//    let nouce = BigInt(self.nonce)
+//    let unconfirmTx = UnconfirmedTransaction(
+//      transferType: .ether(destination: address),
+//      value: BigInt(0),
+//      to: address,
+//      data: nil,
+//      gasLimit: KNGasConfiguration.transferETHGasLimitDefault,
+//      gasPrice: gasPrice,
+//      nonce: nouce
+//    )
+//    return unconfirmTx
+//  }
+//
+//  func makeSpeedUpTransaction(availableTokens: [TokenObject], gasPrice: BigInt) -> UnconfirmedTransaction? {
+//    guard let localizedOperation = self.localizedOperations.first else { return nil }
+//    guard let filteredToken = availableTokens.first(where: { (token) -> Bool in
+//      return token.symbol == localizedOperation.symbol
+//    }) else { return nil }
+//    let transferType: TransferType = {
+//      if filteredToken.isETH {
+//        return TransferType.ether(destination: Address(string: self.to))
+//      }
+//      return TransferType.token(filteredToken)
+//    }()
+//    let amount: BigInt = {
+//      return self.value.amountBigInt(decimals: localizedOperation.decimals) ?? BigInt(0)
+//    }()
+//    let gasLimit: BigInt = {
+//      return self.gasUsed.amountBigInt(units: .wei) ?? BigInt(0)
+//    }()
+//    let nonce = BigInt(self.nonce)
+//    return UnconfirmedTransaction(
+//      transferType: transferType,
+//      value: amount,
+//      to: Address(string: self.to),
+//      data: nil,
+//      gasLimit: gasLimit,
+//      gasPrice: gasPrice,
+//      nonce: nonce
+//    )
+//  }
+//}

@@ -262,13 +262,13 @@ class KNGeneralProvider {
   var priceAlertMessage: String {
     switch self.currentChain {
     case .eth:
-      return "There.is.a.difference.between.the.estimated.price"
+      return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
     case .bsc:
-      return "There.is.a.difference.between.the.estimated.price.bsc"
+      return "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised()
     case .polygon:
-      return "There.is.a.difference.between.the.estimated.price.matic"
+      return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
     case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.avalanche"
+      return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
     }
   }
 
@@ -316,6 +316,10 @@ class KNGeneralProvider {
       address = Constants.krystalProxyAddressAvax.lowercased()
     }
     return Address(string: address)!
+  }
+  
+  var isUseEIP1559: Bool {
+    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche
   }
 
   var wrapperAddress: Address {
@@ -815,7 +819,7 @@ class KNGeneralProvider {
               if tokenAddress.description.lowercased() == Constants.gasTokenAddress {
                 symbol = "CHI"
               }
-              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject())
+              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject(), eip1559Tx: nil) //TODO: add case eip1559
               historyTransaction.hash = hash
               historyTransaction.time = Date()
               historyTransaction.nonce = txCount
@@ -875,7 +879,7 @@ class KNGeneralProvider {
               if tokenAddress.description.lowercased() == Constants.gasTokenAddress {
                 symbol = "CHI"
               }
-              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject())
+              let historyTransaction = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: symbol, transactionDetailDescription: tokenAddress.description, transactionObj: signData.1.toSignTransactionObject(), eip1559Tx: nil) //TODO: add case eip1559
               historyTransaction.hash = hash
               historyTransaction.time = Date()
               historyTransaction.nonce = txCount
@@ -1432,6 +1436,29 @@ extension KNGeneralProvider {
       data: transaction.data,
       gasPrice: transaction.gasPrice
     )
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
+      switch result {
+      case .success(let value):
+        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        completion(.success(limit))
+      case .failure(let error):
+        NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  func getEstimateGasLimit(eip1559Tx: EIP1559Transaction, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+    let request = KNEstimateGasLimitRequest(
+      from: eip1559Tx.fromAddress,
+      to: eip1559Tx.toAddress,
+      value: BigInt(eip1559Tx.value.drop0x, radix: 16) ?? BigInt(0),
+      data: Data(hexString: eip1559Tx.data) ?? Data(),
+      gasPrice: BigInt(eip1559Tx.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
+    )
+    
+    print("[EIP1559] gaslimit request \(request.parameters)")
+
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):

@@ -58,6 +58,15 @@ extension String {
   func trunc(length: Int, trailing: String = "…") -> String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }
+  //Hex signed 2's complement
+  var hexSigned2Complement: String {
+    var string = self.drop0x
+    if string.count % 2 != 0 {
+      return "0" + string
+    } else {
+      return string
+    }
+  }
 }
 
 extension String {

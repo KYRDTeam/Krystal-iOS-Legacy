@@ -6,7 +6,7 @@ import BigInt
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)
   case cancel
-  case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, amount: Int, isSupportERC721: Bool, historyTransaction: InternalHistoryTransaction)
+  case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, amount: Int, isSupportERC721: Bool, historyTransaction: InternalHistoryTransaction, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
 protocol KConfirmSendViewControllerDelegate: class {
@@ -103,7 +103,7 @@ class KConfirmSendViewController: KNBaseViewController {
       type = .transferToken
       symbol = token.symbol
     }
-    let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0))
+    let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0, reservedGasLimit: ""), eip1559Tx: nil) //TODO: add case eip1559
     historyTransaction.transactionSuccessDescription = "-\(self.viewModel.totalAmountString) to \(self.viewModel.shortAddress.lowercased())"
     let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(self.viewModel.transaction), historyTransaction: historyTransaction)
     self.delegate?.kConfirmSendViewController(self, run: event)

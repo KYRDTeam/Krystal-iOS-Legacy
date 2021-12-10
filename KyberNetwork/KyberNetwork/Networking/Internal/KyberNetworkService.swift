@@ -883,6 +883,7 @@ enum KrytalService {
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
+  case getGasPrice2
 }
 
 extension KrytalService: TargetType {
@@ -983,6 +984,8 @@ extension KrytalService: TargetType {
       return "/v1/account/eligible"
     case .getTotalBalance:
       return "/v1/account/totalBalances"
+    case .getGasPrice2:
+      return "/v1/gasPrice"
     }
   }
 
@@ -1248,6 +1251,8 @@ extension KrytalService: TargetType {
           json["chains"] = chains
         }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getGasPrice2:
+      return .requestPlain
     }
   }
 
@@ -1278,6 +1283,7 @@ enum CoinGeckoService {
   case getPriceETH
   case getPriceTokens(addresses: [String])
 }
+
 /*
 extension CoinGeckoService: TargetType {
   var baseURL: URL {

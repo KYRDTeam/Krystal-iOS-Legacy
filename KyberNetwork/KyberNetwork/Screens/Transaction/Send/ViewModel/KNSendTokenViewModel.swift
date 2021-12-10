@@ -21,10 +21,42 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
-
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
   fileprivate(set) var addressString: String = ""
   fileprivate(set) var isUsingEns: Bool = false
   var isSendAllBalanace: Bool = false
+
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
 
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit
@@ -72,6 +104,7 @@ class KNSendTokenViewModel: NSObject {
     self.from = from.clone()
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
+    self.baseGasLimit = self.gasLimit
     self.currentWalletAddress = currentAddress
   }
 
@@ -120,8 +153,8 @@ class KNSendTokenViewModel: NSObject {
       typeString = "regular".toBeLocalised().uppercased()
     case .slow:
       typeString = "slow".toBeLocalised().uppercased()
-    default:
-      break
+    case .custom:
+      typeString = "custom".toBeLocalised().uppercased()
     }
     return "\(feeString) \(sourceToken) (\(typeString))"
   }
@@ -240,15 +273,70 @@ class KNSendTokenViewModel: NSObject {
       }
       return self.isSendAllBalanace ? self.from.getBalanceBigInt() : self.amountBigInt
     }()
-    return UnconfirmedTransaction(
-      transferType: transferType,
-      value: amount,
-      to: self.address,
-      data: nil,
-      gasLimit: self.gasLimit,
-      gasPrice: self.gasPrice,
-      nonce: .none
-    )
+
+    if KNGeneralProvider.shared.isUseEIP1559 {
+      var nonce: BigInt? = nil
+      if let customNonce = self.advancedNonce, let customNonceInt = Int(customNonce) {
+        let customNonceBigInt = BigInt(customNonceInt)
+        nonce = customNonceBigInt
+      }
+      if let advancedGasStr = self.advancedGasLimit,
+         let gasLimit = BigInt(advancedGasStr),
+         let priorityFeeString = self.advancedMaxPriorityFee,
+         let maxGasFeeString = self.advancedMaxFee {
+        return UnconfirmedTransaction(
+          transferType: transferType,
+          value: amount,
+          to: self.address,
+          data: nil,
+          gasLimit: gasLimit,
+          gasPrice: self.gasPrice,
+          nonce: nonce,
+          maxInclusionFeePerGas: priorityFeeString,
+          maxGasFee: maxGasFeeString
+        )
+      } else {
+        let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+        let priorityFeeBigIntDefault = self.selectedPriorityFee
+        return UnconfirmedTransaction(
+          transferType: transferType,
+          value: amount,
+          to: self.address,
+          data: nil,
+          gasLimit: self.gasLimit,
+          gasPrice: self.gasPrice,
+          nonce: nonce,
+          maxInclusionFeePerGas: priorityFeeBigIntDefault.shortString(units: UnitConfiguration.gasPriceUnit),
+          maxGasFee: self.gasPrice.shortString(units: UnitConfiguration.gasPriceUnit)
+        )
+      }
+    } else {
+      var txGasPrice = self.gasPrice
+      var txGasLimit = self.gasLimit
+      var txNonce: BigInt? = .none
+      if let unwrap = self.advancedMaxFee, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+        txGasPrice = value
+      }
+      
+      if let unwrap = self.advancedGasLimit, let value = BigInt(unwrap) {
+        txGasLimit = value
+      }
+      
+      if let unwrap = self.advancedNonce, let value = Int(unwrap) {
+        txNonce = BigInt(value)
+      }
+      return UnconfirmedTransaction(
+        transferType: transferType,
+        value: amount,
+        to: self.address,
+        data: nil,
+        gasLimit: txGasLimit,
+        gasPrice: txGasPrice,
+        nonce: txNonce,
+        maxInclusionFeePerGas: nil,
+        maxGasFee: nil
+      )
+    }
   }
 
   var isNeedUpdateEstFeeForTransferingAllBalance: Bool = false
@@ -259,6 +347,7 @@ class KNSendTokenViewModel: NSObject {
     self.amount = ""
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: self.from)
+    self.baseGasLimit = self.gasLimit
   }
 
   func updateBalance(_ balances: [String: Balance]) {
@@ -282,6 +371,13 @@ class KNSendTokenViewModel: NSObject {
     case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
     case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
     case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
     default: return
     }
   }
@@ -289,7 +385,13 @@ class KNSendTokenViewModel: NSObject {
   @discardableResult
   func updateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, address: String) -> Bool {
     if self.from == from, self.addressString.lowercased() == address.lowercased() {
-      self.gasLimit = gasLimit
+      if self.selectedGasPriceType == .custom {
+        self.baseGasLimit = gasLimit
+      } else {
+        self.gasLimit = gasLimit
+        self.baseGasLimit = gasLimit
+      }
+      
       return true
     }
     return false
@@ -307,6 +409,46 @@ class KNSendTokenViewModel: NSObject {
     if ens == self.addressString {
       self.address = ensAddr
       self.isUsingEns = ensAddr != nil
+    }
+  }
+
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    self.advancedNonce = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
+  
+  var displayEstGas: String {
+    guard KNGeneralProvider.shared.isUseEIP1559 else {
+      return ""
+    }
+    let baseFee = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+    let fee = (baseFee + self.selectedPriorityFee) * self.gasLimit
+    let sourceToken = KNGeneralProvider.shared.quoteToken
+    let feeString: String = fee.displayRate(decimals: 18)
+    return "\(feeString) \(sourceToken) "
+  }
+  
+  var selectedPriorityFee: BigInt {
+    switch self.selectedGasPriceType {
+    case .slow:
+      return KNGasCoordinator.shared.lowPriorityFee ?? BigInt(0)
+    case .medium:
+      return KNGasCoordinator.shared.standardPriorityFee ?? BigInt(0)
+    case .fast:
+      return KNGasCoordinator.shared.fastPriorityFee ?? BigInt(0)
+    case .superFast:
+      return KNGasCoordinator.shared.superFastPriorityFee ?? BigInt(0)
+    case .custom:
+      if let unwrap = self.advancedMaxPriorityFee, let fee = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+        return fee
+      } else {
+        return BigInt(0)
+      }
     }
   }
 }
