@@ -155,5 +155,4 @@ lane :bump_build_number do
   @version = get_version_number(xcodeproj: "KyberNetwork.xcodeproj", target: "KyberNetwork")
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
-  push_to_git_remote(tags: false)
 end
