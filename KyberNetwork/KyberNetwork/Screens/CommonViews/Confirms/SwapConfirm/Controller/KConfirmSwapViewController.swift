@@ -2,8 +2,6 @@
 
 import UIKit
 
-
-
 protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
@@ -11,32 +9,27 @@ protocol KConfirmSwapViewControllerDelegate: class {
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
-
-
   @IBOutlet weak var fromAmountLabel: UILabel!
   @IBOutlet weak var toAmountLabel: UILabel!
-
+  @IBOutlet weak var fromUSDValueLabel: UILabel!
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
-
   @IBOutlet weak var expectedRateLabel: UILabel!
   @IBOutlet weak var minAcceptableRateValueButton: UIButton!
   @IBOutlet weak var minReceivedTitle: UILabel!
-
   @IBOutlet weak var transactionFeeETHLabel: UILabel!
   @IBOutlet weak var transactionFeeUSDLabel: UILabel!
   @IBOutlet weak var transactionGasPriceLabel: UILabel!
   @IBOutlet weak var warningETHBalImageView: UIImageView!
   @IBOutlet weak var warningETHBalanceLabel: UILabel!
-
+  @IBOutlet weak var priceImpactLabelTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var reserveRoutingMessageContainer: UIView!
   @IBOutlet weak var reserveRoutingMessageLabel: UILabel!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-  @IBOutlet weak var rateWarningLabel: UILabel!
-
+  @IBOutlet weak var reserveRoutingMessageTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var priceImpactValueLabel: UILabel!
   @IBOutlet weak var swapAnywayCheckBox: UIButton!
   @IBOutlet weak var swapAnywayContainerView: UIView!
@@ -104,7 +97,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     self.transactionFeeTextLabel.text = "Maximum gas fee".toBeLocalised()
     self.transactionFeeTextLabel.addLetterSpacing()
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
-
+    self.fromUSDValueLabel.text = self.viewModel.displayFromUSDAmount
     let warningBalShown = self.viewModel.warningETHBalanceShown
     self.warningETHBalImageView.isHidden = !warningBalShown
     self.warningETHBalanceLabel.text = self.viewModel.warningETHText
@@ -124,7 +117,8 @@ class KConfirmSwapViewController: KNBaseViewController {
     } else {
       self.swapAnywayContainerView.isHidden = true
     }
-
+    self.reserveRoutingMessageTopConstraint.constant = self.topConstraintValueForReserveMsg()
+    self.priceImpactLabelTopConstraint.constant = self.topConstraintValueForPriceImpactLabel()
     self.view.layoutIfNeeded()
   }
   
@@ -143,6 +137,26 @@ class KConfirmSwapViewController: KNBaseViewController {
       self.confirmButton.isEnabled = false
       self.confirmButton.alpha = 0.5
     }
+  }
+
+  fileprivate func topConstraintValueForReserveMsg() -> CGFloat {
+    var topConstraintValue = CGFloat(86)
+    if !self.viewModel.hasPriceImpact {
+      topConstraintValue -= self.priceImpactTextLabel.frame.size.height
+    }
+
+    if !self.viewModel.warningETHBalanceShown {
+      topConstraintValue -= self.warningETHBalanceLabel.frame.size.height
+    }
+    return topConstraintValue
+  }
+
+  fileprivate func topConstraintValueForPriceImpactLabel() -> CGFloat {
+    var topConstraintValue = CGFloat(44)
+    if !self.viewModel.warningETHBalanceShown {
+      topConstraintValue -= self.warningETHBalanceLabel.frame.size.height
+    }
+    return topConstraintValue
   }
 
   @IBAction func checkBoxTapped(_ sender: UIButton) {
