@@ -17,7 +17,6 @@ class EarnSwapViewModel {
   fileprivate(set) var amountTo: String = ""
   fileprivate(set) var amountFrom: String = ""
   fileprivate(set) var isFocusingFromAmount: Bool = true
-  
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
@@ -102,7 +101,15 @@ class EarnSwapViewModel {
   
   func resetBalances() {
   }
-  
+
+  var displayExpectedReceiveValue: String {
+    return self.isFocusingFromAmount ? self.displayMinDestAmount : self.displayMaxSoldAmount
+  }
+
+  var displayExpectedReceiveTitle: String {
+    return self.isFocusingFromAmount ? "Minimum received" : "Maximum sold"
+  }
+
   var displayBalance: String {
     let string = self.fromTokenData.getBalanceBigInt().string(
       decimals: self.fromTokenData.decimals,
@@ -116,7 +123,7 @@ class EarnSwapViewModel {
   var totalBalanceText: String {
     return "\(self.displayBalance) \(self.fromTokenData.symbol)"
   }
-  
+
   func updateAmount(_ amount: String, isSource: Bool, forSendAllETH: Bool = false) {
     if isSource {
       self.amountFrom = amount
@@ -165,6 +172,22 @@ class EarnSwapViewModel {
     return self.displayBalance.removeGroupSeparator()
   }
   
+  var priceImpactValue: Double {
+    guard !self.amountFrom.isEmpty else {
+      return 0
+    }
+    let refPrice = self.getRefPrice(from: self.fromTokenData, to: self.toTokenData)
+    let price = self.getSwapRate(from: self.fromTokenData.address.description, to: self.toTokenData.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
+
+    guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
+      return 0
+    }
+    let refPriceDouble = refPrice.doubleValue
+    let priceDouble: Double = Double(priceBigInt) / pow(10.0, 18)
+    let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
+    return change
+  }
+  
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) { //TODO: can be improve with enum function
     self.selectedGasPriceType = type
     switch type {
@@ -196,7 +219,7 @@ class EarnSwapViewModel {
   func updateGasPrice(_ gasPrice: BigInt) {
     self.gasPrice = gasPrice
   }
-  
+
   fileprivate func formatFeeStringFor(gasPrice: BigInt) -> String {
     let fee = gasPrice * self.gasLimit
     let feeString: String = fee.displayRate(decimals: 18)
@@ -230,8 +253,16 @@ class EarnSwapViewModel {
     return self.amountToBigInt * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
+  var maxAmtSold: BigInt {
+    return self.amountFromBigInt * BigInt(10000.0 + self.minRatePercent * 100.0) / BigInt(10000.0)
+  }
+
   var displayMinDestAmount: String {
     return self.minDestQty.string(decimals: self.toTokenData.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.toTokenData.symbol
+  }
+  
+  var displayMaxSoldAmount: String {
+    return self.maxAmtSold.string(decimals: self.fromTokenData.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.fromTokenData.symbol
   }
 
   @discardableResult
@@ -1001,6 +1032,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
     let tx = self.viewModel.buildSignSwapTx(txObject)
     let eip1559Tx = self.viewModel.buildEIP1559Tx(txObject)
+    let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
     let event = EarnViewEvent.confirmTx(
       fromToken: self.viewModel.fromTokenData,
       toToken: self.viewModel.toTokenData,
@@ -1012,7 +1044,9 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       transaction: tx,
       eip1559Transaction: eip1559Tx,
       isSwap: true,
-      rawTransaction: txObject
+      rawTransaction: txObject,
+      minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue),
+      priceImpact: priceImpactValue
     )
     self.delegate?.earnViewController(self, run: event)
   }
@@ -1346,7 +1380,7 @@ extension EarnSwapViewController: UITextFieldDelegate {
     }
     self.equivalentUSDValueLabel.text = self.viewModel.displayEquivalentUSDAmount
   }
-  
+
   fileprivate func updateAllRates() {
     let amount = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
     let event = EarnViewEvent.getAllRates(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, amount: amount, focusSrc: self.viewModel.isFocusingFromAmount)

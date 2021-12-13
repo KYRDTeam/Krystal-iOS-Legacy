@@ -131,7 +131,7 @@ class EarnCoordinator: NSObject, Coordinator {
                 platforms.append(platform)
               }
             }
-            let tokenData = TokenData(address: token.address, name: token.name, symbol: token.symbol, decimals: token.decimals, lendingPlatforms: platforms, logo: token.logo)
+            let tokenData = TokenData(address: token.address, name: token.name, symbol: token.symbol, decimals: token.decimals, lendingPlatforms: platforms, logo: "")
             lendingTokensData.append(tokenData)
           }
           self.lendingTokens = lendingTokensData
@@ -311,7 +311,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           }
         }
       }
-    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let eip1559Transaction, let isSwap, let rawTransaction):
+    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let eip1559Transaction, let isSwap, let rawTransaction, let minReceivedData, let priceImpact):
       self.navigationController.displayLoading()
       if let unwrap = transaction {
         KNGeneralProvider.shared.getEstimateGasLimit(transaction: unwrap) { (result) in
@@ -319,7 +319,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
