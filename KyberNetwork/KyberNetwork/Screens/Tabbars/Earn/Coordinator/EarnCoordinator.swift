@@ -347,7 +347,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
