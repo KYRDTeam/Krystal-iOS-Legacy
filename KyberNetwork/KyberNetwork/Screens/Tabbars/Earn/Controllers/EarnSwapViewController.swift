@@ -528,22 +528,22 @@ class EarnSwapViewModel {
   }
   
   var refPriceDiffText: String {
-    guard !self.amountFrom.isEmpty else {
-      return ""
+    guard !self.getRefPrice(from: self.fromTokenData, to: self.toTokenData).isEmpty else {
+      return "---"
     }
-    let refPrice = self.getRefPrice(from: self.fromTokenData, to: self.toTokenData)
-    let price = self.getSwapRate(from: self.fromTokenData.address.description, to: self.toTokenData.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
-    guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price)  else {
-      return ""
-    }
-    let refPriceDouble = refPrice.doubleValue
-    let priceDouble: Double = Double(priceBigInt) / pow(10.0, 18)
-    let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
-    if change > -5.0 {
-      return ""
+    let change = self.priceImpactValue
+    let displayPercent = "\(change)".prefix(6)
+    return "\(displayPercent)%"
+  }
+  
+  var priceImpactValueTextColor: UIColor? {
+    let change = self.priceImpactValue
+    if change <= -5.0 {
+      return UIColor(named: "textRedColor")
+    } else if change <= -2.0 {
+      return UIColor(named: "warningColor")
     } else {
-      let displayPercent = "\(change)".prefix(6)
-      return "↓ \(displayPercent)%"
+      return UIColor(named: "textWhiteColor")
     }
   }
   
@@ -808,11 +808,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   fileprivate func updateExchangeRateField() {
     self.exchangeRateLabel.text = self.viewModel.exchangeRateText
   }
-  
+
   fileprivate func updateUIMinReceiveAmount() {
     self.minReceivedAmount.text = self.viewModel.displayMinDestAmount
   }
-  
+
   fileprivate func updateGasFeeUI() {
     self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
     if KNGeneralProvider.shared.isUseEIP1559 {
@@ -826,12 +826,12 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     }
     self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
   }
-  
+
   fileprivate func updateUIRefPrice() {
-    let change = self.viewModel.refPriceDiffText
-    self.rateWarningLabel.text = change
+    self.rateWarningLabel.text = self.viewModel.refPriceDiffText
+    self.rateWarningLabel.textColor = self.viewModel.priceImpactValueTextColor
   }
-  
+
   fileprivate func updateApproveButton() {
     self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.fromTokenData.symbol, for: .normal)
   }

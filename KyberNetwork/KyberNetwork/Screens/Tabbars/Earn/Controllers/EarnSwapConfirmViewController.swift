@@ -109,12 +109,7 @@ struct EarnSwapConfirmViewModel {
     let displayPercent = "\(self.priceImpact)".prefix(6)
     return "\(displayPercent)%"
   }
-  
-  var refPriceDiffText: String {
-    guard self.priceImpact != -1000.0 else { return "" }
-    return "↓ \(self.priceImpactValueText)"
-  }
-  
+
   var priceImpactValueTextColor: UIColor? {
     guard self.priceImpact != -1000.0 else { return UIColor(named: "normalTextColor") }
     let change = self.priceImpact
@@ -297,8 +292,8 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   }
 
   @IBAction func priceImpactHelpButtonTapped(_ sender: Any) {
-    guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+    guard !self.viewModel.priceImpactValueText.isEmpty else { return }
+    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactValueText)
     self.showBottomBannerView(
       message: message,
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
