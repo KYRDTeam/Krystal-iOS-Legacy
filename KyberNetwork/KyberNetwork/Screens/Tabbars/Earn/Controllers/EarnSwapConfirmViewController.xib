@@ -308,13 +308,14 @@
                                             <rect key="frame" x="25" y="26" width="103" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="D3C-0C-LuC"/>
+                                                <constraint firstAttribute="width" constant="103" id="EVU-jX-GDe"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OCG-q1-ggF">
-                                            <rect key="frame" x="288.66666666666669" y="27.666666666666686" width="24.333333333333314" height="16.666666666666671"/>
+                                            <rect key="frame" x="131" y="27.666666666666686" width="182" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -359,6 +360,7 @@
                                         <constraint firstAttribute="trailing" secondItem="7Gv-87-tcZ" secondAttribute="trailing" constant="25" id="5cP-6r-m2x"/>
                                         <constraint firstAttribute="height" constant="190" id="8Dv-8t-09T"/>
                                         <constraint firstItem="31r-A7-nQj" firstAttribute="leading" secondItem="kLU-e0-5mU" secondAttribute="leading" constant="25" id="BcV-ZZ-Nl2"/>
+                                        <constraint firstItem="OCG-q1-ggF" firstAttribute="leading" secondItem="tHd-wC-t3m" secondAttribute="trailing" constant="3" id="Gjc-2h-DEO"/>
                                         <constraint firstItem="AoC-hx-D1X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NIW-lv-x75" secondAttribute="trailing" constant="2" id="JWy-YE-UcT"/>
                                         <constraint firstItem="OCG-q1-ggF" firstAttribute="centerY" secondItem="tHd-wC-t3m" secondAttribute="centerY" id="MbH-Vq-XUa"/>
                                         <constraint firstItem="jnE-cv-0pc" firstAttribute="leading" secondItem="kLU-e0-5mU" secondAttribute="leading" constant="25" id="Myc-7K-Dbh"/>
