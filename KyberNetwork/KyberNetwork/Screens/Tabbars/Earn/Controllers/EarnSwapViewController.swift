@@ -482,7 +482,7 @@ class EarnSwapViewModel {
     let rateString: String = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate, notNilRate != BigInt(0) {
-      let revertRate = BigInt(10).power(18) / ( notNilRate / BigInt(10).power(18) )
+      let revertRate = BigInt(10).power(36) / notNilRate
       return notNilRate.isZero ? "---" : "Rate: 1 \(self.toTokenData.symbol) = \(revertRate.displayRate(decimals: 18)) \(self.fromTokenData.symbol)"
     } else {
       return "---"
