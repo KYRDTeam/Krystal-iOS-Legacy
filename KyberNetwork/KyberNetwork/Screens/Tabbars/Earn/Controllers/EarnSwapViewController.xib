@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Regular.ttf">
@@ -34,6 +34,7 @@
                 <outlet property="changeRateButton" destination="lyV-ue-RaN" id="kii-xV-kWJ"/>
                 <outlet property="compInfoLabel" destination="gbh-OH-Ifv" id="Vqv-ye-4Rl"/>
                 <outlet property="compInfoMessageContainerView" destination="QT5-hK-uc0" id="UBs-Uv-FIs"/>
+                <outlet property="destAmountContainerView" destination="uRO-C1-Q2L" id="wKn-CT-3m3"/>
                 <outlet property="earnButton" destination="Jda-FF-5tH" id="LMZ-7c-WzA"/>
                 <outlet property="equivalentUSDValueLabel" destination="8wx-BU-7Mc" id="elL-7J-AGE"/>
                 <outlet property="estGasFeeTitleLabel" destination="Ydk-j2-Oi6" id="USp-KN-2bx"/>
@@ -250,7 +251,7 @@
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                            <integer key="value" value="8"/>
+                                            <integer key="value" value="16"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </view>
@@ -263,7 +264,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRO-C1-Q2L">
                                     <rect key="frame" x="20" y="165" width="295" height="42"/>
                                     <subviews>
-                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Pvg-1U-eef">
+                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Pvg-1U-eef">
                                             <rect key="frame" x="16" y="0.0" width="231" height="42"/>
                                             <color key="tintColor" name="buttonBackgroundColor"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -281,7 +282,7 @@
                                             </state>
                                         </button>
                                     </subviews>
-                                    <color key="backgroundColor" name="toolbarBgColor"/>
+                                    <color key="backgroundColor" name="mainViewBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="42" id="9h1-2X-klf"/>
                                         <constraint firstItem="UoU-6H-fCf" firstAttribute="top" secondItem="uRO-C1-Q2L" secondAttribute="top" id="Cj1-xE-3jR"/>

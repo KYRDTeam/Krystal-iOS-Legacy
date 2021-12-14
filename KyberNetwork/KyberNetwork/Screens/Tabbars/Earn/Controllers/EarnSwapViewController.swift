@@ -643,6 +643,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var destAmountContainerView: UIView!
   
   let viewModel: EarnSwapViewModel
   fileprivate var isViewSetup: Bool = false
@@ -679,6 +680,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
     self.updateUIWalletSelectButton()
     self.setUpGasFeeView()
+    self.destAmountContainerView.rounded(color: UIColor(named: "toolbarBgColor")!, width: 2, radius: 16)
   }
 
   override func viewWillAppear(_ animated: Bool) {

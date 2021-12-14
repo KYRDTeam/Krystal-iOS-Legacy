@@ -75,6 +75,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var destAmountContainerView: UIView!
   
   
 //  fileprivate var estRateTimer: Timer?
@@ -221,6 +222,7 @@ class KSwapViewController: KNBaseViewController {
     self.balanceLabel.addGestureRecognizer(tapBalanceGesture)
 
     self.updateTokensView()
+    self.destAmountContainerView.rounded(color: UIColor(named: "toolbarBgColor")!, width: 2, radius: 16)
   }
 
   fileprivate func setUpGasFeeView() {
