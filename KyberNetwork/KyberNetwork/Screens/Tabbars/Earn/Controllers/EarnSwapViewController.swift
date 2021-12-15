@@ -521,7 +521,7 @@ class EarnSwapViewModel {
   }
   
   func getRefPrice(from: TokenData, to: TokenData) -> String {
-    guard from == self.fromTokenData, to == self.toTokenData else {
+    guard from == self.refPrice.0, to == self.refPrice.1 else {
       return ""
     }
     return self.refPrice.2
@@ -1097,6 +1097,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   fileprivate func updateUITokenDidChange(_ token: TokenData) {
     self.fromTokenButton.setTitle(token.symbol.uppercased(), for: .normal)
     self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", self.viewModel.toTokenData.symbol.uppercased())
+    self.updateRefPrice()
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
