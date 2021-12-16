@@ -447,6 +447,8 @@
 		775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C00B420195BFB001B5EBC /* BrowserAction.swift */; };
 		778EAF7D1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */; };
 		77E0E773201FAD06009B4B31 /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */; };
+		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
+		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -1226,6 +1228,8 @@
 		775C00B420195BFB001B5EBC /* BrowserAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAction.swift; sourceTree = "<group>"; };
 		778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorTests.swift; sourceTree = "<group>"; };
 		77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
+		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
+		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -3777,6 +3781,8 @@
 				C31371F82603B194003D432B /* KrytalTableViewCell.xib */,
 				C3F71C882618A57B00285935 /* ClaimHistoryTableViewCell.swift */,
 				C3F71C892618A57B00285935 /* ClaimHistoryTableViewCell.xib */,
+				7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */,
+				7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4681,6 +4687,7 @@
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
 				C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */,
+				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
 				C3053AF92685D2990079B505 /* OverviewSearchTokenViewController.xib in Resources */,
 				C32649DC26CF81BE001B6E11 /* OverviewNFTDetailViewController.xib in Resources */,
 				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
@@ -5275,6 +5282,7 @@
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				296AF9A71F736EC70058AF78 /* RPCServers.swift in Sources */,
+				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
 				25682B7A20EE09C8009738C4 /* KNTransactionDetailsViewModel.swift in Sources */,
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
