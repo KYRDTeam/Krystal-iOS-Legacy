@@ -856,6 +856,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIForCustomNonce() {
+    guard self.isViewLoaded else { return }
     guard !(self.viewModel.isSpeedupMode || self.viewModel.isCancelMode) else {
       self.customNonceTitleLabel.isHidden = true
       self.customNonceContainerView.isHidden = true
