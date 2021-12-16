@@ -54,7 +54,7 @@ class KrytalViewModel {
 
   var nextRewardInfoString: String {
     guard let unwrapped = self.referralOverViewData else { return "---" }
-    return "Unlock \(StringFormatter.usdString(value: unwrapped.volForNextReward)) more to unlock the next reward"
+    return "\(StringFormatter.usdString(value: unwrapped.volForNextReward)) more to unlock the next reward"
   }
 }
 
@@ -145,7 +145,8 @@ class KrytalViewController: KNBaseViewController {
     })
   }
   @IBAction func bonusVolumeButtonTapped(_ sender: Any) {
-    let bonusRatio = self.viewModel.referralOverViewData?.bonusRatio ?? 0
+    // display in BPS style
+    let bonusRatio = (self.viewModel.referralOverViewData?.bonusRatio ?? 0) * 100 / 10000
     self.navigationController?.showBottomBannerView(message: "This is shared by your referrer. \(bonusRatio)% of your trading volume will be counted in the total referral volume.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
       self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
     })
