@@ -864,6 +864,7 @@ enum KrytalService {
   case buildWithdrawTx(platform: String, userAddress: String, token: String, amount: String, gasPrice: String, nonce: Int, useGasToken: Bool)
   case getMarketingAssets
   case getReferralOverview(address: String, accessToken: String)
+  case getReferralTiers(address: String)
   case registerReferrer(address: String, referralCode: String, signature: String)
   case getRewardHistory(address: String, from: Int, to: Int, offset: Int, limit: Int, accessToken: String)
   case buildClaimTx(address: String, nonce: Int)
@@ -902,7 +903,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -946,6 +947,8 @@ extension KrytalService: TargetType {
       return "/v1/mkt/assets"
     case .getReferralOverview:
       return "/v1/account/referralOverview"
+    case .getReferralTiers:
+      return "/v1/account/referralTiers"
     case .registerReferrer:
       return "/v1/account/registerReferrer"
     case .getRewardHistory:
@@ -1116,6 +1119,11 @@ extension KrytalService: TargetType {
     case .getMarketingAssets:
       return .requestPlain
     case .getReferralOverview(address: let address, _):
+      let json: JSONDictionary = [
+        "address": address
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getReferralTiers(address: let address):
       let json: JSONDictionary = [
         "address": address
       ]
