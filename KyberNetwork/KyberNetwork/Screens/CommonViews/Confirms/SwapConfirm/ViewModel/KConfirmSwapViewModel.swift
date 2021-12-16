@@ -52,9 +52,27 @@ struct KConfirmSwapViewModel {
     return usd
   }
 
+  var fromUSDAmount: BigInt? {
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.from.address) else { return nil }
+    let usd = self.transaction.amount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.transaction.from.decimals)
+    return usd
+  }
+
   var displayEquivalentUSDAmount: String? {
     guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
-    let value = amount.displayRate(decimals: 18)
+    let value = amount.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
+    return "~ $\(value) USD"
+  }
+
+  var displayFromUSDAmount: String? {
+    guard let amount = self.fromUSDAmount, !amount.isZero else { return nil }
+    let value = amount.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
     return "~ $\(value) USD"
   }
 
@@ -65,10 +83,7 @@ struct KConfirmSwapViewModel {
 
   var displayEstimatedRate: String {
     let rateString = self.transaction.expectedRate.displayRate(decimals: 18)
-    let usdPriceDouble = KNTrackerRateStorage.shared.getPriceWithAddress(self.transaction.to.address)?.usd ?? 0.0
-    let usdPrice = BigInt(usdPriceDouble * pow(10.0, 18.0))
-    let usdValue = self.transaction.expectedRate * usdPrice / BigInt(10).power(18)
-    return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol) = \(usdValue.displayRate(decimals: 18)) USD"
+    return "1 \(self.transaction.from.symbol) = \(rateString) \(self.transaction.to.symbol)"
   }
 
   var warningMinAcceptableRateMessage: String? {
@@ -97,7 +112,10 @@ struct KConfirmSwapViewModel {
   var feeUSDString: String {
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
     let usd = self.transactionFee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
-    let valueString: String = usd.displayRate(decimals: 18)
+    let valueString: String = usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(valueString), doubleValue < 0.01 {
+      return ""
+    }
     return "~ \(valueString) USD"
   }
 
@@ -159,13 +177,12 @@ struct KConfirmSwapViewModel {
     guard self.priceImpact != -1000 else { return " Missing price impact. Please swap with caution." }
     return self.priceImpact > -5 ? "" : "Price impact is high. You may want to reduce your swap amount for a better rate."
   }
-  
+
   var priceImpactValueText: String {
     guard self.priceImpact != -1000.0 else { return "---" }
-    let displayPercent = "\(self.priceImpact)".prefix(6)
-    return "\(displayPercent)%"
+    return StringFormatter.percentString(value: self.priceImpact / 100)
   }
-  
+
   var priceImpactValueTextColor: UIColor? {
     guard self.priceImpact != -1000.0 else { return UIColor(named: "normalTextColor") }
     let change = self.priceImpact
