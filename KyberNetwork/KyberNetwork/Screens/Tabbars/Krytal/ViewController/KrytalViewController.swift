@@ -9,27 +9,22 @@ import UIKit
 import MBProgressHUD
 
 class KrytalViewModel {
-  var overview: Overview?
+  var referralOverViewData: ReferralOverviewData?
   var wallet: Wallet?
-  
-  var displayTotalKrytalPoint: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(unwrapped.claimablePoint) KP"
-  }
-  
-  var displayTotalETHPoint: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(Double(unwrapped.claimablePoint) / 10000.0) \(KNGeneralProvider.shared.quoteToken)"
+  var tiers: ReferralTiers?
+  var displayTotalReward: String {
+    guard let unwrapped = self.referralOverViewData else { return "---" }
+    return "\(unwrapped.rewardAmount) \(unwrapped.rewardToken.symbol)"
   }
 
   var displayReferralCodes: [KrytalCellViewModel] {
-    guard let unwrapped = self.overview else { return [] }
-    let allHashs = unwrapped.codes.keys
+    guard let unwrapped = self.referralOverViewData else { return [] }
+    let allHashs = unwrapped.codeStats.keys
     let sorted = allHashs.sorted { (left, right) -> Bool in
-      return unwrapped.codes[left]?.ratio ?? 0 > unwrapped.codes[right]?.ratio ?? 0
+      return unwrapped.codeStats[left]?.ratio ?? 0 > unwrapped.codeStats[right]?.ratio ?? 0
     }
     return sorted.map { (refCode) -> KrytalCellViewModel in
-      return KrytalCellViewModel(codeObject: unwrapped.codes[refCode] ?? Code(totalRefer: 0, pendingVol: 0, realizedVol: 0, ratio: 0), referralCode: refCode)
+      return KrytalCellViewModel(codeObject: unwrapped.codeStats[refCode] ?? Code(totalRefer: 0, vol: 0, ratio: 0), referralCode: refCode)
     }
   }
   
@@ -39,50 +34,27 @@ class KrytalViewModel {
   }
   
   var displayIntroAttributedString: NSAttributedString {
-    let fullString = NSMutableAttributedString(string: "Copy below given Referral Codes to share with your friends. Afterward, both of you can start earning Referral Rewards.".toBeLocalised())
+    let fullString = NSMutableAttributedString(string: "Copy below given Ref Code to share with your friends & start earning ".toBeLocalised())
     let image1Attachment = NSTextAttachment()
     image1Attachment.image = UIImage(named: "info_waring_blue_icon")
     let image1String = NSAttributedString(attachment: image1Attachment)
     fullString.append(image1String)
     return fullString
   }
-  
-  var displayCashbackPendingVol: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(unwrapped.cashbackPendingVol)"
+
+  var bonusVol: String {
+    guard let unwrapped = self.referralOverViewData else { return "---" }
+    return "\(unwrapped.bonusVol)"
   }
-  
-  var displayCashbackConfirmedVol: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(unwrapped.cashbackRealizedVol)"
-  }
-  
-  var displayTotalPendingVol: String {
-    guard let unwrapped = self.overview else { return "---" }
-    var total = unwrapped.cashbackPendingVol
-    unwrapped.codes.values.forEach { (item) in
-      total += item.pendingVol
-    }
-    return "\(total)"
-  }
-  
+
   var displayTotalConfirmedVol: String {
-    guard let unwrapped = self.overview else { return "---" }
-    var total = unwrapped.cashbackRealizedVol
-    unwrapped.codes.values.forEach { (item) in
-      total += item.realizedVol
-    }
-    return "\(total)"
+    guard let unwrapped = self.referralOverViewData else { return "---" }
+    return "\(unwrapped.totalVol)"
   }
 
-  var displayTier: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(unwrapped.minTier) \(KNGeneralProvider.shared.quoteToken) - \(unwrapped.maxTier) \(KNGeneralProvider.shared.quoteToken)"
-  }
-
-  var displayRealizedPoint: String {
-    guard let unwrapped = self.overview else { return "---" }
-    return "\(unwrapped.realizedReward) KP"
+  var nextRewardInfoString: String {
+    guard let unwrapped = self.referralOverViewData else { return "---" }
+    return "\(StringFormatter.usdString(value: unwrapped.volForNextReward)) more to unlock \(StringFormatter.usdString(value: unwrapped.nextRewardAmount)) reward"
   }
 }
 
@@ -90,7 +62,8 @@ enum KrytalViewEvent {
   case openShareCode(refCode: String, codeObject: Code)
   case openHistory
   case openWalletList
-  case claim(amount: Double)
+  case claim
+  case showRefferalTiers(tiers: [Tier])
 }
 
 protocol KrytalViewControllerDelegate: class {
@@ -98,21 +71,15 @@ protocol KrytalViewControllerDelegate: class {
 }
 
 class KrytalViewController: KNBaseViewController {
-  @IBOutlet weak var totalKrytalPointLabel: UILabel!
-  @IBOutlet weak var totalETHLabel: UILabel!
+  @IBOutlet weak var totalRewardLabel: UILabel!
   @IBOutlet weak var referralCodeTableView: UITableView!
-  @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var introLabel: UILabel!
-  @IBOutlet weak var cashbackPendingVolLabel: UILabel!
-  @IBOutlet weak var cashbackConfirmedVolLabel: UILabel!
-  @IBOutlet weak var totalPendingVolLabel: UILabel!
+  @IBOutlet weak var bonusVolLabel: UILabel!
   @IBOutlet weak var totalConfirmedVolLabel: UILabel!
-  @IBOutlet weak var tierLabel: UILabel!
-  @IBOutlet weak var realizedPointLabel: UILabel!
-  @IBOutlet weak var pendingVolTitleLabel: UILabel!
   @IBOutlet weak var confirmVolTitleLabel: UILabel!
-  
-  
+  @IBOutlet weak var walletListButton: UIButton!
+  @IBOutlet weak var nextRewardLabel: UILabel!
+
   let viewModel = KrytalViewModel()
   weak var delegate: KrytalViewControllerDelegate?
 
@@ -125,25 +92,23 @@ class KrytalViewController: KNBaseViewController {
   }
 
   fileprivate func updateUI() {
-    self.totalKrytalPointLabel.text = self.viewModel.displayTotalKrytalPoint
-    self.totalETHLabel.text = self.viewModel.displayTotalETHPoint
     self.walletListButton.setTitle(self.viewModel.displayWalletString, for: .normal)
+    self.totalRewardLabel.text = self.viewModel.displayTotalReward
     self.introLabel.attributedText = self.viewModel.displayIntroAttributedString
-    self.cashbackPendingVolLabel.text = self.viewModel.displayCashbackPendingVol
-    self.cashbackConfirmedVolLabel.text = self.viewModel.displayCashbackConfirmedVol
-    self.totalPendingVolLabel.text = self.viewModel.displayTotalPendingVol
+    self.bonusVolLabel.text = self.viewModel.bonusVol
     self.totalConfirmedVolLabel.text = self.viewModel.displayTotalConfirmedVol
-    self.tierLabel.text = self.viewModel.displayTier
-    self.realizedPointLabel.text = self.viewModel.displayRealizedPoint
-    self.pendingVolTitleLabel.text = "Pending\nVol. (\(KNGeneralProvider.shared.quoteToken))"
-    self.confirmVolTitleLabel.text = "Confirmed\nVol. (\(KNGeneralProvider.shared.quoteToken))"
+    self.nextRewardLabel.text = self.viewModel.nextRewardInfoString
     self.referralCodeTableView.reloadData()
   }
 
-  func coordinatorDidUpdateOverviewReferral(_ overview: Overview?) {
-    self.viewModel.overview = overview
+  func coordinatorDidUpdateOverviewReferral(_ referralOverViewData: ReferralOverviewData?) {
+    self.viewModel.referralOverViewData = referralOverViewData
     guard self.isViewLoaded else { return }
     self.updateUI()
+  }
+  
+  func coordinatorDidUpdateTiers(_ tiers: ReferralTiers?) {
+    self.viewModel.tiers = tiers
   }
 
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
@@ -160,12 +125,28 @@ class KrytalViewController: KNBaseViewController {
     self.delegate?.krytalViewController(self, run: .openWalletList)
   }
 
+  @IBAction func claimButtonTapped(_ sender: Any) {
+    self.delegate?.krytalViewController(self, run: .claim)
+  }
+
+  @IBAction func showReferralTierButtonTapped(_ sender: Any) {
+    if let tiersData = self.viewModel.tiers {
+      self.delegate?.krytalViewController(self, run: .showRefferalTiers(tiers: tiersData.tiers))
+    }
+  }
+
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
-  
+
   @IBAction func helpIconTapped(_ sender: UITapGestureRecognizer) {
     self.navigationController?.showBottomBannerView(message: "Ask your friend to download Krystal app using your Referral Code. If they start using Krystal, We will automatically map the referral to you. You will earn rewards every time your friends transact via Krystal app.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
+      self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
+    })
+  }
+  @IBAction func bonusVolumeButtonTapped(_ sender: Any) {
+    let bonusRatio = self.viewModel.referralOverViewData?.bonusRatio ?? 0
+    self.navigationController?.showBottomBannerView(message: "This is shared by your referrer. \(bonusRatio)% of your trading volume will be counted in the total referral volume.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
       self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
     })
   }
