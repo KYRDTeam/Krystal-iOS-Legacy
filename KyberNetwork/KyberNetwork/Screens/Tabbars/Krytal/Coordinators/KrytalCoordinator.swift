@@ -41,8 +41,7 @@ class KrytalCoordinator: NSObject, Coordinator {
   }
   
   fileprivate var historyTxTimer: Timer?
-  weak var claimViewController: ClaimRewardViewController?
-  
+
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
     self.session = session
@@ -54,11 +53,12 @@ class KrytalCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
     self.historyViewController.coordinatorDidUpdateWallet(self.session.wallet)
     self.loadCachedReferralOverview()
-//    self.loadCachedClaimHistory()
+    self.loadCachedReferralTiers()
     self.loadReferralOverview()
+    self.loadReferralTiers()
     self.loadClaimHistory()
     self.historyTxTimer = Timer(timeInterval: KNLoadingInterval.seconds60, repeats: true, block: { (timer) in
-//      self.loadClaimHistory()
+      self.loadReferralTiers()
       self.loadReferralOverview()
     })
     self.checkWallet()
@@ -81,9 +81,9 @@ class KrytalCoordinator: NSObject, Coordinator {
       case .success(let resp):
         let decoder = JSONDecoder()
         do {
-          let data = try decoder.decode(ReferralOverviewResponse.self, from: resp.data)
-          self.rootViewController.coordinatorDidUpdateOverviewReferral(data.overview)
-          Storage.store(data.overview, as: self.session.wallet.address.description + Constants.referralOverviewStoreFileName)
+          let data = try decoder.decode(ReferralOverviewData.self, from: resp.data)
+          self.rootViewController.coordinatorDidUpdateOverviewReferral(data)
+          Storage.store(data, as: self.session.wallet.address.description + Constants.referralOverviewStoreFileName)
         } catch let error {
           print("[Invest] \(error.localizedDescription)")
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -94,6 +94,31 @@ class KrytalCoordinator: NSObject, Coordinator {
         print("[Invest] \(error.localizedDescription)")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
           self.loadReferralOverview()
+        }
+      }
+    }
+  }
+  
+  func loadReferralTiers() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getReferralTiers(address: self.session.wallet.address.description)) { (result) in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(ReferralTiers.self, from: resp.data)
+          self.rootViewController.coordinatorDidUpdateTiers(data)
+          Storage.store(data, as: self.session.wallet.address.description + Constants.referralTiersStoreFileName)
+        } catch let error {
+          print("[Invest] \(error.localizedDescription)")
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            self.loadReferralTiers()
+          }
+        }
+      case .failure(let error):
+        print("[Invest] \(error.localizedDescription)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+          self.loadReferralTiers()
         }
       }
     }
@@ -120,8 +145,13 @@ class KrytalCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func loadCachedReferralOverview() {
-    let overview = Storage.retrieve(self.session.wallet.address.description + Constants.referralOverviewStoreFileName, as: Overview.self)
-    self.rootViewController.coordinatorDidUpdateOverviewReferral(overview)
+    let referralOverViewData = Storage.retrieve(self.session.wallet.address.description + Constants.referralOverviewStoreFileName, as: ReferralOverviewData.self)
+    self.rootViewController.coordinatorDidUpdateOverviewReferral(referralOverViewData)
+  }
+  
+  fileprivate func loadCachedReferralTiers() {
+    let referralTiersData = Storage.retrieve(self.session.wallet.address.description + Constants.referralTiersStoreFileName, as: ReferralTiers.self)
+    self.rootViewController.coordinatorDidUpdateTiers(referralTiersData)
   }
   
   fileprivate func loadCachedClaimHistory() {
@@ -138,6 +168,17 @@ class KrytalCoordinator: NSObject, Coordinator {
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)
   }
+  
+  fileprivate func showReferralTiers(tiers: [Tier]) {
+    let viewModel = ReferralTiersViewModel(tiers: tiers)
+    let controller = ReferralTiersViewController(viewModel: viewModel)
+    self.navigationController.present(controller, animated: true, completion: nil)
+  }
+  
+  fileprivate func showRewards() {
+    let coordinator = RewardCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.start()
+  }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
@@ -145,8 +186,10 @@ class KrytalCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
     self.historyViewController.coordinatorDidUpdateWallet(self.session.wallet)
     self.loadCachedReferralOverview()
+    self.loadCachedReferralTiers()
     self.loadCachedClaimHistory()
     self.loadReferralOverview()
+    self.loadReferralTiers()
     self.loadClaimHistory()
   }
   
@@ -169,8 +212,10 @@ extension KrytalCoordinator: KrytalViewControllerDelegate {
       self.navigationController.pushViewController(self.historyViewController, animated: true)
     case .openWalletList:
       self.openWalletListView()
-    case .claim(amount: let amount):
-//      let controller = ClaimRewardViewController(viewModel: ClaimRewardViewModel(claimablePoint: amount))
+    case .showRefferalTiers(tiers: let tiers):
+      self.showReferralTiers(tiers: tiers)
+    case .claim:
+      self.showRewards()
     break
     }
   }

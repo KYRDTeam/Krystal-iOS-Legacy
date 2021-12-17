@@ -1,74 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="KrytalTableViewCell" id="KGk-i7-Jjw" customClass="KrytalTableViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="KrytalTableViewCell" rowHeight="39" id="KGk-i7-Jjw" customClass="KrytalTableViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="323" height="39"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+                <rect key="frame" x="0.0" y="0.0" width="323" height="39"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="ABI96666666666666666666" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dv5-RV-kNN">
-                        <rect key="frame" x="14" y="14" width="100" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="WWWWWWWW" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dv5-RV-kNN">
+                        <rect key="frame" x="23" y="11.5" width="80" height="16.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="yv3-nZ-JeU"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="buttonBackgroundColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10-10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WEY-LN-9hd">
-                        <rect key="frame" x="119" y="14" width="37" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10-10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEY-LN-9hd">
+                        <rect key="frame" x="115" y="11.5" width="65" height="16.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="65" id="ehh-j7-f7x"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="2mq-Fn-18I">
-                        <rect key="frame" x="161" y="14" width="37" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="60" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mq-Fn-18I">
+                        <rect key="frame" x="181.5" y="11" width="16.5" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9930000000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="ylW-HC-fF5">
-                        <rect key="frame" x="203" y="14" width="52" height="16.5"/>
-                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                        <color key="textColor" name="textWhiteColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.65000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-dK-Kn9">
-                        <rect key="frame" x="260" y="14" width="39" height="16.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.80" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-dK-Kn9">
+                        <rect key="frame" x="265" y="11.5" width="28" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="WEY-LN-9hd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dv5-RV-kNN" secondAttribute="trailing" constant="5" id="4Sh-Kc-JTL"/>
-                    <constraint firstAttribute="trailing" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="137" id="73l-fE-WmT"/>
+                    <constraint firstAttribute="trailing" secondItem="ESJ-dK-Kn9" secondAttribute="trailing" constant="30" id="Bha-ux-AQt"/>
                     <constraint firstItem="Dv5-RV-kNN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="HO7-mo-rdd"/>
                     <constraint firstItem="2mq-Fn-18I" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KfS-jN-Cc7"/>
-                    <constraint firstItem="ylW-HC-fF5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="5" id="MJz-XV-WU6"/>
-                    <constraint firstItem="Dv5-RV-kNN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="OwY-53-g4J"/>
-                    <constraint firstItem="2mq-Fn-18I" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WEY-LN-9hd" secondAttribute="trailing" constant="5" id="Pti-TQ-zco"/>
+                    <constraint firstItem="Dv5-RV-kNN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="23" id="OwY-53-g4J"/>
                     <constraint firstItem="WEY-LN-9hd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="R6b-MF-g6Q"/>
-                    <constraint firstAttribute="trailing" secondItem="WEY-LN-9hd" secondAttribute="trailing" constant="179" id="Yus-iz-DHc"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="ESJ-dK-Kn9" secondAttribute="trailing" constant="20" id="bYK-zb-KrG"/>
+                    <constraint firstItem="WEY-LN-9hd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="115" id="SQz-ol-5Yu"/>
                     <constraint firstItem="ESJ-dK-Kn9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dyW-jJ-uQV"/>
-                    <constraint firstItem="ESJ-dK-Kn9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ylW-HC-fF5" secondAttribute="trailing" constant="5" id="hyF-Ig-YjN"/>
-                    <constraint firstAttribute="trailing" secondItem="ylW-HC-fF5" secondAttribute="trailing" constant="80" id="wV5-2N-wdU"/>
-                    <constraint firstItem="ylW-HC-fF5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="z2Y-Yc-Cll"/>
+                    <constraint firstAttribute="trailing" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="125" id="ySQ-xC-rIc"/>
+                    <constraint firstItem="ESJ-dK-Kn9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2mq-Fn-18I" secondAttribute="trailing" constant="5" id="zJB-6e-4SY"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -77,11 +72,10 @@
             <connections>
                 <outlet property="confirmedVolLabel" destination="ESJ-dK-Kn9" id="WNL-xl-f6W"/>
                 <outlet property="friendsLabel" destination="2mq-Fn-18I" id="XSP-UQ-T1b"/>
-                <outlet property="pendingVolLabel" destination="ylW-HC-fF5" id="UFY-BK-BGQ"/>
                 <outlet property="ratioLabel" destination="WEY-LN-9hd" id="XBi-xx-hQl"/>
                 <outlet property="referralCodeLabel" destination="Dv5-RV-kNN" id="uwS-6H-lmY"/>
             </connections>
-            <point key="canvasLocation" x="137.68115942028987" y="70.3125"/>
+            <point key="canvasLocation" x="127.2" y="67.916041979010501"/>
         </tableViewCell>
     </objects>
     <resources>

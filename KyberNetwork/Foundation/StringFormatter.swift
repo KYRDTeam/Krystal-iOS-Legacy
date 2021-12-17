@@ -28,6 +28,13 @@ final class StringFormatter {
     formatter.numberStyle = .percent
     return formatter.string(from: NSNumber(value: value)) ?? ""
   }
+  
+  static func usdString(value: Double) -> String {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 2
+    formatter.numberStyle = .decimal
+    return "$" + (formatter.string(from: NSNumber(value: value)) ?? "")
+  }
 
   static func currencyString(value: Double, symbol: String) -> String {
     var maxDigits = 2
