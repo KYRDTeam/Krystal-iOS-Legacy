@@ -333,7 +333,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
             var errorMessage = "Can not estimate Gas Limit"
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
+                errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
@@ -361,7 +361,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
             var errorMessage = "Can not estimate Gas Limit"
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
+                errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
