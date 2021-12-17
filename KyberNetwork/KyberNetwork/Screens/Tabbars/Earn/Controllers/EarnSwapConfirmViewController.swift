@@ -128,6 +128,10 @@ struct EarnSwapConfirmViewModel {
   }
 
   var hasPriceImpact: Bool {
+    return self.priceImpact <= -5
+  }
+  
+  var needConfirm: Bool {
     return self.priceImpact <= -20
   }
 }
@@ -234,21 +238,21 @@ class EarnSwapConfirmViewController: KNBaseViewController {
 
     if self.viewModel.hasPriceImpact {
       self.isAccepted = false
-      self.swapAnywayContainerView.isHidden = false
       self.priceImpaceWarningLabel.isHidden = false
       self.framingIconContainerView.isHidden = true
       self.compInfoMessageContainerView.isHidden = true
-      self.sendButtonTopContraint.constant = 150
+      self.sendButtonTopContraint.constant = self.viewModel.needConfirm ? 150 : 100
       self.updateUIPriceImpact()
     } else {
-      self.swapAnywayContainerView.isHidden = true
       self.priceImpaceWarningLabel.isHidden = true
       self.sendButtonTopContraint.constant = self.viewModel.platform.isCompound ? 200 : 20
     }
+    
+    self.swapAnywayContainerView.isHidden = !self.viewModel.needConfirm
   }
   
   fileprivate func updateUIPriceImpact() {
-    guard self.viewModel.hasPriceImpact else { return }
+    guard self.viewModel.needConfirm else { return }
     if self.isAccepted {
       self.swapAnywayBtn.rounded(radius: 2)
       self.swapAnywayBtn.backgroundColor = UIColor(named: "buttonBackgroundColor")

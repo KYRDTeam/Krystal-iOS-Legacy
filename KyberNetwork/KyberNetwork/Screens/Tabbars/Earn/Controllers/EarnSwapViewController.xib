@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Regular.ttf">
@@ -563,7 +563,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AXU-AZ-2QK">
-                            <rect key="frame" x="37" y="722.5" width="301" height="132.5"/>
+                            <rect key="frame" x="37" y="697.5" width="301" height="157.5"/>
                             <color key="backgroundColor" name="mainViewBgColor"/>
                         </view>
                     </subviews>
@@ -576,6 +576,7 @@
                         <constraint firstItem="ktg-Iv-jj2" firstAttribute="leading" secondItem="cmQ-qK-svk" secondAttribute="leading" constant="20" id="70p-r2-NbK"/>
                         <constraint firstItem="QNj-my-TVX" firstAttribute="top" secondItem="ZW4-gs-Sfz" secondAttribute="bottom" constant="12" id="7aC-Wg-Fsd"/>
                         <constraint firstItem="AXU-AZ-2QK" firstAttribute="trailing" secondItem="Jda-FF-5tH" secondAttribute="trailing" id="8er-KO-n1Q"/>
+                        <constraint firstItem="AXU-AZ-2QK" firstAttribute="top" secondItem="Jda-FF-5tH" secondAttribute="bottom" id="8ui-jM-OSs"/>
                         <constraint firstItem="Jda-FF-5tH" firstAttribute="centerY" secondItem="Eiy-Sh-shS" secondAttribute="centerY" id="93h-bt-VwH"/>
                         <constraint firstItem="xrr-ba-x0D" firstAttribute="centerY" secondItem="QNj-my-TVX" secondAttribute="centerY" id="ArU-96-4dy"/>
                         <constraint firstItem="6He-xV-AXw" firstAttribute="top" secondItem="Jda-FF-5tH" secondAttribute="bottom" constant="54" id="Ck0-C9-jUk"/>
@@ -602,7 +603,6 @@
                         <constraint firstItem="wBR-o7-F7S" firstAttribute="centerY" secondItem="6He-xV-AXw" secondAttribute="centerY" id="Yze-f9-QHx"/>
                         <constraint firstItem="Nsu-FM-UeN" firstAttribute="centerX" secondItem="cmQ-qK-svk" secondAttribute="centerX" id="Z2W-3y-tMe"/>
                         <constraint firstItem="AXU-AZ-2QK" firstAttribute="leading" secondItem="Eiy-Sh-shS" secondAttribute="leading" id="cUc-P3-cZP"/>
-                        <constraint firstItem="Ydk-j2-Oi6" firstAttribute="top" secondItem="AXU-AZ-2QK" secondAttribute="top" id="dWb-fG-csM"/>
                         <constraint firstItem="Eba-gn-cza" firstAttribute="top" secondItem="0qS-hT-2kU" secondAttribute="top" id="du9-6H-bIO"/>
                         <constraint firstItem="0qS-hT-2kU" firstAttribute="bottom" secondItem="AXU-AZ-2QK" secondAttribute="bottom" id="gRQ-8a-DtU"/>
                         <constraint firstAttribute="trailing" secondItem="uA8-HS-H8n" secondAttribute="trailing" constant="20" id="h5B-aH-T0E"/>
