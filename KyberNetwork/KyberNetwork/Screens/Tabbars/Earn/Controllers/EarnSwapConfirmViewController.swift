@@ -109,6 +109,16 @@ struct EarnSwapConfirmViewModel {
     let displayPercent = "\(self.priceImpact)".prefix(6)
     return "\(displayPercent)%"
   }
+  
+  var priceImpactHintText: String {
+    var message = ""
+    if self.priceImpact != -1000 {
+      message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.priceImpactValueText)
+    } else {
+      message = " Missing price impact. Please swap with caution."
+    }
+    return message
+  }
 
   var priceImpactValueTextColor: UIColor? {
     guard self.priceImpact != -1000.0 else { return UIColor(named: "normalTextColor") }
@@ -297,9 +307,8 @@ class EarnSwapConfirmViewController: KNBaseViewController {
 
   @IBAction func priceImpactHelpButtonTapped(_ sender: Any) {
     guard !self.viewModel.priceImpactValueText.isEmpty else { return }
-    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.priceImpactValueText)
     self.showBottomBannerView(
-      message: message,
+      message: self.viewModel.priceImpactHintText,
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 3
     )
