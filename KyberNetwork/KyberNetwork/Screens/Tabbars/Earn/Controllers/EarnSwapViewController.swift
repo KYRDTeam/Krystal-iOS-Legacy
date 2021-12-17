@@ -482,7 +482,7 @@ class EarnSwapViewModel {
     let rateString: String = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate, notNilRate != BigInt(0) {
-      let revertRate = BigInt(10).power(18) / ( notNilRate / BigInt(10).power(18) )
+      let revertRate = BigInt(10).power(36) / notNilRate
       return notNilRate.isZero ? "---" : "Rate: 1 \(self.toTokenData.symbol) = \(revertRate.displayRate(decimals: 18)) \(self.fromTokenData.symbol)"
     } else {
       return "---"
@@ -643,6 +643,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var destAmountContainerView: UIView!
   
   let viewModel: EarnSwapViewModel
   fileprivate var isViewSetup: Bool = false
@@ -679,6 +680,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
     self.updateUIWalletSelectButton()
     self.setUpGasFeeView()
+    self.destAmountContainerView.rounded(color: UIColor(named: "toolbarBgColor")!, width: 2, radius: 16)
   }
 
   override func viewWillAppear(_ animated: Bool) {
