@@ -27,6 +27,7 @@
                 <outlet property="bonusVolLabel" destination="K7t-lN-19q" id="c3G-os-Y8l"/>
                 <outlet property="bonusVolTitle" destination="DQ6-XP-Bp9" id="nfD-0C-EyL"/>
                 <outlet property="bonusVolumeHeight" destination="Cg8-nw-qc0" id="4Oc-N2-4td"/>
+                <outlet property="claimButton" destination="J78-Nv-nFq" id="lrI-01-2pC"/>
                 <outlet property="confirmVolTitleLabel" destination="2kZ-Iw-cwd" id="uyn-HC-9oU"/>
                 <outlet property="infoViewHeightContraint" destination="tIC-SA-BaZ" id="Shl-dw-CTS"/>
                 <outlet property="introLabel" destination="tyV-3T-aPM" id="w2p-Zr-cMK"/>
