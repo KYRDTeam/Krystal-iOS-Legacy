@@ -216,7 +216,7 @@ class RewardCoordinator: Coordinator {
       }
     }
   }
-  
+
   func sendSignedTransactionData(_ signedData: Data, transaction: SignTransaction) {
     guard let provider = self.session.externalProvider else {
       return
@@ -237,6 +237,7 @@ class RewardCoordinator: Coordinator {
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.claimRewardController?.dismiss(animated: true, completion: {
             self.openTransactionStatusPopUp(transaction: historyTransaction)
+            self.claimRewardController = nil
           })
       case .failure(let error):
         self.navigationController.showTopBannerView(message: error.localizedDescription)
@@ -331,6 +332,31 @@ extension RewardCoordinator: RewardsViewControllerDelegate {
 }
 
 extension RewardCoordinator: ClaimRewardsControllerDelegate {
+  func didDismiss() {
+    self.claimRewardController = nil
+  }
+  
+  func didSelectAdvancedSetting(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: 0, isUseGasToken: false, isContainSlippageSection: false)
+    viewModel.baseGasLimit = baseGasLimit
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.advancedGasLimit = advancedGasLimit
+    viewModel.advancedMaxPriorityFee = advancedPriorityFee
+    viewModel.advancedMaxFee = advancedMaxFee
+    viewModel.advancedNonce = advancedNonce
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.getLatestNonce { nonce in
+      vc.coordinatorDidUpdateCurrentNonce(nonce)
+    }
+    self.claimRewardController?.present(vc, animated: true, completion: nil)
+  }
+  
   func didClaimRewards(_ controller: ClaimRewardsController, txObject: TxObject) {
     self.rootViewController.viewModel.shouldDisableClaim = true
     self.rootViewController.updateUI()
@@ -654,6 +680,12 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
           }
         }
       }
+    case .gasPriceChanged(let type, let value):
+      self.claimRewardController?.coordinatorDidUpdateSetting(type: type, value: value)
+    case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
+      self.claimRewardController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      self.claimRewardController?.coordinatorDidUpdateAdvancedNonce(nonce)
     default:
       break
     }

@@ -856,6 +856,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIForCustomNonce() {
+    guard self.isViewLoaded else { return }
     guard !(self.viewModel.isSpeedupMode || self.viewModel.isCancelMode) else {
       self.customNonceTitleLabel.isHidden = true
       self.customNonceContainerView.isHidden = true
@@ -894,6 +895,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBAction func gasFeeButtonTapped(_ sender: UIButton) {
     let selectType = KNSelectedGasPriceType(rawValue: sender.tag)!
     self.viewModel.updateSelectedType(selectType)
+    self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.updateGasPriceUIs()
     self.updateUIForMainGasFee()
     self.updateUIAdvancedSetting()
@@ -931,7 +933,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       })
       return
     }
-    self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.gasFeeButtonTapped(self.mediumGasButton)
   }
 

@@ -43,6 +43,7 @@ public struct Constants {
   public static let customFilterOptionFileName = "custom-filter-option.data"
   public static let marketingAssetsStoreFileName = "marketing-assets.data"
   public static let referralOverviewStoreFileName = "-referral-overview.data"
+  public static let referralTiersStoreFileName = "-referral-tiers.data"
   public static let historyTransactionsStoreFileName = "-history-transaction.data"
   public static let notificationsStoreFileName = "notification.data"
   public static let loginTokenStoreFileName = "-login-token.data"

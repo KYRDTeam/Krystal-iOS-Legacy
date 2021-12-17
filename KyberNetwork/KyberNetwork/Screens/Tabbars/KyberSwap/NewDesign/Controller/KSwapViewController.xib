@@ -38,6 +38,7 @@
                 <outlet property="changeRateButton" destination="9PL-XD-kXQ" id="X6D-zG-BpU"/>
                 <outlet property="continueButton" destination="YJW-Oi-0g6" id="8t8-Bj-5r4"/>
                 <outlet property="currentChainIcon" destination="LsP-oY-uMF" id="TDC-DU-AI1"/>
+                <outlet property="destAmountContainerView" destination="EfQ-Sl-42G" id="mfa-ct-YqC"/>
                 <outlet property="equivalentUSDValueLabel" destination="ThL-2a-mea" id="xvo-BU-ibi"/>
                 <outlet property="estGasFeeTitleLabel" destination="4hz-Cx-cXe" id="Ikd-4g-vJC"/>
                 <outlet property="estGasFeeValueLabel" destination="CuG-qV-1fX" id="yFL-Uz-gh6"/>
@@ -284,14 +285,14 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
+                                    <integer key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EfQ-Sl-42G">
                             <rect key="frame" x="37" y="191.5" width="301" height="42"/>
                             <subviews>
-                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.3532" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2ue-dF-Sxj">
+                                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.3532" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2ue-dF-Sxj">
                                     <rect key="frame" x="16" y="0.0" width="218" height="42"/>
                                     <color key="tintColor" name="buttonBackgroundColor"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -316,7 +317,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" name="toolbarBgColor"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Hu8-ec-ud1" secondAttribute="bottom" id="04l-6g-zkf"/>
                                 <constraint firstItem="2ue-dF-Sxj" firstAttribute="leading" secondItem="EfQ-Sl-42G" secondAttribute="leading" constant="16" id="3Rv-z4-fZf"/>

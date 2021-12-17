@@ -25,19 +25,14 @@ struct KrytalCellViewModel {
     return "\(Int(self.codeObject.totalRefer))"
   }
   
-  var displayPendingVol: String {
-    return "\(self.codeObject.pendingVol)"
-  }
-  
-  var displayConfirmedVol: String {
-    return "\(self.codeObject.realizedVol)"
+  var displayVol: String {
+    return "\(self.codeObject.vol)"
   }
 }
 
 protocol KrytalTableViewCellDelegate: class {
   func krytalTableViewCellDidSelectCopy(_ cell: KrytalTableViewCell, code: String)
   func krytalTableViewCellDidSelectShare(_ cell: KrytalTableViewCell, code: String, codeObject: Code)
-  
 }
 
 class KrytalTableViewCell: UITableViewCell {
@@ -47,19 +42,16 @@ class KrytalTableViewCell: UITableViewCell {
   @IBOutlet weak var referralCodeLabel: UILabel!
   @IBOutlet weak var ratioLabel: UILabel!
   @IBOutlet weak var friendsLabel: UILabel!
-  @IBOutlet weak var pendingVolLabel: UILabel!
   @IBOutlet weak var confirmedVolLabel: UILabel!
-  
   var viewModel: KrytalCellViewModel?
   weak var delegate: KrytalTableViewCellDelegate?
-  
+
   func updateCell(viewModel: KrytalCellViewModel) {
     self.viewModel = viewModel
     self.referralCodeLabel.text = viewModel.displayReferralCode
     self.ratioLabel.text = viewModel.displayRatio
     self.friendsLabel.text = viewModel.displayFriends
-    self.pendingVolLabel.text = viewModel.displayPendingVol
-    self.confirmedVolLabel.text = viewModel.displayConfirmedVol
+    self.confirmedVolLabel.text = viewModel.displayVol
   }
   
   @IBAction func copyButtonTapped(_ sender: UIButton) {

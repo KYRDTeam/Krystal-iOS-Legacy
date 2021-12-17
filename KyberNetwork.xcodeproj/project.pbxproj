@@ -447,6 +447,10 @@
 		775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C00B420195BFB001B5EBC /* BrowserAction.swift */; };
 		778EAF7D1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */; };
 		77E0E773201FAD06009B4B31 /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */; };
+		7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */; };
+		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
+		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
+		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -1226,6 +1230,10 @@
 		775C00B420195BFB001B5EBC /* BrowserAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAction.swift; sourceTree = "<group>"; };
 		778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorTests.swift; sourceTree = "<group>"; };
 		77E0E772201FAD05009B4B31 /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
+		7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersViewController.swift; sourceTree = "<group>"; };
+		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
+		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
+		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -3766,6 +3774,8 @@
 				C3F71C832618A47200285935 /* KrytalHistoryViewController.xib */,
 				C3F71C8E261AB0FE00285935 /* ClaimRewardViewController.swift */,
 				C3F71C8F261AB0FF00285935 /* ClaimRewardViewController.xib */,
+				7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */,
+				7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -3777,6 +3787,8 @@
 				C31371F82603B194003D432B /* KrytalTableViewCell.xib */,
 				C3F71C882618A57B00285935 /* ClaimHistoryTableViewCell.swift */,
 				C3F71C892618A57B00285935 /* ClaimHistoryTableViewCell.xib */,
+				7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */,
+				7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4663,6 +4675,7 @@
 				C3A6911725638DE700F57756 /* Lato-Regular.ttf in Resources */,
 				25929C9120DA5CC10045CFA3 /* SFCompactText-Light.otf in Resources */,
 				25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */,
+				7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */,
 				C30568AC2670B87700F331CE /* OverviewMainViewController.xib in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
@@ -4681,6 +4694,7 @@
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
 				C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */,
+				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
 				C3053AF92685D2990079B505 /* OverviewSearchTokenViewController.xib in Resources */,
 				C32649DC26CF81BE001B6E11 /* OverviewNFTDetailViewController.xib in Resources */,
 				25073D2A211AF20D00833C92 /* Montserrat-BoldItalic.ttf in Resources */,
@@ -5035,6 +5049,7 @@
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
 				C3263B0725EDE837005FBB60 /* WithdrawViewController.swift in Sources */,
+				7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */,
 				7E6F510B2733CA69002DA0B2 /* KNSummaryChainModel.swift in Sources */,
 				7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */,
 				C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */,
@@ -5275,6 +5290,7 @@
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				296AF9A71F736EC70058AF78 /* RPCServers.swift in Sources */,
+				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
 				25682B7A20EE09C8009738C4 /* KNTransactionDetailsViewModel.swift in Sources */,
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
@@ -5630,7 +5646,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5663,7 +5679,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5774,7 +5790,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -5804,7 +5820,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -15,10 +15,43 @@ class ClaimRewardsViewModel {
   var totalTokensValue: String
   var tokenIconURL: String
   var shouldDisableClaimButton = false
+  
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
 
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
+  fileprivate(set) var baseGasLimit: BigInt
   private(set) var session: KNSession
   var txObject: TxObject
 
@@ -54,15 +87,52 @@ class ClaimRewardsViewModel {
     self.totalTokensValue = totalTokensValue
     self.tokenIconURL = tokenIconURL
     self.gasLimit = gasLimit
+    self.baseGasLimit = gasLimit
     self.session = session
-    // reset gas price
-    let newTxObject = txObject.newTxObjectWithGasPrice(gasPrice: self.gasPrice)
-    self.txObject = newTxObject
+    self.txObject = txObject
+  }
+  
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
+    default: return
+    }
+  }
+  
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    self.advancedNonce = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+    self.gasLimit = self.baseGasLimit
+  }
+  
+  func buildSumitTxObj() -> TxObject {
+    var nonce = self.txObject.nonce
+    if let unwrap = self.advancedNonce, let unwrapInt = Int(unwrap) {
+      nonce = BigInt(unwrapInt).hexEncoded
+    }
+    return TxObject(from: self.txObject.from, to: self.txObject.to, data: self.txObject.data, value: self.txObject.value, gasPrice: self.gasPrice.hexEncoded, nonce: nonce, gasLimit: self.gasLimit.hexEncoded)
   }
 }
 
 protocol ClaimRewardsControllerDelegate: class {
   func didClaimRewards(_ controller: ClaimRewardsController, txObject: TxObject)
+  func didDismiss()
+  func didSelectAdvancedSetting(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
 class ClaimRewardsController: KNBaseViewController {
@@ -158,17 +228,15 @@ class ClaimRewardsController: KNBaseViewController {
   }
 
   @IBAction func selectGasPriceButtonTapped(_ sender: Any) {
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, currentRatePercentage: 3, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: false)
-    viewModel.updateGasPrices(
-      fast: KNGasCoordinator.shared.fastKNGas,
-      medium: KNGasCoordinator.shared.standardKNGas,
-      slow: KNGasCoordinator.shared.lowKNGas,
-      superFast: KNGasCoordinator.shared.superFastKNGas
+    self.delegate?.didSelectAdvancedSetting(
+      gasLimit: self.viewModel.gasLimit,
+      baseGasLimit: self.viewModel.baseGasLimit,
+      selectType: self.viewModel.selectedGasPriceType,
+      advancedGasLimit: self.viewModel.advancedGasLimit,
+      advancedPriorityFee: self.viewModel.advancedMaxPriorityFee,
+      advancedMaxFee: self.viewModel.advancedMaxFee,
+      advancedNonce: self.viewModel.advancedNonce
     )
-
-    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-    vc.delegate = self
-    self.present(vc, animated: true, completion: nil)
   }
 
   @IBAction func cancelButtonTapped(_ sender: Any) {
@@ -179,14 +247,34 @@ class ClaimRewardsController: KNBaseViewController {
     //check if balance > fee
     guard let quoteToken = KNSupportedTokenStorage.shared.getTokenWith(symbol: KNGeneralProvider.shared.quoteToken) else {return}
     if quoteToken.getBalanceBigInt() > self.viewModel.transactionFee {
-      self.delegate?.didClaimRewards(self, txObject: self.viewModel.txObject)
+      self.delegate?.didClaimRewards(self, txObject: self.viewModel.buildSumitTxObj())
     }
   }
 
   @objc func tapOutside() {
-    self.dismiss(animated: true, completion: nil)
+    self.dismiss(animated: true, completion: {
+      self.delegate?.didDismiss()
+    })
   }
 
+  func coordinatorDidUpdateSetting(type: KNSelectedGasPriceType, value: BigInt) {
+    self.viewModel.selectedGasPriceType = type
+    self.viewModel.gasPrice = value
+    self.viewModel.resetAdvancedSettings()
+    self.updateUI()
+  }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateUI()
+  }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
 }
 
 extension ClaimRewardsController: BottomPopUpAbstract {
@@ -200,19 +288,5 @@ extension ClaimRewardsController: BottomPopUpAbstract {
 
   func getPopupContentView() -> UIView {
     return self.contentView
-  }
-}
-
-extension ClaimRewardsController: GasFeeSelectorPopupViewControllerDelegate {
-  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
-    switch event {
-    case .gasPriceChanged(let type, let value):
-        self.viewModel.selectedGasPriceType = type
-        self.viewModel.gasPrice = value
-        self.viewModel.txObject = self.viewModel.txObject.newTxObjectWithGasPrice(gasPrice: value)
-        self.updateUI()
-    default:
-      break
-    }
   }
 }

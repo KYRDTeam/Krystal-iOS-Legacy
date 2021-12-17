@@ -7,23 +7,17 @@
 
 import Foundation
 
-// MARK: - ReferralOverviewResponse
-struct ReferralOverviewResponse: Codable {
-    let timestamp: Int
-    let overview: Overview
-}
-
-// MARK: - Overview
-struct Overview: Codable {
-    let claimablePoint, cashbackPendingVol, cashbackRealizedVol, minTier: Double
-    let maxTier: Double
-    let realizedReward: Double
-    let codes: [String: Code]
+// MARK: - ReferralOverviewData
+struct ReferralOverviewData: Codable {
+  let timestamp: Int
+  let codeStats: [String: Code]
+  let rewardToken: Token
+  let rewardAmount, nextRewardAmount, volForNextReward, totalVol, bonusVol, bonusRatio: Double
 }
 
 // MARK: - Code
 struct Code: Codable {
-    let totalRefer, pendingVol, realizedVol, ratio: Double
+    let totalRefer, vol, ratio: Double
 }
 
 // MARK: - ClaimHistoryResponse
@@ -39,4 +33,16 @@ struct Claim: Codable {
     let fulfill: Bool
     let timestamp: Int
     let txHash: String
+}
+
+// MARK: - ReferralTiers
+struct ReferralTiers: Codable {
+  let timestamp: Int
+  let tiers: [Tier]
+}
+
+// MARK: - Tier
+struct Tier: Codable {
+  let level: Int
+  let volume, reward: Double
 }
