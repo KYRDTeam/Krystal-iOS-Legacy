@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -42,11 +42,13 @@
                 <outlet property="exchangeRateLabel" destination="DpQ-Q8-bTa" id="kfL-Q8-Xk8"/>
                 <outlet property="fromAmountTextField" destination="0EY-Ql-kod" id="cCc-SS-pQA"/>
                 <outlet property="fromTokenButton" destination="6pu-5h-cPV" id="fcg-CH-y07"/>
+                <outlet property="gasAndFeeBlockerView" destination="AXU-AZ-2QK" id="94y-mq-UU7"/>
                 <outlet property="gasFeeTittleLabelTopContraint" destination="Ck0-C9-jUk" id="uR4-09-bfb"/>
                 <outlet property="minReceivedAmount" destination="xrr-ba-x0D" id="d41-XK-CIX"/>
                 <outlet property="pendingTxIndicatorView" destination="dQz-dI-QV0" id="Uap-T6-beM"/>
                 <outlet property="platformTableView" destination="jLY-DK-hvb" id="WzW-zG-g9Q"/>
                 <outlet property="platformTableViewHeightContraint" destination="6ix-MV-i1L" id="ioj-Dk-yp6"/>
+                <outlet property="rateBlockerView" destination="ysn-FL-W1p" id="HGm-iO-TGo"/>
                 <outlet property="rateWarningLabel" destination="JEu-sV-MW6" id="3O5-bN-Chk"/>
                 <outlet property="selectDepositTitleLabel" destination="kyy-RX-iYI" id="Tm8-ru-31R"/>
                 <outlet property="selectedGasFeeLabel" destination="wBR-o7-F7S" id="NhM-KR-VCJ"/>
@@ -344,11 +346,17 @@
                                         <action selector="revertRateButtonTapped:" destination="-1" eventType="touchUpInside" id="THy-oY-xM5"/>
                                     </connections>
                                 </button>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ysn-FL-W1p">
+                                    <rect key="frame" x="20" y="215" width="295" height="16.5"/>
+                                    <color key="backgroundColor" name="mainViewBgColor"/>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="lyV-ue-RaN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LkA-Xh-Z0r" secondAttribute="trailing" constant="5" id="1YL-ux-egp"/>
+                                <constraint firstItem="ysn-FL-W1p" firstAttribute="leading" secondItem="uRO-C1-Q2L" secondAttribute="leading" id="1zv-t8-X7x"/>
                                 <constraint firstItem="8wx-BU-7Mc" firstAttribute="trailing" secondItem="Gm0-2V-zzS" secondAttribute="trailing" id="3Rt-SM-PHJ"/>
+                                <constraint firstItem="ysn-FL-W1p" firstAttribute="trailing" secondItem="uRO-C1-Q2L" secondAttribute="trailing" id="4Qb-8Z-xFk"/>
                                 <constraint firstItem="wNg-4t-wUv" firstAttribute="top" secondItem="Gm0-2V-zzS" secondAttribute="bottom" constant="25" id="9sO-YW-3bX"/>
                                 <constraint firstItem="Gm0-2V-zzS" firstAttribute="top" secondItem="LwO-dD-Td4" secondAttribute="bottom" constant="15" id="Aid-UE-XBU"/>
                                 <constraint firstItem="d6m-R3-QQo" firstAttribute="trailing" secondItem="Gm0-2V-zzS" secondAttribute="trailing" id="CBx-RP-1t1"/>
@@ -365,11 +373,13 @@
                                 <constraint firstItem="DpQ-Q8-bTa" firstAttribute="top" secondItem="uRO-C1-Q2L" secondAttribute="bottom" constant="8" symbolic="YES" id="Und-Tu-Nta"/>
                                 <constraint firstAttribute="trailing" secondItem="uRO-C1-Q2L" secondAttribute="trailing" constant="20" id="VAR-3Z-p1b"/>
                                 <constraint firstItem="LwO-dD-Td4" firstAttribute="leading" secondItem="uA8-HS-H8n" secondAttribute="leading" constant="20" id="W0j-Df-gBa"/>
+                                <constraint firstItem="DpQ-Q8-bTa" firstAttribute="bottom" secondItem="ysn-FL-W1p" secondAttribute="bottom" id="chN-SL-Xnq"/>
                                 <constraint firstItem="8wx-BU-7Mc" firstAttribute="top" secondItem="Gm0-2V-zzS" secondAttribute="bottom" constant="8" symbolic="YES" id="kYl-Wn-fUh"/>
                                 <constraint firstItem="uRO-C1-Q2L" firstAttribute="leading" secondItem="uA8-HS-H8n" secondAttribute="leading" constant="20" id="oKz-ss-SGM"/>
                                 <constraint firstAttribute="trailing" secondItem="Gm0-2V-zzS" secondAttribute="trailing" constant="20" id="oPv-wY-uoY"/>
                                 <constraint firstItem="lyV-ue-RaN" firstAttribute="centerY" secondItem="DpQ-Q8-bTa" secondAttribute="centerY" id="syG-j3-cEW"/>
                                 <constraint firstItem="Gm0-2V-zzS" firstAttribute="leading" secondItem="uA8-HS-H8n" secondAttribute="leading" constant="20" id="uBk-Lj-Jrp"/>
+                                <constraint firstItem="DpQ-Q8-bTa" firstAttribute="top" secondItem="ysn-FL-W1p" secondAttribute="top" id="ued-5h-YSO"/>
                                 <constraint firstItem="uRO-C1-Q2L" firstAttribute="top" secondItem="wNg-4t-wUv" secondAttribute="bottom" constant="25" id="wMd-EA-pqP"/>
                             </constraints>
                         </view>
@@ -548,11 +558,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydk-j2-Oi6">
-                            <rect key="frame" x="50" y="722.5" width="118.5" height="17"/>
+                            <rect key="frame" x="50" y="722.5" width="119" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AXU-AZ-2QK">
+                            <rect key="frame" x="37" y="697.5" width="301" height="157.5"/>
+                            <color key="backgroundColor" name="mainViewBgColor"/>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="6He-xV-AXw" firstAttribute="leading" secondItem="X3S-Z5-c4q" secondAttribute="leading" constant="50" id="0Oh-Pr-d7i"/>
@@ -562,6 +576,8 @@
                         <constraint firstItem="Jda-FF-5tH" firstAttribute="width" secondItem="Eiy-Sh-shS" secondAttribute="width" priority="999" id="6Xm-yf-TBM"/>
                         <constraint firstItem="ktg-Iv-jj2" firstAttribute="leading" secondItem="cmQ-qK-svk" secondAttribute="leading" constant="20" id="70p-r2-NbK"/>
                         <constraint firstItem="QNj-my-TVX" firstAttribute="top" secondItem="ZW4-gs-Sfz" secondAttribute="bottom" constant="12" id="7aC-Wg-Fsd"/>
+                        <constraint firstItem="AXU-AZ-2QK" firstAttribute="trailing" secondItem="Jda-FF-5tH" secondAttribute="trailing" id="8er-KO-n1Q"/>
+                        <constraint firstItem="AXU-AZ-2QK" firstAttribute="top" secondItem="Jda-FF-5tH" secondAttribute="bottom" id="8ui-jM-OSs"/>
                         <constraint firstItem="Jda-FF-5tH" firstAttribute="centerY" secondItem="Eiy-Sh-shS" secondAttribute="centerY" id="93h-bt-VwH"/>
                         <constraint firstItem="xrr-ba-x0D" firstAttribute="centerY" secondItem="QNj-my-TVX" secondAttribute="centerY" id="ArU-96-4dy"/>
                         <constraint firstItem="6He-xV-AXw" firstAttribute="top" secondItem="Jda-FF-5tH" secondAttribute="bottom" constant="54" id="Ck0-C9-jUk"/>
@@ -587,7 +603,9 @@
                         <constraint firstItem="QT5-hK-uc0" firstAttribute="top" secondItem="ktg-Iv-jj2" secondAttribute="bottom" constant="20" id="Ypw-Kv-nbg"/>
                         <constraint firstItem="wBR-o7-F7S" firstAttribute="centerY" secondItem="6He-xV-AXw" secondAttribute="centerY" id="Yze-f9-QHx"/>
                         <constraint firstItem="Nsu-FM-UeN" firstAttribute="centerX" secondItem="cmQ-qK-svk" secondAttribute="centerX" id="Z2W-3y-tMe"/>
+                        <constraint firstItem="AXU-AZ-2QK" firstAttribute="leading" secondItem="Eiy-Sh-shS" secondAttribute="leading" id="cUc-P3-cZP"/>
                         <constraint firstItem="Eba-gn-cza" firstAttribute="top" secondItem="0qS-hT-2kU" secondAttribute="top" id="du9-6H-bIO"/>
+                        <constraint firstItem="0qS-hT-2kU" firstAttribute="bottom" secondItem="AXU-AZ-2QK" secondAttribute="bottom" id="gRQ-8a-DtU"/>
                         <constraint firstAttribute="trailing" secondItem="uA8-HS-H8n" secondAttribute="trailing" constant="20" id="h5B-aH-T0E"/>
                         <constraint firstItem="QT5-hK-uc0" firstAttribute="leading" secondItem="cmQ-qK-svk" secondAttribute="leading" constant="37" id="hd1-9i-PfH"/>
                         <constraint firstItem="ktg-Iv-jj2" firstAttribute="top" secondItem="Nsu-FM-UeN" secondAttribute="bottom" constant="15" id="hj0-vE-Zz6"/>
