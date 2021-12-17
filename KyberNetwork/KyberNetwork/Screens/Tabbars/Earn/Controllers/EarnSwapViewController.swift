@@ -910,7 +910,12 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
 
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
-    let message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+    var message = ""
+    if self.viewModel.getRefPrice(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData).isEmpty {
+      message = " Missing price impact. Please swap with caution."
+    } else {
+      message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+    }
     self.showTopBannerView(
       with: "",
       message: message,
