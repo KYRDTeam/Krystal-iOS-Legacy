@@ -14,7 +14,12 @@ class KrytalViewModel {
   var tiers: ReferralTiers?
   var displayTotalReward: String {
     guard let unwrapped = self.referralOverViewData else { return "---" }
-    return "\(unwrapped.rewardAmount) \(unwrapped.rewardToken.symbol)"
+    return StringFormatter.amountString(value: unwrapped.rewardAmount) + " " + unwrapped.rewardToken.symbol
+  }
+
+  var shouldEnableClaimButton: Bool {
+    guard let unwrapped = self.referralOverViewData else { return false }
+    return unwrapped.rewardAmount > 0
   }
 
   var displayReferralCodes: [KrytalCellViewModel] {
@@ -34,7 +39,7 @@ class KrytalViewModel {
   }
   
   var displayIntroAttributedString: NSAttributedString {
-    let fullString = NSMutableAttributedString(string: "Copy below given Ref Code to share with your friends & start earning ".toBeLocalised())
+    let fullString = NSMutableAttributedString(string: "Copy below given Referral Codes to share with your friends & start earning ".toBeLocalised())
     let image1Attachment = NSTextAttachment()
     image1Attachment.image = UIImage(named: "info_waring_blue_icon")
     let image1String = NSAttributedString(attachment: image1Attachment)
@@ -89,6 +94,7 @@ class KrytalViewController: KNBaseViewController {
   @IBOutlet weak var infoViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var bonusVolHintImage: UIImageView!
   @IBOutlet weak var bonusVolHintButton: UIButton!
+  @IBOutlet weak var claimButton: UIButton!
   let viewModel = KrytalViewModel()
   weak var delegate: KrytalViewControllerDelegate?
 
@@ -113,6 +119,7 @@ class KrytalViewController: KNBaseViewController {
     self.bonusVolHintImage.isHidden = self.viewModel.shouldHideBonusVolume
     self.bonusVolHintButton.isHidden = self.viewModel.shouldHideBonusVolume
     self.infoViewHeightContraint.constant = self.viewModel.shouldHideBonusVolume ? 335 : 388
+    self.claimButton.isHidden = !self.viewModel.shouldEnableClaimButton
     self.referralCodeTableView.reloadData()
   }
 
@@ -155,7 +162,7 @@ class KrytalViewController: KNBaseViewController {
   }
 
   @IBAction func helpIconTapped(_ sender: UITapGestureRecognizer) {
-    self.navigationController?.showBottomBannerView(message: "Ask your friends to download Krystal App using your Referral Codes. If they enter your Referral Codes when importing/creating their wallets in Krystal, both you and your friends can start earning Referral Rewards.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
+    self.navigationController?.showBottomBannerView(message: "Ask your friends to download Krystal App using your Referral Codes. If they enter your Referral Codes when importing/creating their wallets in Krystal, both you and your friends can start earning Referral Rewards. Learn more", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
       self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
     })
   }
