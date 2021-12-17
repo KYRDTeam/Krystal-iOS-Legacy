@@ -895,6 +895,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBAction func gasFeeButtonTapped(_ sender: UIButton) {
     let selectType = KNSelectedGasPriceType(rawValue: sender.tag)!
     self.viewModel.updateSelectedType(selectType)
+    self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.updateGasPriceUIs()
     self.updateUIForMainGasFee()
     self.updateUIAdvancedSetting()
@@ -932,7 +933,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       })
       return
     }
-    self.viewModel.gasLimit = self.viewModel.baseGasLimit
     self.gasFeeButtonTapped(self.mediumGasButton)
   }
 
