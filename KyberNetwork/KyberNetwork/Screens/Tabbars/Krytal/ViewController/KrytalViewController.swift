@@ -56,6 +56,11 @@ class KrytalViewModel {
     guard let unwrapped = self.referralOverViewData else { return "---" }
     return "\(StringFormatter.usdString(value: unwrapped.volForNextReward)) more to unlock the next reward"
   }
+  
+  var shouldHideBonusVolume: Bool {
+    guard let unwrapped = self.referralOverViewData else { return true }
+    return unwrapped.bonusVol == 0
+  }
 }
 
 enum KrytalViewEvent {
@@ -79,7 +84,11 @@ class KrytalViewController: KNBaseViewController {
   @IBOutlet weak var confirmVolTitleLabel: UILabel!
   @IBOutlet weak var walletListButton: UIButton!
   @IBOutlet weak var nextRewardLabel: UILabel!
-
+  @IBOutlet weak var bonusVolumeHeight: NSLayoutConstraint!
+  @IBOutlet weak var bonusVolTitle: UILabel!
+  @IBOutlet weak var infoViewHeightContraint: NSLayoutConstraint!
+  @IBOutlet weak var bonusVolHintImage: UIImageView!
+  @IBOutlet weak var bonusVolHintButton: UIButton!
   let viewModel = KrytalViewModel()
   weak var delegate: KrytalViewControllerDelegate?
 
@@ -98,6 +107,12 @@ class KrytalViewController: KNBaseViewController {
     self.bonusVolLabel.text = self.viewModel.bonusVol
     self.totalConfirmedVolLabel.text = self.viewModel.displayTotalConfirmedVol
     self.nextRewardLabel.text = self.viewModel.nextRewardInfoString
+    self.bonusVolumeHeight.constant = self.viewModel.shouldHideBonusVolume ? 0 : 53
+    self.bonusVolTitle.isHidden = self.viewModel.shouldHideBonusVolume
+    self.bonusVolLabel.isHidden = self.viewModel.shouldHideBonusVolume
+    self.bonusVolHintImage.isHidden = self.viewModel.shouldHideBonusVolume
+    self.bonusVolHintButton.isHidden = self.viewModel.shouldHideBonusVolume
+    self.infoViewHeightContraint.constant = self.viewModel.shouldHideBonusVolume ? 335 : 388
     self.referralCodeTableView.reloadData()
   }
 
@@ -106,7 +121,7 @@ class KrytalViewController: KNBaseViewController {
     guard self.isViewLoaded else { return }
     self.updateUI()
   }
-  
+
   func coordinatorDidUpdateTiers(_ tiers: ReferralTiers?) {
     self.viewModel.tiers = tiers
   }
@@ -120,7 +135,7 @@ class KrytalViewController: KNBaseViewController {
   @IBAction func historyButtonTapped(_ sender: UIButton) {
     self.delegate?.krytalViewController(self, run: .openHistory)
   }
-  
+
   @IBAction func walletsListButtonTapped(_ sender: UIButton) {
     self.delegate?.krytalViewController(self, run: .openWalletList)
   }

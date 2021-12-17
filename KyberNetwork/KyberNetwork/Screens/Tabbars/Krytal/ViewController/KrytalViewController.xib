@@ -22,8 +22,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KrytalViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="bonusVolHintButton" destination="U9I-Mq-nZB" id="SHQ-nR-siP"/>
+                <outlet property="bonusVolHintImage" destination="ItW-Pr-eI9" id="YT9-hx-dPt"/>
                 <outlet property="bonusVolLabel" destination="K7t-lN-19q" id="c3G-os-Y8l"/>
+                <outlet property="bonusVolTitle" destination="DQ6-XP-Bp9" id="nfD-0C-EyL"/>
+                <outlet property="bonusVolumeHeight" destination="Cg8-nw-qc0" id="4Oc-N2-4td"/>
                 <outlet property="confirmVolTitleLabel" destination="2kZ-Iw-cwd" id="uyn-HC-9oU"/>
+                <outlet property="infoViewHeightContraint" destination="tIC-SA-BaZ" id="Shl-dw-CTS"/>
                 <outlet property="introLabel" destination="tyV-3T-aPM" id="w2p-Zr-cMK"/>
                 <outlet property="nextRewardLabel" destination="cdn-Ml-hKC" id="pIS-h2-qSH"/>
                 <outlet property="referralCodeTableView" destination="ct4-zK-wY1" id="sOQ-lO-ppb"/>
@@ -334,6 +339,7 @@ You - Friend</string>
                                 <constraint firstItem="U9I-Mq-nZB" firstAttribute="leading" secondItem="DQ6-XP-Bp9" secondAttribute="trailing" id="67G-Sx-JpF"/>
                                 <constraint firstItem="nG7-Ca-w71" firstAttribute="top" secondItem="PMq-JD-rCP" secondAttribute="bottom" constant="18" id="9Xl-45-NG1"/>
                                 <constraint firstItem="hr4-3g-oqi" firstAttribute="centerY" secondItem="nG7-Ca-w71" secondAttribute="centerY" id="Ajb-74-AN9"/>
+                                <constraint firstItem="PMq-JD-rCP" firstAttribute="top" secondItem="ct4-zK-wY1" secondAttribute="bottom" constant="53" id="Cg8-nw-qc0"/>
                                 <constraint firstItem="ItW-Pr-eI9" firstAttribute="centerY" secondItem="DQ6-XP-Bp9" secondAttribute="centerY" constant="2" id="D7m-QG-rfD"/>
                                 <constraint firstItem="ct4-zK-wY1" firstAttribute="left" secondItem="EiQ-YL-7Hs" secondAttribute="left" id="E9p-Fx-TnM"/>
                                 <constraint firstItem="1Hj-CQ-JYj" firstAttribute="leading" secondItem="ct4-zK-wY1" secondAttribute="leading" id="ECL-Nu-Vir"/>
@@ -352,7 +358,6 @@ You - Friend</string>
                                 <constraint firstItem="K7t-lN-19q" firstAttribute="centerY" secondItem="DQ6-XP-Bp9" secondAttribute="centerY" id="pzM-Fv-kRv"/>
                                 <constraint firstItem="PvJ-o2-7Ok" firstAttribute="leading" secondItem="EiQ-YL-7Hs" secondAttribute="leading" constant="9" id="rNI-Uz-QOi"/>
                                 <constraint firstAttribute="height" constant="388" id="tIC-SA-BaZ"/>
-                                <constraint firstItem="PMq-JD-rCP" firstAttribute="top" secondItem="DQ6-XP-Bp9" secondAttribute="bottom" constant="17" id="tW3-BH-YgK"/>
                                 <constraint firstItem="ct4-zK-wY1" firstAttribute="top" secondItem="PvJ-o2-7Ok" secondAttribute="bottom" id="uR4-c9-ZQU"/>
                                 <constraint firstItem="PMq-JD-rCP" firstAttribute="trailing" secondItem="ct4-zK-wY1" secondAttribute="trailing" id="zZ4-Vs-upK"/>
                             </constraints>
