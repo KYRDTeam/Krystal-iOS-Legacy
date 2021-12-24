@@ -116,8 +116,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     return true
   }
 
-  // Respond to Universal Links
-  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    guard userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+          return false
+    }
+    var parameters: [String: String] = [:]
+    components.queryItems?.forEach({ element in
+      parameters[element.name] = element.value
+    })
+    
+    if components.path == "/swap" {
+      self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+    }
+    
     return true
   }
 }
