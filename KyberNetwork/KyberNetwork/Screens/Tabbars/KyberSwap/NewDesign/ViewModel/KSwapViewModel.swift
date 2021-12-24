@@ -28,6 +28,8 @@ class KSwapViewModel {
 
   fileprivate(set) var from: TokenObject
   fileprivate(set) var to: TokenObject
+  fileprivate(set) var fromDeepLink: TokenObject?
+  fileprivate(set) var toDeepLink: TokenObject?
 
   fileprivate(set) var amountFrom: String = ""
   fileprivate(set) var amountTo: String = ""
@@ -62,7 +64,7 @@ class KSwapViewModel {
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
   var showingRevertRate: Bool = false
-  
+  var isFromDeepLink: Bool = false
   var advancedGasLimit: String?
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
@@ -422,6 +424,9 @@ class KSwapViewModel {
   }
 
   func resetDefaultTokensPair() {
+    if self.isFromDeepLink {
+      return
+    }
     switch KNGeneralProvider.shared.currentChain {
     case .eth:
       self.from = KNSupportedTokenStorage.shared.ethToken
@@ -436,6 +441,13 @@ class KSwapViewModel {
       self.from = KNSupportedTokenStorage.shared.avaxToken
       self.to = KNSupportedTokenStorage.shared.usdceToken
     }
+  }
+  
+  func updateTokensPair(from: TokenObject, to: TokenObject) {
+    self.from = from
+    self.to = to
+    self.fromDeepLink = from
+    self.toDeepLink = to
   }
 
   // MARK: Update data

@@ -70,7 +70,6 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
   @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
-  
   @IBOutlet weak var loadingView: SRCountdownTimer!
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
@@ -440,21 +439,57 @@ class KSwapViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.view.layoutIfNeeded()
   }
-  
+
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
+      self.viewModel.isFromDeepLink = false
       let viewModel = SwitchChainWalletsListViewModel(selected: selected)
       let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.setUpGasFeeView()
+  }
+
+  func coordinatorShouldShowSwitchChainPopup() {
+    let alertController = KNPrettyAlertController(
+      title: "",
+      message: "Please switch to BSC to swap".toBeLocalised(),
+      secondButtonTitle: "OK".toBeLocalised(),
+      firstButtonTitle: "Cancel".toBeLocalised(),
+      secondButtonAction: {
+        self.showPopupSwitchChain()
+      },
+      firstButtonAction: nil
+    )
+    alertController.popupHeight = 320
+    self.present(alertController, animated: true, completion: nil)
+  }
+  
+  func showPopupSwitchChain() {
+    let popup = SwitchChainViewController()
+    popup.selectedChain = .bsc
+    popup.nextButtonTitle = "Confirm"
+    popup.completionHandler = { selected in
+      KNGeneralProvider.shared.currentChain = selected
+      var selectedAddress = ""
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        selectedAddress = appDelegate.coordinator.session.wallet.address.description
+      }
+      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+      if selected == .bsc {
+        if let srcToken = self.viewModel.fromDeepLink, let destToken = self.viewModel.toDeepLink {
+          self.viewModel.isFromDeepLink = true
+        }
+      }
+    }
+    self.present(popup, animated: true, completion: nil)
   }
 
   func coordinatorUpdateGasPriceCached() {
@@ -796,6 +831,11 @@ extension KSwapViewController {
     self.stopRateTimer()
     self.setUpGasFeeView()
     self.view.layoutIfNeeded()
+  }
+  
+  func coordinatorUpdateTokens(fromToken: TokenObject, toToken: TokenObject) {
+    self.viewModel.updateTokensPair(from: fromToken, to: toToken)
+    self.updateTokensView(updatedFrom: true, updatedTo: true)
   }
 
   /*

@@ -12,6 +12,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorDidSelectAddWallet()
   func settingsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func settingsCoordinatorDidSelectManageWallet()
+  func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
@@ -58,6 +59,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   
   lazy var customTokenCoordinator: AddTokenCoordinator = {
     let coordinator = AddTokenCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
     return coordinator
   }()
 
@@ -406,6 +408,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     self.customTokenCoordinator.start()
     self.customTokenCoordinator.coordinatorDidUpdateTokenObject(token)
   }
+  
+  func appCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.navigationController.popToRootViewController(animated: false)
+    self.customTokenCoordinator.start()
+    self.customTokenCoordinator.coordinatorDidUpdateTokensObject(srcToken: srcToken, destToken: destToken)
+  }
 
   func appCoordinatorDidUpdateChain() {
     self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
@@ -595,6 +603,12 @@ extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.settingsCoordinatorDidSelectAddWallet()
+  }
+}
+
+extension KNSettingsCoordinator: AddTokenCoordinatorDelegate {
+  func addCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.delegate?.settingsCoordinatorDidImportDeepLinkTokens(srcToken: srcToken, destToken: destToken)
   }
 }
 
