@@ -169,7 +169,6 @@ jobs:
           git config user.email "$GH_ACTOR@users.noreply.github.com"
 
       - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
@@ -182,11 +181,11 @@ jobs:
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
-      # - name: Send notifications to a specify Telegram group
-      #   if: failure()
-      #   env:
-      #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-      #     RUN_ID: ${{ github.run_id }}
-      #   shell: bash
-      #   run: .github/failure
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure
