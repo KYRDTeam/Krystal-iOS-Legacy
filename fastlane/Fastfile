@@ -43,7 +43,7 @@ apple_key_id = ENV["APPLE_KEY_ID"]
 apple_issuer_id = ENV["APPLE_ISSUER_ID"]
 apple_key_content = ENV["APPLE_KEY_CONTENT"]
 apple_id = ENV["APPLE_ID"] 
-#======================
+#=====================
 
 lane :all do
   prepare_keychain
@@ -53,8 +53,8 @@ lane :all do
   sentry_upload
 end
 
-# testflight lane
-lane :testflight do 
+# pre_release build and upload to testflight 
+lane :pre_release do 
   prepare_keychain
 
   # install krystal production profile
@@ -65,7 +65,8 @@ lane :testflight do
     key_id: apple_key_id,
     issuer_id: apple_issuer_id,
     key_content: apple_key_content,
-    duration: 3600,
+    is_key_content_base64: true,
+    duration: 1200,
     in_house: false
   )
 
