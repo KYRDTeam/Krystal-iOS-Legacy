@@ -25,12 +25,16 @@ struct SignTransactionObject: Codable {
   let value: String
   let from: String
   let to: String?
-  let nonce: Int
+  var nonce: Int
   let data: Data
   let gasPrice: String
   let gasLimit: String
   let chainID: Int
   let reservedGasLimit: String
+  
+  mutating func updateNonce(nonce: Int) {
+    self.nonce = nonce
+  }
 }
 
 extension SignTransactionObject {

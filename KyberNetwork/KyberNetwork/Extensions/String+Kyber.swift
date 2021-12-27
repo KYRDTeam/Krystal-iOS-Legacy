@@ -163,4 +163,34 @@ extension String {
   func isNativeAddress() -> Bool {
     return self.lowercased() == Constants.ethAddress || self.lowercased() == Constants.bnbAddress
   }
+  
+  var toHexData: Data {
+    if self.hasPrefix("0x") {
+      return Data(_hex: self, chunkSize: 100)
+    } else {
+      return Data(_hex: self.hex, chunkSize: 100)
+    }
+  }
+}
+
+extension StringProtocol {
+
+    public func chunked(into size: Int) -> [SubSequence] {
+        var chunks: [SubSequence] = []
+
+        var i = startIndex
+
+        while let nextIndex = index(i, offsetBy: size, limitedBy: endIndex) {
+            chunks.append(self[i ..< nextIndex])
+            i = nextIndex
+        }
+
+        let finalChunk = self[i ..< endIndex]
+
+        if finalChunk.isEmpty == false {
+            chunks.append(finalChunk)
+        }
+
+        return chunks
+    }
 }

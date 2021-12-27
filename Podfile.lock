@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.9.1)
+  - AlphaWalletWeb3Provider (0.3.0)
   - APIKit (3.2.1):
     - Result (~> 3.0)
   - BigInt (4.0.0)
@@ -185,6 +186,7 @@ PODS:
     - Web3/Core
 
 DEPENDENCIES:
+  - AlphaWalletWeb3Provider (from `https://github.com/AlphaWallet/AlphaWallet-web3-provider`, commit `9a4496d02b7ddb2f6307fd0510d8d7c9fcef9870`)
   - APIKit (~> 3.2.1)
   - BigInt (~> 4.0)
   - Charts
@@ -279,6 +281,9 @@ SPEC REPOS:
     - Web3
 
 EXTERNAL SOURCES:
+  AlphaWalletWeb3Provider:
+    :commit: 9a4496d02b7ddb2f6307fd0510d8d7c9fcef9870
+    :git: https://github.com/AlphaWallet/AlphaWallet-web3-provider
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.2.8
@@ -288,6 +293,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/trustwallet/wallet-connect-swift
 
 CHECKOUT OPTIONS:
+  AlphaWalletWeb3Provider:
+    :commit: 9a4496d02b7ddb2f6307fd0510d8d7c9fcef9870
+    :git: https://github.com/AlphaWallet/AlphaWallet-web3-provider
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.2.8
@@ -300,6 +308,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlphaWalletWeb3Provider: 7ca1e1c1dc841dc1915f970daace48bf34931655
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
@@ -354,6 +363,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 113ae9e1b5d938550c82d5ebf11354006b47a523
+PODFILE CHECKSUM: e2600e68d7c66277aae66620b56c981a6d90ff0c
 
 COCOAPODS: 1.10.1

@@ -47,6 +47,7 @@ target 'KyberNetwork' do
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'lottie-ios'
   pod 'TrustWalletCore', '~> 2.6.29'
+  pod 'AlphaWalletWeb3Provider', :git=>'https://github.com/AlphaWallet/AlphaWallet-web3-provider', :commit => '9a4496d02b7ddb2f6307fd0510d8d7c9fcef9870'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

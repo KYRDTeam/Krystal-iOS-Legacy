@@ -24,6 +24,7 @@ class InvestCoordinator: Coordinator {
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
+  var dappCoordinator: DappCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -135,6 +136,12 @@ class InvestCoordinator: Coordinator {
     self.historyCoordinator?.start()
   }
   
+  func openDappBrowserScreen() {
+    self.dappCoordinator = nil
+    self.dappCoordinator = DappCoordinator(navigationController: self.navigationController, session: self.session)
+    self.dappCoordinator?.start()
+  }
+  
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
   }
@@ -171,6 +178,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openRewardView()
     case .krytal:
       self.openKrytalView()
+    case .dapp:
+      self.openDappBrowserScreen()
     }
   }
 }

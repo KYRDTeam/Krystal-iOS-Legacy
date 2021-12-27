@@ -8,6 +8,8 @@ enum Method: String, Decodable {
     case signTransaction
     case signPersonalMessage
     case signMessage
+    case signTypedMessage
+    case ethCall
     case unknown
 
     init(string: String) {

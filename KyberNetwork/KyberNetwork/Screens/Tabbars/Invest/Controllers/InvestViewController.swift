@@ -31,6 +31,7 @@ enum InvestViewEvent {
   case transfer
   case reward
   case krytal
+  case dapp
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -89,6 +90,10 @@ class InvestViewController: KNBaseViewController {
 
   @IBAction func krytalButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .krytal)
+  }
+  
+  @IBAction func dAppButtonTapped(_ sender: UIButton) {
+    self.delegate?.investViewController(self, run: .dapp)
   }
 
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
