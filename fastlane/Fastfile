@@ -24,6 +24,7 @@ krystal_dev_profile = ENV["KRYSTAL_DEV_PROFILE"]
 ad_hoc_profile = ENV["AD_HOC_PROFILE"]
 ext_ad_hoc_profile = ENV["EXT_AD_HOC_PROFILE"]
 krystal_prod_profile = ENV["KRYSTAL_PROD_PROFILE"]
+krystal_prod_ext_profile = ENV["KRYSTAL_PROD_EXT_PROFILE"]
 
 # profile paths
 dev_profile_path = ENV["DEV_PROFILE_PATH"] 
@@ -31,6 +32,7 @@ krystal_dev_profile_path = ENV["KRYSTAL_DEV_PROFILE_PATH"]
 ad_hoc_profile_path = ENV["AD_HOC_PROFILE_PATH"]
 ext_ad_hoc_profile_path = ENV["EXT_AD_HOC_PROFILE_PATH"]
 krystal_prod_profile_path = ENV["KRYSTAL_PROD_PROFILE_PATH"]
+krystal_prod_ext_profile_path = ENV["KRYSTAL_PROD_EXT_PROFILE_PATH"]
 
 # sentry
 sentry_token = ENV["SENTRY_TOKEN"]
@@ -56,10 +58,23 @@ end
 # pre_release build and upload to testflight 
 lane :pre_release do 
   prepare_keychain
+  install_profiles  
 
-  # install krystal production profile
-  install_provisioning_profile(path:krystal_prod_profile_path)
-  
+  update_code_signing_settings(
+    team_id: team_id,
+    code_sign_identity: signing_id,
+    targets: "KyberNetwork",
+    profile_name: krystal_prod_profile
+  )
+
+  # update code signing identity for KrystalNotificationServiceExtension
+  update_code_signing_settings(
+    team_id: team_id,
+    code_sign_identity: signing_id,
+    targets: "KrystalNotificationServiceExtension",
+    profile_name: krystal_prod_ext_profile
+  )
+
   # prepare connect to appstore 
   api_key = app_store_connect_api_key(
     key_id: apple_key_id,
@@ -85,7 +100,7 @@ lane :pre_release do
     export_options: {
       provisioningProfiles: { 
         bundle_id => krystal_prod_profile,
-        @tid => krystal_prod_profile
+        @tid => krystal_prod_ext_profile
       }
     }
   )
@@ -148,6 +163,10 @@ lane :install_profiles do
   install_provisioning_profile(path: ad_hoc_profile_path)
   # install extension ad hoc profile
   install_provisioning_profile(path: ext_ad_hoc_profile_path)
+  # install krystal production profile
+  install_provisioning_profile(path:krystal_prod_profile_path)
+  # install krystal production extension profile
+  install_provisioning_profile(path:krystal_prod_ext_profile_path)
 end 
 
 # update_project update devops code signing id 

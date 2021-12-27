@@ -72,26 +72,28 @@ jobs:
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
-      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/distribution.p12
+      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/devops_testflight.p12
       DISTRIBUTE_CERT_PASSWORD: ${{ secrets.DISTRIBUTE_CERT_PASSWORD }}
       DEVELOPMENT_CERT_PATH: /Users/runner/privates/certificates/devops_development.p12
       DEVELOPMENT_CERT_PASSWORD: ${{ secrets.DEVELOPMENT_CERT_PASSWORD }}
       # xcode project environment
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
-      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID }}
+      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
       AD_HOC_PROFILE: ${{ secrets.AD_HOC_PROFILE }}
       EXT_AD_HOC_PROFILE: ${{ secrets.EXT_AD_HOC_PROFILE }}
       KRYSTAL_PROD_PROFILE: ${{ secrets.KRYSTAL_PROD_PROFILE }}
+      KRYSTAL_PROD_EXT_PROFILE: ${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}
       # profile paths
       DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.DEV_PROFILE }}.mobileprovision"
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
       KRYSTAL_PROD_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_PROFILE }}.mobileprovision"
+      KRYSTAL_PROD_EXT_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}.mobileprovision"
       # sentry environments
       SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
       ORG_SLUG: ${{ secrets.ORG_SLUG }}
@@ -109,10 +111,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Debug
-        run: |
-          echo "$DISTRIBUTE_CERT_PASSWORD" | base64 | base64
-          echo "$DEVELOPMENT_CERT_PASSWORD" | base64 | base64
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -120,6 +118,9 @@ jobs:
           ruby-version: 2.6
           bundler-cache: true
           
+      - name: Install Pod check
+        run: gem install cocoapods-check
+
       - name: Setup Sentry CLI
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
@@ -154,13 +155,30 @@ jobs:
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
 
       - name: Pods install
-        run: pod install
+        run: pod check || pod install
 
       - name: Build and Upload to Testflight
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: pre_release
           bundle-install-path: "vendor/bundle"
+
+      - name: Prepare bump build number
+        run: |
+          git config user.name "$GH_ACTOR"
+          git config user.email "$GH_ACTOR@users.noreply.github.com"
+
+      - name: Bump Build number
+        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: bump_build_number
+          bundle-install-path: "vendor/bundle"
+
+      - name: Push commit 
+        shell: bash
+        run: | 
+          git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
