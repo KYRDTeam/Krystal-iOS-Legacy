@@ -144,14 +144,14 @@ jobs:
       - name: Get configuration items
         run: |
           mkdir -p /Users/runner/privates        
-          gsutil cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
+          gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
       - name: Setup environments
         shell: bash
         env:
           ENV: prod
         run: |
-          cp /Users/runner/privates/environments/knsecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
 
       - name: Pods install
