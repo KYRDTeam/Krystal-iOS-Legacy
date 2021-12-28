@@ -708,10 +708,8 @@ class OverviewMainViewModel {
     guard let total = currentChainViewModel?.value else {
       return self.defaultDisplayTotalValue
     }
-
-    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getTotalHideAndDeleteTokensBalanceUSD(self.currencyMode)
-    let displayValue = BigInt(total * pow(10.0, 18.0)) - hideAndDeleteTotal
-    return self.currencyMode.symbol() + displayValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+    let formatter = StringFormatter()
+    return self.currencyMode.symbol() + formatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
 
   var defaultDisplayTotalValue: String {
