@@ -892,3 +892,35 @@ class KSwapViewModel {
     }
   }
 }
+
+extension KSwapViewModel {
+  func getChain(chainId: Int) -> ChainType? {
+    switch chainId {
+    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
+      return .eth
+    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
+      return .bsc
+    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
+      return .polygon
+    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
+      return .avalanche
+    default:
+      return nil
+    }
+  }
+  
+  func chainName(chainId: Int) -> String? {
+    switch chainId {
+    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
+        return "Ethereum"
+    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
+        return "BSC"
+    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
+        return "Polygon"
+    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
+        return "Avalanche"
+    default:
+        return nil
+    }
+  }
+}

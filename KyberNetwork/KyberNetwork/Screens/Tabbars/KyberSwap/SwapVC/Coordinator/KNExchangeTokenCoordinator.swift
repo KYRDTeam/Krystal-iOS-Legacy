@@ -152,18 +152,16 @@ extension KNExchangeTokenCoordinator {
   
   func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {
     // default swap screen
-    if self.navigationController.tabBarController?.selectedIndex != 1 {
-      self.navigationController.tabBarController?.selectedIndex = 1
-    }
+    self.navigationController.tabBarController?.selectedIndex = 1
+    self.navigationController.popToRootViewController(animated: false)
     guard let chainIdString = chainIdString else {
       return
     }
-    
-    let chainId = Int(chainIdString) ?? Constants.ethMainnetPRC.chainID
 
+    let chainId = Int(chainIdString) ?? Constants.ethMainnetPRC.chainID
     //switch chain if need
     if KNGeneralProvider.shared.customRPC.chainID != chainId {
-      self.rootViewController.coordinatorShouldShowSwitchChainPopup()
+      self.rootViewController.coordinatorShouldShowSwitchChainPopup(chainId: chainId)
       self.srcTokenAddress = srcTokenAddress
       self.destTokenAddress = destTokenAddress
     } else {
@@ -215,7 +213,7 @@ extension KNExchangeTokenCoordinator {
     if newAddress.isEmpty {
       // there are no new address then show swap screen
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
-    } else {
+    } else if self.rootViewController.viewModel.isFromDeepLink {
       // if there is any new address then show add token screen
       self.requestTokenInfoIfNeeded(srcAddress: srcTokenAddress, destAddress: destTokenAddress)
     }

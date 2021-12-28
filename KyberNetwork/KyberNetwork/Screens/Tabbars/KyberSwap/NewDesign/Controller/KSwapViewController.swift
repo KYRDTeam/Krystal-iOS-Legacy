@@ -38,7 +38,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
 
-  fileprivate var viewModel: KSwapViewModel
+  var viewModel: KSwapViewModel
   weak var delegate: KSwapViewControllerDelegate?
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
@@ -457,39 +457,42 @@ class KSwapViewController: KNBaseViewController {
     self.setUpGasFeeView()
   }
 
-  func coordinatorShouldShowSwitchChainPopup() {
-    let alertController = KNPrettyAlertController(
+  func coordinatorShouldShowSwitchChainPopup(chainId: Int) {
+    var alertController: KNPrettyAlertController
+    guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
+      alertController = KNPrettyAlertController(
+        title: "",
+        message: "Wrong chainId".toBeLocalised(),
+        secondButtonTitle: "OK".toBeLocalised(),
+        firstButtonTitle: "Cancel".toBeLocalised(),
+        secondButtonAction: nil,
+        firstButtonAction: nil
+      )
+      alertController.popupHeight = 320
+      self.present(alertController, animated: true, completion: nil)
+      return
+    }
+
+    alertController = KNPrettyAlertController(
       title: "",
-      message: "Please switch to BSC to swap".toBeLocalised(),
+      message: "Please switch to \(chainName) to swap".toBeLocalised(),
       secondButtonTitle: "OK".toBeLocalised(),
       firstButtonTitle: "Cancel".toBeLocalised(),
       secondButtonAction: {
-        self.showPopupSwitchChain()
+        KNGeneralProvider.shared.currentChain = chainType
+        var selectedAddress = ""
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+          selectedAddress = appDelegate.coordinator.session.wallet.address.description
+        }
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+        if let srcToken = self.viewModel.fromDeepLink, let destToken = self.viewModel.toDeepLink {
+          self.viewModel.isFromDeepLink = true
+        }
       },
       firstButtonAction: nil
     )
     alertController.popupHeight = 320
     self.present(alertController, animated: true, completion: nil)
-  }
-  
-  func showPopupSwitchChain() {
-    let popup = SwitchChainViewController()
-    popup.selectedChain = .bsc
-    popup.nextButtonTitle = "Confirm"
-    popup.completionHandler = { selected in
-      KNGeneralProvider.shared.currentChain = selected
-      var selectedAddress = ""
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.address.description
-      }
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
-      if selected == .bsc {
-        if let srcToken = self.viewModel.fromDeepLink, let destToken = self.viewModel.toDeepLink {
-          self.viewModel.isFromDeepLink = true
-        }
-      }
-    }
-    self.present(popup, animated: true, completion: nil)
   }
 
   func coordinatorUpdateGasPriceCached() {
