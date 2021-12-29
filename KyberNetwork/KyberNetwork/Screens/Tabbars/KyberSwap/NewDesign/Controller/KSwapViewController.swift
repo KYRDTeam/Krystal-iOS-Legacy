@@ -462,7 +462,7 @@ class KSwapViewController: KNBaseViewController {
     guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
       alertController = KNPrettyAlertController(
         title: "",
-        message: "Wrong chainId".toBeLocalised(),
+        message: "Can't detect chain (chainId = \(chainId))".toBeLocalised(),
         secondButtonTitle: "OK".toBeLocalised(),
         firstButtonTitle: "Cancel".toBeLocalised(),
         secondButtonAction: nil,
