@@ -41,7 +41,7 @@ target 'KyberNetwork' do
   pod 'FreshchatSDK'
   pod 'FSPagerView'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
-  pod 'TagListView', '~> 1.0'
+  pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'WalletConnectSwift'
   pod 'Web3'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'

@@ -65,6 +65,17 @@ extension DappCoordinator: DappBrowserHomeViewControllerDelegate {
 }
 
 extension DappCoordinator: BrowserViewControllerDelegate {
+  func browserViewController(_ controller: BrowserViewController, run event: BrowserViewEvent) {
+    switch event {
+    case .openOption:
+      let controller = BrowserOptionsViewController()
+      controller.delegate = self
+      self.navigationController.present(controller, animated: true, completion: nil)
+    case .switchChain:
+      break
+    }
+  }
+  
   func didCall(action: DappAction, callbackID: Int, inBrowserViewController viewController: BrowserViewController) {
     func rejectDappAction() {
       viewController.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(DAppError.cancelled))
@@ -104,10 +115,10 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             }
           }
         }
-      case .walletAddEthereumChain(let customChain):
-        break
-      case .walletSwitchEthereumChain(let targetChain):
-        break
+//      case .walletAddEthereumChain(let customChain):
+//        break
+//      case .walletSwitchEthereumChain(let targetChain):
+//        break
       default:
         self.navigationController.showTopBannerView(message: "This dApp action is not supported yet")
       }
@@ -204,6 +215,27 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       case .failure:
         self.getLatestNonce(completion: completion)
       }
+    }
+  }
+}
+
+extension DappCoordinator: BrowserOptionsViewControllerDelegate {
+  func browserOptionsViewController(_ controller: BrowserOptionsViewController, run event: BrowserOptionsViewEvent) {
+    switch event {
+    case .back:
+      self.browserViewController?.coodinatorDidReceiveBackEvent()
+    case .forward:
+      self.browserViewController?.coodinatorDidReceiveForwardEvent()
+    case .refresh:
+      self.browserViewController?.coodinatorDidReceiveRefreshEvent()
+    case .share:
+      self.browserViewController?.coodinatorDidReceiveShareEvent()
+    case .copy:
+      self.browserViewController?.coodinatorDidReceiveCopyEvent()
+    case .favourite:
+      self.browserViewController?.coodinatorDidReceiveFavoriteEvent()
+    case .switchWallet:
+      self.browserViewController?.coodinatorDidReceiveSwitchWalletEvent()
     }
   }
 }

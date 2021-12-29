@@ -152,7 +152,7 @@ PODS:
   - SwiftMessages/App (5.0.1)
   - SwiftProtobuf (1.18.0)
   - SwipeCellKit (2.7.1)
-  - TagListView (1.4.1)
+  - TagListView (1.4.0)
   - TrezorCrypto (0.0.9)
   - TrustCore (0.0.7):
     - BigInt
@@ -218,7 +218,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.29.4)
   - SwiftMessages (~> 5.0.1)
   - SwipeCellKit
-  - TagListView (~> 1.0)
+  - TagListView (from `https://github.com/Expensify/TagListView.git`)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
   - TrustWalletCore (~> 2.6.29)
@@ -272,7 +272,6 @@ SPEC REPOS:
     - SwiftMessages
     - SwiftProtobuf
     - SwipeCellKit
-    - TagListView
     - TrezorCrypto
     - TrustCore
     - TrustKeystore
@@ -289,6 +288,8 @@ EXTERNAL SOURCES:
     :tag: 7.2.8
   SwiftChart:
     :git: https://github.com/gpbl/SwiftChart.git
+  TagListView:
+    :git: https://github.com/Expensify/TagListView.git
   WalletConnect:
     :git: https://github.com/trustwallet/wallet-connect-swift
 
@@ -302,6 +303,9 @@ CHECKOUT OPTIONS:
   SwiftChart:
     :commit: 4949a94090641ca85b8133129f7a7b2230694788
     :git: https://github.com/gpbl/SwiftChart.git
+  TagListView:
+    :commit: 964553283e872c59d8a3e8901172e27ce792fe25
+    :git: https://github.com/Expensify/TagListView.git
   WalletConnect:
     :commit: 7dd95468711d202608c37ce7cdef72a9b0f65123
     :git: https://github.com/trustwallet/wallet-connect-swift
@@ -354,7 +358,7 @@ SPEC CHECKSUMS:
   SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
   SwiftProtobuf: c3c12645230d9b09c72267e0de89468c5543bd86
   SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
-  TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
+  TagListView: eb59223866cc5da14a5f4618ecbcd69640d64eff
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
@@ -363,6 +367,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 8fde8bd50d06d327096746d9d6ecd8d824305d0e
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: e2600e68d7c66277aae66620b56c981a6d90ff0c
+PODFILE CHECKSUM: ff0872fbdead507112b9f317e5bb9f187030ef05
 
 COCOAPODS: 1.10.1

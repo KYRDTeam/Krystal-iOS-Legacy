@@ -29,8 +29,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p49-HY-XzB">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="kyberswapppppppppppppppppppppppppppppppp" textAlignment="natural" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTI-HD-ZgN">
-                            <rect key="frame" x="68" y="68" width="177" height="19"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="kyberswapppppppppppppppppppppppppppppppp" textAlignment="natural" lineBreakMode="headTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YTI-HD-ZgN">
+                            <rect key="frame" x="68" y="49.5" width="177" height="56.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -105,9 +105,10 @@
                         <constraint firstAttribute="height" constant="113" id="WxM-ui-2pw"/>
                         <constraint firstItem="YTI-HD-ZgN" firstAttribute="leading" secondItem="WSq-Q9-TgO" secondAttribute="trailing" constant="12" id="ZRa-nq-Y8h"/>
                         <constraint firstItem="WSq-Q9-TgO" firstAttribute="leading" secondItem="p49-HY-XzB" secondAttribute="leading" constant="20" id="a2D-bx-Vwx"/>
+                        <constraint firstAttribute="bottom" secondItem="WSq-Q9-TgO" secondAttribute="bottom" constant="17.5" id="cUL-3N-Z3J"/>
                         <constraint firstItem="40f-tI-FQC" firstAttribute="leading" secondItem="YTI-HD-ZgN" secondAttribute="trailing" constant="12" id="ijx-H3-Sup"/>
                         <constraint firstItem="BYE-NG-MOJ" firstAttribute="leading" secondItem="40f-tI-FQC" secondAttribute="trailing" constant="8" symbolic="YES" id="jYP-mj-44v"/>
-                        <constraint firstAttribute="bottom" secondItem="YTI-HD-ZgN" secondAttribute="bottom" constant="26" id="ndT-fp-gXG"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="YTI-HD-ZgN" secondAttribute="bottom" constant="5" id="ndT-fp-gXG"/>
                         <constraint firstItem="BYE-NG-MOJ" firstAttribute="centerY" secondItem="YTI-HD-ZgN" secondAttribute="centerY" id="o3W-Rd-BVc"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

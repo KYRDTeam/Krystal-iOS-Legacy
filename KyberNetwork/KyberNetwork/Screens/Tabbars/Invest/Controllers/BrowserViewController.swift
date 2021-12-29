@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 import TrustKeystore
+import MBProgressHUD
 
 ///Reason for this class: https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
 final class ScriptMessageProxy: NSObject, WKScriptMessageHandler {
@@ -26,7 +27,13 @@ final class ScriptMessageProxy: NSObject, WKScriptMessageHandler {
     }
 }
 
+enum BrowserViewEvent {
+  case openOption
+  case switchChain
+}
+
 protocol BrowserViewControllerDelegate: class {
+  func browserViewController(_ controller: BrowserViewController, run event: BrowserViewEvent)
   func didCall(action: DappAction, callbackID: Int, inBrowserViewController viewController: BrowserViewController)
 }
 
@@ -38,9 +45,6 @@ class BrowserViewModel {
     self.url = url
     self.account = account
   }
-  
-  
-  
 }
 
 class BrowserViewController: KNBaseViewController {
@@ -59,17 +63,18 @@ class BrowserViewController: KNBaseViewController {
   }()
   
   lazy var webView: WKWebView = {
-      let webView = WKWebView(
-          frame: .zero,
-          configuration: config
-      )
-      webView.allowsBackForwardNavigationGestures = true
-      webView.translatesAutoresizingMaskIntoConstraints = false
-      webView.navigationDelegate = self
-      if isDebug {
-          webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-      }
-      return webView
+    let webView = WKWebView(
+      frame: .zero,
+      configuration: config
+    )
+    webView.allowsBackForwardNavigationGestures = true
+    webView.translatesAutoresizingMaskIntoConstraints = false
+    webView.navigationDelegate = self
+    if isDebug {
+      webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
+    }
+    webView.navigationDelegate = self
+    return webView
   }()
   
   init(viewModel: BrowserViewModel) {
@@ -91,12 +96,12 @@ class BrowserViewController: KNBaseViewController {
     self.webView.leftAnchor.constraint(equalTo: self.webViewContainerView.leftAnchor).isActive = true
     self.webView.rightAnchor.constraint(equalTo: self.webViewContainerView.rightAnchor).isActive = true
     
+    webView.load(URLRequest(url: self.viewModel.url))
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    webView.load(URLRequest(url: self.viewModel.url))
   }
   
   @IBAction func dismissButtonTapped(_ sender: UIButton) {
@@ -104,9 +109,11 @@ class BrowserViewController: KNBaseViewController {
   }
   
   @IBAction func optionsButtonTapped(_ sender: UIButton) {
+    self.delegate?.browserViewController(self, run: .openOption)
   }
   
   func coordinatorNotifyFinish(callbackID: Int, value: Result<DappCallback, DAppError>) {
+    print("[Dapp] \(callbackID) \(value)")
       let script: String = {
           switch value {
           case .success(let result):
@@ -117,6 +124,46 @@ class BrowserViewController: KNBaseViewController {
       }()
       webView.evaluateJavaScript(script, completionHandler: nil)
   }
+  
+  func coodinatorDidReceiveBackEvent() {
+    self.webView.goBack()
+  }
+
+  func coodinatorDidReceiveForwardEvent() {
+    self.webView.goForward()
+  }
+
+  func coodinatorDidReceiveRefreshEvent() {
+    self.webView.reload()
+  }
+  
+  func coodinatorDidReceiveShareEvent() {
+    let text = NSLocalizedString(
+      self.viewModel.url.absoluteString,
+      value: self.viewModel.url.absoluteString,
+      comment: ""
+    )
+    let activitiy = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
+    activitiy.popoverPresentationController?.sourceView = self.navigationController?.view!
+    self.navigationController?.present(activitiy, animated: true, completion: nil)
+  }
+  
+  func coodinatorDidReceiveCopyEvent() {
+    UIPasteboard.general.string = self.viewModel.url.absoluteString
+    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+    hud.mode = .text
+    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+    hud.hide(animated: true, afterDelay: 1.5)
+  }
+
+  func coodinatorDidReceiveFavoriteEvent() {
+    
+  }
+  
+  func coodinatorDidReceiveSwitchWalletEvent() {
+    
+  }
 }
 
 extension BrowserViewController: WKScriptMessageHandler {
@@ -125,51 +172,43 @@ extension BrowserViewController: WKScriptMessageHandler {
             
             return
         }
-
-//        let requester = DAppRequester(title: webView.title, url: webView.url)
-      
         let action = DappAction.fromCommand(command)
-//
         delegate?.didCall(action: action, callbackID: command.id, inBrowserViewController: self)
     }
 }
 
 extension BrowserViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//        recordURL()
-//        hideErrorView()
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    //        recordURL()
+    //        hideErrorView()
+  }
+  
+  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    //        hideErrorView()
+  }
+  
+  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+    //        handleError(error: error)
+  }
+  
+  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    //        handleError(error: error)
+  }
+  
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    guard let url = navigationAction.request.url, let scheme = url.scheme else {
+      
+      return decisionHandler(.allow)
     }
 
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-//        hideErrorView()
+    self.navTitleLabel.text = webView.title
+    self.viewModel.url = url
+    let app = UIApplication.shared
+    if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
+      app.open(url)
+      return decisionHandler(.cancel)
     }
-
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-//        handleError(error: error)
-    }
-
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-//        handleError(error: error)
-    }
-
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-//        guard let url = navigationAction.request.url, let scheme = url.scheme else {
-//            return decisionHandler(.allow)
-//        }
-//        let app = UIApplication.shared
-//        if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
-//            app.open(url)
-//            return decisionHandler(.cancel)
-//        }
-//        if MagicLinkURL(url: url) != nil {
-//            delegate?.handleUniversalLink(url, inBrowserViewController: self)
-//            return decisionHandler(.cancel)
-//        }
-//        if url.scheme == ShareContentAction.scheme {
-//            delegate?.handleCustomUrlScheme(url, inBrowserViewController: self)
-//            return decisionHandler(.cancel)
-//        }
-
-        decisionHandler(.allow)
-    }
+    
+    decisionHandler(.allow)
+  }
 }

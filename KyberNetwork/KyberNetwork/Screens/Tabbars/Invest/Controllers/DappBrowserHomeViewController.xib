@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -19,6 +18,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DappBrowserHomeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="favoriteTagsView" destination="hCH-ql-aJS" id="kP7-3h-QWG"/>
+                <outlet property="favoriteTitleLabel" destination="8ln-lM-Kho" id="Gk3-yf-4la"/>
+                <outlet property="favoriteTitleTopContainerContraint" destination="Q2a-3R-mjc" id="J2n-32-CVa"/>
+                <outlet property="favoriteTitleTopContraint" destination="gTK-8m-3iq" id="e06-Fo-3AU"/>
+                <outlet property="recentSearchTagsView" destination="6cd-Wo-q2L" id="E5N-bg-XHU"/>
+                <outlet property="recentTitleLabel" destination="FbL-kf-kMI" id="3RM-qj-KyF"/>
+                <outlet property="suggestionTagsView" destination="ehT-n0-9Mv" id="pKr-Jr-tGe"/>
+                <outlet property="suggestionTitleLabel" destination="7dD-IP-9MT" id="0xP-TV-eHe"/>
+                <outlet property="suggestionTitleSpaceContraintWithRecentlyTagView" destination="FTY-nQ-27p" id="Zds-BT-ttK"/>
+                <outlet property="suggestionTitleTopContainerContraint" destination="IOz-Ls-7mz" id="CUx-JW-Fqt"/>
+                <outlet property="suggestionTitleTopContraint" destination="phh-d8-q45" id="RC6-0S-Mrn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,7 +41,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DApp Browser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5u-ot-pYP">
-                            <rect key="frame" x="121.5" y="73.5" width="132" height="23.5"/>
+                            <rect key="frame" x="122.5" y="73.5" width="130.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -104,20 +114,179 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LeT-EA-eeB">
+                    <rect key="frame" x="0.0" y="193" width="375" height="474"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FbL-kf-kMI">
+                            <rect key="frame" x="26" y="0.0" width="105" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cd-Wo-q2L" customClass="TagListView" customModule="TagListView">
+                            <rect key="frame" x="26" y="29" width="323" height="36"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
+                                    <color key="value" name="tagBgColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="17"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingY">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingX">
+                                    <real key="value" value="18"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginY">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginX">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="rPr-Ql-byS"/>
+                            </connections>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ln-lM-Kho">
+                            <rect key="frame" x="26" y="100" width="57.5" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hCH-ql-aJS" customClass="TagListView" customModule="TagListView">
+                            <rect key="frame" x="26" y="129" width="323" height="36"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
+                                    <color key="value" name="tagBgColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="17"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingY">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingX">
+                                    <real key="value" value="18"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginY">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginX">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="dUq-GY-ZQs"/>
+                            </connections>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggestion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dD-IP-9MT">
+                            <rect key="frame" x="26" y="200" width="81" height="19"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-n0-9Mv" customClass="TagListView" customModule="TagListView">
+                            <rect key="frame" x="26" y="229" width="323" height="36"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
+                                    <color key="value" name="tagBgColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                    <color key="value" name="textWhiteColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="17"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingY">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingX">
+                                    <real key="value" value="18"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginY">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="marginX">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="fnG-Fi-1gb"/>
+                            </connections>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="ehT-n0-9Mv" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="3PK-Ri-70V"/>
+                        <constraint firstItem="7dD-IP-9MT" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="4c8-Tg-R0d"/>
+                        <constraint firstItem="hCH-ql-aJS" firstAttribute="top" secondItem="8ln-lM-Kho" secondAttribute="bottom" constant="10" id="5zT-i9-TNC"/>
+                        <constraint firstItem="FbL-kf-kMI" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="7ak-90-Yag"/>
+                        <constraint firstAttribute="trailing" secondItem="ehT-n0-9Mv" secondAttribute="trailing" constant="26" id="8g6-X9-ict"/>
+                        <constraint firstItem="ehT-n0-9Mv" firstAttribute="top" secondItem="7dD-IP-9MT" secondAttribute="bottom" constant="10" id="B0X-x8-Cyj"/>
+                        <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="6cd-Wo-q2L" secondAttribute="bottom" priority="250" constant="35" id="FTY-nQ-27p"/>
+                        <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="LeT-EA-eeB" secondAttribute="top" priority="250" id="IOz-Ls-7mz"/>
+                        <constraint firstItem="8ln-lM-Kho" firstAttribute="top" secondItem="LeT-EA-eeB" secondAttribute="top" priority="250" id="Q2a-3R-mjc"/>
+                        <constraint firstAttribute="trailing" secondItem="6cd-Wo-q2L" secondAttribute="trailing" constant="26" id="Tf7-jq-fhD"/>
+                        <constraint firstAttribute="bottom" secondItem="ehT-n0-9Mv" secondAttribute="bottom" constant="209" id="VMd-ty-3gV"/>
+                        <constraint firstItem="FbL-kf-kMI" firstAttribute="top" secondItem="LeT-EA-eeB" secondAttribute="top" id="XHP-kq-jem"/>
+                        <constraint firstItem="hCH-ql-aJS" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="Yh2-Jn-Apg"/>
+                        <constraint firstItem="8ln-lM-Kho" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="ab7-nR-AgL"/>
+                        <constraint firstItem="8ln-lM-Kho" firstAttribute="top" secondItem="6cd-Wo-q2L" secondAttribute="bottom" constant="35" id="gTK-8m-3iq"/>
+                        <constraint firstItem="6cd-Wo-q2L" firstAttribute="leading" secondItem="LeT-EA-eeB" secondAttribute="leading" constant="26" id="ml0-9Z-dqD"/>
+                        <constraint firstAttribute="trailing" secondItem="hCH-ql-aJS" secondAttribute="trailing" constant="26" id="odn-DO-kFF"/>
+                        <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="hCH-ql-aJS" secondAttribute="bottom" constant="35" id="phh-d8-q45"/>
+                        <constraint firstItem="6cd-Wo-q2L" firstAttribute="top" secondItem="FbL-kf-kMI" secondAttribute="bottom" constant="10" id="uyi-hC-OSh"/>
+                    </constraints>
+                    <viewLayoutGuide key="contentLayoutGuide" id="Why-Ul-Nnp"/>
+                    <viewLayoutGuide key="frameLayoutGuide" id="rBc-o2-Xnw"/>
+                </scrollView>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
-                <constraint firstItem="0Z9-Mf-4of" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="227-KL-jAQ"/>
-                <constraint firstItem="rtn-tC-emQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="4FB-Hz-k9o"/>
-                <constraint firstItem="rtn-tC-emQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="9kA-KR-y8N"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0Z9-Mf-4of" secondAttribute="trailing" constant="21" id="AYk-Mc-Ju7"/>
+                <constraint firstItem="0Z9-Mf-4of" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="21" id="227-KL-jAQ"/>
+                <constraint firstItem="LeT-EA-eeB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="37L-uY-kbQ"/>
+                <constraint firstItem="rtn-tC-emQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4FB-Hz-k9o"/>
+                <constraint firstItem="LeT-EA-eeB" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="4Mx-Iv-O5b"/>
+                <constraint firstItem="rtn-tC-emQ" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="9kA-KR-y8N"/>
+                <constraint firstAttribute="trailing" secondItem="0Z9-Mf-4of" secondAttribute="trailing" constant="21" id="AYk-Mc-Ju7"/>
                 <constraint firstItem="rtn-tC-emQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="EjH-9v-xqE"/>
                 <constraint firstItem="0Z9-Mf-4of" firstAttribute="top" secondItem="rtn-tC-emQ" secondAttribute="bottom" constant="15" id="Kzo-Zw-zZC"/>
+                <constraint firstItem="LeT-EA-eeB" firstAttribute="top" secondItem="0Z9-Mf-4of" secondAttribute="bottom" constant="23" id="SSz-kE-mTc"/>
+                <constraint firstItem="LeT-EA-eeB" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="bak-6R-r19"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="90"/>
+            <point key="canvasLocation" x="132" y="89.505247376311857"/>
         </view>
     </objects>
+    <designables>
+        <designable name="6cd-Wo-q2L">
+            <size key="intrinsicContentSize" width="323" height="36"/>
+        </designable>
+        <designable name="ehT-n0-9Mv">
+            <size key="intrinsicContentSize" width="323" height="36"/>
+        </designable>
+        <designable name="hCH-ql-aJS">
+            <size key="intrinsicContentSize" width="323" height="36"/>
+        </designable>
+    </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="search_blue_icon" width="16" height="16"/>
@@ -129,6 +298,9 @@
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="tagBgColor">
+            <color red="0.23137254901960785" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
