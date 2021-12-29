@@ -96,11 +96,15 @@ jobs:
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
       AD_HOC_PROFILE: ${{ secrets.AD_HOC_PROFILE }}
       EXT_AD_HOC_PROFILE: ${{ secrets.EXT_AD_HOC_PROFILE }}
+      KRYSTAL_PROD_PROFILE: ${{ secrets.KRYSTAL_PROD_PROFILE }}
+      KRYSTAL_PROD_EXT_PROFILE: ${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}
       # profile paths
       DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.DEV_PROFILE }}.mobileprovision"
       KRYSTAL_DEV_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_DEV_PROFILE }}.mobileprovision"
       AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.AD_HOC_PROFILE }}.mobileprovision"
       EXT_AD_HOC_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.EXT_AD_HOC_PROFILE }}.mobileprovision"
+      KRYSTAL_PROD_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_PROFILE }}.mobileprovision"
+      KRYSTAL_PROD_EXT_PROFILE_PATH: "/Users/runner/privates/profiles/${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}.mobileprovision"
       # sentry environments
       SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
       ORG_SLUG: ${{ secrets.ORG_SLUG }}
