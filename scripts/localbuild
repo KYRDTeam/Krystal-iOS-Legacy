@@ -19,4 +19,4 @@ ENV_FILE="./scripts/build.env"
 # shellcheck disable=SC1090
 [[ -f "$ENV_FILE" ]] && source $ENV_FILE
 
-fastlane all
+"$@"
