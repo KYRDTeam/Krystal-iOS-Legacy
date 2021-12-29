@@ -165,11 +165,17 @@ extension KNExchangeTokenCoordinator {
       self.srcTokenAddress = srcTokenAddress
       self.destTokenAddress = destTokenAddress
     } else {
-      self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId)
+      self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
     }
   }
   
-  func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int) {
+  func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
+    
+    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      return
+    }
+    
     // default token
     var fromToken = KNSupportedTokenStorage.shared.ethToken
     var toToken = KNSupportedTokenStorage.shared.kncToken
@@ -190,35 +196,30 @@ extension KNExchangeTokenCoordinator {
         fromToken = KNSupportedTokenStorage.shared.ethToken
         toToken = KNSupportedTokenStorage.shared.kncToken
     }
-    
     var newAddress: [String] = []
 
     // in case can get token with given address
-    if let srcTokenAddress = srcTokenAddress {
-      if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
-         fromToken = token
-      } else {
-         newAddress.append(srcTokenAddress)
-      }
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
+       fromToken = token
+    } else {
+       newAddress.append(srcTokenAddress)
     }
 
-    if let destTokenAddress = destTokenAddress {
-      if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
-        toToken = token
-      } else {
-        newAddress.append(destTokenAddress)
-      }
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
+      toToken = token
+    } else {
+      newAddress.append(destTokenAddress)
     }
 
     if newAddress.isEmpty {
       // there are no new address then show swap screen
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
-    } else if self.rootViewController.viewModel.isFromDeepLink {
+    } else if isFromDeepLink {
       // if there is any new address then show add token screen
       self.requestTokenInfoIfNeeded(srcAddress: srcTokenAddress, destAddress: destTokenAddress)
     }
   }
-
+  
   func requestTokenInfoIfNeeded(srcAddress: String?, destAddress: String?) {
     var srcToken: TokenObject?
     var destToken: TokenObject?
@@ -278,7 +279,6 @@ extension KNExchangeTokenCoordinator {
       complete(tokenObj)
     }
   }
-
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
