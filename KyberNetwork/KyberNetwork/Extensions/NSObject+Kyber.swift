@@ -51,7 +51,7 @@ extension NSObject {
     SwiftMessages.show(config: config, view: view)
   }
 
-  func showBottomBannerView(with title: String = "", message: String = "", icon: UIImage = UIImage(), time: TimeInterval = 1.5, tapHandler: (() -> Void)? = nil) {
+  func showBottomBannerView(with title: String = "", message: String = "", icon: UIImage = UIImage(), time: TimeInterval = 1.5, linkAttached : String? = nil, tapHandler: (() -> Void)? = nil) {
     let view: MessageView = {
       let view: MessageView = try! SwiftMessages.viewFromNib()
       view.configureContent(title: title, body: message, iconImage: icon)
@@ -60,7 +60,14 @@ extension NSObject {
         view.titleLabel?.isHidden = true
       }
       view.bodyLabel?.font = UIFont.Kyber.regular(with: 14)
-      view.configureTheme(backgroundColor: UIColor.white, foregroundColor: UIColor(red: 20, green: 25, blue: 39), iconImage: icon, iconText: nil)
+      view.configureTheme(backgroundColor: UIColor(named: "grayBackgroundColor")!, foregroundColor: UIColor(named: "textWhiteColor70")!, iconImage: icon, iconText: nil)
+      if let linkAttached = linkAttached {
+        let attributedString = NSMutableAttributedString(string: message + linkAttached, attributes: nil)
+        let linkRange = NSMakeRange(message.count, linkAttached.count)
+        let linkAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "buttonBackgroundColor")!] as [NSAttributedString.Key : Any]
+        attributedString.setAttributes(linkAttributes, range: linkRange)
+        view.bodyLabel?.attributedText = attributedString
+      }
       return view
     }()
     view.tapHandler = { _ in

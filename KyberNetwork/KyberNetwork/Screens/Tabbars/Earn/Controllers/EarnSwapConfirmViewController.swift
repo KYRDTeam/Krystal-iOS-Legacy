@@ -87,15 +87,33 @@ struct EarnSwapConfirmViewModel {
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
-  
+
   var usdValueBigInt: BigInt {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.toToken.address) else { return BigInt(0) }
     let usd = self.toAmount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.toToken.decimals)
     return usd
   }
+  
+  var fromUsdValueBigInt: BigInt {
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.fromToken.address) else { return BigInt(0) }
+    let usd = self.fromAmount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.fromToken.decimals)
+    return usd
+  }
 
   var displayUSDValue: String {
-    return "~ \(self.usdValueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)) USD"
+    let value = self.usdValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
+    return "≈ \(value) USD"
+  }
+  
+  var fromDisplayUSDValue: String {
+    let value = self.fromUsdValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
+    return "≈ \(value) USD"
   }
 
   var displayCompInfo: String {
@@ -140,7 +158,7 @@ struct EarnSwapConfirmViewModel {
   var hasPriceImpact: Bool {
     return self.priceImpact <= -5
   }
-  
+
   var needConfirm: Bool {
     return self.priceImpact <= -20
   }
@@ -167,6 +185,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var distributeAPYValueLabel: UILabel!
   @IBOutlet weak var usdValueLabel: UILabel!
+  @IBOutlet weak var fromUSDValueLabel: UILabel!
   @IBOutlet weak var compInfoLabel: UILabel!
   @IBOutlet weak var minimumReceivedTitleLabel: UILabel!
   @IBOutlet weak var minimumReceivedLabel: UILabel!
@@ -237,6 +256,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
     self.transactionGasPriceLabel.text = self.viewModel.transactionGasPriceString
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.usdValueLabel.text = self.viewModel.displayUSDValue
+    self.fromUSDValueLabel.text = self.viewModel.fromDisplayUSDValue
     self.platformIconImageView.image = KNGeneralProvider.shared.chainIconImage
     self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.toToken.symbol)
     self.minimumReceivedLabel.text = self.viewModel.minReceiveAmount
