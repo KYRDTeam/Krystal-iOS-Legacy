@@ -67,6 +67,32 @@ class BalanceStorage {
     return balance
   }
   
+  func balanceForAddressInChain(_ address: String, chainType: ChainType) -> TokenBalance? {
+    guard let wallet = self.wallet else {
+      return nil
+    }
+
+    
+    let allBalance = Storage.retrieve(self.getChainDBPath(chainType: chainType) + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
+    let balance = allBalance.first { (balance) -> Bool in
+      return balance.address.lowercased() == address.lowercased()
+    }
+    return balance
+  }
+  
+  func getChainDBPath(chainType: ChainType) -> String {
+    switch chainType {
+    case .eth:
+      return "eth" + "-" + KNEnvironment.default.displayName + "-"
+    case .bsc:
+      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
+    case .polygon:
+      return "matic" + "-" + KNEnvironment.default.displayName + "-"
+    case .avalanche:
+      return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    }
+  }
+  
   func supportedTokenBalanceForAddress(_ address: String) -> TokenBalance? {
     let balance = self.supportedTokenBalances.first { (balance) -> Bool in
       return balance.address.lowercased() == address.lowercased()
