@@ -218,7 +218,7 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
-    self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "56")
+    self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "\(KNGeneralProvider.shared.customRPC.chainID)")
   }
   
   func settingsCoordinatorDidSelectAddWallet() {
