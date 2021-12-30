@@ -223,21 +223,29 @@ extension KNExchangeTokenCoordinator {
   func requestTokenInfoIfNeeded(srcAddress: String?, destAddress: String?) {
     var srcToken: TokenObject?
     var destToken: TokenObject?
-
+    var getTokenFail = false
     let group = DispatchGroup()
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     if let srcAddress = srcAddress {
       group.enter()
-      self.requestInfo(address: srcAddress) { token in
-        srcToken = token
+      self.requestInfo(address: srcAddress) { token, success in
+        if success {
+          srcToken = token
+        } else {
+          getTokenFail = true
+        }
         group.leave()
       }
     }
 
     if let destAddress = destAddress {
       group.enter()
-      self.requestInfo(address: destAddress) { token in
-        destToken = token
+      self.requestInfo(address: destAddress) { token, success in
+        if success {
+          destToken = token
+        } else {
+          getTokenFail = true
+        }
         group.leave()
       }
     }
@@ -245,20 +253,26 @@ extension KNExchangeTokenCoordinator {
       DispatchQueue.main.async {
         hud.hide(animated: true)
       }
-      self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
+      if getTokenFail {
+        self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      } else {
+        self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
+      }
     }
   }
 
-  func requestInfo(address: String, complete: @escaping (TokenObject) -> Void) {
+  func requestInfo(address: String, complete: @escaping (TokenObject, Bool) -> Void) {
     var tokenSymbol = ""
     var tokenDecimal = ""
     let group = DispatchGroup()
+    var getTokenFail = false
     group.enter()
     KNGeneralProvider.shared.getTokenSymbol(address: address) { (result) in
       switch result {
       case .success(let symbol):
         tokenSymbol = symbol
       case .failure(let error):
+        getTokenFail = true
         print("[Custom token][Errror] \(error.description)")
       }
       group.leave()
@@ -269,6 +283,7 @@ extension KNExchangeTokenCoordinator {
       case .success(let decimals):
         tokenDecimal = decimals
       case .failure(let error):
+        getTokenFail = true
         print("[Custom token][Errror] \(error.description)")
       }
       group.leave()
@@ -276,7 +291,11 @@ extension KNExchangeTokenCoordinator {
 
     group.notify(queue: .main) {
       let tokenObj = TokenObject(name: "", symbol: tokenSymbol, address: address, decimals: Int(tokenDecimal) ?? 18, logo: "")
-      complete(tokenObj)
+      if getTokenFail {
+        complete(TokenObject(), false)
+      } else {
+        complete(tokenObj, true)
+      }
     }
   }
 
