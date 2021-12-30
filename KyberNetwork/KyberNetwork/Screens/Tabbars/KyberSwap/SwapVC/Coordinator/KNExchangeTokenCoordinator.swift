@@ -555,7 +555,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
               errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
             }
           }
-          if errorMessage.contains("INSUFFICIENT_OUTPUT_AMOUNT") {
+          if errorMessage.contains("INSUFFICIENT_OUTPUT_AMOUNT") || errorMessage.contains("Return amount is not enough") {
             errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
           }
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
@@ -683,7 +683,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
               errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
             }
           }
-          if errorMessage.contains("INSUFFICIENT_OUTPUT_AMOUNT") {
+          if errorMessage.contains("INSUFFICIENT_OUTPUT_AMOUNT") || errorMessage.contains("Return amount is not enough") {
             errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
           }
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
