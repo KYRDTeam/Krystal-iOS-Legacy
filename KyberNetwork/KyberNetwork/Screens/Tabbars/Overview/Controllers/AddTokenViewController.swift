@@ -46,6 +46,10 @@ class AddTokenViewController: KNBaseViewController {
     } else {
       self.titleHeader.text = "Add custom token".toBeLocalised()
       if let unwrapped = self.tokenObject {
+        if unwrapped.address.count != 54 {
+          self.navigationController?.showTopBannerView(message: "Your custom token contract seems not to be a valid address")
+        }
+        
         self.addressField.text = unwrapped.address
         self.symbolField.text = unwrapped.symbol
         self.decimalsField.text = "\(unwrapped.decimals)"
@@ -98,9 +102,8 @@ class AddTokenViewController: KNBaseViewController {
         self.delegate?.addTokenViewController(self, run: .done(address: self.addressField.text ?? "", symbol: self.symbolField.text ?? "", decimals: Int(self.decimalsField.text ?? "") ?? 6))
         return
       }
-
       // case import from deeplink
-      
+
       // update status added for current token
       if let currentToken = remainTokenObjects.first {
         if let tupple = self.newTokenObjects["src"] {
@@ -109,7 +112,6 @@ class AddTokenViewController: KNBaseViewController {
             self.newTokenObjects["src"] = (srcToken, true)
           }
         }
-        
         if let tupple = self.newTokenObjects["dest"] {
           let destToken = tupple.0
           if destToken == currentToken {
@@ -124,7 +126,9 @@ class AddTokenViewController: KNBaseViewController {
 
       if !remainTokenObjects.isEmpty {
         if let token = remainTokenObjects.first {
-          self.coordinatorDidUpdateTokenObject(token)
+          UIView.transition(with: self.view, duration: 0.5, options: .transitionFlipFromLeft) {
+            self.coordinatorDidUpdateTokenObject(token)
+          }
         }
         return
       } else {
@@ -211,7 +215,6 @@ class AddTokenViewController: KNBaseViewController {
       if !self.isAddedToDB(address: sourceToken.address) {
         remainTokens.append(sourceToken)
       }
-      
     }
 
     if let destToken = destToken {
