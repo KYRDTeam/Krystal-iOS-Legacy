@@ -38,7 +38,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
 
-  fileprivate var viewModel: KSwapViewModel
+  var viewModel: KSwapViewModel
   weak var delegate: KSwapViewControllerDelegate?
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
@@ -70,7 +70,6 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
   @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
-  
   @IBOutlet weak var loadingView: SRCountdownTimer!
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
@@ -440,21 +439,51 @@ class KSwapViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.view.layoutIfNeeded()
   }
-  
+
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
+      self.viewModel.isFromDeepLink = false
       let viewModel = SwitchChainWalletsListViewModel(selected: selected)
       let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.setUpGasFeeView()
+  }
+
+  func coordinatorShouldShowSwitchChainPopup(chainId: Int) {
+    var alertController: KNPrettyAlertController
+    guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
+      self.navigationController?.showTopBannerView(message: "Can't detect chain (chainId = \(chainId))".toBeLocalised())
+      return
+    }
+
+    alertController = KNPrettyAlertController(
+      title: "",
+      message: "Please switch to \(chainName) to swap".toBeLocalised(),
+      secondButtonTitle: "OK".toBeLocalised(),
+      firstButtonTitle: "Cancel".toBeLocalised(),
+      secondButtonAction: {
+        KNGeneralProvider.shared.currentChain = chainType
+        var selectedAddress = ""
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+          selectedAddress = appDelegate.coordinator.session.wallet.address.description
+        }
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+        if let srcToken = self.viewModel.fromDeepLink, let destToken = self.viewModel.toDeepLink {
+          self.viewModel.isFromDeepLink = true
+        }
+      },
+      firstButtonAction: nil
+    )
+    alertController.popupHeight = 320
+    self.present(alertController, animated: true, completion: nil)
   }
 
   func coordinatorUpdateGasPriceCached() {
@@ -796,6 +825,11 @@ extension KSwapViewController {
     self.stopRateTimer()
     self.setUpGasFeeView()
     self.view.layoutIfNeeded()
+  }
+  
+  func coordinatorUpdateTokens(fromToken: TokenObject, toToken: TokenObject) {
+    self.viewModel.updateTokensPair(from: fromToken, to: toToken)
+    self.updateTokensView(updatedFrom: true, updatedTo: true)
   }
 
   /*

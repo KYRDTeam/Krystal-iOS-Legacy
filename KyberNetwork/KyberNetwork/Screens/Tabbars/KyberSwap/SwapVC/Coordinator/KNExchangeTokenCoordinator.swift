@@ -12,6 +12,7 @@ import WalletConnect
 import MBProgressHUD
 import JSONRPCKit
 import WalletConnectSwift
+import MBProgressHUD
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
@@ -25,6 +26,7 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoordinatorDidSelectManageWallet()
   func exchangeTokenCoodinatorDidSendRefCode(_ code: String)
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func exchangeTokenCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?)
 }
 
 //swiftlint:disable file_length
@@ -34,9 +36,9 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate(set) var session: KNSession
   var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
-
   var coordinators: [Coordinator] = []
-
+  /// src and dest token used for deeplink
+  var srcTokenAddress, destTokenAddress: String?
   fileprivate var balances: [String: Balance] = [:]
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
 
@@ -147,6 +149,155 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorTrackerRateDidUpdate()
     self.sendTokenCoordinator?.coordinatorDidUpdateTrackerRate()
   }
+  
+  func appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: String?, destTokenAddress: String?, chainIdString: String?) {
+    // default swap screen
+    self.navigationController.tabBarController?.selectedIndex = 1
+    self.navigationController.popToRootViewController(animated: false)
+    guard let chainIdString = chainIdString else {
+      return
+    }
+
+    let chainId = Int(chainIdString) ?? Constants.ethMainnetPRC.chainID
+    //switch chain if need
+    if KNGeneralProvider.shared.customRPC.chainID != chainId {
+      self.rootViewController.coordinatorShouldShowSwitchChainPopup(chainId: chainId)
+      self.srcTokenAddress = srcTokenAddress
+      self.destTokenAddress = destTokenAddress
+    } else {
+      self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
+    }
+  }
+  
+  func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
+    
+    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      return
+    }
+    
+    // default token
+    var fromToken = KNSupportedTokenStorage.shared.ethToken
+    var toToken = KNSupportedTokenStorage.shared.kncToken
+    switch chainId {
+    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.ethToken
+        toToken = KNSupportedTokenStorage.shared.kncToken
+    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.bnbToken
+        toToken = KNSupportedTokenStorage.shared.busdToken
+    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.maticToken
+        toToken = KNSupportedTokenStorage.shared.usdcToken
+    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.avaxToken
+        toToken = KNSupportedTokenStorage.shared.usdceToken
+    default:
+        fromToken = KNSupportedTokenStorage.shared.ethToken
+        toToken = KNSupportedTokenStorage.shared.kncToken
+    }
+    var newAddress: [String] = []
+
+    // in case can get token with given address
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
+       fromToken = token
+    } else {
+       newAddress.append(srcTokenAddress)
+    }
+
+    if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: destTokenAddress) {
+      toToken = token
+    } else {
+      newAddress.append(destTokenAddress)
+    }
+
+    if newAddress.isEmpty {
+      // there are no new address then show swap screen
+      self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
+    } else if isFromDeepLink {
+      // if there is any new address then show add token screen
+      self.requestTokenInfoIfNeeded(srcAddress: srcTokenAddress, destAddress: destTokenAddress)
+    }
+  }
+  
+  func requestTokenInfoIfNeeded(srcAddress: String?, destAddress: String?) {
+    var srcToken: TokenObject?
+    var destToken: TokenObject?
+    var getTokenFail = false
+    let group = DispatchGroup()
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    if let srcAddress = srcAddress {
+      group.enter()
+      self.requestInfo(address: srcAddress) { token, success in
+        if success {
+          srcToken = token
+        } else {
+          getTokenFail = true
+        }
+        group.leave()
+      }
+    }
+
+    if let destAddress = destAddress {
+      group.enter()
+      self.requestInfo(address: destAddress) { token, success in
+        if success {
+          destToken = token
+        } else {
+          getTokenFail = true
+        }
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
+      if getTokenFail {
+        self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      } else {
+        self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
+      }
+    }
+  }
+
+  func requestInfo(address: String, complete: @escaping (TokenObject, Bool) -> Void) {
+    var tokenSymbol = ""
+    var tokenDecimal = ""
+    let group = DispatchGroup()
+    var getTokenFail = false
+    group.enter()
+    KNGeneralProvider.shared.getTokenSymbol(address: address) { (result) in
+      switch result {
+      case .success(let symbol):
+        tokenSymbol = symbol
+      case .failure(let error):
+        getTokenFail = true
+        print("[Custom token][Errror] \(error.description)")
+      }
+      group.leave()
+    }
+    group.enter()
+    KNGeneralProvider.shared.getTokenDecimals(address: address) { (result) in
+      switch result {
+      case .success(let decimals):
+        tokenDecimal = decimals
+      case .failure(let error):
+        getTokenFail = true
+        print("[Custom token][Errror] \(error.description)")
+      }
+      group.leave()
+    }
+
+    group.notify(queue: .main) {
+      let tokenObj = TokenObject(name: "", symbol: tokenSymbol, address: address, decimals: Int(tokenDecimal) ?? 18, logo: "")
+      if getTokenFail {
+        complete(TokenObject(), false)
+      } else {
+        complete(tokenObj, true)
+      }
+    }
+  }
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
@@ -217,10 +368,16 @@ extension KNExchangeTokenCoordinator {
     }
     return self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) ?? false
   }
-  
+
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.coordinatorDidUpdateChain()
     self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
+
+    if self.srcTokenAddress != nil || self.destTokenAddress != nil {
+      self.prepareTokensForSwap(srcTokenAddress: self.srcTokenAddress, destTokenAddress: self.destTokenAddress, chainId: KNGeneralProvider.shared.customRPC.chainID)
+      self.srcTokenAddress = nil
+      self.destTokenAddress = nil
+    }
   }
 }
 

@@ -8,10 +8,15 @@
 import Foundation
 import QRCodeReaderViewController
 
+protocol AddTokenCoordinatorDelegate: class {
+  func addCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
+}
+
 class AddTokenCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   private(set) var session: KNSession
+  weak var delegate: AddTokenCoordinatorDelegate?
   
   lazy var rootViewController: AddTokenViewController = {
     let controller = AddTokenViewController()
@@ -47,9 +52,18 @@ class AddTokenCoordinator: NSObject, Coordinator {
   func coordinatorDidUpdateTokenObject(_ token: TokenObject) {
     self.rootViewController.coordinatorDidUpdateTokenObject(token)
   }
+  
+  func coordinatorDidUpdateTokensObject(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.rootViewController.coordinatorDidUpdateNewTokens(srcToken, destToken)
+  }
 }
 
 extension AddTokenCoordinator: AddTokenViewControllerDelegate {
+  
+  func addTokensViaDeepLink(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.delegate?.addCoordinatorDidImportDeepLinkTokens(srcToken: srcToken, destToken: destToken)
+  }
+  
   func addTokenViewController(_ controller: AddTokenViewController, run event: AddTokenViewEvent) {
     switch event {
     case .openQR:
@@ -62,7 +76,7 @@ extension AddTokenCoordinator: AddTokenViewControllerDelegate {
         return controller
       }()
       controller.present(qrcodeReaderVC, animated: true, completion: nil)
-    case .done(let address, let symbol, let decimals):
+    case .done(let address, let symbol, let decimals, let shouldDismiss):
       let tokenDict: JSONDictionary = ["address": address, "symbol": symbol, "decimals": decimals]
       let token = Token(dictionary: tokenDict)
       if KNSupportedTokenStorage.shared.isTokenSaved(token) {
@@ -83,7 +97,9 @@ extension AddTokenCoordinator: AddTokenViewControllerDelegate {
           time: 1.0
         )
         self.listTokenViewController.coordinatorDidUpdateTokenList()
-        self.navigationController.popViewController(animated: true)
+        if shouldDismiss {
+          self.navigationController.popViewController(animated: true)
+        }
       }
     case .doneEdit(address: let address, newAddress: let newAddress, symbol: let symbol, decimals: let decimals):
       KNSupportedTokenStorage.shared.editCustomToken(address: address, newAddress: newAddress, symbol: symbol, decimal: decimals)

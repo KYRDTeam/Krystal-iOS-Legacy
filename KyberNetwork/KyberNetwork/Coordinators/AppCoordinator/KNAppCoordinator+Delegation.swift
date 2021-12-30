@@ -45,6 +45,11 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
   }
   
+  func exchangeTokenCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.appCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
+  }
+  
   func exchangeTokenCoodinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
@@ -211,6 +216,11 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
+  
+  func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
+    self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "\(KNGeneralProvider.shared.customRPC.chainID)")
+  }
+  
   func settingsCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }

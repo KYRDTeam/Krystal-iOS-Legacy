@@ -404,6 +404,19 @@ class KNSupportedTokenStorage {
     }
     return result
   }
+  
+  func getTotalHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode) -> BigInt {
+    var total = BigInt(0)
+    let tokens = self.disableTokens + self.deletedTokens
+    
+    tokens.forEach { token in
+      let balance = token.getBalanceBigInt()
+      let rateBigInt = BigInt(token.getTokenLastPrice(currency) * pow(10.0, 18.0))
+      let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)
+      total += valueBigInt
+    }
+    return total
+  }
 
   func findTokensWithAddresses(addresses: [String]) -> [Token] {
     return self.allActiveTokens.filter { (token) -> Bool in

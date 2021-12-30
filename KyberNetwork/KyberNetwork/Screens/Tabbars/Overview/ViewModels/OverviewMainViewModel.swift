@@ -716,7 +716,7 @@ class OverviewMainViewModel {
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
     return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
-    
+
   var displayTotalSummaryValue: String {
     guard let isDefaultValue = self.summaryDataSource.first?.isDefaultValue, isDefaultValue == false else {
       return "--"
