@@ -405,16 +405,41 @@ class KNSupportedTokenStorage {
     return result
   }
   
-  func getTotalHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode) -> BigInt {
+  func getChainDBPath(chainType: ChainType) -> String {
+    switch chainType {
+    case .eth:
+      return "eth" + "-" + KNEnvironment.default.displayName + "-"
+    case .bsc:
+      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
+    case .polygon:
+      return "matic" + "-" + KNEnvironment.default.displayName + "-"
+    case .avalanche:
+      return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    }
+  }
+
+  func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType) -> BigInt {
     var total = BigInt(0)
-    let tokens = self.disableTokens + self.deletedTokens
-    
+
+    let disableTokens = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
+    let deletedTokens = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
+    let tokens = disableTokens + deletedTokens
+
     tokens.forEach { token in
-      let balance = token.getBalanceBigInt()
-      let rateBigInt = BigInt(token.getTokenLastPrice(currency) * pow(10.0, 18.0))
+      let balance = token.getBalanceBigIntForChain(chainType: chainType)
+      let rateBigInt = BigInt(token.getTokenLastPrice(currency, chainType: chainType) * pow(10.0, 18.0))
       let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)
       total += valueBigInt
     }
+    return total
+  }
+  
+  func getAllChainHideAndDeleteTokensBalanceUSD( _ currency: CurrencyMode) -> BigInt {
+    var total = BigInt(0)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .eth)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .bsc)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .polygon)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .avalanche)
     return total
   }
 
