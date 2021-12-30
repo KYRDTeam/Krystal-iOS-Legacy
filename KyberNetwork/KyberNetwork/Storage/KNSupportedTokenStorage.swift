@@ -15,7 +15,7 @@ class KNSupportedTokenStorage {
   var allActiveTokens: [Token] {
     return self.getActiveSupportedToken() + self.getActiveCustomToken()
   }
-  
+
   var allFullToken: [Token] {
     return self.supportedToken + self.customTokens
   }
@@ -129,7 +129,6 @@ class KNSupportedTokenStorage {
   }
 
   func updateSupportedTokens(_ tokens: [Token]) {
-    
     guard !self.isEqualTokenArray(array1: tokens, array2: self.supportedToken) else {
       return
     }

@@ -551,6 +551,7 @@
 		C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */; };
 		C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326C688256D04B000B35E8F /* InputPopUpViewController.swift */; };
 		C326C68B256D04B000B35E8F /* InputPopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326C689256D04B000B35E8F /* InputPopUpViewController.xib */; };
+		C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3280159277D69FA00158D27 /* BrowserStorage.swift */; };
 		C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D5D27730B9C00D1065A /* BrowserViewController.swift */; };
 		C3299D6027730B9D00D1065A /* BrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3299D5E27730B9D00D1065A /* BrowserViewController.xib */; };
 		C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D622773254A00D1065A /* BrowserURLParser.swift */; };
@@ -1350,6 +1351,7 @@
 		C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GasFeeSelectorPopupViewController.xib; sourceTree = "<group>"; };
 		C326C688256D04B000B35E8F /* InputPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopUpViewController.swift; sourceTree = "<group>"; };
 		C326C689256D04B000B35E8F /* InputPopUpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputPopUpViewController.xib; sourceTree = "<group>"; };
+		C3280159277D69FA00158D27 /* BrowserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStorage.swift; sourceTree = "<group>"; };
 		C3299D5D27730B9C00D1065A /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		C3299D5E27730B9D00D1065A /* BrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserViewController.xib; sourceTree = "<group>"; };
 		C3299D622773254A00D1065A /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
@@ -4004,6 +4006,14 @@
 			path = TextFieldPopup;
 			sourceTree = "<group>";
 		};
+		C3280158277D68BA00158D27 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				C3280159277D69FA00158D27 /* BrowserStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		C32EA228246933B700866968 /* PrettyAlertController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4172,6 +4182,7 @@
 		C3BBC55B25FB4979004E1FB6 /* Invest */ = {
 			isa = PBXGroup;
 			children = (
+				C3280158277D68BA00158D27 /* Storage */,
 				C30292E3260315BC001929E1 /* Cells */,
 				C3BBC55D25FB49CC004E1FB6 /* Controllers */,
 				C3BBC55C25FB49C1004E1FB6 /* Coordinator */,
@@ -5180,6 +5191,7 @@
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,
 				257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */,
 				25CC0AAB2058F1A00009D0D5 /* KNGetTokenAllowance.swift in Sources */,
+				C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */,
 				259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */,
 				C32656AC266F546100C69561 /* ActionData.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
@@ -5840,7 +5852,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -5869,7 +5881,7 @@
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.2.0;
 				MTL_FAST_MATH = YES;

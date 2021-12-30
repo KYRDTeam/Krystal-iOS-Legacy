@@ -20,7 +20,7 @@ target 'KyberNetwork' do
   pod 'Moya', '~> 10.0.1'
   pod 'JavaScriptKit', '~> 1.0.0'
   pod 'CryptoSwift'
-  pod 'Kingfisher', '~> 5.13'
+  pod 'Kingfisher', '~> 7.0'
   pod 'TrustCore', '~> 0.0.7'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'WalletConnect', git: 'https://github.com/trustwallet/wallet-connect-swift'

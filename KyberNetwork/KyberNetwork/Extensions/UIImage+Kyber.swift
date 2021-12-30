@@ -2,6 +2,7 @@
 
 import UIKit
 import JdenticonSwift
+import Kingfisher
 
 extension UIImage {
 
@@ -72,5 +73,21 @@ extension UIImage {
     }
     guard let data = imageData ?? self.jpegData(compressionQuality: 0.0) else { return self }
     return UIImage(data: data)
+  }
+  
+  static func loadImageIconWithCache(_ urlString: String, completion: @escaping (UIImage?) -> Void) {
+    guard let url = URL(string: urlString) else {
+      completion(nil)
+      return
+    }
+    let downloader = ImageDownloader.default
+    downloader.downloadImage(with: url) { result in
+        switch result {
+        case .success(let value):
+          completion(value.image)
+        case .failure:
+          completion(nil)
+        }
+    }
   }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import TagListView
+import SwiftUI
 
 enum DappBrowserHomeEvent {
   case enterText(text: String)
@@ -14,18 +15,6 @@ enum DappBrowserHomeEvent {
 
 protocol DappBrowserHomeViewControllerDelegate: class {
   func dappBrowserHomeViewController(_ controller: DappBrowserHomeViewController, run event: DappBrowserHomeEvent)
-}
-
-class BrowserItem: Codable {
-  var title: String
-  var url: String
-  var image: String?
-  
-  init(title: String, url: String, image: String? = nil) {
-    self.title = title
-    self.url = url
-    self.image = image
-  }
 }
 
 class DappBrowserHomeViewModel {
@@ -36,8 +25,12 @@ class DappBrowserHomeViewModel {
     BrowserItem(title: "Compound", url: "https://compound.finance", image: "compound")
   ]
   
-  var recentlyDataSource: [BrowserItem] = []
-  var favoriteDataSource: [BrowserItem] = []
+  var recentlyDataSource: [BrowserItem] {
+    return BrowserStorage.shared.recentlyBrowser
+  }
+  var favoriteDataSource: [BrowserItem] {
+    return BrowserStorage.shared.favoriteBrowser
+  }
 }
 
 class DappBrowserHomeViewController: UIViewController {
@@ -60,6 +53,13 @@ class DappBrowserHomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupSuggestionSection()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.setupFavoriteSection()
+    self.setupRecentlySection()
     self.updateUI()
   }
   
@@ -85,30 +85,52 @@ class DappBrowserHomeViewController: UIViewController {
       }
     } else {
       if self.viewModel.favoriteDataSource.isEmpty {
-        self.recentTitleLabel.isHidden = true
-        self.recentSearchTagsView.isHidden = true
-        self.favoriteTitleLabel.isHidden = false
-        self.favoriteTagsView.isHidden = false
-        self.suggestionTitleSpaceContraintWithRecentlyTagView.priority = UILayoutPriority(1000)
-        self.suggestionTitleTopContraint.priority = UILayoutPriority(200)
-        self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(200)
-      } else {
-        self.recentTitleLabel.isHidden = true
-        self.recentSearchTagsView.isHidden = true
+        self.recentTitleLabel.isHidden = false
+        self.recentSearchTagsView.isHidden = false
         self.favoriteTitleLabel.isHidden = true
         self.favoriteTagsView.isHidden = true
         self.suggestionTitleSpaceContraintWithRecentlyTagView.priority = UILayoutPriority(1000)
         self.suggestionTitleTopContraint.priority = UILayoutPriority(200)
         self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(200)
+      } else {
+        self.recentTitleLabel.isHidden = false
+        self.recentSearchTagsView.isHidden = false
+        self.favoriteTitleLabel.isHidden = false
+        self.favoriteTagsView.isHidden = false
+        self.suggestionTitleSpaceContraintWithRecentlyTagView.priority = UILayoutPriority(200)
+        self.suggestionTitleTopContraint.priority = UILayoutPriority(1000)
+        self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(200)
         self.favoriteTitleTopContraint.priority = UILayoutPriority(1000)
         self.favoriteTitleTopContainerContraint.priority = UILayoutPriority(200)
+        
       }
     }
   }
 
   private func setupSuggestionSection() {
+    
     self.viewModel.suggestDataSource.forEach { item in
       self.suggestionTagsView.addTag(item.title, image: UIImage(named: item.image ?? ""))
+    }
+  }
+  
+  private func setupRecentlySection() {
+    self.recentSearchTagsView.removeAllTags()
+    self.viewModel.recentlyDataSource.forEach { item in
+      UIImage.loadImageIconWithCache(item.image ?? "", completion: { image in
+        self.recentSearchTagsView.addTag(item.title, image: image)
+      })
+      
+    }
+  }
+  
+  private func setupFavoriteSection() {
+    self.favoriteTagsView.removeAllTags()
+    self.viewModel.favoriteDataSource.forEach { item in
+      UIImage.loadImageIconWithCache(item.image  ?? "", completion: { image in
+        self.favoriteTagsView.addTag(item.title, image: image)
+      })
+      
     }
   }
 
@@ -129,9 +151,19 @@ extension DappBrowserHomeViewController: TagListViewDelegate {
   func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
     switch sender.tag {
     case 1:
-      break
+      let filtered = self.viewModel.recentlyDataSource.first { item in
+        return item.title == title
+      }
+      if let unwrap = filtered?.url {
+        self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: unwrap))
+      }
     case 2:
-      break
+      let filtered = self.viewModel.favoriteDataSource.first { item in
+        return item.title == title
+      }
+      if let unwrap = filtered?.url {
+        self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: unwrap))
+      }
     case 3:
       let filtered = self.viewModel.suggestDataSource.first { item in
         return item.title == title

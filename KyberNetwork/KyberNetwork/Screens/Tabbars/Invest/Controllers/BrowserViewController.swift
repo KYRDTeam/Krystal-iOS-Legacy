@@ -45,6 +45,10 @@ class BrowserViewModel {
     self.url = url
     self.account = account
   }
+  
+  var webIconURL: String {
+    return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url.absoluteString)/"
+  }
 }
 
 class BrowserViewController: KNBaseViewController {
@@ -95,7 +99,7 @@ class BrowserViewController: KNBaseViewController {
     self.webView.bottomAnchor.constraint(equalTo: self.webViewContainerView.bottomAnchor).isActive = true
     self.webView.leftAnchor.constraint(equalTo: self.webViewContainerView.leftAnchor).isActive = true
     self.webView.rightAnchor.constraint(equalTo: self.webViewContainerView.rightAnchor).isActive = true
-    
+
     webView.load(URLRequest(url: self.viewModel.url))
   }
   
@@ -103,7 +107,7 @@ class BrowserViewController: KNBaseViewController {
     super.viewWillAppear(animated)
     
   }
-  
+
   @IBAction func dismissButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true, completion: nil)
   }
@@ -158,23 +162,48 @@ class BrowserViewController: KNBaseViewController {
   }
 
   func coodinatorDidReceiveFavoriteEvent() {
+    let item = BrowserItem(
+      title: self.webView.title ?? "",
+      url: self.viewModel.url.absoluteString,
+      image: self.viewModel.webIconURL,
+      time: Date().currentTimeMillis()
+    )
+    let isFaved = BrowserStorage.shared.isFaved(url: self.viewModel.url.absoluteString)
     
+    if isFaved {
+      BrowserStorage.shared.deleteFavoriteItem(item)
+    } else {
+      BrowserStorage.shared.addNewFavorite(item: item)
+    }
   }
   
   func coodinatorDidReceiveSwitchWalletEvent() {
     
   }
+  
+  private func saveBrowserIfNeeded() {
+    if !BrowserStorage.shared.isExistRecently(url: self.viewModel.url.absoluteString) {
+      let item = BrowserItem(
+        title: self.webView.title ?? "",
+        url: self.viewModel.url.absoluteString,
+        image: self.viewModel.webIconURL,
+        time: Date().currentTimeMillis()
+      )
+      BrowserStorage.shared.addNewRecently(item: item)
+    }
+  }
 }
 
 extension BrowserViewController: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let command = DappAction.fromMessage(message) else {
-            
-            return
-        }
-        let action = DappAction.fromCommand(command)
-        delegate?.didCall(action: action, callbackID: command.id, inBrowserViewController: self)
+  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    guard let command = DappAction.fromMessage(message) else {
+      return
     }
+    
+    let action = DappAction.fromCommand(command)
+    delegate?.didCall(action: action, callbackID: command.id, inBrowserViewController: self)
+    self.saveBrowserIfNeeded()
+  }
 }
 
 extension BrowserViewController: WKNavigationDelegate {
@@ -200,15 +229,15 @@ extension BrowserViewController: WKNavigationDelegate {
       
       return decisionHandler(.allow)
     }
-
     self.navTitleLabel.text = webView.title
     self.viewModel.url = url
+    
     let app = UIApplication.shared
     if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
       app.open(url)
       return decisionHandler(.cancel)
     }
-    
+
     decisionHandler(.allow)
   }
 }

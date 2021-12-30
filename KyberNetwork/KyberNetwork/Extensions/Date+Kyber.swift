@@ -36,4 +36,8 @@ extension Date {
   func seconds(from date: Date) -> Int {
     return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
   }
+  
+  func currentTimeMillis() -> Double {
+    return self.timeIntervalSince1970 * 1000
+  }
 }
