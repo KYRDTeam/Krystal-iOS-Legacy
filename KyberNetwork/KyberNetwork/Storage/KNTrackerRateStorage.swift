@@ -54,6 +54,26 @@ class KNTrackerRateStorage {
     }
   }
   
+  func getPriceWithAddress(_ address: String, chainType: ChainType) -> TokenPrice? {
+    let allPrices = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.coingeckoPricesStoreFileName, as: [TokenPrice].self) ?? []
+    return allPrices.first { (item) -> Bool in
+      return item.address.lowercased() == address.lowercased()
+    }
+  }
+  
+  func getChainDBPath(chainType: ChainType) -> String {
+    switch chainType {
+    case .eth:
+      return "eth" + "-" + KNEnvironment.default.displayName + "-"
+    case .bsc:
+      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
+    case .polygon:
+      return "matic" + "-" + KNEnvironment.default.displayName + "-"
+    case .avalanche:
+      return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    }
+  }
+  
   func getLastPriceWith(address: String, currency: CurrencyMode) -> Double {
     guard let price = self.getPriceWithAddress(address) else {
       return 0.0
