@@ -168,14 +168,8 @@ extension KNExchangeTokenCoordinator {
       self.prepareTokensForSwap(srcTokenAddress: srcTokenAddress, destTokenAddress: destTokenAddress, chainId: chainId, isFromDeepLink: true)
     }
   }
-  
+
   func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
-    
-    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
-      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
-      return
-    }
-    
     // default token
     var fromToken = KNSupportedTokenStorage.shared.ethToken
     var toToken = KNSupportedTokenStorage.shared.kncToken
@@ -197,7 +191,20 @@ extension KNExchangeTokenCoordinator {
         toToken = KNSupportedTokenStorage.shared.kncToken
     }
     var newAddress: [String] = []
+    guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
+      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
+      return
+    }
 
+    let isValidSrcAddress = Address(string: srcTokenAddress) != nil
+    let isValidDestTokenAddress = Address(string: destTokenAddress) != nil
+    
+    guard isValidSrcAddress, isValidDestTokenAddress else {
+      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
+      self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
+      return
+    }
     // in case can get token with given address
     if let token = KNSupportedTokenStorage.shared.get(forPrimaryKey: srcTokenAddress) {
        fromToken = token
@@ -374,7 +381,8 @@ extension KNExchangeTokenCoordinator {
     self.sendTokenCoordinator?.appCoordinatorDidUpdateChain()
 
     if self.srcTokenAddress != nil || self.destTokenAddress != nil {
-      self.prepareTokensForSwap(srcTokenAddress: self.srcTokenAddress, destTokenAddress: self.destTokenAddress, chainId: KNGeneralProvider.shared.customRPC.chainID)
+      let isFromDeepLink = self.rootViewController.viewModel.isFromDeepLink
+      self.prepareTokensForSwap(srcTokenAddress: self.srcTokenAddress, destTokenAddress: self.destTokenAddress, chainId: KNGeneralProvider.shared.customRPC.chainID, isFromDeepLink: isFromDeepLink)
       self.srcTokenAddress = nil
       self.destTokenAddress = nil
     }

@@ -46,10 +46,6 @@ class AddTokenViewController: KNBaseViewController {
     } else {
       self.titleHeader.text = "Add custom token".toBeLocalised()
       if let unwrapped = self.tokenObject {
-        if unwrapped.address.count != 54 {
-          self.navigationController?.showTopBannerView(message: "Your custom token contract seems not to be a valid address")
-        }
-        
         self.addressField.text = unwrapped.address
         self.symbolField.text = unwrapped.symbol
         self.decimalsField.text = "\(unwrapped.decimals)"
