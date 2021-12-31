@@ -23,13 +23,17 @@ protocol BrowserOptionsViewControllerDelegate: class {
 }
 
 class BrowserOptionsViewController: KNBaseViewController {
+  
+  @IBOutlet weak var favoriteStatusLabel: UILabel!
+  @IBOutlet weak var favoriteStatusIcon: UIImageView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   let transitor = TransitionDelegate()
   weak var delegate: BrowserOptionsViewControllerDelegate?
+  let url: String
   
-  init() {
-    
+  init(url: String) {
+    self.url = url
     super.init(nibName: BrowserOptionsViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -41,7 +45,13 @@ class BrowserOptionsViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    if BrowserStorage.shared.isFaved(url: self.url) {
+      self.favoriteStatusIcon.image = UIImage(named: "unfavorite_actionsheet_icon")
+      self.favoriteStatusLabel.text = "Unfavorite"
+    } else {
+      self.favoriteStatusIcon.image = UIImage(named: "favorite_actionsheet_icon")
+      self.favoriteStatusLabel.text = "Favorite"
+    }
   }
   
   @IBAction func optionButtonTapped(_ sender: UIButton) {
@@ -49,7 +59,6 @@ class BrowserOptionsViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       self.delegate?.browserOptionsViewController(self, run: option)
     }
-    
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

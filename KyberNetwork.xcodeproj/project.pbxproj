@@ -552,6 +552,10 @@
 		C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C326C688256D04B000B35E8F /* InputPopUpViewController.swift */; };
 		C326C68B256D04B000B35E8F /* InputPopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C326C689256D04B000B35E8F /* InputPopUpViewController.xib */; };
 		C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3280159277D69FA00158D27 /* BrowserStorage.swift */; };
+		C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3285AAB277EC2A600D28BC6 /* RecentlyHistoryViewController.swift */; };
+		C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3285AAC277EC2A600D28BC6 /* RecentlyHistoryViewController.xib */; };
+		C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3285AB3277EDFED00D28BC6 /* BrowserCell.swift */; };
+		C3285AB6277EDFED00D28BC6 /* BrowserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3285AB4277EDFED00D28BC6 /* BrowserCell.xib */; };
 		C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D5D27730B9C00D1065A /* BrowserViewController.swift */; };
 		C3299D6027730B9D00D1065A /* BrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3299D5E27730B9D00D1065A /* BrowserViewController.xib */; };
 		C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D622773254A00D1065A /* BrowserURLParser.swift */; };
@@ -1352,6 +1356,10 @@
 		C326C688256D04B000B35E8F /* InputPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopUpViewController.swift; sourceTree = "<group>"; };
 		C326C689256D04B000B35E8F /* InputPopUpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputPopUpViewController.xib; sourceTree = "<group>"; };
 		C3280159277D69FA00158D27 /* BrowserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStorage.swift; sourceTree = "<group>"; };
+		C3285AAB277EC2A600D28BC6 /* RecentlyHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyHistoryViewController.swift; sourceTree = "<group>"; };
+		C3285AAC277EC2A600D28BC6 /* RecentlyHistoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentlyHistoryViewController.xib; sourceTree = "<group>"; };
+		C3285AB3277EDFED00D28BC6 /* BrowserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserCell.swift; sourceTree = "<group>"; };
+		C3285AB4277EDFED00D28BC6 /* BrowserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserCell.xib; sourceTree = "<group>"; };
 		C3299D5D27730B9C00D1065A /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		C3299D5E27730B9D00D1065A /* BrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrowserViewController.xib; sourceTree = "<group>"; };
 		C3299D622773254A00D1065A /* BrowserURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserURLParser.swift; sourceTree = "<group>"; };
@@ -3769,6 +3777,8 @@
 			children = (
 				C30292EE260317E9001929E1 /* MarketingPartnerCollectionViewCell.swift */,
 				C30292EF260317E9001929E1 /* MarketingPartnerCollectionViewCell.xib */,
+				C3285AB3277EDFED00D28BC6 /* BrowserCell.swift */,
+				C3285AB4277EDFED00D28BC6 /* BrowserCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4210,6 +4220,8 @@
 				C3299D5E27730B9D00D1065A /* BrowserViewController.xib */,
 				C34A2263277AE64200F240B8 /* BrowserOptionsViewController.swift */,
 				C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */,
+				C3285AAB277EC2A600D28BC6 /* RecentlyHistoryViewController.swift */,
+				C3285AAC277EC2A600D28BC6 /* RecentlyHistoryViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4587,6 +4599,7 @@
 				25929C6220DA5C760045CFA3 /* SF-Pro-Text-Bold.otf in Resources */,
 				25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */,
 				C3EDDCC325C1829400A99CC8 /* EarnViewController.xib in Resources */,
+				C3285AAE277EC2A600D28BC6 /* RecentlyHistoryViewController.xib in Resources */,
 				25929C8D20DA5CC10045CFA3 /* SFCompactText-BoldItalic.otf in Resources */,
 				25BA01D020BFEBB500053863 /* KNTransactionStatusView.xib in Resources */,
 				25929C8A20DA5CC10045CFA3 /* SFCompactText-LightItalic.otf in Resources */,
@@ -4659,6 +4672,7 @@
 				25929C5F20DA5C760045CFA3 /* SF-Pro-Display-BlackItalic.otf in Resources */,
 				C31F74B025DD3211008B21F7 /* OverviewMarketTableViewCell.xib in Resources */,
 				257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */,
+				C3285AB6277EDFED00D28BC6 /* BrowserCell.xib in Resources */,
 				C3EE06BF267A15E50090B432 /* Karla-Light.ttf in Resources */,
 				C37CC093245803CA0081FB32 /* Roboto-Light.ttf in Resources */,
 				C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */,
@@ -5078,6 +5092,7 @@
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
+				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
 				7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */,
@@ -5186,6 +5201,7 @@
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
+				C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */,
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,

@@ -60,6 +60,9 @@ extension DappCoordinator: DappBrowserHomeViewControllerDelegate {
     switch event {
     case .enterText(let text):
       self.openBrowserScreen(searchText: text)
+    case .showAllRecently:
+      let controller = RecentlyHistoryViewController()
+      self.navigationController.pushViewController(controller, animated: true, completion: nil)
     }
   }
 }
@@ -67,8 +70,8 @@ extension DappCoordinator: DappBrowserHomeViewControllerDelegate {
 extension DappCoordinator: BrowserViewControllerDelegate {
   func browserViewController(_ controller: BrowserViewController, run event: BrowserViewEvent) {
     switch event {
-    case .openOption:
-      let controller = BrowserOptionsViewController()
+    case .openOption(let url):
+      let controller = BrowserOptionsViewController(url: url)
       controller.delegate = self
       self.navigationController.present(controller, animated: true, completion: nil)
     case .switchChain:

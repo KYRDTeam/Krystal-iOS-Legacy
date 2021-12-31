@@ -28,7 +28,7 @@ final class ScriptMessageProxy: NSObject, WKScriptMessageHandler {
 }
 
 enum BrowserViewEvent {
-  case openOption
+  case openOption(url: String)
   case switchChain
 }
 
@@ -113,7 +113,7 @@ class BrowserViewController: KNBaseViewController {
   }
   
   @IBAction func optionsButtonTapped(_ sender: UIButton) {
-    self.delegate?.browserViewController(self, run: .openOption)
+    self.delegate?.browserViewController(self, run: .openOption(url: self.viewModel.url.absoluteString))
   }
   
   func coordinatorNotifyFinish(callbackID: Int, value: Result<DappCallback, DAppError>) {
@@ -226,7 +226,6 @@ extension BrowserViewController: WKNavigationDelegate {
   
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
     guard let url = navigationAction.request.url, let scheme = url.scheme else {
-      
       return decisionHandler(.allow)
     }
     self.navTitleLabel.text = webView.title

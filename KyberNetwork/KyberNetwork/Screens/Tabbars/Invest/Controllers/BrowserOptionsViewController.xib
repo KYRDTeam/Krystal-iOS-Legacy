@@ -24,6 +24,8 @@
             <connections>
                 <outlet property="contentView" destination="hM6-sk-Gq7" id="zC2-c0-Tdw"/>
                 <outlet property="contentViewTopContraint" destination="8Cm-6X-5DB" id="Cq9-Ey-HNM"/>
+                <outlet property="favoriteStatusIcon" destination="0S6-8H-fyR" id="G1Q-ho-MhU"/>
+                <outlet property="favoriteStatusLabel" destination="Kjs-uE-2wf" id="zhr-CA-t4B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -377,7 +379,7 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kjs-uE-2wf">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Kjs-uE-2wf">
                                             <rect key="frame" x="13" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

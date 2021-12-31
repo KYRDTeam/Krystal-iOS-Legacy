@@ -11,6 +11,7 @@ import SwiftUI
 
 enum DappBrowserHomeEvent {
   case enterText(text: String)
+  case showAllRecently
 }
 
 protocol DappBrowserHomeViewControllerDelegate: class {
@@ -45,6 +46,8 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var favoriteTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var suggestionTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var suggestionTitleSpaceContraintWithRecentlyTagView: NSLayoutConstraint!
+  @IBOutlet weak var showAllRecentlyButton: UIButton!
+  
   
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
 
@@ -102,7 +105,6 @@ class DappBrowserHomeViewController: UIViewController {
         self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(200)
         self.favoriteTitleTopContraint.priority = UILayoutPriority(1000)
         self.favoriteTitleTopContainerContraint.priority = UILayoutPriority(200)
-        
       }
     }
   }
@@ -137,6 +139,11 @@ class DappBrowserHomeViewController: UIViewController {
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true, completion: nil)
   }
+  
+  @IBAction func showAllRecently(_ sender: UIButton) {
+    self.delegate?.dappBrowserHomeViewController(self, run: .showAllRecently)
+  }
+  
 }
 
 extension DappBrowserHomeViewController: UITextFieldDelegate {
