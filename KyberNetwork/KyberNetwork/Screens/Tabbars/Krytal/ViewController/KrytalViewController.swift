@@ -54,7 +54,7 @@ class KrytalViewModel {
 
   var displayTotalConfirmedVol: String {
     guard let unwrapped = self.referralOverViewData else { return "---" }
-    return "\(unwrapped.totalVol)"
+    return StringFormatter.amountString(value: unwrapped.totalVol)
   }
 
   var nextRewardInfoString: String {
