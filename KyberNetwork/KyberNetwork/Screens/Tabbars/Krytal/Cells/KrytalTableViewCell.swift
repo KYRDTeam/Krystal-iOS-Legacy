@@ -26,7 +26,7 @@ struct KrytalCellViewModel {
   }
   
   var displayVol: String {
-    return "\(self.codeObject.vol)"
+    return StringFormatter.amountString(value: self.codeObject.vol)
   }
 }
 
