@@ -62,6 +62,7 @@ final class StringFormatter {
   static func amountString(value: Double) -> String {
     let formatter = NumberFormatter()
     // rule amount round upto 4 digits
+    formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = 4
     formatter.roundingMode = .floor
     return formatter.string(from: NSNumber(value: value)) ?? ""
