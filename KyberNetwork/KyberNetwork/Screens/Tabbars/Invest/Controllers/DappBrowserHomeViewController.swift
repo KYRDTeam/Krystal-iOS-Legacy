@@ -64,12 +64,12 @@ class DappBrowserHomeViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+
     self.setupFavoriteSection()
     self.setupRecentlySection()
     self.updateUI()
   }
-  
+
   private func updateUI() {
     if self.viewModel.recentlyDataSource.isEmpty {
       if self.viewModel.favoriteDataSource.isEmpty {
@@ -130,7 +130,6 @@ class DappBrowserHomeViewController: UIViewController {
       UIImage.loadImageIconWithCache(item.image ?? "", completion: { image in
         self.recentSearchTagsView.addTag(item.title, image: image)
       })
-      
     }
   }
   

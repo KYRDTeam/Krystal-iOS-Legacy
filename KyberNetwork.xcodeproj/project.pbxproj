@@ -562,6 +562,8 @@
 		C3299D652773258D00D1065A /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D642773258D00D1065A /* SearchEngine.swift */; };
 		C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3299D662773414F00D1065A /* WKWebViewConfiguration.swift */; };
 		C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32BD4A2268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift */; };
+		C32D6DFF27843587002886F1 /* FirstTimeWarningDappBrowserPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D6DFD27843586002886F1 /* FirstTimeWarningDappBrowserPopup.swift */; };
+		C32D6E0027843587002886F1 /* FirstTimeWarningDappBrowserPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */; };
 		C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32EA229246934AA00866968 /* KNPrettyAlertController.swift */; };
 		C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */; };
 		C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F1F622431ABCD00990706 /* KNMarket.swift */; };
@@ -1366,6 +1368,8 @@
 		C3299D642773258D00D1065A /* SearchEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		C3299D662773414F00D1065A /* WKWebViewConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewConfiguration.swift; sourceTree = "<group>"; };
 		C32BD4A2268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Kyber.swift"; sourceTree = "<group>"; };
+		C32D6DFD27843586002886F1 /* FirstTimeWarningDappBrowserPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTimeWarningDappBrowserPopup.swift; sourceTree = "<group>"; };
+		C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstTimeWarningDappBrowserPopup.xib; sourceTree = "<group>"; };
 		C32EA229246934AA00866968 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
 		C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPrettyAlertController.xib; sourceTree = "<group>"; };
 		C32F1F622431ABCD00990706 /* KNMarket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarket.swift; sourceTree = "<group>"; };
@@ -4222,6 +4226,8 @@
 				C34A2264277AE64300F240B8 /* BrowserOptionsViewController.xib */,
 				C3285AAB277EC2A600D28BC6 /* RecentlyHistoryViewController.swift */,
 				C3285AAC277EC2A600D28BC6 /* RecentlyHistoryViewController.xib */,
+				C32D6DFD27843586002886F1 /* FirstTimeWarningDappBrowserPopup.swift */,
+				C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4573,6 +4579,7 @@
 				C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				25929C9820DA5CC10045CFA3 /* SFCompactText-Semibold.otf in Resources */,
+				C32D6E0027843587002886F1 /* FirstTimeWarningDappBrowserPopup.xib in Resources */,
 				25929C5420DA5C760045CFA3 /* SF-Pro-Display-LightItalic.otf in Resources */,
 				25929C9020DA5CC10045CFA3 /* SFCompactDisplay-Medium.otf in Resources */,
 				25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */,
@@ -5156,6 +5163,7 @@
 				C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */,
 				291F52B91F6B880F00B369AB /* EtherKeystore.swift in Sources */,
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
+				C32D6DFF27843587002886F1 /* FirstTimeWarningDappBrowserPopup.swift in Sources */,
 				296106D01F778A8D0006164B /* TransferType.swift in Sources */,
 				C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */,
 				2561454620C648A700FB00CF /* KNContactStorage.swift in Sources */,

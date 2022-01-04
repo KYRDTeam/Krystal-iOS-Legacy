@@ -12,8 +12,17 @@ import CryptoKit
 import Result
 import APIKit
 import JSONRPCKit
+import MBProgressHUD
+import QRCodeReaderViewController
+import WalletConnectSwift
 
-class DappCoordinator: Coordinator {
+protocol DappCoordinatorDelegate: class {
+  func dAppCoordinatorDidSelectAddWallet()
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func dAppCoordinatorDidSelectManageWallet()
+}
+
+class DappCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var session: KNSession
@@ -33,7 +42,14 @@ class DappCoordinator: Coordinator {
       return BrowserURLParser()
   }()
   
+  fileprivate var currentWallet: KNWalletObject {
+    let address = self.session.wallet.address.description
+    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
+  
   private var browserViewController: BrowserViewController?
+  
+  weak var delegate: DappCoordinatorDelegate?
   
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
@@ -41,6 +57,16 @@ class DappCoordinator: Coordinator {
   
   func stop() {
     
+  }
+  
+  fileprivate func openWalletListView() {
+    let viewModel = WalletsListViewModel(
+      walletObjects: KNWalletStorage.shared.wallets,
+      currentWallet: self.currentWallet
+    )
+    let walletsList = WalletsListViewController(viewModel: viewModel)
+    walletsList.delegate = self
+    self.navigationController.present(walletsList, animated: true, completion: nil)
   }
   
   func openBrowserScreen(searchText: String) {
@@ -51,7 +77,27 @@ class DappCoordinator: Coordinator {
     vc.delegate = self
     self.navigationController.pushViewController(vc, animated: true)
     self.browserViewController = vc
-    
+  }
+
+  func appCoordinatorDidUpdateChain() {
+    guard let topVC = self.navigationController.topViewController, topVC is BrowserViewController, let unwrap = self.browserViewController else { return }
+    guard case .real(let account) = self.session.wallet.type else {
+      self.navigationController.popViewController(animated: true, completion: nil)
+      return
+    }
+    let url = unwrap.viewModel.url
+    self.navigationController.popViewController(animated: false) {
+      let vm = BrowserViewModel(url: url, account: account)
+      let vc = BrowserViewController(viewModel: vm)
+      vc.delegate = self
+      self.navigationController.pushViewController(vc, animated: false)
+      self.browserViewController = vc
+    }
+  }
+  
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
+    self.session = session
+    self.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -238,7 +284,76 @@ extension DappCoordinator: BrowserOptionsViewControllerDelegate {
     case .favourite:
       self.browserViewController?.coodinatorDidReceiveFavoriteEvent()
     case .switchWallet:
+      self.openWalletListView()
       self.browserViewController?.coodinatorDidReceiveSwitchWalletEvent()
+    }
+  }
+}
+
+extension DappCoordinator: WalletsListViewControllerDelegate {
+  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
+    switch event {
+    case .connectWallet:
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
+    case .manageWallet:
+      self.delegate?.dAppCoordinatorDidSelectManageWallet()
+    case .copy(let wallet):
+      UIPasteboard.general.string = wallet.address
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    case .select(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.delegate?.dAppCoordinatorDidSelectWallet(wal)
+    case .addWallet:
+      self.delegate?.dAppCoordinatorDidSelectAddWallet()
+    }
+  }
+}
+
+extension DappCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let url = WCURL(result) else {
+        self.navigationController.showTopBannerView(
+          with: "Invalid session".toBeLocalised(),
+          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
     }
   }
 }

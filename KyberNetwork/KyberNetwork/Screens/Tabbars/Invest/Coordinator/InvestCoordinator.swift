@@ -138,8 +138,10 @@ class InvestCoordinator: Coordinator {
   
   func openDappBrowserScreen() {
     self.dappCoordinator = nil
-    self.dappCoordinator = DappCoordinator(navigationController: self.navigationController, session: self.session)
-    self.dappCoordinator?.start()
+    let coordinator = DappCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    coordinator.start()
+    self.dappCoordinator = coordinator
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -150,6 +152,7 @@ class InvestCoordinator: Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -162,6 +165,7 @@ class InvestCoordinator: Coordinator {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
+    self.dappCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -238,6 +242,20 @@ extension InvestCoordinator: KrytalCoordinatorDelegate {
   }
   
   func krytalCoordinatorDidSelectManageWallet() {
+    self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+}
+
+extension InvestCoordinator: DappCoordinatorDelegate {
+  func dAppCoordinatorDidSelectAddWallet() {
+    self.delegate?.investCoordinatorDidSelectAddWallet()
+  }
+
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.investCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func dAppCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
   }
 }

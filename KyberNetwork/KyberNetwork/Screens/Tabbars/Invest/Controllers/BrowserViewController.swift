@@ -55,7 +55,7 @@ class BrowserViewController: KNBaseViewController {
   
   @IBOutlet weak var navTitleLabel: UILabel!
   @IBOutlet weak var webViewContainerView: UIView!
-  
+  @IBOutlet weak var currentChainIcon: UIImageView!
   
   let viewModel: BrowserViewModel
   weak var delegate: BrowserViewControllerDelegate?
@@ -65,7 +65,7 @@ class BrowserViewController: KNBaseViewController {
       config.websiteDataStore = WKWebsiteDataStore.default()
       return config
   }()
-  
+
   lazy var webView: WKWebView = {
     let webView = WKWebView(
       frame: .zero,
@@ -93,6 +93,7 @@ class BrowserViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.navTitleLabel.text = self.viewModel.url.absoluteString
+    self.updateUISwitchChain()
     webView.translatesAutoresizingMaskIntoConstraints = false
     self.webViewContainerView.addSubview(self.webView)
     self.webView.topAnchor.constraint(equalTo: self.webViewContainerView.topAnchor).isActive = true
@@ -128,7 +129,7 @@ class BrowserViewController: KNBaseViewController {
       }()
       webView.evaluateJavaScript(script, completionHandler: nil)
   }
-  
+
   func coodinatorDidReceiveBackEvent() {
     self.webView.goBack()
   }
@@ -140,7 +141,7 @@ class BrowserViewController: KNBaseViewController {
   func coodinatorDidReceiveRefreshEvent() {
     self.webView.reload()
   }
-  
+
   func coodinatorDidReceiveShareEvent() {
     let text = NSLocalizedString(
       self.viewModel.url.absoluteString,
@@ -152,7 +153,7 @@ class BrowserViewController: KNBaseViewController {
     activitiy.popoverPresentationController?.sourceView = self.navigationController?.view!
     self.navigationController?.present(activitiy, animated: true, completion: nil)
   }
-  
+
   func coodinatorDidReceiveCopyEvent() {
     UIPasteboard.general.string = self.viewModel.url.absoluteString
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -191,6 +192,28 @@ class BrowserViewController: KNBaseViewController {
       )
       BrowserStorage.shared.addNewRecently(item: item)
     }
+  }
+  
+  fileprivate func updateUISwitchChain() {
+    let icon = KNGeneralProvider.shared.chainIconImage
+    self.currentChainIcon.image = icon
+  }
+  
+  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    let popup = SwitchChainViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+      self.present(secondPopup, animated: true, completion: nil)
+    }
+    self.present(popup, animated: true, completion: nil)
+  }
+  
+  func coordinatorDidUpdateChain() {
+    guard self.isViewLoaded else {
+      return
+    }
+    self.updateUISwitchChain()
   }
 }
 

@@ -16,6 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BrowserViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="currentChainIcon" destination="VZ3-XU-zvf" id="42z-6c-2Jz"/>
                 <outlet property="navTitleLabel" destination="YTI-HD-ZgN" id="Coj-IQ-Xmu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="webViewContainerView" destination="mZh-Hu-CeS" id="Nb5-e9-1VO"/>
@@ -50,6 +51,9 @@
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xmG-zl-JzZ">
                                     <rect key="frame" x="0.0" y="0.0" width="63" height="32"/>
+                                    <connections>
+                                        <action selector="switchChainButtonTapped:" destination="-1" eventType="touchUpInside" id="zVs-jY-DIe"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" name="toolbarBgColor"/>
