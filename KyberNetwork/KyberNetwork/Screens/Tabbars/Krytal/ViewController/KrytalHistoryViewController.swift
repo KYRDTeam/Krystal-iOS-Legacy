@@ -97,7 +97,7 @@ extension KrytalHistoryViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return self.viewModel.headers.count
   }
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     let header = self.viewModel.headers[section]
     return self.viewModel.dataSources[header]?.count ?? 0
@@ -112,7 +112,7 @@ extension KrytalHistoryViewController: UITableViewDataSource {
     if let viewModel = self.viewModel.dataSources[header]?[indexPath.row] {
       cell.updateCell(viewModel: viewModel)
     }
-    
+
     return cell
   }
   

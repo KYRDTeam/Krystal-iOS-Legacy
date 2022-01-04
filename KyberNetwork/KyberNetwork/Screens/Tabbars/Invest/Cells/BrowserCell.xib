@@ -30,8 +30,8 @@
                             <constraint firstAttribute="width" constant="22" id="liQ-7e-0cJ"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberSwap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twb-8e-Krh">
-                        <rect key="frame" x="62" y="16" width="70.5" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KyberSwap" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twb-8e-Krh">
+                        <rect key="frame" x="62" y="16" width="226" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="Dvl-PG-YcH"/>
                         </constraints>
@@ -56,6 +56,7 @@
                     <constraint firstItem="twb-8e-Krh" firstAttribute="top" secondItem="ecX-wp-7pr" secondAttribute="top" id="s6w-Gi-r2V"/>
                     <constraint firstAttribute="trailing" secondItem="AIt-LE-8PO" secondAttribute="trailing" constant="32" id="vzn-GC-Led"/>
                     <constraint firstItem="twb-8e-Krh" firstAttribute="leading" secondItem="ecX-wp-7pr" secondAttribute="trailing" constant="8" id="yIf-hy-2sa"/>
+                    <constraint firstAttribute="trailing" secondItem="twb-8e-Krh" secondAttribute="trailing" constant="32" id="yZZ-mb-3eV"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

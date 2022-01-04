@@ -27,6 +27,10 @@ class DappBrowserHomeViewModel {
   ]
   
   var recentlyDataSource: [BrowserItem] {
+    if BrowserStorage.shared.recentlyBrowser.count > 5 {
+      return Array(BrowserStorage.shared.recentlyBrowser.prefix(2))
+    }
+    
     return BrowserStorage.shared.recentlyBrowser
   }
   var favoriteDataSource: [BrowserItem] {
@@ -70,6 +74,7 @@ class DappBrowserHomeViewController: UIViewController {
     if self.viewModel.recentlyDataSource.isEmpty {
       if self.viewModel.favoriteDataSource.isEmpty {
         self.recentTitleLabel.isHidden = true
+        self.showAllRecentlyButton.isHidden = true
         self.recentSearchTagsView.isHidden = true
         self.favoriteTitleLabel.isHidden = true
         self.favoriteTagsView.isHidden = true
@@ -78,6 +83,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(1000)
       } else {
         self.recentTitleLabel.isHidden = true
+        self.showAllRecentlyButton.isHidden = true
         self.recentSearchTagsView.isHidden = true
         self.favoriteTitleLabel.isHidden = false
         self.favoriteTagsView.isHidden = false
@@ -89,6 +95,7 @@ class DappBrowserHomeViewController: UIViewController {
     } else {
       if self.viewModel.favoriteDataSource.isEmpty {
         self.recentTitleLabel.isHidden = false
+        self.showAllRecentlyButton.isHidden = false
         self.recentSearchTagsView.isHidden = false
         self.favoriteTitleLabel.isHidden = true
         self.favoriteTagsView.isHidden = true
@@ -97,6 +104,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.suggestionTitleTopContainerContraint.priority = UILayoutPriority(200)
       } else {
         self.recentTitleLabel.isHidden = false
+        self.showAllRecentlyButton.isHidden = false
         self.recentSearchTagsView.isHidden = false
         self.favoriteTitleLabel.isHidden = false
         self.favoriteTagsView.isHidden = false

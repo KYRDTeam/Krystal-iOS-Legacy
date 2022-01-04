@@ -73,6 +73,11 @@ class BrowserStorage {
     Storage.store(self.recentlyBrowser, as: Constants.browserRecentlyFileName)
   }
   
+  func deleteAllRecentlyItem() {
+    self.recentlyBrowser.removeAll()
+    Storage.store(self.recentlyBrowser, as: Constants.browserRecentlyFileName)
+  }
+  
   func addNewRecently(item: BrowserItem) {
     self.recentlyBrowser.append(item)
     Storage.store(self.recentlyBrowser, as: Constants.browserRecentlyFileName)

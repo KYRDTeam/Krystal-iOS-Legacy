@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 struct BrowserCellViewModel {
   let item: BrowserItem
@@ -23,7 +24,7 @@ struct BrowserCellViewModel {
   }
 }
 
-class BrowserCell: UITableViewCell {
+class BrowserCell: SwipeTableViewCell {
   
   static let cellHeight: CGFloat = 80
   static let cellID: String = "BrowserCell"
