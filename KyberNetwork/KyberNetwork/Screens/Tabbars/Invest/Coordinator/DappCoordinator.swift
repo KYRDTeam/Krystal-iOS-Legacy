@@ -126,6 +126,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
   }
   
   func didCall(action: DappAction, callbackID: Int, inBrowserViewController viewController: BrowserViewController) {
+    let url = viewController.viewModel.url.absoluteString
     func rejectDappAction() {
       viewController.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(DAppError.cancelled))
       navigationController.topViewController?.displayError(error: InCoordinatorError.onlyWatchAccount)
@@ -135,10 +136,10 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       switch action {
       case .signTransaction(let unconfirmedTransaction):
         print(unconfirmedTransaction)
-        self.executeTransaction(action: action, callbackID: callbackID, tx: unconfirmedTransaction)
+        self.executeTransaction(action: action, callbackID: callbackID, tx: unconfirmedTransaction, url: url)
       case .sendTransaction(let unconfirmedTransaction):
         print(unconfirmedTransaction)
-        self.executeTransaction(action: action, callbackID: callbackID, tx: unconfirmedTransaction)
+        self.executeTransaction(action: action, callbackID: callbackID, tx: unconfirmedTransaction, url: url)
       case .signMessage(let hexMessage):
         signMessage(with: .message(hexMessage.toHexData), callbackID: callbackID)
       case .signPersonalMessage(let hexMessage):
@@ -186,8 +187,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
     }
   }
   
-  private func executeTransaction(action: DappAction, callbackID: Int, tx: SignTransactionObject) {
-    self.askToAsyncSign(action: action, callbackID: callbackID, tx: tx, message: "Prepare to send your transaction") {
+  private func executeTransaction(action: DappAction, callbackID: Int, tx: SignTransactionObject, url: String) {
+    self.askToAsyncSign(action: action, callbackID: callbackID, tx: tx, message: "Prepare to send your transaction", url: url) {
     }
   }
   
@@ -210,7 +211,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
     }
   }
   
-  func askToAsyncSign(action: DappAction, callbackID: Int, tx: SignTransactionObject, message: String, sign: @escaping () -> Void) {
+  func askToAsyncSign(action: DappAction, callbackID: Int, tx: SignTransactionObject, message: String, url: String, sign: @escaping () -> Void) {
     guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
       return
     }
@@ -243,13 +244,17 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       }
       let onCancel = {
       }
-      DispatchQueue.main.async {
-          UIAlertController.showShouldSign(from: self.navigationController,
-                                           title: "Request to sign a message",
-                                           message: message,
-                                           onSign: onSign,
-                                           onCancel: onCancel)
-      }
+//      DispatchQueue.main.async {
+//          UIAlertController.showShouldSign(from: self.navigationController,
+//                                           title: "Request to sign a message",
+//                                           message: message,
+//                                           onSign: onSign,
+//                                           onCancel: onCancel)
+//      }
+    
+    let vm = DappBrowerTransactionConfirmViewModel(transaction: tx, url: url, onSign: onSign, onCancel: onCancel)
+    let controller = DappBrowerTransactionConfirmPopup(viewModel: vm)
+    self.navigationController.present(controller, animated: true, completion: nil)
   }
 
   func getLatestNonce(completion: @escaping (Int) -> Void) {
