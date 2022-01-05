@@ -18,12 +18,9 @@ extension WKWebViewConfiguration {
 
         switch type {
         case .dappBrowser:
-            guard
-                    let bundlePath = Bundle.main.path(forResource: "AlphaWalletWeb3Provider", ofType: "bundle"),
-                    let bundle = Bundle(path: bundlePath) else { return webViewConfig }
-            if let filepath = bundle.path(forResource: "AlphaWallet-min", ofType: "js") {
+            if let path = Bundle.main.path(forResource: "KrystalWallet-min", ofType: "js") {
                 do {
-                    js += try String(contentsOfFile: filepath)
+                    js += try String(contentsOfFile: path)
                 } catch { }
             }
             js += javaScriptForDappBrowser(address: address)
@@ -83,57 +80,57 @@ extension WKWebViewConfiguration {
                const chainID = "\(KNGeneralProvider.shared.customRPC.chainID)"
 
                function executeCallback (id, error, value) {
-                   AlphaWallet.executeCallback(id, error, value)
+                   KrystalWallet.executeCallback(id, error, value)
                }
 
-               AlphaWallet.init(rpcURL, {
+               KrystalWallet.init(rpcURL, {
                    getAccounts: function (cb) { cb(null, [addressHex]) },
                    processTransaction: function (tx, cb){
                        console.log('signing a transaction', tx)
                        const { id = 8888 } = tx
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.signTransaction.postMessage({"name": "signTransaction", "object":     tx, id: id})
                    },
                    signMessage: function (msgParams, cb) {
                        const { data } = msgParams
                        const { id = 8888 } = msgParams
                        console.log("signing a message", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.signMessage.postMessage({"name": "signMessage", "object": { data }, id:    id} )
                    },
                    signPersonalMessage: function (msgParams, cb) {
                        const { data } = msgParams
                        const { id = 8888 } = msgParams
                        console.log("signing a personal message", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.signPersonalMessage.postMessage({"name": "signPersonalMessage", "object":  { data }, id: id})
                    },
                    signTypedMessage: function (msgParams, cb) {
                        const { data } = msgParams
                        const { id = 8888 } = msgParams
                        console.log("signing a typed message", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.signTypedMessage.postMessage({"name": "signTypedMessage", "object":     { data }, id: id})
                    },
                    ethCall: function (msgParams, cb) {
                        const data = msgParams
                        const { id = Math.floor((Math.random() * 100000) + 1) } = msgParams
                        console.log("eth_call", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.ethCall.postMessage({"name": "ethCall", "object": data, id: id})
                    },
                    walletAddEthereumChain: function (msgParams, cb) {
                        const data = msgParams
                        const { id = Math.floor((Math.random() * 100000) + 1) } = msgParams
                        console.log("walletAddEthereumChain", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.walletAddEthereumChain.postMessage({"name": "walletAddEthereumChain", "object": data, id: id})
                    },
                    walletSwitchEthereumChain: function (msgParams, cb) {
                        const data = msgParams
                        const { id = Math.floor((Math.random() * 100000) + 1) } = msgParams
                        console.log("walletSwitchEthereumChain", msgParams)
-                       AlphaWallet.addCallback(id, cb)
+                       KrystalWallet.addCallback(id, cb)
                        webkit.messageHandlers.walletSwitchEthereumChain.postMessage({"name": "walletSwitchEthereumChain", "object": data, id: id})
                    },
                    enable: function() {
@@ -148,7 +145,7 @@ extension WKWebViewConfiguration {
                })
 
                web3.setProvider = function () {
-                   console.debug('AlphaWallet Wallet - overrode web3.setProvider')
+                   console.debug('KrystalWallet Wallet - overrode web3.setProvider')
                }
 
                web3.eth.defaultAccount = addressHex
@@ -307,15 +304,15 @@ private struct HackToAllowUsingSafaryExtensionCodeInDappBrowser {
         }
         var js = javaScriptForSafaryExtension()
         js += """
-                const overridenElementsForAlphaWalletExtension = new Map();
+                const overridenElementsForKrystalWalletExtension = new Map();
                 function runOnStart() {
                     function applyURLsOverriding(options, url) {
-                        let elements = overridenElementsForAlphaWalletExtension.get(url);
+                        let elements = overridenElementsForKrystalWalletExtension.get(url);
                         if (typeof elements != 'undefined') {
-                            overridenElementsForAlphaWalletExtension(elements)
+                            overridenElementsForKrystalWalletExtension(elements)
                         }
 
-                        overridenElementsForAlphaWalletExtension.set(url, retrieveAllURLs(document, options));
+                        overridenElementsForKrystalWalletExtension.set(url, retrieveAllURLs(document, options));
                     }
 
                     const url = document.URL;

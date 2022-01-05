@@ -47,7 +47,6 @@ target 'KyberNetwork' do
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'lottie-ios'
   pod 'TrustWalletCore', '~> 2.6.29'
-  pod 'AlphaWalletWeb3Provider', :git=>'https://github.com/AlphaWallet/AlphaWallet-web3-provider', :commit => '9a4496d02b7ddb2f6307fd0510d8d7c9fcef9870'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths
@@ -71,7 +70,7 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
     if ['TrustKeystore'].include? target.name
       target.build_configurations.each do |config|

@@ -564,6 +564,7 @@
 		C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32BD4A2268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift */; };
 		C32D6DFF27843587002886F1 /* FirstTimeWarningDappBrowserPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D6DFD27843586002886F1 /* FirstTimeWarningDappBrowserPopup.swift */; };
 		C32D6E0027843587002886F1 /* FirstTimeWarningDappBrowserPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */; };
+		C32D6E022784620A002886F1 /* KrystalWallet-min.js in Resources */ = {isa = PBXBuildFile; fileRef = C32D6E012784620A002886F1 /* KrystalWallet-min.js */; };
 		C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32EA229246934AA00866968 /* KNPrettyAlertController.swift */; };
 		C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */; };
 		C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F1F622431ABCD00990706 /* KNMarket.swift */; };
@@ -1370,6 +1371,7 @@
 		C32BD4A2268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Kyber.swift"; sourceTree = "<group>"; };
 		C32D6DFD27843586002886F1 /* FirstTimeWarningDappBrowserPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTimeWarningDappBrowserPopup.swift; sourceTree = "<group>"; };
 		C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstTimeWarningDappBrowserPopup.xib; sourceTree = "<group>"; };
+		C32D6E012784620A002886F1 /* KrystalWallet-min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "KrystalWallet-min.js"; sourceTree = "<group>"; };
 		C32EA229246934AA00866968 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
 		C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPrettyAlertController.xib; sourceTree = "<group>"; };
 		C32F1F622431ABCD00990706 /* KNMarket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarket.swift; sourceTree = "<group>"; };
@@ -2056,6 +2058,7 @@
 		2567B3EE216B10060006D963 /* html */ = {
 			isa = PBXGroup;
 			children = (
+				C32D6E012784620A002886F1 /* KrystalWallet-min.js */,
 				2567B3EF216B10060006D963 /* index.html */,
 				2567B3F0216B10060006D963 /* web3.min.js */,
 			);
@@ -4743,6 +4746,7 @@
 				25369F0C20F88A87007231FE /* KNWelcomeScreenCollectionViewCell.xib in Resources */,
 				7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */,
 				C30568AC2670B87700F331CE /* OverviewMainViewController.xib in Resources */,
+				C32D6E022784620A002886F1 /* KrystalWallet-min.js in Resources */,
 				251ABCB220578F6E0069687F /* config_env_production.json in Resources */,
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
@@ -4910,14 +4914,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AlphaWalletWeb3Provider/AlphaWalletWeb3Provider.bundle",
 				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FCResources.bundle",
 				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FreshchatModels.bundle",
 				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FCLocalization.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AlphaWalletWeb3Provider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FreshchatModels.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FCLocalization.bundle",
@@ -5652,7 +5654,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -5708,7 +5710,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
