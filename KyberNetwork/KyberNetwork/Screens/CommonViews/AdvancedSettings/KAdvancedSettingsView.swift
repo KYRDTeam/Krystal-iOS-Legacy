@@ -42,7 +42,7 @@ class KAdvancedSettingsViewModel: NSObject {
   fileprivate(set) var isViewHidden: Bool = true
   fileprivate(set) var hasMinRate: Bool = true
 
-  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
+  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointOne
   fileprivate(set) var currentRate: Double = 0.0
 
   fileprivate(set) var pairToken: String = ""
@@ -113,15 +113,19 @@ class KAdvancedSettingsViewModel: NSObject {
   var minRateViewHeight: CGFloat { return self.isMinRateViewHidden ? 0 : kMinRateContainerHeight }
   var minRateTypeInt: Int {
     switch self.minRateType {
-    case .threePercent: return 0
-    case .anyRate: return 1
-    case .custom: return 2
+    case .zeroPointOne: return 0
+    case .zeroPointFive: return 1
+    case .onePercent: return 2
+    case .anyRate: return 3
+    case .custom: return 4
     }
   }
 
   var minRatePercent: Double {
     switch self.minRateType {
-    case .threePercent: return 3.0
+    case .zeroPointOne: return 0.1
+    case .zeroPointFive: return 0.5
+    case .onePercent: return 1.0
     case .anyRate: return 100.0
     case .custom(let value): return value
     }
@@ -270,9 +274,13 @@ class KAdvancedSettingsView: XibLoaderView {
   weak var delegate: KAdvancedSettingsViewDelegate?
 
   var isMinRateValid: Bool {
-    if case .threePercent = self.viewModel.minRateType { return true }
-    let custom = self.customRateTextField.text ?? ""
-    return !custom.isEmpty
+    switch self.viewModel.minRateType {
+      case .zeroPointOne, .zeroPointFive, .onePercent:
+        return true
+      default:
+        let custom = self.customRateTextField.text ?? ""
+        return !custom.isEmpty
+    }
   }
 
   var height: CGFloat {
@@ -537,7 +545,7 @@ class KAdvancedSettingsView: XibLoaderView {
   }
 
   @IBAction func threePercentButtonPressed(_ sender: Any) {
-    self.viewModel.updateMinRateType(.threePercent)
+    self.viewModel.updateMinRateType(.zeroPointOne)
     self.customRateTextField.text = ""
     self.customRateTextField.isEnabled = false
     self.delegate?.kAdvancedSettingsView(self, run: .minRatePercentageChanged(percent: 3.0))

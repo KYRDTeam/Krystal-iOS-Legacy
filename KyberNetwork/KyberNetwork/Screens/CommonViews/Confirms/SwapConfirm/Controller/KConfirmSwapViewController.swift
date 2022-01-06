@@ -1,11 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
+  func kConfirmSwapViewControllerOpenGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
@@ -173,7 +175,12 @@ class KConfirmSwapViewController: KNBaseViewController {
       time: 2.0
     )
   }
-
+  
+  
+  @IBAction func editButtonTapped(_ sender: Any) {
+//    self.delegate?.kConfirmSwapViewControllerOpenGasPriceSelect(gasLimit: self.viewModel.transactionGasLimit, baseGasLimit: <#T##BigInt#>, selectType: <#T##KNSelectedGasPriceType#>, pair: <#T##String#>, minRatePercent: <#T##Double#>, advancedGasLimit: <#T##String?#>, advancedPriorityFee: <#T##String?#>, advancedMaxFee: <#T##String?#>, advancedNonce: <#T##String?#>)
+  }
+  
   @IBAction func confirmButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
     if let unwrap = self.viewModel.signTransaction {

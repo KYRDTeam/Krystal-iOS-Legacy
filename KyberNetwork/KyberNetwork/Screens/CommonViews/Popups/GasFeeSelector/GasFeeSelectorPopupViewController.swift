@@ -40,7 +40,9 @@ extension KNSelectedGasPriceType {
 }
 
 enum KAdvancedSettingsMinRateType {
-  case threePercent
+  case zeroPointOne
+  case zeroPointFive
+  case onePercent
   case anyRate
   case custom(value: Double)
 }
@@ -74,7 +76,7 @@ class GasFeeSelectorPopupViewModel {
     }
   }
   fileprivate(set) var previousSelectedType: KNSelectedGasPriceType?
-  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .threePercent
+  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointOne
   fileprivate(set) var currentRate: Double
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var gasLimit: BigInt
@@ -124,7 +126,16 @@ class GasFeeSelectorPopupViewModel {
     self.baseGasLimit = gasLimit
     self.selectedType = selectType == .custom ? .medium : selectType
     self.currentRate = currentRatePercentage
-    self.minRateType = currentRatePercentage == 1.0 ? .threePercent : .custom(value: currentRatePercentage)
+    switch currentRatePercentage {
+    case 0.1:
+      self.minRateType = .zeroPointOne
+    case 0.5:
+      self.minRateType = .zeroPointFive
+    case 1.0:
+      self.minRateType = .onePercent
+    default:
+      self.minRateType = .custom(value: currentRatePercentage)
+    }
     self.isUseGasToken = isUseGasToken
     self.isContainSippageSectionOption = isContainSlippageSection
   }
@@ -139,7 +150,7 @@ class GasFeeSelectorPopupViewModel {
 
   func updateMinRateValue(_ value: Double, percent: Double) {
     self.currentRate = value
-    if self.minRateTypeInt == 2 {
+    if self.minRateTypeInt == 4 {
       self.minRateType = .custom(value: percent)
     }
   }
@@ -253,7 +264,9 @@ class GasFeeSelectorPopupViewModel {
 
   var minRatePercent: Double {
     switch self.minRateType {
-    case .threePercent: return 1.0
+    case .zeroPointOne: return 0.1
+    case .zeroPointFive: return 0.5
+    case .onePercent: return 1.0
     case .anyRate: return 100.0
     case .custom(let value): return value
     }
@@ -261,9 +274,11 @@ class GasFeeSelectorPopupViewModel {
 
   var minRateTypeInt: Int {
     switch self.minRateType {
-    case .threePercent: return 0
-    case .anyRate: return 1
-    case .custom: return 2
+    case .zeroPointOne: return 0
+    case .zeroPointFive: return 1
+    case .onePercent: return 2
+    case .anyRate: return 3
+    case .custom: return 4
     }
   }
 
@@ -291,7 +306,6 @@ class GasFeeSelectorPopupViewModel {
       } else {
         return self.valueForSelectedType(type: .medium)
       }
-      
     }
   }
 
@@ -547,22 +561,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var estimateFeeNoteLabel: UILabel!
   @IBOutlet weak var stillProceedIfRateGoesDownTextLabel: UILabel!
 
-  @IBOutlet weak var threePercentButton: UIButton!
-  @IBOutlet weak var threePercentTextLabel: UILabel!
-
-  @IBOutlet weak var customButton: UIButton!
-  @IBOutlet weak var customTextLabel: UILabel!
+  @IBOutlet weak var firstOptionAdvanceSlippageButton: UIButton!
+  @IBOutlet weak var secondOptionAdvanceSlippageButton: UIButton!
+  @IBOutlet weak var thirdOptionAdvanceSlippageButton: UIButton!
   @IBOutlet weak var customRateTextField: UITextField!
-  @IBOutlet weak var customRateContainerView: UIView!
-
   @IBOutlet weak var advancedStillProceedIfRateGoesDownTextLabel: UILabel!
-  @IBOutlet weak var advancedThreePercentButton: UIButton!
-  @IBOutlet weak var advancedThreePercentTextLabel: UILabel!
-  @IBOutlet weak var advancedCustomButton: UIButton!
-  @IBOutlet weak var advancedCustomTextLabel: UILabel!
   @IBOutlet weak var advancedCustomRateTextField: UITextField!
-  @IBOutlet weak var advancedCustomRateContainerView: UIView!
-
   @IBOutlet weak var transactionWillBeRevertedTextLabel: UILabel!
   @IBOutlet weak var sendSwapDivideLineView: UIView!
   @IBOutlet weak var slippageRateSectionHeighContraint: NSLayoutConstraint!
@@ -570,7 +574,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var advancedModeContainerView: UIScrollView!
   @IBOutlet weak var popupContainerHeightContraint: NSLayoutConstraint!
-
   @IBOutlet weak var advancedGasLimitField: UITextField!
   @IBOutlet weak var advancedPriorityFeeField: UITextField!
   @IBOutlet weak var advancedMaxFeeField: UITextField!
@@ -602,7 +605,13 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   @IBOutlet weak var maxFeeAccessoryLabel: UILabel!
   @IBOutlet weak var gasLimitErrorLabel: UILabel!
   @IBOutlet weak var customNonceHelpButton: UIButton!
-  
+  @IBOutlet weak var firstOptionSlippageButton: UIButton!
+  @IBOutlet weak var secondOptionSippageButton: UIButton!
+  @IBOutlet weak var thirdOptionSlippageButton: UIButton!
+  @IBOutlet weak var slippageHintLabelTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var warningSlippageLabel: UILabel!
+  @IBOutlet weak var advanceSlippageHintLabelTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var advanceWarningSlippageLabel: UILabel!
   let viewModel: GasFeeSelectorPopupViewModel
   let transitor = TransitionDelegate()
 
@@ -621,12 +630,108 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.configUI()
+  }
 
+  func updateFocusForView(view: UIView, isFocus: Bool) {
+    if isFocus {
+      view.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1.0, radius: 14.0)
+      view.backgroundColor = UIColor(named: "innerContainerBgColor")!
+    } else {
+      view.rounded(color: UIColor(named: "navButtonBgColor")!, width: 1.0, radius: 14.0)
+      view.backgroundColor = .clear
+    }
+  }
+
+  func configSlippageUI() {
+    // for basic mode
+    self.updateFocusForView(view: self.firstOptionSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.secondOptionSippageButton, isFocus: false)
+    self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.customRateTextField, isFocus: false)
+    //for advance mode
+    self.updateFocusForView(view: self.firstOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.secondOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.thirdOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: false)
+
+    switch self.viewModel.minRatePercent {
+    case 0.1:
+      self.updateFocusForView(view: self.firstOptionSlippageButton, isFocus: true)
+      self.updateFocusForView(view: self.firstOptionAdvanceSlippageButton, isFocus: true)
+    case 0.5:
+      self.updateFocusForView(view: self.secondOptionSippageButton, isFocus: true)
+      self.updateFocusForView(view: self.secondOptionAdvanceSlippageButton, isFocus: true)
+    case 1.0:
+      self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: true)
+      self.updateFocusForView(view: self.thirdOptionAdvanceSlippageButton, isFocus: true)
+    default:
+      self.updateFocusForView(view: self.customRateTextField, isFocus: true)
+      self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: true)
+    }
+    self.updateSlippageHintLabel()
+  }
+
+  func updateSlippageHintLabel() {
+    var shouldShowWarningLabel = false
+    var warningText = ""
+    var warningColor = UIColor(named: "warningColor")!
+    if self.viewModel.minRatePercent <= 0.1 {
+      shouldShowWarningLabel = true
+      warningText = "Your transaction may fail".toBeLocalised()
+    } else if self.viewModel.minRatePercent > 50.0 {
+      shouldShowWarningLabel = true
+      warningText = "Enter a valid slippage percentage".toBeLocalised()
+      warningColor = UIColor(named: "textRedColor")!
+    } else if self.viewModel.minRatePercent >= 10 {
+      shouldShowWarningLabel = true
+      warningText = "Your transaction may be frontrun".toBeLocalised()
+    }
+    self.warningSlippageLabel.text = warningText
+    self.advanceWarningSlippageLabel.text = warningText
+    self.warningSlippageLabel.textColor = warningColor
+    self.advanceWarningSlippageLabel.textColor = warningColor
+    self.slippageHintLabelTopConstraint.constant = shouldShowWarningLabel ? CGFloat(46) : CGFloat(18)
+    self.advanceSlippageHintLabelTopConstraint.constant = shouldShowWarningLabel ? CGFloat(46) : CGFloat(18)
+  }
+
+  func configSlippageUIByType(_ type: KAdvancedSettingsMinRateType) {
+    // for basic mode
+    self.updateFocusForView(view: self.firstOptionSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.secondOptionSippageButton, isFocus: false)
+    self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.customRateTextField, isFocus: false)
+    //for advance mode
+    self.updateFocusForView(view: self.firstOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.secondOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.thirdOptionAdvanceSlippageButton, isFocus: false)
+    self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: false)
+    switch type {
+    case .zeroPointOne:
+      self.updateFocusForView(view: self.firstOptionSlippageButton, isFocus: true)
+      self.updateFocusForView(view: self.firstOptionAdvanceSlippageButton, isFocus: true)
+    case .zeroPointFive:
+      self.updateFocusForView(view: self.secondOptionSippageButton, isFocus: true)
+      self.updateFocusForView(view: self.secondOptionAdvanceSlippageButton, isFocus: true)
+    case .onePercent:
+      self.updateFocusForView(view: self.thirdOptionSlippageButton, isFocus: true)
+      self.updateFocusForView(view: self.thirdOptionAdvanceSlippageButton, isFocus: true)
+    default:
+      self.updateFocusForView(view: self.customRateTextField, isFocus: true)
+      self.updateFocusForView(view: self.advancedCustomRateTextField, isFocus: true)
+    }
+    self.updateSlippageHintLabel()
+  }
+
+  func configUI() {
+    self.configSlippageUI()
     self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
-    self.customRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
-    self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 2 ? self.viewModel.currentRateDisplay : ""
+    self.customRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
+    self.customRateTextField.attributedPlaceholder = NSAttributedString(string: "Input", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "navButtonBgColor")!])
+    self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
+    self.advancedCustomRateTextField.attributedPlaceholder = NSAttributedString(string: "Input", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "navButtonBgColor")!])
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
@@ -715,7 +820,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.equivalentMaxETHFeeLabel.textColor = UIColor(named: "normalTextColor")
       self.maxFeeAccessoryLabel.textColor = UIColor(named: "textWhiteColor")
     }
-    
+
     switch self.viewModel.advancedGasLimitErrorStatus {
     case .low:
       self.advancedGasLimitField.textColor = UIColor(named: "textRedColor")
@@ -733,69 +838,21 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       self.advancedSlippageDivideView.isHidden = true
       self.sendSwapDivideLineView.isHidden = true
     }
-  }
 
-  func updateMinRateCustomErrorShown(_ isShown: Bool) {
-    let borderColor = isShown ? UIColor.Kyber.strawberry : UIColor.clear
-    self.customRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
-    self.advancedCustomRateContainerView.rounded(color: borderColor, width: isShown ? 1.0 : 0.0, radius: 8)
-  }
-
-  var isMinRateValid: Bool {
-    if case .threePercent = self.viewModel.minRateType { return true }
-    let custom = self.customRateTextField.text ?? ""
-    return !custom.isEmpty
   }
 
   fileprivate func updateMinRateUIs() {
     guard self.viewModel.isSwapOption else { return }
-    let selectedWidth: CGFloat = 5.0
-    let normalWidth: CGFloat = 1.0
-
-    self.threePercentButton.rounded(
-      color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.viewModel.minRateTypeInt == 0 ? selectedWidth : normalWidth,
-      radius: self.threePercentButton.frame.height / 2.0
-    )
-
-    self.customButton.rounded(
-      color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
-      radius: self.customButton.frame.height / 2.0
-    )
-    self.customRateTextField.isEnabled = self.viewModel.minRateTypeInt == 2
-
     self.stillProceedIfRateGoesDownTextLabel.text = String(
       format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
       self.viewModel.pairToken
     )
     self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage"
-    self.updateMinRateCustomErrorShown(!self.isMinRateValid)
 
     self.advancedStillProceedIfRateGoesDownTextLabel.text = String(
       format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
       self.viewModel.pairToken
     )
-
-    self.advancedCustomButton.rounded(
-      color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
-      radius: self.advancedCustomButton.frame.height / 2.0
-    )
-
-    self.advancedThreePercentButton.rounded(
-      color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.viewModel.minRateTypeInt == 0 ? selectedWidth : normalWidth,
-      radius: self.threePercentButton.frame.height / 2.0
-    )
-
-    self.advancedCustomButton.rounded(
-      color: UIColor(named: "buttonBackgroundColor")!,
-      width: self.viewModel.minRateTypeInt == 2 ? selectedWidth : normalWidth,
-      radius: self.advancedCustomButton.frame.height / 2.0
-    )
-    self.advancedCustomRateTextField.isEnabled = self.viewModel.minRateTypeInt == 2
-
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
   }
@@ -902,12 +959,19 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   @IBAction func customRateButtonTapped(_ sender: UIButton) {
-    let minRateType = sender.tag == 1 ? KAdvancedSettingsMinRateType.custom(value: self.viewModel.currentRate) : KAdvancedSettingsMinRateType.threePercent
+    var minRateType = KAdvancedSettingsMinRateType.custom(value: self.viewModel.currentRate)
+    switch sender.tag {
+    case 0:
+      minRateType = KAdvancedSettingsMinRateType.zeroPointOne
+    case 1:
+      minRateType = KAdvancedSettingsMinRateType.zeroPointFive
+    default:
+      minRateType = KAdvancedSettingsMinRateType.onePercent
+    }
     self.viewModel.updateMinRateType(minRateType)
-    self.customRateTextField.text = sender.tag == 1 ? self.viewModel.currentRateDisplay : ""
-    self.customRateTextField.isEnabled = sender.tag == 1
-    self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: 1.0))
+    self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: self.viewModel.minRatePercent))
     self.updateMinRateUIs()
+    self.configSlippageUI()
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
@@ -1126,6 +1190,42 @@ extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
 }
 
 extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
+
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
+      return true
+    }
+    textField.text = "\(self.viewModel.currentRate)"
+    self.viewModel.updateMinRateType(.custom(value: self.viewModel.currentRate))
+    self.configSlippageUIByType(.custom(value: self.viewModel.currentRate))
+  
+    return true
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
+      return
+    }
+    var text = textField.text ?? "0.0"
+    if text.isEmpty {
+      text = "0.0"
+    }
+    let shouldFocus = !text.isEmpty
+    self.updateFocusForView(view: textField, isFocus: shouldFocus)
+    let maxMinRatePercent: Double = 100.0
+    let number = text.replacingOccurrences(of: ",", with: ".")
+    let value: Double? = number.isEmpty ? 0 : Double(number)
+    if let val = value, val >= 0, val <= maxMinRatePercent {
+      self.advancedCustomRateTextField.text = text
+      self.customRateTextField.text = text
+      self.viewModel.updateCurrentMinRate(val)
+      self.viewModel.updateMinRateType(.custom(value: val))
+      self.updateMinRateUIs()
+      self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      self.configSlippageUIByType(.custom(value: val))
+    }
+  }
+
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     let number = text.replacingOccurrences(of: ",", with: ".")
@@ -1156,15 +1256,12 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
       self.updateUIForCustomNonce()
       return false
     } else {
-      let maxMinRatePercent: Double = 100.0
-      if let val = value, val >= 0, val <= maxMinRatePercent {
-        self.advancedCustomRateTextField.text = text
-        self.customRateTextField.text = text
-        self.viewModel.updateMinRateType(.custom(value: val))
-        self.updateMinRateUIs()
-        self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      guard !text.isEmpty else {
+        textField.rounded(color: UIColor(named: "error_red_color")!, width: 1.0, radius: 14.0)
+        return true
       }
-      return false
+      textField.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1.0, radius: 14.0)
+      return true
     }
   }
 }

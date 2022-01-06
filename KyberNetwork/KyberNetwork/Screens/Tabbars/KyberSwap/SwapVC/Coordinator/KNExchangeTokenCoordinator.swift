@@ -448,6 +448,36 @@ extension KNExchangeTokenCoordinator {
 
 // MARK: Confirm transaction
 extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
+  
+  func kConfirmSwapViewControllerOpenGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: selectType, currentRatePercentage: minRatePercent, isUseGasToken: self.isAccountUseGasToken())
+    viewModel.baseGasLimit = baseGasLimit
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.updatePairToken(pair)
+    viewModel.advancedGasLimit = advancedGasLimit
+    viewModel.advancedMaxPriorityFee = advancedPriorityFee
+    viewModel.advancedMaxFee = advancedMaxFee
+    viewModel.advancedNonce = advancedNonce
+
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.gasFeeSelectorVC = vc
+    self.navigationController.present(vc, animated: true, completion: nil)
+    self.getLatestNonce { result in
+      switch result {
+      case .success(let nonce):
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(message: error.description)
+      }
+    }
+  }
+  
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
     print("[EIP1559] send confirm \(eip1559Tx)")
     guard let provider = self.session.externalProvider else {
