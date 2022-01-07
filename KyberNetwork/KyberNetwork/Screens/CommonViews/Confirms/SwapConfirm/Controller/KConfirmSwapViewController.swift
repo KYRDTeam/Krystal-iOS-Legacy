@@ -36,6 +36,8 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var swapAnywayCheckBox: UIButton!
   @IBOutlet weak var swapAnywayContainerView: UIView!
   @IBOutlet weak var priceImpactTextLabel: UILabel!
+  @IBOutlet weak var slippageLabel: UILabel!
+  
   var isAccepted: Bool = true
 
   fileprivate var viewModel: KConfirmSwapViewModel
@@ -78,7 +80,7 @@ class KConfirmSwapViewController: KNBaseViewController {
       self.viewModel.warningMinAcceptableRateMessage == nil ? nil : UIImage(named: "info_red_icon"),
       for: .normal
     )
-
+    self.slippageLabel.text = self.viewModel.slippageString
     self.transactionFeeETHLabel.text = self.viewModel.feeETHString
     self.transactionFeeETHLabel.addLetterSpacing()
     self.transactionFeeUSDLabel.text = self.viewModel.feeUSDString
@@ -204,7 +206,9 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
     var mes = ""
-    if sender.tag == 1 {
+    if sender.tag == 2 {
+      mes = "Your transaction will revert if the price changes unfavorably by more than this percentage.".toBeLocalised()
+    } else if sender.tag == 1 {
       if self.viewModel.priceImpact == -1000 {
         mes = " Missing price impact. Please swap with caution."
       } else {

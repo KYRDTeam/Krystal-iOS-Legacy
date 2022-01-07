@@ -277,10 +277,10 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.priceImpaceWarningLabel.isHidden = true
       self.sendButtonTopContraint.constant = self.viewModel.platform.isCompound ? 200 : 20
     }
-    
+
     self.swapAnywayContainerView.isHidden = !self.viewModel.needConfirm
   }
-  
+
   fileprivate func updateUIPriceImpact() {
     guard self.viewModel.needConfirm else { return }
     if self.isAccepted {
@@ -296,6 +296,10 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.confirmButton.isEnabled = false
       self.confirmButton.alpha = 0.5
     }
+  }
+
+  @IBAction func editButtonTapped(_ sender: Any) {
+    
   }
 
   @IBAction func checkBoxTapped(_ sender: UIButton) {

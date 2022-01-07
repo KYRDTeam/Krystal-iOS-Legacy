@@ -9,6 +9,7 @@ struct KConfirmSwapViewModel {
   let ethBalance: BigInt
   let signTransaction: SignTransaction?
   let priceImpact: Double
+  let maxSlippage: Double
   let platform: String
   let rawTransaction: TxObject
   let minReceiveAmount: String
@@ -24,7 +25,8 @@ struct KConfirmSwapViewModel {
     platform: String,
     rawTransaction: TxObject,
     minReceiveAmount: String,
-    minReceiveTitle: String
+    minReceiveTitle: String,
+    maxSlippage: Double
   ) {
     self.transaction = transaction
     self.ethBalance = ethBalance
@@ -35,6 +37,12 @@ struct KConfirmSwapViewModel {
     self.eip1559Transaction = eip1559Tx
     self.minReceiveAmount = minReceiveAmount
     self.minReceiveTitle = minReceiveTitle
+    self.maxSlippage = maxSlippage
+  }
+  
+  var slippageString: String {
+    let doubleStr = String(format: "%.2f", self.maxSlippage)
+    return "\(doubleStr)%"
   }
 
   var titleString: String {
