@@ -68,7 +68,7 @@ class EarnSwapViewModel {
   var remainApprovedAmount: (TokenData, BigInt)?
   var latestNonce: Int = -1
   var refPrice: (TokenData, TokenData, String, [String])
-  fileprivate(set) var minRatePercent: Double = 1.0
+  fileprivate(set) var minRatePercent: Double = 0.5
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
 
@@ -1050,7 +1050,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       isSwap: true,
       rawTransaction: txObject,
       minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue),
-      priceImpact: priceImpactValue
+      priceImpact: priceImpactValue,
+      maxSlippage: self.viewModel.minRatePercent
     )
     self.delegate?.earnViewController(self, run: event)
   }

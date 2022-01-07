@@ -414,7 +414,7 @@ enum EarnViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
-  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject, minReceiveDest: (String, String), priceImpact: Double)
+  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject, minReceiveDest: (String, String), priceImpact: Double, maxSlippage: Double)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt, amountFrom: String)
@@ -762,8 +762,20 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
     let tx = self.viewModel.buildSignSwapTx(txObject)
     let eip1559Tx = self.viewModel.buildEIP1559Tx(txObject)
-    
-    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData, toToken: self.viewModel.tokenData, platform: self.viewModel.selectedPlatformData, fromAmount: self.viewModel.amountBigInt, toAmount: self.viewModel.amountBigInt, gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, transaction: tx, eip1559Transaction: eip1559Tx, isSwap: false,rawTransaction: txObject, minReceiveDest: ("", ""), priceImpact: 0.0)
+    let event = EarnViewEvent.confirmTx(fromToken: self.viewModel.tokenData,
+                                        toToken: self.viewModel.tokenData,
+                                        platform: self.viewModel.selectedPlatformData,
+                                        fromAmount: self.viewModel.amountBigInt,
+                                        toAmount: self.viewModel.amountBigInt,
+                                        gasPrice: self.viewModel.gasPrice,
+                                        gasLimit: self.viewModel.gasLimit,
+                                        transaction: tx,
+                                        eip1559Transaction: eip1559Tx,
+                                        isSwap: false,
+                                        rawTransaction: txObject,
+                                        minReceiveDest: ("", ""),
+                                        priceImpact: 0.0,
+                                        maxSlippage: 0.5)
     self.delegate?.earnViewController(self, run: event)
   }
   
