@@ -15,6 +15,7 @@ import JSONRPCKit
 import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
+import BigInt
 
 protocol DappCoordinatorDelegate: class {
   func dAppCoordinatorDidSelectAddWallet()
@@ -48,6 +49,7 @@ class DappCoordinator: NSObject, Coordinator {
   }
   
   private var browserViewController: BrowserViewController?
+  private var transactionConfirm: DappBrowerTransactionConfirmPopup?
   
   weak var delegate: DappCoordinatorDelegate?
   
@@ -215,12 +217,28 @@ extension DappCoordinator: BrowserViewControllerDelegate {
     guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
       return
     }
-      let onSign = {
-        self.navigationController.displayLoading()
-        self.getLatestNonce { nonce in
-          var sendTx = tx
-          sendTx.updateNonce(nonce: nonce)
-          let signTx = sendTx.toSignTransaction(account: account)
+    let onSign = { (setting: ConfirmAdvancedSetting) in
+      print("[Debug] \(setting)")
+      self.navigationController.displayLoading()
+      self.getLatestNonce { nonce in
+        var sendTx = tx
+        sendTx.updateNonce(nonce: nonce)
+        if KNGeneralProvider.shared.isUseEIP1559 {
+          let eipTx = tx.toEIP1559Transaction(setting: setting)
+          if let data = provider.signContractGenericEIP1559Transaction(eipTx) {
+            KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+              switch sendResult {
+              case .success(let hash):
+                let data = Data(_hex: hash)
+                let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
+                self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+              case .failure(let error):
+                self.navigationController.displayError(error: error)
+              }
+            })
+          }
+        } else {
+          let signTx = sendTx.toSignTransaction(account: account, setting: setting)
           provider.signTransactionData(from: signTx) { [weak self] result in
             guard let `self` = self else { return }
             switch result {
@@ -242,19 +260,38 @@ extension DappCoordinator: BrowserViewControllerDelegate {
           }
         }
       }
-      let onCancel = {
-      }
-//      DispatchQueue.main.async {
-//          UIAlertController.showShouldSign(from: self.navigationController,
-//                                           title: "Request to sign a message",
-//                                           message: message,
-//                                           onSign: onSign,
-//                                           onCancel: onCancel)
-//      }
+    }
+    let onCancel = {
+    }
     
-    let vm = DappBrowerTransactionConfirmViewModel(transaction: tx, url: url, onSign: onSign, onCancel: onCancel)
+    let onChangeGasFee = { (gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) in
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)
+      viewModel.baseGasLimit = baseGasLimit
+      viewModel.updateGasPrices(
+        fast: KNGasCoordinator.shared.fastKNGas,
+        medium: KNGasCoordinator.shared.standardKNGas,
+        slow: KNGasCoordinator.shared.lowKNGas,
+        superFast: KNGasCoordinator.shared.superFastKNGas
+      )
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
+      let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+      vc.delegate = self
+
+      self.getLatestNonce { nonce in
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      }
+
+      self.transactionConfirm?.present(vc, animated: true, completion: nil)
+//      self.gasPriceSelector = vc
+    }
+    
+    let vm = DappBrowerTransactionConfirmViewModel(transaction: tx, url: url, onSign: onSign, onCancel: onCancel, onChangeGasFee: onChangeGasFee)
     let controller = DappBrowerTransactionConfirmPopup(viewModel: vm)
     self.navigationController.present(controller, animated: true, completion: nil)
+    self.transactionConfirm = controller
   }
 
   func getLatestNonce(completion: @escaping (Int) -> Void) {
@@ -359,6 +396,38 @@ extension DappCoordinator: QRCodeReaderDelegate {
           )
         }
       }
+    }
+  }
+}
+
+extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, let value):
+      self.transactionConfirm?.coordinatorDidUpdateGasPriceType(type, value: value)
+    case .helpPressed(let tag):
+      var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
+      switch tag {
+      case 1:
+        message = "gas.limit.help".toBeLocalised()
+      case 2:
+        message = "max.priority.fee.help".toBeLocalised()
+      case 3:
+        message = "max.fee.help".toBeLocalised()
+      default:
+        break
+      }
+      self.navigationController.showBottomBannerView(
+        message: message,
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 10
+      )
+    case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
+      self.transactionConfirm?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+    case .updateAdvancedNonce(nonce: let nonce):
+      self.transactionConfirm?.coordinatorDidUpdateAdvancedNonce(nonce)
+    default:
+      break
     }
   }
 }

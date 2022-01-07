@@ -8,26 +8,75 @@
 import UIKit
 import BigInt
 
-struct  DappBrowerTransactionConfirmViewModel {
+struct ConfirmAdvancedSetting {
+  let gasPrice: String
+  let gasLimit: String
+  let advancedGasLimit: String?
+  let advancedPriorityFee: String?
+  let avancedMaxFee: String?
+  let advancedNonce: Int?
+}
+
+class  DappBrowerTransactionConfirmViewModel {
   let transaction: SignTransactionObject
   let url: String
-  let onSign: (() -> Void)
+  let onSign: ((ConfirmAdvancedSetting) -> Void)
   let onCancel: (() -> Void)
+  let onChangeGasFee: ((BigInt, BigInt, KNSelectedGasPriceType, String?, String?, String?, String?) -> Void)
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
+  fileprivate(set) var gasPrice: BigInt
+  fileprivate(set) var gasLimit: BigInt
+  fileprivate(set) var baseGasLimit: BigInt
   
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  init(transaction: SignTransactionObject, url: String, onSign: @escaping ((ConfirmAdvancedSetting) -> Void), onCancel: @escaping (() -> Void), onChangeGasFee: @escaping ((BigInt, BigInt, KNSelectedGasPriceType, String?, String?, String?, String?) -> Void)) {
+    self.transaction = transaction
+    self.url = url
+    self.onSign = onSign
+    self.onCancel = onCancel
+    self.onChangeGasFee = onChangeGasFee
+    self.gasPrice = BigInt(transaction.gasPrice) ?? BigInt(0)
+    self.gasLimit = BigInt(transaction.gasLimit) ?? BigInt(0)
+    self.baseGasLimit = self.gasLimit
+  }
+
   var displayFromAddress: String {
     return self.transaction.from
   }
-  
+
   var valueBigInt: BigInt {
     return BigInt(self.transaction.value) ?? BigInt(0)
-  }
-  
-  var gasPriceBigInt: BigInt {
-    return BigInt(self.transaction.gasPrice) ?? BigInt(0)
-  }
-  
-  var gasLimitBigInt: BigInt {
-    return BigInt(self.transaction.gasLimit) ?? BigInt(0)
   }
   
   var displayValue: String {
@@ -45,7 +94,7 @@ struct  DappBrowerTransactionConfirmViewModel {
   
   var transactionFeeETHString: String {
     let fee: BigInt = {
-      return self.gasPriceBigInt * self.gasLimitBigInt
+      return self.gasPrice * self.gasLimit
     }()
     let feeString: String = fee.displayRate(decimals: 18)
     return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
@@ -53,7 +102,7 @@ struct  DappBrowerTransactionConfirmViewModel {
 
   var transactionFeeUSDString: String {
     let fee: BigInt = {
-      return self.gasPriceBigInt * self.gasLimitBigInt
+      return self.gasPrice * self.gasLimit
     }()
 
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
@@ -61,19 +110,65 @@ struct  DappBrowerTransactionConfirmViewModel {
     let valueString: String = usd.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
-  
+
   var transactionGasPriceString: String {
-    let gasPriceText = self.gasPriceBigInt.shortString(
+    let gasPriceText = self.gasPrice.shortString(
       units: .gwei,
       maxFractionDigits: 1
     )
-    let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimitBigInt, decimals: 0)
+    let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
-  
+
   var imageIconURL: String {
     return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)/"
+  }
+
+  var transactionFeeAttributionString: NSAttributedString {
+    let string = NSMutableAttributedString.init(string: self.transactionFeeETHString)
+    string.addAttributes([
+      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor") as Any,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
+      NSAttributedString.Key.underlineStyle: 1
+    ], range: NSRange(location: 0, length: string.length)
+    )
+    return string
+  }
+  
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
+    default: return
+    }
+  }
+
+  func updateGasPrice(_ gasPrice: BigInt) {
+    self.gasPrice = gasPrice
+  }
+  
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    self.advancedNonce = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
+  
+  var customSetting: ConfirmAdvancedSetting {
+    return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
   }
 }
 
@@ -121,28 +216,57 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
-      self.viewModel.onSign()
+      self.viewModel.onSign(self.viewModel.customSetting)
     }
   }
   
   @IBAction func transactionFeeHelpButtonTapped(_ sender: UIButton) {
-    
-    
+    self.showBottomBannerView(
+      message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
+      icon: UIImage(named: "help_icon_large") ?? UIImage(),
+      time: 3
+    )
   }
   
+  @IBAction func gasFeeETHLabelTapped(_ sender: UITapGestureRecognizer) {
+    self.viewModel.onChangeGasFee(self.viewModel.gasLimit, self.viewModel.baseGasLimit, self.viewModel.selectedGasPriceType, self.viewModel.advancedGasLimit, self.viewModel.advancedMaxPriorityFee, self.viewModel.advancedMaxFee, self.viewModel.advancedNonce)
+  }
+
+  fileprivate func updateGasFeeUI() {
+    self.equivalentValueLabel.text = self.viewModel.displayValueUSD
+    self.feeETHLabel.attributedText = self.viewModel.transactionFeeAttributionString
+    self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
+    self.gasPriceTextLabel.text = self.viewModel.transactionGasPriceString
+  }
+
   private func setupUI() {
     self.fromAddressLabel.text = self.viewModel.displayFromAddress
     self.valueLabel.text = self.viewModel.displayValue
-    self.equivalentValueLabel.text = self.viewModel.displayValueUSD
-    self.feeETHLabel.text = self.viewModel.transactionFeeETHString
-    self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
-    self.gasPriceTextLabel.text = self.viewModel.transactionGasPriceString
+    self.updateGasFeeUI()
     self.siteURLLabel.text = self.viewModel.url
     UIImage.loadImageIconWithCache(viewModel.imageIconURL) { image in
       self.siteIconImageView.image = image
     }
     self.confirmButton.rounded(radius: 16)
     self.cancelButton.rounded(radius: 16)
+  }
+
+  func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
+    self.viewModel.updateSelectedGasPriceType(type)
+    self.viewModel.updateGasPrice(value)
+    self.updateGasFeeUI()
+  }
+
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.updateSelectedGasPriceType(.custom)
+    self.updateGasFeeUI()
+  }
+
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
   }
 }
 
