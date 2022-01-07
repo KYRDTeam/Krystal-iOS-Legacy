@@ -34,7 +34,8 @@ protocol KSwapViewControllerDelegate: class {
 
 //swiftlint:disable type_body_length
 class KSwapViewController: KNBaseViewController {
-
+  //flag to check if should open confirm screen right after done edit transaction setting
+  fileprivate var shouldOpenConfirm: Bool = false
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
 
@@ -349,6 +350,10 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
+    self.openSwapConfirm()
+  }
+  
+  fileprivate func openSwapConfirm() {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let event = KSwapViewEvent.getExpectedRate(
       from: self.viewModel.from,
@@ -586,6 +591,11 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
+    self.shouldOpenConfirm = false
+    self.openTransactionSetting()
+  }
+
+  fileprivate func openTransactionSetting() {
     let event = KSwapViewEvent.openGasPriceSelect(
       gasLimit: self.viewModel.estimateGasLimit,
       baseGasLimit: self.viewModel.baseGasLimit,
@@ -875,6 +885,11 @@ extension KSwapViewController {
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
     self.viewModel.resetAdvancedSettings()
+    
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
@@ -1010,6 +1025,11 @@ extension KSwapViewController {
   func coordinatorFailUpdateEncodedTx() {
     self.showErrorMessage()
     self.hideLoading()
+  }
+  
+  func coordinatorEditTransactionSetting() {
+    self.shouldOpenConfirm = true
+    self.openTransactionSetting()
   }
 
   func coordinatorSuccessSendTransaction() {
