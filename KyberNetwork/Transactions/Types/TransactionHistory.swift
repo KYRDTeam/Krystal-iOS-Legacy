@@ -91,18 +91,18 @@ extension SignTransactionObject {
       gasLimitBigInt = BigInt(unwrap)
     }
     
-    var priorityFeeBigInt = BigInt.zero
+    var maxGasBigInt = BigInt(self.gasPrice)
+    if let unwrap = setting.avancedMaxFee {
+      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+    
+    var priorityFeeBigInt = (maxGasBigInt ?? BigInt.zero) - (KNGasCoordinator.shared.baseFee ?? BigInt.zero)
     if let unwrap = setting.advancedPriorityFee {
       priorityFeeBigInt = BigInt(unwrap) ?? BigInt.zero
     }
-    
-    var maxGasBigInt = BigInt(self.gasPrice)
-    if let unwrap = setting.avancedMaxFee {
-      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) 
-    }
 
     return EIP1559Transaction(
-      chainID: String(self.chainID),
+      chainID: BigInt(self.chainID).hexEncoded.hexSigned2Complement,
       nonce: BigInt(nonceInt).hexEncoded.hexSigned2Complement,
       gasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
       maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,

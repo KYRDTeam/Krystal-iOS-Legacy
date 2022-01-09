@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -140,11 +140,15 @@
                                         <action selector="transactionFeeHelpButtonTapped:" destination="-1" eventType="touchUpInside" id="wIZ-pN-Xqv"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIh-1I-v1e">
+                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIh-1I-v1e">
                                     <rect key="frame" x="206" y="23" width="81" height="17"/>
+                                    <gestureRecognizers/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="5ji-Dx-j5w" appends="YES" id="zO4-dl-3EU"/>
+                                    </connections>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZi-D6-NP5">
                                     <rect key="frame" x="214" y="42" width="73" height="16.5"/>
@@ -255,6 +259,11 @@
             </constraints>
             <point key="canvasLocation" x="132" y="91.304347826086968"/>
         </view>
+        <tapGestureRecognizer id="5ji-Dx-j5w">
+            <connections>
+                <action selector="gasFeeETHLabelTapped:" destination="-1" id="y9t-ps-T94"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="help_icon_blue" width="14" height="14"/>

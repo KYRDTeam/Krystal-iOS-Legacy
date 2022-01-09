@@ -235,6 +235,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
               case .failure(let error):
                 self.navigationController.displayError(error: error)
               }
+              self.navigationController.hideLoading()
             })
           }
         } else {
