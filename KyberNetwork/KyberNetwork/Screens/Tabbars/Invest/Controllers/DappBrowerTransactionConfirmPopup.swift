@@ -124,17 +124,6 @@ class  DappBrowerTransactionConfirmViewModel {
   var imageIconURL: String {
     return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)/"
   }
-
-  var transactionFeeAttributionString: NSAttributedString {
-    let string = NSMutableAttributedString.init(string: self.transactionFeeETHString)
-    string.addAttributes([
-      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor") as Any,
-      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 14),
-      NSAttributedString.Key.underlineStyle: 1
-    ], range: NSRange(location: 0, length: string.length)
-    )
-    return string
-  }
   
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
     self.selectedGasPriceType = type
@@ -228,13 +217,13 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
     )
   }
   
-  @IBAction func gasFeeETHLabelTapped(_ sender: UITapGestureRecognizer) {
+  @IBAction func editSettingButtonTapped(_ sender: UIButton) {
     self.viewModel.onChangeGasFee(self.viewModel.gasLimit, self.viewModel.baseGasLimit, self.viewModel.selectedGasPriceType, self.viewModel.advancedGasLimit, self.viewModel.advancedMaxPriorityFee, self.viewModel.advancedMaxFee, self.viewModel.advancedNonce)
   }
 
   fileprivate func updateGasFeeUI() {
     self.equivalentValueLabel.text = self.viewModel.displayValueUSD
-    self.feeETHLabel.attributedText = self.viewModel.transactionFeeAttributionString
+    self.feeETHLabel.text = self.viewModel.transactionFeeETHString
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
     self.gasPriceTextLabel.text = self.viewModel.transactionGasPriceString
   }

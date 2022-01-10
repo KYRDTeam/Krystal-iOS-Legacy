@@ -120,16 +120,16 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Upn-ni-M6M">
-                            <rect key="frame" x="37" y="373.5" width="301" height="92"/>
+                            <rect key="frame" x="37" y="373.5" width="301" height="132"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fee" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Hn-5y-f7o">
-                                    <rect key="frame" x="12" y="23" width="100" height="16.5"/>
+                                    <rect key="frame" x="12" y="44" width="100" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="an5-QR-J0L">
-                                    <rect key="frame" x="116" y="24" width="25" height="25"/>
+                                    <rect key="frame" x="116" y="45" width="25" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="DUZ-k5-KvK"/>
                                         <constraint firstAttribute="width" constant="25" id="sGC-Oa-fnv"/>
@@ -141,41 +141,51 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIh-1I-v1e">
-                                    <rect key="frame" x="206" y="23" width="81" height="17"/>
+                                    <rect key="frame" x="206" y="44" width="81" height="17"/>
                                     <gestureRecognizers/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="5ji-Dx-j5w" appends="YES" id="zO4-dl-3EU"/>
-                                    </connections>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZi-D6-NP5">
-                                    <rect key="frame" x="214" y="42" width="73" height="16.5"/>
+                                    <rect key="frame" x="214" y="63" width="73" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80 (Gas Price) *. 394,140 (Gas. Limit)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2g-PY-QxT">
-                                    <rect key="frame" x="58.5" y="60.5" width="228.5" height="16.5"/>
+                                    <rect key="frame" x="58.5" y="81.5" width="228.5" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcr-73-01s">
+                                    <rect key="frame" x="242" y="19" width="45" height="17"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                    <inset key="imageEdgeInsets" minX="-4" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="EDIT" image="edit_confirm_icon">
+                                        <color key="titleColor" name="buttonBackgroundColor"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="editSettingButtonTapped:" destination="-1" eventType="touchUpInside" id="oVy-eC-qEm"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" name="innerContainerBgColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="92" id="Fcz-c4-cuZ"/>
+                                <constraint firstAttribute="height" constant="132" id="Fcz-c4-cuZ"/>
                                 <constraint firstItem="bIh-1I-v1e" firstAttribute="centerY" secondItem="7Hn-5y-f7o" secondAttribute="centerY" id="KAp-re-ktx"/>
-                                <constraint firstItem="7Hn-5y-f7o" firstAttribute="top" secondItem="Upn-ni-M6M" secondAttribute="top" constant="23" id="M5b-OP-zaY"/>
+                                <constraint firstItem="7Hn-5y-f7o" firstAttribute="top" secondItem="Upn-ni-M6M" secondAttribute="top" constant="44" id="M5b-OP-zaY"/>
                                 <constraint firstAttribute="trailing" secondItem="fZi-D6-NP5" secondAttribute="trailing" constant="14" id="NKR-lN-oGL"/>
                                 <constraint firstItem="Z2g-PY-QxT" firstAttribute="top" secondItem="fZi-D6-NP5" secondAttribute="bottom" constant="2" id="PHl-tN-zXt"/>
+                                <constraint firstItem="fcr-73-01s" firstAttribute="trailing" secondItem="bIh-1I-v1e" secondAttribute="trailing" id="PYW-0J-vFC"/>
                                 <constraint firstItem="an5-QR-J0L" firstAttribute="top" secondItem="7Hn-5y-f7o" secondAttribute="top" constant="1" id="cgZ-YE-eVS"/>
                                 <constraint firstItem="fZi-D6-NP5" firstAttribute="top" secondItem="bIh-1I-v1e" secondAttribute="bottom" constant="2" id="dxE-Ay-3gf"/>
                                 <constraint firstItem="an5-QR-J0L" firstAttribute="leading" secondItem="7Hn-5y-f7o" secondAttribute="trailing" constant="4" id="esX-uf-nGI"/>
                                 <constraint firstAttribute="trailing" secondItem="Z2g-PY-QxT" secondAttribute="trailing" constant="14" id="lmc-zW-wM7"/>
                                 <constraint firstItem="7Hn-5y-f7o" firstAttribute="leading" secondItem="Upn-ni-M6M" secondAttribute="leading" constant="12" id="q3S-OF-H3K"/>
                                 <constraint firstAttribute="trailing" secondItem="bIh-1I-v1e" secondAttribute="trailing" constant="14" id="s9z-hd-ioi"/>
+                                <constraint firstItem="bIh-1I-v1e" firstAttribute="top" secondItem="fcr-73-01s" secondAttribute="bottom" constant="8" id="wZs-hz-hL4"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -185,7 +195,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xph-em-93b">
-                            <rect key="frame" x="37" y="495.5" width="134.5" height="38"/>
+                            <rect key="frame" x="37" y="535.5" width="134.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="wU6-EP-YUg"/>
@@ -199,7 +209,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SHw-ZC-zsT">
-                            <rect key="frame" x="203.5" y="495.5" width="134.5" height="38"/>
+                            <rect key="frame" x="203.5" y="535.5" width="134.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="pHS-Sb-mJ5"/>
@@ -259,13 +269,9 @@
             </constraints>
             <point key="canvasLocation" x="132" y="91.304347826086968"/>
         </view>
-        <tapGestureRecognizer id="5ji-Dx-j5w">
-            <connections>
-                <action selector="gasFeeETHLabelTapped:" destination="-1" id="y9t-ps-T94"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="edit_confirm_icon" width="16" height="16"/>
         <image name="help_icon_blue" width="14" height="14"/>
         <image name="knc" width="36" height="36"/>
         <namedColor name="buttonBackgroundColor">
