@@ -998,6 +998,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
       return
     }
     self.gasFeeButtonTapped(self.mediumGasButton)
+    self.customRateButtonTapped(self.secondOptionSippageButton)
   }
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {
