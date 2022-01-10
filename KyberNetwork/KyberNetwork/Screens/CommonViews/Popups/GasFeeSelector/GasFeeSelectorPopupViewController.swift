@@ -76,7 +76,7 @@ class GasFeeSelectorPopupViewModel {
     }
   }
   fileprivate(set) var previousSelectedType: KNSelectedGasPriceType?
-  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointOne
+  fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
   fileprivate(set) var currentRate: Double
   fileprivate(set) var pairToken: String = ""
   fileprivate(set) var gasLimit: BigInt
@@ -1206,22 +1206,23 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
       return
     }
-    var text = textField.text ?? "0.0"
+    var text = textField.text ?? "0.5"
     if text.isEmpty {
-      text = "0.0"
+      text = "0.5"
     }
     let shouldFocus = !text.isEmpty
     self.updateFocusForView(view: textField, isFocus: shouldFocus)
-    let maxMinRatePercent: Double = 100.0
-    let number = text.replacingOccurrences(of: ",", with: ".")
-    let value: Double? = number.isEmpty ? 0 : Double(number)
-    if let val = value, val >= 0, val <= maxMinRatePercent {
+    let maxMinRatePercent: Double = 50.0
+    let value: Double? = text.isEmpty ? 0 : Double(text)
+    if let val = value {
       self.advancedCustomRateTextField.text = text
       self.customRateTextField.text = text
       self.viewModel.updateCurrentMinRate(val)
       self.viewModel.updateMinRateType(.custom(value: val))
       self.updateMinRateUIs()
-      self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      if val >= 0, val <= maxMinRatePercent {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      }
       self.configSlippageUIByType(.custom(value: val))
     }
   }
