@@ -336,8 +336,11 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                 errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
             }
-              if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+            if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
               errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
@@ -369,6 +372,9 @@ extension EarnCoordinator: EarnViewControllerDelegate {
             }
             if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
               errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
