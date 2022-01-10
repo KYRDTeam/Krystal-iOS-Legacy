@@ -124,7 +124,7 @@ class  DappBrowerTransactionConfirmViewModel {
   var imageIconURL: String {
     return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)/"
   }
-  
+
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
     self.selectedGasPriceType = type
     switch type {
@@ -197,6 +197,16 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
     self.setupUI()
   }
   
+  
+  @IBAction func tapOutsidePopup(_ sender: Any) {
+    self.dismiss(animated: true) {
+      self.viewModel.onCancel()
+    }
+  }
+  
+  @IBAction func tapInsidePopup(_ sender: Any) {
+  }
+
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
       self.viewModel.onCancel()
