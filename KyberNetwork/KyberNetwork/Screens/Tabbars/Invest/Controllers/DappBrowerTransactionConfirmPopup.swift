@@ -196,14 +196,13 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
     
     self.setupUI()
   }
-  
-  
+
   @IBAction func tapOutsidePopup(_ sender: Any) {
     self.dismiss(animated: true) {
       self.viewModel.onCancel()
     }
   }
-  
+
   @IBAction func tapInsidePopup(_ sender: Any) {
   }
 

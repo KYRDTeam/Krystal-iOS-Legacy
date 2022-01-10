@@ -28,7 +28,7 @@ class DappBrowserHomeViewModel {
   
   var recentlyDataSource: [BrowserItem] {
     if BrowserStorage.shared.recentlyBrowser.count > 5 {
-      return Array(BrowserStorage.shared.recentlyBrowser.prefix(2))
+      return Array(BrowserStorage.shared.recentlyBrowser.reversed().prefix(5))
     }
     
     return BrowserStorage.shared.recentlyBrowser

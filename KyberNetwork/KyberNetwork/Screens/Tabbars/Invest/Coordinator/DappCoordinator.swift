@@ -266,6 +266,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       }
     }
     let onCancel = {
+      print("[Dapp] cancel")
+      self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(DAppError.cancelled))
     }
     
     let onChangeGasFee = { (gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) in
