@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -41,9 +41,34 @@
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZhU-BG-HTc">
+                        <rect key="frame" x="216" y="37.5" width="79" height="22"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claimed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1q-Si-zZG">
+                                <rect key="frame" x="16" y="3.5" width="50" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="13"/>
+                                <color key="textColor" name="normalTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="investButtonBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="KZf-tZ-qKV"/>
+                            <constraint firstItem="I1q-Si-zZG" firstAttribute="leading" secondItem="ZhU-BG-HTc" secondAttribute="leading" constant="16" id="YZr-W8-aAw"/>
+                            <constraint firstAttribute="trailing" secondItem="I1q-Si-zZG" secondAttribute="trailing" constant="13" id="ZT5-dh-ujm"/>
+                            <constraint firstItem="I1q-Si-zZG" firstAttribute="centerY" secondItem="ZhU-BG-HTc" secondAttribute="centerY" id="mR1-2B-wyh"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
+                    <constraint firstItem="ZhU-BG-HTc" firstAttribute="centerY" secondItem="jt2-1S-yzg" secondAttribute="centerY" id="CB9-1g-vwu"/>
                     <constraint firstAttribute="trailing" secondItem="vVb-D8-3da" secondAttribute="trailing" constant="28" id="DWB-PF-Msg"/>
                     <constraint firstItem="jt2-1S-yzg" firstAttribute="top" secondItem="gKz-9Z-fD4" secondAttribute="bottom" constant="6" id="HvA-fN-wai"/>
                     <constraint firstItem="gKz-9Z-fD4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="Soz-II-J1z"/>
@@ -51,18 +76,24 @@
                     <constraint firstItem="vVb-D8-3da" firstAttribute="centerY" secondItem="gKz-9Z-fD4" secondAttribute="centerY" id="fBr-Ja-gNF"/>
                     <constraint firstItem="jt2-1S-yzg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="31" id="i91-5R-Zuw"/>
                     <constraint firstAttribute="bottom" secondItem="jt2-1S-yzg" secondAttribute="bottom" constant="11" id="kPW-6N-Hp9"/>
+                    <constraint firstAttribute="trailing" secondItem="ZhU-BG-HTc" secondAttribute="trailing" constant="25" id="mzH-Rj-UpZ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="dateTimeLabel" destination="jt2-1S-yzg" id="1fM-Jz-mna"/>
                 <outlet property="sourceLabel" destination="vVb-D8-3da" id="gMa-HT-2pW"/>
+                <outlet property="statusBackgroundView" destination="ZhU-BG-HTc" id="7Rq-Yr-wIs"/>
+                <outlet property="statusLabel" destination="I1q-Si-zZG" id="NI7-xB-h0O"/>
                 <outlet property="valueLabel" destination="gKz-9Z-fD4" id="VBB-Nm-sE1"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="85.714285714285708"/>
         </tableViewCell>
     </objects>
     <resources>
+        <namedColor name="investButtonBgColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -35,7 +35,7 @@ class RewardsViewControllerViewModel {
       self.rewardDetailDisplayDataSource = self.rewardDetailDataSource
     } else {
       self.rewardDetailDisplayDataSource = self.rewardDetailDataSource.filter({ rewardModel in
-        return rewardModel.status != "claimed"
+        return rewardModel.status.lowercased() != "claimed"
       })
     }
   }
