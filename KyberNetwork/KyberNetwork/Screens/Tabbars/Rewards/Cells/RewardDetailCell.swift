@@ -12,7 +12,8 @@ class RewardDetailCell: UITableViewCell {
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var dateTimeLabel: UILabel!
   @IBOutlet weak var sourceLabel: UILabel!
-  
+  @IBOutlet weak var statusLabel: UILabel!
+  @IBOutlet weak var statusBackgroundView: UIView!
   override func awakeFromNib() {
       super.awakeFromNib()
       // Initialization code
@@ -29,5 +30,7 @@ class RewardDetailCell: UITableViewCell {
     let date = Date(timeIntervalSince1970: TimeInterval(model.timestamp))
     dateTimeLabel.text = DateFormatterUtil.shared.rewardDateTimeFormatter.string(from: date)
     sourceLabel.text = model.source
+    statusLabel.text = model.status.capitalized
+    statusBackgroundView.backgroundColor = model.status.lowercased() == "claimed" ? UIColor(named: "investButtonBgColor")! : UIColor(named: "actionsheetSelectedColor")!
   }
 }
