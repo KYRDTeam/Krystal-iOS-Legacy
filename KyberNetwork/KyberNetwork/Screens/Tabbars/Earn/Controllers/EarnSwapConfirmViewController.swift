@@ -307,7 +307,9 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   }
 
   @IBAction func editButtonTapped(_ sender: Any) {
-    
+    self.dismiss(animated: true) {
+      self.delegate?.kConfirmEarnSwapViewControllerOpenGasPriceSelect()
+    }
   }
 
   @IBAction func checkBoxTapped(_ sender: UIButton) {

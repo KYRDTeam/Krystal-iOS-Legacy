@@ -97,6 +97,7 @@ struct EarnConfirmViewModel {
 
 protocol EarnConfirmViewControllerDelegate: class {
   func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction)
+  func kConfirmEarnSwapViewControllerOpenGasPriceSelect()
 }
 
 class EarnConfirmViewController: KNBaseViewController {

@@ -352,7 +352,7 @@ class KSwapViewController: KNBaseViewController {
   @IBAction func continueButtonPressed(_ sender: UIButton) {
     self.openSwapConfirm()
   }
-  
+
   fileprivate func openSwapConfirm() {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let event = KSwapViewEvent.getExpectedRate(

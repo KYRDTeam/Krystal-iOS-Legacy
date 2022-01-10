@@ -23,7 +23,6 @@ class EarnSwapViewModel {
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
-  
   var advancedGasLimit: String? {
     didSet {
       if self.advancedGasLimit != nil {
@@ -677,6 +676,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var destAmountContainerView: UIView!
   
   let viewModel: EarnSwapViewModel
+  //flag to check if should open confirm screen right after done edit transaction setting
+  fileprivate var shouldOpenConfirm: Bool = false
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
   weak var delegate: EarnViewControllerDelegate?
@@ -927,6 +928,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
+    self.shouldOpenConfirm = false
+    self.openTransactionSetting()
+  }
+  
+  fileprivate func openTransactionSetting() {
     self.delegate?.earnViewController(self, run: .openGasPriceSelect(
       gasLimit: self.viewModel.gasLimit,
       baseGasLimit: self.viewModel.baseGasLimit,
@@ -963,6 +969,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    self.openSwapConfirm()
+  }
+  
+  fileprivate func openSwapConfirm() {
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return
     }
@@ -1010,7 +1020,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.view.layoutIfNeeded()
   }
 
-  
+  func coordinatorEditTransactionSetting() {
+    self.shouldOpenConfirm = true
+    self.openTransactionSetting()
+  }
+
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
     self.viewModel.updateSelectedGasPriceType(type)
     self.viewModel.updateGasPrice(value)
@@ -1018,6 +1032,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateGasFeeUI()
     self.updateGasLimit()
     self.viewModel.resetAdvancedSettings()
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorDidUpdateGasLimit(_ value: BigInt, platform: String, tokenAdress: String) {

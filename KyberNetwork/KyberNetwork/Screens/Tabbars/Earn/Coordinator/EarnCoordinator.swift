@@ -765,6 +765,10 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 }
 
 extension EarnCoordinator: EarnConfirmViewControllerDelegate {
+  func kConfirmEarnSwapViewControllerOpenGasPriceSelect() {
+    self.earnSwapViewController?.coordinatorEditTransactionSetting()
+  }
+
   func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())

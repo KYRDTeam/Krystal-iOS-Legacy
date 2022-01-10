@@ -61,7 +61,7 @@
                     <rect key="frame" x="0.0" y="7" width="414" height="855"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn Confirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KzO-Qn-B8b">
-                            <rect key="frame" x="126" y="27" width="162" height="23"/>
+                            <rect key="frame" x="119" y="27" width="176" height="23"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="23" id="MPj-gT-s8o"/>
                             </constraints>
@@ -76,7 +76,7 @@
                                     <rect key="frame" x="38" y="172" width="338" height="146"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Compound" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KDD-mh-zEO">
-                                            <rect key="frame" x="123.66666666666666" y="25" width="90.666666666666657" height="19"/>
+                                            <rect key="frame" x="122.33333333333334" y="25" width="93.666666666666657" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="7dU-ja-VdR"/>
                                             </constraints>
@@ -102,7 +102,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8.50% " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVm-Ig-Vcb">
-                                                    <rect key="frame" x="243.33333333333329" y="2.6666666666666856" width="51.666666666666657" height="19"/>
+                                                    <rect key="frame" x="248.33333333333329" y="2.6666666666666856" width="46.666666666666657" height="19"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" name="textWhiteColor"/>
                                                     <nil key="highlightedColor"/>
@@ -130,13 +130,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distribution APY " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vZ0-An-NfE">
-                                                    <rect key="frame" x="27" y="2.6666666666666856" width="122" height="19"/>
+                                                    <rect key="frame" x="26.999999999999993" y="2.6666666666666856" width="123.33333333333331" height="19"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" name="textWhiteColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.00%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4n-In-dar">
-                                                    <rect key="frame" x="247.66666666666671" y="2.6666666666666856" width="47.333333333333343" height="19"/>
+                                                    <rect key="frame" x="252" y="2.6666666666666856" width="43" height="19"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                                     <color key="textColor" name="textWhiteColor"/>
                                                     <nil key="highlightedColor"/>
@@ -154,7 +154,7 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TBj-YW-1j8">
-                                            <rect key="frame" x="219.33333333333331" y="22.666666666666686" width="24" height="24"/>
+                                            <rect key="frame" x="221" y="22.666666666666686" width="24" height="24"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="farming_icon" translatesAutoresizingMaskIntoConstraints="NO" id="tEe-uv-m1P">
                                                     <rect key="frame" x="2" y="3" width="20" height="18"/>
@@ -209,7 +209,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ 3,81245 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bgp-6P-Rb7">
-                                            <rect key="frame" x="204.33333333333334" y="56" width="109.66666666666666" height="19"/>
+                                            <rect key="frame" x="212.33333333333334" y="56" width="101.66666666666666" height="19"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -229,7 +229,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ 3,81245 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MeD-gs-Tq8">
-                                            <rect key="frame" x="30.000000000000007" y="56" width="109.66666666666669" height="19"/>
+                                            <rect key="frame" x="30.000000000000007" y="56" width="101.66666666666669" height="19"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -261,10 +261,10 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLU-e0-5mU">
-                                    <rect key="frame" x="38" y="338" width="338" height="220"/>
+                                    <rect key="frame" x="38" y="338" width="338" height="230"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Net APY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o51-S6-laL">
-                                            <rect key="frame" x="24.999999999999996" y="102" width="45.666666666666657" height="20"/>
+                                            <rect key="frame" x="25" y="102" width="42" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="hEj-BN-dgQ"/>
                                             </constraints>
@@ -273,7 +273,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYA-Q1-AVf">
-                                            <rect key="frame" x="74.666666666666671" y="103" width="25" height="25"/>
+                                            <rect key="frame" x="71" y="103" width="25" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="25" id="aOI-y1-TCL"/>
                                                 <constraint firstAttribute="width" constant="25" id="zFs-l4-uzO"/>
@@ -285,13 +285,13 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+ 11.5%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICX-m0-Ppe">
-                                            <rect key="frame" x="259.33333333333331" y="104" width="53.666666666666686" height="16.333333333333329"/>
+                                            <rect key="frame" x="272.33333333333331" y="104" width="40.666666666666686" height="16.333333333333329"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NIW-lv-x75">
-                                            <rect key="frame" x="124.66666666666666" y="158" width="24" height="24"/>
+                                            <rect key="frame" x="127.33333333333334" y="158" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="EX6-ze-56H"/>
                                                 <constraint firstAttribute="width" constant="24" id="V5m-Nf-HZd"/>
@@ -303,13 +303,13 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoC-hx-D1X">
-                                            <rect key="frame" x="224" y="156.66666666666663" width="89" height="16.666666666666657"/>
+                                            <rect key="frame" x="232.33333333333329" y="156.66666666666663" width="80.666666666666657" height="16.666666666666657"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price Impact" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnE-cv-0pc">
-                                            <rect key="frame" x="25" y="130" width="68" height="20"/>
+                                            <rect key="frame" x="25" y="130" width="69" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="Tby-gs-518"/>
                                             </constraints>
@@ -318,7 +318,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ETH" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gv-87-tcZ">
-                                            <rect key="frame" x="286" y="131.66666666666663" width="27" height="16.666666666666657"/>
+                                            <rect key="frame" x="288.66666666666669" y="131.66666666666663" width="24.333333333333314" height="16.666666666666657"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -340,25 +340,25 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p77-Bg-MTL">
-                                            <rect key="frame" x="244" y="175.33333333333337" width="69" height="14"/>
+                                            <rect key="frame" x="250.66666666666671" y="175.33333333333337" width="62.333333333333343" height="14"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 (Gas price) * 449,605 (Gas limit)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ec2-HH-EyB">
-                                            <rect key="frame" x="127.66666666666664" y="191.33333333333337" width="185.33333333333337" height="14"/>
+                                            <rect key="frame" x="124.33333333333336" y="191.33333333333337" width="188.66666666666663" height="14"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum gas fee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31r-A7-nQj">
-                                            <rect key="frame" x="25.000000000000007" y="158" width="95.666666666666686" height="14"/>
+                                            <rect key="frame" x="24.999999999999993" y="158" width="98.333333333333314" height="14"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9N-Hh-1NF">
-                                            <rect key="frame" x="93" y="130" width="24" height="24"/>
+                                            <rect key="frame" x="94" y="130" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="HH3-f0-4ht"/>
                                                 <constraint firstAttribute="width" constant="24" id="b9g-Hc-ihe"/>
@@ -399,7 +399,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Max slippage" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhM-4S-gWu">
-                                            <rect key="frame" x="25" y="46" width="72" height="20"/>
+                                            <rect key="frame" x="25" y="46" width="72.666666666666671" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="FjS-ZR-NCF"/>
                                             </constraints>
@@ -408,7 +408,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Fm-lI-FM2">
-                                            <rect key="frame" x="97" y="46" width="20" height="20"/>
+                                            <rect key="frame" x="97.666666666666657" y="46" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="19S-an-Dhi"/>
                                                 <constraint firstAttribute="height" constant="20" id="6gR-ZB-eGb"/>
@@ -419,7 +419,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQa-pA-AtM">
-                                            <rect key="frame" x="278.33333333333331" y="47.666666666666686" width="33.666666666666686" height="17"/>
+                                            <rect key="frame" x="283" y="47.666666666666686" width="29" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -431,7 +431,7 @@
                                         <constraint firstItem="jnE-cv-0pc" firstAttribute="top" secondItem="o51-S6-laL" secondAttribute="bottom" constant="8" id="4HI-Ut-tJI"/>
                                         <constraint firstItem="p77-Bg-MTL" firstAttribute="trailing" secondItem="Ec2-HH-EyB" secondAttribute="trailing" id="573-A4-DWs"/>
                                         <constraint firstAttribute="trailing" secondItem="7Gv-87-tcZ" secondAttribute="trailing" constant="25" id="5cP-6r-m2x"/>
-                                        <constraint firstAttribute="height" constant="220" id="8Dv-8t-09T"/>
+                                        <constraint firstAttribute="height" constant="230" id="8Dv-8t-09T"/>
                                         <constraint firstItem="8Fm-lI-FM2" firstAttribute="leading" secondItem="fhM-4S-gWu" secondAttribute="trailing" id="A7w-kg-gtP"/>
                                         <constraint firstItem="31r-A7-nQj" firstAttribute="leading" secondItem="kLU-e0-5mU" secondAttribute="leading" constant="25" id="BcV-ZZ-Nl2"/>
                                         <constraint firstItem="tHd-wC-t3m" firstAttribute="top" secondItem="fhM-4S-gWu" secondAttribute="bottom" constant="8" id="CGK-P3-HEB"/>
@@ -478,13 +478,13 @@
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price impact is high. You may want to reduce your swap amount for a better rate." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Rd-qD-gW3">
-                                    <rect key="frame" x="38" y="580" width="338" height="32.666666666666629"/>
+                                    <rect key="frame" x="38" y="590" width="338" height="33"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="textRedColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gmb-V4-Pvy">
-                                    <rect key="frame" x="148.66666666666666" y="635.66666666666663" width="116.99999999999997" height="20"/>
+                                    <rect key="frame" x="149.66666666666666" y="646" width="114.99999999999997" height="20"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMJ-nA-NeU">
                                             <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -500,7 +500,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap anyway" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mpd-yj-WSP">
-                                            <rect key="frame" x="30" y="1.6666666666666288" width="87" height="17"/>
+                                            <rect key="frame" x="30" y="1.6666666666667425" width="85" height="17"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -517,7 +517,7 @@
                                     </constraints>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nnA-Wb-aIs">
-                                    <rect key="frame" x="38" y="578" width="338" height="150"/>
+                                    <rect key="frame" x="38" y="588" width="338" height="150"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N2N-Hw-gS0">
                                             <rect key="frame" x="50" y="27" width="266" height="103"/>
@@ -550,7 +550,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
                                     </userDefinedRuntimeAttributes>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dmz-cu-jOk">
-                                    <rect key="frame" x="38" y="758" width="153" height="38"/>
+                                    <rect key="frame" x="38" y="768" width="153" height="38"/>
                                     <color key="backgroundColor" name="navButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="e3a-KU-CMJ"/>
@@ -567,7 +567,7 @@ Once redeemed, COMP token can be swapped to any token.</string>
                                     <rect key="frame" x="200" y="134" width="14" height="18"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfX-iL-zQ0">
-                                    <rect key="frame" x="223" y="758" width="153" height="38"/>
+                                    <rect key="frame" x="223" y="768" width="153" height="38"/>
                                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="COV-83-9Nr"/>
