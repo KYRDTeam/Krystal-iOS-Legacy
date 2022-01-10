@@ -69,7 +69,7 @@ class GasFeeSelectorPopupViewModel {
     return formatter
   }()
   let defaultSlippageText = "0.5"
-
+  let defaultSlippageInputValue = 0.5
   fileprivate(set) var fast: BigInt = KNGasCoordinator.shared.fastKNGas
   fileprivate(set) var medium: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var slow: BigInt = KNGasCoordinator.shared.lowKNGas

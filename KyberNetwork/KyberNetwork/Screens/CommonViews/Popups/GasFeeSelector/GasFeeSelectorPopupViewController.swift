@@ -692,6 +692,8 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
       self.updateMinRateUIs()
       if val >= 0, val <= maxMinRatePercent {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(val)))
+      } else {
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(self.viewModel.defaultSlippageInputValue)))
       }
       self.configSlippageUIByType(.custom(value: val))
     }
