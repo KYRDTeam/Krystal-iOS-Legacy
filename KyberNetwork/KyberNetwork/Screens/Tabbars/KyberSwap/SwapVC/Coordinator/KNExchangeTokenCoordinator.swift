@@ -557,7 +557,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         case .success:
           self.showConfirmSwapScreen(data: data, transaction: tx, eip1559: nil, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
         case .failure(let error):
-          var errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+          var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
             if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
               errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
@@ -688,7 +688,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           print("[EIP1559] success est gas")
           self.showConfirmSwapScreen(data: data, transaction: nil, eip1559: tx, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0)
         case .failure(let error):
-          var errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+          var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
             if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
               errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
