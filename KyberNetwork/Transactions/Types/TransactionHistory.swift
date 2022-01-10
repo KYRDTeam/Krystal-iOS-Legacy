@@ -98,7 +98,7 @@ extension SignTransactionObject {
     
     var priorityFeeBigInt = (maxGasBigInt ?? BigInt.zero) - (KNGasCoordinator.shared.baseFee ?? BigInt.zero)
     if let unwrap = setting.advancedPriorityFee {
-      priorityFeeBigInt = BigInt(unwrap) ?? BigInt.zero
+      priorityFeeBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt.zero
     }
 
     return EIP1559Transaction(
@@ -109,8 +109,8 @@ extension SignTransactionObject {
       maxGasFee: maxGasBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
       toAddress: self.to ?? "",
       fromAddress: self.from,
-      data: self.data.hexString,
-      value: BigInt(self.value)?.hexEncoded.hexSigned2Complement ?? "0x",
+      data: self.data.hexString.add0x,
+      value: BigInt(self.value)?.hexEncoded.drop0x.hexSigned2Complement ?? "0x",
       reservedGasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x")
   }
 

@@ -223,12 +223,15 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       self.getLatestNonce { nonce in
         var sendTx = tx
         sendTx.updateNonce(nonce: nonce)
+        print("[Dapp] raw tx \(tx)")
         if KNGeneralProvider.shared.isUseEIP1559 {
-          let eipTx = tx.toEIP1559Transaction(setting: setting)
+          let eipTx = sendTx.toEIP1559Transaction(setting: setting)
+          print("[Dapp] eip tx \(eipTx)")
           if let data = provider.signContractGenericEIP1559Transaction(eipTx) {
             KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
               switch sendResult {
               case .success(let hash):
+                print("[Dapp] hash \(hash)")
                 let data = Data(_hex: hash)
                 let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
                 self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
