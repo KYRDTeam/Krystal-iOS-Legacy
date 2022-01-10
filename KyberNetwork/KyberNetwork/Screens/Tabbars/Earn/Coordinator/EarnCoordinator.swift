@@ -331,13 +331,17 @@ extension EarnCoordinator: EarnViewControllerDelegate {
             }
           case .failure(let error):
             var errorMessage = "Can not estimate Gas Limit"
+              
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
             }
-              if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+            if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
               errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
@@ -361,7 +365,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
               self.navigationController.present(controller, animated: true, completion: nil)
             }
           case .failure(let error):
-            var errorMessage = "Can not estimate Gas Limit"
+            var errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
@@ -369,6 +373,9 @@ extension EarnCoordinator: EarnViewControllerDelegate {
             }
             if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
               errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
