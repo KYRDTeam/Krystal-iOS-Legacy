@@ -45,4 +45,15 @@ extension BigInt {
   static func bigIntFromString(value: String) -> BigInt {
     return BigInt(stringLiteral: value)
   }
+  
+  func doubleUSDValue(currencyDecimal: Int) -> Double {
+    let doubleString = self.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: currencyDecimal)
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = currencyDecimal
+    if let number = formatter.number(from: doubleString) {
+      return number.doubleValue
+    }
+    return 0.0
+  }
 }

@@ -52,13 +52,41 @@ class Token: Codable, Equatable, Hashable {
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
   }
   
+  func getBalanceBigIntForChain(chainType: ChainType) -> BigInt {
+    let balance = BalanceStorage.shared.balanceForAddressInChain(self.address, chainType: chainType)
+    return BigInt(balance?.balance ?? "") ?? BigInt(0)
+  }
+  
   func getTokenPrice() -> TokenPrice {
     let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address) ?? TokenPrice(address: self.address, quotes: [:])
+    return price
+  }
+  
+  func getTokenPrice(chainType: ChainType) -> TokenPrice {
+    let price = KNTrackerRateStorage.shared.getPriceWithAddress(self.address, chainType: chainType) ?? TokenPrice(address: self.address, quotes: [:])
     return price
   }
 
   func getTokenLastPrice(_ mode: CurrencyMode) -> Double {
     let price = self.getTokenPrice()
+    switch mode {
+    case .usd:
+      return price.usd
+    case .eth:
+      return price.eth
+    case .btc:
+      return price.btc
+    case .bnb:
+      return price.bnb
+    case .matic:
+      return price.matic
+    case .avax:
+      return price.avax
+    }
+  }
+  
+  func getTokenLastPrice(_ mode: CurrencyMode, chainType: ChainType) -> Double {
+    let price = self.getTokenPrice(chainType: chainType)
     switch mode {
     case .usd:
       return price.usd
