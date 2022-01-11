@@ -22,6 +22,7 @@ struct EarnSwapConfirmViewModel {
   let minReceiveAmount: String
   let minReceiveTitle: String
   let priceImpact: Double
+  let maxSlippage: Double
   
   var toAmountString: String {
     let amountString = self.toAmount.displayRate(decimals: self.toToken.decimals)
@@ -57,11 +58,16 @@ struct EarnSwapConfirmViewModel {
       return String(format: "%.2f", self.platform.distributionSupplyRate * 100.0) + "%"
     }
   }
+  
+  var slippageString: String {
+    let doubleStr = String(format: "%.2f", self.maxSlippage)
+    return "\(doubleStr)%"
+  }
 
   var netAPYString: String {
     return String(format: "%.2f", (self.platform.distributionSupplyRate + self.platform.supplyRate) * 100.0) + "%"
   }
-  
+
   var transactionFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
@@ -194,6 +200,8 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var swapAnywayContainerView: UIView!
   @IBOutlet weak var swapAnywayBtn: UIButton!
   @IBOutlet weak var topBackgroundView: UIView!
+  @IBOutlet weak var slippageLabel: UILabel!
+  
   var isAccepted: Bool = true
   let transitor = TransitionDelegate()
   let viewModel: EarnSwapConfirmViewModel
@@ -277,10 +285,10 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.priceImpaceWarningLabel.isHidden = true
       self.sendButtonTopContraint.constant = self.viewModel.platform.isCompound ? 200 : 20
     }
-    
     self.swapAnywayContainerView.isHidden = !self.viewModel.needConfirm
+    self.slippageLabel.text = self.viewModel.slippageString
   }
-  
+
   fileprivate func updateUIPriceImpact() {
     guard self.viewModel.needConfirm else { return }
     if self.isAccepted {
@@ -295,6 +303,12 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.swapAnywayBtn.setImage(nil, for: .normal)
       self.confirmButton.isEnabled = false
       self.confirmButton.alpha = 0.5
+    }
+  }
+
+  @IBAction func editButtonTapped(_ sender: Any) {
+    self.dismiss(animated: true) {
+      self.delegate?.kConfirmEarnSwapViewControllerOpenGasPriceSelect()
     }
   }
 
@@ -336,6 +350,13 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBAction func apyHelpButtonTapped(_ sender: UIButton) {
     self.showBottomBannerView(
       message: "Positive APY mean you will receive interest and negative means you will pay interest.".toBeLocalised(),
+      icon: UIImage(named: "help_icon_large") ?? UIImage(),
+      time: 3
+    )
+  }
+  @IBAction func slippageHintButtonTapped(_ sender: Any) {
+    self.showBottomBannerView(
+      message: "Your transaction will revert if the price changes unfavorably by more than this percentage.".toBeLocalised(),
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 3
     )

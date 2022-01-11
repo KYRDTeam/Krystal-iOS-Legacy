@@ -1,11 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import BigInt
 
 protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
+  func kConfirmSwapViewControllerOpenGasPriceSelect()
 }
 
 class KConfirmSwapViewController: KNBaseViewController {
@@ -34,6 +36,9 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var swapAnywayCheckBox: UIButton!
   @IBOutlet weak var swapAnywayContainerView: UIView!
   @IBOutlet weak var priceImpactTextLabel: UILabel!
+  @IBOutlet weak var slippageLabel: UILabel!
+  
+  @IBOutlet weak var containViewHeighConstraint: NSLayoutConstraint!
   var isAccepted: Bool = true
 
   fileprivate var viewModel: KConfirmSwapViewModel
@@ -76,7 +81,7 @@ class KConfirmSwapViewController: KNBaseViewController {
       self.viewModel.warningMinAcceptableRateMessage == nil ? nil : UIImage(named: "info_red_icon"),
       for: .normal
     )
-
+    self.slippageLabel.text = self.viewModel.slippageString
     self.transactionFeeETHLabel.text = self.viewModel.feeETHString
     self.transactionFeeETHLabel.addLetterSpacing()
     self.transactionFeeUSDLabel.text = self.viewModel.feeUSDString
@@ -119,6 +124,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     }
     self.reserveRoutingMessageTopConstraint.constant = self.topConstraintValueForReserveMsg()
     self.priceImpactLabelTopConstraint.constant = self.topConstraintValueForPriceImpactLabel()
+    self.containViewHeighConstraint.constant = UIScreen.main.bounds.size.height * 0.85
     self.view.layoutIfNeeded()
   }
   
@@ -174,6 +180,12 @@ class KConfirmSwapViewController: KNBaseViewController {
     )
   }
 
+  @IBAction func editButtonTapped(_ sender: Any) {
+    self.dismiss(animated: true) {
+      self.delegate?.kConfirmSwapViewControllerOpenGasPriceSelect()
+    }
+  }
+  
   @IBAction func confirmButtonPressed(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
     if let unwrap = self.viewModel.signTransaction {
@@ -196,7 +208,9 @@ class KConfirmSwapViewController: KNBaseViewController {
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
     var mes = ""
-    if sender.tag == 1 {
+    if sender.tag == 2 {
+      mes = "Your transaction will revert if the price changes unfavorably by more than this percentage.".toBeLocalised()
+    } else if sender.tag == 1 {
       if self.viewModel.priceImpact == -1000 {
         mes = " Missing price impact. Please swap with caution."
       } else {
@@ -223,7 +237,7 @@ extension KConfirmSwapViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 600
+    return self.containViewHeighConstraint.constant
   }
 
   func getPopupContentView() -> UIView {

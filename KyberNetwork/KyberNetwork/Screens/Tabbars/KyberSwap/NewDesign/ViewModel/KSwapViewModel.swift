@@ -37,7 +37,7 @@ class KSwapViewModel {
 
   fileprivate(set) var estRate: BigInt?
   fileprivate(set) var slippageRate: BigInt?
-  fileprivate(set) var minRatePercent: Double = 1.0
+  fileprivate(set) var minRatePercent: Double = 0.5
 
   var isSwapAllBalance: Bool = false
   var isTappedSwapAllBalance: Bool = false
