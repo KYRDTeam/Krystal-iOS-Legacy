@@ -1242,6 +1242,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.updateGasFeeUI()
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorSuccessSendTransaction() {

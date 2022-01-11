@@ -1086,6 +1086,10 @@ extension KSwapViewController {
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.setUpGasFeeView()
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {

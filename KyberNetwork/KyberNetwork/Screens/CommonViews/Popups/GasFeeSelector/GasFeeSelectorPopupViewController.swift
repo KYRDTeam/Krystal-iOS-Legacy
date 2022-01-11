@@ -468,6 +468,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     self.gasFeeButtonTapped(self.mediumGasButton)
     self.customRateButtonTapped(self.secondOptionSippageButton)
+    self.customRateTextField.text = ""
+    self.advancedCustomRateTextField.text = ""
   }
 
   @IBAction func secondButtonTapped(_ sender: UIButton) {

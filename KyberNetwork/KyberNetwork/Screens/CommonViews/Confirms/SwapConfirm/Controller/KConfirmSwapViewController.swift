@@ -38,6 +38,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   @IBOutlet weak var priceImpactTextLabel: UILabel!
   @IBOutlet weak var slippageLabel: UILabel!
   
+  @IBOutlet weak var containViewHeighConstraint: NSLayoutConstraint!
   var isAccepted: Bool = true
 
   fileprivate var viewModel: KConfirmSwapViewModel
@@ -123,6 +124,7 @@ class KConfirmSwapViewController: KNBaseViewController {
     }
     self.reserveRoutingMessageTopConstraint.constant = self.topConstraintValueForReserveMsg()
     self.priceImpactLabelTopConstraint.constant = self.topConstraintValueForPriceImpactLabel()
+    self.containViewHeighConstraint.constant = UIScreen.main.bounds.size.height * 0.85
     self.view.layoutIfNeeded()
   }
   
@@ -235,7 +237,7 @@ extension KConfirmSwapViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 600
+    return self.containViewHeighConstraint.constant
   }
 
   func getPopupContentView() -> UIView {
