@@ -516,6 +516,7 @@
 		C313720E26078051003D432B /* CustomTokenTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C313720C26078051003D432B /* CustomTokenTableViewCell.xib */; };
 		C315AD5E240F845200620096 /* CustomAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */; };
 		C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C316809B25E785B700D0D887 /* TokenChartData.swift */; };
+		C3196319278D6F55005458B4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3196318278D6F55005458B4 /* Logger.swift */; };
 		C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */; };
 		C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */; };
 		C31D05FF25F723E8000739D2 /* EtherscanTransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31D05FE25F723E8000739D2 /* EtherscanTransactionStorage.swift */; };
@@ -1304,6 +1305,7 @@
 		C313720C26078051003D432B /* CustomTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenTableViewCell.xib; sourceTree = "<group>"; };
 		C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAxisValueFormatter.swift; sourceTree = "<group>"; };
 		C316809B25E785B700D0D887 /* TokenChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenChartData.swift; sourceTree = "<group>"; };
+		C3196318278D6F55005458B4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletViewController.swift; sourceTree = "<group>"; };
 		C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddWatchWalletViewController.xib; sourceTree = "<group>"; };
 		C31D05FE25F723E8000739D2 /* EtherscanTransactionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherscanTransactionStorage.swift; sourceTree = "<group>"; };
@@ -1672,6 +1674,7 @@
 				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
 				2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */,
 				C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */,
+				C3196318278D6F55005458B4 /* Logger.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5203,6 +5206,7 @@
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,
 				25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */,
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
+				C3196319278D6F55005458B4 /* Logger.swift in Sources */,
 				257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */,
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,

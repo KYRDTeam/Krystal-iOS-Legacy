@@ -300,6 +300,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func fromTokenButtonPressed(_ sender: UIButton) {
+    info("From token clicked")
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -309,6 +310,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func toTokenButtonPressed(_ sender: UIButton) {
+    info("To token clicked")
     let event = KSwapViewEvent.searchToken(
       from: self.viewModel.from,
       to: self.viewModel.to,
@@ -410,6 +412,7 @@ class KSwapViewController: KNBaseViewController {
   }
   
   @IBAction func revertRateButtonTapped(_ sender: UIButton) {
+    info("Revest rate button clicked")
     self.viewModel.showingRevertRate = !self.viewModel.showingRevertRate
     self.updateExchangeRateField()
   }
@@ -441,6 +444,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    info("Switch chain button clicked")
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       self.viewModel.isFromDeepLink = false
@@ -586,6 +590,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
+    info("Open gas price select")
     let event = KSwapViewEvent.openGasPriceSelect(
       gasLimit: self.viewModel.estimateGasLimit,
       baseGasLimit: self.viewModel.baseGasLimit,
