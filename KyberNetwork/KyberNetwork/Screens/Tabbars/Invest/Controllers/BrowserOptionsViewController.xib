@@ -22,10 +22,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BrowserOptionsViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="backButton" destination="WoT-cZ-c6P" id="Mb4-zd-5Rm"/>
                 <outlet property="contentView" destination="hM6-sk-Gq7" id="zC2-c0-Tdw"/>
                 <outlet property="contentViewTopContraint" destination="8Cm-6X-5DB" id="Cq9-Ey-HNM"/>
                 <outlet property="favoriteStatusIcon" destination="0S6-8H-fyR" id="G1Q-ho-MhU"/>
                 <outlet property="favoriteStatusLabel" destination="Kjs-uE-2wf" id="zhr-CA-t4B"/>
+                <outlet property="forwardButton" destination="SPF-nX-brL" id="jCF-gw-yjD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

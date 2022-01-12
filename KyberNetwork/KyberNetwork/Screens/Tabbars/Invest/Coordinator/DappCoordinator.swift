@@ -122,7 +122,11 @@ extension DappCoordinator: BrowserViewControllerDelegate {
   func browserViewController(_ controller: BrowserViewController, run event: BrowserViewEvent) {
     switch event {
     case .openOption(let url):
-      let controller = BrowserOptionsViewController(url: url)
+      let controller = BrowserOptionsViewController(
+        url: url,
+        canGoBack: controller.webView.canGoBack,
+        canGoForward: controller.webView.canGoForward
+      )
       controller.delegate = self
       self.navigationController.present(controller, animated: true, completion: nil)
     case .switchChain:

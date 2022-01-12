@@ -26,14 +26,21 @@ class BrowserOptionsViewController: KNBaseViewController {
   
   @IBOutlet weak var favoriteStatusLabel: UILabel!
   @IBOutlet weak var favoriteStatusIcon: UIImageView!
+  @IBOutlet weak var backButton: UIButton!
+  @IBOutlet weak var forwardButton: UIButton!
+  
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   let transitor = TransitionDelegate()
   weak var delegate: BrowserOptionsViewControllerDelegate?
   let url: String
+  let canGoBack: Bool
+  let canForward: Bool
   
-  init(url: String) {
+  init(url: String, canGoBack: Bool, canGoForward: Bool) {
     self.url = url
+    self.canGoBack = canGoBack
+    self.canForward = canGoForward
     super.init(nibName: BrowserOptionsViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -51,6 +58,16 @@ class BrowserOptionsViewController: KNBaseViewController {
     } else {
       self.favoriteStatusIcon.image = UIImage(named: "favorite_actionsheet_icon")
       self.favoriteStatusLabel.text = "Favorite"
+    }
+    
+    if !self.canGoBack {
+      self.backButton.isEnabled = false
+      self.backButton.backgroundColor = .white.withAlphaComponent(0.5)
+    }
+    
+    if !self.canForward {
+      self.forwardButton.isEnabled = false
+      self.forwardButton.backgroundColor = .white.withAlphaComponent(0.5)
     }
   }
   
