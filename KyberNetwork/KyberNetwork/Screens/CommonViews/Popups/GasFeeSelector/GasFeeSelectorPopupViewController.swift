@@ -198,9 +198,10 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
     self.customRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
-    self.customRateTextField.attributedPlaceholder = NSAttributedString(string: "Input", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "navButtonBgColor")!])
+    self.customRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
     self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
-    self.advancedCustomRateTextField.attributedPlaceholder = NSAttributedString(string: "Input", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "navButtonBgColor")!])
+    self.advancedCustomRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
+    
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
     self.updateGasPriceUIs()
     self.updateMinRateUIs()
@@ -441,6 +442,8 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: self.viewModel.minRatePercent))
     self.updateMinRateUIs()
     self.configSlippageUI()
+    self.customRateTextField.text = ""
+    self.advancedCustomRateTextField.text = ""
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
@@ -667,7 +670,7 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
       return true
     }
-    textField.text = "\(self.viewModel.currentRate)"
+    textField.setPlaceholder(text: "\(self.viewModel.currentRate)", color: UIColor(named: "navButtonBgColor")!)
     self.viewModel.updateMinRateType(.custom(value: self.viewModel.currentRate))
     self.configSlippageUIByType(.custom(value: self.viewModel.currentRate))
   
