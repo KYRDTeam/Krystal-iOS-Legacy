@@ -49,6 +49,44 @@ enum ChainType: Codable {
     }
   }
   
+  static func make(chainID: Int) -> ChainType? {
+    if KNEnvironment.default == .ropsten {
+      if chainID == Constants.ethRoptenPRC.chainID {
+        return .eth
+      } else if chainID == Constants.bscRoptenPRC.chainID {
+        return .bsc
+      } else if chainID == Constants.polygonRoptenPRC.chainID {
+        return .polygon
+      } else if chainID == Constants.avalancheRoptenPRC.chainID {
+        return .avalanche
+      }
+    } else {
+      if chainID == Constants.ethMainnetPRC.chainID {
+        return .eth
+      } else if chainID == Constants.bscMainnetPRC.chainID {
+        return .bsc
+      } else if chainID == Constants.polygonMainnetPRC.chainID {
+        return .polygon
+      } else if chainID == Constants.avalancheMainnetPRC.chainID {
+        return .avalanche
+      }
+    }
+    return nil
+  }
+  
+  func chainName() -> String {
+    switch self {
+    case .eth:
+     return "Ethereum"
+    case .bsc:
+      return "BSC"
+    case .polygon:
+      return "Polygon"
+    case .avalanche:
+      return "Avalanche"
+    }
+  }
+  
   case eth
   case bsc
   case polygon

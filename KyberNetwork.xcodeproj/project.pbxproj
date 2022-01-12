@@ -615,6 +615,9 @@
 		C365811E25E1132400A6DA4B /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365811D25E1132400A6DA4B /* Storage.swift */; };
 		C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C365812125E2503F00A6DA4B /* BalanceStorage.swift */; };
 		C36C5C7026AEC4BB00A3711C /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36C5C6F26AEC4BB00A3711C /* Overview.swift */; };
+		C3743295278EC076002C97A9 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3743294278EC076002C97A9 /* Int.swift */; };
+		C3743298278ED344002C97A9 /* SignMessageConfirmPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */; };
+		C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */; };
 		C3794179262816E100FBCA14 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3794178262816E100FBCA14 /* NotificationService.swift */; };
 		C379417D262816E100FBCA14 /* KrystalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C3794176262816E100FBCA14 /* KrystalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C37AC1E324A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib */; };
@@ -1426,6 +1429,9 @@
 		C365811D25E1132400A6DA4B /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		C365812125E2503F00A6DA4B /* BalanceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceStorage.swift; sourceTree = "<group>"; };
 		C36C5C6F26AEC4BB00A3711C /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
+		C3743294278EC076002C97A9 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignMessageConfirmPopup.swift; sourceTree = "<group>"; };
+		C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignMessageConfirmPopup.xib; sourceTree = "<group>"; };
 		C3794176262816E100FBCA14 /* KrystalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KrystalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3794178262816E100FBCA14 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		C379417A262816E100FBCA14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1746,6 +1752,7 @@
 		251ABCC0205792080069687F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C3743294278EC076002C97A9 /* Int.swift */,
 				C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */,
 				251ABCC1205792170069687F /* UIColor+Kyber.swift */,
 				257740C020579335003323EB /* UIView+Kyber.swift */,
@@ -4237,6 +4244,8 @@
 				C32D6DFE27843586002886F1 /* FirstTimeWarningDappBrowserPopup.xib */,
 				C314F1672785525A00E3599B /* DappBrowerTransactionConfirmPopup.swift */,
 				C314F1682785525A00E3599B /* DappBrowerTransactionConfirmPopup.xib */,
+				C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */,
+				C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4810,6 +4819,7 @@
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
 				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
@@ -5225,6 +5235,7 @@
 				257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */,
 				25CC0AAB2058F1A00009D0D5 /* KNGetTokenAllowance.swift in Sources */,
 				C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */,
+				C3743298278ED344002C97A9 /* SignMessageConfirmPopup.swift in Sources */,
 				259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */,
 				C32656AC266F546100C69561 /* ActionData.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
@@ -5452,6 +5463,7 @@
 				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				C39D3FDF26FAE7500021DF8A /* KNEnvironment+Kyber.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
+				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
 				25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */,

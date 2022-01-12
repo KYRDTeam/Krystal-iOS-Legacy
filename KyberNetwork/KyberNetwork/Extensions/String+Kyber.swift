@@ -171,6 +171,10 @@ extension String {
       return Data(_hex: self.hex, chunkSize: 100)
     }
   }
+  
+  var has0xPrefix: Bool {
+      return hasPrefix("0x")
+  }
 }
 
 extension StringProtocol {

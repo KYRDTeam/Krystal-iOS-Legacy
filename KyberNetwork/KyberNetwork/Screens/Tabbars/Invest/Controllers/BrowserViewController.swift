@@ -89,7 +89,7 @@ class BrowserViewController: KNBaseViewController {
     return progressView
   }()
   
-  private var estimatedProgressObservation: NSKeyValueObservation!
+  private var estimatedProgressObservation: NSKeyValueObservation?
   
   init(viewModel: BrowserViewModel) {
     self.viewModel = viewModel
@@ -101,7 +101,7 @@ class BrowserViewController: KNBaseViewController {
   }
   
   deinit {
-    estimatedProgressObservation.invalidate()
+    estimatedProgressObservation?.invalidate()
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
   }

@@ -96,7 +96,7 @@ class DappCoordinator: NSObject, Coordinator {
       self.browserViewController = vc
     }
   }
-  
+
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.appCoordinatorDidUpdateChain()
@@ -146,9 +146,36 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         print(unconfirmedTransaction)
         self.executeTransaction(action: action, callbackID: callbackID, tx: unconfirmedTransaction, url: url)
       case .signMessage(let hexMessage):
-        signMessage(with: .message(hexMessage.toHexData), callbackID: callbackID)
+        let vm = SignMessageConfirmViewModel(
+          url: url,
+          address: self.session.wallet.address.description,
+          message: hexMessage,
+          onConfirm: {
+            self.signMessage(with: .message(hexMessage.toHexData), callbackID: callbackID)
+          },
+          onCancel: {
+            let error = DAppError.cancelled
+            self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          }
+        )
+        let vc = SignMessageConfirmPopup(viewModel: vm)
+        self.navigationController.present(vc, animated: true, completion: nil)
       case .signPersonalMessage(let hexMessage):
-        signMessage(with: .personalMessage(hexMessage.toHexData), callbackID: callbackID)
+        let vm = SignMessageConfirmViewModel(
+          url: url,
+          address: self.session.wallet.address.description,
+          message: hexMessage,
+          onConfirm: {
+            self.signMessage(with: .personalMessage(hexMessage.toHexData), callbackID: callbackID)
+          },
+          onCancel: {
+            let error = DAppError.cancelled
+            self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          }
+        )
+        let vc = SignMessageConfirmPopup(viewModel: vm)
+        self.navigationController.present(vc, animated: true, completion: nil)
+        
       case .ethCall(from: let from, to: let to, data: let data):
         let callRequest = CallRequest(to: to, data: data)
         let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
@@ -173,7 +200,32 @@ extension DappCoordinator: BrowserViewControllerDelegate {
 //      case .walletAddEthereumChain(let customChain):
 //        break
       case .walletSwitchEthereumChain(let targetChain):
-        break
+        guard let targetChainId = Int(chainId0xString: targetChain.chainId), let chainType = ChainType.make(chainID: targetChainId) else {
+          let error = DAppError.nodeError("Invaild chain ID")
+          self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          return
+        }
+        if KNGeneralProvider.shared.customRPC.chainID == targetChainId {
+          let callback = DappCallback(id: callbackID, value: .walletSwitchEthereumChain)
+          self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+        } else {
+          let alertController = KNPrettyAlertController(
+            title: "",
+            message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
+            secondButtonTitle: "OK".toBeLocalised(),
+            firstButtonTitle: "Cancel".toBeLocalised(),
+            secondButtonAction: {
+              KNGeneralProvider.shared.currentChain = chainType
+              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.address.description)
+            },
+            firstButtonAction: {
+              let error = DAppError.cancelled
+              self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+            }
+          )
+          alertController.popupHeight = 220
+          self.navigationController.present(alertController, animated: true, completion: nil)
+        }
       default:
         self.navigationController.showTopBannerView(message: "This dApp action is not supported yet")
       }
@@ -330,6 +382,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       }
     }
   }
+  
+  
 }
 
 extension DappCoordinator: BrowserOptionsViewControllerDelegate {

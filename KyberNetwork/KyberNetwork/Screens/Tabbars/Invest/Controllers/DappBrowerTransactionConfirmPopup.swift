@@ -17,7 +17,7 @@ struct ConfirmAdvancedSetting {
   let advancedNonce: Int?
 }
 
-class  DappBrowerTransactionConfirmViewModel {
+class DappBrowerTransactionConfirmViewModel {
   let transaction: SignTransactionObject
   let url: String
   let onSign: ((ConfirmAdvancedSetting) -> Void)
