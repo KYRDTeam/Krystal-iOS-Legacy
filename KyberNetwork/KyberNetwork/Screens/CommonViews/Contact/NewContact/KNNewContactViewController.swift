@@ -53,13 +53,6 @@ class KNNewContactViewModel {
   }
 
   func updateViewModel(address: String) {
-    if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
-      self.contact = contact
-      self.isEditing = true
-    } else {
-      self.contact = KNContact(address: address.lowercased(), name: "")
-      self.isEditing = false
-    }
     self.addressString = address
     self.address = Address(string: address)
   }
@@ -125,8 +118,8 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.deleteButtonTitleLabel.text = "delete.contact".toBeLocalised()
-    self.sendButtonTitleLabel.text = "transfer".toBeLocalised()
+    self.deleteButtonTitleLabel.text = NSLocalizedString("delete.contact", value: "Delete Contact", comment: "")
+    self.sendButtonTitleLabel.text = NSLocalizedString("transfer", value: "Transfer", comment: "")
     self.addressTextField.delegate = self
     self.nameTextField.attributedPlaceholder = NSAttributedString(
       string: "name".toBeLocalised(),
@@ -154,7 +147,7 @@ class KNNewContactViewController: KNBaseViewController {
     self.sendButtonContainerView.isHidden = !self.viewModel.isEditing
     self.separateView.isHidden = !self.viewModel.isEditing
     self.doneButtonTopContraint.constant = self.viewModel.isEditing ? 184 : 51
-    self.doneButton.setTitle(self.viewModel.isEditing ? "done".toBeLocalised() : "add".toBeLocalised(), for: .normal)
+    self.doneButton.setTitle(self.viewModel.isEditing ? NSLocalizedString("done", value: "Done", comment: "") : NSLocalizedString("add", value: "Add", comment: ""), for: .normal)
     self.ensMessageLabel.text = self.viewModel.displayEnsMessage
     self.ensMessageLabel.textColor = self.viewModel.displayEnsMessageColor
     self.ensMessageLabel.isHidden = false
