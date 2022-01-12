@@ -685,7 +685,8 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     let shouldFocus = !text.isEmpty
     self.updateFocusForView(view: textField, isFocus: shouldFocus)
     let maxMinRatePercent: Double = 50.0
-    let value: Double? = text.isEmpty ? 0 : Double(text)
+    let stringFormatter = StringFormatter()
+    let value = stringFormatter.decimal(with: text)?.doubleValue
     if let val = value {
       self.advancedCustomRateTextField.text = text
       self.customRateTextField.text = text
