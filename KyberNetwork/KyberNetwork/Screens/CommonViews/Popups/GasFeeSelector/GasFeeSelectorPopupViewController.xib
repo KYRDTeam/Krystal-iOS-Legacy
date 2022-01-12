@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -323,16 +323,16 @@
                                     <rect key="frame" x="40" y="180" width="334" height="208"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slippage tolerance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1IB-qV-zkS">
-                                            <rect key="frame" x="0.0" y="32" width="318" height="14"/>
+                                            <rect key="frame" x="0.0" y="32" width="318" height="20"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="14" id="Uxq-cn-SHX"/>
+                                                <constraint firstAttribute="height" constant="20" id="Uxq-cn-SHX"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Input" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JSC-23-wGp">
-                                            <rect key="frame" x="248" y="60" width="86" height="36"/>
+                                            <rect key="frame" x="248" y="66" width="86" height="36"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="86" id="uvL-wM-skJ"/>
@@ -342,7 +342,7 @@
                                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Your transaction will revert if the price changes unfavorably by more than this percentage." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fdj-ok-rGr">
-                                            <rect key="frame" x="0.0" y="142" width="334" height="33"/>
+                                            <rect key="frame" x="0.0" y="148" width="334" height="33"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -355,7 +355,7 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="asi-N6-aoq">
-                                            <rect key="frame" x="0.0" y="60" width="67.5" height="36"/>
+                                            <rect key="frame" x="0.0" y="66" width="67.5" height="36"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="36" id="HWW-4i-mbh"/>
@@ -368,7 +368,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZrK-mN-ocL">
-                                            <rect key="frame" x="165.5" y="60" width="67.5" height="36"/>
+                                            <rect key="frame" x="165.5" y="66" width="67.5" height="36"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="tintColor" name="textWhiteColor"/>
@@ -378,7 +378,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ge-Nm-Ud8">
-                                            <rect key="frame" x="82.5" y="60" width="68" height="36"/>
+                                            <rect key="frame" x="82.5" y="66" width="68" height="36"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                             <color key="tintColor" name="textWhiteColor"/>
@@ -388,7 +388,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Your transaction may be frontrun" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUK-ZG-CPc">
-                                            <rect key="frame" x="0.0" y="114" width="334" height="16.5"/>
+                                            <rect key="frame" x="0.0" y="120" width="334" height="16.5"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <color key="textColor" name="warningColor"/>
                                             <nil key="highlightedColor"/>
@@ -1133,6 +1133,11 @@
                         <constraint firstItem="l2A-pM-8RD" firstAttribute="top" secondItem="5QM-Uq-ScQ" secondAttribute="bottom" constant="82" id="wWB-1j-68N"/>
                         <constraint firstItem="cz1-gs-clU" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="zaH-ni-kNn"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="gyw-K5-8ty"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="9TY-M9-cX4" appends="YES" id="NEF-gA-F3G"/>
                     </connections>
