@@ -21,9 +21,7 @@ protocol DappBrowserHomeViewControllerDelegate: class {
 class DappBrowserHomeViewModel {
   let suggestDataSource = [
     BrowserItem(title: "KrystalGO", url: "https://go.krystal.app", image: "krystalgo"),
-    BrowserItem(title: "KyberSwap", url: "https://kyberswap.com", image: "kyberswap"),
-    BrowserItem(title: "Pancake", url: "https://pancakeswap.finance", image: "pancakeswap"),
-    BrowserItem(title: "Compound", url: "https://compound.finance", image: "compound")
+    BrowserItem(title: "KyberSwap", url: "https://kyberswap.com", image: "kyberswap")
   ]
   
   var recentlyDataSource: [BrowserItem] {

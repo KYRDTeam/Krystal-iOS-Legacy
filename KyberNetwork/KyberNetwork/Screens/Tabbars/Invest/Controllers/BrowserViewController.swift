@@ -81,6 +81,16 @@ class BrowserViewController: KNBaseViewController {
     return webView
   }()
   
+  lazy var progressView: UIProgressView = {
+    let progressView = UIProgressView(progressViewStyle: .default)
+    progressView.translatesAutoresizingMaskIntoConstraints = false
+    progressView.tintColor = UIColor(named: "buttonBackgroundColor")
+    progressView.trackTintColor = .clear
+    return progressView
+  }()
+  
+  private var estimatedProgressObservation: NSKeyValueObservation!
+  
   init(viewModel: BrowserViewModel) {
     self.viewModel = viewModel
     super.init(nibName: BrowserViewController.className, bundle: nil)
@@ -88,6 +98,12 @@ class BrowserViewController: KNBaseViewController {
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    estimatedProgressObservation.invalidate()
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
   override func viewDidLoad() {
@@ -101,12 +117,33 @@ class BrowserViewController: KNBaseViewController {
     self.webView.leftAnchor.constraint(equalTo: self.webViewContainerView.leftAnchor).isActive = true
     self.webView.rightAnchor.constraint(equalTo: self.webViewContainerView.rightAnchor).isActive = true
 
+    webView.addSubview(progressView)
+    webView.bringSubviewToFront(progressView)
+
+    NSLayoutConstraint.activate([
+        progressView.topAnchor.constraint(equalTo: self.webViewContainerView.topAnchor),
+        progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
+        progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+        progressView.heightAnchor.constraint(equalToConstant: 2)
+    ])
+    
+    estimatedProgressObservation = webView.observe(\.estimatedProgress) { [weak self] webView, _ in
+        guard let strongSelf = self else { return }
+
+        let progress = Float(webView.estimatedProgress)
+
+        strongSelf.progressView.progress = progress
+        strongSelf.progressView.isHidden = progress == 1
+    }
+
     webView.load(URLRequest(url: self.viewModel.url))
+
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
   }
 
   @IBAction func dismissButtonTapped(_ sender: UIButton) {
@@ -214,6 +251,26 @@ class BrowserViewController: KNBaseViewController {
       return
     }
     self.updateUISwitchChain()
+  }
+  
+  @objc private func keyboardWillShow(notification: NSNotification) {
+      if let keyboardEndFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let _ = notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue {
+          webView.scrollView.contentInset.bottom = keyboardEndFrame.size.height
+      }
+  }
+
+  @objc private func keyboardWillHide(notification: NSNotification) {
+    guard let beginRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue, let endRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+    let isExternalKeyboard = beginRect.origin == endRect.origin && (beginRect.size.height == 0 || endRect.size.height == 0)
+    let isEnteringEditModeWithExternalKeyboard: Bool
+    if isExternalKeyboard {
+      isEnteringEditModeWithExternalKeyboard = beginRect.size.height == 0 && endRect.size.height > 0
+    } else {
+      isEnteringEditModeWithExternalKeyboard = false
+    }
+    if !isExternalKeyboard || !isEnteringEditModeWithExternalKeyboard {
+      webView.scrollView.contentInset.bottom = 0
+    }
   }
 }
 

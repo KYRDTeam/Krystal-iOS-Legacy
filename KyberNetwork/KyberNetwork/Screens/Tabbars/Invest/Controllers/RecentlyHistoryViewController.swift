@@ -10,10 +10,12 @@ import SwipeCellKit
 
 class RecentlyHistoryViewModel {
   var dataSource: [BrowserCellViewModel]
-  init() {
-    self.dataSource = BrowserStorage.shared.recentlyBrowser.map({ item in
+  let onSelect: ((BrowserItem) -> Void)
+  init(onSelect: @escaping ((BrowserItem) -> Void)) {
+    self.dataSource = BrowserStorage.shared.recentlyBrowser.reversed().map({ item in
       return BrowserCellViewModel(item: item)
     })
+    self.onSelect = onSelect
   }
   
   func reloadDataSource() {
@@ -26,7 +28,16 @@ class RecentlyHistoryViewModel {
 class RecentlyHistoryViewController: UIViewController {
   
   @IBOutlet weak var historyTableView: UITableView!
-  let viewModel: RecentlyHistoryViewModel = RecentlyHistoryViewModel()
+  let viewModel: RecentlyHistoryViewModel
+  
+  init(viewModel: RecentlyHistoryViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: RecentlyHistoryViewController.className, bundle: nil)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -74,6 +85,8 @@ extension RecentlyHistoryViewController: UITableViewDataSource {
 extension RecentlyHistoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+    let item = self.viewModel.dataSource[indexPath.row].item
+    self.viewModel.onSelect(item)
   }
 }
 

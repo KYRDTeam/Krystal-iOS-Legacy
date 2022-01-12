@@ -109,7 +109,10 @@ extension DappCoordinator: DappBrowserHomeViewControllerDelegate {
     case .enterText(let text):
       self.openBrowserScreen(searchText: text)
     case .showAllRecently:
-      let controller = RecentlyHistoryViewController()
+      let viewModel = RecentlyHistoryViewModel { item in
+        self.openBrowserScreen(searchText: item.url)
+      }
+      let controller = RecentlyHistoryViewController(viewModel: viewModel)
       self.navigationController.pushViewController(controller, animated: true, completion: nil)
     }
   }
@@ -169,8 +172,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         }
 //      case .walletAddEthereumChain(let customChain):
 //        break
-//      case .walletSwitchEthereumChain(let targetChain):
-//        break
+      case .walletSwitchEthereumChain(let targetChain):
+        break
       default:
         self.navigationController.showTopBannerView(message: "This dApp action is not supported yet")
       }
@@ -235,6 +238,13 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                 let data = Data(_hex: hash)
                 let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
                 self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+
+                let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "DApp", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: eipTx)
+                historyTransaction.hash = hash
+                historyTransaction.time = Date()
+                historyTransaction.nonce = nonce
+                EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                
               case .failure(let error):
                 self.navigationController.displayError(error: error)
               }
@@ -253,6 +263,12 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                   let data = Data(_hex: hash)
                   let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
                   self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+                  
+                  let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "DApp", transactionDetailDescription: "", transactionObj: sendTx, eip1559Tx: nil)
+                  historyTransaction.hash = hash
+                  historyTransaction.time = Date()
+                  historyTransaction.nonce = nonce
+                  EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                 case .failure(let error):
                   self.navigationController.displayError(error: error)
                 }
