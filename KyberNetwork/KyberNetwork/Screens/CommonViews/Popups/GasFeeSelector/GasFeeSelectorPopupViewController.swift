@@ -672,7 +672,7 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
       return true
     }
-    textField.setPlaceholder(text: "\(self.viewModel.currentRate)", color: UIColor(named: "navButtonBgColor")!)
+    textField.setPlaceholder(text: "\(self.viewModel.minRatePercent)", color: UIColor(named: "navButtonBgColor")!)
     self.viewModel.updateMinRateType(.custom(value: self.viewModel.currentRate))
     self.configSlippageUIByType(.custom(value: self.viewModel.currentRate))
   
