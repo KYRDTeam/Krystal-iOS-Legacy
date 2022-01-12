@@ -525,6 +525,7 @@ extension KSendTokenViewController {
 
   func coordinatorDidUpdateChain() {
     guard self.isViewLoaded else { return }
+    self.setupAddressTextField()
     self.viewModel.resetAdvancedSettings()
     self.updateUISwitchChain()
     self.viewModel.resetFromToken()
@@ -540,7 +541,7 @@ extension KSendTokenViewController {
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.updateGasFeeUI()
   }
-  
+
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
     self.viewModel.advancedNonce = nonce
   }
