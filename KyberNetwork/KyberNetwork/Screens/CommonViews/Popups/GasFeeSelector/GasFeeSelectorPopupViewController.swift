@@ -443,7 +443,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.updateMinRateUIs()
     self.configSlippageUI()
     self.customRateTextField.text = ""
+    self.customRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
     self.advancedCustomRateTextField.text = ""
+    self.advancedCustomRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
   }
 
   @IBAction func helpButtonTapped(_ sender: UIButton) {
