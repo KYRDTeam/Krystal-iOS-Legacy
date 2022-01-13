@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Italic.ttf">
@@ -1133,11 +1133,6 @@
                         <constraint firstItem="l2A-pM-8RD" firstAttribute="top" secondItem="5QM-Uq-ScQ" secondAttribute="bottom" constant="82" id="wWB-1j-68N"/>
                         <constraint firstItem="cz1-gs-clU" firstAttribute="centerX" secondItem="pr0-U8-kSa" secondAttribute="centerX" id="zaH-ni-kNn"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="subviews">
-                            <exclude reference="gyw-K5-8ty"/>
-                        </mask>
-                    </variation>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="9TY-M9-cX4" appends="YES" id="NEF-gA-F3G"/>
                     </connections>
