@@ -313,7 +313,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   fileprivate func updateMinRateUIs() {
     guard self.viewModel.isSwapOption else { return }
-    self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage"
+    self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage."
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
   }
