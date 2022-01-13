@@ -197,9 +197,9 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
     self.customRateTextField.delegate = self
-    self.customRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
+    self.customRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay + "%" : ""
     self.customRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
-    self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay : ""
+    self.advancedCustomRateTextField.text = self.viewModel.minRateTypeInt == 4 ? self.viewModel.currentRateDisplay + "%" : ""
     self.advancedCustomRateTextField.setPlaceholder(text: "Input", color: UIColor(named: "navButtonBgColor")!)
     
     self.sendSwapDivideLineView.isHidden = !self.viewModel.isSwapOption
@@ -663,6 +663,10 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
     guard textField == self.customRateTextField || textField == self.advancedCustomRateTextField else {
       return true
     }
+    
+    if let text = textField.text {
+      textField.text = text.replacingOccurrences(of: "%", with: "")
+    }
     textField.setPlaceholder(text: "\(self.viewModel.minRatePercent)", color: UIColor(named: "navButtonBgColor")!)
     self.viewModel.updateMinRateType(.custom(value: self.viewModel.currentRate))
     self.configSlippageUIByType(.custom(value: self.viewModel.currentRate))
@@ -695,6 +699,7 @@ extension GasFeeSelectorPopupViewController: UITextFieldDelegate {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .minRatePercentageChanged(percent: CGFloat(self.viewModel.defaultSlippageInputValue)))
       }
       self.configSlippageUIByType(.custom(value: val))
+      textField.text = text + "%"
     }
   }
 
