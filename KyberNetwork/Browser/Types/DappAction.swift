@@ -59,7 +59,7 @@ extension DappAction {
       return .walletSwitchEthereumChain(command.object)
     }
   }
-  
+
   private static func makeUnconfirmedTransaction(_ object: [String: DappCommandObjectValue]) -> SignTransactionObject {
     let to = object["to"]?.value ?? ""
     let from = object["from"]?.value ?? ""
@@ -77,7 +77,7 @@ extension DappAction {
       return BigInt((value).drop0x, radix: 16)
     }()
     let data = Data(hex: object["data"]?.value ?? "0x")
-    
+
     return SignTransactionObject(
       value: value.description,
       from: from,

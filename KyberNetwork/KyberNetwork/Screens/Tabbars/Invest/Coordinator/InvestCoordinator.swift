@@ -158,6 +158,7 @@ class InvestCoordinator: Coordinator {
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
