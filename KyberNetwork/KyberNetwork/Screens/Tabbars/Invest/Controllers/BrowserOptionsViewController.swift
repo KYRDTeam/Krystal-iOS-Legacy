@@ -62,12 +62,12 @@ class BrowserOptionsViewController: KNBaseViewController {
     
     if !self.canGoBack {
       self.backButton.isEnabled = false
-      self.backButton.backgroundColor = .white.withAlphaComponent(0.5)
+      self.backButton.backgroundColor = self.contentView.backgroundColor?.withAlphaComponent(0.4)
     }
-    
+
     if !self.canForward {
       self.forwardButton.isEnabled = false
-      self.forwardButton.backgroundColor = .white.withAlphaComponent(0.5)
+      self.forwardButton.backgroundColor = self.contentView.backgroundColor?.withAlphaComponent(0.4)
     }
   }
   

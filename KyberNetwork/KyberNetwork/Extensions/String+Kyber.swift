@@ -175,6 +175,11 @@ extension String {
   var has0xPrefix: Bool {
       return hasPrefix("0x")
   }
+  
+  func limit(scope: Int) -> String {
+    guard self.count >= scope else { return self }
+    return String(self.prefix(scope)) + "..."
+  }
 }
 
 extension StringProtocol {

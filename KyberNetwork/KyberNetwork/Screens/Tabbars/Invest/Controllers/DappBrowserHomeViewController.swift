@@ -50,6 +50,7 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var suggestionTitleSpaceContraintWithRecentlyTagView: NSLayoutConstraint!
   @IBOutlet weak var showAllRecentlyButton: UIButton!
   
+  let limitTagLength = 20
   
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
 
@@ -118,7 +119,7 @@ class DappBrowserHomeViewController: UIViewController {
   private func setupSuggestionSection() {
     
     self.viewModel.suggestDataSource.forEach { item in
-      self.suggestionTagsView.addTag(item.title, image: UIImage(named: item.image ?? ""))
+      self.suggestionTagsView.addTag(item.title.limit(scope: limitTagLength), image: UIImage(named: item.image ?? ""))
     }
   }
   
@@ -126,7 +127,7 @@ class DappBrowserHomeViewController: UIViewController {
     self.recentSearchTagsView.removeAllTags()
     self.viewModel.recentlyDataSource.forEach { item in
       UIImage.loadImageIconWithCache(item.image ?? "", completion: { image in
-        self.recentSearchTagsView.addTag(item.title, image: image)
+        self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
       })
     }
   }
@@ -135,7 +136,7 @@ class DappBrowserHomeViewController: UIViewController {
     self.favoriteTagsView.removeAllTags()
     self.viewModel.favoriteDataSource.forEach { item in
       UIImage.loadImageIconWithCache(item.image  ?? "", completion: { image in
-        self.favoriteTagsView.addTag(item.title, image: image)
+        self.favoriteTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
       })
       
     }
@@ -164,21 +165,21 @@ extension DappBrowserHomeViewController: TagListViewDelegate {
     switch sender.tag {
     case 1:
       let filtered = self.viewModel.recentlyDataSource.first { item in
-        return item.title == title
+        return item.title.limit(scope: self.limitTagLength) == title
       }
       if let unwrap = filtered?.url {
         self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: unwrap))
       }
     case 2:
       let filtered = self.viewModel.favoriteDataSource.first { item in
-        return item.title == title
+        return item.title.limit(scope: self.limitTagLength) == title
       }
       if let unwrap = filtered?.url {
         self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: unwrap))
       }
     case 3:
       let filtered = self.viewModel.suggestDataSource.first { item in
-        return item.title == title
+        return item.title.limit(scope: self.limitTagLength) == title
       }
       if let unwrap = filtered?.url {
         self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: unwrap))

@@ -17,6 +17,12 @@ struct SignMessageConfirmViewModel {
   var imageIconURL: String {
     return "https://www.google.com/s2/favicons?sz=128&domain=\(self.url)/"
   }
+  
+  var displayMessage: String {
+    let data = Data(hex: self.message)
+    
+    return String(decoding: data, as: UTF8.self)
+  }
 }
 
 class SignMessageConfirmPopup: UIViewController {
@@ -53,7 +59,7 @@ class SignMessageConfirmPopup: UIViewController {
   
   private func setupUI() {
     self.fromAddressLabel.text = self.viewModel.address
-    self.valueLabel.text = self.viewModel.message
+    self.valueLabel.text = self.viewModel.displayMessage
     self.siteURLLabel.text = self.viewModel.url
     UIImage.loadImageIconWithCache(viewModel.imageIconURL) { image in
       self.siteIconImageView.image = image
@@ -91,7 +97,7 @@ extension SignMessageConfirmPopup: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 299
+    return 368
   }
 
   func getPopupContentView() -> UIView {

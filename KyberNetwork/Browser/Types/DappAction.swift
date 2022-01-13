@@ -69,7 +69,7 @@ extension DappAction {
       return BigInt(value.drop0x, radix: 16)
     }()
     let gasLimit: BigInt? = {
-      guard let value = object["gasLimit"]?.value ?? object["gas"]?.value else { return .none }
+      guard let value = object["gasLimit"]?.value ?? object["gas"]?.value else { return KNGasConfiguration.exchangeTokensGasLimitDefault }
       return BigInt((value).drop0x, radix: 16)
     }()
     let gasPrice: BigInt? = {

@@ -83,7 +83,7 @@
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="password"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" textContentType="password"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="AAP-mw-meO"/>
                             </connections>
