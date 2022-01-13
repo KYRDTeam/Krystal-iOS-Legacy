@@ -313,16 +313,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   fileprivate func updateMinRateUIs() {
     guard self.viewModel.isSwapOption else { return }
-    self.stillProceedIfRateGoesDownTextLabel.text = String(
-      format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
-      self.viewModel.pairToken
-    )
     self.transactionWillBeRevertedTextLabel.text = "Your transaction will revert if the price changes unfavorably by more than this percentage"
-
-    self.advancedStillProceedIfRateGoesDownTextLabel.text = String(
-      format: NSLocalizedString("still.proceed.if.rate.goes.down.by", value: "Still proceed if %@ goes down by:", comment: ""),
-      self.viewModel.pairToken
-    )
     self.contentView.updateConstraints()
     self.contentView.layoutSubviews()
   }
