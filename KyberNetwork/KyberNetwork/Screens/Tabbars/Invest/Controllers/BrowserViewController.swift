@@ -289,21 +289,11 @@ extension BrowserViewController: WKScriptMessageHandler {
 extension BrowserViewController: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     self.navTitleLabel.text = webView.title
-    //        hideErrorView()
+    if let unwrap = webView.url {
+      self.viewModel.url = unwrap
+    }
   }
-  
-  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    //        hideErrorView()
-  }
-  
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-    //        handleError(error: error)
-  }
-  
-  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-    //        handleError(error: error)
-  }
-  
+
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
     guard let url = navigationAction.request.url, let scheme = url.scheme else {
       return decisionHandler(.allow)
