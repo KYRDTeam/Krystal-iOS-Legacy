@@ -128,6 +128,7 @@ class DappBrowserHomeViewController: UIViewController {
     self.viewModel.recentlyDataSource.forEach { item in
       UIImage.loadImageIconWithCache(item.image ?? "", completion: { image in
         self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
+        self.recentSearchTagsView.tagViews.last?.imageView?.contentMode = .scaleAspectFit
       })
     }
   }
