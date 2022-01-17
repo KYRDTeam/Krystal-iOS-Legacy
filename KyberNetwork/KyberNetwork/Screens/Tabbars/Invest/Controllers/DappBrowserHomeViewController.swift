@@ -50,7 +50,7 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var suggestionTitleSpaceContraintWithRecentlyTagView: NSLayoutConstraint!
   @IBOutlet weak var showAllRecentlyButton: UIButton!
   
-  let limitTagLength = 10
+  let limitTagLength = 12
   
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
 
