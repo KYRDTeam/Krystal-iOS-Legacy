@@ -336,10 +336,20 @@ open class EtherKeystore: Keystore {
     }
 
     func signPersonalMessage(_ data: Data, for account: Account) -> Result<Data, KeystoreError> {
-        let message = String(data: data, encoding: .utf8)!
-        let formattedMessage: String = "\u{19}Ethereum Signed Message:\n" + "\(message.count)" + message
-        return signMessage(formattedMessage.data(using: .utf8)!, for: account)
+      let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+      return signMessage(prefix + data, for: account)
     }
+
+  func signTypedMessage(_ datas: [EthTypedData], for account: Account) -> Result<Data, KeystoreError> {
+    let schemas = datas.map { $0.schemaData }.reduce(Data(), { $0 + $1 }).sha3(.keccak256)
+    let values = datas.map { $0.typedData }.reduce(Data(), { $0 + $1 }).sha3(.keccak256)
+    let combined = (schemas + values).sha3(.keccak256)
+    return signHash(combined, for: account)
+  }
+  
+  func signEip712TypedData(_ data: EIP712TypedData, for account: Account) -> Result<Data, KeystoreError> {
+      signHash(data.digest, for: account)
+  }
 
     func signMessage(_ message: Data, for account: Account) -> Result<Data, KeystoreError> {
         return signHash(message.sha3(.keccak256), for: account)

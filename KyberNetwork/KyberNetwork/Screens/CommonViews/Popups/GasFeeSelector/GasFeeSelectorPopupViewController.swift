@@ -392,12 +392,12 @@ class GasFeeSelectorPopupViewModel {
     let value = self.maxGasFeeBigInt * self.advancedGasLimitBigInt
     return value.displayRate(decimals: 18) + " \(KNGeneralProvider.shared.quoteToken)"
   }
-  
+
   var advancedGasLimitErrorStatus: AdvancedInputError {
     guard let unwrap = self.advancedGasLimit, !unwrap.isEmpty, let gasLimit = BigInt(unwrap) else {
       return .none
     }
-    
+
     if gasLimit < BigInt(21000) {
       return .low
     } else {

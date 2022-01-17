@@ -188,7 +188,36 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         )
         let vc = SignMessageConfirmPopup(viewModel: vm)
         self.navigationController.present(vc, animated: true, completion: nil)
-        
+      case .signTypedMessage(let typedData):
+        let vm = SignMessageConfirmViewModel(
+          url: url,
+          address: self.session.wallet.address.description,
+          message: typedData.first?.value.string ?? "0x",
+          onConfirm: {
+            self.signMessage(with: .typedMessage(typedData), callbackID: callbackID)
+          },
+          onCancel: {
+            let error = DAppError.cancelled
+            self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          }
+        )
+        let vc = SignMessageConfirmPopup(viewModel: vm)
+        self.navigationController.present(vc, animated: true, completion: nil)
+      case .signTypedMessageV3(let typedData):
+        let vm = SignMessageConfirmViewModel(
+          url: url,
+          address: self.session.wallet.address.description,
+          message: typedData.message.stringValue ?? "0x",
+          onConfirm: {
+            self.signMessage(with: .eip712v3And4(typedData), callbackID: callbackID)
+          },
+          onCancel: {
+            let error = DAppError.cancelled
+            self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          }
+        )
+        let vc = SignMessageConfirmPopup(viewModel: vm)
+        self.navigationController.present(vc, animated: true, completion: nil)
       case .ethCall(from: let from, to: let to, data: let data):
         let callRequest = CallRequest(to: to, data: data)
         let request = EtherServiceAlchemyRequest(batch: BatchFactory().create(callRequest))
@@ -270,6 +299,14 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       result  = keystore.signPersonalMessage(data, for: account)
     case .personalMessage(let data):
       result = keystore.signPersonalMessage(data, for: account)
+    case .typedMessage(let typedData):
+      if typedData.isEmpty {
+        result = .failure(KeystoreError.failedToSignMessage)
+      } else {
+        result = keystore.signTypedMessage(typedData, for: account)
+      }
+    case .eip712v3And4(let data):
+      result = keystore.signEip712TypedData(data, for: account)
     }
     var callback: DappCallback
     switch result {

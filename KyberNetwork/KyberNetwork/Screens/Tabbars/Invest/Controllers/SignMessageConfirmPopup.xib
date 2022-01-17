@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,7 +26,7 @@
                 <outlet property="fromAddressLabel" destination="XeP-VW-ISY" id="6h4-9d-m83"/>
                 <outlet property="siteIconImageView" destination="QCk-0A-KYz" id="SOp-ZP-XKD"/>
                 <outlet property="siteURLLabel" destination="SMp-j5-c6C" id="TlK-Nf-alh"/>
-                <outlet property="valueLabel" destination="L3G-4Z-9Cc" id="SOt-LC-uM3"/>
+                <outlet property="valueLabel" destination="7cW-35-C2d" id="JGC-AB-kxP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

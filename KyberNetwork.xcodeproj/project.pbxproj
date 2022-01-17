@@ -584,6 +584,11 @@
 		C337E15C277432A3001C8B03 /* EIP712TypedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C337E15B277432A3001C8B03 /* EIP712TypedData.swift */; };
 		C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C337E15D27744D37001C8B03 /* RPCServers.swift */; };
 		C337E16027748849001C8B03 /* DAppRequster.swift in Sources */ = {isa = PBXBuildFile; fileRef = C337E15F27748849001C8B03 /* DAppRequster.swift */; };
+		C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BB7FF27955BC700851BC6 /* ABIEncoder.swift */; };
+		C33BB80227955C2B00851BC6 /* ABIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BB80127955C2B00851BC6 /* ABIError.swift */; };
+		C33BB80627955C9A00851BC6 /* ABIValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BB80327955C9800851BC6 /* ABIValue.swift */; };
+		C33BB80727955C9A00851BC6 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BB80427955C9900851BC6 /* Function.swift */; };
+		C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BB80527955C9A00851BC6 /* ABIType.swift */; };
 		C33BC64725E353F70075259B /* tokens_price.json in Resources */ = {isa = PBXBuildFile; fileRef = C33BC64625E353F60075259B /* tokens_price.json */; };
 		C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33BF86826D77E5C00D9F621 /* SendNFTViewController.swift */; };
 		C33BF86B26D77E5C00D9F621 /* SendNFTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C33BF86926D77E5C00D9F621 /* SendNFTViewController.xib */; };
@@ -1396,6 +1401,11 @@
 		C337E15B277432A3001C8B03 /* EIP712TypedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EIP712TypedData.swift; sourceTree = "<group>"; };
 		C337E15D27744D37001C8B03 /* RPCServers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCServers.swift; sourceTree = "<group>"; };
 		C337E15F27748849001C8B03 /* DAppRequster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAppRequster.swift; sourceTree = "<group>"; };
+		C33BB7FF27955BC700851BC6 /* ABIEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABIEncoder.swift; sourceTree = "<group>"; };
+		C33BB80127955C2B00851BC6 /* ABIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABIError.swift; sourceTree = "<group>"; };
+		C33BB80327955C9800851BC6 /* ABIValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABIValue.swift; sourceTree = "<group>"; };
+		C33BB80427955C9900851BC6 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		C33BB80527955C9A00851BC6 /* ABIType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABIType.swift; sourceTree = "<group>"; };
 		C33BC64625E353F60075259B /* tokens_price.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tokens_price.json; sourceTree = "<group>"; };
 		C33BF86826D77E5C00D9F621 /* SendNFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNFTViewController.swift; sourceTree = "<group>"; };
 		C33BF86926D77E5C00D9F621 /* SendNFTViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendNFTViewController.xib; sourceTree = "<group>"; };
@@ -3304,6 +3314,11 @@
 		291F52AA1F6B805400B369AB /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				C33BB80527955C9A00851BC6 /* ABIType.swift */,
+				C33BB80327955C9800851BC6 /* ABIValue.swift */,
+				C33BB80427955C9900851BC6 /* Function.swift */,
+				C33BB80127955C2B00851BC6 /* ABIError.swift */,
+				C33BB7FF27955BC700851BC6 /* ABIEncoder.swift */,
 				291794F51F95DBE900539A30 /* Web3Swift */,
 			);
 			path = Vendors;
@@ -5137,6 +5152,7 @@
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
+				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
 				291795051F95F60100539A30 /* Web3RequestType.swift in Sources */,
 				C3263B0725EDE837005FBB60 /* WithdrawViewController.swift in Sources */,
 				7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */,
@@ -5238,6 +5254,7 @@
 				C3743298278ED344002C97A9 /* SignMessageConfirmPopup.swift in Sources */,
 				259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */,
 				C32656AC266F546100C69561 /* ActionData.swift in Sources */,
+				C33BB80627955C9A00851BC6 /* ABIValue.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
 				29FC0CB81F8299510036089F /* Coordinator.swift in Sources */,
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
@@ -5257,6 +5274,7 @@
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
 				25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
+				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
@@ -5373,6 +5391,7 @@
 				C360D222255E9AEE00B166E0 /* KNBottomPopupViewController.swift in Sources */,
 				2559A02E22CF3D8700D29735 /* KNTooltipView.swift in Sources */,
 				254BB358211D9F1400B8E75D /* KConfirmSendViewController.swift in Sources */,
+				C33BB80227955C2B00851BC6 /* ABIError.swift in Sources */,
 				C31F152923F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift in Sources */,
 				C31F74B525DD3284008B21F7 /* OverviewAssetsTableViewCell.swift in Sources */,
 				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
@@ -5447,6 +5466,7 @@
 				73ED85A520349BE400593BF3 /* StringFormatter.swift in Sources */,
 				2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
+				C33BB80727955C9A00851BC6 /* Function.swift in Sources */,
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,
 				255F6F2820BBCA6800EF808F /* KNWalletQRCodeCoordinator.swift in Sources */,

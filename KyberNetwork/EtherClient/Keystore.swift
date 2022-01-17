@@ -33,4 +33,6 @@ protocol Keystore {
     func signTransaction(_ signTransaction: SignTransaction) -> Result<Data, KeystoreError>
     func getPassword(for account: Account) -> String?
     func convertPrivateKeyToKeystoreFile(privateKey: String, passphrase: String) -> Result<[String: Any], KeystoreError>
+    func signTypedMessage(_ datas: [EthTypedData], for account: Account) -> Result<Data, KeystoreError>
+    func signEip712TypedData(_ data: EIP712TypedData, for account: Account) -> Result<Data, KeystoreError>
 }

@@ -120,7 +120,6 @@ extension KNTransactionCoordinator {
           print("[GetHistoryTransaction][Error] \(error.localizedDescription)")
         }
       } else {
-        
       }
     }
   }

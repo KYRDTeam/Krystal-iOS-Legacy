@@ -21,7 +21,12 @@ struct SignMessageConfirmViewModel {
   var displayMessage: String {
     let data = Data(hex: self.message)
     
-    return String(decoding: data, as: UTF8.self)
+    if let str = String(data: data, encoding: .utf8) {
+      return str
+    } else {
+      return self.message
+    }
+   
   }
 }
 
