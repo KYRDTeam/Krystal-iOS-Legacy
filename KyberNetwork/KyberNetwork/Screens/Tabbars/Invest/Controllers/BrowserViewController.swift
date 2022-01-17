@@ -300,10 +300,18 @@ extension BrowserViewController: WKNavigationDelegate {
     }
     self.navTitleLabel.text = webView.title
     self.viewModel.url = url
-    
+
     let app = UIApplication.shared
     if ["tel", "mailto"].contains(scheme), app.canOpenURL(url) {
       app.open(url)
+      return decisionHandler(.cancel)
+    }
+    
+    if scheme == "itms-apps" {
+      let urlString = url.absoluteString.replacingOccurrences(of: "itms-apps", with: "https")
+      if let httpURL = URL(string: urlString), app.canOpenURL(httpURL) {
+        app.open(httpURL)
+      }
       return decisionHandler(.cancel)
     }
 
