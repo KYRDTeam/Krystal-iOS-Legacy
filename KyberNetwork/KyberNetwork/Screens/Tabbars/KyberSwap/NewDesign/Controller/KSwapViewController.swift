@@ -9,8 +9,8 @@ import Kingfisher
 
 enum KSwapViewEvent {
   case searchToken(from: TokenObject, to: TokenObject, isSource: Bool)
-  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
-  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String))
+  case confirmSwap(data: KNDraftExchangeTransaction, tx: SignTransaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String), maxSlippage: Double)
+  case confirmEIP1559Swap(data: KNDraftExchangeTransaction, eip1559tx: EIP1559Transaction, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveDest: (String, String), maxSlippage: Double)
   case showQRCode
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, pair: String, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case updateRate(rate: Double)
@@ -34,11 +34,12 @@ protocol KSwapViewControllerDelegate: class {
 
 //swiftlint:disable type_body_length
 class KSwapViewController: KNBaseViewController {
-
+  //flag to check if should open confirm screen right after done edit transaction setting
+  fileprivate var shouldOpenConfirm: Bool = false
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
 
-  fileprivate var viewModel: KSwapViewModel
+  var viewModel: KSwapViewModel
   weak var delegate: KSwapViewControllerDelegate?
 
   @IBOutlet weak var scrollContainerView: UIScrollView!
@@ -70,7 +71,6 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var minReceivedAmount: UILabel!
   @IBOutlet weak var rateTimerView: SRCountdownTimer!
   @IBOutlet weak var minReceivedAmountTitleLabel: UILabel!
-  
   @IBOutlet weak var loadingView: SRCountdownTimer!
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
@@ -350,6 +350,10 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
+    self.openSwapConfirm()
+  }
+
+  fileprivate func openSwapConfirm() {
     if self.showWarningDataInvalidIfNeeded(isConfirming: true) { return }
     let event = KSwapViewEvent.getExpectedRate(
       from: self.viewModel.from,
@@ -440,21 +444,49 @@ class KSwapViewController: KNBaseViewController {
     self.view.endEditing(true)
     self.view.layoutIfNeeded()
   }
-  
+
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
+      self.viewModel.isFromDeepLink = false
       let viewModel = SwitchChainWalletsListViewModel(selected: selected)
       let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
       self.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
-  
+
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.setUpGasFeeView()
+  }
+
+  func coordinatorShouldShowSwitchChainPopup(chainId: Int) {
+    var alertController: KNPrettyAlertController
+    guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
+      self.navigationController?.showTopBannerView(message: "Can't detect chain (chainId = \(chainId))".toBeLocalised())
+      return
+    }
+
+    alertController = KNPrettyAlertController(
+      title: "",
+      message: "Please switch to \(chainName) to swap".toBeLocalised(),
+      secondButtonTitle: "OK".toBeLocalised(),
+      firstButtonTitle: "Cancel".toBeLocalised(),
+      secondButtonAction: {
+        KNGeneralProvider.shared.currentChain = chainType
+        var selectedAddress = ""
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+          selectedAddress = appDelegate.coordinator.session.wallet.address.description
+        }
+        self.viewModel.isFromDeepLink = true
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+      },
+      firstButtonAction: nil
+    )
+    alertController.popupHeight = 320
+    self.present(alertController, animated: true, completion: nil)
   }
 
   func coordinatorUpdateGasPriceCached() {
@@ -559,6 +591,11 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
+    self.shouldOpenConfirm = false
+    self.openTransactionSetting()
+  }
+
+  fileprivate func openTransactionSetting() {
     let event = KSwapViewEvent.openGasPriceSelect(
       gasLimit: self.viewModel.estimateGasLimit,
       baseGasLimit: self.viewModel.baseGasLimit,
@@ -797,6 +834,11 @@ extension KSwapViewController {
     self.setUpGasFeeView()
     self.view.layoutIfNeeded()
   }
+  
+  func coordinatorUpdateTokens(fromToken: TokenObject, toToken: TokenObject) {
+    self.viewModel.updateTokensPair(from: fromToken, to: toToken)
+    self.updateTokensView(updatedFrom: true, updatedTo: true)
+  }
 
   /*
    Result from sending exchange token
@@ -843,6 +885,11 @@ extension KSwapViewController {
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
     self.viewModel.resetAdvancedSettings()
+    
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
@@ -961,7 +1008,8 @@ extension KSwapViewController {
         priceImpact: priceImpactValue,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
-        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
+        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue),
+        maxSlippage: self.viewModel.minRatePercent
       ))
     } else {
       self.delegate?.kSwapViewController(self, run: .confirmSwap(
@@ -970,7 +1018,8 @@ extension KSwapViewController {
         priceImpact: priceImpactValue,
         platform: self.viewModel.currentFlatform,
         rawTransaction: object,
-        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue)
+        minReceiveDest: (self.viewModel.displayExpectedReceiveTitle, self.viewModel.displayExpectedReceiveValue),
+        maxSlippage: self.viewModel.minRatePercent
       ))
     }
   }
@@ -978,6 +1027,11 @@ extension KSwapViewController {
   func coordinatorFailUpdateEncodedTx() {
     self.showErrorMessage()
     self.hideLoading()
+  }
+  
+  func coordinatorEditTransactionSetting() {
+    self.shouldOpenConfirm = true
+    self.openTransactionSetting()
   }
 
   func coordinatorSuccessSendTransaction() {
@@ -1032,6 +1086,10 @@ extension KSwapViewController {
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.setUpGasFeeView()
+    if self.shouldOpenConfirm {
+      self.openSwapConfirm()
+      self.shouldOpenConfirm = false
+    }
   }
 
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {

@@ -68,7 +68,17 @@ extension KNAppCoordinator {
       self.settingsCoordinator!.navigationController,
     ]
     self.tabbarController.tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
-    self.tabbarController.tabBar.barTintColor = UIColor(named: "toolbarBgColor")
+    if #available(iOS 15.0, *) {
+      let apperance = UITabBarAppearance()
+      apperance.configureWithOpaqueBackground()
+      apperance.backgroundColor = UIColor(named: "toolbarBgColor")
+      
+      self.tabbarController.tabBar.standardAppearance = apperance
+      self.tabbarController.tabBar.scrollEdgeAppearance = self.tabbarController.tabBar.standardAppearance
+    } else {
+      self.tabbarController.tabBar.barTintColor = UIColor(named: "toolbarBgColor")
+    }
+    
     self.overviewTabCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
       image: UIImage(named: "tabbar_summary_icon"),

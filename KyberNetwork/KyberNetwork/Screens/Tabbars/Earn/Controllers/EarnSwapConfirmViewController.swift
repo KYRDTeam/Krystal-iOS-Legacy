@@ -22,6 +22,7 @@ struct EarnSwapConfirmViewModel {
   let minReceiveAmount: String
   let minReceiveTitle: String
   let priceImpact: Double
+  let maxSlippage: Double
   
   var toAmountString: String {
     let amountString = self.toAmount.displayRate(decimals: self.toToken.decimals)
@@ -57,11 +58,16 @@ struct EarnSwapConfirmViewModel {
       return String(format: "%.2f", self.platform.distributionSupplyRate * 100.0) + "%"
     }
   }
+  
+  var slippageString: String {
+    let doubleStr = String(format: "%.2f", self.maxSlippage)
+    return "\(doubleStr)%"
+  }
 
   var netAPYString: String {
     return String(format: "%.2f", (self.platform.distributionSupplyRate + self.platform.supplyRate) * 100.0) + "%"
   }
-  
+
   var transactionFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
@@ -87,15 +93,33 @@ struct EarnSwapConfirmViewModel {
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
-  
+
   var usdValueBigInt: BigInt {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.toToken.address) else { return BigInt(0) }
     let usd = self.toAmount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.toToken.decimals)
     return usd
   }
+  
+  var fromUsdValueBigInt: BigInt {
+    guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.fromToken.address) else { return BigInt(0) }
+    let usd = self.fromAmount * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.fromToken.decimals)
+    return usd
+  }
 
   var displayUSDValue: String {
-    return "~ \(self.usdValueBigInt.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: 6)) USD"
+    let value = self.usdValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
+    return "≈ \(value) USD"
+  }
+  
+  var fromDisplayUSDValue: String {
+    let value = self.fromUsdValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
+    if let doubleValue = Double(value), doubleValue < 0.01 {
+      return ""
+    }
+    return "≈ \(value) USD"
   }
 
   var displayCompInfo: String {
@@ -140,7 +164,7 @@ struct EarnSwapConfirmViewModel {
   var hasPriceImpact: Bool {
     return self.priceImpact <= -5
   }
-  
+
   var needConfirm: Bool {
     return self.priceImpact <= -20
   }
@@ -167,6 +191,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var sendButtonTopContraint: NSLayoutConstraint!
   @IBOutlet weak var distributeAPYValueLabel: UILabel!
   @IBOutlet weak var usdValueLabel: UILabel!
+  @IBOutlet weak var fromUSDValueLabel: UILabel!
   @IBOutlet weak var compInfoLabel: UILabel!
   @IBOutlet weak var minimumReceivedTitleLabel: UILabel!
   @IBOutlet weak var minimumReceivedLabel: UILabel!
@@ -175,6 +200,8 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBOutlet weak var swapAnywayContainerView: UIView!
   @IBOutlet weak var swapAnywayBtn: UIButton!
   @IBOutlet weak var topBackgroundView: UIView!
+  @IBOutlet weak var slippageLabel: UILabel!
+  
   var isAccepted: Bool = true
   let transitor = TransitionDelegate()
   let viewModel: EarnSwapConfirmViewModel
@@ -237,6 +264,7 @@ class EarnSwapConfirmViewController: KNBaseViewController {
     self.transactionGasPriceLabel.text = self.viewModel.transactionGasPriceString
     self.netAPYValueLabel.text = self.viewModel.netAPYString
     self.usdValueLabel.text = self.viewModel.displayUSDValue
+    self.fromUSDValueLabel.text = self.viewModel.fromDisplayUSDValue
     self.platformIconImageView.image = KNGeneralProvider.shared.chainIconImage
     self.tokenIconImageView.setSymbolImage(symbol: self.viewModel.toToken.symbol)
     self.minimumReceivedLabel.text = self.viewModel.minReceiveAmount
@@ -257,10 +285,10 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.priceImpaceWarningLabel.isHidden = true
       self.sendButtonTopContraint.constant = self.viewModel.platform.isCompound ? 200 : 20
     }
-    
     self.swapAnywayContainerView.isHidden = !self.viewModel.needConfirm
+    self.slippageLabel.text = self.viewModel.slippageString
   }
-  
+
   fileprivate func updateUIPriceImpact() {
     guard self.viewModel.needConfirm else { return }
     if self.isAccepted {
@@ -275,6 +303,12 @@ class EarnSwapConfirmViewController: KNBaseViewController {
       self.swapAnywayBtn.setImage(nil, for: .normal)
       self.confirmButton.isEnabled = false
       self.confirmButton.alpha = 0.5
+    }
+  }
+
+  @IBAction func editButtonTapped(_ sender: Any) {
+    self.dismiss(animated: true) {
+      self.delegate?.kConfirmEarnSwapViewControllerOpenGasPriceSelect()
     }
   }
 
@@ -316,6 +350,13 @@ class EarnSwapConfirmViewController: KNBaseViewController {
   @IBAction func apyHelpButtonTapped(_ sender: UIButton) {
     self.showBottomBannerView(
       message: "Positive APY mean you will receive interest and negative means you will pay interest.".toBeLocalised(),
+      icon: UIImage(named: "help_icon_large") ?? UIImage(),
+      time: 3
+    )
+  }
+  @IBAction func slippageHintButtonTapped(_ sender: Any) {
+    self.showBottomBannerView(
+      message: "Your transaction will revert if the price changes unfavorably by more than this percentage.".toBeLocalised(),
       icon: UIImage(named: "help_icon_large") ?? UIImage(),
       time: 3
     )

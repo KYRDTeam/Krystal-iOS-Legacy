@@ -1,10 +1,10 @@
-name: CI Build
+name: Testflight
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - main
+      - 'release-*'
+      - ci-testflight
 
 concurrency: 
   group: ${{ github.ref }}
@@ -68,30 +68,18 @@ jobs:
   build-ios:
     needs:
       - prepare
-    strategy:
-      matrix: 
-        include:
-          - app_name: "Krystal: Develop"
-            env: dev
-            ota_key: DEV_OTA_URL
-            bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            bump_build: false
-            
     runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
-      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/distribution.p12
+      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/devops_testflight.p12
       DISTRIBUTE_CERT_PASSWORD: ${{ secrets.DISTRIBUTE_CERT_PASSWORD }}
       DEVELOPMENT_CERT_PATH: /Users/runner/privates/certificates/devops_development.p12
       DEVELOPMENT_CERT_PASSWORD: ${{ secrets.DEVELOPMENT_CERT_PASSWORD }}
       # xcode project environment
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
-      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID }}
+      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
@@ -113,6 +101,11 @@ jobs:
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
       # default actor
       GH_ACTOR: kyber-ci-bot
+      # testflight
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+      APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+      APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
       # GCP 
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
     steps:
@@ -127,7 +120,7 @@ jobs:
           
       - name: Install Pod check
         run: gem install cocoapods-check
-          
+
       - name: Setup Sentry CLI
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
@@ -141,7 +134,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@master
 
       - name: Setup cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -156,7 +149,7 @@ jobs:
       - name: Setup environments
         shell: bash
         env:
-          ENV: ${{ matrix.env }}
+          ENV: prod
         run: |
           cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
@@ -164,35 +157,24 @@ jobs:
       - name: Pods install
         run: pod check || pod install
 
-      - name: Build IPA
+      - name: Build and Upload to Testflight
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: all
+          lane: pre_release
           bundle-install-path: "vendor/bundle"
-
-      - name: Deploy to OTA Server
-        shell: bash
-        env:
-          OTA_URL: ${{ secrets[matrix.ota_key] }}
-          APP_NAME: ${{ matrix.app_name }}
-          OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
-          OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
-        run: .github/deploy 
 
       - name: Prepare bump build number
         run: |
           git config user.name "$GH_ACTOR"
           git config user.email "$GH_ACTOR@users.noreply.github.com"
-                    
+
       - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
           bundle-install-path: "vendor/bundle"
 
       - name: Push commit 
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
         shell: bash
         run: | 
           git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"

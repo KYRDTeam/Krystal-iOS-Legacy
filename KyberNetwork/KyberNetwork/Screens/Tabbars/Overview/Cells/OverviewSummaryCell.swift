@@ -35,7 +35,12 @@ class OverviewSummaryCellViewModel {
       return "********"
     }
     let currencyFormatter = StringFormatter()
-    return self.currency.symbol() + currencyFormatter.currencyString(value: self.value, decimals: self.currency.decimalNumber())
+    
+    let hideAndDeleteBigInt = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currency, chainType: self.chainType ?? .eth)
+    let hideAndDeleteValue = hideAndDeleteBigInt.doubleUSDValue(currencyDecimal: self.currency.decimalNumber())
+    let chainBalanceValue = self.value - hideAndDeleteValue
+    
+    return self.currency.symbol() + currencyFormatter.currencyString(value: chainBalanceValue, decimals: self.currency.decimalNumber())
   }
 
   func percentString() -> String {

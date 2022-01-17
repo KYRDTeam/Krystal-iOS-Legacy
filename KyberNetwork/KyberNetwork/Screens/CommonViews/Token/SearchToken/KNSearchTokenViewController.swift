@@ -143,7 +143,6 @@ class KNSearchTokenViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    self.searchTextField.becomeFirstResponder()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -158,6 +157,8 @@ class KNSearchTokenViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.searchTextField.delegate = self
     self.searchTextField.setPlaceholder(text: "Search name or paste address".toBeLocalised(), color: UIColor(named: "normalTextColor")!)
+    self.searchTextField.autocorrectionType = .no
+    self.searchTextField.textContentType = .name
     let nib = UINib(nibName: KNSearchTokenTableViewCell.className, bundle: nil)
     self.tokensTableView.register(nib, forCellReuseIdentifier: kSearchTokenTableViewCellID)
     self.tokensTableView.rowHeight = 40

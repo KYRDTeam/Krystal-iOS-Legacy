@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import SwipeCellKit
+import MBProgressHUD
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -639,7 +640,11 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "screen_name": "OverviewMainViewController",
         ]
         KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
-        self.reloadUI()
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+          MBProgressHUD.hide(for: self.view, animated: true)
+          self.reloadUI()
+        })
       }
       hideAction.title = "Hide".toBeLocalised().uppercased()
       hideAction.textColor = UIColor(named: "normalTextColor")
@@ -657,7 +662,11 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "screen_name": "OverviewMainViewController",
         ]
         KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
-        self.reloadUI()
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+          MBProgressHUD.hide(for: self.view, animated: true)
+          self.reloadUI()
+        })
       }
       deleteAction.title = "Delete".toBeLocalised().uppercased()
       deleteAction.textColor = UIColor(named: "normalTextColor")

@@ -210,8 +210,6 @@
 		25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */; };
 		25968732211DEC1D0080A33F /* KConfirmSwapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */; };
 		25968736211DEC980080A33F /* KConfirmSwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */; };
-		25968739211EA4180080A33F /* KAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25968738211EA4180080A33F /* KAdvancedSettingsView.swift */; };
-		2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */; };
 		259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B120EF286500CCF2D6 /* KNListContactViewController.swift */; };
 		259925B420EF286500CCF2D6 /* KNListContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 259925B220EF286500CCF2D6 /* KNListContactViewController.xib */; };
 		259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */; };
@@ -467,6 +465,7 @@
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
 		7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */; };
+		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
 		7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43FE27144533006CF502 /* RewardsViewController.swift */; };
 		7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE43FF27144533006CF502 /* RewardsViewController.xib */; };
 		7EFE440527156622006CF502 /* RewardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE440327156622006CF502 /* RewardTableViewCell.swift */; };
@@ -1009,8 +1008,6 @@
 		2596872F211DEC1D0080A33F /* KConfirmSwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewController.swift; sourceTree = "<group>"; };
 		25968730211DEC1D0080A33F /* KConfirmSwapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KConfirmSwapViewController.xib; sourceTree = "<group>"; };
 		25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KConfirmSwapViewModel.swift; sourceTree = "<group>"; };
-		25968738211EA4180080A33F /* KAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KAdvancedSettingsView.swift; sourceTree = "<group>"; };
-		2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KAdvancedSettingsView.xib; sourceTree = "<group>"; };
 		259925B120EF286500CCF2D6 /* KNListContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNListContactViewController.swift; sourceTree = "<group>"; };
 		259925B220EF286500CCF2D6 /* KNListContactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNListContactViewController.xib; sourceTree = "<group>"; };
 		259925B720EF2D4900CCF2D6 /* KNContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableViewCell.swift; sourceTree = "<group>"; };
@@ -1279,6 +1276,7 @@
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
 		7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityPoolModel.swift; sourceTree = "<group>"; };
+		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
 		7EFE43FE27144533006CF502 /* RewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsViewController.swift; sourceTree = "<group>"; };
 		7EFE43FF27144533006CF502 /* RewardsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardsViewController.xib; sourceTree = "<group>"; };
 		7EFE440327156622006CF502 /* RewardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTableViewCell.swift; sourceTree = "<group>"; };
@@ -2213,7 +2211,6 @@
 				C6B4CA2623CC47C40049C843 /* TransferConsent */,
 				258BF6A5230689EF00988EDD /* AllowCamera */,
 				2542604B21218EBC0015ECC7 /* Popups */,
-				25968737211EA4000080A33F /* AdvancedSettings */,
 				254BB34F211D9A2300B8E75D /* Confirms */,
 				25682B6F20EE04CB009738C4 /* Contact */,
 				25682B7020EE051F009738C4 /* Token */,
@@ -2609,15 +2606,6 @@
 				25968735211DEC980080A33F /* KConfirmSwapViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		25968737211EA4000080A33F /* AdvancedSettings */ = {
-			isa = PBXGroup;
-			children = (
-				25968738211EA4180080A33F /* KAdvancedSettingsView.swift */,
-				2596873A211EA4360080A33F /* KAdvancedSettingsView.xib */,
-			);
-			path = AdvancedSettings;
 			sourceTree = "<group>";
 		};
 		259925B520EF288400CCF2D6 /* ListContactView */ = {
@@ -4036,6 +4024,7 @@
 			children = (
 				C326703D2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift */,
 				C326703E2579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib */,
+				7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */,
 			);
 			path = GasFeeSelector;
 			sourceTree = "<group>";
@@ -4630,7 +4619,6 @@
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
-				2596873B211EA4360080A33F /* KAdvancedSettingsView.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
 				25F1BAD921BBA7D200A36900 /* config_env_ropsten2.json in Resources */,
 				25929C5920DA5C760045CFA3 /* SF-Pro-Display-BoldItalic.otf in Resources */,
@@ -5276,6 +5264,7 @@
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
+				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
@@ -5290,7 +5279,6 @@
 				C3ED1DD32616F2D40024970C /* NotificationTableViewCell.swift in Sources */,
 				73200B672044B22600118A82 /* TokensDataStore.swift in Sources */,
 				29C80D4B1FB51C460037B1E0 /* Decimal.swift in Sources */,
-				25968739211EA4180080A33F /* KAdvancedSettingsView.swift in Sources */,
 				250343FF20DA37F700528810 /* KNSaveContactViewController.swift in Sources */,
 				298542F91FBE9A0100CB5081 /* CryptoAddressValidator.swift in Sources */,
 				C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */,
@@ -5770,7 +5758,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5778,7 +5766,7 @@
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = "KyberSwap - Crypto Exchange";
@@ -5803,7 +5791,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5811,7 +5799,7 @@
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = "KyberSwap - Crypto Exchange";
 				PROVISIONING_PROFILE = "d08d5f84-6398-4202-b037-8e45e693b687";
@@ -5914,13 +5902,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5944,12 +5932,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.KrystalNotificationServiceExtension;

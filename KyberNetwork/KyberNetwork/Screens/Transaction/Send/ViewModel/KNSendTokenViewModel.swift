@@ -188,7 +188,8 @@ class KNSendTokenViewModel: NSObject {
       NSAttributedString.Key.font: UIFont.Kyber.latoRegular(with: 14),
       NSAttributedString.Key.foregroundColor: UIColor(red: 66, green: 87, blue: 95),
     ]
-    return NSAttributedString(string: "Recipient Address/ENS", attributes: attributes)
+    let placeHolderString = KNGeneralProvider.shared.currentChain == .eth ? "Recipient Address/ENS".toBeLocalised() : "Recipient Address".toBeLocalised()
+    return NSAttributedString(string: placeHolderString, attributes: attributes)
   }
 
   var placeHolderAmount: NSAttributedString {

@@ -311,7 +311,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           }
         }
       }
-    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let eip1559Transaction, let isSwap, let rawTransaction, let minReceivedData, let priceImpact):
+    case .confirmTx(let fromToken, let toToken, let platform, let fromAmount, let toAmount, let gasPrice, let gasLimit, let transaction, let eip1559Transaction, let isSwap, let rawTransaction, let minReceivedData, let priceImpact, let maxSlippage):
       self.navigationController.displayLoading()
       if let unwrap = transaction {
         KNGeneralProvider.shared.getEstimateGasLimit(transaction: unwrap) { (result) in
@@ -319,7 +319,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: unwrap.gasPrice, gasLimit: unwrap.gasLimit, transaction: unwrap, eip1559Transaction: eip1559Transaction, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact, maxSlippage: maxSlippage)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
@@ -336,6 +336,12 @@ extension EarnCoordinator: EarnViewControllerDelegate {
                 errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
             }
+            if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+              errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+            }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
         }
@@ -347,7 +353,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
           switch result {
           case .success:
             if isSwap {
-              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact)
+              let viewModel = EarnSwapConfirmViewModel(platform: platform, fromToken: fromToken, fromAmount: fromAmount, toToken: toToken, toAmount: toAmount, gasPrice: txGasPrice, gasLimit: txGasLimit, transaction: nil, eip1559Transaction: unwrap, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, priceImpact: priceImpact, maxSlippage: maxSlippage)
               let controller = EarnSwapConfirmViewController(viewModel: viewModel)
               controller.delegate = self
               self.navigationController.present(controller, animated: true, completion: nil)
@@ -363,6 +369,12 @@ extension EarnCoordinator: EarnViewControllerDelegate {
               if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
                 errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
               }
+            }
+            if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+              errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+            }
+            if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+              errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
@@ -759,6 +771,10 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 }
 
 extension EarnCoordinator: EarnConfirmViewControllerDelegate {
+  func kConfirmEarnSwapViewControllerOpenGasPriceSelect() {
+    self.earnSwapViewController?.coordinatorEditTransactionSetting()
+  }
+
   func earnConfirmViewController(_ controller: KNBaseViewController, didConfirm transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, amount: String, netAPY: String, platform: LendingPlatformData, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
