@@ -220,6 +220,7 @@ class BrowserViewController: KNBaseViewController {
   }
   
   private func saveBrowserIfNeeded() {
+    guard self.viewModel.url.host != SearchEngine.default.host else { return }
     if !BrowserStorage.shared.isExistRecently(url: self.viewModel.url.absoluteString) {
       let item = BrowserItem(
         title: self.webView.title ?? "",
@@ -282,7 +283,6 @@ extension BrowserViewController: WKScriptMessageHandler {
     
     let action = DappAction.fromCommand(command)
     delegate?.didCall(action: action, callbackID: command.id, inBrowserViewController: self)
-    self.saveBrowserIfNeeded()
   }
 }
 
@@ -291,6 +291,7 @@ extension BrowserViewController: WKNavigationDelegate {
     self.navTitleLabel.text = webView.title
     if let unwrap = webView.url {
       self.viewModel.url = unwrap
+      self.saveBrowserIfNeeded()
     }
   }
 
@@ -306,7 +307,7 @@ extension BrowserViewController: WKNavigationDelegate {
       app.open(url)
       return decisionHandler(.cancel)
     }
-    
+
     if scheme == "itms-apps" {
       let urlString = url.absoluteString.replacingOccurrences(of: "itms-apps", with: "https")
       if let httpURL = URL(string: urlString), app.canOpenURL(httpURL) {
