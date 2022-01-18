@@ -167,6 +167,7 @@
                                     </connections>
                                 </view>
                             </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="6cd-Wo-q2L" secondAttribute="bottom" id="1iL-Es-CC8"/>
                                 <constraint firstItem="6cd-Wo-q2L" firstAttribute="top" secondItem="ELj-wb-8FD" secondAttribute="top" id="Rxb-bL-UY8"/>
