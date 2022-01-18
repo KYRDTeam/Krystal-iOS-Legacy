@@ -64,10 +64,10 @@ extension DappAction {
     let to = object["to"]?.value ?? ""
     let from = object["from"]?.value ?? ""
     let value = BigInt((object["value"]?.value ?? "0").drop0x, radix: 16) ?? BigInt()
-    let nonce: BigInt? = {
-      guard let value = object["nonce"]?.value else { return .none }
-      return BigInt(value.drop0x, radix: 16)
-    }()
+//    let nonce: BigInt? = {
+//      guard let value = object["nonce"]?.value else { return .none }
+//      return BigInt(value.drop0x, radix: 16)
+//    }()
     let gasLimit: BigInt? = {
       guard let value = object["gasLimit"]?.value ?? object["gas"]?.value else { return KNGasConfiguration.exchangeTokensGasLimitDefault }
       return BigInt((value).drop0x, radix: 16)
@@ -82,7 +82,7 @@ extension DappAction {
       value: value.description,
       from: from,
       to: to,
-      nonce: Int(nonce ?? 0),
+      nonce: 0,
       data: data,
       gasPrice: gasPrice?.description ?? "",
       gasLimit: gasLimit?.description ?? "",

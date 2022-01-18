@@ -25,12 +25,13 @@ class DappBrowserHomeViewModel {
   ]
   
   var recentlyDataSource: [BrowserItem] {
-    if BrowserStorage.shared.recentlyBrowser.count > 5 {
-      return Array(BrowserStorage.shared.recentlyBrowser.reversed().prefix(5))
+    if BrowserStorage.shared.recentlyBrowser.count > 8 {
+      return Array(BrowserStorage.shared.recentlyBrowser.reversed().prefix(8))
     }
-    
+
     return BrowserStorage.shared.recentlyBrowser
   }
+
   var favoriteDataSource: [BrowserItem] {
     return BrowserStorage.shared.favoriteBrowser
   }
@@ -49,8 +50,10 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var suggestionTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var suggestionTitleSpaceContraintWithRecentlyTagView: NSLayoutConstraint!
   @IBOutlet weak var showAllRecentlyButton: UIButton!
+  @IBOutlet weak var recentlyTagsListWidthContraint: NSLayoutConstraint!
+  @IBOutlet weak var recentlyTagViewScrollViewContainer: UIScrollView!
   
-  let limitTagLength = 12
+  let limitTagLength = 16
   
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
 
@@ -75,6 +78,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.recentTitleLabel.isHidden = true
         self.showAllRecentlyButton.isHidden = true
         self.recentSearchTagsView.isHidden = true
+        self.recentlyTagViewScrollViewContainer.isHidden = true
         self.favoriteTitleLabel.isHidden = true
         self.favoriteTagsView.isHidden = true
         self.suggestionTitleTopContraint.priority = UILayoutPriority(200)
@@ -84,6 +88,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.recentTitleLabel.isHidden = true
         self.showAllRecentlyButton.isHidden = true
         self.recentSearchTagsView.isHidden = true
+        self.recentlyTagViewScrollViewContainer.isHidden = true
         self.favoriteTitleLabel.isHidden = false
         self.favoriteTagsView.isHidden = false
         self.favoriteTitleTopContraint.priority = UILayoutPriority(200)
@@ -96,6 +101,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.recentTitleLabel.isHidden = false
         self.showAllRecentlyButton.isHidden = false
         self.recentSearchTagsView.isHidden = false
+        self.recentlyTagViewScrollViewContainer.isHidden = false
         self.favoriteTitleLabel.isHidden = true
         self.favoriteTagsView.isHidden = true
         self.suggestionTitleSpaceContraintWithRecentlyTagView.priority = UILayoutPriority(1000)
@@ -105,6 +111,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.recentTitleLabel.isHidden = false
         self.showAllRecentlyButton.isHidden = false
         self.recentSearchTagsView.isHidden = false
+        self.recentlyTagViewScrollViewContainer.isHidden = false
         self.favoriteTitleLabel.isHidden = false
         self.favoriteTagsView.isHidden = false
         self.suggestionTitleSpaceContraintWithRecentlyTagView.priority = UILayoutPriority(200)
@@ -122,7 +129,7 @@ class DappBrowserHomeViewController: UIViewController {
       self.suggestionTagsView.addTag(item.title.limit(scope: limitTagLength), image: UIImage(named: item.image ?? ""))
     }
   }
-  
+
   private func setupRecentlySection() {
     self.recentSearchTagsView.removeAllTags()
     self.viewModel.recentlyDataSource.forEach { item in
@@ -131,6 +138,7 @@ class DappBrowserHomeViewController: UIViewController {
         self.recentSearchTagsView.tagViews.last?.imageView?.contentMode = .scaleAspectFit
       })
     }
+    self.recentlyTagsListWidthContraint.constant = CGFloat(132 * self.viewModel.recentlyDataSource.count)
   }
   
   private func setupFavoriteSection() {

@@ -177,8 +177,15 @@ extension String {
   }
   
   func limit(scope: Int) -> String {
-    guard self.count >= scope else { return self }
-    return String(self.prefix(scope)) + "..."
+    guard self.count > scope else {
+      let number = scope - self.count
+      var padding = ""
+      for _ in 1...number {
+        padding += " "
+      }
+      return self + padding
+    }
+    return String(self.prefix(scope - 3)) + "..."
   }
 
   var isHexEncoded: Bool {
