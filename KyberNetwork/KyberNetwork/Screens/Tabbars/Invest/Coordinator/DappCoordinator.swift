@@ -149,7 +149,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       viewController.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(DAppError.cancelled))
       navigationController.topViewController?.displayError(error: InCoordinatorError.onlyWatchAccount)
     }
-    
+
     func performDappAction(account: Address) {
       switch action {
       case .signTransaction(let unconfirmedTransaction):
@@ -207,7 +207,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         let vm = SignMessageConfirmViewModel(
           url: url,
           address: self.session.wallet.address.description,
-          message: typedData.message.stringValue ?? "0x",
+          message: typedData.message["functionSignature"]?.stringValue ?? "0x",
           onConfirm: {
             self.signMessage(with: .eip712v3And4(typedData), callbackID: callbackID)
           },
