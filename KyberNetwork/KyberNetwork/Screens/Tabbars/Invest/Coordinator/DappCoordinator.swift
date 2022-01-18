@@ -239,8 +239,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             }
           }
         }
-//      case .walletAddEthereumChain(let customChain):
-//        break
+      case .walletAddEthereumChain(let customChain):
+        self.navigationController.showTopBannerView(message: "Please switch to \(customChain.chainName ?? "Unknow") to continue")
       case .walletSwitchEthereumChain(let targetChain):
         guard let targetChainId = Int(chainId0xString: targetChain.chainId), let chainType = ChainType.make(chainID: targetChainId) else {
           let error = DAppError.nodeError("Invaild chain ID")

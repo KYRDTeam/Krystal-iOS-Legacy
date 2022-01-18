@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -135,6 +135,7 @@
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="tz4-HM-xLn" firstAttribute="leading" secondItem="3qD-7Y-9Fy" secondAttribute="leading" constant="37" id="14x-2L-6hA"/>
+                        <constraint firstAttribute="trailing" secondItem="BFm-xb-CLC" secondAttribute="trailing" constant="37" id="2KL-JE-Spu"/>
                         <constraint firstItem="lMu-jj-PR3" firstAttribute="top" secondItem="L3G-4Z-9Cc" secondAttribute="bottom" constant="26" id="2UZ-ca-qeG"/>
                         <constraint firstAttribute="trailing" secondItem="XeP-VW-ISY" secondAttribute="trailing" constant="37" id="5Dh-H4-luH"/>
                         <constraint firstAttribute="height" constant="368" id="7nV-uQ-qy7"/>
@@ -143,6 +144,7 @@
                         <constraint firstItem="f8a-bc-oHb" firstAttribute="width" secondItem="lMu-jj-PR3" secondAttribute="width" id="Jfb-r6-q1y"/>
                         <constraint firstItem="zg1-oW-Vgd" firstAttribute="top" secondItem="BFm-xb-CLC" secondAttribute="bottom" constant="43" id="OvZ-hE-P1r"/>
                         <constraint firstItem="7cW-35-C2d" firstAttribute="trailing" secondItem="XeP-VW-ISY" secondAttribute="trailing" id="PFy-6E-cWm"/>
+                        <constraint firstItem="BFm-xb-CLC" firstAttribute="leading" secondItem="3qD-7Y-9Fy" secondAttribute="leading" constant="37" id="Phm-8e-QYL"/>
                         <constraint firstItem="L3G-4Z-9Cc" firstAttribute="top" secondItem="tz4-HM-xLn" secondAttribute="bottom" constant="12" id="WW6-Me-5x8"/>
                         <constraint firstItem="f8a-bc-oHb" firstAttribute="leading" secondItem="lMu-jj-PR3" secondAttribute="trailing" constant="32" id="bMV-px-YML"/>
                         <constraint firstItem="BFm-xb-CLC" firstAttribute="centerX" secondItem="3qD-7Y-9Fy" secondAttribute="centerX" id="d5a-nt-F80"/>

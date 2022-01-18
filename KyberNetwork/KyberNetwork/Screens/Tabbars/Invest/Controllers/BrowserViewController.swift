@@ -221,15 +221,13 @@ class BrowserViewController: KNBaseViewController {
   
   private func saveBrowserIfNeeded() {
     guard self.viewModel.url.host != SearchEngine.default.host else { return }
-    if !BrowserStorage.shared.isExistRecently(url: self.viewModel.url.absoluteString) {
-      let item = BrowserItem(
-        title: self.webView.title ?? "",
-        url: self.viewModel.url.absoluteString,
-        image: self.viewModel.webIconURL,
-        time: Date().currentTimeMillis()
-      )
-      BrowserStorage.shared.addNewRecently(item: item)
-    }
+    let item = BrowserItem(
+      title: self.webView.title ?? "",
+      url: self.viewModel.url.absoluteString,
+      image: self.viewModel.webIconURL,
+      time: Date().currentTimeMillis()
+    )
+    BrowserStorage.shared.addNewRecently(item: item)
   }
   
   fileprivate func updateUISwitchChain() {
@@ -315,7 +313,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
       return decisionHandler(.cancel)
     }
-
+    if navigationAction.navigationType == .linkActivated {
+      self.webView.load(URLRequest(url: url))
+    }
     decisionHandler(.allow)
   }
 }
