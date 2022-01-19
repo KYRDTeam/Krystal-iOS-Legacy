@@ -144,6 +144,10 @@ class TokenObject: Object {
     return self.address.lowercased() == Constants.cronosAddress.lowercased()
   }
   
+  var isFantom: Bool {
+    return self.address.lowercased() == Constants.fantomAddress.lowercased()
+  }
+  
   var isQuoteToken: Bool {
     return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }

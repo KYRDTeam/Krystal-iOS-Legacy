@@ -83,6 +83,15 @@ enum KNEnvironment: Int {
       return Constants.cronosMainnetRPC
     }
   }
+  
+  var fantomRPC: CustomRPC {
+    switch self {
+    case .ropsten:
+      return Constants.fantomTestnetRPC
+    default:
+      return Constants.fantomMainnetRPC
+    }
+  }
 
   var configFileName: String {
     switch self {

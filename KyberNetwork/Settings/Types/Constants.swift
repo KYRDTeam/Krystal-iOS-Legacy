@@ -25,6 +25,7 @@ public struct Constants {
   public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
   public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
   public static let krystalProxyAddressCronos = ""
+  public static let krystalProxyAddressFantom = ""
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -205,11 +206,39 @@ public struct Constants {
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
   )
+  
+  public static let fantomTestnetRPC = CustomRPC (
+    chainID: 4002,
+    name: "Fantom Testnet",
+    symbol: "FTM",
+    endpoint: "https://rpc.testnet.fantom.network",
+    endpointKyber: "https://rpc.testnet.fantom.network",
+    endpointAlchemy: "https://rpc.testnet.fantom.network",
+    etherScanEndpoint: "https://rpc.testnet.fantom.network",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+
+  public static let fantomMainnetRPC = CustomRPC (
+    chainID: 250,
+    name: "Fantom",
+    symbol: "FTM",
+    endpoint: "https://rpc.ftm.tools",
+    endpointKyber: "https://rpc.ftm.tools",
+    endpointAlchemy: "https://rpc.ftm.tools",
+    etherScanEndpoint: "https://rpc.ftm.tools",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+  
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   public static let cronosAddress = "0xrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+  public static let fantomAddress = "0xfffffffffffffffffffffffffffffffffffffff"
 }
 
 public struct UnitConfiguration {
@@ -225,4 +254,5 @@ public struct DecimalNumber {
   public static let matic = 4
   public static let avax = 4
   public static let cro = 4
+  public static let ftm = 4
 }

@@ -84,6 +84,8 @@ class Token: Codable, Equatable, Hashable {
       return price.avax
     case .cro:
       return price.cro
+    case .ftm:
+      return price.ftm
     }
   }
   
@@ -104,6 +106,8 @@ class Token: Codable, Equatable, Hashable {
       return price.avax
     case .cro:
       return price.cro
+    case .ftm:
+      return price.ftm
     }
   }
   
@@ -124,6 +128,8 @@ class Token: Codable, Equatable, Hashable {
       return price.avax24hChange
     case .cro:
       return price.cro24hChange
+    case .ftm:
+      return price.ftm24hChange
     }
   }
 
@@ -144,6 +150,8 @@ class Token: Codable, Equatable, Hashable {
       return price.avax24hVol
     case .cro:
       return price.cro24hVol
+    case .ftm:
+      return price.ftm24hVol
     }
   }
   
@@ -164,6 +172,8 @@ class Token: Codable, Equatable, Hashable {
       return price.avaxMarketCap
     case .cro:
       return price.croMarketCap
+    case .ftm:
+      return price.ftmMarketCap
     }
   }
   
@@ -232,6 +242,10 @@ class TokenPrice: Codable {
   var croMarketCap: Double
   var cro24hVol: Double
   var cro24hChange: Double
+  var ftm: Double
+  var ftmMarketCap: Double
+  var ftm24hVol: Double
+  var ftm24hChange: Double
   
   init(address: String, quotes: [String: Quote]) {
     self.address = address
@@ -270,6 +284,11 @@ class TokenPrice: Codable {
     self.croMarketCap = quotes["cro"]?.marketCap ?? 0.0
     self.cro24hVol = quotes["cro"]?.volume24H ?? 0.0
     self.cro24hChange = quotes["cro"]?.price24HChangePercentage ?? 0.0
+    
+    self.ftm = quotes["ftm"]?.price ?? 0.0
+    self.ftmMarketCap = quotes["ftm"]?.marketCap ?? 0.0
+    self.ftm24hVol = quotes["ftm"]?.volume24H ?? 0.0
+    self.ftm24hChange = quotes["ftm"]?.price24HChangePercentage ?? 0.0
   }
 }
 

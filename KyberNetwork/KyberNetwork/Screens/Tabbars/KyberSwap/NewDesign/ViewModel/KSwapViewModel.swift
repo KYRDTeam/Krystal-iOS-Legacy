@@ -443,6 +443,9 @@ class KSwapViewModel {
     case .cronos:
       self.from = KNSupportedTokenStorage.shared.cronosToken
       self.to = KNSupportedTokenStorage.shared.usdcToken
+    case .fantom:
+      self.from = KNSupportedTokenStorage.shared.fantomToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
   }
   

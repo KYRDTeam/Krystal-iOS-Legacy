@@ -104,6 +104,13 @@ class KNSupportedTokenStorage {
     return token.toObject()
   }
   
+  var fantomToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "FTM"
+    } ?? Token(name: "FTM", symbol: "FTM", address: Constants.fantomAddress, decimals: 18, logo: "ftm")
+    return token.toObject()
+  }
+  
   var usdcToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "USDC"
@@ -423,6 +430,8 @@ class KNSupportedTokenStorage {
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
     case .cronos:
       return "cronos" + "-" + KNEnvironment.default.displayName + "-"
+    case .fantom:
+      return "fantom" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
 
