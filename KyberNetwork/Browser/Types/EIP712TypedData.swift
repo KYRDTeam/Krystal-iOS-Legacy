@@ -36,21 +36,6 @@ struct EIP712TypedData: Codable {
             return ""
         }
     }
-
-//    var domainVerifyingContract: AlphaWallet.Address? {
-//        switch domain {
-//        case .object(let dictionary):
-//            switch dictionary["verifyingContract"] {
-//            case .string(let value):
-//                //We need it to be unchecked because test sites like to use 0xCcc..cc
-//                return AlphaWallet.Address(uncheckedAgainstNullAddress: value)
-//            case .array, .object, .number, .bool, .null, .none:
-//                return nil
-//            }
-//        case .array, .string, .number, .bool, .null:
-//            return nil
-//        }
-//    }
 }
 
 extension EIP712TypedData {

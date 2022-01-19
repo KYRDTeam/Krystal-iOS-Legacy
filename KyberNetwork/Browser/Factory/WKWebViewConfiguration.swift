@@ -181,46 +181,6 @@ extension WKWebViewConfiguration {
 
              """
     }
-// swiftlint:enable function_body_length
-
-//    fileprivate static func javaScriptForTokenScriptRenderer(address: Address) -> String {
-//        return """
-//               window.web3CallBacks = {}
-//               window.tokenScriptCallBacks = {}
-//
-//               function executeCallback (id, error, value) {
-//                   window.web3CallBacks[id](error, value)
-//                   delete window.web3CallBacks[id]
-//               }
-//
-//               function executeTokenScriptCallback (id, error, value) {
-//                   let cb = window.tokenScriptCallBacks[id]
-//                   if (cb) {
-//                       window.tokenScriptCallBacks[id](error, value)
-//                       delete window.tokenScriptCallBacks[id]
-//                   } else {
-//                   }
-//               }
-//
-//               web3 = {
-//                 personal: {
-//                   sign: function (msgParams, cb) {
-//                     const { data } = msgParams
-//                     const { id = 8888 } = msgParams
-//                     window.web3CallBacks[id] = cb
-//                     webkit.messageHandlers.signPersonalMessage.postMessage({"name": "signPersonalMessage", "object":  { data }, id: id})
-//                   }
-//                 },
-//                 action: {
-//                   setProps: function (object, cb) {
-//                     const id = 8888
-//                     window.tokenScriptCallBacks[id] = cb
-//                     webkit.messageHandlers.\(TokenInstanceWebView.SetProperties.setActionProps).postMessage({"object":  object, id: id})
-//                   }
-//                 }
-//               }
-//               """
-//    }
 
     fileprivate static func contentBlockingRulesJson() -> String {
         //TODO read from TokenScript, when it's designed and available
