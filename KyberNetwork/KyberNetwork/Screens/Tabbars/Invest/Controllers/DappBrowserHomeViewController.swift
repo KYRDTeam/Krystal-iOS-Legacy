@@ -154,7 +154,9 @@ class DappBrowserHomeViewController: UIViewController {
     self.favoriteTagsView.removeAllTags()
     self.viewModel.favoriteDataSource.forEach { item in
       UIImage.loadImageIconWithCache(item.image  ?? "", completion: { image in
-        self.favoriteTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
+        let tag = self.favoriteTagsView.createCustomTagView(item.title.limit(scope: self.limitTagLength), image: image) { _ in
+        }
+        self.favoriteTagsView.addTagView(tag)
       })
     }
   }
@@ -205,3 +207,70 @@ extension DappBrowserHomeViewController: TagListViewDelegate {
     }
   }
 }
+
+class CustomTagView: TagView {
+  let containerWidth: CGFloat
+  required public init?(coder aDecoder: NSCoder) {
+    self.containerWidth = 100
+    super.init(coder: aDecoder)
+    
+  }
+  
+  public init(title: String, containerWidth: CGFloat) {
+    self.containerWidth = containerWidth
+    super.init(title: title)
+  }
+  
+  override open var intrinsicContentSize: CGSize {
+    var size = titleLabel?.text?.size(withAttributes: [NSAttributedString.Key.font: textFont]) ?? CGSize.zero
+    size.height = textFont.pointSize + paddingY * 2
+    let width = (self.containerWidth / 2) - (paddingX / 2)
+    size.width = width
+    return size
+  }
+}
+
+extension TagListView {
+  func createCustomTagView(_ title: String, image: UIImage? = nil, onTap: @escaping ((TagView) -> Void)) -> TagView {
+    let tagView = CustomTagView(title: title, containerWidth: self.frame.size.width)
+    
+    tagView.textColor = textColor
+    tagView.selectedTextColor = selectedTextColor
+    tagView.tagBackgroundColor = tagBackgroundColor
+    tagView.highlightedBackgroundColor = tagHighlightedBackgroundColor
+    tagView.selectedBackgroundColor = tagSelectedBackgroundColor
+    tagView.titleLineBreakMode = tagLineBreakMode
+    tagView.cornerRadius = cornerRadius
+    tagView.borderWidth = borderWidth
+    tagView.borderColor = borderColor
+    tagView.selectedBorderColor = selectedBorderColor
+    tagView.paddingX = paddingX
+    tagView.paddingY = paddingY
+    tagView.textFont = textFont
+    tagView.removeIconLineWidth = removeIconLineWidth
+    tagView.removeButtonIconSize = removeButtonIconSize
+    tagView.enableRemoveButton = enableRemoveButton
+    tagView.removeIconLineColor = removeIconLineColor
+    tagView.addTarget(self, action: #selector(customTagPressed(_:)), for: .touchUpInside)
+
+    if let image = image {
+      tagView.setImage(image, for: .normal)
+    }
+    
+    // On long press, deselect all tags except this one
+    tagView.onLongPress = { [unowned self] this in
+      self.tagViews.forEach {
+        $0.isSelected = $0 == this
+      }
+    }
+    tagView.onTap = onTap
+    
+    return tagView
+  }
+  
+  @objc func customTagPressed(_ sender: CustomTagView!) {
+      sender.onTap?(sender)
+      delegate?.tagPressed?(sender.currentTitle ?? "", tagView: sender, sender: self)
+  }
+}
+
