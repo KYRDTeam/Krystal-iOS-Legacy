@@ -102,7 +102,7 @@ extension SignMessageConfirmPopup: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 368
+    return 500
   }
 
   func getPopupContentView() -> UIView {
