@@ -61,6 +61,7 @@ public struct Constants {
   public static let gasPriceStoreFileName = "-gas_price.data"
   public static let browserFavoriteFileName = "browser-favorite.data"
   public static let browserRecentlyFileName = "browser-recently.data"
+  public static let methodIdApprove = "0x095ea7b3"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,

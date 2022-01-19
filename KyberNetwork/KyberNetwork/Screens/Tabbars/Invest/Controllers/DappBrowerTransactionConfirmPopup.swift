@@ -78,20 +78,20 @@ class DappBrowerTransactionConfirmViewModel {
   var valueBigInt: BigInt {
     return BigInt(self.transaction.value) ?? BigInt(0)
   }
-  
+
   var displayValue: String {
     let prefix = self.valueBigInt.isZero ? "" : "-"
     return prefix + "\(self.valueBigInt.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
   }
-  
+
   var displayValueUSD: String {
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
     let usd = self.valueBigInt * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
-    
+
     let valueString: String = usd.displayRate(decimals: 18)
     return "≈ $\(valueString)"
   }
-  
+
   var transactionFeeETHString: String {
     let fee: BigInt = {
       return self.gasPrice * self.gasLimit
@@ -159,6 +159,18 @@ class DappBrowerTransactionConfirmViewModel {
   var customSetting: ConfirmAdvancedSetting {
     return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
   }
+  
+  var isApproveTx: Bool {
+    return self.transaction.data.hexEncoded.prefix(10) == Constants.methodIdApprove
+  }
+  
+  var approveSym: String? {
+    return KNSupportedTokenStorage.shared.getTokenWith(address: self.transaction.to ?? "")?.symbol
+  }
+  
+  func buildApproveMsg(_ sym: String) -> String {
+    return "Give this site permission to access your \(sym)?"
+  }
 }
 
 class DappBrowerTransactionConfirmPopup: KNBaseViewController {
@@ -175,7 +187,9 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
-
+  @IBOutlet weak var approveMsgLabel: UILabel!
+  @IBOutlet weak var valueTitleLabel: UILabel!
+  
   private let viewModel: DappBrowerTransactionConfirmViewModel
   
   let transitor = TransitionDelegate()
@@ -247,6 +261,27 @@ class DappBrowerTransactionConfirmPopup: KNBaseViewController {
     }
     self.confirmButton.rounded(radius: 16)
     self.cancelButton.rounded(radius: 16)
+    let isApprove = self.viewModel.isApproveTx
+    self.valueTitleLabel.isHidden = isApprove
+    self.valueLabel.isHidden = isApprove
+    self.equivalentValueLabel.isHidden = isApprove
+    if isApprove {
+      if let symbol = self.viewModel.approveSym {
+        self.approveMsgLabel.text = self.viewModel.buildApproveMsg(symbol)
+        self.approveMsgLabel.isHidden = false
+      } else {
+        KNGeneralProvider.shared.getTokenSymbol(address: self.viewModel.transaction.to ?? "") { (result) in
+          switch result {
+          case .success(let symbol):
+            self.approveMsgLabel.text = self.viewModel.buildApproveMsg(symbol)
+            self.approveMsgLabel.isHidden = false
+          case .failure(let error):
+            self.approveMsgLabel.text = self.viewModel.buildApproveMsg("Unknow")
+            self.approveMsgLabel.isHidden = false
+          }
+        }
+      }
+    }
   }
 
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {

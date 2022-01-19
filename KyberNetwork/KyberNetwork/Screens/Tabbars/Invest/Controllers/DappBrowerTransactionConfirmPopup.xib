@@ -12,13 +12,14 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DappBrowerTransactionConfirmPopup" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="approveMsgLabel" destination="89J-eZ-TKV" id="oCb-lZ-Es4"/>
                 <outlet property="cancelButton" destination="xph-em-93b" id="ltR-jI-SC6"/>
                 <outlet property="confirmButton" destination="SHw-ZC-zsT" id="Hdf-uF-DTp"/>
                 <outlet property="contentView" destination="UAy-yJ-FwL" id="azm-B9-ylm"/>
@@ -32,6 +33,7 @@
                 <outlet property="siteURLLabel" destination="Mwn-7q-P7u" id="0g9-4h-PjK"/>
                 <outlet property="transactionFeeTextLabel" destination="7Hn-5y-f7o" id="0E1-ab-D6s"/>
                 <outlet property="valueLabel" destination="kc5-XB-QnY" id="n9F-mD-B26"/>
+                <outlet property="valueTitleLabel" destination="uT3-jx-15d" id="8Xd-Nu-NJy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -44,7 +46,7 @@
                     <rect key="frame" x="0.0" y="67" width="375" height="600"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Confirm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STr-Ge-vg4">
-                            <rect key="frame" x="90.5" y="60" width="194.5" height="23.5"/>
+                            <rect key="frame" x="97.5" y="60" width="180" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -102,13 +104,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="-0.1 BNB" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kc5-XB-QnY">
-                            <rect key="frame" x="280" y="251.5" width="58" height="19"/>
+                            <rect key="frame" x="271.5" y="251.5" width="66.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="≈ $52.186" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfV-jj-yna">
-                            <rect key="frame" x="278.5" y="278.5" width="59.5" height="17"/>
+                            <rect key="frame" x="275" y="278.5" width="63" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -141,26 +143,26 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.001231 ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIh-1I-v1e">
-                                    <rect key="frame" x="206" y="44" width="81" height="17"/>
+                                    <rect key="frame" x="198" y="44" width="89" height="17"/>
                                     <gestureRecognizers/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="textWhiteColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~ 0.213 USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZi-D6-NP5">
-                                    <rect key="frame" x="214" y="63" width="73" height="16.5"/>
+                                    <rect key="frame" x="206.5" y="63" width="80.5" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80 (Gas Price) *. 394,140 (Gas. Limit)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2g-PY-QxT">
-                                    <rect key="frame" x="58.5" y="81.5" width="228.5" height="16.5"/>
+                                    <rect key="frame" x="57.5" y="81.5" width="229.5" height="16.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <color key="textColor" name="normalTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcr-73-01s">
-                                    <rect key="frame" x="242" y="19" width="45" height="17"/>
+                                    <rect key="frame" x="240" y="19" width="47" height="17"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <inset key="imageEdgeInsets" minX="-4" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="EDIT" image="edit_confirm_icon">
@@ -222,16 +224,24 @@
                                 <action selector="confirmButtonTapped:" destination="-1" eventType="touchUpInside" id="PXJ-aV-HZc"/>
                             </connections>
                         </button>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Give this site permission to access your BELT?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89J-eZ-TKV">
+                            <rect key="frame" x="37" y="261.5" width="301" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" red="0.047058823529411764" green="0.78431372549019607" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="STr-Ge-vg4" firstAttribute="centerX" secondItem="UAy-yJ-FwL" secondAttribute="centerX" id="033-fi-sgi"/>
                         <constraint firstAttribute="trailing" secondItem="PBq-bT-phV" secondAttribute="trailing" constant="37" id="1T2-Ky-6u7"/>
+                        <constraint firstAttribute="trailing" secondItem="89J-eZ-TKV" secondAttribute="trailing" constant="37" id="2Hc-Dx-f1r"/>
                         <constraint firstItem="XfV-jj-yna" firstAttribute="trailing" secondItem="kc5-XB-QnY" secondAttribute="trailing" id="2J9-hE-RMW"/>
                         <constraint firstItem="u0d-lt-KP4" firstAttribute="top" secondItem="dgs-cW-h4P" secondAttribute="bottom" constant="43" id="3Xt-jn-LeS"/>
                         <constraint firstItem="kc5-XB-QnY" firstAttribute="trailing" secondItem="PBq-bT-phV" secondAttribute="trailing" id="3rN-Ot-TX0"/>
                         <constraint firstItem="uT3-jx-15d" firstAttribute="leading" secondItem="n8n-K8-RET" secondAttribute="leading" id="53x-qZ-j5R"/>
+                        <constraint firstItem="89J-eZ-TKV" firstAttribute="leading" secondItem="UAy-yJ-FwL" secondAttribute="leading" constant="37" id="5LN-u0-3Wi"/>
                         <constraint firstAttribute="trailing" secondItem="dgs-cW-h4P" secondAttribute="trailing" constant="37" id="5kX-OZ-Q0r"/>
                         <constraint firstItem="kc5-XB-QnY" firstAttribute="centerY" secondItem="uT3-jx-15d" secondAttribute="centerY" id="72e-bK-20R"/>
                         <constraint firstItem="u0d-lt-KP4" firstAttribute="leading" secondItem="UAy-yJ-FwL" secondAttribute="leading" constant="37" id="9r6-9s-VWZ"/>
@@ -259,6 +269,7 @@
                         <constraint firstItem="xph-em-93b" firstAttribute="top" secondItem="Upn-ni-M6M" secondAttribute="bottom" constant="30" id="vAp-Tr-hrY"/>
                         <constraint firstItem="n8n-K8-RET" firstAttribute="leading" secondItem="UAy-yJ-FwL" secondAttribute="leading" constant="37" id="vGy-YT-OFL"/>
                         <constraint firstItem="SHw-ZC-zsT" firstAttribute="leading" secondItem="xph-em-93b" secondAttribute="trailing" constant="32" id="yHb-nR-Kcy"/>
+                        <constraint firstItem="89J-eZ-TKV" firstAttribute="top" secondItem="PBq-bT-phV" secondAttribute="bottom" constant="20" id="z0B-sc-gHj"/>
                         <constraint firstItem="PBq-bT-phV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n8n-K8-RET" secondAttribute="trailing" constant="5" id="z2o-Zh-fiH"/>
                     </constraints>
                     <connections>
