@@ -23,7 +23,7 @@ class DappBrowserHomeViewModel {
     BrowserItem(title: "KrystalGO", url: "https://go.krystal.app", image: "krystalgo"),
     BrowserItem(title: "KyberSwap", url: "https://kyberswap.com", image: "kyberswap")
   ]
-  
+
   var recentlyDataSource: [BrowserItem] {
     if BrowserStorage.shared.recentlyBrowser.count > 8 {
       return Array(BrowserStorage.shared.recentlyBrowser.reversed().prefix(8))
@@ -52,9 +52,9 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var showAllRecentlyButton: UIButton!
   @IBOutlet weak var recentlyTagsListWidthContraint: NSLayoutConstraint!
   @IBOutlet weak var recentlyTagViewScrollViewContainer: UIScrollView!
-  
-  let limitTagLength = 16
-  
+
+  let limitTagLength = 15
+
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
 
   weak var delegate: DappBrowserHomeViewControllerDelegate?
@@ -124,41 +124,48 @@ class DappBrowserHomeViewController: UIViewController {
   }
 
   private func setupSuggestionSection() {
-    
     self.viewModel.suggestDataSource.forEach { item in
       self.suggestionTagsView.addTag(item.title.limit(scope: limitTagLength), image: UIImage(named: item.image ?? ""))
     }
   }
 
   private func setupRecentlySection() {
-    self.recentSearchTagsView.removeAllTags()
+    var cacheImg: [String: UIImage] = [:]
+    let group = DispatchGroup()
+
     self.viewModel.recentlyDataSource.forEach { item in
+      group.enter()
       UIImage.loadImageIconWithCache(item.image ?? "", completion: { image in
-        self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
-        self.recentSearchTagsView.tagViews.last?.imageView?.contentMode = .scaleAspectFit
+        cacheImg[item.title] = image
+        group.leave()
       })
     }
-    self.recentlyTagsListWidthContraint.constant = CGFloat(132 * self.viewModel.recentlyDataSource.count)
+
+    group.notify(queue: .main) {
+      self.recentSearchTagsView.removeAllTags()
+      self.viewModel.recentlyDataSource.forEach { item in
+        self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: cacheImg[item.title])
+      }
+      self.recentlyTagsListWidthContraint.constant = CGFloat(132 * self.viewModel.recentlyDataSource.count)
+    }
   }
-  
+
   private func setupFavoriteSection() {
     self.favoriteTagsView.removeAllTags()
     self.viewModel.favoriteDataSource.forEach { item in
       UIImage.loadImageIconWithCache(item.image  ?? "", completion: { image in
         self.favoriteTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: image)
       })
-      
     }
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true, completion: nil)
   }
-  
+
   @IBAction func showAllRecently(_ sender: UIButton) {
     self.delegate?.dappBrowserHomeViewController(self, run: .showAllRecently)
   }
-  
 }
 
 extension DappBrowserHomeViewController: UITextFieldDelegate {

@@ -240,7 +240,32 @@ extension DappCoordinator: BrowserViewControllerDelegate {
           }
         }
       case .walletAddEthereumChain(let customChain):
-        self.navigationController.showTopBannerView(message: "Please switch to \(customChain.chainName ?? "Unknow") to continue")
+        guard let targetChainId = Int(chainId0xString: customChain.chainId), let chainType = ChainType.make(chainID: targetChainId) else {
+          let error = DAppError.nodeError("Invaild chain ID")
+          self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+          return
+        }
+        if KNGeneralProvider.shared.customRPC.chainID == targetChainId {
+          let callback = DappCallback(id: callbackID, value: .walletSwitchEthereumChain)
+          self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+        } else {
+          let alertController = KNPrettyAlertController(
+            title: "",
+            message: "Please switch to \(chainType.chainName()) to continue".toBeLocalised(),
+            secondButtonTitle: "OK".toBeLocalised(),
+            firstButtonTitle: "Cancel".toBeLocalised(),
+            secondButtonAction: {
+              KNGeneralProvider.shared.currentChain = chainType
+              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.address.description)
+            },
+            firstButtonAction: {
+              let error = DAppError.cancelled
+              self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .failure(error))
+            }
+          )
+          alertController.popupHeight = 220
+          self.navigationController.present(alertController, animated: true, completion: nil)
+        }
       case .walletSwitchEthereumChain(let targetChain):
         guard let targetChainId = Int(chainId0xString: targetChain.chainId), let chainType = ChainType.make(chainID: targetChainId) else {
           let error = DAppError.nodeError("Invaild chain ID")
