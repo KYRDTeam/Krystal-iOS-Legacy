@@ -331,73 +331,113 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         print("[Dapp] raw tx \(tx)")
         if KNGeneralProvider.shared.isUseEIP1559 {
           let eipTx = sendTx.toEIP1559Transaction(setting: setting)
-          print("[Dapp] eip tx \(eipTx)")
-          if let data = provider.signContractGenericEIP1559Transaction(eipTx) {
-            KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-              switch sendResult {
-              case .success(let hash):
-                print("[Dapp] hash \(hash)")
-                let data = Data(_hex: hash)
-                let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
-                self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+          KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: eipTx) { (estResult) in
+            switch estResult {
+            case .success:
+              if let data = provider.signContractGenericEIP1559Transaction(eipTx) {
+                KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+                  switch sendResult {
+                  case .success(let hash):
+                    print("[Dapp] hash \(hash)")
+                    let data = Data(_hex: hash)
+                    let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
+                    self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
 
-                let historyTransaction = InternalHistoryTransaction(
-                  type: .contractInteraction,
-                  state: .pending,
-                  fromSymbol: nil,
-                  toSymbol: nil,
-                  transactionDescription: "DApp",
-                  transactionDetailDescription: tx.to ?? "",
-                  transactionObj: nil,
-                  eip1559Tx: eipTx
-                )
-                historyTransaction.hash = hash
-                historyTransaction.time = Date()
-                historyTransaction.nonce = nonce
-                EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-                self.openTransactionStatusPopUp(transaction: historyTransaction)
-              case .failure(let error):
-                self.navigationController.displayError(error: error)
+                    let historyTransaction = InternalHistoryTransaction(
+                      type: .contractInteraction,
+                      state: .pending,
+                      fromSymbol: nil,
+                      toSymbol: nil,
+                      transactionDescription: "DApp",
+                      transactionDetailDescription: tx.to ?? "",
+                      transactionObj: nil,
+                      eip1559Tx: eipTx
+                    )
+                    historyTransaction.hash = hash
+                    historyTransaction.time = Date()
+                    historyTransaction.nonce = nonce
+                    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                    self.openTransactionStatusPopUp(transaction: historyTransaction)
+                  case .failure(let error):
+                    self.navigationController.displayError(error: error)
+                  }
+                  self.navigationController.hideLoading()
+                })
               }
+            case .failure(let error):
               self.navigationController.hideLoading()
-            })
+              var errorMessage = "Can not estimate Gas Limit"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+                }
+              }
+              if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+                errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+              }
+              if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+                errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+              }
+              self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+            }
           }
+          
         } else {
           let signTx = sendTx.toSignTransaction(account: account, setting: setting)
-          provider.signTransactionData(from: signTx) { [weak self] result in
-            guard let `self` = self else { return }
-            switch result {
-            case .success(let signedData):
-              KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-                switch sendResult {
-                case .success(let hash):
-                  let data = Data(_hex: hash)
-                  let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
-                  self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
+          KNGeneralProvider.shared.getEstimateGasLimit(transaction: signTx) { estResult in
+            switch estResult {
+            case .success:
+              provider.signTransactionData(from: signTx) { [weak self] result in
+                guard let `self` = self else { return }
+                switch result {
+                case .success(let signedData):
+                  KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+                    switch sendResult {
+                    case .success(let hash):
+                      let data = Data(_hex: hash)
+                      let callback = DappCallback(id: callbackID, value: .sentTransaction(data))
+                      self.browserViewController?.coordinatorNotifyFinish(callbackID: callbackID, value: .success(callback))
 
-                  let historyTransaction = InternalHistoryTransaction(
-                    type: .contractInteraction,
-                    state: .pending,
-                    fromSymbol: nil,
-                    toSymbol: nil,
-                    transactionDescription: "DApp",
-                    transactionDetailDescription: tx.to ?? "",
-                    transactionObj: sendTx,
-                    eip1559Tx: nil
-                  )
-                  historyTransaction.hash = hash
-                  historyTransaction.time = Date()
-                  historyTransaction.nonce = nonce
-                  EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-                  self.openTransactionStatusPopUp(transaction: historyTransaction)
+                      let historyTransaction = InternalHistoryTransaction(
+                        type: .contractInteraction,
+                        state: .pending,
+                        fromSymbol: nil,
+                        toSymbol: nil,
+                        transactionDescription: "DApp",
+                        transactionDetailDescription: tx.to ?? "",
+                        transactionObj: sendTx,
+                        eip1559Tx: nil
+                      )
+                      historyTransaction.hash = hash
+                      historyTransaction.time = Date()
+                      historyTransaction.nonce = nonce
+                      EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                      self.openTransactionStatusPopUp(transaction: historyTransaction)
+                    case .failure(let error):
+                      self.navigationController.displayError(error: error)
+                    }
+                  })
                 case .failure(let error):
                   self.navigationController.displayError(error: error)
                 }
-              })
+                self.navigationController.hideLoading()
+              }
             case .failure(let error):
-              self.navigationController.displayError(error: error)
+              self.navigationController.hideLoading()
+              var errorMessage = "Can not estimate Gas Limit"
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+                }
+              }
+              if errorMessage.lowercased().contains("INSUFFICIENT_OUTPUT_AMOUNT".lowercased()) || errorMessage.lowercased().contains("Return amount is not enough".lowercased()) {
+                errorMessage = "Transaction will probably fail. There may be low liquidity, you can try a smaller amount or increase the slippage."
+              }
+              if errorMessage.lowercased().contains("Unknown(0x)".lowercased()) {
+                errorMessage = "Transaction will probably fail due to various reasons. Please try increasing the slippage or selecting a different platform."
+              }
+              self.navigationController.showErrorTopBannerMessage(message: errorMessage)
             }
-            self.navigationController.hideLoading()
           }
         }
       }
