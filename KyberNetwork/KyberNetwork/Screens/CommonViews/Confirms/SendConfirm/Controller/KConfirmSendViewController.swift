@@ -36,6 +36,7 @@ class KConfirmSendViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var warningMessage: UILabel!
   
+  
   fileprivate let viewModel: KConfirmSendViewModel
   weak var delegate: KConfirmSendViewControllerDelegate?
 

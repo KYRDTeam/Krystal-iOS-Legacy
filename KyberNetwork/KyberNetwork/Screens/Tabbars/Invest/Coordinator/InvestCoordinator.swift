@@ -24,6 +24,7 @@ class InvestCoordinator: Coordinator {
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
+  var dappCoordinator: DappCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -135,6 +136,14 @@ class InvestCoordinator: Coordinator {
     self.historyCoordinator?.start()
   }
   
+  func openDappBrowserScreen() {
+    self.dappCoordinator = nil
+    let coordinator = DappCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    coordinator.start()
+    self.dappCoordinator = coordinator
+  }
+  
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
   }
@@ -143,11 +152,13 @@ class InvestCoordinator: Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
@@ -155,6 +166,7 @@ class InvestCoordinator: Coordinator {
     self.rootViewController.coordinatorDidUpdateChain()
     self.loadMarketAssets()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
+    self.dappCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -171,6 +183,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openRewardView()
     case .krytal:
       self.openKrytalView()
+    case .dapp:
+      self.openDappBrowserScreen()
     }
   }
 }
@@ -229,6 +243,20 @@ extension InvestCoordinator: KrytalCoordinatorDelegate {
   }
   
   func krytalCoordinatorDidSelectManageWallet() {
+    self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+}
+
+extension InvestCoordinator: DappCoordinatorDelegate {
+  func dAppCoordinatorDidSelectAddWallet() {
+    self.delegate?.investCoordinatorDidSelectAddWallet()
+  }
+
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.investCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func dAppCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
   }
 }

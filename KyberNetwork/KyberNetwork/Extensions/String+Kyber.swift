@@ -163,4 +163,61 @@ extension String {
   func isNativeAddress() -> Bool {
     return self.lowercased() == Constants.ethAddress || self.lowercased() == Constants.bnbAddress
   }
+  
+  var toHexData: Data {
+    if self.hasPrefix("0x") {
+      return Data(_hex: self, chunkSize: 100)
+    } else {
+      return Data(_hex: self.hex, chunkSize: 100)
+    }
+  }
+  
+  var has0xPrefix: Bool {
+      return hasPrefix("0x")
+  }
+  
+  func limit(scope: Int) -> String {
+    guard self.count > scope else {
+      let number = scope - self.count
+      var padding = ""
+      for _ in 1...number {
+        padding += " "
+      }
+      return self + padding
+    }
+    return String(self.prefix(scope - 3)) + "..."
+  }
+
+  var isHexEncoded: Bool {
+      guard starts(with: "0x") else {
+          return false
+      }
+      let regex = try! NSRegularExpression(pattern: "^0x[0-9A-Fa-f]*$")
+      if regex.matches(in: self, range: NSRange(startIndex..., in: self)).isEmpty {
+          return false
+      }
+      return true
+  }
+}
+
+extension StringProtocol {
+
+    public func chunked(into size: Int) -> [SubSequence] {
+        var chunks: [SubSequence] = []
+
+        var i = startIndex
+
+        while let nextIndex = index(i, offsetBy: size, limitedBy: endIndex) {
+            chunks.append(self[i ..< nextIndex])
+            i = nextIndex
+        }
+
+        let finalChunk = self[i ..< endIndex]
+
+        if finalChunk.isEmpty == false {
+            chunks.append(finalChunk)
+        }
+
+        return chunks
+    }
 }

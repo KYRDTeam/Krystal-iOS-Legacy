@@ -20,7 +20,7 @@ target 'KyberNetwork' do
   pod 'Moya', '~> 10.0.1'
   pod 'JavaScriptKit', '~> 1.0.0'
   pod 'CryptoSwift'
-  pod 'Kingfisher', '~> 5.13'
+  pod 'Kingfisher', '~> 7.0'
   pod 'TrustCore', '~> 0.0.7'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'WalletConnect', git: 'https://github.com/trustwallet/wallet-connect-swift'
@@ -41,7 +41,7 @@ target 'KyberNetwork' do
   pod 'FreshchatSDK'
   pod 'FSPagerView'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
-  pod 'TagListView', '~> 1.0'
+  pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'WalletConnectSwift'
   pod 'Web3'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
@@ -70,7 +70,7 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
     if ['TrustKeystore'].include? target.name
       target.build_configurations.each do |config|

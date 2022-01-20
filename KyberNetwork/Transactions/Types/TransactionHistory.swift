@@ -25,26 +25,93 @@ struct SignTransactionObject: Codable {
   let value: String
   let from: String
   let to: String?
-  let nonce: Int
+  var nonce: Int
   let data: Data
   let gasPrice: String
   let gasLimit: String
   let chainID: Int
   let reservedGasLimit: String
+  
+  mutating func updateNonce(nonce: Int) {
+    self.nonce = nonce
+  }
 }
 
 extension SignTransactionObject {
-  func toSignTransaction(account: Account) -> SignTransaction {
-    return SignTransaction(
-      value: BigInt(self.value) ?? BigInt(0),
-      account: account,
-      to: Address(string: self.to ?? ""),
-      nonce: self.nonce,
-      data: self.data,
-      gasPrice: BigInt(gasPrice) ?? BigInt(0),
-      gasLimit: BigInt(gasLimit) ?? BigInt(0),
-      chainID: self.chainID
-    )
+  func toSignTransaction(account: Account, setting: ConfirmAdvancedSetting? = nil) -> SignTransaction {
+    if let unwrap = setting {
+      var nonceInt = self.nonce
+      if let unwrapSetting = unwrap.advancedNonce {
+        nonceInt = unwrapSetting
+      }
+      
+      var gasLimitBigInt = BigInt(self.gasLimit)
+      if let unwrapSetting = unwrap.advancedGasLimit {
+        gasLimitBigInt = BigInt(unwrapSetting)
+      }
+      
+      var gasPriceBigInt = BigInt(self.gasPrice)
+      if let unwrapSetting = unwrap.avancedMaxFee {
+        gasPriceBigInt = unwrapSetting.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+      }
+      
+      return SignTransaction(
+        value: BigInt(self.value) ?? BigInt(0),
+        account: account,
+        to: Address(string: self.to ?? ""),
+        nonce: nonceInt,
+        data: self.data,
+        gasPrice: gasPriceBigInt ?? BigInt.zero,
+        gasLimit: gasLimitBigInt ?? BigInt.zero,
+        chainID: self.chainID
+      )
+      
+    } else {
+      return SignTransaction(
+        value: BigInt(self.value) ?? BigInt(0),
+        account: account,
+        to: Address(string: self.to ?? ""),
+        nonce: self.nonce,
+        data: self.data,
+        gasPrice: BigInt(gasPrice) ?? BigInt(0),
+        gasLimit: BigInt(gasLimit) ?? BigInt(0),
+        chainID: self.chainID
+      )
+    }
+  }
+  
+  func toEIP1559Transaction(setting: ConfirmAdvancedSetting) -> EIP1559Transaction {
+    var nonceInt = self.nonce
+    if let unwrap = setting.advancedNonce {
+      nonceInt = unwrap
+    }
+    
+    var gasLimitBigInt = BigInt(self.gasLimit)
+    if let unwrap = setting.advancedGasLimit {
+      gasLimitBigInt = BigInt(unwrap)
+    }
+    
+    var maxGasBigInt = BigInt(self.gasPrice)
+    if let unwrap = setting.avancedMaxFee {
+      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+    
+    var priorityFeeBigInt = (maxGasBigInt ?? BigInt.zero) - (KNGasCoordinator.shared.baseFee ?? BigInt.zero)
+    if let unwrap = setting.advancedPriorityFee {
+      priorityFeeBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt.zero
+    }
+
+    return EIP1559Transaction(
+      chainID: BigInt(self.chainID).hexEncoded.hexSigned2Complement,
+      nonce: BigInt(nonceInt).hexEncoded.hexSigned2Complement,
+      gasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
+      maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
+      maxGasFee: maxGasBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
+      toAddress: self.to ?? "",
+      fromAddress: self.from,
+      data: self.data.hexString.add0x,
+      value: BigInt(self.value)?.hexEncoded.drop0x.hexSigned2Complement ?? "0x",
+      reservedGasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x")
   }
 
   func gasPriceForCancelTransaction() -> BigInt {

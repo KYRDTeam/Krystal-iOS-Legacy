@@ -16,7 +16,7 @@ public struct Constants {
   /// Value in USD to validate if current token should display blue tick or not
   public static let hightVolAmount = 100000.0
   public static let useGasTokenDataKey = "use_gas_token_data_key"
-  
+
   public static let oneSignalAppID = KNEnvironment.default == .ropsten ? "361e7815-4da2-41c9-ba0a-d35add5a58ef" : "0487532e-7b19-415b-91a1-2a285b0b8382"
   public static let gasTokenAddress = KNEnvironment.default == .ropsten ? "0x0000000000b3F879cb30FE243b4Dfee438691c04" : "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
 
@@ -59,6 +59,9 @@ public struct Constants {
   public static let viewModeStoreFileName = "view-mode.data"
   public static let historyKrystalTransactionsStoreFileName = "-krystal-history-transaction.data"
   public static let gasPriceStoreFileName = "-gas_price.data"
+  public static let browserFavoriteFileName = "browser-favorite.data"
+  public static let browserRecentlyFileName = "browser-recently.data"
+  public static let methodIdApprove = "0x095ea7b3"
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,
