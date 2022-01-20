@@ -144,7 +144,8 @@ class DappBrowserHomeViewController: UIViewController {
     group.notify(queue: .main) {
       self.recentSearchTagsView.removeAllTags()
       self.viewModel.recentlyDataSource.forEach { item in
-        self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: cacheImg[item.title])
+        let tagView = self.recentSearchTagsView.addTag(item.title.limit(scope: self.limitTagLength), image: cacheImg[item.title])
+        tagView.imageView?.contentMode = .scaleAspectFit
       }
       self.recentlyTagsListWidthContraint.constant = CGFloat(132 * self.viewModel.recentlyDataSource.count)
     }
@@ -254,6 +255,7 @@ extension TagListView {
     tagView.addTarget(self, action: #selector(customTagPressed(_:)), for: .touchUpInside)
 
     if let image = image {
+      tagView.imageView?.contentMode = .scaleAspectFit
       tagView.setImage(image, for: .normal)
     }
     

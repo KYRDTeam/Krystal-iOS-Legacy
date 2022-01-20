@@ -151,7 +151,6 @@ extension EIP712TypedData {
           return try? ABIValue(Crypto.hash(data), type: .bytes(32))
       } else if type == "bool", let value = data?.boolValue {
           return try? ABIValue(value, type: .bool)
-          //Using `AlphaWallet.Address(uncheckedAgainstNullAddress:)` instead of `AlphaWallet.Address(string:)` because EIP712v3 test pages like to use the contract 0xb...b which fails the burn address check
       } else if type == "address", let value = data?.stringValue, let address = Address(string: value) {
           return try? ABIValue(address, type: .address)
       } else if type.starts(with: "uint") {
