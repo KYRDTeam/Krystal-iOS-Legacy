@@ -74,7 +74,7 @@ class KNTrackerRateStorage {
     case .cronos:
       return "cronos" + "-" + KNEnvironment.default.displayName + "-"
     case .fantom:
-      return "fantom" + "-" + KNEnvironment.default.displayName + "-"
+      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
   

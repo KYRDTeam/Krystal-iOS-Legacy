@@ -71,6 +71,8 @@ class KNSummaryChainModel: Codable {
       return .polygon
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
       return .avalanche
+    case Constants.fantomMainnetRPC.chainID:
+      return .fantom
     default:
       return .avalanche
     }

@@ -186,6 +186,9 @@ extension KNExchangeTokenCoordinator {
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
         fromToken = KNSupportedTokenStorage.shared.avaxToken
         toToken = KNSupportedTokenStorage.shared.usdceToken
+    case Constants.fantomMainnetRPC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.fantomToken
+        toToken = KNSupportedTokenStorage.shared.usdcToken
     default:
         fromToken = KNSupportedTokenStorage.shared.ethToken
         toToken = KNSupportedTokenStorage.shared.kncToken
@@ -313,7 +316,7 @@ extension KNExchangeTokenCoordinator {
     let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
     let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
     let otherTokenCronos: TokenObject = token.isCronos ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
-    let otherTokenFantom: TokenObject = token.isFantom ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
+    let otherTokenFantom: TokenObject = token.isFtm ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
     
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
     var selectToken = KNSupportedTokenStorage.shared.ethToken

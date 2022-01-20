@@ -35,11 +35,10 @@ class OverviewSummaryCellViewModel {
       return "********"
     }
     let currencyFormatter = StringFormatter()
-    
     let hideAndDeleteBigInt = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currency, chainType: self.chainType ?? .eth)
     let hideAndDeleteValue = hideAndDeleteBigInt.doubleUSDValue(currencyDecimal: self.currency.decimalNumber())
     let chainBalanceValue = self.value - hideAndDeleteValue
-    
+
     return self.currency.symbol() + currencyFormatter.currencyString(value: chainBalanceValue, decimals: self.currency.decimalNumber())
   }
 
@@ -63,6 +62,10 @@ class OverviewSummaryCellViewModel {
       return UIImage(named: "chain_polygon_big_icon")!
     case .avalanche:
       return UIImage(named: "chain_avax_icon")!
+    case .fantom:
+      return UIImage(named: "chain_fantom_icon")!
+    case .cronos:
+      return UIImage(named: "chain_cronos_icon")!
     default:
       return UIImage(named: "default_token")!
     }
@@ -78,6 +81,10 @@ class OverviewSummaryCellViewModel {
       return "Polygon"
     case .avalanche:
       return "Avalanche"
+    case .fantom:
+      return "Fantom"
+    case .cronos:
+      return "Cronos"
     default:
       return ""
     }

@@ -910,6 +910,8 @@ extension KSwapViewModel {
       return .polygon
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
       return .avalanche
+    case Constants.fantomMainnetRPC.chainID:
+      return .fantom
     default:
       return nil
     }
@@ -925,6 +927,8 @@ extension KSwapViewModel {
         return "Polygon"
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
         return "Avalanche"
+    case Constants.fantomMainnetRPC.chainID:
+      return "Fantom"
     default:
         return nil
     }
