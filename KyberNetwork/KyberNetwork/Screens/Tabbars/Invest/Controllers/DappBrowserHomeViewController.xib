@@ -11,7 +11,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,6 +26,7 @@
                 <outlet property="recentTitleLabel" destination="FbL-kf-kMI" id="3RM-qj-KyF"/>
                 <outlet property="recentlyTagViewScrollViewContainer" destination="ELj-wb-8FD" id="ciK-nb-98m"/>
                 <outlet property="recentlyTagsListWidthContraint" destination="fH5-7u-lcd" id="gmH-35-Ok6"/>
+                <outlet property="searchTextField" destination="efw-LM-C4X" id="c9q-T5-U41"/>
                 <outlet property="showAllRecentlyButton" destination="TCY-WO-etf" id="stw-wm-G9W"/>
                 <outlet property="suggestionTagsView" destination="ehT-n0-9Mv" id="pKr-Jr-tGe"/>
                 <outlet property="suggestionTitleLabel" destination="7dD-IP-9MT" id="0xP-TV-eHe"/>
@@ -98,6 +99,9 @@
                             </constraints>
                             <color key="tintColor" name="textWhiteColor"/>
                             <state key="normal" image="search_blue_icon"/>
+                            <connections>
+                                <action selector="searchTextButtonTapped:" destination="-1" eventType="touchUpInside" id="nZC-aJ-uXc"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
