@@ -406,7 +406,6 @@ extension DappCoordinator: BrowserViewControllerDelegate {
               self.navigationController.showErrorTopBannerMessage(message: errorMessage)
             }
           }
-          
         } else {
           let signTx = sendTx.toSignTransaction(account: account, setting: setting)
           KNGeneralProvider.shared.getEstimateGasLimit(transaction: signTx) { estResult in
