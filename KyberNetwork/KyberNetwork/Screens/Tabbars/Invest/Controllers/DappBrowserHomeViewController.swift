@@ -52,7 +52,8 @@ class DappBrowserHomeViewController: UIViewController {
   @IBOutlet weak var showAllRecentlyButton: UIButton!
   @IBOutlet weak var recentlyTagsListWidthContraint: NSLayoutConstraint!
   @IBOutlet weak var recentlyTagViewScrollViewContainer: UIScrollView!
-
+  @IBOutlet weak var searchTextField: UITextField!
+  
   let limitTagLength = 15
 
   let viewModel: DappBrowserHomeViewModel = DappBrowserHomeViewModel()
@@ -169,6 +170,14 @@ class DappBrowserHomeViewController: UIViewController {
   @IBAction func showAllRecently(_ sender: UIButton) {
     self.delegate?.dappBrowserHomeViewController(self, run: .showAllRecently)
   }
+  
+  @IBAction func searchTextButtonTapped(_ sender: UIButton) {
+    guard self.searchTextField.isFirstResponder else {
+      self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: self.searchTextField.text ?? ""))
+      return
+    }
+    self.searchTextField.resignFirstResponder()
+  }
 }
 
 extension DappBrowserHomeViewController: UITextFieldDelegate {
@@ -176,6 +185,10 @@ extension DappBrowserHomeViewController: UITextFieldDelegate {
     self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: textField.text ?? ""))
     textField.resignFirstResponder()
     return true
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: textField.text ?? ""))
   }
 }
 
