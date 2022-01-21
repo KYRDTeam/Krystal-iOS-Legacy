@@ -52,12 +52,19 @@ class RecentlyHistoryViewController: UIViewController {
   }
   
   @IBAction func clearButtonTapped(_ sender: UIButton) {
-    let confirmAlert = UIAlertController.confirmAlert(message: "Do you want to delete all recently history?") {
-      BrowserStorage.shared.deleteAllRecentlyItem()
-      self.viewModel.reloadDataSource()
-      self.historyTableView.reloadData()
-    }
-    self.present(confirmAlert, animated: true, completion: nil)
+    let alertController = KNPrettyAlertController(
+      title: "Delete".toBeLocalised(),
+      message: "Do you want to delete all recently history?",
+      secondButtonTitle: "OK".toBeLocalised(),
+      firstButtonTitle: "Cancel".toBeLocalised(),
+      secondButtonAction: {
+        BrowserStorage.shared.deleteAllRecentlyItem()
+        self.viewModel.reloadDataSource()
+        self.historyTableView.reloadData()
+      },
+      firstButtonAction: nil
+    )
+    self.present(alertController, animated: true, completion: nil)
   }
 }
 
@@ -98,15 +105,22 @@ extension RecentlyHistoryViewController: SwipeTableViewCellDelegate {
     }
     
     let deleteAction = SwipeAction(style: .destructive, title: "Delete") { _, indexPath in
-      let confirmAlert = UIAlertController.confirmAlert(message: "Do you want to delete this history item?") {
-        let item = self.viewModel.dataSource[indexPath.row].item
-        BrowserStorage.shared.deleteRecentlyItem(item)
-        self.viewModel.reloadDataSource()
-        tableView.reloadData()
-      }
-      self.present(confirmAlert, animated: true, completion: nil)
+      let alertController = KNPrettyAlertController(
+        title: "Delete".toBeLocalised(),
+        message: "Do you want to delete this history item?",
+        secondButtonTitle: "OK".toBeLocalised(),
+        firstButtonTitle: "Cancel".toBeLocalised(),
+        secondButtonAction: {
+          let item = self.viewModel.dataSource[indexPath.row].item
+          BrowserStorage.shared.deleteRecentlyItem(item)
+          self.viewModel.reloadDataSource()
+          tableView.reloadData()
+        },
+        firstButtonAction: nil
+      )
+      self.present(alertController, animated: true, completion: nil)
     }
-    
+
     return [deleteAction]
   }
 }

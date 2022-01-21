@@ -292,7 +292,7 @@
                         <constraint firstItem="ELj-wb-8FD" firstAttribute="leading" secondItem="rBc-o2-Xnw" secondAttribute="leading" constant="26" id="d5a-vm-x9l"/>
                         <constraint firstAttribute="trailing" secondItem="hCH-ql-aJS" secondAttribute="trailing" constant="26" id="odn-DO-kFF"/>
                         <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="hCH-ql-aJS" secondAttribute="bottom" constant="35" id="phh-d8-q45"/>
-                        <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="ELj-wb-8FD" secondAttribute="bottom" priority="250" constant="135" id="yyR-uq-lKn"/>
+                        <constraint firstItem="7dD-IP-9MT" firstAttribute="top" secondItem="ELj-wb-8FD" secondAttribute="bottom" priority="250" constant="35" id="yyR-uq-lKn"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="Why-Ul-Nnp"/>
                     <viewLayoutGuide key="frameLayoutGuide" id="rBc-o2-Xnw"/>
