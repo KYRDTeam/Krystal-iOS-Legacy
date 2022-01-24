@@ -912,11 +912,13 @@ extension KSwapViewModel {
       return .avalanche
     case Constants.fantomMainnetRPC.chainID:
       return .fantom
+    case Constants.cronosMainnetRPC.chainID:
+      return .cronos
     default:
       return nil
     }
   }
-  
+
   func chainName(chainId: Int) -> String? {
     switch chainId {
     case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
@@ -929,6 +931,8 @@ extension KSwapViewModel {
         return "Avalanche"
     case Constants.fantomMainnetRPC.chainID:
       return "Fantom"
+    case Constants.cronosMainnetRPC.chainID:
+      return "Cronos"
     default:
         return nil
     }

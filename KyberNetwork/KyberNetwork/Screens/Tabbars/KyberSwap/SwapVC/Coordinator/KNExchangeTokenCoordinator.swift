@@ -189,6 +189,9 @@ extension KNExchangeTokenCoordinator {
     case Constants.fantomMainnetRPC.chainID:
         fromToken = KNSupportedTokenStorage.shared.fantomToken
         toToken = KNSupportedTokenStorage.shared.usdcToken
+    case Constants.cronosMainnetRPC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.cronosToken
+        toToken = KNSupportedTokenStorage.shared.usdcToken
     default:
         fromToken = KNSupportedTokenStorage.shared.ethToken
         toToken = KNSupportedTokenStorage.shared.kncToken
@@ -315,7 +318,7 @@ extension KNExchangeTokenCoordinator {
     let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
     let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
     let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
-    let otherTokenCronos: TokenObject = token.isCronos ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
+    let otherTokenCronos: TokenObject = token.isCro ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
     let otherTokenFantom: TokenObject = token.isFtm ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
     
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)

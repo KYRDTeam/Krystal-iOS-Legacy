@@ -211,7 +211,7 @@ public struct Constants {
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  public static let cronosAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  public static let cronosAddress = "0xffffffffffffffffffffffffffffffffffffffff"
   public static let fantomAddress = "0xdddddddddddddddddddddddddddddddddddddddd"
 }
 

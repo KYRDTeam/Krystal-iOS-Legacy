@@ -308,7 +308,7 @@ class KNGeneralProvider {
     case .cronos:
       return "ERC20"
     case .fantom:
-      return "ERC20"
+      return "CRC20"
     }
   }
 

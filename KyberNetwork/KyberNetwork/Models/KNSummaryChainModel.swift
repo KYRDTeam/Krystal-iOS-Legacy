@@ -73,6 +73,8 @@ class KNSummaryChainModel: Codable {
       return .avalanche
     case Constants.fantomMainnetRPC.chainID:
       return .fantom
+    case Constants.cronosMainnetRPC.chainID:
+      return .cronos
     default:
       return .avalanche
     }

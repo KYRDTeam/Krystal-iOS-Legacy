@@ -429,7 +429,7 @@ class KNSupportedTokenStorage {
     case .avalanche:
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
     case .cronos:
-      return "cronos" + "-" + KNEnvironment.default.displayName + "-"
+      return "cro" + "-" + KNEnvironment.default.displayName + "-"
     case .fantom:
       return "ftm" + "-" + KNEnvironment.default.displayName + "-"
     }
@@ -457,6 +457,8 @@ class KNSupportedTokenStorage {
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .bsc)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .polygon)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .avalanche)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .fantom)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .cronos)
     return total
   }
 

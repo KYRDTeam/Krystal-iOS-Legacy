@@ -72,7 +72,7 @@ class KNTrackerRateStorage {
     case .avalanche:
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
     case .cronos:
-      return "cronos" + "-" + KNEnvironment.default.displayName + "-"
+      return "cro" + "-" + KNEnvironment.default.displayName + "-"
     case .fantom:
       return "ftm" + "-" + KNEnvironment.default.displayName + "-"
     }
