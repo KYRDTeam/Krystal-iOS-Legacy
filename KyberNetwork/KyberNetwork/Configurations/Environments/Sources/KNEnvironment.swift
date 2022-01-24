@@ -74,6 +74,15 @@ enum KNEnvironment: Int {
       return Constants.polygonMainnetPRC
     }
   }
+  
+  var cronosRPC: CustomRPC {
+    switch self {
+    case .ropsten:
+      return Constants.cronosTestnetRPC
+    default:
+      return Constants.cronosMainnetRPC
+    }
+  }
 
   var configFileName: String {
     switch self {

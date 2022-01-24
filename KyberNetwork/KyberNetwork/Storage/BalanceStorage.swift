@@ -90,6 +90,8 @@ class BalanceStorage {
       return "matic" + "-" + KNEnvironment.default.displayName + "-"
     case .avalanche:
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    case .cronos:
+      return "cro" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
   

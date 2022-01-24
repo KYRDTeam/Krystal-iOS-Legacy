@@ -30,6 +30,8 @@ enum ChainType: Codable {
       self = .polygon
     case 3:
       self = .avalanche
+    case 4:
+      self = .cronos
     default:
       throw CodingError.unknownValue
     }
@@ -46,6 +48,8 @@ enum ChainType: Codable {
       try container.encode(2, forKey: .rawValue)
     case .avalanche:
       try container.encode(3, forKey: .rawValue)
+    case .cronos:
+      try container.encode(4, forKey: .rawValue)
     }
   }
   
@@ -86,11 +90,12 @@ enum ChainType: Codable {
       return "Avalanche"
     }
   }
-  
+
   case eth
   case bsc
   case polygon
   case avalanche
+  case cronos
 }
 //swiftlint:disable file_length
 //swiftlint:disable type_body_length
@@ -114,6 +119,8 @@ class KNGeneralProvider {
       return KNEnvironment.default.maticRPC
     case .avalanche:
       return KNEnvironment.default.avalancheRPC
+    case .cronos:
+      return KNEnvironment.default.cronosRPC
     }
   }
 
@@ -129,6 +136,8 @@ class KNGeneralProvider {
       return "MATIC"
     case .avalanche:
       return "AVAX"
+    case .cronos:
+      return "CRO"
     }
   }
   
@@ -142,6 +151,8 @@ class KNGeneralProvider {
       return .matic
     case .avalanche:
       return .avax
+    case .cronos:
+      return .cro
     }
   }
 
@@ -164,6 +175,8 @@ class KNGeneralProvider {
       return "/polygon"
     case .avalanche:
       return "/avalanche"
+    case .cronos:
+      return "/cronos"
     }
   }
 
@@ -177,6 +190,8 @@ class KNGeneralProvider {
       return KNSupportedTokenStorage.shared.maticToken
     case .avalanche:
       return KNSupportedTokenStorage.shared.avaxToken
+    case .cronos:
+      return KNSupportedTokenStorage.shared.cronosToken
     }
   }
 
@@ -189,6 +204,8 @@ class KNGeneralProvider {
     case .polygon:
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
     case .avalanche:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
+    case .cronos:
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
     }
   }
@@ -203,6 +220,8 @@ class KNGeneralProvider {
       return UIImage(named: "chain_polygon_big_icon")
     case .avalanche:
       return UIImage(named: "chain_avax_icon")
+    case .cronos:
+      return UIImage(named: "chain_cronos_icon")
     }
   }
 
@@ -216,6 +235,8 @@ class KNGeneralProvider {
       return Constants.krystalProxyAddressMatic.lowercased()
     case .avalanche:
       return Constants.krystalProxyAddressAvax.lowercased()
+    case .cronos:
+      return Constants.krystalProxyAddressCronos.lowercased()
     }
   }
 
@@ -229,6 +250,8 @@ class KNGeneralProvider {
       return "COMP"
     case .avalanche:
       return "" //TODO: wait for compound symbol
+    case .cronos:
+      return ""
     }
   }
 
@@ -242,6 +265,8 @@ class KNGeneralProvider {
       return UIImage(named: "comp_icon")
     case .avalanche:
       return UIImage(named: "") //TODO: wait for compound icon
+    case .cronos:
+      return UIImage(named: "")
     }
   }
 
@@ -255,6 +280,8 @@ class KNGeneralProvider {
       return "ERC20"
     case .avalanche:
       return "ARC20"
+    case .cronos:
+      return "ERC20"
     }
   }
 
@@ -268,6 +295,8 @@ class KNGeneralProvider {
       return KNSecret.polygonscanAPIKey
     case .avalanche:
       return "" //TODO: wait for avalance api key
+    case .cronos:
+      return ""
     }
   }
 
@@ -280,6 +309,8 @@ class KNGeneralProvider {
     case .polygon:
       return ""
     case .avalanche:
+      return ""
+    case .cronos:
       return ""
     }
   }
@@ -294,6 +325,8 @@ class KNGeneralProvider {
       return "Polygon"
     case .avalanche:
       return "Avalanche"
+    case .cronos:
+      return "cronos"
     }
   }
 
@@ -307,6 +340,8 @@ class KNGeneralProvider {
       return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
     case .avalanche:
       return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
+    case .cronos:
+      return "There.is.a.difference.between.the.estimated.price.cronos".toBeLocalised()
     }
   }
 
@@ -352,6 +387,8 @@ class KNGeneralProvider {
       address = Constants.krystalProxyAddressMatic.lowercased()
     case .avalanche:
       address = Constants.krystalProxyAddressAvax.lowercased()
+    case .cronos:
+      address = Constants.krystalProxyAddressCronos.lowercased()
     }
     return Address(string: address)!
   }

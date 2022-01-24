@@ -312,6 +312,8 @@ extension KNExchangeTokenCoordinator {
     let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
     let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
     let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
+    let otherTokenCronos: TokenObject = token.isCronos ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.cronosToken
+    
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
     var selectToken = KNSupportedTokenStorage.shared.ethToken
     switch KNGeneralProvider.shared.currentChain {
@@ -323,6 +325,8 @@ extension KNExchangeTokenCoordinator {
       selectToken = otherTokenMatic
     case .avalanche:
       selectToken = otherTokenAvax
+    case .cronos:
+      selectToken = otherTokenCronos
     }
     self.rootViewController.coordinatorUpdateSelectedToken(selectToken, isSource: isReceived, isWarningShown: true)
     self.rootViewController.tabBarController?.selectedIndex = 1

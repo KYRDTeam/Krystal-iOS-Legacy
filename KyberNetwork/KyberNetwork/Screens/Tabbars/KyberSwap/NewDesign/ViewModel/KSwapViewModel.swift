@@ -440,6 +440,9 @@ class KSwapViewModel {
     case .avalanche:
       self.from = KNSupportedTokenStorage.shared.avaxToken
       self.to = KNSupportedTokenStorage.shared.usdceToken
+    case .cronos:
+      self.from = KNSupportedTokenStorage.shared.cronosToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
   }
   

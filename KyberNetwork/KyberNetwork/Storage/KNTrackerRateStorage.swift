@@ -71,6 +71,8 @@ class KNTrackerRateStorage {
       return "matic" + "-" + KNEnvironment.default.displayName + "-"
     case .avalanche:
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    case .cronos:
+      return "cronos" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
   
@@ -91,6 +93,8 @@ class KNTrackerRateStorage {
       return price.matic
     case .avax:
       return price.avax
+    case .cro:
+      return price.cro
     }
   }
 

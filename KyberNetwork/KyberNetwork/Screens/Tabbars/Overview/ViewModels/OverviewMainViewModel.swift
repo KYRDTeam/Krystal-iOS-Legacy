@@ -175,6 +175,7 @@ enum CurrencyMode: Int {
   case bnb
   case matic
   case avax
+  case cro
   
   func symbol() -> String {
     switch self {
@@ -189,6 +190,8 @@ enum CurrencyMode: Int {
     case .matic:
       return ""
     case .avax:
+      return ""
+    case .cro:
       return ""
     }
   }
@@ -207,6 +210,8 @@ enum CurrencyMode: Int {
       return " MATIC"
     case .avax:
       return " AVAX"
+    case .cro:
+      return " CRO"
     }
   }
   
@@ -224,6 +229,8 @@ enum CurrencyMode: Int {
       return "matic"
     case .avax:
       return "avax"
+    case .cro:
+      return "cro"
     }
   }
 
@@ -241,6 +248,8 @@ enum CurrencyMode: Int {
       return DecimalNumber.matic
     case .avax:
       return DecimalNumber.avax
+    case .cro:
+      return DecimalNumber.cro
     }
   }
   

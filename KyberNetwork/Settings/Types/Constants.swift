@@ -24,7 +24,7 @@ public struct Constants {
   public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
   public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
   public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
-
+  public static let krystalProxyAddressCronos = ""
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -179,11 +179,37 @@ public struct Constants {
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
   )
-  
+
+  public static let cronosTestnetRPC = CustomRPC (
+    chainID: 338,
+    name: "Cronos Testnet",
+    symbol: "CRO",
+    endpoint: "https://cronos-testnet-3.crypto.org:8545",
+    endpointKyber: "https://cronos-testnet-3.crypto.org:8545",
+    endpointAlchemy: "https://cronos-testnet-3.crypto.org:8545",
+    etherScanEndpoint: "https://cronos-testnet-3.crypto.org:8545",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+
+  public static let cronosMainnetRPC = CustomRPC (
+    chainID: 25,
+    name: "Cronos",
+    symbol: "CRO",
+    endpoint: "https://evm-cronos.crypto.org",
+    endpointKyber: "https://evm-cronos.crypto.org",
+    endpointAlchemy: "https://evm-cronos.crypto.org",
+    etherScanEndpoint: "https://evm-cronos.crypto.org",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  public static let cronosAddress = "0xrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
 }
 
 public struct UnitConfiguration {
@@ -198,4 +224,5 @@ public struct DecimalNumber {
   public static let bnb = 4
   public static let matic = 4
   public static let avax = 4
+  public static let cro = 4
 }

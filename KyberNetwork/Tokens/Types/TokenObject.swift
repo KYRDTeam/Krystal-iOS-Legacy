@@ -140,6 +140,10 @@ class TokenObject: Object {
     return self.address.lowercased() == Constants.avaxAddress.lowercased()
   }
   
+  var isCronos: Bool {
+    return self.address.lowercased() == Constants.cronosAddress.lowercased()
+  }
+  
   var isQuoteToken: Bool {
     return self.isETH || self.isBNB || self.isMatic || self.isAvax
   }
