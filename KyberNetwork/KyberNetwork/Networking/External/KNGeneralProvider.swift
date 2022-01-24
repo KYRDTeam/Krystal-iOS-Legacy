@@ -92,6 +92,10 @@ enum ChainType: Codable {
       return "Polygon"
     case .avalanche:
       return "Avalanche"
+    case .fantom:
+      return "Fantom"
+    case .cronos:
+      return "Cronos"
     }
   }
 
