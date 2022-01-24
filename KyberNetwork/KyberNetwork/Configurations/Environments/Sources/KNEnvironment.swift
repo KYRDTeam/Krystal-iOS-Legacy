@@ -21,6 +21,14 @@ enum KNEnvironment: Int {
     case .rinkeby: return "Rinkeby"
     }
   }
+  
+  var endpointName: String {
+    switch self {
+    case .production: return "prod"
+    case .staging: return "stg"
+    default: return "dev"
+    }
+  }
 
   static func allEnvironments() -> [KNEnvironment] {
     return [
