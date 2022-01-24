@@ -188,7 +188,7 @@ public struct Constants {
     endpoint: "https://evm-cronos.crypto.org",
     endpointKyber: "https://cronos.krystal.app/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
     endpointAlchemy: "https://evm-cronos.crypto.org",
-    etherScanEndpoint: "https://evm-cronos.crypto.org",
+    etherScanEndpoint: "https://cronoscan.com/",
     ensAddress: "",
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
@@ -201,7 +201,7 @@ public struct Constants {
     endpoint: "https://rpc.ftm.tools",
     endpointKyber: "https://fantom.krystal.app/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
     endpointAlchemy: "https://rpc.ftm.tools",
-    etherScanEndpoint: "https://rpc.ftm.tools",
+    etherScanEndpoint: "https://ftmscan.com/",
     ensAddress: "",
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
