@@ -133,6 +133,16 @@ class KNTrackerRateStorage {
         saved.matic24hVol = item.matic24hVol
         saved.maticMarketCap = item.maticMarketCap
         saved.matic24hChange = item.matic24hChange
+        
+        saved.cro = item.cro
+        saved.cro24hVol = item.cro24hVol
+        saved.croMarketCap = item.croMarketCap
+        saved.cro24hChange = item.cro24hChange
+        
+        saved.ftm = item.ftm
+        saved.ftm24hVol = item.ftm24hVol
+        saved.ftmMarketCap = item.ftmMarketCap
+        saved.ftm24hChange = item.ftm24hChange
       } else {
         self.allPrices.append(item)
       }
