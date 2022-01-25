@@ -103,7 +103,7 @@ class TokenObject: Object {
       self.isGasFixed = apiDict["is_gas_fixed"] as? Bool ?? false
       self.quotePriority = apiDict["quote_priority"] as? Int ?? 0
     }
-  
+
   convenience init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
     self.init()
     self.contract = address
@@ -112,13 +112,12 @@ class TokenObject: Object {
     self.decimals = decimals
     self.icon = logo
     self.name = name
-    
   }
-  
+
   func toData() -> Token {
     return Token(name: self.name, symbol: self.symbol, address: self.contract, decimals: self.decimals, logo: self.icon)
   }
-  
+
   func getBalanceBigInt() -> BigInt {
     let balance = BalanceStorage.shared.balanceForAddress(self.contract)
     return BigInt(balance?.balance ?? "") ?? BigInt(0)
@@ -127,21 +126,29 @@ class TokenObject: Object {
     var isETH: Bool {
       return self.symbol == "ETH" && self.name.lowercased() == "ethereum"
     }
-  
+
   var isBNB: Bool {
     return self.address.lowercased() == Constants.bnbAddress.lowercased()
   }
-  
+
   var isMatic: Bool {
     return self.address.lowercased() == Constants.maticAddress.lowercased()
   }
-  
+
   var isAvax: Bool {
     return self.address.lowercased() == Constants.avaxAddress.lowercased()
   }
-  
+
+  var isCro: Bool {
+    return self.address.lowercased() == Constants.cronosAddress.lowercased()
+  }
+
+  var isFtm: Bool {
+    return self.address.lowercased() == Constants.fantomAddress.lowercased()
+  }
+
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro
   }
 
     var isWETH: Bool {

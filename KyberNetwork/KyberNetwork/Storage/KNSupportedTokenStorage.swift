@@ -72,7 +72,7 @@ class KNSupportedTokenStorage {
   var bnbToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "BNB"
-    } ?? Token(name: "BNB", symbol: "BNB", address: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", decimals: 18, logo: "bnb")
+    } ?? Token(name: "BNB", symbol: "BNB", address: Constants.bnbAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
@@ -86,14 +86,28 @@ class KNSupportedTokenStorage {
   var maticToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "MATIC"
-    } ?? Token(name: "MATIC", symbol: "MATIC", address: "0xcccccccccccccccccccccccccccccccccccccccc", decimals: 18, logo: "bnb")
+    } ?? Token(name: "MATIC", symbol: "MATIC", address: Constants.maticAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
   var avaxToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "AVAX"
-    } ?? Token(name: "AVAX", symbol: "AVAX", address: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", decimals: 18, logo: "avax")
+    } ?? Token(name: "AVAX", symbol: "AVAX", address: Constants.avaxAddress, decimals: 18, logo: "avax")
+    return token.toObject()
+  }
+  
+  var cronosToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "CRO"
+    } ?? Token(name: "CRO", symbol: "CRO", address: Constants.cronosAddress, decimals: 18, logo: "cro")
+    return token.toObject()
+  }
+  
+  var fantomToken: TokenObject {
+    let token = self.supportedToken.first { (token) -> Bool in
+      return token.symbol == "FTM"
+    } ?? Token(name: "FTM", symbol: "FTM", address: Constants.fantomAddress, decimals: 18, logo: "ftm")
     return token.toObject()
   }
   
@@ -414,6 +428,10 @@ class KNSupportedTokenStorage {
       return "matic" + "-" + KNEnvironment.default.displayName + "-"
     case .avalanche:
       return "avax" + "-" + KNEnvironment.default.displayName + "-"
+    case .cronos:
+      return "cro" + "-" + KNEnvironment.default.displayName + "-"
+    case .fantom:
+      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
 
@@ -439,6 +457,8 @@ class KNSupportedTokenStorage {
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .bsc)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .polygon)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .avalanche)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .fantom)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .cronos)
     return total
   }
 

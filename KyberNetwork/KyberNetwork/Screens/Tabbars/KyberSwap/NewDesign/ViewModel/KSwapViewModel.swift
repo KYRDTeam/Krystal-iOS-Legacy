@@ -440,6 +440,12 @@ class KSwapViewModel {
     case .avalanche:
       self.from = KNSupportedTokenStorage.shared.avaxToken
       self.to = KNSupportedTokenStorage.shared.usdceToken
+    case .cronos:
+      self.from = KNSupportedTokenStorage.shared.cronosToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
+    case .fantom:
+      self.from = KNSupportedTokenStorage.shared.fantomToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
   }
   
@@ -904,11 +910,15 @@ extension KSwapViewModel {
       return .polygon
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
       return .avalanche
+    case Constants.fantomMainnetRPC.chainID:
+      return .fantom
+    case Constants.cronosMainnetRPC.chainID:
+      return .cronos
     default:
       return nil
     }
   }
-  
+
   func chainName(chainId: Int) -> String? {
     switch chainId {
     case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
@@ -919,6 +929,10 @@ extension KSwapViewModel {
         return "Polygon"
     case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
         return "Avalanche"
+    case Constants.fantomMainnetRPC.chainID:
+      return "Fantom"
+    case Constants.cronosMainnetRPC.chainID:
+      return "Cronos"
     default:
         return nil
     }

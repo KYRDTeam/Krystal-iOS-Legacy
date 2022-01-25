@@ -21,6 +21,14 @@ enum KNEnvironment: Int {
     case .rinkeby: return "Rinkeby"
     }
   }
+  
+  var endpointName: String {
+    switch self {
+    case .production: return "prod"
+    case .staging: return "stg"
+    default: return "dev"
+    }
+  }
 
   static func allEnvironments() -> [KNEnvironment] {
     return [
@@ -73,6 +81,14 @@ enum KNEnvironment: Int {
     default:
       return Constants.polygonMainnetPRC
     }
+  }
+  
+  var cronosRPC: CustomRPC {
+    return Constants.cronosMainnetRPC
+  }
+  
+  var fantomRPC: CustomRPC {
+    return Constants.fantomMainnetRPC
   }
 
   var configFileName: String {

@@ -82,6 +82,10 @@ class Token: Codable, Equatable, Hashable {
       return price.matic
     case .avax:
       return price.avax
+    case .cro:
+      return price.cro
+    case .ftm:
+      return price.ftm
     }
   }
   
@@ -100,6 +104,10 @@ class Token: Codable, Equatable, Hashable {
       return price.matic
     case .avax:
       return price.avax
+    case .cro:
+      return price.cro
+    case .ftm:
+      return price.ftm
     }
   }
   
@@ -118,6 +126,10 @@ class Token: Codable, Equatable, Hashable {
       return price.matic24hChange
     case .avax:
       return price.avax24hChange
+    case .cro:
+      return price.cro24hChange
+    case .ftm:
+      return price.ftm24hChange
     }
   }
 
@@ -136,6 +148,10 @@ class Token: Codable, Equatable, Hashable {
       return price.matic24hVol
     case .avax:
       return price.avax24hVol
+    case .cro:
+      return price.cro24hVol
+    case .ftm:
+      return price.ftm24hVol
     }
   }
   
@@ -154,6 +170,10 @@ class Token: Codable, Equatable, Hashable {
       return price.maticMarketCap
     case .avax:
       return price.avaxMarketCap
+    case .cro:
+      return price.croMarketCap
+    case .ftm:
+      return price.ftmMarketCap
     }
   }
   
@@ -218,6 +238,14 @@ class TokenPrice: Codable {
   var avaxMarketCap: Double
   var avax24hVol: Double
   var avax24hChange: Double
+  var cro: Double
+  var croMarketCap: Double
+  var cro24hVol: Double
+  var cro24hChange: Double
+  var ftm: Double
+  var ftmMarketCap: Double
+  var ftm24hVol: Double
+  var ftm24hChange: Double
   
   init(address: String, quotes: [String: Quote]) {
     self.address = address
@@ -251,6 +279,16 @@ class TokenPrice: Codable {
     self.avaxMarketCap = quotes["avax"]?.marketCap ?? 0.0
     self.avax24hVol = quotes["avax"]?.volume24H ?? 0.0
     self.avax24hChange = quotes["avax"]?.price24HChangePercentage ?? 0.0
+    
+    self.cro = quotes["cro"]?.price ?? 0.0
+    self.croMarketCap = quotes["cro"]?.marketCap ?? 0.0
+    self.cro24hVol = quotes["cro"]?.volume24H ?? 0.0
+    self.cro24hChange = quotes["cro"]?.price24HChangePercentage ?? 0.0
+    
+    self.ftm = quotes["ftm"]?.price ?? 0.0
+    self.ftmMarketCap = quotes["ftm"]?.marketCap ?? 0.0
+    self.ftm24hVol = quotes["ftm"]?.volume24H ?? 0.0
+    self.ftm24hChange = quotes["ftm"]?.price24HChangePercentage ?? 0.0
   }
 }
 

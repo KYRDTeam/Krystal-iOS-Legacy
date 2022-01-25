@@ -24,7 +24,8 @@ public struct Constants {
   public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
   public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
   public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
-
+  public static let krystalProxyAddressCronos = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
+  public static let krystalProxyAddressFantom = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -172,9 +173,35 @@ public struct Constants {
     name: "Avalanche Mainnet C-Chain",
     symbol: "AVAX",
     endpoint: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
-    endpointKyber: "https://api.avax.network/ext/bc/C/rpc",
+    endpointKyber: "https://avalanche.krystal.app/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
     endpointAlchemy: "https://speedy-nodes-nyc.moralis.io/847df1933775fb519982918b/avalanche/mainnet/",
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+
+  public static let cronosMainnetRPC = CustomRPC (
+    chainID: 25,
+    name: "Cronos",
+    symbol: "CRO",
+    endpoint: "https://evm-cronos.crypto.org",
+    endpointKyber: "https://cronos.krystal.app/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
+    endpointAlchemy: "https://evm-cronos.crypto.org",
+    etherScanEndpoint: "https://cronoscan.com/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+
+  public static let fantomMainnetRPC = CustomRPC (
+    chainID: 250,
+    name: "Fantom",
+    symbol: "FTM",
+    endpoint: "https://rpc.ftm.tools",
+    endpointKyber: "https://fantom.krystal.app/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
+    endpointAlchemy: "https://rpc.ftm.tools",
+    etherScanEndpoint: "https://ftmscan.com/",
     ensAddress: "",
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
@@ -184,6 +211,8 @@ public struct Constants {
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  public static let cronosAddress = "0xffffffffffffffffffffffffffffffffffffffff"
+  public static let fantomAddress = "0xdddddddddddddddddddddddddddddddddddddddd"
 }
 
 public struct UnitConfiguration {
@@ -198,4 +227,6 @@ public struct DecimalNumber {
   public static let bnb = 4
   public static let matic = 4
   public static let avax = 4
+  public static let cro = 4
+  public static let ftm = 4
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 class SwitchChainViewController: KNBaseViewController {
-  
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   let transitor = TransitionDelegate()
@@ -17,19 +16,22 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var bscCheckMarkIcon: UIImageView!
   @IBOutlet weak var maticCheckMarkIcon: UIImageView!
   @IBOutlet weak var avalancheCheckMarkIcon: UIImageView!
+  @IBOutlet weak var cronosCheckMarkIcon: UIImageView!
+  @IBOutlet weak var fantomCheckMarkIcon: UIImageView!
   
   @IBOutlet weak var ethSelectBgView: UIView!
   @IBOutlet weak var bscSelectBgView: UIView!
   @IBOutlet weak var maticSelectBgView: UIView!
   @IBOutlet weak var avalancheSelectBgView: UIView!
-  
+  @IBOutlet weak var cronosSelectBgView: UIView!
+  @IBOutlet weak var fantomSelectBgView: UIView!
+
   var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
   @IBOutlet weak var nextButton: UIButton!
   @IBOutlet weak var cancelButton: UIButton!
-  
-  
+
   init() {
     self.selectedChain = KNGeneralProvider.shared.currentChain
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
@@ -44,7 +46,6 @@ class SwitchChainViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.updateSelectedChainUI()
     self.cancelButton.rounded(radius: 16)
     self.nextButton.rounded(radius: 16)
@@ -56,18 +57,21 @@ class SwitchChainViewController: KNBaseViewController {
     self.bscCheckMarkIcon.isHidden = !(self.selectedChain == .bsc)
     self.maticCheckMarkIcon.isHidden = !(self.selectedChain == .polygon)
     self.avalancheCheckMarkIcon.isHidden = !(self.selectedChain == .avalanche)
+    self.cronosCheckMarkIcon.isHidden = !(self.selectedChain == .cronos)
+    self.fantomCheckMarkIcon.isHidden = !(self.selectedChain == .fantom)
     
     self.ethSelectBgView.isHidden = !(self.selectedChain == .eth)
     self.bscSelectBgView.isHidden = !(self.selectedChain == .bsc)
     self.maticSelectBgView.isHidden = !(self.selectedChain == .polygon)
     self.avalancheSelectBgView.isHidden = !(self.selectedChain == .avalanche)
+    self.cronosSelectBgView.isHidden = !(self.selectedChain == .cronos)
+    self.fantomSelectBgView.isHidden = !(self.selectedChain == .fantom)
 
     let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
     self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
-    
   }
-  
+
   @IBAction func ethButtonTapped(_ sender: UIButton) {
     self.selectedChain = .eth
     self.updateSelectedChainUI()
@@ -77,7 +81,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.selectedChain = .bsc
     self.updateSelectedChainUI()
   }
-  
+
   @IBAction func polygonButtonTapped(_ sender: UIButton) {
     self.selectedChain = .polygon
     self.updateSelectedChainUI()
@@ -88,8 +92,17 @@ class SwitchChainViewController: KNBaseViewController {
     self.updateSelectedChainUI()
   }
 
+  @IBAction func cronosButtonTapped(_ sender: Any) {
+    self.selectedChain = .cronos
+    self.updateSelectedChainUI()
+  }
+  
+  @IBAction func fantomButtonTapped(_ sender: Any) {
+    self.selectedChain = .fantom
+    self.updateSelectedChainUI()
+  }
+
   @IBAction func nextButtonTapped(_ sender: UIButton) {
-    
     self.dismiss(animated: true, completion: {
       self.completionHandler(self.selectedChain)
     })
@@ -110,7 +123,7 @@ extension SwitchChainViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 450
+    return 550
   }
 
   func getPopupContentView() -> UIView {
