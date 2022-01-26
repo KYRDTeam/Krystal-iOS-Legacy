@@ -277,7 +277,11 @@ struct KNHistoryViewModel {
           let data = self.handledTxHeaders.filter({
             let date = self.dateFormatter.date(from: $0) ?? Date()
             return date >= fromDate && date <= toDate
-          })
+          }).sorted { date1String, date2String in
+            let date1 = self.dateFormatter.date(from: date1String) ?? Date()
+            let date2 = self.dateFormatter.date(from: date2String) ?? Date()
+            return date1 > date2
+          }
           return data
         }()
         self.displayingUnsupportedChainCompletedTxData = [:]
