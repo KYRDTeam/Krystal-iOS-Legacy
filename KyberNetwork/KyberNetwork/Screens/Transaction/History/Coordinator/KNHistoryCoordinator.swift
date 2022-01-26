@@ -64,7 +64,9 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()
       self.rootViewController.coordinatorUpdateTokens()
-      self.session.transacionCoordinator?.loadEtherscanTransactions()
+      if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+        self.session.transacionCoordinator?.loadEtherscanTransactions()
+      }
     }
   }
 

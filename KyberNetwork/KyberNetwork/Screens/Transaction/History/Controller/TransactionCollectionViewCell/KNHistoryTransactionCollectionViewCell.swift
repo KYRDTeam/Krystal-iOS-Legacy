@@ -581,17 +581,14 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
   }
   
   var transactionTypeString: String {
-    guard self.internalTransaction.state == .pending else {
-      switch self.internalTransaction.state {
-      case .speedup:
-        return "SPEED UP"
-      case .cancel:
-        return "CANCEL"
-      default:
-        return ""
-      }
+    if self.internalTransaction.state == .speedup {
+      return "SPEED UP"
     }
-    
+
+    if self.internalTransaction.state == .cancel {
+      return "CANCEL"
+    }
+
     switch self.internalTransaction.type {
     case .swap:
       return "SWAP"
@@ -625,7 +622,11 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
   }
 
   var isError: Bool {
-    return false
+    if self.internalTransaction.state == .pending {
+      return false
+    } else {
+      return self.internalTransaction.state == .error || self.internalTransaction.state == .drop
+    }
   }
 
   var transactionTypeImage: UIImage {

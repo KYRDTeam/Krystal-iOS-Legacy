@@ -26,8 +26,13 @@ class EtherscanTransactionStorage {
     self.transactions = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.etherscanTransactionsStoreFileName, as: [EtherscanTransaction].self) ?? []
     self.historyTransactionModel = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.historyTransactionsStoreFileName, as: [HistoryTransaction].self) ?? []
     self.krystalHistoryTransaction = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName, as: [KrystalHistoryTransaction].self) ?? []
+    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      // Incase current chain didn't support get history api
+      self.internalHistoryTransactions = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName, as: [InternalHistoryTransaction].self) ?? []
+    } else {
+      self.internalHistoryTransactions = []
+    }
     
-    self.internalHistoryTransactions = []
   }
   
   func isSavedKrystalHistory() -> Bool {
@@ -346,12 +351,18 @@ class EtherscanTransactionStorage {
   }
 
   func appendInternalHistoryTransaction(_ tx: InternalHistoryTransaction) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
     self.internalHistoryTransactions.append(tx)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: tx,
       userInfo: nil
     )
+    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
+    }
   }
 
   func isContainInsternalSendTransaction() -> Bool {
@@ -369,13 +380,32 @@ class EtherscanTransactionStorage {
 
   @discardableResult
   func removeInternalHistoryTransactionWithHash(_ hash: String) -> Bool {
+    guard let unwrapped = self.wallet else {
+      return false
+    }
     guard let index = self.internalHistoryTransactions.firstIndex(where: { (item) -> Bool in
       return item.hash.lowercased() == hash.lowercased()
     }) else {
       return false
     }
     self.internalHistoryTransactions.remove(at: index)
+    
+    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
+    }
     return true
+  }
+  
+  func updateInternalHistoryTransactionForUnsupportedChain(_ transaction: InternalHistoryTransaction) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    self.internalHistoryTransactions.forEach { internalTransaction in
+      if internalTransaction.hash == transaction.hash {
+        internalTransaction.state = transaction.state
+      }
+    }
+    Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
   }
 
   func getEtherscanToken() -> [Token] {

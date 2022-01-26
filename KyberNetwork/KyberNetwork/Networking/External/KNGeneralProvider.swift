@@ -98,6 +98,15 @@ enum ChainType: Codable {
       return "Cronos"
     }
   }
+  
+  func isSupportedHistoryAPI() -> Bool {
+    switch self {
+      case .cronos:
+        return false
+      default:
+        return true
+    }
+  }
 
   case eth
   case bsc
