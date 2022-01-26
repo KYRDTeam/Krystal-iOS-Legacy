@@ -577,7 +577,15 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
   }
   
   var transactionDetailsString: String {
-    return self.internalTransaction.transactionDetailDescription
+    switch self.internalTransaction.type {
+    case .transferNFT, .transferETH, .transferToken:
+      if let toAddress = self.internalTransaction.transactionObject?.to {
+        return NSLocalizedString("To", value: "To", comment: "") + ": \(toAddress)"
+      }
+      return ""
+    default:
+      return self.internalTransaction.transactionDetailDescription
+    }
   }
   
   var transactionTypeString: String {
