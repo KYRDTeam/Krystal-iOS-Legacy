@@ -456,14 +456,14 @@ extension KNTransactionCoordinator {
         self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
           if case .responseError(let err) = error, let respError = err as? JSONRPCError {
             switch respError {
-            case .responseError:
-              transaction.state = .error
-              EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: transaction,
-                userInfo: nil
-              )
+//            case .responseError:
+//              transaction.state = .error
+//              EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+//              KNNotificationUtil.postNotification(
+//                for: kTransactionDidUpdateNotificationKey,
+//                object: transaction,
+//                userInfo: nil
+//              )
             case .resultObjectParseError:
               guard transaction.time.addingTimeInterval(600) > Date() else {
                 return
