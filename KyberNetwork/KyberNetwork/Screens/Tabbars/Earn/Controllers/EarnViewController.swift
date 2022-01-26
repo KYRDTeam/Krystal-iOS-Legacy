@@ -605,7 +605,10 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     guard self.isViewLoaded else {
       return
     }
-    self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
