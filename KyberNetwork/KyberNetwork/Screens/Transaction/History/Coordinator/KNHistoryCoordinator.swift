@@ -119,8 +119,17 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorPendingTransactionDidUpdate() {
-    let dates: [String] = {
+    let pendingDates: [String] = {
       let dates = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().map { return self.dateFormatter.string(from: $0.time) }
+      var uniqueDates = [String]()
+      dates.forEach({
+        if !uniqueDates.contains($0) { uniqueDates.append($0) }
+      })
+      return uniqueDates
+    }()
+    
+    let handledDates: [String] = {
+      let dates = EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().map { return self.dateFormatter.string(from: $0.time) }
       var uniqueDates = [String]()
       dates.forEach({
         if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -137,12 +146,23 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       }
       return data
     }()
+    
+    let sectionHandledData: [String: [InternalHistoryTransaction]] = {
+      var data: [String: [InternalHistoryTransaction]] = [:]
+      EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().forEach { tx in
+        var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
+        trans.append(tx)
+        data[self.dateFormatter.string(from: tx.time)] = trans
+      }
+      return data
+    }()
 
     self.rootViewController.coordinatorUpdatePendingTransaction(
-          data: sectionData,
-          dates: dates,
-          currentWallet: self.currentWallet
-        )
+    pendingData: sectionData,
+    handledData: sectionHandledData,
+    pendingDates: pendingDates,
+    handledDates: handledDates,
+    currentWallet: self.currentWallet )
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
 

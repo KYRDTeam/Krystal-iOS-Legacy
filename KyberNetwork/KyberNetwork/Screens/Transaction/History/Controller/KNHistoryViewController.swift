@@ -48,6 +48,9 @@ struct KNHistoryViewModel {
 
   fileprivate(set) var pendingTxData: [String: [InternalHistoryTransaction]] = [:]
   fileprivate(set) var pendingTxHeaders: [String] = []
+  
+  fileprivate(set) var handledTxData: [String: [InternalHistoryTransaction]] = [:]
+  fileprivate(set) var handledTxHeaders: [String] = []
 
   fileprivate(set) var displayingPendingTxData: [String: [PendingInternalHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingPendingTxHeaders: [String] = []
@@ -112,6 +115,12 @@ struct KNHistoryViewModel {
   mutating func update(pendingTxData: [String: [InternalHistoryTransaction]], pendingTxHeaders: [String]) {
     self.pendingTxData = pendingTxData
     self.pendingTxHeaders = pendingTxHeaders
+    self.updateDisplayingData(isCompleted: false)
+  }
+
+  mutating func update(handledTxData: [String: [InternalHistoryTransaction]], handledTxHeaders: [String]) {
+    self.handledTxData = handledTxData
+    self.handledTxHeaders = handledTxHeaders
     self.updateDisplayingData(isCompleted: false)
   }
 
@@ -247,19 +256,14 @@ struct KNHistoryViewModel {
       self.displayingPendingTxHeaders = {
         let data = self.pendingTxHeaders.filter({
           let date = self.dateFormatter.date(from: $0) ?? Date()
-          let pendingTx = self.pendingTxData[$0]?.first(where: { transaction in
-            transaction.state == .pending
-          })
-          return date >= fromDate && date <= toDate && pendingTx != nil
+          return date >= fromDate && date <= toDate
         })
         return data
       }()
       self.displayingPendingTxData = [:]
 
       self.displayingPendingTxHeaders.forEach { (header) in
-        let filteredPendingTxData = self.pendingTxData[header]?.filter { element in
-          element.state == .pending
-        }.sorted(by: { $0.time > $1.time })
+        let filteredPendingTxData = self.pendingTxData[header]?.sorted(by: { $0.time > $1.time })
         let items = filteredPendingTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
           return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
         })
@@ -270,20 +274,15 @@ struct KNHistoryViewModel {
     if isCompleted {
       if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
         self.displayingUnsupportedChainCompletedTxHeaders = {
-          let data = self.pendingTxHeaders.filter({
+          let data = self.handledTxHeaders.filter({
             let date = self.dateFormatter.date(from: $0) ?? Date()
-            let handledTx = self.pendingTxData[$0]?.first(where: { transaction in
-              transaction.state != .pending
-            })
-            return date >= fromDate && date <= toDate && handledTx != nil
+            return date >= fromDate && date <= toDate
           })
           return data
         }()
         self.displayingUnsupportedChainCompletedTxData = [:]
         self.displayingUnsupportedChainCompletedTxHeaders.forEach { (header) in
-          let filteredHandledTxData = self.pendingTxData[header]?.filter { element in
-            element.state != .pending
-          }.sorted(by: { $0.time > $1.time })
+          let filteredHandledTxData = self.handledTxData[header]?.sorted(by: { $0.time > $1.time })
           let items = filteredHandledTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
             return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
           })
@@ -652,11 +651,14 @@ class KNHistoryViewController: KNBaseViewController {
 
 extension KNHistoryViewController {
   func coordinatorUpdatePendingTransaction(
-    data: [String: [InternalHistoryTransaction]],
-    dates: [String],
+    pendingData: [String: [InternalHistoryTransaction]],
+    handledData: [String: [InternalHistoryTransaction]],
+    pendingDates: [String],
+    handledDates: [String],
     currentWallet: KNWalletObject
     ) {
-    self.viewModel.update(pendingTxData: data, pendingTxHeaders: dates)
+    self.viewModel.update(pendingTxData: pendingData, pendingTxHeaders: pendingDates)
+    self.viewModel.update(handledTxData: handledData, handledTxHeaders: handledDates)
     self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }

@@ -347,7 +347,15 @@ class EtherscanTransactionStorage {
   }
 
   func getInternalHistoryTransaction() -> [InternalHistoryTransaction] {
-    return self.internalHistoryTransactions
+    return self.internalHistoryTransactions.filter { transaction in
+      transaction.state == .pending
+    }
+  }
+  
+  func getHandledInternalHistoryTransactionForUnsupportedApi() -> [InternalHistoryTransaction] {
+    return self.internalHistoryTransactions.filter { transaction in
+      transaction.state != .pending
+    }
   }
 
   func appendInternalHistoryTransaction(_ tx: InternalHistoryTransaction) {
