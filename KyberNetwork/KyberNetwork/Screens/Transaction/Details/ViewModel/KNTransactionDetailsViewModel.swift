@@ -421,6 +421,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     guard self.transaction.state != .cancel else {
       return "- 0 \(KNGeneralProvider.shared.quoteToken)"
     }
+    guard self.transaction.transactionDescription != "Application" else { return "" }
     return self.transaction.transactionDescription
   }
 
