@@ -57,6 +57,11 @@ class KNSummaryChainModel: Codable {
         unitValueModel = UnitValueModel(json: usdJson)
         quoteArray["usd"] = unitValueModel
       }
+      
+      if let ftmJson = quotesJson["ftm"] as? JSONDictionary {
+        unitValueModel = UnitValueModel(json: ftmJson)
+        quoteArray["ftm"] = unitValueModel
+      }
     }
     self.quotes = quoteArray
   }
