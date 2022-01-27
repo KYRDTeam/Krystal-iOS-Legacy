@@ -844,7 +844,6 @@
 		251E22652271CBF30038679C /* KNTransactionFilterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionFilterViewController.xib; sourceTree = "<group>"; };
 		252B174A20D3A0CE005B282D /* KNCustomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCustomToolbar.swift; sourceTree = "<group>"; };
 		252B174D20D4319C005B282D /* KNCustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNCustomSegmentedControl.swift; sourceTree = "<group>"; };
-		252EBD8021636D9900609101 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = vi; path = vi.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		252EBD8221636DA200609101 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		2531388D205A565E00B5BD51 /* UIDevice+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Kyber.swift"; sourceTree = "<group>"; };
 		25369F0520F88693007231FE /* KNWelcomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNWelcomeScreenViewModel.swift; sourceTree = "<group>"; };
@@ -898,7 +897,6 @@
 		2561454A20C64B1900FB00CF /* KNContactTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNContactTableView.swift; sourceTree = "<group>"; };
 		2561454C20C64B2200FB00CF /* KNContactTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNContactTableView.xib; sourceTree = "<group>"; };
 		2561455A20C795AF00FB00CF /* KNChartObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNChartObject.swift; sourceTree = "<group>"; };
-		2567B3EB216AE0C90006D963 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		2567B3EF216B10060006D963 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		2567B3F0216B10060006D963 /* web3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = web3.min.js; sourceTree = "<group>"; };
 		25682ABC229FC3C7004AB452 /* KNApproveTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNApproveTokenViewController.swift; sourceTree = "<group>"; };
@@ -917,8 +915,6 @@
 		25696F6B20BEAD97002CC53F /* KNSearchTokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSearchTokenTableViewCell.swift; sourceTree = "<group>"; };
 		25696F6C20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNSearchTokenTableViewCell.xib; sourceTree = "<group>"; };
 		25759622216D8E0D00AC490D /* Locale+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Kyber.swift"; sourceTree = "<group>"; };
-		25759624216D965100AC490D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ko; path = ko.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		25759625216D965200AC490D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		257740C020579335003323EB /* UIView+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Kyber.swift"; sourceTree = "<group>"; };
 		257740C420579456003323EB /* KNSplashScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNSplashScreenViewController.xib; sourceTree = "<group>"; };
 		257740C520579456003323EB /* KNSplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNSplashScreenViewController.swift; sourceTree = "<group>"; };
@@ -1247,8 +1243,6 @@
 		771A8521203588C900528D28 /* ConfirmPaymentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPaymentViewModelTests.swift; sourceTree = "<group>"; };
 		771AA94D1FF971CD00D25403 /* DappAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappAction.swift; sourceTree = "<group>"; };
 		7721A6BD202A5677004DB16C /* DecryptError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptError.swift; sourceTree = "<group>"; };
-		7721A6BF202B1D3E004DB16C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		7721A6C1202B1D5A004DB16C /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7721A6C7202EF81B004DB16C /* CustomRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRPC.swift; sourceTree = "<group>"; };
 		775C00B420195BFB001B5EBC /* BrowserAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAction.swift; sourceTree = "<group>"; };
 		778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -4535,9 +4529,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				"zh-Hans",
-				vi,
-				ko,
 				Base,
 			);
 			mainGroup = 2912CCEC1F6A830700C6CBE3;
@@ -5609,10 +5600,7 @@
 		252EBD7F21636D9900609101 /* Localizable.stringsdict */ = {
 			isa = PBXVariantGroup;
 			children = (
-				252EBD8021636D9900609101 /* vi */,
 				252EBD8221636DA200609101 /* en */,
-				2567B3EB216AE0C90006D963 /* zh-Hans */,
-				25759624216D965100AC490D /* ko */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -5621,9 +5609,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				290B2B551F8F50030053C83E /* en */,
-				7721A6BF202B1D3E004DB16C /* zh-Hans */,
-				7721A6C1202B1D5A004DB16C /* vi */,
-				25759625216D965200AC490D /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
