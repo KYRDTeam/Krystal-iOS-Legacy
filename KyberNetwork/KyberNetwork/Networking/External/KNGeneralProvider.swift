@@ -99,6 +99,24 @@ enum ChainType: Codable {
     }
   }
   
+  func blockExploreName() -> String {
+//    switch self {
+//    case .eth:
+//     return "Etherscan"
+//    case .bsc:
+//      return "BSCscan"
+//    case .polygon:
+//      return "Polygon"
+//    case .avalanche:
+//      return "SnowTrace"
+//    case .fantom:
+//      return "Fantomscan"
+//    case .cronos:
+//      return "Cronosscan"
+//    }
+    return "Block Explorer"
+  }
+  
   func isSupportedHistoryAPI() -> Bool {
     switch self {
       case .cronos:
