@@ -1130,12 +1130,15 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     guard self.isViewLoaded else {
       return
     }
-    self.pendingTxIndicatorView.isHidden = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
-  
+
   func coordinatorUpdateIsUseGasToken(_ state: Bool) {
   }
-  
+
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
     guard !self.viewModel.fromTokenData.isQuoteToken else {
       self.updateUIForSendApprove(isShowApproveButton: false)

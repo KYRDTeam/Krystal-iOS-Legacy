@@ -273,11 +273,17 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     if self.transaction.state == .cancel {
       return ""
     }
+    if self.transaction.type == .transferToken {
+      return ""
+    }
     return self.transaction.fromSymbol ?? ""
   }
   
   var toIconSymbol: String {
     if self.transaction.state == .cancel {
+      return ""
+    }
+    if self.transaction.type == .transferToken {
       return ""
     }
     return self.transaction.toSymbol ?? ""
@@ -397,7 +403,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     case .earn:
       return "trade".toBeLocalised().uppercased()
     case .contractInteraction:
-      return ""
+      return "Contract Interaction"
     case .selfTransfer:
       return "self".toBeLocalised().uppercased()
     case .createNFT:
@@ -415,6 +421,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     guard self.transaction.state != .cancel else {
       return "- 0 \(KNGeneralProvider.shared.quoteToken)"
     }
+    guard self.transaction.transactionDescription != "Application" else { return "" }
     return self.transaction.transactionDescription
   }
 

@@ -39,12 +39,18 @@ struct KNHistoryViewModel {
   
   fileprivate(set) var displayingCompletedKrystalTxData: [String: [CompletedKrystalHistoryTransactionViewModel]] = [:]
   fileprivate(set) var displayingCompletedKrystalTxHeaders: [String] = []
+  
+  fileprivate(set) var displayingUnsupportedChainCompletedTxHeaders: [String] = []
+  fileprivate(set) var displayingUnsupportedChainCompletedTxData: [String: [PendingInternalHistoryTransactonViewModel]] = [:]
 
   fileprivate(set) var displayingCompletedTxData: [String: [CompletedHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingCompletedTxHeaders: [String] = []
 
   fileprivate(set) var pendingTxData: [String: [InternalHistoryTransaction]] = [:]
   fileprivate(set) var pendingTxHeaders: [String] = []
+  
+  fileprivate(set) var handledTxData: [String: [InternalHistoryTransaction]] = [:]
+  fileprivate(set) var handledTxHeaders: [String] = []
 
   fileprivate(set) var displayingPendingTxData: [String: [PendingInternalHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingPendingTxHeaders: [String] = []
@@ -112,6 +118,12 @@ struct KNHistoryViewModel {
     self.updateDisplayingData(isCompleted: false)
   }
 
+  mutating func update(handledTxData: [String: [InternalHistoryTransaction]], handledTxHeaders: [String]) {
+    self.handledTxData = handledTxData
+    self.handledTxHeaders = handledTxHeaders
+    self.updateDisplayingData(isCompleted: false)
+  }
+
   mutating func update(completedTxData: [String: [HistoryTransaction]], completedTxHeaders: [String]) {
     self.completedTxData = completedTxData
     self.completedTxHeaders = completedTxHeaders
@@ -123,7 +135,11 @@ struct KNHistoryViewModel {
   }
 
   var isEmptyStateHidden: Bool {
-    if self.isShowingPending { return !self.displayingPendingTxHeaders.isEmpty }
+    if self.isShowingPending {
+      return !self.displayingPendingTxHeaders.isEmpty
+    } else if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      return !self.displayingUnsupportedChainCompletedTxHeaders.isEmpty
+    }
     return !self.displayingCompletedKrystalTxHeaders.isEmpty
   }
 
@@ -155,12 +171,19 @@ struct KNHistoryViewModel {
 
   var numberSections: Int {
     if self.isShowingPending { return self.displayingPendingTxHeaders.count }
+    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      return self.displayingUnsupportedChainCompletedTxHeaders.count
+    }
     return self.displayingCompletedKrystalTxHeaders.count
   }
 
   func header(for section: Int) -> String {
     let header: String = {
-      if self.isShowingPending { return self.displayingPendingTxHeaders[section] }
+      if self.isShowingPending {
+        return self.displayingPendingTxHeaders[section]
+      } else if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+        return self.displayingUnsupportedChainCompletedTxHeaders[section]
+      }
       return self.displayingCompletedKrystalTxHeaders[section]
     }()
     return header
@@ -171,6 +194,9 @@ struct KNHistoryViewModel {
     if self.isShowingPending {
       return self.displayingPendingTxData[header]?.count ?? 0
     } else {
+      if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+        return self.displayingUnsupportedChainCompletedTxData[header]?.count ?? 0
+      }
       return self.displayingCompletedKrystalTxData[header]?.count ?? 0
     }
   }
@@ -186,6 +212,14 @@ struct KNHistoryViewModel {
   func pendingTransaction(for row: Int, at section: Int) -> PendingInternalHistoryTransactonViewModel? {
     let header = self.header(for: section)
     if let trans = self.displayingPendingTxData[header], trans.count >= row {
+      return trans[row]
+    }
+    return nil
+  }
+
+  func completeTransactionForUnsupportedChain(for row: Int, at section: Int) -> PendingInternalHistoryTransactonViewModel? {
+    let header = self.header(for: section)
+    if let trans = self.displayingUnsupportedChainCompletedTxData[header], trans.count >= row {
       return trans[row]
     }
     return nil
@@ -229,7 +263,8 @@ struct KNHistoryViewModel {
       self.displayingPendingTxData = [:]
 
       self.displayingPendingTxHeaders.forEach { (header) in
-        let items = self.pendingTxData[header]?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
+        let filteredPendingTxData = self.pendingTxData[header]?.sorted(by: { $0.time > $1.time })
+        let items = filteredPendingTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
           return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
         })
         self.displayingPendingTxData[header] = items
@@ -237,7 +272,29 @@ struct KNHistoryViewModel {
     }
 
     if isCompleted {
-      self.updateDisplayingKrystalData()
+      if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+        self.displayingUnsupportedChainCompletedTxHeaders = {
+          let data = self.handledTxHeaders.filter({
+            let date = self.dateFormatter.date(from: $0) ?? Date()
+            return date >= fromDate && date <= toDate
+          }).sorted { date1String, date2String in
+            let date1 = self.dateFormatter.date(from: date1String) ?? Date()
+            let date2 = self.dateFormatter.date(from: date2String) ?? Date()
+            return date1 > date2
+          }
+          return data
+        }()
+        self.displayingUnsupportedChainCompletedTxData = [:]
+        self.displayingUnsupportedChainCompletedTxHeaders.forEach { (header) in
+          let filteredHandledTxData = self.handledTxData[header]?.sorted(by: { $0.time > $1.time })
+          let items = filteredHandledTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
+            return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
+          })
+          self.displayingUnsupportedChainCompletedTxData[header] = items
+        }
+      } else {
+        self.updateDisplayingKrystalData()
+      }
     }
   }
 
@@ -598,11 +655,14 @@ class KNHistoryViewController: KNBaseViewController {
 
 extension KNHistoryViewController {
   func coordinatorUpdatePendingTransaction(
-    data: [String: [InternalHistoryTransaction]],
-    dates: [String],
+    pendingData: [String: [InternalHistoryTransaction]],
+    handledData: [String: [InternalHistoryTransaction]],
+    pendingDates: [String],
+    handledDates: [String],
     currentWallet: KNWalletObject
     ) {
-    self.viewModel.update(pendingTxData: data, pendingTxHeaders: dates)
+    self.viewModel.update(pendingTxData: pendingData, pendingTxHeaders: pendingDates)
+    self.viewModel.update(handledTxData: handledData, handledTxHeaders: handledDates)
     self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }
@@ -640,6 +700,9 @@ extension KNHistoryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if self.viewModel.isShowingPending {
       guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return }
+      self.delegate?.historyViewController(self, run: .selectPendingTransaction(transaction: transaction.internalTransaction))
+    } else if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      guard let transaction = self.viewModel.completeTransactionForUnsupportedChain(for: indexPath.row, at: indexPath.section) else { return }
       self.delegate?.historyViewController(self, run: .selectPendingTransaction(transaction: transaction.internalTransaction))
     } else {
       if let transaction = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) as? CompletedKrystalHistoryTransactionViewModel {
@@ -687,6 +750,9 @@ extension KNHistoryViewController: UICollectionViewDataSource {
     cell.delegate = self
     if self.viewModel.isShowingPending {
       guard let model = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
+      cell.updateCell(with: model)
+    } else if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      guard let model = self.viewModel.completeTransactionForUnsupportedChain(for: indexPath.row, at: indexPath.section) else { return cell }
       cell.updateCell(with: model)
     } else {
       guard let model = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return cell }

@@ -148,7 +148,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         } else if self.transaction.type == .claimReward {
           return "Claim reward successfully".toBeLocalised()
         } else if self.transaction.type == .contractInteraction {
-          if self.transaction.transactionDescription == "DApp" {
+          if self.transaction.transactionDescription == "Application" {
             return "Dapp transaction is successfull".toBeLocalised()
           } else {
             return "Successfully claim".toBeLocalised()
