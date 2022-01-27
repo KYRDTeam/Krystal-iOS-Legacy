@@ -527,7 +527,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     actionController.addAction(Action(ActionData(title: "DELETE", image: UIImage(named: "delete_actionsheet_icon")!), style: .destructive, handler: { _ in
       self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
     }))
-    actionController.addAction(Action(ActionData(title: "Etherscan", image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
+    actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
       if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(self.session.wallet.address.description)") {
         self.rootViewController.openSafari(with: url)
       }

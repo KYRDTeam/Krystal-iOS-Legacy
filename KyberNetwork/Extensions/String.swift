@@ -94,7 +94,7 @@ extension String {
 extension String {
 
   func toBeLocalised() -> String {
-    return NSLocalizedString(self, value: self, comment: "")
+    return NSLocalizedString(self, comment: "")
   }
 
   var jsonValue: Any? {
