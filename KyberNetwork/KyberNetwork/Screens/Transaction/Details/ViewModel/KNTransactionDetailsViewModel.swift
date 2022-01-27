@@ -403,7 +403,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     case .earn:
       return "trade".toBeLocalised().uppercased()
     case .contractInteraction:
-      return ""
+      return "Contract Interaction"
     case .selfTransfer:
       return "self".toBeLocalised().uppercased()
     case .createNFT:
