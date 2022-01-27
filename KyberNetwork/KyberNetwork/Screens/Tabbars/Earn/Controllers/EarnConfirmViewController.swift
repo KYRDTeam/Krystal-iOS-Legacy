@@ -229,7 +229,7 @@ extension EarnConfirmViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.viewModel.platform.isCompound ? 650 : 500
+    return self.viewModel.platform.isCompound ? 667 : 500
   }
 
   func getPopupContentView() -> UIView {

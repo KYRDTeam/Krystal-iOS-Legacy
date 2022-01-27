@@ -273,11 +273,17 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     if self.transaction.state == .cancel {
       return ""
     }
+    if self.transaction.type == .transferToken {
+      return ""
+    }
     return self.transaction.fromSymbol ?? ""
   }
   
   var toIconSymbol: String {
     if self.transaction.state == .cancel {
+      return ""
+    }
+    if self.transaction.type == .transferToken {
       return ""
     }
     return self.transaction.toSymbol ?? ""

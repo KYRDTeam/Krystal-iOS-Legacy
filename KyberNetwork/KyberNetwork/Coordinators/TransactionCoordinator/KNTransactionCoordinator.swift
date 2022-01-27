@@ -47,7 +47,8 @@ class KNTransactionCoordinator {
 
   func start(isReloadData: Bool = true) {
     self.isLoadingEnabled = true
-    if isReloadData { self.startUpdatingCompletedTransactions() }
+    if isReloadData && KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() { self.startUpdatingCompletedTransactions()
+    }
     self.startUpdatingPendingTransactions()
 
     // remove some old txs
@@ -437,7 +438,9 @@ extension KNTransactionCoordinator {
     guard let transaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().last, self.isLoadingEnabled else {
       return
     }
-    self.checkInternalHistory(transaction)
+    if transaction.state == .pending {
+      self.checkInternalHistory(transaction)
+    }
   }
 
   fileprivate func checkInternalHistory(_ transaction: InternalHistoryTransaction) {
@@ -446,7 +449,12 @@ extension KNTransactionCoordinator {
       switch result {
       case .success(let receipt):
         transaction.state = receipt.status == "1" ? .done : .error
-        EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+        if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+          EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+        } else {
+          EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+        }
+        
         KNNotificationUtil.postNotification(
           for: kTransactionDidUpdateNotificationKey,
           object: transaction,
@@ -456,20 +464,28 @@ extension KNTransactionCoordinator {
         self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
           if case .responseError(let err) = error, let respError = err as? JSONRPCError {
             switch respError {
-            case .responseError:
-              transaction.state = .error
-              EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: transaction,
-                userInfo: nil
-              )
+//            case .responseError:
+//              transaction.state = .error
+//              if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+//                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+//              } else {
+//                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+//              }
+//              KNNotificationUtil.postNotification(
+//                for: kTransactionDidUpdateNotificationKey,
+//                object: transaction,
+//                userInfo: nil
+//              )
             case .resultObjectParseError:
-              guard transaction.time.addingTimeInterval(600) > Date() else {
+              guard transaction.time.addingTimeInterval(900) < Date() else {
                 return
               }
               transaction.state = .drop
-              EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+              if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+              } else {
+                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+              }
               KNNotificationUtil.postNotification(
                 for: kTransactionDidUpdateNotificationKey,
                 object: transaction,

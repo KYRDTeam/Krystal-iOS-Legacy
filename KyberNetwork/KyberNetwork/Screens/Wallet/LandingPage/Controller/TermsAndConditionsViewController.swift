@@ -98,7 +98,7 @@ extension TermsAndConditionsViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 200
+    return 250
   }
 
   func getPopupContentView() -> UIView {
