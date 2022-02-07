@@ -410,9 +410,17 @@ struct TokenData: Codable, Equatable {
   var isAvax: Bool {
     return self.symbol == "AVAX"
   }
+  
+  var isFTM: Bool {
+    return self.symbol == "FTM"
+  }
+  
+  var isCRO: Bool {
+    return self.symbol == "CRO"
+  }
 
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFTM || self.isCRO
   }
 
   func getBalanceBigInt() -> BigInt {
