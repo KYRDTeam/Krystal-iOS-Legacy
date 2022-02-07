@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -34,7 +34,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fV3-RJ-AlE">
-                    <rect key="frame" x="0.0" y="465" width="375" height="202"/>
+                    <rect key="frame" x="0.0" y="465" width="375" height="250"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UzJ-IU-9Wk">
                             <rect key="frame" x="37" y="37" width="20" height="20"/>
@@ -81,7 +81,7 @@
                         <constraint firstItem="UzJ-IU-9Wk" firstAttribute="top" secondItem="fV3-RJ-AlE" secondAttribute="top" constant="37" id="5l9-BL-h9I"/>
                         <constraint firstAttribute="trailing" secondItem="grk-gB-eq9" secondAttribute="trailing" constant="37" id="7p1-5O-DYo"/>
                         <constraint firstItem="grk-gB-eq9" firstAttribute="leading" secondItem="fV3-RJ-AlE" secondAttribute="leading" constant="37" id="ZHy-8c-nUV"/>
-                        <constraint firstAttribute="height" constant="202" id="iOS-Sb-WsQ"/>
+                        <constraint firstAttribute="height" constant="250" id="iOS-Sb-WsQ"/>
                         <constraint firstItem="CNq-3m-cNP" firstAttribute="leading" secondItem="UzJ-IU-9Wk" secondAttribute="trailing" constant="10" id="ljU-rk-7gk"/>
                         <constraint firstItem="UzJ-IU-9Wk" firstAttribute="leading" secondItem="fV3-RJ-AlE" secondAttribute="leading" constant="37" id="nDf-gf-hsE"/>
                         <constraint firstAttribute="trailing" secondItem="CNq-3m-cNP" secondAttribute="trailing" constant="37" id="pnN-5C-pLi"/>

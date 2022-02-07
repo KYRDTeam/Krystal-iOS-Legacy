@@ -86,12 +86,13 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.viewControllers = [self.rootViewController]
     if self.keystore.wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
       // In case user delete the app, wallets are removed but passcode is still save in keychain
+      self.navigationController.viewControllers = [self.rootViewController]
       KNPasscodeUtil.shared.deletePasscode()
     }
     if let wallet = self.newWallet {
+      self.navigationController.viewControllers = [self.rootViewController]
       self.createWalletCoordinator.updateNewWallet(wallet, name: "Untitled")
       self.createWalletCoordinator.start()
       return
@@ -114,12 +115,16 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
             KNWalletStorage.shared.deleteAll()
             return
          }
+        
       }
       if KNPasscodeUtil.shared.currentPasscode() == nil {
+        self.navigationController.viewControllers = [self.rootViewController]
         // In case user imported a wallet and kill the app during settings passcode
         self.newWallet = wallet
         self.passcodeCoordinator.start()
       }
+    } else {
+      self.navigationController.viewControllers = [self.rootViewController]
     }
   }
 
