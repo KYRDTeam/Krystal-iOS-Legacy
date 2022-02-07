@@ -908,6 +908,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateAllowance() {
+    guard !self.viewModel.fromTokenData.isWrapToken else { return }
     self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.fromTokenData))
   }
 

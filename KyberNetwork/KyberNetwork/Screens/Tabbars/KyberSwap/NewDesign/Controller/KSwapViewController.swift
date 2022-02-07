@@ -672,6 +672,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAllowance() {
+    guard !self.viewModel.from.isWrapToken else { return }
     self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
 
