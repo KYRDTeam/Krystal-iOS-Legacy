@@ -428,6 +428,15 @@ struct TokenData: Codable, Equatable {
     let value = Int(0.001 * pow(10.0, Double(self.decimals)))
     return BigInt(value)
   }
+  
+  var isWrapToken: Bool {
+    return self.symbol.lowercased() == "weth"
+    || self.symbol.lowercased() == "wbnb"
+    || self.symbol.lowercased() == "wavax"
+    || self.symbol.lowercased() == "wmatic"
+    || self.symbol.lowercased() == "wftm"
+    || self.symbol.lowercased() == "wcro"
+  }
 }
 
 struct LendingPlatformData: Codable {

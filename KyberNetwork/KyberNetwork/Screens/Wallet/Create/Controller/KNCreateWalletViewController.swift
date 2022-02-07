@@ -47,7 +47,7 @@ class KNCreateWalletViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.containerView.rounded(radius: 5.0)
     self.confirmLabel.text = NSLocalizedString("confirm", value: "Confirm", comment: "").uppercased()
-    self.descLabel.text = "This will create a new wallet for you to transfer and receive tokens. Same wallet can be used on ETH, BSC, Polygon(Matic), and Avalanche."
+    self.descLabel.text = "This will create a new wallet for you to transfer and receive tokens. Same wallet can be used on ETH, BSC, Polygon(Matic), Avalanche, Fantom and Crono."
     self.confirmButton.rounded(radius: 16)
     self.confirmButton.setTitle(
       NSLocalizedString("confirm", value: "Confirm", comment: ""),
