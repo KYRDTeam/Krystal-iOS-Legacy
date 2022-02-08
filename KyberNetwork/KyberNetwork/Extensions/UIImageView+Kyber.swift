@@ -120,14 +120,8 @@ extension UIImageView {
   }
   
   func setImage(urlString: String, symbol: String, _ size: CGSize? = nil) {
-    let cacheResult = ImageCache.default.isCached(forKey: urlString)
-    if !cacheResult {
-      DispatchQueue.main.async {
-        self.image = UIImage(named: "default_token")
-      }
-    }
     if let url =  URL(string: urlString) {
-      self.kf.setImage(with: url)
+      self.kf.setImage(with: url, placeholder: UIImage(named: "default_token"), options: [.cacheMemoryOnly])
     } else {
       DispatchQueue.main.async {
         self.image = UIImage(named: "default_token")
