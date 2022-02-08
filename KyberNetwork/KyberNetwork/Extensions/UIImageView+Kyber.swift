@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import Kingfisher
 
 extension UIImageView {
   func  setImage(with url: URL, placeholder: UIImage?, size: CGSize? = nil, applyNoir: Bool = false, fitSize: CGSize? = nil, failCompletion: (() -> Void)? = nil) {
@@ -119,11 +120,17 @@ extension UIImageView {
   }
   
   func setImage(urlString: String, symbol: String, _ size: CGSize? = nil) {
-    DispatchQueue.global(qos: .background).async {
-      UIImage.loadImageIconWithCache(urlString, defaultToken: "default_token") { image in
-        DispatchQueue.main.async {
-          self.image = image?.resizeImage(to: size)
-        }
+    let cacheResult = ImageCache.default.isCached(forKey: urlString)
+    if !cacheResult {
+      DispatchQueue.main.async {
+        self.image = UIImage(named: "default_token")
+      }
+    }
+    if let url =  URL(string: urlString) {
+      self.kf.setImage(with: url)
+    } else {
+      DispatchQueue.main.async {
+        self.image = UIImage(named: "default_token")
       }
     }
   }
