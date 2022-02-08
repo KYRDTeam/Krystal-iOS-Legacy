@@ -75,9 +75,9 @@ extension UIImage {
     return UIImage(data: data)
   }
   
-  static func loadImageIconWithCache(_ urlString: String, completion: @escaping (UIImage?) -> Void) {
+  static func loadImageIconWithCache(_ urlString: String, defaultToken: String = "tagview_default_icon", completion: @escaping (UIImage?) -> Void) {
     guard let url = URL(string: urlString) else {
-      completion(UIImage(named: "tagview_default_icon"))
+      completion(UIImage(named: defaultToken))
       return
     }
     let downloader = ImageDownloader.default
@@ -86,7 +86,7 @@ extension UIImage {
         case .success(let value):
           completion(value.image)
         case .failure:
-          completion(UIImage(named: "tagview_default_icon"))
+          completion(UIImage(named: defaultToken))
         }
     }
   }
