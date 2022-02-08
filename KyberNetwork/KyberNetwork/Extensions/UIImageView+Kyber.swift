@@ -119,12 +119,12 @@ extension UIImageView {
   }
   
   func setImage(urlString: String, symbol: String, _ size: CGSize? = nil) {
-    guard let url = URL(string: urlString)  else {
-      self.image = UIImage(named: "default_token")!
-      return
-    }
-    self.setImage(with: url, placeholder: UIImage(named: "default_token"), size: size) {
-      self.setSymbolImage(symbol: symbol)
+    DispatchQueue.global(qos: .background).async {
+      UIImage.loadImageIconWithCache(urlString, defaultToken: "default_token") { image in
+        DispatchQueue.main.async {
+          self.image = image?.resizeImage(to: size)
+        }
+      }
     }
   }
 }
