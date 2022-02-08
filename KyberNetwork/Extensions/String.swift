@@ -13,20 +13,25 @@ extension String {
         return data.hexEncoded
     }
 
-    var doubleValue: Double {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.decimalSeparator = "."
-        if let result = formatter.number(from: self) {
-            return result.doubleValue
-        } else {
-            formatter.decimalSeparator = ","
-            if let result = formatter.number(from: self) {
-                return result.doubleValue
-            }
-        }
-        return 0
+  var doubleValue: Double {
+    let decimalSeparator = Locale.current.decimalSeparator ?? "."
+    let groupSeparator = Locale.current.groupingSeparator ?? ","
+    let formatter = NumberFormatter()
+    formatter.locale = Locale.current
+    formatter.decimalSeparator = decimalSeparator
+    
+    let refineTxt = self.replacingOccurrences(of: groupSeparator, with: "")
+    
+    if let result = formatter.number(from: refineTxt) {
+      return result.doubleValue
+    } else {
+      formatter.decimalSeparator = ","
+      if let result = formatter.number(from: refineTxt) {
+        return result.doubleValue
+      }
     }
+    return 0
+  }
 
     var trimmed: String {
         return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
