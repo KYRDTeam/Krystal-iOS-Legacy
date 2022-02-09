@@ -531,6 +531,11 @@
 		C31F74B625DD3284008B21F7 /* OverviewAssetsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74B425DD3284008B21F7 /* OverviewAssetsTableViewCell.xib */; };
 		C31F74BB25DD32A6008B21F7 /* OverviewDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F74B925DD32A6008B21F7 /* OverviewDepositTableViewCell.swift */; };
 		C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */; };
+		C320D80827B39DAE0001DC71 /* MultiSendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */; };
+		C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */; };
+		C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */; };
+		C320D80F27B3A7F60001DC71 /* MultiSendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80D27B3A7F60001DC71 /* MultiSendCell.swift */; };
+		C320D81027B3A7F60001DC71 /* MultiSendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */; };
 		C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */; };
 		C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */; };
 		C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C325984426D345A100F87D25 /* OverviewShareNFTViewController.swift */; };
@@ -1341,6 +1346,11 @@
 		C31F74B425DD3284008B21F7 /* OverviewAssetsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAssetsTableViewCell.xib; sourceTree = "<group>"; };
 		C31F74B925DD32A6008B21F7 /* OverviewDepositTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDepositTableViewCell.swift; sourceTree = "<group>"; };
 		C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewDepositTableViewCell.xib; sourceTree = "<group>"; };
+		C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendCoordinator.swift; sourceTree = "<group>"; };
+		C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendViewController.swift; sourceTree = "<group>"; };
+		C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendViewController.xib; sourceTree = "<group>"; };
+		C320D80D27B3A7F60001DC71 /* MultiSendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendCell.swift; sourceTree = "<group>"; };
+		C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendCell.xib; sourceTree = "<group>"; };
 		C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletMenuViewController.swift; sourceTree = "<group>"; };
 		C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateWalletMenuViewController.xib; sourceTree = "<group>"; };
 		C325984426D345A100F87D25 /* OverviewShareNFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewShareNFTViewController.swift; sourceTree = "<group>"; };
@@ -3794,6 +3804,8 @@
 				C30292EF260317E9001929E1 /* MarketingPartnerCollectionViewCell.xib */,
 				C3285AB3277EDFED00D28BC6 /* BrowserCell.swift */,
 				C3285AB4277EDFED00D28BC6 /* BrowserCell.xib */,
+				C320D80D27B3A7F60001DC71 /* MultiSendCell.swift */,
+				C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4221,6 +4233,7 @@
 			children = (
 				C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */,
 				C30DB3EE2771D1EC00F3E545 /* DappCoordinator.swift */,
+				C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -4244,6 +4257,8 @@
 				C314F1682785525A00E3599B /* DappBrowerTransactionConfirmPopup.xib */,
 				C3743296278ED344002C97A9 /* SignMessageConfirmPopup.swift */,
 				C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */,
+				C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */,
+				C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4556,6 +4571,7 @@
 				C31F152A23F549F6006CCACE /* SpeedUpCustomGasSelectViewController.xib in Resources */,
 				25696F6920BE9EB6002CC53F /* KNSearchTokenViewController.xib in Resources */,
 				C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */,
+				C320D81027B3A7F60001DC71 /* MultiSendCell.xib in Resources */,
 				25929C5520DA5C760045CFA3 /* SF-Pro-Display-RegularItalic.otf in Resources */,
 				25929C9620DA5CC10045CFA3 /* SFCompactDisplay-Semibold.otf in Resources */,
 				7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */,
@@ -4789,6 +4805,7 @@
 				C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */,
 				25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */,
 				C3EE06CB267A15E50090B432 /* README.txt in Resources */,
+				C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */,
 				25929C5620DA5C760045CFA3 /* SF-Pro-Text-HeavyItalic.otf in Resources */,
 				C3A6911525638DE700F57756 /* Lato-Bold.ttf in Resources */,
 				C3299D6027730B9D00D1065A /* BrowserViewController.xib in Resources */,
@@ -5179,6 +5196,7 @@
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
 				C32D6DFF27843587002886F1 /* FirstTimeWarningDappBrowserPopup.swift in Sources */,
 				296106D01F778A8D0006164B /* TransferType.swift in Sources */,
+				C320D80827B39DAE0001DC71 /* MultiSendCoordinator.swift in Sources */,
 				C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */,
 				2561454620C648A700FB00CF /* KNContactStorage.swift in Sources */,
 				29E14FDB1F7F4F3D00185568 /* Transaction.swift in Sources */,
@@ -5319,6 +5337,7 @@
 				C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */,
 				C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */,
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
+				C320D80F27B3A7F60001DC71 /* MultiSendCell.swift in Sources */,
 				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
@@ -5352,6 +5371,7 @@
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
+				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				C308BC1526D897290030022B /* ConfirmSendNFTViewController.swift in Sources */,

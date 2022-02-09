@@ -25,6 +25,7 @@ class InvestCoordinator: Coordinator {
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
   var dappCoordinator: DappCoordinator?
+  var multiSendCoordinator: MultiSendCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -185,6 +186,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openKrytalView()
     case .dapp:
       self.openDappBrowserScreen()
+    case .multiSend:
+      let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+      coordinator.start()
+      self.multiSendCoordinator = coordinator
     }
   }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -465,11 +465,11 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B5p-ju-Gve">
                                     <rect key="frame" x="88" y="0.0" width="71.5" height="78"/>
                                     <subviews>
-                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6L-xK-ndD">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6L-xK-ndD">
                                             <rect key="frame" x="9" y="15" width="53" height="32"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="transfer_invest_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7Ah-sk-bA2">
-                                                    <rect key="frame" x="10.5" y="0.0" width="32" height="32"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="multiSend_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7Ah-sk-bA2">
+                                                    <rect key="frame" x="11.5" y="1" width="30" height="30"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -486,21 +486,24 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8P-Fi-iKt">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Send" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X8P-Fi-iKt">
                                             <rect key="frame" x="9" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoL-RK-6Rm">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoL-RK-6Rm">
                                             <rect key="frame" x="0.0" y="0.0" width="71.5" height="78"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <state key="normal">
                                                 <color key="titleColor" name="textWhiteColor"/>
                                             </state>
+                                            <connections>
+                                                <action selector="multiSendButtonTapped:" destination="-1" eventType="touchUpInside" id="d2U-98-TIz"/>
+                                            </connections>
                                         </button>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstItem="X8P-Fi-iKt" firstAttribute="trailing" secondItem="Y6L-xK-ndD" secondAttribute="trailing" id="B7X-Hn-WD3"/>
                                         <constraint firstItem="Y6L-xK-ndD" firstAttribute="centerX" secondItem="B5p-ju-Gve" secondAttribute="centerX" id="BK3-mL-aRF"/>
@@ -683,6 +686,7 @@
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="dapp_invest_icon" width="30" height="30"/>
+        <image name="multiSend_icon" width="30" height="30"/>
         <image name="referral_invest_icon" width="32" height="32"/>
         <image name="reward_icon" width="32" height="32"/>
         <image name="swap_inverst_icon" width="32" height="32"/>
