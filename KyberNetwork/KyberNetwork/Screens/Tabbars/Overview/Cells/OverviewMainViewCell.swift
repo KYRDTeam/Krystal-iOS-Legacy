@@ -131,7 +131,7 @@ class OverviewMainCellViewModel {
         let rateBigInt = BigInt(token.getTokenLastPrice(self.currency) * pow(10.0, 18.0))
         let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
         let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
-        return self.currency.symbol() + valueString
+        return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       case .ch24:
         let change24 = token.getTokenChange24(self.currency)
         return String(format: "%.2f", change24) + "%"
