@@ -267,6 +267,6 @@ enum KNEnvironment: Int {
     if KNEnvironment.default == .ropsten {
       return "ropsten,bsctestnet,mumbai,fuji"
     }
-    return nil
+    return "ethereum,bsc,polygon,avalanche,cronos,fantom"
   }
 }
