@@ -39,6 +39,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   /// src and dest token used for deeplink
   var srcTokenAddress, destTokenAddress: String?
+  var priceImpactSource: [String] = []
   fileprivate var balances: [String: Balance] = [:]
   weak var delegate: KNExchangeTokenCoordinatorDelegate?
 
@@ -696,7 +697,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
     case .getRefPrice(let from, let to):
       self.getRefPrice(from: from, to: to)
-      case .confirmEIP1559Swap(data: let data, eip1559tx: let tx, priceImpact: let priceImpact, platform: let platform, rawTransaction: let rawTransaction, minReceiveDest: let minReceivedData, maxSlippage: let maxSlippage):
+    case .confirmEIP1559Swap(data: let data, eip1559tx: let tx, priceImpact: let priceImpact, platform: let platform, rawTransaction: let rawTransaction, minReceiveDest: let minReceivedData, maxSlippage: let maxSlippage):
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { (result) in
         self.navigationController.hideLoading()
@@ -743,7 +744,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   fileprivate func showConfirmSwapScreen(data: KNDraftExchangeTransaction, transaction: SignTransaction?, eip1559: EIP1559Transaction?, priceImpact: Double, platform: String, rawTransaction: TxObject, minReceiveAmount: String, minReceiveTitle: String, maxSlippage: Double) {
     self.confirmSwapVC = {
       let ethBal = self.balances[KNSupportedTokenStorage.shared.ethToken.contract]?.value ?? BigInt(0)
-      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, eip1559Tx: eip1559, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceiveAmount, minReceiveTitle: minReceiveTitle, maxSlippage: maxSlippage)
+      let viewModel = KConfirmSwapViewModel(transaction: data, ethBalance: ethBal, signTransaction: transaction, eip1559Tx: eip1559, priceImpact: priceImpact, priceImpactSource: self.priceImpactSource, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceiveAmount, minReceiveTitle: minReceiveTitle, maxSlippage: maxSlippage)
       let controller = KConfirmSwapViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
       controller.delegate = self
@@ -901,6 +902,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     provider.request(.getRefPrice(src: src, dst: dest)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let change = json["refPrice"] as? String, let sources = json["sources"] as? [String] {
+        self.priceImpactSource = sources
         self.rootViewController.coordinatorSuccessUpdateRefPrice(from: from, to: to, change: change, source: sources)
       } else {
         //TODO: add handle for fail load ref price

@@ -9,6 +9,7 @@ struct KConfirmSwapViewModel {
   let ethBalance: BigInt
   let signTransaction: SignTransaction?
   let priceImpact: Double
+  let priceImpactSource: [String]
   let maxSlippage: Double
   let platform: String
   let rawTransaction: TxObject
@@ -22,6 +23,7 @@ struct KConfirmSwapViewModel {
     signTransaction: SignTransaction?,
     eip1559Tx: EIP1559Transaction?,
     priceImpact: Double,
+    priceImpactSource: [String],
     platform: String,
     rawTransaction: TxObject,
     minReceiveAmount: String,
@@ -32,6 +34,7 @@ struct KConfirmSwapViewModel {
     self.ethBalance = ethBalance
     self.signTransaction = signTransaction
     self.priceImpact = priceImpact
+    self.priceImpactSource = priceImpactSource
     self.platform = platform
     self.rawTransaction = rawTransaction
     self.eip1559Transaction = eip1559Tx
@@ -184,6 +187,13 @@ struct KConfirmSwapViewModel {
   var priceImpactText: String {
     guard self.priceImpact != -1000 else { return " Missing price impact. Please swap with caution." }
     return self.priceImpact > -5 ? "" : "Price impact is high. You may want to reduce your swap amount for a better rate."
+  }
+  
+  var refPriceSource: String {
+    guard !self.priceImpactSource.isEmpty else {
+      return ""
+    }
+    return "Reference.price.is.from".toBeLocalised() + self.priceImpactSource.joined(separator: ", ") + "."
   }
 
   var priceImpactValueText: String {
