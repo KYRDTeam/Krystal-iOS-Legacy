@@ -79,7 +79,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
-      tokens: tokens.map({ return $0.symbol })
+      tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
   }
@@ -101,7 +101,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
-      tokens: tokens.map({ return $0.symbol })
+      tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
   }
@@ -168,6 +168,13 @@ struct KNHistoryViewModel {
   var isTransactionCollectionViewHidden: Bool {
     return !self.isEmptyStateHidden
   }
+  
+  var tokensSymbol: [String] {
+    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+      return EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols()
+    }
+    return self.tokens.map({ return $0.symbol })
+  }
 
   var numberSections: Int {
     if self.isShowingPending { return self.displayingPendingTxHeaders.count }
@@ -231,7 +238,7 @@ struct KNHistoryViewModel {
     let displayHeaders: [String] = {
       let data = self.completedKrystalTxHeaders.filter({
         let date = self.dateFormatter.date(from: $0) ?? Date()
-        return date >= fromDate && date <= toDate
+        return date >= fromDate.startDate() && date < toDate.endDate()
       })
       return data
     }()
@@ -256,7 +263,7 @@ struct KNHistoryViewModel {
       self.displayingPendingTxHeaders = {
         let data = self.pendingTxHeaders.filter({
           let date = self.dateFormatter.date(from: $0) ?? Date()
-          return date >= fromDate && date <= toDate
+          return date >= fromDate.startDate() && date < toDate.endDate()
         })
         return data
       }()
@@ -276,7 +283,7 @@ struct KNHistoryViewModel {
         self.displayingUnsupportedChainCompletedTxHeaders = {
           let data = self.handledTxHeaders.filter({
             let date = self.dateFormatter.date(from: $0) ?? Date()
-            return date >= fromDate && date <= toDate
+            return date >= fromDate.startDate() && date < toDate.endDate()
           }).sorted { date1String, date2String in
             let date1 = self.dateFormatter.date(from: date1String) ?? Date()
             let date2 = self.dateFormatter.date(from: date2String) ?? Date()
@@ -287,7 +294,7 @@ struct KNHistoryViewModel {
         self.displayingUnsupportedChainCompletedTxData = [:]
         self.displayingUnsupportedChainCompletedTxHeaders.forEach { (header) in
           let filteredHandledTxData = self.handledTxData[header]?.sorted(by: { $0.time > $1.time })
-          let items = filteredHandledTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
+          let items = filteredHandledTxData?.filter({ return self.isInternalHistoryTransactionIncluded($0) }).map({ (item) -> PendingInternalHistoryTransactonViewModel in
             return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
           })
           self.displayingUnsupportedChainCompletedTxData[header] = items
@@ -297,27 +304,39 @@ struct KNHistoryViewModel {
       }
     }
   }
+  
+  fileprivate func isInternalHistoryTransactionIncluded(_ tx: InternalHistoryTransaction) -> Bool {
+    let matchedTransfer = (tx.type == .transferETH || tx.type == .transferNFT || tx.type == .transferToken) && self.filters.isSend
+    let matchedReceive = (tx.type == .receiveETH || tx.type == .receiveNFT || tx.type == .receiveToken) && self.filters.isReceive
+    let matchedSwap = (tx.type == .swap) && self.filters.isSwap
+    let matchedAppprove = (tx.type == .allowance) && self.filters.isApprove
+    let matchedSupply = (tx.type == .earn) && self.filters.isTrade
+    let matchedWithdraw = (tx.type == .withdraw) && self.filters.isWithdraw
+    let matchedClaimReward = (tx.type == .claimReward) && self.filters.isClaimReward
+    let matchedContractInteraction = (tx.type == .contractInteraction) && self.filters.isContractInteraction
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
-  fileprivate func isTransactionIncluded(_ tx: Transaction) -> Bool {
-    let type = tx.localizedOperations.first?.type ?? ""
-    var isTokenIncluded: Bool = false
-    if type == "exchange" {
-      if !self.filters.isSwap { return false } // not swap
-      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol?.uppercased() ?? "") || self.filters.tokens.contains(tx.localizedOperations.first?.name?.uppercased() ?? "")
-    } else {
-      // not include send, but it is a send tx
-      if !self.filters.isSend && tx.from.lowercased() == self.currentWallet.address.lowercased() { return false }
-      // not include receive, but it is a receive tx
-      if !self.filters.isReceive && tx.to.lowercased() == self.currentWallet.address.lowercased() { return false }
-      let symbol = tx.localizedOperations.first?.symbol?.uppercased() ?? ""
-      if symbol.isEmpty && ( tx.state == .error || tx.state == .failed ) { return true }
-      isTokenIncluded = self.filters.tokens.contains(tx.localizedOperations.first?.symbol?.uppercased() ?? "")
+    var tokenMatched = false
+    var transactionToken: [String] = []
+    if let sym = tx.fromSymbol {
+      transactionToken.append(sym)
     }
-    return isTokenIncluded
+    if let sym = tx.toSymbol {
+      transactionToken.append(sym)
+    }
+    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols().count {
+      tokenMatched = true
+    } else {
+      transactionToken.forEach { transaction in
+        if self.filters.tokens.contains(transaction) {
+          tokenMatched = true
+        }
+      }
+    }
+    return matchedType && tokenMatched
   }
 
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
-    
     let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
     let matchedReceive = (tx.type == "Received") && self.filters.isReceive
     let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
@@ -328,7 +347,7 @@ struct KNHistoryViewModel {
     let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
-    var tokenMatched = true
+    var tokenMatched = false
     var transactionToken: [String] = []
     if let sym = tx.extraData?.token?.symbol {
       transactionToken.append(sym)
@@ -339,58 +358,16 @@ struct KNHistoryViewModel {
     if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
-    if transactionToken.isEmpty {
-      if self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
-        tokenMatched = true
-      } else {
-        tokenMatched = false
-      }
+    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
+      tokenMatched = true
     } else {
-      if transactionToken.count > self.filters.tokens.count {
-        tokenMatched = Set(self.filters.tokens).isSubset(of: Set(transactionToken))
-      } else {
-        tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
+      transactionToken.forEach { transaction in
+        if self.filters.tokens.contains(transaction) {
+          tokenMatched = true
+        }
       }
     }
     return matchedType && tokenMatched
-  }
-
-  fileprivate func isCompletedTransactionIncluded(_ tx: HistoryTransaction) -> Bool {
-    let matchedTransfer = (tx.type == .transferETH || tx.type == .transferToken || tx.type == .transferNFT) && self.filters.isSend
-    let matchedReceive = ( tx.type == .receiveETH || tx.type == .receiveToken || tx.type == .receiveNFT || tx.type == .createNFT) && self.filters.isReceive
-    let matchedSwap = tx.type == .swap && self.filters.isSwap
-    let matchedAppprove = tx.type == .allowance && self.filters.isApprove
-    let matchedWithdraw = tx.type == .withdraw && self.filters.isWithdraw
-    let matchedTrade = tx.type == .earn && self.filters.isTrade
-    let matchedContractInteraction = tx.type == .contractInteraction && self.filters.isContractInteraction
-    let matchedSelf = tx.type == .selfTransfer && tx.type == .transferETH
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedWithdraw || matchedTrade || matchedContractInteraction || matchedSelf
-    var tokenMatched = true
-    var transactionToken: [String] = []
-    tx.tokenTransactions.forEach { (item) in
-      if !transactionToken.contains(item.tokenSymbol) {
-        transactionToken.append(item.tokenSymbol)
-      }
-    }
-    if tx.type == .transferETH || tx.type == .receiveETH {
-      tokenMatched = self.filters.tokens.contains(KNGeneralProvider.shared.quoteToken)
-    } else {
-      if transactionToken.isEmpty {
-        if tx.type == .allowance, let approveTx = tx.transacton.first, let token = KNSupportedTokenStorage.shared.getTokenWith(address: approveTx.to) {
-          if matchedType {
-            return self.filters.tokens.contains(token.symbol)
-          } else {
-            return false
-          }
-        } else {
-          tokenMatched = true
-        }
-      } else {
-        tokenMatched = Set(transactionToken).isSubset(of: Set(self.filters.tokens))
-      }
-    }
-
-    return tokenMatched && matchedType
   }
 
   var normalAttributes: [NSAttributedString.Key: Any] = [
@@ -612,11 +589,8 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   @IBAction func filterButtonPressed(_ sender: Any) {
-    let tokenSymbols: [String] = {
-      return self.viewModel.tokens.map({ return $0.symbol })
-    }()
     let viewModel = KNTransactionFilterViewModel(
-      tokens: tokenSymbols,
+      tokens: self.viewModel.tokensSymbol,
       filter: self.viewModel.filters
     )
     let filterVC = KNTransactionFilterViewController(viewModel: viewModel)
