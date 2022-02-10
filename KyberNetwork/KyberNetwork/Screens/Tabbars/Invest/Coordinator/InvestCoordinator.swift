@@ -188,6 +188,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openDappBrowserScreen()
     case .multiSend:
       let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+      coordinator.delegate = self
       coordinator.start()
       self.multiSendCoordinator = coordinator
     }

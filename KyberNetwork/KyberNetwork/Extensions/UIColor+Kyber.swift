@@ -59,7 +59,7 @@ extension UIColor {
     static var cyanLight = UIColor(red: 222, green: 242, blue: 253)
     static var denim = UIColor(red: 29, green: 38, blue: 62)
 
-    static var dashLine = UIColor(red: 172, green: 179, blue: 198)
+    static var dashLine = UIColor(hex: "3A3E3C") 
     static var border = UIColor(red: 202, green: 208, blue: 223)
     static var importRed = UIColor(red: 249, green: 99, blue: 99)
 

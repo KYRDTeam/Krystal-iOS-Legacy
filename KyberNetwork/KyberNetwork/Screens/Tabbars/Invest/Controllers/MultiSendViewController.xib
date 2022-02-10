@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultiSendViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="inputTableView" destination="p5U-Iv-VdQ" id="z6f-LB-lPg"/>
+                <outlet property="inputTableViewHeight" destination="Jr6-nI-B3X" id="hFH-sv-eSG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -32,7 +33,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bsv-pO-Cpy">
-                            <rect key="frame" x="51" y="68" width="96" height="21"/>
+                            <rect key="frame" x="51" y="68" width="88.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -44,6 +45,9 @@
                                 <constraint firstAttribute="width" constant="46" id="vc7-Jr-li2"/>
                             </constraints>
                             <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="g77-Vx-Wib"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLb-D6-t0M">
                             <rect key="frame" x="210" y="62.5" width="110" height="32"/>
@@ -172,7 +176,7 @@
                             <state key="normal" image="gas_config_icon"/>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="p5U-Iv-VdQ">
-                            <rect key="frame" x="37" y="60" width="301" height="206"/>
+                            <rect key="frame" x="37" y="70" width="301" height="206"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="206" id="Jr6-nI-B3X"/>
@@ -183,7 +187,7 @@
                             </connections>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCA-se-phj">
-                            <rect key="frame" x="37" y="276" width="301" height="42"/>
+                            <rect key="frame" x="37" y="286" width="301" height="42"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="lP6-v0-42g"/>
@@ -200,7 +204,7 @@
                             </userDefinedRuntimeAttributes>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7a-Zh-3sg">
-                            <rect key="frame" x="0.0" y="430.5" width="301" height="120"/>
+                            <rect key="frame" x="0.0" y="440.5" width="375" height="120"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENT CONTACT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLo-eN-B8x">
                                     <rect key="frame" x="37" y="6" width="110.5" height="16.5"/>
@@ -209,14 +213,14 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZzV-mX-V0L" customClass="KNContactTableView" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
-                                    <rect key="frame" x="13" y="37" width="275" height="84"/>
+                                    <rect key="frame" x="13" y="37" width="349" height="84"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="84" id="suh-x9-f5i"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s5f-lB-N0L">
-                                    <rect key="frame" x="224" y="0.0" width="40" height="29"/>
+                                    <rect key="frame" x="297" y="0.0" width="41" height="29"/>
                                     <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
                                     <state key="normal" title="MORE">
                                         <color key="titleColor" name="buttonBackgroundColor"/>
@@ -236,25 +240,25 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOK-K8-BYf">
-                            <rect key="frame" x="252.5" y="372" width="85.5" height="16.5"/>
+                            <rect key="frame" x="252.5" y="382" width="85.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDw-0z-YJO">
-                            <rect key="frame" x="37" y="372" width="51.5" height="17"/>
+                            <rect key="frame" x="37" y="382" width="51.5" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SLD-75-pyJ">
-                            <rect key="frame" x="252.5" y="343" width="85.5" height="16.5"/>
+                            <rect key="frame" x="252.5" y="353" width="85.5" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgL-9a-JnC">
-                            <rect key="frame" x="37" y="343" width="119" height="17"/>
+                            <rect key="frame" x="37" y="353" width="119" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
@@ -263,15 +267,15 @@
                     <constraints>
                         <constraint firstItem="P7a-Zh-3sg" firstAttribute="leading" secondItem="6v6-SQ-Koa" secondAttribute="leading" id="0SH-nA-jkD"/>
                         <constraint firstAttribute="trailing" secondItem="P7a-Zh-3sg" secondAttribute="trailing" id="0nz-bX-EUb"/>
-                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="centerX" secondItem="6v6-SQ-Koa" secondAttribute="centerX" id="4L0-1b-HEe"/>
                         <constraint firstItem="SLD-75-pyJ" firstAttribute="centerY" secondItem="xgL-9a-JnC" secondAttribute="centerY" id="50U-4B-Kcd"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="leading" secondItem="6v6-SQ-Koa" secondAttribute="leading" constant="37" id="6RM-vp-xgS"/>
                         <constraint firstItem="kOK-K8-BYf" firstAttribute="centerY" secondItem="FDw-0z-YJO" secondAttribute="centerY" id="AKm-Gh-BtI"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="Aww-m2-rTP"/>
+                        <constraint firstItem="P7a-Zh-3sg" firstAttribute="centerX" secondItem="6v6-SQ-Koa" secondAttribute="centerX" id="B0v-UR-jmD"/>
                         <constraint firstAttribute="bottom" secondItem="P7a-Zh-3sg" secondAttribute="bottom" id="F8a-0l-tmS"/>
                         <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="mLd-V8-BLg" secondAttribute="trailing" constant="37" id="Lhs-mo-HhC"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="top" secondItem="p5U-Iv-VdQ" secondAttribute="bottom" constant="10" id="QYU-Mj-1Yu"/>
-                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="mLd-V8-BLg" secondAttribute="bottom" constant="10" id="Qar-PB-gc4"/>
+                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="mLd-V8-BLg" secondAttribute="bottom" constant="20" id="Qar-PB-gc4"/>
                         <constraint firstItem="kOK-K8-BYf" firstAttribute="trailing" secondItem="SLD-75-pyJ" secondAttribute="trailing" id="ZPZ-5A-zDL"/>
                         <constraint firstItem="mLd-V8-BLg" firstAttribute="centerY" secondItem="chg-27-bUe" secondAttribute="centerY" id="aUx-r2-LMw"/>
                         <constraint firstItem="FDw-0z-YJO" firstAttribute="leading" secondItem="xgL-9a-JnC" secondAttribute="leading" id="dim-8G-lX7"/>
@@ -282,7 +286,7 @@
                         <constraint firstItem="FDw-0z-YJO" firstAttribute="top" secondItem="oCA-se-phj" secondAttribute="bottom" constant="54" id="mps-re-Ib3"/>
                         <constraint firstItem="FDw-0z-YJO" firstAttribute="leading" secondItem="oCA-se-phj" secondAttribute="leading" id="pvZ-Ai-tdh"/>
                         <constraint firstItem="P7a-Zh-3sg" firstAttribute="top" secondItem="kOK-K8-BYf" secondAttribute="bottom" constant="42" id="sXQ-Mi-tv0"/>
-                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="trailing" secondItem="6v6-SQ-Koa" secondAttribute="trailing" constant="37" id="t0J-i7-Avd"/>
+                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="trailing" secondItem="6v6-SQ-Koa" secondAttribute="trailing" constant="-37" id="t0J-i7-Avd"/>
                         <constraint firstItem="FDw-0z-YJO" firstAttribute="top" secondItem="xgL-9a-JnC" secondAttribute="bottom" constant="12" id="vR3-eR-2VH"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="Nle-zF-Shh"/>
