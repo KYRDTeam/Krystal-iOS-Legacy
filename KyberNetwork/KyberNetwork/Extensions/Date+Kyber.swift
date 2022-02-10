@@ -37,6 +37,18 @@ extension Date {
     return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
   }
   
+  func startDate(_ date: Date? = nil) -> Date {
+    if let date = date {
+      return Calendar.current.startOfDay(for: date)
+    }
+    return Calendar.current.startOfDay(for: self)
+  }
+  
+  func endDate() -> Date {
+    let tomorow = Calendar.current.date(byAdding: .day, value: 1, to: self) ?? Date()
+    return self.startDate(tomorow)
+  }
+  
   func currentTimeMillis() -> Double {
     return self.timeIntervalSince1970 * 1000
   }
