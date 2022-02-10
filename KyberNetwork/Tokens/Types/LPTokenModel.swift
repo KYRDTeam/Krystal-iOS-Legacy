@@ -68,6 +68,16 @@ class LPTokenModel: Codable {
       quoteArray["matic"] = unitValueModel
     }
     
+    if let ftmJson = quotesJson["ftm"] as? JSONDictionary {
+      unitValueModel = UnitValueModel(json: ftmJson)
+      quoteArray["ftm"] = unitValueModel
+    }
+    
+    if let croJson = quotesJson["cro"] as? JSONDictionary {
+      unitValueModel = UnitValueModel(json: croJson)
+      quoteArray["cro"] = unitValueModel
+    }
+    
     if let usdJson = quotesJson["usd"] as? JSONDictionary {
       unitValueModel = UnitValueModel(json: usdJson)
       quoteArray["usd"] = unitValueModel

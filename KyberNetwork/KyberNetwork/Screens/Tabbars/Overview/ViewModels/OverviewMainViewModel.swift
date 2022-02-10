@@ -464,7 +464,8 @@ class OverviewMainViewModel {
           })
 
           models[key] = sectionModels
-          let displayTotalSection = self.currencyMode.symbol() + currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
+          let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
+          let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
 
           self.displayTotalValues[key] = displayTotalSection
           total += totalSection
