@@ -265,7 +265,7 @@ enum KNEnvironment: Int {
 
   static var allChainPath: String? {
     if KNEnvironment.default == .ropsten {
-      return "ropsten,bsctestnet,mumbai,fuji"
+      return "ropsten,bsctestnet,mumbai,fuji,cronos,fantom"
     }
     return "ethereum,bsc,polygon,avalanche,cronos,fantom"
   }
