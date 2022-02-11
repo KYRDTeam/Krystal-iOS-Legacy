@@ -53,9 +53,8 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(self.rootViewController, animated: true) {
       self.appCoordinatorTokensTransactionsDidUpdate(showLoading: true)
       self.appCoordinatorPendingTransactionDidUpdate()
-      self.rootViewController.coordinatorUpdateTokens()
       if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-        self.session.transacionCoordinator?.loadEtherscanTransactions()
+        self.session.transacionCoordinator?.loadHistoryTransactions()
       }
     }
   }
@@ -71,7 +70,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     let address = self.session.wallet.address.description
     self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.appCoordinatorTokensTransactionsDidUpdate()
-    self.rootViewController.coordinatorUpdateTokens()
     self.appCoordinatorPendingTransactionDidUpdate()
     self.rootViewController.coordinatorUpdateNewSession(wallet: self.currentWallet)
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
@@ -256,7 +254,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
         self.navigationController.tabBarController?.selectedIndex = 1
       }
     case .reloadAllData:
-      self.session.transacionCoordinator?.loadEtherscanTransactions(isInit: true)
+      self.session.transacionCoordinator?.loadHistoryTransactions(isInit: true)
     }
   }
 

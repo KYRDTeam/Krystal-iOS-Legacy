@@ -293,7 +293,7 @@ extension KNAppCoordinator {
 
     if transaction.state == .done || transaction.state == .drop || transaction.state == .error {
       self.loadBalanceCoordinator?.loadAllBalances()
-      self.session.transacionCoordinator?.loadEtherscanTransactions()
+      self.session.transacionCoordinator?.loadHistoryTransactions()
     }
   }
 

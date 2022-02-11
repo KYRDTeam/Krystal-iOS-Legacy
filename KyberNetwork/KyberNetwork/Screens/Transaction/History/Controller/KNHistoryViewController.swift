@@ -34,7 +34,6 @@ class KNHistoryViewController: KNBaseViewController {
   @IBOutlet weak var segmentedControl: SegmentedControl!
   private let refreshControl = UIRefreshControl()
 
-
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNHistoryViewController.className, bundle: nil)
@@ -66,18 +65,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.swapNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.swapNowButton.frame.size.height / 2)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = 1
-  }
-
-  fileprivate func checkHavePendingTxOver5Min() -> Bool {
-    var flag = false
-    self.viewModel.pendingTxData.keys.forEach { (key) in
-      self.viewModel.pendingTxData[key]?.forEach({ (tx) in
-        if abs(tx.time.timeIntervalSinceNow) >= self.viewModel.timeForLongPendingTx {
-          flag = true
-        }
-      })
-    }
-    return flag
   }
 
   fileprivate func setupNavigationBar() {
@@ -180,9 +167,9 @@ extension KNHistoryViewController {
     self.updateUIWhenDataDidChange()
   }
 
-  func coordinatorUpdateTokens() {
-    //TODO: handle update new token from etherscan
-  }
+//  func coordinatorUpdateTokens() {
+//    //TODO: handle update new token from etherscan
+//  }
 
   func coordinatorDidUpdateCompletedKrystalTransaction(sections: [String], data: [String: [KrystalHistoryTransaction]]) {
     self.refreshControl.endRefreshing()

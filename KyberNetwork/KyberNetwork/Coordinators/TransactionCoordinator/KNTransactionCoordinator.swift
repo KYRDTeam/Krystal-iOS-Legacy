@@ -66,7 +66,7 @@ class KNTransactionCoordinator {
     self.isLoadingEnabled = true
     DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
       if self.isLoadingEnabled {
-        self.loadEtherscanTransactions()
+        self.loadHistoryTransactions()
       }
     }
   }
@@ -76,14 +76,14 @@ class KNTransactionCoordinator {
 extension KNTransactionCoordinator {
   func startUpdatingCompletedTransactions() {
     self.tokenTxTimer?.invalidate()
-    self.loadEtherscanTransactions()
+    self.loadHistoryTransactions()
     self.tokenTxTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.minutes2,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
         if self.isLoadingEnabled {
-          self.loadEtherscanTransactions(isInit: !HistoryTransactionStorage.shared.isSavedKrystalHistory())
+          self.loadHistoryTransactions(isInit: !HistoryTransactionStorage.shared.isSavedKrystalHistory())
         }
       }
     )
@@ -125,7 +125,7 @@ extension KNTransactionCoordinator {
     }
   }
 
-  func loadEtherscanTransactions(isInit: Bool = false) {
+  func loadHistoryTransactions(isInit: Bool = false) {
     DispatchQueue.global(qos: .background).async {
       self.loadKrystalHistory(isInit: isInit)
     }
