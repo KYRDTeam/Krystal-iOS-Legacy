@@ -7,9 +7,12 @@
 
 import UIKit
 import SwipeCellKit
+import QRCodeReaderViewController
 
 enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
+  case openContactsList
+  case addContact(address: String)
 }
 
 protocol MultiSendViewControllerDelegate: class {
@@ -41,19 +44,51 @@ class MultiSendViewController: KNBaseViewController {
     let nib = UINib(nibName: MultiSendCell.className, bundle: nil)
     self.inputTableView.register(nib, forCellReuseIdentifier: MultiSendCell.cellID)
     self.inputTableView.rowHeight = MultiSendCell.cellHeight
-    
-
+    self.updateAvailableBalanceForToken(KNGeneralProvider.shared.quoteTokenObject.toToken())
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
   
+  private func openQRCode() {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
+    let qrcodeReaderVC: QRCodeReaderViewController = {
+      let controller = QRCodeReaderViewController()
+      controller.delegate = self
+      return controller
+    }()
+    self.present(qrcodeReaderVC, animated: true, completion: nil)
+  }
+  
   func coordinatorDidUpdateSendToken(_ from: Token) {
     let cm = self.viewModel.cellModels[self.viewModel.updatingIndex]
     cm.from = from
+    self.updateAvailableBalanceForToken(from)
     self.inputTableView.reloadData()
     self.viewModel.updatingIndex = 0
+  }
+  
+  func coordinatorDidSelectContact(_ contact: KNContact) {
+    let cm = self.viewModel.cellModels[self.viewModel.updatingIndex]
+    let isAddressChanged = cm.addressString.lowercased() != contact.address.lowercased()
+    guard isAddressChanged else { return }
+    cm.updateAddress(contact.address)
+    KNContactStorage.shared.updateLastUsed(contact: contact)
+    self.inputTableView.reloadData()
+  }
+  
+  func coordinatorSend(to address: String) {
+    let cm = self.viewModel.cellModels[self.viewModel.updatingIndex]
+    let isAddressChanged = cm.addressString.lowercased() != address.lowercased()
+    guard isAddressChanged else { return }
+    cm.updateAddress(address)
+    if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
+      KNContactStorage.shared.updateLastUsed(contact: contact)
+    }
+    self.inputTableView.reloadData()
   }
 }
 
@@ -80,6 +115,20 @@ extension MultiSendViewController: UITableViewDelegate {
 }
 
 extension MultiSendViewController: MultiSendCellDelegate {
+  fileprivate func updateAvailableBalanceForToken(_ selectedToken: Token) {
+    var total = selectedToken.getBalanceBigInt()
+    self.viewModel.cellModels.forEach { item in
+      if item.from == selectedToken {
+        total -= item.amountBigInt
+      }
+    }
+    self.viewModel.cellModels.forEach { item in
+      if item.from == selectedToken {
+        item.availableAmount = total
+      }
+    }
+  }
+  
   func multiSendCell(_ cell: MultiSendCell, run event: MultiSendCellEvent) {
     switch event {
     case .add:
@@ -91,11 +140,22 @@ extension MultiSendViewController: MultiSendCellDelegate {
       }
       self.viewModel.cellModels.append(element)
       self.inputTableViewHeight.constant = CGFloat(self.viewModel.cellModels.count) * MultiSendCell.cellHeight
+      self.updateAvailableBalanceForToken(element.from)
       self.inputTableView.reloadData()
-    
     case .searchToken(selectedToken: let selectedToken, cellIndex: let cellIndex):
       self.viewModel.updatingIndex = cellIndex
       self.delegate?.multiSendViewController(self, run: .searchToken(selectedToken: selectedToken))
+    case .updateAmount(amount: _, selectedToken: let selectedToken):
+      updateAvailableBalanceForToken(selectedToken)
+      self.inputTableView.reloadData()
+    case .qrCode(cellIndex: let cellIndex):
+      self.viewModel.updatingIndex = cellIndex
+      self.openQRCode()
+    case .openContact(cellIndex: let cellIndex):
+      self.viewModel.updatingIndex = cellIndex
+      self.delegate?.multiSendViewController(self, run: .openContactsList)
+    case .addContact(address: let address):
+      self.delegate?.multiSendViewController(self, run: .addContact(address: address))
     }
   }
 }
@@ -115,7 +175,7 @@ extension MultiSendViewController: SwipeTableViewCellDelegate {
 
     return [delete]
   }
-  
+
   func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
     var options = SwipeOptions()
     options.expansionStyle = .selection
@@ -123,5 +183,30 @@ extension MultiSendViewController: SwipeTableViewCellDelegate {
     options.maximumButtonWidth = 90
 
     return options
+  }
+}
+
+extension MultiSendViewController: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      let address: String = {
+        if result.count < 42 { return result }
+        if result.starts(with: "0x") { return result }
+        let string = "\(result.suffix(42))"
+        if string.starts(with: "0x") { return string }
+        return result
+      }()
+      let cm = self.viewModel.cellModels[self.viewModel.updatingIndex]
+
+      let isAddressChanged = cm.addressString.lowercased() != address.lowercased()
+      guard isAddressChanged else { return }
+      cm.addressString = address
+      self.viewModel.updatingIndex = 0
+      self.inputTableView.reloadData()
+    }
   }
 }
