@@ -18,22 +18,16 @@ protocol KNHistoryCoordinatorDelegate: class {
 }
 
 class KNHistoryCoordinator: NSObject, Coordinator {
-
   fileprivate lazy var dateFormatter: DateFormatter = {
     return DateFormatterUtil.shared.limitOrderFormatter
   }()
   let navigationController: UINavigationController
   private(set) var session: KNSession
-
   var currentWallet: KNWalletObject
   var sendCoordinator: KNSendTokenViewCoordinator?
-
   var coordinators: [Coordinator] = []
   weak var delegate: KNHistoryCoordinatorDelegate?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
-  var etherScanURL: String {
-    return KNGeneralProvider.shared.customRPC.etherScanEndpoint
-  }
 
   lazy var rootViewController: KNHistoryViewController = {
     let viewModel = KNHistoryViewModel(
@@ -46,13 +40,9 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }()
 
   var txDetailsCoordinator: KNTransactionDetailsCoordinator?
-
   var speedUpViewController: SpeedUpCustomGasSelectViewController?
 
-  init(
-    navigationController: UINavigationController,
-    session: KNSession
-    ) {
+  init( navigationController: UINavigationController, session: KNSession ) {
     self.navigationController = navigationController
     self.session = session
     let address = self.session.wallet.address.description
@@ -179,7 +169,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
-    
+
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
         return BigInt(transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
@@ -187,7 +177,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
         return BigInt(transaction.transactionObject?.gasLimit ?? "") ?? BigInt(0)
       }
     }()
-    
+
     let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: .superFast, currentRatePercentage: 0, isUseGasToken: false)
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
@@ -195,48 +185,15 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-    
+
     viewModel.isCancelMode = true
     viewModel.transaction = transaction
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)
-    
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isCancelMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
-      let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
-      confirmPopup.delegate = self
-      self.navigationController.present(confirmPopup, animated: true, completion: nil)
-    }
-    */
   }
 
   fileprivate func openTransactionSpeedUpViewController(transaction: InternalHistoryTransaction) {
-    
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
         return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
@@ -257,39 +214,6 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isSpeedupMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
-      let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      navigationController.present(controller, animated: true, completion: nil)
-      speedUpViewController = controller
-    }
-    */
   }
 
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
@@ -309,13 +233,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.openTransactionCancelConfirmPopUpFor(transaction: transaction)
     case .speedUpTransaction(let transaction):
       self.openTransactionSpeedUpViewController(transaction: transaction)
-    case .quickTutorial(let pointsAndRadius):
-      break
-    case .openEtherScanWalletPage:
-      let urlString = "\(self.etherScanURL)address/\(self.session.wallet.address.description)"
-      self.rootViewController.openSafari(with: urlString)
-    case .openKyberWalletPage:
-    break
     case .openWalletsListPopup:
       let viewModel = WalletsListViewModel(
         walletObjects: KNWalletStorage.shared.wallets,
@@ -326,10 +243,6 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .selectPendingTransaction(transaction: let transaction):
       let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, transaction: transaction)
-      coordinator.start()
-      self.txDetailsCoordinator = coordinator
-    case .selectCompletedTransaction(data: let data):
-      let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
       coordinator.start()
       self.txDetailsCoordinator = coordinator
     case .selectCompletedKrystalTransaction(data: let data):
@@ -365,12 +278,11 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
   }
 
   fileprivate func openEtherScanForTransaction(with hash: String) {
-    
     if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
       self.rootViewController.openSafari(with: url)
     }
   }
-  
+
   fileprivate func openSendTokenView() {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
@@ -576,19 +488,19 @@ extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.historyCoordinatorDidSelectAddToken(token)
   }
-  
+
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
     self.delegate?.historyCoordinatorDidSelectWallet(wallet)
   }
-  
+
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.navigationController.popViewController(animated: true)
   }
-  
+
   func sendTokenCoordinatorDidSelectManageWallet() {
     self.delegate?.historyCoordinatorDidSelectManageWallet()
   }
-  
+
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.historyCoordinatorDidSelectAddWallet()
   }

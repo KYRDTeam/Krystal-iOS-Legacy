@@ -5,14 +5,10 @@ import SwipeCellKit
 
 enum KNHistoryViewEvent {
   case selectPendingTransaction(transaction: InternalHistoryTransaction)
-  case selectCompletedTransaction(data: CompletedHistoryTransactonViewModel)
   case selectCompletedKrystalTransaction(data: CompletedKrystalHistoryTransactionViewModel)
   case dismiss
   case cancelTransaction(transaction: InternalHistoryTransaction)
   case speedUpTransaction(transaction: InternalHistoryTransaction)
-  case quickTutorial(pointsAndRadius: [(CGPoint, CGFloat)])
-  case openEtherScanWalletPage
-  case openKyberWalletPage
   case openWalletsListPopup
   case swap
   case reloadAllData
@@ -29,20 +25,16 @@ class KNHistoryViewController: KNBaseViewController {
 
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var transactionsTextLabel: UILabel!
-
   @IBOutlet weak var emptyStateContainerView: UIView!
-
   @IBOutlet weak var transactionCollectionView: UICollectionView!
   @IBOutlet weak var transactionCollectionViewBottomConstraint: NSLayoutConstraint!
-  fileprivate var quickTutorialTimer: Timer?
-  var animatingCell: UICollectionViewCell?
-//  @IBOutlet weak var segmentedControl: BetterSegmentedControl!
   @IBOutlet weak var filterButton: UIButton!
   @IBOutlet weak var walletSelectButton: UIButton!
   @IBOutlet weak var swapNowButton: UIButton!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   private let refreshControl = UIRefreshControl()
-  
+
+
   init(viewModel: KNHistoryViewModel) {
     self.viewModel = viewModel
     super.init(nibName: KNHistoryViewController.className, bundle: nil)
@@ -50,11 +42,6 @@ class KNHistoryViewController: KNBaseViewController {
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    self.quickTutorialTimer?.invalidate()
-    self.quickTutorialTimer = nil
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -70,23 +57,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.updateUIWhenDataDidChange()
   }
 
-  fileprivate func showQuickTutorial() {
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    self.quickTutorialTimer?.invalidate()
-    self.quickTutorialTimer = nil
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-  }
-
   fileprivate func setupUI() {
     self.setupNavigationBar()
     self.setupCollectionView()
@@ -98,54 +68,6 @@ class KNHistoryViewController: KNBaseViewController {
     segmentedControl.selectedSegmentIndex = 1
   }
 
-  override func quickTutorialNextAction() {
-    self.dismissTutorialOverlayer()
-    self.animateResetReviewCellActionForTutorial()
-    self.viewModel.isShowingQuickTutorial = false
-    self.updateUIWhenDataDidChange()
-  }
-
-  fileprivate func animateReviewCellActionForTutorial() {
-    guard let firstCell = self.transactionCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) else { return }
-    let speedupLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width, y: 0, width: 77, height: 60))
-    let cancelLabel = UILabel(frame: CGRect(x: firstCell.frame.size.width + 77, y: 0, width: 77, height: 60))
-    self.animatingCell = firstCell
-    firstCell.clipsToBounds = false
-
-    speedupLabel.text = "speed up".toBeLocalised()
-    speedupLabel.textAlignment = .center
-    speedupLabel.font = UIFont.Kyber.bold(with: 14)
-    speedupLabel.backgroundColor = UIColor.Kyber.speedUpOrange
-    speedupLabel.textColor = .white
-    speedupLabel.tag = 101
-
-    cancelLabel.text = "cancel".toBeLocalised()
-    cancelLabel.textAlignment = .center
-    cancelLabel.font = UIFont.Kyber.bold(with: 14)
-    cancelLabel.backgroundColor = UIColor.Kyber.cancelGray
-    cancelLabel.textColor = .white
-    cancelLabel.tag = 102
-
-    firstCell.contentView.addSubview(speedupLabel)
-    firstCell.contentView.addSubview(cancelLabel)
-    UIView.animate(withDuration: 0.3) {
-      firstCell.frame = CGRect(x: firstCell.frame.origin.x - 77 * 2, y: firstCell.frame.origin.y, width: firstCell.frame.size.width, height: firstCell.frame.size.height)
-    }
-  }
-
-  fileprivate func animateResetReviewCellActionForTutorial() {
-    guard let firstCell = self.animatingCell else { return }
-    let speedupLabel = firstCell.viewWithTag(101)
-    let cancelLabel = firstCell.viewWithTag(102)
-    UIView.animate(withDuration: 0.3, animations: {
-      firstCell.frame = CGRect(x: 0, y: firstCell.frame.origin.y, width: firstCell.frame.size.width, height: firstCell.frame.size.height)
-    }, completion: { _ in
-      speedupLabel?.removeFromSuperview()
-      cancelLabel?.removeFromSuperview()
-      self.animatingCell = nil
-    })
-  }
-
   fileprivate func checkHavePendingTxOver5Min() -> Bool {
     var flag = false
     self.viewModel.pendingTxData.keys.forEach { (key) in
@@ -155,7 +77,6 @@ class KNHistoryViewController: KNBaseViewController {
         }
       })
     }
-
     return flag
   }
 
@@ -180,11 +101,7 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func updateUIWhenDataDidChange() {
-    guard self.viewModel.isShowingQuickTutorial == false else {
-      return
-    }
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
-
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
     self.transactionCollectionView.reloadData()
@@ -223,24 +140,16 @@ class KNHistoryViewController: KNBaseViewController {
     self.navigationController?.pushViewController(filterVC, animated: true)
   }
 
-  @IBAction func emptyStateEtherScanButtonTapped(_ sender: UIButton) {
-    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openEtherScanWalletPage)
-  }
-
-  @IBAction func emptyStateKyberButtonTapped(_ sender: UIButton) {
-    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openKyberWalletPage)
-  }
-
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlinePosition()
     self.viewModel.updateIsShowingPending(sender.selectedSegmentIndex == 1)
     self.updateUIWhenDataDidChange()
   }
-  
+
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
   }
-  
+
   @objc private func refreshData(_ sender: Any) {
     guard !self.viewModel.isShowingPending else {
       self.refreshControl.endRefreshing()

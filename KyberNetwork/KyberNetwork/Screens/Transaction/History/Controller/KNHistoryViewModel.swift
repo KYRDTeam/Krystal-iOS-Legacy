@@ -350,8 +350,6 @@ struct KNHistoryViewModel {
     KNAppTracker.saveHistoryFilterData(filters)
   }
 
-  var isShowingQuickTutorial: Bool = false
-
   var timeForLongPendingTx: Double {
     return KNEnvironment.default == .ropsten ? 30.0 : 300
   }
