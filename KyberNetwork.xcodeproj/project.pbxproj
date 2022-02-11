@@ -446,6 +446,7 @@
 		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
 		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
 		7E431D0727B61EA000FDA1CC /* EtherscanTransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E431D0627B61EA000FDA1CC /* EtherscanTransactionStorage.swift */; };
+		7E431D0B27B6484D00FDA1CC /* KNHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E431D0A27B6484D00FDA1CC /* KNHistoryViewModel.swift */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -1252,6 +1253,7 @@
 		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
 		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
 		7E431D0627B61EA000FDA1CC /* EtherscanTransactionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtherscanTransactionStorage.swift; sourceTree = "<group>"; };
+		7E431D0A27B6484D00FDA1CC /* KNHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHistoryViewModel.swift; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -2976,6 +2978,7 @@
 				251E22632271CBDA0038679C /* FilterVC */,
 				257C9FC12078A9D900EE0128 /* TransactionCollectionHeader */,
 				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
+				7E431D0A27B6484D00FDA1CC /* KNHistoryViewModel.swift */,
 				25CE6F8F2073E0BC00A3A2F9 /* KNHistoryViewController.swift */,
 				25CE6F902073E0BC00A3A2F9 /* KNHistoryViewController.xib */,
 			);
@@ -5420,6 +5423,7 @@
 				25E9E1FE208F139E00A9090D /* KNPasscodeViewController.swift in Sources */,
 				29B6AED61F7CA4A700EC6DE3 /* TransactionConfiguration.swift in Sources */,
 				251ABCBD205790210069687F /* KNCustomRPC.swift in Sources */,
+				7E431D0B27B6484D00FDA1CC /* KNHistoryViewModel.swift in Sources */,
 				C3F71C9A261B27BB00285935 /* EarnTutorialCell.swift in Sources */,
 				C337E15A27743118001C8B03 /* DappCommand.swift in Sources */,
 				29BB94951F6FC54C009B09CC /* EthereumUnit.swift in Sources */,
