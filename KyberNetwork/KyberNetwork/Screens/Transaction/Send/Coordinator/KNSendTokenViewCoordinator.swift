@@ -410,7 +410,7 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
           historyTransaction.transactionObject = result.1?.toSignTransactionObject()
           historyTransaction.eip1559Transaction = result.2
           provider.minTxCount += 1
-          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+          HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.openTransactionStatusPopUp(transaction: historyTransaction)
           controller.dismiss(animated: true, completion: nil)
         case .failure(let error):
@@ -446,7 +446,7 @@ extension KNSendTokenViewCoordinator {
         historyTransaction.transactionObject = result.1?.toSignTransactionObject()
         historyTransaction.eip1559Transaction = result.2
 
-        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+        HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
         self.openTransactionStatusPopUp(transaction: historyTransaction)
         self.rootViewController?.coordinatorSuccessSendTransaction()
       case .failure(let error):
@@ -672,7 +672,7 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -699,7 +699,7 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -728,7 +728,7 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
           switch result {
@@ -757,7 +757,7 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in
           switch result {
@@ -823,7 +823,7 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
     switch event {
     case .done(let transaction, let newValue):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
         if let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) {
           speedupTx.send(provider: provider) { (result) in
@@ -889,7 +889,7 @@ extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
 extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+      let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
       
       if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
         saved?.state = .cancel

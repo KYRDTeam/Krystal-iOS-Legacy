@@ -966,7 +966,7 @@ class KNGeneralProvider {
               historyTransaction.hash = hash
               historyTransaction.time = Date()
               historyTransaction.nonce = txCount
-              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+              HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
               completion(.success(txCount + 1))
             case .failure(let error):
               completion(.failure(error))
@@ -1026,7 +1026,7 @@ class KNGeneralProvider {
               historyTransaction.hash = hash
               historyTransaction.time = Date()
               historyTransaction.nonce = txCount
-              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+              HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
               completion(.success(txCount + 1))
             case .failure(let error):
               completion(.failure(error))

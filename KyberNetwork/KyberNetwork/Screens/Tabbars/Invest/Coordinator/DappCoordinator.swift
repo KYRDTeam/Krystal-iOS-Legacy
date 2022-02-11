@@ -387,7 +387,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                     historyTransaction.hash = hash
                     historyTransaction.time = Date()
                     historyTransaction.nonce = nonce
-                    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                    HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                     self.openTransactionStatusPopUp(transaction: historyTransaction)
                   case .failure(let error):
                     self.navigationController.displayError(error: error)
@@ -441,7 +441,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                       historyTransaction.hash = hash
                       historyTransaction.time = Date()
                       historyTransaction.nonce = nonce
-                      EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                      HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                       self.openTransactionStatusPopUp(transaction: historyTransaction)
                     case .failure(let error):
                       self.navigationController.displayError(error: error)
@@ -648,7 +648,7 @@ extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.transactionConfirm?.coordinatorDidUpdateAdvancedNonce(nonce)
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -676,7 +676,7 @@ extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
 
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
@@ -706,7 +706,7 @@ extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
        
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
@@ -736,7 +736,7 @@ extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in

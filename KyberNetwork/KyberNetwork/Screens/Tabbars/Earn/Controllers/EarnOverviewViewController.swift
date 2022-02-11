@@ -73,7 +73,7 @@ class EarnOverviewViewController: KNBaseViewController {
     guard self.isViewLoaded else {
       return
     }
-    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+    let pendingTransaction = HistoryTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
       transaction.state == .pending
     }
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil

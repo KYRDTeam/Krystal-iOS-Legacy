@@ -83,7 +83,7 @@ extension KNTransactionCoordinator {
       block: { [weak self] _ in
         guard let `self` = self else { return }
         if self.isLoadingEnabled {
-          self.loadEtherscanTransactions(isInit: !EtherscanTransactionStorage.shared.isSavedKrystalHistory())
+          self.loadEtherscanTransactions(isInit: !HistoryTransactionStorage.shared.isSavedKrystalHistory())
         }
       }
     )
@@ -96,7 +96,7 @@ extension KNTransactionCoordinator {
 
   fileprivate func loadKrystalHistory(isInit: Bool = false) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
+    let lastBlock = HistoryTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
     provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
@@ -106,10 +106,10 @@ extension KNTransactionCoordinator {
           let history = data.transactions
           var needReloadUI = false
           if lastBlock.isEmpty || isInit {
-            EtherscanTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
+            HistoryTransactionStorage.shared.setKrystalTransaction(history, isSave: isInit)
             needReloadUI = true
           } else {
-            needReloadUI = EtherscanTransactionStorage.shared.appendKrystalTransaction(history)
+            needReloadUI = HistoryTransactionStorage.shared.appendKrystalTransaction(history)
           }
           if needReloadUI {
             DispatchQueue.main.async {
@@ -435,7 +435,7 @@ extension KNTransactionCoordinator {
   
   //MARK: NEW IMPLEMENTATION
   fileprivate func shouldCheckInternalHistory() {
-    guard let transaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().last, self.isLoadingEnabled else {
+    guard let transaction = HistoryTransactionStorage.shared.getInternalHistoryTransaction().last, self.isLoadingEnabled else {
       return
     }
     if transaction.state == .pending {
@@ -450,9 +450,9 @@ extension KNTransactionCoordinator {
       case .success(let receipt):
         transaction.state = receipt.status == "1" ? .done : .error
         if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-          EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+          HistoryTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
         } else {
-          EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+          HistoryTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
         }
         
         KNNotificationUtil.postNotification(
@@ -482,9 +482,9 @@ extension KNTransactionCoordinator {
               }
               transaction.state = .drop
               if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+                HistoryTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
               } else {
-                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+                HistoryTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
               }
               KNNotificationUtil.postNotification(
                 for: kTransactionDidUpdateNotificationKey,

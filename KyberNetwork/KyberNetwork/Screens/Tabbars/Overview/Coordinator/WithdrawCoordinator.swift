@@ -126,7 +126,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                             historyTransaction.time = Date()
                             historyTransaction.nonce = nonce
                             historyTransaction.eip1559Transaction = transaction
-                            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                            HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                             self.withdrawViewController?.coordinatorSuccessSendTransaction()
                             controller.dismiss(animated: true) {
                               self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -168,7 +168,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                               historyTransaction.time = Date()
                               historyTransaction.nonce = transaction.nonce
                               historyTransaction.transactionObject = transaction.toSignTransactionObject()
-                              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                              HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
 
                               controller.dismiss(animated: true) {
                                 self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -454,7 +454,7 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
     switch event {
     case .done(let transaction, let newValue):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
         if KNGeneralProvider.shared.isUseEIP1559 {
           if let speedupTx = transaction.eip1559Transaction?.toSpeedupTransaction(gasPrice: newValue), let data = provider.signContractGenericEIP1559Transaction(speedupTx) {
@@ -523,7 +523,7 @@ extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
 extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+      let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
       
       if KNGeneralProvider.shared.isUseEIP1559 {
         if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
@@ -704,7 +704,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.withdrawViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -725,7 +725,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -748,7 +748,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
           switch result {
@@ -771,7 +771,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in
           switch result {
@@ -871,7 +871,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                               historyTransaction.time = Date()
                               historyTransaction.nonce = nonce
                               historyTransaction.eip1559Transaction = transaction
-                              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                              HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
 
                               controller.dismiss(animated: true) {
                                 self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -921,7 +921,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                                 historyTransaction.hash = hash
                                 historyTransaction.time = Date()
                                 historyTransaction.nonce = transaction.nonce
-                                EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                                HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                                 controller.dismiss(animated: true) {
                                   self.openTransactionStatusPopUp(transaction: historyTransaction)
                                 }

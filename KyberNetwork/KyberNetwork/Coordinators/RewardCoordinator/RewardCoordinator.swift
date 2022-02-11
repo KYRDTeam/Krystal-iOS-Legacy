@@ -234,7 +234,7 @@ class RewardCoordinator: Coordinator {
           historyTransaction.hash = hash
           historyTransaction.time = Date()
           historyTransaction.nonce = transaction.nonce
-          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+          HistoryTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.claimRewardController?.dismiss(animated: true, completion: {
             self.openTransactionStatusPopUp(transaction: historyTransaction)
             self.claimRewardController = nil
@@ -452,7 +452,7 @@ extension RewardCoordinator: SpeedUpCustomGasSelectDelegate {
     switch event {
     case .done(let transaction, let newValue):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
         if let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) {
           speedupTx.send(provider: provider) { (result) in
@@ -490,7 +490,7 @@ extension RewardCoordinator: SpeedUpCustomGasSelectDelegate {
 extension RewardCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+      let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
       
       if KNGeneralProvider.shared.isUseEIP1559 {
         if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
@@ -566,7 +566,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       )
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -593,7 +593,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -622,7 +622,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
           switch result {
@@ -651,7 +651,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in
           switch result {

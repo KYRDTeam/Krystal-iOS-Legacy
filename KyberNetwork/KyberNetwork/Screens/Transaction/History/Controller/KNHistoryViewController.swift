@@ -62,7 +62,7 @@ struct KNHistoryViewModel {
   fileprivate(set) var filters: KNTransactionFilter!
 
   init(
-    tokens: [Token] = EtherscanTransactionStorage.shared.getEtherscanToken(),
+    tokens: [Token] = HistoryTransactionStorage.shared.getEtherscanToken(),
     currentWallet: KNWalletObject
     ) {
     self.tokens = tokens
@@ -171,7 +171,7 @@ struct KNHistoryViewModel {
   
   var tokensSymbol: [String] {
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      return EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols()
+      return HistoryTransactionStorage.shared.getInternalHistoryTokenSymbols()
     }
     return self.tokens.map({ return $0.symbol })
   }
@@ -324,7 +324,7 @@ struct KNHistoryViewModel {
     if let sym = tx.toSymbol {
       transactionToken.append(sym)
     }
-    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols().count {
+    if transactionToken.isEmpty && self.filters.tokens.count == HistoryTransactionStorage.shared.getInternalHistoryTokenSymbols().count {
       tokenMatched = true
     } else {
       transactionToken.forEach { transaction in
@@ -358,7 +358,7 @@ struct KNHistoryViewModel {
     if let sym = tx.extraData?.receiveToken?.symbol {
       transactionToken.append(sym)
     }
-    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
+    if transactionToken.isEmpty && self.filters.tokens.count == HistoryTransactionStorage.shared.getEtherscanToken().count {
       tokenMatched = true
     } else {
       transactionToken.forEach { transaction in
@@ -666,7 +666,7 @@ extension KNHistoryViewController {
   func coordinatorUpdateNewSession(wallet: KNWalletObject) {
     self.viewModel.updateCurrentWallet(wallet)
     self.walletSelectButton.setTitle(wallet.address, for: .normal)
-    self.viewModel.update(tokens: EtherscanTransactionStorage.shared.getEtherscanToken())
+    self.viewModel.update(tokens: HistoryTransactionStorage.shared.getEtherscanToken())
   }
 }
 

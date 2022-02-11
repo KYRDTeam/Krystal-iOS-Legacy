@@ -165,7 +165,7 @@ extension KNAppCoordinator {
     if isLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
       self.loadBalanceCoordinator?.exit()
-      EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
+      HistoryTransactionStorage.shared.updateCurrentWallet(wallet)
       BalanceStorage.shared.updateCurrentWallet(wallet)
       
     }

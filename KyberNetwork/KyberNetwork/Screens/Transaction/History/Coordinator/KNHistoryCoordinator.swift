@@ -95,7 +95,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     if showLoading { self.navigationController.displayLoading() }
     DispatchQueue.global(qos: .background).async {
       let dates: [String] = {
-        let dates = EtherscanTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
+        let dates = HistoryTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
         var uniqueDates = [String]()
         dates.forEach({
           if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -104,7 +104,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
       }()
       let sectionData: [String: [KrystalHistoryTransaction]] = {
         var data: [String: [KrystalHistoryTransaction]] = [:]
-        EtherscanTransactionStorage.shared.getKrystalTransaction().forEach { tx in
+        HistoryTransactionStorage.shared.getKrystalTransaction().forEach { tx in
           var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
           trans.append(tx)
           data[self.dateFormatter.string(from: tx.date)] = trans
@@ -120,7 +120,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
 
   func appCoordinatorPendingTransactionDidUpdate() {
     let pendingDates: [String] = {
-      let dates = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().map { return self.dateFormatter.string(from: $0.time) }
+      let dates = HistoryTransactionStorage.shared.getInternalHistoryTransaction().map { return self.dateFormatter.string(from: $0.time) }
       var uniqueDates = [String]()
       dates.forEach({
         if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -129,7 +129,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     }()
     
     let handledDates: [String] = {
-      let dates = EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().map { return self.dateFormatter.string(from: $0.time) }
+      let dates = HistoryTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().map { return self.dateFormatter.string(from: $0.time) }
       var uniqueDates = [String]()
       dates.forEach({
         if !uniqueDates.contains($0) { uniqueDates.append($0) }
@@ -139,7 +139,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
 
     let sectionData: [String: [InternalHistoryTransaction]] = {
       var data: [String: [InternalHistoryTransaction]] = [:]
-      EtherscanTransactionStorage.shared.getInternalHistoryTransaction().forEach { tx in
+      HistoryTransactionStorage.shared.getInternalHistoryTransaction().forEach { tx in
         var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
         trans.append(tx)
         data[self.dateFormatter.string(from: tx.time)] = trans
@@ -149,7 +149,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     
     let sectionHandledData: [String: [InternalHistoryTransaction]] = {
       var data: [String: [InternalHistoryTransaction]] = [:]
-      EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().forEach { tx in
+      HistoryTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().forEach { tx in
         var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
         trans.append(tx)
         data[self.dateFormatter.string(from: tx.time)] = trans
@@ -388,7 +388,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
 extension KNHistoryCoordinator: KNConfirmCancelTransactionPopUpDelegate {
   func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
     if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+      let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
 
       if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
         saved?.state = .cancel
@@ -444,7 +444,7 @@ extension KNHistoryCoordinator: SpeedUpCustomGasSelectDelegate {
     switch event {
     case .done(let transaction, let newValue):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
         savedTx?.state = .speedup
         let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) //TODO: add case eip1559
         speedupTx?.send(provider: provider) { (result) in
@@ -618,7 +618,7 @@ extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       )
     case .speedupTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -639,7 +639,7 @@ extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransaction(transaction: let transaction, original: let original):
       if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
@@ -662,7 +662,7 @@ extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let savedTx = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let speedupTx = transaction.toSignTransaction(account: account)
         speedupTx.send(provider: provider) { (result) in
           switch result {
@@ -685,7 +685,7 @@ extension KNHistoryCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       }
     case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
       if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        let saved = HistoryTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
         let cancelTx = transaction.toSignTransaction(account: account)
         cancelTx.send(provider: provider) { (result) in
           switch result {

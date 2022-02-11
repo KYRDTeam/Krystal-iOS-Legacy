@@ -245,7 +245,7 @@ class KSwapViewController: KNBaseViewController {
     guard self.isViewLoaded else {
       return
     }
-    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+    let pendingTransaction = HistoryTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
       transaction.state == .pending
     }
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
@@ -617,11 +617,11 @@ class KSwapViewController: KNBaseViewController {
     guard let token = self.viewModel.approvingToken else {
       return
     }
-    if EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty {
+    if HistoryTransactionStorage.shared.getInternalHistoryTransaction().isEmpty {
       self.updateUIForSendApprove(isShowApproveButton: false)
       self.viewModel.approvingToken = nil
     }
-    let pending = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().filter({ (item) -> Bool in
+    let pending = HistoryTransactionStorage.shared.getInternalHistoryTransaction().filter({ (item) -> Bool in
       return item.transactionDetailDescription.lowercased() == token.address.lowercased() && item.type == .allowance
     })
     if pending.isEmpty {

@@ -490,13 +490,13 @@ class WithdrawViewController: KNBaseViewController {
     guard let tokenAddress = self.viewModel.approvingTokenAddress else {
       return
     }
-    if EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty {
+    if HistoryTransactionStorage.shared.getInternalHistoryTransaction().isEmpty {
       self.viewModel.isBearingTokenApproved = true
       self.viewModel.approvingTokenAddress = nil
       self.updateUIforWithdrawButton()
       
     }
-    let pending = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().filter({ (item) -> Bool in
+    let pending = HistoryTransactionStorage.shared.getInternalHistoryTransaction().filter({ (item) -> Bool in
       return item.transactionDetailDescription.lowercased() == tokenAddress.lowercased() && item.type == .allowance
     })
     if pending.isEmpty {
