@@ -8,6 +8,23 @@
 import UIKit
 import SwipeCellKit
 
+enum CurrencyType {
+  case eth
+  case usd
+  case btc
+  
+  func toString() -> String {
+    switch self {
+    case .eth:
+      return "eth"
+    case .usd:
+      return "usd"
+    case .btc:
+      return "btc"
+    }
+  }
+}
+
 class OverviewMarketCellViewModel {
   let token: Token
   let tokenPrice: TokenPrice

@@ -123,6 +123,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     if self.currentCurrencyType.isQuoteCurrency {
       self.currentCurrencyType = KNGeneralProvider.shared.quoteCurrency
     }
+    UserDefaults.standard.setValue(self.currentCurrencyType.rawValue, forKey: Constants.currentCurrencyMode)
     self.rootViewController.coordinatorDidUpdateChain()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
   }

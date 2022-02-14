@@ -297,7 +297,7 @@ class OverviewMainViewModel {
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   init(session: KNSession) {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
-      self.currencyMode = savedCurrencyMode
+      self.currencyMode = savedCurrencyMode.isQuoteCurrency ? KNGeneralProvider.shared.quoteCurrency : savedCurrencyMode
     } else {
       self.currencyMode = .usd
     }
