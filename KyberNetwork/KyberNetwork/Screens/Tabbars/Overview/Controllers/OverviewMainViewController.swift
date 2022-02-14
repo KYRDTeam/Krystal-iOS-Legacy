@@ -717,7 +717,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     }
 
     cell.walletOptionButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .walletConfig(currency: self.viewModel.currencyMode))
+      self.delegate?.overviewMainViewController(self, run: .walletConfig)
     }
 
     cell.receiveButtonTapped = {

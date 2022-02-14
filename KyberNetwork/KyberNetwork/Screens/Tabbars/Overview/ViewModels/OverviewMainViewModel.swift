@@ -13,7 +13,7 @@ enum OverviewMainViewEvent {
   case search
   case notifications
   case changeMode(current: ViewMode)
-  case walletConfig(currency: CurrencyMode)
+  case walletConfig
   case select(token: Token)
   case selectListWallet
   case withdrawBalance(platform: String, balance: LendingBalance)
@@ -289,13 +289,18 @@ class OverviewMainViewModel {
     }
   }
   var marketSortType: MarketSortType = .ch24(des: true)
-  var currencyMode: CurrencyMode = .usd
+  var currencyMode: CurrencyMode
   var hiddenSections = Set<Int>()
   var isHidingSmallAssetsToken = true
   var isRefreshingTableView = false
   var didTapAddNFTHeader: (() -> Void)?
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   init(session: KNSession) {
+    if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
+      self.currencyMode = savedCurrencyMode
+    } else {
+      self.currencyMode = .usd
+    }
     self.session = session
   }
 

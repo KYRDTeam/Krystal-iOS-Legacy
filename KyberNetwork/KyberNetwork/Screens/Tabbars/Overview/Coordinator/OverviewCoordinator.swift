@@ -480,14 +480,15 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     self.navigationController.present(actionController, animated: true, completion: nil)
   }
   
-  func configWallet(currency: CurrencyMode, controller: OverviewMainViewController) {
+  func configWallet(controller: OverviewMainViewController) {
     let actionController = KrystalActionSheetController()
     
     actionController.headerData = "Wallet Details"
     
     actionController.addAction(Action(ActionData(title: "Change Currency", image: UIImage(named: "currency_change_icon")!), style: .default, handler: { _ in
-      let controller = OverviewChangeCurrencyViewController(mode: currency)
+      let controller = OverviewChangeCurrencyViewController()
       controller.completeHandle = { mode in
+        UserDefaults.standard.setValue(mode.rawValue, forKey: Constants.currentCurrencyMode)
         self.rootViewController.coordinatorDidUpdateCurrencyMode(mode)
         self.currentCurrencyType = mode
       }
@@ -545,8 +546,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.pullToRefresh(mode: mode, overviewMode: overviewMode)
     case .changeMode(current: let mode):
       self.changeMode(mode: mode, controller: controller)
-    case .walletConfig(currency: let currency):
-        self.configWallet(currency: currency, controller: controller)
+    case .walletConfig:
+        self.configWallet(controller: controller)
     case .select(token: let token):
       self.openChartView(token: token)
     case .selectListWallet:
