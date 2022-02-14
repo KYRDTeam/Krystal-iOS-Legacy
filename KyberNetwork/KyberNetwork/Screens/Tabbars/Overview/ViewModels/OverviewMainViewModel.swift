@@ -471,7 +471,8 @@ class OverviewMainViewModel {
           total += totalSection
         }
         self.displayLPDataSource = models
-        self.displayTotalValues["all"] = self.currencyMode.symbol() + currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
+        let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
+        self.displayTotalValues["all"] = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
         self.displayNFTHeader = []
         self.displayNFTDataSource = [:]
     case .favourite(let mode):
