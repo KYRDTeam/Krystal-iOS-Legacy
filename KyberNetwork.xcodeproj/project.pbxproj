@@ -574,7 +574,11 @@
 		C32EA22B246934AA00866968 /* KNPrettyAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32EA229246934AA00866968 /* KNPrettyAlertController.swift */; };
 		C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */; };
 		C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F1F622431ABCD00990706 /* KNMarket.swift */; };
+		C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */; };
+		C3308F5D27B66D510045C569 /* MultiSendApproveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */; };
 		C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331133D2629753200E6F7E1 /* GetSymbol.swift */; };
+		C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */; };
+		C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */; };
 		C3357DB524768C400028F4A9 /* CustomFCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3357DB424768C400028F4A9 /* CustomFCTheme.plist */; };
 		C335C21F26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */; };
 		C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */; };
@@ -1389,7 +1393,11 @@
 		C32EA229246934AA00866968 /* KNPrettyAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNPrettyAlertController.swift; sourceTree = "<group>"; };
 		C32EA22A246934AA00866968 /* KNPrettyAlertController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNPrettyAlertController.xib; sourceTree = "<group>"; };
 		C32F1F622431ABCD00990706 /* KNMarket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNMarket.swift; sourceTree = "<group>"; };
+		C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendApproveViewController.swift; sourceTree = "<group>"; };
+		C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendApproveViewController.xib; sourceTree = "<group>"; };
 		C331133D2629753200E6F7E1 /* GetSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSymbol.swift; sourceTree = "<group>"; };
+		C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenCell.swift; sourceTree = "<group>"; };
+		C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenCell.xib; sourceTree = "<group>"; };
 		C3357DB424768C400028F4A9 /* CustomFCTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CustomFCTheme.plist; sourceTree = "<group>"; };
 		C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainWalletsListViewController.swift; sourceTree = "<group>"; };
 		C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainWalletsListViewController.xib; sourceTree = "<group>"; };
@@ -3806,6 +3814,8 @@
 				C3285AB4277EDFED00D28BC6 /* BrowserCell.xib */,
 				C320D80D27B3A7F60001DC71 /* MultiSendCell.swift */,
 				C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */,
+				C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */,
+				C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4259,6 +4269,8 @@
 				C3743297278ED344002C97A9 /* SignMessageConfirmPopup.xib */,
 				C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */,
 				C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */,
+				C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */,
+				C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4625,6 +4637,7 @@
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
+				C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
 				25929C9520DA5CC10045CFA3 /* SFCompactText-Heavy.otf in Resources */,
 				25F1BAD921BBA7D200A36900 /* config_env_ropsten2.json in Resources */,
@@ -4761,6 +4774,7 @@
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
 				25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */,
+				C3308F5D27B66D510045C569 /* MultiSendApproveViewController.xib in Resources */,
 				C3A6592125F1EC3300A89241 /* EarnOverviewViewController.xib in Resources */,
 				7EFE440A2715855D006CF502 /* ClaimButtonTableViewCell.xib in Resources */,
 				7EFE440627156622006CF502 /* RewardTableViewCell.xib in Resources */,
@@ -5331,6 +5345,7 @@
 				C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */,
 				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,
+				C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */,
 				C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
@@ -5345,6 +5360,7 @@
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
+				C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */,
 				C32656AF266F546100C69561 /* ActionCell.swift in Sources */,
 				C37AF0CD25CCFB47006FB880 /* EarnSwapConfirmViewController.swift in Sources */,
 				61C359E02002AA5A0097B04D /* TransactionSigning.swift in Sources */,
