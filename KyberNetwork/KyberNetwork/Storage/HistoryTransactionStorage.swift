@@ -18,13 +18,7 @@ class HistoryTransactionStorage {
     self.wallet = wallet
 
     self.krystalHistoryTransaction = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.historyKrystalTransactionsStoreFileName, as: [KrystalHistoryTransaction].self) ?? []
-
-    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      // Incase current chain didn't support get history api
-      self.internalHistoryTransactions = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName, as: [InternalHistoryTransaction].self) ?? []
-    } else {
-      self.internalHistoryTransactions = []
-    }
+    self.internalHistoryTransactions = Storage.retrieve(wallet.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName, as: [InternalHistoryTransaction].self) ?? []
   }
   
   func isSavedKrystalHistory() -> Bool {
@@ -112,9 +106,7 @@ class HistoryTransactionStorage {
       object: tx,
       userInfo: nil
     )
-    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
-    }
+    Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
   }
   
   func isContainInsternalSendTransaction() -> Bool {
@@ -141,10 +133,7 @@ class HistoryTransactionStorage {
       return false
     }
     self.internalHistoryTransactions.remove(at: index)
-    
-    if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-      Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
-    }
+    Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
     return true
   }
   
