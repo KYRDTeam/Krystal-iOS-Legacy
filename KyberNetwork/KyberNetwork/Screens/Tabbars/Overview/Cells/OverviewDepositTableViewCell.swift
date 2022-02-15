@@ -14,8 +14,8 @@ protocol OverviewDepositCellViewModel {
   var displayValue: String { get }
   var balanceBigInt: BigInt { get }
   var valueBigInt: BigInt { get }
-  var currencyType: CurrencyType { get set }
-  func updateCurrencyType(_ type: CurrencyType)
+  var currencyType: CurrencyMode { get set }
+  func updateCurrencyType(_ type: CurrencyMode)
   var hideBalanceStatus: Bool { get set }
   var displayAPY: String { get }
   var logo: String { get }
@@ -23,11 +23,11 @@ protocol OverviewDepositCellViewModel {
 
 class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
   var hideBalanceStatus: Bool = true
-  func updateCurrencyType(_ type: CurrencyType) {
+  func updateCurrencyType(_ type: CurrencyMode) {
     self.currencyType = type
   }
 
-  var currencyType: CurrencyType = .usd
+  var currencyType: CurrencyMode = .usd
   
   var symbol: String {
     return self.balance.symbol
@@ -46,15 +46,8 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    switch self.currencyType {
-    case .usd:
-      return "$" + string
-    case .eth:
-      return string + " ETH"
-    case .btc:
-      return string + " BTC"
-    }
+    let valueString = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
+    return !self.currencyType.symbol().isEmpty ? self.currencyType.symbol() + valueString : valueString + self.currencyType.suffixSymbol()
   }
   
   var displayAPY: String {
@@ -72,16 +65,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
 
   var valueBigInt: BigInt {
     guard let tokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(self.balance.address) else { return BigInt(0) }
-    var price = 0.0
-    switch self.currencyType {
-    case .usd:
-      price = tokenPrice.usd
-    case .eth:
-      price = tokenPrice.eth
-    case .btc:
-      price = tokenPrice.btc
-    }
-    return self.balanceBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimals)
+    return self.balanceBigInt * BigInt(tokenPrice.priceWithCurrency(currencyMode: self.currencyType) * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimals)
   }
 
   let balance: LendingBalance
@@ -93,7 +77,7 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
 
 class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewModel {
   var hideBalanceStatus: Bool = true
-  func updateCurrencyType(_ type: CurrencyType) {
+  func updateCurrencyType(_ type: CurrencyMode) {
     self.currencyType = type
   }
   
@@ -114,15 +98,8 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let string = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    switch self.currencyType {
-    case .usd:
-      return "$" + string
-    case .eth:
-      return string + " ETH"
-    case .btc:
-      return string + " BTC"
-    }
+    let valueString = self.valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
+    return !self.currencyType.symbol().isEmpty ? self.currencyType.symbol() + valueString : valueString + self.currencyType.suffixSymbol()
   }
 
   var displayAPY: String {
@@ -139,19 +116,10 @@ class OverviewDepositDistributionBalanceCellViewModel: OverviewDepositCellViewMo
   
   var valueBigInt: BigInt {
     guard let tokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(self.balance.address) else { return BigInt(0) }
-    var price = 0.0
-    switch self.currencyType {
-    case .usd:
-      price = tokenPrice.usd
-    case .eth:
-      price = tokenPrice.eth
-    case .btc:
-      price = tokenPrice.btc
-    }
-    return self.balanceBigInt * BigInt(price * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimal)
+    return self.balanceBigInt * BigInt(tokenPrice.priceWithCurrency(currencyMode: self.currencyType) * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimal)
   }
   
-  var currencyType: CurrencyType = .usd
+  var currencyType: CurrencyMode = .usd
 
   let balance: LendingDistributionBalance
 
