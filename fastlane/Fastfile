@@ -52,7 +52,7 @@ lane :all do
   install_profiles
   update_project
   build
-  sentry_upload
+#  sentry_upload
 end
 
 # pre_release build and upload to testflight 
