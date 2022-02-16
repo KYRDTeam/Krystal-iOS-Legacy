@@ -786,7 +786,7 @@ extension DappCoordinator: KNTransactionStatusPopUpDelegate {
     case .cancel(let tx):
       self.openTransactionCancelConfirmPopUpFor(transaction: tx)
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

@@ -513,7 +513,7 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
     case .openLink(let url):
       self.navigationController.openSafari(with: url)
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

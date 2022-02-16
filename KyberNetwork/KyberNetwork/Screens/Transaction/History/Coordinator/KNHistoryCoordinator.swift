@@ -496,7 +496,7 @@ extension KNHistoryCoordinator: KNTransactionStatusPopUpDelegate {
     case .transfer:
       self.openSendTokenView()
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

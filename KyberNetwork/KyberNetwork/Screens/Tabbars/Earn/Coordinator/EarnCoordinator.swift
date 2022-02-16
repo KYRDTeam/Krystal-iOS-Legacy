@@ -882,7 +882,7 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup scre
     case .newSave:
       break
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

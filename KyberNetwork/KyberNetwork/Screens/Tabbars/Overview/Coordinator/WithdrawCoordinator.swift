@@ -306,7 +306,7 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     case .backToInvest:
       self.navigationController.popToRootViewController(animated: true)
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }
