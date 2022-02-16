@@ -6,14 +6,13 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -28,6 +27,7 @@
                 <outlet property="option1Button" destination="LeJ-ya-Tgi" id="0EQ-wf-bn7"/>
                 <outlet property="option2Button" destination="UDP-zx-F6b" id="Pny-MO-mtJ"/>
                 <outlet property="tokensTableView" destination="D8v-UV-aCC" id="mlW-M8-Ir3"/>
+                <outlet property="tokensTableViewHeightContraint" destination="Dio-uX-WYb" id="WQW-ae-WLj"/>
                 <outlet property="transactionFeeTextLabel" destination="X3K-dE-34M" id="DMc-s2-gZ2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -164,6 +164,9 @@
                                         <constraint firstAttribute="height" constant="16" id="Fyf-Jz-Zkk"/>
                                         <constraint firstAttribute="width" constant="16" id="n7N-tA-WYM"/>
                                     </constraints>
+                                    <connections>
+                                        <action selector="checkBox1Tapped:" destination="-1" eventType="touchUpInside" id="Sgh-mL-sYa"/>
+                                    </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Exact amount to be sent " lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFV-Ss-6Du">
                                     <rect key="frame" x="61" y="241.5" width="182" height="19"/>
@@ -182,7 +185,7 @@
                                 </label>
                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="D8v-UV-aCC">
                                     <rect key="frame" x="37" y="103" width="301" height="90"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="90" id="Dio-uX-WYb"/>
                                     </constraints>
@@ -198,6 +201,9 @@
                                         <constraint firstAttribute="height" constant="16" id="2FK-PF-zaE"/>
                                         <constraint firstAttribute="width" constant="16" id="Byz-wJ-zDg"/>
                                     </constraints>
+                                    <connections>
+                                        <action selector="checkBox2Tapped:" destination="-1" eventType="touchUpInside" id="Zow-QY-Yy2"/>
+                                    </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Unlimited amount" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Puv-5Q-rRj">
                                     <rect key="frame" x="61" y="280.5" width="134.5" height="19"/>
@@ -206,6 +212,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="wj1-RG-idI" firstAttribute="top" secondItem="l1S-a7-agP" secondAttribute="bottom" constant="22" id="0da-Lq-UO4"/>
                                 <constraint firstItem="Siu-Bf-6uV" firstAttribute="top" secondItem="UDP-zx-F6b" secondAttribute="bottom" constant="37" id="1cP-Vs-QGm"/>
@@ -239,6 +246,7 @@
                         </scrollView>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="4OC-bQ-IXF" firstAttribute="leading" secondItem="Vd1-rj-yFf" secondAttribute="leading" id="I10-ii-Hn0"/>
                         <constraint firstItem="4OC-bQ-IXF" firstAttribute="top" secondItem="Vd1-rj-yFf" secondAttribute="top" id="LJ2-Tm-Nn5"/>
@@ -246,17 +254,30 @@
                         <constraint firstAttribute="bottom" secondItem="4OC-bQ-IXF" secondAttribute="bottom" id="aeC-Zc-50a"/>
                         <constraint firstAttribute="trailing" secondItem="4OC-bQ-IXF" secondAttribute="trailing" id="jyd-Wr-PP2"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="MYt-Xo-0CT" appends="YES" id="yAe-Uv-FnK"/>
+                    </connections>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="Vd1-rj-yFf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="112" id="Jq8-QM-61g"/>
                 <constraint firstItem="Vd1-rj-yFf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="P3S-zd-MRU"/>
                 <constraint firstItem="Vd1-rj-yFf" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="t1N-fy-59d"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="x00-cx-vem" appends="YES" id="ubo-Le-TPc"/>
+            </connections>
             <point key="canvasLocation" x="132" y="94.902548725637189"/>
         </view>
+        <tapGestureRecognizer id="x00-cx-vem">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="qVz-HY-xJH"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="MYt-Xo-0CT"/>
     </objects>
     <resources>
         <image name="edit_confirm_icon" width="16" height="16"/>
@@ -282,8 +303,5 @@
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

@@ -13,6 +13,7 @@ enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
   case openContactsList
   case addContact(address: String)
+  case checkApproval(tokens: [Token])
 }
 
 protocol MultiSendViewControllerDelegate: class {
@@ -22,6 +23,12 @@ protocol MultiSendViewControllerDelegate: class {
 class MultiSendViewModel {
   var cellModels = [MultiSendCellModel()]
   var updatingIndex = 0
+  
+  var selectedToken: [Token] {
+    return self.cellModels.map { element in
+      return element.from
+    }
+  }
 }
 class MultiSendViewController: KNBaseViewController {
   @IBOutlet weak var inputTableView: UITableView!
@@ -50,6 +57,11 @@ class MultiSendViewController: KNBaseViewController {
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
+  
+  @IBAction func sendButtonTapped(_ sender: UIButton) {
+    self.delegate?.multiSendViewController(self, run: .checkApproval(tokens: self.viewModel.selectedToken))
+  }
+  
   
   private func openQRCode() {
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {

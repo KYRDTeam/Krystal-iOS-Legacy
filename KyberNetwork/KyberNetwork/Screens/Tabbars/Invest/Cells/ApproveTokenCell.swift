@@ -46,7 +46,7 @@ class ApproveTokenCell: UITableViewCell {
     if model.isDoneApprove {
       self.loadingView.pause()
     } else {
-      self.loadingView.resume()
+      self.loadingView.start(beginingValue: 1)
     }
     
     self.cellModel = model

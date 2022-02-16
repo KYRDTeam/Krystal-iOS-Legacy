@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import BigInt
+import Result
 
 class MultiSendCoordinator: Coordinator {
   let navigationController: UINavigationController
@@ -29,6 +31,8 @@ class MultiSendCoordinator: Coordinator {
   }()
   
   fileprivate(set) var searchTokensVC: KNSearchTokenViewController?
+  fileprivate var approveVC: MultiSendApproveViewController?
+  fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -53,6 +57,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.openListContactsView()
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
+    case .checkApproval(tokens: let tokens):
+      self.openApproveView(tokens: tokens)
     }
   }
   
@@ -79,6 +85,14 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address, ens: ens)
     self.addContactVC.updateView(viewModel: viewModel)
     self.navigationController.pushViewController(self.addContactVC, animated: true)
+  }
+  
+  fileprivate func openApproveView(tokens: [Token]) {
+    let viewModel = MultiSendApproveViewModel(tokens: tokens, gasPrice: BigInt(1000), gasLimit: BigInt(1000), baseGasLimit: BigInt(1000))
+    let controller = MultiSendApproveViewController(viewModel: viewModel)
+    controller.delegate = self
+    self.navigationController.present(controller, animated: true, completion: nil)
+    self.approveVC = controller
   }
 }
 
@@ -113,6 +127,97 @@ extension MultiSendCoordinator: KNNewContactViewControllerDelegate {
       if case .send(let address) = event {
         self.rootViewController.coordinatorSend(to: address)
       }
+    }
+  }
+}
+
+extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
+  func multiSendApproveVieController(_ controller: MultiSendApproveViewController, run event: MultiSendApproveViewEvent) {
+    switch event {
+    case .openGasPriceSelect(let gasLimit, let baseGasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
+      let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)
+      viewModel.baseGasLimit = baseGasLimit
+      viewModel.updateGasPrices(
+        fast: KNGasCoordinator.shared.fastKNGas,
+        medium: KNGasCoordinator.shared.standardKNGas,
+        slow: KNGasCoordinator.shared.lowKNGas,
+        superFast: KNGasCoordinator.shared.superFastKNGas
+      )
+      viewModel.advancedGasLimit = advancedGasLimit
+      viewModel.advancedMaxPriorityFee = advancedPriorityFee
+      viewModel.advancedMaxFee = advancedMaxFee
+      viewModel.advancedNonce = advancedNonce
+      let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+      vc.delegate = self
+
+      self.getLatestNonce { result in
+        switch result {
+        case .success(let nonce):
+          vc.coordinatorDidUpdateCurrentNonce(nonce)
+        case .failure(let error):
+          self.navigationController.showErrorTopBannerMessage(message: error.description)
+        }
+      }
+
+      controller.present(vc, animated: true, completion: nil)
+      self.gasPriceSelector = vc
+    case .dismiss:
+      self.approveVC = nil
+    
+    case .approve(tokens: let tokens):
+      //TODO: send approve multiple token
+      break
+    }
+  }
+  
+  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+}
+
+extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .infoPressed:
+      break
+    case .gasPriceChanged(let type, let value):
+      
+      self.approveVC?.coordinatorDidUpdateGasPriceType(type, value: value)
+    case .helpPressed(let tag):
+      var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
+      switch tag {
+      case 1:
+        message = "gas.limit.help".toBeLocalised()
+      case 2:
+        message = "max.priority.fee.help".toBeLocalised()
+      case 3:
+        message = "max.fee.help".toBeLocalised()
+      default:
+        break
+      }
+      self.navigationController.showBottomBannerView(
+        message: message,
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 10
+      )
+    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
+      self.approveVC?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      
+    case .updateAdvancedNonce(let nonce):
+      self.approveVC?.coordinatorDidUpdateAdvancedNonce(nonce)
+      
+    default:
+      break
     }
   }
 }
