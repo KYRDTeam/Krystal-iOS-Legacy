@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -206,52 +206,20 @@
                                 <action selector="sendButtonTapped:" destination="-1" eventType="touchUpInside" id="FgQ-HP-BVT"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOK-K8-BYf">
-                            <rect key="frame" x="252.5" y="382" width="85.5" height="16.5"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <color key="textColor" name="textWhiteColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDw-0z-YJO">
-                            <rect key="frame" x="37" y="382" width="51.5" height="17"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <color key="textColor" name="normalTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.007654 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SLD-75-pyJ">
-                            <rect key="frame" x="252.5" y="353" width="85.5" height="16.5"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <color key="textColor" name="textWhiteColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Estimated Gas Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgL-9a-JnC">
-                            <rect key="frame" x="37" y="353" width="119" height="17"/>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <color key="textColor" name="normalTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="SLD-75-pyJ" firstAttribute="centerY" secondItem="xgL-9a-JnC" secondAttribute="centerY" id="50U-4B-Kcd"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="leading" secondItem="6v6-SQ-Koa" secondAttribute="leading" constant="37" id="6RM-vp-xgS"/>
-                        <constraint firstItem="kOK-K8-BYf" firstAttribute="centerY" secondItem="FDw-0z-YJO" secondAttribute="centerY" id="AKm-Gh-BtI"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="Aww-m2-rTP"/>
                         <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="mLd-V8-BLg" secondAttribute="trailing" constant="37" id="Lhs-mo-HhC"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="top" secondItem="p5U-Iv-VdQ" secondAttribute="bottom" constant="10" id="QYU-Mj-1Yu"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="mLd-V8-BLg" secondAttribute="bottom" constant="20" id="Qar-PB-gc4"/>
-                        <constraint firstItem="kOK-K8-BYf" firstAttribute="trailing" secondItem="SLD-75-pyJ" secondAttribute="trailing" id="ZPZ-5A-zDL"/>
                         <constraint firstItem="mLd-V8-BLg" firstAttribute="centerY" secondItem="chg-27-bUe" secondAttribute="centerY" id="aUx-r2-LMw"/>
-                        <constraint firstItem="FDw-0z-YJO" firstAttribute="leading" secondItem="xgL-9a-JnC" secondAttribute="leading" id="dim-8G-lX7"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="top" secondItem="6v6-SQ-Koa" secondAttribute="top" constant="20" id="fJ4-jM-23h"/>
                         <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="oCA-se-phj" secondAttribute="trailing" constant="37" id="gAb-7O-pG5"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="l6n-yu-PT1"/>
                         <constraint firstAttribute="bottom" secondItem="oCA-se-phj" secondAttribute="bottom" constant="226" id="lFP-Ku-b8d"/>
-                        <constraint firstItem="kOK-K8-BYf" firstAttribute="trailing" secondItem="oCA-se-phj" secondAttribute="trailing" id="mUL-6c-cGI"/>
-                        <constraint firstItem="FDw-0z-YJO" firstAttribute="top" secondItem="oCA-se-phj" secondAttribute="bottom" constant="54" id="mps-re-Ib3"/>
-                        <constraint firstItem="FDw-0z-YJO" firstAttribute="leading" secondItem="oCA-se-phj" secondAttribute="leading" id="pvZ-Ai-tdh"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="centerX" secondItem="6v6-SQ-Koa" secondAttribute="centerX" id="r9t-fN-b0U"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="trailing" secondItem="6v6-SQ-Koa" secondAttribute="trailing" constant="-37" id="t0J-i7-Avd"/>
-                        <constraint firstItem="FDw-0z-YJO" firstAttribute="top" secondItem="xgL-9a-JnC" secondAttribute="bottom" constant="12" id="vR3-eR-2VH"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="Nle-zF-Shh"/>
                     <viewLayoutGuide key="frameLayoutGuide" id="G8e-lo-P4k"/>
@@ -287,17 +255,11 @@
         <namedColor name="navButtonBgColor">
             <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="normalTextColor">
-            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="popupBackgroundColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="secondaryColor">
             <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textWhiteColor">
-            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

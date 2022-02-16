@@ -654,6 +654,8 @@
 		C37CC09D245803CA0081FB32 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC090245803C90081FB32 /* Roboto-Thin.ttf */; };
 		C37CC09E245803CA0081FB32 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C37CC091245803C90081FB32 /* Roboto-Black.ttf */; };
 		C37F04CB2639697800D62E43 /* GetDecimals.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37F04CA2639697800D62E43 /* GetDecimals.swift */; };
+		C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C385D8C527BCD7A300BB226D /* MultiSendConfirmViewController.swift */; };
+		C385D8C827BCD7A300BB226D /* MultiSendConfirmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C385D8C627BCD7A300BB226D /* MultiSendConfirmViewController.xib */; };
 		C38E5D7425F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7225F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift */; };
 		C38E5D7525F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38E5D7325F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib */; };
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
@@ -1476,6 +1478,8 @@
 		C37CC090245803C90081FB32 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		C37CC091245803C90081FB32 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		C37F04CA2639697800D62E43 /* GetDecimals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDecimals.swift; sourceTree = "<group>"; };
+		C385D8C527BCD7A300BB226D /* MultiSendConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendConfirmViewController.swift; sourceTree = "<group>"; };
+		C385D8C627BCD7A300BB226D /* MultiSendConfirmViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendConfirmViewController.xib; sourceTree = "<group>"; };
 		C387F26D26285BA200B1E093 /* KrystalNotificationServiceExtensionDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KrystalNotificationServiceExtensionDebug.entitlements; sourceTree = "<group>"; };
 		C38E5D7225F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawConfirmPopupViewController.swift; sourceTree = "<group>"; };
 		C38E5D7325F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WithdrawConfirmPopupViewController.xib; sourceTree = "<group>"; };
@@ -4271,6 +4275,8 @@
 				C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */,
 				C3308F5A27B66D510045C569 /* MultiSendApproveViewController.swift */,
 				C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */,
+				C385D8C527BCD7A300BB226D /* MultiSendConfirmViewController.swift */,
+				C385D8C627BCD7A300BB226D /* MultiSendConfirmViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4626,6 +4632,7 @@
 				25073D27211AF20D00833C92 /* Montserrat-ThinItalic.ttf in Resources */,
 				25F96F7C215373DB00D7F927 /* KNDocumentPhotoInfoPopUp.xib in Resources */,
 				C37CC09A245803CA0081FB32 /* LICENSE.txt in Resources */,
+				C385D8C827BCD7A300BB226D /* MultiSendConfirmViewController.xib in Resources */,
 				C31F74B625DD3284008B21F7 /* OverviewAssetsTableViewCell.xib in Resources */,
 				25929C6B20DA5C760045CFA3 /* SF-Pro-Text-Regular.otf in Resources */,
 				25929C8B20DA5CC10045CFA3 /* SFCompactText-Bold.otf in Resources */,
@@ -5132,6 +5139,7 @@
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
+				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,
 				C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */,
 				C32649DB26CF81BE001B6E11 /* OverviewNFTDetailViewController.swift in Sources */,
 				C30DB3EF2771D1EC00F3E545 /* DappCoordinator.swift in Sources */,

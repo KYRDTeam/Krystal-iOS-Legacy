@@ -206,6 +206,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   }
   
   @IBAction func approveButtonTapped(_ sender: UIButton) {
+    self.delegate?.multiSendApproveVieController(self, run: .approve(tokens: self.viewModel.tokens))
   }
   
   @IBAction func checkBox1Tapped(_ sender: UIButton) {

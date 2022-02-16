@@ -9,11 +9,14 @@ import UIKit
 import SwipeCellKit
 import QRCodeReaderViewController
 
+typealias MultiSendItem = (String, String, Token)
+
 enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
   case openContactsList
   case addContact(address: String)
   case checkApproval(tokens: [Token])
+  case confirm(items: [MultiSendItem])
 }
 
 protocol MultiSendViewControllerDelegate: class {
@@ -27,6 +30,12 @@ class MultiSendViewModel {
   var selectedToken: [Token] {
     return self.cellModels.map { element in
       return element.from
+    }
+  }
+  
+  var sendItems: [MultiSendItem] {
+    return self.cellModels.map { element in
+      return (element.addressString, element.amount, element.from)
     }
   }
 }
@@ -101,6 +110,10 @@ class MultiSendViewController: KNBaseViewController {
       KNContactStorage.shared.updateLastUsed(contact: contact)
     }
     self.inputTableView.reloadData()
+  }
+  
+  func coordinatorDidFinishApproveTokens() {
+    self.delegate?.multiSendViewController(self, run: .confirm(items: self.viewModel.sendItems))
   }
 }
 
