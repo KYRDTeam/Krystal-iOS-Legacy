@@ -533,6 +533,8 @@
 		C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */; };
 		C32017B627BE28EC0055130B /* MultisendAddressListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */; };
 		C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */; };
+		C32017BA27BE41910055130B /* MultiSendAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32017B827BE41910055130B /* MultiSendAddressCell.swift */; };
+		C32017BB27BE41910055130B /* MultiSendAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32017B927BE41910055130B /* MultiSendAddressCell.xib */; };
 		C320D80827B39DAE0001DC71 /* MultiSendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */; };
 		C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */; };
 		C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */; };
@@ -1356,6 +1358,8 @@
 		C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewDepositTableViewCell.xib; sourceTree = "<group>"; };
 		C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendAddressListViewController.swift; sourceTree = "<group>"; };
 		C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultisendAddressListViewController.xib; sourceTree = "<group>"; };
+		C32017B827BE41910055130B /* MultiSendAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendAddressCell.swift; sourceTree = "<group>"; };
+		C32017B927BE41910055130B /* MultiSendAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendAddressCell.xib; sourceTree = "<group>"; };
 		C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendCoordinator.swift; sourceTree = "<group>"; };
 		C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendViewController.swift; sourceTree = "<group>"; };
 		C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendViewController.xib; sourceTree = "<group>"; };
@@ -3824,6 +3828,8 @@
 				C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */,
 				C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */,
 				C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */,
+				C32017B827BE41910055130B /* MultiSendAddressCell.swift */,
+				C32017B927BE41910055130B /* MultiSendAddressCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4676,6 +4682,7 @@
 				C313720726077A44003D432B /* CustomTokenListViewController.xib in Resources */,
 				C3EE06C4267A15E50090B432 /* Karla-SemiBoldItalic.ttf in Resources */,
 				25929C5E20DA5C760045CFA3 /* SF-Pro-Text-RegularItalic.otf in Resources */,
+				C32017BB27BE41910055130B /* MultiSendAddressCell.xib in Resources */,
 				C3EE06CA267A15E50090B432 /* OFL.txt in Resources */,
 				C313720E26078051003D432B /* CustomTokenTableViewCell.xib in Resources */,
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
@@ -5164,6 +5171,7 @@
 				7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */,
 				255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */,
 				C60BB88E23959794006FE37D /* KNGetAddressFromResolverRequest.swift in Sources */,
+				C32017BA27BE41910055130B /* MultiSendAddressCell.swift in Sources */,
 				25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */,
 				C347DA3F25C03144000D6E81 /* EarnMenuTableViewCell.swift in Sources */,
 				251C29C0232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.swift in Sources */,

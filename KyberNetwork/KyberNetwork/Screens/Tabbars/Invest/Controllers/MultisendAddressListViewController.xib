@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -32,17 +31,21 @@
                     <rect key="frame" x="0.0" y="112" width="375" height="555"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Addresses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEc-Od-dzS">
-                            <rect key="frame" x="113" y="30" width="149" height="24"/>
+                            <rect key="frame" x="116.5" y="30" width="142.5" height="24"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="zLq-R4-zmy">
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="zLq-R4-zmy">
                             <rect key="frame" x="0.0" y="84" width="375" height="471"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="6Li-dE-ufV"/>
+                            </connections>
                         </tableView>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="zLq-R4-zmy" firstAttribute="top" secondItem="sEc-Od-dzS" secondAttribute="bottom" constant="30" id="6Fj-GI-BuO"/>
                         <constraint firstAttribute="trailing" secondItem="zLq-R4-zmy" secondAttribute="trailing" id="On3-hd-HJ6"/>
@@ -52,17 +55,30 @@
                         <constraint firstAttribute="bottom" secondItem="zLq-R4-zmy" secondAttribute="bottom" id="u4I-9W-g3w"/>
                         <constraint firstAttribute="height" constant="555" id="ycp-GY-xuQ"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="1If-8m-E4x" appends="YES" id="Qkb-Rg-LLK"/>
+                    </connections>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="Leh-yO-hyv" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6bO-15-tMR"/>
                 <constraint firstItem="Leh-yO-hyv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WO3-IE-is9"/>
                 <constraint firstItem="Leh-yO-hyv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="112" id="Yxu-h4-H4P"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="Pbx-RI-hmD" appends="YES" id="ajc-V8-cGj"/>
+            </connections>
             <point key="canvasLocation" x="138.40000000000001" y="78.710644677661179"/>
         </view>
+        <tapGestureRecognizer id="Pbx-RI-hmD">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="Jf5-BZ-KLs"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="1If-8m-E4x"/>
     </objects>
     <resources>
         <namedColor name="popupBackgroundColor">
@@ -71,8 +87,5 @@
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MultiSendAddressCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="eb2e3ae8e64aa38f36b...43bd " lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyM-tk-QrK">
+                        <rect key="frame" x="98" y="14" width="124" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-vq-1zX">
+                        <rect key="frame" x="28" y="14" width="8" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000 KNC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUH-UI-TzY">
+                        <rect key="frame" x="227" y="13.5" width="65" height="17"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="iyM-tk-QrK" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="62k-AS-W1Z"/>
+                    <constraint firstItem="iyM-tk-QrK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xfr-vq-1zX" secondAttribute="trailing" constant="5" id="9rP-MR-TbI"/>
+                    <constraint firstItem="xfr-vq-1zX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="Ygb-Ou-bT0"/>
+                    <constraint firstAttribute="trailing" secondItem="vUH-UI-TzY" secondAttribute="trailing" constant="28" id="cIA-AM-WTK"/>
+                    <constraint firstItem="vUH-UI-TzY" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="mZx-xU-iN1"/>
+                    <constraint firstItem="xfr-vq-1zX" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nwq-Lb-XLK"/>
+                    <constraint firstItem="iyM-tk-QrK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="v1n-Yv-LbF"/>
+                    <constraint firstItem="vUH-UI-TzY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iyM-tk-QrK" secondAttribute="trailing" constant="5" id="z7X-VL-X8x"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="addressLabel" destination="iyM-tk-QrK" id="SFe-wh-TvP"/>
+                <outlet property="amountLabel" destination="vUH-UI-TzY" id="7R4-ah-tmf"/>
+                <outlet property="indexLabel" destination="xfr-vq-1zX" id="rGb-vK-j0m"/>
+            </connections>
+            <point key="canvasLocation" x="134.78260869565219" y="78.348214285714278"/>
+        </tableViewCell>
+    </objects>
+</document>
