@@ -415,6 +415,19 @@ class EtherscanTransactionStorage {
     }
     Storage.store(self.internalHistoryTransactions, as: unwrapped.address.description + KNEnvironment.default.envPrefix + Constants.unsupportedChainHistoryTransactionsFileName)
   }
+  
+  func getInternalHistoryTokenSymbols() -> [String] {
+    var symbols: [String] = []
+    self.internalHistoryTransactions.forEach { transaction in
+      if let fromSymbol = transaction.fromSymbol, !symbols.contains(fromSymbol) {
+        symbols.append(fromSymbol)
+      }
+      if let toSymbol = transaction.toSymbol, !symbols.contains(toSymbol) {
+        symbols.append(toSymbol)
+      }
+    }
+    return symbols
+  }
 
   func getEtherscanToken() -> [Token] {
     var tokenSet = Set<Token>()
