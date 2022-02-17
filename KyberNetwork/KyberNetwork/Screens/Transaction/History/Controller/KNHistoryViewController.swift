@@ -280,7 +280,7 @@ struct KNHistoryViewModel {
 
     if isCompleted {
       if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-        self.displayingUnsupportedChainCompletedTxHeaders = {
+        let displayHeaders: [String] = {
           let data = self.handledTxHeaders.filter({
             let date = self.dateFormatter.date(from: $0) ?? Date()
             return date >= fromDate.startDate() && date < toDate.endDate()
@@ -292,13 +292,17 @@ struct KNHistoryViewModel {
           return data
         }()
         self.displayingUnsupportedChainCompletedTxData = [:]
-        self.displayingUnsupportedChainCompletedTxHeaders.forEach { (header) in
+        displayHeaders.forEach { (header) in
           let filteredHandledTxData = self.handledTxData[header]?.sorted(by: { $0.time > $1.time })
           let items = filteredHandledTxData?.filter({ return self.isInternalHistoryTransactionIncluded($0) }).map({ (item) -> PendingInternalHistoryTransactonViewModel in
             return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
           })
           self.displayingUnsupportedChainCompletedTxData[header] = items
         }
+        let filtered = displayHeaders.filter { (header) -> Bool in
+          return !(self.displayingUnsupportedChainCompletedTxData[header]?.isEmpty ?? false)
+        }
+        self.displayingUnsupportedChainCompletedTxHeaders = filtered
       } else {
         self.updateDisplayingKrystalData()
       }
