@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultisendAddressListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="addressesTableView" destination="zLq-R4-zmy" id="XJI-rc-Mp2"/>
+                <outlet property="contentView" destination="Leh-yO-hyv" id="wQ9-Og-Bu3"/>
+                <outlet property="contentViewTopContraint" destination="Yxu-h4-H4P" id="oxU-4X-1Yv"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Leh-yO-hyv">
+                    <rect key="frame" x="0.0" y="112" width="375" height="555"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Addresses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEc-Od-dzS">
+                            <rect key="frame" x="113" y="30" width="149" height="24"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="zLq-R4-zmy">
+                            <rect key="frame" x="0.0" y="84" width="375" height="471"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="zLq-R4-zmy" firstAttribute="top" secondItem="sEc-Od-dzS" secondAttribute="bottom" constant="30" id="6Fj-GI-BuO"/>
+                        <constraint firstAttribute="trailing" secondItem="zLq-R4-zmy" secondAttribute="trailing" id="On3-hd-HJ6"/>
+                        <constraint firstItem="sEc-Od-dzS" firstAttribute="centerX" secondItem="Leh-yO-hyv" secondAttribute="centerX" id="SQo-aH-Fzv"/>
+                        <constraint firstItem="zLq-R4-zmy" firstAttribute="leading" secondItem="Leh-yO-hyv" secondAttribute="leading" id="g0x-Cj-cNN"/>
+                        <constraint firstItem="sEc-Od-dzS" firstAttribute="top" secondItem="Leh-yO-hyv" secondAttribute="top" constant="30" id="hHa-wI-e3p"/>
+                        <constraint firstAttribute="bottom" secondItem="zLq-R4-zmy" secondAttribute="bottom" id="u4I-9W-g3w"/>
+                        <constraint firstAttribute="height" constant="555" id="ycp-GY-xuQ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Leh-yO-hyv" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6bO-15-tMR"/>
+                <constraint firstItem="Leh-yO-hyv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WO3-IE-is9"/>
+                <constraint firstItem="Leh-yO-hyv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="112" id="Yxu-h4-H4P"/>
+            </constraints>
+            <point key="canvasLocation" x="138.40000000000001" y="78.710644677661179"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

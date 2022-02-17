@@ -7,12 +7,13 @@
 
 import UIKit
 import BigInt
+import SwiftUI
 
 enum MultiSendConfirmViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
   case confirm
-  case showAddresses
+  case showAddresses(items: [MultiSendItem])
 }
 
 protocol MultiSendConfirmViewControllerDelegate: class {
@@ -26,6 +27,8 @@ class MultiSendConfirmViewModel {
   fileprivate(set) var gasPrice: BigInt
   fileprivate(set) var gasLimit: BigInt
   fileprivate(set) var baseGasLimit: BigInt
+  fileprivate(set) var transferAmountDataSource: [String] = []
+  fileprivate(set) var totalValueString: String = ""
   
   var advancedGasLimit: String? {
     didSet {
@@ -125,6 +128,40 @@ class MultiSendConfirmViewModel {
       self.selectedGasPriceType = .medium
     }
   }
+  
+  func reloadDataSource() {
+    let tokens = self.sendItems.map { element in
+      return element.2
+    }
+    
+    let removeDuplicateSet = Set(tokens)
+    var tokenAmountStrings: [String] = []
+    var totalUSDAmt = BigInt.zero
+    removeDuplicateSet.forEach { element in
+      let items = self.sendItems.filter { item in
+        return item.2 == element
+      }
+      var balance = BigInt(0)
+      items.forEach { item in
+        balance += item.1
+      }
+      let string = balance.string(
+        decimals: element.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(element.decimals, 5)
+      ).prefix(15)
+      let displayString = "\(string) \(element.symbol)"
+      tokenAmountStrings.append(displayString)
+      var usdAmt = BigInt.zero
+      if let usdRate = KNTrackerRateStorage.shared.getPriceWithAddress(element.address) {
+        usdAmt = balance * BigInt(usdRate.usd * pow(10.0, 18.0)) / BigInt(10).power(element.decimals)
+      }
+      totalUSDAmt += usdAmt
+      
+    }
+    self.transferAmountDataSource = tokenAmountStrings
+    self.totalValueString = "~ \(totalUSDAmt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)) USD"
+  }
 }
 
 class MultiSendConfirmViewController: KNBaseViewController {
@@ -140,6 +177,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
   @IBOutlet weak var gasPriceTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
   
+  @IBOutlet weak var amountTableViewHeightContraint: NSLayoutConstraint!
   let transitor = TransitionDelegate()
   let viewModel: MultiSendConfirmViewModel
   weak var delegate: MultiSendConfirmViewControllerDelegate?
@@ -158,12 +196,18 @@ class MultiSendConfirmViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.amountTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    self.amountTableView.rowHeight = 28
+
     self.updateUI()
     self.updateGasFeeUI()
   }
   
   fileprivate func updateUI() {
     self.addressCountLabel.text = "\(self.viewModel.sendItems.count)"
+    self.viewModel.reloadDataSource()
+    self.amountTableViewHeightContraint.constant = CGFloat(self.viewModel.transferAmountDataSource.count * 28)
+    self.totalAmountLabel.text = self.viewModel.totalValueString
   }
   
   fileprivate func updateGasFeeUI() {
@@ -196,7 +240,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
   }
   
   @IBAction func showAddressesButtonTapped(_ sender: UIButton) {
-    self.delegate?.multiSendConfirmVieController(self, run: .showAddresses)
+    self.delegate?.multiSendConfirmVieController(self, run: .showAddresses(items: self.viewModel.sendItems))
   }
   
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
@@ -231,5 +275,26 @@ extension MultiSendConfirmViewController: BottomPopUpAbstract {
 
   func getPopupContentView() -> UIView {
     return self.contentView
+  }
+}
+
+extension MultiSendConfirmViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.transferAmountDataSource.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: "cell",
+      for: indexPath
+    )
+
+    let cm = self.viewModel.transferAmountDataSource[indexPath.row]
+    cell.textLabel?.textAlignment = .right
+    cell.backgroundColor = .clear
+    cell.textLabel?.textColor = UIColor(named: "textWhiteColor")
+    cell.textLabel?.font = UIFont.Kyber.regular(with: 16)
+    cell.textLabel?.text = cm
+    return cell
   }
 }

@@ -8,8 +8,9 @@
 import UIKit
 import SwipeCellKit
 import QRCodeReaderViewController
+import BigInt
 
-typealias MultiSendItem = (String, String, Token)
+typealias MultiSendItem = (String, BigInt, Token)
 
 enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
@@ -35,7 +36,7 @@ class MultiSendViewModel {
   
   var sendItems: [MultiSendItem] {
     return self.cellModels.map { element in
-      return (element.addressString, element.amount, element.from)
+      return (element.addressString, element.amountBigInt, element.from)
     }
   }
 }

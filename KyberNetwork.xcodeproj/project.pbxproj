@@ -531,6 +531,8 @@
 		C31F74B625DD3284008B21F7 /* OverviewAssetsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74B425DD3284008B21F7 /* OverviewAssetsTableViewCell.xib */; };
 		C31F74BB25DD32A6008B21F7 /* OverviewDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31F74B925DD32A6008B21F7 /* OverviewDepositTableViewCell.swift */; };
 		C31F74BC25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */; };
+		C32017B627BE28EC0055130B /* MultisendAddressListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */; };
+		C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */; };
 		C320D80827B39DAE0001DC71 /* MultiSendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */; };
 		C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */; };
 		C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */; };
@@ -1352,6 +1354,8 @@
 		C31F74B425DD3284008B21F7 /* OverviewAssetsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAssetsTableViewCell.xib; sourceTree = "<group>"; };
 		C31F74B925DD32A6008B21F7 /* OverviewDepositTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDepositTableViewCell.swift; sourceTree = "<group>"; };
 		C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewDepositTableViewCell.xib; sourceTree = "<group>"; };
+		C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendAddressListViewController.swift; sourceTree = "<group>"; };
+		C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultisendAddressListViewController.xib; sourceTree = "<group>"; };
 		C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendCoordinator.swift; sourceTree = "<group>"; };
 		C320D80927B39EBC0001DC71 /* MultiSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSendViewController.swift; sourceTree = "<group>"; };
 		C320D80A27B39EBC0001DC71 /* MultiSendViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendViewController.xib; sourceTree = "<group>"; };
@@ -4277,6 +4281,8 @@
 				C3308F5B27B66D510045C569 /* MultiSendApproveViewController.xib */,
 				C385D8C527BCD7A300BB226D /* MultiSendConfirmViewController.swift */,
 				C385D8C627BCD7A300BB226D /* MultiSendConfirmViewController.xib */,
+				C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */,
+				C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4775,6 +4781,7 @@
 				C31371ED26035182003D432B /* KrytalViewController.xib in Resources */,
 				C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */,
 				C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */,
+				C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */,
 				251ABCB420578F6E0069687F /* config_env_kovan.json in Resources */,
 				2549B286219EA3DA00B7564E /* config_env_rinkeby.json in Resources */,
 				C30292F1260317EA001929E1 /* MarketingPartnerCollectionViewCell.xib in Resources */,
@@ -5332,6 +5339,7 @@
 				25CC0A912057D7340009D0D5 /* KNLoadBalanceCoordinator.swift in Sources */,
 				29F114EE1FA65DEF00114A29 /* ImportType.swift in Sources */,
 				25F9C7692213D0D80001064D /* Double.swift in Sources */,
+				C32017B627BE28EC0055130B /* MultisendAddressListViewController.swift in Sources */,
 				29BDF1981FEE4DB00023A45F /* GasPriceConfiguration.swift in Sources */,
 				C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */,
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,

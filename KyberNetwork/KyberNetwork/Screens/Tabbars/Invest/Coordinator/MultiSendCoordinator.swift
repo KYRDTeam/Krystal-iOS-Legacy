@@ -134,6 +134,12 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     controller.present(vc, animated: true, completion: nil)
     self.gasPriceSelector = vc
   }
+  
+  fileprivate func openAddressListView(items: [MultiSendItem], controller: UIViewController) {
+    let vm = MultisendAddressListViewModel(items: items)
+    let vc = MultisendAddressListViewController(viewModel: vm)
+    controller.present(vc, animated: true, completion: nil)
+  }
 }
 
 extension MultiSendCoordinator: KNSearchTokenViewControllerDelegate {
@@ -251,8 +257,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       self.confirmVC = nil
     case .confirm:
       break
-    case .showAddresses:
-      break
+    case .showAddresses(let items):
+      self.openAddressListView(items: items, controller: controller)
     }
   }
 }

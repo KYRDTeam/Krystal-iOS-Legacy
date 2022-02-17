@@ -21,6 +21,7 @@
             <connections>
                 <outlet property="addressCountLabel" destination="Lvu-qp-kMP" id="IW0-e1-q1G"/>
                 <outlet property="amountTableView" destination="dZj-jZ-tDv" id="U98-pZ-1Ql"/>
+                <outlet property="amountTableViewHeightContraint" destination="pvg-9n-SsP" id="ngG-Hc-VtO"/>
                 <outlet property="contentView" destination="01x-YX-DxM" id="tzY-tX-y20"/>
                 <outlet property="contentViewTopContraint" destination="YuL-Bz-gZE" id="8FM-rq-Jgv"/>
                 <outlet property="feeETHLabel" destination="Peu-NO-Lrd" id="fUj-jR-SO8"/>
@@ -156,12 +157,15 @@
                                     <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dZj-jZ-tDv">
-                                    <rect key="frame" x="166.5" y="111" width="171.5" height="177"/>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dZj-jZ-tDv">
+                                    <rect key="frame" x="166.5" y="111" width="187.5" height="177"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="177" id="pvg-9n-SsP"/>
                                     </constraints>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="AqX-DN-lJj"/>
+                                    </connections>
                                 </tableView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount to Transfer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfE-G6-tCP">
                                     <rect key="frame" x="37" y="111" width="119.5" height="17"/>
@@ -214,7 +218,7 @@
                                 <constraint firstAttribute="bottom" secondItem="RsA-65-FPT" secondAttribute="bottom" constant="60" id="W1c-ZL-Sh5"/>
                                 <constraint firstItem="jTg-8W-O7U" firstAttribute="top" secondItem="EOQ-iT-xQM" secondAttribute="bottom" constant="24" id="Wff-AJ-FpQ"/>
                                 <constraint firstItem="74V-r3-y7m" firstAttribute="leading" secondItem="g84-if-G70" secondAttribute="leading" constant="37" id="XxV-LN-QUD"/>
-                                <constraint firstAttribute="trailing" secondItem="dZj-jZ-tDv" secondAttribute="trailing" constant="37" id="YeK-gC-HpG"/>
+                                <constraint firstAttribute="trailing" secondItem="dZj-jZ-tDv" secondAttribute="trailing" constant="21" id="YeK-gC-HpG"/>
                                 <constraint firstItem="RsA-65-FPT" firstAttribute="width" secondItem="74V-r3-y7m" secondAttribute="width" id="b0R-gZ-caH"/>
                                 <constraint firstItem="E6o-qM-m2e" firstAttribute="centerY" secondItem="Lvu-qp-kMP" secondAttribute="centerY" id="b3k-Nl-qTp"/>
                                 <constraint firstItem="E6o-qM-m2e" firstAttribute="centerY" secondItem="ybG-3u-Mwh" secondAttribute="centerY" id="bW4-x4-zvB"/>
