@@ -57,7 +57,7 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    return String(format: "%.6f", self.detailInfo?.markets[self.currency]?.price ?? 0)
+    return String(format: "%.2f", self.detailInfo?.markets[self.currency]?.price ?? 0)
   }
 
   var display24hVol: String {
@@ -92,7 +92,7 @@ class ChartViewModel {
       return "********"
     }
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
-    return balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + " \(self.token.symbol.uppercased())"
+    return balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 4)) + " \(self.token.symbol.uppercased())"
   }
   
   var displayUSDBalance: String {
@@ -101,7 +101,7 @@ class ChartViewModel {
     
     let rateBigInt = BigInt(price * pow(10.0, 18.0))
     let valueBigInt = balanceBigInt * rateBigInt / BigInt(10).power(18)
-    return self.currencyMode.symbol() + valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 6)) + self.currencyMode.suffixSymbol()
+    return self.currencyMode.symbol() + valueBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
 
   var marketCap: Double {
@@ -213,7 +213,11 @@ class ChartViewModel {
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: dateString + " ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
-    attributedText.append(NSAttributedString(string: "$\(priceBigInt.string(decimals: 18, minFractionDigits: 4, maxFractionDigits: 4))", attributes: normalAttributes))
+    
+    let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+    let displayString = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+    
+    attributedText.append(NSAttributedString(string: displayString, attributes: normalAttributes))
 
     return attributedText
   }
