@@ -2,6 +2,22 @@
 
 import Foundation
 
+enum ValidStatus: Equatable {
+  case success
+  case error(description: String)
+  
+  static func == (lhs: ValidStatus, rhs: ValidStatus) -> Bool {
+    switch (lhs, rhs) {
+    case (.success, .success):
+      return true
+    case (.error, .error):
+      return true
+    default:
+      return false
+    }
+  }
+}
+
 public struct Constants {
   public static let keychainKeyPrefix = "com.kyberswap.ios"
   public static let transactionIsLost = "is_lost"
@@ -214,6 +230,8 @@ public struct Constants {
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   public static let cronosAddress = "0xffffffffffffffffffffffffffffffffffffffff"
   public static let fantomAddress = "0xdddddddddddddddddddddddddddddddddddddddd"
+  
+  public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
 }
 
 public struct UnitConfiguration {

@@ -8,6 +8,8 @@
 import Foundation
 import BigInt
 import Result
+import TrustCore
+import WalletCore
 
 class MultiSendCoordinator: Coordinator {
   let navigationController: UINavigationController
@@ -58,8 +60,15 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.openListContactsView()
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
-    case .checkApproval(tokens: let tokens):
-      self.openApproveView(tokens: tokens)
+    case .checkApproval(items: let items):
+      self.checkAllowance(items: items) { remaining in
+        if remaining.isEmpty {
+          self.rootViewController.coordinatorDidFinishApproveTokens()
+        } else {
+          self.openApproveView(items: remaining)
+        }
+      }
+      
     case .confirm(items: let items):
       self.openConfirmView(items: items)
     }
@@ -77,6 +86,39 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     self.searchTokensVC = controller
   }
   
+  fileprivate func checkAllowance(items: [MultiSendItem], completion: @escaping ([MultiSendItem]) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      self.navigationController.showErrorTopBannerMessage(message: "You are using watch wallet")
+      return
+    }
+    
+    var remaining: [MultiSendItem] = []
+    let group = DispatchGroup()
+    
+    items.forEach { item in
+      if let address = Address(string: item.2.address) {
+        group.enter()
+        
+        provider.getAllowance(tokenAddress: address, toAddress: Address(string: Constants.multisendBscAddress)) { result in
+          switch result {
+          case .success(let res):
+            if item.1 > res {
+              remaining.append(item)
+            }
+          case .failure:
+            break
+          }
+          
+          group.leave()
+        }
+      }
+    }
+    
+    group.notify(queue: .main) {
+      completion(remaining)
+    }
+  }
+  
   fileprivate func openListContactsView() {
     let controller = KNListContactViewController()
     controller.loadViewIfNeeded()
@@ -90,14 +132,14 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     self.navigationController.pushViewController(self.addContactVC, animated: true)
   }
   
-  fileprivate func openApproveView(tokens: [Token]) {
-    let viewModel = MultiSendApproveViewModel(tokens: tokens, gasPrice: BigInt(1000), gasLimit: BigInt(1000), baseGasLimit: BigInt(1000))
+  fileprivate func openApproveView(items: [MultiSendItem]) {
+    let viewModel = MultiSendApproveViewModel(items: items)
     let controller = MultiSendApproveViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.approveVC = controller
   }
-  
+
   fileprivate func openConfirmView(items: [MultiSendItem]) {
     let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: BigInt(1000), gasLimit: BigInt(1000), baseGasLimit: BigInt(1000))
     let controller = MultiSendConfirmViewController(viewModel: vm)
@@ -186,16 +228,35 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     case .dismiss:
       self.approveVC = nil
     
-    case .approve(tokens: let tokens):
+    case .approve(items: let items, isApproveUnlimit: let isApproveUnlimit, settings: let setting):
+      guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
+        return
+      }
       //TODO: send approve multiple token
+      /*
+       - Get gas price NGasCoordinator.shared.defaultKNGas
+       - Get gas limit KNGasConfiguration.approveTokenGasLimitDefault
+       */
+      
+      
+      self.buildApproveDataList(items: items, isApproveUnlimit: isApproveUnlimit) { dataList in
+        print(dataList)
+      }
+      
+      
+      
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        
+      } else {
+        
+      }
+      
       controller.dismiss(animated: true) {
         self.rootViewController.coordinatorDidFinishApproveTokens()
       }
-      
-      break
     }
   }
-  
+
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
@@ -209,6 +270,32 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       }
     }
   }
+  
+  fileprivate func buildApproveDataList(items: [MultiSendItem], isApproveUnlimit: Bool, completion: @escaping ([(MultiSendItem, Data)]) -> Void) {
+    var dataList: [(MultiSendItem, Data)] = []
+    let group = DispatchGroup()
+    items.forEach { item in
+      let value = isApproveUnlimit ? BigInt(2).power(256) - BigInt(1) : item.1
+      let address = Address(string: Constants.multisendBscAddress)!
+      group.enter()
+
+      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: value) { encodeResult in
+        switch encodeResult {
+        case .success(let data):
+          dataList.append((item, data))
+        case .failure( _):
+          break
+        }
+        group.leave()
+      }
+
+      group.notify(queue: .global()) {
+        completion(dataList)
+      }
+    }
+  }
+  
+  
 }
 
 extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {

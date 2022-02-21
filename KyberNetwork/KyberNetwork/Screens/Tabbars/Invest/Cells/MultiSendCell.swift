@@ -57,15 +57,15 @@ class MultiSendCellModel {
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
   }
-  
+
   var totalBalanceText: String {
     return "\(self.displayBalance) \(self.from.symbol)"
   }
-  
+
   var amountBigInt: BigInt {
     return amount.amountBigInt(decimals: self.from.decimals) ?? BigInt(0)
   }
-  
+
   var allTokenBalanceString: String {
     if self.from.isQuoteToken {
       let balance = availableAmount
@@ -79,15 +79,29 @@ class MultiSendCellModel {
     }
     return self.displayBalance.removeGroupSeparator()
   }
-  
+
   var isContractExist: Bool {
     let contact = KNContactStorage.shared.contacts.first(where: { return self.addressString.lowercased() == $0.address.lowercased() })
     return contact != nil
   }
-  
+
   var isAddressValid: Bool {
     let address = Address(string: self.addressString)
     return address != nil
+  }
+  
+  var isBalanceVaild: Bool {
+    return self.amountBigInt <= self.availableAmount
+  }
+  
+  var isCellFormValid: ValidStatus {
+    if !self.isAddressValid {
+      return .error(description: "Address isn't correct")
+    }
+    if !self.isBalanceVaild {
+      return .error(description: "Balance is not be enough to make the transaction.")
+    }
+    return .success
   }
 }
 

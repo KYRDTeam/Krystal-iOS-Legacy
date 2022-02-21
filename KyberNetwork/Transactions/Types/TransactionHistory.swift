@@ -10,6 +10,61 @@ import BigInt
 import TrustCore
 import TrustKeystore
 
+
+class TransactionFactory {
+  static func buildApproveEIP1559Transaction(from: String, token: Token, nonce: Int, data: Data, setting: ConfirmAdvancedSetting) -> EIP1559Transaction {
+    var gasLimitBigInt = BigInt(setting.gasLimit)
+    if let unwrap = setting.advancedGasLimit {
+      gasLimitBigInt = BigInt(unwrap)
+    }
+
+    var maxGasBigInt = BigInt(setting.gasPrice)
+    if let unwrap = setting.avancedMaxFee {
+      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+
+    var priorityFeeBigInt = (maxGasBigInt ?? BigInt.zero) - (KNGasCoordinator.shared.baseFee ?? BigInt.zero)
+    if let unwrap = setting.advancedPriorityFee {
+      priorityFeeBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt.zero
+    }
+    
+    return EIP1559Transaction(
+      chainID: BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded.hexSigned2Complement,
+      nonce: BigInt(nonce).hexEncoded.hexSigned2Complement,
+      gasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
+      maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
+      maxGasFee: maxGasBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
+      toAddress: token.address,
+      fromAddress: from,
+      data: data.hexString.add0x,
+      value: "0x",
+      reservedGasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x")
+  }
+  
+  static func buildApproveLegacyTransaction(account: Account, token: Token, nonce: Int, data: Data, setting: ConfirmAdvancedSetting) -> SignTransaction {
+    var gasLimitBigInt = BigInt(setting.gasLimit)
+    if let unwrap = setting.advancedGasLimit {
+      gasLimitBigInt = BigInt(unwrap)
+    }
+    
+    var maxGasBigInt = BigInt(setting.gasPrice)
+    if let unwrap = setting.avancedMaxFee {
+      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+    
+    return SignTransaction(
+      value: BigInt(0),
+      account: account,
+      to: Address(string: token.address),
+      nonce: nonce,
+      data: data,
+      gasPrice: maxGasBigInt ?? BigInt.zero,
+      gasLimit: gasLimitBigInt ?? BigInt.zero,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
+  }
+}
+
 struct TransactionResponse: Codable {
     let timestamp: Int?
     let error: String?

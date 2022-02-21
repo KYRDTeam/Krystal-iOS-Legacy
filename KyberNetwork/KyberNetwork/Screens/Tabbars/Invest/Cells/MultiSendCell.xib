@@ -27,7 +27,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,232.83" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFN-QH-oNk">
-                        <rect key="frame" x="0.0" y="107" width="51.5" height="16.5"/>
+                        <rect key="frame" x="0.0" y="107" width="54.5" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -39,7 +39,7 @@
                                 <rect key="frame" x="294" y="18" width="10" height="6"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2EZ-0u-dhO">
-                                <rect key="frame" x="16" y="0.0" width="195" height="42"/>
+                                <rect key="frame" x="16" y="0.0" width="192" height="42"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -47,7 +47,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8F-gR-Yzj">
-                                <rect key="frame" x="219" y="12" width="29" height="18"/>
+                                <rect key="frame" x="216" y="12" width="29" height="18"/>
                                 <color key="backgroundColor" name="buttonBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="29" id="lVx-ti-mCc"/>
@@ -68,7 +68,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02j-RO-mCm">
-                                <rect key="frame" x="256" y="0.0" width="56" height="42"/>
+                                <rect key="frame" x="253" y="0.0" width="59" height="42"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
                                 <state key="normal" title="ETH">
@@ -169,7 +169,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y1r-vZ-GkL">
-                        <rect key="frame" x="243" y="42" width="77" height="20"/>
+                        <rect key="frame" x="241" y="42" width="79" height="20"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" title="+ Add Contact">

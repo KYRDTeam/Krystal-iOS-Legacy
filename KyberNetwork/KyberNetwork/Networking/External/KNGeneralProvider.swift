@@ -1309,7 +1309,7 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
+ func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
       value: value

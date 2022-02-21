@@ -11,7 +11,7 @@ import BigInt
 enum MultiSendApproveViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
-  case approve(tokens: [Token])
+  case approve(items: [MultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting)
 }
 
 protocol MultiSendApproveViewControllerDelegate: class {
@@ -25,6 +25,7 @@ class MultiSendApproveViewModel {
   fileprivate(set) var baseGasLimit: BigInt
   
   fileprivate(set) var tokens: [Token]
+  fileprivate(set) var items: [MultiSendItem]
   
   var cellModels: [ApproveTokenCellModel]
   var isApproveUnlimit: Bool = false
@@ -61,11 +62,14 @@ class MultiSendApproveViewModel {
     }
   }
   
-  init(tokens: [Token], gasPrice: BigInt, gasLimit: BigInt, baseGasLimit: BigInt) {
+  init(items: [MultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault) {
+    self.items = items
+    self.tokens = items.map({ item in
+      return item.2
+    })
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
-    self.baseGasLimit = baseGasLimit
-    self.tokens = tokens
+    self.baseGasLimit = gasLimit
     let cms = tokens.map { element in
       return ApproveTokenCellModel(token: element)
     }
@@ -130,6 +134,10 @@ class MultiSendApproveViewModel {
     if self.selectedGasPriceType == .custom {
       self.selectedGasPriceType = .medium
     }
+  }
+  
+  var customSetting: ConfirmAdvancedSetting {
+    return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
   }
 }
 
@@ -206,7 +214,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   }
   
   @IBAction func approveButtonTapped(_ sender: UIButton) {
-    self.delegate?.multiSendApproveVieController(self, run: .approve(tokens: self.viewModel.tokens))
+    self.delegate?.multiSendApproveVieController(self, run: .approve(items: self.viewModel.items, isApproveUnlimit: self.viewModel.isApproveUnlimit, settings: self.viewModel.customSetting))
   }
   
   @IBAction func checkBox1Tapped(_ sender: UIButton) {
@@ -252,8 +260,6 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.updateGasFeeUI()
     self.viewModel.resetAdvancedSettings()
   }
-  
-  
 }
 
 extension MultiSendApproveViewController: BottomPopUpAbstract {

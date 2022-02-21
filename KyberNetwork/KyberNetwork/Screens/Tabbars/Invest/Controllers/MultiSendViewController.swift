@@ -16,7 +16,7 @@ enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
   case openContactsList
   case addContact(address: String)
-  case checkApproval(tokens: [Token])
+  case checkApproval(items: [MultiSendItem])
   case confirm(items: [MultiSendItem])
 }
 
@@ -33,20 +33,34 @@ class MultiSendViewModel {
       return element.from
     }
   }
-  
+
   var sendItems: [MultiSendItem] {
     return self.cellModels.map { element in
       return (element.addressString, element.amountBigInt, element.from)
     }
   }
+  
+  var isFormValid: ValidStatus {
+    let errors = self.cellModels.map { e in
+      return e.isCellFormValid
+    }.filter { status in
+      return status != .success
+    }
+    if let anError = errors.first {
+      return anError
+    } else {
+      return .success
+    }
+  }
 }
+
 class MultiSendViewController: KNBaseViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
   
   let viewModel = MultiSendViewModel()
   weak var delegate: MultiSendViewControllerDelegate?
-  
+
   init() {
     super.init(nibName: MultiSendViewController.className, bundle: nil)
   }
@@ -69,10 +83,13 @@ class MultiSendViewController: KNBaseViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
-    self.delegate?.multiSendViewController(self, run: .checkApproval(tokens: self.viewModel.selectedToken))
+    if case .error(let description) = self.viewModel.isFormValid {
+      self.showErrorTopBannerMessage(message: description)
+    } else {
+      self.delegate?.multiSendViewController(self, run: .checkApproval(items: self.viewModel.sendItems))
+    }
   }
-  
-  
+
   private func openQRCode() {
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
       return
