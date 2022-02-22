@@ -599,36 +599,7 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.gasPriceSelector = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimitBigInt, selectType: .custom)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isCancelMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-        self.gasPriceSelector = vc
-      }
-    } else {
-      let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
-      let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
-      confirmPopup.delegate = self
-      self.navigationController.present(confirmPopup, animated: true, completion: nil)
-    }
-    */
+    
   }
 }
 

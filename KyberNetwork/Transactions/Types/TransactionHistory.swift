@@ -12,7 +12,7 @@ import TrustKeystore
 
 
 class TransactionFactory {
-  static func buildApproveEIP1559Transaction(from: String, token: Token, nonce: Int, data: Data, setting: ConfirmAdvancedSetting) -> EIP1559Transaction {
+  static func buildEIP1559Transaction(from: String, to: String, nonce: Int, data: Data, value: BigInt = BigInt.zero, setting: ConfirmAdvancedSetting) -> EIP1559Transaction {
     var gasLimitBigInt = BigInt(setting.gasLimit)
     if let unwrap = setting.advancedGasLimit {
       gasLimitBigInt = BigInt(unwrap)
@@ -27,35 +27,35 @@ class TransactionFactory {
     if let unwrap = setting.advancedPriorityFee {
       priorityFeeBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt.zero
     }
-    
+
     return EIP1559Transaction(
       chainID: BigInt(KNGeneralProvider.shared.customRPC.chainID).hexEncoded.hexSigned2Complement,
       nonce: BigInt(nonce).hexEncoded.hexSigned2Complement,
       gasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
       maxInclusionFeePerGas: priorityFeeBigInt.hexEncoded.hexSigned2Complement,
       maxGasFee: maxGasBigInt?.hexEncoded.hexSigned2Complement ?? "0x",
-      toAddress: token.address,
+      toAddress: to,
       fromAddress: from,
       data: data.hexString.add0x,
-      value: "0x",
+      value: value.hexEncoded.hexSigned2Complement,
       reservedGasLimit: gasLimitBigInt?.hexEncoded.hexSigned2Complement ?? "0x")
   }
   
-  static func buildApproveLegacyTransaction(account: Account, token: Token, nonce: Int, data: Data, setting: ConfirmAdvancedSetting) -> SignTransaction {
+  static func buildLegacyTransaction(account: Account, to: String, nonce: Int, data: Data, value: BigInt = BigInt.zero, setting: ConfirmAdvancedSetting) -> SignTransaction {
     var gasLimitBigInt = BigInt(setting.gasLimit)
     if let unwrap = setting.advancedGasLimit {
       gasLimitBigInt = BigInt(unwrap)
     }
-    
+
     var maxGasBigInt = BigInt(setting.gasPrice)
     if let unwrap = setting.avancedMaxFee {
       maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
     }
-    
+
     return SignTransaction(
-      value: BigInt(0),
+      value: value,
       account: account,
-      to: Address(string: token.address),
+      to: Address(string: to),
       nonce: nonce,
       data: data,
       gasPrice: maxGasBigInt ?? BigInt.zero,

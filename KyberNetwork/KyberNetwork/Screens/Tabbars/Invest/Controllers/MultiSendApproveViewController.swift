@@ -260,6 +260,14 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.updateGasFeeUI()
     self.viewModel.resetAdvancedSettings()
   }
+  
+  func coordinatorDidUpdateApprove(_ item: MultiSendItem) {
+    let cm = self.viewModel.cellModels.first { model in
+      return item.2 == model.token
+    }
+    cm?.isDoneApprove = true
+    self.tokensTableView.reloadData()
+  }
 }
 
 extension MultiSendApproveViewController: BottomPopUpAbstract {

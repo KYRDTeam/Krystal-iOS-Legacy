@@ -232,27 +232,54 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
         return
       }
-      //TODO: send approve multiple token
-      /*
-       - Get gas price NGasCoordinator.shared.defaultKNGas
-       - Get gas limit KNGasConfiguration.approveTokenGasLimitDefault
-       */
       
-      
-      self.buildApproveDataList(items: items, isApproveUnlimit: isApproveUnlimit) { dataList in
-        print(dataList)
-      }
-      
-      
-      
-      if KNGeneralProvider.shared.isUseEIP1559 {
-        
-      } else {
-        
-      }
-      
-      controller.dismiss(animated: true) {
-        self.rootViewController.coordinatorDidFinishApproveTokens()
+      let currentAddress = account.address.description
+
+      self.getLatestNonce { nonceResult in
+        switch nonceResult {
+        case .success(let nonce):
+          self.buildApproveDataList(items: items, isApproveUnlimit: isApproveUnlimit) { dataList in
+            var eipTxs: [(MultiSendItem, EIP1559Transaction)] = []
+            var legacyTxs: [(MultiSendItem, SignTransaction)] = []
+            for (index, element) in dataList.enumerated() {
+              let item = element.0
+              let txNonce = nonce + index
+              if KNGeneralProvider.shared.isUseEIP1559 {
+                let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.2.address, nonce: txNonce, data: element.1, setting: setting)
+                eipTxs.append((item, tx))
+              } else {
+                let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.2.address, nonce: txNonce, data: element.1, setting: setting)
+                legacyTxs.append((item, tx))
+              }
+            }
+            print(eipTxs)
+            print(legacyTxs)
+            
+            if !eipTxs.isEmpty {
+              self.sendEIP1559Txs(eipTxs) { remaining in
+                guard remaining.isEmpty else {
+                  
+                  return
+                }
+                DispatchQueue.main.async {
+                  controller.dismiss(animated: true) {
+                    self.rootViewController.coordinatorDidFinishApproveTokens()
+                  }
+                }
+              }
+            } else if !legacyTxs.isEmpty {
+              self.sendLegacyTxs(legacyTxs) { remaining in
+                DispatchQueue.main.async {
+                  controller.dismiss(animated: true) {
+                    self.rootViewController.coordinatorDidFinishApproveTokens()
+                  }
+                }
+              }
+            }
+          }
+        case .failure( _):
+          break
+        }
       }
     }
   }
@@ -295,6 +322,90 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     }
   }
   
+  fileprivate func sendEIP1559Txs(_ txs: [(MultiSendItem, EIP1559Transaction)], completion: @escaping ([MultiSendItem]) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
+      return
+    }
+    var signedData: [(MultiSendItem, EIP1559Transaction, Data)] = []
+    txs.forEach { element in
+      if let data = provider.signContractGenericEIP1559Transaction(element.1) {
+        signedData.append((element.0, element.1, data))
+      }
+    }
+    
+    let group = DispatchGroup()
+    var unApproveItem: [MultiSendItem] = []
+    signedData.forEach { txData in
+      group.enter()
+      let item = txData.0
+      KNGeneralProvider.shared.sendSignedTransactionData(txData.2, completion: { sendResult in
+        switch sendResult {
+        case .success(let hash):
+          let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "Approve \(item.2.name)", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: txData.1)
+          historyTx.hash = hash
+          historyTx.time = Date()
+          historyTx.nonce = Int(txData.1.nonce) ?? 0
+          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
+          self.approveVC?.coordinatorDidUpdateApprove(txData.0)
+        case .failure( _):
+          unApproveItem.append(txData.0)
+        }
+        
+        group.leave()
+      })
+    }
+    
+    group.notify(queue: .main) {
+      completion(unApproveItem)
+    }
+  }
+  
+  fileprivate func sendLegacyTxs(_ txs: [(MultiSendItem, SignTransaction)], completion: @escaping ([MultiSendItem]) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
+      return
+    }
+    let group = DispatchGroup()
+    var signedData: [(MultiSendItem, SignTransaction, Data)] = []
+    txs.forEach { element in
+      group.enter()
+      provider.signTransactionData(from: element.1) { signResult in
+        if case .success(let resultData) = signResult {
+          signedData.append((element.0, element.1, resultData.0))
+        }
+
+        group.leave()
+      }
+    }
+    group.notify(queue: .global()) {
+      let sendGroup = DispatchGroup()
+      var unApproveItem: [MultiSendItem] = []
+      signedData.forEach { txData in
+        sendGroup.enter()
+        let item = txData.0
+        KNGeneralProvider.shared.sendSignedTransactionData(txData.2, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "Approve \(item.2.name)", transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx:nil )
+            historyTx.hash = hash
+            historyTx.time = Date()
+            historyTx.nonce = txData.1.nonce
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
+            self.approveVC?.coordinatorDidUpdateApprove(txData.0)
+          case .failure( _):
+            unApproveItem.append(txData.0)
+          }
+          
+          sendGroup.leave()
+        })
+      }
+      
+      sendGroup.notify(queue: .main) {
+        completion(unApproveItem)
+      }
+    }
+  }
   
 }
 
