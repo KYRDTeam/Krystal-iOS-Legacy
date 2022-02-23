@@ -127,8 +127,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     if components.path == "/swap" {
       self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+    } else {
+      self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }
-    
     return true
   }
 }

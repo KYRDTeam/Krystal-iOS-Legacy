@@ -468,7 +468,6 @@ class KSwapViewController: KNBaseViewController {
   func coordinatorShouldShowSwitchChainPopup(chainId: Int) {
     var alertController: KNPrettyAlertController
     guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
-      self.navigationController?.showTopBannerView(message: "Can't detect chain (chainId = \(chainId))".toBeLocalised())
       return
     }
 
