@@ -1135,7 +1135,7 @@ class KNGeneralProvider {
     }
   }
 
-  private func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
     let request = EtherServiceRequest(batch: batch)
     Session.send(request) { result in

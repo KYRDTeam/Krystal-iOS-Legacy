@@ -171,12 +171,8 @@
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLd-V8-BLg">
-                            <rect key="frame" x="302" y="14" width="36" height="36"/>
-                            <state key="normal" image="gas_config_icon"/>
-                        </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="p5U-Iv-VdQ">
-                            <rect key="frame" x="37" y="70" width="301" height="206"/>
+                            <rect key="frame" x="37" y="68.5" width="301" height="206"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="206" id="Jr6-nI-B3X"/>
@@ -187,7 +183,7 @@
                             </connections>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCA-se-phj">
-                            <rect key="frame" x="37" y="286" width="301" height="42"/>
+                            <rect key="frame" x="37" y="284.5" width="301" height="42"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="lP6-v0-42g"/>
@@ -208,12 +204,10 @@
                         </button>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="chg-27-bUe" secondAttribute="bottom" constant="25" id="01m-OW-FOW"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="leading" secondItem="6v6-SQ-Koa" secondAttribute="leading" constant="37" id="6RM-vp-xgS"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="Aww-m2-rTP"/>
-                        <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="mLd-V8-BLg" secondAttribute="trailing" constant="37" id="Lhs-mo-HhC"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="top" secondItem="p5U-Iv-VdQ" secondAttribute="bottom" constant="10" id="QYU-Mj-1Yu"/>
-                        <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="mLd-V8-BLg" secondAttribute="bottom" constant="20" id="Qar-PB-gc4"/>
-                        <constraint firstItem="mLd-V8-BLg" firstAttribute="centerY" secondItem="chg-27-bUe" secondAttribute="centerY" id="aUx-r2-LMw"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="top" secondItem="6v6-SQ-Koa" secondAttribute="top" constant="20" id="fJ4-jM-23h"/>
                         <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="oCA-se-phj" secondAttribute="trailing" constant="37" id="gAb-7O-pG5"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="l6n-yu-PT1"/>
@@ -244,7 +238,6 @@
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
-        <image name="gas_config_icon" width="36" height="36"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -10,6 +10,9 @@ import BigInt
 import Result
 import TrustCore
 import WalletCore
+import Moya
+import APIKit
+import JSONRPCKit
 
 class MultiSendCoordinator: Coordinator {
   let navigationController: UINavigationController
@@ -36,6 +39,7 @@ class MultiSendCoordinator: Coordinator {
   fileprivate(set) var approveVC: MultiSendApproveViewController?
   fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
+  fileprivate(set) var processingTx: TxObject?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -61,16 +65,60 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
     case .checkApproval(items: let items):
-      self.checkAllowance(items: items) { remaining in
-        if remaining.isEmpty {
-          self.rootViewController.coordinatorDidFinishApproveTokens()
-        } else {
-          self.openApproveView(items: remaining)
+      self.requestBuildTx(items: items) { object in
+        self.processingTx = object
+        self.checkAllowance(contractAddress: object.to, items: items) { remaining in
+          if remaining.isEmpty {
+            self.rootViewController.coordinatorDidFinishApproveTokens()
+          } else {
+            self.openApproveView(items: remaining)
+          }
         }
       }
-      
     case .confirm(items: let items):
-      self.openConfirmView(items: items)
+      self.getLatestNonce { result in
+        switch result {
+        case .success(let nonce):
+          let nonceStr = BigInt(nonce).hexEncoded.hexSigned2Complement
+          self.processingTx?.nonce = nonceStr
+          if let tx = self.processingTx, let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), !gasLimit.isZero {
+            self.openConfirmView(items: items, txObject: tx)
+          } else {
+            self.requestBuildTx(items: items) { object in
+              self.processingTx = object
+              self.openConfirmView(items: items, txObject: object)
+            }
+          }
+        case .failure(let error):
+          self.navigationController.showErrorTopBannerMessage(message: error.description)
+        }
+      }
+      if let tx = self.processingTx, let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), !gasLimit.isZero {
+        self.openConfirmView(items: items, txObject: tx)
+      } else {
+        self.requestBuildTx(items: items) { object in
+          self.processingTx = object
+          self.openConfirmView(items: items, txObject: object)
+        }
+      }
+    }
+  }
+  
+  fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let address = self.session.wallet.address.description
+    
+    provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+          completion(data.txObject)
+          
+        } catch let error {
+          self.navigationController.showTopBannerView(message: error.localizedDescription)
+        }
+      }
     }
   }
   
@@ -86,7 +134,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     self.searchTokensVC = controller
   }
   
-  fileprivate func checkAllowance(items: [MultiSendItem], completion: @escaping ([MultiSendItem]) -> Void) {
+  fileprivate func checkAllowance(contractAddress: String, items: [MultiSendItem], completion: @escaping ([MultiSendItem]) -> Void) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showErrorTopBannerMessage(message: "You are using watch wallet")
       return
@@ -99,7 +147,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       if let address = Address(string: item.2.address) {
         group.enter()
         
-        provider.getAllowance(tokenAddress: address, toAddress: Address(string: Constants.multisendBscAddress)) { result in
+        provider.getAllowance(tokenAddress: address, toAddress: Address(string: contractAddress)) { result in
           switch result {
           case .success(let res):
             if item.1 > res {
@@ -133,6 +181,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openApproveView(items: [MultiSendItem]) {
+    guard self.approveVC == nil else { return }
     let viewModel = MultiSendApproveViewModel(items: items)
     let controller = MultiSendApproveViewController(viewModel: viewModel)
     controller.delegate = self
@@ -140,8 +189,10 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     self.approveVC = controller
   }
 
-  fileprivate func openConfirmView(items: [MultiSendItem]) {
-    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: BigInt(1000), gasLimit: BigInt(1000), baseGasLimit: BigInt(1000))
+  fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject) {
+    guard self.confirmVC == nil else { return }
+    let gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? BigInt.zero
+    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: KNGasCoordinator.shared.fastKNGas, gasLimit: gasLimit, baseGasLimit: gasLimit)
     let controller = MultiSendConfirmViewController(viewModel: vm)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
@@ -299,11 +350,11 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
   }
   
   fileprivate func buildApproveDataList(items: [MultiSendItem], isApproveUnlimit: Bool, completion: @escaping ([(MultiSendItem, Data)]) -> Void) {
+    guard let addressStr = self.processingTx?.to, let address = Address(string: addressStr) else { return }
     var dataList: [(MultiSendItem, Data)] = []
     let group = DispatchGroup()
     items.forEach { item in
       let value = isApproveUnlimit ? BigInt(2).power(256) - BigInt(1) : item.1
-      let address = Address(string: Constants.multisendBscAddress)!
       group.enter()
 
       KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: value) { encodeResult in
@@ -321,7 +372,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       }
     }
   }
-  
+
   fileprivate func sendEIP1559Txs(_ txs: [(MultiSendItem, EIP1559Transaction)], completion: @escaping ([MultiSendItem]) -> Void) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
@@ -339,7 +390,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     signedData.forEach { txData in
       group.enter()
       let item = txData.0
-      KNGeneralProvider.shared.sendSignedTransactionData(txData.2, completion: { sendResult in
+      KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
         switch sendResult {
         case .success(let hash):
           let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "Approve \(item.2.name)", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: txData.1)
@@ -351,7 +402,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         case .failure( _):
           unApproveItem.append(txData.0)
         }
-        
+
         group.leave()
       })
     }
@@ -377,6 +428,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
 
         group.leave()
       }
+      group.wait()
     }
     group.notify(queue: .global()) {
       let sendGroup = DispatchGroup()
@@ -384,7 +436,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       signedData.forEach { txData in
         sendGroup.enter()
         let item = txData.0
-        KNGeneralProvider.shared.sendSignedTransactionData(txData.2, completion: { sendResult in
+        print("[Debug] \(txData.2.hexEncoded)")
+        KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
             let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: "Approve \(item.2.name)", transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx:nil )
@@ -399,8 +452,9 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           
           sendGroup.leave()
         })
+        sendGroup.wait()
       }
-      
+
       sendGroup.notify(queue: .main) {
         completion(unApproveItem)
       }
@@ -453,8 +507,78 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       openGasPriceSelectView(gasLimit, selectType, baseGasLimit, advancedGasLimit, advancedPriorityFee, advancedMaxFee, advancedNonce, controller)
     case .dismiss:
       self.confirmVC = nil
-    case .confirm:
-      break
+      self.processingTx = nil
+    case .confirm(setting: let setting):
+      guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
+        return
+      }
+      guard let tx = self.processingTx else { return }
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        let tx = TransactionFactory.buildEIP1559Transaction(txObject: tx, setting: setting)
+        guard let data = provider.signContractGenericEIP1559Transaction(tx) else {
+          return
+        }
+        KNGeneralProvider.shared.sendRawTransactionWithInfura(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "MultiSend", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: tx)
+            historyTransaction.hash = hash
+            historyTransaction.time = Date()
+            historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+          case .failure(let error):
+            self.navigationController.showTopBannerView(message: error.localizedDescription)
+          }
+        })
+      } else {
+        let tx = TransactionFactory.buildLegaryTransaction(txObject: tx, account: account, setting: setting)
+        KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) {
+         result in
+          switch result {
+          case .success(_):
+            provider.signTransactionData(from: tx) { result in
+              switch result {
+              case .success(let signedData):
+                print(signedData.0.hexEncoded)
+                KNGeneralProvider.shared.sendRawTransactionWithInfura(signedData.0) { sendResult in
+                  switch sendResult {
+                  case .success(let hash):
+                    let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "MultiSend", transactionDetailDescription: "", transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
+                    historyTransaction.hash = hash
+                    historyTransaction.time = Date()
+                    historyTransaction.nonce = tx.nonce
+                    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                  case .failure(let error):
+                    self.navigationController.showTopBannerView(message: error.localizedDescription)
+                  }
+                }
+              case .failure(let error):
+                var errorMessage = "Can not sign transaction data"
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+              }
+
+            }
+          case .failure(let error):
+            var errorMessage = "Can not estimate Gas Limit"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+          }
+        }
+        
+        
+      }
+      
+      self.confirmVC = nil
+      self.processingTx = nil
     case .showAddresses(let items):
       self.openAddressListView(items: items, controller: controller)
     }

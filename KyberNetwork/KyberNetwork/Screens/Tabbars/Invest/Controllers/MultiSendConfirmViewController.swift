@@ -12,7 +12,7 @@ import SwiftUI
 enum MultiSendConfirmViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
-  case confirm
+  case confirm(setting: ConfirmAdvancedSetting)
   case showAddresses(items: [MultiSendItem])
 }
 
@@ -162,6 +162,10 @@ class MultiSendConfirmViewModel {
     self.transferAmountDataSource = tokenAmountStrings
     self.totalValueString = "~ \(totalUSDAmt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)) USD"
   }
+  
+  var customSetting: ConfirmAdvancedSetting {
+    return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
+  }
 }
 
 class MultiSendConfirmViewController: KNBaseViewController {
@@ -211,6 +215,7 @@ class MultiSendConfirmViewController: KNBaseViewController {
   }
   
   fileprivate func updateGasFeeUI() {
+    guard self.isViewLoaded else { return }
     self.feeETHLabel.text = self.viewModel.transactionFeeETHString
     self.feeUSDLabel.text = self.viewModel.transactionFeeUSDString
     self.gasPriceTextLabel.text = self.viewModel.transactionGasPriceString
@@ -226,7 +231,9 @@ class MultiSendConfirmViewController: KNBaseViewController {
   }
   
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
-    
+    self.dismiss(animated: true) {
+      self.delegate?.multiSendConfirmVieController(self, run: .confirm(setting: self.viewModel.customSetting))
+    }
   }
   
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {

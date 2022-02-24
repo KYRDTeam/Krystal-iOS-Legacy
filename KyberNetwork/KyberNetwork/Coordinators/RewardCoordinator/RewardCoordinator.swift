@@ -182,7 +182,7 @@ class RewardCoordinator: Coordinator {
              let nonce = txJson["nonce"] as? String,
              let gasLimitString = txJson["gasLimit"] as? String {
             self.gasLimit = BigInt(gasLimitString.drop0x, radix: 16) ?? BigInt(0)
-            let txObject = TxObject(from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, nonce: nonce, gasLimit: gasLimitString)
+            let txObject = TxObject(nonce: nonce, from: from, to: to, data: dataString, value: value, gasPrice: gasPrice, gasLimit: gasLimitString)
             self.rootViewController.coordinatorDidUpdateClaimRewards(shouldShowPopup, txObject: txObject)
           } else if let errorMsg = json["error"] as? String {
             let statusCode = data.statusCode

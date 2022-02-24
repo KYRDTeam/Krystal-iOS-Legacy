@@ -997,7 +997,7 @@ extension KrytalService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx:
       return .post
     default:
       return .get
@@ -1277,6 +1277,7 @@ extension KrytalService: TargetType {
         ]
         sendParams.append(dict)
       }
+      json["sends"] = sendParams
 
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
