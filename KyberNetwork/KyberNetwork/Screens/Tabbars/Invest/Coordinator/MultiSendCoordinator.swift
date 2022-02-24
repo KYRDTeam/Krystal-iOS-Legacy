@@ -40,6 +40,7 @@ class MultiSendCoordinator: Coordinator {
   fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
   fileprivate(set) var processingTx: TxObject?
+  fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -52,6 +53,14 @@ class MultiSendCoordinator: Coordinator {
   
   func stop() {
     
+  }
+  
+  func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if let trans = self.transactionStatusVC?.transaction, trans.hash == tx.hash {
+      self.transactionStatusVC?.updateView(with: tx)
+      return true
+    }
+    return false
   }
 }
 
@@ -232,6 +241,13 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     let vm = MultisendAddressListViewModel(items: items)
     let vc = MultisendAddressListViewController(viewModel: vm)
     controller.present(vc, animated: true, completion: nil)
+  }
+  
+  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+    let controller = KNTransactionStatusPopUp(transaction: transaction)
+    controller.delegate = self
+    self.navigationController.present(controller, animated: true, completion: nil)
+    self.transactionStatusVC = controller
   }
 }
 
@@ -494,6 +510,126 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     case .updateAdvancedNonce(let nonce):
       self.approveVC?.coordinatorDidUpdateAdvancedNonce(nonce)
       self.confirmVC?.coordinatorDidUpdateAdvancedNonce(nonce)
+    case .speedupTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.state = .speedup
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            print(error.description)
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
+          }
+        })
+      }
+    case .cancelTransaction(transaction: let transaction, original: let original):
+      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            savedTx?.state = .cancel
+            savedTx?.type = .transferETH
+            savedTx?.transactionSuccessDescription = "-0 ETH"
+            savedTx?.hash = hash
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
+          }
+        })
+      }
+    case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
+      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
+        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+       
+        let speedupTx = transaction.toSignTransaction(account: account)
+        speedupTx.send(provider: provider) { (result) in
+          switch result {
+          case .success(let hash):
+            savedTx?.state = .speedup
+            savedTx?.hash = hash
+            print("GasSelector][Legacy][Speedup][Sent] \(hash)")
+            if let unwrapped = savedTx {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            var errorMessage = "Speedup failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
+          }
+        }
+      }
+    case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
+      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
+        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
+        
+        let cancelTx = transaction.toSignTransaction(account: account)
+        cancelTx.send(provider: provider) { (result) in
+          switch result {
+          case .success(let hash):
+            saved?.state = .cancel
+            saved?.type = .transferETH
+            saved?.transactionSuccessDescription = "-0 ETH"
+            saved?.hash = hash
+            print("GasSelector][Legacy][Cancel][Sent] \(hash)")
+            if let unwrapped = saved {
+              self.openTransactionStatusPopUp(transaction: unwrapped)
+              KNNotificationUtil.postNotification(
+                for: kTransactionDidUpdateNotificationKey,
+                object: unwrapped,
+                userInfo: nil
+              )
+            }
+          case .failure(let error):
+            var errorMessage = "Cancel failed"
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showTopBannerView(message: errorMessage)
+          }
+        }
+      }
     default:
       break
     }
@@ -526,14 +662,14 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             historyTransaction.time = Date()
             historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+            self.openTransactionStatusPopUp(transaction: historyTransaction)
           case .failure(let error):
             self.navigationController.showTopBannerView(message: error.localizedDescription)
           }
         })
       } else {
         let tx = TransactionFactory.buildLegaryTransaction(txObject: tx, account: account, setting: setting)
-        KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) {
-         result in
+        KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
           switch result {
           case .success(_):
             provider.signTransactionData(from: tx) { result in
@@ -548,6 +684,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                     historyTransaction.time = Date()
                     historyTransaction.nonce = tx.nonce
                     EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                    self.openTransactionStatusPopUp(transaction: historyTransaction)
                   case .failure(let error):
                     self.navigationController.showTopBannerView(message: error.localizedDescription)
                   }
@@ -573,10 +710,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
         }
-        
-        
       }
-      
+
       self.confirmVC = nil
       self.processingTx = nil
     case .showAddresses(let items):
@@ -584,3 +719,74 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
     }
   }
 }
+
+extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
+  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
+    self.transactionStatusVC = nil
+    switch action {
+//    case .transfer:
+//      self.openSendTokenView()
+    case .openLink(let url):
+      self.navigationController.openSafari(with: url)
+    case .speedUp(let tx):
+      self.openTransactionSpeedUpViewController(transaction: tx)
+    case .cancel(let tx):
+      self.openTransactionCancelConfirmPopUpFor(transaction: tx)
+    case .goToSupport:
+      self.navigationController.openSafari(with: "https://support.krystal.app")
+    default:
+      break
+    }
+  }
+  
+  fileprivate func openTransactionSpeedUpViewController(transaction: InternalHistoryTransaction) {
+    let gasLimit: BigInt = {
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+      } else {
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
+      }
+    }()
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: .superFast, currentRatePercentage: 0, isUseGasToken: false)
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+
+    viewModel.isSpeedupMode = true
+    viewModel.transaction = transaction
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.gasPriceSelector = vc
+    self.navigationController.present(vc, animated: true, completion: nil)
+  }
+
+  fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
+    let gasLimit: BigInt = {
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        return BigInt(transaction.eip1559Transaction?.reservedGasLimit.drop0x ?? "", radix: 16) ?? BigInt(0)
+      } else {
+        return BigInt(transaction.transactionObject?.reservedGasLimit ?? "") ?? BigInt(0)
+      }
+    }()
+    
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: .superFast, currentRatePercentage: 0, isUseGasToken: false)
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    
+    viewModel.isCancelMode = true
+    viewModel.transaction = transaction
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.gasPriceSelector = vc
+    self.navigationController.present(vc, animated: true, completion: nil)
+  }
+}
+
+

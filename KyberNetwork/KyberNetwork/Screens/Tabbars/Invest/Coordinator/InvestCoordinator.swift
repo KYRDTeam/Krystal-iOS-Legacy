@@ -160,6 +160,7 @@ class InvestCoordinator: Coordinator {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.multiSendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
