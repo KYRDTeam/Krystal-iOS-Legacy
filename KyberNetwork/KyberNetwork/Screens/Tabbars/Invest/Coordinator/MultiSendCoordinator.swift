@@ -359,6 +359,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 DispatchQueue.main.async {
                   controller.dismiss(animated: true) {
                     self.rootViewController.coordinatorDidFinishApproveTokens()
+                    self.approveVC = nil
                   }
                 }
               }
@@ -367,6 +368,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 DispatchQueue.main.async {
                   controller.dismiss(animated: true) {
                     self.rootViewController.coordinatorDidFinishApproveTokens()
+                    self.approveVC = nil
                   }
                 }
               }
