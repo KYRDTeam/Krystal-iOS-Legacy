@@ -130,6 +130,7 @@ extension KNExchangeTokenCoordinator {
     }
     self.historyCoordinator?.delegate = self
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    
   }
 
   func appCoordinatorDidUpdateWalletObjects() {

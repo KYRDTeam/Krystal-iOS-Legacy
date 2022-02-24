@@ -18,6 +18,8 @@ enum MultiSendViewControllerEvent {
   case addContact(address: String)
   case checkApproval(items: [MultiSendItem])
   case confirm(items: [MultiSendItem])
+  case openHistory
+  case openWalletsList
 }
 
 protocol MultiSendViewControllerDelegate: class {
@@ -27,6 +29,11 @@ protocol MultiSendViewControllerDelegate: class {
 class MultiSendViewModel {
   var cellModels = [MultiSendCellModel()]
   var updatingIndex = 0
+  fileprivate(set) var wallet: Wallet
+  
+  init(wallet: Wallet) {
+    self.wallet = wallet
+  }
   
   var selectedToken: [Token] {
     return self.cellModels.map { element in
@@ -52,16 +59,30 @@ class MultiSendViewModel {
       return .success
     }
   }
+  
+  func resetDataSource() {
+    self.cellModels = [MultiSendCellModel()]
+  }
+  
+  func updateWallet(_ wallet: Wallet) {
+    self.wallet = wallet
+  }
 }
 
 class MultiSendViewController: KNBaseViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
   
-  let viewModel = MultiSendViewModel()
+  
+  @IBOutlet weak var historyButton: UIButton!
+  @IBOutlet weak var currentChainIcon: UIImageView!
+  @IBOutlet weak var walletsListButton: UIButton!
+  
+  let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
-  init() {
+  init(viewModel: MultiSendViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: MultiSendViewController.className, bundle: nil)
   }
 
@@ -76,6 +97,8 @@ class MultiSendViewController: KNBaseViewController {
     self.inputTableView.register(nib, forCellReuseIdentifier: MultiSendCell.cellID)
     self.inputTableView.rowHeight = MultiSendCell.cellHeight
     self.updateAvailableBalanceForToken(KNGeneralProvider.shared.quoteTokenObject.toToken())
+    self.updateUISwitchChain()
+    self.updateUIWalletButton()
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -88,6 +111,35 @@ class MultiSendViewController: KNBaseViewController {
     } else {
       self.delegate?.multiSendViewController(self, run: .checkApproval(items: self.viewModel.sendItems))
     }
+  }
+  
+  @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    let popup = SwitchChainViewController()
+    popup.completionHandler = { selected in
+      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+      self.present(secondPopup, animated: true, completion: nil)
+    }
+    self.present(popup, animated: true, completion: nil)
+  }
+  
+  @IBAction func switchWalletButtonTapped(_ sender: UIButton) {
+    self.delegate?.multiSendViewController(self, run: .openWalletsList)
+  }
+
+  @IBAction func historyButtonTapped(_ sender: UIButton) {
+    self.delegate?.multiSendViewController(self, run: .openHistory)
+  }
+  
+  fileprivate func updateUIWalletButton() {
+    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+  }
+  
+  fileprivate func updateUISwitchChain() {
+    let icon = KNGeneralProvider.shared.chainIconImage
+    self.currentChainIcon.image = icon
+    self.viewModel.resetDataSource()
+    self.inputTableView.reloadData()
   }
 
   private func openQRCode() {
@@ -132,6 +184,17 @@ class MultiSendViewController: KNBaseViewController {
   
   func coordinatorDidFinishApproveTokens() {
     self.delegate?.multiSendViewController(self, run: .confirm(items: self.viewModel.sendItems))
+  }
+  
+  func coordinatorDidUpdateChain() {
+    self.updateUISwitchChain()
+  }
+  
+  func coordinatorUpdateNewSession(wallet: Wallet) {
+    self.viewModel.updateWallet(wallet)
+    self.updateUIWalletButton()
+    self.viewModel.resetDataSource()
+    self.inputTableView.reloadData()
   }
 }
 

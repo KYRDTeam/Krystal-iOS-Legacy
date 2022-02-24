@@ -9,12 +9,15 @@ import Foundation
 import BigInt
 import Result
 import TrustCore
-import WalletCore
+//import WalletCore
 import Moya
 import APIKit
 import JSONRPCKit
+import QRCodeReaderViewController
+import MBProgressHUD
+import WalletConnectSwift
 
-class MultiSendCoordinator: Coordinator {
+class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var session: KNSession
@@ -22,7 +25,8 @@ class MultiSendCoordinator: Coordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
   
   lazy var rootViewController: MultiSendViewController = {
-    let controller = MultiSendViewController()
+    let vm = MultiSendViewModel(wallet: self.session.wallet)
+    let controller = MultiSendViewController(viewModel: vm)
     controller.delegate = self
     return controller
   }()
@@ -41,6 +45,11 @@ class MultiSendCoordinator: Coordinator {
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
   fileprivate(set) var processingTx: TxObject?
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
+  
+  fileprivate var currentWallet: KNWalletObject {
+    let address = self.session.wallet.address.description
+    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -61,6 +70,15 @@ class MultiSendCoordinator: Coordinator {
       return true
     }
     return false
+  }
+  
+  func appCoordinatorDidUpdateChain() {
+    self.rootViewController.coordinatorDidUpdateChain()
+  }
+  
+  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
+    self.session = session
+    self.rootViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
   }
 }
 
@@ -110,6 +128,16 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
           self.openConfirmView(items: items, txObject: object)
         }
       }
+    case .openHistory:
+      self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
+    case .openWalletsList:
+      let viewModel = WalletsListViewModel(
+        walletObjects: KNWalletStorage.shared.wallets,
+        currentWallet: self.currentWallet
+      )
+      let walletsList = WalletsListViewController(viewModel: viewModel)
+      walletsList.delegate = self
+      self.navigationController.present(walletsList, animated: true, completion: nil)
     }
   }
   
@@ -789,4 +817,70 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
   }
 }
 
+extension MultiSendCoordinator: WalletsListViewControllerDelegate {
+  func walletsListViewController(_ controller: WalletsListViewController, run event: WalletsListViewEvent) {
+    switch event {
+    case .connectWallet:
+      let qrcode = QRCodeReaderViewController()
+      qrcode.delegate = self
+      self.navigationController.present(qrcode, animated: true, completion: nil)
+    case .manageWallet:
+      self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
+    case .copy(let wallet):
+      UIPasteboard.general.string = wallet.address
+      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
+      hud.mode = .text
+      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.hide(animated: true, afterDelay: 1.5)
+    case .select(let wallet):
+      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+        return
+      }
+      self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)
+    case .addWallet:
+      self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
+    }
+  }
+}
 
+extension MultiSendCoordinator: QRCodeReaderDelegate {
+  func readerDidCancel(_ reader: QRCodeReaderViewController!) {
+    reader.dismiss(animated: true, completion: nil)
+  }
+
+  func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
+    reader.dismiss(animated: true) {
+      guard let url = WCURL(result) else {
+        self.navigationController.showTopBannerView(
+          with: "Invalid session".toBeLocalised(),
+          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          time: 1.5
+        )
+        return
+      }
+
+      if case .real(let account) = self.session.wallet.type {
+        let result = self.session.keystore.exportPrivateKey(account: account)
+        switch result {
+        case .success(let data):
+          DispatchQueue.main.async {
+            let pkString = data.hexString
+            let controller = KNWalletConnectViewController(
+              wcURL: url,
+              knSession: self.session,
+              pk: pkString
+            )
+            self.navigationController.present(controller, animated: true, completion: nil)
+          }
+          
+        case .failure(_):
+          self.navigationController.showTopBannerView(
+            with: "Private Key Error",
+            message: "Can not get Private key",
+            time: 1.5
+          )
+        }
+      }
+    }
+  }
+}

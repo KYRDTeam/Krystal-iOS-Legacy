@@ -154,6 +154,7 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.multiSendCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -169,6 +170,7 @@ class InvestCoordinator: Coordinator {
     self.loadMarketAssets()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
+    self.multiSendCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 

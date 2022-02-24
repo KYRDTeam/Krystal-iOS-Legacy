@@ -30,9 +30,13 @@ class MultiSendCellModel {
   var addressString: String = ""
   var address: Address?
   var from: Token = KNGeneralProvider.shared.quoteTokenObject.toToken()
-  var availableAmount: BigInt = BigInt.zero
+  var availableAmount: BigInt
   var isSendAllBalanace: Bool = false // Use for update amount when change gasfee
   var gasFee: BigInt = BigInt.zero
+  
+  init() {
+    self.availableAmount = self.from.getBalanceBigInt()
+  }
   
   func updateAmount(_ amount: String, forSendAllETH: Bool = false) {
     self.amount = amount
