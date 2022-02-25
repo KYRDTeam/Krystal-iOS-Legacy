@@ -51,6 +51,8 @@ class MultiSendCoordinator: NSObject, Coordinator {
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
   
+  var approvingItems: [MultiSendItem] = []
+  
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
     self.session = session
@@ -65,6 +67,15 @@ class MultiSendCoordinator: NSObject, Coordinator {
   }
   
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if tx.state == .done, tx.type == .allowance {
+      let approveName = String(tx.transactionDescription.dropFirst(8))
+      if let found = self.approvingItems.first(where: { element in
+        return approveName == element.2.name
+      }) {
+        self.approveVC?.coordinatorDidUpdateApprove(found)
+      }
+    }
+    //TODO: handle tx hash here
     if let trans = self.transactionStatusVC?.transaction, trans.hash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       return true
@@ -330,7 +341,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       }
       
       let currentAddress = account.address.description
-      self.navigationController.displayLoading()
+      controller.displayLoading()
+      self.approvingItems = items
       self.getLatestNonce { nonceResult in
         switch nonceResult {
         case .success(let nonce):
@@ -355,34 +367,33 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.isEmpty else {
                   self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                  controller.hideLoading()
                   return
                 }
-                DispatchQueue.main.async {
-                  controller.dismiss(animated: true) {
-                    self.rootViewController.coordinatorDidFinishApproveTokens()
-                    self.approveVC = nil
-                  }
-                }
+                
               }
             } else if !legacyTxs.isEmpty {
               self.sendLegacyTxs(legacyTxs) { remaining in
                 guard remaining.isEmpty else {
                   self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
-                  self.navigationController.displayLoading()
+                  controller.hideLoading()
                   return
                 }
-                DispatchQueue.main.async {
-                  self.navigationController.displayLoading()
-                  controller.dismiss(animated: true) {
-                    self.rootViewController.coordinatorDidFinishApproveTokens()
-                    self.approveVC = nil
-                  }
-                }
+
               }
             }
           }
         case .failure( _):
           break
+        }
+      }
+    case .done:
+      self.approvingItems.removeAll()
+      DispatchQueue.main.async {
+        controller.hideLoading()
+        controller.dismiss(animated: true) {
+          self.rootViewController.coordinatorDidFinishApproveTokens()
+          self.approveVC = nil
         }
       }
     }
@@ -451,7 +462,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           historyTx.time = Date()
           historyTx.nonce = Int(txData.1.nonce) ?? 0
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-          self.approveVC?.coordinatorDidUpdateApprove(txData.0)
+          
         case .failure( _):
           unApproveItem.append(txData.0)
         }
@@ -498,7 +509,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
             historyTx.time = Date()
             historyTx.nonce = txData.1.nonce
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-            self.approveVC?.coordinatorDidUpdateApprove(txData.0)
+            
           case .failure( _):
             unApproveItem.append(txData.0)
           }

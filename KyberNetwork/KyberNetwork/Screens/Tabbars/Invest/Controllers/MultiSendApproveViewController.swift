@@ -12,6 +12,7 @@ enum MultiSendApproveViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
   case approve(items: [MultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting)
+  case done
 }
 
 protocol MultiSendApproveViewControllerDelegate: class {
@@ -138,6 +139,14 @@ class MultiSendApproveViewModel {
   
   var customSetting: ConfirmAdvancedSetting {
     return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
+  }
+  
+  var isDoneApprove: Bool {
+    let found = self.cellModels.first { element in
+      return element.isDoneApprove == false
+    }
+    
+    return found == nil
   }
 }
 
@@ -267,6 +276,12 @@ class MultiSendApproveViewController: KNBaseViewController {
     }
     cm?.isDoneApprove = true
     self.tokensTableView.reloadData()
+    
+    if self.viewModel.isDoneApprove {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.delegate?.multiSendApproveVieController(self, run: .done)
+      }
+    }
   }
 }
 
