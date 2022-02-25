@@ -199,7 +199,6 @@ extension KNExchangeTokenCoordinator {
     }
     var newAddress: [String] = []
     guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
-      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
       return
     }
@@ -208,7 +207,6 @@ extension KNExchangeTokenCoordinator {
     let isValidDestTokenAddress = Address(string: destTokenAddress) != nil
     
     guard isValidSrcAddress, isValidDestTokenAddress else {
-      self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
       return
     }
@@ -267,9 +265,7 @@ extension KNExchangeTokenCoordinator {
       DispatchQueue.main.async {
         hud.hide(animated: true)
       }
-      if getTokenFail {
-        self.navigationController.showTopBannerView(message: "Can't get swap info from the link")
-      } else {
+      if !getTokenFail {
         self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
       }
     }
