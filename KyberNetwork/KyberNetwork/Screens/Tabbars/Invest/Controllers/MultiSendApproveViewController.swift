@@ -164,6 +164,8 @@ class MultiSendApproveViewController: KNBaseViewController {
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
   
   @IBOutlet weak var tokensTableViewHeightContraint: NSLayoutConstraint!
+  @IBOutlet weak var backButton: UIButton!
+  @IBOutlet weak var approveButton: UIButton!
   
   
   @IBOutlet weak var tokensTableView: UITableView!
@@ -193,6 +195,8 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.tokensTableViewHeightContraint.constant = CGFloat(self.viewModel.cellModels.count) * ApproveTokenCell.cellHeight
     self.updateUIForCheckBox()
     self.updateGasFeeUI()
+    self.backButton.rounded(radius: 16)
+    self.approveButton.rounded(radius: 16)
   }
   
   private func updateUIForCheckBox() {

@@ -22,6 +22,8 @@
                 <outlet property="addressCountLabel" destination="Lvu-qp-kMP" id="IW0-e1-q1G"/>
                 <outlet property="amountTableView" destination="dZj-jZ-tDv" id="U98-pZ-1Ql"/>
                 <outlet property="amountTableViewHeightContraint" destination="pvg-9n-SsP" id="ngG-Hc-VtO"/>
+                <outlet property="backButton" destination="74V-r3-y7m" id="j4t-GD-ho6"/>
+                <outlet property="confirmButton" destination="RsA-65-FPT" id="Yay-AL-DKY"/>
                 <outlet property="contentView" destination="01x-YX-DxM" id="tzY-tX-y20"/>
                 <outlet property="contentViewTopContraint" destination="YuL-Bz-gZE" id="8FM-rq-Jgv"/>
                 <outlet property="feeETHLabel" destination="Peu-NO-Lrd" id="fUj-jR-SO8"/>

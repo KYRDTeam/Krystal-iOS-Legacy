@@ -181,6 +181,9 @@ class MultiSendConfirmViewController: KNBaseViewController {
   @IBOutlet weak var gasPriceTextLabel: UILabel!
   @IBOutlet weak var transactionFeeTextLabel: UILabel!
   
+  @IBOutlet weak var backButton: UIButton!
+  @IBOutlet weak var confirmButton: UIButton!
+  
   @IBOutlet weak var amountTableViewHeightContraint: NSLayoutConstraint!
   let transitor = TransitionDelegate()
   let viewModel: MultiSendConfirmViewModel
@@ -205,6 +208,8 @@ class MultiSendConfirmViewController: KNBaseViewController {
 
     self.updateUI()
     self.updateGasFeeUI()
+    self.backButton.rounded(radius: 16)
+    self.confirmButton.rounded(radius: 16)
   }
   
   fileprivate func updateUI() {

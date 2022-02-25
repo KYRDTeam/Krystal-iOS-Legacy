@@ -77,6 +77,7 @@ class MultiSendViewController: KNBaseViewController {
   @IBOutlet weak var historyButton: UIButton!
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var walletsListButton: UIButton!
+  @IBOutlet weak var pendingTxIndicatorView: UIView!
   
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
@@ -99,6 +100,7 @@ class MultiSendViewController: KNBaseViewController {
     self.updateAvailableBalanceForToken(KNGeneralProvider.shared.quoteTokenObject.toToken())
     self.updateUISwitchChain()
     self.updateUIWalletButton()
+    self.updateUIPendingTxIndicatorView()
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -140,6 +142,16 @@ class MultiSendViewController: KNBaseViewController {
     self.currentChainIcon.image = icon
     self.viewModel.resetDataSource()
     self.inputTableView.reloadData()
+  }
+  
+  fileprivate func updateUIPendingTxIndicatorView() {
+    guard self.isViewLoaded else {
+      return
+    }
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
 
   private func openQRCode() {
@@ -195,6 +207,11 @@ class MultiSendViewController: KNBaseViewController {
     self.updateUIWalletButton()
     self.viewModel.resetDataSource()
     self.inputTableView.reloadData()
+    self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.updateUIPendingTxIndicatorView()
   }
 }
 

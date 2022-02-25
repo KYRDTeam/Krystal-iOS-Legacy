@@ -91,6 +91,10 @@ class MultiSendCoordinator: NSObject, Coordinator {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
   }
+
+  func coordinatorDidUpdatePendingTx() {
+    self.rootViewController.coordinatorDidUpdatePendingTx()
+  }
 }
 
 extension MultiSendCoordinator: MultiSendViewControllerDelegate {

@@ -147,6 +147,7 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.multiSendCoordinator?.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {

@@ -12,13 +12,15 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MultiSendApproveViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="approveButton" destination="27L-e9-XTU" id="3jF-g8-Nkk"/>
+                <outlet property="backButton" destination="t9N-Yc-a9F" id="VxE-i4-zps"/>
                 <outlet property="contentView" destination="Vd1-rj-yFf" id="q5a-OK-Ibl"/>
                 <outlet property="contentViewTopContraint" destination="Jq8-QM-61g" id="lgd-Cz-5ex"/>
                 <outlet property="feeETHLabel" destination="fmE-Rj-jLK" id="jh2-54-N56"/>

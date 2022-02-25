@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -23,6 +23,7 @@
                 <outlet property="historyButton" destination="x1P-qb-xd0" id="cD1-F3-wq5"/>
                 <outlet property="inputTableView" destination="p5U-Iv-VdQ" id="z6f-LB-lPg"/>
                 <outlet property="inputTableViewHeight" destination="Jr6-nI-B3X" id="hFH-sv-eSG"/>
+                <outlet property="pendingTxIndicatorView" destination="HAl-BF-sEn" id="ij7-3I-L60"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="gLb-D6-t0M" id="16j-ix-qy4"/>
             </connections>
