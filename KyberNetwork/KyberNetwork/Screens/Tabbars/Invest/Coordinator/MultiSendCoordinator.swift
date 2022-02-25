@@ -92,6 +92,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
     case .checkApproval(items: let items):
+      self.navigationController.displayLoading()
       self.requestBuildTx(items: items) { object in
         self.processingTx = object
         self.checkAllowance(contractAddress: object.to, items: items) { remaining in
@@ -100,33 +101,31 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
           } else {
             self.openApproveView(items: remaining)
           }
+          self.navigationController.hideLoading()
         }
       }
     case .confirm(items: let items):
+      self.navigationController.displayLoading()
       self.getLatestNonce { result in
         switch result {
         case .success(let nonce):
           let nonceStr = BigInt(nonce).hexEncoded.hexSigned2Complement
           self.processingTx?.nonce = nonceStr
           if let tx = self.processingTx, let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), !gasLimit.isZero {
+            self.navigationController.hideLoading()
             self.openConfirmView(items: items, txObject: tx)
           } else {
             self.requestBuildTx(items: items) { object in
               self.processingTx = object
+              self.navigationController.hideLoading()
               self.openConfirmView(items: items, txObject: object)
             }
           }
         case .failure(let error):
+          self.navigationController.hideLoading()
           self.navigationController.showErrorTopBannerMessage(message: error.description)
         }
-      }
-      if let tx = self.processingTx, let gasLimit = BigInt(tx.gasLimit.drop0x, radix: 16), !gasLimit.isZero {
-        self.openConfirmView(items: items, txObject: tx)
-      } else {
-        self.requestBuildTx(items: items) { object in
-          self.processingTx = object
-          self.openConfirmView(items: items, txObject: object)
-        }
+        
       }
     case .openHistory:
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
@@ -155,6 +154,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
         } catch let error {
           self.navigationController.showTopBannerView(message: error.localizedDescription)
         }
+      } else {
+        self.navigationController.showTopBannerView(message: "Build multiSend request is failed")
       }
     }
   }
@@ -229,7 +230,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject) {
     guard self.confirmVC == nil else { return }
     let gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? BigInt.zero
-    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: KNGasCoordinator.shared.fastKNGas, gasLimit: gasLimit, baseGasLimit: gasLimit)
+    let vm = MultiSendConfirmViewModel(sendItems: items, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit, baseGasLimit: gasLimit)
     let controller = MultiSendConfirmViewController(viewModel: vm)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
@@ -329,7 +330,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       }
       
       let currentAddress = account.address.description
-
+      self.navigationController.displayLoading()
       self.getLatestNonce { nonceResult in
         switch nonceResult {
         case .success(let nonce):
@@ -353,7 +354,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.isEmpty else {
-                  
+                  self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
                   return
                 }
                 DispatchQueue.main.async {
@@ -365,7 +366,13 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
               }
             } else if !legacyTxs.isEmpty {
               self.sendLegacyTxs(legacyTxs) { remaining in
+                guard remaining.isEmpty else {
+                  self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                  self.navigationController.displayLoading()
+                  return
+                }
                 DispatchQueue.main.async {
+                  self.navigationController.displayLoading()
                   controller.dismiss(animated: true) {
                     self.rootViewController.coordinatorDidFinishApproveTokens()
                     self.approveVC = nil
@@ -679,12 +686,14 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
         return
       }
       guard let tx = self.processingTx else { return }
+      self.navigationController.displayLoading()
       if KNGeneralProvider.shared.isUseEIP1559 {
         let tx = TransactionFactory.buildEIP1559Transaction(txObject: tx, setting: setting)
         guard let data = provider.signContractGenericEIP1559Transaction(tx) else {
           return
         }
         KNGeneralProvider.shared.sendRawTransactionWithInfura(data, completion: { sendResult in
+          self.navigationController.hideLoading()
           switch sendResult {
           case .success(let hash):
             let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "MultiSend", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: tx)
@@ -700,6 +709,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       } else {
         let tx = TransactionFactory.buildLegaryTransaction(txObject: tx, account: account, setting: setting)
         KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
+          self.navigationController.hideLoading()
           switch result {
           case .success(_):
             provider.signTransactionData(from: tx) { result in
@@ -738,6 +748,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
               }
             }
             self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+            self.navigationController.hideLoading()
           }
         }
       }

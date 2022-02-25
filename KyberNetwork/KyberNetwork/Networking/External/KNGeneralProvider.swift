@@ -745,7 +745,7 @@ class KNGeneralProvider {
   }
 
   func getAllowance(for address: Address, networkAddress: Address, tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    if tokenAddress == Address(string: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
+    if tokenAddress == Address(string: KNGeneralProvider.shared.quoteTokenObject.address) {
       // ETH no need to request for approval
       completion(.success(BigInt(2).power(255)))
       return
