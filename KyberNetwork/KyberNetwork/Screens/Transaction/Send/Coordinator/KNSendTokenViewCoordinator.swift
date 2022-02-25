@@ -52,6 +52,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     controller.delegate = self
     return controller
   }()
+  
+  var multiSendCoordinator: MultiSendCoordinator?
 
   deinit {
     self.rootViewController?.removeObserveNotification()
@@ -147,6 +149,7 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if self.multiSendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       return true
@@ -156,14 +159,17 @@ extension KNSendTokenViewCoordinator {
   
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController?.coordinatorDidUpdatePendingTx()
+    self.multiSendCoordinator?.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.rootViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.multiSendCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
 
   func appCoordinatorDidUpdateChain() {
     self.rootViewController?.coordinatorDidUpdateChain()
+    self.multiSendCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -270,6 +276,11 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           self.rootViewController?.coordinatorFailedToUpdateEstimateGasLimit()
         }
       }
+    case .openMultiSend:
+      let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+      coordinator.delegate = self.delegate
+      coordinator.start()
+      self.multiSendCoordinator = coordinator
     }
   }
 
