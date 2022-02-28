@@ -64,6 +64,13 @@ class MultiSendViewModel {
     self.cellModels = [MultiSendCellModel()]
   }
   
+  func reloadDataSource() {
+    for (index, element) in self.cellModels.enumerated() {
+      element.index = index
+    }
+
+  }
+  
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
   }
@@ -285,16 +292,21 @@ extension MultiSendViewController: MultiSendCellDelegate {
 
 extension MultiSendViewController: SwipeTableViewCellDelegate {
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-    guard indexPath.row > 0 else { return nil }
+    guard orientation == .right else { return nil }
+    guard self.viewModel.cellModels.count > 1 else { return nil }
+    let bgImg = UIImage(named: "multiSend_edit_bg")!
+    let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: MultiSendCell.cellHeight))!
 
-    let delete = SwipeAction(style: .destructive, title: nil) { _, _ in
+    let delete = SwipeAction(style: .default, title: nil) { _, _ in
       self.viewModel.cellModels.remove(at: indexPath.row)
       self.viewModel.cellModels.last?.addButtonEnable = true
+      self.viewModel.reloadDataSource()
       self.inputTableView.reloadData()
     }
     delete.title = "delete".toBeLocalised().uppercased()
     delete.textColor = UIColor(named: "textWhiteColor")
     delete.font = UIFont.Kyber.medium(with: 12)
+    delete.backgroundColor = UIColor(patternImage: resized)
 
     return [delete]
   }
