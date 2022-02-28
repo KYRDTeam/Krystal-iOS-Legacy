@@ -462,6 +462,8 @@
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
+		7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */; };
+		7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */; };
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
 		7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */; };
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
@@ -1286,6 +1288,8 @@
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBuyCryptoViewController.swift; sourceTree = "<group>"; };
+		7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCoordinator.swift; sourceTree = "<group>"; };
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
@@ -4309,6 +4313,8 @@
 				C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */,
                7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */,
 				7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */,
+				7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */,
+				7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4834,6 +4840,7 @@
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
 				C3EE06BA267A15E50090B432 /* Karla-Italic-VariableFont_wght.ttf in Resources */,
+				7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */,
 				253F50E821E5B5290068813D /* KNPromoCodeViewController.xib in Resources */,
 				25929C6820DA5C760045CFA3 /* SF-Pro-Display-Light.otf in Resources */,
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
@@ -5427,6 +5434,7 @@
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
 				C3F71C90261AB0FF00285935 /* ClaimRewardViewController.swift in Sources */,
+				7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */,
 				25931F1420AEEBF000BAC774 /* KNBackUpWalletViewModel.swift in Sources */,
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
