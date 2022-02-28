@@ -29,14 +29,10 @@ class MultiSendCellModel {
   var amount: String = ""
   var addressString: String = ""
   var address: Address?
-  var from: Token = KNGeneralProvider.shared.quoteTokenObject.toToken()
-  var availableAmount: BigInt
+  var from: Token = Token.blankToken()
+  var availableAmount: BigInt = BigInt.zero
   var isSendAllBalanace: Bool = false // Use for update amount when change gasfee
   var gasFee: BigInt = BigInt.zero
-  
-  init() {
-    self.availableAmount = self.from.getBalanceBigInt()
-  }
   
   func updateAmount(_ amount: String, forSendAllETH: Bool = false) {
     self.amount = amount
@@ -63,6 +59,7 @@ class MultiSendCellModel {
   }
 
   var totalBalanceText: String {
+    guard !self.from.isBlank() else { return "" }
     return "\(self.displayBalance) \(self.from.symbol)"
   }
 
@@ -111,6 +108,7 @@ class MultiSendCellModel {
 
 class MultiSendCell: SwipeTableViewCell {
   
+  @IBOutlet weak var maxButton: UIButton!
   @IBOutlet weak var addContactButton: UIButton!
   @IBOutlet weak var contactButton: UIButton!
   @IBOutlet weak var qrButton: UIButton!
@@ -144,6 +142,13 @@ class MultiSendCell: SwipeTableViewCell {
     self.addressTextField.text = model.addressString
     self.amountTextField.text = model.amount
     self.currentTokenButton.setTitle(model.from.symbol, for: .normal)
+    if model.from.isBlank() {
+      self.currentTokenButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
+      self.maxButton.isHidden = true
+    } else {
+      self.currentTokenButton.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
+      self.maxButton.isHidden = false
+    }
     self.tokenBalanceLabel.text = model.totalBalanceText
     
     self.cellModel = model

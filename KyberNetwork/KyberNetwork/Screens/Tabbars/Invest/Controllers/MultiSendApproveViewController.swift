@@ -31,6 +31,12 @@ class MultiSendApproveViewModel {
   var cellModels: [ApproveTokenCellModel]
   var isApproveUnlimit: Bool = false
   
+  func updateStartApprove() {
+    self.cellModels.forEach { element in
+      element.state = .start
+    }
+  }
+  
   var advancedGasLimit: String? {
     didSet {
       if self.advancedGasLimit != nil {
@@ -143,7 +149,7 @@ class MultiSendApproveViewModel {
   
   var isDoneApprove: Bool {
     let found = self.cellModels.first { element in
-      return element.isDoneApprove == false
+      return element.state != .done
     }
     
     return found == nil
@@ -227,6 +233,8 @@ class MultiSendApproveViewController: KNBaseViewController {
   }
   
   @IBAction func approveButtonTapped(_ sender: UIButton) {
+    self.viewModel.updateStartApprove()
+    self.tokensTableView.reloadData()
     self.delegate?.multiSendApproveVieController(self, run: .approve(items: self.viewModel.items, isApproveUnlimit: self.viewModel.isApproveUnlimit, settings: self.viewModel.customSetting))
   }
   
@@ -278,7 +286,7 @@ class MultiSendApproveViewController: KNBaseViewController {
     let cm = self.viewModel.cellModels.first { model in
       return item.2 == model.token
     }
-    cm?.isDoneApprove = true
+    cm?.state = .done
     self.tokensTableView.reloadData()
     
     if self.viewModel.isDoneApprove {

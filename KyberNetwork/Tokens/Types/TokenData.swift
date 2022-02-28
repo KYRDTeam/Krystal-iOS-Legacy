@@ -26,6 +26,14 @@ class Token: Codable, Equatable, Hashable {
       self.tag = tag
     }
   }
+  
+  static func blankToken() -> Token {
+    return Token(name: "Search Token", symbol: "Search Token", address: "", decimals: 0, logo: "")
+  }
+  
+  func isBlank() -> Bool {
+    return self.address == ""
+  }
 
   init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
     self.name = name

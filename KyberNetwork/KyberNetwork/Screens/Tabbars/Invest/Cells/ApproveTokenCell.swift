@@ -6,10 +6,15 @@
 //
 
 import UIKit
+enum AppproveState {
+  case notStart
+  case start
+  case done
+}
 
 class ApproveTokenCellModel {
   var token: Token
-  var isDoneApprove: Bool = false
+  var state: AppproveState = .notStart
   
   init(token: Token) {
     self.token = token
@@ -42,11 +47,15 @@ class ApproveTokenCell: UITableViewCell {
   
   func updateCellModel(_ model: ApproveTokenCellModel) {
     self.tokenNameLabel.text = model.token.name
-    self.doneIconImgView.isHidden = !model.isDoneApprove
-    if model.isDoneApprove {
+    self.doneIconImgView.isHidden = model.state != .done
+    
+    switch model.state {
+    case .notStart:
       self.loadingView.pause()
-    } else {
+    case .start:
       self.loadingView.start(beginingValue: 1)
+    case .done:
+      self.loadingView.pause()
     }
     
     self.cellModel = model
