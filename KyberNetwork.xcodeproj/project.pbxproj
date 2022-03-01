@@ -465,6 +465,7 @@
 		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
 		7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */; };
 		7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */; };
+		7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */; };
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
 		7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */; };
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
@@ -1292,6 +1293,7 @@
 		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
 		7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBuyCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagManager.swift; sourceTree = "<group>"; };
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCoordinator.swift; sourceTree = "<group>"; };
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
@@ -1719,6 +1721,7 @@
 		251ABCA020578DA30069687F /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				7EB47FF627CCDD2B00FB28D9 /* Feature Flags */,
 				25929C3320DA5C4C0045CFA3 /* Fonts */,
 				25CE6F7020723F6800A3A2F9 /* AppTrackers */,
 				25CC0A972057E1C90009D0D5 /* LoadingInterval */,
@@ -3756,6 +3759,14 @@
 			path = LottieJSON;
 			sourceTree = "<group>";
 		};
+		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
+			isa = PBXGroup;
+			children = (
+				7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */,
+			);
+			path = "Feature Flags";
+			sourceTree = "<group>";
+		};
 		7EC4C6E927168A4900486C00 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -5068,6 +5079,8 @@
 				"${BUILT_PRODUCTS_DIR}/JdenticonSwift/JdenticonSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
+				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
@@ -5118,6 +5131,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JdenticonSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
@@ -5312,6 +5327,7 @@
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
+				7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */,
 				C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */,
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
