@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -24,6 +24,7 @@
                 <outlet property="inputTableView" destination="p5U-Iv-VdQ" id="z6f-LB-lPg"/>
                 <outlet property="inputTableViewHeight" destination="Jr6-nI-B3X" id="hFH-sv-eSG"/>
                 <outlet property="pendingTxIndicatorView" destination="HAl-BF-sEn" id="ij7-3I-L60"/>
+                <outlet property="useLastMultisendButton" destination="aFc-WY-Xds" id="yw4-eE-tpK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="gLb-D6-t0M" id="16j-ix-qy4"/>
             </connections>
@@ -215,14 +216,50 @@
                                 <action selector="sendButtonTapped:" destination="-1" eventType="touchUpInside" id="FgQ-HP-BVT"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFc-WY-Xds">
+                            <rect key="frame" x="37" y="353.5" width="301" height="42"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="42" id="aTK-Q1-hXx"/>
+                            </constraints>
+                            <inset key="titleEdgeInsets" minX="-26" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="     Use the last Multi-send" image="duplicate_form_multisend_icon">
+                                <color key="titleColor" name="textWhiteColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="21"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="lastMultisendButtonTapped:" destination="-1" eventType="touchUpInside" id="UpS-9z-ENM"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nXi-eN-DGX">
+                            <rect key="frame" x="278" y="16.5" width="60" height="31"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Clear All">
+                                <color key="titleColor" name="textRedColor"/>
+                            </state>
+                            <connections>
+                                <action selector="clearAllButtonTapped:" destination="-1" eventType="touchUpInside" id="2aM-em-2Zk"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="top" secondItem="chg-27-bUe" secondAttribute="bottom" constant="25" id="01m-OW-FOW"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="leading" secondItem="6v6-SQ-Koa" secondAttribute="leading" constant="37" id="6RM-vp-xgS"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="Aww-m2-rTP"/>
+                        <constraint firstItem="aFc-WY-Xds" firstAttribute="top" secondItem="oCA-se-phj" secondAttribute="bottom" constant="27" id="Dgw-yB-gtB"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="top" secondItem="p5U-Iv-VdQ" secondAttribute="bottom" constant="10" id="QYU-Mj-1Yu"/>
+                        <constraint firstItem="nXi-eN-DGX" firstAttribute="trailing" secondItem="p5U-Iv-VdQ" secondAttribute="trailing" id="WE4-Wp-sdc"/>
                         <constraint firstItem="chg-27-bUe" firstAttribute="top" secondItem="6v6-SQ-Koa" secondAttribute="top" constant="20" id="fJ4-jM-23h"/>
+                        <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="aFc-WY-Xds" secondAttribute="trailing" constant="37" id="fd4-HQ-RBm"/>
+                        <constraint firstItem="nXi-eN-DGX" firstAttribute="centerY" secondItem="chg-27-bUe" secondAttribute="centerY" id="g1B-Cc-QmJ"/>
                         <constraint firstItem="G8e-lo-P4k" firstAttribute="trailing" secondItem="oCA-se-phj" secondAttribute="trailing" constant="37" id="gAb-7O-pG5"/>
+                        <constraint firstItem="aFc-WY-Xds" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="iqc-fR-gMI"/>
                         <constraint firstItem="oCA-se-phj" firstAttribute="leading" secondItem="G8e-lo-P4k" secondAttribute="leading" constant="37" id="l6n-yu-PT1"/>
                         <constraint firstAttribute="bottom" secondItem="oCA-se-phj" secondAttribute="bottom" constant="226" id="lFP-Ku-b8d"/>
                         <constraint firstItem="p5U-Iv-VdQ" firstAttribute="centerX" secondItem="6v6-SQ-Koa" secondAttribute="centerX" id="r9t-fN-b0U"/>
@@ -251,6 +288,7 @@
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
+        <image name="duplicate_form_multisend_icon" width="20" height="20"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -266,6 +304,12 @@
         </namedColor>
         <namedColor name="secondaryColor">
             <color red="0.99599999189376831" green="0.4309999942779541" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textRedColor">
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

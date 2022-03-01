@@ -23,6 +23,18 @@ protocol MultiSendCellDelegate: class {
   func multiSendCell(_ cell: MultiSendCell, run event: MultiSendCellEvent)
 }
 
+struct MultiSendCellModelStorage: Codable {
+  let index: Int
+  let addButtonEnable: Bool
+  let amount: String
+  let addressString: String
+  let from: Token
+  let availableAmount: String
+  let isSendAllBalanace: Bool
+  let gasFee: String
+  
+}
+
 class MultiSendCellModel {
   var index: Int = 0
   var addButtonEnable: Bool = true
@@ -33,6 +45,20 @@ class MultiSendCellModel {
   var availableAmount: BigInt = BigInt.zero
   var isSendAllBalanace: Bool = false // Use for update amount when change gasfee
   var gasFee: BigInt = BigInt.zero
+  
+  init() {}
+  
+  init(_ object: MultiSendCellModelStorage) {
+    self.index = object.index
+    self.addButtonEnable = object.addButtonEnable
+    self.amount = object.amount
+    self.addressString = object.addressString
+    self.address = Address(string: object.addressString)
+    self.from = object.from
+    self.availableAmount = BigInt(object.availableAmount) ?? BigInt.zero
+    self.isSendAllBalanace = object.isSendAllBalanace
+    self.gasFee = BigInt(object.gasFee) ?? BigInt.zero
+  }
   
   func updateAmount(_ amount: String, forSendAllETH: Bool = false) {
     self.amount = amount
@@ -45,6 +71,10 @@ class MultiSendCellModel {
 
   var amountTextColor: UIColor {
     return .white
+  }
+  
+  var storageObject: MultiSendCellModelStorage {
+    return MultiSendCellModelStorage(index: self.index, addButtonEnable: self.addButtonEnable, amount: self.amount, addressString: self.addressString, from: self.from, availableAmount: self.availableAmount.description, isSendAllBalanace: self.isSendAllBalanace, gasFee: self.gasFee.description)
   }
 
   var displayBalance: String {
@@ -108,7 +138,7 @@ class MultiSendCellModel {
 
 class MultiSendCell: SwipeTableViewCell {
   
-  @IBOutlet weak var maxButton: UIButton!
+//  @IBOutlet weak var maxButton: UIButton!
   @IBOutlet weak var addContactButton: UIButton!
   @IBOutlet weak var contactButton: UIButton!
   @IBOutlet weak var qrButton: UIButton!
@@ -119,6 +149,7 @@ class MultiSendCell: SwipeTableViewCell {
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var addButton: UIButton!
   @IBOutlet weak var separatorView: UIView!
+  var keyboardTimer: Timer?
   weak var cellDelegate: MultiSendCellDelegate?
 
   static let cellHeight: CGFloat = 184
@@ -144,10 +175,10 @@ class MultiSendCell: SwipeTableViewCell {
     self.currentTokenButton.setTitle(model.from.symbol, for: .normal)
     if model.from.isBlank() {
       self.currentTokenButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
-      self.maxButton.isHidden = true
+//      self.maxButton.isHidden = true
     } else {
       self.currentTokenButton.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
-      self.maxButton.isHidden = false
+//      self.maxButton.isHidden = false
     }
     self.tokenBalanceLabel.text = model.totalBalanceText
     
@@ -180,27 +211,26 @@ class MultiSendCell: SwipeTableViewCell {
     self.cellDelegate?.multiSendCell(self, run: .searchToken(selectedToken: self.cellModel?.from ?? KNGeneralProvider.shared.quoteTokenObject.toToken(), cellIndex: self.cellModel?.index ?? 0))
   }
   
-  @IBAction func maxButtonTapped(_ sender: UIButton) {
-    self.cellModel?.isSendAllBalanace = true
-    self.amountTextField.text = self.cellModel?.allTokenBalanceString.removeGroupSeparator()
-    self.cellModel?.updateAmount(self.amountTextField.text ?? "", forSendAllETH: self.cellModel?.from.isQuoteToken ?? false)
-    self.amountTextField.resignFirstResponder()
-    self.amountTextField.textColor = self.cellModel?.amountTextColor
-  }
+//  @IBAction func maxButtonTapped(_ sender: UIButton) {
+//    self.cellModel?.isSendAllBalanace = true
+//    self.amountTextField.text = self.cellModel?.allTokenBalanceString.removeGroupSeparator()
+//    self.cellModel?.updateAmount(self.amountTextField.text ?? "", forSendAllETH: self.cellModel?.from.isQuoteToken ?? false)
+//    self.amountTextField.resignFirstResponder()
+//    self.amountTextField.textColor = self.cellModel?.amountTextColor
+//  }
   
   @IBAction func qrCodeButtonTapped(_ sender: UIButton) {
     self.cellDelegate?.multiSendCell(self, run: .qrCode(cellIndex: self.cellModel?.index ?? 0))
   }
-  
+
   @IBAction func contactButtonTapped(_ sender: UIButton) {
     self.cellDelegate?.multiSendCell(self, run: .openContact(cellIndex: self.cellModel?.index ?? 0))
   }
-  
+
   @IBAction func addContactButtonTapped(_ sender: UIButton) {
     guard let address = self.cellModel?.addressString, !address.isEmpty else { return }
     self.cellDelegate?.multiSendCell(self, run: .addContact(address: address))
   }
-  
 }
 
 extension MultiSendCell: UITextFieldDelegate {
@@ -226,6 +256,15 @@ extension MultiSendCell: UITextFieldDelegate {
     } else {
       textField.text = text
       self.cellModel?.updateAddress(text)
+      
+      self.keyboardTimer?.invalidate()
+      self.keyboardTimer = Timer.scheduledTimer(
+              timeInterval: 1,
+              target: self,
+              selector: #selector(MultiSendCell.keyboardPauseTyping),
+              userInfo: ["textField": textField],
+              repeats: false)
+      
     }
     
     return false
@@ -239,6 +278,10 @@ extension MultiSendCell: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.amountTextField.textColor = self.cellModel?.amountTextColor
     self.cellDelegate?.multiSendCell(self, run: .updateAmount(amount: self.cellModel?.amountBigInt ?? BigInt.zero, selectedToken: self.cellModel?.from ?? KNGeneralProvider.shared.quoteTokenObject.toToken()))
+    self.updateUIAddressField()
+  }
+  
+  @objc func keyboardPauseTyping(timer: Timer) {
     self.updateUIAddressField()
   }
 }

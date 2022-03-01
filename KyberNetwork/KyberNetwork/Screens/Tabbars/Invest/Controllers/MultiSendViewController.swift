@@ -12,6 +12,7 @@ import BigInt
 
 typealias MultiSendItem = (String, BigInt, Token)
 
+
 enum MultiSendViewControllerEvent {
   case searchToken(selectedToken: Token)
   case openContactsList
@@ -20,6 +21,7 @@ enum MultiSendViewControllerEvent {
   case confirm(items: [MultiSendItem])
   case openHistory
   case openWalletsList
+  case useLastMultisend
 }
 
 protocol MultiSendViewControllerDelegate: class {
@@ -27,12 +29,19 @@ protocol MultiSendViewControllerDelegate: class {
 }
 
 class MultiSendViewModel {
+  static let multisendFormDataStoreFileName: String = "MultisendStoreFile.data"
   var cellModels = [MultiSendCellModel()]
   var updatingIndex = 0
   fileprivate(set) var wallet: Wallet
   
   init(wallet: Wallet) {
     self.wallet = wallet
+    if let stored = self.storedData {
+      let models = stored.map { element in
+        return MultiSendCellModel(element)
+      }
+      self.cellModels = models
+    }
   }
   
   var selectedToken: [Token] {
@@ -74,18 +83,47 @@ class MultiSendViewModel {
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
   }
+  
+  func saveFormData() {
+    let objects = self.cellModels.map { element in
+      return element.storageObject
+    }
+    Storage.store(objects, as: KNEnvironment.default.envPrefix + MultiSendViewModel.multisendFormDataStoreFileName)
+  }
+  
+  func resetFormData() {
+    Storage.removeFileAtPath(KNEnvironment.default.envPrefix + MultiSendViewModel.multisendFormDataStoreFileName)
+  }
+  
+  var storedData: [MultiSendCellModelStorage]? {
+    return Storage.retrieve(KNEnvironment.default.envPrefix + MultiSendViewModel.multisendFormDataStoreFileName, as: [MultiSendCellModelStorage].self)
+  }
+  
+  var hasStoredData: Bool {
+    
+    return self.storedData != nil
+  }
+  
+  func reloadPreviousForm() {
+    if let stored = self.storedData {
+      let models = stored.map { element in
+        return MultiSendCellModel(element)
+      }
+      self.cellModels = models
+    }
+  }
 }
 
 class MultiSendViewController: KNBaseViewController {
   @IBOutlet weak var inputTableView: UITableView!
   @IBOutlet weak var inputTableViewHeight: NSLayoutConstraint!
-  
-  
+
   @IBOutlet weak var historyButton: UIButton!
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
-  
+  @IBOutlet weak var useLastMultisendButton: UIButton!
+
   let viewModel: MultiSendViewModel
   weak var delegate: MultiSendViewControllerDelegate?
 
@@ -97,7 +135,7 @@ class MultiSendViewController: KNBaseViewController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -108,6 +146,13 @@ class MultiSendViewController: KNBaseViewController {
     self.updateUISwitchChain()
     self.updateUIWalletButton()
     self.updateUIPendingTxIndicatorView()
+    self.useLastMultisendButton.rounded(color: UIColor(named: "textWhiteColor")!, width: 1, radius: 21)
+    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.updateUIUseLast()
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -140,15 +185,32 @@ class MultiSendViewController: KNBaseViewController {
     self.delegate?.multiSendViewController(self, run: .openHistory)
   }
   
+  fileprivate func updateUIInputTableView() {
+    self.inputTableViewHeight.constant = CGFloat(self.viewModel.cellModels.count) * MultiSendCell.cellHeight
+    self.inputTableView.reloadData()
+  }
+  
+  @IBAction func lastMultisendButtonTapped(_ sender: UIButton) {
+    self.delegate?.multiSendViewController(self, run: .useLastMultisend)
+    self.viewModel.reloadPreviousForm()
+    self.updateUIInputTableView()
+  }
+  
+  
+  @IBAction func clearAllButtonTapped(_ sender: UIButton) {
+    self.viewModel.resetDataSource()
+    self.updateUIInputTableView()
+  }
+  
   fileprivate func updateUIWalletButton() {
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
-  
+
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.viewModel.resetDataSource()
-    self.inputTableView.reloadData()
+    self.updateUIInputTableView()
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -159,6 +221,14 @@ class MultiSendViewController: KNBaseViewController {
       transaction.state == .pending
     }
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
+  }
+  
+  fileprivate func updateUIUseLast() {
+    if self.viewModel.hasStoredData {
+      self.useLastMultisendButton.isHidden = false
+    } else {
+      self.useLastMultisendButton.isHidden = true
+    }
   }
 
   private func openQRCode() {
@@ -213,12 +283,17 @@ class MultiSendViewController: KNBaseViewController {
     self.viewModel.updateWallet(wallet)
     self.updateUIWalletButton()
     self.viewModel.resetDataSource()
-    self.inputTableView.reloadData()
+    self.updateUIInputTableView()
     self.updateUIPendingTxIndicatorView()
   }
   
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorDidConfirmTx() {
+    self.viewModel.saveFormData()
+    self.updateUIUseLast()
   }
 }
 
@@ -269,9 +344,8 @@ extension MultiSendViewController: MultiSendCellDelegate {
         e.addButtonEnable = false
       }
       self.viewModel.cellModels.append(element)
-      self.inputTableViewHeight.constant = CGFloat(self.viewModel.cellModels.count) * MultiSendCell.cellHeight
       self.updateAvailableBalanceForToken(element.from)
-      self.inputTableView.reloadData()
+      self.updateUIInputTableView()
     case .searchToken(selectedToken: let selectedToken, cellIndex: let cellIndex):
       self.viewModel.updatingIndex = cellIndex
       self.delegate?.multiSendViewController(self, run: .searchToken(selectedToken: selectedToken))
@@ -301,7 +375,7 @@ extension MultiSendViewController: SwipeTableViewCellDelegate {
       self.viewModel.cellModels.remove(at: indexPath.row)
       self.viewModel.cellModels.last?.addButtonEnable = true
       self.viewModel.reloadDataSource()
-      self.inputTableView.reloadData()
+      self.updateUIInputTableView()
     }
     delete.title = "delete".toBeLocalised().uppercased()
     delete.textColor = UIColor(named: "textWhiteColor")

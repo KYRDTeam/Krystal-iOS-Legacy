@@ -25,7 +25,6 @@ class InvestCoordinator: Coordinator {
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
   var dappCoordinator: DappCoordinator?
-  var multiSendCoordinator: MultiSendCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -34,6 +33,12 @@ class InvestCoordinator: Coordinator {
     let controller = InvestViewController()
     controller.delegate = self
     return controller
+  }()
+  
+  lazy var multiSendCoordinator: MultiSendCoordinator = {
+    let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    return coordinator
   }()
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
@@ -147,7 +152,7 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
-    self.multiSendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
@@ -155,14 +160,14 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.multiSendCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
-    if self.multiSendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
@@ -171,7 +176,7 @@ class InvestCoordinator: Coordinator {
     self.loadMarketAssets()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
-    self.multiSendCoordinator?.appCoordinatorDidUpdateChain()
+    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -191,10 +196,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     case .dapp:
       self.openDappBrowserScreen()
     case .multiSend:
-      let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
-      coordinator.delegate = self
-      coordinator.start()
-      self.multiSendCoordinator = coordinator
+      self.multiSendCoordinator.start()
     }
   }
 }

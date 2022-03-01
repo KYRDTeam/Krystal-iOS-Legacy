@@ -59,6 +59,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    guard self.navigationController.viewControllers.last != self.rootViewController else { return }
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
   }
   
@@ -152,6 +153,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
+    case .useLastMultisend:
+      break
     }
   }
   
@@ -701,6 +704,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
         return
       }
       guard let tx = self.processingTx else { return }
+      self.rootViewController.coordinatorDidConfirmTx()
       self.navigationController.displayLoading()
       if KNGeneralProvider.shared.isUseEIP1559 {
         let tx = TransactionFactory.buildEIP1559Transaction(txObject: tx, setting: setting)

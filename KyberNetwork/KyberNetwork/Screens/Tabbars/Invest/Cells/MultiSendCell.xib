@@ -39,14 +39,14 @@
                                 <rect key="frame" x="294" y="18" width="10" height="6"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2EZ-0u-dhO">
-                                <rect key="frame" x="16" y="0.0" width="195" height="42"/>
+                                <rect key="frame" x="16" y="0.0" width="235" height="42"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8F-gR-Yzj">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8F-gR-Yzj">
                                 <rect key="frame" x="219" y="12" width="29" height="18"/>
                                 <color key="backgroundColor" name="buttonBackgroundColor"/>
                                 <constraints>
@@ -63,9 +63,6 @@
                                         <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="maxButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bp9-49-rvr"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02j-RO-mCm">
                                 <rect key="frame" x="256" y="0.0" width="56" height="42"/>
@@ -82,7 +79,6 @@
                         <color key="backgroundColor" name="toolbarBgColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="2EZ-0u-dhO" secondAttribute="bottom" id="4PN-Y5-Qzz"/>
-                            <constraint firstItem="a8F-gR-Yzj" firstAttribute="leading" secondItem="2EZ-0u-dhO" secondAttribute="trailing" constant="8" id="6ne-Rg-WXB"/>
                             <constraint firstAttribute="trailing" secondItem="02j-RO-mCm" secondAttribute="trailing" constant="8" id="CJV-Bj-YVe"/>
                             <constraint firstAttribute="trailing" secondItem="AWr-a9-yAg" secondAttribute="trailing" constant="16" id="Gq9-OA-pPm"/>
                             <constraint firstItem="2EZ-0u-dhO" firstAttribute="top" secondItem="YXE-xO-cVB" secondAttribute="top" id="IEd-6o-jNn"/>
@@ -90,6 +86,7 @@
                             <constraint firstItem="a8F-gR-Yzj" firstAttribute="centerY" secondItem="YXE-xO-cVB" secondAttribute="centerY" id="XAy-d7-dHp"/>
                             <constraint firstItem="02j-RO-mCm" firstAttribute="leading" secondItem="a8F-gR-Yzj" secondAttribute="trailing" constant="8" id="XZu-1g-y06"/>
                             <constraint firstItem="2EZ-0u-dhO" firstAttribute="leading" secondItem="YXE-xO-cVB" secondAttribute="leading" constant="16" id="Zk0-D4-uGp"/>
+                            <constraint firstItem="02j-RO-mCm" firstAttribute="leading" secondItem="2EZ-0u-dhO" secondAttribute="trailing" constant="5" id="d3Y-kv-gTd"/>
                             <constraint firstAttribute="height" constant="42" id="hCF-Jy-2m6"/>
                             <constraint firstItem="02j-RO-mCm" firstAttribute="top" secondItem="YXE-xO-cVB" secondAttribute="top" id="jOX-rS-eB9"/>
                             <constraint firstItem="AWr-a9-yAg" firstAttribute="centerY" secondItem="YXE-xO-cVB" secondAttribute="centerY" id="sap-eK-yOt"/>
@@ -210,7 +207,6 @@
                 <outlet property="amountTextField" destination="2EZ-0u-dhO" id="PL1-tI-7r4"/>
                 <outlet property="contactButton" destination="YZP-gT-dRW" id="hxD-ek-kMd"/>
                 <outlet property="currentTokenButton" destination="02j-RO-mCm" id="iK7-a0-5Od"/>
-                <outlet property="maxButton" destination="a8F-gR-Yzj" id="SgC-QF-Zoy"/>
                 <outlet property="qrButton" destination="Y3A-Jh-tQx" id="XY6-ZI-U8T"/>
                 <outlet property="separatorView" destination="kC3-Id-D3W" id="o3b-nd-kWT"/>
                 <outlet property="tokenBalanceLabel" destination="SFN-QH-oNk" id="neq-2M-to7"/>
