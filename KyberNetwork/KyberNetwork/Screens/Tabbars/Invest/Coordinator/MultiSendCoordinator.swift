@@ -722,7 +722,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
             self.openTransactionStatusPopUp(transaction: historyTransaction)
           case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.localizedDescription)
+            self.showErrorMessage(error, viewController: self.navigationController)
           }
         })
       } else {
@@ -745,7 +745,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                     EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
                     self.openTransactionStatusPopUp(transaction: historyTransaction)
                   case .failure(let error):
-                    self.navigationController.showTopBannerView(message: error.localizedDescription)
+                    self.showErrorMessage(error, viewController: self.navigationController)
                   }
                 }
               case .failure(let error):
