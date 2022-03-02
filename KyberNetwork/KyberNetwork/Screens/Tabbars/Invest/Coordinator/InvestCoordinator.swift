@@ -197,6 +197,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openDappBrowserScreen()
     case .multiSend:
       self.multiSendCoordinator.start()
+      KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
     }
   }
 }

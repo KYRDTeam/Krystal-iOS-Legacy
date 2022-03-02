@@ -32,7 +32,6 @@ struct MultiSendCellModelStorage: Codable {
   let availableAmount: String
   let isSendAllBalanace: Bool
   let gasFee: String
-  
 }
 
 class MultiSendCellModel {

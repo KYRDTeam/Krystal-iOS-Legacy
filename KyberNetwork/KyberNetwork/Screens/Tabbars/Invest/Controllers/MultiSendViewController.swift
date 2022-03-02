@@ -346,6 +346,7 @@ extension MultiSendViewController: MultiSendCellDelegate {
       self.viewModel.cellModels.append(element)
       self.updateAvailableBalanceForToken(element.from)
       self.updateUIInputTableView()
+      KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_add_receiver", customAttributes: nil)
     case .searchToken(selectedToken: let selectedToken, cellIndex: let cellIndex):
       self.viewModel.updatingIndex = cellIndex
       self.delegate?.multiSendViewController(self, run: .searchToken(selectedToken: selectedToken))
@@ -355,11 +356,14 @@ extension MultiSendViewController: MultiSendCellDelegate {
     case .qrCode(cellIndex: let cellIndex):
       self.viewModel.updatingIndex = cellIndex
       self.openQRCode()
+      KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_barcode_scan", customAttributes: nil)
     case .openContact(cellIndex: let cellIndex):
       self.viewModel.updatingIndex = cellIndex
       self.delegate?.multiSendViewController(self, run: .openContactsList)
+      KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_contact_book", customAttributes: nil)
     case .addContact(address: let address):
       self.delegate?.multiSendViewController(self, run: .addContact(address: address))
+      
     }
   }
 }
@@ -376,6 +380,7 @@ extension MultiSendViewController: SwipeTableViewCellDelegate {
       self.viewModel.cellModels.last?.addButtonEnable = true
       self.viewModel.reloadDataSource()
       self.updateUIInputTableView()
+      KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_remove_receiver", customAttributes: nil)
     }
     delete.title = "delete".toBeLocalised().uppercased()
     delete.textColor = UIColor(named: "textWhiteColor")
