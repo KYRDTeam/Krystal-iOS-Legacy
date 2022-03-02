@@ -7,11 +7,12 @@
 
 import UIKit
 import BigInt
+import SwiftUI
 
 enum MultiSendApproveViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
-  case approve(items: [MultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting)
+  case approve(items: [ApproveMultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting)
   case done
 }
 
@@ -26,7 +27,7 @@ class MultiSendApproveViewModel {
   fileprivate(set) var baseGasLimit: BigInt
   
   fileprivate(set) var tokens: [Token]
-  fileprivate(set) var items: [MultiSendItem]
+  fileprivate(set) var items: [ApproveMultiSendItem]
   
   var cellModels: [ApproveTokenCellModel]
   var isApproveUnlimit: Bool = false
@@ -69,10 +70,10 @@ class MultiSendApproveViewModel {
     }
   }
   
-  init(items: [MultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault) {
+  init(items: [ApproveMultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault) {
     self.items = items
     self.tokens = items.map({ item in
-      return item.2
+      return item.1
     })
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
@@ -87,7 +88,8 @@ class MultiSendApproveViewModel {
     let fee: BigInt = {
       return self.gasPrice * self.gasLimit
     }()
-    let feeString: String = fee.displayRate(decimals: 18)
+    let total = fee * BigInt(self.items.count)
+    let feeString: String = total.displayRate(decimals: 18)
     return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
 
@@ -95,9 +97,9 @@ class MultiSendApproveViewModel {
     let fee: BigInt = {
       return self.gasPrice * self.gasLimit
     }()
-
+    let total = fee * BigInt(self.items.count)
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
-    let usd = fee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let usd = total * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String = usd.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
@@ -108,7 +110,8 @@ class MultiSendApproveViewModel {
       maxFractionDigits: 1
     )
     let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
-    let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
+    let countText = "\(self.items.count)"
+    let labelText = String(format: NSLocalizedString("%@ * %@ (Gas Price) * %@ (Gas Limit)", comment: ""), countText, gasPriceText, gasLimitText)
     return labelText
   }
   
@@ -282,9 +285,9 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.viewModel.resetAdvancedSettings()
   }
   
-  func coordinatorDidUpdateApprove(_ item: MultiSendItem) {
+  func coordinatorDidUpdateApprove(_ item: ApproveMultiSendItem) {
     let cm = self.viewModel.cellModels.first { model in
-      return item.2 == model.token
+      return item.1 == model.token
     }
     cm?.state = .done
     self.tokensTableView.reloadData()

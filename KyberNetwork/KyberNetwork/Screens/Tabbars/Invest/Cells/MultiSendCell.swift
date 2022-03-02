@@ -121,7 +121,7 @@ class MultiSendCellModel {
   }
   
   var isBalanceVaild: Bool {
-    return self.amountBigInt <= self.availableAmount
+    return self.availableAmount >= 0
   }
   
   var isCellFormValid: ValidStatus {

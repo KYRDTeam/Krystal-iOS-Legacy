@@ -11,6 +11,7 @@ import QRCodeReaderViewController
 import BigInt
 
 typealias MultiSendItem = (String, BigInt, Token)
+typealias ApproveMultiSendItem = (BigInt, Token)
 
 
 enum MultiSendViewControllerEvent {
@@ -160,6 +161,7 @@ class MultiSendViewController: KNBaseViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
+    self.view.endEditing(true)
     if case .error(let description) = self.viewModel.isFormValid {
       self.showErrorTopBannerMessage(message: description)
     } else {
