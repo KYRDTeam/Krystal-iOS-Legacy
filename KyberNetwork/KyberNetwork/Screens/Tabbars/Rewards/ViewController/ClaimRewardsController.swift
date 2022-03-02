@@ -170,7 +170,7 @@ class ClaimRewardsController: KNBaseViewController {
     updateUI()
     setupTimer()
   }
-  
+
   fileprivate func setupTimer() {
     self.countdownTimer.lineWidth = 2
     self.countdownTimer.lineColor = UIColor(named: "buttonBackgroundColor")!

@@ -10,6 +10,7 @@ import UIKit
 enum BuyCryptoEvent {
   case openHistory
   case openWalletsList
+  case updateRate
   case buyCrypto
 }
 
@@ -18,21 +19,37 @@ protocol BuyCryptoViewControllerDelegate: class {
 }
 
 class BuyCryptoViewModel {
-  var wallet: Wallet?
+  var wallet: Wallet
+  init(wallet: Wallet) {
+    self.wallet = wallet
+  }
 }
 
 class BuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   weak var delegate: BuyCryptoViewControllerDelegate?
-  let viewModel = BuyCryptoViewModel()
+  let transitor = TransitionDelegate()
+  let viewModel: BuyCryptoViewModel
+  
+  init(viewModel: BuyCryptoViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: BuyCryptoViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+    self.transitioningDelegate = transitor
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.updateUI()
   }
   
   func updateUI() {
-    self.walletsListButton.setTitle(self.viewModel.wallet?.address.description, for: .normal)
+    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
   }
   
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
@@ -53,7 +70,11 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBAction func walletsListButtonTapped(_ sender: UIButton) {
     self.delegate?.buyCryptoViewController(self, run: .openWalletsList)
   }
-
+  
+  @IBAction func updateRateButtonTapped(_ sender: Any) {
+    self.delegate?.buyCryptoViewController(self, run: .updateRate)
+  }
+  
   @IBAction func buyNowButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .buyCrypto)
   }

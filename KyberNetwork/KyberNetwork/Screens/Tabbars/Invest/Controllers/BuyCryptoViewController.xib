@@ -41,12 +41,12 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wj-lu-1R1">
-                            <rect key="frame" x="265" y="59.5" width="94" height="32"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wj-lu-1R1">
+                            <rect key="frame" x="249" y="59.5" width="110" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="CTF-45-Ile"/>
-                                <constraint firstAttribute="width" constant="94" id="pAJ-1S-yFV"/>
+                                <constraint firstAttribute="width" constant="110" id="pAJ-1S-yFV"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -248,6 +248,9 @@
                         <constraint firstAttribute="width" constant="16" id="yAy-D6-tVS"/>
                     </constraints>
                     <state key="normal" image="refresh_icon"/>
+                    <connections>
+                        <action selector="updateRateButtonTapped:" destination="-1" eventType="touchUpInside" id="PIq-e1-2eJ"/>
+                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recipient Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1X-Bo-353">
                     <rect key="frame" x="49" y="375" width="132" height="24"/>

@@ -27,7 +27,8 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   lazy var rootViewController: BuyCryptoViewController = {
-    let controller = BuyCryptoViewController()
+    let viewModel = BuyCryptoViewModel(wallet: self.session.wallet)
+    let controller = BuyCryptoViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
   }()
@@ -77,6 +78,8 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     case .openHistory:
       self.openHistoryScreen()
     case .openWalletsList:
+      self.openWalletListView()
+    case .updateRate:
       self.openWalletListView()
     case .buyCrypto:
       self.buyCrypto()
