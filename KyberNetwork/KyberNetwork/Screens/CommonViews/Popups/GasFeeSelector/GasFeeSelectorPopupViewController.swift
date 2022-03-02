@@ -600,7 +600,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func maxPriorityFeeChangeAmountButtonTapped(_ sender: UIButton) {
     let isIncrease = sender.tag == 1
-    var currentValue = self.advancedPriorityFeeField.text?.doubleValue ?? 0.0
+    var currentValue = self.advancedPriorityFeeField.text?.doubleValueWithDynamicSeparator ?? 0.0
     if isIncrease {
       currentValue += 0.5
     } else {
@@ -615,7 +615,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
 
   @IBAction func maxGasFeeChangeAmountButtonTapped(_ sender: UIButton) {
     let isIncrease = sender.tag == 1
-    var currentValue = self.advancedMaxFeeField.text?.doubleValue ?? 0.0
+    var currentValue = self.advancedMaxFeeField.text?.doubleValueWithDynamicSeparator ?? 0.0
     if isIncrease {
       currentValue += 0.5
     } else {
