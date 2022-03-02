@@ -150,6 +150,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
           } else {
             self.requestBuildTx(items: items) { object in
               self.processingTx = object
+              self.processingTx?.nonce = nonceStr
               self.navigationController.hideLoading()
               self.openConfirmView(items: items, txObject: object)
             }
@@ -743,6 +744,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
         return
       }
+      
       guard let tx = self.processingTx else { return }
       self.rootViewController.coordinatorDidConfirmTx()
       self.navigationController.displayLoading()
