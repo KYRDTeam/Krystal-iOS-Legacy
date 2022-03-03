@@ -12,7 +12,7 @@ import SwiftUI
 enum MultiSendApproveViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case dismiss
-  case approve(items: [ApproveMultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting)
+  case approve(items: [ApproveMultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting, estNoTx: Int)
   case done
 }
 
@@ -253,7 +253,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   @IBAction func approveButtonTapped(_ sender: UIButton) {
     self.viewModel.updateStartApprove()
     self.tokensTableView.reloadData()
-    self.delegate?.multiSendApproveVieController(self, run: .approve(items: self.viewModel.items, isApproveUnlimit: self.viewModel.isApproveUnlimit, settings: self.viewModel.customSetting))
+    self.delegate?.multiSendApproveVieController(self, run: .approve(items: self.viewModel.items, isApproveUnlimit: self.viewModel.isApproveUnlimit, settings: self.viewModel.customSetting, estNoTx: self.viewModel.estNoTx))
   }
   
   @IBAction func checkBox1Tapped(_ sender: UIButton) {

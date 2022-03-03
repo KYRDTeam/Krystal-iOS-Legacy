@@ -53,6 +53,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   
   var approvingItems: [ApproveMultiSendItem] = []
   var allowance: [Token: BigInt] = [:]
+  var approveRequestCountDown = 0
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -363,7 +364,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     case .dismiss:
       self.approveVC = nil
     
-    case .approve(items: let items, isApproveUnlimit: let isApproveUnlimit, settings: let setting):
+    case .approve(items: let items, isApproveUnlimit: let isApproveUnlimit, settings: let setting, estNoTx: let noTx):
       guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
         return
       }
@@ -374,7 +375,9 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.getLatestNonce { nonceResult in
         switch nonceResult {
         case .success(let nonce):
+          self.approveRequestCountDown = noTx
           self.buildApproveDataList(items: items, isApproveUnlimit: isApproveUnlimit) { dataList in
+            guard dataList.count == noTx else { return }
             var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
             var legacyTxs: [(ApproveMultiSendItem, SignTransaction)] = []
             for (index, element) in dataList.enumerated() {
@@ -388,8 +391,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 legacyTxs.append((item, tx))
               }
             }
-            print(eipTxs)
-            print(legacyTxs)
             
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
@@ -398,7 +399,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                   controller.hideLoading()
                   return
                 }
-                
               }
             } else if !legacyTxs.isEmpty {
               self.sendLegacyTxs(legacyTxs) { remaining in
@@ -488,6 +488,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
     }
+    guard approveRequestCountDown == txs.count else { return }
     var signedData: [(ApproveMultiSendItem, EIP1559Transaction, Data)] = []
     txs.forEach { element in
       if let data = provider.signContractGenericEIP1559Transaction(element.1) {
@@ -509,16 +510,17 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           historyTx.time = Date()
           historyTx.nonce = Int(txData.1.nonce) ?? 0
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-          
         case .failure( _):
           unApproveItem.append(txData.0)
         }
-
+        self.approveRequestCountDown -= 1
         group.leave()
       })
+      
     }
-    
+    group.wait()
     group.notify(queue: .main) {
+      guard self.approveRequestCountDown == 0 else { return }
       completion(unApproveItem)
     }
   }
@@ -528,6 +530,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
     }
+    guard approveRequestCountDown == txs.count else { return }
     let group = DispatchGroup()
     var signedData: [(ApproveMultiSendItem, SignTransaction, Data)] = []
     txs.forEach { element in
@@ -547,12 +550,12 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       signedData.forEach { txData in
         sendGroup.enter()
         let item = txData.0
-        print("[Debug] \(txData.2.hexEncoded)")
+
         KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
           switch sendResult {
           case .success(let hash):
             let message = item.0.isZero ? "Reset \(item.1.name) approval" : "Approve \(item.1.name)"
-            let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx:nil )
+            let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx: nil )
             historyTx.hash = hash
             historyTx.time = Date()
             historyTx.nonce = txData.1.nonce
@@ -561,13 +564,14 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           case .failure( _):
             unApproveItem.append(txData.0)
           }
-          
+          self.approveRequestCountDown -= 1
           sendGroup.leave()
         })
         sendGroup.wait()
       }
 
       sendGroup.notify(queue: .main) {
+        guard self.approveRequestCountDown == 0 else { return }
         completion(unApproveItem)
       }
     }
