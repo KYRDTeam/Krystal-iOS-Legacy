@@ -53,6 +53,12 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     return controller
   }()
 
+  lazy var multiSendCoordinator: MultiSendCoordinator = {
+    let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self.delegate
+    return coordinator
+  }()
+
   deinit {
     self.rootViewController?.removeObserveNotification()
   }
@@ -147,6 +153,7 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       return true
@@ -156,14 +163,17 @@ extension KNSendTokenViewCoordinator {
   
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController?.coordinatorDidUpdatePendingTx()
+    self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.rootViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
   }
 
   func appCoordinatorDidUpdateChain() {
     self.rootViewController?.coordinatorDidUpdateChain()
+    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -270,6 +280,9 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           self.rootViewController?.coordinatorFailedToUpdateEstimateGasLimit()
         }
       }
+    case .openMultiSend:
+      self.multiSendCoordinator.start()
+      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_multiple_transfer", customAttributes: nil)
     }
   }
 
@@ -599,36 +612,7 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.gasPriceSelector = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimitBigInt, selectType: .custom)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isCancelMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-        self.gasPriceSelector = vc
-      }
-    } else {
-      let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
-      let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
-      confirmPopup.delegate = self
-      self.navigationController.present(confirmPopup, animated: true, completion: nil)
-    }
-    */
+    
   }
 }
 

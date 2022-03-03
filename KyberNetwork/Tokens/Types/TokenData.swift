@@ -26,6 +26,14 @@ class Token: Codable, Equatable, Hashable {
       self.tag = tag
     }
   }
+  
+  static func blankToken() -> Token {
+    return Token(name: "Search Token", symbol: "Search Token", address: "", decimals: 0, logo: "")
+  }
+  
+  func isBlank() -> Bool {
+    return self.address == ""
+  }
 
   init(name: String, symbol: String, address: String, decimals: Int, logo: String) {
     self.name = name
@@ -37,6 +45,30 @@ class Token: Codable, Equatable, Hashable {
 
   var isETH: Bool {
     return self.symbol == "ETH"
+  }
+  
+  var isBNB: Bool {
+    return self.address.lowercased() == Constants.bnbAddress.lowercased()
+  }
+
+  var isMatic: Bool {
+    return self.address.lowercased() == Constants.maticAddress.lowercased()
+  }
+
+  var isAvax: Bool {
+    return self.address.lowercased() == Constants.avaxAddress.lowercased()
+  }
+
+  var isCro: Bool {
+    return self.address.lowercased() == Constants.cronosAddress.lowercased()
+  }
+
+  var isFtm: Bool {
+    return self.address.lowercased() == Constants.fantomAddress.lowercased()
+  }
+
+  var isQuoteToken: Bool {
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro
   }
 
   func toObject(isCustom: Bool = false) -> TokenObject {
@@ -190,11 +222,6 @@ class Token: Codable, Equatable, Hashable {
     let valueBigInt = self.getBalanceBigInt() * rateBigInt / BigInt(10).power(self.decimals)
     return valueBigInt
   }
-  
-//  func getValueUSDString() -> String {
-//    let valueString = self.getValueBigInt().string(decimals: 18, minFractionDigits: 0, maxFractionDigits: min(self.decimals, 6))
-//    return "$" + valueString
-//  }
 }
 
 class TokenBalance: Codable {

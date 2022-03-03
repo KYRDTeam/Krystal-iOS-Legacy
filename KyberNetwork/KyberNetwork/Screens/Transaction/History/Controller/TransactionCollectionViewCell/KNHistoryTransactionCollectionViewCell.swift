@@ -347,6 +347,15 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "Receive NFT"
     case .claimReward:
       return "Claim Reward"
+    case .multiSend:
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        let valueBigInt = BigInt(outTx.value) ?? BigInt(0)
+        let valueString = valueBigInt.string(decimals: Int(outTx.tokenDecimal) ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+        return "- \(valueString) \(outTx.tokenSymbol)"
+      }
+      return ""
     }
   }
 
@@ -459,6 +468,13 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return ""
     case .claimReward:
       return "Claim reward"
+    case .multiSend:
+      if let outTx = self.data.tokenTransactions.first { (transaction) -> Bool in
+        return transaction.from.lowercased() == self.data.wallet
+      } {
+        return "To: \(outTx.to)"
+      }
+      return ""
     }
   }
   
@@ -492,6 +508,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return "RECEIVED"
     case .claimReward:
       return "CLAIM REWARD"
+    case .multiSend:
+      return "MULTISEND"
     }
   }
 
@@ -535,6 +553,8 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
       return UIImage(named: "history_receive_icon")!
     case .claimReward:
       return UIImage(named: "history_claim_reward_icon")!
+    case .multiSend:
+      return UIImage(named: "multiSend_icon")!
     }
   }
 
@@ -626,6 +646,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return "RECEIVED"
     case .claimReward:
       return "CLAIM REWARD"
+    case .multiSend:
+      return "MULTISEND"
     }
   }
 
@@ -665,6 +687,8 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
       return UIImage(named: "history_send_icon")!
     case .receiveNFT:
       return UIImage(named: "history_receive_icon")!
+    case .multiSend:
+      return UIImage(named: "multiSend_icon")!
     case .claimReward:
       return UIImage(named: "history_claim_reward_icon")!
     }

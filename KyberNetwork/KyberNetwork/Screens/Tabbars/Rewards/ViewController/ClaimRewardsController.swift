@@ -125,7 +125,7 @@ class ClaimRewardsViewModel {
     if let unwrap = self.advancedNonce, let unwrapInt = Int(unwrap) {
       nonce = BigInt(unwrapInt).hexEncoded
     }
-    return TxObject(from: self.txObject.from, to: self.txObject.to, data: self.txObject.data, value: self.txObject.value, gasPrice: self.gasPrice.hexEncoded, nonce: nonce, gasLimit: self.gasLimit.hexEncoded)
+    return TxObject(nonce: nonce, from: self.txObject.from, to: self.txObject.to, data: self.txObject.data, value: self.txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: self.gasLimit.hexEncoded)
   }
 }
 

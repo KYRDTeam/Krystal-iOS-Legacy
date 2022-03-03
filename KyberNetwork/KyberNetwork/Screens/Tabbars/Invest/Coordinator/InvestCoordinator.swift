@@ -35,6 +35,12 @@ class InvestCoordinator: Coordinator {
     return controller
   }()
   
+  lazy var multiSendCoordinator: MultiSendCoordinator = {
+    let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    return coordinator
+  }()
+  
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
     self.session = session
@@ -146,6 +152,7 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
@@ -153,12 +160,14 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
@@ -167,6 +176,7 @@ class InvestCoordinator: Coordinator {
     self.loadMarketAssets()
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
+    self.multiSendCoordinator.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -185,6 +195,9 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openKrytalView()
     case .dapp:
       self.openDappBrowserScreen()
+    case .multiSend:
+      self.multiSendCoordinator.start()
+      KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
     }
   }
 }

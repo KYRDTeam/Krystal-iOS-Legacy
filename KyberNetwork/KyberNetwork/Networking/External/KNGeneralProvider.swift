@@ -745,7 +745,7 @@ class KNGeneralProvider {
   }
 
   func getAllowance(for address: Address, networkAddress: Address, tokenAddress: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
-    if tokenAddress == Address(string: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
+    if tokenAddress == Address(string: KNGeneralProvider.shared.quoteTokenObject.address) {
       // ETH no need to request for approval
       completion(.success(BigInt(2).power(255)))
       return
@@ -1135,7 +1135,7 @@ class KNGeneralProvider {
     }
   }
 
-  private func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
+  func sendRawTransactionWithInfura(_ data: Data, completion: @escaping (Result<String, AnyError>) -> Void) {
     let batch = BatchFactory().create(SendRawTransactionRequest(signedTransaction: data.hexEncoded))
     let request = EtherServiceRequest(batch: batch)
     Session.send(request) { result in
@@ -1309,7 +1309,7 @@ extension KNGeneralProvider {
     }
   }
 
-  fileprivate func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
+ func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
       value: value

@@ -885,6 +885,7 @@ enum KrytalService {
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
+  case buildMultiSendTx(sender: String, items: [MultiSendItem])
 }
 
 extension KrytalService: TargetType {
@@ -989,12 +990,14 @@ extension KrytalService: TargetType {
       return "/v1/account/totalBalances"
     case .getGasPrice2:
       return "/v1/gasPrice"
+    case .buildMultiSendTx:
+      return "/v1/transfer/buildMultisendTx"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx:
       return .post
     default:
       return .get
@@ -1261,6 +1264,22 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice2:
       return .requestPlain
+    case .buildMultiSendTx(sender: let sender, items: let items):
+      var json: JSONDictionary = [
+        "senderAddress": sender,
+      ]
+      var sendParams: [JSONDictionary] = []
+      items.forEach { element in
+        let dict = [
+          "amount": element.1.description,
+          "toAddress": element.0,
+          "tokenAddress": element.2.address
+        ]
+        sendParams.append(dict)
+      }
+      json["sends"] = sendParams
+
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
 

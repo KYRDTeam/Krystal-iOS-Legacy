@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -413,6 +413,16 @@
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJz-eg-oar">
+                            <rect key="frame" x="37" y="0.0" width="75" height="29"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
+                            <state key="normal" title="Multi-Send">
+                                <color key="titleColor" name="buttonBackgroundColor"/>
+                            </state>
+                            <connections>
+                                <action selector="multiSendButtonTapped:" destination="-1" eventType="touchUpInside" id="Wat-Ro-iDp"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -439,9 +449,11 @@
                         <constraint firstItem="14E-V1-lPT" firstAttribute="centerX" secondItem="ibe-Tm-lI1" secondAttribute="centerX" id="aGv-AL-CHN"/>
                         <constraint firstItem="LPD-AZ-ZYy" firstAttribute="top" secondItem="ibe-Tm-lI1" secondAttribute="top" constant="40" id="cCp-M1-e9r"/>
                         <constraint firstItem="ETA-RM-rZR" firstAttribute="leading" secondItem="DwD-Od-9c0" secondAttribute="leading" id="dEq-ln-Yvy"/>
+                        <constraint firstItem="CJz-eg-oar" firstAttribute="leading" secondItem="ibe-Tm-lI1" secondAttribute="leading" constant="37" id="dvL-q8-aJj"/>
                         <constraint firstItem="ETA-RM-rZR" firstAttribute="top" secondItem="DwD-Od-9c0" secondAttribute="bottom" constant="54" id="hGc-XH-Nj4"/>
                         <constraint firstItem="LQy-gu-Ayb" firstAttribute="leading" secondItem="ibe-Tm-lI1" secondAttribute="leading" constant="37" id="iby-9n-CZ5"/>
                         <constraint firstItem="5nF-2S-cLG" firstAttribute="leading" secondItem="ibe-Tm-lI1" secondAttribute="leading" constant="37" id="kHw-j4-ZHG"/>
+                        <constraint firstItem="CJz-eg-oar" firstAttribute="top" secondItem="ibe-Tm-lI1" secondAttribute="top" id="m1l-6a-b0C"/>
                         <constraint firstItem="DwD-Od-9c0" firstAttribute="leading" secondItem="ibe-Tm-lI1" secondAttribute="leading" constant="37" id="nFm-KJ-abk"/>
                         <constraint firstItem="SFJ-lO-7Sq" firstAttribute="leading" secondItem="ibe-Tm-lI1" secondAttribute="leading" constant="37" id="ohx-vz-2VT"/>
                         <constraint firstItem="JEX-Cb-Srl" firstAttribute="centerY" secondItem="ptb-lV-g0l" secondAttribute="centerY" id="tm4-jz-HhD"/>
