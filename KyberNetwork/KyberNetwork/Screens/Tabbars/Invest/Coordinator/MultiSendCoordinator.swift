@@ -762,7 +762,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
         minFractionDigits: 0,
         maxFractionDigits: 5
       )
-      let valueText = "\(valueString) \(KNGeneralProvider.shared.quoteToken)"
+      let valueText = "- \(valueString) \(KNGeneralProvider.shared.quoteToken)"
       let toAddress = tx.to
       self.rootViewController.coordinatorDidConfirmTx()
       self.navigationController.displayLoading()
