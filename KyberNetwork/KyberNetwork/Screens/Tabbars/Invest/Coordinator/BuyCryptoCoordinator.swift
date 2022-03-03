@@ -8,6 +8,27 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 import Moya
+import Darwin
+
+// MARK: - FiatCryptoModel
+struct FiatCryptoResponse: Codable {
+  let timestamp: Int
+  let data: [FiatCryptoModel]
+}
+
+struct FiatCryptoModel: Codable {
+  let cryptoCurrency: String
+  let fiatCurrency: String
+  let maxLimit: Double
+  let minLimit: Double
+  let quotation: Double
+  let networks: [String]
+}
+
+struct FiatModel: Codable {
+  let url: String
+  let currency: String
+}
 
 protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
@@ -41,6 +62,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
+    self.loadFiatPair()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
@@ -59,15 +81,16 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       case .success(let resp):
         let decoder = JSONDecoder()
         do {
-          let data = try decoder.decode(ReferralTiers.self, from: resp.data)
+          let responseData = try decoder.decode(FiatCryptoResponse.self, from: resp.data)
+          self.rootViewController.coordinatorDidUpdateFiatCrypto(data: responseData.data)
         } catch let error {
-          print("[Invest] \(error.localizedDescription)")
+          print("[Load Fiat] \(error.localizedDescription)")
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.loadFiatPair()
           }
         }
       case .failure(let error):
-        print("[Invest] \(error.localizedDescription)")
+        print("[Load Fiat] \(error.localizedDescription)")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
           self.loadFiatPair()
         }
@@ -88,9 +111,13 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
       self.openWalletListView()
     case .buyCrypto:
       self.buyCrypto()
+    case .selectFiat(fiat: let fiatModels):
+      self.selectFiat(fiat: fiatModels)
+    case .selectCrypto(crypto: let cryptoModels):
+      self.selectCrypto(crypto: cryptoModels)
     }
   }
-  
+
   fileprivate func openHistoryScreen() {
     self.delegate?.buyCryptoCoordinatorOpenHistory()
   }
@@ -104,10 +131,22 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)
   }
-  
+
   fileprivate func buyCrypto() {
     let confirmVC = ConfirmBuyCryptoViewController()
     self.navigationController.present(confirmVC, animated: true, completion: nil)
+  }
+
+  fileprivate func selectFiat(fiat: [FiatModel]) {
+    let viewModel = SearchFiatCryptoViewModel(dataSource: fiat)
+    let selectFiatVC = SearchFiatCryptoViewController(viewModel: viewModel)
+    self.navigationController.present(selectFiatVC, animated: true, completion: nil)
+  }
+
+  fileprivate func selectCrypto(crypto: [FiatModel]) {
+    let viewModel = SearchFiatCryptoViewModel(dataSource: crypto)
+    let selectFiatVC = SearchFiatCryptoViewController(viewModel: viewModel)
+    self.navigationController.present(selectFiatVC, animated: true, completion: nil)
   }
 }
 
