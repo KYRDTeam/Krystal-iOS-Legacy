@@ -54,6 +54,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   var approvingItems: [ApproveMultiSendItem] = []
   var allowance: [Token: BigInt] = [:]
   var approveRequestCountDown = 0
+  var isRequestingApprove = false
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -376,6 +377,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         switch nonceResult {
         case .success(let nonce):
           self.approveRequestCountDown = noTx
+          self.isRequestingApprove = false
           self.buildApproveDataList(items: items, isApproveUnlimit: isApproveUnlimit) { dataList in
             guard dataList.count == noTx else { return }
             var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
@@ -488,7 +490,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
     }
-    guard approveRequestCountDown == txs.count else { return }
+    guard approveRequestCountDown == txs.count, !self.isRequestingApprove else { return }
+    self.isRequestingApprove = true
     var signedData: [(ApproveMultiSendItem, EIP1559Transaction, Data)] = []
     txs.forEach { element in
       if let data = provider.signContractGenericEIP1559Transaction(element.1) {
@@ -521,6 +524,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     group.wait()
     group.notify(queue: .main) {
       guard self.approveRequestCountDown == 0 else { return }
+      self.isRequestingApprove = false
       completion(unApproveItem)
     }
   }
@@ -530,7 +534,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
     }
-    guard approveRequestCountDown == txs.count else { return }
     let group = DispatchGroup()
     var signedData: [(ApproveMultiSendItem, SignTransaction, Data)] = []
     txs.forEach { element in
@@ -545,6 +548,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       group.wait()
     }
     group.notify(queue: .global()) {
+      guard self.approveRequestCountDown == txs.count, !self.isRequestingApprove else { return }
+      self.isRequestingApprove = true
       let sendGroup = DispatchGroup()
       var unApproveItem: [ApproveMultiSendItem] = []
       signedData.forEach { txData in
@@ -572,6 +577,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
 
       sendGroup.notify(queue: .main) {
         guard self.approveRequestCountDown == 0 else { return }
+        self.isRequestingApprove = false
         completion(unApproveItem)
       }
     }
