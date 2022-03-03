@@ -124,9 +124,10 @@ class MultiSendApproveViewModel {
       units: .gwei,
       maxFractionDigits: 1
     )
-    let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
-    let countText = "\(self.estNoTx)"
-    let labelText = String(format: NSLocalizedString("%@ * %@ (Gas Price) * %@ (Gas Limit)", comment: ""), countText, gasPriceText, gasLimitText)
+    let totalGasLimit = BigInt(self.estNoTx) * self.gasLimit
+    let gasLimitText = EtherNumberFormatter.short.string(from: totalGasLimit, decimals: 0)
+    
+    let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
   
@@ -280,6 +281,14 @@ class MultiSendApproveViewController: KNBaseViewController {
     })
   }
 
+  @IBAction func helpButtonTapped(_ sender: UIButton) {
+    self.showBottomBannerView(
+      message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
+      icon: UIImage(named: "help_icon_large") ?? UIImage(),
+      time: 3
+    )
+  }
+  
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
     self.viewModel.advancedGasLimit = gasLimit
     self.viewModel.advancedMaxPriorityFee = maxPriorityFee

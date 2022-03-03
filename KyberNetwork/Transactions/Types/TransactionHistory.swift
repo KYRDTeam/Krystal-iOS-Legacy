@@ -490,6 +490,8 @@ enum HistoryModelType: Codable {
       self = .receiveNFT
     case 13:
       self = .claimReward
+    case 14:
+      self = .multiSend
     default:
       throw CodingError.unknownValue
     }
@@ -526,6 +528,8 @@ enum HistoryModelType: Codable {
       try container.encode(12, forKey: .rawValue)
     case .claimReward:
       try container.encode(13, forKey: .rawValue)
+    case .multiSend:
+      try container.encode(14, forKey: .rawValue)
     }
   }
 
@@ -543,6 +547,7 @@ enum HistoryModelType: Codable {
   case transferNFT
   case receiveNFT
   case claimReward
+  case multiSend
 
   static func typeFromInput(_ input: String) -> HistoryModelType {
     guard !input.isEmpty, input != "0x"  else {

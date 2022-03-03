@@ -229,6 +229,14 @@ class MultiSendConfirmViewController: KNBaseViewController {
   @IBAction func showAddressButtonTapped(_ sender: UIButton) {
   }
   
+  @IBAction func helpButtonTapped(_ sender: UIButton) {
+    self.showBottomBannerView(
+      message: "The.actual.cost.of.the.transaction.is.generally.lower".toBeLocalised(),
+      icon: UIImage(named: "help_icon_large") ?? UIImage(),
+      time: 3
+    )
+  }
+
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true) {
       self.delegate?.multiSendConfirmVieController(self, run: .dismiss)

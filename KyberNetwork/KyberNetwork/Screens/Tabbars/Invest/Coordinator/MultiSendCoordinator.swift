@@ -756,6 +756,14 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       }
       
       guard let tx = self.processingTx else { return }
+      let valueBigInt = BigInt(tx.value.drop0x, radix: 16) ?? BigInt.zero
+      let valueString = valueBigInt.string(
+        decimals: 18,
+        minFractionDigits: 0,
+        maxFractionDigits: 5
+      )
+      let valueText = "\(valueString) \(KNGeneralProvider.shared.quoteToken)"
+      let toAddress = tx.to
       self.rootViewController.coordinatorDidConfirmTx()
       self.navigationController.displayLoading()
       if KNGeneralProvider.shared.isUseEIP1559 {
@@ -767,7 +775,8 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
           self.navigationController.hideLoading()
           switch sendResult {
           case .success(let hash):
-            let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "MultiSend", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: tx)
+            
+            let historyTransaction = InternalHistoryTransaction(type: .multiSend, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: valueText, transactionDetailDescription: toAddress, transactionObj: nil, eip1559Tx: tx)
             historyTransaction.hash = hash
             historyTransaction.time = Date()
             historyTransaction.nonce = Int(tx.nonce.drop0x, radix: 16) ?? 0
@@ -790,7 +799,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                 KNGeneralProvider.shared.sendRawTransactionWithInfura(signedData.0) { sendResult in
                   switch sendResult {
                   case .success(let hash):
-                    let historyTransaction = InternalHistoryTransaction(type: .transferToken, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "MultiSend", transactionDetailDescription: "", transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
+                    let historyTransaction = InternalHistoryTransaction(type: .multiSend, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: valueText, transactionDetailDescription: toAddress, transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
                     historyTransaction.hash = hash
                     historyTransaction.time = Date()
                     historyTransaction.nonce = tx.nonce
