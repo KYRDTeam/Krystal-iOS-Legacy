@@ -13,11 +13,21 @@ enum AppproveState {
 }
 
 class ApproveTokenCellModel {
-  var token: Token
+  var item: ApproveMultiSendItem
   var state: AppproveState = .notStart
   
-  init(token: Token) {
-    self.token = token
+  init(item: ApproveMultiSendItem) {
+    self.item = item
+  }
+  
+  var displayTokenName: String {
+    let amtStr = self.item.0.string(
+      decimals: self.item.1.decimals,
+      minFractionDigits: 0,
+      maxFractionDigits: min(self.item.1.decimals, 5)
+    )
+    
+    return "\(amtStr) \(item.1.symbol)"
   }
 }
 
@@ -46,7 +56,7 @@ class ApproveTokenCell: UITableViewCell {
   }
   
   func updateCellModel(_ model: ApproveTokenCellModel) {
-    self.tokenNameLabel.text = model.token.name
+    self.tokenNameLabel.text = model.displayTokenName
     self.doneIconImgView.isHidden = model.state != .done
     
     switch model.state {

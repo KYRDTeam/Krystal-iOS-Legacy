@@ -257,7 +257,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   
   fileprivate func openApproveView(items: [ApproveMultiSendItem]) {
     guard self.approveVC == nil else { return }
-    let viewModel = MultiSendApproveViewModel(items: items)
+    let viewModel = MultiSendApproveViewModel(items: items, allowances: self.allowance)
     let controller = MultiSendApproveViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)

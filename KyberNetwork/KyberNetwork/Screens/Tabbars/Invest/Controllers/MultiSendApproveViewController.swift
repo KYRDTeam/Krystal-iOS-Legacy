@@ -70,7 +70,9 @@ class MultiSendApproveViewModel {
     }
   }
   
-  init(items: [ApproveMultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault) {
+  let allowance: [Token: BigInt]
+  
+  init(items: [ApproveMultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, allowances: [Token: BigInt]) {
     self.items = items
     self.tokens = items.map({ item in
       return item.1
@@ -78,17 +80,30 @@ class MultiSendApproveViewModel {
     self.gasPrice = gasPrice
     self.gasLimit = gasLimit
     self.baseGasLimit = gasLimit
-    let cms = tokens.map { element in
-      return ApproveTokenCellModel(token: element)
+    let cms = items.map { element in
+      return ApproveTokenCellModel(item: element)
     }
     self.cellModels = cms
+    self.allowance = allowances
   }
-  
+
+  lazy var estNoTx: Int = {
+    var count = 0
+    self.tokens.forEach { element in
+      if let remainAllowance = self.allowance[element], !remainAllowance.isZero {
+        count += 1
+      }
+      count += 1
+    }
+    
+    return count
+  }()
+
   var transactionFeeETHString: String {
     let fee: BigInt = {
       return self.gasPrice * self.gasLimit
     }()
-    let total = fee * BigInt(self.items.count)
+    let total = fee * BigInt(self.estNoTx)
     let feeString: String = total.displayRate(decimals: 18)
     return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
@@ -97,7 +112,7 @@ class MultiSendApproveViewModel {
     let fee: BigInt = {
       return self.gasPrice * self.gasLimit
     }()
-    let total = fee * BigInt(self.items.count)
+    let total = fee * BigInt(self.estNoTx)
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
     let usd = total * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String = usd.displayRate(decimals: 18)
@@ -110,7 +125,7 @@ class MultiSendApproveViewModel {
       maxFractionDigits: 1
     )
     let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
-    let countText = "\(self.items.count)"
+    let countText = "\(self.estNoTx)"
     let labelText = String(format: NSLocalizedString("%@ * %@ (Gas Price) * %@ (Gas Limit)", comment: ""), countText, gasPriceText, gasLimitText)
     return labelText
   }
@@ -287,7 +302,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   
   func coordinatorDidUpdateApprove(_ item: ApproveMultiSendItem) {
     let cm = self.viewModel.cellModels.first { model in
-      return item.1 == model.token
+      return item.1 == model.item.1
     }
     cm?.state = .done
     self.tokensTableView.reloadData()
