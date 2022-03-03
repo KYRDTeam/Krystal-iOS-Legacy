@@ -163,14 +163,14 @@ class KrytalViewController: KNBaseViewController {
 
   @IBAction func helpIconTapped(_ sender: UITapGestureRecognizer) {
     self.navigationController?.showBottomBannerView(message: "Ask your friends to download Krystal App using your Referral Codes. If they enter your Referral Codes when importing/creating their wallets in Krystal, both you and your friends can start earning Referral Rewards.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, linkAttached: " Learn more", tapHandler: {
-      self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
+      self.openSafari(with: "https://docs.krystal.app/krystal-defi/referral-program")
     })
   }
   @IBAction func bonusVolumeButtonTapped(_ sender: Any) {
     // display in BPS style
     let bonusRatio = (self.viewModel.referralOverViewData?.bonusRatio ?? 0) * 100 / 10000
     self.navigationController?.showBottomBannerView(message: "This is shared by your referrer. \(bonusRatio)% of your trading volume will be counted in the total referral volume.", icon: UIImage(named: "info_waring_blue_icon")!, time: 10, tapHandler: {
-      self.openSafari(with: "https://support.krystal.app/support/solutions/articles/47001181546-referral-program")
+      self.openSafari(with: "https://docs.krystal.app/krystal-defi/referral-program")
     })
   }
 }

@@ -317,6 +317,27 @@ class TokenPrice: Codable {
     self.ftm24hVol = quotes["ftm"]?.volume24H ?? 0.0
     self.ftm24hChange = quotes["ftm"]?.price24HChangePercentage ?? 0.0
   }
+  
+  func priceWithCurrency(currencyMode: CurrencyMode) -> Double {
+    switch currencyMode {
+      case .usd:
+        return self.usd
+      case .eth:
+        return self.eth
+      case .btc:
+        return self.btc
+      case .bnb:
+        return self.bnb
+      case .matic:
+        return self.matic
+      case .avax:
+        return self.avax
+      case .cro:
+        return self.cro
+      case .ftm:
+        return self.ftm
+    }
+  }
 }
 
 class FavedToken: Codable {

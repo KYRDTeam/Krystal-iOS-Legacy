@@ -76,7 +76,8 @@ class OverviewLiquidityPoolViewModel {
       total += tokenModel.getTokenValue(self.currency)
     }
     let currencyFormatter = StringFormatter()
-    return self.currency.symbol() + currencyFormatter.currencyString(value: total, decimals: self.currency.decimalNumber())
+    let valueString = currencyFormatter.currencyString(value: total, decimals: self.currency.decimalNumber())
+    return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
   }
 }
 

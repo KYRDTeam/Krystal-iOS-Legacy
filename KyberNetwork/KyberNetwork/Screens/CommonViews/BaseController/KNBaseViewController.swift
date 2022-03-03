@@ -2,12 +2,13 @@
 
 import UIKit
 
-class KNBaseViewController: UIViewController {
+class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     NSLog("Did present: \(self.className)")
   }
 

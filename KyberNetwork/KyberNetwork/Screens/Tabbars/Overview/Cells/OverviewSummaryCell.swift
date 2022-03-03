@@ -86,7 +86,7 @@ class OverviewSummaryCellViewModel {
     case .cronos:
       return "Cronos"
     default:
-      return ""
+      return "Unsupported"
     }
   }
 }

@@ -396,7 +396,7 @@ class KSwapViewController: KNBaseViewController {
     if self.viewModel.getRefPrice(from: self.viewModel.from, to: self.viewModel.to).isEmpty {
       message = " Missing price impact. Please swap with caution."
     } else {
-      message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
+      message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText, self.viewModel.refPriceSource)
     }
 
     self.showTopBannerView(
@@ -468,7 +468,6 @@ class KSwapViewController: KNBaseViewController {
   func coordinatorShouldShowSwitchChainPopup(chainId: Int) {
     var alertController: KNPrettyAlertController
     guard let chainType = self.viewModel.getChain(chainId: chainId), let chainName = self.viewModel.chainName(chainId: chainId) else {
-      self.navigationController?.showTopBannerView(message: "Can't detect chain (chainId = \(chainId))".toBeLocalised())
       return
     }
 

@@ -32,6 +32,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // OneSignal initialization
     OneSignal.initWithLaunchOptions(launchOptions)
     OneSignal.setAppId(KNEnvironment.default.notificationAppID)
+    let notificationOpenedBlock: OSNotificationOpenedBlock = { result in
+        // This block gets called when the user reacts to a notification received
+        let notification: OSNotification = result.notification
+        if let launchURL = notification.launchURL, let url = URL(string: launchURL), let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+          var parameters: [String: String] = [:]
+          components.queryItems?.forEach({ element in
+            parameters[element.name] = element.value
+          })
+          if components.path == "/swap" {
+            self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+          } else {
+            self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
+          }
+        }
+    }
+    OneSignal.setNotificationOpenedHandler(notificationOpenedBlock)
     
     // promptForPushNotifications will show the native iOS notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
@@ -127,8 +143,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     if components.path == "/swap" {
       self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+    } else {
+      self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }
-    
     return true
   }
 }

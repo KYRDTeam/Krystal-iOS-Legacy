@@ -82,12 +82,18 @@ class DappCoordinator: NSObject, Coordinator {
     self.browserViewController = vc
   }
 
-  func appCoordinatorDidUpdateChain() {
+  func appCoordinatorDidUpdateChain(isSwitchChain: Bool = true) {
     guard let topVC = self.navigationController.topViewController, topVC is BrowserViewController, let unwrap = self.browserViewController else { return }
     guard case .real(let account) = self.session.wallet.type else {
       self.navigationController.popViewController(animated: true, completion: nil)
       return
     }
+    if isSwitchChain {
+      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_chain", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.navTitleLabel.text ?? ""])
+    } else {
+      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_wallet", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.navTitleLabel.text ?? ""])
+    }
+    
     let url = unwrap.viewModel.url
     self.navigationController.popViewController(animated: false) {
       let vm = BrowserViewModel(url: url, account: account)
@@ -100,7 +106,7 @@ class DappCoordinator: NSObject, Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
-    self.appCoordinatorDidUpdateChain()
+    self.appCoordinatorDidUpdateChain(isSwitchChain: false)
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -780,7 +786,7 @@ extension DappCoordinator: KNTransactionStatusPopUpDelegate {
     case .cancel(let tx):
       self.openTransactionCancelConfirmPopUpFor(transaction: tx)
     case .goToSupport:
-      self.navigationController.openSafari(with: "https://support.krystal.app")
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

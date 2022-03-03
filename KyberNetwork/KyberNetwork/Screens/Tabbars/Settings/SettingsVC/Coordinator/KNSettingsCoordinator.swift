@@ -157,7 +157,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.passcodeCoordinator.delegate = self
       self.passcodeCoordinator.start()
     case .community:
-      let url = "https://support.krystal.app"
+      let url = "https://docs.krystal.app/"
       self.openCommunityURL(url)
     case .shareWithFriends:
       self.openShareWithFriends()

@@ -8,32 +8,14 @@
 import UIKit
 import BigInt
 
-enum CurrencyType {
-  case eth
-  case usd
-  case btc
-  
-  func toString() -> String {
-    switch self {
-    case .eth:
-      return "eth"
-    case .usd:
-      return "usd"
-    case .btc:
-      return "btc"
-    }
-  }
-}
-
 protocol OverviewViewController: class {
-  func viewControllerDidChangeCurrencyType(_ controller: OverviewViewController, type: CurrencyType)
   func coordinatorDidUpdateDidUpdateTokenList()
 }
 
 class OverviewDepositViewModel {
   var dataSource: [String: [OverviewDepositCellViewModel]] = [:]
   var sectionKeys: [String] = []
-  var currencyType: CurrencyType = .usd
+  var currencyType: CurrencyMode = .usd
   var hideBalanceStatus: Bool = false
   
   init() {
@@ -63,6 +45,9 @@ class OverviewDepositViewModel {
       viewModel.hideBalanceStatus = self.hideBalanceStatus
       self.dataSource["OTHER"] = [viewModel]
       self.sectionKeys.append("OTHER")
+    }
+    if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
+      self.currencyType = savedCurrencyMode
     }
   }
   
@@ -94,7 +79,7 @@ class OverviewDepositViewModel {
     }
     let valueBigInt = self.getTotalValueForSection(section)
     let totalString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    return self.currencyType == .usd ? "$" + totalString : totalString
+    return !self.currencyType.symbol().isEmpty ? self.currencyType.symbol() + totalString : totalString + self.currencyType.suffixSymbol()
   }
   
   var totalValueBigInt: BigInt {
@@ -110,14 +95,7 @@ class OverviewDepositViewModel {
       return "********"
     }
     let totalString = self.totalValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 2)
-    switch self.currencyType {
-    case .usd:
-      return "$" + totalString
-    case .eth:
-      return totalString + " ETH"
-    case .btc:
-      return totalString + " BTC"
-    }
+    return !self.currencyType.symbol().isEmpty ? self.currencyType.symbol() + totalString : totalString + self.currencyType.suffixSymbol()
   }
 }
 
@@ -180,14 +158,6 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
 
   @IBAction func supplyButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewDepositViewController(self, run: .depositMore)
-  }
-
-  func viewControllerDidChangeCurrencyType(_ controller: OverviewViewController, type: CurrencyType) {
-    guard type != self.viewModel.currencyType else {
-      return
-    }
-    self.viewModel.currencyType = type
-    self.reloadUI()
   }
 
   func coordinatorDidUpdateDidUpdateTokenList() {

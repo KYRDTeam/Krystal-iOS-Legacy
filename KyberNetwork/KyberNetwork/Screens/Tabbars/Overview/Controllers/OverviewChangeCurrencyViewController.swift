@@ -21,8 +21,10 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   var selected: CurrencyMode = .usd
   var completeHandle: ((CurrencyMode) -> Void)?
   
-  init(mode: CurrencyMode) {
-    self.selected = mode
+  init() {
+    if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
+      self.selected = savedCurrencyMode
+    }
     super.init(nibName: OverviewChangeCurrencyViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor

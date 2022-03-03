@@ -699,6 +699,13 @@ class KSwapViewModel {
     }
     return self.refPrice.2
   }
+  
+  var refPriceSource: String {
+    guard !self.refPrice.3.isEmpty else {
+      return ""
+    }
+    return "Reference.price.is.from".toBeLocalised() + self.refPrice.3.joined(separator: ", ") + "."
+  }
 
   var refPriceDiffText: String {
     guard !self.getRefPrice(from: self.from, to: self.to).isEmpty else {
