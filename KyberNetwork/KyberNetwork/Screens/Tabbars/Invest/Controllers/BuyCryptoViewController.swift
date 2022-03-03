@@ -12,6 +12,8 @@ enum BuyCryptoEvent {
   case openWalletsList
   case updateRate
   case buyCrypto
+  case selectFiat(fiat: [FiatModel])
+  case selectCrypto(crypto: [FiatModel])
 }
 
 protocol BuyCryptoViewControllerDelegate: class {
@@ -20,9 +22,13 @@ protocol BuyCryptoViewControllerDelegate: class {
 
 class BuyCryptoViewModel {
   var wallet: Wallet
+  var dataSource: [FiatCryptoModel]?
+  var fiatCurrency: [String]?
+  var cryptoCurrency: [String]?
   init(wallet: Wallet) {
     self.wallet = wallet
   }
+  
 }
 
 class BuyCryptoViewController: KNBaseViewController {
@@ -72,11 +78,29 @@ class BuyCryptoViewController: KNBaseViewController {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
   }
+  
+  func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
+    var fiatCurrency: [String] = []
+    var cryptoCurrency: [String] = []
+    
+    data.forEach { model in
+      if !fiatCurrency.contains(model.fiatCurrency) {
+        fiatCurrency.append(model.fiatCurrency)
+      }
+      
+      if !cryptoCurrency.contains(model.cryptoCurrency) {
+        cryptoCurrency.append(model.cryptoCurrency)
+      }
+    }
+    
+    self.viewModel.fiatCurrency = fiatCurrency
+    self.viewModel.cryptoCurrency = cryptoCurrency
+  }
 
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
   }
-  
+
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
     self.delegate?.buyCryptoViewController(self, run: .openHistory)
   }
@@ -91,5 +115,23 @@ class BuyCryptoViewController: KNBaseViewController {
   
   @IBAction func buyNowButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .buyCrypto)
+  }
+  
+  @IBAction func selectFiatButtonTapped(_ sender: Any) {
+    guard let fiatCurrency = self.viewModel.fiatCurrency else { return }
+    var fiatModels: [FiatModel] = []
+    fiatCurrency.forEach { item in
+      fiatModels.append(FiatModel(url: item, currency: item))
+    }
+    self.delegate?.buyCryptoViewController(self, run: .selectFiat(fiat: fiatModels))
+  }
+
+  @IBAction func selectCryptoButtonTapped(_ sender: Any) {
+    guard let cryptoCurrency = self.viewModel.cryptoCurrency else { return }
+    var cryptoModels: [FiatModel] = []
+    cryptoCurrency.forEach { item in
+      cryptoModels.append(FiatModel(url: item, currency: item))
+    }
+    self.delegate?.buyCryptoViewController(self, run: .selectCrypto(crypto: cryptoModels))
   }
 }

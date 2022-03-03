@@ -133,8 +133,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZA-pU-CFa">
                     <rect key="frame" x="38" y="169" width="338" height="42"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="30" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XJc-jH-CEY">
-                            <rect key="frame" x="16" y="0.0" width="46" height="42"/>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XJc-jH-CEY">
+                            <rect key="frame" x="16" y="0.0" width="239" height="42"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -144,9 +144,12 @@
                             <rect key="frame" x="271" y="0.0" width="59" height="42"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
-                            <state key="normal" title="VND">
+                            <state key="normal" title="USD">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="selectFiatButtonTapped:" destination="-1" eventType="touchUpInside" id="M8o-j1-jqT"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="JJW-iP-SAT">
                             <rect key="frame" x="312" y="18" width="10" height="6"/>
@@ -154,6 +157,7 @@
                     </subviews>
                     <color key="backgroundColor" name="toolbarBgColor"/>
                     <constraints>
+                        <constraint firstItem="F7o-xw-K6i" firstAttribute="leading" secondItem="XJc-jH-CEY" secondAttribute="trailing" constant="16" id="5Wq-Jw-4D2"/>
                         <constraint firstItem="F7o-xw-K6i" firstAttribute="centerY" secondItem="oZA-pU-CFa" secondAttribute="centerY" id="9Fq-YM-BCd"/>
                         <constraint firstAttribute="trailing" secondItem="JJW-iP-SAT" secondAttribute="trailing" constant="16" id="LiQ-nt-q6U"/>
                         <constraint firstItem="F7o-xw-K6i" firstAttribute="top" secondItem="oZA-pU-CFa" secondAttribute="top" id="RJ3-KO-b4S"/>
@@ -175,8 +179,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cle-yp-evp">
                     <rect key="frame" x="38" y="265" width="338" height="42"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="30" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UBk-f8-K1n">
-                            <rect key="frame" x="16" y="0.0" width="46" height="42"/>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UBk-f8-K1n">
+                            <rect key="frame" x="16" y="0.0" width="242" height="42"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -189,6 +193,10 @@
                             <state key="normal" title="ETH">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="selectCryptoButtonTapped:" destination="-1" eventType="touchUpInside" id="o0Y-fX-Sh9"/>
+                                <action selector="updateRateButtonTapped:" destination="-1" eventType="touchUpInside" id="mZI-fs-gjo"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="gUI-e7-Kwv">
                             <rect key="frame" x="312" y="18" width="10" height="6"/>
@@ -205,6 +213,7 @@
                         <constraint firstAttribute="bottom" secondItem="dr8-dP-RpK" secondAttribute="bottom" id="bZf-JJ-JMJ"/>
                         <constraint firstItem="gUI-e7-Kwv" firstAttribute="centerY" secondItem="cle-yp-evp" secondAttribute="centerY" id="fBf-9G-tqz"/>
                         <constraint firstAttribute="height" constant="42" id="mBu-dP-cnt"/>
+                        <constraint firstItem="dr8-dP-RpK" firstAttribute="leading" secondItem="UBk-f8-K1n" secondAttribute="trailing" constant="16" id="n57-TO-aUo"/>
                         <constraint firstItem="UBk-f8-K1n" firstAttribute="leading" secondItem="cle-yp-evp" secondAttribute="leading" constant="16" id="wiJ-v6-P9p"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -264,12 +273,12 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="USr-ne-6Cl">
                     <rect key="frame" x="38" y="412" width="338" height="42"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="30" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uUa-sR-dvv">
-                            <rect key="frame" x="16" y="0.0" width="46" height="42"/>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uUa-sR-dvv">
+                            <rect key="frame" x="16" y="0.0" width="264" height="42"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
-                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            <textInputTraits key="textInputTraits"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLY-8D-Ui9">
                             <rect key="frame" x="296" y="0.0" width="42" height="42"/>
@@ -288,6 +297,7 @@
                         <constraint firstAttribute="bottom" secondItem="uUa-sR-dvv" secondAttribute="bottom" id="dNk-ZO-M03"/>
                         <constraint firstItem="uUa-sR-dvv" firstAttribute="leading" secondItem="USr-ne-6Cl" secondAttribute="leading" constant="16" id="lph-6m-LRl"/>
                         <constraint firstItem="uUa-sR-dvv" firstAttribute="top" secondItem="USr-ne-6Cl" secondAttribute="top" id="pB1-1Q-jWn"/>
+                        <constraint firstItem="PLY-8D-Ui9" firstAttribute="leading" secondItem="uUa-sR-dvv" secondAttribute="trailing" constant="16" id="unW-ig-Jsk"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
