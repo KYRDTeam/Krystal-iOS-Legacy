@@ -209,6 +209,7 @@ class MultiSendViewController: KNBaseViewController {
   }
 
   fileprivate func updateUISwitchChain() {
+    guard self.isViewLoaded else { return }
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
     self.viewModel.resetDataSource()
@@ -282,6 +283,7 @@ class MultiSendViewController: KNBaseViewController {
   }
   
   func coordinatorUpdateNewSession(wallet: Wallet) {
+    guard self.isViewLoaded else { return }
     self.viewModel.updateWallet(wallet)
     self.updateUIWalletButton()
     self.viewModel.resetDataSource()
@@ -296,6 +298,11 @@ class MultiSendViewController: KNBaseViewController {
   func coordinatorDidConfirmTx() {
     self.viewModel.saveFormData()
     self.updateUIUseLast()
+  }
+  
+  func coordinatorResetForNewTransfer() {
+    self.viewModel.resetDataSource()
+    self.updateUIInputTableView()
   }
 }
 

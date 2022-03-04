@@ -67,7 +67,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   }
   
   func stop() {
-    
+    self.navigationController.popToRootViewController(animated: true, completion: nil)
   }
   
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -845,8 +845,6 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
     self.transactionStatusVC = nil
     switch action {
-//    case .transfer:
-//      self.openSendTokenView()
     case .openLink(let url):
       self.navigationController.openSafari(with: url)
     case .speedUp(let tx):
@@ -855,6 +853,10 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
       self.openTransactionCancelConfirmPopUpFor(transaction: tx)
     case .goToSupport:
       self.navigationController.openSafari(with: "https://support.krystal.app")
+    case .dismiss:
+      self.stop()
+    case .transfer:
+      self.rootViewController.coordinatorResetForNewTransfer()
     default:
       break
     }

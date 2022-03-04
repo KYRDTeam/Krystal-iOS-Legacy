@@ -147,6 +147,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           return "Successfully withdraw".toBeLocalised()
         } else if self.transaction.type == .claimReward {
           return "Claim reward successfully".toBeLocalised()
+        } else if self.transaction.type == .multiSend {
+          return "Successfully send tokens"
         } else if self.transaction.type == .contractInteraction {
           if self.transaction.transactionDescription == "Application" {
             return "Dapp transaction is successfull".toBeLocalised()
@@ -187,6 +189,9 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if self.transaction.type == .swap {
         self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
+      } else if self.transaction.type == .multiSend {
+        self.firstButton.setTitle("Back to home".toBeLocalised().capitalized, for: .normal)
+        self.secondButton.setTitle("New transfer".toBeLocalised().capitalized, for: .normal)
       } else {
         self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
@@ -251,6 +256,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
           self.delegate?.transactionStatusPopUp(self, action: .newSave)
           return
         }
+        guard self.transaction.type != .multiSend else {
+          self.delegate?.transactionStatusPopUp(self, action: .dismiss)
+          return
+        }
         self.delegate?.transactionStatusPopUp(self, action: .transfer)
       } else if self.transaction.state == .error || self.transaction.state == .drop {
         self.delegate?.transactionStatusPopUp(self, action: .dismiss)
@@ -263,6 +272,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
         self.delegate?.transactionStatusPopUp(self, action: .cancel(tx: self.transaction))
       } else if self.transaction.state == .done {
+        guard self.transaction.type != .multiSend else {
+          self.delegate?.transactionStatusPopUp(self, action: .transfer)
+          return
+        }
         if self.transaction.type == .earn {
           self.delegate?.transactionStatusPopUp(self, action: .backToInvest)
         } else {
