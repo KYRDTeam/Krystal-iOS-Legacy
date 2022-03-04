@@ -22,6 +22,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BuyCryptoViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="cryptoButton" destination="dr8-dP-RpK" id="Kre-pb-96r"/>
+                <outlet property="fiatButton" destination="F7o-xw-K6i" id="4wC-Ex-aXN"/>
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="6wj-lu-1R1" id="o9i-US-Fvh"/>
@@ -195,7 +197,6 @@
                             </state>
                             <connections>
                                 <action selector="selectCryptoButtonTapped:" destination="-1" eventType="touchUpInside" id="o0Y-fX-Sh9"/>
-                                <action selector="updateRateButtonTapped:" destination="-1" eventType="touchUpInside" id="mZI-fs-gjo"/>
                             </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="gUI-e7-Kwv">

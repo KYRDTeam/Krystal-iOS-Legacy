@@ -7,17 +7,44 @@
 
 import UIKit
 
+protocol SearchFiatCryptoViewControllerDelegate: class {
+  func didSelectCurrency(currency: FiatModel, type: SearchCurrencyType)
+}
+
+enum SearchCurrencyType {
+  case fiat
+  case crypto
+}
+
 class SearchFiatCryptoViewModel {
+  let currencyType: SearchCurrencyType
   let dataSource: [FiatModel]?
-  init(dataSource:[FiatModel]) {
+  var displayDataSource: [FiatModel]?
+  var searchedText: String = "" {
+    didSet {
+      if self.searchedText.isEmpty {
+        self.displayDataSource = self.dataSource
+      } else {
+        var filteredDataSource: [FiatModel] = []
+        self.dataSource?.forEach({ model in
+          if model.currency.lowercased().contains(self.searchedText.lowercased()) {
+            filteredDataSource.append(model)
+          }
+        })
+        self.displayDataSource = filteredDataSource
+      }
+    }
+  }
+  init(dataSource: [FiatModel], currencyType: SearchCurrencyType) {
     self.dataSource = dataSource
+    self.currencyType = currencyType
   }
   
   func numberOfRows() -> Int {
-    guard let dataSource = dataSource else {
+    guard let displayDataSource = self.displayDataSource else {
       return 0
     }
-    return dataSource.count
+    return displayDataSource.count
   }
 }
 
@@ -30,6 +57,7 @@ class SearchFiatCryptoViewController: KNBaseViewController {
   @IBOutlet weak var noMatchingLabel: UILabel!
   @IBOutlet weak var outSideBackgroundView: UIView!
 
+  weak var delegate: SearchFiatCryptoViewControllerDelegate?
   let viewModel: SearchFiatCryptoViewModel
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -67,13 +95,12 @@ class SearchFiatCryptoViewController: KNBaseViewController {
   }
   
   @objc func tapOutside() {
-    self.dismiss(animated: true, completion:nil)
+    self.dismiss(animated: true, completion: nil)
   }
   
   fileprivate func searchTextDidChange(_ newText: String) {
-//    self.viewModel.searchedText = newText
-//    self.updateUIDisplayedDataDidChange()
-//    self.requestTokenInfoIfNeeded()
+    self.viewModel.searchedText = newText
+    self.tableView.reloadData()
   }
 
 }
@@ -98,11 +125,21 @@ extension SearchFiatCryptoViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: CryptoFiatCell.kCryptoFiatCellID, for: indexPath) as! CryptoFiatCell
-    if let dataSource = self.viewModel.dataSource {
+    if let dataSource = self.viewModel.displayDataSource {
       let model = dataSource[indexPath.row]
       cell.updateUI(model: model)
     }
     return cell
+  }
+}
+
+extension SearchFiatCryptoViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let dataSource = self.viewModel.displayDataSource {
+      let model = dataSource[indexPath.row]
+      self.delegate?.didSelectCurrency(currency: model, type: self.viewModel.currencyType)
+      self.dismiss(animated: true, completion: nil)
+    }
   }
 }
 

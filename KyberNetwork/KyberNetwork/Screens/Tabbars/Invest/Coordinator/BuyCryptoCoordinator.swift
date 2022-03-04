@@ -138,15 +138,23 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
   }
 
   fileprivate func selectFiat(fiat: [FiatModel]) {
-    let viewModel = SearchFiatCryptoViewModel(dataSource: fiat)
+    let viewModel = SearchFiatCryptoViewModel(dataSource: fiat, currencyType: .fiat)
     let selectFiatVC = SearchFiatCryptoViewController(viewModel: viewModel)
+    selectFiatVC.delegate = self
     self.navigationController.present(selectFiatVC, animated: true, completion: nil)
   }
 
   fileprivate func selectCrypto(crypto: [FiatModel]) {
-    let viewModel = SearchFiatCryptoViewModel(dataSource: crypto)
+    let viewModel = SearchFiatCryptoViewModel(dataSource: crypto, currencyType: .crypto)
     let selectFiatVC = SearchFiatCryptoViewController(viewModel: viewModel)
+    selectFiatVC.delegate = self
     self.navigationController.present(selectFiatVC, animated: true, completion: nil)
+  }
+}
+
+extension BuyCryptoCoordinator: SearchFiatCryptoViewControllerDelegate {
+  func didSelectCurrency(currency: FiatModel, type: SearchCurrencyType) {
+    self.rootViewController.coordinatorDidSelectFiatCrypto(model: currency, type: type)
   }
 }
 

@@ -34,6 +34,8 @@ class BuyCryptoViewModel {
 class BuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var walletsListButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
+  @IBOutlet weak var cryptoButton: UIButton!
+  @IBOutlet weak var fiatButton: UIButton!
   weak var delegate: BuyCryptoViewControllerDelegate?
   let transitor = TransitionDelegate()
   let viewModel: BuyCryptoViewModel
@@ -77,6 +79,15 @@ class BuyCryptoViewController: KNBaseViewController {
 
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorDidSelectFiatCrypto(model: FiatModel, type: SearchCurrencyType) {
+    switch type {
+    case .fiat:
+      self.fiatButton.setTitle(model.currency, for: .normal)
+    case .crypto:
+      self.cryptoButton.setTitle(model.currency, for: .normal)
+    }
   }
   
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
