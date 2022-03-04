@@ -282,7 +282,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       }
     case .openMultiSend:
       self.multiSendCoordinator.start()
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_multiple_transfer", customAttributes: nil)
+      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_click_multiple_transfer", customAttributes: nil)
     }
   }
 

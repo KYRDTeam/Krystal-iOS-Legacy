@@ -275,7 +275,11 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.confirmVC = controller
-    KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_confirm", customAttributes: nil)
+    let allAddresses = items.map { element in
+      return element.0
+    }
+    
+    KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_confirm", customAttributes: ["numberAddress": Set(allAddresses)])
   }
   
   fileprivate func openGasPriceSelectView(_ gasLimit: BigInt, _ selectType: KNSelectedGasPriceType, _ baseGasLimit: BigInt, _ advancedGasLimit: String?, _ advancedPriorityFee: String?, _ advancedMaxFee: String?, _ advancedNonce: String?, _ controller: UIViewController) {
@@ -396,20 +400,29 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
             
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
-                guard remaining.isEmpty else {
-                  self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                guard remaining.0.isEmpty else {
+                  if let error = remaining.1.first {
+                    self.showErrorMessage(error, viewController: self.navigationController)
+                  } else {
+                    self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                  }
+                  
                   controller.hideLoading()
                   return
                 }
               }
             } else if !legacyTxs.isEmpty {
               self.sendLegacyTxs(legacyTxs) { remaining in
-                guard remaining.isEmpty else {
-                  self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                guard remaining.0.isEmpty else {
+                  if let error = remaining.1.first {
+                    self.showErrorMessage(error, viewController: self.navigationController)
+                  } else {
+                    self.navigationController.showErrorTopBannerMessage(message: "Approval request is failed")
+                  }
+                  
                   controller.hideLoading()
                   return
                 }
-
               }
             }
           }
@@ -485,7 +498,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     }
   }
 
-  fileprivate func sendEIP1559Txs(_ txs: [(ApproveMultiSendItem, EIP1559Transaction)], completion: @escaping ([ApproveMultiSendItem]) -> Void) {
+  fileprivate func sendEIP1559Txs(_ txs: [(ApproveMultiSendItem, EIP1559Transaction)], completion: @escaping (([ApproveMultiSendItem], [AnyError])) -> Void) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
@@ -501,6 +514,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
 
     let group = DispatchGroup()
     var unApproveItem: [ApproveMultiSendItem] = []
+    var errors: [AnyError] = []
     signedData.forEach { txData in
       group.enter()
       let item = txData.0
@@ -513,8 +527,9 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           historyTx.time = Date()
           historyTx.nonce = Int(txData.1.nonce) ?? 0
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-        case .failure( _):
+        case .failure(let error):
           unApproveItem.append(txData.0)
+          errors.append(error)
         }
         self.approveRequestCountDown -= 1
         group.leave()
@@ -525,11 +540,11 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     group.notify(queue: .main) {
       guard self.approveRequestCountDown == 0 else { return }
       self.isRequestingApprove = false
-      completion(unApproveItem)
+      completion((unApproveItem, errors))
     }
   }
   
-  fileprivate func sendLegacyTxs(_ txs: [(ApproveMultiSendItem, SignTransaction)], completion: @escaping ([ApproveMultiSendItem]) -> Void) {
+  fileprivate func sendLegacyTxs(_ txs: [(ApproveMultiSendItem, SignTransaction)], completion: @escaping (([ApproveMultiSendItem], [AnyError])) -> Void) {
     guard let provider = self.session.externalProvider else {
       self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
       return
@@ -552,6 +567,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.isRequestingApprove = true
       let sendGroup = DispatchGroup()
       var unApproveItem: [ApproveMultiSendItem] = []
+      var errors: [AnyError] = []
       signedData.forEach { txData in
         sendGroup.enter()
         let item = txData.0
@@ -566,8 +582,9 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
             historyTx.nonce = txData.1.nonce
             EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
             
-          case .failure( _):
+          case .failure(let error):
             unApproveItem.append(txData.0)
+            errors.append(error)
           }
           self.approveRequestCountDown -= 1
           sendGroup.leave()
@@ -578,7 +595,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       sendGroup.notify(queue: .main) {
         guard self.approveRequestCountDown == 0 else { return }
         self.isRequestingApprove = false
-        completion(unApproveItem)
+        completion((unApproveItem, errors))
       }
     }
   }

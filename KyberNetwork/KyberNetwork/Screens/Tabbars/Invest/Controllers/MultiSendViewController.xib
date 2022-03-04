@@ -37,8 +37,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ilt-fG-ALY">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bsv-pO-Cpy">
-                            <rect key="frame" x="51" y="68" width="96" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="Bsv-pO-Cpy">
+                            <rect key="frame" x="51" y="68" width="85" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -156,6 +156,7 @@
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="HAl-BF-sEn" firstAttribute="trailing" secondItem="x1P-qb-xd0" secondAttribute="trailing" id="9pa-3P-D1i"/>
+                        <constraint firstItem="Qdz-HA-BVM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bsv-pO-Cpy" secondAttribute="trailing" constant="5" id="Aut-Dg-jbX"/>
                         <constraint firstItem="gLb-D6-t0M" firstAttribute="centerY" secondItem="Bsv-pO-Cpy" secondAttribute="centerY" id="CPf-yW-Wxq"/>
                         <constraint firstItem="x1P-qb-xd0" firstAttribute="leading" secondItem="gLb-D6-t0M" secondAttribute="trailing" constant="6" id="DKf-yV-psd"/>
                         <constraint firstAttribute="trailing" secondItem="x1P-qb-xd0" secondAttribute="trailing" constant="17" id="Dly-Rd-62T"/>
