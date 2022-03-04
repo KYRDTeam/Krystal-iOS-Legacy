@@ -232,6 +232,7 @@ class WithdrawViewController: KNBaseViewController {
       self.updateGasLimit()
     }
     self.setupUI()
+    self.amountFIeld.setupCustomDeleteIcon()
   }
 
   override func viewWillAppear(_ animated: Bool) {

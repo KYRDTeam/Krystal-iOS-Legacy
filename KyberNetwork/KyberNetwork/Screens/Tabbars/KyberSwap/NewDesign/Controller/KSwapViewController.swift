@@ -96,6 +96,8 @@ class KSwapViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.viewModel.resetDefaultTokensPair()
+    self.fromAmountTextField.setupCustomDeleteIcon()
+    self.toAmountTextField.setupCustomDeleteIcon()
   }
 
   override func viewWillAppear(_ animated: Bool) {

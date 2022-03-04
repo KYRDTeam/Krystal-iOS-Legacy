@@ -161,6 +161,9 @@ class MultiSendCell: SwipeTableViewCell {
     self.amountTextField.delegate = self
     self.addressTextField.delegate = self
     self.separatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
+
+    self.addressTextField.setupCustomDeleteIcon()
+    self.amountTextField.setupCustomDeleteIcon()
   }
   
   func updateCellModel(_ model: MultiSendCellModel) {

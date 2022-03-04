@@ -714,6 +714,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.setUpGasFeeView()
     self.setupHideRateAndFeeViews(shouldHideInfo: true)
     self.destAmountContainerView.rounded(color: UIColor(named: "toolbarBgColor")!, width: 2, radius: 16)
+    self.fromAmountTextField.setupCustomDeleteIcon()
+    self.toAmountTextField.setupCustomDeleteIcon()
   }
 
   override func viewWillAppear(_ animated: Bool) {

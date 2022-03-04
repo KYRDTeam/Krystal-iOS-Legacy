@@ -63,6 +63,7 @@ class DappBrowserHomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupSuggestionSection()
+    self.searchTextField.setupCustomDeleteIcon()
   }
   
   override func viewWillAppear(_ animated: Bool) {

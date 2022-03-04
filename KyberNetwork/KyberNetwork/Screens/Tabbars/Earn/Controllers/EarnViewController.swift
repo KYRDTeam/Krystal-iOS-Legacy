@@ -501,6 +501,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUITokenDidChange(self.viewModel.tokenData)
     self.updateUIWalletSelectButton()
     self.updateUIForSendApprove(isShowApproveButton: false)
+    self.fromAmountTextField.setupCustomDeleteIcon()
     
   }
 
