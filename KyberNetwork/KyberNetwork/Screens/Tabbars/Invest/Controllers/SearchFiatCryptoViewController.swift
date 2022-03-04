@@ -63,24 +63,24 @@ class SearchFiatCryptoViewController: KNBaseViewController {
     super.viewDidLoad()
     self.setupUI()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.searchTextField.text = ""
     self.searchTextDidChange("")
   }
-  
+
   init(viewModel: SearchFiatCryptoViewModel) {
     self.viewModel = viewModel
     super.init(nibName: SearchFiatCryptoViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   func setupUI() {
     let nib = UINib(nibName: CryptoFiatCell.className, bundle: nil)
     self.tableView.register(nib, forCellReuseIdentifier: CryptoFiatCell.kCryptoFiatCellID)
@@ -97,7 +97,7 @@ class SearchFiatCryptoViewController: KNBaseViewController {
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
-  
+
   fileprivate func searchTextDidChange(_ newText: String) {
     self.viewModel.searchedText = newText
     self.tableView.reloadData()

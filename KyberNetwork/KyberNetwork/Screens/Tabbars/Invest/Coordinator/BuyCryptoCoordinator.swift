@@ -108,9 +108,11 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     case .openWalletsList:
       self.openWalletListView()
     case .updateRate:
-      self.openWalletListView()
+      self.updateData()
     case .buyCrypto:
       self.buyCrypto()
+    case .selectNetwork:
+      self.selectNetwork()
     case .selectFiat(fiat: let fiatModels):
       self.selectFiat(fiat: fiatModels)
     case .selectCrypto(crypto: let cryptoModels):
@@ -120,6 +122,15 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
 
   fileprivate func openHistoryScreen() {
     self.delegate?.buyCryptoCoordinatorOpenHistory()
+  }
+
+  fileprivate func updateData() {
+    self.loadFiatPair()
+  }
+
+  fileprivate func selectNetwork() {
+    let selectNetworkVC = SelectNetworkViewController()
+    self.navigationController.present(selectNetworkVC, animated: true, completion: nil)
   }
 
   fileprivate func openWalletListView() {

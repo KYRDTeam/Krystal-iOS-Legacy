@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -24,6 +24,7 @@
             <connections>
                 <outlet property="cryptoButton" destination="dr8-dP-RpK" id="Kre-pb-96r"/>
                 <outlet property="fiatButton" destination="F7o-xw-K6i" id="4wC-Ex-aXN"/>
+                <outlet property="networkLabel" destination="eQ7-G6-gI3" id="ZKy-3C-l86"/>
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="6wj-lu-1R1" id="o9i-US-Fvh"/>
@@ -313,20 +314,11 @@
                         <constraint firstAttribute="height" constant="24" id="9nf-WM-t79"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                    <color key="textColor" name="normalTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hz1-VF-2Ip">
-                    <rect key="frame" x="295" y="489" width="72" height="24"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="24" id="RZn-tV-csv"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5rN-t0-h9Q">
-                    <rect key="frame" x="38" y="576" width="338" height="42"/>
+                    <rect key="frame" x="38" y="629" width="338" height="42"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="rTi-ho-8dd"/>
@@ -345,19 +337,57 @@
                         <action selector="buyNowButtonTapped:" destination="-1" eventType="touchUpInside" id="JRL-ef-Qrh"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3y4-r5-8QV">
+                    <rect key="frame" x="38" y="526" width="338" height="42"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQ7-G6-gI3">
+                            <rect key="frame" x="26" y="9" width="109" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="7gu-qP-6GH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bmf-MW-TIj">
+                            <rect key="frame" x="0.0" y="0.0" width="338" height="42"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="selectNetworkButtonTapped:" destination="-1" eventType="touchUpInside" id="f25-A3-GJt"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="toolbarBgColor"/>
+                    <constraints>
+                        <constraint firstItem="bmf-MW-TIj" firstAttribute="top" secondItem="3y4-r5-8QV" secondAttribute="top" id="DpG-rv-zsV"/>
+                        <constraint firstItem="eQ7-G6-gI3" firstAttribute="centerY" secondItem="3y4-r5-8QV" secondAttribute="centerY" id="Fj8-FB-nR0"/>
+                        <constraint firstAttribute="trailing" secondItem="bmf-MW-TIj" secondAttribute="trailing" id="IaZ-y4-eVT"/>
+                        <constraint firstItem="eQ7-G6-gI3" firstAttribute="leading" secondItem="3y4-r5-8QV" secondAttribute="leading" constant="26" id="Z2K-5v-xBh"/>
+                        <constraint firstAttribute="bottom" secondItem="bmf-MW-TIj" secondAttribute="bottom" id="evX-Xh-MPH"/>
+                        <constraint firstItem="bmf-MW-TIj" firstAttribute="leading" secondItem="3y4-r5-8QV" secondAttribute="leading" id="hIc-Go-4VC"/>
+                        <constraint firstAttribute="height" constant="42" id="tMe-rV-RW6"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="6Ua-96-VW1" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="0U4-ij-gNC"/>
-                <constraint firstItem="5rN-t0-h9Q" firstAttribute="top" secondItem="D4e-YP-mTv" secondAttribute="bottom" constant="63" id="7mu-b9-sH6"/>
+                <constraint firstItem="3y4-r5-8QV" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="1JS-lk-l7a"/>
                 <constraint firstItem="4xT-cL-n6C" firstAttribute="leading" secondItem="Syf-dQ-ZKq" secondAttribute="trailing" constant="4" id="7nP-OG-zUl"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hz1-VF-2Ip" secondAttribute="trailing" constant="47" id="BbA-iZ-qRl"/>
+                <constraint firstItem="5rN-t0-h9Q" firstAttribute="top" secondItem="3y4-r5-8QV" secondAttribute="bottom" constant="61" id="7wf-kA-Rc7"/>
                 <constraint firstItem="cle-yp-evp" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="DWn-S4-byp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6Ua-96-VW1" secondAttribute="trailing" id="EoZ-zh-bQp"/>
                 <constraint firstItem="nEn-GI-Ejj" firstAttribute="top" secondItem="6Ua-96-VW1" secondAttribute="bottom" constant="21" id="FfZ-Vv-SNf"/>
                 <constraint firstItem="z2n-bk-Y7d" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="49" id="G0K-8C-h8A"/>
                 <constraint firstItem="D4e-YP-mTv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="49" id="Iog-Wm-cEX"/>
+                <constraint firstItem="3y4-r5-8QV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="JPA-xu-13l"/>
                 <constraint firstItem="oZA-pU-CFa" firstAttribute="top" secondItem="nEn-GI-Ejj" secondAttribute="bottom" constant="11" id="Sev-ih-P0h"/>
                 <constraint firstItem="5rN-t0-h9Q" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="ShH-tm-BhJ"/>
                 <constraint firstItem="Syf-dQ-ZKq" firstAttribute="top" secondItem="cle-yp-evp" secondAttribute="bottom" constant="14" id="Vb6-WQ-BFT"/>
@@ -374,7 +404,7 @@
                 <constraint firstItem="5rN-t0-h9Q" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="jCE-Jh-aZA"/>
                 <constraint firstItem="D4e-YP-mTv" firstAttribute="top" secondItem="USr-ne-6Cl" secondAttribute="bottom" constant="35" id="jJd-R6-hIJ"/>
                 <constraint firstItem="N1X-Bo-353" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="49" id="kn1-nF-vtz"/>
-                <constraint firstItem="hz1-VF-2Ip" firstAttribute="top" secondItem="USr-ne-6Cl" secondAttribute="bottom" constant="35" id="rmT-Ug-6X5"/>
+                <constraint firstItem="3y4-r5-8QV" firstAttribute="top" secondItem="D4e-YP-mTv" secondAttribute="bottom" constant="13" id="nb5-nr-zFW"/>
                 <constraint firstItem="z2n-bk-Y7d" firstAttribute="top" secondItem="oZA-pU-CFa" secondAttribute="bottom" constant="19" id="sP2-Wb-JzP"/>
                 <constraint firstItem="USr-ne-6Cl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="yL3-ia-sbH"/>
                 <constraint firstItem="cle-yp-evp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="38" id="zcz-am-cIq"/>

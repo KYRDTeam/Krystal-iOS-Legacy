@@ -12,6 +12,7 @@ enum BuyCryptoEvent {
   case openWalletsList
   case updateRate
   case buyCrypto
+  case selectNetwork
   case selectFiat(fiat: [FiatModel])
   case selectCrypto(crypto: [FiatModel])
 }
@@ -36,6 +37,8 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   @IBOutlet weak var cryptoButton: UIButton!
   @IBOutlet weak var fiatButton: UIButton!
+  @IBOutlet weak var networkLabel: UILabel!
+
   weak var delegate: BuyCryptoViewControllerDelegate?
   let transitor = TransitionDelegate()
   let viewModel: BuyCryptoViewModel
@@ -89,7 +92,7 @@ class BuyCryptoViewController: KNBaseViewController {
       self.cryptoButton.setTitle(model.currency, for: .normal)
     }
   }
-  
+
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
     var fiatCurrency: [String] = []
     var cryptoCurrency: [String] = []
@@ -103,7 +106,7 @@ class BuyCryptoViewController: KNBaseViewController {
         cryptoCurrency.append(model.cryptoCurrency)
       }
     }
-    
+
     self.viewModel.fiatCurrency = fiatCurrency
     self.viewModel.cryptoCurrency = cryptoCurrency
   }
@@ -123,11 +126,11 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBAction func updateRateButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .updateRate)
   }
-  
+
   @IBAction func buyNowButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .buyCrypto)
   }
-  
+
   @IBAction func selectFiatButtonTapped(_ sender: Any) {
     guard let fiatCurrency = self.viewModel.fiatCurrency else { return }
     var fiatModels: [FiatModel] = []
@@ -144,5 +147,9 @@ class BuyCryptoViewController: KNBaseViewController {
       cryptoModels.append(FiatModel(url: item, currency: item))
     }
     self.delegate?.buyCryptoViewController(self, run: .selectCrypto(crypto: cryptoModels))
+  }
+
+  @IBAction func selectNetworkButtonTapped(_ sender: Any) {
+    self.delegate?.buyCryptoViewController(self, run: .selectNetwork)
   }
 }
