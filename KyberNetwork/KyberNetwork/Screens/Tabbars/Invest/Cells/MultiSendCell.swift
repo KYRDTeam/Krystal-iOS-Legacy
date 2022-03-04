@@ -128,6 +128,9 @@ class MultiSendCellModel {
     if !self.isAddressValid {
       return .error(description: "Address isn't correct")
     }
+    if self.amountBigInt <= BigInt.zero {
+      return .error(description: "Amount is too low")
+    }
     if !self.isBalanceVaild {
       return .error(description: "Balance is not be enough to make the transaction.")
     }

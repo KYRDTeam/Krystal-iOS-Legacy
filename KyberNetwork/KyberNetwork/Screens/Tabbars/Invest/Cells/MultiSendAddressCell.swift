@@ -39,7 +39,7 @@ class MultiSendAddressCell: UITableViewCell {
   }
   
   func updateCellModel(_ model: MultiSendAddressCellModel) {
-    self.indexLabel.text = "\(model.index)"
+    self.indexLabel.text = "\(model.index + 1)"
     self.addressLabel.text = model.item.0
     self.amountLabel.text = model.displayAmt
     self.cellModel = model

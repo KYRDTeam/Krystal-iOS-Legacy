@@ -137,7 +137,7 @@ final class EtherNumberFormatter {
         var number = number
         let digits = number.description.count
 
-        if number == 0 || decimals - digits > maximumFractionDigits {
+        if number == 0 || decimals - digits >= maximumFractionDigits {
             // Value is smaller than can be represented with `maximumFractionDigits`
             return String(repeating: "0", count: minimumFractionDigits)
         }
