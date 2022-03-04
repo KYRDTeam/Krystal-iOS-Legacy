@@ -203,8 +203,10 @@
             <connections>
                 <outlet property="addButton" destination="rWT-4j-qgo" id="6hr-hy-61x"/>
                 <outlet property="addContactButton" destination="Y1r-vZ-GkL" id="dDl-vu-lRZ"/>
+                <outlet property="addressContainerView" destination="sNJ-M1-LBO" id="Y5h-xe-6Sf"/>
                 <outlet property="addressFieldRightSpaceContraint" destination="GSx-AJ-HFM" id="URL-8D-8TH"/>
                 <outlet property="addressTextField" destination="rn5-9n-r6Q" id="r0Y-Gr-e8Q"/>
+                <outlet property="amountContainerView" destination="YXE-xO-cVB" id="qr4-EP-zDi"/>
                 <outlet property="amountTextField" destination="2EZ-0u-dhO" id="PL1-tI-7r4"/>
                 <outlet property="contactButton" destination="YZP-gT-dRW" id="hxD-ek-kMd"/>
                 <outlet property="currentTokenButton" destination="02j-RO-mCm" id="iK7-a0-5Od"/>

@@ -34,6 +34,7 @@ class MultiSendViewModel {
   var cellModels = [MultiSendCellModel()]
   var updatingIndex = 0
   fileprivate(set) var wallet: Wallet
+  var needValidation: Bool = false
   
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -161,11 +162,14 @@ class MultiSendViewController: KNBaseViewController {
   }
   
   @IBAction func sendButtonTapped(_ sender: UIButton) {
+    self.viewModel.needValidation = true
     self.view.endEditing(true)
     if case .error(let description) = self.viewModel.isFormValid {
       self.showErrorTopBannerMessage(message: description)
+      self.inputTableView.reloadData()
     } else {
       self.delegate?.multiSendViewController(self, run: .checkApproval(items: self.viewModel.sendItems))
+      self.viewModel.needValidation = false
     }
   }
   
@@ -200,6 +204,7 @@ class MultiSendViewController: KNBaseViewController {
   
   
   @IBAction func clearAllButtonTapped(_ sender: UIButton) {
+    self.viewModel.needValidation = false
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
   }
@@ -303,6 +308,7 @@ class MultiSendViewController: KNBaseViewController {
   func coordinatorResetForNewTransfer() {
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()
+    self.viewModel.needValidation = false
   }
 }
 
@@ -319,6 +325,7 @@ extension MultiSendViewController: UITableViewDataSource {
     cell.cellDelegate = self
     cell.delegate = self
     let cm = self.viewModel.cellModels[indexPath.row]
+    cm.needValidation = self.viewModel.needValidation
     cell.updateCellModel(cm)
     return cell
   }
@@ -346,6 +353,7 @@ extension MultiSendViewController: MultiSendCellDelegate {
   func multiSendCell(_ cell: MultiSendCell, run event: MultiSendCellEvent) {
     switch event {
     case .add:
+      self.viewModel.needValidation = false
       let element = MultiSendCellModel()
       element.index = self.viewModel.cellModels.count
       element.addButtonEnable = true
@@ -385,11 +393,14 @@ extension MultiSendViewController: SwipeTableViewCellDelegate {
     let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: MultiSendCell.cellHeight))!
 
     let delete = SwipeAction(style: .default, title: nil) { _, _ in
+      let token = self.viewModel.cellModels[indexPath.row].from
+      self.viewModel.needValidation = false
       self.viewModel.cellModels.remove(at: indexPath.row)
       self.viewModel.cellModels.last?.addButtonEnable = true
       self.viewModel.reloadDataSource()
       self.updateUIInputTableView()
       KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_remove_receiver", customAttributes: nil)
+      self.updateAvailableBalanceForToken(token)
     }
     delete.title = "delete".toBeLocalised().uppercased()
     delete.textColor = UIColor(named: "textWhiteColor")
