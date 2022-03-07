@@ -134,7 +134,7 @@ class MultiSendCellModel {
       return .error(description: "Invalid address")
     }
     if self.isBalanceTooLow {
-      return .error(description: "Amount is too low")
+      return .error(description: "Please enter an amount to continue")
     }
     if !self.isBalanceVaild {
       return .error(description: "Balance is not be enough to make the transaction.")

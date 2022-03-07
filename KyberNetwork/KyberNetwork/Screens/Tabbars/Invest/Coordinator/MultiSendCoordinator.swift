@@ -111,6 +111,10 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
     case .checkApproval(items: let items):
+      guard self.session.externalProvider != nil else {
+        self.navigationController.showErrorTopBannerMessage(message: "You are using watch wallet")
+        return
+      }
       self.navigationController.displayLoading()
       self.requestBuildTx(items: items) { object in
         self.processingTx = object
