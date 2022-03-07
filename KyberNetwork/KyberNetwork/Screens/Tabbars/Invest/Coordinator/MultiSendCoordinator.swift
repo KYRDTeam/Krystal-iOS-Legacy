@@ -154,12 +154,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
             self.navigationController.hideLoading()
             self.openConfirmView(items: items, txObject: tx)
           } else {
-            self.requestBuildTx(items: items) { object in
-              self.processingTx = object
-              self.processingTx?.nonce = nonceStr
-              self.navigationController.hideLoading()
-              self.openConfirmView(items: items, txObject: object)
-            }
+            self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonceStr)
           }
         case .failure(let error):
           self.navigationController.hideLoading()
@@ -179,6 +174,25 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .useLastMultisend:
       break
+    }
+  }
+  
+  fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
+    DispatchQueue.global(qos: .background).async {
+      self.requestBuildTx(items: items) { object in
+        guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
+          DispatchQueue.global().asyncAfter(deadline: .now() + 1.5) {
+            self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
+          }
+          return
+        }
+        self.processingTx = object
+        self.processingTx?.nonce = nonce
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+          self.openConfirmView(items: items, txObject: object)
+        }
+      }
     }
   }
   
@@ -359,6 +373,10 @@ extension MultiSendCoordinator: KNNewContactViewControllerDelegate {
     self.navigationController.popViewController(animated: true) {
       if case .send(let address) = event {
         self.rootViewController.coordinatorSend(to: address)
+      }
+
+      if case .dismiss = event {
+        self.rootViewController.coordinatorDidAddNewContact()
       }
     }
   }
