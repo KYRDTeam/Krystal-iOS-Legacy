@@ -92,6 +92,10 @@ class BuyCryptoViewController: KNBaseViewController {
       self.cryptoButton.setTitle(model.currency, for: .normal)
     }
   }
+  
+  func coordinatorDidSelectNetwork(chain: String) {
+    self.networkLabel.text = chain
+  }
 
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
     var fiatCurrency: [String] = []

@@ -27,7 +27,7 @@
                     <rect key="frame" x="0.0" y="334" width="414" height="562"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0iG-Nz-OCv">
-                            <rect key="frame" x="0.0" y="41" width="414" height="521"/>
+                            <rect key="frame" x="0.0" y="45" width="414" height="517"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -42,7 +42,7 @@
                         <constraint firstAttribute="trailing" secondItem="0iG-Nz-OCv" secondAttribute="trailing" id="DJl-a0-keU"/>
                         <constraint firstAttribute="bottom" secondItem="0iG-Nz-OCv" secondAttribute="bottom" id="JqY-T1-sXR"/>
                         <constraint firstItem="0iG-Nz-OCv" firstAttribute="leading" secondItem="1nO-au-Klg" secondAttribute="leading" id="Nob-3v-kzR"/>
-                        <constraint firstItem="0iG-Nz-OCv" firstAttribute="top" secondItem="1nO-au-Klg" secondAttribute="top" constant="41" id="WeQ-e7-pcT"/>
+                        <constraint firstItem="0iG-Nz-OCv" firstAttribute="top" secondItem="1nO-au-Klg" secondAttribute="top" constant="45" id="WeQ-e7-pcT"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AIC-Oe-LUL">

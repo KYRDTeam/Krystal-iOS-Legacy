@@ -130,6 +130,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
 
   fileprivate func selectNetwork() {
     let selectNetworkVC = SelectNetworkViewController()
+    selectNetworkVC.delegate = self
     self.navigationController.present(selectNetworkVC, animated: true, completion: nil)
   }
 
@@ -166,6 +167,12 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
 extension BuyCryptoCoordinator: SearchFiatCryptoViewControllerDelegate {
   func didSelectCurrency(currency: FiatModel, type: SearchCurrencyType) {
     self.rootViewController.coordinatorDidSelectFiatCrypto(model: currency, type: type)
+  }
+}
+
+extension BuyCryptoCoordinator: SelectNetworkViewControllerDelegate {
+  func didSelectNetwork(chain: String) {
+    self.rootViewController.coordinatorDidSelectNetwork(chain: chain)
   }
 }
 
