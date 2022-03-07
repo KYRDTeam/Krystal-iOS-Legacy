@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -218,14 +218,22 @@
                         <constraint firstItem="weA-XV-dtP" firstAttribute="leading" secondItem="Z6z-e6-9We" secondAttribute="trailing" constant="15" id="zxa-6p-ljx"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAf-E8-iM6">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="476"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="mainViewBgColor"/>
+            <color key="backgroundColor" red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qa5-l2-zcK" secondAttribute="trailing" id="1fR-zT-Ljv"/>
                 <constraint firstAttribute="bottom" secondItem="qa5-l2-zcK" secondAttribute="bottom" id="5RV-cU-9X7"/>
                 <constraint firstItem="qa5-l2-zcK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Clq-5A-nKi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="rAf-E8-iM6" secondAttribute="trailing" id="FE7-bS-Vi0"/>
                 <constraint firstItem="qa5-l2-zcK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="476" id="Pc8-cu-y2p"/>
+                <constraint firstItem="rAf-E8-iM6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ShT-Hz-1nd"/>
+                <constraint firstItem="qa5-l2-zcK" firstAttribute="top" secondItem="rAf-E8-iM6" secondAttribute="bottom" id="kJg-98-ls3"/>
+                <constraint firstItem="rAf-E8-iM6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="tor-nn-BJA"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="126.5625"/>
         </view>

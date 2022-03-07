@@ -10,11 +10,17 @@ import UIKit
 class ConfirmBuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var outSideBackgroundView: UIView!
   let transitor = TransitionDelegate()
-  override func viewDidLoad() {
-      super.viewDidLoad()
 
-      // Do any additional setup after loading the view.
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.outSideBackgroundView.addGestureRecognizer(tapGesture)
+  }
+
+  @objc func tapOutside() {
+    self.dismiss(animated: true, completion: nil)
   }
 
   init() {
