@@ -279,6 +279,10 @@ class MultiSendViewController: KNBaseViewController {
     self.inputTableView.reloadData()
   }
   
+  func coordinatorDidAddNewContact() {
+    self.inputTableView.reloadData()
+  }
+  
   func coordinatorDidFinishApproveTokens() {
     self.delegate?.multiSendViewController(self, run: .confirm(items: self.viewModel.sendItems))
   }
