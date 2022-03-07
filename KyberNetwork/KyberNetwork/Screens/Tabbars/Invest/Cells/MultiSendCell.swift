@@ -44,6 +44,7 @@ class MultiSendCellModel {
   var availableAmount: BigInt = BigInt.zero
   var isSendAllBalanace: Bool = false // Use for update amount when change gasfee
   var gasFee: BigInt = BigInt.zero
+  var needValidation: Bool = false
   
   init() {}
   
@@ -124,11 +125,15 @@ class MultiSendCellModel {
     return self.availableAmount >= 0
   }
   
+  var isBalanceTooLow: Bool {
+    return self.amountBigInt <= BigInt.zero
+  }
+  
   var isCellFormValid: ValidStatus {
     if !self.isAddressValid {
-      return .error(description: "Address isn't correct")
+      return .error(description: "Invalid address")
     }
-    if self.amountBigInt <= BigInt.zero {
+    if self.isBalanceTooLow {
       return .error(description: "Amount is too low")
     }
     if !self.isBalanceVaild {
@@ -151,6 +156,9 @@ class MultiSendCell: SwipeTableViewCell {
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var addButton: UIButton!
   @IBOutlet weak var separatorView: UIView!
+  @IBOutlet weak var addressContainerView: UIView!
+  @IBOutlet weak var amountContainerView: UIView!
+  
   var keyboardTimer: Timer?
   weak var cellDelegate: MultiSendCellDelegate?
 
@@ -164,6 +172,9 @@ class MultiSendCell: SwipeTableViewCell {
     self.amountTextField.delegate = self
     self.addressTextField.delegate = self
     self.separatorView.dashLine(width: 1, color: UIColor.Kyber.dashLine)
+
+    self.addressTextField.setupCustomDeleteIcon()
+    self.amountTextField.setupCustomDeleteIcon()
   }
   
   func updateCellModel(_ model: MultiSendCellModel) {
@@ -186,6 +197,7 @@ class MultiSendCell: SwipeTableViewCell {
     
     self.cellModel = model
     self.updateUIAddressField()
+    self.updateUIForValidation()
   }
   
   private func updateUIAddressField() {
@@ -204,6 +216,25 @@ class MultiSendCell: SwipeTableViewCell {
     }
   }
   
+  func updateUIForValidation() {
+    guard let unwrap = self.cellModel, unwrap.needValidation else {
+      self.addressContainerView.rounded(color: UIColor.clear, radius: 16)
+      self.amountContainerView.rounded(color: UIColor.clear, radius: 16)
+      return
+    }
+    if !unwrap.isAddressValid {
+      self.addressContainerView.rounded(color: UIColor.Kyber.red, width: 1, radius: 16)
+    } else {
+      self.addressContainerView.rounded(color: UIColor.clear, radius: 16)
+    }
+    
+    if unwrap.isBalanceTooLow || !unwrap.isBalanceVaild {
+      self.amountContainerView.rounded(color: UIColor.Kyber.red, width: 1, radius: 16)
+    } else {
+      self.amountContainerView.rounded(color: UIColor.clear, radius: 16)
+    }
+  }
+
   @IBAction func addButtonTapped(_ sender: UIButton) {
     guard self.cellModel?.addButtonEnable == true else { return }
     self.cellDelegate?.multiSendCell(self, run: .add)

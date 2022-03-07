@@ -99,6 +99,8 @@ class KSendTokenViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.addressTextField.setupCustomDeleteIcon()
+    self.amountTextField.setupCustomDeleteIcon()
   }
 
   override func viewWillAppear(_ animated: Bool) {
