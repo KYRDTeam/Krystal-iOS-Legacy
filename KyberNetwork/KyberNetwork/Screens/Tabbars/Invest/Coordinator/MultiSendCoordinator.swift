@@ -158,7 +158,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
           }
         case .failure(let error):
           self.navigationController.hideLoading()
-          self.navigationController.showErrorTopBannerMessage(message: error.description)
+          self.showErrorMessage(error, viewController: self.navigationController)
         }
         
       }
@@ -672,14 +672,7 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            print(error.description)
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
+            self.showErrorMessage(error, viewController: self.navigationController)
           }
         })
       }
@@ -703,13 +696,7 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
+            self.showErrorMessage(error, viewController: self.navigationController)
           }
         })
       }
@@ -733,13 +720,7 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
+            self.showErrorMessage(error, viewController: self.navigationController)
           }
         }
       }
@@ -765,13 +746,7 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
               )
             }
           case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
+            self.showErrorMessage(error, viewController: self.navigationController)
           }
         }
       }
@@ -849,24 +824,12 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
                   }
                 }
               case .failure(let error):
-                var errorMessage = "Can not sign transaction data"
-                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                    errorMessage = message
-                  }
-                }
-                self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+                self.showErrorMessage(error, viewController: self.navigationController)
               }
 
             }
           case .failure(let error):
-            var errorMessage = "Can not estimate Gas Limit"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
-              }
-            }
-            self.navigationController.showErrorTopBannerMessage(message: errorMessage)
+            self.showErrorMessage(error, viewController: self.navigationController)
             self.navigationController.hideLoading()
           }
         }
