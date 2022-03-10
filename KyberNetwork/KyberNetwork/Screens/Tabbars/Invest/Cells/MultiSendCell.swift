@@ -282,12 +282,15 @@ extension MultiSendCell: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
 
     let cleanedText = text.cleanStringToNumber()
-    if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.cellModel?.from.decimals ?? 18) == nil { return false }
+    if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.cellModel?.from.decimals ?? 18) == nil {
+      self.showErrorTopBannerMessage(message: "Incorrect value")
+      return false
+    }
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.cellModel?.updateAmount(cleanedText)
+      return false
     } else {
-      textField.text = text
       self.cellModel?.updateAddress(text)
       
       self.keyboardTimer?.invalidate()
@@ -297,10 +300,8 @@ extension MultiSendCell: UITextFieldDelegate {
               selector: #selector(MultiSendCell.keyboardPauseTyping),
               userInfo: ["textField": textField],
               repeats: false)
-      
+      return true
     }
-    
-    return false
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {

@@ -1128,8 +1128,14 @@ extension KSwapViewController: UITextFieldDelegate {
     let prevDest = self.toAmountTextField.text ?? ""
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string).cleanStringToNumber()
 
-    if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
-    if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil { return false }
+    if textField == self.fromAmountTextField && text.amountBigInt(decimals: self.viewModel.from.decimals) == nil {
+      self.showErrorTopBannerMessage(message: "Incorrect value")
+      return false
+    }
+    if textField == self.toAmountTextField && text.amountBigInt(decimals: self.viewModel.to.decimals) == nil {
+      self.showErrorTopBannerMessage(message: "Incorrect value")
+      return false
+    }
     let double: Double = {
       if textField == self.fromAmountTextField {
         let bigInt = Double(text.amountBigInt(decimals: self.viewModel.from.decimals) ?? BigInt(0))
