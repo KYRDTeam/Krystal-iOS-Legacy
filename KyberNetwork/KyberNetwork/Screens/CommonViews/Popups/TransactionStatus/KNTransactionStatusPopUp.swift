@@ -47,6 +47,15 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var secondButton: UIButton!
 
+  @IBOutlet weak var rateContainView: RectangularDashedView!
+  
+  @IBOutlet weak var oneStarButton: UIButton!
+  @IBOutlet weak var twoStarButton: UIButton!
+  @IBOutlet weak var threeStarButton: UIButton!
+  @IBOutlet weak var fourStarButton: UIButton!
+  @IBOutlet weak var fiveStarButton: UIButton!
+  @IBOutlet weak var tapOutsideBGView: UIView!
+
   weak var delegate: KNTransactionStatusPopUpDelegate?
 
   fileprivate(set) var transaction: InternalHistoryTransaction
@@ -108,6 +117,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     self.secondButton.rounded(radius: self.secondButton.frame.size.height / 2)
     self.txHashLabel.text = self.transaction.hash
     self.view.isUserInteractionEnabled = true
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.tapOutsideBGView.addGestureRecognizer(tapGesture)
   }
 
   fileprivate func updateViewTransactionDidChange() {
@@ -115,7 +126,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       return
     }
     self.txHashLabel.text = self.transaction.hash
-
+    self.rateContainView.isHidden = self.transaction.state != .done
     if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
       self.titleLabel.text = "Broadcasted!".toBeLocalised().uppercased()
@@ -132,6 +143,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
+      self.contentViewHeightContraint.constant += 160
+      self.contentViewTopContraint.constant -= 160
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
       self.titleLabel.text = "Done!".toBeLocalised().uppercased()
       self.subTitleLabel.text = {
@@ -187,6 +200,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
       } else if self.transaction.type == .swap {
+        self.txHashTopConstraintToLoadingImage.constant += 30
+        self.firstButtonTopContraint.constant = 164
         self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
       } else if self.transaction.type == .multiSend {
@@ -287,7 +302,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     }
   }
 
-  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+  @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
 }
@@ -298,10 +313,35 @@ extension KNTransactionStatusPopUp: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 332
+    return 330
   }
 
   func getPopupContentView() -> UIView {
     return self.containerView
+  }
+}
+
+extension KNTransactionStatusPopUp {
+  @IBAction func rateButtonTapped(_ sender: UIButton) {
+    self.updateRateUI(rate: sender.tag)
+    let vc = RateTransactionPopupViewController(currentRate: sender.tag)
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  func updateRateUI(rate: Int) {
+    self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
+    self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+
+    self.twoStarButton.setImage(rate >= 2 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
+    self.twoStarButton.setImage(rate >= 2 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+
+    self.threeStarButton.setImage(rate >= 3 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
+    self.threeStarButton.setImage(rate >= 3 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+
+    self.fourStarButton.setImage(rate >= 4 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
+    self.fourStarButton.setImage(rate >= 4 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+
+    self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
+    self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
   }
 }
