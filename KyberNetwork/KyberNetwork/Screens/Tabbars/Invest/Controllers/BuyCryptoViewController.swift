@@ -63,28 +63,26 @@ class BuyCryptoViewController: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.updateUI()
   }
-  
+
   func updateUI() {
     self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
     self.addressTextField.text = self.viewModel.wallet.address.description
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func updateRateUI() {
-    self.viewModel.dataSource?.forEach({ model in
-      if model.fiatCurrency == self.fiatButton.titleLabel?.text && model.cryptoCurrency == self.cryptoButton.titleLabel?.text {
-        self.rateLabel.text = "Rate: 1\(model.cryptoCurrency) = \(model.quotation) \(model.fiatCurrency)"
-        // save supported networks for selected fiat and crypto pair to view model
-        self.viewModel.currentNetworks = model.networks
-      }
-    })
+    if let model = self.currentFiatCryptoModel() {
+      self.rateLabel.text = "Rate: 1\(model.cryptoCurrency) = \(model.quotation) \(model.fiatCurrency)"
+      // save supported networks for selected fiat and crypto pair to view model
+      self.viewModel.currentNetworks = model.networks
+    }
   }
-  
+
   func updateNetworkUI(network: FiatNetwork?) {
     guard let network = network else {
       return
@@ -108,7 +106,7 @@ class BuyCryptoViewController: KNBaseViewController {
       }
     })
   }
-  
+
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return
@@ -117,6 +115,16 @@ class BuyCryptoViewController: KNBaseViewController {
       transaction.state == .pending
     }
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
+  }
+
+  func currentFiatCryptoModel() -> FiatCryptoModel? {
+    var fiatCryptoModel: FiatCryptoModel?
+    self.viewModel.dataSource?.forEach({ model in
+      if model.fiatCurrency == self.fiatButton.titleLabel?.text && model.cryptoCurrency == self.cryptoButton.titleLabel?.text {
+        fiatCryptoModel = model
+      }
+    })
+    return fiatCryptoModel
   }
 
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
@@ -220,47 +228,41 @@ class BuyCryptoViewController: KNBaseViewController {
   func validateInput() -> BuyCryptoModel? {
     // validate fiat input
     guard let fiatAmount = self.fiatTextField.text, !fiatAmount.isEmpty else {
-      self.fiatInputView.layer.borderColor = UIColor.red.cgColor
-      self.fiatInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.fiatInputView)
+      self.shakeViewError(viewToShake: self.fiatInputView)
+      showErrorTopBannerMessage(message: "Please input your spent amount")
       return nil
     }
-    
+
     guard let fiatCurrency = self.fiatButton.titleLabel?.text, !fiatCurrency.isEmpty else {
-      self.fiatInputView.layer.borderColor = UIColor.red.cgColor
-      self.fiatInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.fiatInputView)
+      self.shakeViewError(viewToShake: self.fiatInputView)
+      showErrorTopBannerMessage(message: "Please select your currency")
       return nil
     }
 
     // validate crypto input
     guard let cryptoAmount = self.cryptoTextField.text, !cryptoAmount.isEmpty else {
-      self.cryptoInputView.layer.borderColor = UIColor.red.cgColor
-      self.cryptoInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.cryptoInputView)
+      self.shakeViewError(viewToShake: self.cryptoInputView)
+      showErrorTopBannerMessage(message: "Invalid crypto amount")
       return nil
     }
 
     guard let cryptoCurrency = self.cryptoButton.titleLabel?.text, !cryptoCurrency.isEmpty else {
-      self.cryptoInputView.layer.borderColor = UIColor.red.cgColor
-      self.cryptoInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.cryptoInputView)
+      self.shakeViewError(viewToShake: self.cryptoInputView)
+      showErrorTopBannerMessage(message: "Please select received crypto currency")
       return nil
     }
 
     // validate address
     guard let address = self.addressTextField.text, !address.isEmpty else {
-      self.addressInputView.layer.borderColor = UIColor.red.cgColor
-      self.addressInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.addressInputView)
+      self.shakeViewError(viewToShake: self.addressInputView)
+      showErrorTopBannerMessage(message: "Invalid recipient address")
       return nil
     }
 
     // validate network
     if self.networkLabel.text == "Select Network" {
-      self.networkInputView.layer.borderColor = UIColor.red.cgColor
-      self.networkInputView.layer.borderWidth = 1.0
-      self.shakeView(viewToShake: self.networkInputView)
+      self.shakeViewError(viewToShake: self.networkInputView)
+      showErrorTopBannerMessage(message: "Please select your network")
       return nil
     }
 
@@ -268,7 +270,9 @@ class BuyCryptoViewController: KNBaseViewController {
     return buyCryptoModel
   }
 
-  func shakeView(viewToShake: UIView) {
+  func shakeViewError(viewToShake: UIView) {
+    viewToShake.layer.borderColor = UIColor.red.cgColor
+    viewToShake.layer.borderWidth = 1.0
     let animation = CABasicAnimation(keyPath: "position")
     animation.duration = 0.07
     animation.repeatCount = 2
@@ -291,6 +295,26 @@ extension BuyCryptoViewController: UITextFieldDelegate {
     } else if textField == self.addressTextField {
       self.addressInputView.layer.borderColor = UIColor.clear.cgColor
       self.addressInputView.layer.borderWidth = 1.0
+    }
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    if textField == self.fiatTextField {
+      guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
+      let value = textField.text?.doubleValue ?? 0
+      if value > currentFiatModel.maxLimit || value < currentFiatModel.minLimit {
+        self.shakeViewError(viewToShake: self.fiatInputView)
+        return
+      }
+      self.cryptoTextField.text = StringFormatter.amountString(value: value / currentFiatModel.quotation)
+    } else if textField == self.cryptoTextField {
+      guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
+      let cryptoValue = textField.text?.doubleValue ?? 0
+      let fiatValue = cryptoValue
+      if fiatValue > currentFiatModel.maxLimit || fiatValue < currentFiatModel.minLimit {
+        self.shakeViewError(viewToShake: self.cryptoInputView)
+        return
+      }
     }
   }
 }
