@@ -19,15 +19,24 @@ struct FiatCryptoResponse: Codable {
 struct FiatCryptoModel: Codable {
   let cryptoCurrency: String
   let fiatCurrency: String
+  let fiatName: String
+  let fiatLogo: String
+  let cryptoLogo: String
   let maxLimit: Double
   let minLimit: Double
   let quotation: Double
-  let networks: [String]
+  let networks: [FiatNetwork]
+}
+
+struct FiatNetwork: Codable {
+  let name: String
+  let logo: String
 }
 
 struct FiatModel: Codable {
   let url: String
   let currency: String
+  let name: String
 }
 
 struct BuyCryptoModel: Codable {
@@ -135,8 +144,8 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
       self.openWalletListView()
     case .updateRate:
       self.updateData()
-    case .selectNetwork:
-      self.selectNetwork()
+    case .selectNetwork(networks: let networks):
+      self.selectNetwork(networks: networks)
     case .selectFiat(fiat: let fiatModels):
       self.selectFiat(fiat: fiatModels)
     case .selectCrypto(crypto: let cryptoModels):
@@ -156,8 +165,9 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     self.loadFiatPair()
   }
 
-  fileprivate func selectNetwork() {
-    let selectNetworkVC = SelectNetworkViewController()
+  fileprivate func selectNetwork(networks: [FiatNetwork]) {
+    let viewModel = SelectNetworkViewModel(networks: networks)
+    let selectNetworkVC = SelectNetworkViewController(viewModel: viewModel)
     selectNetworkVC.delegate = self
     self.navigationController.present(selectNetworkVC, animated: true, completion: nil)
   }
@@ -194,8 +204,8 @@ extension BuyCryptoCoordinator: SearchFiatCryptoViewControllerDelegate {
 }
 
 extension BuyCryptoCoordinator: SelectNetworkViewControllerDelegate {
-  func didSelectNetwork(chain: String) {
-    self.rootViewController.coordinatorDidSelectNetwork(chain: chain)
+  func didSelectNetwork(network: FiatNetwork) {
+    self.rootViewController.coordinatorDidSelectNetwork(network: network)
   }
 }
 

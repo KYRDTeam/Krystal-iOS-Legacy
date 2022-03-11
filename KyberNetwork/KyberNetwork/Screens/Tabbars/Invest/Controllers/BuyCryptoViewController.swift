@@ -11,7 +11,7 @@ enum BuyCryptoEvent {
   case openHistory
   case openWalletsList
   case updateRate
-  case selectNetwork
+  case selectNetwork(networks: [FiatNetwork])
   case selectFiat(fiat: [FiatModel])
   case selectCrypto(crypto: [FiatModel])
 }
@@ -24,8 +24,9 @@ protocol BuyCryptoViewControllerDelegate: class {
 class BuyCryptoViewModel {
   var wallet: Wallet
   var dataSource: [FiatCryptoModel]?
-  var fiatCurrency: [String]?
-  var cryptoCurrency: [String]?
+  var currentNetworks: [FiatNetwork]?
+  var fiatCurrency: [FiatModel]?
+  var cryptoCurrency: [FiatModel]?
   init(wallet: Wallet) {
     self.wallet = wallet
   }
@@ -45,6 +46,7 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var fiatTextField: UITextField!
   @IBOutlet weak var cryptoTextField: UITextField!
   @IBOutlet weak var networkInputView: UIView!
+  @IBOutlet weak var rateLabel: UILabel!
   //  var buyCryptoModel: BuyCryptoModel?
 
   weak var delegate: BuyCryptoViewControllerDelegate?
@@ -73,6 +75,40 @@ class BuyCryptoViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
   }
   
+  func updateRateUI() {
+    self.viewModel.dataSource?.forEach({ model in
+      if model.fiatCurrency == self.fiatButton.titleLabel?.text && model.cryptoCurrency == self.cryptoButton.titleLabel?.text {
+        self.rateLabel.text = "Rate: 1\(model.cryptoCurrency) = \(model.quotation) \(model.fiatCurrency)"
+        // save supported networks for selected fiat and crypto pair to view model
+        self.viewModel.currentNetworks = model.networks
+      }
+    })
+  }
+  
+  func updateNetworkUI(network: FiatNetwork?) {
+    guard let network = network else {
+      return
+    }
+    self.networkLabel.text = network.name
+  }
+  
+  func setDefaultValue() {
+    self.viewModel.dataSource?.forEach({ model in
+      if model.cryptoCurrency == KNGeneralProvider.shared.quoteToken {
+        self.cryptoButton.titleLabel?.text = KNGeneralProvider.shared.quoteToken
+      }
+    })
+
+    self.viewModel.dataSource?.forEach({ model in
+      if model.fiatCurrency == "USD" && model.cryptoCurrency == KNGeneralProvider.shared.currentChain.chainShortName() {
+        self.cryptoButton.setTitle(model.cryptoCurrency, for: .normal)
+        self.updateNetworkUI(network: model.networks.first(where: { network in
+          network.name == KNGeneralProvider.shared.currentChain.chainShortName()
+        }))
+      }
+    })
+  }
+  
   fileprivate func updateUIPendingTxIndicatorView() {
     guard self.isViewLoaded else {
       return
@@ -82,7 +118,7 @@ class BuyCryptoViewController: KNBaseViewController {
     }
     self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
-  
+
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
     self.viewModel.wallet = wallet
     guard self.isViewLoaded else { return }
@@ -92,7 +128,7 @@ class BuyCryptoViewController: KNBaseViewController {
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
   }
-  
+
   func coordinatorDidSelectFiatCrypto(model: FiatModel, type: SearchCurrencyType) {
     switch type {
     case .fiat:
@@ -100,30 +136,47 @@ class BuyCryptoViewController: KNBaseViewController {
     case .crypto:
       self.cryptoButton.setTitle(model.currency, for: .normal)
     }
+    self.updateRateUI()
+    self.updateNetworkUI(network: self.viewModel.currentNetworks?.first)
   }
   
-  func coordinatorDidSelectNetwork(chain: String) {
-    self.networkLabel.text = chain
+  func coordinatorDidSelectNetwork(network: FiatNetwork) {
+    self.networkLabel.text = network.name
     self.networkInputView.layer.borderColor = UIColor.clear.cgColor
     self.networkInputView.layer.borderWidth = 1.0
   }
 
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
-    var fiatCurrency: [String] = []
-    var cryptoCurrency: [String] = []
-    
+    var fiatCurrency: [FiatModel] = []
+    var cryptoCurrency: [FiatModel] = []
+
     data.forEach { model in
-      if !fiatCurrency.contains(model.fiatCurrency) {
-        fiatCurrency.append(model.fiatCurrency)
+      let fiat = FiatModel(url: model.fiatLogo, currency: model.fiatCurrency, name: model.fiatName)
+
+      let crypto = FiatModel(url: model.cryptoLogo, currency: model.cryptoCurrency, name: model.cryptoCurrency)
+      let isContainFiat = fiatCurrency.contains { fiatModel in
+        fiatModel.currency == fiat.currency
       }
-      
-      if !cryptoCurrency.contains(model.cryptoCurrency) {
-        cryptoCurrency.append(model.cryptoCurrency)
+      if !isContainFiat {
+        fiatCurrency.append(fiat)
+      }
+
+      let isContainCrypto = cryptoCurrency.contains { cryptoModel in
+        cryptoModel.currency == crypto.currency
+      }
+      if !isContainCrypto {
+        cryptoCurrency.append(crypto)
       }
     }
-
+    self.viewModel.dataSource = data
     self.viewModel.fiatCurrency = fiatCurrency
     self.viewModel.cryptoCurrency = cryptoCurrency
+    guard let cryptoCurrency = self.cryptoButton.titleLabel?.text, !cryptoCurrency.isEmpty else {
+      self.setDefaultValue()
+      self.updateRateUI()
+      return
+    }
+    self.updateRateUI()
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
@@ -137,7 +190,7 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBAction func walletsListButtonTapped(_ sender: UIButton) {
     self.delegate?.buyCryptoViewController(self, run: .openWalletsList)
   }
-  
+
   @IBAction func updateRateButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .updateRate)
   }
@@ -151,24 +204,17 @@ class BuyCryptoViewController: KNBaseViewController {
 
   @IBAction func selectFiatButtonTapped(_ sender: Any) {
     guard let fiatCurrency = self.viewModel.fiatCurrency else { return }
-    var fiatModels: [FiatModel] = []
-    fiatCurrency.forEach { item in
-      fiatModels.append(FiatModel(url: item, currency: item))
-    }
-    self.delegate?.buyCryptoViewController(self, run: .selectFiat(fiat: fiatModels))
+    self.delegate?.buyCryptoViewController(self, run: .selectFiat(fiat: fiatCurrency))
   }
 
   @IBAction func selectCryptoButtonTapped(_ sender: Any) {
     guard let cryptoCurrency = self.viewModel.cryptoCurrency else { return }
-    var cryptoModels: [FiatModel] = []
-    cryptoCurrency.forEach { item in
-      cryptoModels.append(FiatModel(url: item, currency: item))
-    }
-    self.delegate?.buyCryptoViewController(self, run: .selectCrypto(crypto: cryptoModels))
+    self.delegate?.buyCryptoViewController(self, run: .selectCrypto(crypto: cryptoCurrency))
   }
 
   @IBAction func selectNetworkButtonTapped(_ sender: Any) {
-    self.delegate?.buyCryptoViewController(self, run: .selectNetwork)
+    guard let networks = self.viewModel.currentNetworks else { return }
+    self.delegate?.buyCryptoViewController(self, run: .selectNetwork(networks: networks))
   }
   
   func validateInput() -> BuyCryptoModel? {
@@ -194,7 +240,7 @@ class BuyCryptoViewController: KNBaseViewController {
       self.shakeView(viewToShake: self.cryptoInputView)
       return nil
     }
-    
+
     guard let cryptoCurrency = self.cryptoButton.titleLabel?.text, !cryptoCurrency.isEmpty else {
       self.cryptoInputView.layer.borderColor = UIColor.red.cgColor
       self.cryptoInputView.layer.borderWidth = 1.0
@@ -217,7 +263,6 @@ class BuyCryptoViewController: KNBaseViewController {
       self.shakeView(viewToShake: self.networkInputView)
       return nil
     }
-    
 
     let buyCryptoModel = BuyCryptoModel(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetWork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, orderAmount: cryptoAmount.doubleValue, requestPrice: fiatAmount.doubleValue)
     return buyCryptoModel

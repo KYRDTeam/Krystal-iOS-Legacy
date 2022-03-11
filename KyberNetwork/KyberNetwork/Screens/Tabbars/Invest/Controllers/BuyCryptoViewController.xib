@@ -33,6 +33,7 @@
                 <outlet property="networkInputView" destination="3y4-r5-8QV" id="Kdt-v7-3iY"/>
                 <outlet property="networkLabel" destination="eQ7-G6-gI3" id="ZKy-3C-l86"/>
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
+                <outlet property="rateLabel" destination="Syf-dQ-ZKq" id="GvM-EX-YLX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="6wj-lu-1R1" id="o9i-US-Fvh"/>
             </connections>
@@ -193,7 +194,7 @@
                     <rect key="frame" x="38" y="265" width="338" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UBk-f8-K1n">
-                            <rect key="frame" x="16" y="0.0" width="242" height="42"/>
+                            <rect key="frame" x="16" y="0.0" width="274" height="42"/>
                             <color key="tintColor" name="buttonBackgroundColor"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -203,10 +204,10 @@
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dr8-dP-RpK">
-                            <rect key="frame" x="274" y="0.0" width="56" height="42"/>
+                            <rect key="frame" x="306" y="0.0" width="24" height="42"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
-                            <state key="normal" title="ETH">
+                            <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>

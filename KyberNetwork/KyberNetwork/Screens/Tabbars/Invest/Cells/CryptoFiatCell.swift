@@ -25,5 +25,7 @@ class CryptoFiatCell: UITableViewCell {
     
   func updateUI(model: FiatModel) {
     self.nameLabel.text = model.currency
+    self.fullNameLabel.text = model.name
+    self.icon.setImage(with: model.url, placeholder: UIImage(named: "default_token"))
   }
 }

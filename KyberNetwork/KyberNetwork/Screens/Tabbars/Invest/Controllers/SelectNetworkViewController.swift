@@ -8,7 +8,14 @@
 import UIKit
 
 protocol SelectNetworkViewControllerDelegate: class {
-  func didSelectNetwork(chain: String)
+  func didSelectNetwork(network: FiatNetwork)
+}
+
+class SelectNetworkViewModel {
+  var networks: [FiatNetwork]
+  init(networks: [FiatNetwork]) {
+    self.networks = networks
+  }
 }
 
 class SelectNetworkViewController: KNBaseViewController {
@@ -18,7 +25,9 @@ class SelectNetworkViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var outSideBackgroundView: UIView!
   weak var delegate: SelectNetworkViewControllerDelegate?
-  init() {
+  var viewModel: SelectNetworkViewModel
+  init(viewModel: SelectNetworkViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: SelectNetworkViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -48,7 +57,7 @@ class SelectNetworkViewController: KNBaseViewController {
 
 extension SelectNetworkViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 6
+    return self.viewModel.networks.count
   }
 
   private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -58,46 +67,17 @@ extension SelectNetworkViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: SelectNetworkCell.kSelectNetworkCellID, for: indexPath) as! SelectNetworkCell
     
-    switch indexPath.row {
-    case 0:
-      cell.iconImageView.image = UIImage(named: "chain_eth_icon")
-      cell.nameLabel.text = "Ethereum"
-    case 1:
-      cell.iconImageView.image = UIImage(named: "chain_bsc_big_icon")
-      cell.nameLabel.text = "Binance Smart Chain (BSC)"
-    case 2:
-      cell.iconImageView.image = UIImage(named: "chain_polygon_big_icon")
-      cell.nameLabel.text = "Polygon (Matic)"
-    case 3:
-      cell.iconImageView.image = UIImage(named: "chain_avax_icon")
-      cell.nameLabel.text = "Avalanche"
-    case 4:
-      cell.iconImageView.image = UIImage(named: "chain_fantom_icon")
-      cell.nameLabel.text = "Fantom"
-    default:
-      cell.iconImageView.image = UIImage(named: "chain_cronos_icon")
-      cell.nameLabel.text = "Cronos"
-    }
+    let model = self.viewModel.networks[indexPath.row]
+    cell.iconImageView.setImage(with: model.logo, placeholder: UIImage(named: "default_token"))
+    cell.nameLabel.text = model.name
     return cell
   }
 }
 
 extension SelectNetworkViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    switch indexPath.row {
-    case 0:
-        self.delegate?.didSelectNetwork(chain: "ETH")
-    case 1:
-        self.delegate?.didSelectNetwork(chain: "Binance Smart Chain (BSC)")
-    case 2:
-        self.delegate?.didSelectNetwork(chain: "Polygon (Matic)")
-    case 3:
-        self.delegate?.didSelectNetwork(chain: "Avalanche")
-    case 4:
-        self.delegate?.didSelectNetwork(chain: "Fantom")
-    default:
-        self.delegate?.didSelectNetwork(chain: "Cronos")
-    }
+    let model = self.viewModel.networks[indexPath.row]
+    self.delegate?.didSelectNetwork(network: model)
     self.dismiss(animated: true, completion: nil)
   }
 }
