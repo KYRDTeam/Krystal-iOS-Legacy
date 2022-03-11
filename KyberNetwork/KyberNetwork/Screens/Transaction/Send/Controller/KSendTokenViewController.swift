@@ -588,7 +588,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     let cleanedText = text.cleanStringToNumber()
     if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.viewModel.from.decimals) == nil {
-      self.showErrorTopBannerMessage(message: "Incorrect value")
+      self.showErrorTopBannerMessage(message: "Invalid input amount, please input number with \(self.viewModel.from.decimals) decimal places")
       return false
     }
     if textField == self.amountTextField {

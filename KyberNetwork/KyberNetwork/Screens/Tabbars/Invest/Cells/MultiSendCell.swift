@@ -283,7 +283,7 @@ extension MultiSendCell: UITextFieldDelegate {
 
     let cleanedText = text.cleanStringToNumber()
     if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.cellModel?.from.decimals ?? 18) == nil {
-      self.showErrorTopBannerMessage(message: "Incorrect value")
+      self.showErrorTopBannerMessage(message: "Invalid input amount, please input number with \(self.cellModel?.from.decimals ?? 18) decimal places")
       return false
     }
     if textField == self.amountTextField {
