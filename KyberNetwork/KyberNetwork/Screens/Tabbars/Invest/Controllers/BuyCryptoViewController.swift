@@ -89,7 +89,7 @@ class BuyCryptoViewController: KNBaseViewController {
     }
     self.networkLabel.text = network.name
   }
-  
+
   func setDefaultValue() {
     self.viewModel.dataSource?.forEach({ model in
       if model.cryptoCurrency == KNGeneralProvider.shared.quoteToken {
@@ -147,7 +147,7 @@ class BuyCryptoViewController: KNBaseViewController {
     self.updateRateUI()
     self.updateNetworkUI(network: self.viewModel.currentNetworks?.first)
   }
-  
+
   func coordinatorDidSelectNetwork(network: FiatNetwork) {
     self.networkLabel.text = network.name
     self.networkInputView.layer.borderColor = UIColor.clear.cgColor
@@ -299,22 +299,31 @@ extension BuyCryptoViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
+    guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
+    var fiatValue: Double = 0
+    let containView: UIView = textField == self.fiatTextField ? self.fiatInputView : self.cryptoInputView
+    
     if textField == self.fiatTextField {
-      guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
-      let value = textField.text?.doubleValue ?? 0
-      if value > currentFiatModel.maxLimit || value < currentFiatModel.minLimit {
-        self.shakeViewError(viewToShake: self.fiatInputView)
-        return
-      }
-      self.cryptoTextField.text = StringFormatter.amountString(value: value / currentFiatModel.quotation)
+      fiatValue = textField.text?.doubleValue ?? 0
     } else if textField == self.cryptoTextField {
-      guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
       let cryptoValue = textField.text?.doubleValue ?? 0
-      let fiatValue = cryptoValue
-      if fiatValue > currentFiatModel.maxLimit || fiatValue < currentFiatModel.minLimit {
-        self.shakeViewError(viewToShake: self.cryptoInputView)
-        return
-      }
+      fiatValue = cryptoValue * currentFiatModel.quotation
     }
+    
+    if fiatValue > currentFiatModel.maxLimit {
+      self.shakeViewError(viewToShake: containView)
+      showErrorTopBannerMessage(message: "Please place an order of less than \(currentFiatModel.maxLimit) \(currentFiatModel.fiatCurrency)")
+      return
+    }
+    if fiatValue < currentFiatModel.minLimit {
+      self.shakeViewError(viewToShake: containView)
+      showErrorTopBannerMessage(message: "Minimum spend amount should be more than \(currentFiatModel.minLimit) \(currentFiatModel.fiatCurrency)")
+      return
+    }
+
+    if textField == self.fiatTextField {
+      self.cryptoTextField.text = StringFormatter.amountString(value: fiatValue / currentFiatModel.quotation)
+    }
+    
   }
 }
