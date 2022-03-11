@@ -224,12 +224,25 @@ class BuyCryptoViewController: KNBaseViewController {
     guard let networks = self.viewModel.currentNetworks else { return }
     self.delegate?.buyCryptoViewController(self, run: .selectNetwork(networks: networks))
   }
-  
+
   func validateInput() -> BuyCryptoModel? {
     // validate fiat input
     guard let fiatAmount = self.fiatTextField.text, !fiatAmount.isEmpty else {
       self.shakeViewError(viewToShake: self.fiatInputView)
       showErrorTopBannerMessage(message: "Please input your spent amount")
+      return nil
+    }
+
+    guard let currentFiatModel = self.currentFiatCryptoModel() else { return nil}
+    guard let inputAmount = self.fiatTextField.text?.doubleValue, inputAmount <= currentFiatModel.maxLimit  else {
+      self.shakeViewError(viewToShake: self.fiatInputView)
+      showErrorTopBannerMessage(message: "Please place an order of less than \(currentFiatModel.maxLimit) \(currentFiatModel.fiatCurrency)")
+      return nil
+    }
+
+    guard let inputAmount = self.fiatTextField.text?.doubleValue, inputAmount >= currentFiatModel.minLimit  else {
+      self.shakeViewError(viewToShake: self.fiatInputView)
+      showErrorTopBannerMessage(message: "Minimum spend amount should be more than \(currentFiatModel.minLimit) \(currentFiatModel.fiatCurrency)")
       return nil
     }
 
@@ -309,7 +322,7 @@ extension BuyCryptoViewController: UITextFieldDelegate {
       let cryptoValue = textField.text?.doubleValue ?? 0
       fiatValue = cryptoValue * currentFiatModel.quotation
     }
-    
+
     if fiatValue > currentFiatModel.maxLimit {
       self.shakeViewError(viewToShake: containView)
       showErrorTopBannerMessage(message: "Please place an order of less than \(currentFiatModel.maxLimit) \(currentFiatModel.fiatCurrency)")
@@ -324,6 +337,5 @@ extension BuyCryptoViewController: UITextFieldDelegate {
     if textField == self.fiatTextField {
       self.cryptoTextField.text = StringFormatter.amountString(value: fiatValue / currentFiatModel.quotation)
     }
-    
   }
 }
