@@ -98,10 +98,10 @@ class BuyCryptoViewController: KNBaseViewController {
     })
 
     self.viewModel.dataSource?.forEach({ model in
-      if model.fiatCurrency == "USD" && model.cryptoCurrency == KNGeneralProvider.shared.currentChain.chainShortName() {
+      if model.fiatCurrency == "USD" && model.cryptoCurrency == KNGeneralProvider.shared.quoteToken {
         self.cryptoButton.setTitle(model.cryptoCurrency, for: .normal)
         self.updateNetworkUI(network: model.networks.first(where: { network in
-          network.name == KNGeneralProvider.shared.currentChain.chainShortName()
+          network.name == KNGeneralProvider.shared.quoteToken
         }))
       }
     })
@@ -131,6 +131,7 @@ class BuyCryptoViewController: KNBaseViewController {
     self.viewModel.wallet = wallet
     guard self.isViewLoaded else { return }
     self.updateUI()
+    self.setDefaultValue()
   }
 
   func coordinatorDidUpdatePendingTx() {

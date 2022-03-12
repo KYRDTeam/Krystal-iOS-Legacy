@@ -473,6 +473,8 @@
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
 		7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */; };
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
+		7EC892CD27DCD15B000C5980 /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */; };
+		7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
@@ -1309,6 +1311,8 @@
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCoordinator.swift; sourceTree = "<group>"; };
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
+		7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
+		7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowserViewController.xib; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
@@ -4353,6 +4357,8 @@
 				7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */,
 				7ED5FA7F27D1EF4000F0CB8E /* SelectNetworkViewController.swift */,
 				7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */,
+				7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */,
+				7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4892,6 +4898,7 @@
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
+				7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */,
 				C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */,
 				C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */,
 				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
@@ -5302,6 +5309,7 @@
 				25A4B4B321242DE000924351 /* KNCreateWalletViewController.swift in Sources */,
 				C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */,
 				29FC9BC61F830899000209CD /* MirgrationInitializer.swift in Sources */,
+				7EC892CD27DCD15B000C5980 /* WebBrowserViewController.swift in Sources */,
 				C335FC71257F90990015CC27 /* RectangularDashedView.swift in Sources */,
 				25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */,
 				25696F5720BD2B81002CC53F /* KNDataDetailsView.swift in Sources */,

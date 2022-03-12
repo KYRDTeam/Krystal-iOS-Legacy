@@ -121,8 +121,9 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          let url = json["eternalRedirectUrl"]
-          print(url)
+          let webVC = WebBrowserViewController()
+          webVC.urlString = json["eternalRedirectUrl"] as? String
+          self.navigationController.present(webVC, animated: true, completion: nil)
         }
       } else {
         print("[Buy crypto][Error]")
