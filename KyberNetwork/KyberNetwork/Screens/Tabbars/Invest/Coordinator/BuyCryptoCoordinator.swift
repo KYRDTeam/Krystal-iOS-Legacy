@@ -52,7 +52,7 @@ protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
   func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
   func buyCryptoCoordinatorDidSelectManageWallet()
-  func buyCryptoCoordinatorOpenHistory()
+//  func buyCryptoCoordinatorOpenHistory()
 }
 
 class BuyCryptoCoordinator: NSObject, Coordinator {
@@ -156,7 +156,9 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
   }
 
   fileprivate func openHistoryScreen() {
-    self.delegate?.buyCryptoCoordinatorOpenHistory()
+//    self.delegate?.buyCryptoCoordinatorOpenHistory()
+    let orderVC = BifinityOrderViewController()
+    self.navigationController.pushViewController(orderVC, animated: true)
   }
 
   fileprivate func updateData() {

@@ -475,6 +475,10 @@
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
 		7EC892CD27DCD15B000C5980 /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */; };
 		7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */; };
+		7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */; };
+		7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */; };
+		7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */; };
+		7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
@@ -1313,6 +1317,10 @@
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
 		7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
 		7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowserViewController.xib; sourceTree = "<group>"; };
+		7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BifinityOrderViewController.swift; sourceTree = "<group>"; };
+		7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BifinityOrderViewController.xib; sourceTree = "<group>"; };
+		7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCryptoHistoryCell.swift; sourceTree = "<group>"; };
+		7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FiatCryptoHistoryCell.xib; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
@@ -3889,6 +3897,8 @@
 				7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */,
 				7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */,
 				7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */,
+				7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */,
+				7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4359,6 +4369,8 @@
 				7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */,
 				7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */,
 				7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */,
+				7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */,
+				7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4772,6 +4784,7 @@
 				C3EE06BB267A15E50090B432 /* Karla-Italic.ttf in Resources */,
 				7EFE440E27158594006CF502 /* ToggleTokenCell.xib in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
+				7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */,
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
@@ -4852,6 +4865,7 @@
 				C3EE06C6267A15E50090B432 /* Karla-Bold.ttf in Resources */,
 				C3EE06C5267A15E50090B432 /* Karla-BoldItalic.ttf in Resources */,
 				25073D19211AF20D00833C92 /* Montserrat-LightItalic.ttf in Resources */,
+				7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */,
 				C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */,
 				C3F71C852618A47200285935 /* KrytalHistoryViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
@@ -5400,6 +5414,7 @@
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
+				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
@@ -5488,6 +5503,7 @@
 				255A68E720AADB2000F39749 /* Double+Kyber.swift in Sources */,
 				2932045C1F8DCD6E0095B7C1 /* CurrencyRate.swift in Sources */,
 				25CC0AA82058F1A00009D0D5 /* KNExchangeRequest.swift in Sources */,
+				7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,

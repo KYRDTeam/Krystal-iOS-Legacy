@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BifinityOrderViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="fDp-3x-p4y" id="WgX-tz-9lS"/>
+                <outlet property="segmentedControl" destination="gVD-vw-mfe" id="FyR-kQ-Ef1"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletSelectButton" destination="F7a-aq-06F" id="mhB-cy-DUE"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMj-ge-d8V">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HISTORY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Eg-Lx-N4Q">
+                            <rect key="frame" x="51" y="74.5" width="82" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di8-NY-jCT">
+                            <rect key="frame" x="16" y="68.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="1nj-9M-ccY"/>
+                                <constraint firstAttribute="width" constant="46" id="EAe-iA-KqB"/>
+                            </constraints>
+                            <state key="normal" image="back_blue_icon"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7a-aq-06F">
+                            <rect key="frame" x="306" y="70.5" width="94" height="32"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="6Vv-kb-gPV"/>
+                                <constraint firstAttribute="width" constant="94" id="nFK-mY-3NN"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="27" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="72" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="0xxx..xx" image="arrow_down_template">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="walletSelectButtonTapped:" destination="-1" eventType="touchUpInside" id="09F-C1-1XK"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="F7a-aq-06F" firstAttribute="centerY" secondItem="4Eg-Lx-N4Q" secondAttribute="centerY" id="1gI-iF-mfe"/>
+                        <constraint firstAttribute="trailing" secondItem="F7a-aq-06F" secondAttribute="trailing" constant="14" id="LFa-4w-Vwn"/>
+                        <constraint firstItem="4Eg-Lx-N4Q" firstAttribute="leading" secondItem="wMj-ge-d8V" secondAttribute="leading" constant="51" id="P1W-Go-b8T"/>
+                        <constraint firstItem="Di8-NY-jCT" firstAttribute="centerY" secondItem="4Eg-Lx-N4Q" secondAttribute="centerY" id="QbJ-ps-LC3"/>
+                        <constraint firstItem="Di8-NY-jCT" firstAttribute="leading" secondItem="wMj-ge-d8V" secondAttribute="leading" constant="16" id="eO7-LZ-VAh"/>
+                        <constraint firstAttribute="bottom" secondItem="4Eg-Lx-N4Q" secondAttribute="bottom" constant="16" id="nV3-cH-Vdw"/>
+                        <constraint firstAttribute="height" constant="114" id="za2-YY-5dd"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gVD-vw-mfe" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                    <rect key="frame" x="20" y="114" width="197" height="32"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <segments>
+                        <segment title="Completed" width="98"/>
+                        <segment title="Pending" width="98"/>
+                    </segments>
+                    <color key="tintColor" name="buttonBackgroundColor"/>
+                    <color key="selectedSegmentTintColor" name="textWhiteColor"/>
+                    <connections>
+                        <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="ShX-Kv-7IH"/>
+                    </connections>
+                </segmentedControl>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fDp-3x-p4y">
+                    <rect key="frame" x="0.0" y="164" width="414" height="698"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uPc-yH-RA2">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="iTs-T5-egu"/>
+                        <outlet property="delegate" destination="-1" id="esg-fe-rh7"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="gVD-vw-mfe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="7SG-IZ-a1H"/>
+                <constraint firstItem="wMj-ge-d8V" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="JE9-UG-WSi"/>
+                <constraint firstItem="fDp-3x-p4y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bGZ-va-ZNo"/>
+                <constraint firstItem="wMj-ge-d8V" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gjn-c0-E6t"/>
+                <constraint firstAttribute="trailing" secondItem="fDp-3x-p4y" secondAttribute="trailing" id="lqs-kH-jAi"/>
+                <constraint firstItem="gVD-vw-mfe" firstAttribute="top" secondItem="wMj-ge-d8V" secondAttribute="bottom" id="m5V-uz-nER"/>
+                <constraint firstItem="wMj-ge-d8V" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nBl-Ue-7LZ"/>
+                <constraint firstItem="fDp-3x-p4y" firstAttribute="top" secondItem="wMj-ge-d8V" secondAttribute="bottom" constant="50" id="qXf-zM-aPI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="fDp-3x-p4y" secondAttribute="bottom" id="uaT-eu-S8j"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="132"/>
+        </view>
+        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" id="WtE-tw-Pc6" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="197" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <segments>
+                <segment title="Completed" width="98"/>
+                <segment title="Pending" width="98"/>
+            </segments>
+            <color key="tintColor" name="buttonBackgroundColor"/>
+            <color key="selectedSegmentTintColor" name="textWhiteColor"/>
+            <point key="canvasLocation" x="133" y="-222"/>
+        </segmentedControl>
+    </objects>
+    <resources>
+        <image name="arrow_down_template" width="24" height="24"/>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="navButtonBgColor">
+            <color red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
