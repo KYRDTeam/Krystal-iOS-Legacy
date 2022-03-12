@@ -1303,12 +1303,12 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .buyCrypto(buyCryptoModel: let model):
       var json: JSONDictionary = [
-        "cryptoAddress": model.cryptoAddress,
+        "cryptoAddress": model.cryptoAddress.lowercased(),
         "cryptoCurrency": model.cryptoCurrency,
         "cryptoNetWork": model.cryptoNetWork,
         "fiatCurrency": model.fiatCurrency,
         "orderAmount": model.orderAmount,
-        "requestPrice": model.requestPrice
+        "requestPrice": model.requestPrice.rounded(to: 4)
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }

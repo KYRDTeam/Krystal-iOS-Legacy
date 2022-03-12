@@ -120,12 +120,9 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       if case .success(let resp) = result {
-        let decoder = JSONDecoder()
-        do {
-//          let data = try decoder.decode(LoginToken.self, from: resp.data)
-//          Storage.store(data, as: self.session.wallet.address.description + Constants.loginTokenStoreFileName)
-        } catch let error {
-          print("[Buy crypto][Error] \(error.localizedDescription)")
+        if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
+          let url = json["eternalRedirectUrl"]
+          print(url)
         }
       } else {
         print("[Buy crypto][Error]")

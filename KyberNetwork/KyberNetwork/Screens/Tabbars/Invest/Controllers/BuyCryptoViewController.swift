@@ -279,7 +279,7 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
-    let buyCryptoModel = BuyCryptoModel(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetWork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, orderAmount: cryptoAmount.doubleValue, requestPrice: fiatAmount.doubleValue)
+    let buyCryptoModel = BuyCryptoModel(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetWork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation)
     return buyCryptoModel
   }
 
