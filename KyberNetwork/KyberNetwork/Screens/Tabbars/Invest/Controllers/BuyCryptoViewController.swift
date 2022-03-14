@@ -101,7 +101,7 @@ class BuyCryptoViewController: KNBaseViewController {
       if model.fiatCurrency == "USD" && model.cryptoCurrency == KNGeneralProvider.shared.quoteToken {
         self.cryptoButton.setTitle(model.cryptoCurrency, for: .normal)
         self.updateNetworkUI(network: model.networks.first(where: { network in
-          network.name == KNGeneralProvider.shared.quoteToken
+          network.name == KNGeneralProvider.shared.currentChain.chainShortName()
         }))
       }
     })
@@ -234,7 +234,7 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
-    guard let currentFiatModel = self.currentFiatCryptoModel() else { return nil}
+    guard let currentFiatModel = self.currentFiatCryptoModel() else { return nil }
     guard let inputAmount = self.fiatTextField.text?.doubleValue, inputAmount <= currentFiatModel.maxLimit  else {
       self.shakeViewError(viewToShake: self.fiatInputView)
       showErrorTopBannerMessage(message: "Please place an order of less than \(currentFiatModel.maxLimit) \(currentFiatModel.fiatCurrency)")
@@ -316,7 +316,6 @@ extension BuyCryptoViewController: UITextFieldDelegate {
     guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
     var fiatValue: Double = 0
     let containView: UIView = textField == self.fiatTextField ? self.fiatInputView : self.cryptoInputView
-    
     if textField == self.fiatTextField {
       fiatValue = textField.text?.doubleValue ?? 0
     } else if textField == self.cryptoTextField {

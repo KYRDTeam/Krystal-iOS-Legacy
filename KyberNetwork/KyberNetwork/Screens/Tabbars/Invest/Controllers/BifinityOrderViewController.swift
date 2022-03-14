@@ -7,12 +7,26 @@
 
 import UIKit
 
+protocol BifinityOrderDelegate: class {
+  func openWalletList()
+}
+
+class BifinityOrderViewModel {
+  var orders: [BifinityOrder] = []
+  var wallet: Wallet
+  init(wallet: Wallet) {
+    self.wallet = wallet
+  }
+}
+
 class BifinityOrderViewController: KNBaseViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var walletSelectButton: UIButton!
-  var orders: [BifinityOrder] = []
-  init() {
+  let viewModel: BifinityOrderViewModel
+  weak var delegate: BifinityOrderDelegate?
+  init(viewModel: BifinityOrderViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: BifinityOrderViewController.className, bundle: nil)
   }
 
@@ -27,7 +41,7 @@ class BifinityOrderViewController: KNBaseViewController {
 
   func setupUI() {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-//    self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
+    self.walletSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = 1
     segmentedControl.highlightSelectedSegment()
@@ -40,28 +54,33 @@ class BifinityOrderViewController: KNBaseViewController {
   }
 
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-
+    self.delegate?.openWalletList()
   }
 
+  @IBAction func onBackButtonTapped(_ sender: Any) {
+    self.navigationController?.popViewController(animated: true)
+  }
   func coordinatorDidGetOrders(orders: [BifinityOrder]) {
-    self.orders = orders
+    self.viewModel.orders = orders
     self.collectionView.reloadData()
+  }
+  
+  func coordinatorDidUpdateWallet(_ wallet: Wallet) {
+    guard self.isViewLoaded else { return }
   }
 }
 
 extension BifinityOrderViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FiatCryptoHistoryCell.cellID, for: indexPath) as! FiatCryptoHistoryCell
-    let order = self.orders[indexPath.row]
+    let order = self.viewModel.orders[indexPath.row]
     cell.updateCell(order: order)
     return cell
   }
 
-
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.orders.count
+    return self.viewModel.orders.count
   }
-
 }
 
 extension BifinityOrderViewController: UICollectionViewDelegateFlowLayout {

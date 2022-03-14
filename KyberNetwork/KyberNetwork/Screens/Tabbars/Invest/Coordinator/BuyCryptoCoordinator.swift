@@ -76,7 +76,8 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   var session: KNSession
   let navigationController: UINavigationController
   weak var delegate: BuyCryptoCoordinatorDelegate?
-  
+  var bifinityOrders: [BifinityOrder] = []
+
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -90,7 +91,15 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }()
   
   lazy var ordersViewController: BifinityOrderViewController = {
-    let controller = BifinityOrderViewController()
+    let viewModel = BifinityOrderViewModel(wallet: self.session.wallet)
+    let controller = BifinityOrderViewController(viewModel: viewModel)
+    controller.delegate = self
+    return controller
+  }()
+  
+  lazy var webViewController: WebBrowserViewController = {
+    let controller = WebBrowserViewController()
+    controller.delegate = self
     return controller
   }()
 
@@ -107,6 +116,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
+    self.ordersViewController.coordinatorDidUpdateWallet(self.session.wallet)
   }
 
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -136,9 +146,8 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          let webVC = WebBrowserViewController()
-          webVC.urlString = json["eternalRedirectUrl"] as? String
-          self.navigationController.present(webVC, animated: true, completion: nil)
+          self.webViewController.urlString = json["eternalRedirectUrl"] as? String
+          self.navigationController.present(self.webViewController, animated: true, completion: nil)
         }
       } else {
         print("[Buy crypto][Error]")
@@ -153,8 +162,11 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       case .success(let resp):
         let decoder = JSONDecoder()
         do {
+          self.showDetailOrderIfNeed()
           let responseData = try decoder.decode(BifinityOrderResponse.self, from: resp.data)
           self.ordersViewController.coordinatorDidGetOrders(orders: responseData.data)
+          self.bifinityOrders = responseData.data
+          
         } catch let error {
           print("[Get BifinityOrder] \(error.localizedDescription)")
         }
@@ -164,6 +176,13 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
   }
 
+  func showDetailOrderIfNeed() {
+    self.bifinityOrders.forEach { order in
+      //TODO: check contain current order here
+    }
+    let confirmVC = ConfirmBuyCryptoViewController()
+    self.navigationController.present(confirmVC, animated: true)
+  }
 }
 
 extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
@@ -238,6 +257,18 @@ extension BuyCryptoCoordinator: SearchFiatCryptoViewControllerDelegate {
 extension BuyCryptoCoordinator: SelectNetworkViewControllerDelegate {
   func didSelectNetwork(network: FiatNetwork) {
     self.rootViewController.coordinatorDidSelectNetwork(network: network)
+  }
+}
+
+extension BuyCryptoCoordinator: WebBrowserViewControllerDelegate {
+  func didClose() {
+    self.getBifinityOrders()
+  }
+}
+
+extension BuyCryptoCoordinator: BifinityOrderDelegate {
+  func openWalletList() {
+    self.openWalletListView()
   }
 }
 
