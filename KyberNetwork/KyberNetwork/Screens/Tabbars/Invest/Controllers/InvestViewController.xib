@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -525,10 +525,10 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Kv-Nz-9iU">
                                     <rect key="frame" x="175.5" y="0.0" width="72" height="78"/>
                                     <subviews>
-                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxi-iF-ZgF">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxi-iF-ZgF">
                                             <rect key="frame" x="9.5" y="15" width="53" height="32"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="reward_icon" translatesAutoresizingMaskIntoConstraints="NO" id="nli-Jv-zfS">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="promo_code_icon" translatesAutoresizingMaskIntoConstraints="NO" id="nli-Jv-zfS">
                                                     <rect key="frame" x="10.5" y="0.0" width="32" height="32"/>
                                                 </imageView>
                                             </subviews>
@@ -546,21 +546,24 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HS1-w0-ceI">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HS1-w0-ceI">
                                             <rect key="frame" x="9.5" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoZ-gf-3cs">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoZ-gf-3cs">
                                             <rect key="frame" x="0.0" y="0.0" width="72" height="78"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <state key="normal">
                                                 <color key="titleColor" name="textWhiteColor"/>
                                             </state>
+                                            <connections>
+                                                <action selector="promoCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="M2c-iY-f2W"/>
+                                            </connections>
                                         </button>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="EoZ-gf-3cs" secondAttribute="bottom" id="2I5-ic-F3K"/>
                                         <constraint firstItem="EoZ-gf-3cs" firstAttribute="leading" secondItem="6Kv-Nz-9iU" secondAttribute="leading" id="6o7-kY-Q9O"/>
@@ -687,6 +690,7 @@
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="dapp_invest_icon" width="30" height="30"/>
         <image name="multiSend_icon" width="30" height="30"/>
+        <image name="promo_code_icon" width="32" height="32"/>
         <image name="referral_invest_icon" width="32" height="32"/>
         <image name="reward_icon" width="32" height="32"/>
         <image name="swap_inverst_icon" width="32" height="32"/>

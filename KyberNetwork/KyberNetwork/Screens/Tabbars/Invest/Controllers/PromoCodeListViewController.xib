@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gR1-Lq-JxG">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0dx-M9-GPb">
+                            <rect key="frame" x="138" y="73.5" width="99.5" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ycy-fm-YJh">
+                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="8H0-OD-tho"/>
+                                <constraint firstAttribute="height" constant="36" id="lkk-so-GOB"/>
+                            </constraints>
+                            <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="667-3u-kBu"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="0dx-M9-GPb" secondAttribute="bottom" constant="16" id="DaW-v2-Qyv"/>
+                        <constraint firstItem="Ycy-fm-YJh" firstAttribute="centerY" secondItem="0dx-M9-GPb" secondAttribute="centerY" id="FV8-5J-J1v"/>
+                        <constraint firstAttribute="height" constant="113" id="XkO-yv-QJ5"/>
+                        <constraint firstItem="Ycy-fm-YJh" firstAttribute="leading" secondItem="gR1-Lq-JxG" secondAttribute="leading" constant="16" id="dvf-NR-ZxD"/>
+                        <constraint firstItem="0dx-M9-GPb" firstAttribute="centerX" secondItem="gR1-Lq-JxG" secondAttribute="centerX" id="ouB-No-SXa"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDK-bl-nvD">
+                    <rect key="frame" x="21" y="128" width="333" height="42"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f2c-gP-1nP">
+                            <rect key="frame" x="16" y="0.0" width="301" height="42"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" name="buttonBackgroundColor"/>
+                            <color key="textColor" name="textWhiteColor"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" textContentType="password"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" name="innerContainerBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="f2c-gP-1nP" secondAttribute="bottom" id="2Ss-cx-Dq5"/>
+                        <constraint firstItem="f2c-gP-1nP" firstAttribute="leading" secondItem="xDK-bl-nvD" secondAttribute="leading" constant="16" id="6DX-CL-63x"/>
+                        <constraint firstItem="f2c-gP-1nP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="top" id="TQo-IG-AgL"/>
+                        <constraint firstAttribute="trailing" secondItem="f2c-gP-1nP" secondAttribute="trailing" constant="16" id="sif-6D-2wn"/>
+                        <constraint firstAttribute="height" constant="42" id="ue4-dy-Wsl"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
+                    <rect key="frame" x="0.0" y="185" width="375" height="482"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="xDK-bl-nvD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="3sg-V5-jzz"/>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="F9C-54-wlB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xDK-bl-nvD" secondAttribute="trailing" constant="21" id="VRW-LP-EnX"/>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YPd-1d-rLX"/>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="aYL-05-NJg"/>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="15" id="k3a-TY-RoG"/>
+                <constraint firstItem="gR1-Lq-JxG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="mrN-4n-k5A"/>
+                <constraint firstItem="xDK-bl-nvD" firstAttribute="top" secondItem="gR1-Lq-JxG" secondAttribute="bottom" constant="15" id="pxS-p0-vaX"/>
+                <constraint firstItem="gR1-Lq-JxG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ubr-Qv-CZu"/>
+                <constraint firstItem="gR1-Lq-JxG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xUs-E3-eQf"/>
+            </constraints>
+            <point key="canvasLocation" x="138.40000000000001" y="95.802098950524751"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="innerContainerBgColor">
+            <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

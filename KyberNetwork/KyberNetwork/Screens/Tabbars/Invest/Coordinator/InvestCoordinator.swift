@@ -28,6 +28,7 @@ class InvestCoordinator: Coordinator {
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
+  var promoCodeCoordinator: PromoCodeCoordinator?
   
   lazy var rootViewController: InvestViewController = {
     let controller = InvestViewController()
@@ -198,6 +199,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     case .multiSend:
       self.multiSendCoordinator.start()
       KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
+    case .promoCode:
+      let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, session: self.session)
+      coordinator.start()
+      self.promoCodeCoordinator = coordinator
     }
   }
 }
