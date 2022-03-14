@@ -162,11 +162,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       case .success(let resp):
         let decoder = JSONDecoder()
         do {
-          self.showDetailOrderIfNeed()
           let responseData = try decoder.decode(BifinityOrderResponse.self, from: resp.data)
           self.ordersViewController.coordinatorDidGetOrders(orders: responseData.data)
           self.bifinityOrders = responseData.data
-          
+          self.showDetailOrderIfNeed()
         } catch let error {
           print("[Get BifinityOrder] \(error.localizedDescription)")
         }
@@ -176,6 +175,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
   }
 
+  
   func showDetailOrderIfNeed() {
     self.bifinityOrders.forEach { order in
       //TODO: check contain current order here

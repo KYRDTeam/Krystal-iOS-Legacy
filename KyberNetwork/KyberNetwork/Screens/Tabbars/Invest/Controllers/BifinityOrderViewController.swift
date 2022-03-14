@@ -62,7 +62,7 @@ class BifinityOrderViewController: KNBaseViewController {
   }
   func coordinatorDidGetOrders(orders: [BifinityOrder]) {
     self.viewModel.orders = orders
-    self.collectionView.reloadData()
+//    self.collectionView.reloadData()
   }
   
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {

@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -24,6 +24,7 @@
             <connections>
                 <outlet property="contentView" destination="qa5-l2-zcK" id="vt6-Bz-a8L"/>
                 <outlet property="contentViewTopContraint" destination="Pc8-cu-y2p" id="4KH-aW-jfA"/>
+                <outlet property="outSideBackgroundView" destination="rAf-E8-iM6" id="2pf-TC-cbx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -52,7 +52,6 @@ class BuyCryptoViewController: KNBaseViewController {
   weak var delegate: BuyCryptoViewControllerDelegate?
   let transitor = TransitionDelegate()
   let viewModel: BuyCryptoViewModel
-  
   init(viewModel: BuyCryptoViewModel) {
     self.viewModel = viewModel
     super.init(nibName: BuyCryptoViewController.className, bundle: nil)
