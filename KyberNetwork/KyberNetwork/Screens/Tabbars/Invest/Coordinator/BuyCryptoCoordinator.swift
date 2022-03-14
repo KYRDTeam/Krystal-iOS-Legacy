@@ -155,7 +155,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
   }
 
-  func getBifinityOrders() {
+  func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getOrders(userId: self.session.wallet.address.description)) { (result) in
       switch result {
@@ -165,7 +165,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
           let responseData = try decoder.decode(BifinityOrderResponse.self, from: resp.data)
           self.ordersViewController.coordinatorDidGetOrders(orders: responseData.data)
           self.bifinityOrders = responseData.data
-          self.showDetailOrderIfNeed()
+          self.showDetailOrderIfNeed(currentOrder)
         } catch let error {
           print("[Get BifinityOrder] \(error.localizedDescription)")
         }
@@ -176,7 +176,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   
-  func showDetailOrderIfNeed() {
+  func showDetailOrderIfNeed(_ currentOrder: BifinityOrder?) {
+    guard let currentOrder = currentOrder else {
+      return
+    }
     self.bifinityOrders.forEach { order in
       //TODO: check contain current order here
     }
