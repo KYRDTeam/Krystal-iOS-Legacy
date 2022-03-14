@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -25,9 +25,15 @@
                 <outlet property="backButton" destination="WoT-cZ-c6P" id="Mb4-zd-5Rm"/>
                 <outlet property="contentView" destination="hM6-sk-Gq7" id="zC2-c0-Tdw"/>
                 <outlet property="contentViewTopContraint" destination="8Cm-6X-5DB" id="Cq9-Ey-HNM"/>
+                <outlet property="favoriteButton" destination="JGk-PF-2Vz" id="cCs-dU-Vwz"/>
+                <outlet property="favoriteContainView" destination="MGC-UY-UBh" id="7LR-6H-DBW"/>
                 <outlet property="favoriteStatusIcon" destination="0S6-8H-fyR" id="G1Q-ho-MhU"/>
                 <outlet property="favoriteStatusLabel" destination="Kjs-uE-2wf" id="zhr-CA-t4B"/>
                 <outlet property="forwardButton" destination="SPF-nX-brL" id="jCF-gw-yjD"/>
+                <outlet property="switchWalletButton" destination="dZI-qU-2dO" id="kMq-bN-tPN"/>
+                <outlet property="switchWalletContainView" destination="5cy-AR-p2Q" id="D2m-af-w2e"/>
+                <outlet property="switchWalletIcon" destination="5Fe-kA-SsS" id="LDk-D3-opn"/>
+                <outlet property="switchWalletLabel" destination="ZfZ-VY-OXZ" id="RBW-mW-UDR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

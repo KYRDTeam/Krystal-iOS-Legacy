@@ -50,7 +50,14 @@ class WebBrowserViewController: KNBaseViewController {
   }
   
   @IBAction func optionButtonTapped(_ sender: Any) {
-
+    let controller = BrowserOptionsViewController(
+      url: "url",
+      canGoBack: true,
+      canGoForward: true
+    )
+    controller.delegate = self
+    controller.isNormalBrowser = true
+    self.present(controller, animated: true, completion: nil)
   }
   
   func checkContainOrder() {
@@ -63,5 +70,11 @@ extension WebBrowserViewController: WKScriptMessageHandler {
     if message.name == jsBackToWallet {
       print("hehehe")
     }
+  }
+}
+
+extension WebBrowserViewController: BrowserOptionsViewControllerDelegate {
+  func browserOptionsViewController(_ controller: BrowserOptionsViewController, run event: BrowserOptionsViewEvent) {
+    
   }
 }
