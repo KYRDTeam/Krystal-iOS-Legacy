@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Moya
 
 class RateTransactionPopupViewController: KNBaseViewController {
   @IBOutlet weak var oneStarButton: UIButton!
@@ -21,10 +22,12 @@ class RateTransactionPopupViewController: KNBaseViewController {
   @IBOutlet weak var doneImageView: UIImageView!
   @IBOutlet weak var sendButton: UIButton!
   var currentRate: Int
+  var txHash: String
   var detailValuation: String?
   let transitor = TransitionDelegate()
-  init(currentRate: Int) {
+  init(currentRate: Int, txHash: String) {
     self.currentRate = currentRate
+    self.txHash = txHash
     super.init(nibName: RateTransactionPopupViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -33,7 +36,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
       super.viewDidLoad()
 
@@ -55,11 +58,16 @@ class RateTransactionPopupViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonTapped(_ sender: Any) {
+    if self.currentRate <= 3 && self.detailTextView.text.trimmed.isEmpty {
+      self.detailTextView.shakeViewError()
+      showTopBannerView(message: "Please input detailed valuation to send.")
+      return
+    }
     self.finishView.isHidden = false
+    self.sendRate()
   }
-  
+
   func updateRateUI(rate: Int) {
-    self.sendButton.isEnabled = rate > 3
     self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
     self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
 
@@ -74,8 +82,20 @@ class RateTransactionPopupViewController: KNBaseViewController {
 
     self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
     self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+    self.currentRate = rate
   }
 
+  func sendRate() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.sendRate(star: self.currentRate, detail: self.detailTextView.text, txHash: self.txHash)) { result in
+      switch result {
+      case .success(_):
+        print("[Send Rate][Success] ")
+      case .failure(let error):
+        print("[Send Rate][Error] \(error.localizedDescription)")
+      }
+    }
+  }
 }
 
 extension RateTransactionPopupViewController: UITextViewDelegate {

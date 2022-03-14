@@ -324,7 +324,7 @@ extension KNTransactionStatusPopUp: BottomPopUpAbstract {
 extension KNTransactionStatusPopUp {
   @IBAction func rateButtonTapped(_ sender: UIButton) {
     self.updateRateUI(rate: sender.tag)
-    let vc = RateTransactionPopupViewController(currentRate: sender.tag)
+    let vc = RateTransactionPopupViewController(currentRate: sender.tag, txHash: self.transaction.hash)
     self.present(vc, animated: true, completion: nil)
   }
 
