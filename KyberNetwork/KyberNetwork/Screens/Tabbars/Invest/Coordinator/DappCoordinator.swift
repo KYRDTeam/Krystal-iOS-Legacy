@@ -89,9 +89,9 @@ class DappCoordinator: NSObject, Coordinator {
       return
     }
     if isSwitchChain {
-      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_chain", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.navTitleLabel.text ?? ""])
+      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_chain", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.viewModel.url.absoluteString])
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_wallet", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.navTitleLabel.text ?? ""])
+      KNCrashlyticsUtil.logCustomEvent(withName: "dapp_switch_wallet", customAttributes: ["url": unwrap.viewModel.url, "chainId": KNGeneralProvider.shared.customRPC.chainID, "title": unwrap.viewModel.url.absoluteString])
     }
     
     let url = unwrap.viewModel.url
