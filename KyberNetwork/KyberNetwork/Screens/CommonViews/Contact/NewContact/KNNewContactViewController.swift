@@ -192,6 +192,7 @@ class KNNewContactViewController: KNBaseViewController {
     KNContactStorage.shared.update(contacts: [contact])
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
     self.delegate?.newContactViewController(self, run: .dismiss)
+    self.navigationController?.showTopBannerView(message: "New contact is added")
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
