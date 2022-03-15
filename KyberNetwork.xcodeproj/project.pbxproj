@@ -629,6 +629,7 @@
 		C35E9DF027DB2ED900E1E7CE /* PromoCodeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */; };
 		C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */; };
 		C35E9DF427DB56F800E1E7CE /* PromoCodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */; };
+		C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */; };
 		C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D21C255E95A900B166E0 /* TransitionDelegate.swift */; };
 		C360D222255E9AEE00B166E0 /* KNBottomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */; };
 		C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */; };
@@ -1460,6 +1461,7 @@
 		C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromoCodeListViewController.xib; sourceTree = "<group>"; };
 		C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCell.swift; sourceTree = "<group>"; };
 		C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromoCodeCell.xib; sourceTree = "<group>"; };
+		C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeStorage.swift; sourceTree = "<group>"; };
 		C360D21C255E95A900B166E0 /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBottomPopupViewController.swift; sourceTree = "<group>"; };
 		C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBottomPopupViewController.xib; sourceTree = "<group>"; };
@@ -4084,6 +4086,7 @@
 			isa = PBXGroup;
 			children = (
 				C3280159277D69FA00158D27 /* BrowserStorage.swift */,
+				C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -5198,6 +5201,7 @@
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */,
+				C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
