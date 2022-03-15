@@ -8,6 +8,10 @@
 import UIKit
 import Moya
 
+protocol RateTransactionPopupDelegate: class {
+  func didUpdateRate(rate: Int)
+}
+
 class RateTransactionPopupViewController: KNBaseViewController {
   @IBOutlet weak var oneStarButton: UIButton!
   @IBOutlet weak var twoStarButton: UIButton!
@@ -25,6 +29,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
   var txHash: String
   var detailValuation: String?
   let transitor = TransitionDelegate()
+  weak var delegate: RateTransactionPopupDelegate?
   init(currentRate: Int, txHash: String) {
     self.currentRate = currentRate
     self.txHash = txHash
@@ -32,7 +37,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -51,6 +56,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
 
   @IBAction func rateButtonTapped(_ sender: UIButton) {
     self.updateRateUI(rate: sender.tag)
+    self.delegate?.didUpdateRate(rate: sender.tag)
   }
 
   @IBAction func closeButtonTapped(_ sender: Any) {

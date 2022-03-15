@@ -126,7 +126,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       return
     }
     self.txHashLabel.text = self.transaction.hash
-    self.rateContainView.isHidden = self.transaction.state != .done
+    self.rateContainView.isHidden = (self.transaction.state != .done || self.transaction.type != .swap)
     if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
       self.titleLabel.text = "Broadcasted!".toBeLocalised().uppercased()
@@ -143,8 +143,6 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
-      self.contentViewHeightContraint.constant += 160
-      self.contentViewTopContraint.constant -= 160
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
       self.titleLabel.text = "Done!".toBeLocalised().uppercased()
       self.subTitleLabel.text = {
@@ -202,12 +200,15 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       } else if self.transaction.type == .swap {
         self.txHashTopConstraintToLoadingImage.constant += 30
         self.firstButtonTopContraint.constant = 164
+        self.contentViewHeightContraint.constant += 160
+        self.contentViewTopContraint.constant -= 160
         self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
       } else if self.transaction.type == .multiSend {
         self.firstButton.setTitle("Back to home".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New transfer".toBeLocalised().capitalized, for: .normal)
       } else {
+        self.txHashTopConstraintToLoadingImage.constant += 30
         self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
@@ -325,6 +326,7 @@ extension KNTransactionStatusPopUp {
   @IBAction func rateButtonTapped(_ sender: UIButton) {
     self.updateRateUI(rate: sender.tag)
     let vc = RateTransactionPopupViewController(currentRate: sender.tag, txHash: self.transaction.hash)
+    vc.delegate = self
     self.present(vc, animated: true, completion: nil)
   }
 
@@ -343,5 +345,11 @@ extension KNTransactionStatusPopUp {
 
     self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
     self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+  }
+}
+
+extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
+  func didUpdateRate(rate: Int) {
+    self.updateRateUI(rate: rate)
   }
 }
