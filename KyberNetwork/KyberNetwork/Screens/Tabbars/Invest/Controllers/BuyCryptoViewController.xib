@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -312,6 +312,9 @@
                                                 <constraint firstAttribute="height" constant="42" id="bGn-GO-CAk"/>
                                             </constraints>
                                             <state key="normal" image="qr_code_blue_icon"/>
+                                            <connections>
+                                                <action selector="scanAddressButtonTapped:" destination="-1" eventType="touchUpInside" id="XDe-n7-Pof"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" name="toolbarBgColor"/>

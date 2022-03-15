@@ -14,6 +14,7 @@ enum BuyCryptoEvent {
   case selectNetwork(networks: [FiatNetwork])
   case selectFiat(fiat: [FiatModel])
   case selectCrypto(crypto: [FiatModel])
+  case scanQRCode
 }
 
 protocol BuyCryptoViewControllerDelegate: class {
@@ -153,6 +154,10 @@ class BuyCryptoViewController: KNBaseViewController {
     self.networkInputView.layer.borderColor = UIColor.clear.cgColor
     self.networkInputView.layer.borderWidth = 1.0
   }
+  
+  func coordinatorDidScanAddress(address: String) {
+    self.addressTextField.text = address
+  }
 
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
     var fiatCurrency: [FiatModel] = []
@@ -223,6 +228,10 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBAction func selectNetworkButtonTapped(_ sender: Any) {
     guard let networks = self.viewModel.currentNetworks else { return }
     self.delegate?.buyCryptoViewController(self, run: .selectNetwork(networks: networks))
+  }
+
+  @IBAction func scanAddressButtonTapped(_ sender: Any) {
+    self.delegate?.buyCryptoViewController(self, run: .scanQRCode)
   }
 
   func validateInput() -> BuyCryptoModel? {
@@ -320,6 +329,8 @@ extension BuyCryptoViewController: UITextFieldDelegate {
     } else if textField == self.cryptoTextField {
       let cryptoValue = textField.text?.doubleValue ?? 0
       fiatValue = cryptoValue * currentFiatModel.quotation
+    } else {
+      return
     }
 
     if fiatValue > currentFiatModel.maxLimit {
