@@ -51,7 +51,7 @@ class PromoCodeListViewController: KNBaseViewController {
     
     let nib = UINib(nibName: PromoCodeCell.className, bundle: nil)
     self.promoCodeTableView.register(nib, forCellReuseIdentifier: PromoCodeCell.cellID)
-    self.promoCodeTableView.rowHeight = UITableView.automaticDimension;
+    self.promoCodeTableView.rowHeight = UITableView.automaticDimension
     self.promoCodeTableView.estimatedRowHeight = 200
     
   }
@@ -104,23 +104,11 @@ extension PromoCodeListViewController: UITableViewDataSource {
 extension PromoCodeListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if let cell = self.cachedCell[indexPath] {
-      
       let value = self.calculateHeightForConfiguredSizingCell(cell: cell)
-      print("[Promo]  has cell \(value)")
       return value
-    } else {
-      print("[Promo]  no cell")
     }
-    
-//    if indexPath.section == 0 {
-//      let txt = self.viewModel.unusedDataSource[indexPath.row].displayTitle
-//
-//    } else {
-//      let txt = self.viewModel.usedDataSource[indexPath.row].displayTitle
-//
-//    }
 
-    return 170 //TODO: calculate row height
+    return UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -145,10 +133,10 @@ extension PromoCodeListViewController: UITableViewDelegate {
     }
   }
   
-  func calculateHeightForConfiguredSizingCell(cell: UITableViewCell) -> CGFloat {
+  func calculateHeightForConfiguredSizingCell(cell: PromoCodeCell) -> CGFloat {
       cell.setNeedsLayout()
       cell.layoutIfNeeded()
-    let height = cell.contentView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height + 1.0
+    let height = cell.containerView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height + 42.0
       return height
   }
 }
