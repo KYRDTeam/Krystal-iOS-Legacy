@@ -126,7 +126,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       return
     }
     self.txHashLabel.text = self.transaction.hash
-    self.rateContainView.isHidden = (self.transaction.state != .done || self.transaction.type != .swap)
+    let shouldShowRate = (self.transaction.state == .done || self.transaction.state == .error || self.transaction.state == .drop) && self.transaction.type == .swap
+    self.rateContainView.isHidden = !shouldShowRate
     if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
       self.titleLabel.text = "Broadcasted!".toBeLocalised().uppercased()
@@ -234,7 +235,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.subTitleLabelCenterContraint.constant = 0
       self.subTitleTopContraint.constant = 20
       self.subTitleDetailLabel.isHidden = true
-
+      DispatchQueue.main.async {
+        self.contentViewHeightContraint.constant += 60
+        self.contentViewTopContraint.constant -= 60
+      }
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
