@@ -98,24 +98,7 @@ enum ChainType: Codable {
       return "Cronos"
     }
   }
-  
-  func chainShortName() -> String {
-    switch self {
-    case .eth:
-     return "ETH"
-    case .bsc:
-      return "BSC"
-    case .polygon:
-      return "MATIC"
-    case .avalanche:
-      return "AVAX"
-    case .fantom:
-      return "Fantom"
-    case .cronos:
-      return "Cronos"
-    }
-  }
-  
+
   func blockExploreName() -> String {
 //    switch self {
 //    case .eth:
