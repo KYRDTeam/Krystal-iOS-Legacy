@@ -35,6 +35,33 @@ class PromoCodeCoordinator: Coordinator {
 }
 
 extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
+  fileprivate func claimPromotionCode(_ code: String) {
+    self.navigationController.displayLoading()
+    let address = self.session.wallet.address.description
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.claimPromotion(code: code, address: address)) { result in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(ClaimResponse.self, from: resp.data)
+          self.rootViewController.showSuccessTopBannerMessage(message: data.message)
+          self.rootViewController.coordinatorDidClaimSuccessCode()
+        } catch {
+          do {
+            let data = try decoder.decode(ClaimErrorResponse.self, from: resp.data)
+            self.rootViewController.coordinatorDidReceiveClaimError(data.error)
+          } catch {
+            self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
+          }
+        }
+      case .failure(let error):
+        self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
+      }
+      self.navigationController.hideLoading()
+    }
+  }
+  
   func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent) {
     switch event {
     case .checkCode(let code):
@@ -73,30 +100,22 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
         }
       }
     case .claim(let code):
-      self.navigationController.displayLoading()
-      let address = self.session.wallet.address.description
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.claimPromotion(code: code, address: address)) { result in
-        switch result {
-        case .success(let resp):
-          let decoder = JSONDecoder()
-          do {
-            let data = try decoder.decode(ClaimResponse.self, from: resp.data)
-            self.rootViewController.showSuccessTopBannerMessage(message: data.message)
-            self.rootViewController.coordinatorDidClaimSuccessCode()
-          } catch {
-            do {
-              let data = try decoder.decode(ClaimErrorResponse.self, from: resp.data)
-              self.rootViewController.showErrorTopBannerMessage(message: data.error)
-            } catch {
-              self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
-            }
-          }
-        case .failure(let error):
-          self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
-        }
-        self.navigationController.hideLoading()
-      }
+      claimPromotionCode(code)
+    case .openDetail(item: let item):
+      let vm = PromoCodeDetailViewModel(item: item)
+      let controller = PromoCodeDetailViewController(viewModel: vm)
+      controller.delegate = self
+      self.navigationController.pushViewController(controller, animated: true, completion: nil)
     }
   }
+}
+
+extension PromoCodeCoordinator: PromoCodeDetailViewControllerDelegate {
+  func promoCodeDetailViewController(_ controller: PromoCodeDetailViewController, claim code: String) {
+    self.navigationController.popViewController(animated: true) {
+      self.claimPromotionCode(code)
+    }
+  }
+  
+  
 }

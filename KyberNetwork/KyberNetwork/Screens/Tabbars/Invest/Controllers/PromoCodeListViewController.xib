@@ -19,7 +19,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="errorLabel" destination="KrN-hN-bXd" id="HCH-AW-ZRO"/>
                 <outlet property="promoCodeTableView" destination="JOa-IB-FIP" id="C1n-zi-mpi"/>
+                <outlet property="searchContainerView" destination="xDK-bl-nvD" id="TFY-F5-mTR"/>
                 <outlet property="searchTextField" destination="f2c-gP-1nP" id="N7d-cy-Per"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -95,24 +97,32 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
-                    <rect key="frame" x="0.0" y="185" width="375" height="482"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JOa-IB-FIP">
+                    <rect key="frame" x="0.0" y="190" width="375" height="477"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="6W7-hA-17v"/>
                         <outlet property="delegate" destination="-1" id="fsR-ku-vvo"/>
                     </connections>
                 </tableView>
+                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KrN-hN-bXd">
+                    <rect key="frame" x="21" y="180" width="34.5" height="16.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                    <color key="textColor" name="textRedColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="3sg-V5-jzz"/>
+                <constraint firstItem="KrN-hN-bXd" firstAttribute="leading" secondItem="xDK-bl-nvD" secondAttribute="leading" id="ADR-lR-CM0"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="F9C-54-wlB"/>
+                <constraint firstItem="KrN-hN-bXd" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="10" id="Lfb-C6-aRn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xDK-bl-nvD" secondAttribute="trailing" constant="21" id="VRW-LP-EnX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="YPd-1d-rLX"/>
                 <constraint firstItem="JOa-IB-FIP" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="aYL-05-NJg"/>
-                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="15" id="k3a-TY-RoG"/>
+                <constraint firstItem="JOa-IB-FIP" firstAttribute="top" secondItem="xDK-bl-nvD" secondAttribute="bottom" constant="20" id="k3a-TY-RoG"/>
                 <constraint firstItem="gR1-Lq-JxG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="mrN-4n-k5A"/>
                 <constraint firstItem="xDK-bl-nvD" firstAttribute="top" secondItem="gR1-Lq-JxG" secondAttribute="bottom" constant="15" id="pxS-p0-vaX"/>
                 <constraint firstItem="gR1-Lq-JxG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ubr-Qv-CZu"/>
@@ -131,6 +141,9 @@
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textRedColor">
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

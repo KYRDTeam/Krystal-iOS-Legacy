@@ -11,6 +11,7 @@ enum PromoCodeListViewEvent {
   case checkCode(code: String)
   case loadUsedCode
   case claim(code: String)
+  case openDetail(item: PromoCode)
 }
 
 protocol PromoCodeListViewControllerDelegate: class {
@@ -52,6 +53,8 @@ class PromoCodeListViewController: KNBaseViewController {
   
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var promoCodeTableView: UITableView!
+  @IBOutlet weak var searchContainerView: UIView!
+  @IBOutlet weak var errorLabel: UILabel!
   
   
   let viewModel: PromoCodeListViewModel
@@ -76,11 +79,25 @@ class PromoCodeListViewController: KNBaseViewController {
     self.promoCodeTableView.rowHeight = UITableView.automaticDimension
     self.promoCodeTableView.estimatedRowHeight = 200
     self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
+    self.updateUIForSearchField(error: "")
     
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true, completion: nil)
+  }
+  
+  private func updateUIForSearchField(error: String) {
+    if error.isEmpty {
+      self.searchContainerView.rounded(radius: 16)
+      self.searchTextField.textColor = UIColor(named: "textWhiteColor")
+      self.errorLabel.isHidden = true
+    } else {
+      self.searchContainerView.rounded(color: UIColor(named: "textRedColor")!, width: 1, radius: 16)
+      self.searchTextField.textColor = UIColor(named: "textRedColor")
+      self.errorLabel.isHidden = false
+      self.errorLabel.text = error
+    }
   }
   
   func coordinatorDidUpdateSearchPromoCodeItems(_ codes: [PromoCode]) {
@@ -101,6 +118,10 @@ class PromoCodeListViewController: KNBaseViewController {
     self.viewModel.clearSearchData()
     self.searchTextField.text = ""
     self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
+  }
+  
+  func coordinatorDidReceiveClaimError(_ error: String) {
+    self.updateUIForSearchField(error: error)
   }
 }
 
@@ -169,6 +190,17 @@ extension PromoCodeListViewController: UITableViewDelegate {
     }
   }
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    if indexPath.section == 0 {
+      let cm = self.viewModel.unusedDataSource[indexPath.row]
+      self.delegate?.promoCodeListViewController(self, run: .openDetail(item: cm.item))
+    } else {
+      let cm = self.viewModel.usedDataSource[indexPath.row]
+      self.delegate?.promoCodeListViewController(self, run: .openDetail(item: cm.item))
+    }
+  }
+  
   func calculateHeightForConfiguredSizingCell(cell: PromoCodeCell) -> CGFloat {
     cell.setNeedsLayout()
     cell.layoutIfNeeded()
@@ -196,6 +228,10 @@ extension PromoCodeListViewController: UITextFieldDelegate {
     self.viewModel.clearSearchData()
     self.promoCodeTableView.reloadData()
     return true
+  }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.updateUIForSearchField(error: "")
   }
 }
 

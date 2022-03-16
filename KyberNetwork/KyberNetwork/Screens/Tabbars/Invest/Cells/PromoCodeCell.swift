@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol PromoCodeCellDelegate: class {
   func promoCodeCell(_ cell: PromoCodeCell, claim code: String)
@@ -66,6 +67,11 @@ class PromoCodeCell: UITableViewCell {
     self.titleLabel.text = cm.displayTitle
     self.statusLabel.text = cm.displayStatus
     self.useButton.isHidden = cm.hiddenUseButton
+    if let url = URL(string: cm.item.campaign.logoURL) {
+      self.iconImageView.kf.setImage(with: url, placeholder: UIImage(named: "promo_code_default_icon"), options: [.cacheMemoryOnly])
+    } else {
+      self.iconImageView.image = UIImage(named: "promo_code_default_icon")
+    }
     self.cellModel = cm
   }
 
