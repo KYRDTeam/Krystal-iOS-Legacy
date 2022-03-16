@@ -587,18 +587,22 @@ extension KSendTokenViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     let cleanedText = text.cleanStringToNumber()
-    if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.viewModel.from.decimals) == nil { return false }
+    if textField == self.amountTextField, cleanedText.amountBigInt(decimals: self.viewModel.from.decimals) == nil {
+      self.showErrorTopBannerMessage(message: "Invalid input amount, please input number with \(self.viewModel.from.decimals) decimal places")
+      return false
+    }
     if textField == self.amountTextField {
       textField.text = cleanedText
       self.viewModel.updateAmount(cleanedText)
+      self.view.layoutIfNeeded()
+      return false
     } else {
-      textField.text = text
       self.viewModel.updateAddress(text)
       self.updateUIEnsMessage()
       self.getEnsAddressFromName(text)
+      self.view.layoutIfNeeded()
+      return true
     }
-    self.view.layoutIfNeeded()
-    return false
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {

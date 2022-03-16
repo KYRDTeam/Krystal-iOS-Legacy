@@ -47,6 +47,15 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var secondButton: UIButton!
 
+  @IBOutlet weak var rateContainView: RectangularDashedView!
+  
+  @IBOutlet weak var oneStarButton: UIButton!
+  @IBOutlet weak var twoStarButton: UIButton!
+  @IBOutlet weak var threeStarButton: UIButton!
+  @IBOutlet weak var fourStarButton: UIButton!
+  @IBOutlet weak var fiveStarButton: UIButton!
+  @IBOutlet weak var tapOutsideBGView: UIView!
+
   weak var delegate: KNTransactionStatusPopUpDelegate?
 
   fileprivate(set) var transaction: InternalHistoryTransaction
@@ -108,6 +117,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     self.secondButton.rounded(radius: self.secondButton.frame.size.height / 2)
     self.txHashLabel.text = self.transaction.hash
     self.view.isUserInteractionEnabled = true
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.tapOutsideBGView.addGestureRecognizer(tapGesture)
   }
 
   fileprivate func updateViewTransactionDidChange() {
@@ -115,7 +126,8 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       return
     }
     self.txHashLabel.text = self.transaction.hash
-
+    let shouldShowRate = (self.transaction.state == .done || self.transaction.state == .error || self.transaction.state == .drop) && self.transaction.type == .swap
+    self.rateContainView.isHidden = !shouldShowRate
     if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
       self.titleIconImageView.image = UIImage(named: "tx_broadcasted_icon")
       self.titleLabel.text = "Broadcasted!".toBeLocalised().uppercased()
@@ -187,12 +199,17 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
       } else if self.transaction.type == .swap {
+        self.txHashTopConstraintToLoadingImage.constant += 30
+        self.firstButtonTopContraint.constant = 164
+        self.contentViewHeightContraint.constant += 160
+        self.contentViewTopContraint.constant -= 160
         self.firstButton.setTitle("Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New swap".toBeLocalised().capitalized, for: .normal)
       } else if self.transaction.type == .multiSend {
         self.firstButton.setTitle("Back to home".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("New transfer".toBeLocalised().capitalized, for: .normal)
       } else {
+        self.txHashTopConstraintToLoadingImage.constant += 30
         self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
@@ -218,7 +235,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.subTitleLabelCenterContraint.constant = 0
       self.subTitleTopContraint.constant = 20
       self.subTitleDetailLabel.isHidden = true
-
+      DispatchQueue.main.async {
+        self.contentViewHeightContraint.constant += 60
+        self.contentViewTopContraint.constant -= 60
+      }
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
@@ -287,7 +307,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
     }
   }
 
-  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+  @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
 }
@@ -298,10 +318,33 @@ extension KNTransactionStatusPopUp: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 332
+    return 330
   }
 
   func getPopupContentView() -> UIView {
     return self.containerView
+  }
+}
+
+extension KNTransactionStatusPopUp {
+  @IBAction func rateButtonTapped(_ sender: UIButton) {
+    self.updateRateUI(rate: sender.tag)
+    let vc = RateTransactionPopupViewController(currentRate: sender.tag, txHash: self.transaction.hash)
+    vc.delegate = self
+    self.present(vc, animated: true, completion: nil)
+  }
+
+  func updateRateUI(rate: Int) {
+    self.oneStarButton.configStarRate(isHighlight: rate >= 1)
+    self.twoStarButton.configStarRate(isHighlight: rate >= 2)
+    self.threeStarButton.configStarRate(isHighlight: rate >= 3)
+    self.fourStarButton.configStarRate(isHighlight: rate >= 4)
+    self.fiveStarButton.configStarRate(isHighlight: rate >= 5)
+  }
+}
+
+extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
+  func didUpdateRate(rate: Int) {
+    self.updateRateUI(rate: rate)
   }
 }
