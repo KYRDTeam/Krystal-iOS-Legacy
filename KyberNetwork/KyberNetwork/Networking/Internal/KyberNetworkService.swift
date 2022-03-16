@@ -906,10 +906,8 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
-    case .getCryptoFiatPair:
-      return URL(string: KNEnvironment.default.krystalEndpoint + "/v1/bifinity")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -995,7 +993,7 @@ extension KrytalService: TargetType {
     case .getGasPrice2:
       return "/v1/gasPrice"
     case .getCryptoFiatPair:
-      return "/crypto"
+      return "v1/fiat/cryptos"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
     case .sendRate:
