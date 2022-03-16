@@ -1316,7 +1316,7 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .getOrders(userWallet: let userWallet):
       let json: JSONDictionary = [
-        "userWallet": "0xe403043A0F9C7B9F315Cf145166EB747D9790E77"// userWallet
+        "userWallet": userWallet
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
