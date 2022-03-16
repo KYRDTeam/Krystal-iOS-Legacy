@@ -220,8 +220,7 @@ extension PromoCodeListViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let text = textField.text, text.count >= 8 else { return }
-    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
+    self.checkRequestCode()
   }
   
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
@@ -232,6 +231,31 @@ extension PromoCodeListViewController: UITextFieldDelegate {
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.updateUIForSearchField(error: "")
+  }
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    self.keyboardTimer?.invalidate()
+    self.keyboardTimer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(PromoCodeListViewController.keyboardPauseTyping),
+            userInfo: ["textField": textField],
+            repeats: false)
+    return true
+  }
+  
+  @objc func keyboardPauseTyping(timer: Timer) {
+    self.checkRequestCode()
+  }
+  
+  fileprivate func checkRequestCode() {
+    guard let text = self.searchTextField.text, text.count >= 8 else {
+      self.viewModel.clearSearchData()
+      self.promoCodeTableView.reloadData()
+      self.updateUIForSearchField(error: "")
+      return
+    }
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
   }
 }
 
