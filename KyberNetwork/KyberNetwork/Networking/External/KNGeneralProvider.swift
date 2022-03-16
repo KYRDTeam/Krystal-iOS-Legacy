@@ -462,7 +462,7 @@ class KNGeneralProvider {
   }
   
   var isUseEIP1559: Bool {
-    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche
+    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche || KNGeneralProvider.shared.currentChain == .polygon
   }
 
   var wrapperAddress: Address {
