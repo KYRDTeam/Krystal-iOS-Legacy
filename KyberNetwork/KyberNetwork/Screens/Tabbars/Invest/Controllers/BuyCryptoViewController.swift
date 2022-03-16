@@ -50,6 +50,17 @@ class BuyCryptoViewController: KNBaseViewController {
   
   func updateUI() {
     self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.updateUIPendingTxIndicatorView()
+  }
+  
+  fileprivate func updateUIPendingTxIndicatorView() {
+    guard self.isViewLoaded else {
+      return
+    }
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
   }
   
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
@@ -58,6 +69,9 @@ class BuyCryptoViewController: KNBaseViewController {
     self.updateUI()
   }
 
+  func coordinatorDidUpdatePendingTx() {
+    self.updateUIPendingTxIndicatorView()
+  }
 
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)

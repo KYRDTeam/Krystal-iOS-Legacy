@@ -13,6 +13,7 @@ protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
   func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
   func buyCryptoCoordinatorDidSelectManageWallet()
+  func buyCryptoCoordinatorOpenHistory()
 }
 
 class BuyCryptoCoordinator: NSObject, Coordinator {
@@ -45,6 +46,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
+  }
+  
+  func appCoordinatorPendingTransactionsDidUpdate() {
+    self.rootViewController.coordinatorDidUpdatePendingTx()
   }
   
   func loadFiatPair() {
@@ -87,7 +92,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-
+    self.delegate?.buyCryptoCoordinatorOpenHistory()
   }
 
   fileprivate func openWalletListView() {
