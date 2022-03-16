@@ -62,6 +62,16 @@ struct BifinityOrder: Codable {
   let orderAmount: Double
   let requestPrice: Double
   let userWallet: String
+  let fiatLogo: String
+  let cryptoLogo: String
+  let networkLogo: String
+  /// init, processing ,success, failure
+  let status: String
+  let executePrice: Double
+  // in miliseconds
+  let createdTime: Int
+  let errorCode: String
+  let errorReason: String
 }
 
 protocol BuyCryptoCoordinatorDelegate: class {
@@ -96,7 +106,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     controller.delegate = self
     return controller
   }()
-  
+
   lazy var webViewController: WebBrowserViewController = {
     let controller = WebBrowserViewController()
     controller.delegate = self
@@ -117,6 +127,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     self.session = session
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
     self.ordersViewController.coordinatorDidUpdateWallet(self.session.wallet)
+    self.getBifinityOrders()
   }
 
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -157,7 +168,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getOrders(userId: self.session.wallet.address.description)) { (result) in
+    provider.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -175,7 +186,6 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
   }
 
-  
   func showDetailOrderIfNeed(_ currentOrder: BifinityOrder?) {
     guard let currentOrder = currentOrder else {
       return

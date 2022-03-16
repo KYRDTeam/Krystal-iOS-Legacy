@@ -890,7 +890,7 @@ enum KrytalService {
   case buyCrypto(buyCryptoModel: BuyCryptoModel)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case sendRate(star: Int, detail: String, txHash: String)
-  case getOrders(userId: String)
+  case getOrders(userWallet: String)
 }
 
 extension KrytalService: TargetType {
@@ -1314,9 +1314,9 @@ extension KrytalService: TargetType {
         "requestPrice": model.requestPrice.rounded(to: 4)
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
-    case .getOrders(userId: let userId):
+    case .getOrders(userWallet: let userWallet):
       let json: JSONDictionary = [
-        "userID": userId
+        "userWallet": "0xe403043A0F9C7B9F315Cf145166EB747D9790E77"// userWallet
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
