@@ -12,5 +12,14 @@ extension UIButton {
         UIGraphicsEndImageContext()
 
         self.setBackgroundImage(colorImage, for: forState)
-    }
+  }
+  
+  func setImageForAllState(image: UIImage?) {
+    self.setImage(image, for: .normal)
+    self.setImage(image, for: .highlighted)
+  }
+  
+  func configStarRate(isHighlight: Bool) {
+    self.setImageForAllState(image: isHighlight ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"))
+  }
 }

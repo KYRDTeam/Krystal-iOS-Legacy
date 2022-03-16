@@ -201,4 +201,17 @@ extension UIView {
     maskLayer.path = path.cgPath
     self.layer.mask = maskLayer
   }
+  
+  func shakeViewError() {
+    self.layer.borderColor = UIColor.red.cgColor
+    self.layer.borderWidth = 1.0
+    let animation = CABasicAnimation(keyPath: "position")
+    animation.duration = 0.07
+    animation.repeatCount = 2
+    animation.autoreverses = true
+    animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
+    animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
+
+    self.layer.add(animation, forKey: "position")
+  }
 }

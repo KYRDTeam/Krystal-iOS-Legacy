@@ -886,6 +886,7 @@ enum KrytalService {
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
+  case sendRate(star: Int, detail: String, txHash: String)
 }
 
 extension KrytalService: TargetType {
@@ -904,7 +905,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -992,12 +993,14 @@ extension KrytalService: TargetType {
       return "/v1/gasPrice"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
+    case .sendRate:
+      return "/v1/tracking/ratings"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx:
+      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .sendRate:
       return .post
     default:
       return .get
@@ -1279,6 +1282,15 @@ extension KrytalService: TargetType {
       }
       json["sends"] = sendParams
 
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+        
+    case .sendRate(star: let star, detail: let detail, txHash: let txHash):
+      let json: JSONDictionary = [
+        "category": "swap",
+        "detail": detail,
+        "star": star,
+        "txHash": txHash
+      ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
