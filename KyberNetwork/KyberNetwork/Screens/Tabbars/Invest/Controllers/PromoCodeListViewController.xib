@@ -20,6 +20,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromoCodeListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="promoCodeTableView" destination="JOa-IB-FIP" id="C1n-zi-mpi"/>
+                <outlet property="searchTextField" destination="f2c-gP-1nP" id="N7d-cy-Per"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -74,6 +75,9 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" textContentType="password"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="sTq-MH-ACJ"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>

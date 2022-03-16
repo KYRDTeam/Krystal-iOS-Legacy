@@ -886,6 +886,8 @@ enum KrytalService {
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
+  case getPromotions(code: String, address: String)
+  case claimPromotion(code: String, address: String)
 }
 
 extension KrytalService: TargetType {
@@ -904,7 +906,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -992,12 +994,16 @@ extension KrytalService: TargetType {
       return "/v1/gasPrice"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
+    case .getPromotions:
+      return "/v1/promotion/check"
+    case .claimPromotion:
+      return "/v1/promotion/claim"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion:
       return .post
     default:
       return .get
@@ -1280,6 +1286,21 @@ extension KrytalService: TargetType {
       json["sends"] = sendParams
 
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getPromotions(code: let code, address: let address):
+      var json: JSONDictionary = [:]
+      if !code.isEmpty {
+        json["code"] = code
+      }
+      if !address.isEmpty {
+        json["address"] = address
+      }
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .claimPromotion(code: let code, address: let address):
+      let json: JSONDictionary = [
+        "address": address,
+        "code": code
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
 
@@ -1297,6 +1318,10 @@ extension KrytalService: TargetType {
       return ["Authorization" : "Bearer \(accessToken)"]
     case .claimReward(_ , _, let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
+    case .getPromotions:
+      return ["accept": "application/json"]
+    case .claimPromotion:
+      return ["accept": "application/json", "Content-Type": "application/json"]
     default:
       return nil
     }

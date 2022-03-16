@@ -7,35 +7,57 @@
 
 import UIKit
 
+enum PromoCodeListViewEvent {
+  case checkCode(code: String)
+  case loadUsedCode
+  case claim(code: String)
+}
+
+protocol PromoCodeListViewControllerDelegate: class {
+  func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent)
+}
+
 class PromoCodeListViewModel {
-  var items: [PromoCodeItem] = []
+  
+  var searchCodes: [PromoCode] = []
+  var usedCodes: [PromoCode] = []
+  
   var unusedDataSource: [PromoCodeCellModel] = []
   var usedDataSource: [PromoCodeCellModel] = []
   
   func reloadDataSource() {
     unusedDataSource.removeAll()
     usedDataSource.removeAll()
-    self.items.forEach { element in
-      let cm = PromoCodeCellModel(item: element)
-      if element.type == .claimed {
-        self.usedDataSource.append(cm)
-      } else {
-        self.unusedDataSource.append(cm)
-      }
-    }
+    
+    self.unusedDataSource = self.searchCodes.map({ element in
+      return PromoCodeCellModel(item: element)
+    })
+    
+    self.usedDataSource = self.usedCodes.map({ element in
+      return PromoCodeCellModel(item: element)
+    })
   }
-  
+
   var numberOfSection: Int {
     return self.usedDataSource.isEmpty ? 1 : 2
+  }
+  
+  func clearSearchData() {
+    unusedDataSource.removeAll()
+    self.searchCodes.removeAll()
   }
 }
 
 class PromoCodeListViewController: KNBaseViewController {
   
+  @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var promoCodeTableView: UITableView!
+  
   
   let viewModel: PromoCodeListViewModel
   var cachedCell: [IndexPath: PromoCodeCell] = [:]
+  var keyboardTimer: Timer?
+  weak var delegate: PromoCodeListViewControllerDelegate?
   
   init(viewModel: PromoCodeListViewModel) {
     self.viewModel = viewModel
@@ -45,7 +67,7 @@ class PromoCodeListViewController: KNBaseViewController {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -53,6 +75,7 @@ class PromoCodeListViewController: KNBaseViewController {
     self.promoCodeTableView.register(nib, forCellReuseIdentifier: PromoCodeCell.cellID)
     self.promoCodeTableView.rowHeight = UITableView.automaticDimension
     self.promoCodeTableView.estimatedRowHeight = 200
+    self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
     
   }
   
@@ -60,12 +83,24 @@ class PromoCodeListViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true, completion: nil)
   }
   
-  func coordinatorDidUpdatePromoCodeItems(_ items: [PromoCodeItem]) {
-    self.viewModel.items = items
+  func coordinatorDidUpdateSearchPromoCodeItems(_ codes: [PromoCode]) {
+    self.viewModel.searchCodes = codes
     self.viewModel.reloadDataSource()
     guard self.isViewLoaded else { return }
-    
     self.promoCodeTableView.reloadData()
+  }
+
+  func coordinatorDidUpdateUsedPromoCodeItems(_ codes: [PromoCode]) {
+    self.viewModel.usedCodes = codes
+    self.viewModel.reloadDataSource()
+    guard self.isViewLoaded else { return }
+    self.promoCodeTableView.reloadData()
+  }
+  
+  func coordinatorDidClaimSuccessCode() {
+    self.viewModel.clearSearchData()
+    self.searchTextField.text = ""
+    self.delegate?.promoCodeListViewController(self, run: .loadUsedCode)
   }
 }
 
@@ -96,6 +131,7 @@ extension PromoCodeListViewController: UITableViewDataSource {
       let cm = self.viewModel.usedDataSource[indexPath.row]
       cell.updateCellModel(cm)
     }
+    cell.delegate = self
     self.cachedCell[indexPath] = cell
     return cell
   }
@@ -134,9 +170,37 @@ extension PromoCodeListViewController: UITableViewDelegate {
   }
   
   func calculateHeightForConfiguredSizingCell(cell: PromoCodeCell) -> CGFloat {
-      cell.setNeedsLayout()
-      cell.layoutIfNeeded()
+    cell.setNeedsLayout()
+    cell.layoutIfNeeded()
     let height = cell.containerView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height + 42.0
-      return height
+    return height
+  }
+}
+
+extension PromoCodeListViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if let empty = textField.text?.isEmpty, empty == true {
+      self.viewModel.clearSearchData()
+      self.promoCodeTableView.reloadData()
+    }
+    textField.resignFirstResponder()
+    return true
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    guard let text = textField.text, text.count >= 8 else { return }
+    self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
+  }
+  
+  func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    self.viewModel.clearSearchData()
+    self.promoCodeTableView.reloadData()
+    return true
+  }
+}
+
+extension PromoCodeListViewController: PromoCodeCellDelegate {
+  func promoCodeCell(_ cell: PromoCodeCell, claim code: String) {
+    self.delegate?.promoCodeListViewController(self, run: .claim(code: code))
   }
 }

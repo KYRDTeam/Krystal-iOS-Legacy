@@ -7,21 +7,25 @@
 
 import UIKit
 
+protocol PromoCodeCellDelegate: class {
+  func promoCodeCell(_ cell: PromoCodeCell, claim code: String)
+}
+
 class PromoCodeCellModel {
-  let item: PromoCodeItem
+  let item: PromoCode
   
-  init(item: PromoCodeItem) {
+  init(item: PromoCode) {
     self.item = item
   }
   
   var displayTitle: String {
-    return self.item.title
+    return self.item.campaign.title
   }
   
   var displayStatus: String {
-    switch self.item.type {
+    switch self.item.getStatus() {
     case .pending:
-      let date = Date(timeIntervalSince1970: self.item.expired)
+      let date = Date(timeIntervalSince1970: Double(self.item.campaign.expired))
       let stringDate = DateFormatterUtil.shared.notificationDisplayDateFormatter.string(from: date)
       return "Valid until \(stringDate)"
     case .claimed:
@@ -32,7 +36,7 @@ class PromoCodeCellModel {
   }
   
   var hiddenUseButton: Bool {
-    return self.item.type != .pending
+    return self.item.getStatus() != .pending
   }
 }
 
@@ -46,6 +50,7 @@ class PromoCodeCell: UITableViewCell {
   @IBOutlet weak var statusLabel: UILabel!
   
   var cellModel: PromoCodeCellModel?
+  weak var delegate: PromoCodeCellDelegate?
   
   static let cellID: String = "PromoCodeCell"
   
@@ -62,5 +67,10 @@ class PromoCodeCell: UITableViewCell {
     self.statusLabel.text = cm.displayStatus
     self.useButton.isHidden = cm.hiddenUseButton
     self.cellModel = cm
+  }
+
+  @IBAction func useButtonTapped(_ sender: UIButton) {
+    guard let cm = self.cellModel else { return }
+    self.delegate?.promoCodeCell(self, claim: cm.item.code)
   }
 }

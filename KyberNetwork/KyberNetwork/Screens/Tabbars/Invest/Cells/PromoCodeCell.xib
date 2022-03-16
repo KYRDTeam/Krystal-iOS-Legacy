@@ -70,6 +70,9 @@
                                 <state key="normal" title="Use Now">
                                     <color key="titleColor" name="mainViewBgColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="useButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="40l-j4-axU"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.22745098039215686" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
@@ -78,6 +81,7 @@
                             <constraint firstAttribute="bottom" secondItem="dZ6-bc-9rk" secondAttribute="bottom" constant="11" id="4D8-Ja-tQg"/>
                             <constraint firstItem="PGB-OV-kqL" firstAttribute="leading" secondItem="UA4-Xk-wS8" secondAttribute="leading" constant="22" id="5Qm-Nh-Icx"/>
                             <constraint firstItem="7Sd-rF-FW2" firstAttribute="leading" secondItem="UA4-Xk-wS8" secondAttribute="leading" constant="16" id="B5J-Ow-3Nq"/>
+                            <constraint firstItem="7Sd-rF-FW2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Lyf-Ti-olB" secondAttribute="bottom" constant="5" id="Dua-ay-EZ2"/>
                             <constraint firstItem="7Sd-rF-FW2" firstAttribute="top" secondItem="h3j-pt-5FD" secondAttribute="bottom" constant="18" id="GEU-mR-ztO"/>
                             <constraint firstItem="PGB-OV-kqL" firstAttribute="top" secondItem="7Sd-rF-FW2" secondAttribute="bottom" constant="18" id="Hya-mu-gPS"/>
                             <constraint firstAttribute="trailing" secondItem="7Sd-rF-FW2" secondAttribute="trailing" constant="16" id="Khl-LM-kTA"/>

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Moya
 
 class PromoCodeCoordinator: Coordinator {
   let navigationController: UINavigationController
@@ -15,6 +16,7 @@ class PromoCodeCoordinator: Coordinator {
   lazy var rootViewController: PromoCodeListViewController = {
     let vm = PromoCodeListViewModel()
     let controller = PromoCodeListViewController(viewModel: vm)
+    controller.delegate = self
     return controller
   }()
   
@@ -25,17 +27,76 @@ class PromoCodeCoordinator: Coordinator {
   
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
-    let todayTS = Date().timeIntervalSince1970
-    let item1 = PromoCodeItem(title: "$5 GIVEAWAY for new users on Avalanche ..... long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn long logn logn logn logn ", expired: todayTS + 100, description: "", logoURL: "", bannerURL: "", type: .pending)
-    let item2 = PromoCodeItem(title: "$1500 GIVEAWAY for new users on Avalanche ..... long logn logn logn logn ", expired: todayTS + 100, description: "", logoURL: "", bannerURL: "", type: .expired)
-    
-    let item3 = PromoCodeItem(title: "$1500 GIVEAWAY for new users on Avalanche ..... long logn logn logn logn ", expired: todayTS + 100, description: "", logoURL: "", bannerURL: "", type: .claimed)
-    
-    let items = [item1, item2, item3]
-    self.rootViewController.coordinatorDidUpdatePromoCodeItems(items)
   }
   
   func stop() {
     
+  }
+}
+
+extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
+  func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent) {
+    switch event {
+    case .checkCode(let code):
+      self.navigationController.displayLoading()
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getPromotions(code: code, address: "")) { result in
+        switch result {
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(PromotionResponse.self, from: resp.data)
+            self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems(data.codes)
+          } catch {
+            self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
+          }
+        case .failure(let error):
+          self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
+        }
+        self.navigationController.hideLoading()
+      }
+    case .loadUsedCode:
+      let address = self.session.wallet.address.description
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getPromotions(code: "", address: address)) { result in
+        switch result {
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(PromotionResponse.self, from: resp.data)
+            self.rootViewController.coordinatorDidUpdateUsedPromoCodeItems(data.codes)
+          } catch {
+            self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
+          }
+        case .failure(let error):
+          self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
+        }
+      }
+    case .claim(let code):
+      self.navigationController.displayLoading()
+      let address = self.session.wallet.address.description
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.claimPromotion(code: code, address: address)) { result in
+        switch result {
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(ClaimResponse.self, from: resp.data)
+            self.rootViewController.showSuccessTopBannerMessage(message: data.message)
+            self.rootViewController.coordinatorDidClaimSuccessCode()
+          } catch {
+            do {
+              let data = try decoder.decode(ClaimErrorResponse.self, from: resp.data)
+              self.rootViewController.showErrorTopBannerMessage(message: data.error)
+            } catch {
+              self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
+            }
+          }
+        case .failure(let error):
+          self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
+        }
+        self.navigationController.hideLoading()
+      }
+    }
   }
 }
