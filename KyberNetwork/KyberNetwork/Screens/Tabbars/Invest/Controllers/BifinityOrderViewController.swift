@@ -8,10 +8,10 @@
 import UIKit
 
 class BifinityOrderViewController: KNBaseViewController {
-
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var walletSelectButton: UIButton!
+  var orders: [BifinityOrder] = []
   init() {
     super.init(nibName: BifinityOrderViewController.className, bundle: nil)
   }
@@ -24,7 +24,7 @@ class BifinityOrderViewController: KNBaseViewController {
     super.viewDidLoad()
     self.setupUI()
   }
-  
+
   func setupUI() {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
 //    self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
@@ -40,19 +40,26 @@ class BifinityOrderViewController: KNBaseViewController {
   }
 
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-    
+
+  }
+
+  func coordinatorDidGetOrders(orders: [BifinityOrder]) {
+    self.orders = orders
+    self.collectionView.reloadData()
   }
 }
 
 extension BifinityOrderViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FiatCryptoHistoryCell.cellID, for: indexPath) as! FiatCryptoHistoryCell
+    let order = self.orders[indexPath.row]
+    cell.updateCell(order: order)
     return cell
   }
 
-  
+
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return self.orders.count
   }
 
 }

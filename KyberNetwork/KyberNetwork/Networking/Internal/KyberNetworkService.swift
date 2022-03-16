@@ -890,6 +890,7 @@ enum KrytalService {
   case buyCrypto(buyCryptoModel: BuyCryptoModel)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case sendRate(star: Int, detail: String, txHash: String)
+  case getOrders(userId: String)
 }
 
 extension KrytalService: TargetType {
@@ -908,7 +909,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair, . buyCrypto:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -1000,6 +1001,8 @@ extension KrytalService: TargetType {
       return "v1/fiat/buyCrypto"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
+    case .getOrders:
+      return "v1/fiat/orders"
     case .sendRate:
       return "/v1/tracking/ratings"
     }
@@ -1311,6 +1314,11 @@ extension KrytalService: TargetType {
         "requestPrice": model.requestPrice.rounded(to: 4)
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getOrders(userId: let userId):
+      let json: JSONDictionary = [
+        "userID": userId
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 

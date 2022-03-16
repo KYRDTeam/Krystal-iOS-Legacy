@@ -48,6 +48,22 @@ struct BuyCryptoModel: Codable {
   var requestPrice: Double
 }
 
+struct BifinityOrderResponse: Codable {
+  let timestamp: Int
+  let data: [BifinityOrder]
+}
+
+struct BifinityOrder: Codable {
+  let cryptoAddress: String
+  let cryptoCurrency: String
+  let cryptoNetwork: String
+  let fiatCurrency: String
+  let merchantOrderId: String
+  let orderAmount: Double
+  let requestPrice: Double
+  let userWallet: String
+}
+
 protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
   func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
@@ -70,6 +86,11 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     let viewModel = BuyCryptoViewModel(wallet: self.session.wallet)
     let controller = BuyCryptoViewController(viewModel: viewModel)
     controller.delegate = self
+    return controller
+  }()
+  
+  lazy var ordersViewController: BifinityOrderViewController = {
+    let controller = BifinityOrderViewController()
     return controller
   }()
 
@@ -103,19 +124,13 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
           self.rootViewController.coordinatorDidUpdateFiatCrypto(data: responseData.data)
         } catch let error {
           print("[Load Fiat] \(error.localizedDescription)")
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.loadFiatPair()
-          }
         }
       case .failure(let error):
         print("[Load Fiat] \(error.localizedDescription)")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-          self.loadFiatPair()
-        }
       }
     }
   }
-  
+
   func createBuyCryptoOrder(buyCryptoModel: BuyCryptoModel) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
@@ -127,6 +142,24 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
         }
       } else {
         print("[Buy crypto][Error]")
+      }
+    }
+  }
+
+  func getBifinityOrders() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getOrders(userId: self.session.wallet.address.description)) { (result) in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let responseData = try decoder.decode(BifinityOrderResponse.self, from: resp.data)
+          self.ordersViewController.coordinatorDidGetOrders(orders: responseData.data)
+        } catch let error {
+          print("[Get BifinityOrder] \(error.localizedDescription)")
+        }
+      case .failure(let error):
+        print("[Get BifinityOrder] \(error.localizedDescription)")
       }
     }
   }
@@ -156,9 +189,8 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
   }
 
   fileprivate func openHistoryScreen() {
-//    self.delegate?.buyCryptoCoordinatorOpenHistory()
-    let orderVC = BifinityOrderViewController()
-    self.navigationController.pushViewController(orderVC, animated: true)
+    self.getBifinityOrders()
+    self.navigationController.pushViewController(self.ordersViewController, animated: true)
   }
 
   fileprivate func updateData() {
@@ -264,7 +296,6 @@ extension BuyCryptoCoordinator: QRCodeReaderDelegate {
             )
             self.navigationController.present(controller, animated: true, completion: nil)
           }
-          
         case .failure(_):
           self.navigationController.showTopBannerView(
             with: "Private Key Error",

@@ -18,11 +18,14 @@ class FiatCryptoHistoryCell: UICollectionViewCell {
   @IBOutlet weak var rateLabel: UILabel!
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
-  
-  
+
   override func awakeFromNib() {
       super.awakeFromNib()
       // Initialization code
+  }
+  
+  func updateCell(order: BifinityOrder) {
+    
   }
 
 }
