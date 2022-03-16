@@ -120,6 +120,7 @@ class InvestViewController: KNBaseViewController {
 
   @IBAction func buyCryptoButtonTapped(_ sender: Any) {
     self.delegate?.investViewController(self, run: .buyCrypto)
+  }
   
   @IBAction func multiSendButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .multiSend)
