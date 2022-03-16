@@ -26,6 +26,8 @@ class PromoCodeListViewModel {
   var unusedDataSource: [PromoCodeCellModel] = []
   var usedDataSource: [PromoCodeCellModel] = []
   
+  var searchText = ""
+  
   func reloadDataSource() {
     unusedDataSource.removeAll()
     usedDataSource.removeAll()
@@ -100,11 +102,13 @@ class PromoCodeListViewController: KNBaseViewController {
     }
   }
   
-  func coordinatorDidUpdateSearchPromoCodeItems(_ codes: [PromoCode]) {
+  func coordinatorDidUpdateSearchPromoCodeItems(_ codes: [PromoCode], searchText: String) {
+    guard self.viewModel.searchText == searchText else { return }
     self.viewModel.searchCodes = codes
     self.viewModel.reloadDataSource()
     guard self.isViewLoaded else { return }
     self.promoCodeTableView.reloadData()
+    self.updateUIForSearchField(error: "")
   }
 
   func coordinatorDidUpdateUsedPromoCodeItems(_ codes: [PromoCode]) {
@@ -226,6 +230,7 @@ extension PromoCodeListViewController: UITextFieldDelegate {
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
     self.viewModel.clearSearchData()
     self.promoCodeTableView.reloadData()
+    self.viewModel.searchText = ""
     return true
   }
 
@@ -249,13 +254,14 @@ extension PromoCodeListViewController: UITextFieldDelegate {
   }
   
   fileprivate func checkRequestCode() {
-    guard let text = self.searchTextField.text, text.count >= 8 else {
-      self.viewModel.clearSearchData()
-      self.promoCodeTableView.reloadData()
-      self.updateUIForSearchField(error: "")
+    guard let text = self.searchTextField.text, text != self.viewModel.searchText else {
+//      self.viewModel.clearSearchData()
+//      self.promoCodeTableView.reloadData()
+//      self.updateUIForSearchField(error: "")
       return
     }
     self.delegate?.promoCodeListViewController(self, run: .checkCode(code: text))
+    self.viewModel.searchText = text
   }
 }
 

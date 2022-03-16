@@ -65,7 +65,6 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent) {
     switch event {
     case .checkCode(let code):
-      self.navigationController.displayLoading()
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getPromotions(code: code, address: "")) { result in
         switch result {
@@ -73,14 +72,13 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(PromotionResponse.self, from: resp.data)
-            self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems(data.codes)
+            self.rootViewController.coordinatorDidUpdateSearchPromoCodeItems(data.codes, searchText: code)
           } catch {
             self.rootViewController.showErrorTopBannerMessage(message: "Can not decode data")
           }
         case .failure(let error):
           self.rootViewController.showErrorTopBannerMessage(message: error.localizedDescription)
         }
-        self.navigationController.hideLoading()
       }
     case .loadUsedCode:
       let address = self.session.wallet.address.description
