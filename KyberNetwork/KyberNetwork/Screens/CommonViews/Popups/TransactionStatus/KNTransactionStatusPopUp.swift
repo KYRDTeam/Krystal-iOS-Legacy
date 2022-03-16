@@ -335,20 +335,11 @@ extension KNTransactionStatusPopUp {
   }
 
   func updateRateUI(rate: Int) {
-    self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.oneStarButton.setImage(rate >= 1 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
-
-    self.twoStarButton.setImage(rate >= 2 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.twoStarButton.setImage(rate >= 2 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
-
-    self.threeStarButton.setImage(rate >= 3 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.threeStarButton.setImage(rate >= 3 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
-
-    self.fourStarButton.setImage(rate >= 4 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.fourStarButton.setImage(rate >= 4 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
-
-    self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.fiveStarButton.setImage(rate >= 5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .highlighted)
+    self.oneStarButton.configStarRate(isHighlight: rate >= 1)
+    self.twoStarButton.configStarRate(isHighlight: rate >= 2)
+    self.threeStarButton.configStarRate(isHighlight: rate >= 3)
+    self.fourStarButton.configStarRate(isHighlight: rate >= 4)
+    self.fiveStarButton.configStarRate(isHighlight: rate >= 5)
   }
 }
 
