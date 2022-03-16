@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -34,6 +34,7 @@
                 <outlet property="networkLabel" destination="eQ7-G6-gI3" id="ZKy-3C-l86"/>
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
                 <outlet property="rateLabel" destination="Syf-dQ-ZKq" id="GvM-EX-YLX"/>
+                <outlet property="selectNetworkIcon" destination="7yU-DS-bYn" id="Yny-Ep-XmX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="6wj-lu-1R1" id="o9i-US-Fvh"/>
             </connections>
@@ -157,6 +158,7 @@
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                             <connections>
+                                                <action selector="textFieldChanged:" destination="-1" eventType="editingChanged" id="r9c-ah-NW9"/>
                                                 <outlet property="delegate" destination="-1" id="YnQ-HB-WAf"/>
                                             </connections>
                                         </textField>
@@ -206,6 +208,7 @@
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                             <connections>
+                                                <action selector="textFieldChanged:" destination="-1" eventType="editingChanged" id="LWP-E2-ZCh"/>
                                                 <outlet property="delegate" destination="-1" id="S8K-jz-3Yv"/>
                                             </connections>
                                         </textField>
@@ -302,6 +305,7 @@
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
+                                                <action selector="textFieldChanged:" destination="-1" eventType="editingChanged" id="LTC-nk-R1d"/>
                                                 <outlet property="delegate" destination="-1" id="UL4-PL-Gwg"/>
                                             </connections>
                                         </textField>
@@ -382,12 +386,17 @@
                                                 <action selector="selectNetworkButtonTapped:" destination="-1" eventType="touchUpInside" id="f25-A3-GJt"/>
                                             </connections>
                                         </button>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="7yU-DS-bYn">
+                                            <rect key="frame" x="273" y="18" width="10" height="6"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" name="toolbarBgColor"/>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="7yU-DS-bYn" secondAttribute="trailing" constant="16" id="6MW-7q-Kzb"/>
                                         <constraint firstItem="bmf-MW-TIj" firstAttribute="top" secondItem="3y4-r5-8QV" secondAttribute="top" id="DpG-rv-zsV"/>
                                         <constraint firstItem="eQ7-G6-gI3" firstAttribute="centerY" secondItem="3y4-r5-8QV" secondAttribute="centerY" id="Fj8-FB-nR0"/>
                                         <constraint firstAttribute="trailing" secondItem="bmf-MW-TIj" secondAttribute="trailing" id="IaZ-y4-eVT"/>
+                                        <constraint firstItem="7yU-DS-bYn" firstAttribute="centerY" secondItem="3y4-r5-8QV" secondAttribute="centerY" id="UVd-ge-tzx"/>
                                         <constraint firstItem="eQ7-G6-gI3" firstAttribute="leading" secondItem="3y4-r5-8QV" secondAttribute="leading" constant="26" id="Z2K-5v-xBh"/>
                                         <constraint firstAttribute="bottom" secondItem="bmf-MW-TIj" secondAttribute="bottom" id="evX-Xh-MPH"/>
                                         <constraint firstItem="bmf-MW-TIj" firstAttribute="leading" secondItem="3y4-r5-8QV" secondAttribute="leading" id="hIc-Go-4VC"/>
@@ -456,7 +465,7 @@
                 <constraint firstItem="4Xy-zP-Gf7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="s4E-c1-NfY"/>
                 <constraint firstItem="BdW-me-l4a" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="tCj-S7-ZGH"/>
             </constraints>
-            <point key="canvasLocation" x="131.8840579710145" y="105.80357142857143"/>
+            <point key="canvasLocation" x="130.40000000000001" y="105.69715142428787"/>
         </view>
     </objects>
     <resources>

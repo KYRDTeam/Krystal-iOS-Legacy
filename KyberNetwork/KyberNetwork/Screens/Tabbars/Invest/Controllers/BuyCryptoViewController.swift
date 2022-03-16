@@ -48,6 +48,7 @@ class BuyCryptoViewController: KNBaseViewController {
   @IBOutlet weak var cryptoTextField: UITextField!
   @IBOutlet weak var networkInputView: UIView!
   @IBOutlet weak var rateLabel: UILabel!
+  @IBOutlet weak var selectNetworkIcon: UIImageView!
   //  var buyCryptoModel: BuyCryptoModel?
 
   weak var delegate: BuyCryptoViewControllerDelegate?
@@ -88,6 +89,7 @@ class BuyCryptoViewController: KNBaseViewController {
       return
     }
     self.networkLabel.text = network.name
+    self.selectNetworkIcon.isHidden = true
   }
 
   func setDefaultValue() {
@@ -100,9 +102,6 @@ class BuyCryptoViewController: KNBaseViewController {
     self.viewModel.dataSource?.forEach({ model in
       if model.fiatCurrency == "USD" && model.cryptoCurrency == KNGeneralProvider.shared.quoteToken {
         self.cryptoButton.setTitle(model.cryptoCurrency, for: .normal)
-        self.updateNetworkUI(network: model.networks.first(where: { network in
-          network.name == KNGeneralProvider.shared.currentChain.chainShortName()
-        }))
       }
     })
   }
@@ -151,6 +150,7 @@ class BuyCryptoViewController: KNBaseViewController {
 
   func coordinatorDidSelectNetwork(network: FiatNetwork) {
     self.networkLabel.text = network.name
+    self.selectNetworkIcon.isHidden = true
     self.networkInputView.layer.borderColor = UIColor.clear.cgColor
     self.networkInputView.layer.borderWidth = 1.0
   }
@@ -160,6 +160,7 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   func coordinatorDidUpdateFiatCrypto(data: [FiatCryptoModel]) {
+    guard self.isViewLoaded else { return }
     var fiatCurrency: [FiatModel] = []
     var cryptoCurrency: [FiatModel] = []
 
@@ -232,6 +233,17 @@ class BuyCryptoViewController: KNBaseViewController {
 
   @IBAction func scanAddressButtonTapped(_ sender: Any) {
     self.delegate?.buyCryptoViewController(self, run: .scanQRCode)
+  }
+
+  @IBAction func textFieldChanged(_ sender: UITextField) {
+    guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
+    if sender == self.fiatTextField {
+      let fiatValue = sender.text?.doubleValue ?? 0
+      self.cryptoTextField.text = StringFormatter.amountString(value: fiatValue / currentFiatModel.quotation)
+    } else if sender == self.cryptoTextField {
+      let cryptoValue = sender.text?.doubleValue ?? 0
+      self.fiatTextField.text = StringFormatter.amountString(value: cryptoValue * currentFiatModel.quotation)
+    }
   }
 
   func validateInput() -> BifinityOrder? {
@@ -343,10 +355,6 @@ extension BuyCryptoViewController: UITextFieldDelegate {
       self.shakeViewError(viewToShake: containView)
       showErrorTopBannerMessage(message: "Minimum spend amount should be more than \(currentFiatModel.minLimit) \(currentFiatModel.fiatCurrency)")
       return
-    }
-
-    if textField == self.fiatTextField {
-      self.cryptoTextField.text = StringFormatter.amountString(value: fiatValue / currentFiatModel.quotation)
     }
   }
 }

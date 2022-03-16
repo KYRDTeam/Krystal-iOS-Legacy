@@ -36,11 +36,11 @@ class BifinityOrderViewModel {
   init(wallet: Wallet) {
     self.wallet = wallet
   }
-  
+
   func numberOfRows() -> Int {
     return self.isShowingPending ? self.pendingOrders.count : self.completedOrders.count
   }
-  
+
   func orderForRows(indexPath: IndexPath) -> BifinityOrder {
     return self.isShowingPending ? self.pendingOrders[indexPath.row] : self.completedOrders[indexPath.row]
   }
@@ -50,6 +50,9 @@ class BifinityOrderViewController: KNBaseViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var segmentedControl: SegmentedControl!
   @IBOutlet weak var walletSelectButton: UIButton!
+  @IBOutlet weak var emptyStateContainerView: UIView!
+  @IBOutlet weak var orderNowButton: UIButton!
+
   let viewModel: BifinityOrderViewModel
   weak var delegate: BifinityOrderDelegate?
   init(viewModel: BifinityOrderViewModel) {
@@ -74,12 +77,23 @@ class BifinityOrderViewController: KNBaseViewController {
     segmentedControl.highlightSelectedSegment()
     let nib = UINib(nibName: FiatCryptoHistoryCell.className, bundle: nil)
     self.collectionView.register(nib, forCellWithReuseIdentifier: FiatCryptoHistoryCell.cellID)
+    self.orderNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.orderNowButton.frame.size.height / 2)
+    self.updateCollectionView()
+  }
+
+  func updateCollectionView() {
+    self.emptyStateContainerView.isHidden = self.viewModel.numberOfRows() > 0
+    self.collectionView.reloadData()
+  }
+
+  @IBAction func orderButtonTapped(_ sender: UIButton) {
+    self.navigationController?.popViewController(animated: true)
   }
 
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
     segmentedControl.underlinePosition()
     self.viewModel.isShowingPending = sender.selectedSegmentIndex == 1
-    self.collectionView.reloadData()
+    self.updateCollectionView()
   }
 
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
@@ -89,10 +103,11 @@ class BifinityOrderViewController: KNBaseViewController {
   @IBAction func onBackButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
   }
+
   func coordinatorDidGetOrders(orders: [BifinityOrder]) {
     guard self.isViewLoaded else { return }
     self.viewModel.orders = orders
-    self.collectionView.reloadData()
+    self.updateCollectionView()
   }
 
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {

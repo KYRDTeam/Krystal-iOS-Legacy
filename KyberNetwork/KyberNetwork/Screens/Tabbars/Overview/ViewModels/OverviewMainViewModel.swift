@@ -24,6 +24,7 @@ enum OverviewMainViewEvent {
   case openNFTDetail(item: NFTItem, category: NFTSection)
   case didAppear
   case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
+  case buyCrypto
 }
 
 enum OverviewMode {

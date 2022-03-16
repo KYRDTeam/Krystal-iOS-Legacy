@@ -12,14 +12,19 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
+        </array>
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BifinityOrderViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="fDp-3x-p4y" id="WgX-tz-9lS"/>
+                <outlet property="emptyStateContainerView" destination="NFq-ou-3y4" id="BA5-1T-Ckv"/>
+                <outlet property="orderNowButton" destination="5sS-bY-8D5" id="qRV-uw-bC3"/>
                 <outlet property="segmentedControl" destination="gVD-vw-mfe" id="FyR-kQ-Ef1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletSelectButton" destination="F7a-aq-06F" id="mhB-cy-DUE"/>
@@ -113,12 +118,54 @@
                         <outlet property="delegate" destination="-1" id="esg-fe-rh7"/>
                     </connections>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NFq-ou-3y4">
+                    <rect key="frame" x="0.0" y="164" width="414" height="698"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_transaction" translatesAutoresizingMaskIntoConstraints="NO" id="nF7-4e-WE7">
+                            <rect key="frame" x="162" y="60" width="90" height="107"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No orders yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wC-hn-f7O">
+                            <rect key="frame" x="161.5" y="195" width="91.5" height="18.5"/>
+                            <fontDescription key="fontDescription" name="Kailasa" family="Kailasa" pointSize="14"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sS-bY-8D5">
+                            <rect key="frame" x="161.5" y="250.5" width="91.5" height="36"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="SyV-zd-167"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                            <state key="normal" title="Order Now">
+                                <color key="titleColor" name="buttonBackgroundColor"/>
+                            </state>
+                            <connections>
+                                <action selector="orderButtonTapped:" destination="-1" eventType="touchUpInside" id="Caz-Ym-atG"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="nF7-4e-WE7" firstAttribute="centerX" secondItem="NFq-ou-3y4" secondAttribute="centerX" id="IML-Db-hgG"/>
+                        <constraint firstItem="5sS-bY-8D5" firstAttribute="trailing" secondItem="2wC-hn-f7O" secondAttribute="trailing" id="V3c-e6-7aW"/>
+                        <constraint firstItem="nF7-4e-WE7" firstAttribute="top" secondItem="NFq-ou-3y4" secondAttribute="top" constant="60" id="ahE-cM-MIa"/>
+                        <constraint firstItem="5sS-bY-8D5" firstAttribute="top" secondItem="2wC-hn-f7O" secondAttribute="bottom" constant="37" id="lcX-Kx-6pb"/>
+                        <constraint firstItem="5sS-bY-8D5" firstAttribute="leading" secondItem="2wC-hn-f7O" secondAttribute="leading" id="pLm-Or-pD5"/>
+                        <constraint firstItem="2wC-hn-f7O" firstAttribute="top" secondItem="nF7-4e-WE7" secondAttribute="bottom" constant="28" id="tEg-cm-vCV"/>
+                        <constraint firstItem="2wC-hn-f7O" firstAttribute="centerX" secondItem="nF7-4e-WE7" secondAttribute="centerX" id="vht-NK-4FN"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="NFq-ou-3y4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6XK-dS-0DD"/>
                 <constraint firstItem="gVD-vw-mfe" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="7SG-IZ-a1H"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NFq-ou-3y4" secondAttribute="bottom" id="EK8-Nr-vIv"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NFq-ou-3y4" secondAttribute="trailing" id="HE2-qN-gtj"/>
                 <constraint firstItem="wMj-ge-d8V" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="JE9-UG-WSi"/>
+                <constraint firstItem="NFq-ou-3y4" firstAttribute="top" secondItem="fDp-3x-p4y" secondAttribute="top" id="WBn-NV-eNf"/>
                 <constraint firstItem="fDp-3x-p4y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="bGZ-va-ZNo"/>
                 <constraint firstItem="wMj-ge-d8V" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gjn-c0-E6t"/>
                 <constraint firstAttribute="trailing" secondItem="fDp-3x-p4y" secondAttribute="trailing" id="lqs-kH-jAi"/>
@@ -145,6 +192,7 @@
     <resources>
         <image name="arrow_down_template" width="24" height="24"/>
         <image name="back_blue_icon" width="22" height="18"/>
+        <image name="empty_transaction" width="90" height="107"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
