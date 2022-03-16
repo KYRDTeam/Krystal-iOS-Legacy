@@ -30,6 +30,15 @@ struct FiatModel: Codable {
   let currency: String
 }
 
+struct BuyCryptoModel: Codable {
+  var cryptoAddress: String
+  var cryptoCurrency: String
+  var cryptoNetWork: String
+  var fiatCurrency: String
+  var orderAmount: Double
+  var requestPrice: Double
+}
+
 protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
   func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
@@ -59,21 +68,21 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     self.navigationController = navigationController
     self.session = session
   }
-  
+
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
     self.loadFiatPair()
   }
-  
+
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
     self.session = session
     self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
   }
-  
+
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.rootViewController.coordinatorDidUpdatePendingTx()
   }
-  
+
   func loadFiatPair() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getCryptoFiatPair) { (result) in
@@ -97,6 +106,23 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       }
     }
   }
+  
+  func createBuyCryptoOrder(buyCryptoModel: BuyCryptoModel) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+//          let data = try decoder.decode(LoginToken.self, from: resp.data)
+//          Storage.store(data, as: self.session.wallet.address.description + Constants.loginTokenStoreFileName)
+        } catch let error {
+          print("[Buy crypto][Error] \(error.localizedDescription)")
+        }
+      } else {
+        print("[Buy crypto][Error]")
+      }
+    }
+  }
 
 }
 
@@ -109,8 +135,6 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
       self.openWalletListView()
     case .updateRate:
       self.updateData()
-    case .buyCrypto:
-      self.buyCrypto()
     case .selectNetwork:
       self.selectNetwork()
     case .selectFiat(fiat: let fiatModels):
@@ -118,6 +142,10 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     case .selectCrypto(crypto: let cryptoModels):
       self.selectCrypto(crypto: cryptoModels)
     }
+  }
+  
+  func didBuyCrypto(_ buyCryptoModel: BuyCryptoModel) {
+    self.createBuyCryptoOrder(buyCryptoModel: buyCryptoModel)
   }
 
   fileprivate func openHistoryScreen() {
@@ -142,11 +170,6 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     let walletsList = WalletsListViewController(viewModel: viewModel)
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)
-  }
-
-  fileprivate func buyCrypto() {
-    let confirmVC = ConfirmBuyCryptoViewController()
-    self.navigationController.present(confirmVC, animated: true, completion: nil)
   }
 
   fileprivate func selectFiat(fiat: [FiatModel]) {

@@ -4,6 +4,7 @@
 import Moya
 import CryptoSwift
 import BigInt
+import SwiftProtobuf
 
 protocol MoyaCacheable {
   typealias MoyaCacheablePolicy = URLRequest.CachePolicy
@@ -886,6 +887,7 @@ enum KrytalService {
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
   case getCryptoFiatPair
+  case buyCrypto(buyCryptoModel: BuyCryptoModel)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case sendRate(star: Int, detail: String, txHash: String)
 }
@@ -906,7 +908,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair, . buyCrypto:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -994,6 +996,8 @@ extension KrytalService: TargetType {
       return "/v1/gasPrice"
     case .getCryptoFiatPair:
       return "v1/fiat/cryptos"
+    case .buyCrypto:
+      return "v1/fiat/buyCrypto"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
     case .sendRate:
@@ -1003,7 +1007,7 @@ extension KrytalService: TargetType {
 
   var method: Moya.Method {
     switch self {
-      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .sendRate:
+      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .sendRate, . buyCrypto:
       return .post
     default:
       return .get
@@ -1295,6 +1299,16 @@ extension KrytalService: TargetType {
         "detail": detail,
         "star": star,
         "txHash": txHash
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .buyCrypto(buyCryptoModel: let model):
+      var json: JSONDictionary = [
+        "cryptoAddress": model.cryptoAddress,
+        "cryptoCurrency": model.cryptoCurrency,
+        "cryptoNetWork": model.cryptoNetWork,
+        "fiatCurrency": model.fiatCurrency,
+        "orderAmount": model.orderAmount,
+        "requestPrice": model.requestPrice
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }

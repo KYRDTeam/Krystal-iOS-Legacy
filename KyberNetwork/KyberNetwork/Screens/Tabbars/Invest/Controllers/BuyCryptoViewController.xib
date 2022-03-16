@@ -15,15 +15,22 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BuyCryptoViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
+                <outlet property="addressInputView" destination="USr-ne-6Cl" id="ULZ-j8-aZO"/>
+                <outlet property="addressTextField" destination="uUa-sR-dvv" id="Wgl-ex-WbQ"/>
                 <outlet property="cryptoButton" destination="dr8-dP-RpK" id="Kre-pb-96r"/>
+                <outlet property="cryptoInputView" destination="cle-yp-evp" id="szI-sO-gdb"/>
+                <outlet property="cryptoTextField" destination="UBk-f8-K1n" id="j7Q-JA-fJ1"/>
                 <outlet property="fiatButton" destination="F7o-xw-K6i" id="4wC-Ex-aXN"/>
+                <outlet property="fiatInputView" destination="oZA-pU-CFa" id="auZ-n4-x9l"/>
+                <outlet property="fiatTextField" destination="XJc-jH-CEY" id="Czs-QN-iBw"/>
+                <outlet property="networkInputView" destination="3y4-r5-8QV" id="Kdt-v7-3iY"/>
                 <outlet property="networkLabel" destination="eQ7-G6-gI3" id="ZKy-3C-l86"/>
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -142,6 +149,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="YnQ-HB-WAf"/>
+                            </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7o-xw-K6i">
                             <rect key="frame" x="271" y="0.0" width="59" height="42"/>
@@ -188,6 +198,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="S8K-jz-3Yv"/>
+                            </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dr8-dP-RpK">
                             <rect key="frame" x="274" y="0.0" width="56" height="42"/>
@@ -281,6 +294,9 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="UL4-PL-Gwg"/>
+                            </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLY-8D-Ui9">
                             <rect key="frame" x="296" y="0.0" width="42" height="42"/>
