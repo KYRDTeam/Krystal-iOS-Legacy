@@ -462,6 +462,7 @@
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
+		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
 		7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */; };
 		7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */; };
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
@@ -1288,6 +1289,7 @@
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
 		7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
@@ -4279,6 +4281,7 @@
 			children = (
 				C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */,
 				C30DB3EE2771D1EC00F3E545 /* DappCoordinator.swift */,
+				7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */,
 				C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -5412,6 +5415,7 @@
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
+				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
