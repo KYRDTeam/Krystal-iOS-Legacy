@@ -885,6 +885,7 @@ enum KrytalService {
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
+  case getCryptoFiatPair
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case sendRate(star: Int, detail: String, txHash: String)
 }
@@ -907,6 +908,8 @@ extension KrytalService: TargetType {
       return urlComponents.url!
       case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
+    case .getCryptoFiatPair:
+      return URL(string: KNEnvironment.default.krystalEndpoint + "/v1/bifinity")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -991,6 +994,8 @@ extension KrytalService: TargetType {
       return "/v1/account/totalBalances"
     case .getGasPrice2:
       return "/v1/gasPrice"
+    case .getCryptoFiatPair:
+      return "/crypto"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
     case .sendRate:
@@ -1266,6 +1271,8 @@ extension KrytalService: TargetType {
         }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice2:
+      return .requestPlain
+    case .getCryptoFiatPair:
       return .requestPlain
     case .buildMultiSendTx(sender: let sender, items: let items):
       var json: JSONDictionary = [
