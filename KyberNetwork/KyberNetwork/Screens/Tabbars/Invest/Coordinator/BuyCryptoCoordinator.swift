@@ -70,8 +70,8 @@ struct BifinityOrder: Codable {
   let executePrice: Double
   // in miliseconds
   let createdTime: Int
-  let errorCode: String
-  let errorReason: String
+  let errorCode: String?
+  let errorReason: String?
 }
 
 protocol BuyCryptoCoordinatorDelegate: class {
@@ -203,8 +203,6 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
         newOrder = order
       }
     }
-    /// just hardcode for test
-    newOrder = self.currentOrder
     if let newOrder = newOrder {
       let confirmVC = ConfirmBuyCryptoViewController(currentOrder: newOrder)
       self.navigationController.present(confirmVC, animated: true)

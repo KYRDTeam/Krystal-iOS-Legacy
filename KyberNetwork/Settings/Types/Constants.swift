@@ -92,7 +92,8 @@ public struct Constants {
     etherScanEndpoint: "https://etherscan.io/",
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
     wrappedAddress: "0x6172afc8c00c46e0d07ce3af203828198194620a",
-    apiEtherscanEndpoint: "https://api.etherscan.io/"
+    apiEtherscanEndpoint: "https://api.etherscan.io/",
+    scanAddressEndpoint: "https://etherscan.io/address/"
   )
   
   public static let ethRoptenPRC = CustomRPC(
@@ -105,7 +106,8 @@ public struct Constants {
     etherScanEndpoint: "https://ropsten.etherscan.io/",
     ensAddress: "0x112234455c3a32fd11230c42e7bccd4a84e02010",
     wrappedAddress: "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
-    apiEtherscanEndpoint: "https://api-ropsten.etherscan.io/"
+    apiEtherscanEndpoint: "https://api-ropsten.etherscan.io/",
+    scanAddressEndpoint: "https://etherscan.io/address/"
   )
   
   public static let ethStaggingPRC = CustomRPC(
@@ -119,6 +121,8 @@ public struct Constants {
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
     wrappedAddress: "0x6172afc8c00c46e0d07ce3af203828198194620a",
     apiEtherscanEndpoint: "https://api.etherscan.io/"
+    ,
+    scanAddressEndpoint: "https://etherscan.io/address/"
   )
   
   public static let bscMainnetPRC = CustomRPC(
@@ -131,7 +135,8 @@ public struct Constants {
     etherScanEndpoint: "https://bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x465661625B3B96b102a49e07E2Eb31cC9F5cE58B",
-    apiEtherscanEndpoint: "https://api.bscscan.com/"
+    apiEtherscanEndpoint: "https://api.bscscan.com/",
+    scanAddressEndpoint: "https://bscscan.com/address/"
   )
   
   public static let bscRoptenPRC = CustomRPC(
@@ -144,7 +149,8 @@ public struct Constants {
     etherScanEndpoint: "https://testnet.bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x813718C50df497BC136d5d6dfc0E0aDA8AB0C93e",
-    apiEtherscanEndpoint: "https://api-testnet.bscscan.com/"
+    apiEtherscanEndpoint: "https://api-testnet.bscscan.com/",
+    scanAddressEndpoint: "https://bscscan.com/address/"
   )
   
   public static let polygonMainnetPRC = CustomRPC(
@@ -157,7 +163,8 @@ public struct Constants {
     etherScanEndpoint: "https://polygonscan.com/",
     ensAddress: "",
     wrappedAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a",
-    apiEtherscanEndpoint: "https://api.polygonscan.com/"
+    apiEtherscanEndpoint: "https://api.polygonscan.com/",
+    scanAddressEndpoint: "https://polygonscan.com/address/"
   )
   
   public static let polygonRoptenPRC = CustomRPC(
@@ -170,7 +177,8 @@ public struct Constants {
     etherScanEndpoint: "https://mumbai.polygonscan.com/",
     ensAddress: "",
     wrappedAddress: "0xB8C6Ed80688a2674623D89A0AaBD3a87507B1868",
-    apiEtherscanEndpoint: "https://api.polygonscan.com"
+    apiEtherscanEndpoint: "https://api.polygonscan.com",
+    scanAddressEndpoint: "https://polygonscan.com/address/"
   )
   
   public static let avalancheRoptenPRC = CustomRPC(
@@ -183,7 +191,8 @@ public struct Constants {
     etherScanEndpoint: "https://cchain.explorer.avax-test.network/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    scanAddressEndpoint: "https://snowtrace.io/address/"
   )
   
   public static let avalancheMainnetPRC = CustomRPC(
@@ -196,7 +205,8 @@ public struct Constants {
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    scanAddressEndpoint: "https://snowtrace.io/address/"
   )
 
   public static let cronosMainnetRPC = CustomRPC (
@@ -209,7 +219,8 @@ public struct Constants {
     etherScanEndpoint: "https://cronoscan.com/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    scanAddressEndpoint: "https://cronoscan.com/address/"
   )
 
   public static let fantomMainnetRPC = CustomRPC (
@@ -222,7 +233,8 @@ public struct Constants {
     etherScanEndpoint: "https://ftmscan.com/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    scanAddressEndpoint: "https://ftmscan.com/address/"
   )
   
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"

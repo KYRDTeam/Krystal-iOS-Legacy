@@ -43,11 +43,11 @@ class FiatCryptoHistoryCell: UICollectionViewCell {
   }
   
   func didTapStatusButton() {
-    guard let order = self.order, self.isFailOrder() else {
+    guard let order = self.order, self.isFailOrder(), let errorTitle = order.errorCode, let msg = order.errorReason else {
       return
     }
 
-    showBottomBannerView(with: order.errorCode, message: order.errorReason, icon: UIImage(named: "help_icon_large") ?? UIImage(), time: 5 )
+    showBottomBannerView(with: errorTitle, message: msg, icon: UIImage(named: "help_icon_large") ?? UIImage(), time: 5 )
   }
   
   func isFailOrder() -> Bool {

@@ -13,6 +13,7 @@ public struct CustomRPC {
   let ensAddress: String
   let wrappedAddress: String
   let apiEtherscanEndpoint: String
+  let scanAddressEndpoint: String
 }
 
 extension CustomRPC: Equatable {

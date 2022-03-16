@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -176,6 +176,9 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="copy_actionsheet_icon"/>
+                            <connections>
+                                <action selector="copyButtonTapped:" destination="-1" eventType="touchUpInside" id="CPS-mN-2b3"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i20-eV-zMp">
                             <rect key="frame" x="361" y="179" width="16" height="16"/>
@@ -185,6 +188,9 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="open_link_icon_blue"/>
+                            <connections>
+                                <action selector="scanButtonTapped:" destination="-1" eventType="touchUpInside" id="bQU-Sq-v8M"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
