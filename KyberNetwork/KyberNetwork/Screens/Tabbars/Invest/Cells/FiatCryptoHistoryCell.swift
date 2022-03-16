@@ -32,7 +32,7 @@ class FiatCryptoHistoryCell: UICollectionViewCell {
     self.cryptIcon.setImage(with: order.cryptoLogo, placeholder: UIImage(named: "default_token"))
     self.fiatIcon.setImage(with: order.fiatLogo, placeholder: UIImage(named: "default_token"))
     self.networkIcon.setImage(with: order.networkLogo, placeholder: UIImage(named: "default_token"))
-    self.valueLabel.text = "\(order.orderAmount) \(order.fiatCurrency) -> \(order.orderAmount) \(order.cryptoCurrency)"
+    self.valueLabel.text = "\(order.orderAmount) \(order.fiatCurrency) -> \(order.orderAmount * order.executePrice) \(order.cryptoCurrency)"
     self.rateLabel.text = "1 \(order.cryptoCurrency) = \(order.executePrice) \(order.fiatCurrency)"
     self.addressLabel.text = order.cryptoAddress
 

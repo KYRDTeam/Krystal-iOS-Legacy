@@ -90,6 +90,7 @@ class BifinityOrderViewController: KNBaseViewController {
     self.navigationController?.popViewController(animated: true)
   }
   func coordinatorDidGetOrders(orders: [BifinityOrder]) {
+    guard self.isViewLoaded else { return }
     self.viewModel.orders = orders
     self.collectionView.reloadData()
   }

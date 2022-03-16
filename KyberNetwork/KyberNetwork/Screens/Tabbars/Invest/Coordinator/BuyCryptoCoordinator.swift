@@ -39,14 +39,14 @@ struct FiatModel: Codable {
   let name: String
 }
 
-struct BuyCryptoModel: Codable {
-  var cryptoAddress: String
-  var cryptoCurrency: String
-  var cryptoNetWork: String
-  var fiatCurrency: String
-  var orderAmount: Double
-  var requestPrice: Double
-}
+//struct BuyCryptoModel: Codable {
+//  var cryptoAddress: String
+//  var cryptoCurrency: String
+//  var cryptoNetWork: String
+//  var fiatCurrency: String
+//  var orderAmount: Double
+//  var requestPrice: Double
+//}
 
 struct BifinityOrderResponse: Codable {
   let timestamp: Int
@@ -87,7 +87,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   weak var delegate: BuyCryptoCoordinatorDelegate?
   var bifinityOrders: [BifinityOrder] = []
-
+  var currentOrder: BifinityOrder?
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -152,13 +152,14 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
   }
 
-  func createBuyCryptoOrder(buyCryptoModel: BuyCryptoModel) {
+  func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
           self.webViewController.urlString = json["eternalRedirectUrl"] as? String
           self.navigationController.present(self.webViewController, animated: true, completion: nil)
+          self.currentOrder = buyCryptoModel
         }
       } else {
         print("[Buy crypto][Error]")
@@ -190,11 +191,24 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     guard let currentOrder = currentOrder else {
       return
     }
+    var newOrder: BifinityOrder?
     self.bifinityOrders.forEach { order in
       //TODO: check contain current order here
+      if order.cryptoAddress == currentOrder.cryptoAddress
+          && order.cryptoCurrency == currentOrder.cryptoCurrency
+          && order.cryptoNetwork == currentOrder.cryptoNetwork
+          && order.fiatCurrency == currentOrder.fiatCurrency
+          && order.orderAmount == currentOrder.orderAmount
+          && order.requestPrice == currentOrder.requestPrice {
+        newOrder = order
+      }
     }
-    let confirmVC = ConfirmBuyCryptoViewController()
-    self.navigationController.present(confirmVC, animated: true)
+    /// just hardcode for test
+    newOrder = self.currentOrder
+    if let newOrder = newOrder {
+      let confirmVC = ConfirmBuyCryptoViewController(currentOrder: newOrder)
+      self.navigationController.present(confirmVC, animated: true)
+    }
   }
 }
 
@@ -230,7 +244,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     self.navigationController.present(qrcodeReaderVC, animated: true, completion: nil)
   }
   
-  func didBuyCrypto(_ buyCryptoModel: BuyCryptoModel) {
+  func didBuyCrypto(_ buyCryptoModel: BifinityOrder) {
     self.createBuyCryptoOrder(buyCryptoModel: buyCryptoModel)
   }
 
@@ -289,7 +303,7 @@ extension BuyCryptoCoordinator: SelectNetworkViewControllerDelegate {
 
 extension BuyCryptoCoordinator: WebBrowserViewControllerDelegate {
   func didClose() {
-    self.getBifinityOrders()
+    self.getBifinityOrders(self.currentOrder)
   }
 }
 

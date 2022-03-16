@@ -887,7 +887,7 @@ enum KrytalService {
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
   case getCryptoFiatPair
-  case buyCrypto(buyCryptoModel: BuyCryptoModel)
+  case buyCrypto(buyCryptoModel: BifinityOrder)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
@@ -1308,7 +1308,7 @@ extension KrytalService: TargetType {
       var json: JSONDictionary = [
         "cryptoAddress": model.cryptoAddress.lowercased(),
         "cryptoCurrency": model.cryptoCurrency,
-        "cryptoNetWork": model.cryptoNetWork,
+        "cryptoNetWork": model.cryptoNetwork,
         "fiatCurrency": model.fiatCurrency,
         "orderAmount": model.orderAmount,
         "requestPrice": model.requestPrice.rounded(to: 4)

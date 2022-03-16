@@ -19,7 +19,7 @@ enum BuyCryptoEvent {
 
 protocol BuyCryptoViewControllerDelegate: class {
   func buyCryptoViewController(_ controller: BuyCryptoViewController, run event: BuyCryptoEvent)
-  func didBuyCrypto(_ buyCryptoModel: BuyCryptoModel)
+  func didBuyCrypto(_ buyCryptoModel: BifinityOrder)
 }
 
 class BuyCryptoViewModel {
@@ -234,7 +234,7 @@ class BuyCryptoViewController: KNBaseViewController {
     self.delegate?.buyCryptoViewController(self, run: .scanQRCode)
   }
 
-  func validateInput() -> BuyCryptoModel? {
+  func validateInput() -> BifinityOrder? {
     // validate fiat input
     guard let fiatAmount = self.fiatTextField.text, !fiatAmount.isEmpty else {
       self.shakeViewError(viewToShake: self.fiatInputView)
@@ -288,7 +288,8 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
-    let buyCryptoModel = BuyCryptoModel(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetWork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation)
+    let buyCryptoModel = BifinityOrder(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetwork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, merchantOrderId: "", orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation, userWallet: self.viewModel.wallet.address.description, fiatLogo: "", cryptoLogo: "", networkLogo: "", status: "", executePrice: 0, createdTime: 0, errorCode: "", errorReason: "")
+
     return buyCryptoModel
   }
 
