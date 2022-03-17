@@ -347,4 +347,8 @@ extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
   func didUpdateRate(rate: Int) {
     self.updateRateUI(rate: rate)
   }
+
+  func didSendRate() {
+    self.rateContainView.isHidden = true
+  }
 }
