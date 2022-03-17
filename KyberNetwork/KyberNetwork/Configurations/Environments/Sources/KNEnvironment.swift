@@ -262,6 +262,13 @@ enum KNEnvironment: Int {
     default: return KNSecret.ropstenKyberNodeURL
     }
   }
+  
+  var mobileKey: String {
+    if KNEnvironment.default == .production {
+      return "mob-5d185228-993b-4283-84fa-4dae640b19b1"
+    }
+    return "mob-23b6e6df-bf90-494b-90e9-85c1d59ab4a2"
+  }
 
   static var allChainPath: String? {
     if KNEnvironment.default == .ropsten {

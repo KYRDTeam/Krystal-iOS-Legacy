@@ -98,7 +98,7 @@ enum ChainType: Codable {
       return "Cronos"
     }
   }
-  
+
   func blockExploreName() -> String {
 //    switch self {
 //    case .eth:

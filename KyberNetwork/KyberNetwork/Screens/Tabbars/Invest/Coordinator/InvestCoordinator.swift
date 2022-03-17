@@ -25,6 +25,7 @@ class InvestCoordinator: Coordinator {
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
   var dappCoordinator: DappCoordinator?
+  var buyCryptoCoordinator: BuyCryptoCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -150,8 +151,17 @@ class InvestCoordinator: Coordinator {
     self.dappCoordinator = coordinator
   }
   
+  func openBuyCryptoScreen() {
+    self.buyCryptoCoordinator = nil
+    let coordinator = BuyCryptoCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    coordinator.start()
+    self.buyCryptoCoordinator = coordinator
+  }
+  
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.buyCryptoCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
   
@@ -160,7 +170,9 @@ class InvestCoordinator: Coordinator {
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.buyCryptoCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
+    
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -195,6 +207,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openKrytalView()
     case .dapp:
       self.openDappBrowserScreen()
+    case .buyCrypto:
+      self.openBuyCryptoScreen()
     case .multiSend:
       self.multiSendCoordinator.start()
       KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
@@ -257,6 +271,24 @@ extension InvestCoordinator: KrytalCoordinatorDelegate {
   
   func krytalCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+}
+
+extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
+  func buyCryptoCoordinatorDidSelectAddWallet() {
+    self.delegate?.investCoordinatorDidSelectAddWallet()
+  }
+  
+  func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.investCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func buyCryptoCoordinatorDidSelectManageWallet() {
+    self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+  
+  func buyCryptoCoordinatorOpenHistory() {
+    self.openHistoryScreen()
   }
 }
 

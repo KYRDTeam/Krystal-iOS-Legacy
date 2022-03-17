@@ -25,6 +25,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidSelectDeleteWallet()
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
+  func overviewCoordinatorBuyCrypto()
 }
 
 class OverviewCoordinator: NSObject, Coordinator {
@@ -652,6 +653,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.navigationController.pushViewController(vc, animated: true)
     case .didAppear:
       self.delegate?.overviewCoordinatorDidStart()
+    case .buyCrypto:
+      self.delegate?.overviewCoordinatorBuyCrypto()
     }
   }
 }

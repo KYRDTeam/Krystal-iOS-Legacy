@@ -33,6 +33,7 @@ enum InvestViewEvent {
   case krytal
   case dapp
   case multiSend
+  case buyCrypto
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -50,6 +51,8 @@ class InvestViewController: KNBaseViewController {
   @IBOutlet weak var collectionViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var currentChainIcon: UIImageView!
   
+  @IBOutlet weak var buyCryptoView: UIView!
+  
   let viewModel: InvestViewModel = InvestViewModel()
   weak var delegate: InvestViewControllerDelegate?
   
@@ -63,13 +66,31 @@ class InvestViewController: KNBaseViewController {
     self.patnerCollectionView.register(nib, forCellWithReuseIdentifier: MarketingPartnerCollectionViewCell.cellID)
     self.updateUIBannerPagerView()
     self.updateUIPartnerCollectionView()
+    self.updateFeatureFlagChanged()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     self.bannerPagerView.itemSize = self.bannerPagerView.frame.size
     self.updateUISwitchChain()
-    
+    self.configFeatureFlag()
+  }
+  
+  fileprivate func updateFeatureFlagChanged() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(configFeatureFlag),
+      name: Notification.Name(kUpdateFeatureFlag),
+      object: nil
+    )
+  }
+  
+  @objc fileprivate func configFeatureFlag() {
+    let shouldShowBuyCrypto = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+    self.buyCryptoView.subviews.forEach { view in
+      view.isHidden = !shouldShowBuyCrypto
+    }
+    self.buyCryptoView.backgroundColor = shouldShowBuyCrypto ? UIColor(named: "investButtonBgColor")! : .clear
   }
   
   fileprivate func updateUISwitchChain() {
@@ -95,6 +116,10 @@ class InvestViewController: KNBaseViewController {
   
   @IBAction func dAppButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .dapp)
+  }
+
+  @IBAction func buyCryptoButtonTapped(_ sender: Any) {
+    self.delegate?.investViewController(self, run: .buyCrypto)
   }
   
   @IBAction func multiSendButtonTapped(_ sender: UIButton) {
