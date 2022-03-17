@@ -244,7 +244,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAddressValid: Bool {
-    return self.address != nil
+    return self.address != nil && self.addressString.has0xPrefix
   }
 
   var ethFeeBigInt: BigInt {

@@ -180,7 +180,7 @@ class KNNewContactViewController: KNBaseViewController {
       self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
     }
-    guard let address = Address(string: self.addressTextField.text ?? "") else {
+    guard let text = self.addressTextField.text, text.has0xPrefix, let address = Address(string: text) else {
       self.showErrorTopBannerMessage(
         with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
         message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
