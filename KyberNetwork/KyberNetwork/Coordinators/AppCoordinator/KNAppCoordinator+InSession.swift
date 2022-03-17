@@ -10,6 +10,7 @@ extension KNAppCoordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
+    FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
     self.loadBalanceCoordinator = KNLoadBalanceCoordinator(session: self.session)

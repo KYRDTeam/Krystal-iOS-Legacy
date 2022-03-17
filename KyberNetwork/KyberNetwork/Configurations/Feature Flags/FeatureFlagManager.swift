@@ -30,7 +30,7 @@ class FeatureFlagManager {
   }
 
   func showFeature(forKey flagKey: String) -> Bool {
-    let client = LDClient.get()!
+    guard let client = LDClient.get() else { return false }
     return client.variation(forKey: flagKey, defaultValue: false)
   }
 }
