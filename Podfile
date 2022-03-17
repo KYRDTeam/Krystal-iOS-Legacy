@@ -47,6 +47,7 @@ target 'KyberNetwork' do
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'lottie-ios'
   pod 'TrustWalletCore', '~> 2.6.29'
+  pod 'LaunchDarkly', '~> 5.4'
 
   target 'KyberNetworkTests' do
     inherit! :search_paths

@@ -28,15 +28,22 @@ class BrowserOptionsViewController: KNBaseViewController {
   @IBOutlet weak var favoriteStatusIcon: UIImageView!
   @IBOutlet weak var backButton: UIButton!
   @IBOutlet weak var forwardButton: UIButton!
-  
+  @IBOutlet weak var favoriteButton: UIButton!
+  @IBOutlet weak var favoriteContainView: UIView!
+  @IBOutlet weak var switchWalletContainView: UIView!
+  @IBOutlet weak var switchWalletLabel: UILabel!
+  @IBOutlet weak var switchWalletIcon: UIImageView!
+  @IBOutlet weak var switchWalletButton: UIButton!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  
+  
   let transitor = TransitionDelegate()
   weak var delegate: BrowserOptionsViewControllerDelegate?
   let url: String
   let canGoBack: Bool
   let canForward: Bool
-  
+  var isNormalBrowser = false
   init(url: String, canGoBack: Bool, canGoForward: Bool) {
     self.url = url
     self.canGoBack = canGoBack
@@ -58,6 +65,18 @@ class BrowserOptionsViewController: KNBaseViewController {
     } else {
       self.favoriteStatusIcon.image = UIImage(named: "favorite_actionsheet_icon")
       self.favoriteStatusLabel.text = "Favorite"
+    }
+    
+    if self.isNormalBrowser {
+      self.favoriteButton.isUserInteractionEnabled = false
+      self.favoriteStatusLabel.isHidden = true
+      self.favoriteStatusIcon.isHidden = true
+      self.favoriteContainView.backgroundColor = UIColor.clear
+      
+      self.switchWalletButton.isUserInteractionEnabled = false
+      self.switchWalletIcon.isHidden = true
+      self.switchWalletLabel.isHidden = true
+      self.switchWalletContainView.backgroundColor = UIColor.clear
     }
     
     if !self.canGoBack {
@@ -89,7 +108,7 @@ extension BrowserOptionsViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 430
+    return self.isNormalBrowser ? 350 : 430
   }
 
   func getPopupContentView() -> UIView {

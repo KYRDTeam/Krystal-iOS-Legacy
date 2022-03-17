@@ -4,6 +4,7 @@
 import Moya
 import CryptoSwift
 import BigInt
+import SwiftProtobuf
 
 protocol MoyaCacheable {
   typealias MoyaCacheablePolicy = URLRequest.CachePolicy
@@ -885,10 +886,13 @@ enum KrytalService {
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: String, forceSync: Bool,_ chains: String?)
   case getGasPrice2
+  case getCryptoFiatPair
+  case buyCrypto(buyCryptoModel: BifinityOrder)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
   case getPromotions(code: String, address: String)
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
+  case getOrders(userWallet: String)
 }
 
 extension KrytalService: TargetType {
@@ -907,7 +911,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -993,12 +997,18 @@ extension KrytalService: TargetType {
       return "/v1/account/totalBalances"
     case .getGasPrice2:
       return "/v1/gasPrice"
+    case .getCryptoFiatPair:
+      return "v1/fiat/cryptos"
+    case .buyCrypto:
+      return "v1/fiat/buyCrypto"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
     case .getPromotions:
       return "/v1/promotion/check"
     case .claimPromotion:
       return "/v1/promotion/claim"
+    case .getOrders:
+      return "v1/fiat/orders"
     case .sendRate:
       return "/v1/tracking/ratings"
     }
@@ -1006,7 +1016,7 @@ extension KrytalService: TargetType {
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto:
       return .post
     default:
       return .get
@@ -1273,6 +1283,8 @@ extension KrytalService: TargetType {
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPrice2:
       return .requestPlain
+    case .getCryptoFiatPair:
+      return .requestPlain
     case .buildMultiSendTx(sender: let sender, items: let items):
       var json: JSONDictionary = [
         "senderAddress": sender,
@@ -1312,6 +1324,21 @@ extension KrytalService: TargetType {
         "txHash": txHash
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .buyCrypto(buyCryptoModel: let model):
+      var json: JSONDictionary = [
+        "cryptoAddress": model.cryptoAddress.lowercased(),
+        "cryptoCurrency": model.cryptoCurrency,
+        "cryptoNetWork": model.cryptoNetwork,
+        "fiatCurrency": model.fiatCurrency,
+        "orderAmount": model.orderAmount,
+        "requestPrice": model.requestPrice.rounded(to: 4)
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getOrders(userWallet: let userWallet):
+      let json: JSONDictionary = [
+        "userWallet": userWallet
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 

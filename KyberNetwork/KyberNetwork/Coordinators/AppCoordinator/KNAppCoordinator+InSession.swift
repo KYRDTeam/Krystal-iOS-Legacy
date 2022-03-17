@@ -170,6 +170,7 @@ extension KNAppCoordinator {
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       self.session.switchSession(wallet)
+      FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,

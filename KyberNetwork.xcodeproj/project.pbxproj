@@ -460,13 +460,33 @@
 		7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AFF273D09FB00B6E67C /* intro_swap.json */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
+		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
+		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
+		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
+		7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */; };
+		7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */; };
+		7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */; };
+		7EB47FFB27D077DF00FB28D9 /* SearchFiatCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FF927D077DF00FB28D9 /* SearchFiatCryptoViewController.swift */; };
+		7EB47FFC27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */; };
+		7EB47FFF27D095F200FB28D9 /* CryptoFiatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */; };
+		7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */; };
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
 		7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */; };
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
+		7EC892CD27DCD15B000C5980 /* WebBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */; };
+		7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */; };
+		7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */; };
+		7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */; };
+		7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */; };
+		7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
 		7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */; };
+		7ED5FA8127D1EF4000F0CB8E /* SelectNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5FA7F27D1EF4000F0CB8E /* SelectNetworkViewController.swift */; };
+		7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */; };
+		7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */; };
+		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
 		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
 		7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43FE27144533006CF502 /* RewardsViewController.swift */; };
 		7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE43FF27144533006CF502 /* RewardsViewController.xib */; };
@@ -1290,13 +1310,33 @@
 		7E913AFF273D09FB00B6E67C /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
+		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
+		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
+		7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBuyCryptoViewController.swift; sourceTree = "<group>"; };
+		7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBuyCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagManager.swift; sourceTree = "<group>"; };
+		7EB47FF927D077DF00FB28D9 /* SearchFiatCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiatCryptoViewController.swift; sourceTree = "<group>"; };
+		7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchFiatCryptoViewController.xib; sourceTree = "<group>"; };
+		7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoFiatCell.swift; sourceTree = "<group>"; };
+		7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CryptoFiatCell.xib; sourceTree = "<group>"; };
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCoordinator.swift; sourceTree = "<group>"; };
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
+		7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserViewController.swift; sourceTree = "<group>"; };
+		7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowserViewController.xib; sourceTree = "<group>"; };
+		7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BifinityOrderViewController.swift; sourceTree = "<group>"; };
+		7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BifinityOrderViewController.xib; sourceTree = "<group>"; };
+		7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCryptoHistoryCell.swift; sourceTree = "<group>"; };
+		7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FiatCryptoHistoryCell.xib; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
 		7ECCB89C270C00A10080DC3B /* LiquidityPoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityPoolModel.swift; sourceTree = "<group>"; };
+		7ED5FA7F27D1EF4000F0CB8E /* SelectNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNetworkViewController.swift; sourceTree = "<group>"; };
+		7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkViewController.xib; sourceTree = "<group>"; };
+		7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNetworkCell.swift; sourceTree = "<group>"; };
+		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
 		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
 		7EFE43FE27144533006CF502 /* RewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsViewController.swift; sourceTree = "<group>"; };
 		7EFE43FF27144533006CF502 /* RewardsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardsViewController.xib; sourceTree = "<group>"; };
@@ -1725,6 +1765,7 @@
 		251ABCA020578DA30069687F /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				7EB47FF627CCDD2B00FB28D9 /* Feature Flags */,
 				25929C3320DA5C4C0045CFA3 /* Fonts */,
 				25CE6F7020723F6800A3A2F9 /* AppTrackers */,
 				25CC0A972057E1C90009D0D5 /* LoadingInterval */,
@@ -3762,6 +3803,14 @@
 			path = LottieJSON;
 			sourceTree = "<group>";
 		};
+		7EB47FF627CCDD2B00FB28D9 /* Feature Flags */ = {
+			isa = PBXGroup;
+			children = (
+				7EB47FF727CCDDDB00FB28D9 /* FeatureFlagManager.swift */,
+			);
+			path = "Feature Flags";
+			sourceTree = "<group>";
+		};
 		7EC4C6E927168A4900486C00 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -3862,6 +3911,12 @@
 				C32017B927BE41910055130B /* MultiSendAddressCell.xib */,
 				C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */,
 				C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */,
+                7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */,
+				7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */,
+				7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */,
+				7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */,
+				7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */,
+				7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4290,6 +4345,7 @@
 			children = (
 				C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */,
 				C30DB3EE2771D1EC00F3E545 /* DappCoordinator.swift */,
+				7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */,
 				C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */,
 				C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */,
 			);
@@ -4327,6 +4383,18 @@
 				C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */,
 				C35E9DFA27E1BDF300E1E7CE /* PromoCodeDetailViewController.swift */,
 				C35E9DFB27E1BDF300E1E7CE /* PromoCodeDetailViewController.xib */,
+               7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */,
+				7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */,
+				7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */,
+				7EB47FF327C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib */,
+				7EB47FF927D077DF00FB28D9 /* SearchFiatCryptoViewController.swift */,
+				7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */,
+				7ED5FA7F27D1EF4000F0CB8E /* SelectNetworkViewController.swift */,
+				7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */,
+				7EC892CB27DCD15B000C5980 /* WebBrowserViewController.swift */,
+				7EC892CC27DCD15B000C5980 /* WebBrowserViewController.xib */,
+				7EC892D127DCE7A9000C5980 /* BifinityOrderViewController.swift */,
+				7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4686,6 +4754,7 @@
 				C31F74B625DD3284008B21F7 /* OverviewAssetsTableViewCell.xib in Resources */,
 				25929C6B20DA5C760045CFA3 /* SF-Pro-Text-Regular.otf in Resources */,
 				25929C8B20DA5CC10045CFA3 /* SFCompactText-Bold.otf in Resources */,
+				7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */,
 				259925BA20EF2D4900CCF2D6 /* KNContactTableViewCell.xib in Resources */,
 				25929C9A20DA5CC10045CFA3 /* SFCompactDisplay-Black.otf in Resources */,
 				259EC46A20E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib in Resources */,
@@ -4739,6 +4808,7 @@
 				C3EE06BB267A15E50090B432 /* Karla-Italic.ttf in Resources */,
 				7EFE440E27158594006CF502 /* ToggleTokenCell.xib in Resources */,
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
+				7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */,
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
 				C35E9DF427DB56F800E1E7CE /* PromoCodeCell.xib in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
@@ -4821,12 +4891,14 @@
 				C3EE06C6267A15E50090B432 /* Karla-Bold.ttf in Resources */,
 				C3EE06C5267A15E50090B432 /* Karla-BoldItalic.ttf in Resources */,
 				25073D19211AF20D00833C92 /* Montserrat-LightItalic.ttf in Resources */,
+				7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */,
 				C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */,
 				C3F71C852618A47200285935 /* KrytalHistoryViewController.xib in Resources */,
 				251ABCB120578F6E0069687F /* config_env_mainnet_test.json in Resources */,
 				25929C6020DA5C760045CFA3 /* SF-Pro-Display-ThinItalic.otf in Resources */,
 				7E6F51092733895D002DA0B2 /* OverviewSummaryCell.xib in Resources */,
 				C31371ED26035182003D432B /* KrytalViewController.xib in Resources */,
+				7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */,
 				C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */,
 				C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */,
 				C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */,
@@ -4853,6 +4925,7 @@
 				25929C5D20DA5C760045CFA3 /* SF-Pro-Display-Black.otf in Resources */,
 				255A70EB214F9ECE005D7A6A /* KNSettingsTabViewController.xib in Resources */,
 				C3EE06BA267A15E50090B432 /* Karla-Italic-VariableFont_wght.ttf in Resources */,
+				7EB47FF527C8883200FB28D9 /* ConfirmBuyCryptoViewController.xib in Resources */,
 				253F50E821E5B5290068813D /* KNPromoCodeViewController.xib in Resources */,
 				25929C6820DA5C760045CFA3 /* SF-Pro-Display-Light.otf in Resources */,
 				2502AC19209475BE007F23CD /* KNListWalletsTableViewCell.xib in Resources */,
@@ -4865,6 +4938,7 @@
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
+				7EC892CE27DCD15B000C5980 /* WebBrowserViewController.xib in Resources */,
 				C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */,
 				C34A2266277AE64300F240B8 /* BrowserOptionsViewController.xib in Resources */,
 				7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */,
@@ -4888,6 +4962,7 @@
 				257C9FC52078A9F800EE0128 /* KNTransactionCollectionReusableView.xib in Resources */,
 				25929C9920DA5CC10045CFA3 /* SFCompactDisplay-Bold.otf in Resources */,
 				C325984726D345A100F87D25 /* OverviewShareNFTViewController.xib in Resources */,
+				7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */,
 				C3F71C9B261B27BB00285935 /* EarnTutorialCell.xib in Resources */,
 				25C45AE220AD75EC00CDA1FF /* KNImportSeedsViewController.xib in Resources */,
 				25929C6A20DA5C760045CFA3 /* SF-Pro-Text-Semibold.otf in Resources */,
@@ -4907,11 +4982,13 @@
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */,
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
 				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
+				7EB47FFC27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib in Resources */,
 				C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5078,6 +5155,8 @@
 				"${BUILT_PRODUCTS_DIR}/JdenticonSwift/JdenticonSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
+				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
@@ -5128,6 +5207,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JdenticonSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
@@ -5193,6 +5274,7 @@
 				254BB353211D9A5500B8E75D /* KConfirmSendViewModel.swift in Sources */,
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
+				7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
 				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,
@@ -5225,6 +5307,7 @@
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */,
 				C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */,
+				7EB47FFF27D095F200FB28D9 /* CryptoFiatCell.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
@@ -5270,6 +5353,7 @@
 				25A4B4B321242DE000924351 /* KNCreateWalletViewController.swift in Sources */,
 				C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */,
 				29FC9BC61F830899000209CD /* MirgrationInitializer.swift in Sources */,
+				7EC892CD27DCD15B000C5980 /* WebBrowserViewController.swift in Sources */,
 				C335FC71257F90990015CC27 /* RectangularDashedView.swift in Sources */,
 				25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */,
 				25696F5720BD2B81002CC53F /* KNDataDetailsView.swift in Sources */,
@@ -5324,6 +5408,7 @@
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
+				7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */,
 				C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */,
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
@@ -5359,6 +5444,7 @@
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
+				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
@@ -5374,6 +5460,7 @@
 				250343FF20DA37F700528810 /* KNSaveContactViewController.swift in Sources */,
 				298542F91FBE9A0100CB5081 /* CryptoAddressValidator.swift in Sources */,
 				C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */,
+				7ED5FA8127D1EF4000F0CB8E /* SelectNetworkViewController.swift in Sources */,
 				258C47EC2081F22C00BD4068 /* KNReachability.swift in Sources */,
 				C337E16027748849001C8B03 /* DAppRequster.swift in Sources */,
 				C30F78E6271414AD00E3233D /* EIP1559Transaction.swift in Sources */,
@@ -5427,6 +5514,7 @@
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
+				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
@@ -5445,10 +5533,13 @@
 				255A68E720AADB2000F39749 /* Double+Kyber.swift in Sources */,
 				2932045C1F8DCD6E0095B7C1 /* CurrencyRate.swift in Sources */,
 				25CC0AA82058F1A00009D0D5 /* KNExchangeRequest.swift in Sources */,
+				7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
 				C3F71C90261AB0FF00285935 /* ClaimRewardViewController.swift in Sources */,
+				7EB47FF427C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift in Sources */,
+				7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */,
 				25931F1420AEEBF000BAC774 /* KNBackUpWalletViewModel.swift in Sources */,
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
@@ -5542,6 +5633,7 @@
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
 				C3299D652773258D00D1065A /* SearchEngine.swift in Sources */,
 				25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */,
+				7EB47FFB27D077DF00FB28D9 /* SearchFiatCryptoViewController.swift in Sources */,
 				257B84A62074C2B9003DD40E /* KNDebugMenuViewController.swift in Sources */,
 				C3F71CA0261C084C00285935 /* EarnTutorialViewController.swift in Sources */,
 				291794FB1F95DC2200539A30 /* Web3Swift.swift in Sources */,
@@ -5851,7 +5943,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5884,7 +5976,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				ENABLE_BITCODE = NO;
@@ -5995,7 +6087,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -6025,7 +6117,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

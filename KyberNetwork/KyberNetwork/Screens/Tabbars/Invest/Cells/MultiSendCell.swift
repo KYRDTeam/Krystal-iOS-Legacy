@@ -117,6 +117,7 @@ class MultiSendCellModel {
   }
 
   var isAddressValid: Bool {
+    guard self.addressString.has0xPrefix else { return false }
     let address = Address(string: self.addressString)
     return address != nil
   }

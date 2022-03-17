@@ -177,6 +177,11 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode) {
     self.loadBalanceCoordinator?.appCoordinatorRefreshData(mode: mode, overviewMode:overviewMode)
   }
+  
+  func overviewCoordinatorBuyCrypto() {
+    self.tabbarController.selectedIndex = 2
+    self.investCoordinator?.openBuyCryptoScreen()
+  }
 }
 
 extension KNAppCoordinator: KrytalCoordinatorDelegate {

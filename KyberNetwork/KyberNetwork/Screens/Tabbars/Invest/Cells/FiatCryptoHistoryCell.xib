@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="FiatCryptoHistoryCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="404" height="94"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="404" height="94"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="400 KNC -&gt; 1 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Hev-MN-tUv">
+                        <rect key="frame" x="51" y="12" width="119.5" height="19"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                        <color key="textColor" name="textWhiteColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="1 KNC = 0.002602 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0h-FT-0Fs">
+                        <rect key="frame" x="51" y="35" width="136" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="10:48 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg3-PY-Cqh">
+                        <rect key="frame" x="338" y="57.5" width="56" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="knc" translatesAutoresizingMaskIntoConstraints="NO" id="vfh-8D-EZ3">
+                        <rect key="frame" x="17" y="15" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="JW7-80-Yx1"/>
+                            <constraint firstAttribute="width" constant="16" id="vYw-SW-FbO"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="VJd-xx-v7n">
+                        <rect key="frame" x="27" y="20" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="1Uc-Ti-aWO"/>
+                            <constraint firstAttribute="height" constant="16" id="CVW-ZS-WVK"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="0x84911237a4jj238502i3" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8K-5K-9iA">
+                        <rect key="frame" x="51" y="57.5" width="164" height="16.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="164" id="1Tv-Ot-icH"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="textWhiteColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="gyQ-Ww-mtT">
+                        <rect key="frame" x="377" y="13" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="VRN-YR-y2l"/>
+                            <constraint firstAttribute="width" constant="16" id="gcU-bS-iWz"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eu2-rC-6eV">
+                        <rect key="frame" x="307" y="9.5" width="62" height="23"/>
+                        <color key="backgroundColor" name="error_bg_color"/>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                        <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
+                        <inset key="imageEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Failed" image="warning_red_icon">
+                            <color key="titleColor" name="error_red_color"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="Lg3-PY-Cqh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="p8K-5K-9iA" secondAttribute="trailing" constant="5" id="6xN-Yg-Mu5"/>
+                <constraint firstItem="vfh-8D-EZ3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="EIB-es-kyh"/>
+                <constraint firstItem="gyQ-Ww-mtT" firstAttribute="leading" secondItem="eu2-rC-6eV" secondAttribute="trailing" constant="8" id="KOc-cL-IjQ"/>
+                <constraint firstItem="Hev-MN-tUv" firstAttribute="top" secondItem="vfh-8D-EZ3" secondAttribute="top" constant="-3" id="LeL-fa-L1A"/>
+                <constraint firstItem="VJd-xx-v7n" firstAttribute="leading" secondItem="vfh-8D-EZ3" secondAttribute="leading" constant="10" id="Ran-Re-Hmy"/>
+                <constraint firstItem="p8K-5K-9iA" firstAttribute="top" secondItem="d0h-FT-0Fs" secondAttribute="bottom" constant="6" id="T8B-j6-NJT"/>
+                <constraint firstAttribute="trailing" secondItem="gyQ-Ww-mtT" secondAttribute="trailing" constant="11" id="YKQ-1J-OSe"/>
+                <constraint firstItem="VJd-xx-v7n" firstAttribute="top" secondItem="vfh-8D-EZ3" secondAttribute="top" constant="5" id="ZBz-eE-pj5"/>
+                <constraint firstItem="Hev-MN-tUv" firstAttribute="leading" secondItem="VJd-xx-v7n" secondAttribute="trailing" constant="8" id="e6t-PY-fnW"/>
+                <constraint firstItem="p8K-5K-9iA" firstAttribute="leading" secondItem="d0h-FT-0Fs" secondAttribute="leading" id="mTE-a0-fuF"/>
+                <constraint firstItem="gyQ-Ww-mtT" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="13" id="p0h-1U-rJF"/>
+                <constraint firstItem="Lg3-PY-Cqh" firstAttribute="centerY" secondItem="p8K-5K-9iA" secondAttribute="centerY" id="q2k-9a-h66"/>
+                <constraint firstAttribute="trailing" secondItem="Lg3-PY-Cqh" secondAttribute="trailing" constant="10" id="rJV-wm-485"/>
+                <constraint firstItem="gyQ-Ww-mtT" firstAttribute="centerY" secondItem="eu2-rC-6eV" secondAttribute="centerY" id="spB-qd-BN0"/>
+                <constraint firstItem="Hev-MN-tUv" firstAttribute="leading" secondItem="d0h-FT-0Fs" secondAttribute="leading" id="vXY-KN-oqX"/>
+                <constraint firstItem="d0h-FT-0Fs" firstAttribute="top" secondItem="Hev-MN-tUv" secondAttribute="bottom" constant="4" id="xak-qT-Qz3"/>
+                <constraint firstItem="vfh-8D-EZ3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="17" id="zfZ-lo-AWC"/>
+            </constraints>
+            <size key="customSize" width="404" height="94"/>
+            <connections>
+                <outlet property="addressLabel" destination="p8K-5K-9iA" id="7ce-6X-dVy"/>
+                <outlet property="cryptIcon" destination="vfh-8D-EZ3" id="W8C-tm-Efn"/>
+                <outlet property="fiatIcon" destination="VJd-xx-v7n" id="W9y-Qf-a5p"/>
+                <outlet property="networkIcon" destination="gyQ-Ww-mtT" id="jmO-0J-HYH"/>
+                <outlet property="rateLabel" destination="d0h-FT-0Fs" id="Q6a-Ri-LLE"/>
+                <outlet property="statusButton" destination="eu2-rC-6eV" id="Dsn-X0-H75"/>
+                <outlet property="timeLabel" destination="Lg3-PY-Cqh" id="jOJ-XO-4a5"/>
+                <outlet property="valueLabel" destination="Hev-MN-tUv" id="owf-1r-U5I"/>
+            </connections>
+            <point key="canvasLocation" x="388.40579710144931" y="145.98214285714286"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="eth" width="32" height="32"/>
+        <image name="knc" width="36" height="36"/>
+        <image name="warning_red_icon" width="13" height="14"/>
+        <namedColor name="error_bg_color">
+            <color red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="error_red_color">
+            <color red="1" green="0.43137254901960786" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
