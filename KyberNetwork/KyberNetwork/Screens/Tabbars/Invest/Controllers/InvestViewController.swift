@@ -53,6 +53,7 @@ class InvestViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   
   @IBOutlet weak var buyCryptoView: UIView!
+  @IBOutlet weak var promoCodeContainerView: UIView!
   
   let viewModel: InvestViewModel = InvestViewModel()
   weak var delegate: InvestViewControllerDelegate?
@@ -92,6 +93,12 @@ class InvestViewController: KNBaseViewController {
       view.isHidden = !shouldShowBuyCrypto
     }
     self.buyCryptoView.backgroundColor = shouldShowBuyCrypto ? UIColor(named: "investButtonBgColor")! : .clear
+    
+    let shouldShowPromoCode = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+    self.promoCodeContainerView.subviews.forEach { view in
+      view.isHidden = !shouldShowPromoCode
+    }
+    self.promoCodeContainerView.backgroundColor = shouldShowPromoCode ? UIColor(named: "investButtonBgColor")! : .clear
   }
   
   fileprivate func updateUISwitchChain() {
