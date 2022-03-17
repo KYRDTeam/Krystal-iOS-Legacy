@@ -52,6 +52,7 @@ class InvestViewController: KNBaseViewController {
   @IBOutlet weak var collectionViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var currentChainIcon: UIImageView!
   
+  @IBOutlet weak var stackView: UIStackView!
   @IBOutlet weak var buyCryptoView: UIView!
   @IBOutlet weak var promoCodeContainerView: UIView!
   
@@ -93,7 +94,13 @@ class InvestViewController: KNBaseViewController {
       view.isHidden = !shouldShowBuyCrypto
     }
     self.buyCryptoView.backgroundColor = shouldShowBuyCrypto ? UIColor(named: "investButtonBgColor")! : .clear
-    
+    self.stackView.removeArrangedSubview(self.buyCryptoView)
+    if !shouldShowBuyCrypto {
+      self.stackView.insertArrangedSubview(self.buyCryptoView, at: 3)
+    } else {
+      self.stackView.insertArrangedSubview(self.buyCryptoView, at: 2)
+    }
+
     let shouldShowPromoCode = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
     self.promoCodeContainerView.subviews.forEach { view in
       view.isHidden = !shouldShowPromoCode

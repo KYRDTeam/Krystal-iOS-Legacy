@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -29,6 +29,7 @@
                 <outlet property="currentChainIcon" destination="F1W-Yk-3S3" id="t7w-rh-iX3"/>
                 <outlet property="patnerCollectionView" destination="lBA-XO-EC2" id="0Rt-Xn-gdG"/>
                 <outlet property="promoCodeContainerView" destination="E7n-1k-uDU" id="GUM-wl-RGp"/>
+                <outlet property="stackView" destination="11v-mB-S8g" id="5jX-8z-EDY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
