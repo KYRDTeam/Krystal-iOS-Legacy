@@ -77,7 +77,7 @@ class ConfirmBuyCryptoViewController: KNBaseViewController {
   }
   
   @IBAction func scanButtonTapped(_ sender: Any) {
-    guard let url = URL(string: KNGeneralProvider.shared.customRPC.scanAddressEndpoint + self.currentOrder.cryptoAddress) else {
+    guard let url = URL(string: KNGeneralProvider.shared.customRPC.etherScanEndpoint + "address/" + self.currentOrder.cryptoAddress) else {
       return
     }
     self.openSafari(with: url)
