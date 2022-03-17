@@ -1361,7 +1361,7 @@ extension KrytalService: TargetType {
       json["accept"] = "application/json"
     case .claimPromotion:
       json["accept"] = "application/json"
-      json["Content-Type"]: "application/json"
+      json["Content-Type"] = "application/json"
     default:
       return json
     }
