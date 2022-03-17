@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -28,6 +28,7 @@
                 <outlet property="collectionViewHeightContraint" destination="gFD-NB-SEJ" id="iQM-l5-qa3"/>
                 <outlet property="currentChainIcon" destination="F1W-Yk-3S3" id="t7w-rh-iX3"/>
                 <outlet property="patnerCollectionView" destination="lBA-XO-EC2" id="0Rt-Xn-gdG"/>
+                <outlet property="promoCodeContainerView" destination="E7n-1k-uDU" id="GUM-wl-RGp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -586,16 +587,16 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7n-1k-uDU">
                                     <rect key="frame" x="263.5" y="0.0" width="71.5" height="78"/>
                                     <subviews>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Referral" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzC-rB-Xvm">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YzC-rB-Xvm">
                                             <rect key="frame" x="9" y="57" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5RD-4V-Thw">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5RD-4V-Thw">
                                             <rect key="frame" x="9" y="15" width="53" height="32"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="referral_invest_icon" translatesAutoresizingMaskIntoConstraints="NO" id="QgP-fF-068">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="promo_code_icon" translatesAutoresizingMaskIntoConstraints="NO" id="QgP-fF-068">
                                                     <rect key="frame" x="10.5" y="0.0" width="32" height="32"/>
                                                 </imageView>
                                             </subviews>
@@ -613,15 +614,18 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8il-TW-ZP8">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8il-TW-ZP8">
                                             <rect key="frame" x="0.0" y="0.0" width="71.5" height="78"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                             <state key="normal">
                                                 <color key="titleColor" name="textWhiteColor"/>
                                             </state>
+                                            <connections>
+                                                <action selector="promoCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="q4l-PQ-V6v"/>
+                                            </connections>
                                         </button>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" name="investButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="8il-TW-ZP8" secondAttribute="trailing" id="9JS-93-UT5"/>
                                         <constraint firstItem="YzC-rB-Xvm" firstAttribute="leading" secondItem="5RD-4V-Thw" secondAttribute="leading" id="9a0-ht-ZWP"/>
@@ -692,6 +696,7 @@
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="dapp_invest_icon" width="30" height="30"/>
         <image name="multiSend_icon" width="30" height="30"/>
+        <image name="promo_code_icon" width="32" height="32"/>
         <image name="referral_invest_icon" width="32" height="32"/>
         <image name="reward_icon" width="32" height="32"/>
         <image name="swap_inverst_icon" width="32" height="32"/>

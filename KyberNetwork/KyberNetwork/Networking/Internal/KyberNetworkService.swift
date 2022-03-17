@@ -889,6 +889,8 @@ enum KrytalService {
   case getCryptoFiatPair
   case buyCrypto(buyCryptoModel: BifinityOrder)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
+  case getPromotions(code: String, address: String)
+  case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
 }
@@ -909,7 +911,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -1001,6 +1003,10 @@ extension KrytalService: TargetType {
       return "v1/fiat/buyCrypto"
     case .buildMultiSendTx:
       return "/v1/transfer/buildMultisendTx"
+    case .getPromotions:
+      return "/v1/promotion/check"
+    case .claimPromotion:
+      return "/v1/promotion/claim"
     case .getOrders:
       return "v1/fiat/orders"
     case .sendRate:
@@ -1010,7 +1016,7 @@ extension KrytalService: TargetType {
 
   var method: Moya.Method {
     switch self {
-      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .sendRate, . buyCrypto:
+    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto:
       return .post
     default:
       return .get
@@ -1295,7 +1301,21 @@ extension KrytalService: TargetType {
       json["sends"] = sendParams
 
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
-        
+    case .getPromotions(code: let code, address: let address):
+      var json: JSONDictionary = [:]
+      if !code.isEmpty {
+        json["code"] = code
+      }
+      if !address.isEmpty {
+        json["address"] = address
+      }
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .claimPromotion(code: let code, address: let address):
+      let json: JSONDictionary = [
+        "address": address,
+        "code": code
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .sendRate(star: let star, detail: let detail, txHash: let txHash):
       let json: JSONDictionary = [
         "category": "swap",
@@ -1336,6 +1356,10 @@ extension KrytalService: TargetType {
       return ["Authorization" : "Bearer \(accessToken)"]
     case .claimReward(_ , _, let accessToken):
       return ["Authorization" : "Bearer \(accessToken)"]
+    case .getPromotions:
+      return ["accept": "application/json"]
+    case .claimPromotion:
+      return ["accept": "application/json", "Content-Type": "application/json"]
     default:
       return nil
     }

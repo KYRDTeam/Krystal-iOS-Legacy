@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .staging
+    return .ropsten
   }
 
   var isMainnet: Bool {

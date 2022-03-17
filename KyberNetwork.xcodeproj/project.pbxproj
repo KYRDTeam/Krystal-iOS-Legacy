@@ -646,6 +646,14 @@
 		C351B6F22722A54C00811319 /* OverviewWarningBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */; };
 		C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
+		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
+		C35E9DEF27DB2ED900E1E7CE /* PromoCodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */; };
+		C35E9DF027DB2ED900E1E7CE /* PromoCodeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */; };
+		C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */; };
+		C35E9DF427DB56F800E1E7CE /* PromoCodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */; };
+		C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */; };
+		C35E9DFC27E1BDF500E1E7CE /* PromoCodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DFA27E1BDF300E1E7CE /* PromoCodeDetailViewController.swift */; };
+		C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35E9DFB27E1BDF300E1E7CE /* PromoCodeDetailViewController.xib */; };
 		C360D21D255E95A900B166E0 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D21C255E95A900B166E0 /* TransitionDelegate.swift */; };
 		C360D222255E9AEE00B166E0 /* KNBottomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */; };
 		C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */; };
@@ -1494,6 +1502,14 @@
 		C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWarningBackupViewController.swift; sourceTree = "<group>"; };
 		C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewWarningBackupViewController.xib; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
+		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
+		C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeListViewController.swift; sourceTree = "<group>"; };
+		C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromoCodeListViewController.xib; sourceTree = "<group>"; };
+		C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCell.swift; sourceTree = "<group>"; };
+		C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromoCodeCell.xib; sourceTree = "<group>"; };
+		C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeStorage.swift; sourceTree = "<group>"; };
+		C35E9DFA27E1BDF300E1E7CE /* PromoCodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeDetailViewController.swift; sourceTree = "<group>"; };
+		C35E9DFB27E1BDF300E1E7CE /* PromoCodeDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromoCodeDetailViewController.xib; sourceTree = "<group>"; };
 		C360D21C255E95A900B166E0 /* TransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		C360D220255E9AEE00B166E0 /* KNBottomPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNBottomPopupViewController.swift; sourceTree = "<group>"; };
 		C360D221255E9AEE00B166E0 /* KNBottomPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNBottomPopupViewController.xib; sourceTree = "<group>"; };
@@ -3893,6 +3909,8 @@
 				C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */,
 				C32017B827BE41910055130B /* MultiSendAddressCell.swift */,
 				C32017B927BE41910055130B /* MultiSendAddressCell.xib */,
+				C35E9DF127DB56F700E1E7CE /* PromoCodeCell.swift */,
+				C35E9DF227DB56F800E1E7CE /* PromoCodeCell.xib */,
                 7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */,
 				7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */,
 				7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */,
@@ -4141,6 +4159,7 @@
 			isa = PBXGroup;
 			children = (
 				C3280159277D69FA00158D27 /* BrowserStorage.swift */,
+				C35E9DF827DF2AA500E1E7CE /* PromoCodeStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -4328,6 +4347,7 @@
 				C30DB3EE2771D1EC00F3E545 /* DappCoordinator.swift */,
 				7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */,
 				C320D80727B39DAE0001DC71 /* MultiSendCoordinator.swift */,
+				C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -4359,6 +4379,10 @@
 				C385D8C627BCD7A300BB226D /* MultiSendConfirmViewController.xib */,
 				C32017B427BE28EC0055130B /* MultisendAddressListViewController.swift */,
 				C32017B527BE28EC0055130B /* MultisendAddressListViewController.xib */,
+				C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */,
+				C35E9DEE27DB2ED900E1E7CE /* PromoCodeListViewController.xib */,
+				C35E9DFA27E1BDF300E1E7CE /* PromoCodeDetailViewController.swift */,
+				C35E9DFB27E1BDF300E1E7CE /* PromoCodeDetailViewController.xib */,
                7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */,
 				7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */,
 				7EB47FF227C8883200FB28D9 /* ConfirmBuyCryptoViewController.swift */,
@@ -4786,6 +4810,7 @@
 				C3114371249B1C2300084CD8 /* KNMigrationTutorialViewController.xib in Resources */,
 				7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */,
 				25073D20211AF20D00833C92 /* Montserrat-BlackItalic.ttf in Resources */,
+				C35E9DF427DB56F800E1E7CE /* PromoCodeCell.xib in Resources */,
 				25929C6620DA5C760045CFA3 /* SF-Pro-Display-Semibold.otf in Resources */,
 				255709C020DCB50800B5BC9E /* KNNewContactViewController.xib in Resources */,
 				25073D24211AF20D00833C92 /* Montserrat-Thin.ttf in Resources */,
@@ -4834,6 +4859,7 @@
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
+				C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */,
 				25929C6420DA5C760045CFA3 /* SF-Pro-Text-Heavy.otf in Resources */,
 				C37CC09D245803CA0081FB32 /* Roboto-Thin.ttf in Resources */,
 				C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */,
@@ -4945,6 +4971,7 @@
 				25929C6320DA5C760045CFA3 /* SF-Pro-Text-Light.otf in Resources */,
 				7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */,
 				25929C5820DA5C760045CFA3 /* SF-Pro-Text-MediumItalic.otf in Resources */,
+				C35E9DF027DB2ED900E1E7CE /* PromoCodeListViewController.xib in Resources */,
 				25C45ADB20AD40F400CDA1FF /* KNImportPrivateKeyViewController.xib in Resources */,
 				C37CC099245803CA0081FB32 /* Roboto-Italic.ttf in Resources */,
 				C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */,
@@ -5252,6 +5279,7 @@
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
 				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,
 				C365812225E2503F00A6DA4B /* BalanceStorage.swift in Sources */,
+				C35E9DEF27DB2ED900E1E7CE /* PromoCodeListViewController.swift in Sources */,
 				C32649DB26CF81BE001B6E11 /* OverviewNFTDetailViewController.swift in Sources */,
 				C30DB3EF2771D1EC00F3E545 /* DappCoordinator.swift in Sources */,
 				C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */,
@@ -5267,6 +5295,7 @@
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
 				7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */,
 				255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */,
+				C35E9DFC27E1BDF500E1E7CE /* PromoCodeDetailViewController.swift in Sources */,
 				C60BB88E23959794006FE37D /* KNGetAddressFromResolverRequest.swift in Sources */,
 				C32017BA27BE41910055130B /* MultiSendAddressCell.swift in Sources */,
 				25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */,
@@ -5277,6 +5306,7 @@
 				25DBB57E205FB4E20020F19D /* UIViewController+Kyber.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */,
+				C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */,
 				7EB47FFF27D095F200FB28D9 /* CryptoFiatCell.swift in Sources */,
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
@@ -5577,6 +5607,7 @@
 				C6B4CA2923CC50190049C843 /* KNTransferConsentViewController.swift in Sources */,
 				255C40F0209306B800475871 /* KNTokenTransactionStorage.swift in Sources */,
 				25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */,
+				C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,
 				291A1B691F980E3400ADEC80 /* StackViewController.swift in Sources */,
 				7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */,
@@ -5597,6 +5628,7 @@
 				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
 				291F52B71F6B870400B369AB /* CastError.swift in Sources */,
 				25CE6F8E2073E05A00A3A2F9 /* KNHistoryCoordinator.swift in Sources */,
+				C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */,
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
 				C3299D652773258D00D1065A /* SearchEngine.swift in Sources */,

@@ -43,12 +43,10 @@ extension KNAppCoordinator {
       return coordinator
     }()
     
-    self.investCoordinator = {
-      let coordinator = InvestCoordinator(session: self.session)
-      coordinator.delegate = self
-      return coordinator
-    }()
-    self.investCoordinator?.start()
+    let investCoordinator = InvestCoordinator(session: self.session)
+    investCoordinator.delegate = self
+    investCoordinator.start()
+    self.investCoordinator = investCoordinator
 
     self.earnCoordinator = {
       let coordinator = EarnCoordinator(session: self.session)

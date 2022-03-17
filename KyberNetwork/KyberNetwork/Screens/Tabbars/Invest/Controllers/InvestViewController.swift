@@ -33,6 +33,7 @@ enum InvestViewEvent {
   case krytal
   case dapp
   case multiSend
+  case promoCode
   case buyCrypto
 }
 
@@ -52,6 +53,7 @@ class InvestViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   
   @IBOutlet weak var buyCryptoView: UIView!
+  @IBOutlet weak var promoCodeContainerView: UIView!
   
   let viewModel: InvestViewModel = InvestViewModel()
   weak var delegate: InvestViewControllerDelegate?
@@ -91,13 +93,19 @@ class InvestViewController: KNBaseViewController {
       view.isHidden = !shouldShowBuyCrypto
     }
     self.buyCryptoView.backgroundColor = shouldShowBuyCrypto ? UIColor(named: "investButtonBgColor")! : .clear
+    
+    let shouldShowPromoCode = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+    self.promoCodeContainerView.subviews.forEach { view in
+      view.isHidden = !shouldShowPromoCode
+    }
+    self.promoCodeContainerView.backgroundColor = shouldShowPromoCode ? UIColor(named: "investButtonBgColor")! : .clear
   }
   
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
   }
-  
+
   @IBAction func swapButtonTapped(_ sender: UIButton) {
     self.delegate?.investViewController(self, run: .swap)
   }
@@ -135,7 +143,11 @@ class InvestViewController: KNBaseViewController {
     }
     self.present(popup, animated: true, completion: nil)
   }
-
+  
+  @IBAction func promoCodeButtonTapped(_ sender: UIButton) {
+    self.delegate?.investViewController(self, run: .promoCode)
+  }
+  
   func coordinatorDidUpdateMarketingAssets(_ assets: [Asset]) {
     self.viewModel.dataSource = assets
     guard self.isViewLoaded else { return }
