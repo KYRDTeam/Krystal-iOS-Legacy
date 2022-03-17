@@ -1296,22 +1296,24 @@ extension KrytalService: TargetType {
   }
 
   var headers: [String: String]? {
+    var json: [String: String] = ["client": "com.kyrd.krystal.ios"]
     switch self {
     case .getReferralOverview( _ , let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     case .getRewards( _ , let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     case .getClaimRewards( _ , let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     case .getRewardHistory(_ , _, _ , _ , _ , let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     case .getClaimHistory( _, let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     case .claimReward(_ , _, let accessToken):
-      return ["Authorization" : "Bearer \(accessToken)"]
+        json["Authorization"] = "Bearer \(accessToken)"
     default:
-      return nil
+      return json
     }
+    return json
   }
 }
 
