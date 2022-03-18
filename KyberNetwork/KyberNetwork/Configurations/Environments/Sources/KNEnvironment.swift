@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .ropsten
+    return .staging
   }
 
   var isMainnet: Bool {
@@ -82,13 +82,17 @@ enum KNEnvironment: Int {
       return Constants.polygonMainnetPRC
     }
   }
-  
+
   var cronosRPC: CustomRPC {
     return Constants.cronosMainnetRPC
   }
-  
+
   var fantomRPC: CustomRPC {
     return Constants.fantomMainnetRPC
+  }
+  
+  var arbitrumRPC: CustomRPC {
+    return Constants.arbitrumMainnetRPC
   }
 
   var configFileName: String {
@@ -101,7 +105,7 @@ enum KNEnvironment: Int {
     case .rinkeby: return "config_env_rinkeby"
     }
   }
-  
+
   var notificationAppID: String {
     switch self {
     case .ropsten:
@@ -272,8 +276,8 @@ enum KNEnvironment: Int {
 
   static var allChainPath: String? {
     if KNEnvironment.default == .ropsten {
-      return "ropsten,bsctestnet,mumbai,fuji,cronos,fantom"
+      return "ropsten,bsctestnet,mumbai,fuji,cronos,fantom,arbitrum"
     }
-    return "ethereum,bsc,polygon,avalanche,cronos,fantom"
+    return "ethereum,bsc,polygon,avalanche,cronos,fantom,arbitrum"
   }
 }

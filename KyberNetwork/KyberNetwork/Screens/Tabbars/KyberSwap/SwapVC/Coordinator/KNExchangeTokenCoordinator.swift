@@ -194,6 +194,9 @@ extension KNExchangeTokenCoordinator {
     case Constants.cronosMainnetRPC.chainID:
         fromToken = KNSupportedTokenStorage.shared.cronosToken
         toToken = KNSupportedTokenStorage.shared.usdcToken
+    case Constants.arbitrumMainnetRPC.chainID:
+        fromToken = KNSupportedTokenStorage.shared.ethToken
+        toToken = KNSupportedTokenStorage.shared.kncToken
     default:
         fromToken = KNSupportedTokenStorage.shared.ethToken
         toToken = KNSupportedTokenStorage.shared.kncToken
@@ -318,7 +321,8 @@ extension KNExchangeTokenCoordinator {
     let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
     let otherTokenCronos: TokenObject = token.isCro ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
     let otherTokenFantom: TokenObject = token.isFtm ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
-    
+    let otherTokenArbitrum: TokenObject = token.isAETH ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.ethToken
+
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
     var selectToken = KNSupportedTokenStorage.shared.ethToken
     switch KNGeneralProvider.shared.currentChain {
@@ -334,6 +338,8 @@ extension KNExchangeTokenCoordinator {
       selectToken = otherTokenCronos
     case .fantom:
       selectToken = otherTokenFantom
+    case .arbitrum:
+      selectToken = otherTokenArbitrum
     }
     self.rootViewController.coordinatorUpdateSelectedToken(selectToken, isSource: isReceived, isWarningShown: true)
     self.rootViewController.tabBarController?.selectedIndex = 1

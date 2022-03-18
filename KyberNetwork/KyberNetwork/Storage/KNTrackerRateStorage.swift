@@ -75,6 +75,8 @@ class KNTrackerRateStorage {
       return "cro" + "-" + KNEnvironment.default.displayName + "-"
     case .fantom:
       return "ftm" + "-" + KNEnvironment.default.displayName + "-"
+    case .arbitrum:
+      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
   

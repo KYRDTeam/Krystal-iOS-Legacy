@@ -66,6 +66,8 @@ class OverviewSummaryCellViewModel {
       return UIImage(named: "chain_fantom_icon")!
     case .cronos:
       return UIImage(named: "chain_cronos_icon")!
+    case .arbitrum:
+      return UIImage(named: "chain_arbitrum_icon")!
     default:
       return UIImage(named: "default_token")!
     }
@@ -85,6 +87,8 @@ class OverviewSummaryCellViewModel {
       return "Fantom"
     case .cronos:
       return "Cronos"
+    case .arbitrum:
+      return "Arbitrum"
     default:
       return "Unsupported"
     }
