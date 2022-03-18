@@ -205,11 +205,13 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
         matchOrders.append(order)
       }
     }
-    
+
     // only get latest order
-    matchOrders.sorted(by: $0.createdTime > $1.createdTime)
-    newOrder = matchOrders.first
-    
+    let sortedOrders = matchOrders.sorted { lhs, rhs in
+      return lhs.createdTime > rhs.createdTime
+    }
+    newOrder = sortedOrders.first
+
     if let newOrder = newOrder {
       let confirmVC = ConfirmBuyCryptoViewController(currentOrder: newOrder)
       self.navigationController.present(confirmVC, animated: true)
