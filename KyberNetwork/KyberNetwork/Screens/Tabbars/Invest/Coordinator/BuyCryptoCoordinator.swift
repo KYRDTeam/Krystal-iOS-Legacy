@@ -192,6 +192,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       return
     }
     var newOrder: BifinityOrder?
+    var matchOrders: [BifinityOrder] = []
     self.bifinityOrders.forEach { order in
       //TODO: check contain current order here
       if order.cryptoAddress == currentOrder.cryptoAddress
@@ -199,10 +200,16 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
           && order.cryptoNetwork == currentOrder.cryptoNetwork
           && order.fiatCurrency == currentOrder.fiatCurrency
           && order.orderAmount == currentOrder.orderAmount
-          && order.requestPrice == currentOrder.requestPrice {
-        newOrder = order
+          && order.requestPrice == currentOrder.requestPrice
+          && order.status == "processing" {
+        matchOrders.append(order)
       }
     }
+    
+    // only get latest order
+    matchOrders.sorted(by: $0.createdTime > $1.createdTime)
+    newOrder = matchOrders.first
+    
     if let newOrder = newOrder {
       let confirmVC = ConfirmBuyCryptoViewController(currentOrder: newOrder)
       self.navigationController.present(confirmVC, animated: true)
