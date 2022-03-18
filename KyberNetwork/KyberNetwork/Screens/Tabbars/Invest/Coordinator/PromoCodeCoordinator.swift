@@ -65,6 +65,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   func promoCodeListViewController(_ viewController: PromoCodeListViewController, run event: PromoCodeListViewEvent) {
     switch event {
     case .checkCode(let code):
+      guard !code.isEmpty else { return }
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getPromotions(code: code, address: "")) { result in
         switch result {
