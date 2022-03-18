@@ -9,6 +9,7 @@ import QRCodeReaderViewController
 import WalletConnectSwift
 import Moya
 import Darwin
+import MBProgressHUD
 
 // MARK: - FiatCryptoModel
 struct FiatCryptoResponse: Codable {
@@ -136,7 +137,11 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func loadFiatPair() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     provider.request(.getCryptoFiatPair) { (result) in
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -154,7 +159,11 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
           self.webViewController.urlString = json["eternalRedirectUrl"] as? String
@@ -169,7 +178,16 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    var presentView: UIView = self.ordersViewController.view
+    if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+      presentView = rootViewController.view
+    }
+
+    let hud = MBProgressHUD.showAdded(to: presentView, animated: true)
     provider.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
+      DispatchQueue.main.async {
+        hud.hide(animated: true)
+      }
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
