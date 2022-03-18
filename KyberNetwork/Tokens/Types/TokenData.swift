@@ -481,6 +481,9 @@ struct TokenData: Codable, Equatable {
   }
 
   var placeholderValue: BigInt {
+    guard self.decimals > 2 else {
+      return BigInt(Int(pow(10.0, Double(self.decimals))))
+    }
     let value = Int(0.001 * pow(10.0, Double(self.decimals)))
     return BigInt(value)
   }
