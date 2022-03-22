@@ -126,10 +126,15 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
-    self.session = session
-    self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
-    self.ordersViewController.coordinatorDidUpdateWallet(self.session.wallet)
-    self.getBifinityOrders()
+    let shouldShowBuyCrypto = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+    if shouldShowBuyCrypto {
+      self.session = session
+      self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
+      self.ordersViewController.coordinatorDidUpdateWallet(self.session.wallet)
+      self.getBifinityOrders()
+    } else {
+      self.rootViewController.navigationController?.popViewController(animated: true)
+    }
   }
 
   func appCoordinatorPendingTransactionsDidUpdate() {
