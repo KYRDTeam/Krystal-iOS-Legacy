@@ -170,6 +170,7 @@ extension KNAppCoordinator {
     }
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+      if isLoading { self.navigationController.hideLoading() }
       self.session.switchSession(wallet)
       FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
@@ -200,7 +201,6 @@ extension KNAppCoordinator {
 
       self.doLogin { completed in
       }
-      if isLoading { self.navigationController.hideLoading() }
     }
   }
 
