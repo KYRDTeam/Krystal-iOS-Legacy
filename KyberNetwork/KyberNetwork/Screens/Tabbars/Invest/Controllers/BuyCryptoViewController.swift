@@ -15,6 +15,7 @@ enum BuyCryptoEvent {
   case selectFiat(fiat: [FiatModel])
   case selectCrypto(crypto: [FiatModel])
   case scanQRCode
+  case closeScreen
 }
 
 protocol BuyCryptoViewControllerDelegate: class {
@@ -60,7 +61,7 @@ class BuyCryptoViewController: KNBaseViewController {
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -195,6 +196,7 @@ class BuyCryptoViewController: KNBaseViewController {
 
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
+    self.delegate?.buyCryptoViewController(self, run: .closeScreen)
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
