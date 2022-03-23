@@ -3,7 +3,7 @@
 import Foundation
 
 class KNLoadingInterval {
-
+  static let seconds15: TimeInterval = 15.0
   static let seconds20: TimeInterval = 20.0
   static let seconds30: TimeInterval = 30.0
   static let seconds60: TimeInterval = 60.0
