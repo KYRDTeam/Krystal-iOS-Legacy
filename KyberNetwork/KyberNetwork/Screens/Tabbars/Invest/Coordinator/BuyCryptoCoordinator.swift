@@ -10,6 +10,7 @@ import WalletConnectSwift
 import Moya
 import Darwin
 import MBProgressHUD
+import UIKit
 
 // MARK: - FiatCryptoModel
 struct FiatCryptoResponse: Codable {
@@ -143,10 +144,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func loadFiatPair() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    self.rootViewController.showLoadingHUD()
     provider.request(.getCryptoFiatPair) { (result) in
       DispatchQueue.main.async {
-        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
+        self.rootViewController.hideLoading()
       }
       switch result {
       case .success(let resp):
@@ -165,10 +166,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    self.rootViewController.showLoadingHUD()
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       DispatchQueue.main.async {
-        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
+        self.rootViewController.hideLoading()
       }
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
@@ -184,17 +185,17 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
     self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    var presentView: UIView = self.ordersViewController.view
+    var presentViewController: UIViewController = self.ordersViewController
     if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
-      presentView = rootViewController.view
+      presentViewController = rootViewController
     }
 
-    MBProgressHUD.showAdded(to: presentView, animated: true)
+    let hud = MBProgressHUD.showAdded(to: presentViewController.view, animated: true)
     hud.isUserInteractionEnabled = false
     
     self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
       DispatchQueue.main.async {
-        MBProgressHUD.hide(for: presentView, animated: true)
+        presentViewController.hideLoading()
       }
       switch result {
       case .success(let resp):
