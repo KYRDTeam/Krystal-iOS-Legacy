@@ -238,7 +238,7 @@ extension KNExchangeTokenCoordinator {
     var destToken: TokenObject?
     var getTokenFail = false
     let group = DispatchGroup()
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    self.rootViewController.showLoadingHUD()
     if let srcAddress = srcAddress {
       group.enter()
       self.requestInfo(address: srcAddress) { token, success in
@@ -264,7 +264,7 @@ extension KNExchangeTokenCoordinator {
     }
     group.notify(queue: .main) {
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        self.rootViewController.hideLoading()
       }
       if !getTokenFail {
         self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)
