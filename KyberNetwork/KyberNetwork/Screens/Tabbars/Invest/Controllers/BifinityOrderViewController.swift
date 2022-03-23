@@ -9,6 +9,7 @@ import UIKit
 
 protocol BifinityOrderDelegate: class {
   func openWalletList()
+  func didCloseOrdersScreen()
 }
 
 class BifinityOrderViewModel {
@@ -67,6 +68,11 @@ class BifinityOrderViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.delegate?.didCloseOrdersScreen()
   }
 
   func setupUI() {
