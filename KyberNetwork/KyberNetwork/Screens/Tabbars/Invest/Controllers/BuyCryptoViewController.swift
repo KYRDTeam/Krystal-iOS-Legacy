@@ -139,12 +139,16 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   func coordinatorDidSelectFiatCrypto(model: FiatModel, type: SearchCurrencyType) {
+    self.clearWarningUI()
+    self.fiatTextField.text = ""
+    self.cryptoTextField.text = ""
     switch type {
     case .fiat:
       self.fiatButton.setTitle(model.currency, for: .normal)
     case .crypto:
       self.cryptoButton.setTitle(model.currency, for: .normal)
     }
+    
     self.updateRateUI()
     self.updateNetworkUI(network: self.viewModel.currentNetworks?.first)
   }
@@ -192,6 +196,13 @@ class BuyCryptoViewController: KNBaseViewController {
       return
     }
     self.updateRateUI()
+  }
+  
+  func clearWarningUI() {
+    self.fiatInputView.layer.borderColor = UIColor.clear.cgColor
+    self.fiatInputView.layer.borderWidth = 1.0
+    self.cryptoInputView.layer.borderColor = UIColor.clear.cgColor
+    self.cryptoInputView.layer.borderWidth = 1.0
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
@@ -256,6 +267,19 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
+    // validate crypto input
+    guard let cryptoCurrency = self.cryptoButton.titleLabel?.text, !cryptoCurrency.isEmpty else {
+      self.shakeViewError(viewToShake: self.cryptoInputView)
+      showErrorTopBannerMessage(message: "Please select received crypto currency")
+      return nil
+    }
+
+    guard let cryptoAmount = self.cryptoTextField.text, !cryptoAmount.isEmpty else {
+      self.shakeViewError(viewToShake: self.cryptoInputView)
+      showErrorTopBannerMessage(message: "Invalid crypto amount")
+      return nil
+    }
+
     guard let currentFiatModel = self.currentFiatCryptoModel() else { return nil }
     guard let inputAmount = self.fiatTextField.text?.doubleValue, inputAmount <= currentFiatModel.maxLimit  else {
       self.shakeViewError(viewToShake: self.fiatInputView)
@@ -272,19 +296,6 @@ class BuyCryptoViewController: KNBaseViewController {
     guard let fiatCurrency = self.fiatButton.titleLabel?.text, !fiatCurrency.isEmpty else {
       self.shakeViewError(viewToShake: self.fiatInputView)
       showErrorTopBannerMessage(message: "Please select your currency")
-      return nil
-    }
-
-    // validate crypto input
-    guard let cryptoAmount = self.cryptoTextField.text, !cryptoAmount.isEmpty else {
-      self.shakeViewError(viewToShake: self.cryptoInputView)
-      showErrorTopBannerMessage(message: "Invalid crypto amount")
-      return nil
-    }
-
-    guard let cryptoCurrency = self.cryptoButton.titleLabel?.text, !cryptoCurrency.isEmpty else {
-      self.shakeViewError(viewToShake: self.cryptoInputView)
-      showErrorTopBannerMessage(message: "Please select received crypto currency")
       return nil
     }
 
@@ -323,12 +334,8 @@ class BuyCryptoViewController: KNBaseViewController {
 
 extension BuyCryptoViewController: UITextFieldDelegate {
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    if textField == self.fiatTextField {
-      self.fiatInputView.layer.borderColor = UIColor.clear.cgColor
-      self.fiatInputView.layer.borderWidth = 1.0
-    } else if textField == self.cryptoTextField {
-      self.cryptoInputView.layer.borderColor = UIColor.clear.cgColor
-      self.cryptoInputView.layer.borderWidth = 1.0
+    if textField == self.fiatTextField || textField == self.cryptoTextField{
+      self.clearWarningUI()
     } else if textField == self.addressTextField {
       self.addressInputView.layer.borderColor = UIColor.clear.cgColor
       self.addressInputView.layer.borderWidth = 1.0
@@ -338,7 +345,6 @@ extension BuyCryptoViewController: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     guard let currentFiatModel = self.currentFiatCryptoModel() else { return }
     var fiatValue: Double = 0
-    let containView: UIView = textField == self.fiatTextField ? self.fiatInputView : self.cryptoInputView
     if textField == self.fiatTextField {
       fiatValue = textField.text?.doubleValue ?? 0
     } else if textField == self.cryptoTextField {
@@ -349,12 +355,12 @@ extension BuyCryptoViewController: UITextFieldDelegate {
     }
 
     if fiatValue > currentFiatModel.maxLimit {
-      self.shakeViewError(viewToShake: containView)
+      self.shakeViewError(viewToShake: self.fiatInputView)
       showErrorTopBannerMessage(message: "Please place an order of less than \(currentFiatModel.maxLimit) \(currentFiatModel.fiatCurrency)")
       return
     }
     if fiatValue < currentFiatModel.minLimit {
-      self.shakeViewError(viewToShake: containView)
+      self.shakeViewError(viewToShake: self.fiatInputView)
       showErrorTopBannerMessage(message: "Minimum spend amount should be more than \(currentFiatModel.minLimit) \(currentFiatModel.fiatCurrency)")
       return
     }
