@@ -79,6 +79,7 @@ protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
   func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
   func buyCryptoCoordinatorDidSelectManageWallet()
+  func buyCryptoCoordinatorDidClose()
 //  func buyCryptoCoordinatorOpenHistory()
 }
 
@@ -257,8 +258,9 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
       self.selectCrypto(crypto: cryptoModels)
     case .scanQRCode:
       self.scanQRCode()
-    case .closeScreen:
+    case .close:
       self.historyProvider?.manager.session.invalidateAndCancel()
+      self.delegate?.buyCryptoCoordinatorDidClose()
     }
   }
   

@@ -280,6 +280,10 @@ extension InvestCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
+  func buyCryptoCoordinatorDidClose() {
+    self.buyCryptoCoordinator = nil
+  }
+  
   func buyCryptoCoordinatorDidSelectAddWallet() {
     self.delegate?.investCoordinatorDidSelectAddWallet()
   }
