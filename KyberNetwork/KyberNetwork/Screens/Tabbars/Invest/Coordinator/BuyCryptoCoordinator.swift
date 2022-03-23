@@ -90,6 +90,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   weak var delegate: BuyCryptoCoordinatorDelegate?
   var bifinityOrders: [BifinityOrder] = []
   var currentOrder: BifinityOrder?
+  var historyProvider: MoyaProvider<KrytalService>?
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
@@ -178,14 +179,16 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   }
 
   func getBifinityOrders(_ currentOrder: BifinityOrder? = nil) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.historyProvider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var presentView: UIView = self.ordersViewController.view
     if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
       presentView = rootViewController.view
     }
 
     let hud = MBProgressHUD.showAdded(to: presentView, animated: true)
-    provider.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
+    hud.isUserInteractionEnabled = false
+    
+    self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
       DispatchQueue.main.async {
         hud.hide(animated: true)
       }
@@ -256,6 +259,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
     case .scanQRCode:
       self.scanQRCode()
     case .close:
+      self.historyProvider?.manager.session.invalidateAndCancel()
       self.delegate?.buyCryptoCoordinatorDidClose()
     }
   }
@@ -338,6 +342,10 @@ extension BuyCryptoCoordinator: WebBrowserViewControllerDelegate {
 extension BuyCryptoCoordinator: BifinityOrderDelegate {
   func openWalletList() {
     self.openWalletListView()
+  }
+  
+  func didCloseOrdersScreen() {
+    self.historyProvider?.manager.session.invalidateAndCancel()
   }
 }
 
