@@ -51,6 +51,10 @@ extension UIViewController {
         hud.label.text = text
     }
 
+    func showLoadingHUD (animated: Bool = true) {
+      MBProgressHUD.showAdded(to: self.view, animated: animated)
+    }
+
     func hideLoading(animated: Bool = true) {
         MBProgressHUD.hide(for: view, animated: animated)
     }
