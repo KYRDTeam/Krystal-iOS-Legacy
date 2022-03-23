@@ -91,6 +91,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   weak var delegate: BuyCryptoCoordinatorDelegate?
   var bifinityOrders: [BifinityOrder] = []
   var currentOrder: BifinityOrder?
+  fileprivate var loadTimer: Timer?
   var historyProvider: MoyaProvider<KrytalService>?
   fileprivate var currentWallet: KNWalletObject {
     let address = self.session.wallet.address.description
@@ -124,7 +125,21 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true)
+    self.startIntervalLoadingAssets()
     self.loadFiatPair()
+  }
+  
+  fileprivate func startIntervalLoadingAssets() {
+    self.loadTimer?.invalidate()
+    self.loadTimer = nil
+    self.loadTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds15,
+      repeats: true,
+      block: { [weak self] timer in
+        guard let `self` = self else { return }
+        self.loadFiatPair()
+      }
+    )
   }
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
