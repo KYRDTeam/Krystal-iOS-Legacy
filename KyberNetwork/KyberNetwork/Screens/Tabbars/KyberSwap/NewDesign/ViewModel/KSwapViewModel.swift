@@ -448,7 +448,7 @@ class KSwapViewModel {
       self.to = KNSupportedTokenStorage.shared.usdcToken
     case .arbitrum:
       self.from = KNSupportedTokenStorage.shared.ethToken
-      self.to = KNSupportedTokenStorage.shared.kncToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
   }
   
