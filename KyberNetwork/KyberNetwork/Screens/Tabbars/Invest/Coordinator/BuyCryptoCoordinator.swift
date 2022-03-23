@@ -189,12 +189,12 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       presentView = rootViewController.view
     }
 
-    let hud = MBProgressHUD.showAdded(to: presentView, animated: true)
+    MBProgressHUD.showAdded(to: presentView, animated: true)
     hud.isUserInteractionEnabled = false
     
     self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: presentView, animated: true)
       }
       switch result {
       case .success(let resp):

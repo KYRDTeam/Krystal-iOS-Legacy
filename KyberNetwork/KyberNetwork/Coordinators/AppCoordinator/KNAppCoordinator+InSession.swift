@@ -166,11 +166,9 @@ extension KNAppCoordinator {
       self.loadBalanceCoordinator?.exit()
       EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
       BalanceStorage.shared.updateCurrentWallet(wallet)
-      
     }
-    
+
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      if isLoading { self.navigationController.hideLoading() }
       self.session.switchSession(wallet)
       FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
@@ -178,19 +176,19 @@ extension KNAppCoordinator {
         self.session,
         resetRoot: true
       )
-      
+
       self.earnCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
-      
+
       self.overviewTabCoordinator?.appCoordinatorDidUpdateNewSession(
         self.session,
         resetRoot: true
       )
-      
+
       self.settingsCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-      
+
       self.investCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
 
       KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
@@ -201,6 +199,7 @@ extension KNAppCoordinator {
 
       self.doLogin { completed in
       }
+      if isLoading { self.navigationController.hideLoading() }
     }
   }
 
