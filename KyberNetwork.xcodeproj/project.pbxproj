@@ -634,6 +634,8 @@
 		C33F749025E8E8AF0065F333 /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */; };
 		C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */; };
 		C3409E1B25AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */; };
+		C343F15A27E882D3006A86DB /* config.js in Resources */ = {isa = PBXBuildFile; fileRef = C343F15827E882D3006A86DB /* config.js */; };
+		C343F15B27E882D3006A86DB /* helpers.js in Resources */ = {isa = PBXBuildFile; fileRef = C343F15927E882D3006A86DB /* helpers.js */; };
 		C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3025C02A2B000D6E81 /* EarnCoordinator.swift */; };
 		C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DA3625C02BE3000D6E81 /* EarnMenuViewController.swift */; };
 		C347DA3925C02BE3000D6E81 /* EarnMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C347DA3725C02BE3000D6E81 /* EarnMenuViewController.xib */; };
@@ -1489,6 +1491,8 @@
 		C33F748F25E8E8AE0065F333 /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		C3409E1825AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListSectionTableViewCell.swift; sourceTree = "<group>"; };
 		C3409E1925AEAEEC00C7C662 /* WalletListSectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletListSectionTableViewCell.xib; sourceTree = "<group>"; };
+		C343F15827E882D3006A86DB /* config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = config.js; sourceTree = "<group>"; };
+		C343F15927E882D3006A86DB /* helpers.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = helpers.js; sourceTree = "<group>"; };
 		C344E91A2621715C00524B8D /* KyberSwap - Crypto ExchangeDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "KyberSwap - Crypto ExchangeDebug.entitlements"; sourceTree = "<group>"; };
 		C347DA3025C02A2B000D6E81 /* EarnCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnCoordinator.swift; sourceTree = "<group>"; };
 		C347DA3625C02BE3000D6E81 /* EarnMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarnMenuViewController.swift; sourceTree = "<group>"; };
@@ -3631,6 +3635,7 @@
 		29E6E0681FE897BB0079265A /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				C343F15727E882AF006A86DB /* Resource */,
 				29C70C7D20199ADE0072E454 /* Factory */,
 				771AA94C1FF971BB00D25403 /* Types */,
 			);
@@ -4180,6 +4185,15 @@
 				C33CCB2C23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.xib */,
 			);
 			path = ConfirmCancelTransaction;
+			sourceTree = "<group>";
+		};
+		C343F15727E882AF006A86DB /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				C343F15827E882D3006A86DB /* config.js */,
+				C343F15927E882D3006A86DB /* helpers.js */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		C347DA2D25C0298F000D6E81 /* Earn */ = {
@@ -4799,6 +4813,7 @@
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
+				C343F15A27E882D3006A86DB /* config.js in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
@@ -4935,6 +4950,7 @@
 				C37AF0C825CCFB29006FB880 /* EarnSwapViewController.xib in Resources */,
 				C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */,
 				C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */,
+				C343F15B27E882D3006A86DB /* helpers.js in Resources */,
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
