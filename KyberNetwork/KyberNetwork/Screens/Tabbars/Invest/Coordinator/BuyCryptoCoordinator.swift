@@ -143,10 +143,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func loadFiatPair() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     provider.request(.getCryptoFiatPair) { (result) in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       switch result {
       case .success(let resp):
@@ -165,10 +165,10 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
 
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       if case .success(let resp) = result {
         if let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {

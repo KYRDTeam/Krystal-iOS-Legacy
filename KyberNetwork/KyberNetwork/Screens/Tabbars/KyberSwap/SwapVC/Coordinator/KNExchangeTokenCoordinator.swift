@@ -264,7 +264,7 @@ extension KNExchangeTokenCoordinator {
     }
     group.notify(queue: .main) {
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       if !getTokenFail {
         self.delegate?.exchangeTokenCoordinatorDidAddTokens(srcToken: srcToken, destToken: destToken)

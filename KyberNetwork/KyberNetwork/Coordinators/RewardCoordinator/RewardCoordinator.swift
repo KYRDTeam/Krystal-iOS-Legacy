@@ -59,10 +59,10 @@ class RewardCoordinator: Coordinator {
   }
 
   func handleUpdateLoginTokenForClaimReward() {
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     self.updateLoginToken { completed in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       self.claimRetryCount += 1
       self.loadRewards()
@@ -73,7 +73,7 @@ class RewardCoordinator: Coordinator {
     let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     self.updateLoginToken { completed in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       self.claimDetailRetryCount += 1
       self.loadClaimRewards()
@@ -86,14 +86,14 @@ class RewardCoordinator: Coordinator {
       return
     }
 
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     if self.claimRetryCount > RETRYMAXCOUNT {
-      hud.hide(animated: true)
+      MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       return
     }
     guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       self.handleUpdateLoginTokenForClaimReward()
       return
@@ -103,7 +103,7 @@ class RewardCoordinator: Coordinator {
 
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       switch result {
       case .success(let data):
@@ -151,14 +151,14 @@ class RewardCoordinator: Coordinator {
   }
 
   func loadClaimRewards(shouldShowPopup: Bool = false) {
-    let hud = MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
+    MBProgressHUD.showAdded(to: self.rootViewController.view, animated: true)
     if self.claimDetailRetryCount > RETRYMAXCOUNT {
-      hud.hide(animated: true)
+      MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       return
     }
     guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       self.handleUpdateLoginTokenForClaimRewardDetail()
       return
@@ -168,7 +168,7 @@ class RewardCoordinator: Coordinator {
 
     provider.request(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
-        hud.hide(animated: true)
+        MBProgressHUD.hide(for: self.rootViewController.view, animated: true)
       }
       switch result {
       case .success(let data):
