@@ -16,6 +16,8 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 import BigInt
+import WebKit
+
 
 protocol DappCoordinatorDelegate: class {
   func dAppCoordinatorDidSelectAddWallet()
@@ -78,6 +80,7 @@ class DappCoordinator: NSObject, Coordinator {
     let vm = BrowserViewModel(url: url, account: account)
     let vc = BrowserViewController(viewModel: vm)
     vc.delegate = self
+    vc.webView.uiDelegate = self
     self.navigationController.pushViewController(vc, animated: true)
     self.browserViewController = vc
   }
@@ -838,6 +841,15 @@ extension DappCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)
   }
+}
+
+extension DappCoordinator: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+          browserViewController?.webView.load(navigationAction.request)
+        }
+        return nil
+    }
 }
 
 //extension DappCoordinator: GasFeeSelectorPopupViewControllerDelegate {
