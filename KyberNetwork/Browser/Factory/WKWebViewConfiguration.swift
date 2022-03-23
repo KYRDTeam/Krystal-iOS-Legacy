@@ -64,7 +64,7 @@ extension WKWebViewConfiguration {
         webViewConfig.userContentController.add(messageHandler, name: Method.ethCall.rawValue)
         webViewConfig.userContentController.add(messageHandler, name: AddCustomChainCommand.Method.walletAddEthereumChain.rawValue)
         webViewConfig.userContentController.add(messageHandler, name: SwitchChainCommand.Method.walletSwitchEthereumChain.rawValue)
-        webViewConfig.userContentController.add(messageHandler, name: BrowserViewController.locationChangedEventName)
+//        webViewConfig.userContentController.add(messageHandler, name: BrowserViewController.locationChangedEventName)
         //TODO extract like `Method.signTypedMessage.rawValue` when we have more than 1
 //        webViewConfig.userContentController.add(messageHandler, name: TokenInstanceWebView.SetProperties.setActionProps)
         return webViewConfig
@@ -178,10 +178,7 @@ extension WKWebViewConfiguration {
                  window.dispatchEvent(new Event('locationchange'))
                });
              })();
-             
-                          window.addEventListener('locationchange', function(){
-                            webkit.messageHandlers.\(BrowserViewController.locationChangedEventName).postMessage(window.location.href)
-                          })
+
              """
     }
 

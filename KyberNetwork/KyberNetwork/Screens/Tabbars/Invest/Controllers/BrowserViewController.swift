@@ -60,8 +60,6 @@ class BrowserViewController: KNBaseViewController {
   let viewModel: BrowserViewModel
   weak var delegate: BrowserViewControllerDelegate?
   
-  static let locationChangedEventName = "locationChanged"
-  
   lazy var config: WKWebViewConfiguration = {
     let config = WKWebViewConfiguration.make(forType: .dappBrowser, address: self.viewModel.account.address, in: ScriptMessageProxy(delegate: self))
       config.websiteDataStore = WKWebsiteDataStore.default()
@@ -76,10 +74,9 @@ class BrowserViewController: KNBaseViewController {
     webView.allowsBackForwardNavigationGestures = true
     webView.translatesAutoresizingMaskIntoConstraints = false
     webView.navigationDelegate = self
-//    if isDebug {
-//      webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-//    }
-
+    if isDebug {
+      webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
+    }
     return webView
   }()
   
@@ -92,16 +89,6 @@ class BrowserViewController: KNBaseViewController {
   }()
   
   private var estimatedProgressObservation: NSKeyValueObservation?
-  private lazy var userClient: String = {
-      "KrystalWallet" + "/" + (Bundle.main.versionNumber ?? "") + " 1inchWallet"
-  }()
-  
-  private func injectUserAgent() {
-      webView.evaluateJavaScript("navigator.userAgent") { [weak self] result, _ in
-          guard let strongSelf = self, let currentUserAgent = result as? String else { return }
-          strongSelf.webView.customUserAgent = currentUserAgent + " " + strongSelf.userClient
-      }
-  }
   
   init(viewModel: BrowserViewModel) {
     self.viewModel = viewModel
@@ -131,7 +118,7 @@ class BrowserViewController: KNBaseViewController {
 
     webView.addSubview(progressView)
     webView.bringSubviewToFront(progressView)
-    injectUserAgent()
+
     NSLayoutConstraint.activate([
         progressView.topAnchor.constraint(equalTo: self.webViewContainerView.topAnchor),
         progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
@@ -294,9 +281,6 @@ class BrowserViewController: KNBaseViewController {
 extension BrowserViewController: WKScriptMessageHandler {
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     guard let command = DappAction.fromMessage(message) else {
-      if message.name == Self.locationChangedEventName {
-        print("[Browser]  location change")
-      }
       return
     }
     
@@ -315,8 +299,6 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-    print("[Browser]  \(navigationAction.request.url)")
-
     guard let url = navigationAction.request.url, let scheme = url.scheme else {
       return decisionHandler(.allow)
     }
@@ -340,18 +322,5 @@ extension BrowserViewController: WKNavigationDelegate {
       self.webView.load(URLRequest(url: url))
     }
     decisionHandler(.allow)
-  }
-  
-  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    print("[Browser]  did commit")
-
-  }
-
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-      print("[Browser] navigation with error: \(error)")
-  }
-
-  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-    print("[Browser] provisional navigation with error: \(error)")
   }
 }
