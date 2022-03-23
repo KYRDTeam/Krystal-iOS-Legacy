@@ -15,6 +15,7 @@ enum BuyCryptoEvent {
   case selectFiat(fiat: [FiatModel])
   case selectCrypto(crypto: [FiatModel])
   case scanQRCode
+  case close
 }
 
 protocol BuyCryptoViewControllerDelegate: class {
@@ -194,7 +195,9 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
+    self.navigationController?.popViewController(animated: true, completion: {
+      self.delegate?.buyCryptoViewController(self, run: .close)
+    })
   }
 
   @IBAction func historyListButtonTapped(_ sender: UIButton) {
