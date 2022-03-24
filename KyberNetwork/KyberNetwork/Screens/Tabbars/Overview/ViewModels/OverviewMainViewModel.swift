@@ -308,7 +308,7 @@ class OverviewMainViewModel {
   func isEmpty() -> Bool {
     switch self.currentMode {
     case .asset, .market, .favourite:
-      return self.displayDataSource[""]?.isEmpty ?? true
+      return self.dataSource[""]?.isEmpty ?? true
     case .supply, .showLiquidityPool:
       return self.displayHeader.isEmpty
     case .nft:
@@ -399,10 +399,6 @@ class OverviewMainViewModel {
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
       }
 
-      if self.isHidingSmallAssetsToken {
-        assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
-      }
-
       self.displayHeader = []
       self.displayTotalValues = [:]
       var total = BigInt(0)
@@ -413,7 +409,17 @@ class OverviewMainViewModel {
         return viewModel
       }
       self.dataSource = ["": models]
-      self.displayDataSource = ["": models]
+      // filter to hide small assets
+      if self.isHidingSmallAssetsToken {
+        assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
+      }
+      let displayModels = assetTokens.map { (item) -> OverviewMainCellViewModel in
+        total += item.getValueBigInt(self.currencyMode)
+        let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
+        viewModel.tag = item.tag
+        return viewModel
+      }
+      self.displayDataSource = ["": displayModels]
       let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
       self.displayTotalValues["all"] = displayTotalString
       self.displayNFTHeader = []
