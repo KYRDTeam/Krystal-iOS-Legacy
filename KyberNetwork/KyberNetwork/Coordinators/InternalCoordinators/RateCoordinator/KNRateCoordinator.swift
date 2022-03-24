@@ -44,50 +44,20 @@ class KNRateCoordinator {
   init() {}
 
   func resume() {
-//    self.fetchCacheRate(nil)
-//    self.loadETHPrice()
     self.loadTokenPrice()
     self.cacheRateTimer?.invalidate()
     self.cacheRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds60,
       repeats: true,
       block: { [weak self] timer in
-//        self?.fetchCacheRate(timer)
-//        self?.loadETHPrice()
         self?.loadTokenPrice()
       }
     )
-    // Immediate fetch data from server, then run timers with interview 60 seconds
-//    self.fetchExchangeTokenRate(nil)
-//    self.exchangeTokenRatesTimer?.invalidate()
-//    self.platformFeeTimer?.invalidate()
-//
-//    self.exchangeTokenRatesTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.seconds30,
-//      repeats: true,
-//      block: { [weak self] timer in
-//      self?.fetchExchangeTokenRate(timer)
-//      }
-//    )
-//
-//    self.fetchPlatformFee(nil)
-//    self.platformFeeTimer = Timer.scheduledTimer(
-//      withTimeInterval: KNLoadingInterval.seconds60,
-//      repeats: true,
-//      block: { [weak self] (timer) in
-//        self?.fetchPlatformFee(timer)
-//      }
-//    )
   }
 
   func pause() {
     self.cacheRateTimer?.invalidate()
     self.cacheRateTimer = nil
-//    self.exchangeTokenRatesTimer?.invalidate()
-//    self.exchangeTokenRatesTimer = nil
-//    self.platformFeeTimer?.invalidate()
-//    self.platformFeeTimer = nil
-//    self.isLoadingExchangeTokenRates = false
   }
 
 
@@ -276,18 +246,42 @@ class KNRateCoordinator {
   }
 
   func loadTokenPrice() {
+    guard !self.isLoadingExchangeTokenRates else { return }
     let tx = SentrySDK.startTransaction(
       name: "load-token-price-request",
       operation: "load-token-price-operation"
     )
-    let tokenAddress = KNSupportedTokenStorage.shared.allActiveTokens.map { (token) -> String in
+    
+    let tokenAddress = KNSupportedTokenStorage.shared.getActiveCustomToken().map { (token) -> String in
       return token.address
     }
     let splitCount = tokenAddress.count > 100 ? tokenAddress.count / 3 : 100
     let addressesTrucked = tokenAddress.chunked(into: splitCount)
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     var output: [TokenPrice] = []
+    self.isLoadingExchangeTokenRates = true
     let group = DispatchGroup()
+    group.enter()
+
+    provider.request(.getOverviewMarket(addresses: [], quotes: ["eth", "btc", "usd", "bnb", "matic", "avax", "ftm", "cro"])) { result in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(OverviewResponse.self, from: resp.data)
+          let priceObj = data.data.map { item in
+            return TokenPrice(address: item.address, quotes: item.quotes)
+          }
+          output.append(contentsOf: priceObj)
+          print("[GetOverview][Supported][Success] ")
+        } catch let error {
+          print("[GetOverview][Supported][Error] \(error.localizedDescription)")
+        }
+      } else {
+        print("[GetOverview][Supported][Error] ")
+      }
+      group.leave()
+    }
+
     addressesTrucked.forEach { (element) in
       group.enter()
       provider.request(.getOverviewMarket(addresses: element, quotes: ["eth", "btc", "usd", "bnb", "matic", "avax", "ftm", "cro"])) { result in
@@ -310,6 +304,7 @@ class KNRateCoordinator {
       }
     }
     group.notify(queue: .global()) {
+      self.isLoadingExchangeTokenRates = false
       KNTrackerRateStorage.shared.updatePrices(output)
       DispatchQueue.main.async {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
