@@ -18,14 +18,15 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var avalancheCheckMarkIcon: UIImageView!
   @IBOutlet weak var cronosCheckMarkIcon: UIImageView!
   @IBOutlet weak var fantomCheckMarkIcon: UIImageView!
-  
+  @IBOutlet weak var arbitrumCheckMarkIcon: UIImageView!
   @IBOutlet weak var ethSelectBgView: UIView!
   @IBOutlet weak var bscSelectBgView: UIView!
   @IBOutlet weak var maticSelectBgView: UIView!
   @IBOutlet weak var avalancheSelectBgView: UIView!
   @IBOutlet weak var cronosSelectBgView: UIView!
   @IBOutlet weak var fantomSelectBgView: UIView!
-
+  @IBOutlet weak var arbitrumSelectBgView: UIView!
+  
   var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
@@ -59,6 +60,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.avalancheCheckMarkIcon.isHidden = !(self.selectedChain == .avalanche)
     self.cronosCheckMarkIcon.isHidden = !(self.selectedChain == .cronos)
     self.fantomCheckMarkIcon.isHidden = !(self.selectedChain == .fantom)
+    self.arbitrumCheckMarkIcon.isHidden = !(self.selectedChain == .arbitrum)
     
     self.ethSelectBgView.isHidden = !(self.selectedChain == .eth)
     self.bscSelectBgView.isHidden = !(self.selectedChain == .bsc)
@@ -66,6 +68,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.avalancheSelectBgView.isHidden = !(self.selectedChain == .avalanche)
     self.cronosSelectBgView.isHidden = !(self.selectedChain == .cronos)
     self.fantomSelectBgView.isHidden = !(self.selectedChain == .fantom)
+    self.arbitrumSelectBgView.isHidden = !(self.selectedChain == .arbitrum)
 
     let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
@@ -102,12 +105,17 @@ class SwitchChainViewController: KNBaseViewController {
     self.updateSelectedChainUI()
   }
 
+  @IBAction func arbitrumButtonTapped(_ sender: Any) {
+    self.selectedChain = .arbitrum
+    self.updateSelectedChainUI()
+  }
+
   @IBAction func nextButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: {
       self.completionHandler(self.selectedChain)
     })
   }
-  
+
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: nil)
   }
@@ -123,7 +131,7 @@ extension SwitchChainViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 550
+    return 601
   }
 
   func getPopupContentView() -> UIView {

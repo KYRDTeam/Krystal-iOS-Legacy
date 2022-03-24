@@ -34,6 +34,8 @@ enum ChainType: Codable {
       self = .cronos
     case 5:
       self = .fantom
+    case 6:
+      self = .arbitrum
     default:
       throw CodingError.unknownValue
     }
@@ -54,6 +56,8 @@ enum ChainType: Codable {
       try container.encode(4, forKey: .rawValue)
     case .fantom:
       try container.encode(5, forKey: .rawValue)
+    case .arbitrum:
+      try container.encode(6, forKey: .rawValue)
     }
   }
   
@@ -96,33 +100,21 @@ enum ChainType: Codable {
       return "Fantom"
     case .cronos:
       return "Cronos"
+    case .arbitrum:
+      return "Arbitrum"
     }
   }
 
   func blockExploreName() -> String {
-//    switch self {
-//    case .eth:
-//     return "Etherscan"
-//    case .bsc:
-//      return "BSCscan"
-//    case .polygon:
-//      return "Polygon"
-//    case .avalanche:
-//      return "SnowTrace"
-//    case .fantom:
-//      return "Fantomscan"
-//    case .cronos:
-//      return "Cronosscan"
-//    }
     return "Block Explorer"
   }
-  
+
   func isSupportedHistoryAPI() -> Bool {
     switch self {
-      case .cronos:
-        return false
-      default:
-        return true
+    case .cronos:
+      return false
+    default:
+      return true
     }
   }
 
@@ -132,6 +124,7 @@ enum ChainType: Codable {
   case avalanche
   case cronos
   case fantom
+  case arbitrum
 }
 //swiftlint:disable file_length
 //swiftlint:disable type_body_length
@@ -159,6 +152,8 @@ class KNGeneralProvider {
       return KNEnvironment.default.cronosRPC
     case .fantom:
       return KNEnvironment.default.fantomRPC
+    case .arbitrum:
+      return KNEnvironment.default.arbitrumRPC
     }
   }
 
@@ -178,6 +173,8 @@ class KNGeneralProvider {
       return "CRO"
     case .fantom:
       return "FTM"
+    case .arbitrum:
+      return "ETH"
     }
   }
   
@@ -195,6 +192,8 @@ class KNGeneralProvider {
       return .cro
     case .fantom:
       return .ftm
+    case .arbitrum:
+      return .eth
     }
   }
 
@@ -221,6 +220,8 @@ class KNGeneralProvider {
       return "/cronos"
     case .fantom:
       return "/fantom"
+    case .arbitrum:
+      return "/arbitrum"
     }
   }
 
@@ -238,6 +239,8 @@ class KNGeneralProvider {
       return KNSupportedTokenStorage.shared.cronosToken
     case .fantom:
       return KNSupportedTokenStorage.shared.fantomToken
+    case .arbitrum:
+      return KNSupportedTokenStorage.shared.ethToken
     }
   }
 
@@ -255,6 +258,8 @@ class KNGeneralProvider {
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.cronosAddress)
     case .fantom:
       return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.fantomAddress)
+    case .arbitrum:
+      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.arbitrumAddress)
     }
   }
 
@@ -272,6 +277,8 @@ class KNGeneralProvider {
       return UIImage(named: "chain_cronos_icon")
     case .fantom:
       return UIImage(named: "chain_fantom_icon")
+    case .arbitrum:
+      return UIImage(named: "chain_arbitrum_icon")
     }
   }
 
@@ -289,6 +296,8 @@ class KNGeneralProvider {
       return Constants.krystalProxyAddressCronos.lowercased()
     case .fantom:
       return Constants.krystalProxyAddressFantom.lowercased()
+    case .arbitrum:
+      return Constants.krystalProxyAddressArbitrum.lowercased()
     }
   }
 
@@ -305,6 +314,8 @@ class KNGeneralProvider {
     case .cronos:
       return ""
     case .fantom:
+      return ""
+    case .arbitrum:
       return ""
     }
   }
@@ -323,6 +334,8 @@ class KNGeneralProvider {
       return UIImage(named: "")
     case .fantom:
       return UIImage(named: "")
+    case .arbitrum:
+      return UIImage(named: "")
     }
   }
 
@@ -339,6 +352,8 @@ class KNGeneralProvider {
     case .cronos:
       return "CRC20"
     case .fantom:
+      return "ERC20"
+    case .arbitrum:
       return "ERC20"
     }
   }
@@ -357,6 +372,8 @@ class KNGeneralProvider {
       return ""
     case .fantom:
       return ""
+    case .arbitrum:
+      return ""
     }
   }
 
@@ -373,6 +390,8 @@ class KNGeneralProvider {
     case .cronos:
       return ""
     case .fantom:
+      return ""
+    case .arbitrum:
       return ""
     }
   }
@@ -391,6 +410,8 @@ class KNGeneralProvider {
       return "cronos"
     case .fantom:
       return "fantom"
+    case .arbitrum:
+      return "Arbitrum One"
     }
   }
 
@@ -408,6 +429,8 @@ class KNGeneralProvider {
       return "There.is.a.difference.between.the.estimated.price.cronos".toBeLocalised()
     case .fantom:
       return "There.is.a.difference.between.the.estimated.price.fantom".toBeLocalised()
+    case .arbitrum:
+      return "There.is.a.difference.between.the.estimated.price.arbitrum".toBeLocalised()
     }
   }
 
@@ -457,6 +480,8 @@ class KNGeneralProvider {
       address = Constants.krystalProxyAddressCronos.lowercased()
     case .fantom:
       address = Constants.krystalProxyAddressFantom.lowercased()
+    case .arbitrum:
+      address = Constants.krystalProxyAddressArbitrum.lowercased()
     }
     return Address(string: address)!
   }

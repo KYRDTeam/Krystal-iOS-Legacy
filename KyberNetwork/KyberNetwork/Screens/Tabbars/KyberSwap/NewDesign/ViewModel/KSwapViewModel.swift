@@ -446,6 +446,9 @@ class KSwapViewModel {
     case .fantom:
       self.from = KNSupportedTokenStorage.shared.fantomToken
       self.to = KNSupportedTokenStorage.shared.usdcToken
+    case .arbitrum:
+      self.from = KNSupportedTokenStorage.shared.ethToken
+      self.to = KNSupportedTokenStorage.shared.usdcToken
     }
   }
   
@@ -921,6 +924,8 @@ extension KSwapViewModel {
       return .fantom
     case Constants.cronosMainnetRPC.chainID:
       return .cronos
+    case Constants.arbitrumMainnetRPC.chainID:
+      return .arbitrum
     default:
       return nil
     }
@@ -940,6 +945,8 @@ extension KSwapViewModel {
       return "Fantom"
     case Constants.cronosMainnetRPC.chainID:
       return "Cronos"
+    case Constants.arbitrumMainnetRPC.chainID:
+      return "Arbitrum"
     default:
         return nil
     }

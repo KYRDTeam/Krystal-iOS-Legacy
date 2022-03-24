@@ -432,6 +432,8 @@ class KNSupportedTokenStorage {
       return "cro" + "-" + KNEnvironment.default.displayName + "-"
     case .fantom:
       return "ftm" + "-" + KNEnvironment.default.displayName + "-"
+    case .arbitrum:
+      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
     }
   }
 
@@ -459,6 +461,7 @@ class KNSupportedTokenStorage {
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .avalanche)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .fantom)
     total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .cronos)
+    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .arbitrum)
     return total
   }
 

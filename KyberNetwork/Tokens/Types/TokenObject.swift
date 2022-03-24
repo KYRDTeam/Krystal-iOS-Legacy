@@ -146,9 +146,13 @@ class TokenObject: Object {
   var isFtm: Bool {
     return self.address.lowercased() == Constants.fantomAddress.lowercased()
   }
+  
+  var isAETH: Bool {
+    return self.address.lowercased() == Constants.arbitrumAddress.lowercased()
+  }
 
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isAETH
   }
 
     var isWETH: Bool {

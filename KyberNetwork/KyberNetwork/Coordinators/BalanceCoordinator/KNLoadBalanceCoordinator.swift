@@ -369,14 +369,16 @@ class KNLoadBalanceCoordinator {
                            KNSummaryChainModel.defaultValue(chainId: Constants.polygonRoptenPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.avalancheRoptenPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.fantomMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID)]
+                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.arbitrumMainnetRPC.chainID)]
         } else {
           summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethMainnetPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.bscMainnetPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.polygonMainnetPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.avalancheMainnetPRC.chainID),
                            KNSummaryChainModel.defaultValue(chainId: Constants.fantomMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID)]
+                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID),
+                           KNSummaryChainModel.defaultValue(chainId: Constants.arbitrumMainnetRPC.chainID)]
         }
         BalanceStorage.shared.saveSummaryChainModels(summaryChains)
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)

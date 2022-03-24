@@ -42,6 +42,7 @@ public struct Constants {
   public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
   public static let krystalProxyAddressCronos = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
   public static let krystalProxyAddressFantom = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
+  public static let krystalProxyAddressArbitrum = "0x864F01c5E46b0712643B956BcA607bF883e0dbC5"
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -185,7 +186,7 @@ public struct Constants {
     wrappedAddress: "",
     apiEtherscanEndpoint: ""
   )
-  
+
   public static let avalancheMainnetPRC = CustomRPC(
     chainID: 43114,
     name: "Avalanche Mainnet C-Chain",
@@ -225,19 +226,32 @@ public struct Constants {
     apiEtherscanEndpoint: ""
   )
   
+  public static let arbitrumMainnetRPC = CustomRPC (
+    chainID: 42161,
+    name: "Arbitrum One",
+    symbol: "ETH",
+    endpoint: "https://arb1.arbitrum.io/rpc",
+    endpointKyber: "https://arbitrum.knstats.com/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
+    endpointAlchemy: "https://arb1.arbitrum.io/rpc",
+    etherScanEndpoint: "https://arbiscan.io/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: ""
+  )
+
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
   public static let ethAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let maticAddress = "0xcccccccccccccccccccccccccccccccccccccccc"
   public static let avaxAddress = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   public static let cronosAddress = "0xffffffffffffffffffffffffffffffffffffffff"
   public static let fantomAddress = "0xdddddddddddddddddddddddddddddddddddddddd"
-  
+  public static let arbitrumAddress = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
 }
 
 public struct UnitConfiguration {
-    public static let gasPriceUnit: EthereumUnit = .gwei
-    public static let gasFeeUnit: EthereumUnit = .ether
+  public static let gasPriceUnit: EthereumUnit = .gwei
+  public static let gasFeeUnit: EthereumUnit = .ether
 }
 
 public struct DecimalNumber {
