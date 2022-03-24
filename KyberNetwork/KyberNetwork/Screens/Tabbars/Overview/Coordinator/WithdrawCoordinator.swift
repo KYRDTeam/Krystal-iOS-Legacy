@@ -991,6 +991,10 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
 }
 
 extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.withdrawCoordinatorDidSelectAddToken(token)
   }

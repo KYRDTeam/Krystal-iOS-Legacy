@@ -222,6 +222,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
   }
@@ -249,7 +253,7 @@ extension InvestCoordinator: KNHistoryCoordinatorDelegate {
   }
   
   func historyCoordinatorDidClose() {
-    
+    self.historyCoordinator = nil
   }
   
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {

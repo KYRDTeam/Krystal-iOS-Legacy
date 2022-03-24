@@ -573,6 +573,10 @@ extension KNHistoryCoordinator: QRCodeReaderDelegate {
 }
 
 extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.historyCoordinatorDidSelectAddToken(token)
   }
