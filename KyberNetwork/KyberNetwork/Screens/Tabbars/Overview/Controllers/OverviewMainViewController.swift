@@ -285,7 +285,6 @@ class OverviewMainViewController: KNBaseViewController {
       }
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
     }
-    self.viewModel.reloadAllData()
     self.reloadUI()
   }
 
