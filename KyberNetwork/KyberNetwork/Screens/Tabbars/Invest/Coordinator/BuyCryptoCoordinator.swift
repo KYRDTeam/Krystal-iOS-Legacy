@@ -206,9 +206,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
       presentViewController = rootViewController
     }
 
-    let hud = MBProgressHUD.showAdded(to: presentViewController.view, animated: true)
-    hud.isUserInteractionEnabled = false
-    
+    presentViewController.showLoadingHUD()
     self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
       DispatchQueue.main.async {
         presentViewController.hideLoading()
