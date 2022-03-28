@@ -8,6 +8,8 @@ import TrustKeystore
 import TrustCore
 import Moya
 import Sentry
+import FirebasePerformance
+import Firebase
 
 class KNLoadBalanceCoordinator {
 
@@ -42,6 +44,8 @@ class KNLoadBalanceCoordinator {
       name: "load-balance-request",
       operation: "load-balance-operation"
     )
+    let traceBalance = PerformanceUtil.createTrace("balance_trace")
+
     let group = DispatchGroup()
     group.enter()
     let span1 = tx.startChild(operation: "load-lending-balances")
@@ -91,6 +95,7 @@ class KNLoadBalanceCoordinator {
     }
 
     group.notify(queue: .global()) {
+      traceBalance?.stop()
       tx.finish()
     }
   }

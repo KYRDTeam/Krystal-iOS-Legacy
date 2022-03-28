@@ -99,12 +99,6 @@ extension KNAppCoordinator {
       object: nil
     )
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(userRestoreIdReceived),
-      name: NSNotification.Name(rawValue: FRESHCHAT_USER_RESTORE_ID_GENERATED),
-      object: nil
-    )
   }
 
   func removeObserveNotificationFromSession() {
@@ -173,12 +167,6 @@ extension KNAppCoordinator {
       object: nil
     )
 
-    let liveChatName = Notification.Name(FRESHCHAT_USER_RESTORE_ID_GENERATED)
-    NotificationCenter.default.removeObserver(
-      self,
-      name: liveChatName,
-      object: nil
-    )
   }
 
   @objc func exchangeRateTokenDidUpdateNotification(_ sender: Any?) {
@@ -328,20 +316,6 @@ extension KNAppCoordinator {
     if self.session == nil { return }
     self.tabbarController.selectedIndex = 1
     self.exchangeCoordinator?.navigationController.popToRootViewController(animated: true)
-  }
-
-  @objc func userRestoreIdReceived() {
-    guard let restoreId = FreshchatUser.sharedInstance().restoreID, let externalID = FreshchatUser.sharedInstance().externalID  else {
-      return
-    }
-    if var saved = UserDefaults.standard.object(forKey: KNAppTracker.kSavedRestoreIDForLiveChat) as? [String: String] {
-      saved[externalID] = restoreId
-      UserDefaults.standard.set(saved, forKey: KNAppTracker.kSavedRestoreIDForLiveChat)
-    } else {
-      let dict = [externalID: restoreId]
-      UserDefaults.standard.set(dict, forKey: KNAppTracker.kSavedRestoreIDForLiveChat)
-    }
-    Freshchat.sharedInstance().identifyUser(withExternalID: externalID, restoreID: restoreId)
   }
   
   @objc func handleNewReceiveTx(_ sender: Notification) {

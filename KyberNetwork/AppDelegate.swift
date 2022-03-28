@@ -55,12 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       print("User accepted notifications: \(accepted)")
     })
     
-    if #available(iOS 14, *) {
-    } else {
-      FirebaseApp.configure()
-      self.setupSentry()
-    }
-
+    self.setupFirebase()
+    
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
   }
@@ -77,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationWillResignActive(_ application: UIApplication) {
   }
 
-  func applicationDidBecomeActive(_ application: UIApplication) {
+  fileprivate func setupFirebase() {
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
@@ -86,15 +82,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             FirebaseApp.configure()
           } else {
             let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-            guard let fileopts = FirebaseOptions(contentsOfFile: filePath!)
-              else { assert(false, "Couldn't load config file") }
+            guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+              return
+            }
             FirebaseApp.configure(options: fileopts)
           }
-
+          
           self.setupSentry()
         }
       }
     }
+  }
+  
+  func applicationDidBecomeActive(_ application: UIApplication) {
+    self.setupFirebase()
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
   }
