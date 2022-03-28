@@ -391,6 +391,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
+      cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
       cell.button2.isHidden = true
     case .favourite:
       cell.imageIcon.image = UIImage(named: "empty_fav_token")
