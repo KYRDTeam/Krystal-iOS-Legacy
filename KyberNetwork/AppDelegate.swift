@@ -82,7 +82,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
           guard !SentrySDK.isEnabled else { return }
-          FirebaseApp.configure()
+          if KNEnvironment.default == .production {
+            FirebaseApp.configure()
+          } else {
+            let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+            guard let fileopts = FirebaseOptions(contentsOfFile: filePath!)
+              else { assert(false, "Couldn't load config file") }
+            FirebaseApp.configure(options: fileopts)
+          }
+
           self.setupSentry()
         }
       }

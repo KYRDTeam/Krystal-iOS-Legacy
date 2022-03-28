@@ -698,6 +698,7 @@
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FDF26FAE7500021DF8A /* KNEnvironment+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FDE26FAE7500021DF8A /* KNEnvironment+Kyber.swift */; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
+		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
 		C3A2419C2567AD610073703C /* WalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A2419A2567AD610073703C /* WalletsListViewController.xib */; };
 		C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */; };
@@ -1556,6 +1557,7 @@
 		C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTutorialPagerCell.xib; sourceTree = "<group>"; };
 		C39D3FDE26FAE7500021DF8A /* KNEnvironment+Kyber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KNEnvironment+Kyber.swift"; sourceTree = "<group>"; };
 		C39D3FE026FB33610021DF8A /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Dev.plist"; sourceTree = "<group>"; };
 		C3A241992567AD610073703C /* WalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsListViewController.swift; sourceTree = "<group>"; };
 		C3A2419A2567AD610073703C /* WalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletsListViewController.xib; sourceTree = "<group>"; };
 		C3A241A22567BEB50073703C /* WalletListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletListTableViewCell.swift; sourceTree = "<group>"; };
@@ -3245,6 +3247,7 @@
 				296106CD1F777E410006164B /* LaunchScreen.storyboard */,
 				C364819324726B1200137596 /* KyberSwap-Bridging-Header.h */,
 				C3D6996D26410CCB004B34E1 /* GoogleService-Info.plist */,
+				C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */,
 				C3357DB424768C400028F4A9 /* CustomFCTheme.plist */,
 			);
 			path = KyberNetwork;
@@ -4860,6 +4863,7 @@
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
 				C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */,
+				C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */,
 				25929C6420DA5C760045CFA3 /* SF-Pro-Text-Heavy.otf in Resources */,
 				C37CC09D245803CA0081FB32 /* Roboto-Thin.ttf in Resources */,
 				C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */,
