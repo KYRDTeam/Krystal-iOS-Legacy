@@ -121,7 +121,7 @@ class KNGeneralProvider {
   }
   
   var isUseEIP1559: Bool {
-    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche || KNGeneralProvider.shared.currentChain == .polygon
+    return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
 
   var wrapperAddress: Address {

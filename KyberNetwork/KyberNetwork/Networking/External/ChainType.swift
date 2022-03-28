@@ -120,6 +120,15 @@ enum ChainType: Codable, CaseIterable {
       return .eth
     }
   }
+  
+  func isSupportedEIP1559() -> Bool {
+    switch self {
+    case .eth, .avalanche, .polygon:
+      return true
+    default:
+      return false
+    }
+  }
 
   func chainPath() -> String {
     switch self {
