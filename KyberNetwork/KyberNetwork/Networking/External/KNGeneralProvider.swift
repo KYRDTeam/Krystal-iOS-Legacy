@@ -8,8 +8,9 @@ import TrustKeystore
 import TrustCore
 import JavaScriptKit
 import CryptoSwift
+import UIKit
 
-enum ChainType: Codable {
+enum ChainType: Codable, CaseIterable {
   enum Key: CodingKey {
     case rawValue
   }
@@ -102,6 +103,44 @@ enum ChainType: Codable {
       return "Cronos"
     case .arbitrum:
       return "Arbitrum"
+    }
+  }
+  
+  func chainFullName() -> String {
+    switch self {
+    case .eth:
+     return "Ethereum"
+    case .bsc:
+      return "Binance Smart Chain(BSC)"
+    case .polygon:
+      return "Polygon(Matic)"
+    case .avalanche:
+      return "Avalanche"
+    case .fantom:
+      return "Fantom"
+    case .cronos:
+      return "Cronos"
+    case .arbitrum:
+      return "Arbitrum"
+    }
+  }
+  
+  func chainIcon() -> UIImage? {
+    switch self {
+    case .eth:
+      return UIImage(named: "chain_eth_icon")
+    case .bsc:
+      return UIImage(named: "chain_bsc_icon")
+    case .polygon:
+      return UIImage(named: "chain_polygon_big_icon")
+    case .avalanche:
+      return UIImage(named: "chain_avax_icon")
+    case .cronos:
+      return UIImage(named: "chain_cronos_icon")
+    case .fantom:
+      return UIImage(named: "chain_fantom_icon")
+    case .arbitrum:
+      return UIImage(named: "chain_arbitrum_icon")
     }
   }
 
@@ -264,22 +303,7 @@ class KNGeneralProvider {
   }
 
   var chainIconImage: UIImage? {
-    switch self.currentChain {
-    case .eth:
-      return UIImage(named: "chain_eth_icon")
-    case .bsc:
-      return UIImage(named: "chain_bsc_icon")
-    case .polygon:
-      return UIImage(named: "chain_polygon_big_icon")
-    case .avalanche:
-      return UIImage(named: "chain_avax_icon")
-    case .cronos:
-      return UIImage(named: "chain_cronos_icon")
-    case .fantom:
-      return UIImage(named: "chain_fantom_icon")
-    case .arbitrum:
-      return UIImage(named: "chain_arbitrum_icon")
-    }
+    return self.currentChain.chainIcon()
   }
 
   var proxyAddress: String {
