@@ -13,6 +13,7 @@ public struct CustomRPC {
   let ensAddress: String
   let wrappedAddress: String
   let apiEtherscanEndpoint: String
+  let proxyAddress: String
 }
 
 extension CustomRPC: Equatable {
@@ -23,6 +24,7 @@ extension CustomRPC: Equatable {
       lhs.symbol == rhs.symbol &&
       lhs.endpoint == rhs.symbol &&
       lhs.endpointKyber == rhs.endpointKyber &&
-      lhs.endpointAlchemy == rhs.endpointAlchemy
+      lhs.endpointAlchemy == rhs.endpointAlchemy &&
+      lhs.proxyAddress == rhs.proxyAddress
   }
 }

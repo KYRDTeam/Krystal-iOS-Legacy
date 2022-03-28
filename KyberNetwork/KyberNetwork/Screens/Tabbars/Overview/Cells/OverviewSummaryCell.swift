@@ -53,45 +53,17 @@ class OverviewSummaryCellViewModel {
   }
 
   func chainIconImage() -> UIImage {
-    switch self.chainType {
-    case .eth:
-      return UIImage(named: "chain_eth_icon")!
-    case .bsc:
-      return UIImage(named: "chain_bsc_icon")!
-    case .polygon:
-      return UIImage(named: "chain_polygon_big_icon")!
-    case .avalanche:
-      return UIImage(named: "chain_avax_icon")!
-    case .fantom:
-      return UIImage(named: "chain_fantom_icon")!
-    case .cronos:
-      return UIImage(named: "chain_cronos_icon")!
-    case .arbitrum:
-      return UIImage(named: "chain_arbitrum_icon")!
-    default:
+    guard let chainType = self.chainType else {
       return UIImage(named: "default_token")!
     }
+    return chainType.chainIcon()!
   }
 
   func chainName() -> String {
-    switch self.chainType {
-    case .eth:
-      return "Ethereum"
-    case .bsc:
-      return "BSC"
-    case .polygon:
-      return "Polygon"
-    case .avalanche:
-      return "Avalanche"
-    case .fantom:
-      return "Fantom"
-    case .cronos:
-      return "Cronos"
-    case .arbitrum:
-      return "Arbitrum"
-    default:
+    guard let chainType = self.chainType else {
       return "Unsupported"
     }
+    return chainType.chainName()
   }
 }
 

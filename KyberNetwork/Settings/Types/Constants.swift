@@ -35,14 +35,7 @@ public struct Constants {
 
   public static let oneSignalAppID = KNEnvironment.default == .ropsten ? "361e7815-4da2-41c9-ba0a-d35add5a58ef" : "0487532e-7b19-415b-91a1-2a285b0b8382"
   public static let gasTokenAddress = KNEnvironment.default == .ropsten ? "0x0000000000b3F879cb30FE243b4Dfee438691c04" : "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
-
-  public static let krystalProxyAddress = KNEnvironment.default == .ropsten ? "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a" : "0x70270C228c5B4279d1578799926873aa72446CcD"
-  public static let krystalProxyAddressBSC = KNEnvironment.default == .ropsten ? "0xA58573970cfFAd93309071cE9aff46b8A35eC62B" : "0x051DC16b2ECB366984d1074dCC07c342a9463999"
-  public static let krystalProxyAddressMatic = KNEnvironment.default == .ropsten ? "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3" : "0x70270c228c5b4279d1578799926873aa72446ccd"
-  public static let krystalProxyAddressAvax = KNEnvironment.default == .ropsten ? "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65" : "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
-  public static let krystalProxyAddressCronos = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
-  public static let krystalProxyAddressFantom = "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
-  public static let krystalProxyAddressArbitrum = "0x864F01c5E46b0712643B956BcA607bF883e0dbC5"
+  
   public static let tokenStoreFileName = "token.data"
   public static let balanceStoreFileName = "_balance.data"
   public static let nftBalanceStoreFileName = "_nft.data"
@@ -93,9 +86,10 @@ public struct Constants {
     etherScanEndpoint: "https://etherscan.io/",
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
     wrappedAddress: "0x6172afc8c00c46e0d07ce3af203828198194620a",
-    apiEtherscanEndpoint: "https://api.etherscan.io/"
+    apiEtherscanEndpoint: "https://api.etherscan.io/",
+    proxyAddress: "0x70270C228c5B4279d1578799926873aa72446CcD"
   )
-  
+
   public static let ethRoptenPRC = CustomRPC(
     chainID: 3,
     name: "Ropsten",
@@ -106,9 +100,10 @@ public struct Constants {
     etherScanEndpoint: "https://ropsten.etherscan.io/",
     ensAddress: "0x112234455c3a32fd11230c42e7bccd4a84e02010",
     wrappedAddress: "0x665d34f192f4940da4e859ff7768c0a80ed3ae10",
-    apiEtherscanEndpoint: "https://api-ropsten.etherscan.io/"
+    apiEtherscanEndpoint: "https://api-ropsten.etherscan.io/",
+    proxyAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
   )
-  
+
   public static let ethStaggingPRC = CustomRPC(
     chainID: 1,
     name: "Mainnet",
@@ -119,7 +114,8 @@ public struct Constants {
     etherScanEndpoint: "https://etherscan.io/",
     ensAddress: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
     wrappedAddress: "0x6172afc8c00c46e0d07ce3af203828198194620a",
-    apiEtherscanEndpoint: "https://api.etherscan.io/"
+    apiEtherscanEndpoint: "https://api.etherscan.io/",
+    proxyAddress: "0x70270C228c5B4279d1578799926873aa72446CcD"
   )
   
   public static let bscMainnetPRC = CustomRPC(
@@ -132,7 +128,8 @@ public struct Constants {
     etherScanEndpoint: "https://bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x465661625B3B96b102a49e07E2Eb31cC9F5cE58B",
-    apiEtherscanEndpoint: "https://api.bscscan.com/"
+    apiEtherscanEndpoint: "https://api.bscscan.com/",
+    proxyAddress: "0x051DC16b2ECB366984d1074dCC07c342a9463999"
   )
   
   public static let bscRoptenPRC = CustomRPC(
@@ -145,7 +142,8 @@ public struct Constants {
     etherScanEndpoint: "https://testnet.bscscan.com/",
     ensAddress: "",
     wrappedAddress: "0x813718C50df497BC136d5d6dfc0E0aDA8AB0C93e",
-    apiEtherscanEndpoint: "https://api-testnet.bscscan.com/"
+    apiEtherscanEndpoint: "https://api-testnet.bscscan.com/",
+    proxyAddress: "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
   )
   
   public static let polygonMainnetPRC = CustomRPC(
@@ -158,7 +156,8 @@ public struct Constants {
     etherScanEndpoint: "https://polygonscan.com/",
     ensAddress: "",
     wrappedAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a",
-    apiEtherscanEndpoint: "https://api.polygonscan.com/"
+    apiEtherscanEndpoint: "https://api.polygonscan.com/",
+    proxyAddress: "0x70270c228c5b4279d1578799926873aa72446ccd"
   )
   
   public static let polygonRoptenPRC = CustomRPC(
@@ -171,7 +170,8 @@ public struct Constants {
     etherScanEndpoint: "https://mumbai.polygonscan.com/",
     ensAddress: "",
     wrappedAddress: "0xB8C6Ed80688a2674623D89A0AaBD3a87507B1868",
-    apiEtherscanEndpoint: "https://api.polygonscan.com"
+    apiEtherscanEndpoint: "https://api.polygonscan.com",
+    proxyAddress: "0x6deaAe9d76991db2943064Bca84e00f63c46C0A3"
   )
   
   public static let avalancheRoptenPRC = CustomRPC(
@@ -184,7 +184,8 @@ public struct Constants {
     etherScanEndpoint: "https://cchain.explorer.avax-test.network/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0xAE0505c0C30Dc0EA077cDB4Ed1B2BB894D9c6B65"
   )
 
   public static let avalancheMainnetPRC = CustomRPC(
@@ -197,7 +198,8 @@ public struct Constants {
     etherScanEndpoint: "https://cchain.explorer.avax.network/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0x8C27aBf05DE1d4847c3924566C3cBAFec6eFb42A"
   )
 
   public static let cronosMainnetRPC = CustomRPC (
@@ -210,7 +212,8 @@ public struct Constants {
     etherScanEndpoint: "https://cronoscan.com/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
   )
 
   public static let fantomMainnetRPC = CustomRPC (
@@ -223,9 +226,10 @@ public struct Constants {
     etherScanEndpoint: "https://ftmscan.com/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0xf351Dd5EC89e5ac6c9125262853c74E714C1d56a"
   )
-  
+
   public static let arbitrumMainnetRPC = CustomRPC (
     chainID: 42161,
     name: "Arbitrum One",
@@ -236,7 +240,8 @@ public struct Constants {
     etherScanEndpoint: "https://arbiscan.io/",
     ensAddress: "",
     wrappedAddress: "",
-    apiEtherscanEndpoint: ""
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5"
   )
 
   public static let bnbAddress = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"

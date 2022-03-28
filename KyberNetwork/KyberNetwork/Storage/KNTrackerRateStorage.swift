@@ -62,22 +62,7 @@ class KNTrackerRateStorage {
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
-    switch chainType {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
-    case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
-    }
+    return chainType.getChainDBPath()
   }
   
   func getLastPriceWith(address: String, currency: CurrencyMode) -> Double {

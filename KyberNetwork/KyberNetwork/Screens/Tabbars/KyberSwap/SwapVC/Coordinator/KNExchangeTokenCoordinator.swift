@@ -315,32 +315,8 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
-    let otherToken: TokenObject = token.isETH ? KNSupportedTokenStorage.shared.kncToken : KNSupportedTokenStorage.shared.ethToken
-    let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
-    let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
-    let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
-    let otherTokenCronos: TokenObject = token.isCro ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
-    let otherTokenFantom: TokenObject = token.isFtm ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
-    let otherTokenArbitrum: TokenObject = token.isAETH ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.ethToken
-
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
-    var selectToken = KNSupportedTokenStorage.shared.ethToken
-    switch KNGeneralProvider.shared.currentChain {
-    case .eth:
-      selectToken = otherToken
-    case .bsc:
-      selectToken = otherTokenBsc
-    case .polygon:
-      selectToken = otherTokenMatic
-    case .avalanche:
-      selectToken = otherTokenAvax
-    case .cronos:
-      selectToken = otherTokenCronos
-    case .fantom:
-      selectToken = otherTokenFantom
-    case .arbitrum:
-      selectToken = otherTokenArbitrum
-    }
+    let selectToken = KNGeneralProvider.shared.currentChain.otherTokenObject(toToken: token)
     self.rootViewController.coordinatorUpdateSelectedToken(selectToken, isSource: isReceived, isWarningShown: true)
     self.rootViewController.tabBarController?.selectedIndex = 1
   }

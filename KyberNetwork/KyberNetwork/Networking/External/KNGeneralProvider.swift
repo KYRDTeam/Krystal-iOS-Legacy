@@ -23,128 +23,29 @@ class KNGeneralProvider {
   }
   
   var customRPC: CustomRPC {
-    switch self.currentChain {
-    case .eth:
-      return KNEnvironment.default.ethRPC
-    case .bsc:
-      return KNEnvironment.default.bscRPC
-    case .polygon:
-      return KNEnvironment.default.maticRPC
-    case .avalanche:
-      return KNEnvironment.default.avalancheRPC
-    case .cronos:
-      return KNEnvironment.default.cronosRPC
-    case .fantom:
-      return KNEnvironment.default.fantomRPC
-    case .arbitrum:
-      return KNEnvironment.default.arbitrumRPC
-    }
+    return self.currentChain.customRPC()
   }
 
   var currentWeb3: Web3Swift = Web3Swift()
   
   var quoteToken: String {
-    switch self.currentChain {
-    case .eth:
-      return "ETH"
-    case .bsc:
-      return "BNB"
-    case .polygon:
-      return "MATIC"
-    case .avalanche:
-      return "AVAX"
-    case .cronos:
-      return "CRO"
-    case .fantom:
-      return "FTM"
-    case .arbitrum:
-      return "ETH"
-    }
+    return self.currentChain.quoteToken()
   }
   
   var quoteCurrency: CurrencyMode {
-    switch self.currentChain {
-    case .eth:
-      return .eth
-    case .bsc:
-      return .bnb
-    case .polygon:
-      return .matic
-    case .avalanche:
-      return .avax
-    case .cronos:
-      return .cro
-    case .fantom:
-      return .ftm
-    case .arbitrum:
-      return .eth
-    }
+    return self.currentChain.quoteCurrency()
   }
 
   var chainPath: String {
-    switch self.currentChain {
-    case .eth:
-      if KNEnvironment.default == .ropsten {
-        return "/ropsten"
-      }
-      return "/ethereum"
-    case .bsc:
-      if KNEnvironment.default == .ropsten {
-        return "/bsctestnet"
-      }
-      return "/bsc"
-    case .polygon:
-      if KNEnvironment.default == .ropsten {
-        return "/mumbai"
-      }
-      return "/polygon"
-    case .avalanche:
-      return "/avalanche"
-    case .cronos:
-      return "/cronos"
-    case .fantom:
-      return "/fantom"
-    case .arbitrum:
-      return "/arbitrum"
-    }
+    return self.currentChain.chainPath()
   }
 
   var quoteTokenObject: TokenObject {
-    switch self.currentChain {
-    case .eth:
-      return KNSupportedTokenStorage.shared.ethToken
-    case .bsc:
-      return KNSupportedTokenStorage.shared.bnbToken
-    case .polygon:
-      return KNSupportedTokenStorage.shared.maticToken
-    case .avalanche:
-      return KNSupportedTokenStorage.shared.avaxToken
-    case .cronos:
-      return KNSupportedTokenStorage.shared.cronosToken
-    case .fantom:
-      return KNSupportedTokenStorage.shared.fantomToken
-    case .arbitrum:
-      return KNSupportedTokenStorage.shared.ethToken
-    }
+    return self.currentChain.quoteTokenObject()
   }
 
   var quoteTokenPrice: TokenPrice? {
-    switch self.currentChain {
-    case .eth:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.ethAddress)
-    case .bsc:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.bnbAddress)
-    case .polygon:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
-    case .avalanche:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
-    case .cronos:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.cronosAddress)
-    case .fantom:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.fantomAddress)
-    case .arbitrum:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.arbitrumAddress)
-    }
+    return self.currentChain.quoteTokenPrice()
   }
 
   var chainIconImage: UIImage? {
@@ -152,117 +53,27 @@ class KNGeneralProvider {
   }
 
   var proxyAddress: String {
-    switch self.currentChain {
-    case .eth:
-      return Constants.krystalProxyAddress.lowercased()
-    case .bsc:
-      return Constants.krystalProxyAddressBSC.lowercased()
-    case .polygon:
-      return Constants.krystalProxyAddressMatic.lowercased()
-    case .avalanche:
-      return Constants.krystalProxyAddressAvax.lowercased()
-    case .cronos:
-      return Constants.krystalProxyAddressCronos.lowercased()
-    case .fantom:
-      return Constants.krystalProxyAddressFantom.lowercased()
-    case .arbitrum:
-      return Constants.krystalProxyAddressArbitrum.lowercased()
-    }
+    return self.currentChain.proxyAddress()
   }
 
   var compoundSymbol: String {
-    switch self.currentChain {
-    case .eth:
-      return "COMP"
-    case .bsc:
-      return "XVS"
-    case .polygon:
-      return "COMP"
-    case .avalanche:
-      return "" //TODO: wait for compound symbol
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.compoundSymbol()
   }
 
   var compoundImageIcon: UIImage? {
-    switch self.currentChain {
-    case .eth:
-      return UIImage(named: "comp_icon")
-    case .bsc:
-      return UIImage(named: "venus_icon")
-    case .polygon:
-      return UIImage(named: "comp_icon")
-    case .avalanche:
-      return UIImage(named: "") //TODO: wait for compound icon
-    case .cronos:
-      return UIImage(named: "")
-    case .fantom:
-      return UIImage(named: "")
-    case .arbitrum:
-      return UIImage(named: "")
-    }
+    return self.currentChain.compoundImageIcon()
   }
 
   var tokenType: String {
-    switch self.currentChain {
-    case .eth:
-      return "ERC20"
-    case .bsc:
-      return "BEP20"
-    case .polygon:
-      return "ERC20"
-    case .avalanche:
-      return "ARC20"
-    case .cronos:
-      return "CRC20"
-    case .fantom:
-      return "ERC20"
-    case .arbitrum:
-      return "ERC20"
-    }
+    return self.currentChain.tokenType()
   }
 
   var apiKey: String {
-    switch self.currentChain {
-    case .eth:
-      return KNSecret.etherscanAPIKey
-    case .bsc:
-      return KNSecret.bscscanAPIKey
-    case .polygon:
-      return KNSecret.polygonscanAPIKey
-    case .avalanche:
-      return "" //TODO: wait for avalance api key
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.apiKey()
   }
 
   var lendingDistributionPlatform: String {
-    switch self.currentChain {
-    case .eth:
-      return "Compound"
-    case .bsc:
-      return "Venus"
-    case .polygon:
-      return ""
-    case .avalanche:
-      return ""
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.lendingDistributionPlatform()
   }
 
   var chainName: String {
@@ -270,22 +81,7 @@ class KNGeneralProvider {
   }
 
   var priceAlertMessage: String {
-    switch self.currentChain {
-    case .eth:
-      return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
-    case .bsc:
-      return "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised()
-    case .polygon:
-      return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
-    case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
-    case .cronos:
-      return "There.is.a.difference.between.the.estimated.price.cronos".toBeLocalised()
-    case .fantom:
-      return "There.is.a.difference.between.the.estimated.price.fantom".toBeLocalised()
-    case .arbitrum:
-      return "There.is.a.difference.between.the.estimated.price.arbitrum".toBeLocalised()
-    }
+    return self.currentChain.priceAlertMessage()
   }
 
   var web3Swift: Web3Swift {
@@ -320,23 +116,7 @@ class KNGeneralProvider {
   }
 
   var networkAddress: Address {
-    var address = ""
-    switch self.currentChain {
-    case .eth:
-      address = Constants.krystalProxyAddress.lowercased()
-    case .bsc:
-      address = Constants.krystalProxyAddressBSC.lowercased()
-    case .polygon:
-      address = Constants.krystalProxyAddressMatic.lowercased()
-    case .avalanche:
-      address = Constants.krystalProxyAddressAvax.lowercased()
-    case .cronos:
-      address = Constants.krystalProxyAddressCronos.lowercased()
-    case .fantom:
-      address = Constants.krystalProxyAddressFantom.lowercased()
-    case .arbitrum:
-      address = Constants.krystalProxyAddressArbitrum.lowercased()
-    }
+    let address = self.currentChain.proxyAddress()
     return Address(string: address)!
   }
   
