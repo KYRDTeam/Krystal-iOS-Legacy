@@ -454,6 +454,7 @@
 		7E6F510B2733CA69002DA0B2 /* KNSummaryChainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */; };
 		7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917727F193FC00ADF721 /* SwitchChainCell.swift */; };
 		7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E72917827F193FC00ADF721 /* SwitchChainCell.xib */; };
+		7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72917B27F1B36100ADF721 /* ChainType.swift */; };
 		7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */; };
 		7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */; };
 		7E913AF9273CF6DA00B6E67C /* intro_manage.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF5273CF6D900B6E67C /* intro_manage.json */; };
@@ -1307,6 +1308,7 @@
 		7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNSummaryChainModel.swift; sourceTree = "<group>"; };
 		7E72917727F193FC00ADF721 /* SwitchChainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainCell.swift; sourceTree = "<group>"; };
 		7E72917827F193FC00ADF721 /* SwitchChainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainCell.xib; sourceTree = "<group>"; };
+		7E72917B27F1B36100ADF721 /* ChainType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainType.swift; sourceTree = "<group>"; };
 		7E8C62D6271D319200A6C9DB /* ClaimRewardsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRewardsController.swift; sourceTree = "<group>"; };
 		7E8C62D7271D319200A6C9DB /* ClaimRewardsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClaimRewardsController.xib; sourceTree = "<group>"; };
 		7E913AF5273CF6D900B6E67C /* intro_manage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_manage.json; sourceTree = "<group>"; };
@@ -2945,6 +2947,7 @@
 				25CC0AA32058F18A0009D0D5 /* Web3Swift */,
 				25CC0A952057DD4E0009D0D5 /* KNExternalProvider.swift */,
 				25FCB18B2100405A00F030A8 /* KNGeneralProvider.swift */,
+				7E72917B27F1B36100ADF721 /* ChainType.swift */,
 			);
 			path = External;
 			sourceTree = "<group>";
@@ -5486,6 +5489,7 @@
 				252B174B20D3A0CE005B282D /* KNCustomToolbar.swift in Sources */,
 				29E14FD11F7F457D00185568 /* TransactionsStorage.swift in Sources */,
 				C3ED1DD82616F7540024970C /* Notifications.swift in Sources */,
+				7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */,
 				C30292F0260317EA001929E1 /* MarketingPartnerCollectionViewCell.swift in Sources */,
 				C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */,
 				25CC0A912057D7340009D0D5 /* KNLoadBalanceCoordinator.swift in Sources */,
