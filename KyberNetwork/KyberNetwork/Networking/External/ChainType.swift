@@ -203,25 +203,6 @@ enum ChainType: Codable, CaseIterable {
     }
   }
 
-  func chainFullName() -> String {
-    switch self {
-    case .eth:
-     return "Ethereum"
-    case .bsc:
-      return "Binance Smart Chain(BSC)"
-    case .polygon:
-      return "Polygon(Matic)"
-    case .avalanche:
-      return "Avalanche"
-    case .fantom:
-      return "Fantom"
-    case .cronos:
-      return "Cronos"
-    case .arbitrum:
-      return "Arbitrum"
-    }
-  }
-
   func chainIcon() -> UIImage? {
     switch self {
     case .eth:

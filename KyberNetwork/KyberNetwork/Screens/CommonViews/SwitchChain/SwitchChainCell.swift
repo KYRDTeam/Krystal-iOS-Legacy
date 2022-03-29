@@ -26,7 +26,7 @@ class SwitchChainCell: UITableViewCell {
   
   func configCell(chain: ChainType, isSelected: Bool) {
     self.chainIcon.image = chain.chainIcon()
-    self.chainNameLabel.text = chain.chainFullName()
+    self.chainNameLabel.text = chain.chainName()
     self.markIcon.isHidden = !isSelected
     self.cellBackgroundView.backgroundColor = isSelected ? UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2) : .clear
   }
