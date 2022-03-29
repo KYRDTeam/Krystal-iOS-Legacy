@@ -229,25 +229,6 @@ enum ChainType: Codable, CaseIterable {
     return KNTrackerRateStorage.shared.getPriceWithAddress(self.customRPC().quoteTokenAddress)
   }
 
-  func priceAlertMessage() -> String {
-    switch self {
-    case .eth:
-      return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
-    case .bsc:
-      return "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised()
-    case .polygon:
-      return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
-    case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
-    case .cronos:
-      return "There.is.a.difference.between.the.estimated.price.cronos".toBeLocalised()
-    case .fantom:
-      return "There.is.a.difference.between.the.estimated.price.fantom".toBeLocalised()
-    case .arbitrum:
-      return "There.is.a.difference.between.the.estimated.price.arbitrum".toBeLocalised()
-    }
-  }
-
   func getChainDBPath() -> String {
     switch self {
     case .arbitrum:

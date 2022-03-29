@@ -81,7 +81,7 @@ class KNGeneralProvider {
   }
 
   var priceAlertMessage: String {
-    return self.currentChain.priceAlertMessage()
+    return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
   }
 
   var web3Swift: Web3Swift {
