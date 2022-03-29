@@ -22,7 +22,6 @@ enum KNSettingsTabViewEvent {
   case linkedIn
   case reportBugs
   case rateOurApp
-  case liveChat
   case addCustomToken
   case manangeCustomToken
   case termOfUse
@@ -164,10 +163,6 @@ class KNSettingsTabViewController: KNBaseViewController {
 
   @IBAction func rateOurAppButtonPressed(_ sender: Any) {
     self.delegate?.settingsTabViewController(self, run: .rateOurApp)
-  }
-
-  @IBAction func liveChatButtonPressed(_ sender: UIButton) {
-    self.delegate?.settingsTabViewController(self, run: .liveChat)
   }
   
   @IBAction func addCustomTokenTapped(_ sender: UIButton) {
