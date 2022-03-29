@@ -161,14 +161,8 @@ enum ChainType: Codable, CaseIterable {
       return "XVS"
     case .polygon:
       return "COMP"
-    case .avalanche:
-      return "" //TODO: wait for compound symbol
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
+    default:
+        return ""
     }
   }
 
@@ -180,14 +174,8 @@ enum ChainType: Codable, CaseIterable {
       return UIImage(named: "venus_icon")
     case .polygon:
       return UIImage(named: "comp_icon")
-    case .avalanche:
+    default:
       return UIImage(named: "") //TODO: wait for compound icon
-    case .cronos:
-      return UIImage(named: "")
-    case .fantom:
-      return UIImage(named: "")
-    case .arbitrum:
-      return UIImage(named: "")
     }
   }
 
@@ -207,13 +195,7 @@ enum ChainType: Codable, CaseIterable {
       return KNSecret.bscscanAPIKey
     case .polygon:
       return KNSecret.polygonscanAPIKey
-    case .avalanche:
-      return "" //TODO: wait for avalance api key
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
+    default:
       return ""
     }
   }
@@ -224,77 +206,27 @@ enum ChainType: Codable, CaseIterable {
       return "Compound"
     case .bsc:
       return "Venus"
-    case .polygon:
-      return ""
-    case .avalanche:
-      return ""
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
+    default:
       return ""
     }
   }
 
   func quoteTokenObject() -> TokenObject {
-    switch self {
-    case .eth:
-      return KNSupportedTokenStorage.shared.ethToken
-    case .bsc:
-      return KNSupportedTokenStorage.shared.bnbToken
-    case .polygon:
-      return KNSupportedTokenStorage.shared.maticToken
-    case .avalanche:
-      return KNSupportedTokenStorage.shared.avaxToken
-    case .cronos:
-      return KNSupportedTokenStorage.shared.cronosToken
-    case .fantom:
-      return KNSupportedTokenStorage.shared.fantomToken
-    case .arbitrum:
-      return KNSupportedTokenStorage.shared.ethToken
-    }
+    let token = KNSupportedTokenStorage.shared.supportedToken.first { (token) -> Bool in
+      return token.symbol == self.customRPC().quoteToken
+    } ?? Token(name: self.customRPC().quoteToken, symbol: self.customRPC().quoteToken, address: self.customRPC().quoteTokenAddress, decimals: 18, logo: self.customRPC().quoteToken.lowercased())
+    return token.toObject()
   }
 
   func otherTokenObject(toToken: TokenObject) -> TokenObject {
     if toToken.isQuoteToken {
-      switch self {
-      case .eth:
-        return KNSupportedTokenStorage.shared.kncToken
-      case .bsc:
-        return KNSupportedTokenStorage.shared.busdToken
-      case .polygon:
-        return KNSupportedTokenStorage.shared.usdcToken
-      case .avalanche:
-        return KNSupportedTokenStorage.shared.usdceToken
-      case .cronos:
-        return KNSupportedTokenStorage.shared.usdcToken
-      case .fantom:
-        return KNSupportedTokenStorage.shared.usdcToken
-      case .arbitrum:
-        return KNSupportedTokenStorage.shared.usdcToken
-      }
+      return self.defaultToSwapToken()
     }
     return self.quoteTokenObject()
   }
 
   func quoteTokenPrice() -> TokenPrice? {
-    switch self {
-    case .eth:
-        return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.ethMainnetPRC.quoteTokenAddress)
-    case .bsc:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.bscMainnetPRC.quoteTokenAddress)
-    case .polygon:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.polygonMainnetPRC.quoteTokenAddress)
-    case .avalanche:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.avalancheMainnetPRC.quoteTokenAddress)
-    case .cronos:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.cronosMainnetRPC.quoteTokenAddress)
-    case .fantom:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.fantomMainnetRPC.quoteTokenAddress)
-    case .arbitrum:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.arbitrumMainnetRPC.quoteTokenAddress)
-    }
+    return KNTrackerRateStorage.shared.getPriceWithAddress(self.customRPC().quoteTokenAddress)
   }
 
   func priceAlertMessage() -> String {
@@ -318,20 +250,10 @@ enum ChainType: Codable, CaseIterable {
 
   func getChainDBPath() -> String {
     switch self {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
     case .arbitrum:
       return "aeth" + "-" + KNEnvironment.default.displayName + "-"
+    default:
+        return self.customRPC().quoteToken.lowercased() + "-" + KNEnvironment.default.displayName + "-"
     }
   }
 

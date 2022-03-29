@@ -6,7 +6,7 @@ import TrustCore
 import BigInt
 
 class KNSupportedTokenStorage {
-  private var supportedToken: [Token]
+  var supportedToken: [Token]
   private var favedTokens: [FavedToken]
   private var customTokens: [Token]
   private var disableTokens: [Token]
