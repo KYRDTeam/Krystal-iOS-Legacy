@@ -57,42 +57,42 @@ enum KNEnvironment: Int {
   var ethRPC: CustomRPC {
     switch self {
     case .ropsten:
-      return Constants.ethRoptenPRC
+      return AllChains.ethRoptenPRC
     case .staging:
-      return Constants.ethStaggingPRC
+      return AllChains.ethStaggingPRC
     default:
-      return Constants.ethMainnetPRC
+      return AllChains.ethMainnetPRC
     }
   }
   
   var bscRPC: CustomRPC {
     switch self {
     case .ropsten:
-      return Constants.bscRoptenPRC
+      return AllChains.bscRoptenPRC
     default:
-      return Constants.bscMainnetPRC
+      return AllChains.bscMainnetPRC
     }
   }
   
   var maticRPC: CustomRPC {
     switch self {
     case .ropsten:
-      return Constants.polygonRoptenPRC
+      return AllChains.polygonRoptenPRC
     default:
-      return Constants.polygonMainnetPRC
+      return AllChains.polygonMainnetPRC
     }
   }
 
   var cronosRPC: CustomRPC {
-    return Constants.cronosMainnetRPC
+    return AllChains.cronosMainnetRPC
   }
 
   var fantomRPC: CustomRPC {
-    return Constants.fantomMainnetRPC
+    return AllChains.fantomMainnetRPC
   }
   
   var arbitrumRPC: CustomRPC {
-    return Constants.arbitrumMainnetRPC
+    return AllChains.arbitrumMainnetRPC
   }
 
   var configFileName: String {

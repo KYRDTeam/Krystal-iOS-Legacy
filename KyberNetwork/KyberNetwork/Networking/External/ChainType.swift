@@ -60,23 +60,23 @@ enum ChainType: Codable, CaseIterable {
 
   static func make(chainID: Int) -> ChainType? {
     if KNEnvironment.default == .ropsten {
-      if chainID == Constants.ethRoptenPRC.chainID {
+      if chainID == AllChains.ethRoptenPRC.chainID {
         return .eth
-      } else if chainID == Constants.bscRoptenPRC.chainID {
+      } else if chainID == AllChains.bscRoptenPRC.chainID {
         return .bsc
-      } else if chainID == Constants.polygonRoptenPRC.chainID {
+      } else if chainID == AllChains.polygonRoptenPRC.chainID {
         return .polygon
-      } else if chainID == Constants.avalancheRoptenPRC.chainID {
+      } else if chainID == AllChains.avalancheRoptenPRC.chainID {
         return .avalanche
       }
     } else {
-      if chainID == Constants.ethMainnetPRC.chainID {
+      if chainID == AllChains.ethMainnetPRC.chainID {
         return .eth
-      } else if chainID == Constants.bscMainnetPRC.chainID {
+      } else if chainID == AllChains.bscMainnetPRC.chainID {
         return .bsc
-      } else if chainID == Constants.polygonMainnetPRC.chainID {
+      } else if chainID == AllChains.polygonMainnetPRC.chainID {
         return .polygon
-      } else if chainID == Constants.avalancheMainnetPRC.chainID {
+      } else if chainID == AllChains.avalancheMainnetPRC.chainID {
         return .avalanche
       }
     }
@@ -168,19 +168,38 @@ enum ChainType: Codable, CaseIterable {
   func proxyAddress() -> String {
     switch self {
     case .eth:
-        return KNEnvironment.default == .ropsten ? Constants.ethRoptenPRC.proxyAddress.lowercased() : Constants.ethMainnetPRC.proxyAddress.lowercased()
+        return KNEnvironment.default == .ropsten ? AllChains.ethRoptenPRC.proxyAddress.lowercased() : AllChains.ethMainnetPRC.proxyAddress.lowercased()
     case .bsc:
-      return KNEnvironment.default == .ropsten ? Constants.bscRoptenPRC.proxyAddress.lowercased() : Constants.bscMainnetPRC.proxyAddress.lowercased()
+      return KNEnvironment.default == .ropsten ? AllChains.bscRoptenPRC.proxyAddress.lowercased() : AllChains.bscMainnetPRC.proxyAddress.lowercased()
     case .polygon:
-      return KNEnvironment.default == .ropsten ? Constants.polygonRoptenPRC.proxyAddress.lowercased() : Constants.polygonMainnetPRC.proxyAddress.lowercased()
+      return KNEnvironment.default == .ropsten ? AllChains.polygonRoptenPRC.proxyAddress.lowercased() : AllChains.polygonMainnetPRC.proxyAddress.lowercased()
     case .avalanche:
-      return KNEnvironment.default == .ropsten ? Constants.avalancheRoptenPRC.proxyAddress.lowercased() : Constants.avalancheMainnetPRC.proxyAddress.lowercased()
+      return KNEnvironment.default == .ropsten ? AllChains.avalancheRoptenPRC.proxyAddress.lowercased() : AllChains.avalancheMainnetPRC.proxyAddress.lowercased()
     case .cronos:
-      return Constants.cronosMainnetRPC.proxyAddress.lowercased()
+      return AllChains.cronosMainnetRPC.proxyAddress.lowercased()
     case .fantom:
-      return Constants.fantomMainnetRPC.proxyAddress.lowercased()
+      return AllChains.fantomMainnetRPC.proxyAddress.lowercased()
     case .arbitrum:
-      return Constants.arbitrumMainnetRPC.proxyAddress.lowercased()
+      return AllChains.arbitrumMainnetRPC.proxyAddress.lowercased()
+    }
+  }
+  
+  func getChainId() -> Int {
+    switch self {
+    case .eth:
+        return KNEnvironment.default == .ropsten ? AllChains.ethRoptenPRC.chainID : AllChains.ethMainnetPRC.chainID
+    case .bsc:
+      return KNEnvironment.default == .ropsten ? AllChains.bscRoptenPRC.chainID : AllChains.bscMainnetPRC.chainID
+    case .polygon:
+      return KNEnvironment.default == .ropsten ? AllChains.polygonRoptenPRC.chainID : AllChains.polygonMainnetPRC.chainID
+    case .avalanche:
+      return KNEnvironment.default == .ropsten ? AllChains.avalancheRoptenPRC.chainID : AllChains.avalancheMainnetPRC.chainID
+    case .cronos:
+      return AllChains.cronosMainnetRPC.chainID
+    case .fantom:
+      return AllChains.fantomMainnetRPC.chainID
+    case .arbitrum:
+      return AllChains.arbitrumMainnetRPC.chainID
     }
   }
 
@@ -380,19 +399,19 @@ enum ChainType: Codable, CaseIterable {
   func quoteTokenPrice() -> TokenPrice? {
     switch self {
     case .eth:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.ethAddress)
+        return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.ethMainnetPRC.quoteTokenAddress)
     case .bsc:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.bnbAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.bscMainnetPRC.quoteTokenAddress)
     case .polygon:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.polygonMainnetPRC.quoteTokenAddress)
     case .avalanche:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.avalancheMainnetPRC.quoteTokenAddress)
     case .cronos:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.cronosAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.cronosMainnetRPC.quoteTokenAddress)
     case .fantom:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.fantomAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.fantomMainnetRPC.quoteTokenAddress)
     case .arbitrum:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.arbitrumAddress)
+      return KNTrackerRateStorage.shared.getPriceWithAddress(AllChains.arbitrumMainnetRPC.quoteTokenAddress)
     }
   }
 

@@ -128,7 +128,7 @@ class BalanceStorage {
   }
   
   func balanceBNB() -> String {
-    return self.balanceForAddress(Constants.bnbAddress)?.balance ?? ""
+    return self.balanceForAddress(AllChains.bscMainnetPRC.quoteTokenAddress)?.balance ?? ""
   }
 
   func getBalanceETHBigInt() -> BigInt {
@@ -138,7 +138,7 @@ class BalanceStorage {
   func getBalanceBNBBigInt() -> BigInt {
     return BigInt(self.balanceBNB()) ?? BigInt(0)
   }
-  
+
   func getTotalAssetBalanceUSD(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
     let tokens = KNSupportedTokenStorage.shared.allActiveTokens

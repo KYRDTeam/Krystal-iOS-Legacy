@@ -160,7 +160,7 @@ extension KNExchangeTokenCoordinator {
       return
     }
 
-    let chainId = Int(chainIdString) ?? Constants.ethMainnetPRC.chainID
+    let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
     //switch chain if need
     if KNGeneralProvider.shared.customRPC.chainID != chainId {
       self.rootViewController.coordinatorShouldShowSwitchChainPopup(chainId: chainId)
@@ -173,34 +173,9 @@ extension KNExchangeTokenCoordinator {
 
   func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
     // default token
-    var fromToken = KNSupportedTokenStorage.shared.ethToken
-    var toToken = KNSupportedTokenStorage.shared.kncToken
-    switch chainId {
-    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.bnbToken
-        toToken = KNSupportedTokenStorage.shared.busdToken
-    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.maticToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.avaxToken
-        toToken = KNSupportedTokenStorage.shared.usdceToken
-    case Constants.fantomMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.fantomToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.cronosMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.cronosToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.arbitrumMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    default:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    }
+    var fromToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    var toToken = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
+
     var newAddress: [String] = []
     guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)

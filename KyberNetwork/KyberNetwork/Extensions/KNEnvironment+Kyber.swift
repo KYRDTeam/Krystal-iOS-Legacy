@@ -11,9 +11,9 @@ extension KNEnvironment {
   var avalancheRPC: CustomRPC {
     switch self {
     case .ropsten:
-      return Constants.avalancheRoptenPRC
+      return AllChains.avalancheRoptenPRC
     default:
-      return Constants.avalancheMainnetPRC
+      return AllChains.avalancheMainnetPRC
     }
   }
 }

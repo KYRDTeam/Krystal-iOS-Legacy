@@ -72,24 +72,13 @@ class KNSummaryChainModel: Codable {
   }
 
   func chainType() -> ChainType {
-    switch chainId {
-    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
-      return .eth
-    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
-      return .bsc
-    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
-      return .polygon
-    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
-      return .avalanche
-    case Constants.fantomMainnetRPC.chainID:
-      return .fantom
-    case Constants.cronosMainnetRPC.chainID:
-      return .cronos
-    case Constants.arbitrumMainnetRPC.chainID:
-      return .arbitrum
-    default:
-      return .avalanche
+    var chainType: ChainType = .eth
+    ChainType.allCases.forEach { chain in
+      if chain.getChainId() == chainId {
+        chainType = chain
+      }
     }
+    return chainType
   }
   
   static func defaultValue(chainId: Int) -> KNSummaryChainModel {
