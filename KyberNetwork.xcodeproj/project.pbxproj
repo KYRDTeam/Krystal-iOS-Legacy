@@ -4557,7 +4557,7 @@
 				29282B511F7629DB0067F88D /* Run SwiftLint */,
 				250CA1EB225B3FC200DF28A4 /* Embed Frameworks */,
 				C379417E262816E100FBCA14 /* Embed App Extensions */,
-				C3D6996F2641454C004B34E1 /* ShellScript */,
+				C3D6996F2641454C004B34E1 /* Upload dSYMs */,
 			);
 			buildRules = (
 			);
@@ -5075,7 +5075,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C3D6996F2641454C004B34E1 /* ShellScript */ = {
+		C3D6996F2641454C004B34E1 /* Upload dSYMs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5083,7 +5083,10 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist",
 			);
+			name = "Upload dSYMs";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -5932,10 +5935,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -5965,10 +5968,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
