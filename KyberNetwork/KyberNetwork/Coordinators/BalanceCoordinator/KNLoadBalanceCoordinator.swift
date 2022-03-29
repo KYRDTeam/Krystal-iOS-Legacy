@@ -44,7 +44,6 @@ class KNLoadBalanceCoordinator {
       name: "load-balance-request",
       operation: "load-balance-operation"
     )
-    let traceBalance = PerformanceUtil.createTrace("balance_trace")
 
     let group = DispatchGroup()
     group.enter()
@@ -95,7 +94,6 @@ class KNLoadBalanceCoordinator {
     }
 
     group.notify(queue: .global()) {
-      traceBalance?.stop()
       tx.finish()
     }
   }

@@ -95,7 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
-    self.setupFirebase()
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
   }
