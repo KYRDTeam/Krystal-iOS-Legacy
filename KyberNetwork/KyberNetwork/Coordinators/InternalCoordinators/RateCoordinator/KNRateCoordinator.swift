@@ -138,7 +138,7 @@ class KNRateCoordinator {
 
   func loadTokenPrice() {
 
-    guard !self.isLoadingExchangeTokenRates || self.requestingChain != KNGeneralProvider.shared.currentChain else { return }
+    guard !(self.isLoadingExchangeTokenRates && self.requestingChain == KNGeneralProvider.shared.currentChain) else { return }
     let tx = SentrySDK.startTransaction(
       name: "load-token-price-request",
       operation: "load-token-price-operation"
