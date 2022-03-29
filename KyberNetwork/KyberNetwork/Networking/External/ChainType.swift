@@ -59,28 +59,13 @@ enum ChainType: Codable, CaseIterable {
   }
 
   static func make(chainID: Int) -> ChainType? {
-    if KNEnvironment.default == .ropsten {
-      if chainID == AllChains.ethRoptenPRC.chainID {
-        return .eth
-      } else if chainID == AllChains.bscRoptenPRC.chainID {
-        return .bsc
-      } else if chainID == AllChains.polygonRoptenPRC.chainID {
-        return .polygon
-      } else if chainID == AllChains.avalancheRoptenPRC.chainID {
-        return .avalanche
-      }
-    } else {
-      if chainID == AllChains.ethMainnetPRC.chainID {
-        return .eth
-      } else if chainID == AllChains.bscMainnetPRC.chainID {
-        return .bsc
-      } else if chainID == AllChains.polygonMainnetPRC.chainID {
-        return .polygon
-      } else if chainID == AllChains.avalancheMainnetPRC.chainID {
-        return .avalanche
+    var chainType: ChainType?
+    ChainType.allCases.forEach { chain in
+      if chain.getChainId() == chainID {
+        chainType = chain
       }
     }
-    return nil
+    return chainType
   }
 
   func customRPC() -> CustomRPC {
@@ -120,7 +105,7 @@ enum ChainType: Codable, CaseIterable {
       return .eth
     }
   }
-  
+
   func isSupportedEIP1559() -> Bool {
     switch self {
     case .eth, .avalanche, .polygon:
@@ -129,7 +114,7 @@ enum ChainType: Codable, CaseIterable {
       return false
     }
   }
-  
+
   func currentChainPathName() -> String {
     switch self {
     case .eth:
@@ -183,7 +168,7 @@ enum ChainType: Codable, CaseIterable {
       return AllChains.arbitrumMainnetRPC.proxyAddress.lowercased()
     }
   }
-  
+
   func getChainId() -> Int {
     switch self {
     case .eth:

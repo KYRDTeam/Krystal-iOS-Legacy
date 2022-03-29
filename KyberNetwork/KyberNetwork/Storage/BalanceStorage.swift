@@ -154,7 +154,7 @@ class BalanceStorage {
       guard token.getBalanceBigInt() > BigInt(0), !lendingSymbols.contains(token.symbol.lowercased()) else {
         return
       }
-      
+
       let balance = token.getBalanceBigInt()
       let rateBigInt = BigInt(token.getTokenLastPrice(currency) * pow(10.0, 18.0))
       let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)

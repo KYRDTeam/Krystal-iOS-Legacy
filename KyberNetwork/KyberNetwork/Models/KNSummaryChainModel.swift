@@ -72,13 +72,7 @@ class KNSummaryChainModel: Codable {
   }
 
   func chainType() -> ChainType {
-    var chainType: ChainType = .eth
-    ChainType.allCases.forEach { chain in
-      if chain.getChainId() == chainId {
-        chainType = chain
-      }
-    }
-    return chainType
+    return ChainType.make(chainID: chainId) ?? .eth
   }
   
   static func defaultValue(chainId: Int) -> KNSummaryChainModel {

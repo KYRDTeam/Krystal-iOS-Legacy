@@ -890,22 +890,10 @@ class KSwapViewModel {
 
 extension KSwapViewModel {
   func getChain(chainId: Int) -> ChainType? {
-    var chainType: ChainType?
-    ChainType.allCases.forEach { chain in
-      if chain.getChainId() == chainId {
-        chainType = chain
-      }
-    }
-    return chainType
+    return ChainType.make(chainID: chainId)
   }
 
   func chainName(chainId: Int) -> String? {
-    var chainType: ChainType?
-    ChainType.allCases.forEach { chain in
-      if chain.getChainId() == chainId {
-        chainType = chain
-      }
-    }
-    return chainType?.chainName()
+    return ChainType.make(chainID: chainId)?.chainName()
   }
 }
