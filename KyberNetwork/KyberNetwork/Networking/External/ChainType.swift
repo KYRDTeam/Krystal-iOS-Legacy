@@ -129,33 +129,40 @@ enum ChainType: Codable, CaseIterable {
       return false
     }
   }
-
-  func chainPath() -> String {
+  
+  func currentChainPathName() -> String {
     switch self {
     case .eth:
       if KNEnvironment.default == .ropsten {
-        return "/ropsten"
+        return "ropsten"
       }
-      return "/ethereum"
+      return "ethereum"
     case .bsc:
       if KNEnvironment.default == .ropsten {
-        return "/bsctestnet"
+        return "bsctestnet"
       }
-      return "/bsc"
+      return "bsc"
     case .polygon:
       if KNEnvironment.default == .ropsten {
-        return "/mumbai"
+        return "mumbai"
       }
-      return "/polygon"
+      return "polygon"
     case .avalanche:
-      return "/avalanche"
+      if KNEnvironment.default == .ropsten {
+        return "fuji"
+      }
+      return "avalanche"
     case .cronos:
-      return "/cronos"
+      return "cronos"
     case .fantom:
-      return "/fantom"
+      return "fantom"
     case .arbitrum:
-      return "/arbitrum"
+      return "arbitrum"
     }
+  }
+
+  func chainPath() -> String {
+    return "/\(self.currentChainPathName())"
   }
 
   func proxyAddress() -> String {

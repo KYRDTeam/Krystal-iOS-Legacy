@@ -275,9 +275,11 @@ enum KNEnvironment: Int {
   }
 
   static var allChainPath: String? {
-    if KNEnvironment.default == .ropsten {
-      return "ropsten,bsctestnet,mumbai,fuji,cronos,fantom,arbitrum"
+    var allChainPath: [String] = []
+    ChainType.allCases.forEach { chain in
+      allChainPath.append(chain.currentChainPathName())
     }
-    return "ethereum,bsc,polygon,avalanche,cronos,fantom,arbitrum"
+    let allChainPathString = allChainPath.joined(separator: ",")
+    return allChainPathString
   }
 }
