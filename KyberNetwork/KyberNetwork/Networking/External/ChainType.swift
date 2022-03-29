@@ -103,20 +103,10 @@ enum ChainType: Codable, CaseIterable {
 
   func quoteCurrency() -> CurrencyMode {
     switch self {
-    case .eth:
+    case .eth, .arbitrum:
       return .eth
-    case .bsc:
-      return .bnb
-    case .polygon:
-      return .matic
-    case .avalanche:
-      return .avax
-    case .cronos:
-      return .cro
-    case .fantom:
-      return .ftm
-    case .arbitrum:
-      return .eth
+    default:
+      return .quote
     }
   }
 
@@ -288,4 +278,63 @@ enum ChainType: Codable, CaseIterable {
   case cronos
   case fantom
   case arbitrum
+}
+
+enum CurrencyMode: Int {
+  case usd = 0
+  case eth
+  case btc
+  case quote
+  
+  func symbol() -> String {
+    switch self {
+    case .usd:
+      return "$"
+    case .btc:
+      return "₿"
+    case .eth:
+      return "⧫"
+    case .quote:
+      return ""
+    }
+  }
+  
+  func suffixSymbol() -> String {
+    switch self {
+    case .quote:
+      return " \(KNGeneralProvider.shared.currentChain.quoteToken())"
+    default:
+      return ""
+    }
+  }
+
+  func toString() -> String {
+    switch self {
+    case .eth:
+      return "eth"
+    case .usd:
+      return "usd"
+    case .btc:
+      return "btc"
+    case .quote:
+        return KNGeneralProvider.shared.currentChain.quoteToken().lowercased()
+    }
+  }
+
+  func decimalNumber() -> Int {
+    switch self {
+    case .eth:
+      return DecimalNumber.eth
+    case .usd:
+      return DecimalNumber.usd
+    case .btc:
+      return DecimalNumber.btc
+    case .quote:
+      return DecimalNumber.quote
+    }
+  }
+
+  var isQuoteCurrency: Bool {
+    return self == .quote
+  }
 }

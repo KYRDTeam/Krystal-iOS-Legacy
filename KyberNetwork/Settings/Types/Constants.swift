@@ -87,9 +87,5 @@ public struct DecimalNumber {
   public static let eth = 4
   public static let usd = 2
   public static let btc = 5
-  public static let bnb = 4
-  public static let matic = 4
-  public static let avax = 4
-  public static let cro = 4
-  public static let ftm = 4
+  public static let quote = 4
 }

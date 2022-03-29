@@ -108,19 +108,11 @@ class Token: Codable, Equatable, Hashable {
       return price.eth
     case .btc:
       return price.btc
-    case .bnb:
-      return price.bnb
-    case .matic:
-      return price.matic
-    case .avax:
-      return price.avax
-    case .cro:
-      return price.cro
-    case .ftm:
-      return price.ftm
+    default:
+      return price.quote
     }
   }
-  
+
   func getTokenLastPrice(_ mode: CurrencyMode, chainType: ChainType) -> Double {
     let price = self.getTokenPrice(chainType: chainType)
     switch mode {
@@ -130,16 +122,8 @@ class Token: Codable, Equatable, Hashable {
       return price.eth
     case .btc:
       return price.btc
-    case .bnb:
-      return price.bnb
-    case .matic:
-      return price.matic
-    case .avax:
-      return price.avax
-    case .cro:
-      return price.cro
-    case .ftm:
-      return price.ftm
+    default:
+      return price.quote
     }
   }
   
@@ -152,16 +136,8 @@ class Token: Codable, Equatable, Hashable {
       return price.eth24hChange
     case .btc:
       return price.btc24hChange
-    case .bnb:
-      return price.bnb24hChange
-    case .matic:
-      return price.matic24hChange
-    case .avax:
-      return price.avax24hChange
-    case .cro:
-      return price.cro24hChange
-    case .ftm:
-      return price.ftm24hChange
+    default:
+      return price.quote24hChange
     }
   }
 
@@ -174,16 +150,8 @@ class Token: Codable, Equatable, Hashable {
       return price.eth24hVol
     case .btc:
       return price.btc24hVol
-    case .bnb:
-      return price.bnb24hVol
-    case .matic:
-      return price.matic24hVol
-    case .avax:
-      return price.avax24hVol
-    case .cro:
-      return price.cro24hVol
-    case .ftm:
-      return price.ftm24hVol
+    default:
+      return price.quote24hVol
     }
   }
   
@@ -196,16 +164,8 @@ class Token: Codable, Equatable, Hashable {
       return price.ethMarketCap
     case .btc:
       return price.btcMarketCap
-    case .bnb:
-      return price.bnbMarketCap
-    case .matic:
-      return price.maticMarketCap
-    case .avax:
-      return price.avaxMarketCap
-    case .cro:
-      return price.croMarketCap
-    case .ftm:
-      return price.ftmMarketCap
+    default:
+      return price.quoteMarketCap
     }
   }
   
@@ -245,97 +205,51 @@ class TokenPrice: Codable {
   var usdMarketCap: Double
   var usd24hVol: Double
   var usd24hChange: Double
-  var eth: Double
-  var ethMarketCap: Double
-  var eth24hVol: Double
-  var eth24hChange: Double
   var btc: Double
   var btcMarketCap: Double
   var btc24hVol: Double
   var btc24hChange: Double
-  var bnb: Double
-  var bnbMarketCap: Double
-  var bnb24hVol: Double
-  var bnb24hChange: Double
-  var matic: Double
-  var maticMarketCap: Double
-  var matic24hVol: Double
-  var matic24hChange: Double
-  var avax: Double
-  var avaxMarketCap: Double
-  var avax24hVol: Double
-  var avax24hChange: Double
-  var cro: Double
-  var croMarketCap: Double
-  var cro24hVol: Double
-  var cro24hChange: Double
-  var ftm: Double
-  var ftmMarketCap: Double
-  var ftm24hVol: Double
-  var ftm24hChange: Double
-  
+  var eth: Double
+  var ethMarketCap: Double
+  var eth24hVol: Double
+  var eth24hChange: Double
+  var quote: Double
+  var quoteMarketCap: Double
+  var quote24hVol: Double
+  var quote24hChange: Double
+
   init(address: String, quotes: [String: Quote]) {
     self.address = address
-    
     self.usd = quotes["usd"]?.price ?? 0.0
     self.usdMarketCap = quotes["usd"]?.marketCap ?? 0.0
     self.usd24hVol = quotes["usd"]?.volume24H ?? 0.0
     self.usd24hChange = quotes["usd"]?.price24HChangePercentage ?? 0.0
-    
+    self.btc = quotes["btc"]?.price ?? 0.0
+    self.btcMarketCap = quotes["btc"]?.marketCap ?? 0.0
+    self.btc24hVol = quotes["btc"]?.volume24H ?? 0.0
+    self.btc24hChange = quotes["btc"]?.price24HChangePercentage ?? 0.0
     self.eth = quotes["eth"]?.price ?? 0.0
     self.ethMarketCap = quotes["eth"]?.marketCap ?? 0.0
     self.eth24hVol = quotes["eth"]?.volume24H ?? 0.0
     self.eth24hChange = quotes["eth"]?.price24HChangePercentage ?? 0.0
     
-    self.btc = quotes["btc"]?.price ?? 0.0
-    self.btcMarketCap = quotes["btc"]?.marketCap ?? 0.0
-    self.btc24hVol = quotes["btc"]?.volume24H ?? 0.0
-    self.btc24hChange = quotes["btc"]?.price24HChangePercentage ?? 0.0
-    
-    self.bnb = quotes["bnb"]?.price ?? 0.0
-    self.bnbMarketCap = quotes["bnb"]?.marketCap ?? 0.0
-    self.bnb24hVol = quotes["bnb"]?.volume24H ?? 0.0
-    self.bnb24hChange = quotes["bnb"]?.price24HChangePercentage ?? 0.0
-    
-    self.matic = quotes["matic"]?.price ?? 0.0
-    self.maticMarketCap = quotes["matic"]?.marketCap ?? 0.0
-    self.matic24hVol = quotes["matic"]?.volume24H ?? 0.0
-    self.matic24hChange = quotes["matic"]?.price24HChangePercentage ?? 0.0
-    
-    self.avax = quotes["avax"]?.price ?? 0.0
-    self.avaxMarketCap = quotes["avax"]?.marketCap ?? 0.0
-    self.avax24hVol = quotes["avax"]?.volume24H ?? 0.0
-    self.avax24hChange = quotes["avax"]?.price24HChangePercentage ?? 0.0
-    
-    self.cro = quotes["cro"]?.price ?? 0.0
-    self.croMarketCap = quotes["cro"]?.marketCap ?? 0.0
-    self.cro24hVol = quotes["cro"]?.volume24H ?? 0.0
-    self.cro24hChange = quotes["cro"]?.price24HChangePercentage ?? 0.0
-    
-    self.ftm = quotes["ftm"]?.price ?? 0.0
-    self.ftmMarketCap = quotes["ftm"]?.marketCap ?? 0.0
-    self.ftm24hVol = quotes["ftm"]?.volume24H ?? 0.0
-    self.ftm24hChange = quotes["ftm"]?.price24HChangePercentage ?? 0.0
+    let quote = KNGeneralProvider.shared.currentChain.quoteToken().lowercased()
+    self.quote = quotes[quote]?.price ?? 0.0
+    self.quoteMarketCap = quotes[quote]?.marketCap ?? 0.0
+    self.quote24hVol = quotes[quote]?.volume24H ?? 0.0
+    self.quote24hChange = quotes[quote]?.price24HChangePercentage ?? 0.0
   }
   
   func priceWithCurrency(currencyMode: CurrencyMode) -> Double {
     switch currencyMode {
-      case .usd:
-        return self.usd
-      case .eth:
-        return self.eth
-      case .btc:
-        return self.btc
-      case .bnb:
-        return self.bnb
-      case .matic:
-        return self.matic
-      case .avax:
-        return self.avax
-      case .cro:
-        return self.cro
-      case .ftm:
-        return self.ftm
+    case .usd:
+      return self.usd
+    case .eth:
+      return self.eth
+    case .btc:
+      return self.btc
+    default:
+      return self.quote
     }
   }
 }

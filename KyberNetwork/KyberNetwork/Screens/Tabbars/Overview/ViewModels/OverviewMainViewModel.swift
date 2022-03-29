@@ -155,7 +155,7 @@ enum RightMode: Codable {
       try container.encode(2, forKey: .rawValue)
     }
   }
-  
+
   case lastPrice
   case value
   case ch24
@@ -167,105 +167,6 @@ enum MarketSortType {
   case vol(des: Bool)
   case price(des: Bool)
   case cap(des: Bool)
-}
-
-enum CurrencyMode: Int {
-  case usd = 0
-  case eth
-  case btc
-  case bnb
-  case matic
-  case avax
-  case cro
-  case ftm
-  
-  func symbol() -> String {
-    switch self {
-    case .usd:
-      return "$"
-    case .btc:
-      return "₿"
-    case .eth:
-      return "⧫"
-    case .bnb:
-      return ""
-    case .matic:
-      return ""
-    case .avax:
-      return ""
-    case .cro:
-      return ""
-    case .ftm:
-      return ""
-    }
-  }
-  
-  func suffixSymbol() -> String {
-    switch self {
-    case .usd:
-      return ""
-    case .btc:
-      return ""
-    case .eth:
-      return ""
-    case .bnb:
-      return " BNB"
-    case .matic:
-      return " MATIC"
-    case .avax:
-      return " AVAX"
-    case .cro:
-      return " CRO"
-    case .ftm:
-      return " FTM"
-    }
-  }
-  
-  func toString() -> String {
-    switch self {
-    case .eth:
-      return "eth"
-    case .usd:
-      return "usd"
-    case .btc:
-      return "btc"
-    case .bnb:
-      return "bnb"
-    case .matic:
-      return "matic"
-    case .avax:
-      return "avax"
-    case .cro:
-      return "cro"
-    case .ftm:
-      return "ftm"
-    }
-  }
-
-  func decimalNumber() -> Int {
-    switch self {
-    case .eth:
-      return DecimalNumber.eth
-    case .usd:
-      return DecimalNumber.usd
-    case .btc:
-      return DecimalNumber.btc
-    case .bnb:
-      return DecimalNumber.bnb
-    case .matic:
-      return DecimalNumber.matic
-    case .avax:
-      return DecimalNumber.avax
-    case .cro:
-      return DecimalNumber.cro
-    case .ftm:
-      return DecimalNumber.ftm
-    }
-  }
-  
-  var isQuoteCurrency: Bool {
-    return self == .eth || self == .bnb || self == .matic || self == .avax || self == .cro || self == .ftm
-  }
 }
 
 class OverviewMainViewModel {
