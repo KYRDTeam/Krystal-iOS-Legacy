@@ -290,7 +290,14 @@ class KNRateCoordinator {
     let group = DispatchGroup()
     addressesTrucked.forEach { (element) in
       group.enter()
-      provider.request(.getOverviewMarket(addresses: element, quotes: ["eth", "btc", "usd", "bnb", "matic", "avax", "ftm", "cro"])) { result in
+      var allChainQuote: [String] = ["btc", "usd"]
+      ChainType.allCases.forEach { chain in
+        if !allChainQuote.contains(chain.quoteToken().lowercased()) {
+          allChainQuote.append(chain.quoteToken().lowercased())
+        }
+      }
+      
+      provider.request(.getOverviewMarket(addresses: element, quotes: allChainQuote)) { result in
         if case .success(let resp) = result {
           let decoder = JSONDecoder()
           do {
