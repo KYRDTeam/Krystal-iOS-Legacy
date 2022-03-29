@@ -53,47 +53,6 @@ enum KNEnvironment: Int {
     let chain = KNGeneralProvider.shared.quoteToken.lowercased()
     return chain + "-" + self.displayName + "-"
   }
-  
-  var ethRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return AllChains.ethRoptenPRC
-    case .staging:
-      return AllChains.ethStaggingPRC
-    default:
-      return AllChains.ethMainnetPRC
-    }
-  }
-  
-  var bscRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return AllChains.bscRoptenPRC
-    default:
-      return AllChains.bscMainnetPRC
-    }
-  }
-  
-  var maticRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return AllChains.polygonRoptenPRC
-    default:
-      return AllChains.polygonMainnetPRC
-    }
-  }
-
-  var cronosRPC: CustomRPC {
-    return AllChains.cronosMainnetRPC
-  }
-
-  var fantomRPC: CustomRPC {
-    return AllChains.fantomMainnetRPC
-  }
-  
-  var arbitrumRPC: CustomRPC {
-    return AllChains.arbitrumMainnetRPC
-  }
 
   var configFileName: String {
     switch self {

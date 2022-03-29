@@ -5,7 +5,7 @@ import Foundation
 enum ValidStatus: Equatable {
   case success
   case error(description: String)
-  
+
   static func == (lhs: ValidStatus, rhs: ValidStatus) -> Bool {
     switch (lhs, rhs) {
     case (.success, .success):

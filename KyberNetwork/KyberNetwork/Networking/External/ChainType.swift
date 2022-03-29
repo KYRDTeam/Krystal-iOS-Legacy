@@ -71,19 +71,33 @@ enum ChainType: Codable, CaseIterable {
   func customRPC() -> CustomRPC {
     switch self {
     case .eth:
-      return KNEnvironment.default.ethRPC
+      if KNEnvironment.default == .ropsten {
+        return AllChains.ethRoptenPRC
+      } else if KNEnvironment.default == .staging {
+        return AllChains.ethStaggingPRC
+      }
+      return AllChains.ethMainnetPRC
     case .bsc:
-      return KNEnvironment.default.bscRPC
+      if KNEnvironment.default == .ropsten {
+        return AllChains.bscRoptenPRC
+      }
+      return AllChains.bscMainnetPRC
     case .polygon:
-      return KNEnvironment.default.maticRPC
+      if KNEnvironment.default == .ropsten {
+        return AllChains.polygonRoptenPRC
+      }
+      return AllChains.polygonMainnetPRC
     case .avalanche:
-      return KNEnvironment.default.avalancheRPC
+      if KNEnvironment.default == .ropsten {
+        return AllChains.avalancheRoptenPRC
+      }
+      return AllChains.avalancheMainnetPRC
     case .cronos:
-      return KNEnvironment.default.cronosRPC
+        return AllChains.cronosMainnetRPC
     case .fantom:
-      return KNEnvironment.default.fantomRPC
+        return AllChains.fantomMainnetRPC
     case .arbitrum:
-      return KNEnvironment.default.arbitrumRPC
+        return AllChains.arbitrumMainnetRPC
     }
   }
 
@@ -116,34 +130,7 @@ enum ChainType: Codable, CaseIterable {
   }
 
   func currentChainPathName() -> String {
-    switch self {
-    case .eth:
-      if KNEnvironment.default == .ropsten {
-        return "ropsten"
-      }
-      return "ethereum"
-    case .bsc:
-      if KNEnvironment.default == .ropsten {
-        return "bsctestnet"
-      }
-      return "bsc"
-    case .polygon:
-      if KNEnvironment.default == .ropsten {
-        return "mumbai"
-      }
-      return "polygon"
-    case .avalanche:
-      if KNEnvironment.default == .ropsten {
-        return "fuji"
-      }
-      return "avalanche"
-    case .cronos:
-      return "cronos"
-    case .fantom:
-      return "fantom"
-    case .arbitrum:
-      return "arbitrum"
-    }
+    return self.customRPC().apiChainPath
   }
 
   func chainPath() -> String {
@@ -151,79 +138,19 @@ enum ChainType: Codable, CaseIterable {
   }
 
   func proxyAddress() -> String {
-    switch self {
-    case .eth:
-        return KNEnvironment.default == .ropsten ? AllChains.ethRoptenPRC.proxyAddress.lowercased() : AllChains.ethMainnetPRC.proxyAddress.lowercased()
-    case .bsc:
-      return KNEnvironment.default == .ropsten ? AllChains.bscRoptenPRC.proxyAddress.lowercased() : AllChains.bscMainnetPRC.proxyAddress.lowercased()
-    case .polygon:
-      return KNEnvironment.default == .ropsten ? AllChains.polygonRoptenPRC.proxyAddress.lowercased() : AllChains.polygonMainnetPRC.proxyAddress.lowercased()
-    case .avalanche:
-      return KNEnvironment.default == .ropsten ? AllChains.avalancheRoptenPRC.proxyAddress.lowercased() : AllChains.avalancheMainnetPRC.proxyAddress.lowercased()
-    case .cronos:
-      return AllChains.cronosMainnetRPC.proxyAddress.lowercased()
-    case .fantom:
-      return AllChains.fantomMainnetRPC.proxyAddress.lowercased()
-    case .arbitrum:
-      return AllChains.arbitrumMainnetRPC.proxyAddress.lowercased()
-    }
+    return self.customRPC().proxyAddress.lowercased()
   }
 
   func getChainId() -> Int {
-    switch self {
-    case .eth:
-        return KNEnvironment.default == .ropsten ? AllChains.ethRoptenPRC.chainID : AllChains.ethMainnetPRC.chainID
-    case .bsc:
-      return KNEnvironment.default == .ropsten ? AllChains.bscRoptenPRC.chainID : AllChains.bscMainnetPRC.chainID
-    case .polygon:
-      return KNEnvironment.default == .ropsten ? AllChains.polygonRoptenPRC.chainID : AllChains.polygonMainnetPRC.chainID
-    case .avalanche:
-      return KNEnvironment.default == .ropsten ? AllChains.avalancheRoptenPRC.chainID : AllChains.avalancheMainnetPRC.chainID
-    case .cronos:
-      return AllChains.cronosMainnetRPC.chainID
-    case .fantom:
-      return AllChains.fantomMainnetRPC.chainID
-    case .arbitrum:
-      return AllChains.arbitrumMainnetRPC.chainID
-    }
+    return self.customRPC().chainID
   }
 
   func chainName() -> String {
-    switch self {
-    case .eth:
-     return "Ethereum"
-    case .bsc:
-      return "Binance Smart Chain"
-    case .polygon:
-      return "Polygon"
-    case .avalanche:
-      return "Avalanche"
-    case .fantom:
-      return "Fantom"
-    case .cronos:
-      return "Cronos"
-    case .arbitrum:
-      return "Arbitrum"
-    }
+    return self.self.customRPC().name
   }
 
   func chainIcon() -> UIImage? {
-    switch self {
-    case .eth:
-      return UIImage(named: "chain_eth_icon")
-    case .bsc:
-      return UIImage(named: "chain_bsc_icon")
-    case .polygon:
-      return UIImage(named: "chain_polygon_big_icon")
-    case .avalanche:
-      return UIImage(named: "chain_avax_icon")
-    case .cronos:
-      return UIImage(named: "chain_cronos_icon")
-    case .fantom:
-      return UIImage(named: "chain_fantom_icon")
-    case .arbitrum:
-      return UIImage(named: "chain_arbitrum_icon")
-    }
+    return UIImage(named: self.customRPC().chainIcon)
   }
 
   func compoundSymbol() -> String {
@@ -265,41 +192,11 @@ enum ChainType: Codable, CaseIterable {
   }
 
   func tokenType() -> String {
-    switch self {
-    case .eth:
-      return "ERC20"
-    case .bsc:
-      return "BEP20"
-    case .polygon:
-      return "ERC20"
-    case .avalanche:
-      return "ARC20"
-    case .cronos:
-      return "CRC20"
-    case .fantom:
-      return "ERC20"
-    case .arbitrum:
-      return "ERC20"
-    }
+    return self.customRPC().type
   }
 
   func quoteToken() -> String {
-    switch self {
-    case .eth:
-      return "ETH"
-    case .bsc:
-      return "BNB"
-    case .polygon:
-      return "MATIC"
-    case .avalanche:
-      return "AVAX"
-    case .cronos:
-      return "CRO"
-    case .fantom:
-      return "FTM"
-    case .arbitrum:
-      return "ETH"
-    }
+    return self.customRPC().quoteToken
   }
 
   func apiKey() -> String {
