@@ -33,11 +33,12 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet var sortButtons: [UIButton]!
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-  
   @IBOutlet weak var insestView: UIView!
+  
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
+  let calculatingQueue: DispatchQueue = .global()
 
   init(viewModel: OverviewMainViewModel) {
     self.viewModel = viewModel
@@ -166,7 +167,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
 
   fileprivate func reloadUI() {
-    DispatchQueue.global().async {
+    calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
@@ -328,7 +329,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.session = session
     guard self.isViewLoaded else { return }
     
-    DispatchQueue.global().async {
+    calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
@@ -340,7 +341,7 @@ class OverviewMainViewController: KNBaseViewController {
 
   func coordinatorDidUpdateDidUpdateTokenList() {
     guard self.isViewLoaded else { return }
-    DispatchQueue.global().async {
+    calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
