@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 enum ChainType: Codable, CaseIterable {
   enum Key: CodingKey {
     case rawValue
