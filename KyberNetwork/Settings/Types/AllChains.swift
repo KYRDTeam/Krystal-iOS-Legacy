@@ -235,4 +235,23 @@ public struct AllChains {
     quoteToken: "ETH",
     apiChainPath: "arbitrum"
   )
+  
+  public static let auroraMainnetRPC = CustomRPC (
+    chainID: 1313161554,
+    type: "ERC20",
+    name: "Aurora",
+    symbol: "ETH",
+    endpoint: "https://mainnet.aurora.dev",
+    endpointKyber: "https://aurora.knstats.com/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
+    endpointAlchemy: "https://mainnet.aurora.dev",
+    etherScanEndpoint: "https://aurorascan.dev/",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: "",
+    proxyAddress: "0x864F01c5E46b0712643B956BcAsw607bF883e0dbC5",
+    quoteTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    chainIcon: "chain_aurora_icon",
+    quoteToken: "ETH",
+    apiChainPath: "aurora"
+  )
 }

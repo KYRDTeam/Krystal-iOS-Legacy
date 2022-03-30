@@ -35,6 +35,8 @@ enum ChainType: Codable, CaseIterable {
       self = .fantom
     case 6:
       self = .arbitrum
+    case 7:
+      self = .aurora
     default:
       throw CodingError.unknownValue
     }
@@ -57,6 +59,8 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(5, forKey: .rawValue)
     case .arbitrum:
       try container.encode(6, forKey: .rawValue)
+    case .aurora:
+      try container.encode(7, forKey: .rawValue)
     }
   }
 
@@ -100,6 +104,8 @@ enum ChainType: Codable, CaseIterable {
         return AllChains.fantomMainnetRPC
     case .arbitrum:
         return AllChains.arbitrumMainnetRPC
+    case .aurora:
+      return AllChains.auroraMainnetRPC
     }
   }
 
@@ -246,6 +252,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .arbitrum:
         return KNSupportedTokenStorage.shared.usdcToken
+    case .aurora:
+        return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -280,6 +288,7 @@ enum ChainType: Codable, CaseIterable {
   case cronos
   case fantom
   case arbitrum
+  case aurora
 }
 
 enum CurrencyMode: Int {
@@ -287,7 +296,7 @@ enum CurrencyMode: Int {
   case eth
   case btc
   case quote
-  
+
   func symbol() -> String {
     switch self {
     case .usd:
