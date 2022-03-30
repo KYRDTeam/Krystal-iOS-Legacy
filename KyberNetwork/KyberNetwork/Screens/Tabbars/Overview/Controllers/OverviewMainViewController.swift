@@ -183,7 +183,7 @@ class OverviewMainViewController: KNBaseViewController {
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
-    self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
+    self.currentChainLabel.text = KNGeneralProvider.shared.chainName
   }
 
   fileprivate func updateCh24Button() {
