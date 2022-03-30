@@ -699,6 +699,8 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
+		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39D3FDF26FAE7500021DF8A /* KNEnvironment+Kyber.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FDE26FAE7500021DF8A /* KNEnvironment+Kyber.swift */; };
 		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
@@ -4565,9 +4567,8 @@
 				F291FF6299FBB0600050DA49 /* [CP] Embed Pods Frameworks */,
 				29282B511F7629DB0067F88D /* Run SwiftLint */,
 				250CA1EB225B3FC200DF28A4 /* Embed Frameworks */,
-				D9F645674916A4782560555E /* [CP] Copy Pods Resources */,
 				C379417E262816E100FBCA14 /* Embed App Extensions */,
-				C3D6996F2641454C004B34E1 /* ShellScript */,
+				C3D6996F2641454C004B34E1 /* Upload dSYMs */,
 			);
 			buildRules = (
 			);
@@ -5086,7 +5087,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C3D6996F2641454C004B34E1 /* ShellScript */ = {
+		C3D6996F2641454C004B34E1 /* Upload dSYMs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5094,7 +5095,10 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist",
 			);
+			name = "Upload dSYMs";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -5102,28 +5106,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
-		};
-		D9F645674916A4782560555E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-resources.sh",
-				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FCResources.bundle",
-				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FreshchatModels.bundle",
-				"${PODS_ROOT}/FreshchatSDK/FreshchatSDK/FCLocalization.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FCResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FreshchatModels.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FCLocalization.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KyberNetwork/Pods-KyberNetwork-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		EB2D49CBEF37022D8861D8E0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5157,10 +5139,13 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebasePerformance/FirebasePerformance.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseRemoteConfig/FirebaseRemoteConfig.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
@@ -5184,6 +5169,7 @@
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/StatefulViewController/StatefulViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms/Algorithms.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftChart/SwiftChart.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
@@ -5209,10 +5195,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebasePerformance.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseRemoteConfig.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
@@ -5236,6 +5225,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StatefulViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Algorithms.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftChart.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
@@ -5302,7 +5292,7 @@
 				C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */,
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* (null) in Sources */,
+				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
@@ -5959,10 +5949,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				CURRENT_PROJECT_VERSION = 8;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -5992,10 +5982,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Devops Kyber (YKG7A8A764)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				CURRENT_PROJECT_VERSION = 8;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -6103,7 +6093,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
@@ -6133,7 +6123,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

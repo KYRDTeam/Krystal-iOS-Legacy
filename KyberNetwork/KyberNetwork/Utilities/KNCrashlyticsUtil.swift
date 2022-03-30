@@ -1,6 +1,8 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import FirebaseAnalytics
+import Firebase
+import FirebasePerformance
 
 class KNCrashlyticsUtil {
 
@@ -8,5 +10,14 @@ class KNCrashlyticsUtil {
 //    if !isDebug {
       Analytics.logEvent(name, parameters: customAttributes)
 //    }
+  }
+}
+
+class PerformanceUtil {
+  static func createTrace(_ name: String) -> Trace? {
+    guard FirebaseApp.app() != nil else {
+      return nil
+    }
+    return Performance.startTrace(name: name)
   }
 }
