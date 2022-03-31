@@ -78,10 +78,7 @@ extension SwitchChainViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: SwitchChainCell.kCellID,
-      for: indexPath
-    ) as! SwitchChainCell
+    let cell = tableView.dequeueReusableCell(SwitchChainCell.self, indexPath: indexPath)!
     let chain = self.dataSource[indexPath.row]
     cell.configCell(chain: chain, isSelected: self.selectedChain == chain)
     return cell

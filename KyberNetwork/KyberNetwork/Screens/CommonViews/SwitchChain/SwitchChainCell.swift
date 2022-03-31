@@ -8,7 +8,6 @@
 import UIKit
 
 class SwitchChainCell: UITableViewCell {
-  static let kCellID: String = "SwitchChainCell"
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var markIcon: UIImageView!
   @IBOutlet weak var chainNameLabel: UILabel!
