@@ -112,15 +112,6 @@ enum ChainType: Codable, CaseIterable {
     }
   }
 
-  func quoteCurrency() -> CurrencyMode {
-    switch self {
-    case .eth, .arbitrum:
-      return .eth
-    default:
-      return .quote
-    }
-  }
-
   func isSupportedEIP1559() -> Bool {
     switch self {
     case .eth, .avalanche, .polygon:

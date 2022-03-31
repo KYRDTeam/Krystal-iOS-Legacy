@@ -28,15 +28,6 @@ class KNSummaryChainModel: Codable {
     var quoteArray: [String: UnitValueModel] = [:]
     if let quotesJson = json["quotes"] as? JSONDictionary {
       var unitValueModel: UnitValueModel
-      if let avaxJson = quotesJson["avax"] as? JSONDictionary {
-        unitValueModel = UnitValueModel(json: avaxJson)
-        quoteArray["avax"] = unitValueModel
-      }
-
-      if let bnbJson = quotesJson["bnb"] as? JSONDictionary {
-        unitValueModel = UnitValueModel(json: bnbJson)
-        quoteArray["bnb"] = unitValueModel
-      }
 
       if let btcJson = quotesJson["btc"] as? JSONDictionary {
         unitValueModel = UnitValueModel(json: btcJson)
@@ -47,25 +38,15 @@ class KNSummaryChainModel: Codable {
         unitValueModel = UnitValueModel(json: ethJson)
         quoteArray["eth"] = unitValueModel
       }
-
-      if let maticJson = quotesJson["matic"] as? JSONDictionary {
-        unitValueModel = UnitValueModel(json: maticJson)
-        quoteArray["matic"] = unitValueModel
-      }
       
       if let usdJson = quotesJson["usd"] as? JSONDictionary {
         unitValueModel = UnitValueModel(json: usdJson)
         quoteArray["usd"] = unitValueModel
       }
-      
-      if let ftmJson = quotesJson["ftm"] as? JSONDictionary {
+      let quote = KNGeneralProvider.shared.currentChain.quoteToken().lowercased()
+      if let ftmJson = quotesJson[quote] as? JSONDictionary {
         unitValueModel = UnitValueModel(json: ftmJson)
-        quoteArray["ftm"] = unitValueModel
-      }
-      
-      if let croJson = quotesJson["cro"] as? JSONDictionary {
-        unitValueModel = UnitValueModel(json: croJson)
-        quoteArray["cro"] = unitValueModel
+        quoteArray[quote] = unitValueModel
       }
     }
     self.quotes = quoteArray

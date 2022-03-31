@@ -33,7 +33,7 @@ class KNGeneralProvider {
   }
   
   var quoteCurrency: CurrencyMode {
-    return self.currentChain.quoteCurrency()
+    return .quote
   }
 
   var chainPath: String {
