@@ -65,7 +65,16 @@ enum ChainType: Codable, CaseIterable {
   }
 
   static func make(chainID: Int) -> ChainType? {
-    return ChainType.allCases.first { $0.getChainId() == chainID }
+    return ChainType.getAllChain().first { $0.getChainId() == chainID }
+  }
+  
+  static func getAllChain() -> [ChainType] {
+    var allChains = ChainType.allCases
+    let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
+    if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
+      allChains = allChains.filter { $0 != .aurora }
+    }
+    return allChains
   }
 
   func customRPC() -> CustomRPC {
@@ -303,7 +312,7 @@ enum CurrencyMode: Int {
       return ""
     }
   }
-  
+
   func suffixSymbol() -> String {
     switch self {
     case .quote:

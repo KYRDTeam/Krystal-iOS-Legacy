@@ -234,7 +234,7 @@ enum KNEnvironment: Int {
   }
 
   static var allChainPath: String? {
-    return ChainType.allCases.map { chain in
+    return ChainType.getAllChain().map { chain in
       chain.apiChainPath()
     }.joined(separator: ",")
   }

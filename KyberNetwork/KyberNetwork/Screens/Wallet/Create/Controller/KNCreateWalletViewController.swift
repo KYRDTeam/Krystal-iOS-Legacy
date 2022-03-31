@@ -47,12 +47,12 @@ class KNCreateWalletViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.containerView.rounded(radius: 5.0)
     self.confirmLabel.text = NSLocalizedString("confirm", value: "Confirm", comment: "").uppercased()
-    var allChainName = ChainType.allCases.first?.chainName() ?? ""
-    for index in 1..<ChainType.allCases.count {
-      if index == ChainType.allCases.count - 1 {
-        allChainName += " and " + ChainType.allCases[index].chainName()
+    var allChainName = ChainType.getAllChain().first?.chainName() ?? ""
+    for index in 1..<ChainType.getAllChain().count {
+      if index == ChainType.getAllChain().count - 1 {
+        allChainName += " and " + ChainType.getAllChain()[index].chainName()
       } else {
-        allChainName += ", " + ChainType.allCases[index].chainName()
+        allChainName += ", " + ChainType.getAllChain()[index].chainName()
       }
     }
     self.descLabel.text = "This will create a new wallet for you to transfer and receive tokens. The same wallet can be used on \(allChainName)."

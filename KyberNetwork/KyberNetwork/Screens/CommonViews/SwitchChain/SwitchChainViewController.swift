@@ -48,7 +48,7 @@ class SwitchChainViewController: KNBaseViewController {
   }
 
   func initializeData() {
-    self.dataSource = ChainType.allCases
+    self.dataSource = ChainType.getAllChain()
   }
 
   fileprivate func updateSelectedChainUI() {
