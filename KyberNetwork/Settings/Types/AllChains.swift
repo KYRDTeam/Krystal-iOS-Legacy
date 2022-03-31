@@ -248,7 +248,7 @@ public struct AllChains {
     ensAddress: "",
     wrappedAddress: "",
     apiEtherscanEndpoint: "",
-    proxyAddress: "0x864F01c5E46b0712643B956BcAsw607bF883e0dbC5",
+    proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5",
     quoteTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     chainIcon: "chain_aurora_icon",
     quoteToken: "ETH",
