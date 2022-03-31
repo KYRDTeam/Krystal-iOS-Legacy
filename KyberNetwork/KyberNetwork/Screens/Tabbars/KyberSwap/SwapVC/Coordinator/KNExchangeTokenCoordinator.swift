@@ -1469,7 +1469,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
     }
     provider.sendApproveERCTokenAddress(
       for: gasTokenAddress,
-      value: BigInt(2).power(256) - BigInt(1),
+      value: Constants.maxValueBigInt,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
       gasLimit: gasLimit
     ) { approveResult in
@@ -1507,7 +1507,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        provider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
+        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
           switch result {
           case .success:
             self.rootViewController.coordinatorSuccessApprove(token: token)

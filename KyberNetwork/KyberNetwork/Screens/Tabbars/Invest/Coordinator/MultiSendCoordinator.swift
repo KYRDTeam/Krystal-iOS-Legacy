@@ -500,7 +500,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         }
       }
       
-      let value = isApproveUnlimit ? BigInt(2).power(256) - BigInt(1) : item.0
+      let value = isApproveUnlimit ? Constants.maxValueBigInt : item.0
       group.enter()
 
       KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: value) { encodeResult in

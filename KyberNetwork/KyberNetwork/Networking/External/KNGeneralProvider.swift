@@ -942,7 +942,7 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -1030,7 +1030,7 @@ class KNGeneralProvider {
     })
   }
 
-  func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(tokenAddress: Address, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -1356,7 +1356,7 @@ extension KNGeneralProvider {
     }
   }
 
- func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
+ func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = Constants.maxValueBigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
       value: value
@@ -1629,7 +1629,8 @@ extension KNGeneralProvider {
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
@@ -1646,13 +1647,12 @@ extension KNGeneralProvider {
       data: Data(hexString: eip1559Tx.data) ?? Data(),
       gasPrice: BigInt(eip1559Tx.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
     )
-    
-    print("[EIP1559] gaslimit request \(request.parameters)")
 
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")

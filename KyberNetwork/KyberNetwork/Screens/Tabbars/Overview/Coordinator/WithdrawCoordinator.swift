@@ -595,7 +595,7 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
   }
 
   fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
-    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
         if address.lowercased() == Constants.gasTokenAddress.lowercased() {
