@@ -75,8 +75,8 @@ extension String {
     )
   }
 
-  func displayRate() -> String {
-    return KNRateHelper.displayRate(from: self)
+  func displayRate(meaningNumber: Int = 4) -> String {
+    return KNRateHelper.displayRate(from: self, meaningNumber: meaningNumber)
   }
 
   func formatName(maxLen: Int = 10) -> String {
