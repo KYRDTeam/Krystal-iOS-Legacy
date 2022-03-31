@@ -42,8 +42,7 @@ class SwitchChainViewController: KNBaseViewController {
     self.cancelButton.rounded(radius: 16)
     self.nextButton.rounded(radius: 16)
     self.nextButton.setTitle(self.nextButtonTitle, for: .normal)
-    let nib = UINib(nibName: SwitchChainCell.className, bundle: nil)
-    self.tableView.register(nib, forCellReuseIdentifier: SwitchChainCell.kCellID)
+    self.tableView.registerCellNib(SwitchChainCell.self)
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     self.outsideBackgroundView.addGestureRecognizer(tapGesture)
   }

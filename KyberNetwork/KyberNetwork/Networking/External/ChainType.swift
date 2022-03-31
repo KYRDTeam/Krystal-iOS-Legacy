@@ -127,12 +127,12 @@ enum ChainType: Codable, CaseIterable {
     }
   }
 
-  func currentChainPathName() -> String {
+  func apiChainPath() -> String {
     return self.customRPC().apiChainPath
   }
 
   func chainPath() -> String {
-    return "/\(self.currentChainPathName())"
+    return "/\(self.apiChainPath())"
   }
 
   func proxyAddress() -> String {

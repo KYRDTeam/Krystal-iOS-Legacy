@@ -151,12 +151,7 @@ class KNRateCoordinator {
     var output: [TokenPrice] = []
     self.isLoadingExchangeTokenRates = true
     self.requestingChain = KNGeneralProvider.shared.currentChain
-    var allChainQuote: [String] = ["btc", "usd"]
-    ChainType.allCases.forEach { chain in
-      if !allChainQuote.contains(chain.quoteToken().lowercased()) {
-        allChainQuote.append(chain.quoteToken().lowercased())
-      }
-    }
+    let allChainQuote: [String] = (["btc", "usd"] + ChainType.allCases.map { $0.quoteToken().lowercased() }).unique
     let group = DispatchGroup()
     group.enter()
     provider.request(.getOverviewMarket(addresses: [], quotes: allChainQuote)) { result in

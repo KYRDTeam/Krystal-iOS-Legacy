@@ -225,7 +225,7 @@ enum KNEnvironment: Int {
     default: return KNSecret.ropstenKyberNodeURL
     }
   }
-  
+
   var mobileKey: String {
     if KNEnvironment.default == .production {
       return "mob-5d185228-993b-4283-84fa-4dae640b19b1"
@@ -234,11 +234,8 @@ enum KNEnvironment: Int {
   }
 
   static var allChainPath: String? {
-    var allChainPath: [String] = []
-    ChainType.allCases.forEach { chain in
-      allChainPath.append(chain.currentChainPathName())
-    }
-    let allChainPathString = allChainPath.joined(separator: ",")
-    return allChainPathString
+    return ChainType.allCases.map { chain in
+      chain.apiChainPath()
+    }.joined(separator: ",")
   }
 }
