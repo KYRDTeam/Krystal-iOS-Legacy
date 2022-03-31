@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import Foundation
+import BigInt
 
 enum ValidStatus: Equatable {
   case success

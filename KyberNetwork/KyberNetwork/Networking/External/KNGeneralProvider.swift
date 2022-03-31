@@ -576,7 +576,7 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -610,7 +610,7 @@ class KNGeneralProvider {
       }
 
       guard let tokenAddress = Address(string: token.contract) else { return }
-      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -637,8 +637,34 @@ class KNGeneralProvider {
       }
     }
   }
+  
+  func buildSignTxForApprove(tokenAddress: Address, account: Account, completion: @escaping (SignTransaction?) -> Void) {
+    let address = Address(string: self.proxyAddress)!
+    
+    self.getSendApproveERC20TokenEncodeData(networkAddress: address, value: Constants.maxValueBigInt, completion: { result in
+      switch result {
+      case .success(let resp):
+        let gasLimit = KNGasConfiguration.approveTokenGasLimitDefault
+        let gasPrice = KNGasCoordinator.shared.defaultKNGas
+        
+        let signTransaction = SignTransaction(
+          value: BigInt(0),
+          account: account,
+          to: tokenAddress,
+          nonce: 1,
+          data: resp,
+          gasPrice: gasPrice,
+          gasLimit: gasLimit,
+          chainID: KNGeneralProvider.shared.customRPC.chainID
+        )
+        completion(signTransaction)
+      case .failure:
+        completion(nil)
+      }
+    })
+  }
 
-  func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(tokenAddress: Address, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -670,7 +696,7 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -836,11 +862,7 @@ class KNGeneralProvider {
 
 // MARK: Sign transaction
 extension KNGeneralProvider {
-  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    let gasLimit: BigInt = {
-      if let gasApprove = token.gasApproveDefault { return gasApprove }
-      return KNGasConfiguration.approveTokenGasLimitDefault
-    }()
+  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
@@ -860,8 +882,8 @@ extension KNGeneralProvider {
     }
   }
 
-  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
-    let gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
+
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
@@ -968,7 +990,7 @@ extension KNGeneralProvider {
     }
   }
 
- func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
+ func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = Constants.maxValueBigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
       value: value
@@ -1241,7 +1263,8 @@ extension KNGeneralProvider {
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
@@ -1258,13 +1281,12 @@ extension KNGeneralProvider {
       data: Data(hexString: eip1559Tx.data) ?? Data(),
       gasPrice: BigInt(eip1559Tx.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
     )
-    
-    print("[EIP1559] gaslimit request \(request.parameters)")
 
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")

@@ -430,13 +430,14 @@ class KNExternalProvider {
   func sendApproveERC20Token(exchangeTransaction: KNDraftExchangeTransaction, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     self.sendApproveERCToken(
       for: exchangeTransaction.from,
-      value: BigInt(2).power(256) - BigInt(1),
+      value: Constants.maxValueBigInt,
       gasPrice: exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas,
+      gasLimit: KNGasConfiguration.approveTokenGasLimitDefault,
       completion: completion
     )
   }
 
-  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
       token: token,
       value: value,
@@ -444,7 +445,8 @@ class KNExternalProvider {
       keystore: self.keystore,
       currentNonce: self.minTxCount,
       networkAddress: self.networkAddress,
-      gasPrice: gasPrice
+      gasPrice: gasPrice,
+      gasLimit: gasLimit
     ) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
@@ -457,7 +459,7 @@ class KNExternalProvider {
     }
   }
 
-  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     var address: Address?
     if let unwrap = toAddress {
       address = Address(string: unwrap)
@@ -469,7 +471,8 @@ class KNExternalProvider {
       keystore: self.keystore,
       currentNonce: self.minTxCount,
       networkAddress: address ?? self.networkAddress,
-      gasPrice: gasPrice
+      gasPrice: gasPrice,
+      gasLimit: gasLimit
     ) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
