@@ -350,8 +350,8 @@ class OverviewMainViewModel {
     
     //convert đang bị nil ở đây
     let totalDoubleValue = totalBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())//Double(totalBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()))
-
-    self.summaryDataSource = summaryChainModels.map({ summaryModel in
+    self.summaryDataSource.removeAll()
+    let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
       //re-calculate value and percent for each chain by subtract to hide or delete tokens
       if let unitValueModel = summaryModel.quotes[self.currencyMode.toString()] {
         let hideAndDeleteBigInt = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currencyMode, chainType: summaryModel.chainType())
@@ -361,10 +361,12 @@ class OverviewMainViewModel {
           summaryModel.percentage = chainBalanceValue / totalDoubleValue
         }
       }
+      
       let viewModel = OverviewSummaryCellViewModel(dataModel: summaryModel, currency: self.currencyMode)
       viewModel.hideBalanceStatus = self.hideBalanceStatus
       return viewModel
     })
+    self.summaryDataSource.append(contentsOf: array)
   }
 
   func reloadAllData() {
@@ -391,7 +393,7 @@ class OverviewMainViewModel {
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
-      self.displayTotalValues = [:]
+      self.displayTotalValues.removeAll()
       self.displayNFTHeader = []
       self.displayNFTDataSource = [:]
     case .asset(let mode):
@@ -400,7 +402,7 @@ class OverviewMainViewModel {
       }
 
       self.displayHeader = []
-      self.displayTotalValues = [:]
+      self.displayTotalValues.removeAll()
       var total = BigInt(0)
       let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
         total += item.getValueBigInt(self.currencyMode)
@@ -510,7 +512,7 @@ class OverviewMainViewModel {
       }
       self.dataSource = ["": models]
       self.displayDataSource = ["": models]
-      self.displayTotalValues = [:]
+      self.displayTotalValues.removeAll()
       self.displayNFTHeader = []
       self.displayNFTDataSource = [:]
     case .nft:
