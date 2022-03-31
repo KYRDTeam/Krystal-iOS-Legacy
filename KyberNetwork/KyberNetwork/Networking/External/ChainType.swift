@@ -65,13 +65,7 @@ enum ChainType: Codable, CaseIterable {
   }
 
   static func make(chainID: Int) -> ChainType? {
-    var chainType: ChainType?
-    ChainType.allCases.forEach { chain in
-      if chain.getChainId() == chainID {
-        chainType = chain
-      }
-    }
-    return chainType
+    return ChainType.allCases.first { $0.getChainId() == chainID }
   }
 
   func customRPC() -> CustomRPC {
