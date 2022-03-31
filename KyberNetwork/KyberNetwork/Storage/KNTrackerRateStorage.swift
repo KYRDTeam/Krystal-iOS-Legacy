@@ -62,22 +62,7 @@ class KNTrackerRateStorage {
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
-    switch chainType {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
-    case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
-    }
+    return chainType.getChainDBPath()
   }
   
   func getLastPriceWith(address: String, currency: CurrencyMode) -> Double {
@@ -91,16 +76,8 @@ class KNTrackerRateStorage {
       return price.eth
     case .btc:
       return price.btc
-    case .bnb:
-      return price.bnb
-    case .matic:
-      return price.matic
-    case .avax:
-      return price.avax
-    case .cro:
-      return price.cro
-    case .ftm:
-      return price.ftm
+    default:
+      return price.quote
     }
   }
 
@@ -126,25 +103,10 @@ class KNTrackerRateStorage {
         saved.btcMarketCap = item.btcMarketCap
         saved.btc24hChange = item.btc24hChange
         
-        saved.bnb = item.bnb
-        saved.bnb24hVol = item.bnb24hVol
-        saved.bnbMarketCap = item.bnbMarketCap
-        saved.bnb24hChange = item.bnb24hChange
-        
-        saved.matic = item.matic
-        saved.matic24hVol = item.matic24hVol
-        saved.maticMarketCap = item.maticMarketCap
-        saved.matic24hChange = item.matic24hChange
-        
-        saved.cro = item.cro
-        saved.cro24hVol = item.cro24hVol
-        saved.croMarketCap = item.croMarketCap
-        saved.cro24hChange = item.cro24hChange
-        
-        saved.ftm = item.ftm
-        saved.ftm24hVol = item.ftm24hVol
-        saved.ftmMarketCap = item.ftmMarketCap
-        saved.ftm24hChange = item.ftm24hChange
+        saved.quote = item.quote
+        saved.quote24hVol = item.quote24hVol
+        saved.quoteMarketCap = item.quoteMarketCap
+        saved.quote24hChange = item.quote24hChange
       } else {
         self.allPrices.append(item)
       }
@@ -152,4 +114,3 @@ class KNTrackerRateStorage {
     Storage.store(self.allPrices, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
   }
 }
-

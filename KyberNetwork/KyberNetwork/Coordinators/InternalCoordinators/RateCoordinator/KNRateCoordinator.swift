@@ -14,9 +14,7 @@ import Sentry
 */
 
 class KNRateCoordinator {
-
   static let shared = KNRateCoordinator()
-  static let quotes = ["eth", "btc", "usd", "bnb", "matic", "avax", "ftm", "cro"]
 
   fileprivate let provider = MoyaProvider<KNTrackerService>()
   fileprivate let userInfoProvider = MoyaProvider<UserInfoService>(plugins: [MoyaCacheablePlugin()])
@@ -153,10 +151,10 @@ class KNRateCoordinator {
     var output: [TokenPrice] = []
     self.isLoadingExchangeTokenRates = true
     self.requestingChain = KNGeneralProvider.shared.currentChain
+    let allChainQuote: [String] = (["btc", "usd"] + ChainType.getAllChain().map { $0.quoteToken().lowercased() }).unique
     let group = DispatchGroup()
     group.enter()
-
-    provider.request(.getOverviewMarket(addresses: [], quotes: KNRateCoordinator.quotes)) { result in
+    provider.request(.getOverviewMarket(addresses: [], quotes: allChainQuote)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -177,7 +175,7 @@ class KNRateCoordinator {
 
     addressesTrucked.forEach { (element) in
       group.enter()
-      provider.request(.getOverviewMarket(addresses: element, quotes: KNRateCoordinator.quotes)) { result in
+      provider.request(.getOverviewMarket(addresses: element, quotes: allChainQuote)) { result in
         if case .success(let resp) = result {
           let decoder = JSONDecoder()
           do {

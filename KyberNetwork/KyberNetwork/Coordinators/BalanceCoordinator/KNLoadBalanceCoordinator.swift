@@ -365,23 +365,8 @@ class KNLoadBalanceCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
         completion(true)
       } else {
-        var summaryChains: [KNSummaryChainModel] = []
-        if KNEnvironment.default == .ropsten {
-          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethRoptenPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.bscRoptenPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonRoptenPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheRoptenPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.fantomMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.arbitrumMainnetRPC.chainID)]
-        } else {
-          summaryChains = [KNSummaryChainModel.defaultValue(chainId: Constants.ethMainnetPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.bscMainnetPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.polygonMainnetPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.avalancheMainnetPRC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.fantomMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.cronosMainnetRPC.chainID),
-                           KNSummaryChainModel.defaultValue(chainId: Constants.arbitrumMainnetRPC.chainID)]
+        let summaryChains = ChainType.getAllChain().map { chain in
+          KNSummaryChainModel.defaultValue(chainId: chain.getChainId())
         }
         BalanceStorage.shared.saveSummaryChainModels(summaryChains)
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)

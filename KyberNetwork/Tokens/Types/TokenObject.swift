@@ -128,27 +128,27 @@ class TokenObject: Object {
     }
 
   var isBNB: Bool {
-    return self.address.lowercased() == Constants.bnbAddress.lowercased()
+    return self.address.lowercased() == AllChains.bscMainnetPRC.quoteTokenAddress.lowercased()
   }
 
   var isMatic: Bool {
-    return self.address.lowercased() == Constants.maticAddress.lowercased()
+    return self.address.lowercased() == AllChains.polygonMainnetPRC.quoteTokenAddress.lowercased()
   }
 
   var isAvax: Bool {
-    return self.address.lowercased() == Constants.avaxAddress.lowercased()
+    return self.address.lowercased() == AllChains.avalancheMainnetPRC.quoteTokenAddress.lowercased()
   }
 
   var isCro: Bool {
-    return self.address.lowercased() == Constants.cronosAddress.lowercased()
+    return self.address.lowercased() == AllChains.cronosMainnetRPC.quoteTokenAddress.lowercased()
   }
 
   var isFtm: Bool {
-    return self.address.lowercased() == Constants.fantomAddress.lowercased()
+    return self.address.lowercased() == AllChains.fantomMainnetRPC.quoteTokenAddress.lowercased()
   }
   
   var isAETH: Bool {
-    return self.address.lowercased() == Constants.arbitrumAddress.lowercased()
+    return self.address.lowercased() == AllChains.arbitrumMainnetRPC.quoteTokenAddress.lowercased()
   }
 
   var isQuoteToken: Bool {

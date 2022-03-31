@@ -160,7 +160,7 @@ extension KNExchangeTokenCoordinator {
       return
     }
 
-    let chainId = Int(chainIdString) ?? Constants.ethMainnetPRC.chainID
+    let chainId = Int(chainIdString) ?? AllChains.ethMainnetPRC.chainID
     //switch chain if need
     if KNGeneralProvider.shared.customRPC.chainID != chainId {
       self.rootViewController.coordinatorShouldShowSwitchChainPopup(chainId: chainId)
@@ -173,34 +173,9 @@ extension KNExchangeTokenCoordinator {
 
   func prepareTokensForSwap(srcTokenAddress: String?, destTokenAddress: String?, chainId: Int, isFromDeepLink: Bool = false) {
     // default token
-    var fromToken = KNSupportedTokenStorage.shared.ethToken
-    var toToken = KNSupportedTokenStorage.shared.kncToken
-    switch chainId {
-    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.bnbToken
-        toToken = KNSupportedTokenStorage.shared.busdToken
-    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.maticToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.avaxToken
-        toToken = KNSupportedTokenStorage.shared.usdceToken
-    case Constants.fantomMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.fantomToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.cronosMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.cronosToken
-        toToken = KNSupportedTokenStorage.shared.usdcToken
-    case Constants.arbitrumMainnetRPC.chainID:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    default:
-        fromToken = KNSupportedTokenStorage.shared.ethToken
-        toToken = KNSupportedTokenStorage.shared.kncToken
-    }
+    var fromToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    var toToken = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
+
     var newAddress: [String] = []
     guard let srcTokenAddress = srcTokenAddress, let destTokenAddress = destTokenAddress else {
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
@@ -315,32 +290,8 @@ extension KNExchangeTokenCoordinator {
 
   func appCoordinatorShouldOpenExchangeForToken(_ token: TokenObject, isReceived: Bool = false) {
     self.navigationController.popToRootViewController(animated: true)
-    let otherToken: TokenObject = token.isETH ? KNSupportedTokenStorage.shared.kncToken : KNSupportedTokenStorage.shared.ethToken
-    let otherTokenBsc: TokenObject = token.isBNB ? KNSupportedTokenStorage.shared.busdToken : KNSupportedTokenStorage.shared.bnbToken
-    let otherTokenMatic: TokenObject = token.isMatic ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.maticToken
-    let otherTokenAvax: TokenObject = token.isAvax ? KNSupportedTokenStorage.shared.usdceToken : KNSupportedTokenStorage.shared.avaxToken
-    let otherTokenCronos: TokenObject = token.isCro ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.cronosToken
-    let otherTokenFantom: TokenObject = token.isFtm ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.fantomToken
-    let otherTokenArbitrum: TokenObject = token.isAETH ? KNSupportedTokenStorage.shared.usdcToken : KNSupportedTokenStorage.shared.ethToken
-
     self.rootViewController.coordinatorUpdateSelectedToken(token, isSource: !isReceived, isWarningShown: false)
-    var selectToken = KNSupportedTokenStorage.shared.ethToken
-    switch KNGeneralProvider.shared.currentChain {
-    case .eth:
-      selectToken = otherToken
-    case .bsc:
-      selectToken = otherTokenBsc
-    case .polygon:
-      selectToken = otherTokenMatic
-    case .avalanche:
-      selectToken = otherTokenAvax
-    case .cronos:
-      selectToken = otherTokenCronos
-    case .fantom:
-      selectToken = otherTokenFantom
-    case .arbitrum:
-      selectToken = otherTokenArbitrum
-    }
+    let selectToken = KNGeneralProvider.shared.currentChain.otherTokenObject(toToken: token)
     self.rootViewController.coordinatorUpdateSelectedToken(selectToken, isSource: isReceived, isWarningShown: true)
     self.rootViewController.tabBarController?.selectedIndex = 1
   }

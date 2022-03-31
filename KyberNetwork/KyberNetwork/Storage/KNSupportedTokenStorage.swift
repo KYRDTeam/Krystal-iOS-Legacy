@@ -6,7 +6,7 @@ import TrustCore
 import BigInt
 
 class KNSupportedTokenStorage {
-  private var supportedToken: [Token]
+  var supportedToken: [Token]
   private var favedTokens: [FavedToken]
   private var customTokens: [Token]
   private var disableTokens: [Token]
@@ -72,7 +72,7 @@ class KNSupportedTokenStorage {
   var bnbToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "BNB"
-    } ?? Token(name: "BNB", symbol: "BNB", address: Constants.bnbAddress, decimals: 18, logo: "bnb")
+    } ?? Token(name: "BNB", symbol: "BNB", address: AllChains.bscMainnetPRC.quoteTokenAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
@@ -86,28 +86,28 @@ class KNSupportedTokenStorage {
   var maticToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "MATIC"
-    } ?? Token(name: "MATIC", symbol: "MATIC", address: Constants.maticAddress, decimals: 18, logo: "bnb")
+    } ?? Token(name: "MATIC", symbol: "MATIC", address: AllChains.polygonMainnetPRC.quoteTokenAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
   var avaxToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "AVAX"
-    } ?? Token(name: "AVAX", symbol: "AVAX", address: Constants.avaxAddress, decimals: 18, logo: "avax")
+    } ?? Token(name: "AVAX", symbol: "AVAX", address: AllChains.avalancheMainnetPRC.quoteTokenAddress, decimals: 18, logo: "avax")
     return token.toObject()
   }
   
   var cronosToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "CRO"
-    } ?? Token(name: "CRO", symbol: "CRO", address: Constants.cronosAddress, decimals: 18, logo: "cro")
+    } ?? Token(name: "CRO", symbol: "CRO", address: AllChains.cronosMainnetRPC.quoteTokenAddress, decimals: 18, logo: "cro")
     return token.toObject()
   }
   
   var fantomToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "FTM"
-    } ?? Token(name: "FTM", symbol: "FTM", address: Constants.fantomAddress, decimals: 18, logo: "ftm")
+    } ?? Token(name: "FTM", symbol: "FTM", address: AllChains.fantomMainnetRPC.quoteTokenAddress, decimals: 18, logo: "ftm")
     return token.toObject()
   }
   
@@ -419,22 +419,7 @@ class KNSupportedTokenStorage {
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
-    switch chainType {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
-    case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
-    }
+    return chainType.getChainDBPath()
   }
 
   func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType) -> BigInt {

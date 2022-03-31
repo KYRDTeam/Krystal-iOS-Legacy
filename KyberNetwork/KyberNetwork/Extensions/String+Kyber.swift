@@ -161,7 +161,7 @@ extension String {
   }
   
   func isNativeAddress() -> Bool {
-    return self.lowercased() == Constants.ethAddress || self.lowercased() == Constants.bnbAddress
+    return self.lowercased() == AllChains.ethMainnetPRC.quoteTokenAddress || self.lowercased() == AllChains.bscMainnetPRC.quoteTokenAddress
   }
   
   var toHexData: Data {

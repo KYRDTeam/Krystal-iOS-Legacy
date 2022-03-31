@@ -53,47 +53,6 @@ enum KNEnvironment: Int {
     let chain = KNGeneralProvider.shared.quoteToken.lowercased()
     return chain + "-" + self.displayName + "-"
   }
-  
-  var ethRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return Constants.ethRoptenPRC
-    case .staging:
-      return Constants.ethStaggingPRC
-    default:
-      return Constants.ethMainnetPRC
-    }
-  }
-  
-  var bscRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return Constants.bscRoptenPRC
-    default:
-      return Constants.bscMainnetPRC
-    }
-  }
-  
-  var maticRPC: CustomRPC {
-    switch self {
-    case .ropsten:
-      return Constants.polygonRoptenPRC
-    default:
-      return Constants.polygonMainnetPRC
-    }
-  }
-
-  var cronosRPC: CustomRPC {
-    return Constants.cronosMainnetRPC
-  }
-
-  var fantomRPC: CustomRPC {
-    return Constants.fantomMainnetRPC
-  }
-  
-  var arbitrumRPC: CustomRPC {
-    return Constants.arbitrumMainnetRPC
-  }
 
   var configFileName: String {
     switch self {
@@ -266,7 +225,7 @@ enum KNEnvironment: Int {
     default: return KNSecret.ropstenKyberNodeURL
     }
   }
-  
+
   var mobileKey: String {
     if KNEnvironment.default == .production {
       return "mob-5d185228-993b-4283-84fa-4dae640b19b1"
@@ -275,9 +234,8 @@ enum KNEnvironment: Int {
   }
 
   static var allChainPath: String? {
-    if KNEnvironment.default == .ropsten {
-      return "ropsten,bsctestnet,mumbai,fuji,cronos,fantom,arbitrum"
-    }
-    return "ethereum,bsc,polygon,avalanche,cronos,fantom,arbitrum"
+    return ChainType.getAllChain().map { chain in
+      chain.apiChainPath()
+    }.joined(separator: ",")
   }
 }
