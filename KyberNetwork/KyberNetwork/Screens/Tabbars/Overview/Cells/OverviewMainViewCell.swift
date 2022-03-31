@@ -121,7 +121,7 @@ class OverviewMainCellViewModel {
     case .market(token: let token, rightMode: let mode):
       let price = token.getTokenLastPrice(self.currency)
       let priceBigInt = BigInt(price * pow(10.0, 18.0))
-        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate()
+        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
       return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
@@ -139,7 +139,7 @@ class OverviewMainCellViewModel {
       case .lastPrice:
         let price = token.getTokenLastPrice(self.currency)
         let priceBigInt = BigInt(price * pow(10.0, 18.0))
-          let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate()
+          let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       }
     case .supply(balance: let balance):

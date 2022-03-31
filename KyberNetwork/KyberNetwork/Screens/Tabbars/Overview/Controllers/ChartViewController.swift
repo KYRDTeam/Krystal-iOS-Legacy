@@ -65,7 +65,7 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    return self.numberFormatter.string(from: NSNumber(value: self.detailInfo?.markets[self.currency]?.price ?? 0))?.displayRate() ?? "0"
+    return self.numberFormatter.string(from: NSNumber(value: self.detailInfo?.markets[self.currency]?.price ?? 0))?.displayRate(meaningNumber: 2) ?? "0"
   }
 
   var display24hVol: String {
@@ -222,7 +222,7 @@ class ChartViewModel {
     attributedText.append(NSAttributedString(string: dateString + " ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
 
-    let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 18, maxFractionDigits: 18).displayRate()
+    let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 18, maxFractionDigits: 18).displayRate(meaningNumber: 2)
     let displayString = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
     
     attributedText.append(NSAttributedString(string: displayString, attributes: normalAttributes))

@@ -375,7 +375,7 @@ class KNRateHelper {
     return string
   }
 
-  static func displayRate(from rate: String, mainRuleDecimals: Int = 2) -> String {
+  static func displayRate(from rate: String, mainRuleDecimals: Int = 2, meaningNumber: Int = 4) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = mainRuleDecimals
@@ -383,7 +383,7 @@ class KNRateHelper {
     guard formatter.string(from: mainRuleConvertedNumber) == "0" else {
       return formatter.string(from: mainRuleConvertedNumber) ?? ""
     }
-    
+
     var string = rate
     let separator = EtherNumberFormatter.full.decimalSeparator
     if let _ = string.firstIndex(of: separator[separator.startIndex]) { string = string + "0000" }
@@ -400,7 +400,7 @@ class KNRateHelper {
         if cnt > 0 || string[index] != "0" {
           cnt += 1
         }
-        if cnt == 4 { return string.substring(to: id + 1) }
+        if cnt == meaningNumber { return string.substring(to: id + 1) }
       }
       index = string.index(after: index)
     }
