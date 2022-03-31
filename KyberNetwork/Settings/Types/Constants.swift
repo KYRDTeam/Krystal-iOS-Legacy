@@ -77,6 +77,7 @@ public struct Constants {
   public static let methodIdApprove = "0x095ea7b3"
   public static let currentCurrencyMode = "current_currency_mode"
   public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
+  public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
 }
 
 public struct UnitConfiguration {
