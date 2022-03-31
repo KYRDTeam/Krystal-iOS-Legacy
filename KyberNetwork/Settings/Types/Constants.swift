@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import Foundation
+import BigInt
 
 enum ValidStatus: Equatable {
   case success
@@ -82,6 +83,7 @@ public struct Constants {
   public static let browserRecentlyFileName = "browser-recently.data"
   public static let methodIdApprove = "0x095ea7b3"
   public static let currentCurrencyMode = "current_currency_mode"
+  public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
 
   public static let ethMainnetPRC = CustomRPC(
     chainID: 1,
