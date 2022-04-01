@@ -224,7 +224,9 @@ enum ChainType: Codable, CaseIterable {
   func getChainDBPath() -> String {
     switch self {
     case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
+      return "arbitrum" + "-" + KNEnvironment.default.displayName + "-"
+    case .aurora:
+      return "aurora" + "-" + KNEnvironment.default.displayName + "-"
     default:
         return self.customRPC().quoteToken.lowercased() + "-" + KNEnvironment.default.displayName + "-"
     }
