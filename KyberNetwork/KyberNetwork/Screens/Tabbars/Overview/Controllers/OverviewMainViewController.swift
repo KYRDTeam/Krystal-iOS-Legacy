@@ -38,7 +38,6 @@ class OverviewMainViewController: KNBaseViewController {
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
-  let calculatingQueue: DispatchQueue = .global()
 
   init(viewModel: OverviewMainViewModel) {
     self.viewModel = viewModel
@@ -167,18 +166,14 @@ class OverviewMainViewController: KNBaseViewController {
   }
 
   fileprivate func reloadUI() {
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-        self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
-        self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-        self.updateCh24Button()
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
+    self.viewModel.reloadAllData()
+    self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+    self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
+    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+    self.updateCh24Button()
+    self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
 
   fileprivate func updateUISwitchChain() {
@@ -328,27 +323,18 @@ class OverviewMainViewController: KNBaseViewController {
   func coordinatorDidUpdateNewSession(_ session: KNSession) {
     self.viewModel.session = session
     guard self.isViewLoaded else { return }
-    
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
+    self.viewModel.reloadAllData()
+    self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+    self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
 
   func coordinatorDidUpdateDidUpdateTokenList() {
     guard self.isViewLoaded else { return }
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
+    self.viewModel.reloadAllData()
+    self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+    self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
 
   func coordinatorDidUpdateCurrencyMode(_ mode: CurrencyMode) {
