@@ -17,3 +17,11 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
         return nil
     }
 }
+
+extension Dictionary {
+  mutating func appendOtherDictionary(_ dict: Dictionary) {
+    for (key, value) in dict {
+      self[key] = value
+    }
+  }
+}
