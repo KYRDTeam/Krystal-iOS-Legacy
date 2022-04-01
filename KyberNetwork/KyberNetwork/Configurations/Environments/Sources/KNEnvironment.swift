@@ -50,8 +50,7 @@ enum KNEnvironment: Int {
   }
 
   var envPrefix: String {
-    let chain = KNGeneralProvider.shared.quoteToken.lowercased()
-    return chain + "-" + self.displayName + "-"
+    return KNGeneralProvider.shared.currentChain.getChainDBPath()
   }
 
   var configFileName: String {
