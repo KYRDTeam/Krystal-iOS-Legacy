@@ -22,7 +22,7 @@ extension UICollectionView {
   
   func dequeueReusableCell<T: UICollectionViewCell>(_ aClass: T.Type, indexPath: IndexPath) -> T! {
     let name = String(describing: aClass)
-    guard let cell = self.dequeueReusableCell(withReuseIdentifier: name, for: indexPath) as? T else  {
+    guard let cell = self.dequeueReusableCell(withReuseIdentifier: name, for: indexPath) as? T else {
       fatalError("\(name) is not registed")
     }
     return cell
