@@ -305,9 +305,8 @@ class OverviewMainViewModel {
 
       self.displayHeader.removeAll()
       self.displayTotalValues.removeAll()
-      var total = BigInt(0)
+
       let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
-        total += item.getValueBigInt(self.currencyMode)
         let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
         viewModel.tag = item.tag
         return viewModel
@@ -318,6 +317,7 @@ class OverviewMainViewModel {
       if self.isHidingSmallAssetsToken {
         assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
       }
+      var total = BigInt(0)
       let displayModels = assetTokens.map { (item) -> OverviewMainCellViewModel in
         total += item.getValueBigInt(self.currencyMode)
         let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
