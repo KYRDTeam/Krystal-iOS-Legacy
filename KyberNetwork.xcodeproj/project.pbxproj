@@ -4575,7 +4575,8 @@
 				29282B511F7629DB0067F88D /* Run SwiftLint */,
 				250CA1EB225B3FC200DF28A4 /* Embed Frameworks */,
 				C379417E262816E100FBCA14 /* Embed App Extensions */,
-				C3D6996F2641454C004B34E1 /* Upload dSYMs */,
+				C3D6996F2641454C004B34E1 /* Run Crashlytics */,
+				A6B3A86027FAD77900F84819 /* Upload dSYMs */,
 			);
 			buildRules = (
 			);
@@ -5094,7 +5095,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C3D6996F2641454C004B34E1 /* Upload dSYMs */ = {
+		A6B3A86027FAD77900F84819 /* Upload dSYMs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload dSYMs";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\n";
+		};
+		C3D6996F2641454C004B34E1 /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5105,7 +5124,7 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist",
 			);
-			name = "Upload dSYMs";
+			name = "Run Crashlytics";
 			outputFileListPaths = (
 			);
 			outputPaths = (
