@@ -19,14 +19,20 @@ class BalanceStorage {
   private var distributionBalance: LendingDistributionBalance?
   private var wallet: Wallet?
   
+  private var ethTokenBalances: [TokenBalance] = []
+  private var bscTokenBalances: [TokenBalance] = []
+  private var polygonTokenBalances: [TokenBalance] = []
+  private var avaxTokenBalances: [TokenBalance] = []
+  private var cronosTokenBalances: [TokenBalance] = []
+  private var fantomTokenBalances: [TokenBalance] = []
+  private var arbitrumTokenBalances: [TokenBalance] = []
+  private var auroraTokenBalances: [TokenBalance] = []
+
   var allBalance: [TokenBalance] {
     return self.supportedTokenBalances
   }
   
   func getAllLendingBalances() -> [LendingPlatformBalance] {
-//    if self.allLendingBalance.isEmpty, let unwrapped = self.wallet {
-//      self.updateCurrentWallet(unwrapped)
-//    }
     return self.allLendingBalance
   }
   
@@ -46,6 +52,16 @@ class BalanceStorage {
   func updateCurrentWallet(_ wallet: Wallet) {
     self.wallet = wallet
     DispatchQueue.global(qos: .background).async {
+      let walletAddress = wallet.address.description.lowercased()
+      self.ethTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .eth)
+      self.bscTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .bsc)
+      self.polygonTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .polygon)
+      self.avaxTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .avalanche)
+      self.cronosTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .cronos)
+      self.fantomTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .fantom)
+      self.arbitrumTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .arbitrum)
+      self.auroraTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .aurora)
+      
       self.supportedTokenBalances = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
       self.allLendingBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.allLiquidityPool = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
@@ -67,13 +83,38 @@ class BalanceStorage {
     return balance
   }
   
+  private func retrieveBalancesInHardDisk(address: String, chainType: ChainType) -> [TokenBalance] {
+    let allBalance = Storage.retrieve(self.getChainDBPath(chainType: chainType) + address + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
+    return allBalance
+  }
+  
+  private func getBalancesFor(chain: ChainType) -> [TokenBalance] {
+    switch chain {
+    case .eth:
+      return self.ethTokenBalances
+    case .bsc:
+      return self.bscTokenBalances
+    case .polygon:
+      return self.polygonTokenBalances
+    case .avalanche:
+      return self.avaxTokenBalances
+    case .cronos:
+      return self.cronosTokenBalances
+    case .fantom:
+      return self.fantomTokenBalances
+    case .arbitrum:
+      return self.arbitrumTokenBalances
+    case .aurora:
+      return self.auroraTokenBalances
+    }
+  }
+  
   func balanceForAddressInChain(_ address: String, chainType: ChainType) -> TokenBalance? {
-    guard let wallet = self.wallet else {
+    guard self.wallet != nil else {
       return nil
     }
 
-    
-    let allBalance = Storage.retrieve(self.getChainDBPath(chainType: chainType) + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
+    let allBalance = self.getBalancesFor(chain: chainType)
     let balance = allBalance.first { (balance) -> Bool in
       return balance.address.lowercased() == address.lowercased()
     }
@@ -83,13 +124,13 @@ class BalanceStorage {
   func getChainDBPath(chainType: ChainType) -> String {
     return chainType.getChainDBPath()
   }
-  
-  func supportedTokenBalanceForAddress(_ address: String) -> TokenBalance? {
-    let balance = self.supportedTokenBalances.first { (balance) -> Bool in
-      return balance.address.lowercased() == address.lowercased()
-    }
-    return balance
-  }
+
+//  func supportedTokenBalanceForAddress(_ address: String) -> TokenBalance? {
+//    let balance = self.supportedTokenBalances.first { (balance) -> Bool in
+//      return balance.address.lowercased() == address.lowercased()
+//    }
+//    return balance
+//  }
 
   func setLendingBalances(_ balances: [LendingPlatformBalance]) {
     guard let unwrapped = self.wallet else {
