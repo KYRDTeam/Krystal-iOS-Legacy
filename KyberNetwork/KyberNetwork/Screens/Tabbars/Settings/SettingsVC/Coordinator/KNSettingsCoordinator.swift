@@ -179,8 +179,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       self.navigationController.openSafari(with: "https://goo.gl/forms/ZarhiV7MPE0mqr712")
     case .rateOurApp:
       self.navigationController.openSafari(with: "https://apps.apple.com/us/app/id1558105691")
-    case .liveChat:
-      Freshchat.sharedInstance().showConversations(self.navigationController)
     case .addCustomToken:
       self.customTokenCoordinator.rootViewController.tokenObject = nil
       self.customTokenCoordinator.start()

@@ -1210,15 +1210,23 @@ extension EarnCoordinator: ChooseRateViewControllerDelegate {
 }
 
 extension EarnCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
+    
+    
+  }
+  
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
       return
     }
     provider.sendApproveERCTokenAddress(
       for: gasTokenAddress,
-      value: BigInt(2).power(256) - BigInt(1),
-      gasPrice: KNGasCoordinator.shared.defaultKNGas) { approveResult in
+      value: Constants.maxValueBigInt,
+      gasPrice: KNGasCoordinator.shared.defaultKNGas,
+      gasLimit: gasLimit
+    ) { approveResult in
       self.navigationController.hideLoading()
       switch approveResult {
       case .success:
@@ -1235,17 +1243,17 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
     }
   }
 
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider else {
       return
     }
-    self.resetAllowanceForTokenIfNeeded(token, remain: remain) { [weak self] resetResult in
+    self.resetAllowanceForTokenIfNeeded(token, remain: remain, gasLimit: gasLimit) { [weak self] resetResult in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        provider.sendApproveERCToken(for: token, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas) { (result) in
+        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
           switch result {
           case .success:
             if let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler {
@@ -1271,7 +1279,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
     }
   }
 
-  fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -1283,7 +1291,8 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
     provider.sendApproveERCToken(
       for: token,
       value: BigInt(0),
-      gasPrice: gasPrice
+      gasPrice: gasPrice,
+      gasLimit: gasLimit
     ) { result in
       switch result {
       case .success:

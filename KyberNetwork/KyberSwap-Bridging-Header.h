@@ -8,6 +8,5 @@
 #ifndef KyberSwap_Bridging_Header_h
 #define KyberSwap_Bridging_Header_h
 
-#import "FreshchatSDK.h"
 
 #endif /* KyberSwap_Bridging_Header_h */

@@ -1205,11 +1205,13 @@ extension KrytalService: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getOverviewMarket(addresses: let addresses, quotes: let quotes):
-      let json: JSONDictionary = [
-        "tokenAddresses": addresses.joined(separator: ","),
+      var json: JSONDictionary = [
         "quoteCurrencies": quotes.joined(separator: ","),
         "sparkline": "false"
       ]
+      if !addresses.isEmpty {
+        json["tokenAddresses"] = addresses.joined(separator: ",")
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
       
     case .getTokenDetail(address: let address):

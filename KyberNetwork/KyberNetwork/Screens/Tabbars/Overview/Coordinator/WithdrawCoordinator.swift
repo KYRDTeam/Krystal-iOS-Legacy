@@ -590,8 +590,12 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
-  fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
-    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(2).power(256) - BigInt(1), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
+    
+  }
+
+  fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    provider.sendApproveERCTokenAddress(for: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
         if address.lowercased() == Constants.gasTokenAddress.lowercased() {
@@ -611,25 +615,25 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
     }
   }
   
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?) {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
     guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
       return
     }
     guard remain.isZero else {
-      self.resetAllowanceBeforeSend(provider, tokenAddress, toAddress, address)
+      self.resetAllowanceBeforeSend(provider, tokenAddress, toAddress, address, gasLimit)
       return
     }
-    self.sendApprove(provider, tokenAddress, toAddress, address)
+    self.sendApprove(provider, tokenAddress, toAddress, address, gasLimit)
   }
 
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt) {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
   }
 
-  fileprivate func resetAllowanceBeforeSend(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String) {
+  fileprivate func resetAllowanceBeforeSend(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
     provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
-        self.sendApprove(provider, tokenAddress, toAddress, address)
+        self.sendApprove(provider, tokenAddress, toAddress, address, gasLimit)
       case .failure(let error):
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),

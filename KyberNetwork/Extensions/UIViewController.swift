@@ -47,12 +47,14 @@ extension UIViewController {
         text: String = NSLocalizedString("loading", value: "Loading", comment: ""),
         animated: Bool = true
     ) {
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: animated)
-        hud.label.text = text
+      let hud = MBProgressHUD.showAdded(to: self.view, animated: animated)
+      hud.label.text = text
+      hud.isUserInteractionEnabled = false
     }
 
     func showLoadingHUD (animated: Bool = true) {
-      MBProgressHUD.showAdded(to: self.view, animated: animated)
+      let hud = MBProgressHUD.showAdded(to: self.view, animated: animated)
+      hud.isUserInteractionEnabled = false
     }
 
     func hideLoading(animated: Bool = true) {

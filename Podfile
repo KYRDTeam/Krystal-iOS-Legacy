@@ -35,10 +35,11 @@ target 'KyberNetwork' do
   pod 'Starscream', '~> 3.1'
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
+  pod 'FirebasePerformance'
 #  pod 'FirebaseRemoteConfig', '~> 4.4'
   pod 'SwipeCellKit'
   pod 'Charts'
-  pod 'FreshchatSDK'
+  
   pod 'FSPagerView'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'

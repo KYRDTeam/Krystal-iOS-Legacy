@@ -427,31 +427,10 @@ class KSwapViewModel {
     if self.isFromDeepLink {
       return
     }
-    switch KNGeneralProvider.shared.currentChain {
-    case .eth:
-      self.from = KNSupportedTokenStorage.shared.ethToken
-      self.to = KNSupportedTokenStorage.shared.kncToken
-    case .bsc:
-      self.from = KNSupportedTokenStorage.shared.bnbToken
-      self.to = KNSupportedTokenStorage.shared.busdToken
-    case .polygon:
-      self.from = KNSupportedTokenStorage.shared.maticToken
-      self.to = KNSupportedTokenStorage.shared.usdcToken
-    case .avalanche:
-      self.from = KNSupportedTokenStorage.shared.avaxToken
-      self.to = KNSupportedTokenStorage.shared.usdceToken
-    case .cronos:
-      self.from = KNSupportedTokenStorage.shared.cronosToken
-      self.to = KNSupportedTokenStorage.shared.usdcToken
-    case .fantom:
-      self.from = KNSupportedTokenStorage.shared.fantomToken
-      self.to = KNSupportedTokenStorage.shared.usdcToken
-    case .arbitrum:
-      self.from = KNSupportedTokenStorage.shared.ethToken
-      self.to = KNSupportedTokenStorage.shared.usdcToken
-    }
+    self.from = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    self.to = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
   }
-  
+
   func updateTokensPair(from: TokenObject, to: TokenObject) {
     self.from = from
     self.to = to
@@ -911,44 +890,10 @@ class KSwapViewModel {
 
 extension KSwapViewModel {
   func getChain(chainId: Int) -> ChainType? {
-    switch chainId {
-    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
-      return .eth
-    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
-      return .bsc
-    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
-      return .polygon
-    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
-      return .avalanche
-    case Constants.fantomMainnetRPC.chainID:
-      return .fantom
-    case Constants.cronosMainnetRPC.chainID:
-      return .cronos
-    case Constants.arbitrumMainnetRPC.chainID:
-      return .arbitrum
-    default:
-      return nil
-    }
+    return ChainType.make(chainID: chainId)
   }
 
   func chainName(chainId: Int) -> String? {
-    switch chainId {
-    case Constants.ethMainnetPRC.chainID, Constants.ethRoptenPRC.chainID:
-        return "Ethereum"
-    case Constants.bscMainnetPRC.chainID, Constants.bscRoptenPRC.chainID:
-        return "BSC"
-    case Constants.polygonMainnetPRC.chainID, Constants.polygonRoptenPRC.chainID:
-        return "Polygon"
-    case Constants.avalancheMainnetPRC.chainID, Constants.avalancheRoptenPRC.chainID:
-        return "Avalanche"
-    case Constants.fantomMainnetRPC.chainID:
-      return "Fantom"
-    case Constants.cronosMainnetRPC.chainID:
-      return "Cronos"
-    case Constants.arbitrumMainnetRPC.chainID:
-      return "Arbitrum"
-    default:
-        return nil
-    }
+    return ChainType.make(chainID: chainId)?.chainName()
   }
 }

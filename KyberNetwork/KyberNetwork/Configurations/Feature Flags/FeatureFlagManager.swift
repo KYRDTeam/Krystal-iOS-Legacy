@@ -10,6 +10,7 @@ import LaunchDarkly
 public struct FeatureFlagKeys {
   public static let bifinityIntegration = "bifinity-integration"
   public static let promotionCodeIntegration = "promotion-code"
+  public static let auroraChainIntegration = "aurora-chain"
 }
 
 class FeatureFlagManager {

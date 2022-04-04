@@ -33,8 +33,8 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet var sortButtons: [UIButton]!
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
-  
   @IBOutlet weak var insestView: UIView!
+  
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
   let viewModel: OverviewMainViewModel
@@ -179,7 +179,7 @@ class OverviewMainViewController: KNBaseViewController {
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
-    self.currentChainLabel.text = KNGeneralProvider.shared.quoteToken.uppercased()
+    self.currentChainLabel.text = KNGeneralProvider.shared.chainName
   }
 
   fileprivate func updateCh24Button() {
@@ -281,7 +281,6 @@ class OverviewMainViewController: KNBaseViewController {
       }
       KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
     }
-    self.viewModel.reloadAllData()
     self.reloadUI()
   }
 
@@ -320,7 +319,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.updateUISwitchChain()
     self.reloadUI()
   }
-
+  
   func coordinatorDidUpdateNewSession(_ session: KNSession) {
     self.viewModel.session = session
     guard self.isViewLoaded else { return }
@@ -391,6 +390,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
+      cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
       cell.button2.isHidden = true
     case .favourite:
       cell.imageIcon.image = UIImage(named: "empty_fav_token")

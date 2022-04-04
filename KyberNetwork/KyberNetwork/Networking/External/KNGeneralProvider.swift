@@ -8,124 +8,8 @@ import TrustKeystore
 import TrustCore
 import JavaScriptKit
 import CryptoSwift
+import UIKit
 
-enum ChainType: Codable {
-  enum Key: CodingKey {
-    case rawValue
-  }
-
-  enum CodingError: Error {
-    case unknownValue
-  }
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: Key.self)
-    let rawValue = try container.decode(Int.self, forKey: .rawValue)
-    switch rawValue {
-    case 0:
-      self = .eth
-    case 1:
-      self = .bsc
-    case 2:
-      self = .polygon
-    case 3:
-      self = .avalanche
-    case 4:
-      self = .cronos
-    case 5:
-      self = .fantom
-    case 6:
-      self = .arbitrum
-    default:
-      throw CodingError.unknownValue
-    }
-  }
-
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: Key.self)
-    switch self {
-    case .eth:
-      try container.encode(0, forKey: .rawValue)
-    case .bsc:
-      try container.encode(1, forKey: .rawValue)
-    case .polygon:
-      try container.encode(2, forKey: .rawValue)
-    case .avalanche:
-      try container.encode(3, forKey: .rawValue)
-    case .cronos:
-      try container.encode(4, forKey: .rawValue)
-    case .fantom:
-      try container.encode(5, forKey: .rawValue)
-    case .arbitrum:
-      try container.encode(6, forKey: .rawValue)
-    }
-  }
-  
-  static func make(chainID: Int) -> ChainType? {
-    if KNEnvironment.default == .ropsten {
-      if chainID == Constants.ethRoptenPRC.chainID {
-        return .eth
-      } else if chainID == Constants.bscRoptenPRC.chainID {
-        return .bsc
-      } else if chainID == Constants.polygonRoptenPRC.chainID {
-        return .polygon
-      } else if chainID == Constants.avalancheRoptenPRC.chainID {
-        return .avalanche
-      }
-    } else {
-      if chainID == Constants.ethMainnetPRC.chainID {
-        return .eth
-      } else if chainID == Constants.bscMainnetPRC.chainID {
-        return .bsc
-      } else if chainID == Constants.polygonMainnetPRC.chainID {
-        return .polygon
-      } else if chainID == Constants.avalancheMainnetPRC.chainID {
-        return .avalanche
-      }
-    }
-    return nil
-  }
-  
-  func chainName() -> String {
-    switch self {
-    case .eth:
-     return "Ethereum"
-    case .bsc:
-      return "BSC"
-    case .polygon:
-      return "Polygon"
-    case .avalanche:
-      return "Avalanche"
-    case .fantom:
-      return "Fantom"
-    case .cronos:
-      return "Cronos"
-    case .arbitrum:
-      return "Arbitrum"
-    }
-  }
-
-  func blockExploreName() -> String {
-    return "Block Explorer"
-  }
-
-  func isSupportedHistoryAPI() -> Bool {
-    switch self {
-    case .cronos:
-      return false
-    default:
-      return true
-    }
-  }
-
-  case eth
-  case bsc
-  case polygon
-  case avalanche
-  case cronos
-  case fantom
-  case arbitrum
-}
 //swiftlint:disable file_length
 //swiftlint:disable type_body_length
 class KNGeneralProvider {
@@ -139,299 +23,65 @@ class KNGeneralProvider {
   }
   
   var customRPC: CustomRPC {
-    switch self.currentChain {
-    case .eth:
-      return KNEnvironment.default.ethRPC
-    case .bsc:
-      return KNEnvironment.default.bscRPC
-    case .polygon:
-      return KNEnvironment.default.maticRPC
-    case .avalanche:
-      return KNEnvironment.default.avalancheRPC
-    case .cronos:
-      return KNEnvironment.default.cronosRPC
-    case .fantom:
-      return KNEnvironment.default.fantomRPC
-    case .arbitrum:
-      return KNEnvironment.default.arbitrumRPC
-    }
+    return self.currentChain.customRPC()
   }
 
   var currentWeb3: Web3Swift = Web3Swift()
   
   var quoteToken: String {
-    switch self.currentChain {
-    case .eth:
-      return "ETH"
-    case .bsc:
-      return "BNB"
-    case .polygon:
-      return "MATIC"
-    case .avalanche:
-      return "AVAX"
-    case .cronos:
-      return "CRO"
-    case .fantom:
-      return "FTM"
-    case .arbitrum:
-      return "ETH"
-    }
+    return self.currentChain.quoteToken()
   }
   
   var quoteCurrency: CurrencyMode {
-    switch self.currentChain {
-    case .eth:
-      return .eth
-    case .bsc:
-      return .bnb
-    case .polygon:
-      return .matic
-    case .avalanche:
-      return .avax
-    case .cronos:
-      return .cro
-    case .fantom:
-      return .ftm
-    case .arbitrum:
-      return .eth
-    }
+    return .quote
   }
 
   var chainPath: String {
-    switch self.currentChain {
-    case .eth:
-      if KNEnvironment.default == .ropsten {
-        return "/ropsten"
-      }
-      return "/ethereum"
-    case .bsc:
-      if KNEnvironment.default == .ropsten {
-        return "/bsctestnet"
-      }
-      return "/bsc"
-    case .polygon:
-      if KNEnvironment.default == .ropsten {
-        return "/mumbai"
-      }
-      return "/polygon"
-    case .avalanche:
-      return "/avalanche"
-    case .cronos:
-      return "/cronos"
-    case .fantom:
-      return "/fantom"
-    case .arbitrum:
-      return "/arbitrum"
-    }
+    return self.currentChain.chainPath()
   }
 
   var quoteTokenObject: TokenObject {
-    switch self.currentChain {
-    case .eth:
-      return KNSupportedTokenStorage.shared.ethToken
-    case .bsc:
-      return KNSupportedTokenStorage.shared.bnbToken
-    case .polygon:
-      return KNSupportedTokenStorage.shared.maticToken
-    case .avalanche:
-      return KNSupportedTokenStorage.shared.avaxToken
-    case .cronos:
-      return KNSupportedTokenStorage.shared.cronosToken
-    case .fantom:
-      return KNSupportedTokenStorage.shared.fantomToken
-    case .arbitrum:
-      return KNSupportedTokenStorage.shared.ethToken
-    }
+    return self.currentChain.quoteTokenObject()
   }
 
   var quoteTokenPrice: TokenPrice? {
-    switch self.currentChain {
-    case .eth:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.ethAddress)
-    case .bsc:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.bnbAddress)
-    case .polygon:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.maticAddress)
-    case .avalanche:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.avaxAddress)
-    case .cronos:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.cronosAddress)
-    case .fantom:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.fantomAddress)
-    case .arbitrum:
-      return KNTrackerRateStorage.shared.getPriceWithAddress(Constants.arbitrumAddress)
-    }
+    return self.currentChain.quoteTokenPrice()
   }
 
   var chainIconImage: UIImage? {
-    switch self.currentChain {
-    case .eth:
-      return UIImage(named: "chain_eth_icon")
-    case .bsc:
-      return UIImage(named: "chain_bsc_icon")
-    case .polygon:
-      return UIImage(named: "chain_polygon_big_icon")
-    case .avalanche:
-      return UIImage(named: "chain_avax_icon")
-    case .cronos:
-      return UIImage(named: "chain_cronos_icon")
-    case .fantom:
-      return UIImage(named: "chain_fantom_icon")
-    case .arbitrum:
-      return UIImage(named: "chain_arbitrum_icon")
-    }
+    return self.currentChain.chainIcon()
   }
 
   var proxyAddress: String {
-    switch self.currentChain {
-    case .eth:
-      return Constants.krystalProxyAddress.lowercased()
-    case .bsc:
-      return Constants.krystalProxyAddressBSC.lowercased()
-    case .polygon:
-      return Constants.krystalProxyAddressMatic.lowercased()
-    case .avalanche:
-      return Constants.krystalProxyAddressAvax.lowercased()
-    case .cronos:
-      return Constants.krystalProxyAddressCronos.lowercased()
-    case .fantom:
-      return Constants.krystalProxyAddressFantom.lowercased()
-    case .arbitrum:
-      return Constants.krystalProxyAddressArbitrum.lowercased()
-    }
+    return self.currentChain.proxyAddress()
   }
 
   var compoundSymbol: String {
-    switch self.currentChain {
-    case .eth:
-      return "COMP"
-    case .bsc:
-      return "XVS"
-    case .polygon:
-      return "COMP"
-    case .avalanche:
-      return "" //TODO: wait for compound symbol
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.compoundSymbol()
   }
 
   var compoundImageIcon: UIImage? {
-    switch self.currentChain {
-    case .eth:
-      return UIImage(named: "comp_icon")
-    case .bsc:
-      return UIImage(named: "venus_icon")
-    case .polygon:
-      return UIImage(named: "comp_icon")
-    case .avalanche:
-      return UIImage(named: "") //TODO: wait for compound icon
-    case .cronos:
-      return UIImage(named: "")
-    case .fantom:
-      return UIImage(named: "")
-    case .arbitrum:
-      return UIImage(named: "")
-    }
+    return self.currentChain.compoundImageIcon()
   }
 
   var tokenType: String {
-    switch self.currentChain {
-    case .eth:
-      return "ERC20"
-    case .bsc:
-      return "BEP20"
-    case .polygon:
-      return "ERC20"
-    case .avalanche:
-      return "ARC20"
-    case .cronos:
-      return "CRC20"
-    case .fantom:
-      return "ERC20"
-    case .arbitrum:
-      return "ERC20"
-    }
+    return self.currentChain.tokenType()
   }
 
   var apiKey: String {
-    switch self.currentChain {
-    case .eth:
-      return KNSecret.etherscanAPIKey
-    case .bsc:
-      return KNSecret.bscscanAPIKey
-    case .polygon:
-      return KNSecret.polygonscanAPIKey
-    case .avalanche:
-      return "" //TODO: wait for avalance api key
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.apiKey()
   }
 
   var lendingDistributionPlatform: String {
-    switch self.currentChain {
-    case .eth:
-      return "Compound"
-    case .bsc:
-      return "Venus"
-    case .polygon:
-      return ""
-    case .avalanche:
-      return ""
-    case .cronos:
-      return ""
-    case .fantom:
-      return ""
-    case .arbitrum:
-      return ""
-    }
+    return self.currentChain.lendingDistributionPlatform()
   }
 
   var chainName: String {
-    switch self.currentChain {
-    case .eth:
-      return "Ethereum"
-    case .bsc:
-      return "Binance Smart Chain"
-    case .polygon:
-      return "Polygon"
-    case .avalanche:
-      return "Avalanche"
-    case .cronos:
-      return "cronos"
-    case .fantom:
-      return "fantom"
-    case .arbitrum:
-      return "Arbitrum One"
-    }
+    return self.currentChain.chainName()
   }
 
   var priceAlertMessage: String {
-    switch self.currentChain {
-    case .eth:
-      return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
-    case .bsc:
-      return "There.is.a.difference.between.the.estimated.price.bsc".toBeLocalised()
-    case .polygon:
-      return "There.is.a.difference.between.the.estimated.price.matic".toBeLocalised()
-    case .avalanche:
-      return "There.is.a.difference.between.the.estimated.price.avalanche".toBeLocalised()
-    case .cronos:
-      return "There.is.a.difference.between.the.estimated.price.cronos".toBeLocalised()
-    case .fantom:
-      return "There.is.a.difference.between.the.estimated.price.fantom".toBeLocalised()
-    case .arbitrum:
-      return "There.is.a.difference.between.the.estimated.price.arbitrum".toBeLocalised()
-    }
+    return "There.is.a.difference.between.the.estimated.price".toBeLocalised()
   }
 
   var web3Swift: Web3Swift {
@@ -466,28 +116,12 @@ class KNGeneralProvider {
   }
 
   var networkAddress: Address {
-    var address = ""
-    switch self.currentChain {
-    case .eth:
-      address = Constants.krystalProxyAddress.lowercased()
-    case .bsc:
-      address = Constants.krystalProxyAddressBSC.lowercased()
-    case .polygon:
-      address = Constants.krystalProxyAddressMatic.lowercased()
-    case .avalanche:
-      address = Constants.krystalProxyAddressAvax.lowercased()
-    case .cronos:
-      address = Constants.krystalProxyAddressCronos.lowercased()
-    case .fantom:
-      address = Constants.krystalProxyAddressFantom.lowercased()
-    case .arbitrum:
-      address = Constants.krystalProxyAddressArbitrum.lowercased()
-    }
+    let address = self.currentChain.proxyAddress()
     return Address(string: address)!
   }
   
   var isUseEIP1559: Bool {
-    return KNGeneralProvider.shared.currentChain == .eth || KNGeneralProvider.shared.currentChain == .avalanche || KNGeneralProvider.shared.currentChain == .polygon
+    return KNGeneralProvider.shared.currentChain.isSupportedEIP1559()
   }
 
   var wrapperAddress: Address {
@@ -942,7 +576,7 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(token: TokenObject, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -976,7 +610,7 @@ class KNGeneralProvider {
       }
 
       guard let tokenAddress = Address(string: token.contract) else { return }
-      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -1003,8 +637,34 @@ class KNGeneralProvider {
       }
     }
   }
+  
+  func buildSignTxForApprove(tokenAddress: Address, account: Account, completion: @escaping (SignTransaction?) -> Void) {
+    let address = Address(string: self.proxyAddress)!
+    
+    self.getSendApproveERC20TokenEncodeData(networkAddress: address, value: Constants.maxValueBigInt, completion: { result in
+      switch result {
+      case .success(let resp):
+        let gasLimit = KNGasConfiguration.approveTokenGasLimitDefault
+        let gasPrice = KNGasCoordinator.shared.defaultKNGas
+        
+        let signTransaction = SignTransaction(
+          value: BigInt(0),
+          account: account,
+          to: tokenAddress,
+          nonce: 1,
+          data: resp,
+          gasPrice: gasPrice,
+          gasLimit: gasLimit,
+          chainID: KNGeneralProvider.shared.customRPC.chainID
+        )
+        completion(signTransaction)
+      case .failure:
+        completion(nil)
+      }
+    })
+  }
 
-  func approve(tokenAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(tokenAddress: Address, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: Address, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -1036,7 +696,7 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice) { [weak self] result in
+      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -1202,11 +862,7 @@ class KNGeneralProvider {
 
 // MARK: Sign transaction
 extension KNGeneralProvider {
-  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    let gasLimit: BigInt = {
-      if let gasApprove = token.gasApproveDefault { return gasApprove }
-      return KNGasConfiguration.approveTokenGasLimitDefault
-    }()
+  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
@@ -1226,8 +882,8 @@ extension KNGeneralProvider {
     }
   }
 
-  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
-    let gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+  private func signTransactionData(forApproving tokenAddress: Address, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
+
     let signTransaction = SignTransaction(
       value: BigInt(0),
       account: account,
@@ -1334,7 +990,7 @@ extension KNGeneralProvider {
     }
   }
 
- func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = BigInt(2).power(256) - BigInt(1), completion: @escaping (Result<Data, AnyError>) -> Void) {
+ func getSendApproveERC20TokenEncodeData(networkAddress: Address, value: BigInt = Constants.maxValueBigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(
       address: networkAddress,
       value: value
@@ -1607,7 +1263,8 @@ extension KNGeneralProvider {
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
@@ -1624,13 +1281,12 @@ extension KNGeneralProvider {
       data: Data(hexString: eip1559Tx.data) ?? Data(),
       gasPrice: BigInt(eip1559Tx.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
     )
-    
-    print("[EIP1559] gaslimit request \(request.parameters)")
 
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):
-        let limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
         completion(.success(limit))
       case .failure(let error):
         NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")

@@ -75,8 +75,8 @@ extension String {
     )
   }
 
-  func displayRate() -> String {
-    return KNRateHelper.displayRate(from: self)
+  func displayRate(meaningNumber: Int = 4) -> String {
+    return KNRateHelper.displayRate(from: self, meaningNumber: meaningNumber)
   }
 
   func formatName(maxLen: Int = 10) -> String {
@@ -161,7 +161,7 @@ extension String {
   }
   
   func isNativeAddress() -> Bool {
-    return self.lowercased() == Constants.ethAddress || self.lowercased() == Constants.bnbAddress
+    return self.lowercased() == AllChains.ethMainnetPRC.quoteTokenAddress || self.lowercased() == AllChains.bscMainnetPRC.quoteTokenAddress
   }
   
   var toHexData: Data {

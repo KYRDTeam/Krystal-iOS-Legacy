@@ -81,22 +81,7 @@ class BalanceStorage {
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
-    switch chainType {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
-    case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
-    }
+    return chainType.getChainDBPath()
   }
   
   func supportedTokenBalanceForAddress(_ address: String) -> TokenBalance? {
@@ -143,7 +128,7 @@ class BalanceStorage {
   }
   
   func balanceBNB() -> String {
-    return self.balanceForAddress(Constants.bnbAddress)?.balance ?? ""
+    return self.balanceForAddress(AllChains.bscMainnetPRC.quoteTokenAddress)?.balance ?? ""
   }
 
   func getBalanceETHBigInt() -> BigInt {
@@ -153,7 +138,7 @@ class BalanceStorage {
   func getBalanceBNBBigInt() -> BigInt {
     return BigInt(self.balanceBNB()) ?? BigInt(0)
   }
-  
+
   func getTotalAssetBalanceUSD(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
     let tokens = KNSupportedTokenStorage.shared.allActiveTokens
@@ -169,7 +154,7 @@ class BalanceStorage {
       guard token.getBalanceBigInt() > BigInt(0), !lendingSymbols.contains(token.symbol.lowercased()) else {
         return
       }
-      
+
       let balance = token.getBalanceBigInt()
       let rateBigInt = BigInt(token.getTokenLastPrice(currency) * pow(10.0, 18.0))
       let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)
