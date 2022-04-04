@@ -175,10 +175,13 @@ extension String {
   var has0xPrefix: Bool {
       return hasPrefix("0x")
   }
-  
+
   func limit(scope: Int) -> String {
     guard self.count > scope else {
       let number = scope - self.count
+      if number == 0 {
+        return self
+      }
       var padding = ""
       for _ in 1...number {
         padding += " "
