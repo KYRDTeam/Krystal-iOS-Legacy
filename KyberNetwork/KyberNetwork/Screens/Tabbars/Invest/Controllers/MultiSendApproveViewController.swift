@@ -14,6 +14,7 @@ enum MultiSendApproveViewEvent {
   case dismiss
   case approve(items: [ApproveMultiSendItem], isApproveUnlimit: Bool, settings: ConfirmAdvancedSetting, estNoTx: Int)
   case done
+  case estimateGas(items: [ApproveMultiSendItem])
 }
 
 protocol MultiSendApproveViewControllerDelegate: class {
@@ -142,7 +143,7 @@ class MultiSendApproveViewModel {
           let customGasLimitString = self.advancedGasLimit,
           let customGasLimit = BigInt(customGasLimitString) {
         self.gasPrice = customGasPrice
-        self.gasLimit = customGasLimit
+        self.gasLimit = customGasLimit * BigInt(self.items.count)
       }
     default: return
     }
@@ -222,6 +223,8 @@ class MultiSendApproveViewController: KNBaseViewController {
     self.updateGasFeeUI()
     self.backButton.rounded(radius: 16)
     self.approveButton.rounded(radius: 16)
+
+    self.delegate?.multiSendApproveVieController(self, run: .estimateGas(items: self.viewModel.items))
   }
   
   private func updateUIForCheckBox() {
@@ -321,6 +324,13 @@ class MultiSendApproveViewController: KNBaseViewController {
         self.delegate?.multiSendApproveVieController(self, run: .done)
       }
     }
+  }
+  
+  func coordinatorDidUpdateGasLimit(gas: [(ApproveMultiSendItem, BigInt)]) {
+    print("[Gas Limit]  update \(gas)")
+    
+    guard self.isViewLoaded else { return }
+
   }
 }
 

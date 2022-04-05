@@ -419,7 +419,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 legacyTxs.append((item, tx))
               }
             }
-            
+
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.0.isEmpty else {
@@ -460,6 +460,74 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         controller.dismiss(animated: true) {
           self.rootViewController.coordinatorDidFinishApproveTokens()
           self.approveVC = nil
+        }
+      }
+    case .estimateGas(items: let items):
+      guard case .real(let account) = self.session.wallet.type else {
+        return
+      }
+      
+      self.buildApproveDataList(items: items, isApproveUnlimit: true) { dataList in
+        var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
+        var legacyTxs: [(ApproveMultiSendItem, SignTransaction)] = []
+        let currentAddress = account.address.description
+        
+        let setting = ConfirmAdvancedSetting(
+          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
+          advancedGasLimit: nil,
+          advancedPriorityFee: nil,
+          avancedMaxFee: nil,
+          advancedNonce: nil
+        )
+        for (_, element) in dataList.enumerated() {
+          let item = element.0
+          let txNonce = 1
+          if KNGeneralProvider.shared.isUseEIP1559 {
+            let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            eipTxs.append((item, tx))
+          } else {
+            let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            legacyTxs.append((item, tx))
+          }
+        }
+        
+        var output: [(ApproveMultiSendItem, BigInt)] = []
+        
+        if KNGeneralProvider.shared.isUseEIP1559 {
+          let group = DispatchGroup()
+          eipTxs.forEach { item in
+            group.enter()
+            KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: item.1) { result in
+              switch result {
+              case.success(let gas):
+                output.append((item.0, gas))
+              default:
+                output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
+              }
+              group.leave()
+            }
+          }
+          group.notify(queue: .global()) {
+            controller.coordinatorDidUpdateGasLimit(gas: output)
+          }
+        } else {
+          let group = DispatchGroup()
+          group.enter()
+          legacyTxs.forEach { item in
+            KNGeneralProvider.shared.getEstimateGasLimit(transaction: item.1) { result in
+              switch result {
+              case.success(let gas):
+                output.append((item.0, gas))
+              default:
+                output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
+              }
+              group.leave()
+            }
+          }
+          group.notify(queue: .global()) {
+            controller.coordinatorDidUpdateGasLimit(gas: output)
+          }
         }
       }
     }
@@ -511,7 +579,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           break
         }
         group.leave()
-        
       }
 
       group.notify(queue: .global()) {
