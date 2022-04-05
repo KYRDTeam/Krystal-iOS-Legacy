@@ -35,6 +35,28 @@ class KNTrackerRateStorage {
 
   func reloadData() {
     self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices)
+  }
+  
+  private func updateCacheRate(chain: ChainType, rates: [TokenPrice]) {
+    switch chain {
+    case .eth:
+      self.ethAllPrices = rates
+    case .bsc:
+      self.bscAllPrices = rates
+    case .polygon:
+      self.polygonAllPrices = rates
+    case .avalanche:
+      self.avalancheAllPrices = rates
+    case .cronos:
+      self.cronosAllPrices = rates
+    case .fantom:
+      self.fantomAllPrices = rates
+    case .arbitrum:
+      self.arbitrumAllPrices = rates
+    case .aurora:
+      self.auroraAllPrices = rates
+    }
   }
 
   //MARK: new implementation

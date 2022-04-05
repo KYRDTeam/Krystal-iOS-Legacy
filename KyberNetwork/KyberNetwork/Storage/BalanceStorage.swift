@@ -45,8 +45,31 @@ class BalanceStorage {
       return
     }
     
+    self.setCacheForChain(chain: KNGeneralProvider.shared.currentChain, balances: balances)
+    
     self.supportedTokenBalances = balances
     Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.balanceStoreFileName)
+  }
+  
+  private func setCacheForChain(chain: ChainType, balances: [TokenBalance]) {
+    switch chain {
+    case .eth:
+      self.ethTokenBalances = balances
+    case .bsc:
+      self.bscTokenBalances = balances
+    case .polygon:
+      self.polygonTokenBalances = balances
+    case .avalanche:
+      self.avaxTokenBalances = balances
+    case .cronos:
+      self.cronosTokenBalances = balances
+    case .fantom:
+      self.fantomTokenBalances = balances
+    case .arbitrum:
+      self.arbitrumTokenBalances = balances
+    case .aurora:
+      self.auroraTokenBalances = balances
+    }
   }
   
   func updateCurrentWallet(_ wallet: Wallet) {

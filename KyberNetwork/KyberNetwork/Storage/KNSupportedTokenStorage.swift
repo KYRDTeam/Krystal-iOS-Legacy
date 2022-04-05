@@ -282,6 +282,7 @@ class KNSupportedTokenStorage {
       self.deletedTokens.remove(at: index)
     }
     Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+    self.setCacheDeletedToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.deletedTokens)
   }
 
   func getTokenActiveStatus(_ token: Token) -> Bool {
@@ -302,6 +303,49 @@ class KNSupportedTokenStorage {
         Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
       }
     }
+    self.setCacheDisableToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.disableTokens)
+  }
+  
+  private func setCacheDisableToken(chain: ChainType, tokens: [Token]) {
+    switch chain {
+    case .eth:
+      self.ethDisableTokens = tokens
+    case .bsc:
+      self.bscDisableTokens = tokens
+    case .polygon:
+      self.polygonDisableTokens = tokens
+    case .avalanche:
+      self.avalancheDisableTokens = tokens
+    case .cronos:
+      self.cronosDisableTokens = tokens
+    case .fantom:
+      self.fantomDisableTokens = tokens
+    case .arbitrum:
+      self.arbitrumDisableTokens = tokens
+    case .aurora:
+      self.auroraDisableTokens = tokens
+    }
+  }
+  
+  private func setCacheDeletedToken(chain: ChainType, tokens: [Token]) {
+    switch chain {
+    case .eth:
+      self.ethDeletedTokens = tokens
+    case .bsc:
+      self.bscDeletedTokens = tokens
+    case .polygon:
+      self.polygonDeletedTokens = tokens
+    case .avalanche:
+      self.avalancheDeletedTokens = tokens
+    case .cronos:
+      self.cronosDeletedTokens = tokens
+    case .fantom:
+      self.fantomDeletedTokens = tokens
+    case .arbitrum:
+      self.arbitrumDeletedTokens = tokens
+    case .aurora:
+      self.auroraDeletedTokens = tokens
+    }
   }
 
   func changeAllTokensActiveStatus(isActive: Bool) {
@@ -315,6 +359,7 @@ class KNSupportedTokenStorage {
       self.disableTokens.append(contentsOf: manageToken)
     }
     Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+    self.setCacheDisableToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.disableTokens)
   }
 
   func activeStatus() -> Bool {
@@ -343,6 +388,7 @@ class KNSupportedTokenStorage {
 
     self.deletedTokens.append(token)
     Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+    self.setCacheDeletedToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.deletedTokens)
   }
 
   func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {
