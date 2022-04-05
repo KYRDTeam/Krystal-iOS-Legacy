@@ -1432,6 +1432,7 @@ extension EarnCoordinator: KNHistoryCoordinatorDelegate {
   }
 
   func historyCoordinatorDidClose() {
+    self.historyCoordinator = nil
   }
 
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
@@ -1468,6 +1469,10 @@ extension EarnCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
   }

@@ -1010,7 +1010,7 @@ extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
   }
 
   func historyCoordinatorDidClose() {
-//    self.historyCoordinator = nil
+    self.historyCoordinator = nil
   }
 
   func historyCoordinatorDidUpdateWalletObjects() {
@@ -1622,6 +1622,10 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendTokenCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
   }

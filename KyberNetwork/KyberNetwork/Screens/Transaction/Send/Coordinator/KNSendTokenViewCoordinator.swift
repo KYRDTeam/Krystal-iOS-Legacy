@@ -17,6 +17,7 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectManageWallet()
   func sendTokenCoordinatorDidSelectAddWallet()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func sendTokenCoordinatorDidClose()
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
@@ -113,7 +114,9 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true) {
+      self.delegate?.sendTokenCoordinatorDidClose()
+    }
   }
 }
 
