@@ -184,7 +184,6 @@ class DappBrowserHomeViewController: UIViewController {
 
 extension DappBrowserHomeViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: textField.text ?? ""))
     textField.resignFirstResponder()
     return true
   }
