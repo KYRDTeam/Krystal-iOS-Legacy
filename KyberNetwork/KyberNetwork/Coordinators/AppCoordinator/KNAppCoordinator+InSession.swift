@@ -206,6 +206,7 @@ extension KNAppCoordinator {
       self.doLogin { completed in
       }
       if isLoading { self.navigationController.hideLoading() }
+      MixPanelManager.shared.updateWalletAddress(address: wallet.address.description.lowercased())
     }
   }
 
