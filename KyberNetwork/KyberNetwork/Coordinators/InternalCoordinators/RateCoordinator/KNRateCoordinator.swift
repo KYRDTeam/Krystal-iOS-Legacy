@@ -266,7 +266,7 @@ class KNRateHelper {
     formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = mainRuleDecimals
     let mainRuleConvertedNumber = formatter.number(from: rate) ?? NSNumber(value: 0)
-    guard formatter.string(from: mainRuleConvertedNumber) == "0" else {
+    guard mainRuleConvertedNumber.doubleValue < 0.1 else {
       return formatter.string(from: mainRuleConvertedNumber) ?? ""
     }
 
