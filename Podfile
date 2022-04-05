@@ -31,7 +31,7 @@ target 'KyberNetwork' do
   pod 'SwiftChart', :git => 'https://github.com/gpbl/SwiftChart.git'
   pod 'JdenticonSwift', '~> 0.0.1'
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
-
+  pod 'Mixpanel-swift'
   pod 'Starscream', '~> 3.1'
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
