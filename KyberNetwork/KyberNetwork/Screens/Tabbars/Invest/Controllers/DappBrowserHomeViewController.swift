@@ -189,12 +189,14 @@ extension DappBrowserHomeViewController: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: textField.text ?? ""))
+    guard let text = textField.text, !text.isEmpty else { return }
+    self.delegate?.dappBrowserHomeViewController(self, run: .enterText(text: text))
   }
 }
 
 extension DappBrowserHomeViewController: TagListViewDelegate {
   func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
+    self.searchTextField.text = ""
     switch sender.tag {
     case 1:
       let filtered = self.viewModel.recentlyDataSource.first { item in
