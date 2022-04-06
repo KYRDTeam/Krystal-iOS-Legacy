@@ -71,21 +71,40 @@ class MultiSendApproveViewModel {
     }
   }
   
+  var maxGasLimit: BigInt {
+    let all = self.gasLimits.map { element in
+      return element.1
+    }
+    return all.max() ?? KNGasConfiguration.approveTokenGasLimitDefault
+  }
+
   let allowance: [Token: BigInt]
-  
-  init(items: [ApproveMultiSendItem], gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, allowances: [Token: BigInt]) {
+  var gasLimits: [(ApproveMultiSendItem, BigInt)] {
+    didSet {
+      self.gasLimit = self.maxGasLimit
+    }
+  }
+
+  init(
+    items: [ApproveMultiSendItem],
+    gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas,
+    allowances: [Token: BigInt]
+  ) {
     self.items = items
     self.tokens = items.map({ item in
       return item.1
     })
     self.gasPrice = gasPrice
-    self.gasLimit = gasLimit
-    self.baseGasLimit = gasLimit
+    self.gasLimit = KNGasConfiguration.approveTokenGasLimitDefault
+    self.baseGasLimit = KNGasConfiguration.approveTokenGasLimitDefault
     let cms = items.map { element in
       return ApproveTokenCellModel(item: element)
     }
     self.cellModels = cms
     self.allowance = allowances
+    self.gasLimits = items.map({ element in
+      return (element, KNGasConfiguration.approveTokenGasLimitDefault)
+    })
   }
 
   lazy var estNoTx: Int = {
@@ -143,7 +162,7 @@ class MultiSendApproveViewModel {
           let customGasLimitString = self.advancedGasLimit,
           let customGasLimit = BigInt(customGasLimitString) {
         self.gasPrice = customGasPrice
-        self.gasLimit = customGasLimit * BigInt(self.items.count)
+        self.gasLimit = customGasLimit
       }
     default: return
     }
@@ -327,10 +346,12 @@ class MultiSendApproveViewController: KNBaseViewController {
   }
   
   func coordinatorDidUpdateGasLimit(gas: [(ApproveMultiSendItem, BigInt)]) {
-    print("[Gas Limit]  update \(gas)")
+    self.viewModel.gasLimits = gas
     
-    guard self.isViewLoaded else { return }
-
+    DispatchQueue.main.async {
+      guard self.isViewLoaded else { return }
+      self.updateGasFeeUI()
+    }
   }
 }
 
