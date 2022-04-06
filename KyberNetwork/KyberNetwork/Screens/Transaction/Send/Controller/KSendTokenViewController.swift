@@ -206,6 +206,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_submit", customAttributes: nil)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     let event = KSendTokenViewEvent.validate(
