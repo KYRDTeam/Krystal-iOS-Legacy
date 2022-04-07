@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       print("User accepted notifications: \(accepted)")
     })
     
-    self.setupFirebase()
+    self.requestAcceptToolTrackingIfNeeded()
     
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
@@ -73,25 +73,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationWillResignActive(_ application: UIApplication) {
   }
 
-  fileprivate func setupFirebase() {
+  fileprivate func requestAcceptToolTrackingIfNeeded() {
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
-          guard !SentrySDK.isEnabled else { return }
-          if KNEnvironment.default == .production {
-            FirebaseApp.configure()
-          } else {
-            let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-            guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-              return
-            }
-            FirebaseApp.configure(options: fileopts)
-          }
-          
-          self.setupSentry()
+          self.setupTrackingTools()
         }
       }
+    } else {
+      self.setupTrackingTools()
     }
+  }
+  
+  fileprivate func setupTrackingTools() {
+    guard !SentrySDK.isEnabled else { return }
+    if KNEnvironment.default == .production {
+      FirebaseApp.configure()
+    } else {
+      let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+      guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+        return
+      }
+      FirebaseApp.configure(options: fileopts)
+    }
+    
+    self.setupSentry()
+    MixPanelManager.shared.configClient()
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
