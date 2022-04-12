@@ -54,9 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
     })
-    
-    self.requestAcceptToolTrackingIfNeeded()
-    
+
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
   }
@@ -75,9 +73,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   fileprivate func requestAcceptToolTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      ATTrackingManager.requestTrackingAuthorization { (status) in
-        if status == .authorized {
-          self.setupTrackingTools()
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      if status == .notDetermined {
+        ATTrackingManager.requestTrackingAuthorization { (status) in
+          if status == .authorized {
+            self.setupTrackingTools()
+          }
         }
       }
     } else {
@@ -104,6 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
+    self.requestAcceptToolTrackingIfNeeded()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
