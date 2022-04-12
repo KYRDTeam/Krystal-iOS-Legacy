@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular_Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CheckinRewardPopupViewController" customModule="KyberGames" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="41I-RQ-p1J">
+                    <rect key="frame" x="36" y="800" width="342" height="38"/>
+                    <color key="backgroundColor" red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="MMw-OB-3rm"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="16" maxY="0.0"/>
+                    <state key="normal" title="Share with your friends" image="share">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="shareWasTapped:" destination="-1" eventType="touchUpInside" id="Ufg-DC-JEj"/>
+                    </connections>
+                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="MYy-RW-8xC">
+                    <rect key="frame" x="36" y="742" width="342" height="38"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RtM-Ru-f6E">
+                            <rect key="frame" x="0.0" y="0.0" width="163" height="38"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Spin Now">
+                                <color key="titleColor" red="0.058823529409999999" green="0.058823529409999999" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="spinNowWasTapped:" destination="-1" eventType="touchUpInside" id="Wkx-yO-CEL"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poL-5v-72U">
+                            <rect key="frame" x="179" y="0.0" width="163" height="38"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="View Rewards">
+                                <color key="titleColor" red="0.058823529409999999" green="0.058823529409999999" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="viewRewardsWasTapped:" destination="-1" eventType="touchUpInside" id="KFT-Zk-jMN"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="L9z-jI-88j"/>
+                    </constraints>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A lucky spin turn" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cf8-Lw-g6N">
+                    <rect key="frame" x="36" y="478.5" width="342" height="207.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Congratulation!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0a3-aJ-VVU">
+                    <rect key="frame" x="36" y="291" width="342" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="spin_reward" translatesAutoresizingMaskIntoConstraints="NO" id="WKM-w8-uQZ">
+                    <rect key="frame" x="151" y="350.5" width="112" height="112"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="112" id="HsC-xA-WGo"/>
+                        <constraint firstAttribute="width" constant="112" id="KGi-yu-qhc"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                            <real key="value" value="56"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="congras_bg" translatesAutoresizingMaskIntoConstraints="NO" id="hnD-It-MyP">
+                    <rect key="frame" x="0.0" y="60" width="414" height="207"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="hnD-It-MyP" secondAttribute="height" multiplier="2:1" id="Sha-dk-R0c"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="WKM-w8-uQZ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="0uP-NR-mNb"/>
+                <constraint firstItem="WKM-w8-uQZ" firstAttribute="top" secondItem="0a3-aJ-VVU" secondAttribute="bottom" constant="36" id="745-K8-fjI"/>
+                <constraint firstItem="MYy-RW-8xC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="36" id="K2d-j9-KdQ"/>
+                <constraint firstItem="Cf8-Lw-g6N" firstAttribute="top" secondItem="WKM-w8-uQZ" secondAttribute="bottom" constant="16" id="MHR-Ja-4da"/>
+                <constraint firstItem="Cf8-Lw-g6N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="36" id="MwC-wB-VmM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hnD-It-MyP" secondAttribute="trailing" id="SFv-4U-v9M"/>
+                <constraint firstItem="hnD-It-MyP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Skz-Kv-bc4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Cf8-Lw-g6N" secondAttribute="trailing" constant="36" id="X1c-eS-3pU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0a3-aJ-VVU" secondAttribute="trailing" constant="36" id="Xi5-2d-NoV"/>
+                <constraint firstItem="41I-RQ-p1J" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="36" id="gZi-IR-Ofn"/>
+                <constraint firstItem="0a3-aJ-VVU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="36" id="gvO-tW-qsV"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="41I-RQ-p1J" secondAttribute="trailing" constant="36" id="kwa-ep-6U1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="MYy-RW-8xC" secondAttribute="trailing" constant="36" id="pCq-U0-l3S"/>
+                <constraint firstItem="MYy-RW-8xC" firstAttribute="top" secondItem="Cf8-Lw-g6N" secondAttribute="bottom" constant="56" id="udH-AU-dfe"/>
+                <constraint firstItem="hnD-It-MyP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="ue8-YI-JAk"/>
+                <constraint firstItem="0a3-aJ-VVU" firstAttribute="top" secondItem="hnD-It-MyP" secondAttribute="bottom" constant="24" id="uoU-cA-gFD"/>
+                <constraint firstItem="41I-RQ-p1J" firstAttribute="top" secondItem="MYy-RW-8xC" secondAttribute="bottom" constant="20" id="xZI-Jl-7nn"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="41I-RQ-p1J" secondAttribute="bottom" constant="24" id="yqO-B4-rej"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="98"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="congras_bg" width="375" height="186"/>
+        <image name="share" width="24" height="24"/>
+        <image name="spin_reward" width="112" height="112"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

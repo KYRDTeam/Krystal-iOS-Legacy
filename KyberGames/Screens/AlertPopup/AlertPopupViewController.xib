@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlertPopupViewController" customModule="KyberGames" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="9CL-ge-K0g" id="iV3-OQ-6a1"/>
+                <outlet property="confirmButton" destination="kBx-cJ-Iya" id="16p-b7-NMX"/>
+                <outlet property="messageLabel" destination="557-CR-V3Z" id="kFd-aY-seq"/>
+                <outlet property="titleLabel" destination="5GQ-gm-eMy" id="Mjv-s1-0L0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Oqs-wN-MV4">
+                    <rect key="frame" x="36" y="788" width="342" height="38"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CL-ge-K0g">
+                            <rect key="frame" x="0.0" y="0.0" width="163" height="38"/>
+                            <color key="backgroundColor" red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelWasTapped:" destination="-1" eventType="touchUpInside" id="0Yx-Fm-AAc"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBx-cJ-Iya">
+                            <rect key="frame" x="179" y="0.0" width="163" height="38"/>
+                            <color key="backgroundColor" name="buttonBackgroundColor"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Skip">
+                                <color key="titleColor" red="0.058823529409999999" green="0.058823529409999999" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="confirmWasTapped:" destination="-1" eventType="touchUpInside" id="c51-U7-wuX"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="2fo-Gz-VaE"/>
+                    </constraints>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will miss many valuable deals &amp; reward" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="557-CR-V3Z">
+                    <rect key="frame" x="24" y="111.5" width="366" height="632.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Do you want to cancel notification?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5GQ-gm-eMy">
+                    <rect key="frame" x="24" y="60" width="366" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="5GQ-gm-eMy" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="1Gb-Qd-mJz"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5GQ-gm-eMy" secondAttribute="trailing" constant="24" id="44o-Hr-fDP"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Oqs-wN-MV4" secondAttribute="trailing" constant="36" id="8Xg-yu-Hut"/>
+                <constraint firstItem="Oqs-wN-MV4" firstAttribute="top" secondItem="557-CR-V3Z" secondAttribute="bottom" constant="44" id="Mph-fV-VcN"/>
+                <constraint firstItem="557-CR-V3Z" firstAttribute="top" secondItem="5GQ-gm-eMy" secondAttribute="bottom" constant="28" id="Y1Z-Cf-c39"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="557-CR-V3Z" secondAttribute="trailing" constant="24" id="eCb-tk-NJc"/>
+                <constraint firstItem="Oqs-wN-MV4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="36" id="gbH-wU-RVb"/>
+                <constraint firstItem="557-CR-V3Z" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="gl5-rM-lck"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Oqs-wN-MV4" secondAttribute="bottom" constant="36" id="uqy-Wo-qfU"/>
+                <constraint firstItem="5GQ-gm-eMy" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="wiz-EF-c8C"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="99"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

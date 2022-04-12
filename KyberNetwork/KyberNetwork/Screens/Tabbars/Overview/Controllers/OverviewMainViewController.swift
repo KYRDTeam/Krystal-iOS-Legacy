@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import SwipeCellKit
 import MBProgressHUD
+import KyberGames
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -723,8 +724,9 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       self.delegate?.overviewMainViewController(self, run: .receive)
     }
 
-    cell.transferButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .send)
+    cell.transferButtonTapped = { [navigationController] in
+//      self.delegate?.overviewMainViewController(self, run: .send)
+      KyberGamesModule.open(endpoint: .list, navigationController: navigationController!)
     }
 
     return cell

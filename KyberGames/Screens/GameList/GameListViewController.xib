@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular_Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GameListViewController" customModule="KyberGames" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="c3h-p2-nHW" id="5nN-Bs-1Kq"/>
+                <outlet property="topBarHeight" destination="PrV-lq-t69" id="v5Q-TN-yzM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ewt-WB-gge">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward Hunting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJy-sM-snp">
+                            <rect key="frame" x="130" y="63" width="154" height="24"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQ3-x5-uLo">
+                            <rect key="frame" x="16" y="59" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="I4g-c3-mo7"/>
+                                <constraint firstAttribute="height" constant="32" id="OM2-H6-MeL"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Button" image="left_arrow"/>
+                            <connections>
+                                <action selector="backWasTapped:" destination="-1" eventType="touchUpInside" id="zPK-bD-m5y"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="aJy-sM-snp" secondAttribute="bottom" constant="26" id="4dv-ph-sW9"/>
+                        <constraint firstAttribute="height" constant="113" id="PrV-lq-t69"/>
+                        <constraint firstItem="bQ3-x5-uLo" firstAttribute="centerY" secondItem="aJy-sM-snp" secondAttribute="centerY" id="RzN-zH-Io4"/>
+                        <constraint firstItem="bQ3-x5-uLo" firstAttribute="leading" secondItem="Ewt-WB-gge" secondAttribute="leading" constant="16" id="dw0-vr-YYf"/>
+                        <constraint firstItem="aJy-sM-snp" firstAttribute="centerX" secondItem="Ewt-WB-gge" secondAttribute="centerX" id="ejz-rV-dWv"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="c3h-p2-nHW">
+                    <rect key="frame" x="0.0" y="113" width="414" height="749"/>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zoe-rr-Mhw">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="c3h-p2-nHW" firstAttribute="top" secondItem="Ewt-WB-gge" secondAttribute="bottom" id="2R9-9e-jQs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="c3h-p2-nHW" secondAttribute="trailing" id="9BO-0r-6K8"/>
+                <constraint firstItem="Ewt-WB-gge" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="GV5-lu-DSx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="c3h-p2-nHW" secondAttribute="bottom" id="dIG-eO-eMo"/>
+                <constraint firstItem="Ewt-WB-gge" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="du0-NS-Obd"/>
+                <constraint firstItem="c3h-p2-nHW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gw1-rz-fdF"/>
+                <constraint firstItem="Ewt-WB-gge" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nIE-sV-GDu"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="60.9375"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="left_arrow" width="32" height="32.5"/>
+    </resources>
+</document>

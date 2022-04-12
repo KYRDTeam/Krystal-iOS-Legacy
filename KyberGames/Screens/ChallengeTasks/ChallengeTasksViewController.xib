@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular_Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChallengeTasksViewController" customModule="KyberGames" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="ET4-bb-z0O" id="M3t-jz-If3"/>
+                <outlet property="topBarHeight" destination="wlY-dS-OES" id="hHK-sM-wOP"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lh-EI-3fy">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get more turns" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WsQ-1C-l1R">
+                            <rect key="frame" x="135.5" y="63" width="143" height="24"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWb-gN-aq0">
+                            <rect key="frame" x="16" y="59" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="Rmx-zp-8aD"/>
+                                <constraint firstAttribute="height" constant="32" id="sqU-Oz-9SN"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Button" image="left_arrow"/>
+                            <connections>
+                                <action selector="backWasTapped:" destination="-1" eventType="touchUpInside" id="gNw-U0-EHF"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="WsQ-1C-l1R" secondAttribute="bottom" constant="26" id="Bts-Ju-DAd"/>
+                        <constraint firstItem="wWb-gN-aq0" firstAttribute="leading" secondItem="3Lh-EI-3fy" secondAttribute="leading" constant="16" id="Cym-hl-Eqd"/>
+                        <constraint firstItem="wWb-gN-aq0" firstAttribute="centerY" secondItem="WsQ-1C-l1R" secondAttribute="centerY" id="WBJ-Nw-Ip2"/>
+                        <constraint firstItem="WsQ-1C-l1R" firstAttribute="centerX" secondItem="3Lh-EI-3fy" secondAttribute="centerX" id="YB6-Zd-rO5"/>
+                        <constraint firstAttribute="height" constant="113" id="wlY-dS-OES"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ET4-bb-z0O">
+                    <rect key="frame" x="0.0" y="113" width="414" height="749"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0039215686269999999" green="0.0039215686269999999" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="3Lh-EI-3fy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8PK-Hb-o3O"/>
+                <constraint firstItem="ET4-bb-z0O" firstAttribute="top" secondItem="3Lh-EI-3fy" secondAttribute="bottom" id="OrK-cM-O76"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ET4-bb-z0O" secondAttribute="trailing" id="SuK-Yg-Tla"/>
+                <constraint firstAttribute="trailing" secondItem="3Lh-EI-3fy" secondAttribute="trailing" id="jzn-cl-7E3"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ET4-bb-z0O" secondAttribute="bottom" id="lL5-WK-vRw"/>
+                <constraint firstItem="ET4-bb-z0O" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tbf-2L-zli"/>
+                <constraint firstItem="3Lh-EI-3fy" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="u6Q-9b-AHc"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="97.767857142857139"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="left_arrow" width="32" height="32.5"/>
+    </resources>
+</document>

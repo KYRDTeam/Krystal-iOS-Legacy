@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ChallengeStartCell" customModule="KyberGames" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="124"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="390" height="124"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stb-AI-79T">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="124"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SY8-Cn-Ds4">
+                                <rect key="frame" x="28" y="16" width="24" height="24"/>
+                                <color key="backgroundColor" name="buttonBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="kDh-bB-lCa"/>
+                                    <constraint firstAttribute="height" constant="24" id="wpq-0M-LXf"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Challenge has begun" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UmQ-hV-vVL">
+                                <rect key="frame" x="68" y="16" width="294" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start date: 04:36 PM 02 Apr 2022" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYK-gx-Rae">
+                                <rect key="frame" x="68" y="41" width="294" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="PYK-gx-Rae" firstAttribute="top" secondItem="UmQ-hV-vVL" secondAttribute="bottom" constant="6" id="LhO-wY-U49"/>
+                            <constraint firstItem="PYK-gx-Rae" firstAttribute="leading" secondItem="UmQ-hV-vVL" secondAttribute="leading" id="O4c-ep-nkm"/>
+                            <constraint firstItem="UmQ-hV-vVL" firstAttribute="top" secondItem="SY8-Cn-Ds4" secondAttribute="top" id="VsZ-Cx-ICL"/>
+                            <constraint firstAttribute="trailing" secondItem="PYK-gx-Rae" secondAttribute="trailing" constant="28" id="Vzr-Df-Gpd"/>
+                            <constraint firstItem="UmQ-hV-vVL" firstAttribute="leading" secondItem="SY8-Cn-Ds4" secondAttribute="trailing" constant="16" id="eNL-d2-UZH"/>
+                            <constraint firstAttribute="trailing" secondItem="UmQ-hV-vVL" secondAttribute="trailing" constant="28" id="lvE-fg-eZ6"/>
+                            <constraint firstItem="SY8-Cn-Ds4" firstAttribute="top" secondItem="stb-AI-79T" secondAttribute="top" constant="16" id="ttt-lE-Iyl"/>
+                            <constraint firstItem="SY8-Cn-Ds4" firstAttribute="leading" secondItem="stb-AI-79T" secondAttribute="leading" constant="28" id="zaS-ft-tSx"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="stb-AI-79T" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="9Gj-Yv-c3M"/>
+                <constraint firstItem="stb-AI-79T" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="DHV-Pm-1ar"/>
+                <constraint firstAttribute="trailing" secondItem="stb-AI-79T" secondAttribute="trailing" id="Mw5-Hb-c8v"/>
+                <constraint firstAttribute="bottom" secondItem="stb-AI-79T" secondAttribute="bottom" id="mEy-7v-V6h"/>
+            </constraints>
+            <size key="customSize" width="390" height="124"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="PYK-gx-Rae" id="Lg4-on-zm9"/>
+                <outlet property="stepButton" destination="SY8-Cn-Ds4" id="fVb-Js-1C6"/>
+                <outlet property="titleLabel" destination="UmQ-hV-vVL" id="iU5-Wr-tHU"/>
+            </connections>
+            <point key="canvasLocation" x="384.05797101449281" y="54.910714285714285"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
