@@ -53,8 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.requestAcceptTrackingFirebaseIfNeeded()
+      }
     })
-    self.requestAcceptTrackingFirebaseIfNeeded()
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
   }
