@@ -54,9 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
     })
-    
-    self.requestAcceptToolTrackingIfNeeded()
-    
+    self.requestAcceptTrackingFirebaseIfNeeded()
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
   }
@@ -73,20 +71,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationWillResignActive(_ application: UIApplication) {
   }
 
-  fileprivate func requestAcceptToolTrackingIfNeeded() {
+  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
-          self.setupTrackingTools()
+          self.setupFirebase()
         }
       }
     } else {
-      self.setupTrackingTools()
+      self.setupFirebase()
     }
   }
   
   fileprivate func setupTrackingTools() {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
+
+    MixPanelManager.shared.configClient()
     guard !SentrySDK.isEnabled else { return }
+    self.setupSentry()
+  }
+  
+  fileprivate func setupFirebase() {
     if KNEnvironment.default == .production {
       FirebaseApp.configure()
     } else {
@@ -96,14 +106,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       }
       FirebaseApp.configure(options: fileopts)
     }
-    
-    self.setupSentry()
-    MixPanelManager.shared.configClient()
   }
-  
+
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
+    self.setupTrackingTools()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
