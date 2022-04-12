@@ -73,12 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   fileprivate func requestAcceptToolTrackingIfNeeded() {
     if #available(iOS 14, *) {
-      let status = ATTrackingManager.trackingAuthorizationStatus
-      if status == .notDetermined {
-        ATTrackingManager.requestTrackingAuthorization { (status) in
-          if status == .authorized {
-            self.setupTrackingTools()
-          }
+      ATTrackingManager.requestTrackingAuthorization { (status) in
+        if status == .authorized {
+          self.setupTrackingTools()
         }
       }
     } else {
