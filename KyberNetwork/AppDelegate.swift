@@ -84,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   }
   
   fileprivate func setupTrackingTools() {
-    guard !SentrySDK.isEnabled else { return }
+    MixPanelManager.shared.configClient()
     if KNEnvironment.default == .production {
       FirebaseApp.configure()
     } else {
@@ -94,9 +94,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       }
       FirebaseApp.configure(options: fileopts)
     }
-    
+    guard !SentrySDK.isEnabled else { return }
     self.setupSentry()
-    MixPanelManager.shared.configClient()
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
