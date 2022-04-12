@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "title": "Daily Check-In",
+    "description": "Etiam eu enim pretium, lacinia metus vel, auctor lectus.",
+    "turns": 1,
+    "type": "checkin"
+  },
+  {
+    "id": "2",
+    "title": "Refer a friend",
+    "description": "Etiam eu enim pretium, lacinia metus vel, auctor lectus.",
+    "turns": 2,
+    "type": "refer"
+  },
+  {
+    "id": "3",
+    "title": "Use Multi-Send",
+    "description": "Etiam eu enim pretium.",
+    "turns": 1,
+    "type": "multisend"
+  }
+]
+

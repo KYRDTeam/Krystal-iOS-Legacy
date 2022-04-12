@@ -13,7 +13,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChallengeTasksViewController" customModule="KyberGames" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GameTasksViewController" customModule="KyberGames" customModuleProvider="target">
             <connections>
                 <outlet property="tableView" destination="ET4-bb-z0O" id="M3t-jz-If3"/>
                 <outlet property="topBarHeight" destination="wlY-dS-OES" id="hHK-sM-wOP"/>

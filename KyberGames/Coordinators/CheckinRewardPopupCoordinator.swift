@@ -9,19 +9,22 @@ import Foundation
 import FittedSheets
 import UIKit
 
-class CheckinRewardPopupCoordinator: Coordinator {
-  var parentCoordinator: Coordinator?
-  var children: [Coordinator] = []
+class CheckinRewardPopupCoordinator: BaseCoordinator {
   var parentViewController: UIViewController
   
   init(parentViewController: UIViewController) {
     self.parentViewController = parentViewController
   }
   
-  func start() {
+  override func start() {
     let vc = CheckinRewardPopupViewController.instantiateFromNib()
     let sheet = SheetViewController(controller: vc)
     sheet.contentViewController.pullBarView.isHidden = true
+    
+    sheet.didDismiss = { [weak self] _ in
+      self?.onCompleted?()
+    }
+    
     parentViewController.present(sheet, animated: true)
   }
 

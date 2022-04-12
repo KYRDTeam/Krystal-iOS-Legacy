@@ -1,5 +1,5 @@
 //
-//  ChallengeTasksCoordinator.swift
+//  GameTasksCoordinator.swift
 //  KyberGames
 //
 //  Created by Nguyen Tung on 07/04/2022.
@@ -8,26 +8,24 @@
 import Foundation
 import UIKit
 
-class ChallengeTasksCoordinator: Coordinator {
-  var parentCoordinator: Coordinator?
-  var children: [Coordinator] = []
+class GameTasksCoordinator: BaseCoordinator {
   let navigationController: UINavigationController
   
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
   
-  func start() {
-    let vc = ChallengeTasksViewController.instantiateFromNib()
-    let viewModel = ChallengeTasksViewModel()
+  override func start() {
+    let vc = GameTasksViewController.instantiateFromNib()
+    let viewModel = GameTasksViewModel()
     
-    viewModel.onTapBack = {
-      self.navigationController.popViewController(animated: true)
+    viewModel.onTapBack = { [weak self] in
+      self?.navigationController.popViewController(animated: true)
+      self?.onCompleted?()
     }
     
     vc.viewModel = viewModel
     navigationController.pushViewController(vc, animated: true)
   }
-  
   
 }

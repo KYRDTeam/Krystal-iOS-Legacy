@@ -508,6 +508,15 @@
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		A6502A6B27FC270A0017866E /* KyberGames.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6502A6A27FC270A0017866E /* KyberGames.framework */; };
 		A6502A6C27FC270A0017866E /* KyberGames.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6502A6A27FC270A0017866E /* KyberGames.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A65B467C2805253D00DA425D /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B467B2805253D00DA425D /* Game.swift */; };
+		A65B467E2805255300DA425D /* GameCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B467D2805255300DA425D /* GameCampaign.swift */; };
+		A65B4680280525A600DA425D /* GameTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B467F280525A600DA425D /* GameTask.swift */; };
+		A65B46832805268000DA425D /* mock_games.json in Resources */ = {isa = PBXBuildFile; fileRef = A65B46822805268000DA425D /* mock_games.json */; };
+		A65B46852805279100DA425D /* GameTaskCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B46842805279100DA425D /* GameTaskCellViewModel.swift */; };
+		A65B4687280528B500DA425D /* GameItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B4686280528B500DA425D /* GameItemCellViewModel.swift */; };
+		A65B4689280531C200DA425D /* mock_game_tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = A65B4688280531C200DA425D /* mock_game_tasks.json */; };
+		A65B468B28053A4700DA425D /* mock_spin_rewards.json in Resources */ = {isa = PBXBuildFile; fileRef = A65B468A28053A4600DA425D /* mock_spin_rewards.json */; };
+		A65B468D28053A8500DA425D /* GameReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65B468C28053A8500DA425D /* GameReward.swift */; };
 		A6796A9527FEBC1200E1D646 /* KyberGames.h in Headers */ = {isa = PBXBuildFile; fileRef = A6796A9427FEBC1200E1D646 /* KyberGames.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6796AE627FEBCD700E1D646 /* KyberGamesModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AE527FEBCD400E1D646 /* KyberGamesModule.swift */; };
 		A6796B3927FEBD7B00E1D646 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AF227FEBD7800E1D646 /* Dynamic.swift */; };
@@ -517,12 +526,12 @@
 		A6796B3D27FEBD7B00E1D646 /* AlertPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AF927FEBD7800E1D646 /* AlertPopupViewController.swift */; };
 		A6796B3E27FEBD7B00E1D646 /* AlertPopupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AFA27FEBD7800E1D646 /* AlertPopupCoordinator.swift */; };
 		A6796B3F27FEBD7B00E1D646 /* AlertPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6796AFB27FEBD7800E1D646 /* AlertPopupViewController.xib */; };
-		A6796B4027FEBD7B00E1D646 /* ChallengeTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6796AFD27FEBD7800E1D646 /* ChallengeTaskCell.xib */; };
-		A6796B4127FEBD7B00E1D646 /* ChallengeTasksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6796AFE27FEBD7800E1D646 /* ChallengeTasksViewController.xib */; };
-		A6796B4227FEBD7B00E1D646 /* ChallengeTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AFF27FEBD7800E1D646 /* ChallengeTaskCell.swift */; };
-		A6796B4327FEBD7B00E1D646 /* ChallengeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0027FEBD7800E1D646 /* ChallengeTasksViewController.swift */; };
-		A6796B4427FEBD7B00E1D646 /* ChallengeTasksCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0127FEBD7800E1D646 /* ChallengeTasksCoordinator.swift */; };
-		A6796B4527FEBD7B00E1D646 /* ChallengeTasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0227FEBD7800E1D646 /* ChallengeTasksViewModel.swift */; };
+		A6796B4027FEBD7B00E1D646 /* GameTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6796AFD27FEBD7800E1D646 /* GameTaskCell.xib */; };
+		A6796B4127FEBD7B00E1D646 /* GameTasksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6796AFE27FEBD7800E1D646 /* GameTasksViewController.xib */; };
+		A6796B4227FEBD7B00E1D646 /* GameTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796AFF27FEBD7800E1D646 /* GameTaskCell.swift */; };
+		A6796B4327FEBD7B00E1D646 /* GameTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0027FEBD7800E1D646 /* GameTasksViewController.swift */; };
+		A6796B4427FEBD7B00E1D646 /* GameTasksCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0127FEBD7800E1D646 /* GameTasksCoordinator.swift */; };
+		A6796B4527FEBD7B00E1D646 /* GameTasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0227FEBD7800E1D646 /* GameTasksViewModel.swift */; };
 		A6796B4627FEBD7C00E1D646 /* ChallengeFinishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0427FEBD7800E1D646 /* ChallengeFinishCell.swift */; };
 		A6796B4727FEBD7C00E1D646 /* ChallengeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0527FEBD7800E1D646 /* ChallengeCoordinator.swift */; };
 		A6796B4827FEBD7C00E1D646 /* ChallengeStartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6796B0627FEBD7800E1D646 /* ChallengeStartCell.swift */; };
@@ -772,7 +781,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -1448,6 +1457,15 @@
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6502A6A27FC270A0017866E /* KyberGames.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KyberGames.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65B467B2805253D00DA425D /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		A65B467D2805255300DA425D /* GameCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCampaign.swift; sourceTree = "<group>"; };
+		A65B467F280525A600DA425D /* GameTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTask.swift; sourceTree = "<group>"; };
+		A65B46822805268000DA425D /* mock_games.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_games.json; sourceTree = "<group>"; };
+		A65B46842805279100DA425D /* GameTaskCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTaskCellViewModel.swift; sourceTree = "<group>"; };
+		A65B4686280528B500DA425D /* GameItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItemCellViewModel.swift; sourceTree = "<group>"; };
+		A65B4688280531C200DA425D /* mock_game_tasks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_game_tasks.json; sourceTree = "<group>"; };
+		A65B468A28053A4600DA425D /* mock_spin_rewards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mock_spin_rewards.json; sourceTree = "<group>"; };
+		A65B468C28053A8500DA425D /* GameReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameReward.swift; sourceTree = "<group>"; };
 		A6796A9227FEBC1100E1D646 /* KyberGames.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KyberGames.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6796A9427FEBC1200E1D646 /* KyberGames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KyberGames.h; sourceTree = "<group>"; };
 		A6796AE527FEBCD400E1D646 /* KyberGamesModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KyberGamesModule.swift; path = KyberGames/../KyberGamesModule.swift; sourceTree = "<group>"; };
@@ -1458,12 +1476,12 @@
 		A6796AF927FEBD7800E1D646 /* AlertPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertPopupViewController.swift; sourceTree = "<group>"; };
 		A6796AFA27FEBD7800E1D646 /* AlertPopupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertPopupCoordinator.swift; sourceTree = "<group>"; };
 		A6796AFB27FEBD7800E1D646 /* AlertPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPopupViewController.xib; sourceTree = "<group>"; };
-		A6796AFD27FEBD7800E1D646 /* ChallengeTaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChallengeTaskCell.xib; sourceTree = "<group>"; };
-		A6796AFE27FEBD7800E1D646 /* ChallengeTasksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChallengeTasksViewController.xib; sourceTree = "<group>"; };
-		A6796AFF27FEBD7800E1D646 /* ChallengeTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTaskCell.swift; sourceTree = "<group>"; };
-		A6796B0027FEBD7800E1D646 /* ChallengeTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTasksViewController.swift; sourceTree = "<group>"; };
-		A6796B0127FEBD7800E1D646 /* ChallengeTasksCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTasksCoordinator.swift; sourceTree = "<group>"; };
-		A6796B0227FEBD7800E1D646 /* ChallengeTasksViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTasksViewModel.swift; sourceTree = "<group>"; };
+		A6796AFD27FEBD7800E1D646 /* GameTaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameTaskCell.xib; sourceTree = "<group>"; };
+		A6796AFE27FEBD7800E1D646 /* GameTasksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameTasksViewController.xib; sourceTree = "<group>"; };
+		A6796AFF27FEBD7800E1D646 /* GameTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTaskCell.swift; sourceTree = "<group>"; };
+		A6796B0027FEBD7800E1D646 /* GameTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTasksViewController.swift; sourceTree = "<group>"; };
+		A6796B0127FEBD7800E1D646 /* GameTasksCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTasksCoordinator.swift; sourceTree = "<group>"; };
+		A6796B0227FEBD7800E1D646 /* GameTasksViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTasksViewModel.swift; sourceTree = "<group>"; };
 		A6796B0427FEBD7800E1D646 /* ChallengeFinishCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeFinishCell.swift; sourceTree = "<group>"; };
 		A6796B0527FEBD7800E1D646 /* ChallengeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeCoordinator.swift; sourceTree = "<group>"; };
 		A6796B0627FEBD7800E1D646 /* ChallengeStartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeStartCell.swift; sourceTree = "<group>"; };
@@ -4076,14 +4094,82 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A65B4675280523E200DA425D /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				A6796AF627FEBD7800E1D646 /* CheckinRewardPopupCoordinator.swift */,
+				A6796B1627FEBD7800E1D646 /* GameListCoordinator.swift */,
+				A6796B0127FEBD7800E1D646 /* GameTasksCoordinator.swift */,
+				A6796B2627FEBD7800E1D646 /* LuckySpinCoordinator.swift */,
+				A6796B0527FEBD7800E1D646 /* ChallengeCoordinator.swift */,
+				A6796AFA27FEBD7800E1D646 /* AlertPopupCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		A65B4676280523F100DA425D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A6796B2727FEBD7800E1D646 /* LuckySpinViewModel.swift */,
+				A6796B0227FEBD7800E1D646 /* GameTasksViewModel.swift */,
+				A6796B0B27FEBD7800E1D646 /* ChallengeViewModel.swift */,
+				A6796B1A27FEBD7800E1D646 /* GameListViewModel.swift */,
+				A65B46842805279100DA425D /* GameTaskCellViewModel.swift */,
+				A65B4686280528B500DA425D /* GameItemCellViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A65B46782805252800DA425D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A65B46812805265600DA425D /* Mocks */,
+				A65B467A2805252D00DA425D /* Models */,
+				A65B46792805252800DA425D /* Networking */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A65B46792805252800DA425D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		A65B467A2805252D00DA425D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A65B467B2805253D00DA425D /* Game.swift */,
+				A65B467D2805255300DA425D /* GameCampaign.swift */,
+				A65B467F280525A600DA425D /* GameTask.swift */,
+				A65B468C28053A8500DA425D /* GameReward.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A65B46812805265600DA425D /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				A65B46822805268000DA425D /* mock_games.json */,
+				A65B4688280531C200DA425D /* mock_game_tasks.json */,
+				A65B468A28053A4600DA425D /* mock_spin_rewards.json */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		A6796A9327FEBC1200E1D646 /* KyberGames */ = {
 			isa = PBXGroup;
 			children = (
+				A65B46782805252800DA425D /* Data */,
 				A6796B2927FEBD7A00E1D646 /* CustomViews */,
 				A6796B3027FEBD7B00E1D646 /* Extensions */,
 				A6796AF127FEBD7800E1D646 /* Helpers */,
 				A6796B2D27FEBD7A00E1D646 /* Resources */,
-				A6796AF327FEBD7800E1D646 /* Screens */,
+				A6796B2127FEBD7800E1D646 /* Base */,
+				A65B4675280523E200DA425D /* Coordinators */,
+				A6796AF327FEBD7800E1D646 /* Views */,
+				A65B4676280523F100DA425D /* ViewModels */,
 				A6796AE527FEBCD400E1D646 /* KyberGamesModule.swift */,
 				A6796A9427FEBC1200E1D646 /* KyberGames.h */,
 			);
@@ -4098,25 +4184,23 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		A6796AF327FEBD7800E1D646 /* Screens */ = {
+		A6796AF327FEBD7800E1D646 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				A6796AF427FEBD7800E1D646 /* CheckinRewardPopup */,
 				A6796AF827FEBD7800E1D646 /* AlertPopup */,
-				A6796AFC27FEBD7800E1D646 /* ChallengeTasks */,
+				A6796AFC27FEBD7800E1D646 /* GameTasks */,
 				A6796B0327FEBD7800E1D646 /* Challenge */,
 				A6796B1227FEBD7800E1D646 /* GameList */,
-				A6796B2127FEBD7800E1D646 /* Base */,
 				A6796B2427FEBD7800E1D646 /* LuckySpin */,
 			);
-			path = Screens;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A6796AF427FEBD7800E1D646 /* CheckinRewardPopup */ = {
 			isa = PBXGroup;
 			children = (
 				A6796AF527FEBD7800E1D646 /* CheckinRewardPopupViewController.swift */,
-				A6796AF627FEBD7800E1D646 /* CheckinRewardPopupCoordinator.swift */,
 				A6796AF727FEBD7800E1D646 /* CheckinRewardPopupViewController.xib */,
 			);
 			path = CheckinRewardPopup;
@@ -4126,42 +4210,37 @@
 			isa = PBXGroup;
 			children = (
 				A6796AF927FEBD7800E1D646 /* AlertPopupViewController.swift */,
-				A6796AFA27FEBD7800E1D646 /* AlertPopupCoordinator.swift */,
 				A6796AFB27FEBD7800E1D646 /* AlertPopupViewController.xib */,
 			);
 			path = AlertPopup;
 			sourceTree = "<group>";
 		};
-		A6796AFC27FEBD7800E1D646 /* ChallengeTasks */ = {
+		A6796AFC27FEBD7800E1D646 /* GameTasks */ = {
 			isa = PBXGroup;
 			children = (
-				A6796AFE27FEBD7800E1D646 /* ChallengeTasksViewController.xib */,
-				A6796B0027FEBD7800E1D646 /* ChallengeTasksViewController.swift */,
-				A6796AFD27FEBD7800E1D646 /* ChallengeTaskCell.xib */,
-				A6796AFF27FEBD7800E1D646 /* ChallengeTaskCell.swift */,
-				A6796B0127FEBD7800E1D646 /* ChallengeTasksCoordinator.swift */,
-				A6796B0227FEBD7800E1D646 /* ChallengeTasksViewModel.swift */,
+				A6796AFE27FEBD7800E1D646 /* GameTasksViewController.xib */,
+				A6796B0027FEBD7800E1D646 /* GameTasksViewController.swift */,
+				A6796AFD27FEBD7800E1D646 /* GameTaskCell.xib */,
+				A6796AFF27FEBD7800E1D646 /* GameTaskCell.swift */,
 			);
-			path = ChallengeTasks;
+			path = GameTasks;
 			sourceTree = "<group>";
 		};
 		A6796B0327FEBD7800E1D646 /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
 				A6796B0427FEBD7800E1D646 /* ChallengeFinishCell.swift */,
-				A6796B0527FEBD7800E1D646 /* ChallengeCoordinator.swift */,
+				A6796B0E27FEBD7800E1D646 /* ChallengeFinishCell.xib */,
+				A6796B0927FEBD7800E1D646 /* ChallengeInfoCell.swift */,
+				A6796B0C27FEBD7800E1D646 /* ChallengeInfoCell.xib */,
+				A6796B0827FEBD7800E1D646 /* ChallengeProgressCell.swift */,
+				A6796B1127FEBD7800E1D646 /* ChallengeProgressCell.xib */,
+				A6796B1027FEBD7800E1D646 /* ChallengeSingleRewardCell.swift */,
+				A6796B0F27FEBD7800E1D646 /* ChallengeSingleRewardCell.xib */,
 				A6796B0627FEBD7800E1D646 /* ChallengeStartCell.swift */,
 				A6796B0727FEBD7800E1D646 /* ChallengeStartCell.xib */,
-				A6796B0827FEBD7800E1D646 /* ChallengeProgressCell.swift */,
-				A6796B0927FEBD7800E1D646 /* ChallengeInfoCell.swift */,
-				A6796B0A27FEBD7800E1D646 /* ChallengeViewController.xib */,
-				A6796B0B27FEBD7800E1D646 /* ChallengeViewModel.swift */,
-				A6796B0C27FEBD7800E1D646 /* ChallengeInfoCell.xib */,
 				A6796B0D27FEBD7800E1D646 /* ChallengeViewController.swift */,
-				A6796B0E27FEBD7800E1D646 /* ChallengeFinishCell.xib */,
-				A6796B0F27FEBD7800E1D646 /* ChallengeSingleRewardCell.xib */,
-				A6796B1027FEBD7800E1D646 /* ChallengeSingleRewardCell.swift */,
-				A6796B1127FEBD7800E1D646 /* ChallengeProgressCell.xib */,
+				A6796B0A27FEBD7800E1D646 /* ChallengeViewController.xib */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";
@@ -4169,6 +4248,8 @@
 		A6796B1227FEBD7800E1D646 /* GameList */ = {
 			isa = PBXGroup;
 			children = (
+				A6796B1527FEBD7800E1D646 /* GameListViewController.swift */,
+				A6796B1327FEBD7800E1D646 /* GameListViewController.xib */,
 				A6796B1C27FEBD7800E1D646 /* CampaignItemCell.swift */,
 				A6796B1E27FEBD7800E1D646 /* CampaignItemCell.xib */,
 				A6796B1D27FEBD7800E1D646 /* CampaignListCell.swift */,
@@ -4179,10 +4260,6 @@
 				A6796B1827FEBD7800E1D646 /* GameItemCell.xib */,
 				A6796B1427FEBD7800E1D646 /* GameListCell.swift */,
 				A6796B1F27FEBD7800E1D646 /* GameListCell.xib */,
-				A6796B1627FEBD7800E1D646 /* GameListCoordinator.swift */,
-				A6796B1527FEBD7800E1D646 /* GameListViewController.swift */,
-				A6796B1327FEBD7800E1D646 /* GameListViewController.xib */,
-				A6796B1A27FEBD7800E1D646 /* GameListViewModel.swift */,
 			);
 			path = GameList;
 			sourceTree = "<group>";
@@ -4200,8 +4277,6 @@
 			isa = PBXGroup;
 			children = (
 				A6796B2527FEBD7800E1D646 /* LuckySpinViewController.swift */,
-				A6796B2627FEBD7800E1D646 /* LuckySpinCoordinator.swift */,
-				A6796B2727FEBD7800E1D646 /* LuckySpinViewModel.swift */,
 				A6796B2827FEBD7800E1D646 /* LuckySpinViewController.xib */,
 			);
 			path = LuckySpin;
@@ -5415,14 +5490,17 @@
 				A6796B4E27FEBD7C00E1D646 /* ChallengeInfoCell.xib in Resources */,
 				A6796B3F27FEBD7B00E1D646 /* AlertPopupViewController.xib in Resources */,
 				A6796B5927FEBD7C00E1D646 /* GameItemCell.xib in Resources */,
+				A65B46832805268000DA425D /* mock_games.json in Resources */,
 				A6796B6B27FEBD7C00E1D646 /* Assets.xcassets in Resources */,
 				A6796B5127FEBD7C00E1D646 /* ChallengeSingleRewardCell.xib in Resources */,
 				A6796B6727FEBD7C00E1D646 /* LuckySpinViewController.xib in Resources */,
-				A6796B4027FEBD7B00E1D646 /* ChallengeTaskCell.xib in Resources */,
+				A65B468B28053A4700DA425D /* mock_spin_rewards.json in Resources */,
+				A6796B4027FEBD7B00E1D646 /* GameTaskCell.xib in Resources */,
 				A6796B5427FEBD7C00E1D646 /* GameListViewController.xib in Resources */,
-				A6796B4127FEBD7B00E1D646 /* ChallengeTasksViewController.xib in Resources */,
+				A6796B4127FEBD7B00E1D646 /* GameTasksViewController.xib in Resources */,
 				A6796B6027FEBD7C00E1D646 /* GameListCell.xib in Resources */,
 				A6796B6C27FEBD7D00E1D646 /* Coiny-Regular.ttf in Resources */,
+				A65B4689280531C200DA425D /* mock_game_tasks.json in Resources */,
 				A6796B5F27FEBD7C00E1D646 /* CampaignItemCell.xib in Resources */,
 				A6796B5827FEBD7C00E1D646 /* CheckinBoardCell.xib in Resources */,
 				A6796B5027FEBD7C00E1D646 /* ChallengeFinishCell.xib in Resources */,
@@ -5752,7 +5830,7 @@
 				C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */,
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
@@ -6242,6 +6320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A65B46852805279100DA425D /* GameTaskCellViewModel.swift in Sources */,
 				A6796B7027FEBD7D00E1D646 /* UIImageView+.swift in Sources */,
 				A6796B6127FEBD7C00E1D646 /* CheckinBoardCell.swift in Sources */,
 				A6796B4A27FEBD7C00E1D646 /* ChallengeProgressCell.swift in Sources */,
@@ -6251,7 +6330,8 @@
 				A6796B5E27FEBD7C00E1D646 /* CampaignListCell.swift in Sources */,
 				A6796B6227FEBD7C00E1D646 /* BaseViewController.swift in Sources */,
 				A6796B6927FEBD7C00E1D646 /* HorizontalStepItemCell.swift in Sources */,
-				A6796B4327FEBD7B00E1D646 /* ChallengeTasksViewController.swift in Sources */,
+				A6796B4327FEBD7B00E1D646 /* GameTasksViewController.swift in Sources */,
+				A65B4687280528B500DA425D /* GameItemCellViewModel.swift in Sources */,
 				A6796B7327FEBD7D00E1D646 /* UIColor+.swift in Sources */,
 				A6796B5227FEBD7C00E1D646 /* ChallengeSingleRewardCell.swift in Sources */,
 				A6796B4F27FEBD7C00E1D646 /* ChallengeViewController.swift in Sources */,
@@ -6259,7 +6339,7 @@
 				A6796B3D27FEBD7B00E1D646 /* AlertPopupViewController.swift in Sources */,
 				A6796B7427FEBD7D00E1D646 /* UIScreen+.swift in Sources */,
 				A6796B7227FEBD7D00E1D646 /* UICollectionView+.swift in Sources */,
-				A6796B4427FEBD7B00E1D646 /* ChallengeTasksCoordinator.swift in Sources */,
+				A6796B4427FEBD7B00E1D646 /* GameTasksCoordinator.swift in Sources */,
 				A6796B5727FEBD7C00E1D646 /* GameListCoordinator.swift in Sources */,
 				A6796B6E27FEBD7D00E1D646 /* RectangularDashedLine.swift in Sources */,
 				A6796B6527FEBD7C00E1D646 /* LuckySpinCoordinator.swift in Sources */,
@@ -6270,8 +6350,10 @@
 				A6796B5627FEBD7C00E1D646 /* GameListViewController.swift in Sources */,
 				A6796B3A27FEBD7B00E1D646 /* CheckinRewardPopupViewController.swift in Sources */,
 				A6796B5C27FEBD7C00E1D646 /* GameItemCell.swift in Sources */,
+				A65B4680280525A600DA425D /* GameTask.swift in Sources */,
 				A6D2FA2727FEC22D00B96A25 /* Images.swift in Sources */,
 				A6796B6627FEBD7C00E1D646 /* LuckySpinViewModel.swift in Sources */,
+				A65B467E2805255300DA425D /* GameCampaign.swift in Sources */,
 				A6796B6F27FEBD7D00E1D646 /* UIView+.swift in Sources */,
 				A6796B5D27FEBD7C00E1D646 /* CampaignItemCell.swift in Sources */,
 				A6796B6327FEBD7C00E1D646 /* Coordinator.swift in Sources */,
@@ -6279,12 +6361,14 @@
 				A6796B5B27FEBD7C00E1D646 /* GameListViewModel.swift in Sources */,
 				A6796B3E27FEBD7B00E1D646 /* AlertPopupCoordinator.swift in Sources */,
 				A6796B4727FEBD7C00E1D646 /* ChallengeCoordinator.swift in Sources */,
-				A6796B4527FEBD7B00E1D646 /* ChallengeTasksViewModel.swift in Sources */,
+				A6796B4527FEBD7B00E1D646 /* GameTasksViewModel.swift in Sources */,
 				A6796B3927FEBD7B00E1D646 /* Dynamic.swift in Sources */,
+				A65B467C2805253D00DA425D /* Game.swift in Sources */,
 				A6796B6827FEBD7C00E1D646 /* StepProgressView.swift in Sources */,
 				A6796B6427FEBD7C00E1D646 /* LuckySpinViewController.swift in Sources */,
 				A6796B7127FEBD7D00E1D646 /* UIViewController+.swift in Sources */,
-				A6796B4227FEBD7B00E1D646 /* ChallengeTaskCell.swift in Sources */,
+				A65B468D28053A8500DA425D /* GameReward.swift in Sources */,
+				A6796B4227FEBD7B00E1D646 /* GameTaskCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

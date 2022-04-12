@@ -9,19 +9,22 @@ import Foundation
 import FittedSheets
 import UIKit
 
-class AlertPopupCoordinator: Coordinator {
-  var parentCoordinator: Coordinator?
-  var children: [Coordinator] = []
+class AlertPopupCoordinator: BaseCoordinator {
   var parentViewController: UIViewController
   
   init(parentViewController: UIViewController) {
     self.parentViewController = parentViewController
   }
   
-  func start() {
+  override func start() {
     let vc = AlertPopupViewController.instantiateFromNib()
     let sheet = SheetViewController(controller: vc)
     sheet.contentViewController.pullBarView.isHidden = true
+    
+    sheet.didDismiss = { [weak self] _ in
+      self?.onCompleted?()
+    }
+    
     parentViewController.present(sheet, animated: true)
   }
 

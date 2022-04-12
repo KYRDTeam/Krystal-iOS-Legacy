@@ -1,5 +1,5 @@
 //
-//  ChallengeTaskCell.swift
+//  GameTaskCell.swift
 //  KyberGames
 //
 //  Created by Nguyen Tung on 07/04/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ChallengeTaskCell: UITableViewCell {
+class GameTaskCell: UITableViewCell {
   
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var titleLabel: UILabel!
@@ -28,12 +28,12 @@ class ChallengeTaskCell: UITableViewCell {
     
   }
   
-  func configure(task: ChallengeTask) {
-    iconImageView.image = task.type.icon
-    titleLabel.text = task.title
-    descriptionLabel.text = task.description
-    actionButton.setTitle(task.type.action, for: .normal)
-    rewardLabel.text = "+\(task.turns) turn"
+  func configure(viewModel: GameTaskCellViewModel) {
+    iconImageView.image = viewModel.image
+    titleLabel.text = viewModel.title
+    descriptionLabel.text = viewModel.description
+    actionButton.setTitle(viewModel.action, for: .normal)
+    rewardLabel.text = viewModel.rewardString
   }
   
   @IBAction func actionWasTapped(_ sender: Any) {

@@ -7,22 +7,21 @@
 
 import UIKit
 
-class ChallengeCoordinator: Coordinator {
+class ChallengeCoordinator: BaseCoordinator {
   
-  var parentCoordinator: Coordinator?
-  var children: [Coordinator] = []
   var navigationController: UINavigationController
   
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
   
-  func start() {
+  override func start() {
     let vc = ChallengeViewController.instantiateFromNib()
     let viewModel = ChallengeViewModel()
     
-    viewModel.onTapBack = { [navigationController] in
-      navigationController.popViewController(animated: true)
+    viewModel.onTapBack = { [weak self] in
+      self?.navigationController.popViewController(animated: true)
+      self?.onCompleted?()
     }
     
     vc.viewModel = viewModel

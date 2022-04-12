@@ -15,12 +15,15 @@ public enum KyberGamesEndpoint {
 public class KyberGamesModule {
   
   static var isFontsRegistered: Bool = false
+  static var gameListCoordinator: GameListCoordinator?
   
   public static func open(endpoint: KyberGamesEndpoint, navigationController: UINavigationController) {
     registerResourcesIfNeeded()
     switch endpoint {
     case .list:
-      GameListCoordinator(navigationController: navigationController).start()
+      gameListCoordinator = GameListCoordinator(navigationController: navigationController)
+      gameListCoordinator?.onCompleted = { gameListCoordinator = nil }
+      gameListCoordinator?.start()
     }
   }
   

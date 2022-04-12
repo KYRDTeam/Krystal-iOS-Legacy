@@ -44,7 +44,7 @@ extension GameListCell: UICollectionViewDelegate, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(GameItemCell.self, indexPath: indexPath)!
-    cell.configure(game: games[indexPath.item])
+    cell.configure(viewModel: GameItemCellViewModel(game: games[indexPath.item]))
     return cell
   }
   

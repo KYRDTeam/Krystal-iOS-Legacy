@@ -11,9 +11,9 @@ class GameItemCell: UICollectionViewCell {
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var nameLabel: UILabel!
 
-  func configure(game: Game) {
-    iconImageView.loadImage(urlString: game.icon)
-    nameLabel.text = game.name
+  func configure(viewModel: GameItemCellViewModel) {
+    iconImageView.loadImage(urlString: viewModel.image)
+    nameLabel.text = viewModel.title
   }
   
 }

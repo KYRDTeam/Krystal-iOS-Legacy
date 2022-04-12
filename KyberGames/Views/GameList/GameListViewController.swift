@@ -75,14 +75,8 @@ extension GameListViewController: UICollectionViewDelegate, UICollectionViewData
     case .games:
       let cell = collectionView.dequeueReusableCell(GameListCell.self, indexPath: indexPath)!
       cell.configure(games: viewModel.games.value)
-      cell.onSelectGame = { [navigationController] game in
-        switch game.id {
-        case 0:
-          LuckySpinCoordinator(navigationController: navigationController!).start()
-        default:
-          ChallengeCoordinator(navigationController: navigationController!).start()
-        }
-        
+      cell.onSelectGame = { [weak self] game in
+        self?.viewModel.onSelectGame?(game)
       }
       return cell
     case .campaigns:
