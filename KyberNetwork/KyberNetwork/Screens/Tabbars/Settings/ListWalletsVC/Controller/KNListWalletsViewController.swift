@@ -10,6 +10,7 @@ enum KNListWalletsViewEvent {
   case remove(wallet: KNWalletObject)
   case edit(wallet: KNWalletObject)
   case addWallet(type: AddNewWalletType)
+  case copy(data: WalletData)
 }
 
 protocol KNListWalletsViewControllerDelegate: class {
@@ -124,6 +125,9 @@ class KNListWalletsViewModel {
       if !self.nonSeedsCellModels.isEmpty {
         self.nonSeedsCellModels.removeAll()
       }
+      if !self.watchCellModels.isEmpty {
+        self.watchCellModels.removeAll()
+      }
 
       for element in listData {
         if element.isWatchWallet {
@@ -153,6 +157,13 @@ class KNListWalletsViewModel {
   func update(wallets: [KNWalletObject], curWallet: KNWalletObject) {
     self.listWallets = wallets
     self.curWallet = curWallet
+  }
+  
+  func isMultichainWallet(data: WalletData) -> Bool {
+    let filterd = self.seedsCellModels.first { element in
+      return data == element.wallet
+    }
+    return filterd != nil
   }
 }
 
@@ -352,10 +363,15 @@ extension KNListWalletsViewController: SwipeTableViewCellDelegate {
     guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return nil }
 
     let copy = SwipeAction(style: .default, title: nil) { (_, _) in
-      UIPasteboard.general.string = wallet.address
-      self.showMessageWithInterval(
-        message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
-      )
+      let data = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section).wallet
+      if self.viewModel.isMultichainWallet(data: data) {
+        self.delegate?.listWalletsViewController(self, run: .copy(data: data))
+      } else {
+        UIPasteboard.general.string = wallet.address
+        self.showMessageWithInterval(
+          message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
+        )
+      }
     }
     copy.hidesWhenSelected = true
     copy.title = "copy".toBeLocalised().uppercased()

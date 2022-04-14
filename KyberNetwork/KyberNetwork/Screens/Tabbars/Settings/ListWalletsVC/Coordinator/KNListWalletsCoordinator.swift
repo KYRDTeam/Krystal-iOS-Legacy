@@ -123,6 +123,10 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
       }
     case .addWallet(let type):
       self.delegate?.listWalletsCoordinatorDidSelectAddWallet(type: type)
+    case .copy(data: let data):
+      let vm = CopyAddressViewModel(data: data)
+      let vc = CopyAddressViewController(viewModel: vm)
+      self.navigationController.pushViewController(vc, animated: true)
     }
   }
 

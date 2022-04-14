@@ -7,11 +7,15 @@
 
 import Foundation
 
-struct WalletData {
+struct WalletData: Equatable {
   let address: String
   let name: String
   let icon: String
   let isBackedUp: Bool
   let isWatchWallet: Bool
   let date: Date
+  //TODO: change later
+  static func == (lhs: WalletData, rhs: WalletData) -> Bool {
+    return lhs.address == rhs.address
+  }
 }
