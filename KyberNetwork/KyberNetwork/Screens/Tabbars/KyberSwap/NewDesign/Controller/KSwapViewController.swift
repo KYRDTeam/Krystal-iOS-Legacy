@@ -631,7 +631,7 @@ extension KSwapViewController {
         self.fromFieldTrailing.constant = -30
         self.fromTokenDropdown.tintColor = UIColor.white.withAlphaComponent(0.5)
         self.fromTokenButton.setTitleColor(.white.withAlphaComponent(0.5), for: .normal)
-        self.fromTokenButton.setTitle("Select Token", for: .normal)
+        self.fromTokenButton.setTitle(Strings.selectToken, for: .normal)
       }
     }
     if updatedTo {
@@ -642,7 +642,7 @@ extension KSwapViewController {
       } else {
         self.toTokenDropdown.tintColor = UIColor.white.withAlphaComponent(0.5)
         self.toTokenButton.setTitleColor(.white.withAlphaComponent(0.5), for: .normal)
-        self.toTokenButton.setTitle("Select Token", for: .normal)
+        self.toTokenButton.setTitle(Strings.selectToken, for: .normal)
       }
     }
     //TODO: remove est rate cache logic

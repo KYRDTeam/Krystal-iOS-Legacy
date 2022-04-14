@@ -16,7 +16,7 @@ struct RawSwapTransaction {
   let useGasToken: Bool
 }
 
-class KSwapViewModel {  
+class KSwapViewModel {
   let defaultTokenIconImg = UIImage(named: "default_token")
   let eth = KNSupportedTokenStorage.shared.getETH().toObject()
   let knc = KNSupportedTokenStorage.shared.getKNC().toObject()
@@ -909,7 +909,6 @@ extension KSwapViewModel {
   
   typealias SwapValidationError = (title: String, message: String)
   
-  // FIXME: localize message
   func validate(isConfirming: Bool) -> ValidationResult<SwapValidationError> {
     guard let from = from else {
       return isConfirming ?

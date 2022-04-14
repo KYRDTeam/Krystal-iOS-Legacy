@@ -80,5 +80,6 @@ struct Strings {
   static let depositMoreXOrClickAdvancedToLowerGasFee = "deposit.more.x.or.click.advanced.to.lower.gas.fee".toBeLocalised()
   static let insufficientXForTransaction = "insufficient.x.for.transaction".toBeLocalised()
   static let pleaseWaitForExpectedRateUpdate = "please.wait.for.expected.rate.updated".toBeLocalised()
-  
+  static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
+  static let selectToken = "select.token".toBeLocalised()
 }

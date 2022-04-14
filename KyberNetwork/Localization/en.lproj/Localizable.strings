@@ -155,6 +155,7 @@
 "receive" = "Receive";
 "from" = "From";
 "to" = "To";
+"select.token" = "Select Token";
 "you.are.all.set" = "You are all set";
 "none.completed" = "None completed";
 "you.do.not.have.any.pending.transactions" = "You do not have any pending transactions.";
