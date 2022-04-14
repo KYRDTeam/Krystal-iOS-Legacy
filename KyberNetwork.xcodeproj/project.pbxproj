@@ -617,6 +617,7 @@
 		C335C21F26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */; };
 		C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */; };
 		C335FC71257F90990015CC27 /* RectangularDashedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335FC70257F90990015CC27 /* RectangularDashedView.swift */; };
+		C3362D8F2806D0E500840884 /* WalletData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3362D8E2806D0E500840884 /* WalletData.swift */; };
 		C33696102595A387000EDD5D /* ApproveTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C336960E2595A386000EDD5D /* ApproveTokenViewController.swift */; };
 		C33696112595A387000EDD5D /* ApproveTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C336960F2595A386000EDD5D /* ApproveTokenViewController.xib */; };
 		C3377ACF25E650B00035A18D /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3377ACD25E650B00035A18D /* ChartViewController.swift */; };
@@ -1480,6 +1481,7 @@
 		C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainWalletsListViewController.swift; sourceTree = "<group>"; };
 		C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainWalletsListViewController.xib; sourceTree = "<group>"; };
 		C335FC70257F90990015CC27 /* RectangularDashedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularDashedView.swift; sourceTree = "<group>"; };
+		C3362D8E2806D0E500840884 /* WalletData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletData.swift; sourceTree = "<group>"; };
 		C336960E2595A386000EDD5D /* ApproveTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenViewController.swift; sourceTree = "<group>"; };
 		C336960F2595A386000EDD5D /* ApproveTokenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenViewController.xib; sourceTree = "<group>"; };
 		C3377ACD25E650B00035A18D /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
@@ -1817,6 +1819,7 @@
 				C32F1F622431ABCD00990706 /* KNMarket.swift */,
 				7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */,
 				7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */,
+				C3362D8E2806D0E500840884 /* WalletData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5545,6 +5548,7 @@
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
+				C3362D8F2806D0E500840884 /* WalletData.swift in Sources */,
 				C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */,
 				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,

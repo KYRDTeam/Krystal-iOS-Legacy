@@ -26,7 +26,7 @@ class KNListWalletsCoordinator: Coordinator {
   lazy var rootViewController: KNListWalletsViewController = {
     let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
     let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
-    let viewModel = KNListWalletsViewModel(listWallets: listWallets, curWallet: curWallet)
+    let viewModel = KNListWalletsViewModel(listWallets: listWallets, curWallet: curWallet, keyStore: self.session.keystore)
     let controller = KNListWalletsViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
     controller.delegate = self
