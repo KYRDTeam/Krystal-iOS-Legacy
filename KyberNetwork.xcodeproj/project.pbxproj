@@ -586,6 +586,10 @@
 		C320D81027B3A7F60001DC71 /* MultiSendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */; };
 		C322EB0B25B1A3D8009746FB /* CreateWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */; };
 		C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */; };
+		C3233EFA2807DAEC0086C2BC /* CopyAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3233EF82807DAEC0086C2BC /* CopyAddressViewController.swift */; };
+		C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3233EF92807DAEC0086C2BC /* CopyAddressViewController.xib */; };
+		C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3233EFC2807DF4D0086C2BC /* CopyAddressCell.swift */; };
+		C3233EFF2807DF4D0086C2BC /* CopyAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3233EFD2807DF4D0086C2BC /* CopyAddressCell.xib */; };
 		C325984626D345A100F87D25 /* OverviewShareNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C325984426D345A100F87D25 /* OverviewShareNFTViewController.swift */; };
 		C325984726D345A100F87D25 /* OverviewShareNFTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C325984526D345A100F87D25 /* OverviewShareNFTViewController.xib */; };
 		C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */; };
@@ -1464,6 +1468,10 @@
 		C320D80E27B3A7F60001DC71 /* MultiSendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiSendCell.xib; sourceTree = "<group>"; };
 		C322EB0925B1A3D8009746FB /* CreateWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletMenuViewController.swift; sourceTree = "<group>"; };
 		C322EB0A25B1A3D8009746FB /* CreateWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateWalletMenuViewController.xib; sourceTree = "<group>"; };
+		C3233EF82807DAEC0086C2BC /* CopyAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyAddressViewController.swift; sourceTree = "<group>"; };
+		C3233EF92807DAEC0086C2BC /* CopyAddressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CopyAddressViewController.xib; sourceTree = "<group>"; };
+		C3233EFC2807DF4D0086C2BC /* CopyAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyAddressCell.swift; sourceTree = "<group>"; };
+		C3233EFD2807DF4D0086C2BC /* CopyAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CopyAddressCell.xib; sourceTree = "<group>"; };
 		C325984426D345A100F87D25 /* OverviewShareNFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewShareNFTViewController.swift; sourceTree = "<group>"; };
 		C325984526D345A100F87D25 /* OverviewShareNFTViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewShareNFTViewController.xib; sourceTree = "<group>"; };
 		C3263B0125EDE6FB005FBB60 /* WithdrawCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawCoordinator.swift; sourceTree = "<group>"; };
@@ -1744,6 +1752,8 @@
 			children = (
 				2502AC16209475BE007F23CD /* KNListWalletsTableViewCell.swift */,
 				2502AC17209475BE007F23CD /* KNListWalletsTableViewCell.xib */,
+				C3233EFC2807DF4D0086C2BC /* CopyAddressCell.swift */,
+				C3233EFD2807DF4D0086C2BC /* CopyAddressCell.xib */,
 			);
 			path = ListWalletsTableViewCell;
 			sourceTree = "<group>";
@@ -2839,6 +2849,8 @@
 				2502AC152094758C007F23CD /* ListWalletsTableViewCell */,
 				25BE329A209096E800D760FB /* KNListWalletsViewController.swift */,
 				25BE329B209096E800D760FB /* KNListWalletsViewController.xib */,
+				C3233EF82807DAEC0086C2BC /* CopyAddressViewController.swift */,
+				C3233EF92807DAEC0086C2BC /* CopyAddressViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4963,6 +4975,7 @@
 				25929C6F20DA5C760045CFA3 /* SF-Pro-Display-Medium.otf in Resources */,
 				251C29C1232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.xib in Resources */,
 				C3F71C8B2618A57B00285935 /* ClaimHistoryTableViewCell.xib in Resources */,
+				C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */,
 				25929C8F20DA5CC10045CFA3 /* SFCompactDisplay-Regular.otf in Resources */,
 				2561454D20C64B2200FB00CF /* KNContactTableView.xib in Resources */,
 				255F6F2420BBC6B500EF808F /* KNWalletQRCodeViewController.xib in Resources */,
@@ -5062,6 +5075,7 @@
 				C325984726D345A100F87D25 /* OverviewShareNFTViewController.xib in Resources */,
 				7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */,
 				C3F71C9B261B27BB00285935 /* EarnTutorialCell.xib in Resources */,
+				C3233EFF2807DF4D0086C2BC /* CopyAddressCell.xib in Resources */,
 				25C45AE220AD75EC00CDA1FF /* KNImportSeedsViewController.xib in Resources */,
 				25929C6A20DA5C760045CFA3 /* SF-Pro-Text-Semibold.otf in Resources */,
 				255A70F0214FB908005D7A6A /* KNEditWalletViewController.xib in Resources */,
@@ -5397,6 +5411,7 @@
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
+				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				A6DA40F327F6E15D0078C58E /* ExploreMenuCell.swift in Sources */,
@@ -5525,6 +5540,7 @@
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,
+				C3233EFA2807DAEC0086C2BC /* CopyAddressViewController.swift in Sources */,
 				257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */,
 				25CC0AAB2058F1A00009D0D5 /* KNGetTokenAllowance.swift in Sources */,
 				C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */,
