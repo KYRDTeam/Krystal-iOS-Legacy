@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import Foundation
+import BigInt
 
 extension String {
     var hex: String {
@@ -125,5 +126,9 @@ extension String {
       let _indices = indices(of: searchString)
       let count = searchString.count
       return _indices.map({ index(startIndex, offsetBy: $0)..<index(startIndex, offsetBy: $0+count) })
+  }
+  
+  var bigInt: BigInt? {
+    return BigInt(self)
   }
 }

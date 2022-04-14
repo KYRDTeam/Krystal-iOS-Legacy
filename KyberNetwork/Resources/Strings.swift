@@ -62,4 +62,23 @@ struct Strings {
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
   static let rewardHuntingWatchWalletErrorMessage = "reward.hunting.watch.wallet.not.supported".toBeLocalised()
   static let notHaveChainWalletPleaseCreateOrImport = "not.have.chain.wallet.please.create.or.import".toBeLocalised()
+
+  // Swap
+  static let invalidInput = "invalid.input".toBeLocalised()
+  static let unsupported = "unsupported".toBeLocalised()
+  static let amountTooBig = "amount.too.big".toBeLocalised()
+  static let invalidAmount = "invalid.amount".toBeLocalised()
+  static let rateMightChange = "rate.might.change".toBeLocalised()
+  
+  static let pleaseSelectSourceToken = "please.select.source.token".toBeLocalised()
+  static let pleaseSelectDestToken = "please.select.dest.token".toBeLocalised()
+  static let canNotSwapSameToken = "can.not.swap.same.token".toBeLocalised()
+  static let pleaseEnterAmountToContinue = "please.enter.an.amount.to.continue".toBeLocalised()
+  static let canNotFindExchangeRate = "Can not find the exchange rate".toBeLocalised()
+  static let balanceNotEnoughToMakeTransaction = "balance.not.enough.to.make.transaction".toBeLocalised()
+  static let amountTooSmallToSwap = "amount.too.small.to.perform.swap".toBeLocalised()
+  static let depositMoreXOrClickAdvancedToLowerGasFee = "deposit.more.x.or.click.advanced.to.lower.gas.fee".toBeLocalised()
+  static let insufficientXForTransaction = "insufficient.x.for.transaction".toBeLocalised()
+  static let pleaseWaitForExpectedRateUpdate = "please.wait.for.expected.rate.updated".toBeLocalised()
+  
 }

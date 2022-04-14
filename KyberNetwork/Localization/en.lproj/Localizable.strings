@@ -507,6 +507,8 @@
 "Transfer Now" = "Transfer Now";
 "Deposit more ETH or click Advanced to lower GAS fee" = "Deposit more ETH or click Advanced to lower GAS fee. Transaction fee: %@ ETH";
 "Insufficient ETH for transaction" = "Insufficient ETH for transaction";
+"deposit.more.x.or.click.advanced.to.lower.gas.fee" = "Deposit more %@ or click Advanced to lower GAS fee";
+"insufficient.x.for.transaction" = "Insufficient %@ for transaction";
 "This password is needed to unlock your JSON file. Please remember it carefully." = "This password is needed to unlock your JSON file. Please remember it carefully.";
 
 // Promo code error messages

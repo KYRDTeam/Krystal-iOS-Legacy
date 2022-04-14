@@ -16,8 +16,7 @@ struct RawSwapTransaction {
   let useGasToken: Bool
 }
 
-class KSwapViewModel {
-
+class KSwapViewModel {  
   let defaultTokenIconImg = UIImage(named: "default_token")
   let eth = KNSupportedTokenStorage.shared.getETH().toObject()
   let knc = KNSupportedTokenStorage.shared.getKNC().toObject()
@@ -26,10 +25,8 @@ class KSwapViewModel {
   fileprivate(set) var walletObject: KNWalletObject
   fileprivate var supportedTokens: [TokenObject] = []
 
-  fileprivate(set) var from: TokenObject
-  fileprivate(set) var to: TokenObject
-  fileprivate(set) var fromDeepLink: TokenObject?
-  fileprivate(set) var toDeepLink: TokenObject?
+  fileprivate(set) var from: TokenObject?
+  fileprivate(set) var to: TokenObject?
 
   fileprivate(set) var amountFrom: String = ""
   fileprivate(set) var amountTo: String = ""
@@ -60,10 +57,10 @@ class KSwapViewModel {
   }
   var remainApprovedAmount: (TokenObject, BigInt)?
   var latestNonce: Int = 0
-  var refPrice: (TokenObject, TokenObject, String, [String])
+  var refPrice: (from: TokenObject, to: TokenObject, price: String, sources: [String])?
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
-  var showingRevertRate: Bool = false
+  var showingRevertedRate: Bool = false
   var isFromDeepLink: Bool = false
   var advancedGasLimit: String?
   var advancedMaxPriorityFee: String?
@@ -81,7 +78,6 @@ class KSwapViewModel {
     self.from = from.clone()
     self.to = to.clone()
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
-    self.refPrice = (self.from, self.to, "", [])
   }
   // MARK: Wallet name
   var walletNameString: String {
@@ -98,40 +94,50 @@ class KSwapViewModel {
     return false
   }
 
-  var allFromTokenBalanceString: String {
-    if self.from.isQuoteToken {
-      let balance = self.from.getBalanceBigInt()
+  var allFromTokenBalanceString: String? {
+    guard let from = from else { return nil }
+    if from.isQuoteToken {
+      let balance = from.getBalanceBigInt()
       if balance <= self.feeBigInt { return "0" }
       let fee = self.allETHBalanceFee
       let availableToSwap = max(BigInt(0), balance - fee)
       let string = availableToSwap.string(
-        decimals: self.from.decimals,
+        decimals: from.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.from.decimals, 5)
+        maxFractionDigits: min(from.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
-    return self.balanceText.removeGroupSeparator()
+    return self.balanceText?.removeGroupSeparator()
   }
 
-  var amountFromBigInt: BigInt {
-    return self.amountFrom.removeGroupSeparator().amountBigInt(decimals: self.from.decimals) ?? BigInt(0)
+  var fromAmount: BigInt {
+    guard let decimals = from?.decimals else { return BigInt(0) }
+    return self.amountFrom.removeGroupSeparator().amountBigInt(decimals: decimals) ?? BigInt(0)
   }
 
-  var amountToEstimate: BigInt {
-    if self.amountFromBigInt.isZero, let smallAmount = EtherNumberFormatter.short.number(from: "0.001", decimals: self.from.decimals) {
+  var estimatedDestAmount: BigInt {
+    guard let from = from else { return BigInt(0) }
+    
+    if self.fromAmount.isZero, let smallAmount = EtherNumberFormatter.short.number(from: "0.001", decimals: from.decimals) {
       return smallAmount
     }
-    return self.amountFromBigInt
+    return self.fromAmount
   }
 
-  var equivalentUSDAmount: BigInt? {
-    if let usdRate = KNTrackerRateStorage.shared.getPriceWithAddress(self.from.address) {
-      return self.amountFromBigInt * BigInt(usdRate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.from.decimals)
+  private var equivalentUSDAmount: BigInt? {
+    guard let from = from, let price = KNTrackerRateStorage.shared.getPriceWithAddress(from.address) else {
+      return nil
     }
-    return nil
+    return equivalentUSDAmount(amount: fromAmount,
+                               usdRate: price.usd,
+                               decimals: from.decimals)
   }
-
+  
+  private func equivalentUSDAmount(amount: BigInt, usdRate: Double, decimals: Int) -> BigInt {
+    return amount * BigInt(usdRate * pow(10.0, 18.0)) / BigInt(10).power(decimals)
+  }
+  
   var displayEquivalentUSDAmount: String? {
     guard let amount = self.equivalentUSDAmount, !amount.isZero else { return nil }
     let valueString = amount.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: DecimalNumber.usd)
@@ -141,8 +147,8 @@ class KSwapViewModel {
     return "~ $\(valueString) USD"
   }
 
-  var fromTokenIconName: String {
-    return self.from.icon
+  var fromTokenIconName: String? {
+    return self.from?.icon
   }
 
   var isFromTokenBtnEnabled: Bool {
@@ -150,35 +156,45 @@ class KSwapViewModel {
       // not a promo wallet, always enabled
       return true
     }
-    if self.from.isPromoToken { return false }
+    if from?.isPromoToken ?? false {
+      return false
+    }
     return true
   }
 
-  var fromTokenBtnTitle: String {
-    return self.from.symbol
+  var fromTokenSymbol: String? {
+    return self.from?.symbol
+  }
+  
+  var isFromTokenSelected: Bool {
+    return from != nil
   }
 
   // when user wants to fix received amount
-  var expectedExchangeAmountText: String { //TODO: Improve loading rate later
-    guard !self.amountToBigInt.isZero else {
+  var expectedExchangeAmountText: String? { //TODO: Improve loading rate later
+    guard let from = from, let to = to else {
+      return nil
+    }
+    guard !self.toAmount.isZero else {
       return ""
     }
-    let rate = self.getCurrentRate() ?? BigInt(0)
+    let rate = exchangeRate ?? BigInt(0)
     let expectedExchange: BigInt = {
       if rate.isZero { return BigInt(0) }
-      let amount = self.amountToBigInt * BigInt(10).power(18) * BigInt(10).power(self.from.decimals)
-      return amount / rate / BigInt(10).power(self.to.decimals)
+      let amount = self.toAmount * BigInt(10).power(18) * BigInt(10).power(from.decimals)
+      return amount / rate / BigInt(10).power(to.decimals)
     }()
     return expectedExchange.string(
-      decimals: self.from.decimals,
-      minFractionDigits: self.from.decimals,
-      maxFractionDigits: self.from.decimals
+      decimals: from.decimals,
+      minFractionDigits: from.decimals,
+      maxFractionDigits: from.decimals
     ).removeGroupSeparator()
   }
 
   // MARK: To Token
-  var amountToBigInt: BigInt {
-    return self.amountTo.removeGroupSeparator().amountBigInt(decimals: self.to.decimals) ?? BigInt(0)
+  var toAmount: BigInt {
+    guard let to = to else { return BigInt(0) }
+    return self.amountTo.removeGroupSeparator().amountBigInt(decimals: to.decimals) ?? BigInt(0)
   }
 
   var isToTokenBtnEnabled: Bool {
@@ -186,16 +202,21 @@ class KSwapViewModel {
       // not a promo wallet, always enabled
       return true
     }
-    if self.from.isPromoToken && self.to.symbol == destToken { return false }
+    
+    if (from?.isPromoToken ?? false) && (to?.symbol == destToken) { return false }
     return true
   }
 
-  var toTokenBtnTitle: String {
-    return self.to.symbol
+  var toTokenSymbol: String? {
+    return self.to?.symbol
   }
 
-  var toTokenIconName: String {
-    return self.to.icon
+  var toTokenIconName: String? {
+    return self.to?.icon
+  }
+  
+  var isToTokenSelected: Bool {
+    return to != nil
   }
 
   var amountTextFieldColor: UIColor {
@@ -203,79 +224,72 @@ class KSwapViewModel {
   }
 
   var expectedReceivedAmountText: String {
-    guard !self.amountFromBigInt.isZero else {
+    guard let from = from, let to = to else {
+      return ""
+    }
+    guard !self.fromAmount.isZero else {
       return ""
     }
 
-    let expectedRate = self.getCurrentRate() ?? BigInt(0)
+    let expectedRate = exchangeRate ?? BigInt(0)
     let expectedAmount: BigInt = {
-      let amount = self.amountFromBigInt
-      return expectedRate * amount * BigInt(10).power(self.to.decimals) / BigInt(10).power(18) / BigInt(10).power(self.from.decimals)
+      let amount = self.fromAmount
+      return expectedRate * amount * BigInt(10).power(to.decimals) / BigInt(10).power(18) / BigInt(10).power(from.decimals)
     }()
     return expectedAmount.string(
-      decimals: self.to.decimals,
-      minFractionDigits: min(self.to.decimals, 5),
-      maxFractionDigits: min(self.to.decimals, 5)
+      decimals: to.decimals,
+      minFractionDigits: min(to.decimals, 5),
+      maxFractionDigits: min(to.decimals, 5)
     ).removeGroupSeparator()
   }
 
-  func tokenButtonText(isSource: Bool) -> String {
-    return isSource ? self.from.symbol : self.to.symbol
-  }
-
   // MARK: Balance
-  var balanceText: String {
-    let bal: BigInt = self.from.getBalanceBigInt()
+  private var balanceText: String? {
+    guard let from = from else { return nil }
+    let bal: BigInt = from.getBalanceBigInt()
     let string = bal.string(
-      decimals: self.from.decimals,
+      decimals: from.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.from.decimals, 5)
+      maxFractionDigits: min(from.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
   }
   
-  var balanceDisplayText: String {
-    return "\(self.balanceText) \(self.from.symbol)"
-  }
-
-  var balanceTextString: String {
-    let balanceText = NSLocalizedString("balance", value: "Balance", comment: "")
-    return "\(self.from.symbol) \(balanceText)".uppercased()
+  var balanceDisplayText: String? {
+    guard let balanceText = balanceText, let fromSymbol = from?.symbol else {
+      return nil
+    }
+    return "\(balanceText) \(fromSymbol)"
   }
 
   // MARK: Rate
-  var exchangeRateText: String {
-    if self.showingRevertRate {
-      return self.displayRevertRate
-    } else {
-      return displayExchangeRate
+  var exchangeRateText: String? {
+    guard let from = from, let to = to else {
+      return nil
     }
-  }
-
-  var displayExchangeRate: String {
-    let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
-    let rate = BigInt(rateString)
-    if let notNilRate = rate {
-      return notNilRate.isZero ? "---" : "Rate: 1 \(self.from.symbol) = \(notNilRate.displayRate(decimals: 18)) \(self.to.symbol)"
-    } else {
+    
+    guard let rate = exchangeRate, !rate.isZero else {
       return "---"
     }
-  }
-
-  var displayRevertRate: String {
-    let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
-    let rate = BigInt(rateString)
-    if let notNilRate = rate, notNilRate != BigInt(0) {
-      let revertRate = BigInt(10).power(36) / notNilRate
-      return notNilRate.isZero ? "---" : "Rate: 1 \(self.to.symbol) = \(revertRate.displayRate(decimals: 18)) \(self.from.symbol)"
+    
+    if showingRevertedRate {
+      return "Rate: 1 \(from.symbol) = \(rate.displayRate(decimals: 18)) \(to.symbol)"
     } else {
-      return "---"
+      let revertRate = BigInt(10).power(36) / rate
+      return "Rate: 1 \(to.symbol) = \(revertRate.displayRate(decimals: 18)) \(from.symbol)"
     }
   }
-
-  func getCurrentRate() -> BigInt? {
-    let rateString: String = self.getSwapRate(from: self.from.address.lowercased(), to: self.to.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+  
+  private var exchangeRate: BigInt? {
+    guard let from = from, let to = to else { return nil }
+    
+    let rateString = self.getSwapRate(
+      from: from.address.lowercased(),
+      to: to.address.lowercased(),
+      amount: fromAmount,
+      platform: currentFlatform
+    )
     return BigInt(rateString)
   }
 
@@ -285,7 +299,8 @@ class KSwapViewModel {
   }
 
   var slippageRateText: String? {
-    return self.slippageRate?.string(decimals: self.to.decimals, minFractionDigits: 0, maxFractionDigits: min(self.to.decimals, 9))
+    guard let to = to else { return nil }
+    return self.slippageRate?.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: min(to.decimals, 9))
   }
 
   // MARK: Gas Price
@@ -296,31 +311,30 @@ class KSwapViewModel {
   // MARK: Verify data
   // Amount should > 0 and <= balance
   var isAmountTooSmall: Bool {
-    if self.amountFromBigInt <= BigInt(0) { return true }
-    if self.from.isETH || self.from.isWETH || self.from.isBNB {
-      return self.amountFromBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+    guard let from = from, let to = to else {
+      return false
     }
-    if self.to.isETH || self.to.isWETH {
-      return self.amountToBigInt < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+    if self.fromAmount <= BigInt(0) { return true }
+    if from.isETH || from.isWETH || from.isBNB {
+      return self.fromAmount < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
+    }
+    if to.isETH || to.isWETH {
+      return self.toAmount < BigInt(0.001 * Double(EthereumUnit.ether.rawValue))
     }
     return false
   }
 
   var isBalanceEnough: Bool {
-    if self.amountFromBigInt > self.from.getBalanceBigInt() { return false }
+    guard let from = from else {
+      return true
+    }
+    if self.fromAmount > from.getBalanceBigInt() { return false }
     return true
   }
 
   var isAmountTooBig: Bool {
     if !self.isBalanceEnough { return true }
     return false
-  }
-
-  var isETHSwapAmountAndFeeTooBig: Bool {
-    if !self.from.isETH || self.from.isBNB { return false } // not ETH
-    let totalValue = self.feeBigInt + self.amountFromBigInt
-    let balance = self.from.getBalanceBigInt()
-    return balance < totalValue
   }
 
   var isAmountValid: Bool {
@@ -344,30 +358,24 @@ class KSwapViewModel {
   }
 
   var minDestQty: BigInt {
-    return self.amountToBigInt * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
+    return self.toAmount * BigInt(10000.0 - self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
   var maxAmtSold: BigInt {
-    return self.amountFromBigInt * BigInt(10000.0 + self.minRatePercent * 100.0) / BigInt(10000.0)
+    return self.fromAmount * BigInt(10000.0 + self.minRatePercent * 100.0) / BigInt(10000.0)
   }
 
-  var displayMinDestAmount: String {
-    return self.minDestQty.string(
-      decimals: self.to.decimals,
-      minFractionDigits: min(self.to.decimals, 5),
-      maxFractionDigits: min(self.to.decimals, 5)
-    ) + " " + self.to.symbol
+  var displayMinDestAmount: String? {
+    guard let to = to else { return nil }
+    return self.minDestQty.string(decimals: to.decimals, minFractionDigits: min(to.decimals, 5), maxFractionDigits: min(to.decimals, 5)) + " " + to.symbol
   }
 
-  var displayMaxSoldAmount: String {
-    return self.maxAmtSold.string(
-      decimals: self.from.decimals,
-      minFractionDigits: min(self.to.decimals, 5),
-      maxFractionDigits: min(self.to.decimals, 5)
-    ) + " " + self.from.symbol
+  var displayMaxSoldAmount: String? {
+    guard let from = from else { return nil }
+    return self.maxAmtSold.string(decimals: from.decimals, minFractionDigits: min(from.decimals, 5), maxFractionDigits: min(from.decimals, 5)) + " " + from.symbol
   }
 
-  var displayExpectedReceiveValue: String {
+  var displayExpectedReceiveValue: String? {
     return self.isFocusingFromAmount ? self.displayMinDestAmount : self.displayMaxSoldAmount
   }
 
@@ -377,9 +385,12 @@ class KSwapViewModel {
 
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.estimateGasLimit
-    if self.from.isETH || self.from.isBNB { fee += self.amountFromBigInt }
-    let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
-    return ethBal >= fee
+    guard let from = from else {
+      return true
+    }
+    if from.isETH || from.isBNB { fee += self.fromAmount }
+    let quoteBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
+    return quoteBalance >= fee
   }
 
   var amountFromStringParameter: String {
@@ -436,14 +447,12 @@ class KSwapViewModel {
       return
     }
     self.from = KNGeneralProvider.shared.currentChain.quoteTokenObject()
-    self.to = KNGeneralProvider.shared.currentChain.defaultToSwapToken()
+    self.to = nil
   }
 
   func updateTokensPair(from: TokenObject, to: TokenObject) {
     self.from = from
     self.to = to
-    self.fromDeepLink = from
-    self.toDeepLink = to
   }
 
   // MARK: Update data
@@ -461,8 +470,8 @@ class KSwapViewModel {
 
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
-    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.estimateGasLimit = defaultGasLimit
+    self.baseGasLimit = defaultGasLimit
   }
 
   func updateWalletObject() {
@@ -478,8 +487,8 @@ class KSwapViewModel {
 
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
-    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.estimateGasLimit = defaultGasLimit
+    self.baseGasLimit = defaultGasLimit
   }
 
   func updateSelectedToken(_ token: TokenObject, isSource: Bool) {
@@ -498,8 +507,8 @@ class KSwapViewModel {
     }
     self.estRate = nil
     self.slippageRate = nil
-    self.estimateGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
-    self.baseGasLimit = self.getDefaultGasLimit(for: self.from, to: self.to)
+    self.estimateGasLimit = defaultGasLimit
+    self.baseGasLimit = defaultGasLimit
   }
 
   func updateFocusingField(_ isSource: Bool) {
@@ -541,27 +550,12 @@ class KSwapViewModel {
     self.gasPrice = gasPrice
   }
 
-  @discardableResult
-  func updateExchangeRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt, slippageRate: BigInt) -> Bool {
-    let isAmountChanged: Bool = {
-      if self.amountFromBigInt == amount { return false }
-      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
-    }()
-    if from == self.from, to == self.to, !isAmountChanged {
-      self.estRate = rate
-      self.slippageRate = slippageRate
-      return true
-    }
-    return false
-  }
-
   func updateExchangeMinRatePercent(_ percent: Double) {
     self.minRatePercent = percent
   }
 
   func updateEstimateGasLimit(for from: TokenObject, to: TokenObject, amount: BigInt, gasLimit: BigInt) {
-    if from == self.from, to == self.to, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.amountFromBigInt) {
+    if from == self.from, to == self.to, !self.isAmountFromChanged(newAmount: amount, oldAmount: self.fromAmount) {
       if let customGasLimitString = self.advancedGasLimit, let customGasLimit = BigInt(customGasLimitString), customGasLimit > gasLimit {
         self.baseGasLimit = gasLimit
       } else {
@@ -571,25 +565,24 @@ class KSwapViewModel {
     }
   }
 
-  func getDefaultGasLimit(for from: TokenObject, to: TokenObject) -> BigInt {
+  var defaultGasLimit: BigInt {
+    guard let from = from, let to = to else { return BigInt(0) }
     return KNGasConfiguration.calculateDefaultGasLimit(from: from, to: to)
   }
 
   // if different less than 3%, consider as no changes
   private func isAmountFromChanged(newAmount: BigInt, oldAmount: BigInt) -> Bool {
+    guard let from = from else { return false }
     if oldAmount == newAmount { return false }
     let different = abs(oldAmount - newAmount)
     if different <= oldAmount * BigInt(3) / BigInt(100) { return false }
-    let doubleValue = Double(newAmount) / pow(10.0, Double(self.from.decimals))
+    let doubleValue = Double(newAmount) / pow(10.0, Double(from.decimals))
     return !(oldAmount.isZero && doubleValue == 0.001)
   }
 
   func getHint(from: String, to: String, amount: BigInt, platform: String) -> String {
-    let isAmountChanged: Bool = {
-      if self.amountFromBigInt == amount { return false }
-      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
-    }()
+    let isAmountChanged = isAmountChanged(amount: amount)
+    
     guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
       return ""
     }
@@ -597,19 +590,11 @@ class KSwapViewModel {
     let rateDict = self.swapRates.3.first { (element) -> Bool in
       return platform == element.platform
     }
-    if let rateString = rateDict?.hint {
-      return rateString
-    } else {
-      return ""
-    }
+    return rateDict?.hint ?? ""
   }
 
   func getSwapRate(from: String, to: String, amount: BigInt, platform: String) -> String {
-    let isAmountChanged: Bool = {
-      if self.amountFromBigInt == amount { return false }
-      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
-    }()
+    let isAmountChanged = isAmountChanged(amount: amount)
 
     guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
       return ""
@@ -618,11 +603,7 @@ class KSwapViewModel {
     let rateDict = self.swapRates.3.first { (element) -> Bool in
       return platform == element.platform
     }
-    if let rateString = rateDict?.rate {
-      return rateString
-    } else {
-      return ""
-    }
+    return rateDict?.rate ?? ""
   }
 
   func getCurrentRateObj(platform: String) -> Rate? {
@@ -684,25 +665,27 @@ class KSwapViewModel {
   }
 
   func getRefPrice(from: TokenObject, to: TokenObject) -> String {
-    guard from.isEqual(self.refPrice.0), to.isEqual(self.refPrice.1) else {
+    guard let refPrice = refPrice, from.isEqual(refPrice.from), from.isEqual(refPrice.to) else {
       return ""
     }
-    return self.refPrice.2
+    return refPrice.price
   }
   
   var refPriceSource: String {
-    guard !self.refPrice.3.isEmpty else {
+    guard let refPrice = refPrice, !refPrice.sources.isEmpty else {
       return ""
     }
-    return "Reference.price.is.from".toBeLocalised() + self.refPrice.3.joined(separator: ", ") + "."
+    return "Reference.price.is.from".toBeLocalised() + refPrice.sources.joined(separator: ", ") + "."
   }
 
   var refPriceDiffText: String {
-    guard !self.getRefPrice(from: self.from, to: self.to).isEmpty else {
+    guard let from = from, let to = to else {
+      return "---"
+    }
+    guard !self.getRefPrice(from: from, to: to).isEmpty else {
       return "---"
     }
     return StringFormatter.percentString(value: self.priceImpactValue / 100)
-
   }
 
   var priceImpactValueTextColor: UIColor? {
@@ -717,11 +700,14 @@ class KSwapViewModel {
   }
 
   var priceImpactValue: Double {
+    guard let from = from, let to = to else {
+      return 0
+    }
     guard !self.amountFrom.isEmpty else {
       return 0
     }
-    let refPrice = self.getRefPrice(from: self.from, to: self.to)
-    let price = self.getSwapRate(from: self.from.address.description, to: self.to.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
+    let refPrice = self.getRefPrice(from: from, to: to)
+    let price = self.getSwapRate(from: from.address, to: to.address, amount: self.fromAmount, platform: self.currentFlatform)
 
     guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
       return 0
@@ -734,11 +720,7 @@ class KSwapViewModel {
 
   @discardableResult
   func updateExpectedRate(for from: TokenObject, to: TokenObject, amount: BigInt, rate: BigInt) -> Bool {
-    let isAmountChanged: Bool = {
-      if self.amountFromBigInt == amount { return false }
-      let doubleValue = Double(amount) / pow(10.0, Double(self.from.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
-    }()
+    let isAmountChanged = isAmountChanged(amount: amount)
     if from == self.from, to == self.to, !isAmountChanged {
       self.estRate = rate
       return true
@@ -746,19 +728,20 @@ class KSwapViewModel {
     return false
   }
 
-  func buildRawSwapTx() -> RawSwapTransaction {
+  func buildRawSwapTx() -> RawSwapTransaction? {
+    guard let from = from, let to = to else { return nil }
     return RawSwapTransaction(
       userAddress: self.wallet.addressString,
-      src: self.from.address ,
-      dest: self.to.address,
-      srcQty: self.amountFromBigInt.description,
+      src: from.address ,
+      dest: to.address,
+      srcQty: self.fromAmount.description,
       minDesQty: self.minDestQty.description,
       gasPrice: self.gasPrice.description,
       nonce: self.latestNonce,
       hint: self.getHint(
-        from: self.from.address,
-        to: self.to.address,
-        amount: self.amountFromBigInt,
+        from: from.address,
+        to: to.address,
+        amount: self.fromAmount,
         platform: self.currentFlatform
       ),
       useGasToken: self.isUseGasToken
@@ -908,4 +891,82 @@ extension KSwapViewModel {
   func chainName(chainId: Int) -> String? {
     return ChainType.make(chainID: chainId)?.chainName()
   }
+}
+
+
+extension KSwapViewModel {
+  
+  private func isAmountChanged(amount: BigInt) -> Bool {
+    guard let from = from else { return false }
+    if self.fromAmount == amount { return false }
+    let doubleValue = Double(amount) / pow(10.0, Double(from.decimals))
+    return !(self.fromAmount.isZero && doubleValue == 0.001)
+  }
+  
+}
+
+extension KSwapViewModel {
+  
+  typealias SwapValidationError = (title: String, message: String)
+  
+  // FIXME: localize message
+  func validate(isConfirming: Bool) -> ValidationResult<SwapValidationError> {
+    guard let from = from else {
+      return isConfirming ?
+        .failure(error: (title: Strings.invalidInput, message: Strings.pleaseSelectSourceToken))
+      : .success
+    }
+    guard let to = to else {
+      return isConfirming ?
+        .failure(error: (title: Strings.invalidInput, message: Strings.pleaseSelectDestToken)) :
+        .success
+    }
+    
+    let estRate = getSwapRate(from: from.address.lowercased(),
+                              to: to.address.lowercased(),
+                              amount: fromAmount,
+                              platform: currentFlatform).bigInt
+    
+    if from == to {
+      return .failure(error: (title: Strings.unsupported,
+                              message: Strings.canNotSwapSameToken))
+    }
+    
+    if amountFrom.isEmpty {
+      return .failure(error: (title: Strings.invalidInput,
+                              message: Strings.pleaseEnterAmountToContinue))
+    }
+    
+    if estRate?.isZero ?? true {
+      return .failure(error: (title: "",
+                              message: Strings.canNotFindExchangeRate))
+    }
+    
+    if !isBalanceEnough {
+      return .failure(error: (title: Strings.amountTooBig,
+                              message: Strings.balanceNotEnoughToMakeTransaction))
+    }
+    
+    if isAmountTooSmall {
+      return .failure(error: (title: Strings.invalidAmount,
+                              message: Strings.amountTooSmallToSwap))
+    }
+    
+    if isConfirming {
+      let quoteToken = KNGeneralProvider.shared.quoteToken
+      
+      if !isHavingEnoughETHForFee {
+        let title = String(format: Strings.insufficientXForTransaction, quoteToken)
+        let message = String(format: Strings.depositMoreXOrClickAdvancedToLowerGasFee, feeBigInt.shortString(units: .ether, maxFractionDigits: 5))
+        return .failure(error: (title: title, message: message))
+      }
+      
+      if estRate?.isZero ?? true {
+        return .failure(error: (title: Strings.rateMightChange, message: Strings.pleaseWaitForExpectedRateUpdate))
+      }
+    }
+   
+    return .success
+  }
+  
 }

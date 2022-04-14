@@ -92,7 +92,6 @@ class GasFeeSelectorPopupViewModel {
   fileprivate(set) var previousSelectedType: KNSelectedGasPriceType?
   fileprivate(set) var minRateType: KAdvancedSettingsMinRateType = .zeroPointFive
   fileprivate(set) var currentRate: Double
-  fileprivate(set) var pairToken: String = ""
   fileprivate(set) var isSwapOption: Bool = true
   fileprivate(set) var isUseGasToken: Bool
   fileprivate(set) var isContainSippageSectionOption: Bool
@@ -156,10 +155,6 @@ class GasFeeSelectorPopupViewModel {
 
   var currentRateDisplay: String {
     return String(format: "%.2f", self.currentRate)
-  }
-
-  func updatePairToken(_ value: String) {
-    self.pairToken = value
   }
 
   func updateMinRateValue(_ value: Double, percent: Double) {
