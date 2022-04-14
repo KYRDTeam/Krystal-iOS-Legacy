@@ -4,6 +4,11 @@ import UIKit
 import TrustCore
 import SwipeCellKit
 
+struct KNListWalletsTableViewCellModel {
+  let wallet: WalletData
+  let isMultipleWallet: Bool
+}
+
 class KNListWalletsTableViewCell: SwipeTableViewCell {
 
   @IBOutlet weak var walletNameLabel: UILabel!
@@ -20,5 +25,10 @@ class KNListWalletsTableViewCell: SwipeTableViewCell {
     self.walletNameLabel.text = wallet.name
     self.walletAddressLabel.text = wallet.address.lowercased()
     self.layoutIfNeeded()
+  }
+  
+  func updateCell(cellModel: KNListWalletsTableViewCellModel) {
+    self.walletNameLabel.text = cellModel.wallet.name
+    self.walletAddressLabel.text = cellModel.wallet.address.lowercased()
   }
 }
