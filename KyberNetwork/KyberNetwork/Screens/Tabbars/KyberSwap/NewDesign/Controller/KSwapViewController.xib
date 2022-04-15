@@ -341,9 +341,6 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="radius">
                                     <real key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                    <color key="value" name="toolbarBgColor"/>
-                                </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="color" keyPath="kn_borderColor">
                                     <color key="value" red="0.16078431372549018" green="0.1764705882352941" blue="0.17254901960784313" alpha="0.89803921568627454" colorSpace="calibratedRGB"/>
                                 </userDefinedRuntimeAttribute>

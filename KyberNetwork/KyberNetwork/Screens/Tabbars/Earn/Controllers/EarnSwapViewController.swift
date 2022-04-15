@@ -83,8 +83,6 @@ class EarnSwapViewModel {
     }
     self.platformDataSource = dataSource
     self.wallet = wallet
-    
-//    self.refPrice = (self.fromTokenData, self.toTokenData, "", [])
   }
   
   func updateFocusingField(_ isSource: Bool) {
