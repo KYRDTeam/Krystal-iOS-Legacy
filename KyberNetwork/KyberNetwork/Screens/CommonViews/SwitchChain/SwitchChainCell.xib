@@ -38,23 +38,20 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="eX3-K0-z3z"/>
-                                    <constraint firstAttribute="width" constant="32" id="mDH-qR-aUl"/>
+                                    <constraint firstAttribute="width" secondItem="bug-re-fgm" secondAttribute="height" multiplier="1:1" id="mCT-Mx-VbI"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="16"/>
-                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="DeC-sE-kqG">
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="check_icon_green" translatesAutoresizingMaskIntoConstraints="NO" id="DeC-sE-kqG">
                                 <rect key="frame" x="307" y="17.5" width="16" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="WxW-k7-g1U"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bug-re-fgm" firstAttribute="centerY" secondItem="wlQ-Bd-QMd" secondAttribute="centerY" id="8b3-ww-JYj"/>
                             <constraint firstItem="ZmM-UP-fqk" firstAttribute="leading" secondItem="bug-re-fgm" secondAttribute="trailing" constant="15" id="HZW-yy-RYw"/>
@@ -87,6 +84,7 @@
                 <outlet property="cellBackgroundView" destination="wlQ-Bd-QMd" id="Soy-S3-Bim"/>
                 <outlet property="chainIcon" destination="bug-re-fgm" id="FHh-ub-5bL"/>
                 <outlet property="chainNameLabel" destination="ZmM-UP-fqk" id="43Y-v8-yyg"/>
+                <outlet property="iconHeightConstraint" destination="eX3-K0-z3z" id="tsP-fr-fW1"/>
                 <outlet property="markIcon" destination="DeC-sE-kqG" id="FPf-Fa-5T6"/>
             </connections>
             <point key="canvasLocation" x="154.34782608695653" y="116.51785714285714"/>
