@@ -28,13 +28,9 @@ class KNImportWalletCoordinator: Coordinator {
   }
 
   func start() {
-    let importVC: KNImportWalletViewController = {
-      let controller = KNImportWalletViewController()
-      controller.delegate = self
-      controller.loadViewIfNeeded()
-      return controller
-    }()
-    self.navigationController.pushViewController(importVC, animated: true)
+    let selectChainVC = SelectChainViewController()
+    selectChainVC.delegate = self
+    self.navigationController.pushViewController(selectChainVC, animated: true)
   }
 
   func stop(completion: (() -> Void)? = nil) {
@@ -45,11 +41,34 @@ class KNImportWalletCoordinator: Coordinator {
   }
 }
 
+extension KNImportWalletCoordinator: SelectChainDelegate {
+  func selectChainViewController(_ controller: SelectChainViewController, run event: SelectChainEvent) {
+    let importVC: KNImportWalletViewController = {
+      let controller = KNImportWalletViewController()
+      controller.delegate = self
+      controller.loadViewIfNeeded()
+      return controller
+    }()
+    switch event {
+    case .back:
+      self.stop()
+      return
+    case .importMultiChain:
+      importVC.importType = .multiChain
+    case .importEVM:
+      importVC.importType = .evm
+    case .importSolana:
+      importVC.importType = .solana
+    }
+    self.navigationController.pushViewController(importVC, animated: true)
+  }
+}
+
 extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   func importWalletViewController(_ controller: KNImportWalletViewController, run event: KNImportWalletViewEvent) {
     switch event {
     case .back:
-      self.stop()
+      self.navigationController.popViewController(animated: true)
     case .importJSON(let json, let password, let name):
       self.importWallet(with: .keystore(string: json, password: password), name: name)
     case .importPrivateKey(let privateKey, let name):
