@@ -4,6 +4,18 @@ import UIKit
 import QRCodeReaderViewController
 import WalletConnect
 
+enum ImportWalletChainType {
+  case multiChain
+  case evm
+  case solana
+}
+
+enum ImportWalletType {
+  case json
+  case privateKey
+  case seeds
+}
+
 enum KNImportWalletViewEvent {
   case back
   case importJSON(json: String, password: String, name: String?)
@@ -27,10 +39,15 @@ class KNImportWalletViewController: KNBaseViewController {
   @IBOutlet weak var jsonButton: UIButton!
   @IBOutlet weak var privateKeyButton: UIButton!
   @IBOutlet weak var seedsButton: UIButton!
+  var currentImportWalletType: ImportWalletType = .json
 
   fileprivate var importJSONVC: KNImportJSONViewController?
   fileprivate var importPrivateKeyVC: KNImportPrivateKeyViewController?
   fileprivate var importSeedsVC: KNImportSeedsViewController?
+  
+  fileprivate var sourceVC: [UIViewController] = []
+  
+  var importType: ImportWalletChainType = .multiChain
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
@@ -56,7 +73,7 @@ class KNImportWalletViewController: KNBaseViewController {
     let height: CGFloat = self.view.frame.height - self.scrollView.frame.minY
 
     self.scrollView.contentSize = CGSize(
-      width: CGFloat(3) * width,
+      width: CGFloat(self.sourceVC.count) * width,
       height: height
     )
     self.scrollView.frame = CGRect(
@@ -65,24 +82,16 @@ class KNImportWalletViewController: KNBaseViewController {
       width: width,
       height: height
     )
-    self.importJSONVC?.view.frame = CGRect(
-      x: 0,
-      y: 0,
-      width: width,
-      height: height
-    )
-    self.importPrivateKeyVC?.view.frame = CGRect(
-      x: width,
-      y: 0,
-      width: width,
-      height: height
-    )
-    self.importSeedsVC?.view.frame = CGRect(
-      x: 2.0 * width,
-      y: 0,
-      width: width,
-      height: height
-    )
+
+    for index in 0..<self.sourceVC.count {
+      let vc = self.sourceVC[index]
+      vc.view.frame = CGRect(
+        x: width * CGFloat(index),
+        y: 0,
+        width: width,
+        height: height
+      )
+    }
   }
 
   fileprivate func setupUI() {
@@ -97,24 +106,32 @@ class KNImportWalletViewController: KNBaseViewController {
     self.jsonButton.rounded(radius: 10.0)
     self.jsonButton.setBackgroundColor(UIColor(named: "importJsonSelectedColor")!, forState: .selected)
     self.jsonButton.setBackgroundColor(UIColor(named: "investButtonBgColor")!, forState: .normal)
+    self.jsonButton.setBackgroundColor(UIColor(named: "buttonTextColor")!, forState: .disabled)
     self.jsonButton.setImage(UIImage(named: "json_import_icon"), for: .normal)
     self.jsonButton.setImage(UIImage(named: "json_import_select_icon"), for: .selected)
+    self.jsonButton.setImage(UIImage(named: "json_import_icon_disable"), for: .disabled)
     self.jsonButton.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
     self.jsonButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .selected)
+    self.jsonButton.setTitleColor(UIColor(named: "navButtonBgColor"), for: .disabled)
     self.jsonButton.centerVertically(padding: 10)
+    self.jsonButton.isEnabled = self.importType == .evm
 
     self.privateKeyButton.rounded(radius: 10.0)
     self.privateKeyButton.setBackgroundColor(UIColor(named: "importPKSelectedColor")!, forState: .selected)
     self.privateKeyButton.setBackgroundColor(UIColor(named: "investButtonBgColor")!, forState: .normal)
+    self.privateKeyButton.setBackgroundColor(UIColor(named: "buttonTextColor")!, forState: .disabled)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_icon"), for: .normal)
     self.privateKeyButton.setImage(UIImage(named: "private_key_import_select_icon"), for: .selected)
+    self.privateKeyButton.setImage(UIImage(named: "private_key_import_icon_disable"), for: .disabled)
     self.privateKeyButton.setTitle(
       NSLocalizedString("private.key", value: "Private Key", comment: ""),
       for: .normal
     )
     self.privateKeyButton.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
     self.privateKeyButton.setTitleColor(UIColor(named: "mainViewBgColor"), for: .selected)
+    self.privateKeyButton.setTitleColor(UIColor(named: "navButtonBgColor"), for: .disabled)
     self.privateKeyButton.centerVertically(padding: 10)
+    self.privateKeyButton.isEnabled = self.importType != .multiChain
 
     self.seedsButton.rounded(radius: 10.0)
     self.seedsButton.setBackgroundColor(UIColor(named: "importSeedsSelectedColor")!, forState: .selected)
@@ -154,14 +171,22 @@ class KNImportWalletViewController: KNBaseViewController {
       return controller
     }()
     self.importSeedsVC = importSeedsVC
-    let viewControllers = [importJSONVC, importPrivateKeyVC, importSeedsVC]
+    self.sourceVC = []
+    if self.importType == .evm {
+      self.sourceVC.append(importJSONVC)
+    }
+    if self.importType != .multiChain {
+      self.sourceVC.append(importPrivateKeyVC)
+    }
+    self.sourceVC.append(importSeedsVC)
+
     self.scrollView.contentSize = CGSize(
-      width: CGFloat(viewControllers.count) * width,
+      width: CGFloat(self.sourceVC.count) * width,
       height: height
     )
     self.scrollView.delegate = self
-    for id in 0..<viewControllers.count {
-      let viewController = viewControllers[id]
+    for id in 0..<self.sourceVC.count {
+      let viewController = self.sourceVC[id]
       self.addChild(viewController)
       self.scrollView.addSubview(viewController.view)
       let originX: CGFloat = CGFloat(id) * width
@@ -173,22 +198,46 @@ class KNImportWalletViewController: KNBaseViewController {
       )
       viewController.didMove(toParent: self)
     }
-    self.updateUIWithCurrentPage(0)
+    self.updateDefaultPage()
   }
 
   func resetUIs() {
     self.importJSONVC?.resetUIs()
     self.importPrivateKeyVC?.resetUI()
     self.importSeedsVC?.resetUIs()
-    self.updateUIWithCurrentPage(0)
+    self.updateDefaultPage()
   }
 
   @IBAction func importTypeButtonPressed(_ sender: UIButton) {
-    self.updateUIWithCurrentPage(sender.tag)
+    switch sender.tag {
+    case 0:
+      self.currentImportWalletType = .json
+      self.updateUIWithCurrentPage(0)
+    case 1:
+      self.currentImportWalletType = .privateKey
+      if self.importType == .solana {
+        self.updateUIWithCurrentPage(0)
+      } else {
+        self.updateUIWithCurrentPage(1)
+      }
+    default:
+      self.currentImportWalletType = .seeds
+      if self.importType == .multiChain {
+        self.updateUIWithCurrentPage(0)
+      } else if self.importType == .solana {
+        self.updateUIWithCurrentPage(1)
+      } else {
+        self.updateUIWithCurrentPage(2)
+      }
+    }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
     self.delegate?.importWalletViewController(self, run: .back)
+  }
+  
+  fileprivate func updateDefaultPage() {
+    self.updateUIWithCurrentPage(0)
   }
 
   fileprivate func updateUIWithCurrentPage(_ page: Int) {
@@ -197,9 +246,10 @@ class KNImportWalletViewController: KNBaseViewController {
       self.jsonButton.isSelected = false
       self.privateKeyButton.isSelected = false
       self.seedsButton.isSelected = false
-      if page == 0 {
+      let vc = self.sourceVC[page]
+      if vc == self.importJSONVC {
         self.jsonButton.isSelected = true
-      } else if page == 1 {
+      } else if vc == self.importPrivateKeyVC {
         self.privateKeyButton.isSelected = true
       } else {
         self.seedsButton.isSelected = true
@@ -209,7 +259,7 @@ class KNImportWalletViewController: KNBaseViewController {
       self.view.layoutIfNeeded()
     }
   }
-  
+
   fileprivate func openQRCode() {
     let qrcode = QRCodeReaderViewController()
     qrcode.delegate = self
