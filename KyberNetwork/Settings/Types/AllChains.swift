@@ -254,4 +254,23 @@ public struct AllChains {
     quoteToken: "ETH",
     apiChainPath: "aurora"
   )
+
+  public static let solana = CustomRPC (
+    chainID: -1,
+    type: "",
+    name: "Solana",
+    symbol: "SOL",
+    endpoint: "",
+    endpointKyber: "https://solana.knstats.com/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
+    endpointAlchemy: "",
+    etherScanEndpoint: "",
+    ensAddress: "",
+    wrappedAddress: "",
+    apiEtherscanEndpoint: "",
+    proxyAddress: "",
+    quoteTokenAddress: "",
+    chainIcon: "chain_solana_icon",
+    quoteToken: "SOL",
+    apiChainPath: "solana"
+  )
 }

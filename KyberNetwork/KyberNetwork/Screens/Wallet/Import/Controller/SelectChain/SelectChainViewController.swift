@@ -7,7 +7,19 @@
 
 import UIKit
 
+enum SelectChainEvent {
+  case back
+  case importMultiChain
+  case importEVM
+  case importSolana
+}
+
+protocol SelectChainDelegate: class {
+  func selectChainViewController(_ controller: SelectChainViewController, run event: SelectChainEvent)
+}
+
 class SelectChainViewController: KNBaseViewController {
+  weak var delegate: SelectChainDelegate?
   @IBOutlet weak var tableView: UITableView!
   var selectedChain: ChainType?
   override func viewDidLoad() {
@@ -20,7 +32,7 @@ class SelectChainViewController: KNBaseViewController {
   }
 
   @IBAction func onBackButtonTapped(_ sender: Any) {
-
+    self.delegate?.selectChainViewController(self, run: .back)
   }
 }
 
@@ -52,10 +64,11 @@ extension SelectChainViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 0 {
       // config multi-chain cell
+      self.delegate?.selectChainViewController(self, run: .importMultiChain)
     } else {
       let chain = ChainType.allCases[indexPath.row - 1]
       self.selectedChain = chain
+      self.delegate?.selectChainViewController(self, run: chain == .solana ? .importSolana : .importEVM)
     }
-//    self.tableView.reloadData()
   }
 }
