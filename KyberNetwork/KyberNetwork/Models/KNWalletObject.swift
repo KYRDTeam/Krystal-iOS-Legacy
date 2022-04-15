@@ -57,6 +57,17 @@ class KNWalletObject: Object {
       isWatchWallet: self.isWatchWallet
     )
   }
+  
+  func toData() -> WalletData {
+    return WalletData(
+      address: self.address,
+      name: self.name,
+      icon: self.icon,
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet,
+      date: self.date
+    )
+  }
 }
 
 class KNWalletPromoInfoStorage: NSObject {
