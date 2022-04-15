@@ -493,41 +493,23 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         }
         
         var output: [(ApproveMultiSendItem, BigInt)] = []
+        var gasRequests: [(ApproveMultiSendItem, GasLimitRequestable)]  = KNGeneralProvider.shared.isUseEIP1559 ? eipTxs : legacyTxs
         
-        if KNGeneralProvider.shared.isUseEIP1559 {
-          let group = DispatchGroup()
-          eipTxs.forEach { item in
-            group.enter()
-            KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: item.1) { result in
-              switch result {
-              case.success(let gas):
-                output.append((item.0, gas))
-              default:
-                output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
-              }
-              group.leave()
-            }
-          }
-          group.notify(queue: .global()) {
-            controller.coordinatorDidUpdateGasLimit(gas: output)
-          }
-        } else {
-          let group = DispatchGroup()
+        let group = DispatchGroup()
+        gasRequests.forEach { item in
           group.enter()
-          legacyTxs.forEach { item in
-            KNGeneralProvider.shared.getEstimateGasLimit(transaction: item.1) { result in
-              switch result {
-              case.success(let gas):
-                output.append((item.0, gas))
-              default:
-                output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
-              }
-              group.leave()
+          KNGeneralProvider.shared.getEstimateGasLimit(request: item.1.createGasLimitRequest()) { result in
+            switch result {
+            case.success(let gas):
+              output.append((item.0, gas))
+            default:
+              output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
             }
+            group.leave()
           }
-          group.notify(queue: .global()) {
-            controller.coordinatorDidUpdateGasLimit(gas: output)
-          }
+        }
+        group.notify(queue: .global()) {
+          controller.coordinatorDidUpdateGasLimit(gas: output)
         }
       }
     }
