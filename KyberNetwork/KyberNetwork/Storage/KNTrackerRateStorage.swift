@@ -10,27 +10,15 @@ class KNTrackerRateStorage {
   static var shared = KNTrackerRateStorage()
   private(set) var realm: Realm!
   private var allPrices: [TokenPrice]
-  
-  private var ethAllPrices: [TokenPrice]
-  private var bscAllPrices: [TokenPrice]
-  private var polygonAllPrices: [TokenPrice]
-  private var avalancheAllPrices: [TokenPrice]
-  private var cronosAllPrices: [TokenPrice]
-  private var fantomAllPrices: [TokenPrice]
-  private var arbitrumAllPrices: [TokenPrice]
-  private var auroraAllPrices: [TokenPrice]
+  private var chainAllPrices: [ChainType : [TokenPrice]]
 
   init() {
     self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
-    
-    self.ethAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .eth)
-    self.bscAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .bsc)
-    self.polygonAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .polygon)
-    self.avalancheAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .avalanche)
-    self.cronosAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .cronos)
-    self.fantomAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .fantom)
-    self.arbitrumAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .arbitrum)
-    self.auroraAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .aurora)
+    var chainAllPricesDic: [ChainType : [TokenPrice]] = [:]
+    ChainType.getAllChain().forEach { chain in
+      chainAllPricesDic[chain] = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: chain)
+    }
+    self.chainAllPrices = chainAllPricesDic
   }
 
   func reloadData() {
@@ -39,24 +27,7 @@ class KNTrackerRateStorage {
   }
   
   private func updateCacheRate(chain: ChainType, rates: [TokenPrice]) {
-    switch chain {
-    case .eth:
-      self.ethAllPrices = rates
-    case .bsc:
-      self.bscAllPrices = rates
-    case .polygon:
-      self.polygonAllPrices = rates
-    case .avalanche:
-      self.avalancheAllPrices = rates
-    case .cronos:
-      self.cronosAllPrices = rates
-    case .fantom:
-      self.fantomAllPrices = rates
-    case .arbitrum:
-      self.arbitrumAllPrices = rates
-    case .aurora:
-      self.auroraAllPrices = rates
-    }
+    self.chainAllPrices[chain] = rates
   }
 
   //MARK: new implementation
@@ -84,24 +55,7 @@ class KNTrackerRateStorage {
   }
 
   private func getPricesFor(chainType: ChainType) -> [TokenPrice] {
-    switch chainType {
-    case .eth:
-      return self.ethAllPrices
-    case .bsc:
-      return self.bscAllPrices
-    case .polygon:
-      return self.polygonAllPrices
-    case .avalanche:
-      return self.avalancheAllPrices
-    case .cronos:
-      return self.cronosAllPrices
-    case .fantom:
-      return self.fantomAllPrices
-    case .arbitrum:
-      return self.arbitrumAllPrices
-    case .aurora:
-      return self.auroraAllPrices
-    }
+    return self.chainAllPrices[chainType] ?? []
   }
 
   func getPriceWithAddress(_ address: String, chainType: ChainType) -> TokenPrice? {
