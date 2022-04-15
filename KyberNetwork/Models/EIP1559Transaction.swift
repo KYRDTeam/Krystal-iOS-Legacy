@@ -152,4 +152,17 @@ struct EIP1559Transaction: Codable {
   }
 }
 
+extension EIP1559Transaction: GasLimitRequestable {
+  func createGasLimitRequest() -> KNEstimateGasLimitRequest {
+    let request = KNEstimateGasLimitRequest(
+      from: self.fromAddress,
+      to: self.toAddress,
+      value: BigInt(self.value.drop0x, radix: 16) ?? BigInt(0),
+      data: Data(hexString: self.data) ?? Data(),
+      gasPrice: BigInt(self.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
+    )
+    return request
+  }
+}
+
 
