@@ -71,6 +71,7 @@
                     <rect key="frame" x="14" y="164" width="386" height="698"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="8rZ-aQ-Cx9"/>
                         <outlet property="delegate" destination="-1" id="gdR-gE-UOb"/>

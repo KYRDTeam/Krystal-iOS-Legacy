@@ -52,6 +52,7 @@ extension SelectChainViewController: UITableViewDataSource {
       let chain = ChainType.allCases[indexPath.row - 1]
       cell.configCell(chain: chain, isSelected: self.selectedChain == chain)
     }
+    cell.selectionStyle = .none
     return cell
   }
   
