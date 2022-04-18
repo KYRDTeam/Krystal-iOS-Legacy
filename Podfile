@@ -56,7 +56,6 @@ def databasePods
 end
 
 def utilitiesPods
-  pod 'Swinject'
   pod 'LaunchDarkly', '~> 5.4'
   pod 'SwiftLint', '~> 0.29.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
