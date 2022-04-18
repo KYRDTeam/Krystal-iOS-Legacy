@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,6 +26,7 @@
                 <outlet property="emptyStateView" destination="O1V-Us-qFQ" id="VLa-Fr-5Wf"/>
                 <outlet property="headerContainerView" destination="6Nx-3L-1U6" id="2Kq-fh-3G2"/>
                 <outlet property="navTitleLabel" destination="5JI-zn-Q2P" id="UMB-lb-Ej2"/>
+                <outlet property="topBarHeight" destination="Uy4-cI-igf" id="ZJf-dN-LzS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,13 +39,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JI-zn-Q2P">
-                            <rect key="frame" x="147" y="73.5" width="81.5" height="23.5"/>
+                            <rect key="frame" x="145" y="63.5" width="85.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUV-Ge-Xk8">
-                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="80v-IN-6Qp"/>
                                 <constraint firstAttribute="height" constant="36" id="CBq-lN-jej"/>
@@ -57,7 +58,7 @@
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="5JI-zn-Q2P" secondAttribute="bottom" constant="16" id="9zb-0C-2Hs"/>
+                        <constraint firstAttribute="bottom" secondItem="5JI-zn-Q2P" secondAttribute="bottom" constant="26" id="9zb-0C-2Hs"/>
                         <constraint firstAttribute="height" constant="113" id="Uy4-cI-igf"/>
                         <constraint firstItem="5JI-zn-Q2P" firstAttribute="centerX" secondItem="6Nx-3L-1U6" secondAttribute="centerX" id="cHy-bY-YH5"/>
                         <constraint firstItem="eUV-Ge-Xk8" firstAttribute="centerY" secondItem="5JI-zn-Q2P" secondAttribute="centerY" id="h5z-bX-a2z"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -45,13 +45,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DApp Browser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5u-ot-pYP">
-                            <rect key="frame" x="121.5" y="73.5" width="132" height="23.5"/>
+                            <rect key="frame" x="121.5" y="63.5" width="132" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fV-Fy-eYd">
-                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="GCA-G6-ccZ"/>
                                 <constraint firstAttribute="height" constant="36" id="txa-0F-92l"/>
@@ -66,7 +66,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="113" id="0Yn-JT-l6X"/>
                         <constraint firstItem="P5u-ot-pYP" firstAttribute="centerX" secondItem="rtn-tC-emQ" secondAttribute="centerX" id="Ktn-TG-f39"/>
-                        <constraint firstAttribute="bottom" secondItem="P5u-ot-pYP" secondAttribute="bottom" constant="16" id="f4p-Pr-KIm"/>
+                        <constraint firstAttribute="bottom" secondItem="P5u-ot-pYP" secondAttribute="bottom" constant="26" id="f4p-Pr-KIm"/>
                         <constraint firstItem="1fV-Fy-eYd" firstAttribute="leading" secondItem="rtn-tC-emQ" secondAttribute="leading" constant="16" id="gog-7K-ZKS"/>
                         <constraint firstItem="1fV-Fy-eYd" firstAttribute="centerY" secondItem="P5u-ot-pYP" secondAttribute="centerY" id="t96-sr-YTJ"/>
                     </constraints>

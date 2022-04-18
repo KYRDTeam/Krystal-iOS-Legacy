@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -27,6 +27,7 @@
                 <outlet property="suggestSearchTagList" destination="gM2-Su-00S" id="wEs-L3-QAK"/>
                 <outlet property="suggestSearchTitleTopContraint" destination="WZM-SY-H2Q" id="im7-4j-n6c"/>
                 <outlet property="tableView" destination="wQ8-KH-51x" id="hNY-zn-LNK"/>
+                <outlet property="topBarHeight" destination="1ls-Me-GM5" id="F9E-Qg-rE7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -39,13 +40,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoC-ua-6fa">
-                            <rect key="frame" x="154.5" y="73.5" width="66" height="23.5"/>
+                            <rect key="frame" x="154.5" y="63.5" width="66" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5v-Nf-jTN">
-                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="iGK-wS-OYe"/>
                                 <constraint firstAttribute="width" constant="46" id="vvb-5R-Crd"/>
@@ -62,7 +63,7 @@
                         <constraint firstItem="AoC-ua-6fa" firstAttribute="centerX" secondItem="UGS-rW-Gvk" secondAttribute="centerX" id="A88-4H-11q"/>
                         <constraint firstItem="X5v-Nf-jTN" firstAttribute="leading" secondItem="UGS-rW-Gvk" secondAttribute="leading" constant="16" id="Zti-Hq-aD0"/>
                         <constraint firstItem="X5v-Nf-jTN" firstAttribute="centerY" secondItem="AoC-ua-6fa" secondAttribute="centerY" id="deH-mo-Yff"/>
-                        <constraint firstAttribute="bottom" secondItem="AoC-ua-6fa" secondAttribute="bottom" constant="16" id="efV-bw-Jux"/>
+                        <constraint firstAttribute="bottom" secondItem="AoC-ua-6fa" secondAttribute="bottom" constant="26" id="efV-bw-Jux"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>

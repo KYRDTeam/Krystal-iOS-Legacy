@@ -18,7 +18,7 @@
             <connections>
                 <outlet property="collectionView" destination="2cb-2r-u0N" id="sdk-TC-wL3"/>
                 <outlet property="currentChainIcon" destination="F1W-Yk-3S3" id="t7w-rh-iX3"/>
-                <outlet property="topBarHeight" destination="MB8-he-ZU2" id="WV2-I4-ukI"/>
+                <outlet property="topBarHeight" destination="MB8-he-ZU2" id="gXK-av-PDl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

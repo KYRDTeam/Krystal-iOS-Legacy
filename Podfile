@@ -46,6 +46,7 @@ def networkingPods
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
   pod 'Moya', '~> 10.0.1'
+  pod 'Mixpanel-swift'
 end
 
 def databasePods

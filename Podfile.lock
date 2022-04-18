@@ -182,6 +182,7 @@ PODS:
     - SwiftMessages/App (= 5.0.1)
   - SwiftMessages/App (5.0.1)
   - SwiftProtobuf (1.19.0)
+  - Swinject (2.8.1)
   - SwipeCellKit (2.7.1)
   - TagListView (1.4.0)
   - TrezorCrypto (0.0.9)
@@ -249,6 +250,7 @@ DEPENDENCIES:
   - SwiftChart (from `https://github.com/gpbl/SwiftChart.git`)
   - SwiftLint (~> 0.29.4)
   - SwiftMessages (~> 5.0.1)
+  - Swinject
   - SwipeCellKit
   - TagListView (from `https://github.com/Expensify/TagListView.git`)
   - TrustCore (~> 0.0.7)
@@ -309,6 +311,7 @@ SPEC REPOS:
     - SwiftLint
     - SwiftMessages
     - SwiftProtobuf
+    - Swinject
     - SwipeCellKit
     - TrezorCrypto
     - TrustCore
@@ -394,6 +397,7 @@ SPEC CHECKSUMS:
   SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
   SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
+  Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
   SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
   TagListView: eb59223866cc5da14a5f4618ecbcd69640d64eff
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
@@ -404,6 +408,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 8e1d4ed103d5ec8ff7cfc0454fcb3020a7e6e205
+PODFILE CHECKSUM: d012b66f27c15e47235794540008589c56a68ff0
 
 COCOAPODS: 1.11.3

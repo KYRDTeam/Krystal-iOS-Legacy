@@ -27,7 +27,6 @@ protocol InvestViewControllerDelegate: class {
 class InvestViewController: KNBaseViewController {
   @IBOutlet weak var currentChainIcon: UIImageView!
   @IBOutlet weak var collectionView: UICollectionView!
-  @IBOutlet weak var topBarHeight: NSLayoutConstraint!
   
   let viewModel: ExploreViewModel = ExploreViewModel()
   weak var delegate: InvestViewControllerDelegate?
@@ -38,7 +37,6 @@ class InvestViewController: KNBaseViewController {
     self.setupCollectionView()
     self.bindViewModel()
     self.observeFeatureFlagChanged()
-    setupTopBar()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -46,10 +44,6 @@ class InvestViewController: KNBaseViewController {
     
     self.updateUISwitchChain()
     self.configFeatureFlag()
-  }
-  
-  func setupTopBar() {
-    topBarHeight.constant = UIScreen.statusBarHeight + 24 + 26 * 2
   }
   
   deinit {
