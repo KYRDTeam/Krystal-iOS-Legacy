@@ -644,6 +644,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     self.updateUIForCustomNonce()
   }
+  
+  @IBAction func closeWasTapped(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+  }
+  
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
