@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -44,6 +44,7 @@
                 <outlet property="scrollContainerView" destination="Ut7-Gy-SfI" id="EIH-1e-3rd"/>
                 <outlet property="selectedGasFeeLabel" destination="SOv-KD-7uX" id="EAa-cI-fya"/>
                 <outlet property="sendButton" destination="pDd-uu-8SH" id="zR4-Fd-bWn"/>
+                <outlet property="topBarHeight" destination="TBq-sP-UtW" id="G4c-UA-2N5"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -56,13 +57,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer NFT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UEz-EF-0bU">
-                            <rect key="frame" x="134.5" y="68" width="106.5" height="21"/>
+                            <rect key="frame" x="134.5" y="65.5" width="106.5" height="21.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLj-w9-VOW">
-                            <rect key="frame" x="16" y="60.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="7ji-fr-A4G"/>
                                 <constraint firstAttribute="width" constant="46" id="vly-g0-ye6"/>
@@ -77,7 +78,7 @@
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="UEz-EF-0bU" firstAttribute="centerX" secondItem="3oA-8K-md3" secondAttribute="centerX" id="2Jn-I6-pBQ"/>
-                        <constraint firstItem="UEz-EF-0bU" firstAttribute="top" secondItem="3oA-8K-md3" secondAttribute="top" constant="68" id="C8q-tu-Qps"/>
+                        <constraint firstAttribute="bottom" secondItem="UEz-EF-0bU" secondAttribute="bottom" constant="26" id="9oN-je-P9p"/>
                         <constraint firstAttribute="height" constant="113" id="TBq-sP-UtW"/>
                         <constraint firstItem="oLj-w9-VOW" firstAttribute="leading" secondItem="3oA-8K-md3" secondAttribute="leading" constant="16" id="UEM-FG-ePL"/>
                         <constraint firstItem="oLj-w9-VOW" firstAttribute="centerY" secondItem="UEz-EF-0bU" secondAttribute="centerY" id="en4-aT-djV"/>
