@@ -9,7 +9,7 @@ class KNTrackerRateStorage {
 
   static var shared = KNTrackerRateStorage()
   private(set) var realm: Realm!
-  private var allPrices: [TokenPrice]
+  private var allPrices: ThreadProtectedObject<[TokenPrice]> = .init(storageValue: [])
   
   private var ethAllPrices: [TokenPrice]
   private var bscAllPrices: [TokenPrice]
@@ -21,7 +21,7 @@ class KNTrackerRateStorage {
   private var auroraAllPrices: [TokenPrice]
 
   init() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
     
     self.ethAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .eth)
     self.bscAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .bsc)
@@ -34,8 +34,8 @@ class KNTrackerRateStorage {
   }
 
   func reloadData() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
-    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices)
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices.value)
   }
   
   private func updateCacheRate(chain: ChainType, rates: [TokenPrice]) {
@@ -69,11 +69,11 @@ class KNTrackerRateStorage {
   }
   
   func getAllPrices() -> [TokenPrice] {
-    return self.allPrices
+    return self.allPrices.value
   }
   
   func getPriceWithAddress(_ address: String) -> TokenPrice? {
-    return self.allPrices.first { (item) -> Bool in
+    return getAllPrices().first { (item) -> Bool in
       return item.address.lowercased() == address.lowercased()
     }
   }
@@ -158,9 +158,9 @@ class KNTrackerRateStorage {
         saved.quoteMarketCap = item.quoteMarketCap
         saved.quote24hChange = item.quote24hChange
       } else {
-        self.allPrices.append(item)
+        self.allPrices.value.append(item)
       }
     }
-    Storage.store(self.allPrices, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
+    Storage.store(self.allPrices.value, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
   }
 }
