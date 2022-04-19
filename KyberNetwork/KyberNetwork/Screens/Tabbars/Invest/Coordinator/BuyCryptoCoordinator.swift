@@ -94,7 +94,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   fileprivate var loadTimer: Timer?
   var historyProvider: MoyaProvider<KrytalService>?
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
@@ -207,7 +207,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
 
     presentViewController.showLoadingHUD()
-    self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.address.description)) { (result) in
+    self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.addressString)) { (result) in
       DispatchQueue.main.async {
         presentViewController.hideLoading()
       }
@@ -384,7 +384,7 @@ extension BuyCryptoCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.buyCryptoCoordinatorDidSelectWallet(wal)

@@ -33,7 +33,7 @@ class KNSession {
       self.web3Swift = Web3Swift()
     }
     // Wallet type should always be real(account)
-    //TODO: Add support watch account
+    //TODO: Add support solana account
     var account: Account?
     if case .real(let acc) = self.wallet.type {
       account = acc
@@ -49,7 +49,7 @@ class KNSession {
     }
 
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
-    if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
+    if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
       self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
   }
@@ -108,7 +108,7 @@ class KNSession {
       )
       self.transacionCoordinator?.start()
       let pendingTxs = self.transactionStorage.kyberPendingTransactions
-      if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.address.description.lowercased() }), let nonce = Int(tx.nonce) {
+      if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
         self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
       }
     }
@@ -143,7 +143,7 @@ class KNSession {
       // Remove wallet storage
       let globalConfig = RealmConfiguration.globalConfiguration()
       let globalRealm = try! Realm(configuration: globalConfig)
-      if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.address.description) {
+      if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.addressString) {
         KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
         try! globalRealm.write { globalRealm.delete(walletObject) }
       }
@@ -222,7 +222,8 @@ extension KNSession {
   }
 
   static func sessionID(from wallet: Wallet) -> String {
-    return KNSession.sessionID(from: wallet.address)
+    guard let address = wallet.address else { return "" }
+    return KNSession.sessionID(from: address)
   }
 
   static func sessionID(from address: Address) -> String {

@@ -49,7 +49,7 @@ class KNWalletConnectViewController: KNBaseViewController {
       self.connectToWC()
     }
     
-    let address = self.knSession.wallet.address.description
+    let address = self.knSession.wallet.addressString
     self.addressLabel.text = "\(address.prefix(12))...\(address.suffix(10))"
     self.urlLabel.text = ""
     self.connectionStatusLabel.text = ""

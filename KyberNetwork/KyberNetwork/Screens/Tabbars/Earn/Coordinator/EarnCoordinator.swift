@@ -72,7 +72,7 @@ class EarnCoordinator: NSObject, Coordinator {
   fileprivate weak var earnSwapViewController: EarnSwapViewController?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
   
@@ -265,7 +265,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.buildSwapAndDepositTx(
                         lendingPlatform: platform,
-                        userAddress: self.session.wallet.address.description,
+                        userAddress: self.session.wallet.addressString,
                         src: src,
                         dest: dest,
                         srcAmount: amount,
@@ -291,7 +291,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         guard let `self` = self else { return }
         self.buildTx(
           lendingPlatform: platform,
-          userAddress: self.session.wallet.address.description,
+          userAddress: self.session.wallet.addressString,
           src: src,
           dest: dest,
           srcAmount: amount,
@@ -464,7 +464,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buildSwapAndDepositTx(
                       lendingPlatform: lendingPlatform,
-                      userAddress: self.session.wallet.address.description,
+                      userAddress: self.session.wallet.addressString,
                       src: src,
                       dest: dest,
                       srcAmount: srcAmount,
@@ -494,7 +494,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -535,7 +535,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }
 
@@ -757,7 +757,7 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
   
   fileprivate func saveUseGasTokenState(_ state: Bool) {
@@ -765,7 +765,7 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
 }
@@ -1366,7 +1366,7 @@ extension EarnCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.earnCoordinatorDidSelectWallet(wal)

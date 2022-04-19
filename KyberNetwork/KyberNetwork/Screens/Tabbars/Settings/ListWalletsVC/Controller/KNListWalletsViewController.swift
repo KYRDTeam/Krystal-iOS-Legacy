@@ -135,7 +135,7 @@ class KNListWalletsViewModel {
           self.watchCellModels.append(cm)
           continue
         }
-        if let wallet = self.keyStore.wallets.first(where: { $0.address.description.lowercased() == element.address.lowercased() }),
+        if let wallet = self.keyStore.wallets.first(where: { $0.addressString.lowercased() == element.address.lowercased() }),
             case .real(let account) = wallet.type,
             case .success = self.keyStore.exportMnemonics(account: account) {
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: true)

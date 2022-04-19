@@ -67,11 +67,11 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
    */
   fileprivate func openBackUpWallet(_ wallet: Wallet, name: String?) {
     let walletObject: KNWalletObject = {
-      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.address.description) {
+      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.addressString) {
         return walletObject
       }
       return KNWalletObject(
-        address: wallet.address.description,
+        address: wallet.addressString,
         isBackedUp: false
       )
     }()
@@ -134,7 +134,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   func backupWalletViewControllerDidFinish() {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
-      address: wallet.address.description,
+      address: wallet.addressString,
       name: self.name ?? "New Wallet",
       isBackedUp: true
     )
@@ -145,7 +145,7 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   func backupWalletViewControllerDidConfirmSkipWallet() {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
-      address: wallet.address.description,
+      address: wallet.addressString,
       name: self.name ?? "New Wallet",
       isBackedUp: false
     )

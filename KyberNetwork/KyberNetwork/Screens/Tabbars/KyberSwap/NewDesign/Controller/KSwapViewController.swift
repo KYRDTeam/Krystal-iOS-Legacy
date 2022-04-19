@@ -482,7 +482,7 @@ class KSwapViewController: KNBaseViewController {
         KNGeneralProvider.shared.currentChain = chainType
         var selectedAddress = ""
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-          selectedAddress = appDelegate.coordinator.session.wallet.address.description
+          selectedAddress = appDelegate.coordinator.session.wallet.addressString
         }
         self.viewModel.isFromDeepLink = true
         KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)

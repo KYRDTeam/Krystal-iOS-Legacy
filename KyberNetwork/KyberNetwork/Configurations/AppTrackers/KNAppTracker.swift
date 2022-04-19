@@ -202,7 +202,11 @@ class KNAppTracker {
   }
 
   // MARK: Reset app tracker
-  static func resetAppTrackerData(for address: Address) {
+  static func resetAppTrackerData(for address: Address?) {
+    guard let address = address else {
+      return
+    }
+
     self.updateAllTransactionLastBlockLoad(0, for: address)
     self.updateTransactionLoadState(.none, for: address)
     self.updateTransactionNonce(0, address: address)

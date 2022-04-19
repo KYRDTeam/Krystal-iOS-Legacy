@@ -31,7 +31,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate var nftItem: NFTItem = NFTItem()
   fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
@@ -98,7 +98,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.sendNFTController = controller
       self.navigationController.pushViewController(controller, animated: true)
     } else {
-      let address = self.session.wallet.address.description
+      let address = self.session.wallet.addressString
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
@@ -290,7 +290,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
       provider.request(.getPreScreeningWallet(address: address)) { result in
@@ -795,7 +795,7 @@ extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)

@@ -104,7 +104,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       self.getLatestNonce { [weak self] (nonce) in
         guard let `self` = self else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
+        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
           if case .success(let resp) = result {
             let decoder = JSONDecoder()
             do {
@@ -213,7 +213,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.address.description, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
+      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
@@ -810,7 +810,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
   
   fileprivate func saveUseGasTokenState(_ state: Bool) {
@@ -818,7 +818,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
   
@@ -829,7 +829,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }
 
@@ -854,7 +854,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
         self.navigationController.displayLoading()
         if self.claimViewController != nil {
           self.getLatestNonce { (nonce) in
-            self.buildClaimTx(address: self.session.wallet.address.description, nonce: nonce) { (result) in
+            self.buildClaimTx(address: self.session.wallet.addressString, nonce: nonce) { (result) in
               self.navigationController.hideLoading()
               switch result {
               case .success(let txObj):

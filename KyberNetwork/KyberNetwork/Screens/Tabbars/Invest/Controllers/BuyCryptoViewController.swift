@@ -72,8 +72,8 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   func updateUI() {
-    self.walletsListButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
-    self.addressTextField.text = self.viewModel.wallet.address.description
+    self.walletsListButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
+    self.addressTextField.text = self.viewModel.wallet.addressString
     self.updateUIPendingTxIndicatorView()
   }
 
@@ -314,7 +314,7 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
-    let buyCryptoModel = BifinityOrder(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetwork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, merchantOrderId: "", orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation, userWallet: self.viewModel.wallet.address.description, fiatLogo: "", cryptoLogo: "", networkLogo: "", status: "", executePrice: 0, createdTime: 0, errorCode: "", errorReason: "")
+    let buyCryptoModel = BifinityOrder(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetwork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, merchantOrderId: "", orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation, userWallet: self.viewModel.wallet.addressString, fiatLogo: "", cryptoLogo: "", networkLogo: "", status: "", executePrice: 0, createdTime: 0, errorCode: "", errorReason: "")
 
     return buyCryptoModel
   }

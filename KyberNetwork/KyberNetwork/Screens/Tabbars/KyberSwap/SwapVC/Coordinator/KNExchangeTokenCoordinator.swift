@@ -49,13 +49,13 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
   lazy var rootViewController: KSwapViewController = {
     let (from, to): (TokenObject, TokenObject) = {
-      let address = self.session.wallet.address.description
+      let address = self.session.wallet.addressString
       let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address)
       return (KNSupportedTokenStorage.shared.ethToken, KNSupportedTokenStorage.shared.kncToken)
     }()
@@ -74,7 +74,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
+    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) else { return nil }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
       navigationController: self.navigationController,
       walletObject: walletObject
@@ -746,7 +746,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -896,7 +896,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
       provider.request(.getPreScreeningWallet(address: address)) { result in
@@ -986,7 +986,7 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
   }
   
   func addNewWalletCoordinator(add wallet: Wallet) {
-    let address = wallet.address.description
+    let address = wallet.addressString
     let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
   }
@@ -1338,7 +1338,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
 
@@ -1349,7 +1349,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
 
   fileprivate func isAccountUseGasToken() -> Bool {
@@ -1359,7 +1359,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }
 
@@ -1379,7 +1379,7 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wal)

@@ -27,7 +27,7 @@ class SolanaManager: NSObject {
       return nil
     }
   }
-  
+
   func exportWalletPrivateKey(wallet: WalletCore.Wallet) -> String? {
     do {
       let keyData = try self.keyStore.exportPrivateKey(wallet: wallet, password: NEW_PASSWORD)

@@ -6,7 +6,7 @@ import TrustCore
 import TrustKeystore
 
 protocol KNImportWalletCoordinatorDelegate: class {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType)
   func importWalletCoordinatorDidClose()
   func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -69,25 +69,25 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true)
-    case .importJSON(let json, let password, let name):
-      self.importWallet(with: .keystore(string: json, password: password), name: name)
-    case .importPrivateKey(let privateKey, let name):
-      self.importWallet(with: .privateKey(privateKey: privateKey), name: name)
-    case .importSeeds(let seeds, let name):
-      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name)
+    case .importJSON(let json, let password, let name, let importType):
+      self.importWallet(with: .keystore(string: json, password: password), name: name, importType: importType)
+    case .importPrivateKey(let privateKey, let name, let importType):
+      self.importWallet(with: .privateKey(privateKey: privateKey), name: name, importType: importType)
+    case .importSeeds(let seeds, let name, let importType):
+      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: importType)
     case .sendRefCode(code: let code):
       self.refCode = code
     }
   }
 
-  fileprivate func importWallet(with type: ImportType, name: String?) {
+  fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType) {
     self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     if name == nil || name?.isEmpty == true {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
     } else {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_not_empty"])
     }
-    self.keystore.importWallet(type: type) { [weak self] result in
+    self.keystore.importWallet(type: type, importType: importType) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.topViewController?.hideLoading()
       switch result {
@@ -101,7 +101,9 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           if name == nil || name?.isEmpty == true { return "Imported" }
           return name ?? "Imported"
         }()
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType)
+        
+        //TODO: add solana sign message
         if !self.refCode.isEmpty {
           if case .real(let account) = wallet.type {
             self.sendRefCode(self.refCode, account: account)
@@ -112,7 +114,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       }
     }
   }
-  
+
   func sendRefCode(_ code: String, account: Account) {
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!

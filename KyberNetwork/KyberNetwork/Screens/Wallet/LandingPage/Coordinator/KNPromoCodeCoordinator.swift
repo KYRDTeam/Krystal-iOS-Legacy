@@ -78,7 +78,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                   return
                 }
                 self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
-                self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey)) { [weak self] result in
+                self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey), importType: .multiChain) { [weak self] result in
                   guard let `self` = self else { return }
                   self.rootViewController.hideLoading()
                   switch result {
@@ -118,7 +118,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
 
   fileprivate func didSuccessUnlockPromoCode(wallet: Wallet, name: String, expiredDate: TimeInterval, destinationToken: String, destAddress: String?) {
     let walletObject = KNWalletObject(
-      address: wallet.address.description,
+      address: wallet.addressString,
       name: name
     )
     KNWalletStorage.shared.add(wallets: [walletObject])

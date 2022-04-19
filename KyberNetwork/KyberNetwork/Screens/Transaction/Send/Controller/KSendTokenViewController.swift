@@ -528,7 +528,7 @@ extension KSendTokenViewController {
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.currentWalletAddress = wallet.address.description
+    self.viewModel.currentWalletAddress = wallet.addressString
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()

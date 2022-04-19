@@ -14,14 +14,14 @@ protocol Keystore {
     @available(iOS 10.0, *)
     func createAccount(with password: String, completion: @escaping (Result<Account, KeystoreError>) -> Void)
     func create12wordsAccount(with password: String) -> Account
-    func importWallet(type: ImportType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void)
+    func importWallet(type: ImportType, importType: ImportWalletChainType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void)
     func keystore(for privateKey: String, password: String, completion: @escaping (Result<String, KeystoreError>) -> Void)
     func importKeystore(value: String, password: String, newPassword: String, completion: @escaping (Result<Account, KeystoreError>) -> Void)
     func createAccout(password: String) -> Account
     func importKeystore(value: String, password: String, newPassword: String) -> Result<Account, KeystoreError>
-    func export(account: Account, password: String, newPassword: String) -> Result<String, KeystoreError>
-    func export(account: Account, password: String, newPassword: String, completion: @escaping (Result<String, KeystoreError>) -> Void)
-    func exportData(account: Account, password: String, newPassword: String) -> Result<Data, KeystoreError>
+    func export(account: Account, password: String, newPassword: String, importType: ImportWalletChainType) -> Result<String, KeystoreError>
+    func export(account: Account, password: String, newPassword: String, importType: ImportWalletChainType, completion: @escaping (Result<String, KeystoreError>) -> Void)
+    func exportData(account: Account, password: String, newPassword: String, importType: ImportWalletChainType) -> Result<Data, KeystoreError>
     func exportPrivateKey(account: Account) -> Result<Data, KeystoreError>
     func exportMnemonics(account: Account) -> Result<String, KeystoreError>
     func delete(wallet: Wallet) -> Result<Void, KeystoreError>

@@ -661,6 +661,7 @@
 		C35136E726CCE53D006A55F4 /* OverviewNFTTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */; };
 		C351B6F22722A54C00811319 /* OverviewWarningBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */; };
 		C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */; };
+		C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */; };
 		C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */; };
 		C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */; };
 		C35E9DEF27DB2ED900E1E7CE /* PromoCodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */; };
@@ -1533,6 +1534,7 @@
 		C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewNFTTableViewCell.xib; sourceTree = "<group>"; };
 		C351B6F02722A54B00811319 /* OverviewWarningBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewWarningBackupViewController.swift; sourceTree = "<group>"; };
 		C351B6F12722A54C00811319 /* OverviewWarningBackupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewWarningBackupViewController.xib; sourceTree = "<group>"; };
+		C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtil.swift; sourceTree = "<group>"; };
 		C35A133226F1CEBA002B627C /* SRCountdownTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRCountdownTimer.swift; sourceTree = "<group>"; };
 		C35E9DEB27DB2BE000E1E7CE /* PromoCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeCoordinator.swift; sourceTree = "<group>"; };
 		C35E9DED27DB2ED900E1E7CE /* PromoCodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoCodeListViewController.swift; sourceTree = "<group>"; };
@@ -1850,6 +1852,7 @@
 				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
 				2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */,
 				C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */,
+				C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5627,6 +5630,7 @@
 				25CC0AA82058F1A00009D0D5 /* KNExchangeRequest.swift in Sources */,
 				7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */,
 				7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */,
+				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,
