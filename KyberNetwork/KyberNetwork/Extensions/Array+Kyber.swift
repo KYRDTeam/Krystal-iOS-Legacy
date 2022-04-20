@@ -12,12 +12,6 @@ extension Array where Element: Equatable {
   }
 }
 
-extension Array where Element: Hashable {
-  var unique: [Element] {
-    return Array(Set(self))
-  }
-}
-
 extension Array {
   func chunked(into size: Int) -> [[Element]] {
     return stride(from: 0, to: count, by: size).map {
@@ -33,3 +27,10 @@ extension Array {
     return self[index]
   }
 }
+
+extension Array where Element: Equatable {
+  func containsElementsOf(other: Array) -> Bool {
+    return self.contains(where: { element in other.contains(element) })
+  }
+}
+

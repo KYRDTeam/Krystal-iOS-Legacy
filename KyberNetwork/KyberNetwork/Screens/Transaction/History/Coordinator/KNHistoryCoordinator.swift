@@ -93,76 +93,14 @@ class KNHistoryCoordinator: NSObject, Coordinator {
 
   func appCoordinatorTokensTransactionsDidUpdate(showLoading: Bool = false) {
     if showLoading { self.navigationController.displayLoading() }
-    DispatchQueue.global(qos: .background).async {
-      let dates: [String] = {
-        let dates = EtherscanTransactionStorage.shared.getKrystalTransaction().map { return self.dateFormatter.string(from: $0.date) }
-        var uniqueDates = [String]()
-        dates.forEach({
-          if !uniqueDates.contains($0) { uniqueDates.append($0) }
-        })
-        return uniqueDates
-      }()
-      let sectionData: [String: [KrystalHistoryTransaction]] = {
-        var data: [String: [KrystalHistoryTransaction]] = [:]
-        EtherscanTransactionStorage.shared.getKrystalTransaction().forEach { tx in
-          var trans = data[self.dateFormatter.string(from: tx.date)] ?? []
-          trans.append(tx)
-          data[self.dateFormatter.string(from: tx.date)] = trans
-        }
-        return data
-      }()
-      DispatchQueue.main.async {
-        self.navigationController.hideLoading()
-        self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction(sections: dates, data: sectionData)
-      }
+    DispatchQueue.main.async {
+      self.navigationController.hideLoading()
+      self.rootViewController.coordinatorDidUpdateCompletedKrystalTransaction()
     }
   }
 
   func appCoordinatorPendingTransactionDidUpdate() {
-    let pendingDates: [String] = {
-      let dates = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().map { return self.dateFormatter.string(from: $0.time) }
-      var uniqueDates = [String]()
-      dates.forEach({
-        if !uniqueDates.contains($0) { uniqueDates.append($0) }
-      })
-      return uniqueDates
-    }()
-    
-    let handledDates: [String] = {
-      let dates = EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().map { return self.dateFormatter.string(from: $0.time) }
-      var uniqueDates = [String]()
-      dates.forEach({
-        if !uniqueDates.contains($0) { uniqueDates.append($0) }
-      })
-      return uniqueDates
-    }()
-
-    let sectionData: [String: [InternalHistoryTransaction]] = {
-      var data: [String: [InternalHistoryTransaction]] = [:]
-      EtherscanTransactionStorage.shared.getInternalHistoryTransaction().forEach { tx in
-        var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
-        trans.append(tx)
-        data[self.dateFormatter.string(from: tx.time)] = trans
-      }
-      return data
-    }()
-    
-    let sectionHandledData: [String: [InternalHistoryTransaction]] = {
-      var data: [String: [InternalHistoryTransaction]] = [:]
-      EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi().forEach { tx in
-        var trans = data[self.dateFormatter.string(from: tx.time)] ?? []
-        trans.append(tx)
-        data[self.dateFormatter.string(from: tx.time)] = trans
-      }
-      return data
-    }()
-
-    self.rootViewController.coordinatorUpdatePendingTransaction(
-    pendingData: sectionData,
-    handledData: sectionHandledData,
-    pendingDates: pendingDates,
-    handledDates: handledDates,
-    currentWallet: self.currentWallet )
+    self.rootViewController.coordinatorUpdatePendingTransaction(currentWallet: self.currentWallet)
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
 
