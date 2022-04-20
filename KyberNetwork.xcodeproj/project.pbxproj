@@ -511,6 +511,7 @@
 		A6B3CD1C280FEFAC005D0D66 /* CompletedHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD1B280FEFAC005D0D66 /* CompletedHistoryTransactonViewModel.swift */; };
 		A6B3CD1E280FEFF0005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD1D280FEFF0005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */; };
 		A6B3CD20280FF018005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD1F280FF018005D0D66 /* PendingHistoryTransactonViewModel.swift */; };
+		A6B3CD22280FF38B005D0D66 /* KNHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD21280FF38B005D0D66 /* KNHistoryViewModel.swift */; };
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
@@ -1379,6 +1380,7 @@
 		A6B3CD1B280FEFAC005D0D66 /* CompletedHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
 		A6B3CD1D280FEFF0005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInternalHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
 		A6B3CD1F280FF018005D0D66 /* PendingHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD21280FF38B005D0D66 /* KNHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNHistoryViewModel.swift; sourceTree = "<group>"; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -3104,6 +3106,7 @@
 				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
 				25CE6F8F2073E0BC00A3A2F9 /* KNHistoryViewController.swift */,
 				25CE6F902073E0BC00A3A2F9 /* KNHistoryViewController.xib */,
+				A6B3CD21280FF38B005D0D66 /* KNHistoryViewModel.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -5598,6 +5601,7 @@
 				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
+				A6B3CD22280FF38B005D0D66 /* KNHistoryViewModel.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
 				C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */,
 				C32656AF266F546100C69561 /* ActionCell.swift in Sources */,
