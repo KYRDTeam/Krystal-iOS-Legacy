@@ -158,11 +158,12 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     }()
 
     self.rootViewController.coordinatorUpdatePendingTransaction(
-    pendingData: sectionData,
-    handledData: sectionHandledData,
-    pendingDates: pendingDates,
-    handledDates: handledDates,
-    currentWallet: self.currentWallet )
+      pendingData: sectionData,
+      handledData: sectionHandledData,
+      pendingDates: pendingDates,
+      handledDates: handledDates,
+      currentWallet: self.currentWallet
+    )
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
 

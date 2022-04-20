@@ -6,10 +6,10 @@ import BigInt
 
 
 protocol AbstractHistoryTransactionViewModel: class {
-  var index: Int { get }
+//  var index: Int { get }
   var fromIconSymbol: String { get }
   var toIconSymbol: String { get }
-  var backgroundColor: UIColor { get }
+//  var backgroundColor: UIColor { get }
   var displayedAmountString: String { get }
   var transactionDetailsString: String { get }
   var transactionTypeString: String { get }
@@ -166,7 +166,7 @@ class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionVie
 }
 
 class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
-  let index: Int
+//  let index: Int
   
   var fromIconSymbol: String {
     guard self.data.type == .swap || self.data.type == .earn || self.data.type == .withdraw else {
@@ -569,14 +569,14 @@ class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   
   let data: HistoryTransaction
   
-  init(data: HistoryTransaction, index: Int) {
+  init(data: HistoryTransaction) {
     self.data = data
-    self.index = index
+//    self.index = index
   }
 }
 
 class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
-  var index: Int
+//  var index: Int
   
   let internalTransaction: InternalHistoryTransaction
   
@@ -588,9 +588,9 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
     return self.internalTransaction.toSymbol ?? ""
   }
   
-  var backgroundColor: UIColor {
-    return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53)
-  }
+//  var backgroundColor: UIColor {
+//    return self.index % 2 == 0 ? UIColor(red: 0, green: 50, blue: 67) : UIColor(red: 1, green: 40, blue: 53)
+//  }
   
   var displayedAmountString: String {
     return self.internalTransaction.transactionDescription
@@ -698,8 +698,7 @@ class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewM
     return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: self.internalTransaction.time)
   }
 
-  init(index: Int, transaction: InternalHistoryTransaction) {
-    self.index = index
+  init(transaction: InternalHistoryTransaction) {
     self.internalTransaction = transaction
   }
 }

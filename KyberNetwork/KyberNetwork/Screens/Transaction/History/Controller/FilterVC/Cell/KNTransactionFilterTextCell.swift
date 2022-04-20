@@ -14,6 +14,7 @@ class KNTransactionFilterTextCell: UICollectionViewCell {
 
   func configure(text: String, isSelected: Bool) {
     label.text = text
+    label.textColor = isSelected ? .black : .white
     containerView.backgroundColor = isSelected ? UIColor.Kyber.selectedbuttonBackground : UIColor.Kyber.unselectedButtonBackground
   }
 }

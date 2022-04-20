@@ -67,19 +67,19 @@ class KNTransactionFilterViewModel {
   func title(forTransactionType type: FilteringTransactionType) -> String {
     switch type {
     case .transfer:
-      return "transfer" //Strings.send
+      return "Transfer" //Strings.send
     case .receive:
-      return "receive"// Strings.receive
+      return "Receive"// Strings.receive
     case .swap:
-      return "swap" //Strings.swap
+      return "Swap" //Strings.swap
     case .approval:
-      return "approval" //Strings.approval
+      return "Approval" //Strings.approval
     case .supply:
-      return "supply" //Strings.supply
+      return "Supply" //Strings.supply
     case .contractInteraction:
-      return "contractInteraction" //Strings.contractInteraction
+      return "Contract Interaction" //Strings.contractInteraction
     case .claimReward:
-      return "claimReward" //Strings.claimReward
+      return "Claim Reward" //Strings.claimReward
     case .withdraw:
       return "Withdraw"
     }

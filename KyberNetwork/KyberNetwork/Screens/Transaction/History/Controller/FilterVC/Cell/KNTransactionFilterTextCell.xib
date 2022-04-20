@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="184" height="59"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ox2-MK-szH">
-                                <rect key="frame" x="8" y="22" width="168" height="15"/>
+                                <rect key="frame" x="16" y="22" width="152" height="15"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -34,10 +34,16 @@
                         </subviews>
                         <color key="backgroundColor" red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Ox2-MK-szH" secondAttribute="trailing" constant="8" id="1Tv-r1-4Qs"/>
+                            <constraint firstAttribute="trailing" secondItem="Ox2-MK-szH" secondAttribute="trailing" constant="16" id="1Tv-r1-4Qs"/>
                             <constraint firstItem="Ox2-MK-szH" firstAttribute="centerY" secondItem="LTQ-WF-MnC" secondAttribute="centerY" id="F1Q-Jt-JXG"/>
-                            <constraint firstItem="Ox2-MK-szH" firstAttribute="leading" secondItem="LTQ-WF-MnC" secondAttribute="leading" constant="8" id="inB-mJ-iVS"/>
+                            <constraint firstItem="Ox2-MK-szH" firstAttribute="leading" secondItem="LTQ-WF-MnC" secondAttribute="leading" constant="16" id="inB-mJ-iVS"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
             </view>
