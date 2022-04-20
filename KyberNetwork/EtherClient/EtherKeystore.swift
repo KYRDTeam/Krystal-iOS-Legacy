@@ -60,7 +60,7 @@ open class EtherKeystore: Keystore {
 
     var recentlyUsedWallet: Wallet? {
         set {
-            keychain.set(newValue?.address?.description ?? "", forKey: Keys.recentlyUsedAddress, withAccess: defaultKeychainAccess)
+          keychain.set(newValue?.addressString ?? "", forKey: Keys.recentlyUsedAddress, withAccess: defaultKeychainAccess)
         }
         get {
             let address = keychain.get(Keys.recentlyUsedAddress)
@@ -147,7 +147,12 @@ open class EtherKeystore: Keystore {
           do {
             let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
             _ = setPassword(newPassword, for: account)
-            completion(.success(Wallet(type: .real(account))))
+            if importType == .solana {
+              let publicKey = SolanaUtil.seedsToPublicKey(key)
+              completion(.success(Wallet(type: .solana(publicKey))))
+            } else {
+              completion(.success(Wallet(type: .real(account))))
+            }
           } catch let error {
             if case KeyStore.Error.accountAlreadyExists = error {
               completion(.failure(.duplicateAccount))

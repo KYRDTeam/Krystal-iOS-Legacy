@@ -673,6 +673,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAllowance() {
+    guard KNGeneralProvider.shared.currentChain != .solana else { return }
     guard !(self.viewModel.from.isWrapToken && self.viewModel.to.isQuoteToken) else { return }
     self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
@@ -732,6 +733,7 @@ extension KSwapViewController {
    Update new session when current wallet is changed, update all UIs
    */
   func coordinatorUpdateNewSession(wallet: Wallet) {
+    
     self.viewModel.updateWallet(wallet)
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""

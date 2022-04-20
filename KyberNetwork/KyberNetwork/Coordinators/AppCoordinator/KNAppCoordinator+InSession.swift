@@ -7,6 +7,7 @@ import OneSignal
 extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
+    
     self.keystore.recentlyUsedWallet = wallet
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)

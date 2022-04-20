@@ -114,7 +114,9 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
         address: wallet.addressString,
         name: name ?? "Untitled",
         isBackedUp: isBackUp,
-        isWatchWallet: isWatchWallet
+        isWatchWallet: isWatchWallet,
+        chainType: .multiChain,
+        storageType: .seeds
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(
@@ -138,11 +140,12 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
 }
 
 extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
+  
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType) {
     self.navigationController.dismiss(animated: true) {
       //TODO: add type to wallet firebase obj
       var isWatchWallet = false
@@ -154,7 +157,8 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         name: name ?? "Untitled",
         isBackedUp: true,
         isWatchWallet: isWatchWallet,
-        chainType: importType
+        chainType: importType,
+        storageType: importMethod
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(

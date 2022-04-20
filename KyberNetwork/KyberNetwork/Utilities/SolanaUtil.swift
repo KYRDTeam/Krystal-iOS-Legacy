@@ -46,6 +46,13 @@ class SolanaUtil {
     let keyPairString = Base58.encodeNoCheck(data: data)
     return keyPairString
   }
+
+  static func seedsToPublicKey(_ seeds: String) -> String {
+    let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+    let publicKey = privateKey.getPublicKeyEd25519()
+    var solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
+    return solanaAddress.description
+  }
   
   // Generate privateKey from keypair
   static func keyPairToPrivateKey(_ keypair: String) -> PrivateKey? {

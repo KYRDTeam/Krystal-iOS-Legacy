@@ -36,3 +36,15 @@ protocol Keystore {
     func signTypedMessage(_ datas: [EthTypedData], for account: Account) -> Result<Data, KeystoreError>
     func signEip712TypedData(_ data: EIP712TypedData, for account: Account) -> Result<Data, KeystoreError>
 }
+
+extension Keystore {
+  func matchWithWalletObject(_ object: KNWalletObject) -> Wallet? {
+    let chainType = ImportWalletChainType(rawValue: object.chainType) ?? .multiChain
+    if chainType == .solana {
+      return Wallet(type: .solana(object.address))
+    } else {
+      let wal = self.wallets.first(where: { $0.addressString == object.address })
+      return wal
+    }
+  }
+}
