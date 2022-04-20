@@ -41,10 +41,19 @@ extension Keystore {
   func matchWithWalletObject(_ object: KNWalletObject) -> Wallet? {
     let chainType = ImportWalletChainType(rawValue: object.chainType) ?? .multiChain
     if chainType == .solana {
-      return Wallet(type: .solana(object.address))
+      return Wallet(type: .solana(object.address, object.evmAddress))
     } else {
       let wal = self.wallets.first(where: { $0.addressString == object.address })
       return wal
+    }
+  }
+
+  func matchWithEvmAccount(address: String) -> Account? {
+    let wal = self.wallets.first(where: { $0.addressString == address.lowercased() })
+    if case .real(let account) = wal?.type {
+      return account
+    } else {
+      return nil
     }
   }
 }

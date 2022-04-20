@@ -117,7 +117,7 @@ open class EtherKeystore: Keystore {
           if importType == .solana {
             let result = self.solanaUtil.importKeyPair(privateKey)
             if let address = result.0 {
-              completion(.success(Wallet(type: .solana(address))))
+              completion(.success(Wallet(type: .solana(address, ""))))
             } else {
               completion(.failure(.failedToCreateWallet))
             }
@@ -149,7 +149,7 @@ open class EtherKeystore: Keystore {
             _ = setPassword(newPassword, for: account)
             if importType == .solana {
               let publicKey = SolanaUtil.seedsToPublicKey(key)
-              completion(.success(Wallet(type: .solana(publicKey))))
+              completion(.success(Wallet(type: .solana(publicKey, account.address.description))))
             } else {
               completion(.success(Wallet(type: .real(account))))
             }

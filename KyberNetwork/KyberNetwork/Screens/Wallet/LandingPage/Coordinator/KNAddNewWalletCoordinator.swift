@@ -158,7 +158,8 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         isBackedUp: true,
         isWatchWallet: isWatchWallet,
         chainType: importType,
-        storageType: importMethod
+        storageType: importMethod,
+        evmAddress: wallet.evmAddressString
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(

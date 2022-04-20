@@ -7,7 +7,7 @@ import TrustKeystore
 enum WalletType {
     case real(Account)
     case watch(Address)
-    case solana(String)
+    case solana(String, String)
 }
 
 extension WalletType: Equatable {
@@ -17,7 +17,7 @@ extension WalletType: Equatable {
             return lhs == rhs
         case (let .watch(lhs), let .watch(rhs)):
             return lhs == rhs
-        case (let .solana(lhs), let .solana(rhs)):
+        case (let .solana(lhs, _), let .solana(rhs, _)):
             return lhs == rhs
         default:
             return false
@@ -45,8 +45,19 @@ struct Wallet {
       return account.address.description.lowercased()
     case .watch(let address):
       return address.description.lowercased()
-    case .solana(let address):
+    case .solana(let address, _):
       return address
+    }
+  }
+  
+  var evmAddressString: String {
+    switch type {
+    case .real(let account):
+      return account.address.description.lowercased()
+    case .watch(let address):
+      return address.description.lowercased()
+    case .solana(_, let evm):
+      return evm
     }
   }
 }
@@ -55,13 +66,15 @@ extension Wallet: Equatable {
     static func == (lhs: Wallet, rhs: Wallet) -> Bool {
         return lhs.type == rhs.type
     }
-  
+
   func getWalletObject() -> KNWalletObject? {
-    return KNWalletStorage.shared.wallets.first { obj in
-      let address = self.address?.description.lowercased() ?? ""
-      let objAddress = obj.address.lowercased()
+    let walletObject = KNWalletStorage.shared.wallets.first { obj in
+      let address = self.addressString
+      let objAddress = obj.address
 
       return address == objAddress
     }
+
+    return walletObject
   }
 }
