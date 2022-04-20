@@ -266,7 +266,6 @@ class KNListWalletsViewController: KNBaseViewController {
       self.walletTableView.reloadData()
       self.hideLoading()
     }
-    
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

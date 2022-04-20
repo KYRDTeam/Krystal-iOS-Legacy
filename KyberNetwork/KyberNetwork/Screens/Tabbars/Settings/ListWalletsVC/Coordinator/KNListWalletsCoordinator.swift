@@ -99,7 +99,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
     case .close:
       self.listWalletsViewControllerDidClickBackButton()
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet) else {
         return
       }
       self.listWalletsViewControllerDidSelectWallet(wal)

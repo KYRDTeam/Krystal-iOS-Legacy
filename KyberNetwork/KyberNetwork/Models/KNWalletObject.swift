@@ -3,6 +3,14 @@
 import UIKit
 import RealmSwift
 
+enum StorageType: Int {
+  case unknow = 0
+  case json
+  case privateKey
+  case seeds
+  case watch
+}
+
 class KNWalletObject: Object {
 
   @objc dynamic var address: String = ""
@@ -12,8 +20,9 @@ class KNWalletObject: Object {
   @objc dynamic var isWatchWallet: Bool = false
   @objc dynamic var date: Date = Date()
   @objc dynamic var chainType: Int = 0
+  @objc dynamic var storateType: Int = 0
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow) {
     self.init()
     self.address = address
     self.name = name
@@ -22,9 +31,10 @@ class KNWalletObject: Object {
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
     self.chainType = chainType.rawValue
+    self.storateType = storageType.rawValue
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow) {
     self.init()
     self.address = address
     self.name = name
@@ -33,6 +43,7 @@ class KNWalletObject: Object {
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
     self.chainType = chainType.rawValue
+    self.storateType = storageType.rawValue
   }
 
   func copy(withNewName newName: String) -> KNWalletObject {
@@ -43,7 +54,8 @@ class KNWalletObject: Object {
       date: self.date,
       isBackedUp: self.isBackedUp,
       isWatchWallet: self.isWatchWallet,
-      chainType: ImportWalletChainType(rawValue: self.chainType)!
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!
     )
   }
 
@@ -59,10 +71,11 @@ class KNWalletObject: Object {
       date: self.date,
       isBackedUp: self.isBackedUp,
       isWatchWallet: self.isWatchWallet,
-      chainType: ImportWalletChainType(rawValue: self.chainType)!
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!
     )
   }
-  
+
   func toData() -> WalletData {
     return WalletData(
       address: self.address,
@@ -72,6 +85,10 @@ class KNWalletObject: Object {
       isWatchWallet: self.isWatchWallet,
       date: self.date
     )
+  }
+
+  func getWalletChainType() -> ImportWalletChainType {
+    return ImportWalletChainType(rawValue: self.chainType) ?? .multiChain
   }
 }
 

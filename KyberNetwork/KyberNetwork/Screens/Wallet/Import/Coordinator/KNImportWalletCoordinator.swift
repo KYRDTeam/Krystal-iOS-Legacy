@@ -6,7 +6,7 @@ import TrustCore
 import TrustKeystore
 
 protocol KNImportWalletCoordinatorDelegate: class {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType)
   func importWalletCoordinatorDidClose()
   func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -101,7 +101,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           if name == nil || name?.isEmpty == true { return "Imported" }
           return name ?? "Imported"
         }()
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType)
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType, importMethod: type.toStorageType())
         
         //TODO: add solana sign message
         if !self.refCode.isEmpty {

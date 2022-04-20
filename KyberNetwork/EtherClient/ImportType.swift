@@ -25,3 +25,18 @@ extension ImportType {
     }
   }
 }
+
+extension ImportType {
+  func toStorageType() -> StorageType {
+    switch self {
+    case .keystore(let string, let password):
+      return .json
+    case .privateKey(let privateKey):
+      return .privateKey
+    case .mnemonic(let words, let password):
+      return .seeds
+    case .watch(let address):
+      return .watch
+    }
+  }
+}

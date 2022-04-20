@@ -38,7 +38,7 @@ struct Wallet {
           return nil
         }
     }
-  
+
   var addressString: String {
     switch type {
     case .real(let account):
@@ -46,7 +46,7 @@ struct Wallet {
     case .watch(let address):
       return address.description.lowercased()
     case .solana(let address):
-      return address.lowercased()
+      return address
     }
   }
 }
