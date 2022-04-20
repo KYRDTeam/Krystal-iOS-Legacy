@@ -59,7 +59,7 @@ struct KNHistoryViewModel {
 
   fileprivate(set) var isShowingPending: Bool = true
 
-  fileprivate(set) var filters: KNTransactionFilter!
+  fileprivate(set) var filterConditions: [FilterCondition] = []
 
   init(
     tokens: [Token] = EtherscanTransactionStorage.shared.getEtherscanToken(),
@@ -68,19 +68,19 @@ struct KNHistoryViewModel {
     self.tokens = tokens
     self.currentWallet = currentWallet
     self.isShowingPending = true
-    self.filters = KNTransactionFilter(
-      from: nil,
-      to: nil,
-      isSend: true,
-      isReceive: true,
-      isSwap: true,
-      isApprove: true,
-      isWithdraw: true,
-      isTrade: true,
-      isContractInteraction: true,
-      isClaimReward: true,
-      tokens: self.tokensSymbol
-    )
+//    self.filters = KNTransactionFilter(
+//      from: nil,
+//      to: nil,
+//      isSend: true,
+//      isReceive: true,
+//      isSwap: true,
+//      isApprove: true,
+//      isWithdraw: true,
+//      isTrade: true,
+//      isContractInteraction: true,
+//      isClaimReward: true,
+//      tokens: self.tokensSymbol
+//    )
     self.updateDisplayingData()
   }
 
@@ -90,19 +90,19 @@ struct KNHistoryViewModel {
 
   mutating func update(tokens: [Token]) {
     self.tokens = tokens
-    self.filters = KNTransactionFilter(
-      from: nil,
-      to: nil,
-      isSend: true,
-      isReceive: true,
-      isSwap: true,
-      isApprove: true,
-      isWithdraw: true,
-      isTrade: true,
-      isContractInteraction: true,
-      isClaimReward: true,
-      tokens: self.tokensSymbol
-    )
+//    self.filters = KNTransactionFilter(
+//      from: nil,
+//      to: nil,
+//      isSend: true,
+//      isReceive: true,
+//      isSwap: true,
+//      isApprove: true,
+//      isWithdraw: true,
+//      isTrade: true,
+//      isContractInteraction: true,
+//      isClaimReward: true,
+//      tokens: self.tokensSymbol
+//    )
     self.updateDisplayingData()
   }
 
@@ -310,68 +310,67 @@ struct KNHistoryViewModel {
   }
   
   fileprivate func isInternalHistoryTransactionIncluded(_ tx: InternalHistoryTransaction) -> Bool {
-    let matchedTransfer = (tx.type == .transferETH || tx.type == .transferNFT || tx.type == .transferToken) && self.filters.isSend
-    let matchedReceive = (tx.type == .receiveETH || tx.type == .receiveNFT || tx.type == .receiveToken) && self.filters.isReceive
-    let matchedSwap = (tx.type == .swap) && self.filters.isSwap
-    let matchedAppprove = (tx.type == .allowance) && self.filters.isApprove
-    let matchedSupply = (tx.type == .earn) && self.filters.isTrade
-    let matchedWithdraw = (tx.type == .withdraw) && self.filters.isWithdraw
-    let matchedClaimReward = (tx.type == .claimReward) && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == .contractInteraction) && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
-
-    var tokenMatched = false
-    var transactionToken: [String] = []
-    if let sym = tx.fromSymbol {
-      transactionToken.append(sym)
-    }
-    if let sym = tx.toSymbol {
-      transactionToken.append(sym)
-    }
-    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols().count {
-      tokenMatched = true
-    } else {
-      transactionToken.forEach { transaction in
-        if self.filters.tokens.contains(transaction) {
-          tokenMatched = true
+    var isMatchingConditions = true
+    filterConditions.forEach { condition in
+      switch condition {
+      case .byDate(let from, let to):
+        ()
+      case .byTypes(let types):
+        if !types.isEmpty {
+          let matchedTransfer = (tx.type == .transferETH || tx.type == .transferNFT || tx.type == .transferToken) && types.contains(.transfer)
+          let matchedReceive = (tx.type == .receiveETH || tx.type == .receiveNFT || tx.type == .receiveToken) && types.contains(.receive)
+          let matchedSwap = (tx.type == .swap) && types.contains(.swap)
+          let matchedAppprove = (tx.type == .allowance) && types.contains(.approval)
+          let matchedSupply = (tx.type == .earn) && types.contains(.supply)
+          let matchedWithdraw = (tx.type == .withdraw) && types.contains(.withdraw)
+          let matchedClaimReward = (tx.type == .claimReward) && types.contains(.claimReward)
+          let matchedContractInteraction = (tx.type == .contractInteraction) && types.contains(.contractInteraction)
+          let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
+          
+          isMatchingConditions = isMatchingConditions && matchedType
+        }
+      case .byTokens(let tokens):
+        let txTokens = [
+          tx.fromSymbol,
+          tx.toSymbol
+        ].compactMap { $0 }
+        if txTokens.isEmpty {
+          // True when select all
+          isMatchingConditions = isMatchingConditions && tokens.count == EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols().count
+        } else {
+          isMatchingConditions = isMatchingConditions && tokens.containsElementsOf(other: txTokens)
         }
       }
     }
-    return matchedType && tokenMatched
+    return isMatchingConditions
   }
 
   fileprivate func isCompletedKrystalTransactionIncluded(_ tx: KrystalHistoryTransaction) -> Bool {
-    let matchedTransfer = (tx.type == "Transfer") && self.filters.isSend
-    let matchedReceive = (tx.type == "Received") && self.filters.isReceive
-    let matchedSwap = (tx.type == "Swap") && self.filters.isSwap
-    let matchedAppprove = (tx.type == "Approval") && self.filters.isApprove
-    let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
-    let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
-    let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
-
-    var tokenMatched = false
-    var transactionToken: [String] = []
-    if let sym = tx.extraData?.token?.symbol {
-      transactionToken.append(sym)
-    }
-    if let sym = tx.extraData?.sendToken?.symbol {
-      transactionToken.append(sym)
-    }
-    if let sym = tx.extraData?.receiveToken?.symbol {
-      transactionToken.append(sym)
-    }
-    if transactionToken.isEmpty && self.filters.tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count {
-      tokenMatched = true
-    } else {
-      transactionToken.forEach { transaction in
-        if self.filters.tokens.contains(transaction) {
-          tokenMatched = true
+    var isMatchingConditions = true
+    filterConditions.forEach { condition in
+      switch condition {
+      case .byDate(let from, let to):
+        ()
+      case .byTypes(let types):
+        if !types.isEmpty, let type = FilteringTransactionType(rawValue: tx.type) {
+          isMatchingConditions = isMatchingConditions && types.contains(type)
         }
+      case .byTokens(let tokens):
+        let txTokens = [
+          tx.extraData?.token?.symbol,
+          tx.extraData?.sendToken?.symbol,
+          tx.extraData?.receiveToken?.symbol
+        ].compactMap { $0 }
+        if txTokens.isEmpty {
+          // True when select all
+          isMatchingConditions = isMatchingConditions && tokens.count == EtherscanTransactionStorage.shared.getEtherscanToken().count
+        } else {
+          isMatchingConditions = isMatchingConditions && tokens.containsElementsOf(other: txTokens)
+        }
+        
       }
     }
-    return matchedType && tokenMatched
+    return isMatchingConditions
   }
 
   var normalAttributes: [NSAttributedString.Key: Any] = [
@@ -384,10 +383,10 @@ struct KNHistoryViewModel {
     NSAttributedString.Key.foregroundColor: UIColor.Kyber.enygold,
   ]
 
-  mutating func updateFilters(_ filters: KNTransactionFilter) {
-    self.filters = filters
+  mutating func updateFilters(_ conditions: [FilterCondition]) {
+    self.filterConditions = conditions
     self.updateDisplayingData()
-    KNAppTracker.saveHistoryFilterData(filters)
+//    KNAppTracker.saveHistoryFilterData(filters)
   }
 
   var isShowingQuickTutorial: Bool = false
@@ -594,8 +593,8 @@ class KNHistoryViewController: KNBaseViewController {
 
   @IBAction func filterButtonPressed(_ sender: Any) {
     let viewModel = KNTransactionFilterViewModel(
-      tokens: self.viewModel.tokensSymbol,
-      filter: self.viewModel.filters
+      allTokens: self.viewModel.tokensSymbol,
+      conditions: []
     )
     let filterVC = KNTransactionFilterViewController(viewModel: viewModel)
     filterVC.loadViewIfNeeded()
@@ -753,8 +752,8 @@ extension KNHistoryViewController: UICollectionViewDataSource {
 }
 
 extension KNHistoryViewController: KNTransactionFilterViewControllerDelegate {
-  func transactionFilterViewController(_ controller: KNTransactionFilterViewController, apply filter: KNTransactionFilter) {
-    self.viewModel.updateFilters(filter)
+  func transactionFilterViewController(_ controller: KNTransactionFilterViewController, apply conditions: [FilterCondition]) {
+    self.viewModel.updateFilters(conditions)
     self.updateUIWhenDataDidChange()
   }
 }

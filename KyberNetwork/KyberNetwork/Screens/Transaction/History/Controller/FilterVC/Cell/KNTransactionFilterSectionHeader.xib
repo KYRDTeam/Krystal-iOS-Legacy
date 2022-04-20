@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular_Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="KNTransactionFilterSectionHeader" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="328" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GtF-4o-VWE">
+                    <rect key="frame" x="21" y="55" width="44" height="22"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bsb-TT-Ft6">
+                    <rect key="frame" x="240" y="51" width="67" height="30"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="15"/>
+                    <color key="tintColor" name="buttonBackgroundColor"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Select All"/>
+                    <connections>
+                        <action selector="actionButtonWasTapped:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="ldh-w7-3Qg"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstItem="GtF-4o-VWE" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="21" id="DIv-g6-0pt"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="bsb-TT-Ft6" secondAttribute="trailing" constant="21" id="H4D-lK-M84"/>
+                <constraint firstItem="GtF-4o-VWE" firstAttribute="centerY" secondItem="VXr-Tz-HHm" secondAttribute="centerY" id="jJg-Ob-c0s"/>
+                <constraint firstItem="bsb-TT-Ft6" firstAttribute="centerY" secondItem="VXr-Tz-HHm" secondAttribute="centerY" id="orU-Lr-w4W"/>
+            </constraints>
+            <connections>
+                <outlet property="actionButton" destination="bsb-TT-Ft6" id="wdj-wu-r2b"/>
+                <outlet property="titleLabel" destination="GtF-4o-VWE" id="da1-Ot-acK"/>
+            </connections>
+            <point key="canvasLocation" x="-33.333333333333336" y="0.6696428571428571"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

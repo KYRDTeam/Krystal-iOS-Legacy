@@ -510,6 +510,13 @@
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
 		A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA410127F974B40078C58E /* ThreadProtectedObject.swift */; };
+		A6E536F1280EAEC50014EB15 /* KNTransactionFilterTimeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E536EF280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.swift */; };
+		A6E536F2280EAEC50014EB15 /* KNTransactionFilterTimeRangeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E536F0280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.xib */; };
+		A6E536F5280EAEEE0014EB15 /* KNTransactionFilterTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E536F3280EAEEE0014EB15 /* KNTransactionFilterTextCell.swift */; };
+		A6E536F6280EAEEE0014EB15 /* KNTransactionFilterTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E536F4280EAEEE0014EB15 /* KNTransactionFilterTextCell.xib */; };
+		A6E536F8280EB24B0014EB15 /* KNTransactionFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E536F7280EB24A0014EB15 /* KNTransactionFilterViewModel.swift */; };
+		A6E536FB280EB8F90014EB15 /* KNTransactionFilterSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E536F9280EB8F90014EB15 /* KNTransactionFilterSectionHeader.swift */; };
+		A6E536FC280EB8F90014EB15 /* KNTransactionFilterSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E536FA280EB8F90014EB15 /* KNTransactionFilterSectionHeader.xib */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
 		C154BB4E1861959DEFE1048F /* Pods_KrystalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */; };
 		C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */; };
@@ -1373,6 +1380,13 @@
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
 		A6DA410127F974B40078C58E /* ThreadProtectedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadProtectedObject.swift; sourceTree = "<group>"; };
+		A6E536EF280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionFilterTimeRangeCell.swift; sourceTree = "<group>"; };
+		A6E536F0280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionFilterTimeRangeCell.xib; sourceTree = "<group>"; };
+		A6E536F3280EAEEE0014EB15 /* KNTransactionFilterTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionFilterTextCell.swift; sourceTree = "<group>"; };
+		A6E536F4280EAEEE0014EB15 /* KNTransactionFilterTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionFilterTextCell.xib; sourceTree = "<group>"; };
+		A6E536F7280EB24A0014EB15 /* KNTransactionFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionFilterViewModel.swift; sourceTree = "<group>"; };
+		A6E536F9280EB8F90014EB15 /* KNTransactionFilterSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionFilterSectionHeader.swift; sourceTree = "<group>"; };
+		A6E536FA280EB8F90014EB15 /* KNTransactionFilterSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNTransactionFilterSectionHeader.xib; sourceTree = "<group>"; };
 		ACB15546CA9F3081C6AABCC5 /* Pods-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalNotificationServiceExtension/Pods-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		AF8FFDA00149AF7FF756410D /* Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetwork-KrystalNotificationServiceExtension/Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		B13A87D3BA5167741E5D0801 /* Pods-Trust.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trust.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trust/Pods-Trust.release.xcconfig"; sourceTree = "<group>"; };
@@ -1904,6 +1918,7 @@
 				25485B012272F91C004B7454 /* Cell */,
 				251E22642271CBF30038679C /* KNTransactionFilterViewController.swift */,
 				251E22652271CBF30038679C /* KNTransactionFilterViewController.xib */,
+				A6E536F7280EB24A0014EB15 /* KNTransactionFilterViewModel.swift */,
 			);
 			path = FilterVC;
 			sourceTree = "<group>";
@@ -2049,6 +2064,12 @@
 			children = (
 				25485B022272F938004B7454 /* KNTransactionFilterTableViewCell.swift */,
 				25485B032272F938004B7454 /* KNTransactionFilterTableViewCell.xib */,
+				A6E536EF280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.swift */,
+				A6E536F0280EAEC40014EB15 /* KNTransactionFilterTimeRangeCell.xib */,
+				A6E536F3280EAEEE0014EB15 /* KNTransactionFilterTextCell.swift */,
+				A6E536F4280EAEEE0014EB15 /* KNTransactionFilterTextCell.xib */,
+				A6E536F9280EB8F90014EB15 /* KNTransactionFilterSectionHeader.swift */,
+				A6E536FA280EB8F90014EB15 /* KNTransactionFilterSectionHeader.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -4751,6 +4772,7 @@
 				7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */,
 				C3EE06BE267A15E50090B432 /* Karla-MediumItalic.ttf in Resources */,
 				C37AF0C025CA5639006FB880 /* EarnConfirmViewController.xib in Resources */,
+				A6E536F2280EAEC50014EB15 /* KNTransactionFilterTimeRangeCell.xib in Resources */,
 				C326C68B256D04B000B35E8F /* InputPopUpViewController.xib in Resources */,
 				25073D2B211AF20D00833C92 /* Montserrat-ExtraBold.ttf in Resources */,
 				C3EE06C7267A15E50090B432 /* Karla-ExtraLight.ttf in Resources */,
@@ -4767,8 +4789,10 @@
 				25073D28211AF20D00833C92 /* Montserrat-ExtraLight.ttf in Resources */,
 				25FB472422CC939F00374CE8 /* config_env_staging2.json in Resources */,
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
+				A6E536FC280EB8F90014EB15 /* KNTransactionFilterSectionHeader.xib in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
+				A6E536F6280EAEEE0014EB15 /* KNTransactionFilterTextCell.xib in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -5383,6 +5407,7 @@
 				257740C120579335003323EB /* UIView+Kyber.swift in Sources */,
 				C31D05FF25F723E8000739D2 /* EtherscanTransactionStorage.swift in Sources */,
 				C32656B5266F55E200C69561 /* KrystalActionSheetCell.swift in Sources */,
+				A6E536F5280EAEEE0014EB15 /* KNTransactionFilterTextCell.swift in Sources */,
 				C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */,
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
 				C33696102595A387000EDD5D /* ApproveTokenViewController.swift in Sources */,
@@ -5392,6 +5417,7 @@
 				29358DA91F79FD1C00925D61 /* CALayer.swift in Sources */,
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				C32656AD266F546100C69561 /* ActionController.swift in Sources */,
+				A6E536FB280EB8F90014EB15 /* KNTransactionFilterSectionHeader.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
 				A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
@@ -5565,6 +5591,7 @@
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
 				C320D80F27B3A7F60001DC71 /* MultiSendCell.swift in Sources */,
 				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
+				A6E536F1280EAEC50014EB15 /* KNTransactionFilterTimeRangeCell.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
@@ -5666,6 +5693,7 @@
 				255C40F0209306B800475871 /* KNTokenTransactionStorage.swift in Sources */,
 				25CC0AB420591AFA0009D0D5 /* KNTransaction.swift in Sources */,
 				C35E9DF327DB56F800E1E7CE /* PromoCodeCell.swift in Sources */,
+				A6E536F8280EB24B0014EB15 /* KNTransactionFilterViewModel.swift in Sources */,
 				25CC0AAA2058F1A00009D0D5 /* KNGetUserCapInWei.swift in Sources */,
 				291A1B691F980E3400ADEC80 /* StackViewController.swift in Sources */,
 				7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */,

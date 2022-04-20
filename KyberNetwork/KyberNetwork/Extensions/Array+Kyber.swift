@@ -33,3 +33,9 @@ extension Array {
     return self[index]
   }
 }
+
+extension Array where Element: Equatable {
+  func containsElementsOf(other: Array) -> Bool {
+    return self.contains(where: { element in other.contains(element) })
+  }
+}

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -28,6 +29,7 @@
                 <outlet property="approveButton" destination="gLc-gI-luH" id="5JS-Qo-Fz9"/>
                 <outlet property="bottomPaddingForButtonConstraint" destination="EZg-8H-jbs" id="zFh-1m-pXu"/>
                 <outlet property="claimRewardButton" destination="YVW-aJ-91q" id="M60-sL-Ks3"/>
+                <outlet property="collectionView" destination="od3-cc-cLJ" id="YXI-zM-JSI"/>
                 <outlet property="contractInteractionButton" destination="AHl-Ss-t5i" id="CY1-ik-cJs"/>
                 <outlet property="fromDateTimeView" destination="4wa-DK-Evy" id="Ub4-qk-ag1"/>
                 <outlet property="fromTextField" destination="SjL-4y-uiz" id="ax1-zq-l9n"/>
@@ -107,6 +109,16 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="od3-cc-cLJ">
+                    <rect key="frame" x="0.0" y="113" width="375" height="655"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="a2n-Ly-zJG">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xY-JY-b3T">
                     <rect key="frame" x="0.0" y="113" width="375" height="655"/>
                     <subviews>
@@ -450,11 +462,15 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="od3-cc-cLJ" secondAttribute="bottom" id="1ny-mx-tsa"/>
                 <constraint firstItem="3xY-JY-b3T" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="BfC-3o-jgn"/>
+                <constraint firstItem="od3-cc-cLJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JHX-pZ-zy8"/>
+                <constraint firstItem="od3-cc-cLJ" firstAttribute="top" secondItem="c5L-Rn-ihd" secondAttribute="bottom" id="Kph-xj-oaF"/>
                 <constraint firstItem="c5L-Rn-ihd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="RI6-zf-WZh"/>
                 <constraint firstItem="c5L-Rn-ihd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="SO6-ts-cec"/>
                 <constraint firstItem="3xY-JY-b3T" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="cm7-8b-U3r"/>
                 <constraint firstItem="3xY-JY-b3T" firstAttribute="top" secondItem="c5L-Rn-ihd" secondAttribute="bottom" id="cuR-w1-v6L"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="od3-cc-cLJ" secondAttribute="trailing" id="fHV-ax-iJg"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="3xY-JY-b3T" secondAttribute="bottom" id="kBy-ja-eQ7"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="c5L-Rn-ihd" secondAttribute="trailing" id="ypj-vm-lZc"/>
             </constraints>
@@ -494,5 +510,8 @@
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

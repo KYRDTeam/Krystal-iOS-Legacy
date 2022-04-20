@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNTransactionFilterTextCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="184" height="59"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="184" height="59"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTQ-WF-MnC">
+                        <rect key="frame" x="0.0" y="0.0" width="184" height="59"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ox2-MK-szH">
+                                <rect key="frame" x="8" y="22" width="168" height="15"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.29411764705882354" green="0.30980392156862746" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Ox2-MK-szH" secondAttribute="trailing" constant="8" id="1Tv-r1-4Qs"/>
+                            <constraint firstItem="Ox2-MK-szH" firstAttribute="centerY" secondItem="LTQ-WF-MnC" secondAttribute="centerY" id="F1Q-Jt-JXG"/>
+                            <constraint firstItem="Ox2-MK-szH" firstAttribute="leading" secondItem="LTQ-WF-MnC" secondAttribute="leading" constant="8" id="inB-mJ-iVS"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="LTQ-WF-MnC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="3NG-po-AR4"/>
+                <constraint firstAttribute="bottom" secondItem="LTQ-WF-MnC" secondAttribute="bottom" id="HjA-C4-7gU"/>
+                <constraint firstItem="LTQ-WF-MnC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Upn-WN-UVe"/>
+                <constraint firstAttribute="trailing" secondItem="LTQ-WF-MnC" secondAttribute="trailing" id="mLI-om-f3u"/>
+            </constraints>
+            <size key="customSize" width="184" height="59"/>
+            <connections>
+                <outlet property="containerView" destination="LTQ-WF-MnC" id="FLG-j9-z55"/>
+                <outlet property="label" destination="Ox2-MK-szH" id="UeK-qP-0WH"/>
+            </connections>
+            <point key="canvasLocation" x="234.78260869565219" y="112.83482142857142"/>
+        </collectionViewCell>
+    </objects>
+</document>

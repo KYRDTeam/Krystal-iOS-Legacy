@@ -240,12 +240,12 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  static func saveHistoryFilterData(_ object: KNTransactionFilter) {
+//  static func saveHistoryFilterData(_ object: KNTransactionFilter) {
 //    let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
 //    userDefaults.set(json, forKey: key)
 //    userDefaults.synchronize()
-    Storage.store(object, as: Constants.customFilterOptionFileName)
-  }
+//    Storage.store(object, as: Constants.customFilterOptionFileName)
+//  }
 
   static func removeHistoryFilterData() {
     let key = "\(KNEnvironment.default.displayName)_\(kHistoryFilterKey)"
@@ -253,9 +253,9 @@ class KNAppTracker {
     userDefaults.synchronize()
   }
 
-  static func getLastHistoryFilterData() -> KNTransactionFilter? {
-    Storage.retrieve(Constants.customFilterOptionFileName, as: KNTransactionFilter.self)
-  }
+//  static func getLastHistoryFilterData() -> KNTransactionFilter? {
+//    Storage.retrieve(Constants.customFilterOptionFileName, as: KNTransactionFilter.self)
+//  }
 
   static func saveLastTimeAuthenticate() {
     userDefaults.set(Date().timeIntervalSince1970, forKey: kLastTimeAuthenticateKey)
