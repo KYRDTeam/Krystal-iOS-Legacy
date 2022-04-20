@@ -21,8 +21,9 @@ class KNWalletObject: Object {
   @objc dynamic var date: Date = Date()
   @objc dynamic var chainType: Int = 0
   @objc dynamic var storateType: Int = 0
+  @objc dynamic var evmAddress: String = ""
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow, evmAddress: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -32,9 +33,10 @@ class KNWalletObject: Object {
     self.isWatchWallet = isWatchWallet
     self.chainType = chainType.rawValue
     self.storateType = storageType.rawValue
+    self.evmAddress = evmAddress
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow, evmAddress: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -44,6 +46,7 @@ class KNWalletObject: Object {
     self.isWatchWallet = isWatchWallet
     self.chainType = chainType.rawValue
     self.storateType = storageType.rawValue
+    self.evmAddress = evmAddress
   }
 
   func copy(withNewName newName: String) -> KNWalletObject {
@@ -55,7 +58,8 @@ class KNWalletObject: Object {
       isBackedUp: self.isBackedUp,
       isWatchWallet: self.isWatchWallet,
       chainType: ImportWalletChainType(rawValue: self.chainType)!,
-      storageType: StorageType(rawValue: self.storateType)!
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress
     )
   }
 
@@ -72,7 +76,8 @@ class KNWalletObject: Object {
       isBackedUp: self.isBackedUp,
       isWatchWallet: self.isWatchWallet,
       chainType: ImportWalletChainType(rawValue: self.chainType)!,
-      storageType: StorageType(rawValue: self.storateType)!
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress
     )
   }
 

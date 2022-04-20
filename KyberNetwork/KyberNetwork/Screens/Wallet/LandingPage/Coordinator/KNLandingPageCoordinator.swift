@@ -142,7 +142,8 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
       name: name ?? "Untitled",
       isBackedUp: isBackUp,
       chainType: importType,
-      storageType: importMethod
+      storageType: importMethod,
+      evmAddress: wallet.evmAddressString
     )
     KNWalletStorage.shared.add(wallets: [walletObject])
     if addToContact {

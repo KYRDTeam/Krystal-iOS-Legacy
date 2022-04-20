@@ -10,6 +10,7 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 import JSONRPCKit
+import WalletCore
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
@@ -58,6 +59,19 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
     coordinator.delegate = self.delegate
     return coordinator
+  }()
+  //Get solana private key
+  lazy var privateKey: PrivateKey? = {
+    guard let account = self.session.keystore.matchWithEvmAccount(address: self.currentWallet.evmAddress) else {
+      return nil
+    }
+    let result = self.session.keystore.exportMnemonics(account: account)
+    if case .success(let seeds) = result {
+      let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+      return privateKey
+    }
+
+    return nil
   }()
 
   deinit {
@@ -111,6 +125,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.rootViewController = controller
       self.rootViewController?.coordinatorUpdateBalances(self.balances)
     }
+    
+    print("[Debug] \(self.privateKey)")
   }
 
   func stop() {
