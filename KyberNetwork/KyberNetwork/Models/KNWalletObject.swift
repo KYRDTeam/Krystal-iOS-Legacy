@@ -88,7 +88,10 @@ class KNWalletObject: Object {
       icon: self.icon,
       isBackedUp: self.isBackedUp,
       isWatchWallet: self.isWatchWallet,
-      date: self.date
+      date: self.date,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress
     )
   }
 

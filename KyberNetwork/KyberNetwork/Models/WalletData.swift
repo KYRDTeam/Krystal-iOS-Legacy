@@ -14,7 +14,10 @@ struct WalletData: Equatable {
   let isBackedUp: Bool
   let isWatchWallet: Bool
   let date: Date
-  //TODO: change later
+  let chainType: ImportWalletChainType
+  let storageType: StorageType
+  let evmAddress: String
+  
   static func == (lhs: WalletData, rhs: WalletData) -> Bool {
     return lhs.address == rhs.address
   }
