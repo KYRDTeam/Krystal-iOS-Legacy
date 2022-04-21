@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import BigInt
 
-class PendingInternalHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
+class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModelProtocol {
   
   let internalTransaction: InternalHistoryTransaction
   

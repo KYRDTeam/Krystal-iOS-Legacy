@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol AbstractHistoryTransactionViewModel: class {
+protocol TransactionHistoryItemViewModelProtocol: class {
   var fromIconSymbol: String { get }
   var toIconSymbol: String { get }
   var displayedAmountString: String { get }

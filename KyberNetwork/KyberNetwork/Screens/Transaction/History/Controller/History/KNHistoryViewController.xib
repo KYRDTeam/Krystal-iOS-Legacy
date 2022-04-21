@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,23 +12,17 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
-        </array>
-        <array key="Lato-Bold.ttf">
-            <string>Lato-Bold</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNHistoryViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
-                <outlet property="emptyStateContainerView" destination="38H-s2-1f5" id="bfP-jC-EnZ"/>
                 <outlet property="filterButton" destination="bHG-74-IjS" id="B2i-PL-TIL"/>
                 <outlet property="headerContainerView" destination="gaQ-YO-jy8" id="h9d-J7-cNA"/>
+                <outlet property="pageContainer" destination="70B-Dp-o8C" id="fC9-Va-jGC"/>
                 <outlet property="segmentedControl" destination="RVy-7Y-G4X" id="WBl-RW-CdK"/>
-                <outlet property="swapNowButton" destination="qxT-e1-KJ8" id="lAa-Z3-Uq4"/>
-                <outlet property="transactionCollectionView" destination="oeZ-dP-Rut" id="TzK-da-nmD"/>
-                <outlet property="transactionCollectionViewBottomConstraint" destination="b18-BJ-adl" id="Igp-c2-CDB"/>
                 <outlet property="transactionsTextLabel" destination="GYJ-ao-QW0" id="3yV-HB-UvF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletSelectButton" destination="Pqe-0V-dgy" id="vRz-ax-2PV"/>
@@ -110,54 +104,6 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="oeZ-dP-Rut">
-                    <rect key="frame" x="0.0" y="165" width="414" height="687"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bEn-sP-ATM">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                </collectionView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38H-s2-1f5">
-                    <rect key="frame" x="0.0" y="170" width="414" height="692"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_transaction" translatesAutoresizingMaskIntoConstraints="NO" id="n6D-Nh-Zpb">
-                            <rect key="frame" x="162" y="60" width="90" height="107"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transactions yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcE-9h-X5g">
-                            <rect key="frame" x="141.5" y="195" width="131.5" height="18.5"/>
-                            <fontDescription key="fontDescription" name="Kailasa" family="Kailasa" pointSize="14"/>
-                            <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qxT-e1-KJ8">
-                            <rect key="frame" x="141.5" y="250.5" width="131.5" height="36"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="36" id="ehX-Re-0RB"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
-                            <state key="normal" title="Swap Now">
-                                <color key="titleColor" name="buttonBackgroundColor"/>
-                            </state>
-                            <connections>
-                                <action selector="swapButtonTapped:" destination="-1" eventType="touchUpInside" id="hWv-xx-jw6"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="LcE-9h-X5g" firstAttribute="centerX" secondItem="n6D-Nh-Zpb" secondAttribute="centerX" id="8aT-Lm-RWS"/>
-                        <constraint firstItem="qxT-e1-KJ8" firstAttribute="trailing" secondItem="LcE-9h-X5g" secondAttribute="trailing" id="DQr-PT-KeW"/>
-                        <constraint firstItem="n6D-Nh-Zpb" firstAttribute="top" secondItem="38H-s2-1f5" secondAttribute="top" constant="60" id="IpH-wK-npC"/>
-                        <constraint firstItem="n6D-Nh-Zpb" firstAttribute="centerX" secondItem="38H-s2-1f5" secondAttribute="centerX" id="LIm-bI-DFt"/>
-                        <constraint firstItem="LcE-9h-X5g" firstAttribute="top" secondItem="n6D-Nh-Zpb" secondAttribute="bottom" constant="28" id="N1o-hv-tHn"/>
-                        <constraint firstItem="qxT-e1-KJ8" firstAttribute="top" secondItem="LcE-9h-X5g" secondAttribute="bottom" constant="37" id="N2R-cl-vDc"/>
-                        <constraint firstItem="qxT-e1-KJ8" firstAttribute="leading" secondItem="LcE-9h-X5g" secondAttribute="leading" id="ZBL-nn-0L9"/>
-                    </constraints>
-                </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RVy-7Y-G4X" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
                     <rect key="frame" x="20" y="114" width="197" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -171,25 +117,24 @@
                         <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="Zhs-vW-qJf"/>
                     </connections>
                 </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70B-Dp-o8C">
+                    <rect key="frame" x="0.0" y="161" width="414" height="701"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="RVy-7Y-G4X" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" id="0RS-S5-6gj"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oeZ-dP-Rut" secondAttribute="trailing" id="1Fs-os-FYt"/>
                 <constraint firstItem="gaQ-YO-jy8" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4iH-ac-bj8"/>
-                <constraint firstItem="oeZ-dP-Rut" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="6gp-my-uKn"/>
-                <constraint firstItem="38H-s2-1f5" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="56" id="Eug-JB-gbB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="70B-Dp-o8C" secondAttribute="bottom" id="ElL-MM-fCz"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="70B-Dp-o8C" secondAttribute="trailing" id="U8X-96-cJz"/>
                 <constraint firstItem="RVy-7Y-G4X" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="UwV-Dc-Qzc"/>
-                <constraint firstItem="oeZ-dP-Rut" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Wt6-vY-Pvn"/>
+                <constraint firstItem="70B-Dp-o8C" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Vfa-rm-wpn"/>
                 <constraint firstItem="gaQ-YO-jy8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XdV-ZB-MLR"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="oeZ-dP-Rut" secondAttribute="bottom" constant="10" id="b18-BJ-adl"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="38H-s2-1f5" secondAttribute="bottom" id="e8U-7c-Htz"/>
                 <constraint firstItem="gaQ-YO-jy8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="i5I-Lc-hlp"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="38H-s2-1f5" secondAttribute="trailing" id="jng-wq-nZT"/>
-                <constraint firstItem="38H-s2-1f5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="n6F-Rq-SnA"/>
-                <constraint firstItem="oeZ-dP-Rut" firstAttribute="top" secondItem="gaQ-YO-jy8" secondAttribute="bottom" constant="51" id="xJH-Qe-iX7"/>
+                <constraint firstItem="70B-Dp-o8C" firstAttribute="top" secondItem="RVy-7Y-G4X" secondAttribute="bottom" constant="16" id="uMo-Rf-c4z"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gaQ-YO-jy8" secondAttribute="trailing" id="zIp-Ed-MuD"/>
             </constraints>
             <connections>
@@ -207,7 +152,6 @@
     <resources>
         <image name="arrow_down_template" width="24" height="24"/>
         <image name="back_blue_icon" width="22" height="18"/>
-        <image name="empty_transaction" width="90" height="107"/>
         <image name="filter_blue_icon" width="26" height="26"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

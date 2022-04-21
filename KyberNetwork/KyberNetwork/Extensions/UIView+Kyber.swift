@@ -215,3 +215,41 @@ extension UIView {
     self.layer.add(animation, forKey: "position")
   }
 }
+
+extension UIView {
+  
+  func rounded(cornerRadius: CGFloat) {
+    self.layer.cornerRadius = cornerRadius
+    self.layer.masksToBounds = true
+  }
+  
+  @IBInspectable var customBorderColor: UIColor {
+    get {
+      let color = self.layer.borderColor ?? UIColor.white.cgColor
+      return UIColor(cgColor: color)
+    }
+    set {
+      self.layer.borderColor = newValue.cgColor
+    }
+  }
+  
+  @IBInspectable var customBorderWidth: CGFloat {
+    get {
+      return self.layer.borderWidth
+    }
+    set {
+      self.layer.borderWidth = newValue
+    }
+  }
+  
+  @IBInspectable var customRadius: CGFloat {
+    get {
+      return self.layer.cornerRadius
+    }
+    set {
+      self.layer.cornerRadius = newValue
+      self.rounded(cornerRadius: newValue)
+    }
+  }
+  
+}

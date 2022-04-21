@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import UIKit
+import BigInt
 
-class CompletedHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
+class CompletedHistoryTransactonViewModel: TransactionHistoryItemViewModelProtocol {
 
   var fromIconSymbol: String {
     guard self.data.type == .swap || self.data.type == .earn || self.data.type == .withdraw else {

@@ -9,7 +9,7 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
   static let cellID: String = "kHistoryTransactionCellID"
   static let height: CGFloat = 68.0
 
-  fileprivate var viewModel: AbstractHistoryTransactionViewModel!
+  fileprivate var viewModel: TransactionHistoryItemViewModelProtocol!
 
   @IBOutlet weak var transactionAmountLabel: UILabel!
   @IBOutlet weak var transactionDetailsLabel: UILabel!
@@ -29,7 +29,7 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
     self.transactionStatus.rounded(radius: 10.0)
   }
 
-  func updateCell(with model: AbstractHistoryTransactionViewModel) {
+  func updateCell(with model: TransactionHistoryItemViewModelProtocol) {
     self.viewModel = model
     let hasFromToIcon = !self.viewModel.fromIconSymbol.isEmpty && !self.viewModel.toIconSymbol.isEmpty
     self.transactionAmountLabel.text = model.displayedAmountString

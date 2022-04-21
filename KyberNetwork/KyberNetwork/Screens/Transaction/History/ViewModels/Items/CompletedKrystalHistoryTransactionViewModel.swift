@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import BigInt
 
-class CompletedKrystalHistoryTransactionViewModel: AbstractHistoryTransactionViewModel {
+class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewModelProtocol {
 
   var fromIconSymbol: String {
     if self.historyItem.isSwapTokenType {

@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import BigInt
 
-class PendingHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
+class PendingHistoryTransactonViewModel: TransactionHistoryItemViewModelProtocol {
   let transaction: Transaction
   let ownerAddress: String
   let ownerWalletName: String
@@ -15,7 +16,7 @@ class PendingHistoryTransactonViewModel: AbstractHistoryTransactionViewModel {
   init(
     transaction: Transaction,
     ownerAddress: String,
-    ownerWalletName: String,
+    ownerWalletName: String
   ) {
     self.transaction = transaction
     self.ownerAddress = ownerAddress
