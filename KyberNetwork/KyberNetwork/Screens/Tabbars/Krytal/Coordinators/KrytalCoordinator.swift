@@ -216,7 +216,6 @@ extension KrytalCoordinator: KrytalViewControllerDelegate {
       self.showReferralTiers(tiers: tiers)
     case .claim:
       self.showRewards()
-    break
     }
   }
 }

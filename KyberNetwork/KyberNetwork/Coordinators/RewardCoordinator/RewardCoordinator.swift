@@ -473,7 +473,6 @@ extension RewardCoordinator: SpeedUpCustomGasSelectDelegate {
             }
           }
         }
-        
       } else {
         self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
       }

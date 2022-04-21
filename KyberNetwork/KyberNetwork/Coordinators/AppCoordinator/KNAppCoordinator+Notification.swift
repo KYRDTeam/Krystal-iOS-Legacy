@@ -200,8 +200,14 @@ extension KNAppCoordinator {
   }
   
   @objc func chainDidUpdateNotification(_ sender: Notification) {
-    if let address = sender.object as? String, let wal = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == address.lowercased() }) {
-      self.restartNewSession(wal)
+    if let address = sender.object as? String {
+      let walletObject = KNWalletStorage.shared.wallets.first { element in
+        return element.address == address
+      }
+      if let unwrap = walletObject, let wal = self.keystore.matchWithWalletObject(unwrap) {
+        self.restartNewSession(wal)
+      }
+     
     }
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()

@@ -33,6 +33,18 @@ class KNWalletStorage {
       return !object.isWatchWallet
     }
   }
+  
+  var solanaWallet: [KNWalletObject] {
+    return self.wallets.filter { (object) -> Bool in
+      return object.chainType == 2
+    }
+  }
+  
+  var nonSolanaWallet: [KNWalletObject] {
+    return self.wallets.filter { (object) -> Bool in
+      return object.chainType != 2
+    }
+  }
 
   func checkAddressExisted(_ address: Address) -> Bool {
     let existed = self.wallets.first { (object) -> Bool in

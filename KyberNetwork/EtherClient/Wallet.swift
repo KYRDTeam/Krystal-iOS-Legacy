@@ -49,6 +49,14 @@ struct Wallet {
       return address
     }
   }
+
+  var isSolanaWallet: Bool {
+    if case .solana(_, _) = self.type {
+      return true
+    } else {
+      return false
+    }
+  }
   
   var evmAddressString: String {
     switch type {
