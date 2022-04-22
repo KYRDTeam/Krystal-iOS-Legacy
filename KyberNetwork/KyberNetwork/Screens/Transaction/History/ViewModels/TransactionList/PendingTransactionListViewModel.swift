@@ -7,11 +7,11 @@
 
 import Foundation
 
-class PendingTransactionHistoryViewModel: KNTransactionListViewModel {
+class PendingTransactionListViewModel: KNTransactionListViewModel {
   
   init(currentWallet: KNWalletObject) {
-    let fetchTransactionsUseCase = InternalPendingFetchTransactionsUseCase()
-    let fetchTokensUseCase = InternalFetchTokensUseCase()
+    let fetchTransactionsUseCase = FetchInternalPendingTransactionsUseCase()
+    let fetchTokensUseCase = FetchInternalTokensUseCase()
     super.init(fetchTransactionsUseCase: fetchTransactionsUseCase,
                fetchTokensUseCase: fetchTokensUseCase,
                wallet: currentWallet,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class InternalFetchTokensUseCase: FetchTokensUseCase {
+class FetchInternalTokensUseCase: FetchTokensUseCase {
   
   func execute() -> [String] {
     return EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols()

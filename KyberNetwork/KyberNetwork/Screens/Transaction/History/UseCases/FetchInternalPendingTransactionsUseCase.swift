@@ -7,7 +7,7 @@
 
 import Foundation
 
-class InternalPendingFetchTransactionsUseCase: FetchTransactionsUseCase {
+class FetchInternalPendingTransactionsUseCase: FetchTransactionsUseCase {
   
   func execute() -> [TransactionHistoryItem] {
     return EtherscanTransactionStorage.shared.getInternalHistoryTransaction()

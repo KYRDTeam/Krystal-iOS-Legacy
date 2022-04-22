@@ -1,17 +1,17 @@
 //
-//  KrystalTransactionHistoryViewModel.swift
+//  InternalTransactionListViewModel.swift
 //  KyberNetwork
 //
-//  Created by Nguyen Tung on 20/04/2022.
+//  Created by Nguyen Tung on 22/04/2022.
 //
 
 import Foundation
 
-class KrystalTransactionHistoryViewModel: KNTransactionListViewModel {
+class InternalTransactionListViewModel: KNTransactionListViewModel {
   
   init(currentWallet: KNWalletObject) {
-    let fetchTransactionsUseCase = KrystalFetchTransactionsUseCase()
-    let fetchTokensUseCase = KrystalFetchTokensUseCase()
+    let fetchTransactionsUseCase = FetchInternalTransactionsUseCase()
+    let fetchTokensUseCase = FetchInternalTokensUseCase()
     super.init(fetchTransactionsUseCase: fetchTransactionsUseCase,
                fetchTokensUseCase: fetchTokensUseCase,
                wallet: currentWallet,

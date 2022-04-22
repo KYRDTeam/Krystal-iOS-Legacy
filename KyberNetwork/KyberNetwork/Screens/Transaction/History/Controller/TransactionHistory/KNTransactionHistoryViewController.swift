@@ -42,16 +42,24 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     switch viewModel.type {
     case .krystal:
       let completedVC = KNTransactionListViewController.instantiateFromNib()
-      completedVC.viewModel = KrystalTransactionHistoryViewModel(currentWallet: viewModel.currentWallet)
+      completedVC.viewModel = KrystalTransactionListViewModel(currentWallet: viewModel.currentWallet)
       completedVC.delegate = self
       
       let pendingVC = KNTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = PendingTransactionHistoryViewModel(currentWallet: viewModel.currentWallet)
+      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
       pendingVC.delegate = self
       
       childListViewControllers = [completedVC, pendingVC]
     case .external:
-      childListViewControllers = []
+      let completedVC = KNTransactionListViewController.instantiateFromNib()
+      completedVC.viewModel = InternalTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      completedVC.delegate = self
+      
+      let pendingVC = KNTransactionListViewController.instantiateFromNib()
+      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      pendingVC.delegate = self
+      
+      childListViewControllers = [completedVC, pendingVC]
     case .solana:
       childListViewControllers = []
     }

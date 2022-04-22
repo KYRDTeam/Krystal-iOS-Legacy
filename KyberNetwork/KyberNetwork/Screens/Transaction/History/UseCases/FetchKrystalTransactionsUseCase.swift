@@ -7,10 +7,10 @@
 
 import Foundation
 
-class KrystalFetchTransactionsUseCase: FetchTransactionsUseCase {
+class FetchKrystalTransactionsUseCase: FetchTransactionsUseCase {
   
   func execute() -> [TransactionHistoryItem] {
-    return []
+    return EtherscanTransactionStorage.shared.getKrystalTransaction()
   }
   
 }

@@ -7,10 +7,10 @@
 
 import Foundation
 
-class InternalFetchTransactionsUseCase: FetchTransactionsUseCase {
+class FetchInternalTransactionsUseCase: FetchTransactionsUseCase {
   
   func execute() -> [TransactionHistoryItem] {
-    return []
+    return EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi()
   }
   
 }
