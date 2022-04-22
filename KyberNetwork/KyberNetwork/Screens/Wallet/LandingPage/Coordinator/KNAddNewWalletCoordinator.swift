@@ -149,8 +149,13 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
     self.navigationController.dismiss(animated: true) {
       //TODO: add type to wallet firebase obj
       var isWatchWallet = false
+      var solWalletId = ""
       if case WalletType.watch(_) = wallet.type {
         isWatchWallet = true
+      }
+      
+      if case WalletType.solana(_, _, let walletID) = wallet.type {
+        solWalletId = walletID
       }
       let walletObject = KNWalletObject(
         address: wallet.addressString,
@@ -159,7 +164,8 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         isWatchWallet: isWatchWallet,
         chainType: importType,
         storageType: importMethod,
-        evmAddress: wallet.evmAddressString
+        evmAddress: wallet.evmAddressString,
+        walletID: solWalletId
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(

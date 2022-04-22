@@ -7,7 +7,7 @@ import TrustKeystore
 enum WalletType {
     case real(Account)
     case watch(Address)
-    case solana(String, String)
+    case solana(String, String, String) //(Public key, EVM address, wallet id)
 }
 
 extension WalletType: Equatable {
@@ -17,7 +17,7 @@ extension WalletType: Equatable {
             return lhs == rhs
         case (let .watch(lhs), let .watch(rhs)):
             return lhs == rhs
-        case (let .solana(lhs, _), let .solana(rhs, _)):
+        case (let .solana(lhs, _, _), let .solana(rhs, _, _)):
             return lhs == rhs
         default:
             return false
@@ -45,13 +45,13 @@ struct Wallet {
       return account.address.description.lowercased()
     case .watch(let address):
       return address.description.lowercased()
-    case .solana(let address, _):
+    case .solana(let address, _, _):
       return address
     }
   }
 
   var isSolanaWallet: Bool {
-    if case .solana(_, _) = self.type {
+    if case .solana(_, _, _) = self.type {
       return true
     } else {
       return false
@@ -64,7 +64,7 @@ struct Wallet {
       return account.address.description.lowercased()
     case .watch(let address):
       return address.description.lowercased()
-    case .solana(_, let evm):
+    case .solana(_, let evm, _):
       return evm
     }
   }

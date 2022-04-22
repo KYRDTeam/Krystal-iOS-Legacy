@@ -73,6 +73,11 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
 
     return nil
   }()
+  
+  //Get privatekey with PK import
+  lazy var privateKeyForPKWallet: PrivateKey? = {
+    return self.session.keystore.solanaUtil.exportKeyPair(walletID: self.currentWallet.walletID)
+  }()
 
   deinit {
     self.rootViewController?.removeObserveNotification()
@@ -126,7 +131,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.rootViewController?.coordinatorUpdateBalances(self.balances)
     }
     
-    print("[Debug] \(self.privateKey)")
+    print("[Debug] \(self.privateKeyForPKWallet)")
   }
 
   func stop() {

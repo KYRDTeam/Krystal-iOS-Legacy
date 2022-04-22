@@ -6,6 +6,7 @@ import TrustKeystore
 import TrustCore
 
 protocol Keystore {
+  var solanaUtil: SolanaUtil { get }
     var hasWallets: Bool { get }
     var wallets: [Wallet] { get }
     var keysDirectory: URL { get }
@@ -41,7 +42,7 @@ extension Keystore {
   func matchWithWalletObject(_ object: KNWalletObject) -> Wallet? {
     let chainType = ImportWalletChainType(rawValue: object.chainType) ?? .multiChain
     if chainType == .solana {
-      return Wallet(type: .solana(object.address, object.evmAddress))
+      return Wallet(type: .solana(object.address, object.evmAddress, object.walletID))
     } else {
       let wal = self.wallets.first(where: { $0.addressString == object.address })
       return wal

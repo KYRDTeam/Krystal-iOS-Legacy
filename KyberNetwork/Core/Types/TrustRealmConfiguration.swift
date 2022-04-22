@@ -17,7 +17,7 @@ struct RealmConfiguration {
     static func configuration(for address: String, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
       var config = Realm.Configuration()
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(address.lowercased())-\(chainID).realm")
-      config.schemaVersion = 16
+      config.schemaVersion = 17
       config.migrationBlock = { migration, oldVersion in
         switch oldVersion {
         case 0:
@@ -42,7 +42,7 @@ struct RealmConfiguration {
     static func globalConfiguration(for chainID: Int = 1) -> Realm.Configuration {
       var config = Realm.Configuration()
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
-      config.schemaVersion = 16
+      config.schemaVersion = 17
       config.migrationBlock = { migration, oldVersion in
         switch oldVersion {
         case 0:
