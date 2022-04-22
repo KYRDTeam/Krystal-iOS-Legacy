@@ -163,6 +163,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
   func landinagePageViewController(_ controller: KNLandingPageViewController, run event: KNLandingPageViewEvent) {
     switch event {
     case .openCreateWallet:
+      KNCrashlyticsUtil.logCustomEvent(withName: "intro_create_wallet", customAttributes: nil)
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
           self.createWalletCoordinator.updateNewWallet(nil, name: nil)
@@ -174,6 +175,7 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
       self.createWalletCoordinator.updateNewWallet(nil, name: nil)
       self.createWalletCoordinator.start()
     case .openImportWallet:
+      KNCrashlyticsUtil.logCustomEvent(withName: "intro_import_wallet", customAttributes: nil)
       if UserDefaults.standard.bool(forKey: Constants.acceptedTermKey) == false {
         self.termViewController.nextAction = {
           self.importWalletCoordinator.start()
