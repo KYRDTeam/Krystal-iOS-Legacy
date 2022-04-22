@@ -200,6 +200,19 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
       height: 24
     )
   }
+  
+  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    if viewModel.isLoadingMore { return }
+    if indexPath.section == viewModel.numberOfSections - 1 && indexPath.item == viewModel.numberOfItems(inSection: indexPath.section) - 1 {
+      DispatchQueue.global().async {
+        self.viewModel.loadMoreIfNeeded {
+          DispatchQueue.main.async {
+            self.reloadUI()
+          }
+        }
+      }
+    }
+  }
 }
 
 extension KNTransactionListViewController: UICollectionViewDataSource {

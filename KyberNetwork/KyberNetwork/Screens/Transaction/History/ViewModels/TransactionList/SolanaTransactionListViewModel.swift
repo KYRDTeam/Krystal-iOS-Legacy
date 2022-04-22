@@ -16,7 +16,8 @@ class SolanaTransactionListViewModel: KNTransactionListViewModel {
                fetchTokensUseCase: fetchTokensUseCase,
                wallet: currentWallet,
                isTransactionActionEnabled: false,
-               canRefresh: true)
+               canRefresh: true,
+               canLoadMore: true)
   }
   
 }

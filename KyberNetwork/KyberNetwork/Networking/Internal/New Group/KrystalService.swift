@@ -16,16 +16,16 @@ class KrystalService {
   
   let provider = MoyaProvider<KrystalApi>(plugins: [NetworkLoggerPlugin()])
   
-  func getSolanaTransactions(address: String, page: Int, completion: @escaping (Result<[KrystalSolanaTransaction], Error>) -> ()) {
-    provider.request(.transactions(address: address)) { result in
+  func getSolanaTransactions(address: String, prevHash: String?, limit: Int, completion: @escaping (Result<[KrystalSolanaTransaction], Error>) -> ()) {
+    provider.request(.transactions(address: address, prevHash: prevHash, limit: limit)) { result in
       switch result {
       case .success(let json):
-//        do {
+        do {
           let listResponse = try! JSONDecoder().decode(KrystalSolanaTransactionListResponse.self, from: json.data)
           completion(.success(listResponse.transactions))
-//        } catch {
-//          completion(.failure(KrystalNetworkError.cannotDecode))
-//        }
+        } catch {
+          completion(.failure(KrystalNetworkError.cannotDecode))
+        }
       case .failure(let error):
         completion(.failure(error))
       }

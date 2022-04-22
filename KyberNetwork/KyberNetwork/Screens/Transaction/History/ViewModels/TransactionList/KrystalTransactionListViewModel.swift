@@ -16,7 +16,8 @@ class KrystalTransactionListViewModel: KNTransactionListViewModel {
                fetchTokensUseCase: fetchTokensUseCase,
                wallet: currentWallet,
                isTransactionActionEnabled: false,
-               canRefresh: true)
+               canRefresh: true,
+               canLoadMore: false)
   }
   
 }

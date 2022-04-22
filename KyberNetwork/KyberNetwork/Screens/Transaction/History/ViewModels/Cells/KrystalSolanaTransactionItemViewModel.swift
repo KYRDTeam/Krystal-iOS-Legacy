@@ -26,14 +26,14 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var fromIconSymbol: String {
     if isSwapTransaction {
-      return transferEvents[0].symbol
+      return transferEvents.last!.symbol
     }
     return ""
   }
   
   var toIconSymbol: String {
     if isSwapTransaction {
-      return transferEvents[1].symbol
+      return transferEvents.first!.symbol
     }
     return ""
   }
@@ -57,13 +57,13 @@ extension KrystalSolanaTransactionItemViewModel {
   }
   
   var isSwapTransaction: Bool {
-    return transferEvents.count == 2
+    return transferEvents.count > 2
   }
   
   var displayedAmountString: String {
     if isSwapTransaction {
-      let tx0 = transferEvents[0]
-      let tx1 = transferEvents[1]
+      let tx0 = transferEvents.last!
+      let tx1 = transferEvents.first!
       return String(format: "%@ %@ -> %@ %@", tx0.formattedAmount, tx0.symbol, tx1.formattedAmount, tx1.symbol)
     } else if isTokenTransferTransaction {
       let tx = transaction.details.tokensTransferTxs[0]
@@ -82,8 +82,8 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var transactionDetailsString: String {
     if isSwapTransaction {
-      let tx0 = transferEvents[0]
-      let tx1 = transferEvents[1]
+      let tx0 = transferEvents.last!
+      let tx1 = transferEvents.first!
       let formattedRate = formattedSwapRate(from: tx0.amount, to: tx1.amount, decimals: tx0.decimals)
       return "1 \(tx0.symbol) = \(formattedRate) \(tx1.symbol)"
     } else if isTokenTransferTransaction {
@@ -143,7 +143,6 @@ fileprivate extension KrystalSolanaTransaction.SolTransferTx {
   
   var amountString: String {
     let decimals = Constants.Tokens.Decimals.solana
-    let amount = amount.doubleAmount(decimals: decimals)
     return amount.formattedAmount(decimals: decimals)
   }
   

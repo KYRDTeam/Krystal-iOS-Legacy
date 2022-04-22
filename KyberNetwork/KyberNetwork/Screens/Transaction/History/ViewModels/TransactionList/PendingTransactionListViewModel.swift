@@ -16,7 +16,8 @@ class PendingTransactionListViewModel: KNTransactionListViewModel {
                fetchTokensUseCase: fetchTokensUseCase,
                wallet: currentWallet,
                isTransactionActionEnabled: true,
-               canRefresh: false)
+               canRefresh: false,
+               canLoadMore: false)
   }
   
 }

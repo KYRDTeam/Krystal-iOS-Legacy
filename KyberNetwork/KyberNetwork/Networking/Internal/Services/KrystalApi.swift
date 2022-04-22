@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 enum KrystalApi: TargetType {
-  case transactions(address: String)
+  case transactions(address: String, prevHash: String?, limit: Int)
 }
 
 extension KrystalApi {
@@ -36,8 +36,12 @@ extension KrystalApi {
   
   var task: Task {
     switch self {
-    case .transactions(let address):
-      return .requestParameters(parameters: ["address": address], encoding: URLEncoding.default)
+    case .transactions(let address, let prevHash, let limit):
+      var dict = [String: Any]()
+      dict["address"] = address
+      dict["beforeHash"] = prevHash
+      dict["limit"] = limit
+      return .requestParameters(parameters: dict, encoding: URLEncoding.default)
     }
   }
   

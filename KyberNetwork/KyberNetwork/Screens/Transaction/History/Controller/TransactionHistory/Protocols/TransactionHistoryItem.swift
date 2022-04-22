@@ -9,6 +9,7 @@ import Foundation
 
 protocol TransactionHistoryItem {
   var txDate: Date { get }
+  var txHash: String { get }
   
   func match(filter: KNTransactionFilter, allTokens: [String]) -> Bool
   func toViewModel() -> TransactionHistoryItemViewModelProtocol

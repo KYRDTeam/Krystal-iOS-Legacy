@@ -44,7 +44,7 @@ struct KrystalSolanaTransaction: Decodable {
   struct SolTransferTx: Decodable {
     var source: String
     var destination: String
-    var amount: String
+    var amount: Double
   }
       
   struct Token: Decodable {
@@ -73,14 +73,39 @@ struct KrystalSolanaTransaction: Decodable {
   struct Event: Decodable {
     var amount: String
     var decimals: Int
-    var destination: String
-    var destinationOwner: String
-    var icon: String
-    var source: String
-    var sourceOwner: String
+    var destination: String?
+    var destinationOwner: String?
+    var icon: String?
+    var source: String?
+    var sourceOwner: String?
     var symbol: String
-    var tokenAddress: String
+    var tokenAddress: String?
     var type: String
+    
+    enum CodingKeys: String, CodingKey {
+      case amount, decimals, destination, destinationOwner, icon, source, sourceOwner, symbol, tokenAddress, type
+    }
+    
+    init(from decoder: Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      if let amount = try? container.decode(String.self, forKey: .amount) {
+        self.amount = amount
+      } else if let doubleAmount = try? container.decode(Int.self, forKey: .amount) {
+        self.amount = String(doubleAmount)
+      } else {
+        self.amount = "0"
+      }
+      self.decimals = try container.decode(Int.self, forKey: .decimals)
+      self.destination = try container.decodeIfPresent(String.self, forKey: .destination)
+      self.destinationOwner = try container.decodeIfPresent(String.self, forKey: .destinationOwner)
+      self.icon = try container.decodeIfPresent(String.self, forKey: .icon)
+      self.source = try container.decodeIfPresent(String.self, forKey: .source)
+      self.sourceOwner = try container.decodeIfPresent(String.self, forKey: .sourceOwner)
+      self.symbol = try container.decodeIfPresent(String.self, forKey: .symbol) ?? ""
+      self.tokenAddress = try container.decodeIfPresent(String.self, forKey: .tokenAddress)
+      self.type = try container.decode(String.self, forKey: .type)
+    }
+    
   }
   
   struct UnknownTransferTx: Decodable {

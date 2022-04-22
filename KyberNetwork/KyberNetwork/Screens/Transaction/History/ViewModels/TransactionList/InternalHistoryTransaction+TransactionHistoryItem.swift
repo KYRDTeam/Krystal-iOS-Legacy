@@ -13,6 +13,10 @@ extension InternalHistoryTransaction: TransactionHistoryItem {
     return time
   }
   
+  var txHash: String {
+    return hash
+  }
+  
   func match(filter: KNTransactionFilter, allTokens: [String]) -> Bool {
     var isMatchingConditions = true
 

@@ -7,7 +7,8 @@
 
 import Foundation
 
-class FetchSolanaTransactionsUseCase: FetchTransactionsUseCase {
+class FetchSolanaTransactionsUseCase: FetchTransactionsUseCase, FetchNextTransactionsPageUseCase {
+  static let limit = 5
   var address: String
   let krystalService = KrystalService()
   
@@ -16,12 +17,23 @@ class FetchSolanaTransactionsUseCase: FetchTransactionsUseCase {
   }
   
   func execute(completion: @escaping ([TransactionHistoryItem]) -> ()) {
-    krystalService.getSolanaTransactions(address: address, page: 1) { result in
+    krystalService.getSolanaTransactions(address: address, prevHash: nil, limit: FetchSolanaTransactionsUseCase.limit) { result in
       switch result {
       case .success(let transactions):
         completion(transactions)
       case .failure:
         completion([])
+      }
+    }
+  }
+  
+  func loadNextPage(prevHash: String, completion: @escaping ([TransactionHistoryItem], Bool) -> ()) {
+    krystalService.getSolanaTransactions(address: address, prevHash: prevHash, limit: FetchSolanaTransactionsUseCase.limit) { result in
+      switch result {
+      case .success(let transactions):
+        completion(transactions, transactions.count == FetchSolanaTransactionsUseCase.limit)
+      case .failure:
+        completion([], false)
       }
     }
   }

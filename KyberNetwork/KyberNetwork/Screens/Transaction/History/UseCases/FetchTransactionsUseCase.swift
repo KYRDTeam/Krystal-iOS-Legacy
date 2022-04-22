@@ -11,3 +11,7 @@ protocol FetchTransactionsUseCase {
   func execute(completion: @escaping ([TransactionHistoryItem]) -> ())
 }
 
+protocol FetchNextTransactionsPageUseCase {
+  func loadNextPage(prevHash: String, completion: @escaping ([TransactionHistoryItem], Bool) -> ())
+}
+

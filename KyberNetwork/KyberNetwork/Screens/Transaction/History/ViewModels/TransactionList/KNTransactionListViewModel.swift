@@ -15,10 +15,13 @@ class KNTransactionListViewModel {
   
   var isTransactionActionEnabled: Bool
   var canRefresh: Bool
+  var canLoadMore: Bool
+  var isLoadingMore = false
   
   var allTokens: [String]
+  var allTransactions: [TransactionHistoryItem] = []
   var allHeaders: [String] = []
-  var allTransactions: [String: [TransactionHistoryItem]] = [:]
+  var allGroupedTransactions: [String: [TransactionHistoryItem]] = [:]
   var displayTransactions: [String: [TransactionHistoryItem]] = [:]
   var displayHeaders: [String] = []
   
@@ -30,10 +33,12 @@ class KNTransactionListViewModel {
        fetchTokensUseCase: FetchTokensUseCase,
        wallet: KNWalletObject,
        isTransactionActionEnabled: Bool,
-       canRefresh: Bool) {
+       canRefresh: Bool,
+       canLoadMore: Bool) {
     self.wallet = wallet
     self.isTransactionActionEnabled = isTransactionActionEnabled
     self.canRefresh = canRefresh
+    self.canLoadMore = canLoadMore
     self.fetchTransactionsUseCase = fetchTransactionsUseCase
     self.fetchTokensUseCase = fetchTokensUseCase
     self.allTokens = fetchTokensUseCase.execute()
@@ -52,18 +57,26 @@ class KNTransactionListViewModel {
     )
   }
   
+  func updateAllTransactions(transactions: [TransactionHistoryItem]) {
+    self.allTransactions = transactions
+    self.allHeaders = transactions
+      .map { $0.txDate.startDate() }
+      .unique
+      .sorted(by: >)
+      .map { self.dateFormatter.string(from: $0) }
+    
+    self.allGroupedTransactions = Dictionary(grouping: transactions) { self.dateFormatter.string(from: $0.txDate) }
+    
+    self.filterTransactions()
+  }
+  
   func reloadData(completion: @escaping () -> ()) {
     fetchTransactionsUseCase.execute { [weak self] transactions in
-      guard let self = self else { return }
-      self.allHeaders = transactions
-        .map { $0.txDate.startDate() }
-        .unique
-        .sorted(by: >)
-        .map { self.dateFormatter.string(from: $0) }
-      
-      self.allTransactions = Dictionary(grouping: transactions) { self.dateFormatter.string(from: $0.txDate) }
-      
-      self.filterTransactions()
+      guard let self = self else {
+        completion()
+        return
+      }
+      self.updateAllTransactions(transactions: transactions)
       completion()
     }
   }
@@ -79,7 +92,7 @@ class KNTransactionListViewModel {
     self.displayTransactions = {
       var dictionary = [String: [TransactionHistoryItem]]()
       headers.forEach { header in
-        dictionary[header] = allTransactions[header]?
+        dictionary[header] = allGroupedTransactions[header]?
           .filter { $0.match(filter: filter, allTokens: allTokens) }
           .sorted { $0.txDate > $1.txDate }
       }
@@ -97,6 +110,29 @@ class KNTransactionListViewModel {
   func updateWallet(wallet: KNWalletObject, completion: @escaping () -> ()) {
     self.wallet = wallet
     self.reloadData(completion: completion)
+  }
+  
+  func loadMoreIfNeeded(completion: @escaping () -> ()) {
+    guard canLoadMore else {
+      completion()
+      return
+    }
+    guard let useCase = fetchTransactionsUseCase as? FetchNextTransactionsPageUseCase else {
+      completion()
+      return
+    }
+    guard let header = displayHeaders.last, let tx = displayTransactions[header]?.last else {
+      completion()
+      return
+    }
+    isLoadingMore = true
+    useCase.loadNextPage(prevHash: tx.txHash) { [weak self] transactions, hasMore in
+      guard let self = self else { return }
+      self.isLoadingMore = false
+      self.canLoadMore = hasMore
+      self.updateAllTransactions(transactions: self.allTransactions + transactions)
+      completion()
+    }
   }
 }
 
