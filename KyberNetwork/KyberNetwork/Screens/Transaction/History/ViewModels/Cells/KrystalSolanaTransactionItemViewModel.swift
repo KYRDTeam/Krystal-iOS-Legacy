@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import BigInt
 
 class KrystalSolanaTransactionItemViewModel: TransactionHistoryItemViewModelProtocol {
   
@@ -81,22 +82,25 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var transactionDetailsString: String {
     if isSwapTransaction {
-      return "Rate..."
+      let tx0 = transferEvents[0]
+      let tx1 = transferEvents[1]
+      let formattedRate = formattedSwapRate(from: tx0.amount, to: tx1.amount, decimals: tx0.decimals)
+      return "1 \(tx0.symbol) = \(formattedRate) \(tx1.symbol)"
     } else if isTokenTransferTransaction {
       let tx = transaction.details.tokensTransferTxs[0]
       let isTransferToOther = transaction.signer.first == tx.sourceOwner
       if isTransferToOther {
-        return "To: \(tx.destinationOwner)"
+        return String(format: "to_colon_x".toBeLocalised(), tx.destinationOwner)
       } else {
-        return "From: \(tx.sourceOwner)"
+        return String(format: "from_colon_x".toBeLocalised(), tx.sourceOwner)
       }
     } else if isSolTransferTransaction {
       let tx = transaction.details.solTransferTxs[0]
       let isTransferToOther = transaction.signer.first == tx.source
       if isTransferToOther {
-        return "To: \(tx.destination)"
+        return String(format: "to_colon_x".toBeLocalised(), tx.destination)
       } else {
-        return "From: \(tx.source)"
+        return String(format: "from_colon_x".toBeLocalised(), tx.source)
       }
     } else {
       return interactProgram
@@ -124,11 +128,14 @@ extension KrystalSolanaTransactionItemViewModel {
       .filter { $0.type == "transfer" }
   }
   
-  var isTransferToOther: Bool {
-    if transaction.details.tokensTransferTxs.isEmpty {
-      return false
-    }
-    return transaction.signer.first == transaction.details.tokensTransferTxs[0].sourceOwner
+  func formattedSwapRate(from: String, to: String, decimals: Int) -> String {
+    let sourceAmountBigInt = BigInt(from) ?? BigInt(0)
+    let destAmountBigInt = BigInt(to) ?? BigInt(0)
+    
+    let amountFrom = sourceAmountBigInt * BigInt(10).power(18) / BigInt(10).power(decimals)
+    let amountTo = destAmountBigInt * BigInt(10).power(18) / BigInt(10).power(decimals)
+    let rate = amountTo * BigInt(10).power(18) / amountFrom
+    return rate.displayRate(decimals: 18)
   }
 }
 
@@ -161,6 +168,12 @@ fileprivate extension KrystalSolanaTransaction.Event {
 }
 
 fileprivate extension String {
+  
+  func toFormattedAmountString(decimals: Int) -> String {
+    let amountBigInt = BigInt(self) ?? BigInt(0)
+    let formattedValue = amountBigInt.string(decimals: decimals, minFractionDigits: 0, maxFractionDigits: 6)
+    return formattedValue
+  }
   
   func doubleAmount(decimals: Int) -> Double {
     return (Double(self) ?? 0) / pow(Double(10), Double(decimals))
