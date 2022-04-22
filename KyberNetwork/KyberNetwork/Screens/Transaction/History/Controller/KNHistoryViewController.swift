@@ -208,7 +208,7 @@ struct KNHistoryViewModel {
     }
   }
 
-  func completedTransaction(for row: Int, at section: Int) -> AbstractHistoryTransactionViewModel? {
+  func completedTransaction(for row: Int, at section: Int) -> TransactionHistoryItemViewModelProtocol? {
     let header = self.header(for: section)
     if let trans = self.displayingCompletedKrystalTxData[header], trans.count >= row {
       return trans[row]
@@ -272,7 +272,7 @@ struct KNHistoryViewModel {
       self.displayingPendingTxHeaders.forEach { (header) in
         let filteredPendingTxData = self.pendingTxData[header]?.sorted(by: { $0.time > $1.time })
         let items = filteredPendingTxData?.map({ (item) -> PendingInternalHistoryTransactonViewModel in
-          return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
+          return PendingInternalHistoryTransactonViewModel(transaction: item)
         })
         self.displayingPendingTxData[header] = items
       }
@@ -295,7 +295,7 @@ struct KNHistoryViewModel {
         displayHeaders.forEach { (header) in
           let filteredHandledTxData = self.handledTxData[header]?.sorted(by: { $0.time > $1.time })
           let items = filteredHandledTxData?.filter({ return self.isInternalHistoryTransactionIncluded($0) }).map({ (item) -> PendingInternalHistoryTransactonViewModel in
-            return PendingInternalHistoryTransactonViewModel(index: 0, transaction: item)
+            return PendingInternalHistoryTransactonViewModel(transaction: item)
           })
           self.displayingUnsupportedChainCompletedTxData[header] = items
         }

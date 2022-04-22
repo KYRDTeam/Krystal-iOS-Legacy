@@ -121,7 +121,7 @@ protocol KNTransactionFilterViewControllerDelegate: class {
 class KNTransactionFilterViewController: KNBaseViewController {
 
   fileprivate let kFilterTokensTableViewCellID: String = "kFilterTokensTableViewCellID"
-  fileprivate var viewModel: KNTransactionFilterViewModel
+  var viewModel: KNTransactionFilterViewModel
 
   @IBOutlet weak var headerContainerView: UIView!
   @IBOutlet weak var navTitleLabel: UILabel!

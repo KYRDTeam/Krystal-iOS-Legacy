@@ -511,6 +511,33 @@
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		A6B3A85F27FAB4F200F84819 /* PairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3A85E27FAB4F100F84819 /* PairKey.swift */; };
+		A6B3CD3B281176E4005D0D66 /* KNTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD39281176E3005D0D66 /* KNTransactionListViewController.swift */; };
+		A6B3CD3C281176E4005D0D66 /* KNTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B3CD3A281176E4005D0D66 /* KNTransactionListViewController.xib */; };
+		A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD3D28117806005D0D66 /* KNTransactionHistoryViewController.swift */; };
+		A6B3CD4028117806005D0D66 /* KNTransactionHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B3CD3E28117806005D0D66 /* KNTransactionHistoryViewController.xib */; };
+		A6B3CD44281178BC005D0D66 /* TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD43281178BC005D0D66 /* TransactionHistoryItem.swift */; };
+		A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD452811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift */; };
+		A6B3CD4D2811BE58005D0D66 /* PendingTransactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD492811BE58005D0D66 /* PendingTransactionHistoryViewModel.swift */; };
+		A6B3CD4E2811BE58005D0D66 /* KrystalTransactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD4A2811BE58005D0D66 /* KrystalTransactionHistoryViewModel.swift */; };
+		A6B3CD512811BF85005D0D66 /* TransactionHistoryItemViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD502811BF84005D0D66 /* TransactionHistoryItemViewModelProtocol.swift */; };
+		A6B3CD562811C07C005D0D66 /* CompletedHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD522811C07A005D0D66 /* CompletedHistoryTransactonViewModel.swift */; };
+		A6B3CD572811C07C005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD532811C07A005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift */; };
+		A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD542811C07B005D0D66 /* PendingHistoryTransactonViewModel.swift */; };
+		A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD552811C07B005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */; };
+		A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD5B2811C3D0005D0D66 /* Assembler+.swift */; };
+		A6B3CD5E2811C3E5005D0D66 /* ViewModelAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD5D2811C3E4005D0D66 /* ViewModelAssembly.swift */; };
+		A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD5F2811CBBA005D0D66 /* ViewControllerAssembly.swift */; };
+		A6B3CD622811D451005D0D66 /* KNTransactionHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD612811D450005D0D66 /* KNTransactionHistoryCoordinator.swift */; };
+		A6B3CD652811E379005D0D66 /* KNTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD642811E378005D0D66 /* KNTransactionListViewModel.swift */; };
+		A6B3CD672811E423005D0D66 /* FetchTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD662811E423005D0D66 /* FetchTransactionsUseCase.swift */; };
+		A6B3CD692811E437005D0D66 /* FetchTokensUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD682811E437005D0D66 /* FetchTokensUseCase.swift */; };
+		A6B3CD6B28124900005D0D66 /* KrystalFetchTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD6A28124900005D0D66 /* KrystalFetchTransactionsUseCase.swift */; };
+		A6B3CD6D28124CDF005D0D66 /* InternalPendingFetchTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD6C28124CDF005D0D66 /* InternalPendingFetchTransactionsUseCase.swift */; };
+		A6B3CD6F28124D05005D0D66 /* InternalFetchTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD6E28124D04005D0D66 /* InternalFetchTransactionsUseCase.swift */; };
+		A6B3CD7128124D47005D0D66 /* KrystalFetchTokensUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7028124D47005D0D66 /* KrystalFetchTokensUseCase.swift */; };
+		A6B3CD7328124D70005D0D66 /* InternalFetchTokensUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7228124D70005D0D66 /* InternalFetchTokensUseCase.swift */; };
+		A6B3CD7728124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7628124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift */; };
+		A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */; };
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
@@ -1397,6 +1424,33 @@
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B3A85E27FAB4F100F84819 /* PairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairKey.swift; sourceTree = "<group>"; };
+		A6B3CD39281176E3005D0D66 /* KNTransactionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNTransactionListViewController.swift; sourceTree = "<group>"; };
+		A6B3CD3A281176E4005D0D66 /* KNTransactionListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNTransactionListViewController.xib; sourceTree = "<group>"; };
+		A6B3CD3D28117806005D0D66 /* KNTransactionHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNTransactionHistoryViewController.swift; sourceTree = "<group>"; };
+		A6B3CD3E28117806005D0D66 /* KNTransactionHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNTransactionHistoryViewController.xib; sourceTree = "<group>"; };
+		A6B3CD43281178BC005D0D66 /* TransactionHistoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistoryItem.swift; sourceTree = "<group>"; };
+		A6B3CD452811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD492811BE58005D0D66 /* PendingTransactionHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingTransactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD4A2811BE58005D0D66 /* KrystalTransactionHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KrystalTransactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD502811BF84005D0D66 /* TransactionHistoryItemViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistoryItemViewModelProtocol.swift; sourceTree = "<group>"; };
+		A6B3CD522811C07A005D0D66 /* CompletedHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD532811C07A005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedKrystalHistoryTransactionViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD542811C07B005D0D66 /* PendingHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD552811C07B005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingInternalHistoryTransactonViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD5B2811C3D0005D0D66 /* Assembler+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assembler+.swift"; sourceTree = "<group>"; };
+		A6B3CD5D2811C3E4005D0D66 /* ViewModelAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelAssembly.swift; sourceTree = "<group>"; };
+		A6B3CD5F2811CBBA005D0D66 /* ViewControllerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerAssembly.swift; sourceTree = "<group>"; };
+		A6B3CD612811D450005D0D66 /* KNTransactionHistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionHistoryCoordinator.swift; sourceTree = "<group>"; };
+		A6B3CD642811E378005D0D66 /* KNTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNTransactionListViewModel.swift; sourceTree = "<group>"; };
+		A6B3CD662811E423005D0D66 /* FetchTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTransactionsUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD682811E437005D0D66 /* FetchTokensUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTokensUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD6A28124900005D0D66 /* KrystalFetchTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalFetchTransactionsUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD6C28124CDF005D0D66 /* InternalPendingFetchTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalPendingFetchTransactionsUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD6E28124D04005D0D66 /* InternalFetchTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalFetchTransactionsUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD7028124D47005D0D66 /* KrystalFetchTokensUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalFetchTokensUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD7228124D70005D0D66 /* InternalFetchTokensUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalFetchTokensUseCase.swift; sourceTree = "<group>"; };
+		A6B3CD7628124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KrystalHistoryTransaction+TransactionHistoryItem.swift"; sourceTree = "<group>"; };
+		A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InternalHistoryTransaction+TransactionHistoryItem.swift"; sourceTree = "<group>"; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -1817,6 +1871,7 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				A6B3CD5A2811C35D005D0D66 /* DI */,
 				7E6F5115273A572B002DA0B2 /* LottieJSON */,
 				255C40EC2092DB6200475871 /* Storage */,
 				257740C82057948F003323EB /* Coordinators */,
@@ -2838,6 +2893,8 @@
 		25BE32972090967100D760FB /* History */ = {
 			isa = PBXGroup;
 			children = (
+				A6B3CD632811E19B005D0D66 /* UseCases */,
+				A6B3CD472811BE18005D0D66 /* ViewModels */,
 				25CE6F8C2073E03800A3A2F9 /* Controller */,
 				25CE6F8B2073E03100A3A2F9 /* Coordinator */,
 			);
@@ -3138,6 +3195,7 @@
 			isa = PBXGroup;
 			children = (
 				25CE6F8D2073E05A00A3A2F9 /* KNHistoryCoordinator.swift */,
+				A6B3CD612811D450005D0D66 /* KNTransactionHistoryCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -3145,6 +3203,7 @@
 		25CE6F8C2073E03800A3A2F9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A6B3CD3728117657005D0D66 /* TransactionHistory */,
 				251E22632271CBDA0038679C /* FilterVC */,
 				257C9FC12078A9D900EE0128 /* TransactionCollectionHeader */,
 				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
@@ -4006,6 +4065,36 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		A6B3CD3728117657005D0D66 /* TransactionHistory */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD41281178A2005D0D66 /* Protocols */,
+				A6B3CD3D28117806005D0D66 /* KNTransactionHistoryViewController.swift */,
+				A6B3CD3E28117806005D0D66 /* KNTransactionHistoryViewController.xib */,
+				A6B3CD39281176E3005D0D66 /* KNTransactionListViewController.swift */,
+				A6B3CD3A281176E4005D0D66 /* KNTransactionListViewController.xib */,
+				A6B3CD452811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift */,
+			);
+			path = TransactionHistory;
+			sourceTree = "<group>";
+		};
+		A6B3CD41281178A2005D0D66 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD43281178BC005D0D66 /* TransactionHistoryItem.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A6B3CD472811BE18005D0D66 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD7528124DE8005D0D66 /* TransactionList */,
+				A6B3CD7428124DC8005D0D66 /* Cells */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		A6DA40E327F6DAA00078C58E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -4013,6 +4102,54 @@
 				A6DA40E627F6DC8C0078C58E /* Images.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		A6B3CD5A2811C35D005D0D66 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD5B2811C3D0005D0D66 /* Assembler+.swift */,
+				A6B3CD5D2811C3E4005D0D66 /* ViewModelAssembly.swift */,
+				A6B3CD5F2811CBBA005D0D66 /* ViewControllerAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		A6B3CD632811E19B005D0D66 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD662811E423005D0D66 /* FetchTransactionsUseCase.swift */,
+				A6B3CD682811E437005D0D66 /* FetchTokensUseCase.swift */,
+				A6B3CD6A28124900005D0D66 /* KrystalFetchTransactionsUseCase.swift */,
+				A6B3CD6C28124CDF005D0D66 /* InternalPendingFetchTransactionsUseCase.swift */,
+				A6B3CD6E28124D04005D0D66 /* InternalFetchTransactionsUseCase.swift */,
+				A6B3CD7028124D47005D0D66 /* KrystalFetchTokensUseCase.swift */,
+				A6B3CD7228124D70005D0D66 /* InternalFetchTokensUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		A6B3CD7428124DC8005D0D66 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD522811C07A005D0D66 /* CompletedHistoryTransactonViewModel.swift */,
+				A6B3CD532811C07A005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift */,
+				A6B3CD542811C07B005D0D66 /* PendingHistoryTransactonViewModel.swift */,
+				A6B3CD552811C07B005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */,
+				A6B3CD502811BF84005D0D66 /* TransactionHistoryItemViewModelProtocol.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A6B3CD7528124DE8005D0D66 /* TransactionList */ = {
+			isa = PBXGroup;
+			children = (
+				A6B3CD4A2811BE58005D0D66 /* KrystalTransactionHistoryViewModel.swift */,
+				A6B3CD492811BE58005D0D66 /* PendingTransactionHistoryViewModel.swift */,
+				A6B3CD642811E378005D0D66 /* KNTransactionListViewModel.swift */,
+				A6B3CD7628124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift */,
+				A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */,
+			);
+			path = TransactionList;
 			sourceTree = "<group>";
 		};
 		C3018DC826579379003C8114 /* SwitchChain */ = {
@@ -4931,6 +5068,7 @@
 				C3EE06C4267A15E50090B432 /* Karla-SemiBoldItalic.ttf in Resources */,
 				25929C5E20DA5C760045CFA3 /* SF-Pro-Text-RegularItalic.otf in Resources */,
 				C32017BB27BE41910055130B /* MultiSendAddressCell.xib in Resources */,
+				A6B3CD4028117806005D0D66 /* KNTransactionHistoryViewController.xib in Resources */,
 				C3EE06CA267A15E50090B432 /* OFL.txt in Resources */,
 				C313720E26078051003D432B /* CustomTokenTableViewCell.xib in Resources */,
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
@@ -4964,6 +5102,7 @@
 				2567B3F2216B10060006D963 /* web3.min.js in Resources */,
 				25E9E1FF208F139E00A9090D /* KNPasscodeViewController.xib in Resources */,
 				C3A6911625638DE700F57756 /* Lato-Black.ttf in Resources */,
+				A6B3CD3C281176E4005D0D66 /* KNTransactionListViewController.xib in Resources */,
 				7E72917A27F193FC00ADF721 /* SwitchChainCell.xib in Resources */,
 				296106CE1F777E410006164B /* LaunchScreen.storyboard in Resources */,
 				25929C9720DA5CC10045CFA3 /* SFCompactDisplay-Heavy.otf in Resources */,
@@ -5324,6 +5463,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftChart/SwiftChart.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
@@ -5381,6 +5521,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftChart.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
@@ -5469,6 +5610,7 @@
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
+				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
@@ -5487,6 +5629,7 @@
 				C31371EC26035182003D432B /* KrytalViewController.swift in Sources */,
 				C3114370249B1C2300084CD8 /* KNMigrationTutorialViewController.swift in Sources */,
 				290B2B5F1F9177860053C83E /* UIImage.swift in Sources */,
+				A6B3CD622811D451005D0D66 /* KNTransactionHistoryCoordinator.swift in Sources */,
 				25D3D3EC20F61DC10071D599 /* KNTrackerRateStorage.swift in Sources */,
 				C30568AB2670B87700F331CE /* OverviewMainViewController.swift in Sources */,
 				257740C120579335003323EB /* UIView+Kyber.swift in Sources */,
@@ -5508,6 +5651,7 @@
 				C3EEA45B2671EF840011DB97 /* OverviewMainViewCell.swift in Sources */,
 				C347DA3825C02BE3000D6E81 /* EarnMenuViewController.swift in Sources */,
 				C37AF0BF25CA5639006FB880 /* EarnConfirmViewController.swift in Sources */,
+				A6B3CD7728124F96005D0D66 /* KrystalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
 				259EC46920E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.swift in Sources */,
 				25A4B4B321242DE000924351 /* KNCreateWalletViewController.swift in Sources */,
 				C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */,
@@ -5516,6 +5660,7 @@
 				C335FC71257F90990015CC27 /* RectangularDashedView.swift in Sources */,
 				25E9E1EF208DE24F00A9090D /* BigInt.swift in Sources */,
 				25696F5720BD2B81002CC53F /* KNDataDetailsView.swift in Sources */,
+				A6B3CD44281178BC005D0D66 /* TransactionHistoryItem.swift in Sources */,
 				C3BC3F7F24AC984000B1ADFE /* KNSecret.swift in Sources */,
 				291F52B91F6B880F00B369AB /* EtherKeystore.swift in Sources */,
 				2545577D20ABD9A200012692 /* KNSupportedTokenStorage.swift in Sources */,
@@ -5574,6 +5719,7 @@
 				C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */,
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
+				A6B3CD562811C07C005D0D66 /* CompletedHistoryTransactonViewModel.swift in Sources */,
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,
 				C3233EFA2807DAEC0086C2BC /* CopyAddressViewController.swift in Sources */,
 				257A377C205B01F000E86794 /* BigInt+Kyber.swift in Sources */,
@@ -5602,12 +5748,15 @@
 				25BE329C209096E800D760FB /* KNListWalletsViewController.swift in Sources */,
 				25682B7D20EE0A36009738C4 /* KNTransactionDetailsCoordinator.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
+				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				25CC0AAE205918900009D0D5 /* KyberNetworkService.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
+				A6B3CD692811E437005D0D66 /* FetchTokensUseCase.swift in Sources */,
+				A6B3CD6B28124900005D0D66 /* KrystalFetchTransactionsUseCase.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
@@ -5615,9 +5764,11 @@
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
+				A6B3CD4D2811BE58005D0D66 /* PendingTransactionHistoryViewModel.swift in Sources */,
 				25EE4A6D20C54AD200E2282F /* KNAppCoordinator+InSession.swift in Sources */,
 				C33C33B725ECC70700F347E5 /* AddTokenViewController.swift in Sources */,
 				2995739F1FA1F294006F17FD /* QRURLParser.swift in Sources */,
+				A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */,
 				7721A6BE202A5677004DB16C /* DecryptError.swift in Sources */,
 				A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */,
 				61FC5ECF1FCFBAE500CCB12A /* EtherNumberFormatter.swift in Sources */,
@@ -5635,7 +5786,9 @@
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
 				25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */,
+				A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */,
 				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
+				A6B3CD512811BF85005D0D66 /* TransactionHistoryItemViewModelProtocol.swift in Sources */,
 				A6B3A85F27FAB4F200F84819 /* PairKey.swift in Sources */,
 				258BF6A723068A4800988EDD /* KNOpenSettingsAllowCamera.swift in Sources */,
 				298542E81FBAD0B200CB5081 /* OperationType.swift in Sources */,
@@ -5665,6 +5818,7 @@
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				C3D560AA260C641E00408875 /* OverviewClaimViewController.swift in Sources */,
 				29CA4B791F6FBFD50032313D /* Balance.swift in Sources */,
+				A6B3CD3B281176E4005D0D66 /* KNTransactionListViewController.swift in Sources */,
 				291F52A71F6B766100B369AB /* BalanceRequest.swift in Sources */,
 				C3377ACF25E650B00035A18D /* ChartViewController.swift in Sources */,
 				251ABCBC205790210069687F /* KNEnvironment.swift in Sources */,
@@ -5677,6 +5831,7 @@
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,
 				C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */,
 				C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */,
+				A6B3CD7328124D70005D0D66 /* InternalFetchTokensUseCase.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
 				257A377A205B013E00E86794 /* String+Kyber.swift in Sources */,
 				C33CCB2D23F4100000F54B81 /* KNConfirmCancelTransactionPopUp.swift in Sources */,
@@ -5685,6 +5840,7 @@
 				C320D80F27B3A7F60001DC71 /* MultiSendCell.swift in Sources */,
 				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
+				A6B3CD652811E379005D0D66 /* KNTransactionListViewModel.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				251ABCA620578E630069687F /* KNNotificationUtil.swift in Sources */,
 				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
@@ -5720,6 +5876,7 @@
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
 				C32656AE266F546100C69561 /* Action.swift in Sources */,
+				A6B3CD5E2811C3E5005D0D66 /* ViewModelAssembly.swift in Sources */,
 				257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */,
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
@@ -5730,6 +5887,7 @@
 				C308BC1526D897290030022B /* ConfirmSendNFTViewController.swift in Sources */,
 				294DFBA31FE0E2EA004CEB56 /* TransactionValue.swift in Sources */,
 				A6DA40E227F6B11B0078C58E /* ExploreViewModel.swift in Sources */,
+				A6B3CD572811C07C005D0D66 /* CompletedKrystalHistoryTransactionViewModel.swift in Sources */,
 				C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */,
 				25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
@@ -5737,6 +5895,7 @@
 				C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */,
 				C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */,
 				255C40EE2092E09600475871 /* KNTokenTransaction.swift in Sources */,
+				A6B3CD672811E423005D0D66 /* FetchTransactionsUseCase.swift in Sources */,
 				29F1C863200375D2003780D8 /* Wallet.swift in Sources */,
 				7EFE44092715855D006CF502 /* ClaimButtonTableViewCell.swift in Sources */,
 				25CC0AB220591A3D0009D0D5 /* KNRate.swift in Sources */,
@@ -5747,6 +5906,7 @@
 				254BB358211D9F1400B8E75D /* KConfirmSendViewController.swift in Sources */,
 				C33BB80227955C2B00851BC6 /* ABIError.swift in Sources */,
 				C31F152923F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift in Sources */,
+				A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
 				C31F74B525DD3284008B21F7 /* OverviewAssetsTableViewCell.swift in Sources */,
 				25CC0AB02059191C0009D0D5 /* KNInternalProvider.swift in Sources */,
 				C38E5D7425F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift in Sources */,
@@ -5760,6 +5920,7 @@
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
+				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
@@ -5778,6 +5939,7 @@
 				296AF9AB1F7380920058AF78 /* GetTransactionCountRequest.swift in Sources */,
 				25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */,
 				7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */,
+				A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */,
 				C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
 				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
@@ -5840,13 +6002,17 @@
 				C3018DCB265793E1003C8114 /* SwitchChainViewController.swift in Sources */,
 				251E22662271CBF40038679C /* KNTransactionFilterViewController.swift in Sources */,
 				25369F0620F88693007231FE /* KNWelcomeScreenViewModel.swift in Sources */,
+				A6B3CD4E2811BE58005D0D66 /* KrystalTransactionHistoryViewModel.swift in Sources */,
 				25EE47EE21267B97002657DF /* KNAppStyle.swift in Sources */,
+				A6B3CD6F28124D05005D0D66 /* InternalFetchTransactionsUseCase.swift in Sources */,
 				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
+				A6B3CD6D28124CDF005D0D66 /* InternalPendingFetchTransactionsUseCase.swift in Sources */,
 				25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */,
+				A6B3CD7128124D47005D0D66 /* KrystalFetchTokensUseCase.swift in Sources */,
 				2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */,
 				C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */,
 				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,

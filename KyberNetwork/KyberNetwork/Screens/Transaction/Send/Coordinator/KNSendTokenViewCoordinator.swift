@@ -21,12 +21,11 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidClose()
 }
 
-class KNSendTokenViewCoordinator: NSObject, Coordinator {
+class KNSendTokenViewCoordinator: BaseCoordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
 
   let navigationController: UINavigationController
   fileprivate var session: KNSession
-  var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
   fileprivate var nftItem: NFTItem = NFTItem()

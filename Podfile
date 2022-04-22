@@ -57,6 +57,7 @@ end
 
 def utilitiesPods
   pod 'LaunchDarkly', '~> 5.4'
+  pod 'Swinject'
   pod 'SwiftLint', '~> 0.29.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'Lokalise', '~> 0.8.1'
