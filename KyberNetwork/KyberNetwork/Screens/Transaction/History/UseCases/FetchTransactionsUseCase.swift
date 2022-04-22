@@ -8,6 +8,6 @@
 import Foundation
 
 protocol FetchTransactionsUseCase {
-  func execute() -> [TransactionHistoryItem]
+  func execute(completion: @escaping ([TransactionHistoryItem]) -> ())
 }
 

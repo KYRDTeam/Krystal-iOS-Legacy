@@ -52,17 +52,20 @@ class KNTransactionListViewModel {
     )
   }
   
-  func reloadData() {
-    let transactions = fetchTransactionsUseCase.execute()
-    self.allHeaders = transactions
-      .map { $0.txDate.startDate() }
-      .unique
-      .sorted(by: >)
-      .map { dateFormatter.string(from: $0) }
-    
-    self.allTransactions = Dictionary(grouping: transactions) { dateFormatter.string(from: $0.txDate) }
-    
-    self.filterTransactions()
+  func reloadData(completion: @escaping () -> ()) {
+    fetchTransactionsUseCase.execute { [weak self] transactions in
+      guard let self = self else { return }
+      self.allHeaders = transactions
+        .map { $0.txDate.startDate() }
+        .unique
+        .sorted(by: >)
+        .map { self.dateFormatter.string(from: $0) }
+      
+      self.allTransactions = Dictionary(grouping: transactions) { self.dateFormatter.string(from: $0.txDate) }
+      
+      self.filterTransactions()
+      completion()
+    }
   }
   
   private func filterTransactions() {
@@ -91,9 +94,9 @@ class KNTransactionListViewModel {
     self.filterTransactions()
   }
   
-  func updateWallet(wallet: KNWalletObject) {
+  func updateWallet(wallet: KNWalletObject, completion: @escaping () -> ()) {
     self.wallet = wallet
-    self.reloadData()
+    self.reloadData(completion: completion)
   }
 }
 

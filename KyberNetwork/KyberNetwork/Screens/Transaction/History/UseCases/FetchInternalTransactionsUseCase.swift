@@ -9,8 +9,8 @@ import Foundation
 
 class FetchInternalTransactionsUseCase: FetchTransactionsUseCase {
   
-  func execute() -> [TransactionHistoryItem] {
-    return EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi()
+  func execute(completion: @escaping ([TransactionHistoryItem]) -> ()) {
+    completion( EtherscanTransactionStorage.shared.getHandledInternalHistoryTransactionForUnsupportedApi())
   }
   
 }

@@ -9,7 +9,7 @@ import Foundation
 
 enum KNTransactionHistoryType {
   case krystal
-  case internal
+  case `internal`
   case solana
 }
 

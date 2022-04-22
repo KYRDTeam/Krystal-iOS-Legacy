@@ -937,7 +937,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, wallet: currentWallet, type: .krystal)
+    let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, wallet: currentWallet, type: .solana)
     coordinate(coordinator: coordinator)
 //    self.historyCoordinator = nil
 //    self.historyCoordinator = KNHistoryCoordinator(

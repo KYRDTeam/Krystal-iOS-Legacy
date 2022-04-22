@@ -9,8 +9,8 @@ import Foundation
 
 class FetchInternalPendingTransactionsUseCase: FetchTransactionsUseCase {
   
-  func execute() -> [TransactionHistoryItem] {
-    return EtherscanTransactionStorage.shared.getInternalHistoryTransaction()
+  func execute(completion: @escaping ([TransactionHistoryItem]) -> ()) {
+    completion(EtherscanTransactionStorage.shared.getInternalHistoryTransaction())
   }
   
 }

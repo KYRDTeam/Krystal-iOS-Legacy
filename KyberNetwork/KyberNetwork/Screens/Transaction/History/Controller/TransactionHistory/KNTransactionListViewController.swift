@@ -107,9 +107,10 @@ class KNTransactionListViewController: UIViewController {
   
   func updateWallet(wallet: KNWalletObject) {
     DispatchQueue.global().async {
-      self.viewModel.updateWallet(wallet: wallet)
-      DispatchQueue.main.async {
-        self.reloadUI()
+      self.viewModel.updateWallet(wallet: wallet) {
+        DispatchQueue.main.async {
+          self.reloadUI()
+        }
       }
     }
   }
@@ -125,9 +126,10 @@ class KNTransactionListViewController: UIViewController {
   
   func reload() {
     DispatchQueue.global().async {
-      self.viewModel.reloadData()
-      DispatchQueue.main.async {
-        self.reloadUI()
+      self.viewModel.reloadData {
+        DispatchQueue.main.async {
+          self.reloadUI()
+        }
       }
     }
   }

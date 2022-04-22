@@ -9,8 +9,8 @@ import Foundation
 
 class FetchKrystalTransactionsUseCase: FetchTransactionsUseCase {
   
-  func execute() -> [TransactionHistoryItem] {
-    return EtherscanTransactionStorage.shared.getKrystalTransaction()
+  func execute(completion: @escaping ([TransactionHistoryItem]) -> ()) {
+    completion(EtherscanTransactionStorage.shared.getKrystalTransaction())
   }
   
 }

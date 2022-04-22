@@ -7,7 +7,7 @@
 
 import Foundation
 
-class KrystalFetchTokensUseCase: FetchTokensUseCase {
+class FetchKrystalTokensUseCase: FetchTokensUseCase {
   
   func execute() -> [String] {
     return EtherscanTransactionStorage.shared.getEtherscanToken().map { $0.symbol }

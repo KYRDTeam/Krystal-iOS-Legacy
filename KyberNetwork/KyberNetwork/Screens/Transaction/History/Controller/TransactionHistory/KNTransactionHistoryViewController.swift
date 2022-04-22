@@ -50,7 +50,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
       pendingVC.delegate = self
       
       childListViewControllers = [completedVC, pendingVC]
-    case .external:
+    case .internal:
       let completedVC = KNTransactionListViewController.instantiateFromNib()
       completedVC.viewModel = InternalTransactionListViewModel(currentWallet: viewModel.currentWallet)
       completedVC.delegate = self
@@ -61,7 +61,15 @@ class KNTransactionHistoryViewController: KNBaseViewController {
       
       childListViewControllers = [completedVC, pendingVC]
     case .solana:
-      childListViewControllers = []
+      let completedVC = KNTransactionListViewController.instantiateFromNib()
+      completedVC.viewModel = SolanaTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      completedVC.delegate = self
+      
+      let pendingVC = KNTransactionListViewController.instantiateFromNib()
+      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      pendingVC.delegate = self
+      
+      childListViewControllers = [completedVC, pendingVC]
     }
     
   }
