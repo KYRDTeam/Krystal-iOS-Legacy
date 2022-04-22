@@ -96,9 +96,9 @@ class SolanaUtil {
       return account.identifier
   }
   
-  func importKeyPair(_ key: String) -> (String?, WalletCore.Account?) {
+  func importKeyPair(_ key: String) -> (String?, WalletCore.Account?, String?) {
     guard let pk = SolanaUtil.keyPairToPrivateKey(key) else {
-      return (nil, nil)
+      return (nil, nil, nil)
     }
     let newPassword = PasswordGenerator.generateRandom()
     let wallet = try? self.keyStore.import(privateKey: pk, name: "", password: newPassword, coin: .ethereum)
@@ -107,10 +107,21 @@ class SolanaUtil {
       let address = AnyAddress(publicKey: pk.getPublicKeyEd25519(), coin: .solana)
       self.keysDict[address.description] = unwrap.identifier
       let account = try! unwrap.getAccount(password: newPassword, coin: .ethereum)
-      return (address.description, account)
+      return (address.description, account, unwrap.identifier)
     }
     
-    return (nil, nil)
+    return (nil, nil, nil)
+  }
+  
+  func exportKeyPair(walletID: String) -> PrivateKey? {
+    let filtered = self.keyStore.wallets.first { element in
+      return element.identifier == walletID
+    }
+    
+    guard let wallet = filtered, let password = self.getPassword(for: wallet), let data = try? self.keyStore.exportPrivateKey(wallet: wallet, password: password) else { return nil }
+    
+    let pk = PrivateKey(data: data)
+    return pk
   }
   
   func getPrivateKeyForAddress(_ address: String) -> PrivateKey? {

@@ -24,14 +24,14 @@ class CopyAddressViewModel {
       if element == .solana {
         if let account = keyStore.matchWithEvmAccount(address: self.walletData.address), case .success(let seeds) = self.keyStore.exportMnemonics(account: account) {
           let address = SolanaUtil.seedsToPublicKey(seeds)
-          let solData = WalletData(address: address, name: "", icon: "", isBackedUp: true, isWatchWallet: false, date: Date(), chainType: .solana, storageType: .seeds, evmAddress: "")
+          let solData = WalletData(address: address, name: "", icon: "", isBackedUp: true, isWatchWallet: false, date: Date(), chainType: .solana, storageType: .seeds, evmAddress: "", walletID: "")
           result.append(CopyAddressCellModel(type: element, data: solData))
         }
       } else {
         result.append(CopyAddressCellModel(type: element, data: data))
       }
     }
-    
+
     self.dataSource = result
   }
 }
