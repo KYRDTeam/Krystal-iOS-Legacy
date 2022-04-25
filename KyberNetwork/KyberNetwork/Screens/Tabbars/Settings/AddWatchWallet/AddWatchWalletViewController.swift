@@ -11,8 +11,7 @@ import TrustCore
 
 class AddWatchWalletViewModel {
   fileprivate(set) var addressString: String = ""
-  fileprivate(set) var isUsingEns: Bool = false
-  var address: Address?
+
   var wallet: KNWalletObject? {
     didSet {
       if let unwrapped = self.wallet {
@@ -20,38 +19,22 @@ class AddWatchWalletViewModel {
       }
     }
   }
+  
+  var isAddressValid: Bool {
+    guard !self.addressString.isEmpty else { return false }
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return SolanaUtil.isVaildSolanaAddress(self.addressString)
+    } else {
+      return Address.isAddressValid(self.addressString)
+    }
+  }
 
   func updateAddress(_ address: String) {
     self.addressString = address
-    self.address = Address(string: address)
-    if self.address != nil {
-      self.isUsingEns = false
-    }
-  }
-
-  func updateAddressFromENS(_ ens: String, ensAddr: Address?) {
-    if ens == self.addressString {
-      self.address = ensAddr
-      self.isUsingEns = ensAddr != nil
-    }
-  }
-  
-  var displayEnsMessage: String? {
-    if self.addressString.isEmpty { return nil }
-    if self.address == nil { return "Invalid address or your ens is not mapped yet" }
-    if Address(string: self.addressString) != nil { return nil }
-    let address = self.address?.description ?? ""
-    return "\(address.prefix(12))...\(address.suffix(10))"
-  }
-
-  var displayEnsMessageColor: UIColor {
-    if self.address == nil { return UIColor.Kyber.strawberry }
-    return UIColor.Kyber.blueGreen
   }
   
   var displayAddress: String? {
-    //TODO: check case add existed address
-    if self.address == nil { return self.addressString }
+
     if let contact = KNContactStorage.shared.contacts.first(where: { self.addressString.lowercased() == $0.address.lowercased() }) {
       return "\(contact.name) - \(self.addressString)"
     }
@@ -76,9 +59,9 @@ class AddWatchWalletViewModel {
 }
 
 protocol AddWatchWalletViewControllerDelegate: class {
-  func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: Address, name: String?)
+  func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: String, name: String?)
   func addWatchWalletViewControllerDidClose(_ controller: AddWatchWalletViewController)
-  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: Address, name: String?)
+  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: String, name: String?)
 }
 
 class AddWatchWalletViewController: UIViewController {
@@ -128,12 +111,12 @@ class AddWatchWalletViewController: UIViewController {
   }
 
   @IBAction func doneButtonTapped(_ sender: Any) {
-    guard let address = self.viewModel.address else {
+    guard self.viewModel.isAddressValid else {
       self.showErrorTopBannerMessage(message: "Please enter address".toBeLocalised())
       return
     }
     if self.viewModel.wallet == nil {
-      guard !KNWalletStorage.shared.checkAddressExisted(address) else {
+      guard !KNWalletStorage.shared.checkAddressExisted(self.viewModel.addressString) else {
         self.showErrorTopBannerMessage(message: "Address existed".toBeLocalised())
         return
       }
@@ -141,9 +124,9 @@ class AddWatchWalletViewController: UIViewController {
     
     self.dismiss(animated: true) {
       if let unwrapped = self.viewModel.wallet {
-        self.delegate?.addWatchWalletViewControllerDidEdit(self, wallet: unwrapped.clone(), address: address, name: self.walletLabelTextField.text)
+        self.delegate?.addWatchWalletViewControllerDidEdit(self, wallet: unwrapped.clone(), address: self.viewModel.addressString, name: self.walletLabelTextField.text)
       } else {
-        self.delegate?.addWatchWalletViewController(self, didAddAddress: address, name: self.walletLabelTextField.text)
+        self.delegate?.addWatchWalletViewController(self, didAddAddress: self.viewModel.addressString, name: self.walletLabelTextField.text)
       }
     }
   }
@@ -170,31 +153,7 @@ class AddWatchWalletViewController: UIViewController {
     self.contentView.endEditing(true)
   }
 
-  fileprivate func getEnsAddressFromName(_ name: String) {
-    if Address(string: name) != nil { return }
-    if !name.contains(".") {
-      self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-      self.updateUIAddressQRCode()
-      return
-    }
-    DispatchQueue.main.async {
-      KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
-            self.viewModel.updateAddressFromENS(name, ensAddr: address)
-          } else {
-            self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
-              self.getEnsAddressFromName(self.viewModel.addressString)
-            }
-          }
-          self.updateUIAddressQRCode()
-        }
-      }
-    }
-  }
+  
 
   func updateUIAddressQRCode(isAddressChanged: Bool = true) {
     self.walletAddressTextField.text = self.viewModel.displayAddress
@@ -203,9 +162,7 @@ class AddWatchWalletViewController: UIViewController {
   }
 
   func updateUIEnsMessage() {
-    self.ensAddressLabel.isHidden = false
-    self.ensAddressLabel.text = self.viewModel.displayEnsMessage
-    self.ensAddressLabel.textColor = self.viewModel.displayEnsMessageColor
+    self.ensAddressLabel.isHidden = true
   }
 }
 
@@ -240,7 +197,7 @@ extension AddWatchWalletViewController: QRCodeReaderDelegate {
 
       let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
       self.viewModel.updateAddress(address)
-      self.getEnsAddressFromName(address)
+
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
   }
@@ -251,7 +208,6 @@ extension AddWatchWalletViewController: UITextFieldDelegate {
     textField.text = ""
     self.viewModel.updateAddress("")
     self.updateUIAddressQRCode()
-    self.getEnsAddressFromName("")
     return false
   }
 
@@ -260,7 +216,6 @@ extension AddWatchWalletViewController: UITextFieldDelegate {
     textField.text = text
     self.viewModel.updateAddress(text)
     self.updateUIEnsMessage()
-    self.getEnsAddressFromName(text)
     return false
   }
 
@@ -270,6 +225,5 @@ extension AddWatchWalletViewController: UITextFieldDelegate {
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     self.updateUIAddressQRCode()
-    self.getEnsAddressFromName(self.viewModel.addressString)
   }
 }

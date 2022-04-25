@@ -198,11 +198,11 @@ extension KNAddNewWalletCoordinator: CreateWalletMenuViewControllerDelegate {
 }
 
 extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
-  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: Address, name: String?) {
-    if wallet.address.lowercased() == address.description.lowercased() {
+  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: String, name: String?) {
+    if wallet.address.lowercased() == address.lowercased() {
       wallet.name = name ?? "Imported"
       KNWalletStorage.shared.add(wallets: [wallet])
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: address.description) {
+      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
         let newContact = contact.clone()
         newContact.name = name ?? "Imported"
         KNContactStorage.shared.update(contacts: [newContact])
@@ -213,20 +213,31 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
         )
       }
       self.navigationController.dismiss(animated: true, completion: nil)
-      self.delegate?.addNewWalletCoordinator(add: Wallet(type: .watch(address)))
-    } else {
-      guard let walletAddress = Address(string: wallet.address) else {
-        return
+      if KNGeneralProvider.shared.currentChain == .solana {
+        self.delegate?.addNewWalletCoordinator(add: Wallet(type: .solana(wallet.address, wallet.evmAddress, wallet.walletID)))
+      } else if let walletAddress = Address(string: wallet.address) {
+        self.delegate?.addNewWalletCoordinator(add: Wallet(type: .watch(walletAddress)))
       }
-      let aWallet = Wallet(type: .watch(walletAddress))
-      self.keystore.delete(wallet: aWallet)
-      KNWalletStorage.shared.delete(wallet: wallet)
+      
+    } else {
+      if KNGeneralProvider.shared.currentChain == .solana {
+        self.keystore.solanaUtil.removeWatchWallet(address)
+        self.importNewWatchWallet(address: address, name: name, isAdd: false)
+      } else {
+        guard let walletAddress = Address(string: wallet.address) else {
+          return
+        }
+        let aWallet = Wallet(type: .watch(walletAddress))
+        self.keystore.delete(wallet: aWallet)
+        KNWalletStorage.shared.delete(wallet: wallet)
 
-      self.importNewWatchWallet(address: address, name: name, isAdd: false)
+        self.importNewWatchWallet(address: address, name: name, isAdd: false)
+      }
+      
     }
   }
   
-  func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: Address, name: String?) {
+  func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: String, name: String?) {
     self.importNewWatchWallet(address: address, name: name)
   }
 
@@ -234,8 +245,9 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
     self.navigationController.dismiss(animated: true, completion: nil)
   }
 
-  fileprivate func importNewWatchWallet(address: Address, name: String?, isAdd: Bool = true) {
-    self.keystore.importWallet(type: .watch(address: address), importType: .multiChain) { [weak self] result in //TODO: add watch wallet for
+  fileprivate func importNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
+    let importType: ImportWalletChainType = KNGeneralProvider.shared.currentChain == .solana ? .solana : .evm
+    self.keystore.importWallet(type: .watch(address: address, name: name ?? ""), importType: importType) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let wallet):
@@ -260,7 +272,8 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
         let walletObject = KNWalletObject(
           address: wallet.addressString,
           name: walletName,
-          isWatchWallet: true
+          isWatchWallet: true,
+          chainType: importType
         )
         KNWalletStorage.shared.add(wallets: [walletObject])
         let contact = KNContact(

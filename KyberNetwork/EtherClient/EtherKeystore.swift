@@ -160,13 +160,20 @@ open class EtherKeystore: Keystore {
               completion(.failure(.failedToImport(error)))
             }
           }
-        case .watch(let address):
-            let addressString = address.description
+        case .watch(let address, let name):
+          if importType == .solana {
+            self.solanaUtil.addWatchWallet(name: name, address: address)
+            completion(.success(Wallet(type: .solana(address, "", ""))))
+          } else {
+            let addressString = address
             guard !watchAddresses.contains(addressString) else {
-                return completion(.failure(.duplicateAccount))
+              return completion(.failure(.duplicateAccount))
             }
             self.watchAddresses = [watchAddresses, [addressString]].flatMap { $0 }
-            completion(.success(Wallet(type: .watch(address))))
+            if let addressObj = Address(string: address) {
+              completion(.success(Wallet(type: .watch(addressObj))))
+            }
+          }
         }
     }
 

@@ -46,9 +46,9 @@ class KNWalletStorage {
     }
   }
 
-  func checkAddressExisted(_ address: Address) -> Bool {
+  func checkAddressExisted(_ address: String) -> Bool {
     let existed = self.wallets.first { (object) -> Bool in
-      return object.address.lowercased() == address.description.lowercased()
+      return object.address.lowercased() == address.lowercased()
     }
     return existed != nil
   }

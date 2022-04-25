@@ -151,4 +151,31 @@ class SolanaUtil {
     let keyPairString = Base58.encodeNoCheck(data: data)
     return keyPairString
   }
+  
+  static func isVaildSolanaAddress(_ address: String) -> Bool {
+    return AnyAddress.isValid(string: address, coin: .solana)
+  }
+  
+  func addWatchWallet(name: String, address: String) {
+    let watch = Watch(coin: .solana, name: name, address: address, xpub: nil)
+    do {
+      try self.keyStore.watch([watch])
+    } catch {
+    }
+  }
+  
+  func matchWatchWallet(_ address: String) -> Watch? {
+    return self.keyStore.watches.first { element in
+      return element.address == address
+    }
+  }
+  
+  func removeWatchWallet(_ address: String) {
+    if let watch = self.matchWatchWallet(address) {
+      do {
+        try self.keyStore.removeWatch(watch)
+      } catch {
+      }
+    }
+  }
 }
