@@ -131,6 +131,11 @@ jobs:
         run: |
           gcloud config configurations list
 
-      - name: Get configuration items
+      - name: a1111
         run: |
           gsutil -m cp -r /Users/runner/privates/* gs://ota-storage/ios/
+
+
+     - name: a222
+        run: |
+          gsutil ls gs://ota-storage/ios/
