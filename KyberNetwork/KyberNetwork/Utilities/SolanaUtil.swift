@@ -141,4 +141,14 @@ class SolanaUtil {
     
     return nil
   }
+  
+  static func exportKeyPair(privateKey: PrivateKey) -> String {
+    var publicKey = privateKey.getPublicKeyEd25519()
+    let privateKeyData = privateKey.data
+    let publicKeyData = publicKey.data
+    
+    let data = privateKeyData + publicKeyData
+    let keyPairString = Base58.encodeNoCheck(data: data)
+    return keyPairString
+  }
 }

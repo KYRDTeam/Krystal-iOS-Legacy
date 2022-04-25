@@ -265,35 +265,46 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func showActionSheetBackupPhrase(walletObj: KNWalletObject) {
-    guard let wallet = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() }) else { return }
+    
+    
+    let wallet = walletObj.walletID.isEmpty ? self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() }) : Wallet(type: .solana(walletObj.address, "", walletObj.walletID))
+    
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
         var action = [UIAlertAction]()
-        action.append(UIAlertAction(
-            title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-            style: .default,
-            handler: { _ in
-              self.backupKeystore(wallet: wallet)
-            }
-          ))
+      if let unwrap = wallet {
+        if !unwrap.isSolanaWallet {
+          action.append(UIAlertAction(
+              title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
+              style: .default,
+              handler: { _ in
+                self.backupKeystore(wallet: unwrap)
+              }
+            ))
+        }
+        
         action.append(UIAlertAction(
             title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
             style: .default,
             handler: { _ in
-              self.backupPrivateKey(wallet: wallet)
-              self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
+              self.backupPrivateKey(wallet: unwrap)
+              self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
             }
           ))
-        if case .real(let account) = wallet.type, case .success = self.session.keystore.exportMnemonics(account: account) {
+        if case .real(let account) = unwrap.type, case .success = self.session.keystore.exportMnemonics(account: account) {
             action.append(UIAlertAction(
               title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
               style: .default,
               handler: { _ in
-                self.backupMnemonic(wallet: wallet)
-                self.saveBackedUpWallet(wallet: wallet, name: walletObj.name)
+                self.backupMnemonic(wallet: unwrap)
+                self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
               }
             ))
         }
+      }
+      
+      guard !action.isEmpty else { return }
+
         action.append(UIAlertAction(
             title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
             style: .cancel,
@@ -329,21 +340,29 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupPrivateKey(wallet: Wallet) {
-    self.navigationController.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      if case .real(let account) = wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        self.navigationController.hideLoading()
-        switch result {
-        case .success(let data):
-          self.openShowBackUpView(data: data.hexString, wallet: wallet)
-        case .failure(let error):
-          self.navigationController.topViewController?.displayError(error: error)
+    if case .solana(let address, _, let walletID) = wallet.type {
+      guard let pk = self.session.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
+      let keypair = SolanaUtil.exportKeyPair(privateKey: pk)
+      self.openShowBackUpView(data: keypair, wallet: wallet)
+    } else {
+      self.navigationController.displayLoading()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+        if case .real(let account) = wallet.type {
+          let result = self.session.keystore.exportPrivateKey(account: account)
+          self.navigationController.hideLoading()
+          switch result {
+          case .success(let data):
+            self.openShowBackUpView(data: data.hexString, wallet: wallet)
+          case .failure(let error):
+            self.navigationController.topViewController?.displayError(error: error)
+          }
+        } else {
+          self.navigationController.hideLoading()
         }
-      } else {
-        self.navigationController.hideLoading()
       }
     }
+    
+    
   }
 
   fileprivate func backupMnemonic(wallet: Wallet) {
