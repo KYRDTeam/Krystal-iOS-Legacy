@@ -21,13 +21,20 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // reset data
+    self.setupSkeleton()
     self.transactionAmountLabel.text = ""
     self.transactionDetailsLabel.text = ""
     self.transactionTypeLabel.text = ""
     self.transactionStatus.rounded(radius: 10.0)
   }
+  
+  func setupSkeleton() {
+    transactionAmountLabel.lastLineFillPercent = 30
+    transactionDetailsLabel.lastLineFillPercent = 70
+  }
 
-  func updateCell(with model: TransactionHistoryItemViewModelProtocol) {
+  func updateCell(with model: TransactionHistoryItemViewModelProtocol, index: Int) {
+    self.backgroundColor = index % 2 == 0 ? UIColor.Kyber.evenBg : UIColor.Kyber.mainBg
     let hasFromToIcon = !model.fromIconSymbol.isEmpty && !model.toIconSymbol.isEmpty
     self.transactionAmountLabel.text = model.displayedAmountString
     self.transactionDetailsLabel.text = model.transactionDetailsString

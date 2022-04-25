@@ -2,6 +2,7 @@
 
 import UIKit
 import SwipeCellKit
+import Swinject
 
 class KNTransactionHistoryViewController: KNBaseViewController {
 
@@ -41,32 +42,16 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   func initChildViewControllers() {
     switch viewModel.type {
     case .krystal:
-      let completedVC = KNTransactionListViewController.instantiateFromNib()
-      completedVC.viewModel = KrystalTransactionListViewModel(currentWallet: viewModel.currentWallet)
-      completedVC.delegate = self
-      
-      let pendingVC = KNTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
-      pendingVC.delegate = self
-      
-      childListViewControllers = [completedVC, pendingVC]
+      childListViewControllers = []
     case .internal:
-      let completedVC = KNTransactionListViewController.instantiateFromNib()
-      completedVC.viewModel = InternalTransactionListViewModel(currentWallet: viewModel.currentWallet)
-      completedVC.delegate = self
-      
-      let pendingVC = KNTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
-      pendingVC.delegate = self
-      
-      childListViewControllers = [completedVC, pendingVC]
+      childListViewControllers = []
     case .solana:
       let completedVC = KNTransactionListViewController.instantiateFromNib()
-      completedVC.viewModel = SolanaTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      completedVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.currentWallet)
       completedVC.delegate = self
       
       let pendingVC = KNTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = PendingTransactionListViewModel(currentWallet: viewModel.currentWallet)
+      pendingVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.currentWallet)
       pendingVC.delegate = self
       
       childListViewControllers = [completedVC, pendingVC]

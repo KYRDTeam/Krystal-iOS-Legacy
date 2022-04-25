@@ -7,6 +7,7 @@
 
 import UIKit
 import SwipeCellKit
+import SkeletonView
 
 protocol KNTransactionListViewControllerDelegate: AnyObject {
   func selectSwapNow(_ viewController: KNTransactionListViewController)
@@ -20,7 +21,7 @@ class KNTransactionListViewController: UIViewController {
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var emptyView: UIView!
   
-  var viewModel: KNTransactionListViewModel!
+  var viewModel: BaseTransactionListViewModel!
   weak var delegate: KNTransactionListViewControllerDelegate?
   var animatingCell: UICollectionViewCell?
   private let refreshControl = UIRefreshControl()
@@ -29,17 +30,25 @@ class KNTransactionListViewController: UIViewController {
     super.viewDidLoad()
     
     setupCollectionView()
+    setupSkeleton()
     reload()
   }
   
   func setupCollectionView() {
     self.collectionView.registerCellNib(KNHistoryTransactionCollectionViewCell.self)
+    self.collectionView.registerCell(LoadingIndicatorCell.self)
     self.collectionView.registerHeaderCellNib(KNTransactionCollectionReusableView.self)
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
     self.collectionView.refreshControl = self.refreshControl
     self.refreshControl.tintColor = .lightGray
     self.refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+  }
+  
+  func setupSkeleton() {
+    let gradient = SkeletonGradient(baseColor: UIColor.Kyber.dark)
+    let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+    view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
   }
   
   func reloadUI() {
@@ -102,22 +111,22 @@ class KNTransactionListViewController: UIViewController {
     guard self.refreshControl.isRefreshing else {
       return
     }
-    delegate?.refreshTransactions(self)
+    self.reload()
   }
   
   func updateWallet(wallet: KNWalletObject) {
     DispatchQueue.global().async {
-      self.viewModel.updateWallet(wallet: wallet) {
-        DispatchQueue.main.async {
-          self.reloadUI()
-        }
-      }
+//      self.viewModel.updateWallet(wallet: wallet) {
+//        DispatchQueue.main.async {
+//          self.reloadUI()
+//        }
+//      }
     }
   }
   
   func applyFilter(filter: KNTransactionFilter) {
     DispatchQueue.global().async {
-      self.viewModel.applyFilter(filter: filter)
+//      self.viewModel.applyFilter(filter: filter)
       DispatchQueue.main.async {
         self.reloadUI()
       }
@@ -126,8 +135,9 @@ class KNTransactionListViewController: UIViewController {
   
   func reload() {
     DispatchQueue.global().async {
-      self.viewModel.reloadData {
+      self.viewModel.reload {
         DispatchQueue.main.async {
+          self.view.hideSkeleton()
           self.reloadUI()
         }
       }
@@ -147,7 +157,7 @@ extension KNTransactionListViewController: SwipeCollectionViewCellDelegate {
     guard let transaction = self.viewModel.item(forIndex: indexPath.item, inSection: indexPath.section) else { return nil }
     let speedUp = SwipeAction(style: .default, title: nil) { [weak self] (_, _) in
       guard let self = self else { return }
-      self.delegate?.transactionListViewController(self, speedupTransaction: transaction)
+//      self.delegate?.transactionListViewController(self, speedupTransaction: transaction)
     }
     speedUp.hidesWhenSelected = true
     speedUp.title = NSLocalizedString("speed up", value: "Speed Up", comment: "").uppercased()
@@ -158,7 +168,7 @@ extension KNTransactionListViewController: SwipeCollectionViewCellDelegate {
     speedUp.backgroundColor = UIColor(patternImage: resized)
     let cancel = SwipeAction(style: .destructive, title: nil) { [weak self] _, _ in
       guard let self = self else { return }
-      self.delegate?.transactionListViewController(self, cancelTransaction: transaction)
+//      self.delegate?.transactionListViewController(self, cancelTransaction: transaction)
     }
 
     cancel.title = NSLocalizedString("cancel", value: "Cancel", comment: "").uppercased()
@@ -202,10 +212,10 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    if viewModel.isLoadingMore { return }
+    if viewModel.isLoading || !viewModel.canLoadMore { return }
     if indexPath.section == viewModel.numberOfSections - 1 && indexPath.item == viewModel.numberOfItems(inSection: indexPath.section) - 1 {
       DispatchQueue.global().async {
-        self.viewModel.loadMoreIfNeeded {
+        self.viewModel.load {
           DispatchQueue.main.async {
             self.reloadUI()
           }
@@ -215,22 +225,32 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-extension KNTransactionListViewController: UICollectionViewDataSource {
+extension KNTransactionListViewController {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return viewModel.numberOfSections
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return viewModel.numberOfItems(inSection: section)
+    if section < viewModel.numberOfSections - 1 {
+      return viewModel.numberOfItems(inSection: section)
+    }
+    return viewModel.numberOfItems(inSection: section) + (viewModel.canLoadMore ? 1 : 0) // For load more indicator
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(KNHistoryTransactionCollectionViewCell.self, indexPath: indexPath)!
-    cell.delegate = self
-    if let item = viewModel.item(forIndex: indexPath.item, inSection: indexPath.section) {
-      cell.updateCell(with: item.toViewModel())
+    if indexPath.section == viewModel.numberOfSections - 1 && indexPath.item == viewModel.numberOfItems(inSection: indexPath.section) {
+      let cell = collectionView.dequeueReusableCell(LoadingIndicatorCell.self, indexPath: indexPath)!
+      cell.inidicator.startAnimating()
+      return cell
+    } else {
+      let cell = collectionView.dequeueReusableCell(KNHistoryTransactionCollectionViewCell.self, indexPath: indexPath)!
+      cell.delegate = self
+      if let item = viewModel.item(forIndex: indexPath.item, inSection: indexPath.section) {
+        let viewModel = item.toViewModel()
+        cell.updateCell(with: viewModel, index: indexPath.item)
+      }
+      return cell
     }
-    return cell
   }
 
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -244,4 +264,25 @@ extension KNTransactionListViewController: UICollectionViewDataSource {
       return UICollectionReusableView()
     }
   }
+}
+
+extension KNTransactionListViewController: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSource {
+  
+  func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 3
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+    String(describing: KNHistoryTransactionCollectionViewCell.self)
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UICollectionView, skeletonCellForItemAt indexPath: IndexPath) -> UICollectionViewCell? {
+    let cell = collectionView.dequeueReusableCell(KNHistoryTransactionCollectionViewCell.self, indexPath: indexPath)!
+    return cell
+  }
+  
+  func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? {
+    return String(describing: KNTransactionCollectionReusableView.self)
+  }
+
 }

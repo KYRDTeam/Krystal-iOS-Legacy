@@ -193,7 +193,7 @@ extension HistoryModelType {
     case .earn:
       return "SUPPLY"
     case .contractInteraction:
-      return "CONTRACT INTERACT"
+      return "CONTRACT EXECUTION"
     case .selfTransfer:
       return "SELF"
     case .createNFT:

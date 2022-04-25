@@ -728,13 +728,13 @@ extension KNHistoryViewController: UICollectionViewDataSource {
     cell.delegate = self
     if self.viewModel.isShowingPending {
       guard let model = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
-      cell.updateCell(with: model)
+      cell.updateCell(with: model, index: indexPath.item)
     } else if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
       guard let model = self.viewModel.completeTransactionForUnsupportedChain(for: indexPath.row, at: indexPath.section) else { return cell }
-      cell.updateCell(with: model)
+      cell.updateCell(with: model, index: indexPath.item)
     } else {
       guard let model = self.viewModel.completedTransaction(for: indexPath.row, at: indexPath.section) else { return cell }
-      cell.updateCell(with: model)
+      cell.updateCell(with: model, index: indexPath.item)
     }
     return cell
   }

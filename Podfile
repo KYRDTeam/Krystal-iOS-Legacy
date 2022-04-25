@@ -24,6 +24,7 @@ def uiPods
   pod 'Eureka', '~> 5.3.0'
   pod 'FSPagerView'
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
+  pod 'SkeletonView'
 end
 
 def cryptoHelperPods

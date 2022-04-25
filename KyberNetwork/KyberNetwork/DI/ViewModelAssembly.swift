@@ -14,11 +14,14 @@ class ViewModelAssembly: Assembly {
     container.register(KNTransactionHistoryViewModel.self) { resolver, wallet, type in
       return KNTransactionHistoryViewModel(currentWallet: wallet, type: type)
     }
-    container.register(KrystalTransactionListViewModel.self) { resolver, wallet in
-      return KrystalTransactionListViewModel(currentWallet: wallet)
-    }
-    container.register(PendingTransactionListViewModel.self) { resolver, wallet in
-      return PendingTransactionListViewModel(currentWallet: wallet)
+    container.register(SolanaTransactionListViewModel.self) { resolver, wallet in
+      return SolanaTransactionListViewModel(
+        wallet: wallet,
+        getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase(
+          address: wallet.address,
+          repository: DefaultTransactionRepository()
+        )
+      )
     }
     container.register(KNTransactionFilterViewModel.self) { resolver, tokens, filter in
       return KNTransactionFilterViewModel(tokens: tokens, filter: filter)

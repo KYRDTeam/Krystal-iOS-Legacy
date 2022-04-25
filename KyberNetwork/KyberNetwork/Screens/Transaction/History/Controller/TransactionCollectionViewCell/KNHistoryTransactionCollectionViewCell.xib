@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -23,27 +23,52 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="400 KNC -&gt; 1 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gTI-Nj-zlU">
-                        <rect key="frame" x="51" y="12" width="136" height="19"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="400 KNC -&gt; 1 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gTI-Nj-zlU">
+                        <rect key="frame" x="51" y="12" width="269.5" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="5xW-IP-v4z"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                        <color key="textColor" red="0.78823529411764703" green="0.82352941176470584" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="NO"/>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="1 KNC = 0.002602 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4f-Li-Doz">
-                        <rect key="frame" x="51" y="35" width="136" height="16.5"/>
+                        <rect key="frame" x="51" y="36" width="269.5" height="12"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                        <color key="textColor" red="0.29803921568627451" green="0.40000000000000002" blue="0.4392156862745098" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="SWAP" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysG-jl-Pun">
-                        <rect key="frame" x="328.5" y="10" width="31.5" height="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="SWAP" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysG-jl-Pun">
+                        <rect key="frame" x="328.5" y="15" width="31.5" height="14"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                        <color key="textColor" red="0.78823529411764703" green="0.82352941176470584" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onX-I3-OM9">
-                        <rect key="frame" x="259.5" y="10" width="62" height="23"/>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="onX-I3-OM9">
+                        <rect key="frame" x="259.5" y="11" width="62" height="22"/>
                         <color key="backgroundColor" name="error_bg_color"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="264-xQ-9du"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                         <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
                         <inset key="imageEdgeInsets" minX="-6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -55,13 +80,21 @@
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                 <integer key="value" value="8"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="10:48 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="smC-Xt-XHs">
-                        <rect key="frame" x="304" y="30" width="56" height="16.5"/>
+                        <rect key="frame" x="304" y="34" width="56" height="16.5"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                        <color key="textColor" red="0.29803921570000003" green="0.40000000000000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="history_receive_icon" translatesAutoresizingMaskIntoConstraints="NO" id="3Zu-cl-MKE">
                         <rect key="frame" x="17" y="18" width="24" height="24"/>
@@ -69,6 +102,12 @@
                             <constraint firstAttribute="width" constant="24" id="jSi-Ug-4Un"/>
                             <constraint firstAttribute="height" constant="24" id="kFu-eh-rvt"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="knc" translatesAutoresizingMaskIntoConstraints="NO" id="1Mo-mW-pBI">
                         <rect key="frame" x="18" y="12" width="16" height="16"/>
@@ -76,6 +115,10 @@
                             <constraint firstAttribute="width" constant="16" id="BaC-dW-iED"/>
                             <constraint firstAttribute="height" constant="16" id="Wnr-Hv-lx9"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eth" translatesAutoresizingMaskIntoConstraints="NO" id="Vh4-pY-66L">
                         <rect key="frame" x="28" y="17" width="16" height="16"/>
@@ -83,18 +126,21 @@
                             <constraint firstAttribute="width" constant="16" id="OAC-nW-BQ5"/>
                             <constraint firstAttribute="height" constant="16" id="VoY-sC-Wf6"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="g4f-Li-Doz" secondAttribute="bottom" constant="12" id="1bS-B4-dy5"/>
                 <constraint firstItem="1Mo-mW-pBI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="18" id="34E-wd-Cjz"/>
+                <constraint firstItem="smC-Xt-XHs" firstAttribute="centerY" secondItem="g4f-Li-Doz" secondAttribute="centerY" id="4yE-C0-1fz"/>
                 <constraint firstItem="gTI-Nj-zlU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="51" id="5o8-vm-exi"/>
-                <constraint firstItem="ysG-jl-Pun" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTI-Nj-zlU" secondAttribute="trailing" constant="4" id="7Uc-5k-4GS"/>
                 <constraint firstItem="ysG-jl-Pun" firstAttribute="leading" secondItem="onX-I3-OM9" secondAttribute="trailing" constant="7" id="Dij-Ox-Pq3"/>
-                <constraint firstItem="ysG-jl-Pun" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="GaE-2z-Qyx"/>
-                <constraint firstItem="smC-Xt-XHs" firstAttribute="top" secondItem="ysG-jl-Pun" secondAttribute="bottom" constant="6" id="H08-UM-xgp"/>
                 <constraint firstItem="3Zu-cl-MKE" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Hxd-dt-0WN"/>
                 <constraint firstItem="Vh4-pY-66L" firstAttribute="leading" secondItem="1Mo-mW-pBI" secondAttribute="leading" constant="10" id="MlB-UP-Err"/>
                 <constraint firstItem="g4f-Li-Doz" firstAttribute="top" secondItem="gTI-Nj-zlU" secondAttribute="bottom" constant="4" id="PH1-Kk-Ybh"/>
@@ -103,11 +149,16 @@
                 <constraint firstItem="g4f-Li-Doz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="51" id="dpp-d4-Ias"/>
                 <constraint firstItem="3Zu-cl-MKE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="17" id="dsJ-W1-3OX"/>
                 <constraint firstItem="ysG-jl-Pun" firstAttribute="trailing" secondItem="smC-Xt-XHs" secondAttribute="trailing" id="e3N-qb-wL9"/>
+                <constraint firstItem="ysG-jl-Pun" firstAttribute="leading" secondItem="gTI-Nj-zlU" secondAttribute="trailing" constant="8" id="hs6-x1-JIH"/>
+                <constraint firstItem="ysG-jl-Pun" firstAttribute="centerY" secondItem="gTI-Nj-zlU" secondAttribute="centerY" id="i07-Cp-U5A"/>
                 <constraint firstAttribute="trailing" secondItem="ysG-jl-Pun" secondAttribute="trailing" constant="15" id="oWv-ib-e2v"/>
-                <constraint firstItem="ysG-jl-Pun" firstAttribute="top" secondItem="onX-I3-OM9" secondAttribute="top" id="wJb-U2-lbN"/>
+                <constraint firstItem="onX-I3-OM9" firstAttribute="centerY" secondItem="gTI-Nj-zlU" secondAttribute="centerY" id="v30-3O-57R"/>
                 <constraint firstItem="gTI-Nj-zlU" firstAttribute="top" secondItem="1Mo-mW-pBI" secondAttribute="top" id="y6y-5j-5G5"/>
                 <constraint firstItem="Vh4-pY-66L" firstAttribute="top" secondItem="1Mo-mW-pBI" secondAttribute="top" constant="5" id="yss-Dt-qe2"/>
             </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="dateTimeLabel" destination="smC-Xt-XHs" id="NxG-h0-Vkk"/>
                 <outlet property="fromIconImage" destination="1Mo-mW-pBI" id="PGB-5a-14k"/>
@@ -123,7 +174,7 @@
     </objects>
     <resources>
         <image name="eth" width="32" height="32"/>
-        <image name="history_receive_icon" width="20" height="20"/>
+        <image name="history_receive_icon" width="24" height="24"/>
         <image name="knc" width="36" height="36"/>
         <image name="warning_red_icon" width="13" height="14"/>
         <namedColor name="error_bg_color">
