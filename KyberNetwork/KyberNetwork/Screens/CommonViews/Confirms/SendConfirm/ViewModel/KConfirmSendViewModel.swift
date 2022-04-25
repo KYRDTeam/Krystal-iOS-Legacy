@@ -5,20 +5,31 @@ import BigInt
 import JdenticonSwift
 
 struct KConfirmSendViewModel {
-
-  let transaction: UnconfirmedTransaction
+  let solTransaction: UnconfirmedSolTransaction?
+  let transaction: UnconfirmedTransaction?
   let ens: String?
 
-  init(transaction: UnconfirmedTransaction, ens: String?) {
+  init(transaction: UnconfirmedTransaction? = nil, ens: String? = nil, solTransaction: UnconfirmedSolTransaction? = nil) {
     self.transaction = transaction
     self.ens = ens
+    self.solTransaction = solTransaction
   }
 
-  var token: TokenObject { return transaction.transferType.tokenObject() }
+  var token: TokenObject {
+    if let transaction = transaction {
+      return transaction.transferType.tokenObject()
+    }
+    return TokenObject()
+  }
 
   var addressToIcon: UIImage? {
-    guard let data = self.transaction.to?.data else { return nil }
-    return UIImage.generateImage(with: 75, hash: data)
+    if let solTransaction = self.solTransaction {
+      guard let data = SolanaUtil.convertBase58Data(addressString: solTransaction.to) else { return nil }
+      return UIImage.generateImage(with: 75, hash: data)
+    } else {
+      guard let data = self.transaction?.to?.data else { return nil }
+      return UIImage.generateImage(with: 75, hash: data)
+    }
   }
 
   var titleString: String {
@@ -26,7 +37,12 @@ struct KConfirmSendViewModel {
   }
 
   var contactName: String {
-    let address = transaction.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
+    var address = ""
+    if let solTransaction = self.solTransaction {
+      address = solTransaction.to
+    } else {
+      address = transaction?.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
+    }
     guard let contact = KNContactStorage.shared.contacts.first(where: { address.lowercased() == $0.address.lowercased() }) else {
       let text = NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
       if let ens = self.ens { return "\(ens) - \(text)" }
@@ -37,22 +53,33 @@ struct KConfirmSendViewModel {
   }
 
   var address: String {
-    let address = transaction.to?.description ?? ""
+    if let solTransaction = self.solTransaction {
+      return "\(solTransaction.to.prefix(20))...\(solTransaction.to.suffix(8))"
+    }
+    let address = transaction?.to?.description ?? ""
     return "\(address.prefix(20))...\(address.suffix(8))"
   }
-  
+
   var shortAddress: String {
-    let address = transaction.to?.description ?? ""
+    var address = ""
+    if let solTransaction = self.solTransaction {
+      address = solTransaction.to
+    } else {
+      address = transaction?.to?.description ?? ""
+    }
     return "\(address.prefix(6))...\(address.suffix(6))"
   }
-  
 
   var totalAmountString: String {
-    let string = self.transaction.value.string(
+    if let solTransaction = self.solTransaction {
+      let string = solTransaction.value.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+      return "\(string.prefix(15)) \(self.token.symbol)"
+    }
+    let string = self.transaction?.value.string(
       decimals: self.token.decimals,
       minFractionDigits: 0,
       maxFractionDigits: min(self.token.decimals, 6)
-    )
+    ) ?? ""
     return "\(string.prefix(15)) \(self.token.symbol)"
   }
 
@@ -60,7 +87,7 @@ struct KConfirmSendViewModel {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
 //    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
     let displayString: String = {
-    let usd = self.transaction.value * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
+      let usd = self.transaction?.value ?? BigInt(1) * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
     return usd.string(
       units: EthereumUnit.ether,
       minFractionDigits: 0,
@@ -72,8 +99,11 @@ struct KConfirmSendViewModel {
 
   var transactionFeeText: String { return "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")): " }
   var transactionFeeETHString: String {
+    if let solTransaction = self.solTransaction {
+      return solTransaction.fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+    }
     let fee: BigInt? = {
-      guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
+      guard let gasPrice = self.transaction?.gasPrice, let gasLimit = self.transaction?.gasLimit else { return nil }
       return gasPrice * gasLimit
     }()
     let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
@@ -82,7 +112,7 @@ struct KConfirmSendViewModel {
 
   var transactionFeeUSDString: String {
     let fee: BigInt? = {
-      guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
+      guard let gasPrice = self.transaction?.gasPrice, let gasLimit = self.transaction?.gasLimit else { return nil }
       return gasPrice * gasLimit
     }()
     guard let feeBigInt = fee else { return "" }
@@ -98,8 +128,11 @@ struct KConfirmSendViewModel {
     return "~ \(valueString) USD"
   }
   var transactionGasPriceString: String {
-    let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+    if let solTransaction = self.solTransaction {
+      return String(format: NSLocalizedString("%@ (Lamport) * %@ (Signatures)", comment: ""), solTransaction.lamportPerSignature.displayRate(decimals: 0), solTransaction.totaSignature.displayRate(decimals: 0))
+    }
+    let gasPrice: BigInt = self.transaction?.gasPrice ?? KNGasCoordinator.shared.fastKNGas
+    let gasLimit: BigInt = self.transaction?.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
     let gasPriceText = gasPrice.shortString(
       units: .gwei,
       maxFractionDigits: 1

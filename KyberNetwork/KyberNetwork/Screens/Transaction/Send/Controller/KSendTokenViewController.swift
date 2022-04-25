@@ -13,7 +13,9 @@ enum KSendTokenViewEvent {
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case validate(transaction: UnconfirmedTransaction, ens: String?)
+  case validateSolana
   case send(transaction: UnconfirmedTransaction, ens: String?)
+  case sendSolana(transaction: UnconfirmedSolTransaction)
   case addContact(address: String, ens: String?)
   case contactSelectMore
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
@@ -208,11 +210,17 @@ class KSendTokenViewController: KNBaseViewController {
   @IBAction func sendButtonPressed(_ sender: Any) {
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
-    let event = KSendTokenViewEvent.validate(
-      transaction: self.viewModel.unconfirmTransaction,
-      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
-    )
-    self.delegate?.kSendTokenViewController(self, run: event)
+    
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      self.delegate?.kSendTokenViewController(self, run: .validateSolana)
+    } else {
+      let event = KSendTokenViewEvent.validate(
+        transaction: self.viewModel.unconfirmTransaction,
+        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+      )
+      self.delegate?.kSendTokenViewController(self, run: event)
+    }
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
@@ -254,17 +262,22 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func updateGasFeeUI() {
-    self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      self.estGasFeeTitleLabel.isHidden = false
-      self.estGasFeeValueLabel.isHidden = false
-      self.gasFeeTittleLabelTopContraint.constant = 54
+    if KNGeneralProvider.shared.currentChain == .solana {
+      self.selectedGasFeeLabel.text = self.viewModel.solFeeString
+      self.estGasFeeValueLabel.text = self.viewModel.solFeeString
     } else {
-      self.estGasFeeTitleLabel.isHidden = true
-      self.estGasFeeValueLabel.isHidden = true
-      self.gasFeeTittleLabelTopContraint.constant = 20
+      self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        self.estGasFeeTitleLabel.isHidden = false
+        self.estGasFeeValueLabel.isHidden = false
+        self.gasFeeTittleLabelTopContraint.constant = 54
+      } else {
+        self.estGasFeeTitleLabel.isHidden = true
+        self.estGasFeeValueLabel.isHidden = true
+        self.gasFeeTittleLabelTopContraint.constant = 20
+      }
+      self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
     }
-    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -313,14 +326,27 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
     if !isConfirming && self.isViewDisappeared { return false }
     if isConfirming {
-      guard self.viewModel.isHavingEnoughETHForFee else {
-        let quoteToken = KNGeneralProvider.shared.quoteToken
-        let fee = self.viewModel.ethFeeBigInt
-        self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
-          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
-        )
-        return true
+      
+      if KNGeneralProvider.shared.currentChain == .solana {
+        guard self.viewModel.isHavingEnoughSolForFee else {
+          let quoteToken = KNGeneralProvider.shared.quoteToken
+          let fee = self.viewModel.solanaFeeBigInt
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+            message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          )
+          return true
+        }
+      } else {
+        guard self.viewModel.isHavingEnoughETHForFee else {
+          let quoteToken = KNGeneralProvider.shared.quoteToken
+          let fee = self.viewModel.ethFeeBigInt
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+            message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          )
+          return true
+        }
       }
     }
     guard !self.viewModel.amount.isEmpty else {
@@ -513,6 +539,13 @@ extension KSendTokenViewController {
       ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
     )
     self.delegate?.kSendTokenViewController(self, run: event)
+  }
+
+  func coordinatorDidValidateSolTransferTransaction() {
+    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: self.viewModel.solanaFeeBigInt)
+    unconfirmedSolTransaction.mintTokenAddress = self.viewModel.from.address
+    unconfirmedSolTransaction.decimal = self.viewModel.from.decimals
+    self.delegate?.kSendTokenViewController(self, run: .sendSolana(transaction: unconfirmedSolTransaction))
   }
 
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {

@@ -99,7 +99,6 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateView(with: self.transaction)
-    self.updateViewTransactionDidChange()
   }
 
   override func viewWillDisappear(_ animated: Bool) {

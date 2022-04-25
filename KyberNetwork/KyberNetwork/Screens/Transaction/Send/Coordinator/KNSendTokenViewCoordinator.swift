@@ -220,6 +220,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
         return
       }
+
       controller.displayLoading()
       self.sendGetPreScreeningWalletRequest { [weak self] (result) in
         controller.hideLoading()
@@ -242,8 +243,34 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           self.rootViewController?.coordinatorDidValidateTransferTransaction()
         }
       }
+    case .validateSolana:
+      controller.displayLoading()
+      self.sendGetPreScreeningWalletRequest { [weak self] (result) in
+        controller.hideLoading()
+        guard let `self` = self else { return }
+        var message: String?
+        if case .success(let resp) = result,
+          let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
+          if let status = json["eligible"] as? Bool {
+            if isDebug { print("eligible status : \(status)") }
+            if status == false { message = json["message"] as? String }
+          }
+        }
+        if let errorMessage = message {
+          self.navigationController.showErrorTopBannerMessage(
+            with: NSLocalizedString("error", value: "Error", comment: ""),
+            message: errorMessage,
+            time: 2.0
+          )
+        } else {
+          self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
+        }
+      }
+
     case .send(let transaction, let ens):
       self.openConfirmTransfer(transaction: transaction, ens: ens)
+    case .sendSolana(transaction: let transaction):
+      self.openConfirmSolTransfer(transaction: transaction)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
     case .contactSelectMore:
@@ -366,6 +393,17 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     }()
     self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
   }
+  
+  fileprivate func openConfirmSolTransfer(transaction: UnconfirmedSolTransaction) {
+    self.confirmVC = {
+      let viewModel = KConfirmSendViewModel(solTransaction: transaction)
+      let controller = KConfirmSendViewController(viewModel: viewModel)
+      controller.delegate = self
+      controller.loadViewIfNeeded()
+      return controller
+    }()
+    self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
+  }
 
   fileprivate func openNewContact(address: String, ens: String?) {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address, ens: ens)
@@ -424,6 +462,10 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
+    case .confirmSolana(let transaction, let historyTransaction):
+      controller.dismiss(animated: true) {
+        self.didConfirmSolTransfer(transaction, historyTransaction)
+      }
     case .cancel:
       controller.dismiss(animated: true) {
         self.confirmVC = nil
@@ -465,6 +507,93 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
+  
+  fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    
+    
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { senderTokenAddress in
+      guard let senderTokenAddress = senderTokenAddress else {
+        completion(nil)
+        return
+      }
+      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { recipientTokenAddress in
+        guard let recipientTokenAddress = recipientTokenAddress else {
+          completion(nil)
+          return
+        }
+        
+        let signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+        
+        SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+          guard let signature = signature else {
+            completion(nil)
+            return
+          }
+          completion(signature)
+        }
+      }
+    }
+    
+    
+    
+    
+    
+  }
+  
+  fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
+    SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+      guard let signature = signature else {
+        completion(nil)
+        return
+      }
+      completion(signature)
+    }
+  }
+  
+  fileprivate func getTransactionStatus(signature: String?, historyTransaction: InternalHistoryTransaction) {
+    guard let signature = signature else {
+      return
+    }
+    SolanaUtil.getTransactionStatus(signature: signature) { state in
+      historyTransaction.hash = signature
+      historyTransaction.state = state
+      let controller = KNTransactionStatusPopUp(transaction: historyTransaction)
+      controller.delegate = self
+      self.navigationController.present(controller, animated: true, completion: nil)
+      self.transactionStatusVC = controller
+    }
+  }
+  
+  fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
+      SolanaUtil.getRecentBlockhash { blockHash in
+        let receiptAddress = transaction.to
+        
+        let seeds = "novel census nominee cover consider again feel obey wool misery fatal use"
+        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+        let privateKeyData = privateKey.data
+        let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
+
+        let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: UInt64(transaction.value), recentBlockhash: blockHash)
+        
+        // send solana
+//        self.sendSOL(privateKeyData: privateKeyData, receiptAddress: receiptAddress, amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: 9) { signature in
+//          self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+//        }
+        
+        // send SPL tokens
+        
+        
+        let walletAddress = self.session.wallet.addressString
+        self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: UInt32(transaction.decimal ?? 0)) { signature in
+          self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+        }
+        
+
+      }
+  }
+  
+  
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return

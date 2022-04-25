@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import BigInt
+import WalletCore
 
 extension String {
 
@@ -88,6 +89,12 @@ extension String {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     return emailTest.evaluate(with: self)
+  }
+  
+  func isValidSolanaAddress() -> Bool {
+    let solAddressRegex = "[1-9A-HJ-NP-Za-km-z]{32,44}"
+    let solAddressTest = NSPredicate(format: "SELF MATCHES %@", solAddressRegex)
+    return solAddressTest.evaluate(with: self) && Base58.decodeNoCheck(string: self)?.count == 32
   }
 
   func isValidPassword() -> Bool {

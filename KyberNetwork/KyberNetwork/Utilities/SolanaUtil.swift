@@ -9,6 +9,7 @@ import Foundation
 import WalletCore
 import SwiftUI
 import KeychainSwift
+import Moya
 
 class SolanaUtil {
   
@@ -79,6 +80,128 @@ class SolanaUtil {
 
     let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
     return output.encoded
+  }
+  
+  static func signTokenTransferTransaction(tokenMintAddress: String, senderTokenAddress: String, privateKeyData: Data, recipientTokenAddress: String, amount: UInt64, recentBlockhash: String, tokenDecimals: UInt32) -> String {
+    let tokenTransferMessage = SolanaTokenTransfer.with {
+      $0.tokenMintAddress = tokenMintAddress
+      $0.senderTokenAddress = senderTokenAddress
+      $0.recipientTokenAddress = recipientTokenAddress
+      $0.amount = amount
+      $0.decimals = tokenDecimals
+    }
+    let input = SolanaSigningInput.with {
+      $0.tokenTransferTransaction = tokenTransferMessage
+      $0.recentBlockhash = recentBlockhash
+      $0.privateKey = privateKeyData
+    }
+    let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
+    return output.encoded
+  }
+
+  static func getRecentBlockhash(completion: @escaping (String) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getRecentBlockhash) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let resultJson = json["result"] as? JSONDictionary,
+             let valueJson = resultJson["value"] as? JSONDictionary,
+             let blockHash = valueJson["blockhash"] as? String {
+           completion(blockHash)
+          }
+        }
+      case .failure(let error):
+        print("[Solana error] \(error.localizedDescription)")
+      }
+    }
+  }
+  
+  static func getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String, completion: @escaping (String?) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getTokenAccountsByOwner(ownerAddress: ownerAddress, tokenAddress: tokenAddress)) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let resultJson = json["result"] as? JSONDictionary,
+             let valueJsons = resultJson["value"] as? [JSONDictionary] {
+            
+            if valueJsons.isEmpty {
+              // receipt wallet doesn't have account for current SPL token
+            }
+            
+            valueJsons.forEach { value in
+              if let pubKey = value["pubkey"] as? String {
+                completion(pubKey)
+              }
+            }
+          }
+        }
+        completion(nil)
+      case .failure(let error):
+        completion(nil)
+        print("[Solana error] \(error.localizedDescription)")
+      }
+    }
+  }
+  
+  static func sendSignedTransaction(signedTransaction: String, completion: @escaping (String?) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.sendTransaction(signedTransaction: signedTransaction)) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let signatureResult = json["result"] as? String {
+            completion(signatureResult)
+            return
+          }
+//          else if let error = json["error"] as? JSONDictionary {
+//            let errorMsg = error["message"] as? String ?? "Error"
+//            completion(nil)
+//          }
+          completion(nil)
+        }
+        completion(nil)
+      case .failure(let error):
+        completion(nil)
+        print("[Solana error] \(error.localizedDescription)")
+      }
+    }
+  }
+  
+  static func getTransactionStatus(signature: String, completion: @escaping (InternalTransactionState) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getSignatureStatuses(signature: signature)) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let resultJson = json["result"] as? JSONDictionary {
+            if let valueArray = resultJson["value"] as? [JSONDictionary] {
+              var status: InternalTransactionState = valueArray.isEmpty ? .done : .pending
+              valueArray.forEach { valueJson in
+                if let statusString = valueJson["confirmationStatus"] as? String, statusString == "confirmed" {
+                  status = .done
+                }
+              }
+              completion(status)
+              return
+            }else if let valueArray = resultJson["value"] as? Array<Any> {
+              completion(.done)
+              return
+            }
+            
+          }
+        }
+        completion(.error)
+      case .failure(let error):
+        print("[Solana error] \(error.localizedDescription)")
+        completion(.error)
+      }
+    }
+  }
+  
+  static func convertBase58Data(addressString: String) -> Data? {
+    return Base58.decodeNoCheck(string: addressString)
   }
   
   func getPassword(for account: WalletCore.Wallet) -> String? {

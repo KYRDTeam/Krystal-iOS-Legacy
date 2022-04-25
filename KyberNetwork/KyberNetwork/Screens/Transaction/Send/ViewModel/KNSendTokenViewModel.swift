@@ -24,6 +24,12 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
   fileprivate(set) var addressString: String = ""
   fileprivate(set) var isUsingEns: Bool = false
+  
+  ///solana default lamport per signature
+  fileprivate(set) var lamportPerSignature: BigInt = BigInt(5000)
+  fileprivate(set) var totalSignature: BigInt = BigInt(1)
+  
+  
   var isSendAllBalanace: Bool = false
 
   var advancedGasLimit: String? {
@@ -158,10 +164,19 @@ class KNSendTokenViewModel: NSObject {
     }
     return "\(feeString) \(sourceToken) (\(typeString))"
   }
+  
+  fileprivate func formatSolFeeStringFor(fee: BigInt) -> String {
+    let feeString: String = fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
+  }
 
   var gasFeeString: String {
     self.updateSelectedGasPriceType(self.selectedGasPriceType)
     return self.formatFeeStringFor(gasPrice: self.gasPrice)
+  }
+  
+  var solFeeString: String {
+    return self.formatSolFeeStringFor(fee: self.solanaFeeBigInt)
   }
 
   var balanceText: String {
@@ -244,11 +259,18 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAddressValid: Bool {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return self.addressString.isValidSolanaAddress()
+    }
     return self.address != nil && self.addressString.has0xPrefix
   }
 
   var ethFeeBigInt: BigInt {
     return self.gasPrice * self.gasLimit
+  }
+  
+  var solanaFeeBigInt: BigInt {
+    return self.lamportPerSignature * self.totalSignature
   }
 
   var isHavingEnoughETHForFee: Bool {
@@ -256,6 +278,11 @@ class KNSendTokenViewModel: NSObject {
     if self.from.isETH || self.from.isBNB { fee += self.amountBigInt }
     let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
+  }
+  
+  var isHavingEnoughSolForFee: Bool {
+    let solBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
+    return solBalance > self.solanaFeeBigInt
   }
 
   var unconfirmTransaction: UnconfirmedTransaction {
@@ -339,6 +366,10 @@ class KNSendTokenViewModel: NSObject {
       )
     }
   }
+  
+//  var solanaUnconfirmTransaction: UnconfirmedTransaction {
+//
+//  }
 
   var isNeedUpdateEstFeeForTransferingAllBalance: Bool = false
 

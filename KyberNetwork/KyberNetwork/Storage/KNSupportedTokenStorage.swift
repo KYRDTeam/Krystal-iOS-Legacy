@@ -514,7 +514,7 @@ class KNSupportedTokenStorage {
       let secondToken = array2[index]
 
       //just 1 param different then we will consider there are updates from api
-      if firstToken.address.lowercased() != secondToken.address.lowercased()
+      if firstToken.address != secondToken.address
           || firstToken.decimals != secondToken.decimals
           || firstToken.name.lowercased() != secondToken.name.lowercased()
           || firstToken.symbol.lowercased() != secondToken.symbol.lowercased()
