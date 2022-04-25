@@ -17,6 +17,10 @@ struct KNContactTableViewCellModel {
   }
 
   var addressImage: UIImage? {
+    if self.contact.address.isValidSolanaAddress() {
+      guard let data = SolanaUtil.convertBase58Data(addressString: self.contact.address) else { return nil }
+      return UIImage.generateImage(with: 32, hash: data)
+    }
     guard let data = Address(string: self.contact.address)?.data else { return nil }
     return UIImage.generateImage(with: 32, hash: data)
   }
@@ -30,8 +34,11 @@ struct KNContactTableViewCellModel {
   }
 
   var displayedAddress: String {
-    let address = self.contact.address.lowercased()
-    return "\(address.prefix(20))...\(address.suffix(6))"
+    let address = self.contact.address
+    if address.isValidSolanaAddress() {
+      return "\(address.prefix(20))...\(address.suffix(6))"
+    }
+    return "\(address.lowercased().prefix(20))...\(address.lowercased().suffix(6))"
   }
 
   var backgroundColor: UIColor {
@@ -64,7 +71,7 @@ class KNContactTableViewCell: SwipeTableViewCell {
   
   @IBOutlet weak var checkIcon: UIImageView!
   @IBOutlet weak var addressImageLeftPaddingContraint: NSLayoutConstraint!
-  
+
   override func awakeFromNib() {
     super.awakeFromNib()
     self.contactNameLabel.text = ""
@@ -82,7 +89,7 @@ class KNContactTableViewCell: SwipeTableViewCell {
     self.checkIcon.isHidden = true
     self.layoutIfNeeded()
   }
-  
+
   func update(with viewModel: KNWalletTableCellViewModel, selected: String) {
     self.addressImageView.image = viewModel.addressImage
     self.contactNameLabel.text = viewModel.displayedName

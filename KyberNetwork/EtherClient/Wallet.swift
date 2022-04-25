@@ -42,9 +42,9 @@ struct Wallet {
   var addressString: String {
     switch type {
     case .real(let account):
-      return account.address.description.lowercased()
+      return account.address.description
     case .watch(let address):
-      return address.description.lowercased()
+      return address.description
     case .solana(let address, _, _):
       return address
     }
@@ -77,8 +77,8 @@ extension Wallet: Equatable {
 
   func getWalletObject() -> KNWalletObject? {
     let walletObject = KNWalletStorage.shared.wallets.first { obj in
-      let address = self.addressString
-      let objAddress = obj.address
+      let address = self.addressString.lowercased()
+      let objAddress = obj.address.lowercased()
 
       return address == objAddress
     }

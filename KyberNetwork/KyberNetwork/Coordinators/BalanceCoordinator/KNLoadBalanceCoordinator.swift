@@ -419,7 +419,7 @@ class KNLoadBalanceCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
         completion(true)
       } else {
-        if KNEnvironment.default == .ropsten { return }
+        if KNEnvironment.default != .production { return }
         self.loadLendingBalances(completion: completion)
       }
     }
@@ -435,7 +435,7 @@ class KNLoadBalanceCoordinator {
         BalanceStorage.shared.setLendingDistributionBalance(balance)
         completion(true)
       } else {
-        if KNEnvironment.default == .ropsten { return }
+        if KNEnvironment.default != .production { return }
         self.loadLendingDistributionBalance(completion: completion)
       }
     }

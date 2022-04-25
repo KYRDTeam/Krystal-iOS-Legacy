@@ -450,6 +450,8 @@
 		7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E448D022808064E00C1617F /* SelectChainViewController.swift */; };
 		7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E448D032808064E00C1617F /* SelectChainViewController.xib */; };
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
+		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
+		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -465,7 +467,6 @@
 		7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF6273CF6DA00B6E67C /* intro_reward.json */; };
 		7E913AFB273CF6DA00B6E67C /* intro_earn.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF7273CF6DA00B6E67C /* intro_earn.json */; };
 		7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AFF273D09FB00B6E67C /* intro_swap.json */; };
-		7E95D6142806D32C0006E694 /* SolanaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E95D6132806D32C0006E694 /* SolanaManager.swift */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
@@ -1317,6 +1318,8 @@
 		7E448D022808064E00C1617F /* SelectChainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChainViewController.swift; sourceTree = "<group>"; };
 		7E448D032808064E00C1617F /* SelectChainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectChainViewController.xib; sourceTree = "<group>"; };
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
+		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
+		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -1332,7 +1335,6 @@
 		7E913AF6273CF6DA00B6E67C /* intro_reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_reward.json; sourceTree = "<group>"; };
 		7E913AF7273CF6DA00B6E67C /* intro_earn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_earn.json; sourceTree = "<group>"; };
 		7E913AFF273D09FB00B6E67C /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
-		7E95D6132806D32C0006E694 /* SolanaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaManager.swift; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
@@ -1794,7 +1796,6 @@
 				251ABCA220578E1F0069687F /* Models */,
 				25CC0A922057DD2A0009D0D5 /* Networking */,
 				251ABCA020578DA30069687F /* Configurations */,
-				7E95D6122806D3010006E694 /* SolanaManager */,
 			);
 			path = KyberNetwork;
 			sourceTree = "<group>";
@@ -3032,6 +3033,7 @@
 			children = (
 				25CC0AAD205918900009D0D5 /* KyberNetworkService.swift */,
 				25CC0AAF2059191C0009D0D5 /* KNInternalProvider.swift */,
+				7E4EDD6228100A400000CB0B /* SolanaService.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -3601,6 +3603,7 @@
 			isa = PBXGroup;
 			children = (
 				2963B6AE1F9823E6003063C1 /* UnconfirmedTransaction.swift */,
+				7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */,
 				296106CF1F778A8D0006164B /* TransferType.swift */,
 				29B6AED51F7CA4A700EC6DE3 /* TransactionConfiguration.swift */,
 				299B5E461FD2C87F0051361C /* ConfigureTransactionError.swift */,
@@ -3857,14 +3860,6 @@
 				7E913AFF273D09FB00B6E67C /* intro_swap.json */,
 			);
 			path = LottieJSON;
-			sourceTree = "<group>";
-		};
-		7E95D6122806D3010006E694 /* SolanaManager */ = {
-			isa = PBXGroup;
-			children = (
-				7E95D6132806D32C0006E694 /* SolanaManager.swift */,
-			);
-			path = SolanaManager;
 			sourceTree = "<group>";
 		};
 		7E95D6152806E5920006E694 /* SelectChain */ = {
@@ -5517,12 +5512,14 @@
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
 				25CE6F77207291EC00A3A2F9 /* KNEtherScanService.swift in Sources */,
 				251ABCC2205792170069687F /* UIColor+Kyber.swift in Sources */,
+				7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */,
 				25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */,
 				C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
 				2996F14D1F6CA743005C33AE /* UIViewController.swift in Sources */,
 				2959961F1FAE759700DB66A8 /* RawTransaction.swift in Sources */,
 				C3ED1DDC2617027B0024970C /* Date+Kyber.swift in Sources */,
+				7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */,
 				C3EDDCC225C1829400A99CC8 /* EarnViewController.swift in Sources */,
 				25CC0ACD2059268D0009D0D5 /* KNExchangeTokenCoordinator.swift in Sources */,
 				C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */,
@@ -5724,7 +5721,6 @@
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */,
 				25682ABE229FC3C7004AB452 /* KNApproveTokenViewController.swift in Sources */,
-				7E95D6142806D32C0006E694 /* SolanaManager.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
