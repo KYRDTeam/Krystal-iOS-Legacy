@@ -67,10 +67,10 @@ jobs:
             env: dev
             ota_key: DEV_OTA_URL
             bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            bump_build: false
+          # - app_name: "Krystal: Staging"
+          #   env: stg
+          #   ota_key: STG_OTA_URL
+          #   bump_build: false
             
     runs-on: macos-11
     env:
@@ -126,3 +126,12 @@ jobs:
 
       - name: Debug
         run: ls -al /Users/runner/privates
+
+      - name: Setup Auth 2
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCS_OTA_SA_CREDENTIAL }}'
+
+      - name: Get configuration items
+        run: |
+          gsutil -m cp -r /Users/runner/privates/* gs://ota-storage/ios/
