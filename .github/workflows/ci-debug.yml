@@ -132,6 +132,14 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCS_OTA_SA_CREDENTIAL }}'
 
+      - name: export sa file
+        run: |
+          echo "${{ secrets.GCS_OTA_SA_CREDENTIAL }}" > /etc/sa.json
+
+      - name: auth with sa file
+        run: |
+          gcloud auth activate-service-account --key-file /etc/sa.json
+
       - name: Get configuration items
         run: |
           gsutil -m cp -r /Users/runner/privates/* gs://ota-storage/ios/
