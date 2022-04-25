@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - cicd-develop-x
+      - cicd-develop
 
 concurrency: 
   group: ${{ github.ref }}
@@ -14,9 +14,9 @@ concurrency:
 env:
   LANG: en_US.UTF-8
   # base64 service account credentials
-  GCS_SA_CREDENTIAL: ${{ secrets.GCS_OTA_SA_CREDENTIAL }}
-  GCS_PROJECT_ID: krystal-operation
-  GCS_BUCKET: ota-storage
+  GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
+  GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
+  GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
 
 jobs:
   prepare:
@@ -55,16 +55,7 @@ jobs:
           [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
           echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
 
-      # This step will automatically run if any of the previous steps fail.
-      # DO NOT CHANGE IT
-      - name: Send notifications to a specify Telegram group
-        if: failure()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-          RUN_ID: ${{ github.run_id }}
-        shell: bash
-        run: .github/failure
+
 
   build-ios:
     needs:
@@ -115,96 +106,23 @@ jobs:
       # default actor
       GH_ACTOR: kyber-ci-bot
       # GCP 
-      # PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.6
-          bundler-cache: true
-          
-      - name: Install Pod check
-        run: gem install cocoapods-check
-          
-      - name: Setup Sentry CLI
-        shell: bash
-        run: curl -sL https://sentry.io/get-cli/ | bash
+        uses: actions/checkout@v2          
 
       - name: Setup Auth
         uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ secrets.GCS_OTA_SA_CREDENTIAL }}'
+          credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
-
-      - name: Setup cache
-        uses: actions/cache@v1
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
 
       - name: Get configuration items
         run: |
           mkdir -p /Users/runner/privates        
           gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
-      - name: Setup environments
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
-
-      - name: Pods install
-        run: pod check || pod install
-
-      - name: Build IPA
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: all
-          bundle-install-path: "vendor/bundle"
-
-      - name: Deploy to OTA Server
-        shell: bash
-        env:
-          OTA_URL: https://ota-dev.krystal.team
-          APP_NAME: ${{ matrix.app_name }}
-          OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
-          OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
-        run: .github/deploy 
-
-      - name: Prepare bump build number
-        run: |
-          git config user.name "$GH_ACTOR"
-          git config user.email "$GH_ACTOR@users.noreply.github.com"
-                    
-      # - name: Bump Build number
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
-      #   uses: maierj/fastlane-action@v2.0.1
-      #   with:
-      #     lane: bump_build_number
-      #     bundle-install-path: "vendor/bundle"
-
-      # - name: Push commit 
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
-      #   shell: bash
-      #   run: | 
-      #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
-
-      # This step will automatically run if any of the previous steps fail.
-      # DO NOT CHANGE IT
-      # - name: Send notifications to a specify Telegram group
-      #   if: failure()
-      #   env:
-      #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-      #     RUN_ID: ${{ github.run_id }}
-      #   shell: bash
-      #   run: .github/failure
+      - name: Debug
+        run: ls -al /Users/runner/privates

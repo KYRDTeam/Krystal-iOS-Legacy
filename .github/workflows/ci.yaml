@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - cicd-develop
 
 concurrency: 
   group: ${{ github.ref }}
