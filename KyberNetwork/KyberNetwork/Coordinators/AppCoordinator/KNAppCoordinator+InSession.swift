@@ -177,6 +177,7 @@ extension KNAppCoordinator {
       OneSignal.removeExternalUserId { _ in
         OneSignal.setExternalUserId(wallet.address.description)
       } withFailure: { _ in
+        OneSignal.setExternalUserId(wallet.address.description)
       }
     }
 
