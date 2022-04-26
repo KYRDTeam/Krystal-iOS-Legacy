@@ -11,13 +11,14 @@ import Moya
 class DefaultTransactionRepository: TransactionRepository {
   
   let provider = MoyaProvider<KrystalApi>(plugins: [NetworkLoggerPlugin()])
+  let storage = SolanaTransactionStorage()
   
-  func saveSolanaTransactions(transactions: [SolanaTransaction]) {
-    
+  func saveSolanaTransactions(address: String, transactions: [SolanaTransaction]) {
+    storage.saveTransactions(address: address, transactions: transactions)
   }
   
-  func getSavedSolanaTransactions() -> [SolanaTransaction] {
-    return []
+  func getSavedSolanaTransactions(address: String) -> [SolanaTransaction] {
+    storage.getSolanaTransactions(address: address)
   }
   
   func fetchSolanaTransaction(

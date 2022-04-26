@@ -23,6 +23,10 @@ class BaseTransactionListViewModel {
     self.wallet = wallet
   }
   
+  func loadCacheData() {
+    
+  }
+  
   func reload() {
     
   }

@@ -18,8 +18,12 @@ class GetSolanaTransactionsUseCase {
     self.repository = repository
   }
   
-  func loadCachedTransactions(completion: @escaping ([SolanaTransaction]) -> ()) {
-    completion(repository.getSavedSolanaTransactions())
+  func saveTransactions(transactions: [SolanaTransaction]) {
+    repository.saveSolanaTransactions(address: address, transactions: transactions)
+  }
+  
+  func loadCachedTransactions() -> [SolanaTransaction] {
+    return repository.getSavedSolanaTransactions(address: address)
   }
   
   func load(lastHash: String?, completion: @escaping ([SolanaTransaction], Bool) -> ()) {
