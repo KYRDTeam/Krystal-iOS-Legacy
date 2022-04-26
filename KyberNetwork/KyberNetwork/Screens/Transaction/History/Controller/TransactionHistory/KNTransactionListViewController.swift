@@ -30,13 +30,14 @@ class KNTransactionListViewController: UIViewController {
     
     setupCollectionView()
     bindViewModel()
+    startSkeletonAnimation()
     reload()
   }
   
   func setupCollectionView() {
     self.collectionView.registerCellNib(KNHistoryTransactionCollectionViewCell.self)
     self.collectionView.registerCell(LoadingIndicatorCell.self)
-    self.collectionView.registerCell(TransactionListEmptyCell.self)
+    self.collectionView.registerCellNib(TransactionListEmptyCell.self)
     self.collectionView.registerHeaderCellNib(KNTransactionCollectionReusableView.self)
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
@@ -60,8 +61,8 @@ class KNTransactionListViewController: UIViewController {
   }
   
   func reloadUI() {
-    view.hideSkeleton()
     collectionView?.reloadData()
+    view.hideSkeleton()
     refreshControl.endRefreshing()
   }
   
@@ -135,7 +136,6 @@ class KNTransactionListViewController: UIViewController {
   }
   
   func reload() {
-    startSkeletonAnimation()
     DispatchQueue.global().async {
       self.viewModel.reload()
     }
@@ -193,12 +193,12 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      return CGSize(
-        width: collectionView.frame.width,
-        height: KNHistoryTransactionCollectionViewCell.height
-      )
+    return CGSize(
+      width: collectionView.frame.width,
+      height: KNHistoryTransactionCollectionViewCell.height
+    )
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -219,27 +219,32 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension KNTransactionListViewController {
+  
+  var transactionsIsEmpty: Bool {
+    return viewModel.isTransactionListEmpty && !viewModel.isLoading
+  }
+  
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    if viewModel.isTransactionListEmpty {
+    if transactionsIsEmpty {
       return 1
     }
     return viewModel.numberOfSections
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    if viewModel.isTransactionListEmpty {
+    if viewModel.isTransactionListEmpty && !viewModel.isLoading {
       return 1
-    } else {
-      if section < viewModel.numberOfSections - 1 {
-        return viewModel.numberOfItems(inSection: section)
-      }
-      return viewModel.numberOfItems(inSection: section) + (viewModel.canLoadMore ? 1 : 0) // For load more indicator
     }
+    if section < viewModel.numberOfSections - 1 {
+      return viewModel.numberOfItems(inSection: section)
+    }
+    return viewModel.numberOfItems(inSection: section) + (viewModel.canLoadMore ? 1 : 0) // For load more indicator
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard !viewModel.isTransactionListEmpty else {
       let cell = collectionView.dequeueReusableCell(TransactionListEmptyCell.self, indexPath: indexPath)!
+      cell.frame = collectionView.frame
       return cell
     }
     let isLastSection = indexPath.section == viewModel.numberOfSections - 1

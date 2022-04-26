@@ -23,7 +23,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="239" height="394"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2OU-eF-epv">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2OU-eF-epv">
                         <rect key="frame" x="0.0" y="0.0" width="239" height="394"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_transaction" translatesAutoresizingMaskIntoConstraints="NO" id="o9D-zQ-UZO">

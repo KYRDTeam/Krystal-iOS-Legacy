@@ -34,11 +34,11 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
     self.getSolanaTransactionsUseCase.load(lastHash: lastHash) { [weak self] transactions, hasMore in
       self?.transactions = []
       self?.headers = []
-      self?.groupedTransactions.value = [:]
       self?.canLoadMore = hasMore
       self?.isLoading = false
       self?.lastHash = transactions.last?.txHash
-      self?.appendTransactions(newTransactions: transactions)
+      self?.transactions = transactions
+      self?.recalculate()
     }
   }
   

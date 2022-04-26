@@ -33,10 +33,10 @@ struct SolanaTransactionDTO: Decodable {
   
   struct DetailsDTO: Decodable {
     var recentBlockhash: String
-    var solTransferTxs: [SolTransferTxDTO]
-    var tokensTransferTxs: [TokenTransferTxDTO]
-    var unknownTransferTxs: [UnknownTransferTxDTO]
-    var raydiumTxs: [RaydiumTxDTO]
+    var solTransferTxs: [SolTransferTxDTO]?
+    var tokensTransferTxs: [TokenTransferTxDTO]?
+    var unknownTransferTxs: [UnknownTransferTxDTO]?
+    var raydiumTxs: [RaydiumTxDTO]?
     
     enum CodingKeys: String, CodingKey {
       case recentBlockhash
@@ -172,10 +172,10 @@ extension SolanaTransactionDTO.DetailsDTO {
   
   func toDomain() -> SolanaTransaction.Details {
     return .init(recentBlockhash: recentBlockhash,
-                 solTransferTxs: solTransferTxs.map { $0.toDomain() },
-                 tokensTransferTxs: tokensTransferTxs.map { $0.toDomain() },
-                 unknownTransferTxs: unknownTransferTxs.map { $0.toDomain() },
-                 raydiumTxs: raydiumTxs.map { $0.toDomain() })
+                 solTransferTxs: solTransferTxs?.map { $0.toDomain() } ?? [],
+                 tokensTransferTxs: tokensTransferTxs?.map { $0.toDomain() } ?? [],
+                 unknownTransferTxs: unknownTransferTxs?.map { $0.toDomain() } ?? [],
+                 raydiumTxs: raydiumTxs?.map { $0.toDomain() } ?? [])
   }
   
 }
