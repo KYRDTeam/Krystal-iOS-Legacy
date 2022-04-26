@@ -811,3 +811,6 @@
 "promotion" = "Promotion";
 "supported.platforms" = "Supported Platforms";
 
+// Transaction History
+"from_colon_x" = "From: %@";
+"to_colon_x" = "To: %@";

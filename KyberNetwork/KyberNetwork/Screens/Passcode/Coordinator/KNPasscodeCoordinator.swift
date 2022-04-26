@@ -8,12 +8,11 @@ protocol KNPasscodeCoordinatorDelegate: class {
   func passcodeCoordinatorDidCreatePasscode()
 }
 
-class KNPasscodeCoordinator: NSObject, Coordinator {
+class KNPasscodeCoordinator: BaseCoordinator {
 
   let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
-  var coordinators: [Coordinator] = []
 
   weak var delegate: KNPasscodeCoordinatorDelegate?
 

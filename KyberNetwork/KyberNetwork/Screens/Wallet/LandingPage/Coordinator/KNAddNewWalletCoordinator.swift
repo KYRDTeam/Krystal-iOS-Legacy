@@ -17,10 +17,9 @@ enum AddNewWalletType {
   case watch
 }
 
-class KNAddNewWalletCoordinator: Coordinator {
+class KNAddNewWalletCoordinator: BaseCoordinator {
 
   let navigationController: UINavigationController
-  var coordinators: [Coordinator] = []
   fileprivate var keystore: Keystore
 
   fileprivate var newWallet: Wallet?
