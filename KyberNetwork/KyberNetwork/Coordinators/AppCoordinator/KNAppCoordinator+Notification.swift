@@ -218,9 +218,13 @@ extension KNAppCoordinator {
     KNRateCoordinator.shared.resume()
     KNTrackerRateStorage.shared.reloadData()
     
-    KNGasCoordinator.shared.pause()
-    KNGasCoordinator.shared.resume()
-
+    if KNGeneralProvider.shared.currentChain == .solana {
+      SolFeeCoordinator.shared.resume()
+    } else {
+      KNGasCoordinator.shared.pause()
+      KNGasCoordinator.shared.resume()
+    }
+    
     self.exchangeCoordinator?.appCoordinatorDidUpdateChain()
     self.overviewTabCoordinator?.appCoordinatorDidUpdateChain()
     self.investCoordinator?.appCoordinatorDidUpdateChain()

@@ -109,8 +109,28 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
             self.sendRefCode(self.refCode, account: account)
           }
         }
+        switch type {
+        case .keystore:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_success", customAttributes: nil)
+        case .privateKey:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_success", customAttributes: nil)
+        case .mnemonic:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_success", customAttributes: nil)
+        case .watch:
+          break
+        }
       case .failure(let error):
         self.navigationController.topViewController?.displayError(error: error)
+        switch type {
+        case .keystore:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_fail", customAttributes: nil)
+        case .privateKey:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_fail", customAttributes: nil)
+        case .mnemonic:
+          KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_fail", customAttributes: nil)
+        case .watch:
+          break
+        }
       }
     }
   }

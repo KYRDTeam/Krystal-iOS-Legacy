@@ -26,10 +26,10 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var isUsingEns: Bool = false
   
   ///solana default lamport per signature
-  fileprivate(set) var lamportPerSignature: BigInt = BigInt(5000)
+  fileprivate(set) var lamportPerSignature: BigInt = SolFeeCoordinator.shared.lamportPerSignature
   fileprivate(set) var totalSignature: BigInt = BigInt(1)
   
-  
+
   var isSendAllBalanace: Bool = false
 
   var advancedGasLimit: String? {

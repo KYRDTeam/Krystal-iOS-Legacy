@@ -104,6 +104,7 @@ extension KNWelcomeScreenCollectionView: UICollectionViewDataSource {
     for indexPath in self.collectionView.indexPathsForVisibleItems {
       let cell = self.collectionView.cellForItem(at: indexPath) as! KNWelcomeScreenCollectionViewCell
       cell.playAnimation()
+      KNCrashlyticsUtil.logCustomEvent(withName: "intro_swipe_onboard", customAttributes: nil)
     }
   }
 }

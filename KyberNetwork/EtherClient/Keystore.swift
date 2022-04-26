@@ -50,7 +50,7 @@ extension Keystore {
   }
 
   func matchWithEvmAccount(address: String) -> Account? {
-    let wal = self.wallets.first(where: { $0.addressString.lowercased() == address.lowercased() })
+    let wal = self.wallets.first(where: { $0.addressString == address.lowercased() })
     if case .real(let account) = wal?.type {
       return account
     } else {

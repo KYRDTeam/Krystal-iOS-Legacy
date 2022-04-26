@@ -6,6 +6,7 @@
 //
 import Mixpanel
 import Foundation
+import AppTrackingTransparency
 
 let mixPanelProjectToken = "df948aa0c8dc30f5c784b9cb19c125cc"
 
@@ -15,8 +16,14 @@ class MixPanelManager {
   func configClient() {
     Mixpanel.initialize(token: mixPanelProjectToken)
   }
-  
+
   func updateWalletAddress(address: String) {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
     Mixpanel.mainInstance().track(event: "wallet_address", properties: [
       "user-id": address
     ])

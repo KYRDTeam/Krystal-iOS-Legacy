@@ -10,6 +10,7 @@ import Moya
 
 enum SolanaService {
   case getRecentBlockhash
+  case getMinimumBalanceForRentExemption
   case sendTransaction(signedTransaction: String)
   case getSignatureStatuses(signature: String)
   case getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String)
@@ -42,6 +43,14 @@ extension SolanaService: TargetType {
         "method": self.methodName()
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getMinimumBalanceForRentExemption:
+      let json: JSONDictionary = [
+        "jsonrpc": "2.0",
+        "id": 1,
+        "params":[50],
+        "method": self.methodName()
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .sendTransaction(let signedTransactionString):
       let json: JSONDictionary = [
         "jsonrpc": "2.0",
@@ -59,13 +68,13 @@ extension SolanaService: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .getTokenAccountsByOwner(let ownerAddress, let tokenAddress):
-        let json: JSONDictionary = [
-          "jsonrpc": "2.0",
-          "id": 1,
-          "method": self.methodName(),
-          "params": [ownerAddress , ["mint" : tokenAddress], ["encoding" : "jsonParsed"]]
-        ]
-        return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+      let json: JSONDictionary = [
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": self.methodName(),
+        "params": [ownerAddress , ["mint" : tokenAddress], ["encoding" : "jsonParsed"]]
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     }
   }
 
@@ -75,14 +84,16 @@ extension SolanaService: TargetType {
 
   func methodName() -> String {
     switch self {
-      case .getRecentBlockhash:
-        return "getRecentBlockhash"
-      case .sendTransaction:
-        return "sendTransaction"
-      case .getSignatureStatuses:
-        return "getSignatureStatuses"
-      case .getTokenAccountsByOwner:
-        return "getTokenAccountsByOwner"
+    case .getRecentBlockhash:
+      return "getRecentBlockhash"
+    case .getMinimumBalanceForRentExemption:
+      return "getMinimumBalanceForRentExemption"
+    case .sendTransaction:
+      return "sendTransaction"
+    case .getSignatureStatuses:
+      return "getSignatureStatuses"
+    case .getTokenAccountsByOwner:
+      return "getTokenAccountsByOwner"
     }
   }
 }

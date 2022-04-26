@@ -34,33 +34,24 @@ protocol KSendTokenViewControllerDelegate: class {
 class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var navTitleLabel: UILabel!
-
   @IBOutlet weak var headerContainerView: UIView!
-
   @IBOutlet weak var amountTextField: UITextField!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
-
   @IBOutlet weak var scrollContainerView: UIScrollView!
-
   @IBOutlet weak var moreContactButton: UIButton!
   @IBOutlet weak var recentContactView: UIView!
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
   @IBOutlet weak var recentContactHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var recentContactTableViewHeightConstraint: NSLayoutConstraint!
-
   @IBOutlet weak var ensAddressLabel: UILabel!
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
-
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
-
+  @IBOutlet weak var selectedMaxFeeLabel: UILabel!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!
   @IBOutlet weak var maxAmountButton: UIButton!
   @IBOutlet weak var sendMessageLabel: UILabel!
-
-  fileprivate var isViewSetup: Bool = false
-  fileprivate var isViewDisappeared: Bool = false
   @IBOutlet weak var currentTokenButton: UIButton!
   @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
@@ -68,6 +59,12 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var gasSettingButton: UIButton!
+  @IBOutlet weak var multiSendButton: UIButton!
+  @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
+
+  fileprivate var isViewSetup: Bool = false
+  fileprivate var isViewDisappeared: Bool = false
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -132,6 +129,9 @@ class KSendTokenViewController: KNBaseViewController {
 
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.updateGasFeeUI()
+    self.gasSettingButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.multiSendButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.recentContactViewTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 0 : 42
   }
 
   func removeObserveNotification() {
@@ -262,9 +262,11 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func updateGasFeeUI() {
+    self.selectedGasFeeLabel.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.selectedMaxFeeLabel.isHidden = KNGeneralProvider.shared.currentChain == .solana
     if KNGeneralProvider.shared.currentChain == .solana {
-      self.selectedGasFeeLabel.text = self.viewModel.solFeeString
       self.estGasFeeValueLabel.text = self.viewModel.solFeeString
+      self.estGasFeeTitleLabel.text = "Network fee"
     } else {
       self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
       if KNGeneralProvider.shared.isUseEIP1559 {

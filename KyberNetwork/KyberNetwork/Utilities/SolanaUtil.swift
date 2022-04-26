@@ -121,8 +121,27 @@ class SolanaUtil {
     let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
     return output.encoded
   }
+  
+  static func getMinimumBalanceForRentExemption(completion: @escaping (Int?) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getMinimumBalanceForRentExemption) { result in
+      switch result {
+        case .success(let data):
+          if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+            if let result = json["result"] as? Int {
+             completion(result)
+              return
+            }
+          }
+          completion(nil)
+        case .failure(let error):
+          completion(nil)
+          print("[Solana error] \(error.localizedDescription)")
+        }
+      }
+  }
 
-  static func getRecentBlockhash(completion: @escaping (String) -> Void) {
+  static func getRecentBlockhash(completion: @escaping (String?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getRecentBlockhash) { result in
       switch result {
@@ -131,10 +150,35 @@ class SolanaUtil {
           if let resultJson = json["result"] as? JSONDictionary,
              let valueJson = resultJson["value"] as? JSONDictionary,
              let blockHash = valueJson["blockhash"] as? String {
-           completion(blockHash)
+            completion(blockHash)
+            return
           }
         }
+        completion(nil)
       case .failure(let error):
+        completion(nil)
+        print("[Solana error] \(error.localizedDescription)")
+      }
+    }
+  }
+  
+  static func getLamportsPerSignature(completion: @escaping (Int?) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getRecentBlockhash) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let resultJson = json["result"] as? JSONDictionary,
+             let valueJson = resultJson["value"] as? JSONDictionary,
+             let feeJson = valueJson["feeCalculator"] as? JSONDictionary,
+             let lamportsPerSignature = feeJson["lamportsPerSignature"] as? Int {
+            completion(lamportsPerSignature)
+            return
+          }
+        }
+        completion(nil)
+      case .failure(let error):
+        completion(nil)
         print("[Solana error] \(error.localizedDescription)")
       }
     }
@@ -148,14 +192,10 @@ class SolanaUtil {
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let resultJson = json["result"] as? JSONDictionary,
              let valueJsons = resultJson["value"] as? [JSONDictionary] {
-            
-            if valueJsons.isEmpty {
-              // receipt wallet doesn't have account for current SPL token
-            }
-            
             valueJsons.forEach { value in
               if let pubKey = value["pubkey"] as? String {
                 completion(pubKey)
+                return
               }
             }
           }
