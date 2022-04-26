@@ -13,7 +13,7 @@ struct UnconfirmedSolTransaction {
   let to: String
   let data: Data?
   let fee: BigInt
-  let lamportPerSignature: BigInt = BigInt(5000)
+  let lamportPerSignature: BigInt = SolFeeCoordinator.shared.lamportPerSignature
   let totaSignature: BigInt = BigInt(1)
   var mintTokenAddress: String?
   var decimal: Int?

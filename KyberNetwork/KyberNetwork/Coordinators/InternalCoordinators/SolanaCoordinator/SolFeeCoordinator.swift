@@ -14,9 +14,9 @@ class SolFeeCoordinator {
   static let defaultLamportPerSignature = BigInt(5000)
   fileprivate let provider = MoyaProvider<KyberNetworkService>()
   fileprivate var fetchTimer: Timer?
-  
+
   var lamportPerSignature: BigInt = SolFeeCoordinator.defaultLamportPerSignature
-  
+
   @objc func fetchSolFee(_ sender: Timer?) {
     DispatchQueue.global(qos: .background).async {
       SolanaUtil.getLamportsPerSignature { lamports in
@@ -26,7 +26,7 @@ class SolFeeCoordinator {
       }
     }
   }
-  
+
   func resume() {
 //    self.loadSavedGasPrice()
     fetchTimer?.invalidate()
