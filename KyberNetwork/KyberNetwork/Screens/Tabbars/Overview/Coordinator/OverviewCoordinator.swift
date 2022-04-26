@@ -781,10 +781,11 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
       session: self.session,
       nftItem: item,
       supportERC721: supportERC721,
-      nftCategory: category
+      nftCategory: category,
+      sendNFT: true
     )
     coordinator.delegate = self
-    coordinator.start(sendNFT: true)
+    coordinator.start()
     self.sendCoordinator = coordinator
   }
   

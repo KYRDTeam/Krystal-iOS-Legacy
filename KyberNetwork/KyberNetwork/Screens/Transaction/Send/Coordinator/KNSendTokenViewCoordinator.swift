@@ -43,7 +43,7 @@ class KNSendTokenViewCoordinator: BaseCoordinator {
   fileprivate(set) var confirmVC: KConfirmSendViewController?
   fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
-  
+  let sendNFT: Bool
   fileprivate var isSupportERC721 = true
 
   lazy var addContactVC: KNNewContactViewController = {
@@ -86,12 +86,14 @@ class KNSendTokenViewCoordinator: BaseCoordinator {
     navigationController: UINavigationController,
     session: KNSession,
     balances: [String: Balance],
-    from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
-    ) {
+    from: TokenObject = KNGeneralProvider.shared.quoteTokenObject,
+    sendNFT: Bool = false
+  ) {
     self.navigationController = navigationController
     self.session = session
     self.balances = balances
     self.from = from
+    self.sendNFT = sendNFT
   }
   
   init(
@@ -99,7 +101,8 @@ class KNSendTokenViewCoordinator: BaseCoordinator {
     session: KNSession,
     nftItem: NFTItem,
     supportERC721: Bool,
-    nftCategory: NFTSection
+    nftCategory: NFTSection,
+    sendNFT: Bool = false
   ) {
     self.navigationController = navigationController
     self.session = session
@@ -107,9 +110,10 @@ class KNSendTokenViewCoordinator: BaseCoordinator {
     self.nftCategory = nftCategory
     self.from = KNGeneralProvider.shared.quoteTokenObject
     self.isSupportERC721 = supportERC721
+    self.sendNFT = sendNFT
   }
 
-  func start(sendNFT: Bool = false) {
+  override func start() {
     if sendNFT {
       let controller = SendNFTViewController(viewModel: SendNFTViewModel(item: self.nftItem, category: self.nftCategory, supportERC721: self.isSupportERC721))
       controller.delegate = self
