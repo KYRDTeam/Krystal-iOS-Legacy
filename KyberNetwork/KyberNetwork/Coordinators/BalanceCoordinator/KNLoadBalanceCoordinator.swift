@@ -139,7 +139,7 @@ class KNLoadBalanceCoordinator {
     pause()
   }
 
-
+  /*
   @objc func fetchNonSupportedTokensBalancesNew(_ sender: Any?) {
     if self.isFetchNonSupportedBalance { return }
     self.isFetchNonSupportedBalance = true
@@ -197,7 +197,7 @@ class KNLoadBalanceCoordinator {
       self.isFetchNonSupportedBalance = false
     }
   }
-
+ 
   func fetchNonSupportedTokensBalances(addresses: [Address]) {
     guard let provider = self.session.externalProvider else {
       return
@@ -247,7 +247,7 @@ class KNLoadBalanceCoordinator {
       }
     }
   }
-
+   */
   fileprivate func fetchTokenBalances(tokens: [Address], completion: @escaping (Result<Bool, AnyError>) -> Void) {
     guard let provider = self.session.externalProvider else {
       return
@@ -302,7 +302,8 @@ class KNLoadBalanceCoordinator {
     guard !erc20Address.isEmpty else {
       return
     }
-    KNGeneralProvider.shared.getMutipleERC20Balances(for: self.session.wallet.address, tokens: erc20Address) { result in
+    guard let address = self.session.wallet.address else { return }
+    KNGeneralProvider.shared.getMutipleERC20Balances(for: address, tokens: erc20Address) { result in
       switch result {
       case .success(let values):
         if values.count == erc20Address.count {
@@ -324,7 +325,7 @@ class KNLoadBalanceCoordinator {
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getBalances(address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
+    provider.request(.getBalances(address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -354,7 +355,7 @@ class KNLoadBalanceCoordinator {
 
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getTotalBalance(address: self.session.wallet.address.description, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
+    provider.request(.getTotalBalance(address: self.session.wallet.addressString, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
@@ -377,7 +378,7 @@ class KNLoadBalanceCoordinator {
 
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getNTFBalance(address: self.session.wallet.address.description, forceSync: forceSync)) { result in
+    provider.request(.getNTFBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -400,7 +401,7 @@ class KNLoadBalanceCoordinator {
 
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getLendingBalance(address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
+    provider.request(.getLendingBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
         var balances: [LendingPlatformBalance] = []
         result.forEach { (element) in
@@ -427,7 +428,7 @@ class KNLoadBalanceCoordinator {
     guard !KNGeneralProvider.shared.lendingDistributionPlatform.isEmpty else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
 
-    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.address.description, forceSync: forceSync)) { (result) in
+    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)
@@ -441,7 +442,7 @@ class KNLoadBalanceCoordinator {
 
   func loadLiquidityPool(forceSync: Bool = false, completion:  @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     let chain = KNGeneralProvider.shared.chainName
     provider.request(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
@@ -479,7 +480,7 @@ class KNLoadBalanceCoordinator {
               KNGeneralProvider.shared.getOwnerOf(address: sectionItem.collectibleAddress, id: nftItem.tokenID) { ownerResult in
                 switch ownerResult {
                 case .success(let owner):
-                  if owner.lowercased() == self.session.wallet.address.description.lowercased() {
+                  if owner.lowercased() == self.session.wallet.addressString.lowercased() {
                     //do nothing
                   } else {
                     BalanceStorage.shared.removeCustomNFT(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID)

@@ -265,7 +265,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func showActionSheetBackupPhrase(walletObj: KNWalletObject) {
-    guard let wallet = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == walletObj.address.lowercased() }) else { return }
+    guard let wallet = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() }) else { return }
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
         var action = [UIAlertAction]()
@@ -308,7 +308,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func saveBackedUpWallet(wallet: Wallet, name: String) {
     let walletObject = KNWalletObject(
-      address: wallet.address.description,
+      address: wallet.addressString,
       name: name,
       isBackedUp: true
     )
@@ -366,7 +366,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
   fileprivate func openShowBackUpView(data: String, wallet: Wallet) {
     let showBackUpVC = KNShowBackUpDataViewController(
-      wallet: wallet.address.description,
+      wallet: wallet.addressString,
       backupData: data
     )
     showBackUpVC.loadViewIfNeeded()
@@ -374,11 +374,11 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func copyAddress(wallet: Wallet) {
-    UIPasteboard.general.string = wallet.address.description
+    UIPasteboard.general.string = wallet.addressString
   }
 
   fileprivate func exportDataString(_ value: String, wallet: Wallet) {
-    let fileName = "krystal_backup_\(wallet.address.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
+    let fileName = "krystal_backup_\(wallet.addressString)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
@@ -423,7 +423,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   
   func appCoordinatorDidSelectExportWallet() {
     let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
-    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.address.description.lowercased() })!
+    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() })!
     self.settingsViewControllerBackUpButtonPressed(wallet: curWallet)
   }
   
@@ -442,14 +442,14 @@ extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
     if case .real(let account) = wallet.type {
       var name = "New Wallet"
       if let walletObject = KNWalletStorage.shared.wallets.first(where: { (item) -> Bool in
-        return item.address.lowercased() == wallet.address.description.lowercased()
+        return item.address.lowercased() == wallet.addressString.lowercased()
       }) {
         name = walletObject.name
       }
       self.saveBackedUpWallet(wallet: wallet, name: name)
       if let currentPassword = self.session.keystore.getPassword(for: account) {
         self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
-        self.session.keystore.export(account: account, password: currentPassword, newPassword: password, completion: { [weak self] result in
+        self.session.keystore.export(account: account, password: currentPassword, newPassword: password, importType: .multiChain, completion: { [weak self] result in //NOTE: remove later
           self?.navigationController.topViewController?.hideLoading()
           switch result {
           case .success(let value):

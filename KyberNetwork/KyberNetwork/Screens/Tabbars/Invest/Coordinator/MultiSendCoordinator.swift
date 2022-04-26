@@ -47,7 +47,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
   
@@ -198,7 +198,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     
     provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
       if case .success(let resp) = result {
@@ -979,7 +979,7 @@ extension MultiSendCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)

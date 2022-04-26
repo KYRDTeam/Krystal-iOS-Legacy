@@ -135,13 +135,13 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool) {
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportWalletChainType) {
     // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled", isBackedUp: isBackUp)
+    let walletObject = KNWalletObject(address: wallet.addressString, name: name ?? "Untitled", isBackedUp: isBackUp)
     KNWalletStorage.shared.add(wallets: [walletObject])
     if addToContact {
       let contact = KNContact(
-        address: wallet.address.description,
+        address: wallet.addressString,
         name: name ?? "Untitled"
       )
       KNContactStorage.shared.update(contacts: [contact])
@@ -218,8 +218,8 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
-    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType) {
+    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType)
   }
 
   func importWalletCoordinatorDidClose() {
@@ -261,7 +261,7 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
 
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
     guard let wallet = wallet else { return }
-    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp)
+    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp, importType: .multiChain)
   }
 }
 

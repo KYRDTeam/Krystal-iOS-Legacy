@@ -111,14 +111,14 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
         isWatchWallet = true
       }
       let walletObject = KNWalletObject(
-        address: wallet.address.description,
+        address: wallet.addressString,
         name: name ?? "Untitled",
         isBackedUp: isBackUp,
         isWatchWallet: isWatchWallet
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(
-        address: wallet.address.description,
+        address: wallet.addressString,
         name: name ?? "Untitled"
       )
       KNContactStorage.shared.update(contacts: [contact])
@@ -142,7 +142,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType) {
     self.navigationController.dismiss(animated: true) {
       //TODO: add type to wallet firebase obj
       var isWatchWallet = false
@@ -150,14 +150,15 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         isWatchWallet = true
       }
       let walletObject = KNWalletObject(
-        address: wallet.address.description,
+        address: wallet.addressString,
         name: name ?? "Untitled",
         isBackedUp: true,
-        isWatchWallet: isWatchWallet
+        isWatchWallet: isWatchWallet,
+        chainType: importType
       )
       KNWalletStorage.shared.add(wallets: [walletObject])
       let contact = KNContact(
-        address: wallet.address.description,
+        address: wallet.addressString,
         name: name ?? "Untitled"
       )
       KNContactStorage.shared.update(contacts: [contact])
@@ -223,7 +224,7 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
   }
 
   fileprivate func importNewWatchWallet(address: Address, name: String?, isAdd: Bool = true) {
-    self.keystore.importWallet(type: .watch(address: address)) { [weak self] result in
+    self.keystore.importWallet(type: .watch(address: address), importType: .multiChain) { [weak self] result in //TODO: add watch wallet for
       guard let `self` = self else { return }
       switch result {
       case .success(let wallet):
@@ -246,13 +247,13 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
           return name ?? "Imported"
         }()
         let walletObject = KNWalletObject(
-          address: wallet.address.description,
+          address: wallet.addressString,
           name: walletName,
           isWatchWallet: true
         )
         KNWalletStorage.shared.add(wallets: [walletObject])
         let contact = KNContact(
-          address: wallet.address.description,
+          address: wallet.addressString,
           name: name ?? "Untitled"
         )
         KNContactStorage.shared.update(contacts: [contact])

@@ -52,7 +52,7 @@ class BalanceStorage {
   func updateCurrentWallet(_ wallet: Wallet) {
     self.wallet = wallet
     DispatchQueue.global(qos: .background).async {
-      let walletAddress = wallet.address.description.lowercased()
+      let walletAddress = wallet.addressString
       ChainType.getAllChain().forEach { chain in
         self.chainTokenBalances[chain] = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: chain)
       }
@@ -122,7 +122,7 @@ class BalanceStorage {
       return
     }
     self.distributionBalance = balance
-    Storage.store(balance, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName)
+    Storage.store(balance, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.lendingDistributionBalanceStoreFileName)
   }
   
   func setLiquidityPools(_ liquidityPools: [LiquidityPoolModel]) {

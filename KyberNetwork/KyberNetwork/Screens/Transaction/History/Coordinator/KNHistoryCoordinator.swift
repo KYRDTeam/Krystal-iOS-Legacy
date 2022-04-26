@@ -55,7 +55,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
     ) {
     self.navigationController = navigationController
     self.session = session
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
 
@@ -78,7 +78,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
 
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     self.currentWallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.appCoordinatorTokensTransactionsDidUpdate()
     self.rootViewController.coordinatorUpdateTokens()
@@ -312,7 +312,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .quickTutorial(let pointsAndRadius):
       break
     case .openEtherScanWalletPage:
-      let urlString = "\(self.etherScanURL)address/\(self.session.wallet.address.description)"
+      let urlString = "\(self.etherScanURL)address/\(self.session.wallet.addressString)"
       self.rootViewController.openSafari(with: urlString)
     case .openKyberWalletPage:
     break
@@ -520,7 +520,7 @@ extension KNHistoryCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
         return
       }
       self.delegate?.historyCoordinatorDidSelectWallet(wal)

@@ -60,7 +60,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
-    guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
+    guard let wallet = self.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else { return }
     if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
     self.restartNewSession(wallet)
   }
@@ -279,7 +279,8 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   
   func addNewWalletCoordinator(add wallet: Wallet) {
     // reset loading state
-    KNAppTracker.updateAllTransactionLastBlockLoad(0, for: wallet.address)
+    guard let unwrap = wallet.address else { return }
+    KNAppTracker.updateAllTransactionLastBlockLoad(0, for: unwrap)
     if self.tabbarController == nil {
       self.startNewSession(with: wallet)
     } else {
@@ -295,7 +296,7 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
 extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
   func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
     self.navigationController.popViewController(animated: true) {
-      let address = wallet.address.description
+      let address = wallet.addressString
       KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
         address: address,
         destinationToken: destinationToken ?? "",

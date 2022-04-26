@@ -77,7 +77,7 @@ class BifinityOrderViewController: KNBaseViewController {
 
   func setupUI() {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletSelectButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = 1
     segmentedControl.highlightSelectedSegment()
@@ -119,7 +119,7 @@ class BifinityOrderViewController: KNBaseViewController {
   func coordinatorDidUpdateWallet(_ wallet: Wallet) {
     guard self.isViewLoaded else { return }
     self.viewModel.wallet = wallet
-    self.walletSelectButton.setTitle(self.viewModel.wallet.address.description, for: .normal)
+    self.walletSelectButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
   }
 }
 

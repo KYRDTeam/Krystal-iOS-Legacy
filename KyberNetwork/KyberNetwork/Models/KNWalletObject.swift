@@ -11,8 +11,9 @@ class KNWalletObject: Object {
   @objc dynamic var isBackedUp: Bool = true
   @objc dynamic var isWatchWallet: Bool = false
   @objc dynamic var date: Date = Date()
+  @objc dynamic var chainType: Int = 0
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain) {
     self.init()
     self.address = address
     self.name = name
@@ -20,9 +21,10 @@ class KNWalletObject: Object {
     self.date = Date()
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
+    self.chainType = chainType.rawValue
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType) {
     self.init()
     self.address = address
     self.name = name
@@ -30,6 +32,7 @@ class KNWalletObject: Object {
     self.date = date
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
+    self.chainType = chainType.rawValue
   }
 
   func copy(withNewName newName: String) -> KNWalletObject {
@@ -39,7 +42,8 @@ class KNWalletObject: Object {
       icon: self.icon,
       date: self.date,
       isBackedUp: self.isBackedUp,
-      isWatchWallet: self.isWatchWallet
+      isWatchWallet: self.isWatchWallet,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!
     )
   }
 
@@ -54,7 +58,8 @@ class KNWalletObject: Object {
       icon: self.icon,
       date: self.date,
       isBackedUp: self.isBackedUp,
-      isWatchWallet: self.isWatchWallet
+      isWatchWallet: self.isWatchWallet,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!
     )
   }
   

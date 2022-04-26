@@ -17,7 +17,7 @@ class SwitchChainWalletsListViewModel {
       return KNWalletTableCellViewModel(wallet: obj)
     })
     if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-      self.selectedAddress = appDelegate.coordinator.session.wallet.address.description
+      self.selectedAddress = appDelegate.coordinator.session.wallet.addressString
     }
   }
   

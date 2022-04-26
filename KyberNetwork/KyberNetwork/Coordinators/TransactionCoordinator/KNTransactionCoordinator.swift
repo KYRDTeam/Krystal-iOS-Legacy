@@ -98,7 +98,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
-    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
+    provider.request(.getTransactionsHistory(address: self.wallet.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -294,7 +294,7 @@ extension KNTransactionCoordinator {
     let savedTokens: [TokenObject] = self.tokenStorage.tokens
     transactions.forEach { tx in
       // receive token tx only
-      if !tx.isInvalidated, self.wallet.address.description.lowercased() == tx.to.lowercased(),
+      if !tx.isInvalidated, self.wallet.addressString == tx.to.lowercased(),
         let token = tx.getTokenObject(), !tokenObjects.contains(token),
         !savedTokens.contains(token) {
         tokenObjects.append(token)
@@ -307,9 +307,9 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func handleReceiveEtherOrToken(_ transactions: [Transaction]) {
-    if transactions.isEmpty { return }
-    if KNAppTracker.transactionLoadState(for: wallet.address) != .done { return }
-    let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.address.description.lowercased() && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
+    guard !transactions.isEmpty, let addressObj = wallet.address else { return }
+    if KNAppTracker.transactionLoadState(for: addressObj) != .done { return }
+    let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.addressString && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
     // last transaction is received, and less than 5 mins ago
     if let latestReceiveTx = receivedTxs.first, Date().timeIntervalSince(latestReceiveTx.date) <= 5.0 * 60.0 {
       let title = NSLocalizedString("received.token", value: "Received %@", comment: "")
@@ -401,7 +401,7 @@ extension KNTransactionCoordinator {
         }
         if transaction.date.addingTimeInterval(60) < Date() {
           let minedTxs = self.transactionStorage.transferNonePendingObjects
-          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.address.description.lowercased() }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
+          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.addressString }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
             if nonce >= txNonce && tx.id.lowercased() != transaction.id.lowercased() {
               self.removeTransactionHasBeenLost(transaction)
             }
@@ -535,7 +535,7 @@ extension UnconfirmedTransaction {
     return Transaction(
       id: hash,
       blockNumber: 0,
-      from: wallet.address.description,
+      from: wallet.addressString,
       to: self.to?.description ?? "",
       value: self.value.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: token.decimals),
       gas: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",
