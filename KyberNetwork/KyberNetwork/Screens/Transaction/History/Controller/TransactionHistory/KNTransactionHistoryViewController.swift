@@ -204,5 +204,9 @@ extension KNTransactionHistoryViewController: KNTransactionListViewControllerDel
   func refreshTransactions(_ viewController: KNTransactionListViewController) {
 //    delegate?.historyViewController(self, run: .reloadAllData)
   }
+  
+  func transactionListViewController(_ viewController: KNTransactionListViewController, openDetail transaction: TransactionHistoryItem) {
+    viewModel.didSelectTransaction(transaction: transaction)
+  }
 
 }

@@ -23,7 +23,7 @@ class GetSolanaTransactionsUseCase {
   }
   
   func load(lastHash: String?, completion: @escaping ([SolanaTransaction], Bool) -> ()) {
-    repository.fetchSolanaTransaction(address: "59FjBbHSQUe4LpzMLVFQCQ4ArDs3cMN2g7csW9U8AFtA", prevHash: lastHash, limit: limit) { transactions in
+    repository.fetchSolanaTransaction(address: "cqDeXT4WUEUSgVGwbydDj6S8o9waG7a1zchLcDmg8Tq", prevHash: lastHash, limit: limit) { transactions in
       completion(transactions, transactions.count == self.limit)
     }
   }

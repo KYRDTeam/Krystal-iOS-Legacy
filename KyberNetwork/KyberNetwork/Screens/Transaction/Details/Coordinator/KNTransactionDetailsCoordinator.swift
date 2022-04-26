@@ -12,6 +12,14 @@ class KNTransactionDetailsCoordinator: Coordinator {
 
   var rootViewController: KNTransactionDetailsViewController
 
+  init(navigationController: UINavigationController, viewModel: TransactionDetailsViewModel) {
+    self.navigationController = navigationController
+    let controller = KNTransactionDetailsViewController(viewModel: viewModel)
+    self.rootViewController = controller
+    controller.loadViewIfNeeded()
+    controller.delegate = self
+  }
+  
   init(
     navigationController: UINavigationController,
     transaction: InternalHistoryTransaction

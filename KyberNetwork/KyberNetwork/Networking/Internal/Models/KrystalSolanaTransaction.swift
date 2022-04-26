@@ -37,6 +37,7 @@ struct SolanaTransactionDTO: Decodable {
     var tokensTransferTxs: [TokenTransferTxDTO]?
     var unknownTransferTxs: [UnknownTransferTxDTO]?
     var raydiumTxs: [RaydiumTxDTO]?
+    var inputAccount: [InputAccountDTO]?
     
     enum CodingKeys: String, CodingKey {
       case recentBlockhash
@@ -44,6 +45,15 @@ struct SolanaTransactionDTO: Decodable {
       case tokensTransferTxs = "tokens_transfer_txs"
       case unknownTransferTxs = "unknown_transfer_txs"
       case raydiumTxs = "raydium_txs"
+      case inputAccount
+    }
+    
+    struct InputAccountDTO: Decodable {
+      var account: String
+      var signer: Bool
+      var writable: Bool
+      var preBalance: Int
+      var postBalance: Int
     }
     
     struct SolTransferTxDTO: Decodable {
@@ -175,7 +185,16 @@ extension SolanaTransactionDTO.DetailsDTO {
                  solTransferTxs: solTransferTxs?.map { $0.toDomain() } ?? [],
                  tokensTransferTxs: tokensTransferTxs?.map { $0.toDomain() } ?? [],
                  unknownTransferTxs: unknownTransferTxs?.map { $0.toDomain() } ?? [],
-                 raydiumTxs: raydiumTxs?.map { $0.toDomain() } ?? [])
+                 raydiumTxs: raydiumTxs?.map { $0.toDomain() } ?? [],
+                 inputAccount: inputAccount?.map { $0.toDomain() } ?? [])
+  }
+  
+}
+
+extension SolanaTransactionDTO.DetailsDTO.InputAccountDTO {
+  
+  func toDomain() -> SolanaTransaction.Details.InputAccount {
+    return .init(account: account, signer: signer, writable: writable, preBalance: preBalance, postBalance: postBalance)
   }
   
 }

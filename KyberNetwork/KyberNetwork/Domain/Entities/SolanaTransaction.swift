@@ -24,6 +24,15 @@ struct SolanaTransaction {
     var tokensTransferTxs: [TokenTransferTx]
     var unknownTransferTxs: [UnknownTransferTx]
     var raydiumTxs: [RaydiumTx]
+    var inputAccount: [InputAccount]
+    
+    struct InputAccount {
+      var account: String
+      var signer: Bool
+      var writable: Bool
+      var preBalance: Int
+      var postBalance: Int
+    }
     
     struct SolTransferTx {
       var source: String

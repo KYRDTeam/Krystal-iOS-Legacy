@@ -1,51 +1,95 @@
 //
-//  KrystalSolanaTransactionItemViewModel.swift
+//  SolanaTransactionDetailViewModel.swift
 //  KyberNetwork
 //
-//  Created by Nguyen Tung on 22/04/2022.
+//  Created by Nguyen Tung on 26/04/2022.
 //
 
 import Foundation
 import UIKit
 import BigInt
 
-class KrystalSolanaTransactionItemViewModel: TransactionHistoryItemViewModelProtocol {
-  
+class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   let transaction: SolanaTransaction
+  
+  let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm:ss ZZZZ"
+    return formatter
+  }()
   
   init(transaction: SolanaTransaction) {
     self.transaction = transaction
   }
-}
-
-extension KrystalSolanaTransactionItemViewModel {
   
-  var interactProgram: String {
-    return transaction.details.inputAccount.last?.account ?? ""
+  var isError: Bool {
+    return transaction.status.lowercased() != "success"
   }
   
-  var fromIconSymbol: String {
+  var displayTxStatus: String {
+    return transaction.status
+  }
+  
+  var displayTxIcon: UIImage? {
+    return isError ? UIImage(named: "warning_red_icon") : nil
+  }
+  
+  var displayTxStatusColor: UIColor {
+    return isError ? UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
+  }
+  
+  var displayTxTypeString: String {
+    return txType.displayString
+  }
+  
+  var displayDateString: String {
+    return dateFormatter.string(from: transaction.txDate)
+  }
+  
+  var displayAmountString: String {
     if isSwapTransaction {
-      return swapEvents.first!.symbol
+      return tokenSwapAmountString
+    } else if isTokenTransferTransaction {
+      return tokenTransferTxAmountString
+    } else if isSolTransferTransaction {
+      return solanaTransferTxAmountString
+    }
+    return "Application"
+  }
+  
+  var displayFromAddress: String {
+    if isSwapTransaction {
+      return transaction.signer.first ?? ""
+    } else if isTokenTransferTransaction {
+      guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
+      return transaction.details.tokensTransferTxs[0].sourceOwner
+    } else if isSolTransferTransaction {
+      guard !transaction.details.solTransferTxs.isEmpty else { return "" }
+      return transaction.details.solTransferTxs[0].source
     }
     return ""
   }
   
-  var toIconSymbol: String {
+  var displayToAddress: String {
     if isSwapTransaction {
-      return swapEvents.last!.symbol
+      return "" // TODO: Update use input account
+    } else if isTokenTransferTransaction {
+      guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
+      return transaction.details.tokensTransferTxs[0].destinationOwner
+    } else if isSolTransferTransaction {
+      guard !transaction.details.solTransferTxs.isEmpty else { return "" }
+      return transaction.details.solTransferTxs[0].destination
     }
-    return ""
+    return "" // TODO: Update use input account
   }
   
-  var txType: HistoryModelType {
-    if isSwapTransaction {
-      return .swap
-    } else if isTokenTransferTransaction || isSolTransferTransaction {
-      return .transferToken
-    } else {
-      return .contractInteraction
-    }
+  var displayGasFee: String {
+    let feeBigInt = BigInt(transaction.fee)
+    return feeBigInt.string(decimals: Constants.Tokens.Decimals.solana, minFractionDigits: 0, maxFractionDigits: 6) + " " + Constants.Tokens.Symbol.solana
+  }
+  
+  var displayHash: String {
+    return transaction.txHash
   }
   
   var isTokenTransferTransaction: Bool {
@@ -71,43 +115,52 @@ extension KrystalSolanaTransactionItemViewModel {
     return false
   }
   
-  var displayedAmountString: String {
+  var fromIconSymbol: String {
     if isSwapTransaction {
-      return tokenSwapAmountString
-    } else if isTokenTransferTransaction {
-      return tokenTransferTxAmountString
-    } else if isSolTransferTransaction {
-      return solanaTransferTxAmountString
+      return swapEvents.first!.symbol
     }
-    return "Application"
+    return ""
   }
   
-  var transactionDetailsString: String {
+  var toIconSymbol: String {
     if isSwapTransaction {
-      return swapRateString
-    } else if isTokenTransferTransaction {
-      return tokenTransferInfoString
-    } else if isSolTransferTransaction {
-      return solTransferString
-    } else {
-      return interactProgram
+      return swapEvents.last!.symbol
     }
+    return ""
   }
   
-  var isError: Bool {
-    return transaction.status.lowercased() != "success"
+  var fromFieldTitle: String {
+    if isTokenTransferTransaction || isSolTransferTransaction {
+      if !isTransferToOther {
+        return "From Wallet".toBeLocalised()
+      }
+    }
+    return "Wallet".toBeLocalised()
+  }
+  
+  var toFieldTitle: String {
+    if isTokenTransferTransaction || isSolTransferTransaction {
+      return "To Wallet".toBeLocalised()
+    }
+    return "Application".toBeLocalised()
   }
   
   var transactionTypeImage: UIImage {
     return txType.displayIcon
   }
   
-  var displayTime: String {
-    return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: transaction.txDate)
-  }
-  
   var transactionTypeString: String {
     return txType.displayString
+  }
+  
+  var txType: HistoryModelType {
+    if isSwapTransaction {
+      return .swap
+    } else if isTokenTransferTransaction || isSolTransferTransaction {
+      return .transferToken
+    } else {
+      return .contractInteraction
+    }
   }
   
   var swapEvents: [SolanaTransaction.Details.Event] {
@@ -118,6 +171,10 @@ extension KrystalSolanaTransactionItemViewModel {
     } else {
       return raydiumTransferTxs
     }
+  }
+  
+  var interactProgram: String {
+    return transaction.details.inputAccount.last?.account ?? ""
   }
   
   private var solTransferString: String {

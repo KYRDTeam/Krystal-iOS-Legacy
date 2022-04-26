@@ -16,6 +16,7 @@ enum KNTransactionHistoryType {
 struct KNTransactionHistoryViewModelActions {
   var closeTransactionHistory: () -> ()
   var openTransactionFilter: ([String], KNTransactionFilter) -> ()
+  var openTransactionDetail: (TransactionHistoryItem) -> ()
 }
 
 class KNTransactionHistoryViewModel {
@@ -61,6 +62,10 @@ class KNTransactionHistoryViewModel {
   
   func didTapFilter() {
     actions?.openTransactionFilter(tokenSymbols, filters)
+  }
+  
+  func didSelectTransaction(transaction: TransactionHistoryItem) {
+    actions?.openTransactionDetail(transaction)
   }
 
 }

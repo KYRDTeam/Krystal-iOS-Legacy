@@ -46,4 +46,8 @@ extension InternalHistoryTransaction: TransactionHistoryItem {
     return PendingInternalHistoryTransactonViewModel(transaction: self)
   }
   
+  func toDetailViewModel() -> TransactionDetailsViewModel {
+    return InternalTransactionDetailViewModel(transaction: self)
+  }
+  
 }

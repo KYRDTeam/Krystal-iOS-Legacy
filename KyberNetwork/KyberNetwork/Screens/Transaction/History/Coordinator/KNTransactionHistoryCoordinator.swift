@@ -24,7 +24,13 @@ class KNTransactionHistoryCoordinator: BaseCoordinator {
   
   override func start() {
     let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, arguments: wallet, type)!
-    vc.viewModel.actions = KNTransactionHistoryViewModelActions(closeTransactionHistory: closeTransactionHistory, openTransactionFilter: openTransactionFilter)
+    
+    vc.viewModel.actions = KNTransactionHistoryViewModelActions(
+      closeTransactionHistory: closeTransactionHistory,
+      openTransactionFilter: openTransactionFilter,
+      openTransactionDetail: openTransactionDetail
+    )
+    
     self.viewController = vc
     self.navigationController.pushViewController(vc, animated: true)
   }
@@ -36,6 +42,11 @@ class KNTransactionHistoryCoordinator: BaseCoordinator {
   private func openTransactionFilter(tokens: [String], filter: KNTransactionFilter) {
     let vc = DIContainer.resolve(KNTransactionFilterViewController.self, arguments: filter, tokens, viewController as KNTransactionFilterViewControllerDelegate?)!
     navigationController.pushViewController(vc, animated: true)
+  }
+  
+  private func openTransactionDetail(transaction: TransactionHistoryItem) {
+    let coordinator = KNTransactionDetailsCoordinator(navigationController: navigationController, viewModel: transaction.toDetailViewModel())
+    coordinate(coordinator: coordinator)
   }
   
 }

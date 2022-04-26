@@ -17,5 +17,9 @@ extension SolanaTransaction: TransactionHistoryItem {
     return KrystalSolanaTransactionItemViewModel(transaction: self)
   }
   
+  func toDetailViewModel() -> TransactionDetailsViewModel {
+    return SolanaTransactionDetailViewModel(transaction: self)
+  }
+  
 }
 

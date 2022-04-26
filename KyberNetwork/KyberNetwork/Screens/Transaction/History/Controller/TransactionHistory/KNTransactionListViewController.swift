@@ -14,6 +14,7 @@ protocol KNTransactionListViewControllerDelegate: AnyObject {
   func transactionListViewController(_ viewController: KNTransactionListViewController, speedupTransaction transaction: TransactionHistoryItem)
   func transactionListViewController(_ viewController: KNTransactionListViewController, cancelTransaction transaction: TransactionHistoryItem)
   func refreshTransactions(_ viewController: KNTransactionListViewController)
+  func transactionListViewController(_ viewController: KNTransactionListViewController, openDetail transaction: TransactionHistoryItem)
 }
 
 class KNTransactionListViewController: UIViewController {
@@ -216,6 +217,19 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
       }
     }
   }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard !transactionsIsEmpty else {
+      return
+    }
+    guard indexPath.section < viewModel.numberOfSections else {
+      return
+    }
+    guard let transaction = viewModel.item(forIndex: indexPath.item, inSection: indexPath.section) else {
+      return
+    }
+    delegate?.transactionListViewController(self, openDetail: transaction)
+  }
 }
 
 extension KNTransactionListViewController {
@@ -232,7 +246,7 @@ extension KNTransactionListViewController {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    if viewModel.isTransactionListEmpty && !viewModel.isLoading {
+    if transactionsIsEmpty {
       return 1
     }
     if section < viewModel.numberOfSections - 1 {

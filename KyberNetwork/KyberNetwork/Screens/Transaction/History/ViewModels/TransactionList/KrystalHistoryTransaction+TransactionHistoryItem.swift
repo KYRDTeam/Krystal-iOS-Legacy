@@ -61,4 +61,8 @@ extension KrystalHistoryTransaction: TransactionHistoryItem {
     return CompletedKrystalHistoryTransactionViewModel(item: self)
   }
   
+  func toDetailViewModel() -> TransactionDetailsViewModel {
+    return KrystalTransactionDetailViewModel(data: CompletedKrystalHistoryTransactionViewModel(item: self))
+  }
+  
 }
