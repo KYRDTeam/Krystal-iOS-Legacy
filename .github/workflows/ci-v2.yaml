@@ -76,10 +76,10 @@ jobs:
             env: dev
             ota_key: DEV_OTA_URL
             bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            bump_build: false
+          # - app_name: "Krystal: Staging"
+          #   env: stg
+          #   ota_key: STG_OTA_URL
+          #   bump_build: false
             
     runs-on: macos-11
     env:
