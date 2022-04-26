@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectChainViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="5g8-bI-gR9" id="wPY-Va-U7M"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ldk-MH-CEo">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a10-dy-TfD">
+                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="L69-AO-aa4"/>
+                                <constraint firstAttribute="height" constant="36" id="hMD-kK-mgu"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back_blue_icon">
+                                <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="onBackButtonTapped:" destination="-1" eventType="touchUpInside" id="gGT-tq-1i5"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4H0-0F-IjL">
+                            <rect key="frame" x="142" y="64.5" width="130" height="23.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="88" id="SV2-hB-PcJ"/>
+                        <constraint firstItem="a10-dy-TfD" firstAttribute="leading" secondItem="Ldk-MH-CEo" secondAttribute="leading" constant="16" id="WZR-C4-T99"/>
+                        <constraint firstItem="4H0-0F-IjL" firstAttribute="centerY" secondItem="a10-dy-TfD" secondAttribute="centerY" id="bY8-Bg-KeQ"/>
+                        <constraint firstAttribute="bottom" secondItem="4H0-0F-IjL" secondAttribute="bottom" id="jAV-3k-cUK"/>
+                        <constraint firstItem="4H0-0F-IjL" firstAttribute="centerX" secondItem="Ldk-MH-CEo" secondAttribute="centerX" id="phS-ty-HAb"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Network for Importing wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TrA-rt-ou4">
+                    <rect key="frame" x="46.5" y="128" width="321" height="24"/>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5g8-bI-gR9">
+                    <rect key="frame" x="14" y="164" width="386" height="698"/>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="8rZ-aQ-Cx9"/>
+                        <outlet property="delegate" destination="-1" id="gdR-gE-UOb"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="Ldk-MH-CEo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0K2-xu-qxJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ldk-MH-CEo" secondAttribute="trailing" id="2fL-dX-ao2"/>
+                <constraint firstItem="Ldk-MH-CEo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5jP-wZ-05E"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5g8-bI-gR9" secondAttribute="trailing" constant="14" id="5qa-rJ-f75"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5g8-bI-gR9" secondAttribute="bottom" id="CdX-Pe-6Xb"/>
+                <constraint firstItem="TrA-rt-ou4" firstAttribute="top" secondItem="Ldk-MH-CEo" secondAttribute="bottom" constant="40" id="E9c-c4-fqF"/>
+                <constraint firstItem="5g8-bI-gR9" firstAttribute="top" secondItem="TrA-rt-ou4" secondAttribute="bottom" constant="12" id="NU4-TG-z1E"/>
+                <constraint firstItem="5g8-bI-gR9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="14" id="cQ4-A3-18J"/>
+                <constraint firstItem="TrA-rt-ou4" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="pTM-HC-Sn3"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="99"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
