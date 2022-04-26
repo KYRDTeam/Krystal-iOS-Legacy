@@ -12,9 +12,9 @@ protocol AddTokenCoordinatorDelegate: class {
   func addCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
 }
 
-class AddTokenCoordinator: NSObject, Coordinator {
+class AddTokenCoordinator: BaseCoordinator {
   let navigationController: UINavigationController
-  var coordinators: [Coordinator] = []
+//  var coordinators: [Coordinator] = []
   private(set) var session: KNSession
   weak var delegate: AddTokenCoordinatorDelegate?
   

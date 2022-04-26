@@ -30,13 +30,13 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
 }
 
 //swiftlint:disable file_length
-class KNExchangeTokenCoordinator: NSObject, Coordinator {
+class KNExchangeTokenCoordinator: BaseCoordinator {
 
   let navigationController: UINavigationController
   fileprivate(set) var session: KNSession
   var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
-  var coordinators: [Coordinator] = []
+//  var coordinators: [Coordinator] = []
   /// src and dest token used for deeplink
   var srcTokenAddress, destTokenAddress: String?
   var priceImpactSource: [String] = []
@@ -98,7 +98,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
     self.session = session
   }
 
-  func start() {
+  override func start() {
     self.navigationController.viewControllers = [self.rootViewController]
   }
 
@@ -937,14 +937,16 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
+    let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, wallet: currentWallet, type: .solana)
+    coordinate(coordinator: coordinator)
+//    self.historyCoordinator = nil
+//    self.historyCoordinator = KNHistoryCoordinator(
+//      navigationController: self.navigationController,
+//      session: self.session
+//    )
+//    self.historyCoordinator?.delegate = self
+//    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+//    self.historyCoordinator?.start()
   }
 
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
