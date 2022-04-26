@@ -18,15 +18,7 @@ class BalanceStorage {
   private var customNftBalance: ThreadProtectedObject<[NFTSection]> = .init(storageValue: [])
   private var distributionBalance: LendingDistributionBalance?
   private var wallet: Wallet?
-  
-  private var ethTokenBalances: [TokenBalance] = []
-  private var bscTokenBalances: [TokenBalance] = []
-  private var polygonTokenBalances: [TokenBalance] = []
-  private var avaxTokenBalances: [TokenBalance] = []
-  private var cronosTokenBalances: [TokenBalance] = []
-  private var fantomTokenBalances: [TokenBalance] = []
-  private var arbitrumTokenBalances: [TokenBalance] = []
-  private var auroraTokenBalances: [TokenBalance] = []
+  private var chainTokenBalances: [ChainType: [TokenBalance]] = [:]
 
   var allBalance: [TokenBalance] {
     return self.supportedTokenBalances.value
@@ -54,39 +46,16 @@ class BalanceStorage {
   }
   
   private func setCacheForChain(chain: ChainType, balances: [TokenBalance]) {
-    switch chain {
-    case .eth:
-      self.ethTokenBalances = balances
-    case .bsc:
-      self.bscTokenBalances = balances
-    case .polygon:
-      self.polygonTokenBalances = balances
-    case .avalanche:
-      self.avaxTokenBalances = balances
-    case .cronos:
-      self.cronosTokenBalances = balances
-    case .fantom:
-      self.fantomTokenBalances = balances
-    case .arbitrum:
-      self.arbitrumTokenBalances = balances
-    case .aurora:
-      self.auroraTokenBalances = balances
-    }
+    self.chainTokenBalances[chain] = balances
   }
   
   func updateCurrentWallet(_ wallet: Wallet) {
     self.wallet = wallet
     DispatchQueue.global(qos: .background).async {
       let walletAddress = wallet.address.description.lowercased()
-      self.ethTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .eth)
-      self.bscTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .bsc)
-      self.polygonTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .polygon)
-      self.avaxTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .avalanche)
-      self.cronosTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .cronos)
-      self.fantomTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .fantom)
-      self.arbitrumTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .arbitrum)
-      self.auroraTokenBalances = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: .aurora)
-
+      ChainType.getAllChain().forEach { chain in
+        self.chainTokenBalances[chain] = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: chain)
+      }
       self.supportedTokenBalances.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
       self.allLendingBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
@@ -114,24 +83,7 @@ class BalanceStorage {
   }
   
   private func getBalancesFor(chain: ChainType) -> [TokenBalance] {
-    switch chain {
-    case .eth:
-      return self.ethTokenBalances
-    case .bsc:
-      return self.bscTokenBalances
-    case .polygon:
-      return self.polygonTokenBalances
-    case .avalanche:
-      return self.avaxTokenBalances
-    case .cronos:
-      return self.cronosTokenBalances
-    case .fantom:
-      return self.fantomTokenBalances
-    case .arbitrum:
-      return self.arbitrumTokenBalances
-    case .aurora:
-      return self.auroraTokenBalances
-    }
+    return self.chainTokenBalances[chain] ?? []
   }
   
   func balanceForAddressInChain(_ address: String, chainType: ChainType) -> TokenBalance? {
