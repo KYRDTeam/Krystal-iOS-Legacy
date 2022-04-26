@@ -76,7 +76,7 @@ class SolanaUtil {
       $0.recentBlockhash = recentBlockhash
       $0.privateKey = privateKeyData
     }
-    
+
     let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
     return output.encoded
   }

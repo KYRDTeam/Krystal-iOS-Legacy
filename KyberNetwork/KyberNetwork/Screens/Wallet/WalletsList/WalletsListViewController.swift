@@ -39,13 +39,21 @@ class WalletsListViewModel {
 
   var watchWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
-      return object.isWatchWallet
+      if KNGeneralProvider.shared.currentChain == .solana {
+          return object.chainType == 2 && object.isWatchWallet
+      } else {
+        return object.chainType != 2 && object.isWatchWallet
+      }
     }
   }
 
   var realWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
-      return !object.isWatchWallet
+      if KNGeneralProvider.shared.currentChain == .solana {
+          return object.chainType == 2 && !object.isWatchWallet
+      } else {
+        return object.chainType != 2 && !object.isWatchWallet
+      }
     }
   }
 

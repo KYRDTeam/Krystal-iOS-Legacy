@@ -8,9 +8,25 @@ extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
     
-    self.keystore.recentlyUsedWallet = wallet
+    var aWallet = wallet
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if !wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = solWallet
+        }
+      }
+    } else {
+      if wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = nonSolWallet
+        }
+      }
+    }
+    
+    self.keystore.recentlyUsedWallet = aWallet
     self.currentWallet = wallet
-    self.session = KNSession(keystore: self.keystore, wallet: wallet)
+    self.session = KNSession(keystore: self.keystore, wallet: aWallet)
     self.session.startSession()
     OneSignal.setExternalUserId(wallet.address.description)
     DispatchQueue.global(qos: .background).async {
@@ -170,11 +186,32 @@ extension KNAppCoordinator {
 
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet, isLoading: Bool = true) {
+    var aWallet = wallet
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if !wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = solWallet
+        } else {
+          return
+        }
+      }
+    } else {
+      if wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = nonSolWallet
+        } else {
+          return
+        }
+      }
+    }
+
     if isLoading { self.navigationController.displayLoading() }
+
     DispatchQueue.global(qos: .background).async {
       self.loadBalanceCoordinator?.exit()
-      EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
-      BalanceStorage.shared.updateCurrentWallet(wallet)
+      EtherscanTransactionStorage.shared.updateCurrentWallet(aWallet)
+      BalanceStorage.shared.updateCurrentWallet(aWallet)
       OneSignal.removeExternalUserId { _ in
         OneSignal.setExternalUserId(wallet.address.description)
       } withFailure: { _ in
@@ -183,7 +220,7 @@ extension KNAppCoordinator {
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      self.session.switchSession(wallet)
+      self.session.switchSession(aWallet)
       FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
@@ -214,7 +251,7 @@ extension KNAppCoordinator {
       self.doLogin { completed in
       }
       if isLoading { self.navigationController.hideLoading() }
-      MixPanelManager.shared.updateWalletAddress(address: wallet.addressString)
+      MixPanelManager.shared.updateWalletAddress(address: aWallet.addressString)
     }
   }
 
