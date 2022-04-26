@@ -322,6 +322,8 @@ class ChartViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.setupConstraints()
     self.chartView.showYLabelsAndGrid = false
     self.chartView.labelColor = UIColor(red: 164, green: 171, blue: 187)
     self.chartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
@@ -344,6 +346,10 @@ class ChartViewController: KNBaseViewController {
     }
   }
 
+  func setupConstraints() {
+    topBarHeight?.constant = UIScreen.statusBarHeight + 36 * 2 + 24
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.loadChartData()

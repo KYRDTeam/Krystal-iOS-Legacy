@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -26,6 +26,7 @@
                 <outlet property="emptyStateContainerView" destination="NFq-ou-3y4" id="BA5-1T-Ckv"/>
                 <outlet property="orderNowButton" destination="5sS-bY-8D5" id="qRV-uw-bC3"/>
                 <outlet property="segmentedControl" destination="gVD-vw-mfe" id="FyR-kQ-Ef1"/>
+                <outlet property="topBarHeight" destination="za2-YY-5dd" id="h3J-Qi-WtI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletSelectButton" destination="F7a-aq-06F" id="mhB-cy-DUE"/>
             </connections>
@@ -39,13 +40,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HISTORY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Eg-Lx-N4Q">
-                            <rect key="frame" x="51" y="74.5" width="82" height="23.5"/>
+                            <rect key="frame" x="51" y="64.5" width="82" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di8-NY-jCT">
-                            <rect key="frame" x="16" y="68.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="1nj-9M-ccY"/>
                                 <constraint firstAttribute="width" constant="46" id="EAe-iA-KqB"/>
@@ -56,7 +57,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7a-aq-06F">
-                            <rect key="frame" x="306" y="70.5" width="94" height="32"/>
+                            <rect key="frame" x="306" y="60.5" width="94" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="6Vv-kb-gPV"/>
@@ -81,7 +82,7 @@
                         <constraint firstItem="4Eg-Lx-N4Q" firstAttribute="leading" secondItem="wMj-ge-d8V" secondAttribute="leading" constant="51" id="P1W-Go-b8T"/>
                         <constraint firstItem="Di8-NY-jCT" firstAttribute="centerY" secondItem="4Eg-Lx-N4Q" secondAttribute="centerY" id="QbJ-ps-LC3"/>
                         <constraint firstItem="Di8-NY-jCT" firstAttribute="leading" secondItem="wMj-ge-d8V" secondAttribute="leading" constant="16" id="eO7-LZ-VAh"/>
-                        <constraint firstAttribute="bottom" secondItem="4Eg-Lx-N4Q" secondAttribute="bottom" constant="16" id="nV3-cH-Vdw"/>
+                        <constraint firstAttribute="bottom" secondItem="4Eg-Lx-N4Q" secondAttribute="bottom" constant="26" id="nV3-cH-Vdw"/>
                         <constraint firstAttribute="height" constant="114" id="za2-YY-5dd"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -29,6 +29,7 @@
                 <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
                 <outlet property="shareButton" destination="JIX-CP-yTw" id="MFa-T3-VWJ"/>
                 <outlet property="titleLabel" destination="hYE-MU-J4V" id="9Ja-R7-3uA"/>
+                <outlet property="topBarHeight" destination="XY1-26-aan" id="HuK-fc-9Pb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,20 +39,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9wd-Gg-Jw3">
-                    <rect key="frame" x="104" y="174" width="167" height="167"/>
+                    <rect key="frame" x="104" y="173" width="167" height="167"/>
                     <color key="backgroundColor" white="0.0" alpha="0.25409881161971831" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="9wd-Gg-Jw3" secondAttribute="height" multiplier="1:1" id="QMN-E6-rvI"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">
-                    <rect key="frame" x="32" y="361" width="311" height="16.5"/>
+                    <rect key="frame" x="32" y="360" width="311" height="16.5"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="soD-bJ-naO">
-                    <rect key="frame" x="193" y="490.5" width="156" height="32"/>
+                    <rect key="frame" x="193" y="490" width="156" height="32"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="BRe-wW-oV6"/>
@@ -65,16 +66,16 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-K1-otl">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="114"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Satoshi Nakamoto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYE-MU-J4V">
-                            <rect key="frame" x="64" y="74.5" width="247" height="23.5"/>
+                            <rect key="frame" x="64" y="63.5" width="247" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Sw-3K-xlS">
-                            <rect key="frame" x="16" y="68.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="Aa0-ur-98s"/>
                                 <constraint firstAttribute="width" constant="46" id="LVK-dL-3aq"/>
@@ -90,8 +91,8 @@
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="hYE-MU-J4V" secondAttribute="bottom" constant="16" id="2o4-65-RXf"/>
-                        <constraint firstAttribute="height" constant="114" id="XY1-26-aan"/>
+                        <constraint firstAttribute="bottom" secondItem="hYE-MU-J4V" secondAttribute="bottom" constant="26" id="2o4-65-RXf"/>
+                        <constraint firstAttribute="height" constant="113" id="XY1-26-aan"/>
                         <constraint firstItem="hYE-MU-J4V" firstAttribute="centerX" secondItem="ayx-K1-otl" secondAttribute="centerX" id="ZLB-uL-H9l"/>
                         <constraint firstItem="1Sw-3K-xlS" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="16" id="hYc-eb-FJg"/>
                         <constraint firstItem="hYE-MU-J4V" firstAttribute="leading" secondItem="ayx-K1-otl" secondAttribute="leading" constant="64" id="mE3-Wk-V7d"/>
@@ -106,7 +107,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTe-ow-Na9">
-                    <rect key="frame" x="32" y="409.5" width="311" height="49"/>
+                    <rect key="frame" x="32" y="408.5" width="311" height="49.5"/>
                     <string key="text">Send only ERC20 tokens to this address.
 * Sending tokens other than ERC20 tokens to this address may result in loss of your funds.</string>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
@@ -114,7 +115,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JIX-CP-yTw">
-                    <rect key="frame" x="26" y="490.5" width="156" height="32"/>
+                    <rect key="frame" x="26" y="490" width="156" height="32"/>
                     <color key="backgroundColor" name="buttonBackgroundColor"/>
                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
                     <state key="normal" title="Share">
@@ -164,10 +165,10 @@
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <namedColor name="buttonBackgroundColor">
-            <color red="0.11400000005960464" green="0.91399997472763062" blue="0.71399998664855957" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="mainViewBgColor">
-            <color red="0.0040000001899898052" green="0.0040000001899898052" blue="0.0040000001899898052" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

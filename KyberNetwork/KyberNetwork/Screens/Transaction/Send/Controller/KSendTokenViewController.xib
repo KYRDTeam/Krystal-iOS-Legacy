@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -44,6 +44,7 @@
                 <outlet property="sendButton" destination="DwD-Od-9c0" id="cqg-wt-Pak"/>
                 <outlet property="sendMessageLabel" destination="LPD-AZ-ZYy" id="wBv-5d-c3Q"/>
                 <outlet property="tokenBalanceLabel" destination="SFJ-lO-7Sq" id="Bqq-Le-mZB"/>
+                <outlet property="topBarHeight" destination="GOK-pp-JII" id="ozI-k6-q7P"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsSelectButton" destination="l6R-yz-TfI" id="BQ5-ls-Akm"/>
             </connections>
@@ -57,13 +58,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3JI-9Y-K6Q">
-                            <rect key="frame" x="51" y="68" width="47.5" height="21"/>
+                            <rect key="frame" x="51" y="66" width="47.5" height="21"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vpg-CJ-CvH">
-                            <rect key="frame" x="16" y="60.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="L6B-eO-5vZ"/>
                                 <constraint firstAttribute="width" constant="46" id="h3m-aM-Ijo"/>
@@ -74,7 +75,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6R-yz-TfI">
-                            <rect key="frame" x="210" y="62.5" width="110" height="32"/>
+                            <rect key="frame" x="210" y="60.5" width="110" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="FbT-RV-sq0"/>
@@ -98,7 +99,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vxS-K0-QVF">
-                            <rect key="frame" x="352" y="65.5" width="6" height="6"/>
+                            <rect key="frame" x="352" y="63.5" width="6" height="6"/>
                             <color key="backgroundColor" name="secondaryColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="6" id="Sl7-Qh-zsM"/>
@@ -112,7 +113,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cFk-FJ-4b4">
-                            <rect key="frame" x="141" y="62.5" width="63" height="32"/>
+                            <rect key="frame" x="141" y="60.5" width="63" height="32"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_switch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Nlt-0S-0W2">
                                     <rect key="frame" x="38" y="6" width="20" height="20"/>
@@ -153,7 +154,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TK8-a8-VNf">
-                            <rect key="frame" x="326" y="62.5" width="32" height="32"/>
+                            <rect key="frame" x="326" y="60.5" width="32" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Qys-a4-2xw"/>
@@ -176,12 +177,12 @@
                     <constraints>
                         <constraint firstItem="l6R-yz-TfI" firstAttribute="centerY" secondItem="3JI-9Y-K6Q" secondAttribute="centerY" id="4g5-hA-mj8"/>
                         <constraint firstItem="TK8-a8-VNf" firstAttribute="leading" secondItem="l6R-yz-TfI" secondAttribute="trailing" constant="6" id="6E6-bf-Jlt"/>
+                        <constraint firstAttribute="bottom" secondItem="3JI-9Y-K6Q" secondAttribute="bottom" constant="26" id="Aw8-BH-zch"/>
                         <constraint firstItem="vxS-K0-QVF" firstAttribute="trailing" secondItem="TK8-a8-VNf" secondAttribute="trailing" id="D3S-L0-X3n"/>
                         <constraint firstAttribute="height" constant="113" id="GOK-pp-JII"/>
                         <constraint firstItem="vpg-CJ-CvH" firstAttribute="leading" secondItem="2bX-gH-E8o" secondAttribute="leading" constant="16" id="Q6a-A2-sox"/>
                         <constraint firstItem="vpg-CJ-CvH" firstAttribute="centerY" secondItem="3JI-9Y-K6Q" secondAttribute="centerY" id="QYb-hO-pe5"/>
                         <constraint firstItem="TK8-a8-VNf" firstAttribute="centerY" secondItem="3JI-9Y-K6Q" secondAttribute="centerY" id="YVL-Po-2Ov"/>
-                        <constraint firstItem="3JI-9Y-K6Q" firstAttribute="top" secondItem="2bX-gH-E8o" secondAttribute="top" constant="68" id="ZNI-ZL-Huk"/>
                         <constraint firstItem="vxS-K0-QVF" firstAttribute="top" secondItem="TK8-a8-VNf" secondAttribute="top" constant="3" id="btF-qn-694"/>
                         <constraint firstItem="3JI-9Y-K6Q" firstAttribute="leading" secondItem="2bX-gH-E8o" secondAttribute="leading" constant="51" id="iri-PO-jGI"/>
                         <constraint firstItem="l6R-yz-TfI" firstAttribute="leading" secondItem="cFk-FJ-4b4" secondAttribute="trailing" constant="6" id="vTw-0B-BQf"/>

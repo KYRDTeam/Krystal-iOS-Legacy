@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Roboto-Medium.ttf">
@@ -23,6 +23,7 @@
                 <outlet property="emptyLabel" destination="dmy-xM-oZ9" id="n4U-rG-e1s"/>
                 <outlet property="emptyView" destination="SYa-MS-onI" id="HP3-KQ-aRk"/>
                 <outlet property="tableView" destination="qha-uO-L9h" id="eof-gb-oYT"/>
+                <outlet property="topBarHeight" destination="2f4-GG-aJ7" id="pmZ-V9-1F0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -35,13 +36,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reward" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbS-qQ-2h9">
-                            <rect key="frame" x="177" y="68" width="60.5" height="21"/>
+                            <rect key="frame" x="177" y="66" width="60.5" height="21"/>
                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBj-5Q-Fhm">
-                            <rect key="frame" x="16" y="60.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="58.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="D5a-fs-fx9"/>
                                 <constraint firstAttribute="height" constant="36" id="kQV-nL-7fz"/>
@@ -56,13 +57,13 @@
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="113" id="2f4-GG-aJ7"/>
-                        <constraint firstItem="QbS-qQ-2h9" firstAttribute="top" secondItem="JCH-1S-XIW" secondAttribute="top" constant="68" id="V8x-vu-BsV"/>
+                        <constraint firstAttribute="bottom" secondItem="QbS-qQ-2h9" secondAttribute="bottom" constant="26" id="Xe2-Fc-6s8"/>
                         <constraint firstItem="pBj-5Q-Fhm" firstAttribute="centerY" secondItem="QbS-qQ-2h9" secondAttribute="centerY" id="gAE-Sr-yAy"/>
                         <constraint firstItem="QbS-qQ-2h9" firstAttribute="centerX" secondItem="JCH-1S-XIW" secondAttribute="centerX" id="pKO-gN-a3E"/>
                         <constraint firstItem="pBj-5Q-Fhm" firstAttribute="leading" secondItem="JCH-1S-XIW" secondAttribute="leading" constant="16" id="v02-vt-yuf"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qha-uO-L9h">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qha-uO-L9h">
                     <rect key="frame" x="0.0" y="113" width="414" height="749"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <connections>

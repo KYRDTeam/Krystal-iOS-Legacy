@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -24,6 +24,7 @@
                 <outlet property="navTitleLabel" destination="2fo-ZO-rb0" id="heo-Td-kgd"/>
                 <outlet property="qrcodeImageView" destination="rbb-Uw-oCq" id="3Fo-d8-814"/>
                 <outlet property="saveButton" destination="30v-6K-Jhh" id="XUc-sw-g2M"/>
+                <outlet property="topBarHeight" destination="kRD-86-l39" id="3ca-he-khf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="warningMessageLabel" destination="ZZ0-Sw-EfG" id="cjU-EI-FZT"/>
             </connections>
@@ -34,16 +35,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jdc-p8-jMn">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BACKUP YOUR WALLET" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-ZO-rb0">
-                            <rect key="frame" x="74.5" y="72.5" width="226.5" height="23.5"/>
+                            <rect key="frame" x="82" y="63.5" width="211.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="It2-IA-8Ct">
-                            <rect key="frame" x="16" y="66.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="aE8-Ev-apc"/>
                                 <constraint firstAttribute="width" constant="46" id="irX-t9-Egv"/>
@@ -59,8 +60,8 @@
                         <constraint firstItem="It2-IA-8Ct" firstAttribute="centerY" secondItem="2fo-ZO-rb0" secondAttribute="centerY" id="5BS-UL-uBG"/>
                         <constraint firstItem="It2-IA-8Ct" firstAttribute="leading" secondItem="jdc-p8-jMn" secondAttribute="leading" constant="16" id="WbX-Be-Ane"/>
                         <constraint firstItem="2fo-ZO-rb0" firstAttribute="centerX" secondItem="jdc-p8-jMn" secondAttribute="centerX" id="eWm-j6-6gB"/>
-                        <constraint firstAttribute="height" constant="112" id="kRD-86-l39"/>
-                        <constraint firstAttribute="bottom" secondItem="2fo-ZO-rb0" secondAttribute="bottom" constant="16" id="ziO-lO-d55"/>
+                        <constraint firstAttribute="height" constant="113" id="kRD-86-l39"/>
+                        <constraint firstAttribute="bottom" secondItem="2fo-ZO-rb0" secondAttribute="bottom" constant="26" id="ziO-lO-d55"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="olive chef address repeat sand give argue because someone panic rigid need" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPW-y8-V7z">
@@ -70,7 +71,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export at your own risk!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZZ0-Sw-EfG">
-                    <rect key="frame" x="32" y="136" width="311" height="19"/>
+                    <rect key="frame" x="32" y="137" width="311" height="19"/>
                     <color key="tintColor" name="textRedColor"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
@@ -139,7 +140,7 @@
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textRedColor">
-            <color red="0.9570000171661377" green="0.33300000429153442" blue="0.19599999487400055" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

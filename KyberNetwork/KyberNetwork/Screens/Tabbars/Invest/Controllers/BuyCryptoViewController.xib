@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,7 +15,7 @@
         <array key="Karla-Medium.ttf">
             <string>Karla-Medium</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -35,6 +35,7 @@
                 <outlet property="pendingTxIndicatorView" destination="4fr-ia-9nG" id="CWm-sx-JTJ"/>
                 <outlet property="rateLabel" destination="Syf-dQ-ZKq" id="GvM-EX-YLX"/>
                 <outlet property="selectNetworkIcon" destination="7yU-DS-bYn" id="Yny-Ep-XmX"/>
+                <outlet property="topBarHeight" destination="2Jg-g6-T9U" id="l2l-Kj-35Z"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="6wj-lu-1R1" id="o9i-US-Fvh"/>
             </connections>

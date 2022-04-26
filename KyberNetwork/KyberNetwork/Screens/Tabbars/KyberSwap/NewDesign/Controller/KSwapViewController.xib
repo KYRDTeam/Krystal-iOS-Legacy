@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -60,6 +60,7 @@
                 <outlet property="slippageLabel" destination="nrV-j9-Z3y" id="QPP-Fw-5Xf"/>
                 <outlet property="toAmountTextField" destination="2ue-dF-Sxj" id="dYw-AF-iPd"/>
                 <outlet property="toTokenButton" destination="Hu8-ec-ud1" id="M3b-9x-WfE"/>
+                <outlet property="topBarHeight" destination="ftb-Ys-LFW" id="4tv-5a-8V3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="icW-gp-OKH" id="W75-MW-b8y"/>
             </connections>
