@@ -145,7 +145,26 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
       storageType: importMethod,
       evmAddress: wallet.evmAddressString
     )
-    KNWalletStorage.shared.add(wallets: [walletObject])
+    var wallets = [walletObject]
+    if case .multiChain = importType, case .real(let account) = wallet.type {
+      let result = self.keystore.exportMnemonics(account: account)
+      if case .success(let seeds) = result {
+        let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+        let solName = name ?? "Untitled"
+        let solWalletObject = KNWalletObject(
+          address: publicKey,
+          name: solName + "-sol",
+          isBackedUp: true,
+          isWatchWallet: false,
+          chainType: .solana,
+          storageType: importMethod,
+          evmAddress: wallet.evmAddressString,
+          walletID: ""
+        )
+        wallets.append(solWalletObject)
+      }
+    }
+    KNWalletStorage.shared.add(wallets: wallets)
     if addToContact {
       let contact = KNContact(
         address: wallet.addressString,
