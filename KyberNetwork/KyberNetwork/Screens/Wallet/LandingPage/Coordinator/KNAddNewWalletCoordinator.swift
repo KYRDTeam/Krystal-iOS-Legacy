@@ -153,10 +153,11 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       if case WalletType.watch(_) = wallet.type {
         isWatchWallet = true
       }
-      
+
       if case WalletType.solana(_, _, let walletID) = wallet.type {
         solWalletId = walletID
       }
+      
       let walletObject = KNWalletObject(
         address: wallet.addressString,
         name: name ?? "Untitled",
@@ -167,7 +168,26 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         evmAddress: wallet.evmAddressString,
         walletID: solWalletId
       )
-      KNWalletStorage.shared.add(wallets: [walletObject])
+      var wallets = [walletObject]
+      if case .multiChain = importType, case .real(let account) = wallet.type {
+        let result = self.keystore.exportMnemonics(account: account)
+        if case .success(let seeds) = result {
+          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+          let solName = name ?? "Untitled"
+          let solWalletObject = KNWalletObject(
+            address: publicKey,
+            name: solName + "-sol",
+            isBackedUp: true,
+            isWatchWallet: isWatchWallet,
+            chainType: .solana,
+            storageType: importMethod,
+            evmAddress: wallet.evmAddressString,
+            walletID: solWalletId
+          )
+          wallets.append(solWalletObject)
+        }
+      }
+      KNWalletStorage.shared.add(wallets: wallets)
       let contact = KNContact(
         address: wallet.addressString,
         name: name ?? "Untitled"
