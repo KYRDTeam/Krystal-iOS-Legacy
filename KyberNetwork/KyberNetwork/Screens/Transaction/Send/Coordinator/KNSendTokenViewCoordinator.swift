@@ -567,6 +567,9 @@ extension KNSendTokenViewCoordinator {
   
   fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
       SolanaUtil.getRecentBlockhash { blockHash in
+        guard let blockHash = blockHash else {
+          return
+        }
         let receiptAddress = transaction.to
         
         let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
@@ -578,8 +581,6 @@ extension KNSendTokenViewCoordinator {
         self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: UInt32(transaction.decimal ?? 0)) { signature in
           self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
         }
-        
-
       }
   }
   

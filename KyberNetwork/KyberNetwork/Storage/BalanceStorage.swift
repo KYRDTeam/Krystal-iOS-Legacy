@@ -42,7 +42,7 @@ class BalanceStorage {
     
     self.setCacheForChain(chain: KNGeneralProvider.shared.currentChain, balances: balances)
     self.supportedTokenBalances.value = balances
-    Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.balanceStoreFileName)
+    Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.balanceStoreFileName)
   }
   
   private func setCacheForChain(chain: ChainType, balances: [TokenBalance]) {
@@ -56,13 +56,13 @@ class BalanceStorage {
       ChainType.getAllChain().forEach { chain in
         self.chainTokenBalances[chain] = self.retrieveBalancesInHardDisk(address: walletAddress, chainType: chain)
       }
-      self.supportedTokenBalances.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
-      self.allLendingBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
-      self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
-      self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
-      self.nftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
-      self.customNftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
-      self.summaryChainModels.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.address.description.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
+      self.supportedTokenBalances.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
+      self.allLendingBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
+      self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
+      self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
+      self.nftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
+      self.customNftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
+      self.summaryChainModels.value = Storage.retrieve(KNEnvironment.default.envPrefix + wallet.addressString.lowercased() + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
 
       DispatchQueue.main.async {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
@@ -114,7 +114,7 @@ class BalanceStorage {
       return
     }
     self.allLendingBalance.value = balances
-    Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.lendingBalanceStoreFileName)
+    Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.lendingBalanceStoreFileName)
   }
 
   func setLendingDistributionBalance(_ balance: LendingDistributionBalance) {
@@ -130,7 +130,7 @@ class BalanceStorage {
       return
     }
     self.allLiquidityPool.value = liquidityPools
-    Storage.store(liquidityPools, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.liquidityPoolStoreFileName)
+    Storage.store(liquidityPools, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.liquidityPoolStoreFileName)
   }
 
   func saveSummaryChainModels(_ summaryChainsModels: [KNSummaryChainModel]) {
@@ -138,7 +138,7 @@ class BalanceStorage {
       return
     }
     self.summaryChainModels.value = summaryChainsModels
-    Storage.store(summaryChainsModels, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.summaryChainStoreFileName)
+    Storage.store(summaryChainsModels, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.summaryChainStoreFileName)
   }
 
   func balanceETH() -> String {
@@ -355,11 +355,11 @@ class BalanceStorage {
           self.customNftBalance.value.remove(at: idx)
         }
       }
-      Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+      Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.nftBalanceStoreFileName)
     }
 
     self.nftBalance.value = balance
-    Storage.store(self.nftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.nftBalanceStoreFileName)
+    Storage.store(self.nftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.nftBalanceStoreFileName)
   }
   
   func getCustomNFT() -> [NFTSection] {
@@ -386,12 +386,12 @@ class BalanceStorage {
       if let newItem = balance.items.first, !currentIDs.contains(newItem.tokenID) {
         self.customNftBalance.value[duplicateSectionIdx].items.append(newItem)
         
-        Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
+        Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.customNftBalanceStoreFileName)
       }
       return true
     } else {
       self.customNftBalance.value.append(balance)
-      Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
+      Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.customNftBalanceStoreFileName)
       return true
     }
   }
@@ -414,7 +414,7 @@ class BalanceStorage {
             self.customNftBalance.value.remove(at: sectionIndex)
           }
         }
-        Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
+        Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.customNftBalanceStoreFileName)
       }
     }
   }
@@ -440,7 +440,7 @@ class BalanceStorage {
     guard let unwrapped = self.wallet else {
       return
     }
-    Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.address.description.lowercased() + Constants.customNftBalanceStoreFileName)
+    Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.customNftBalanceStoreFileName)
   }
   
   func getAllFavedItems() -> [(NFTItem, NFTSection)] {

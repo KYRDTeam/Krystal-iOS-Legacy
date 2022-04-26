@@ -28,7 +28,7 @@ extension KNAppCoordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: aWallet)
     self.session.startSession()
-    OneSignal.setExternalUserId(wallet.address.description)
+    OneSignal.setExternalUserId(wallet.addressString)
     DispatchQueue.global(qos: .background).async {
       _ = KNSupportedTokenStorage.shared
       _ = BalanceStorage.shared
@@ -213,9 +213,9 @@ extension KNAppCoordinator {
       EtherscanTransactionStorage.shared.updateCurrentWallet(aWallet)
       BalanceStorage.shared.updateCurrentWallet(aWallet)
       OneSignal.removeExternalUserId { _ in
-        OneSignal.setExternalUserId(wallet.address.description)
+        OneSignal.setExternalUserId(wallet.addressString)
       } withFailure: { _ in
-        OneSignal.setExternalUserId(wallet.address.description)
+        OneSignal.setExternalUserId(wallet.addressString)
       }
     }
 

@@ -29,7 +29,7 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var lamportPerSignature: BigInt = BigInt(5000)
   fileprivate(set) var totalSignature: BigInt = BigInt(1)
   
-  
+
   var isSendAllBalanace: Bool = false
 
   var advancedGasLimit: String? {

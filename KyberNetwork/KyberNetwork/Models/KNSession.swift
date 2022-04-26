@@ -201,7 +201,11 @@ class KNSession {
 
   static func resumeInternalSession() {
     KNRateCoordinator.shared.resume()
-    KNGasCoordinator.shared.resume()
+    if KNGeneralProvider.shared.currentChain == .solana {
+      SolFeeCoordinator.shared.resume()
+    } else {
+      KNGasCoordinator.shared.resume()
+    }
     KNRecentTradeCoordinator.shared.resume()
     KNSupportedTokenCoordinator.shared.resume()
 //    KNNotificationCoordinator.shared.resume()

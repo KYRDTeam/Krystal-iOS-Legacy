@@ -507,6 +507,7 @@
 		7EFE440E27158594006CF502 /* ToggleTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE440C27158594006CF502 /* ToggleTokenCell.xib */; };
 		7EFE441127167F2A006CF502 /* RewardDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE440F27167F2A006CF502 /* RewardDetailCell.swift */; };
 		7EFE441227167F2A006CF502 /* RewardDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE441027167F2A006CF502 /* RewardDetailCell.xib */; };
+		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
 		A6B3A85F27FAB4F200F84819 /* PairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3A85E27FAB4F100F84819 /* PairKey.swift */; };
@@ -1389,6 +1390,7 @@
 		7EFE440C27158594006CF502 /* ToggleTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToggleTokenCell.xib; sourceTree = "<group>"; };
 		7EFE440F27167F2A006CF502 /* RewardDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailCell.swift; sourceTree = "<group>"; };
 		7EFE441027167F2A006CF502 /* RewardDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardDetailCell.xib; sourceTree = "<group>"; };
+		7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolFeeCoordinator.swift; sourceTree = "<group>"; };
 		87FA1153388F27F599C430B8 /* Pods-TrustTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrustTests/Pods-TrustTests.debug.xcconfig"; sourceTree = "<group>"; };
 		88401C14158F6CE1B2A8A18D /* Pods-KyberNetworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetworkTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetworkTests/Pods-KyberNetworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3073,6 +3075,7 @@
 		25CC0AB520591D520009D0D5 /* InternalCoordinators */ = {
 			isa = PBXGroup;
 			children = (
+				7EFE71472817DC0900476184 /* SolanaCoordinator */,
 				25C45ABC20AC215F00CDA1FF /* SupportedTokenCoordinator */,
 				25CC0ABE20591F2F0009D0D5 /* RateCoordinator */,
 				25CC0AB920591DD50009D0D5 /* GasCoordinator */,
@@ -3961,6 +3964,14 @@
 				7EFE441027167F2A006CF502 /* RewardDetailCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		7EFE71472817DC0900476184 /* SolanaCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */,
+			);
+			path = SolanaCoordinator;
 			sourceTree = "<group>";
 		};
 		9A0F00B2D545197C8F7691C2 /* Pods */ = {
@@ -5698,6 +5709,7 @@
 				7EC892D327DCE7A9000C5980 /* BifinityOrderViewController.swift in Sources */,
 				7E72917927F193FC00ADF721 /* SwitchChainCell.swift in Sources */,
 				C3554D89280E5E3F0043BC1B /* SolanaUtil.swift in Sources */,
+				7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */,
 				291F52A51F6B762300B369AB /* EtherServiceRequest.swift in Sources */,
 				C6FE41812383A0C10096AAD8 /* KNWalletConnectViewController.swift in Sources */,
 				CCA4FE361FD4282400749AE4 /* DeviceChecker.swift in Sources */,

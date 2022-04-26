@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -29,9 +29,11 @@
                 <outlet property="estGasFeeTitleLabel" destination="ptb-lV-g0l" id="x6O-FX-zq2"/>
                 <outlet property="estGasFeeValueLabel" destination="JEX-Cb-Srl" id="hrU-vq-IHu"/>
                 <outlet property="gasFeeTittleLabelTopContraint" destination="hGc-XH-Nj4" id="3ev-nQ-hZP"/>
+                <outlet property="gasSettingButton" destination="qdA-YS-U84" id="LqQ-LY-PQW"/>
                 <outlet property="headerContainerView" destination="2bX-gH-E8o" id="QYZ-MU-pAa"/>
                 <outlet property="maxAmountButton" destination="7m4-Zz-Cde" id="EsC-K9-Qbe"/>
                 <outlet property="moreContactButton" destination="mVy-Mm-ZAM" id="WWS-Mz-juj"/>
+                <outlet property="multiSendButton" destination="CJz-eg-oar" id="zKO-A3-z3R"/>
                 <outlet property="navTitleLabel" destination="3JI-9Y-K6Q" id="zkT-3L-ri1"/>
                 <outlet property="pendingTxIndicatorView" destination="vxS-K0-QVF" id="Pv2-ja-9lD"/>
                 <outlet property="recentContactHeightConstraint" destination="4hM-hb-U3T" id="3uk-0i-WcI"/>
@@ -39,8 +41,10 @@
                 <outlet property="recentContactTableView" destination="HiG-vL-Xx8" id="zW8-4R-NnT"/>
                 <outlet property="recentContactTableViewHeightConstraint" destination="hYV-kk-Cpd" id="F7R-WD-oqw"/>
                 <outlet property="recentContactView" destination="14E-V1-lPT" id="R5d-nf-WMR"/>
+                <outlet property="recentContactViewTopConstraint" destination="yiE-L3-gsN" id="wfA-53-9Ni"/>
                 <outlet property="scrollContainerView" destination="ibe-Tm-lI1" id="axj-0C-A7A"/>
                 <outlet property="selectedGasFeeLabel" destination="tSi-cP-xx1" id="r0i-RV-EZl"/>
+                <outlet property="selectedMaxFeeLabel" destination="ETA-RM-rZR" id="4VD-hw-bKx"/>
                 <outlet property="sendButton" destination="DwD-Od-9c0" id="cqg-wt-Pak"/>
                 <outlet property="sendMessageLabel" destination="LPD-AZ-ZYy" id="wBv-5d-c3Q"/>
                 <outlet property="tokenBalanceLabel" destination="SFJ-lO-7Sq" id="Bqq-Le-mZB"/>
