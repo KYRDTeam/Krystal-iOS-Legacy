@@ -133,6 +133,7 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
         guard let `self` = self else { return }
         self.dismiss(animated: true) {
           self.delegate?.testBackUpStatusViewDidComplete(sender: self)
+          KNCrashlyticsUtil.logCustomEvent(withName: "cw_success", customAttributes: nil)
         }
       })
     }
@@ -144,11 +145,13 @@ class KNTestBackUpStatusViewController: KNBaseViewController, BottomPopUpAbstrac
   }
 
   @IBAction func firstButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "cw_try_again", customAttributes: nil)
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func secondButtonPressed(_ sender: Any) {
     self.dismiss(animated: true) {
+      KNCrashlyticsUtil.logCustomEvent(withName: "cw_backup_again", customAttributes: nil)
       self.delegate?.testBackUpStatusViewDidPressSecondButton(sender: self)
     }
   }

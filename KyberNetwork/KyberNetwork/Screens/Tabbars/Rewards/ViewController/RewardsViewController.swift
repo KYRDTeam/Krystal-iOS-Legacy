@@ -186,6 +186,7 @@ extension RewardsViewController: UITableViewDataSource {
       withIdentifier: RewardTableViewCell.kCellID,
       for: indexPath
     ) as! RewardTableViewCell
+    cell.selectionStyle = .none
     cell.shouldRoundTopBGView = indexPath.row == 0
     cell.updateCell(model: self.viewModel.dataModelAtIndex(indexPath))
     return cell
@@ -199,6 +200,7 @@ extension RewardsViewController: UITableViewDataSource {
     cell.onClaimButtonTapped = {
       self.claimRewardsButtonTapped()
     }
+    cell.selectionStyle = .none
     return cell
   }
 
@@ -210,6 +212,7 @@ extension RewardsViewController: UITableViewDataSource {
       self.viewModel.isShowingDetails = !isOn
       self.updateUI()
     }
+    cell.selectionStyle = .none
     return cell
   }
 
@@ -218,6 +221,7 @@ extension RewardsViewController: UITableViewDataSource {
       withIdentifier: RewardDetailCell.kCellID,
       for: indexPath
     ) as! RewardDetailCell
+    cell.selectionStyle = .none
     cell.updateCell(model: self.viewModel.dataModelAtIndex(indexPath))
     cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor(named: "mainViewBgColor") : UIColor(named: "buttonTextColor")
     return cell

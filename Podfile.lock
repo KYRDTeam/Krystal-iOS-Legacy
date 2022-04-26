@@ -136,6 +136,9 @@ PODS:
   - Lokalise (0.8.1)
   - lottie-ios (3.3.0)
   - MBProgressHUD (1.1.0)
+  - Mixpanel-swift (3.1.7):
+    - Mixpanel-swift/Complete (= 3.1.7)
+  - Mixpanel-swift/Complete (3.1.7)
   - Moya (10.0.2):
     - Moya/Core (= 10.0.2)
   - Moya/Core (10.0.2):
@@ -233,6 +236,7 @@ DEPENDENCIES:
   - Lokalise (~> 0.8.1)
   - lottie-ios
   - MBProgressHUD (~> 1.1.0)
+  - Mixpanel-swift
   - Moya (~> 10.0.1)
   - OneSignal (< 4.0, >= 3.0.0)
   - QRCodeReaderViewController (~> 4.0.2)
@@ -286,6 +290,7 @@ SPEC REPOS:
     - Lokalise
     - lottie-ios
     - MBProgressHUD
+    - Mixpanel-swift
     - Moya
     - nanopb
     - OneSignal
@@ -368,6 +373,7 @@ SPEC CHECKSUMS:
   Lokalise: d81f4ccce8cd2c1589bf73bb39fab7781d4f7cbc
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  Mixpanel-swift: ef23b580149b352a3d6f383cdb767ed44f62a3ea
   Moya: 2b0531a9fef318e0bc484030c3db1e6f279ccb66
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OneSignal: 29b555f5991109dc717f75d4440c565cab92511c
@@ -398,6 +404,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 03aca935339906a420e350d73e052e9b6f7d75ba
+PODFILE CHECKSUM: 60efe6e6115877a07cf3e7b7c3ddf6f4a4b9cbaa
 
 COCOAPODS: 1.11.3

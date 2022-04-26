@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,13 +45,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DApp Browser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5u-ot-pYP">
-                            <rect key="frame" x="121.5" y="73.5" width="132" height="23.5"/>
+                            <rect key="frame" x="121.5" y="63.5" width="132" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fV-Fy-eYd">
-                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="GCA-G6-ccZ"/>
                                 <constraint firstAttribute="height" constant="36" id="txa-0F-92l"/>
@@ -66,7 +66,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="113" id="0Yn-JT-l6X"/>
                         <constraint firstItem="P5u-ot-pYP" firstAttribute="centerX" secondItem="rtn-tC-emQ" secondAttribute="centerX" id="Ktn-TG-f39"/>
-                        <constraint firstAttribute="bottom" secondItem="P5u-ot-pYP" secondAttribute="bottom" constant="16" id="f4p-Pr-KIm"/>
+                        <constraint firstAttribute="bottom" secondItem="P5u-ot-pYP" secondAttribute="bottom" constant="26" id="f4p-Pr-KIm"/>
                         <constraint firstItem="1fV-Fy-eYd" firstAttribute="leading" secondItem="rtn-tC-emQ" secondAttribute="leading" constant="16" id="gog-7K-ZKS"/>
                         <constraint firstItem="1fV-Fy-eYd" firstAttribute="centerY" secondItem="P5u-ot-pYP" secondAttribute="centerY" id="t96-sr-YTJ"/>
                     </constraints>
@@ -121,7 +121,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LeT-EA-eeB">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LeT-EA-eeB">
                     <rect key="frame" x="0.0" y="193" width="375" height="474"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FbL-kf-kMI">
@@ -188,8 +188,8 @@
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hCH-ql-aJS" customClass="TagListView" customModule="TagListView">
-                            <rect key="frame" x="26" y="133" width="323" height="36"/>
+                        <view tag="2" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hCH-ql-aJS" customClass="TagListView" customModule="TagListView">
+                            <rect key="frame" x="26" y="133" width="323" height="0.0"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -222,12 +222,12 @@
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggestion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dD-IP-9MT">
-                            <rect key="frame" x="26" y="204" width="83.5" height="19"/>
+                            <rect key="frame" x="26" y="168" width="83.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-n0-9Mv" customClass="TagListView" customModule="TagListView">
+                        <view tag="3" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-n0-9Mv" customClass="TagListView" customModule="TagListView">
                             <rect key="frame" x="26" y="233" width="323" height="36"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
@@ -314,17 +314,6 @@
             <point key="canvasLocation" x="132" y="89.505247376311857"/>
         </view>
     </objects>
-    <designables>
-        <designable name="6cd-Wo-q2L">
-            <size key="intrinsicContentSize" width="600" height="36"/>
-        </designable>
-        <designable name="ehT-n0-9Mv">
-            <size key="intrinsicContentSize" width="323" height="36"/>
-        </designable>
-        <designable name="hCH-ql-aJS">
-            <size key="intrinsicContentSize" width="323" height="36"/>
-        </designable>
-    </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="search_blue_icon" width="16" height="16"/>

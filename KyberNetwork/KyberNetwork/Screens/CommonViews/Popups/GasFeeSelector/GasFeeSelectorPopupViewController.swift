@@ -13,6 +13,8 @@ protocol GasFeeSelectorPopupViewControllerDelegate: class {
 }
 
 class GasFeeSelectorPopupViewController: KNBaseViewController {
+  
+  @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var gasFeeGweiTextLabel: UILabel!
@@ -193,6 +195,7 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
   }
 
   func configUI() {
+    self.contentViewHeight.constant = getPopupHeight()
     self.configSlippageUI()
     self.estimateFeeNoteLabel.text = "Select higher gas price to accelerate your transaction processing time".toBeLocalised()
     self.gasFeeGweiTextLabel.text = NSLocalizedString("gas.fee.gwei", value: "GAS fee (Gwei)", comment: "")
@@ -641,6 +644,11 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
     }
     self.updateUIForCustomNonce()
   }
+  
+  @IBAction func closeWasTapped(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+  }
+  
 }
 
 extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
@@ -649,7 +657,7 @@ extension GasFeeSelectorPopupViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.viewModel.advancedSettingsHeight
+    return min(650, UIScreen.main.bounds.height - 120)
   }
 
   func getPopupContentView() -> UIView {

@@ -447,7 +447,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     guard self.transaction.state != .cancel else {
       return self.displayFromAddress
     }
-    if let toAddress = self.transaction.transactionObject?.to {
+    if let toAddress = self.transaction.toAddress {
       return toAddress
     } else if let toAddressEIP = self.transaction.eip1559Transaction?.toAddress {
       return toAddressEIP

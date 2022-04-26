@@ -355,6 +355,7 @@ extension OverviewCoordinator: KNHistoryCoordinatorDelegate {
   }
 
   func historyCoordinatorDidClose() {
+    self.historyCoordinator = nil
   }
 
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
@@ -385,6 +386,10 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.overviewCoordinatorDidSelectAddToken(token)
   }

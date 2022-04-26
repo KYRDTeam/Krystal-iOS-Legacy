@@ -62,4 +62,17 @@ extension SignTransaction {
   }
 }
 
-
+extension SignTransaction: GasLimitRequestable {
+  func createGasLimitRequest() -> KNEstimateGasLimitRequest {
+    let request = KNEstimateGasLimitRequest(
+      from: self.account.address.description,
+      to: self.to?.description,
+      value: self.value,
+      data: self.data,
+      gasPrice: self.gasPrice
+    )
+    return request
+  }
+  
+  
+}

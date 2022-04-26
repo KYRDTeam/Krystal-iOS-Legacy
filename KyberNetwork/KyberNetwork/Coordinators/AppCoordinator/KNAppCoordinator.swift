@@ -253,7 +253,6 @@ extension KNAppCoordinator {
     if let session = self.session {
       FeatureFlagManager.shared.configClient(session: session)
     }
-    
   }
 
   func appDidBecomeActive() {

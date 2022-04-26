@@ -1,6 +1,7 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import OneSignal
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
@@ -10,6 +11,13 @@ extension KNAppCoordinator {
     self.currentWallet = wallet
     self.session = KNSession(keystore: self.keystore, wallet: wallet)
     self.session.startSession()
+    OneSignal.setExternalUserId(wallet.address.description)
+    DispatchQueue.global(qos: .background).async {
+      _ = KNSupportedTokenStorage.shared
+      _ = BalanceStorage.shared
+      _ = KNTrackerRateStorage.shared
+    }
+    
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
@@ -166,6 +174,11 @@ extension KNAppCoordinator {
       self.loadBalanceCoordinator?.exit()
       EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
       BalanceStorage.shared.updateCurrentWallet(wallet)
+      OneSignal.removeExternalUserId { _ in
+        OneSignal.setExternalUserId(wallet.address.description)
+      } withFailure: { _ in
+        OneSignal.setExternalUserId(wallet.address.description)
+      }
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -200,6 +213,7 @@ extension KNAppCoordinator {
       self.doLogin { completed in
       }
       if isLoading { self.navigationController.hideLoading() }
+      MixPanelManager.shared.updateWalletAddress(address: wallet.address.description.lowercased())
     }
   }
 

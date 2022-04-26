@@ -4,6 +4,7 @@ import Foundation
 
 public struct CustomRPC {
   let chainID: Int
+  let type: String
   let name: String
   let symbol: String
   let endpoint: String
@@ -13,16 +14,27 @@ public struct CustomRPC {
   let ensAddress: String
   let wrappedAddress: String
   let apiEtherscanEndpoint: String
+  let proxyAddress: String
+  let quoteTokenAddress: String
+  let chainIcon: String
+  let quoteToken: String
+  let apiChainPath: String
 }
 
 extension CustomRPC: Equatable {
   public static func == (lhs: CustomRPC, rhs: CustomRPC) -> Bool {
     return
       lhs.chainID == rhs.chainID &&
+      lhs.type == rhs.type &&
       lhs.name == rhs.name &&
       lhs.symbol == rhs.symbol &&
       lhs.endpoint == rhs.symbol &&
       lhs.endpointKyber == rhs.endpointKyber &&
-      lhs.endpointAlchemy == rhs.endpointAlchemy
+      lhs.endpointAlchemy == rhs.endpointAlchemy &&
+      lhs.proxyAddress == rhs.proxyAddress &&
+      lhs.quoteTokenAddress == rhs.quoteTokenAddress &&
+      lhs.chainIcon == rhs.chainIcon &&
+      lhs.quoteToken == rhs.quoteToken &&
+      lhs.apiChainPath == rhs.apiChainPath
   }
 }
