@@ -128,8 +128,6 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.rootViewController = controller
       self.rootViewController?.coordinatorUpdateBalances(self.balances)
     }
-    
-    print("[Debug] \(self.privateKeyForPKWallet)")
   }
 
   func stop() {
@@ -566,35 +564,16 @@ extension KNSendTokenViewCoordinator {
   }
   
   fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
+    guard let pk = self.solanaPrivateKey else { return }
     let receiptAddress = transaction.to
     
-    let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
-    let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
-    let privateKeyData = privateKey.data
-    let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
+    let privateKeyData = pk.data
     
     let walletAddress = self.session.wallet.addressString
     self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(transaction.decimal ?? 0)) { signature in
       self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
     }
   }
-
-    guard let pk = self.solanaPrivateKey else { return }
-      SolanaUtil.getRecentBlockhash { blockHash in
-        let receiptAddress = transaction.to
-
-        let privateKeyData = pk.data
-        let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
-        
-        let walletAddress = self.session.wallet.addressString
-        self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: UInt32(transaction.decimal ?? 0)) { signature in
-          self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
-        }
-        
-
-      }
-  }
-  
   
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
