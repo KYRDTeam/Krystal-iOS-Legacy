@@ -61,10 +61,14 @@ class SolanaUtil {
     let key = PrivateKey(data: data[0...31])
     return key
   }
-  
+
   static func keyPairToPrivateKeyData(_ keypair: String) -> Data? {
     let data = SolanaUtil.keyPairToPrivateKey(keypair)?.data
     return data
+  }
+  
+  static func generateTokenAccountAddress(receiptWalletAddress: String, tokenMintAddress: String) -> String {
+    return SolanaAddress(string: receiptWalletAddress)?.defaultTokenAddress(tokenMintAddress: tokenMintAddress) ?? ""
   }
   
   static func signTransferTransaction(privateKeyData: Data, recipient: String, value: UInt64, recentBlockhash: String) -> String {
@@ -95,6 +99,25 @@ class SolanaUtil {
       $0.recentBlockhash = recentBlockhash
       $0.privateKey = privateKeyData
     }
+    let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
+    return output.encoded
+  }
+  
+  static func signCreateAndTransferToken(recipientMainAddress: String, tokenMintAddress: String, senderTokenAddress: String, privateKeyData: Data, recipientTokenAddress: String, amount: UInt64, recentBlockhash: String, tokenDecimals: UInt32) -> String {
+    let createAndTransferTokenMessage = SolanaCreateAndTransferToken.with {
+      $0.recipientMainAddress = recipientMainAddress
+      $0.tokenMintAddress = tokenMintAddress
+      $0.recipientTokenAddress = recipientTokenAddress
+      $0.senderTokenAddress = senderTokenAddress
+      $0.amount = amount
+      $0.decimals = tokenDecimals
+    }
+    let input = SolanaSigningInput.with {
+      $0.createAndTransferTokenTransaction = createAndTransferTokenMessage
+      $0.recentBlockhash = recentBlockhash
+      $0.privateKey = privateKeyData
+    }
+
     let output: SolanaSigningOutput = AnySigner.sign(input: input, coin: .solana)
     return output.encoded
   }
