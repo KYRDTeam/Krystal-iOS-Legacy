@@ -507,8 +507,8 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
-  
-  fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
+
+  fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
     SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { senderTokenAddress in
       guard let senderTokenAddress = senderTokenAddress else {
         completion(nil)
@@ -517,24 +517,26 @@ extension KNSendTokenViewCoordinator {
       SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { recipientAccount in
         var recipientTokenAddress = ""
         var signedEncodedString = ""
-        
-        if let recipientAccount = recipientAccount {
-          recipientTokenAddress = recipientAccount
-          signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
-          
-          
-        } else {
-          recipientTokenAddress = SolanaUtil.generateTokenAccountAddress(receiptWalletAddress: receiptAddress, tokenMintAddress: tokenAddress)
-          
-          signedEncodedString = SolanaUtil.signCreateAndTransferToken(recipientMainAddress: receiptAddress, tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
-        }
 
-        SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
-          guard let signature = signature else {
-            completion(nil)
+        SolanaUtil.getRecentBlockhash { recentBlockHash in
+          guard let recentBlockHash = recentBlockHash else {
             return
           }
-          completion(signature)
+          if let recipientAccount = recipientAccount {
+            recipientTokenAddress = recipientAccount
+            signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+          } else {
+            recipientTokenAddress = SolanaUtil.generateTokenAccountAddress(receiptWalletAddress: receiptAddress, tokenMintAddress: tokenAddress)
+            signedEncodedString = SolanaUtil.signCreateAndTransferToken(recipientMainAddress: receiptAddress, tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+          }
+
+          SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+            guard let signature = signature else {
+              completion(nil)
+              return
+            }
+            completion(signature)
+          }
         }
       }
     }
@@ -566,25 +568,19 @@ extension KNSendTokenViewCoordinator {
   }
   
   fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
-      SolanaUtil.getRecentBlockhash { blockHash in
-        guard let blockHash = blockHash else {
-          return
-        }
-        let receiptAddress = transaction.to
-        
-        let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
-        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
-        let privateKeyData = privateKey.data
-        let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
-        
-        let walletAddress = self.session.wallet.addressString
-        self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: UInt32(transaction.decimal ?? 0)) { signature in
-          self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
-        }
-      }
+    let receiptAddress = transaction.to
+    
+    let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
+    let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+    let privateKeyData = privateKey.data
+    let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
+    
+    let walletAddress = self.session.wallet.addressString
+    self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(transaction.decimal ?? 0)) { signature in
+      self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+    }
   }
-  
-  
+
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
