@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - ci-test
 
 concurrency: 
   group: ${{ github.ref }}
@@ -75,10 +76,10 @@ jobs:
             env: dev
             ota_key: DEV_OTA_URL
             bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            bump_build: false
+          # - app_name: "Krystal: Staging"
+          #   env: stg
+          #   ota_key: STG_OTA_URL
+          #   bump_build: false
             
     runs-on: macos-11
     env:
@@ -179,31 +180,31 @@ jobs:
           OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
         run: .github/deploy 
 
-      - name: Prepare bump build number
-        run: |
-          git config user.name "$GH_ACTOR"
-          git config user.email "$GH_ACTOR@users.noreply.github.com"
+      # - name: Prepare bump build number
+      #   run: |
+      #     git config user.name "$GH_ACTOR"
+      #     git config user.email "$GH_ACTOR@users.noreply.github.com"
                     
-      - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: bump_build_number
-          bundle-install-path: "vendor/bundle"
+      # - name: Bump Build number
+      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   with:
+      #     lane: bump_build_number
+      #     bundle-install-path: "vendor/bundle"
 
-      - name: Push commit 
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
-        shell: bash
-        run: | 
-          git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+      # - name: Push commit 
+      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
+      #   shell: bash
+      #   run: | 
+      #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
-      - name: Send notifications to a specify Telegram group
-        if: failure()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-          RUN_ID: ${{ github.run_id }}
-        shell: bash
-        run: .github/failure
+      # - name: Send notifications to a specify Telegram group
+      #   if: failure()
+      #   env:
+      #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+      #     RUN_ID: ${{ github.run_id }}
+      #   shell: bash
+      #   run: .github/failure
