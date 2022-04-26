@@ -60,24 +60,22 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     coordinator.delegate = self.delegate
     return coordinator
   }()
-  //Get solana private key
-  lazy var privateKey: PrivateKey? = {
-    guard let account = self.session.keystore.matchWithEvmAccount(address: self.currentWallet.evmAddress) else {
+
+  var solanaPrivateKey: PrivateKey? {
+    if let key = self.session.keystore.solanaUtil.exportKeyPair(walletID: self.currentWallet.walletID) {
+      return key
+    } else if let account = self.session.keystore.matchWithEvmAccount(address: self.currentWallet.evmAddress) {
+      let result = self.session.keystore.exportMnemonics(account: account)
+      if case .success(let seeds) = result {
+        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+        return privateKey
+      } else {
+        return nil
+      }
+    } else {
       return nil
     }
-    let result = self.session.keystore.exportMnemonics(account: account)
-    if case .success(let seeds) = result {
-      let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
-      return privateKey
-    }
-
-    return nil
-  }()
-  
-  //Get privatekey with PK import
-  lazy var privateKeyForPKWallet: PrivateKey? = {
-    return self.session.keystore.solanaUtil.exportKeyPair(walletID: self.currentWallet.walletID)
-  }()
+  }
 
   deinit {
     self.rootViewController?.removeObserveNotification()
@@ -130,8 +128,6 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.rootViewController = controller
       self.rootViewController?.coordinatorUpdateBalances(self.balances)
     }
-    
-    print("[Debug] \(self.privateKeyForPKWallet)")
   }
 
   func stop() {
@@ -566,12 +562,11 @@ extension KNSendTokenViewCoordinator {
   }
   
   fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
+    guard let pk = self.solanaPrivateKey else { return }
       SolanaUtil.getRecentBlockhash { blockHash in
         let receiptAddress = transaction.to
-        
-        let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
-        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
-        let privateKeyData = privateKey.data
+
+        let privateKeyData = pk.data
         let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
         
         let walletAddress = self.session.wallet.addressString
