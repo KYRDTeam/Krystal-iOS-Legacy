@@ -158,6 +158,14 @@ jobs:
         run: |
           echo "/Users/runner/privates/environments/$ENV/KNEnvironment.swift"
 
+      - name: debug_2
+        run: |
+          cat /Users/runner/privates/environments/$ENV/KNEnvironment.swift
+
+      - name: debug_3
+        run: |
+          echo $ENV
+
       - name: Setup environments
         shell: bash
         env:
