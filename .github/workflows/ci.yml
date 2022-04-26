@@ -154,6 +154,10 @@ jobs:
           mkdir -p /Users/runner/privates        
           gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
+      - name: debug
+        run: |
+          echo "/Users/runner/privates/environments/$ENV/KNEnvironment.swift"
+
       - name: Setup environments
         shell: bash
         env:
