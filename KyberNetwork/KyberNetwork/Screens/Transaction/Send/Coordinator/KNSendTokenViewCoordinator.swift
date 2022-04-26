@@ -509,21 +509,26 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 extension KNSendTokenViewCoordinator {
   
   fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
-    
-    
     SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { senderTokenAddress in
       guard let senderTokenAddress = senderTokenAddress else {
         completion(nil)
         return
       }
-      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { recipientTokenAddress in
-        guard let recipientTokenAddress = recipientTokenAddress else {
-          completion(nil)
-          return
+      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { recipientAccount in
+        var recipientTokenAddress = ""
+        var signedEncodedString = ""
+        
+        if let recipientAccount = recipientAccount {
+          recipientTokenAddress = recipientAccount
+          signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+          
+          
+        } else {
+          recipientTokenAddress = SolanaUtil.generateTokenAccountAddress(receiptWalletAddress: receiptAddress, tokenMintAddress: tokenAddress)
+          
+          signedEncodedString = SolanaUtil.signCreateAndTransferToken(recipientMainAddress: receiptAddress, tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
         }
-        
-        let signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
-        
+
         SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
           guard let signature = signature else {
             completion(nil)
@@ -533,13 +538,8 @@ extension KNSendTokenViewCoordinator {
         }
       }
     }
-    
-    
-    
-    
-    
   }
-  
+
   fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
     let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
     SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
@@ -569,20 +569,10 @@ extension KNSendTokenViewCoordinator {
       SolanaUtil.getRecentBlockhash { blockHash in
         let receiptAddress = transaction.to
         
-        let seeds = "novel census nominee cover consider again feel obey wool misery fatal use"
+        let seeds = "solid must business cannon flip mercy original near decrease trumpet annual sketch"
         let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
         let privateKeyData = privateKey.data
         let privateKeyString = Base58.encodeNoCheck(data: privateKeyData)
-
-        let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: UInt64(transaction.value), recentBlockhash: blockHash)
-        
-        // send solana
-//        self.sendSOL(privateKeyData: privateKeyData, receiptAddress: receiptAddress, amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: 9) { signature in
-//          self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
-//        }
-        
-        // send SPL tokens
-        
         
         let walletAddress = self.session.wallet.addressString
         self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), recentBlockHash: blockHash, decimals: UInt32(transaction.decimal ?? 0)) { signature in
