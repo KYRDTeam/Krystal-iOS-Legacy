@@ -154,15 +154,24 @@ jobs:
           mkdir -p /Users/runner/privates        
           gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
-      - name: debug
+      - name: debug echo
+        shell: bash
+        env:
+          ENV: ${{ matrix.env }}
         run: |
           echo "/Users/runner/privates/environments/$ENV/KNEnvironment.swift"
 
-      - name: debug_2
+      - name: debug cat /Users/runner/privates/environments......
+        shell: bash
+        env:
+          ENV: ${{ matrix.env }}
         run: |
           cat /Users/runner/privates/environments/$ENV/KNEnvironment.swift
 
-      - name: debug_3
+      - name: debug echo $ENV
+        shell: bash
+        env:
+          ENV: ${{ matrix.env }}
         run: |
           echo $ENV
 
