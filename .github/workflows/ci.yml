@@ -8,7 +8,7 @@ on:
       - ci-test
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: ios-build-dev-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -165,6 +165,11 @@ jobs:
         run: |
           cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
+
+      - name: debug 2
+        run: |
+          ls -al ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources;
+          ls -al ./KyberNetwork/KyberNetwork/Configurations/Environments;
 
       - name: Pods install
         run: pod check || pod install
