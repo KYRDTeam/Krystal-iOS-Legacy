@@ -174,7 +174,8 @@ extension SolanaTransactionDTO.DetailsDTO {
     return .init(recentBlockhash: recentBlockhash,
                  solTransferTxs: solTransferTxs.map { $0.toDomain() },
                  tokensTransferTxs: tokensTransferTxs.map { $0.toDomain() },
-                 unknownTransferTxs: unknownTransferTxs.map { $0.toDomain() })
+                 unknownTransferTxs: unknownTransferTxs.map { $0.toDomain() },
+                 raydiumTxs: raydiumTxs.map { $0.toDomain() })
   }
   
 }
@@ -211,9 +212,34 @@ extension SolanaTransactionDTO.DetailsDTO.UnknownTransferTxDTO {
   
 }
 
-extension SolanaTransactionDTO.DetailsDTO.UnknownTransferTxDTO.EventDTO {
+extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO {
   
-  func toDomain() -> SolanaTransaction.Details.UnknownTransferTx.Event {
+  func toDomain() -> SolanaTransaction.Details.RaydiumTx {
+    return .init(swap: swap?.toDomain())
+  }
+  
+}
+
+extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO.SwapDTO {
+  
+  func toDomain() -> SolanaTransaction.Details.RaydiumTx.Swap {
+    return .init(coin: coin.toDomain(), event: event.map { $0.toDomain() })
+  }
+  
+}
+
+extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO.SwapDTO.CoinDTO {
+  
+  func toDomain() -> SolanaTransaction.Details.RaydiumTx.Swap.Coin {
+    return .init(amount: amount, decimals: decimals, symbol: symbol, tokenAddress: tokenAddress)
+  }
+  
+}
+      
+
+extension SolanaTransactionDTO.DetailsDTO.EventDTO {
+  
+  func toDomain() -> SolanaTransaction.Details.Event {
     return .init(amount: Double(amount) ?? 0, decimals: decimals, symbol: symbol, type: type)
   }
   

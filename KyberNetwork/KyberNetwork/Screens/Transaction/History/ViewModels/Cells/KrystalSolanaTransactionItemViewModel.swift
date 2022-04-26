@@ -26,23 +26,23 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var fromIconSymbol: String {
     if isSwapTransaction {
-      return transferEvents.first!.symbol
+      return swapEvents.first!.symbol
     }
     return ""
   }
   
   var toIconSymbol: String {
     if isSwapTransaction {
-      return transferEvents.last!.symbol
+      return swapEvents.last!.symbol
     }
     return ""
   }
   
   var transactionModelType: HistoryModelType {
-    if isTokenTransferTransaction || isSolTransferTransaction {
-      return .transferToken
-    } else if isSwapTransaction {
+    if isSwapTransaction {
       return .swap
+    } else if isTokenTransferTransaction || isSolTransferTransaction {
+      return .transferToken
     } else {
       return .contractInteraction
     }
@@ -57,7 +57,7 @@ extension KrystalSolanaTransactionItemViewModel {
   }
   
   var isSwapTransaction: Bool {
-    return transferEvents.count >= 2
+    return swapEvents.count >= 2
   }
   
   var isTransferToOther: Bool {
@@ -73,8 +73,8 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var displayedAmountString: String {
     if isSwapTransaction {
-      let tx0 = transferEvents.first!
-      let tx1 = transferEvents.last!
+      let tx0 = swapEvents.first!
+      let tx1 = swapEvents.last!
       let fromAmount = formattedAmount(amount: tx0.amount, decimals: tx0.decimals)
       let toAmount = formattedAmount(amount: tx1.amount, decimals: tx1.decimals)
       return String(format: "%@ %@ → %@ %@", fromAmount, tx0.symbol, toAmount, tx1.symbol)
@@ -95,8 +95,8 @@ extension KrystalSolanaTransactionItemViewModel {
   
   var transactionDetailsString: String {
     if isSwapTransaction {
-      let tx0 = transferEvents.first!
-      let tx1 = transferEvents.last!
+      let tx0 = swapEvents.first!
+      let tx1 = swapEvents.last!
       let formattedRate = formattedSwapRate(tx0: tx0, tx1: tx1)
       return "1 \(tx0.symbol) = \(formattedRate) \(tx1.symbol)"
     } else if isTokenTransferTransaction {
@@ -134,14 +134,19 @@ extension KrystalSolanaTransactionItemViewModel {
     return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: transaction.txDate)
   }
   
-  var transferEvents: [SolanaTransaction.Details.UnknownTransferTx.Event] {
-    return transaction.details.unknownTransferTxs.flatMap(\.event)
-      .filter { $0.type == "transfer" }
+  var swapEvents: [SolanaTransaction.Details.Event] {
+    let unknownTransferTxs = transaction.details.unknownTransferTxs.flatMap(\.event)
+    let raydiumTransferTxs = transaction.details.raydiumTxs.compactMap { $0.swap }.flatMap { $0.event }
+    if !unknownTransferTxs.isEmpty {
+      return unknownTransferTxs
+    } else {
+      return raydiumTransferTxs
+    }
   }
   
-  private func formattedSwapRate(tx0: SolanaTransaction.Details.UnknownTransferTx.Event, tx1: SolanaTransaction.Details.UnknownTransferTx.Event) -> String {
-    let sourceAmountBigInt = BigInt(tx0.amount) ?? BigInt(0)
-    let destAmountBigInt = BigInt(tx1.amount) ?? BigInt(0)
+  private func formattedSwapRate(tx0: SolanaTransaction.Details.Event, tx1: SolanaTransaction.Details.Event) -> String {
+    let sourceAmountBigInt = BigInt(tx0.amount)
+    let destAmountBigInt = BigInt(tx1.amount)
     
     let amountFrom = sourceAmountBigInt * BigInt(10).power(18) / BigInt(10).power(tx0.decimals)
     let amountTo = destAmountBigInt * BigInt(10).power(18) / BigInt(10).power(tx1.decimals)

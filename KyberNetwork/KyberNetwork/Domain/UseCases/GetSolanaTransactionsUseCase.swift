@@ -9,7 +9,7 @@ import Foundation
 
 class GetSolanaTransactionsUseCase {
   let limit = 5
-  var lastHash: String?
+  
   var address: String
   let repository: TransactionRepository
   
@@ -22,10 +22,8 @@ class GetSolanaTransactionsUseCase {
     completion(repository.getSavedSolanaTransactions())
   }
   
-  func load(completion: @escaping ([SolanaTransaction], Bool) -> ()) {
-    repository.fetchSolanaTransaction(address: "cqDeXT4WUEUSgVGwbydDj6S8o9waG7a1zchLcDmg8Tq", prevHash: lastHash, limit: limit) { [weak self] transactions in
-      guard let self = self else { return }
-      self.lastHash = transactions.last?.txHash
+  func load(lastHash: String?, completion: @escaping ([SolanaTransaction], Bool) -> ()) {
+    repository.fetchSolanaTransaction(address: "59FjBbHSQUe4LpzMLVFQCQ4ArDs3cMN2g7csW9U8AFtA", prevHash: lastHash, limit: limit) { transactions in
       completion(transactions, transactions.count == self.limit)
     }
   }

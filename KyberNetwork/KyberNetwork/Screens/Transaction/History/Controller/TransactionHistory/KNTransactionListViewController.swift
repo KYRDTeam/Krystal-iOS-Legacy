@@ -19,7 +19,6 @@ protocol KNTransactionListViewControllerDelegate: AnyObject {
 class KNTransactionListViewController: UIViewController {
   
   @IBOutlet weak var collectionView: UICollectionView!
-  @IBOutlet weak var emptyView: UIView!
   
   var viewModel: BaseTransactionListViewModel!
   weak var delegate: KNTransactionListViewControllerDelegate?
@@ -30,13 +29,14 @@ class KNTransactionListViewController: UIViewController {
     super.viewDidLoad()
     
     setupCollectionView()
-    setupSkeleton()
+    bindViewModel()
     reload()
   }
   
   func setupCollectionView() {
     self.collectionView.registerCellNib(KNHistoryTransactionCollectionViewCell.self)
     self.collectionView.registerCell(LoadingIndicatorCell.self)
+    self.collectionView.registerCell(TransactionListEmptyCell.self)
     self.collectionView.registerHeaderCellNib(KNTransactionCollectionReusableView.self)
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
@@ -45,16 +45,23 @@ class KNTransactionListViewController: UIViewController {
     self.refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
   }
   
-  func setupSkeleton() {
+  func bindViewModel() {
+    viewModel.groupedTransactions.observe(on: self) { [weak self] _ in
+      DispatchQueue.main.async {
+        self?.reloadUI()
+      }
+    }
+  }
+  
+  func startSkeletonAnimation() {
     let gradient = SkeletonGradient(baseColor: UIColor.Kyber.dark)
     let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
     view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
   }
   
   func reloadUI() {
+    view.hideSkeleton()
     collectionView?.reloadData()
-    collectionView?.isHidden = viewModel.isTransactionListEmpty
-    emptyView?.isHidden = !viewModel.isTransactionListEmpty
     refreshControl.endRefreshing()
   }
   
@@ -115,32 +122,22 @@ class KNTransactionListViewController: UIViewController {
   }
   
   func updateWallet(wallet: KNWalletObject) {
+    startSkeletonAnimation()
     DispatchQueue.global().async {
-//      self.viewModel.updateWallet(wallet: wallet) {
-//        DispatchQueue.main.async {
-//          self.reloadUI()
-//        }
-//      }
+      self.viewModel.updateWallet(wallet: wallet)
     }
   }
   
   func applyFilter(filter: KNTransactionFilter) {
     DispatchQueue.global().async {
-//      self.viewModel.applyFilter(filter: filter)
-      DispatchQueue.main.async {
-        self.reloadUI()
-      }
+      self.viewModel.applyFilter(filter: filter)
     }
   }
   
   func reload() {
+    startSkeletonAnimation()
     DispatchQueue.global().async {
-      self.viewModel.reload {
-        DispatchQueue.main.async {
-          self.view.hideSkeleton()
-          self.reloadUI()
-        }
-      }
+      self.viewModel.reload()
     }
   }
   
@@ -205,21 +202,17 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    return CGSize(
-      width: collectionView.frame.width,
-      height: 24
-    )
+    if viewModel.isTransactionListEmpty {
+      return .zero
+    }
+    return CGSize(width: collectionView.frame.width, height: 24)
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if viewModel.isLoading || !viewModel.canLoadMore { return }
     if indexPath.section == viewModel.numberOfSections - 1 && indexPath.item == viewModel.numberOfItems(inSection: indexPath.section) - 1 {
       DispatchQueue.global().async {
-        self.viewModel.load {
-          DispatchQueue.main.async {
-            self.reloadUI()
-          }
-        }
+        self.viewModel.load()
       }
     }
   }
@@ -227,18 +220,31 @@ extension KNTransactionListViewController: UICollectionViewDelegateFlowLayout {
 
 extension KNTransactionListViewController {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
+    if viewModel.isTransactionListEmpty {
+      return 1
+    }
     return viewModel.numberOfSections
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    if section < viewModel.numberOfSections - 1 {
-      return viewModel.numberOfItems(inSection: section)
+    if viewModel.isTransactionListEmpty {
+      return 1
+    } else {
+      if section < viewModel.numberOfSections - 1 {
+        return viewModel.numberOfItems(inSection: section)
+      }
+      return viewModel.numberOfItems(inSection: section) + (viewModel.canLoadMore ? 1 : 0) // For load more indicator
     }
-    return viewModel.numberOfItems(inSection: section) + (viewModel.canLoadMore ? 1 : 0) // For load more indicator
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    if indexPath.section == viewModel.numberOfSections - 1 && indexPath.item == viewModel.numberOfItems(inSection: indexPath.section) {
+    guard !viewModel.isTransactionListEmpty else {
+      let cell = collectionView.dequeueReusableCell(TransactionListEmptyCell.self, indexPath: indexPath)!
+      return cell
+    }
+    let isLastSection = indexPath.section == viewModel.numberOfSections - 1
+    let isLastCell = indexPath.item == viewModel.numberOfItems(inSection: indexPath.section)
+    if isLastSection && isLastCell {
       let cell = collectionView.dequeueReusableCell(LoadingIndicatorCell.self, indexPath: indexPath)!
       cell.inidicator.startAnimating()
       return cell
@@ -264,6 +270,7 @@ extension KNTransactionListViewController {
       return UICollectionReusableView()
     }
   }
+  
 }
 
 extension KNTransactionListViewController: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSource {

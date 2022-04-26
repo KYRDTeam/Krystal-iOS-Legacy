@@ -564,6 +564,11 @@
 		A6E6C9CF2817195D00EEB2E6 /* BaseTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9CE2817195C00EEB2E6 /* BaseTransactionListViewModel.swift */; };
 		A6E6C9D128171A1400EEB2E6 /* SolanaTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9D028171A1400EEB2E6 /* SolanaTransactionListViewModel.swift */; };
 		A6E6C9D32817208C00EEB2E6 /* KrystalNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9D22817208C00EEB2E6 /* KrystalNetworkError.swift */; };
+		A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9D5281796C000EEB2E6 /* SolanaTransactionStorage.swift */; };
+		A6E6C9D8281796F100EEB2E6 /* SolanaTransaction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9D7281796F100EEB2E6 /* SolanaTransaction+.swift */; };
+		A6E6C9DB281798E100EEB2E6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9DA281798E000EEB2E6 /* Observable.swift */; };
+		A6E6C9E02817A3DA00EEB2E6 /* TransactionListEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6C9DE2817A3DA00EEB2E6 /* TransactionListEmptyCell.swift */; };
+		A6E6C9E12817A3DA00EEB2E6 /* TransactionListEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E6C9DF2817A3DA00EEB2E6 /* TransactionListEmptyCell.xib */; };
 		BB03A8712042B01300649DA0 /* BalanceStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB03A8702042B01300649DA0 /* BalanceStatusTests.swift */; };
 		C154BB4E1861959DEFE1048F /* Pods_KrystalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */; };
 		C3012CC3269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */; };
@@ -1487,6 +1492,11 @@
 		A6E6C9CE2817195C00EEB2E6 /* BaseTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionListViewModel.swift; sourceTree = "<group>"; };
 		A6E6C9D028171A1400EEB2E6 /* SolanaTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionListViewModel.swift; sourceTree = "<group>"; };
 		A6E6C9D22817208C00EEB2E6 /* KrystalNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalNetworkError.swift; sourceTree = "<group>"; };
+		A6E6C9D5281796C000EEB2E6 /* SolanaTransactionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionStorage.swift; sourceTree = "<group>"; };
+		A6E6C9D7281796F100EEB2E6 /* SolanaTransaction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SolanaTransaction+.swift"; sourceTree = "<group>"; };
+		A6E6C9DA281798E000EEB2E6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		A6E6C9DE2817A3DA00EEB2E6 /* TransactionListEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListEmptyCell.swift; sourceTree = "<group>"; };
+		A6E6C9DF2817A3DA00EEB2E6 /* TransactionListEmptyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionListEmptyCell.xib; sourceTree = "<group>"; };
 		ACB15546CA9F3081C6AABCC5 /* Pods-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalNotificationServiceExtension/Pods-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		AF8FFDA00149AF7FF756410D /* Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-KyberNetwork-KrystalNotificationServiceExtension/Pods-KyberNetwork-KrystalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		B13A87D3BA5167741E5D0801 /* Pods-Trust.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trust.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trust/Pods-Trust.release.xcconfig"; sourceTree = "<group>"; };
@@ -1891,6 +1901,7 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				A6E6C9D9281798D500EEB2E6 /* Utils */,
 				A6E6C9BB2816F92400EEB2E6 /* Domain */,
 				A6E6C9BF2816F9C900EEB2E6 /* Data */,
 				A6B3CD5A2811C35D005D0D66 /* DI */,
@@ -3228,10 +3239,9 @@
 		25CE6F8C2073E03800A3A2F9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A6E6C9DC2817A3A600EEB2E6 /* Cells */,
 				A6B3CD3728117657005D0D66 /* TransactionHistory */,
 				251E22632271CBDA0038679C /* FilterVC */,
-				257C9FC12078A9D900EE0128 /* TransactionCollectionHeader */,
-				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
 				25CE6F8F2073E0BC00A3A2F9 /* KNHistoryViewController.swift */,
 				25CE6F902073E0BC00A3A2F9 /* KNHistoryViewController.xib */,
 			);
@@ -4173,6 +4183,7 @@
 				A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */,
 				A6E6C9CE2817195C00EEB2E6 /* BaseTransactionListViewModel.swift */,
 				A6E6C9D028171A1400EEB2E6 /* SolanaTransactionListViewModel.swift */,
+				A6E6C9D7281796F100EEB2E6 /* SolanaTransaction+.swift */,
 			);
 			path = TransactionList;
 			sourceTree = "<group>";
@@ -4215,6 +4226,7 @@
 		A6E6C9BF2816F9C900EEB2E6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A6E6C9D42817969500EEB2E6 /* Storages */,
 				A6E6C9CB28170D2E00EEB2E6 /* Repositories */,
 				A6E6C9CA28170D2100EEB2E6 /* Network */,
 			);
@@ -4267,6 +4279,41 @@
 				A6E6C9CC28170D4B00EEB2E6 /* DefaultTransactionRepository.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A6E6C9D42817969500EEB2E6 /* Storages */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6C9D5281796C000EEB2E6 /* SolanaTransactionStorage.swift */,
+			);
+			path = Storages;
+			sourceTree = "<group>";
+		};
+		A6E6C9D9281798D500EEB2E6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6C9DA281798E000EEB2E6 /* Observable.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A6E6C9DC2817A3A600EEB2E6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6C9DD2817A3BA00EEB2E6 /* TransactionListEmptyCell */,
+				257C9FC12078A9D900EE0128 /* TransactionCollectionHeader */,
+				257B84B02074E8C8003DD40E /* TransactionCollectionViewCell */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A6E6C9DD2817A3BA00EEB2E6 /* TransactionListEmptyCell */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6C9DE2817A3DA00EEB2E6 /* TransactionListEmptyCell.swift */,
+				A6E6C9DF2817A3DA00EEB2E6 /* TransactionListEmptyCell.xib */,
+			);
+			path = TransactionListEmptyCell;
 			sourceTree = "<group>";
 		};
 		C3018DC826579379003C8114 /* SwitchChain */ = {
@@ -5261,6 +5308,7 @@
 				C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */,
 				25929C6420DA5C760045CFA3 /* SF-Pro-Text-Heavy.otf in Resources */,
 				C37CC09D245803CA0081FB32 /* Roboto-Thin.ttf in Resources */,
+				A6E6C9E12817A3DA00EEB2E6 /* TransactionListEmptyCell.xib in Resources */,
 				C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */,
 				25929C6F20DA5C760045CFA3 /* SF-Pro-Display-Medium.otf in Resources */,
 				251C29C1232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.xib in Resources */,
@@ -5839,12 +5887,14 @@
 				29FF6D6B2011D2AF00A3011C /* InCoordinatorError.swift in Sources */,
 				254BB33C211C20E200B8E75D /* UIFont+Kyber.swift in Sources */,
 				C31371E52603511F003D432B /* KrytalCoordinator.swift in Sources */,
+				A6E6C9DB281798E100EEB2E6 /* Observable.swift in Sources */,
 				737D1675202BDCB400B42DDE /* UINavigationController.swift in Sources */,
 				296105931FA2AA2100292494 /* SignTransaction.swift in Sources */,
 				7EB47FF827CCDDDB00FB28D9 /* FeatureFlagManager.swift in Sources */,
 				C3285AB5277EDFED00D28BC6 /* BrowserCell.swift in Sources */,
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
+				A6E6C9D8281796F100EEB2E6 /* SolanaTransaction+.swift in Sources */,
 				A6B3CD562811C07C005D0D66 /* CompletedHistoryTransactonViewModel.swift in Sources */,
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,
 				C3233EFA2807DAEC0086C2BC /* CopyAddressViewController.swift in Sources */,
@@ -6000,6 +6050,7 @@
 				25C45ADA20AD40F400CDA1FF /* KNImportPrivateKeyViewController.swift in Sources */,
 				29EB102A1F6CBD23000907A4 /* UIAlertController.swift in Sources */,
 				C32656AE266F546100C69561 /* Action.swift in Sources */,
+				A6E6C9E02817A3DA00EEB2E6 /* TransactionListEmptyCell.swift in Sources */,
 				A6B3CD5E2811C3E5005D0D66 /* ViewModelAssembly.swift in Sources */,
 				257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */,
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
@@ -6156,6 +6207,7 @@
 				25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */,
 				C365811E25E1132400A6DA4B /* Storage.swift in Sources */,
 				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,
+				A6E6C9D6281796C000EEB2E6 /* SolanaTransactionStorage.swift in Sources */,
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,

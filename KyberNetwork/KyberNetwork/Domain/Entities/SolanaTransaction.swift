@@ -23,6 +23,7 @@ struct SolanaTransaction {
     var solTransferTxs: [SolTransferTx]
     var tokensTransferTxs: [TokenTransferTx]
     var unknownTransferTxs: [UnknownTransferTx]
+    var raydiumTxs: [RaydiumTx]
     
     struct SolTransferTx {
       var source: String
@@ -53,7 +54,7 @@ struct SolanaTransaction {
     }
     
     struct RaydiumTx {
-      var swap: Swap
+      var swap: Swap?
       
       struct Swap {
         var coin: Coin

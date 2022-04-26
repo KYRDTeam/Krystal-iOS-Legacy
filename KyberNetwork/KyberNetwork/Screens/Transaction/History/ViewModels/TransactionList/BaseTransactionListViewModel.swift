@@ -17,18 +17,26 @@ class BaseTransactionListViewModel {
   
   var transactions: [TransactionHistoryItem] = []
   var headers: [String] = []
-  var groupedTransactions: [String: [TransactionHistoryItem]] = [:]
+  var groupedTransactions: Observable<[String: [TransactionHistoryItem]]> = .init([:])
   
   init(wallet: KNWalletObject) {
     self.wallet = wallet
   }
   
-  func reload(completion: @escaping () -> ()) {
+  func reload() {
     
   }
   
-  func load(completion: @escaping () -> ()) {
+  func load() {
     
+  }
+  
+  func applyFilter(filter: KNTransactionFilter) {
+    
+  }
+  
+  func updateWallet(wallet: KNWalletObject) {
+    self.wallet = wallet
   }
 }
 
@@ -43,7 +51,7 @@ extension BaseTransactionListViewModel {
   }
   
   func numberOfItems(inSection section: Int) -> Int {
-    return groupedTransactions[headers[section]]?.count ?? 0
+    return groupedTransactions.value[headers[section]]?.count ?? 0
   }
   
   func headerTitle(forSection section: Int) -> String {
@@ -51,7 +59,7 @@ extension BaseTransactionListViewModel {
   }
   
   func item(forIndex index: Int, inSection section: Int) -> TransactionHistoryItem? {
-    return groupedTransactions[headers[section]]?[index]
+    return groupedTransactions.value[headers[section]]?[index]
   }
   
 }
