@@ -126,18 +126,18 @@ class SolanaUtil {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getMinimumBalanceForRentExemption) { result in
       switch result {
-        case .success(let data):
-          if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
-            if let result = json["result"] as? Int {
-             completion(result)
-              return
-            }
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let result = json["result"] as? Int {
+           completion(result)
+            return
           }
-          completion(nil)
-        case .failure(let error):
-          completion(nil)
-          print("[Solana error] \(error.localizedDescription)")
         }
+        completion(nil)
+      case .failure(let error):
+        completion(nil)
+        print("[Solana error] \(error.localizedDescription)")
+      }
       }
   }
 

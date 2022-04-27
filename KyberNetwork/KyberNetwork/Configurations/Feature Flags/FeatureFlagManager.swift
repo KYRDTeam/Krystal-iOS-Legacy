@@ -17,8 +17,8 @@ public struct FeatureFlagKeys {
 class FeatureFlagManager {
   static let shared = FeatureFlagManager()
 
-  func configClient(session: KNSession) {
-    let currentAddress = session.wallet.addressString
+  func configClient(session: KNSession?) {
+    let currentAddress = session?.wallet.addressString ?? ""
 
     var config = LDConfig(mobileKey: KNEnvironment.default.mobileKey)
     config.backgroundFlagPollingInterval = 60
