@@ -128,7 +128,7 @@ class KNListWalletsViewModel {
       if !self.watchCellModels.isEmpty {
         self.watchCellModels.removeAll()
       }
-
+      let isSolana = KNGeneralProvider.shared.currentChain == .solana
       for element in listData {
         if element.isWatchWallet {
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
@@ -139,6 +139,9 @@ class KNListWalletsViewModel {
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: true)
           self.seedsCellModels.append(cm)
         } else {
+          guard (element.chainType == .solana && isSolana) || (element.chainType != .solana && !isSolana) else {
+            continue
+          }
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
           self.nonSeedsCellModels.append(cm)
         }

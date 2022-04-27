@@ -33,13 +33,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  lazy var listWalletsCoordinator: KNListWalletsCoordinator = {
-    return KNListWalletsCoordinator(
-      navigationController: self.navigationController,
-      session: self.session,
-      delegate: self
-    )
-  }()
+  var listWalletsCoordinator: KNListWalletsCoordinator?
 
   lazy var contactVC: KNListContactViewController = {
     let controller = KNListContactViewController()
@@ -88,7 +82,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     if resetRoot {
       self.navigationController.popToRootViewController(animated: true)
     }
-    self.listWalletsCoordinator.updateNewSession(self.session)
+    self.listWalletsCoordinator?.updateNewSession(self.session)
   }
 
   func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
@@ -216,7 +210,13 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
-    self.listWalletsCoordinator.start()
+    let coordinator = KNListWalletsCoordinator(
+      navigationController: self.navigationController,
+      session: self.session,
+      delegate: self
+    )
+    coordinator.start()
+    self.listWalletsCoordinator = coordinator
   }
 
   func settingsViewControllerPasscodeDidChange(_ isOn: Bool) {
@@ -437,7 +437,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
   
   func appCoordinatorDidSelectRenameWallet() {
-    self.listWalletsCoordinator.startEditWallet()
+    self.listWalletsCoordinator?.startEditWallet()
   }
   
   func appCoordinatorDidSelectExportWallet() {
@@ -569,11 +569,12 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
 
 extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   func listWalletsCoordinatorDidClickBack() {
-    self.listWalletsCoordinator.stop()
+    self.listWalletsCoordinator?.stop()
+    self.listWalletsCoordinator = nil
   }
 
   func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.listWalletsCoordinator.stop()
+    self.listWalletsCoordinator?.stop()
     if wallet == self.session.wallet { return }
     self.delegate?.settingsCoordinatorUserDidSelectNewWallet(wallet)
   }
