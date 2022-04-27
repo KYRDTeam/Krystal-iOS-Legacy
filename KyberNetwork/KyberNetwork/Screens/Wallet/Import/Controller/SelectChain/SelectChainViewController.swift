@@ -38,7 +38,7 @@ class SelectChainViewController: KNBaseViewController {
 
 extension SelectChainViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return ChainType.allCases.count + 1
+    return ChainType.getAllChain().count + 1
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,7 +49,7 @@ extension SelectChainViewController: UITableViewDataSource {
       cell.chainIcon.image = UIImage(named: "multichain_icon")
       cell.chainNameLabel.text = "Multi-chain wallet"
     } else {
-      let chain = ChainType.allCases[indexPath.row - 1]
+      let chain = ChainType.getAllChain()[indexPath.row - 1]
       cell.configCell(chain: chain, isSelected: self.selectedChain == chain)
     }
     cell.selectionStyle = .none
@@ -67,7 +67,7 @@ extension SelectChainViewController: UITableViewDelegate {
       // config multi-chain cell
       self.delegate?.selectChainViewController(self, run: .importMultiChain)
     } else {
-      let chain = ChainType.allCases[indexPath.row - 1]
+      let chain = ChainType.getAllChain()[indexPath.row - 1]
       self.selectedChain = chain
       self.delegate?.selectChainViewController(self, run: chain == .solana ? .importSolana : .importEVM)
     }

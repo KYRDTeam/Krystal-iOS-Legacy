@@ -227,7 +227,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
-    self.authenticationCoordinator.start(isLaunch: true)
+    self.authenticationCoordinator.start()
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()

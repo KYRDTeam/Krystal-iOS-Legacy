@@ -519,6 +519,7 @@ extension KNSendTokenViewCoordinator {
 
         SolanaUtil.getRecentBlockhash { recentBlockHash in
           guard let recentBlockHash = recentBlockHash else {
+            completion(nil)
             return
           }
           if let recipientAccount = recipientAccount {
@@ -541,14 +542,21 @@ extension KNSendTokenViewCoordinator {
     }
   }
 
-  fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, recentBlockHash: String, decimals: UInt32, completion: @escaping (String?) -> Void) {
-    let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
-    SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
-      guard let signature = signature else {
+  fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    SolanaUtil.getRecentBlockhash { recentBlockHash in
+      guard let recentBlockHash = recentBlockHash else {
         completion(nil)
         return
       }
-      completion(signature)
+      
+      let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
+      SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+        guard let signature = signature else {
+          completion(nil)
+          return
+        }
+        completion(signature)
+      }
     }
   }
   
@@ -556,28 +564,37 @@ extension KNSendTokenViewCoordinator {
     guard let signature = signature else {
       return
     }
-    SolanaUtil.getTransactionStatus(signature: signature) { state in
-      historyTransaction.hash = signature
-      historyTransaction.state = state
-      let controller = KNTransactionStatusPopUp(transaction: historyTransaction)
-      controller.delegate = self
-      self.navigationController.present(controller, animated: true, completion: nil)
-      self.transactionStatusVC = controller
-    }
+    historyTransaction.hash = signature
+    historyTransaction.time = Date()
+    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+    self.openTransactionStatusPopUp(transaction: historyTransaction)
+    self.rootViewController?.coordinatorSuccessSendTransaction()
   }
   
   fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
     guard let pk = self.solanaPrivateKey else { return }
     let receiptAddress = transaction.to
-    
     let privateKeyData = pk.data
-    
     let walletAddress = self.session.wallet.addressString
-    self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(transaction.decimal ?? 0)) { signature in
-      self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+    
+    let tokenDecimal = transaction.decimal ?? 0
+    let feeString = transaction.fee.description
+    
+    historyTransaction.toAddress = receiptAddress
+    historyTransaction.transactionObject = SignTransactionObject(value: transaction.value.string(decimals: tokenDecimal, minFractionDigits: 0, maxFractionDigits: tokenDecimal), from: walletAddress, to: receiptAddress, nonce: 0, data: Data(), gasPrice: feeString, gasLimit: feeString, chainID: AllChains.solana.chainID, reservedGasLimit: "")
+
+    // TODO: check send SPL or send Sol here
+    if transaction.mintTokenAddress != "So11111111111111111111111111111111111111112" {
+      self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
+        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+      }
+    } else {
+      self.sendSOL(privateKeyData: privateKeyData, receiptAddress: receiptAddress, amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
+        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+      }
     }
   }
-  
+
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
