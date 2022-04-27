@@ -160,7 +160,7 @@ jobs:
       - name: Get configuration items
         run: |
           bash -c 'base64 --decode <<< "$SSH_PRIVATE_KEY" > private.key'
-          md5sum private.key
+          
           chmod 600 private.key
           GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git
           ls -al krystal-mobile-enviroment/
