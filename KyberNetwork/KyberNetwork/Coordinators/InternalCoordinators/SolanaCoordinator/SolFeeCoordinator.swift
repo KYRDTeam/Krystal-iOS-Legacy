@@ -12,16 +12,24 @@ import Moya
 class SolFeeCoordinator {
   static let shared: SolFeeCoordinator = SolFeeCoordinator()
   static let defaultLamportPerSignature = BigInt(5000)
+  static let defaultMinimumRentExemption = BigInt(1238880)
   fileprivate let provider = MoyaProvider<KyberNetworkService>()
   fileprivate var fetchTimer: Timer?
 
   var lamportPerSignature: BigInt = SolFeeCoordinator.defaultLamportPerSignature
+  var minimumRentExemption: BigInt = SolFeeCoordinator.defaultMinimumRentExemption
 
   @objc func fetchSolFee(_ sender: Timer?) {
     DispatchQueue.global(qos: .background).async {
       SolanaUtil.getLamportsPerSignature { lamports in
         if let lamports = lamports {
           self.lamportPerSignature = BigInt(lamports)
+        }
+      }
+      
+      SolanaUtil.getMinimumBalanceForRentExemption { rentFee in
+        if let rentFee = rentFee {
+          self.minimumRentExemption = BigInt(rentFee)
         }
       }
     }

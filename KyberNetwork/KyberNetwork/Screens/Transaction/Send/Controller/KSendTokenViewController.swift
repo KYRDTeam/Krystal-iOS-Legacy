@@ -635,10 +635,22 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.view.layoutIfNeeded()
       return false
     } else {
-      self.viewModel.updateAddress(text)
-      self.updateUIEnsMessage()
-      self.getEnsAddressFromName(text)
-      self.view.layoutIfNeeded()
+      if KNGeneralProvider.shared.currentChain == .solana {
+        self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
+          if tokenAccount == nil {
+            self.estGasFeeValueLabel.text = self.viewModel.solFeeWithRentTokenAccountFeeString
+          }
+          self.viewModel.updateAddress(text)
+          self.updateUIEnsMessage()
+          self.getEnsAddressFromName(text)
+          self.view.layoutIfNeeded()
+        }
+      } else {
+        self.viewModel.updateAddress(text)
+        self.updateUIEnsMessage()
+        self.getEnsAddressFromName(text)
+        self.view.layoutIfNeeded()
+      }
       return true
     }
   }
@@ -685,6 +697,14 @@ extension KSendTokenViewController: UITextFieldDelegate {
           self.updateUIAddressQRCode()
         }
       }
+    }
+  }
+}
+
+extension KSendTokenViewController {
+  func checkIfReceivedWalletHasTokenAccount(walletAddress: String, completion: @escaping (String?) -> Void) {
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { recipientAccount in
+      completion(recipientAccount)
     }
   }
 }

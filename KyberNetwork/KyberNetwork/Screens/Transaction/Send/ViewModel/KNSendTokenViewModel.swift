@@ -27,6 +27,7 @@ class KNSendTokenViewModel: NSObject {
   
   ///solana default lamport per signature
   fileprivate(set) var lamportPerSignature: BigInt = SolFeeCoordinator.shared.lamportPerSignature
+  fileprivate(set) var minimumRentExemption: BigInt = SolFeeCoordinator.shared.minimumRentExemption
   fileprivate(set) var totalSignature: BigInt = BigInt(1)
   
 
@@ -177,6 +178,10 @@ class KNSendTokenViewModel: NSObject {
   
   var solFeeString: String {
     return self.formatSolFeeStringFor(fee: self.solanaFeeBigInt)
+  }
+  
+  var solFeeWithRentTokenAccountFeeString: String {
+    return self.formatSolFeeStringFor(fee: self.solanaFeeBigInt + self.minimumRentExemption)
   }
 
   var balanceText: String {

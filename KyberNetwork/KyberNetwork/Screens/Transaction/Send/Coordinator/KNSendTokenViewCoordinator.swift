@@ -583,8 +583,7 @@ extension KNSendTokenViewCoordinator {
     historyTransaction.toAddress = receiptAddress
     historyTransaction.transactionObject = SignTransactionObject(value: transaction.value.string(decimals: tokenDecimal, minFractionDigits: 0, maxFractionDigits: tokenDecimal), from: walletAddress, to: receiptAddress, nonce: 0, data: Data(), gasPrice: feeString, gasLimit: feeString, chainID: AllChains.solana.chainID, reservedGasLimit: "")
 
-    // TODO: check send SPL or send Sol here
-    if transaction.mintTokenAddress != "So11111111111111111111111111111111111111112" {
+    if transaction.mintTokenAddress != AllChains.solana.quoteTokenAddress {
       self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
         self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
       }
