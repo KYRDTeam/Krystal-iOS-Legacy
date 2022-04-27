@@ -23,10 +23,11 @@ class WebViewController: KNBaseViewController {
   
   private var progressObservation: NSKeyValueObservation?
   private var pageTitleObservation: NSKeyValueObservation?
+  private var urlObservation: NSKeyValueObservation?
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    disableZooming()
     setupNavigationBar()
     setupRefreshControl()
     setupObservations()
@@ -37,8 +38,20 @@ class WebViewController: KNBaseViewController {
   }
   
   func setupRefreshControl() {
+    refreshControl.tintColor = UIColor.white.withAlphaComponent(0.8)
     refreshControl.addTarget(self, action: #selector(reloadWeb), for: .valueChanged)
     webView.scrollView.addSubview(refreshControl)
+  }
+  
+  func disableZooming() {
+    let source: String = "var meta = document.createElement('meta');" +
+        "meta.name = 'viewport';" +
+        "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
+        "var head = document.getElementsByTagName('head')[0];" +
+        "head.appendChild(meta);"
+
+    let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+    webView.configuration.userContentController.addUserScript(script)
   }
   
   @objc func reloadWeb(_ sender: UIRefreshControl) {
@@ -64,6 +77,9 @@ class WebViewController: KNBaseViewController {
     }
     pageTitleObservation = webView.observe(\.title, options: [.new]) { _, _ in
       self.navigationBar.title = self.webView.title
+    }
+    urlObservation = webView.observe(\.url, options: [.new]) { _, _ in
+      print("[WEBVIEW] Loading \(self.webView.url)")
     }
   }
   
