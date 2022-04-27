@@ -21,9 +21,9 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidClose()
 }
 
-class KNSendTokenViewCoordinator: BaseCoordinator {
+class KNSendTokenViewCoordinator: NSObject, Coordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
-
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   fileprivate var session: KNSession
   var balances: [String: Balance] = [:]
@@ -111,7 +111,7 @@ class KNSendTokenViewCoordinator: BaseCoordinator {
     self.sendNFT = sendNFT
   }
 
-  override func start() {
+  func start() {
     if sendNFT {
       let controller = SendNFTViewController(viewModel: SendNFTViewModel(item: self.nftItem, category: self.nftCategory, supportERC721: self.isSupportERC721))
       controller.delegate = self

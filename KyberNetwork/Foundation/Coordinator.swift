@@ -45,12 +45,3 @@ extension Coordinator {
     )
   }
 }
-
-class BaseCoordinator: NSObject, Coordinator {
-  var coordinators : [Coordinator] = []
-  var onCompleted: (() -> ())?
-  
-  func start() {
-    fatalError("Children must implement `start`.")
-  }
-}
