@@ -190,8 +190,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
     
-    KNGeneralProvider.shared.currentChain = .solana
-    
     if self.keystore.wallets.count == 1 {
       KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
