@@ -13,18 +13,20 @@ class KNTransactionHistoryCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   var session: KNSession
+  var wallet: KNWalletObject
   let type: KNTransactionHistoryType
   
   var viewController: KNTransactionHistoryViewController?
   
-  init(navigationController: UINavigationController, session: KNSession, type: KNTransactionHistoryType) {
+  init(navigationController: UINavigationController, session: KNSession, wallet: KNWalletObject, type: KNTransactionHistoryType) {
     self.navigationController = navigationController
     self.session = session
+    self.wallet = wallet
     self.type = type
   }
   
   func start() {
-    let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, arguments: session.wallet, type)!
+    let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, arguments: wallet, type)!
     
     vc.viewModel.actions = KNTransactionHistoryViewModelActions(
       closeTransactionHistory: closeTransactionHistory,
@@ -124,7 +126,7 @@ extension KNTransactionHistoryCoordinator: GasFeeSelectorPopupViewControllerDele
 extension KNTransactionHistoryCoordinator: KNTransactionStatusPopUpDelegate {
   
   func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
-    handleTransactionStatusPopUpEvent(event: event)
+    handleTransactionStatusPopUpEvent(event: action)
   }
   
 }
@@ -133,8 +135,26 @@ extension KNTransactionHistoryCoordinator: GasFeePopupDelegateCoordinator {
   
   func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
     let controller = KNTransactionStatusPopUp(transaction: transaction)
-    controller.delegate = delegate
+    controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
   }
   
+  func handleTransactionStatusPopUpEvent(event: KNTransactionStatusPopUpEvent) {
+//    switch event {
+//    case .openLink(let url):
+//      self.navigationController.openSafari(with: url)
+//    case .speedUp(let tx):
+//      self.openTransactionSpeedUpViewController(transaction: tx)
+//    case .cancel(let tx):
+//      self.openTransactionCancelConfirmPopUpFor(transaction: tx)
+//    case .backToInvest:
+//      self.navigationController.popToRootViewController(animated: true)
+//    case .goToSupport:
+//      self.navigationController.openSafari(with: "https://docs.krystal.app/")
+//    default:
+//      break
+//    }
+  }
+  
 }
+
