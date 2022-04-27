@@ -13,6 +13,7 @@ concurrency:
 
 env:
   LANG: en_US.UTF-8
+
   # base64 service account credentials
   # GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
   # GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
