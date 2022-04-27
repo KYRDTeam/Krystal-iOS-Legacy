@@ -13,12 +13,7 @@ concurrency:
 
 env:
   LANG: en_US.UTF-8
-
-  # base64 service account credentials
-  # GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
-  # GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
-  # GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
-
+  
 jobs:
   prepare:
     runs-on: ubuntu-18.04
@@ -182,27 +177,6 @@ jobs:
           cp -va $CONFIG_PATH/* /Users/runner/privates
           # --- gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
-      - name: debug echo
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          echo "/Users/runner/privates/environments/$ENV/KNEnvironment.swift"
-
-      - name: debug cat /Users/runner/privates/environments......
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          cat /Users/runner/privates/environments/$ENV/KNEnvironment.swift
-
-      - name: debug echo $ENV
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          echo $ENV
-
       - name: Setup environments
         shell: bash
         env:
@@ -210,11 +184,6 @@ jobs:
         run: |
           cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
-
-      - name: debug 2
-        run: |
-          ls -al ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources;
-          ls -al ./KyberNetwork/KyberNetwork/Configurations/Environments;
 
       - name: Pods install
         run: pod check || pod install
@@ -225,13 +194,23 @@ jobs:
           lane: all
           bundle-install-path: "vendor/bundle"
 
+      # tmp disable as 413 status code from ota server
+      # - name: Deploy to OTA Server
+      #   shell: bash
+      #   env:
+      #     OTA_URL: ${{ secrets[matrix.ota_key] }}
+      #     APP_NAME: ${{ matrix.app_name }}
+      #     OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
+      #     OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
+      #   run: .github/deploy 
+
       - name: Deploy to OTA Server
         shell: bash
         env:
           OTA_URL: ${{ secrets[matrix.ota_key] }}
           APP_NAME: ${{ matrix.app_name }}
-          OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
-          OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
+          OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
+          OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
         run: .github/deploy 
 
       # TODO
