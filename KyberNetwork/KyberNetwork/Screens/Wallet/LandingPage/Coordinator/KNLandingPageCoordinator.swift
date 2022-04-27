@@ -136,7 +136,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportWalletChainType, importMethod: StorageType) {
-    // add new wallet into database in case user exits app
     let walletObject = KNWalletObject(
       address: wallet.addressString,
       name: name ?? "Untitled",
@@ -163,6 +162,20 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
         )
         wallets.append(solWalletObject)
       }
+    }
+    if case .solana = importType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
+      let walletName = name ?? "Untitled"
+      let evmWalletObject = KNWalletObject(
+        address: evmAddress,
+        name: walletName + "-evm",
+        isBackedUp: true,
+        isWatchWallet: false,
+        chainType: .evm,
+        storageType: importMethod,
+        evmAddress: "",
+        walletID: walletID
+      )
+      wallets.append(evmWalletObject)
     }
     KNWalletStorage.shared.add(wallets: wallets)
     if addToContact {
