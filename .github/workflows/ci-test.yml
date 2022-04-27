@@ -230,8 +230,8 @@ jobs:
         env:
           OTA_URL: ${{ secrets[matrix.ota_key] }}
           APP_NAME: ${{ matrix.app_name }}
-          KRYSTAL_OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
-          KRYSTAL_OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
+          OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
+          OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
         run: .github/deploy 
 
       # TODO
