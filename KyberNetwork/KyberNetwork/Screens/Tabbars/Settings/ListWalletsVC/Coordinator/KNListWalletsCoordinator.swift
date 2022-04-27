@@ -32,6 +32,11 @@ class KNListWalletsCoordinator: Coordinator {
     controller.delegate = self
     return controller
   }()
+  
+  fileprivate var currentWallet: KNWalletObject {
+    let address = self.session.wallet.addressString
+    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
 
   init(
     navigationController: UINavigationController,
@@ -126,6 +131,7 @@ extension KNListWalletsCoordinator: KNListWalletsViewControllerDelegate {
     case .copy(data: let data):
       let vm = CopyAddressViewModel(data: data, keyStore: self.session.keystore)
       let vc = CopyAddressViewController(viewModel: vm)
+      vc.delegate = self
       self.navigationController.pushViewController(vc, animated: true)
     }
   }
@@ -230,5 +236,45 @@ extension KNListWalletsCoordinator: KNAddNewWalletCoordinatorDelegate {
   }
 
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
+  }
+}
+
+extension KNListWalletsCoordinator: CopyAddressViewControllerDelegate {
+  func copyAddressViewController(_ controller: CopyAddressViewController, didSelect wallet: WalletData, chain: ChainType) {
+    
+    guard let found = KNWalletStorage.shared.get(forPrimaryKey: wallet.address), let wal = self.session.keystore.matchWithWalletObject(found) else {
+      return
+    }
+    self.navigationController.popViewController(animated: true, completion: nil)
+    var action = [UIAlertAction]()
+    if wallet.address.lowercased() != self.currentWallet.address.lowercased() {
+      action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
+        if chain != KNGeneralProvider.shared.currentChain {
+          KNGeneralProvider.shared.currentChain = chain
+        }
+        self.listWalletsViewControllerDidSelectWallet(wal)
+      }))
+    }
+    action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
+      self.selectedWallet = found
+      if !wallet.isWatchWallet {
+        let viewModel = KNEditWalletViewModel(wallet: found)
+        let controller = KNEditWalletViewController(viewModel: viewModel)
+        controller.loadViewIfNeeded()
+        controller.delegate = self
+        self.navigationController.pushViewController(controller, animated: true)
+      } else {
+        let coordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
+        coordinator.delegate = self
+        self.navigationController.present(coordinator.navigationController, animated: true) {
+          coordinator.start(type: .watch, wallet: found)
+          self.addWalletCoordinator = coordinator
+        }
+      }
+    }))
+    action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+
+    let alertController = KNActionSheetAlertViewController(title: "", actions: action)
+    self.navigationController.present(alertController, animated: true, completion: nil)
   }
 }

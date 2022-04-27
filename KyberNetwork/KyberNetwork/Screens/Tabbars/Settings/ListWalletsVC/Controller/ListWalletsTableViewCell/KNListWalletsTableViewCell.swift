@@ -29,6 +29,6 @@ class KNListWalletsTableViewCell: SwipeTableViewCell {
   
   func updateCell(cellModel: KNListWalletsTableViewCellModel) {
     self.walletNameLabel.text = cellModel.wallet.name
-    self.walletAddressLabel.text = cellModel.wallet.address.lowercased()
+    self.walletAddressLabel.text = cellModel.isMultipleWallet ? "" : cellModel.wallet.address
   }
 }

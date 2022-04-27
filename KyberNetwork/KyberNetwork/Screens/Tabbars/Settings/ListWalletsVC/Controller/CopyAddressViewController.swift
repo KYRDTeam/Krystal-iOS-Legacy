@@ -36,10 +36,15 @@ class CopyAddressViewModel {
   }
 }
 
+protocol CopyAddressViewControllerDelegate: class {
+  func copyAddressViewController(_ controller: CopyAddressViewController, didSelect wallet: WalletData, chain: ChainType)
+}
+
 class CopyAddressViewController: KNBaseViewController {
   
   @IBOutlet weak var chainListTableView: UITableView!
   let viewModel: CopyAddressViewModel
+  weak var delegate: CopyAddressViewControllerDelegate?
   
   init(viewModel: CopyAddressViewModel) {
     self.viewModel = viewModel
@@ -81,5 +86,12 @@ extension CopyAddressViewController: CopyAddressCellDelegate {
     self.showMessageWithInterval(
       message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
     )
+  }
+}
+
+extension CopyAddressViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let cm = self.viewModel.dataSource[indexPath.row]
+    self.delegate?.copyAddressViewController(self, didSelect: cm.data, chain: cm.type)
   }
 }

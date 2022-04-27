@@ -285,23 +285,28 @@ class KNListWalletsViewController: KNBaseViewController {
 extension KNListWalletsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return }
-    var action = [UIAlertAction]()
-    if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
-      action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
-        self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
+    let cm = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section)
+    if cm.isMultipleWallet {
+      self.delegate?.listWalletsViewController(self, run: .copy(data: cm.wallet))
+    } else {
+      guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return }
+      var action = [UIAlertAction]()
+      if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
+        action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
+          self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
+        }))
+      }
+      action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
+        self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
       }))
-    }
-    action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
-      self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
-    }))
-    action.append(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
-      self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
-    }))
-    action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
+      action.append(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
+        self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
+      }))
+      action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
 
-    let alertController = KNActionSheetAlertViewController(title: "", actions: action)
-    self.present(alertController, animated: true, completion: nil)
+      let alertController = KNActionSheetAlertViewController(title: "", actions: action)
+      self.present(alertController, animated: true, completion: nil)
+    }
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

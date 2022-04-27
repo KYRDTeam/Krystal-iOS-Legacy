@@ -39,7 +39,7 @@ class WalletListTableViewCell: UITableViewCell {
   func updateCell(with viewModel: WalletListTableViewCellViewModel) {
     self.viewModel = viewModel
     self.walletNameLabel.text = viewModel.walletName
-    self.walletAddressLabel.text = viewModel.walletAddress.lowercased()
+    self.walletAddressLabel.text = viewModel.walletAddress
     self.checkIconImage.isHidden = !viewModel.isCurrentWallet
     self.leftPaddingContraint.constant = viewModel.isCurrentWallet ? 66.0 : 40.0
   }
