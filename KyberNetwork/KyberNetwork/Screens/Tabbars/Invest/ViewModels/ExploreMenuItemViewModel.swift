@@ -34,6 +34,8 @@ class ExploreMenuItemViewModel {
       return Strings.buyCrypto
     case .promotion:
       return Strings.promotion
+    case .rewardHunting:
+      return Strings.rewardHunting
     }
   }
   
@@ -55,6 +57,8 @@ class ExploreMenuItemViewModel {
       return Images.exploreBuyCryptoIcon
     case .promotion:
       return Images.explorePromotionIcon
+    case .rewardHunting:
+      return Images.exploreRewardHuntingIcon
     }
   }
   

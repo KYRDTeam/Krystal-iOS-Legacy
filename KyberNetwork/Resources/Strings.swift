@@ -20,4 +20,5 @@ struct Strings {
   static let buyCrypto = "buy.crypto".toBeLocalised()
   static let promotion = "promotion".toBeLocalised()
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
+  static let rewardHunting = "reward.hunting".toBeLocalised()
 }

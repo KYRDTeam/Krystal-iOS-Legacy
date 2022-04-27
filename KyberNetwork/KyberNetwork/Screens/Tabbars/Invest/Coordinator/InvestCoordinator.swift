@@ -26,6 +26,7 @@ class InvestCoordinator: Coordinator {
   var rewardCoordinator: RewardCoordinator?
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
+  var webViewCoordinator: RewardHuntingCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -160,6 +161,14 @@ class InvestCoordinator: Coordinator {
     self.buyCryptoCoordinator = coordinator
   }
   
+  func openRewardHunting() {
+    let url = URL(string: Constants.rewardHuntingUrl)!
+      .appending("address", value: session.wallet.address.description)
+    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, url: url)
+    coordinator.start()
+    self.webViewCoordinator = coordinator
+  }
+  
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
     self.buyCryptoCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
@@ -217,6 +226,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.start()
       self.promoCodeCoordinator = coordinator
+    case .rewardHunting:
+      self.openRewardHunting()
     }
   }
 }
