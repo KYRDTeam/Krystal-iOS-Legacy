@@ -8,7 +8,7 @@ on:
       - ci-test
 
 concurrency: 
-  group: ios-build-dev-k-${{ github.ref }}
+  group: ios-build-dev-${{ github.ref }}
   cancel-in-progress: true
 
 env:
