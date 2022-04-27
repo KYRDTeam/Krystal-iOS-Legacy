@@ -613,6 +613,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAmount("")
       self.view.layoutIfNeeded()
     } else {
+      self.estGasFeeValueLabel.text = self.viewModel.solFeeString
       self.viewModel.updateAddress("")
       self.updateUIAddressQRCode()
       self.getEnsAddressFromName("")
@@ -636,10 +637,17 @@ extension KSendTokenViewController: UITextFieldDelegate {
       return false
     } else {
       if KNGeneralProvider.shared.currentChain == .solana {
-        self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
-          if tokenAccount == nil {
-            self.estGasFeeValueLabel.text = self.viewModel.solFeeWithRentTokenAccountFeeString
+        if text.isValidSolanaAddress() {
+          self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
+            self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
+            
+            self.viewModel.updateAddress(text)
+            self.updateUIEnsMessage()
+            self.getEnsAddressFromName(text)
+            self.view.layoutIfNeeded()
           }
+        } else {
+          self.estGasFeeValueLabel.text = self.viewModel.solFeeString
           self.viewModel.updateAddress(text)
           self.updateUIEnsMessage()
           self.getEnsAddressFromName(text)
@@ -703,8 +711,10 @@ extension KSendTokenViewController: UITextFieldDelegate {
 
 extension KSendTokenViewController {
   func checkIfReceivedWalletHasTokenAccount(walletAddress: String, completion: @escaping (String?) -> Void) {
+    self.navigationController?.showLoadingHUD()
     SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { recipientAccount in
       completion(recipientAccount)
+      self.navigationController?.hideLoading()
     }
   }
 }

@@ -192,7 +192,7 @@ class SolanaUtil {
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let resultJson = json["result"] as? JSONDictionary,
              let valueJsons = resultJson["value"] as? [JSONDictionary] {
-            valueJsons.forEach { value in
+            for value in valueJsons {
               if let pubKey = value["pubkey"] as? String {
                 completion(pubKey)
                 return
