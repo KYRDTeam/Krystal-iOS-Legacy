@@ -70,7 +70,8 @@ jobs:
         include:
           - app_name: "Krystal: Develop"
             env: dev
-            ota_key: KRYSTAL_DEV_OTA_URL
+            ota_key: DEV_OTA_URL
+            krystal_ota_key: KRYSTAL_DEV_OTA_URL
             bump_build: true
           # TODO
           # - app_name: "Krystal: Staging"
