@@ -32,7 +32,15 @@ struct RealmConfiguration {
             new?["side_trade"] = nil
           }
         case 14:
-          break //NOTE: migrate data here
+          migration.enumerateObjects(ofType: "KNWalletObject") { (_, new) in
+            new?["chainType"] = 0
+            new?["storateType"] = 0
+            new?["evmAddress"] = ""
+            new?["walletID"] = ""
+          }
+          migration.enumerateObjects(ofType: "KNContact") { (_, new) in
+            new?["chainType"] = 1
+          }
         default: break
         }
       }
