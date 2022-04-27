@@ -16,6 +16,9 @@ struct KConfirmSendViewModel {
   }
 
   var token: TokenObject {
+    if let solTransaction = self.solTransaction {
+      return solTransaction.transferType.tokenObject()
+    }
     if let transaction = transaction {
       return transaction.transferType.tokenObject()
     }
@@ -72,7 +75,7 @@ struct KConfirmSendViewModel {
 
   var totalAmountString: String {
     if let solTransaction = self.solTransaction {
-      let string = solTransaction.value.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+      let string = solTransaction.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: self.token.decimals)
       return "\(string.prefix(15)) \(self.token.symbol)"
     }
     let string = self.transaction?.value.string(

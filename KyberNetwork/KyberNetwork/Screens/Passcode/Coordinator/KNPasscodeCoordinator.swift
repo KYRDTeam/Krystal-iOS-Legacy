@@ -8,8 +8,8 @@ protocol KNPasscodeCoordinatorDelegate: class {
   func passcodeCoordinatorDidCreatePasscode()
 }
 
-class KNPasscodeCoordinator: BaseCoordinator {
-
+class KNPasscodeCoordinator: Coordinator {
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
@@ -21,14 +21,13 @@ class KNPasscodeCoordinator: BaseCoordinator {
     controller.loadViewIfNeeded()
     return controller
   }()
-
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     type: KNPasscodeViewType
-    ) {
+  ) {
     self.navigationController = navigationController
     self.type = type
-    super.init()
     if case .authenticate(let isUpdating) = self.type, !isUpdating {
       self.window.windowLevel = UIWindow.Level.statusBar + 1.0
       self.window.rootViewController = self.passcodeViewController
@@ -36,7 +35,11 @@ class KNPasscodeCoordinator: BaseCoordinator {
     }
   }
 
-  func start(isLaunch: Bool = false) {
+  func start() {
+    self.start(isLaunch: false)
+  }
+  
+  override func start() {
     if KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {

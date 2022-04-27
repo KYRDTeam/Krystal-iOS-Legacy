@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class KNTransactionHistoryCoordinator: BaseCoordinator {
-  
+class KNTransactionHistoryCoordinator: Coordinator {
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   let wallet: KNWalletObject
   let type: KNTransactionHistoryType
@@ -22,7 +22,7 @@ class KNTransactionHistoryCoordinator: BaseCoordinator {
     self.type = type
   }
   
-  override func start() {
+  func start() {
     let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, arguments: wallet, type)!
     
     vc.viewModel.actions = KNTransactionHistoryViewModelActions(

@@ -17,8 +17,8 @@ enum AddNewWalletType {
   case watch
 }
 
-class KNAddNewWalletCoordinator: BaseCoordinator {
-
+class KNAddNewWalletCoordinator: Coordinator {
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   fileprivate var keystore: Keystore
 
@@ -61,6 +61,10 @@ class KNAddNewWalletCoordinator: BaseCoordinator {
     self.keystore = keystore
   }
 
+  func start() {
+    
+  }
+  
   func start(type: AddNewWalletType, wallet: KNWalletObject? = nil) {
     self.navigationController.popToRootViewController(animated: false)
     switch type {

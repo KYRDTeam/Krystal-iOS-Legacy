@@ -268,7 +268,7 @@ public struct AllChains {
     wrappedAddress: "",
     apiEtherscanEndpoint: "",
     proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5", //NOTE: fix later , add to avoid crash
-    quoteTokenAddress: "",
+    quoteTokenAddress: "So11111111111111111111111111111111111111112",
     chainIcon: "chain_solana_icon",
     quoteToken: "SOL",
     apiChainPath: "solana"

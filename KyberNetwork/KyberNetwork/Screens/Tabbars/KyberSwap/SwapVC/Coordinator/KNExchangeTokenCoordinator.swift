@@ -30,8 +30,8 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
 }
 
 //swiftlint:disable file_length
-class KNExchangeTokenCoordinator: BaseCoordinator {
-
+class KNExchangeTokenCoordinator: NSObject, Coordinator {
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   fileprivate(set) var session: KNSession
   var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
@@ -88,17 +88,17 @@ class KNExchangeTokenCoordinator: BaseCoordinator {
   deinit {
     self.stop()
   }
-
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
-    ) {
+  ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
   }
 
-  override func start() {
+  func start() {
     self.navigationController.viewControllers = [self.rootViewController]
   }
 
