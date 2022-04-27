@@ -117,10 +117,33 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
         chainType: .multiChain,
         storageType: .seeds
       )
-      KNWalletStorage.shared.add(wallets: [walletObject])
+      var wallets = [walletObject]
+      
+      if case .real(let account) = wallet.type {
+        let result = self.keystore.exportMnemonics(account: account)
+        if case .success(let seeds) = result {
+          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+          let solName = name ?? "Untitled"
+          let solWalletObject = KNWalletObject(
+            address: publicKey,
+            name: solName + "-sol",
+            isBackedUp: true,
+            isWatchWallet: isWatchWallet,
+            chainType: .solana,
+            storageType: .seeds,
+            evmAddress: wallet.evmAddressString,
+            walletID: ""
+          )
+          wallets.append(solWalletObject)
+        }
+      }
+      
+      let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
+      KNWalletStorage.shared.add(wallets: wallets)
       let contact = KNContact(
         address: wallet.addressString,
-        name: name ?? "Untitled"
+        name: name ?? "Untitled",
+        chainType: chainType
       )
       KNContactStorage.shared.update(contacts: [contact])
       self.delegate?.addNewWalletCoordinator(add: wallet)
@@ -146,7 +169,6 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType) {
     self.navigationController.dismiss(animated: true) {
-      //TODO: add type to wallet firebase obj
       var isWatchWallet = false
       var solWalletId = ""
       if case WalletType.watch(_) = wallet.type {
@@ -204,7 +226,8 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       KNWalletStorage.shared.add(wallets: wallets)
       let contact = KNContact(
         address: wallet.addressString,
-        name: name ?? "Untitled"
+        name: name ?? "Untitled",
+        chainType: importType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
       self.delegate?.addNewWalletCoordinator(add: wallet)
@@ -310,9 +333,11 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
           chainType: importType
         )
         KNWalletStorage.shared.add(wallets: [walletObject])
+        let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
         let contact = KNContact(
           address: wallet.addressString,
-          name: name ?? "Untitled"
+          name: name ?? "Untitled",
+          chainType: chainType
         )
         KNContactStorage.shared.update(contacts: [contact])
         self.navigationController.dismiss(animated: true, completion: nil)

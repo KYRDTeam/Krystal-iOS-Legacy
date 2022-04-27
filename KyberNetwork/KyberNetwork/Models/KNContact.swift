@@ -9,14 +9,16 @@ class KNContact: Object {
   @objc dynamic var address: String = ""
   @objc dynamic var name: String = ""
   @objc dynamic var lastUsed: Date = Date()
+  @objc dynamic var chainType: Int = 0
 
-  convenience init(address: String, name: String) {
+  convenience init(address: String, name: String, chainType: Int) {
     self.init()
     self.name = name
     self.address = {
       guard let addr = Address(string: address) else { return address }
       return addr.description
     }()
+    self.chainType = chainType
     self.lastUsed = Date()
   }
 
@@ -25,6 +27,10 @@ class KNContact: Object {
   }
   
   func clone() -> KNContact {
-    return KNContact(address: self.address, name: self.name)
+    return KNContact(address: self.address, name: self.name, chainType: self.chainType)
+  }
+  
+  func getImportType() -> ImportWalletChainType {
+    return ImportWalletChainType(rawValue: self.chainType) ?? .evm
   }
 }

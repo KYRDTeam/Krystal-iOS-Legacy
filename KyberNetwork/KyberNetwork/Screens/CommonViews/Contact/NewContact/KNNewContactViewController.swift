@@ -28,7 +28,8 @@ class KNNewContactViewModel {
       self.contact = contact
       self.isEditing = true
     } else {
-      self.contact = KNContact(address: address.lowercased(), name: ens ?? "")
+      let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
+      self.contact = KNContact(address: address.lowercased(), name: ens ?? "", chainType: chainType)
       self.isEditing = false
     }
     self.address = Address(string: address)
@@ -64,9 +65,11 @@ class KNNewContactViewModel {
       self.contact = contact
       self.isEditing = true
     } else if let addr = ensAddr {
+      let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
       self.contact = KNContact(
         address: addr.description.lowercased(),
-        name: self.contact.name.isEmpty ? name : self.contact.name
+        name: self.contact.name.isEmpty ? name : self.contact.name,
+        chainType: chainType
       )
       self.isEditing = false
     }
@@ -188,7 +191,8 @@ class KNNewContactViewController: KNBaseViewController {
       )
       return
     }
-    let contact = KNContact(address: address.description.lowercased(), name: name)
+    let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
+    let contact = KNContact(address: address.description.lowercased(), name: name, chainType: chainType)
     KNContactStorage.shared.update(contacts: [contact])
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
     self.delegate?.newContactViewController(self, run: .dismiss)

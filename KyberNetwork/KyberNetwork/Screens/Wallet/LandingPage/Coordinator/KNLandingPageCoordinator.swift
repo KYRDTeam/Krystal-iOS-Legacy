@@ -181,14 +181,14 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     if addToContact {
       let contact = KNContact(
         address: wallet.addressString,
-        name: name ?? "Untitled"
+        name: name ?? "Untitled",
+        chainType: importType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
     }
     self.newWallet = wallet
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
-    let abc = self.keystore.recentlyUsedWallet
     
     KNGeneralProvider.shared.currentChain = .solana
     

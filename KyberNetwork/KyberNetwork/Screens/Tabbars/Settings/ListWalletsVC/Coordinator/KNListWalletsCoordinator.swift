@@ -177,7 +177,8 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
   fileprivate func shouldUpdateWallet(_ walletObject: KNWalletObject) {
     let contact = KNContact(
       address: walletObject.address,
-      name: walletObject.name
+      name: walletObject.name,
+      chainType: walletObject.chainType
     )
     KNContactStorage.shared.update(contacts: [contact])
     KNWalletStorage.shared.update(wallets: [walletObject])
