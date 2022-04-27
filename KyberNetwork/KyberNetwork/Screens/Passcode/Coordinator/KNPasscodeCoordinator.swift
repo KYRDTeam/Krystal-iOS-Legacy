@@ -34,12 +34,8 @@ class KNPasscodeCoordinator: Coordinator {
       self.window.isHidden = true
     }
   }
-
-  func start() {
-    self.start(isLaunch: false)
-  }
   
-  override func start() {
+  func start() {
     if KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {
