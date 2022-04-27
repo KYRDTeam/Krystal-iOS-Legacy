@@ -78,9 +78,6 @@ class WebViewController: KNBaseViewController {
     pageTitleObservation = webView.observe(\.title, options: [.new]) { _, _ in
       self.navigationBar.title = self.webView.title
     }
-    urlObservation = webView.observe(\.url, options: [.new]) { _, _ in
-      print("[WEBVIEW] Loading \(self.webView.url)")
-    }
   }
   
   func load(webType: WebType) {

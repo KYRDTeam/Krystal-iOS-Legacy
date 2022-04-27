@@ -162,7 +162,6 @@ class InvestCoordinator: Coordinator {
   }
   
   func openRewardHunting() {
-    
     let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, session: session)
     coordinator.start()
     self.webViewCoordinator = coordinator

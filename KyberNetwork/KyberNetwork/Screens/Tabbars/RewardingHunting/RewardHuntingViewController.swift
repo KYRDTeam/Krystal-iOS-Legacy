@@ -9,7 +9,7 @@ import Foundation
 
 class RewardHuntingViewController: WebViewController {
   
-  var viewModel: RewardHuntingViewModel! = nil
+  var viewModel: RewardHuntingViewModel!
   
   convenience init() {
     self.init(nibName: String(describing: WebViewController.self), bundle: nil)
