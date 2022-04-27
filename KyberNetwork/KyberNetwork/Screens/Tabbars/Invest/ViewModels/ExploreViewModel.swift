@@ -16,6 +16,7 @@ enum ExploreMenuItem: CaseIterable {
   case multisend
   case buyCrypto
   case promotion
+  case rewardHunting
 }
 
 enum ExploreSection {
@@ -27,7 +28,7 @@ enum ExploreSection {
 class ExploreViewModel {
   
   var banners: Dynamic<[Asset]> = .init([])
-  var menuItems: Dynamic<[ExploreMenuItem]> = .init(ExploreMenuItem.allCases)
+  var menuItems: Dynamic<[ExploreMenuItem]> = .init([])
   var partners: Dynamic<[Asset]> = .init([])
   
   var sections: [ExploreSection] = [.banners, .menu, .partners]

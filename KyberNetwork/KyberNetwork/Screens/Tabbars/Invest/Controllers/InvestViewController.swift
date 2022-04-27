@@ -18,6 +18,7 @@ enum InvestViewEvent {
   case multiSend
   case promoCode
   case buyCrypto
+  case rewardHunting
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -39,8 +40,8 @@ class InvestViewController: KNBaseViewController {
     self.observeFeatureFlagChanged()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     
     self.updateUISwitchChain()
     self.configFeatureFlag()
@@ -94,12 +95,17 @@ class InvestViewController: KNBaseViewController {
   @objc fileprivate func configFeatureFlag() {
     let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+    let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+    
     var menuItems: [ExploreMenuItem] = [.swap, .transfer, .reward, .referral, .dapps, .multisend]
     if isBuyCryptoEnabled {
       menuItems.append(.buyCrypto)
     }
     if isPromoCodeEnabled {
       menuItems.append(.promotion)
+    }
+    if isRewardHuntingEnabled {
+      menuItems.append(.rewardHunting)
     }
     if viewModel.menuItems.value != menuItems {
       viewModel.menuItems.value = menuItems
@@ -259,6 +265,8 @@ extension InvestViewController: UICollectionViewDelegate {
         delegate?.investViewController(self, run: .buyCrypto)
       case .promotion:
         delegate?.investViewController(self, run: .promoCode)
+      case .rewardHunting:
+        delegate?.investViewController(self, run: .rewardHunting)
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

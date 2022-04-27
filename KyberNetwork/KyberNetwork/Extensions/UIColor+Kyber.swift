@@ -93,6 +93,7 @@ extension UIColor {
     static var SWSelectedBlueColor = UIColor(red: 1, green: 38, blue: 51)
 
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
+    static var primaryGreenColor = UIColor(hex: "1DE9B6")
 
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,
