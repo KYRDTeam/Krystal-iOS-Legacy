@@ -162,9 +162,8 @@ class InvestCoordinator: Coordinator {
   }
   
   func openRewardHunting() {
-    let url = URL(string: Constants.rewardHuntingUrl)!
-      .appending("address", value: session.wallet.address.description)
-    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, url: url)
+    
+    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, session: session)
     coordinator.start()
     self.webViewCoordinator = coordinator
   }

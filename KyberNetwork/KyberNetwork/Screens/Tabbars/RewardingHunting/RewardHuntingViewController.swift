@@ -23,7 +23,6 @@ class RewardHuntingViewController: WebViewController {
   
   override func setupNavigationBar() {
     navigationBar.rightButtonImage = Images.giftIcon
-    navigationBar.badgeView.isHidden = false
     navigationBar.setLeftButtonAction { [weak self] in
       guard let self = self else { return }
       if self.webView.canGoBack {
@@ -31,6 +30,9 @@ class RewardHuntingViewController: WebViewController {
       } else {
         self.viewModel.didTapBack()
       }
+    }
+    navigationBar.setRightButtonAction { [weak self] in
+      self?.viewModel.didTapRewards()
     }
   }
   

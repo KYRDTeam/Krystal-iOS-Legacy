@@ -9,6 +9,7 @@ import Foundation
 
 struct RewardHuntingViewModelActions {
   var goBack: () -> ()
+  var openRewards: () -> ()
 }
 
 class RewardHuntingViewModel {
@@ -21,6 +22,10 @@ class RewardHuntingViewModel {
   
   func didTapBack() {
     actions?.goBack()
+  }
+  
+  func didTapRewards() {
+    actions?.openRewards()
   }
 
 }

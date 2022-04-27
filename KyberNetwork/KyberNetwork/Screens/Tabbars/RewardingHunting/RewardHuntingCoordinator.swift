@@ -10,17 +10,21 @@ import UIKit
 class RewardHuntingCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  let session: KNSession
   let url: URL
   
-  init(navigationController: UINavigationController, url: URL) {
+  init(navigationController: UINavigationController, session: KNSession) {
     self.navigationController = navigationController
+    self.session = session
+    let url = URL(string: Constants.rewardHuntingUrl)!
+      .appending("address", value: session.wallet.address.description)
     self.url = url
   }
   
   func start() {
     let vc = RewardHuntingViewController()
     let viewModel = RewardHuntingViewModel(url: url)
-    viewModel.actions = RewardHuntingViewModelActions(goBack: goBack)
+    viewModel.actions = RewardHuntingViewModelActions(goBack: goBack, openRewards: openRewards)
     vc.viewModel = viewModel
     vc.hidesBottomBarWhenPushed = true
     navigationController.pushViewController(vc, animated: true)
@@ -28,6 +32,11 @@ class RewardHuntingCoordinator: Coordinator {
   
   private func goBack() {
     navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  private func openRewards() {
+    let coordinator = RewardCoordinator(navigationController: navigationController, session: session)
+    coordinator.start()
   }
   
 }
