@@ -144,7 +144,7 @@ jobs:
       #   uses: 'google-github-actions/auth@v0'
       #   with:
       #     credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
-
+      #
       # don't need anymore
       # - name: Set up Cloud SDK
       #   uses: google-github-actions/setup-gcloud@v0
