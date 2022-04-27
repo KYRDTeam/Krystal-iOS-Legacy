@@ -250,9 +250,7 @@ extension KNAppCoordinator {
     KNAppTracker.removeHistoryFilterData()
     KNAppTracker.updateShouldShowUserTranserConsentPopUp(true)
 
-    if let session = self.session {
-      FeatureFlagManager.shared.configClient(session: session)
-    }
+    FeatureFlagManager.shared.configClient(session: session)
   }
 
   func appDidBecomeActive() {
