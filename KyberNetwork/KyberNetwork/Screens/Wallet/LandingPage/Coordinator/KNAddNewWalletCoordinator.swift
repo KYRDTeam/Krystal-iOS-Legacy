@@ -50,7 +50,7 @@ class KNAddNewWalletCoordinator: Coordinator {
   init(
     navigationController: UINavigationController = UINavigationController(),
     keystore: Keystore
-    ) {
+  ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     let rootViewController = UIViewController()

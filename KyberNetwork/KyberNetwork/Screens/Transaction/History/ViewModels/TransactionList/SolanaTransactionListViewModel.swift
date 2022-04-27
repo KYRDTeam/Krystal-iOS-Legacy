@@ -8,7 +8,6 @@
 import Foundation
 
 class SolanaTransactionListViewModel: BaseTransactionListViewModel {
-  
   let getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase
   let dateFormatter = DateFormatterUtil.shared.limitOrderFormatter
   var lastHash: String?
@@ -18,7 +17,6 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
     self.getSolanaTransactionsUseCase = getSolanaTransactionsUseCase
     super.init(wallet: wallet)
     self.canLoadMore = true
-    self.canRefresh = true
     self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(scheduledFetchTransactions), userInfo: nil, repeats: true)
     RunLoop.current.add(timer!, forMode: .common)
   }

@@ -23,6 +23,9 @@ class ViewModelAssembly: Assembly {
         )
       )
     }
+    container.register(BasePendingTransactionListViewModel.self) { resolver, wallet in
+      return BasePendingTransactionListViewModel(wallet: wallet)
+    }
     container.register(KNTransactionFilterViewModel.self) { resolver, tokens, filter in
       return KNTransactionFilterViewModel(tokens: tokens, filter: filter)
     }

@@ -79,10 +79,10 @@ enum ChainType: Codable, CaseIterable {
       allChains = allChains.filter { $0 != .aurora }
     }
     
-    let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
-    if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
-      allChains = allChains.filter { $0 != .solana }
-    }
+//    let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
+//    if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
+//      allChains = allChains.filter { $0 != .solana }
+//    }
     return allChains
   }
 

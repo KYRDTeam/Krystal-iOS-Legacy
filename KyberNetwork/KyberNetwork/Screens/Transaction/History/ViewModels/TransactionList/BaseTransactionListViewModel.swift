@@ -10,8 +10,6 @@ import Foundation
 class BaseTransactionListViewModel {
   var wallet: KNWalletObject
   
-  var isTransactionActionEnabled: Bool = false
-  var canRefresh: Bool = false
   var canLoadMore: Bool = false
   var isLoading: Bool = true
   
@@ -35,13 +33,10 @@ class BaseTransactionListViewModel {
     
   }
   
-  func applyFilter(filter: KNTransactionFilter) {
-    
-  }
-  
   func updateWallet(wallet: KNWalletObject) {
     self.wallet = wallet
   }
+  
 }
 
 extension BaseTransactionListViewModel {

@@ -17,6 +17,10 @@ struct KNTransactionHistoryViewModelActions {
   var closeTransactionHistory: () -> ()
   var openTransactionFilter: ([String], KNTransactionFilter) -> ()
   var openTransactionDetail: (TransactionHistoryItem) -> ()
+  var openPendingTransactionDetail: (InternalHistoryTransaction) -> ()
+  var openSwap: () -> ()
+  var speedupTransaction: (InternalHistoryTransaction) -> ()
+  var cancelTransaction: (InternalHistoryTransaction) -> ()
 }
 
 class KNTransactionHistoryViewModel {
@@ -60,6 +64,10 @@ class KNTransactionHistoryViewModel {
     actions?.closeTransactionHistory()
   }
   
+  func didTapSwap() {
+    actions?.openSwap()
+  }
+  
   func didTapFilter() {
     actions?.openTransactionFilter(tokenSymbols, filters)
   }
@@ -68,4 +76,16 @@ class KNTransactionHistoryViewModel {
     actions?.openTransactionDetail(transaction)
   }
 
+  func didSelectPendingTransaction(transaction: InternalHistoryTransaction) {
+    actions?.openTransactionDetail(transaction)
+  }
+  
+  func didSelectSpeedupTransaction(transaction: InternalHistoryTransaction) {
+    actions?.speedupTransaction(transaction)
+  }
+  
+  func didSelectCancelTransaction(transaction: InternalHistoryTransaction) {
+    actions?.cancelTransaction(transaction)
+  }
+  
 }
