@@ -31,7 +31,10 @@ class KNTransactionListViewController: UIViewController {
     
     setupCollectionView()
     bindViewModel()
-    startSkeletonAnimation()
+    viewModel.loadCacheData()
+    if viewModel.isTransactionListEmpty {
+      startSkeletonAnimation()
+    }
     reload()
   }
   

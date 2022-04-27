@@ -28,6 +28,11 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
     self.timer = nil
   }
   
+  override func loadCacheData() {
+    self.transactions = getSolanaTransactionsUseCase.loadCachedTransactions()
+    self.onTransactionsListChanged()
+  }
+  
   override func reload() {
     self.lastHash = nil
     self.isLoading = true
@@ -38,7 +43,7 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
       self?.isLoading = false
       self?.lastHash = transactions.last?.txHash
       self?.transactions = transactions
-      self?.recalculate()
+      self?.onTransactionsListChanged()
     }
   }
   
@@ -59,12 +64,19 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
         newTransactions.contains { $0.txHash == tx.txHash }
       }
       self.transactions = newTransactions + self.transactions
-      self.recalculate()
+      self.onTransactionsListChanged()
     }
   }
   
   private func appendTransactions(newTransactions: [SolanaTransaction]) {
     self.transactions += newTransactions
+    self.onTransactionsListChanged()
+  }
+  
+  func onTransactionsListChanged() {
+    self.getSolanaTransactionsUseCase.saveTransactions(
+      transactions: transactions as! [SolanaTransaction]
+    )
     self.recalculate()
   }
   

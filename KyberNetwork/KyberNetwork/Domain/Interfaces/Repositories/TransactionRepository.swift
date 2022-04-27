@@ -8,8 +8,8 @@
 import Foundation
 
 protocol TransactionRepository {
-  func saveSolanaTransactions(transactions: [SolanaTransaction])
-  func getSavedSolanaTransactions() -> [SolanaTransaction]
+  func saveSolanaTransactions(address: String, transactions: [SolanaTransaction])
+  func getSavedSolanaTransactions(address: String) -> [SolanaTransaction]
   func fetchSolanaTransaction(
     address: String, prevHash: String?, limit: Int,
     completion: @escaping ([SolanaTransaction]) -> ()
