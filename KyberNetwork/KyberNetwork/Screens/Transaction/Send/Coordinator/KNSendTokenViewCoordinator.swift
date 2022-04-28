@@ -243,29 +243,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         }
       }
     case .validateSolana:
-      controller.displayLoading()
-      self.sendGetPreScreeningWalletRequest { [weak self] (result) in
-        controller.hideLoading()
-        guard let `self` = self else { return }
-        var message: String?
-        if case .success(let resp) = result,
-          let json = try? resp.mapJSON() as? JSONDictionary ?? [:] {
-          if let status = json["eligible"] as? Bool {
-            if isDebug { print("eligible status : \(status)") }
-            if status == false { message = json["message"] as? String }
-          }
-        }
-        if let errorMessage = message {
-          self.navigationController.showErrorTopBannerMessage(
-            with: NSLocalizedString("error", value: "Error", comment: ""),
-            message: errorMessage,
-            time: 2.0
-          )
-        } else {
-          self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
-        }
-      }
-
+      self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
     case .send(let transaction, let ens):
       self.openConfirmTransfer(transaction: transaction, ens: ens)
     case .sendSolana(transaction: let transaction):
@@ -508,8 +486,10 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 extension KNSendTokenViewCoordinator {
 
   fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    self.rootViewController?.showLoadingHUD()
     SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { senderTokenAddress in
       guard let senderTokenAddress = senderTokenAddress else {
+        self.rootViewController?.hideLoading()
         completion(nil)
         return
       }
@@ -519,6 +499,7 @@ extension KNSendTokenViewCoordinator {
 
         SolanaUtil.getRecentBlockhash { recentBlockHash in
           guard let recentBlockHash = recentBlockHash else {
+            self.rootViewController?.hideLoading()
             completion(nil)
             return
           }
@@ -531,6 +512,7 @@ extension KNSendTokenViewCoordinator {
           }
 
           SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+            self.rootViewController?.hideLoading()
             guard let signature = signature else {
               completion(nil)
               return
@@ -543,14 +525,17 @@ extension KNSendTokenViewCoordinator {
   }
 
   fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    self.rootViewController?.showLoadingHUD()
     SolanaUtil.getRecentBlockhash { recentBlockHash in
       guard let recentBlockHash = recentBlockHash else {
+        self.rootViewController?.hideLoading()
         completion(nil)
         return
       }
       
       let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
       SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+        self.rootViewController?.hideLoading()
         guard let signature = signature else {
           completion(nil)
           return

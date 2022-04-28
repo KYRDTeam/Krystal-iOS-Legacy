@@ -256,7 +256,7 @@ public struct AllChains {
   )
 
   public static let solana = CustomRPC (
-    chainID: -1,
+    chainID: 101,
     type: "",
     name: "Solana",
     symbol: "SOL",

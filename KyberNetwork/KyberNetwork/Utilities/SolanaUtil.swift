@@ -248,11 +248,7 @@ class SolanaUtil {
               }
               completion(status)
               return
-            } else if let valueArray = resultJson["value"] as? Array<Any> {
-              completion(.done)
-              return
-            }
-          }
+            }          }
         }
         completion(nil)
       case .failure(let error):

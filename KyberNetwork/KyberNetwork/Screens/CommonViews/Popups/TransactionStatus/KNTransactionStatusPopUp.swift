@@ -180,7 +180,11 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.loadingImageView.stopRotating()
       self.loadingImageView.isHidden = true
 
-      if self.transaction.type == .claimReward {
+      if KNGeneralProvider.shared.currentChain == .solana {
+        self.firstButton.isHidden = true
+        self.secondButton.isHidden = true
+        self.txHashTopConstraintToLoadingImage.constant += 30
+      } else if self.transaction.type == .claimReward {
         self.firstButton.isHidden = true
         self.secondButton.isHidden = true
       } else if self.transaction.type == .earn {
