@@ -31,7 +31,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayTxIcon: UIImage? {
-    return isError ? UIImage(named: "warning_red_icon") : nil
+    return isError ? Images.warningRedIcon : nil
   }
   
   var displayTxStatusColor: UIColor {
@@ -54,33 +54,29 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     } else if isSolTransferTransaction {
       return solanaTransferTxAmountString
     }
-    return "Application"
+    return "--"
   }
   
   var displayFromAddress: String {
     if isSwapTransaction {
-      return transaction.signer.first ?? ""
+      return transaction.details.inputAccount.first?.account ?? ""
     } else if isTokenTransferTransaction {
-      guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
-      return transaction.details.tokensTransferTxs[0].sourceOwner
+      return transaction.details.tokensTransferTxs.first?.sourceOwner ?? ""
     } else if isSolTransferTransaction {
-      guard !transaction.details.solTransferTxs.isEmpty else { return "" }
-      return transaction.details.solTransferTxs[0].source
+      return transaction.details.solTransferTxs.first?.source ?? ""
     }
-    return ""
+    return transaction.details.inputAccount.first?.account ?? ""
   }
   
   var displayToAddress: String {
     if isSwapTransaction {
-      return "" // TODO: Update use input account
+      return interactApplication
     } else if isTokenTransferTransaction {
-      guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
-      return transaction.details.tokensTransferTxs[0].destinationOwner
+      return transaction.details.tokensTransferTxs.first?.destinationOwner ?? ""
     } else if isSolTransferTransaction {
-      guard !transaction.details.solTransferTxs.isEmpty else { return "" }
-      return transaction.details.solTransferTxs[0].destination
+      return transaction.details.solTransferTxs.first?.destination ?? ""
     }
-    return "" // TODO: Update use input account
+    return interactApplication
   }
   
   var displayGasFee: String {
@@ -132,17 +128,17 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   var fromFieldTitle: String {
     if isTokenTransferTransaction || isSolTransferTransaction {
       if !isTransferToOther {
-        return "From Wallet".toBeLocalised()
+        return Strings.fromWallet
       }
     }
-    return "Wallet".toBeLocalised()
+    return Strings.wallet
   }
   
   var toFieldTitle: String {
     if isTokenTransferTransaction || isSolTransferTransaction {
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     }
-    return "Application".toBeLocalised()
+    return Strings.application
   }
   
   var transactionTypeImage: UIImage {
@@ -173,7 +169,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     }
   }
   
-  var interactProgram: String {
+  var interactApplication: String {
     return transaction.details.inputAccount.last?.account ?? ""
   }
   
@@ -191,9 +187,9 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
     let tx = transaction.details.tokensTransferTxs[0]
     if isTransferToOther {
-      return String(format: "to_colon_x".toBeLocalised(), tx.destinationOwner)
+      return String(format: Strings.toColonX, tx.destinationOwner)
     } else {
-      return String(format: "from_colon_x".toBeLocalised(), tx.sourceOwner)
+      return String(format: Strings.fromColonX, tx.sourceOwner)
     }
   }
   

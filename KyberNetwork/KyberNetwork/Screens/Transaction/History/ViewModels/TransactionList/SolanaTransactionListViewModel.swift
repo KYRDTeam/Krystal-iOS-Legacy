@@ -32,16 +32,14 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
   }
   
   override func reload() {
-    self.lastHash = nil
     self.isLoading = true
-    self.getSolanaTransactionsUseCase.load(lastHash: lastHash) { [weak self] transactions, hasMore in
-      self?.transactions = []
-      self?.headers = []
-      self?.canLoadMore = hasMore
-      self?.isLoading = false
-      self?.lastHash = transactions.last?.txHash
-      self?.transactions = transactions
-      self?.onTransactionsListChanged()
+    self.getSolanaTransactionsUseCase.load(lastHash: nil) { [weak self] transactions, hasMore in
+      guard let self = self else { return }
+      self.canLoadMore = hasMore
+      self.isLoading = false
+      self.transactions = transactions.isEmpty ? self.getSolanaTransactionsUseCase.loadCachedTransactions() : transactions
+      self.lastHash = self.transactions.last?.txHash
+      self.onTransactionsListChanged()
     }
   }
   
@@ -50,8 +48,8 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
     self.getSolanaTransactionsUseCase.load(lastHash: lastHash) { [weak self] transactions, hasMore in
       self?.canLoadMore = hasMore
       self?.isLoading = false
-      self?.lastHash = transactions.last?.txHash
       self?.appendTransactions(newTransactions: transactions)
+      self?.lastHash = transactions.last?.txHash
     }
   }
   

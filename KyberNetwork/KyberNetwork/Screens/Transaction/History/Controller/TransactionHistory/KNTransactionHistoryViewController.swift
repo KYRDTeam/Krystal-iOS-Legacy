@@ -32,12 +32,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     self.setupUI()
     segmentedControl.highlightSelectedSegment()
   }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    
-    self.reloadData()
-  }
   
   func initChildViewControllers() {
     switch viewModel.type {
@@ -104,7 +98,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   }
   
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-//    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
+    viewModel.didTapSelectWallet()
   }
 }
 

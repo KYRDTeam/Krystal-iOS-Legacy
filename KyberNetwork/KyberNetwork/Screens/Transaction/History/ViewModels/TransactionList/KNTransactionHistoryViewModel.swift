@@ -21,6 +21,7 @@ struct KNTransactionHistoryViewModelActions {
   var openSwap: () -> ()
   var speedupTransaction: (InternalHistoryTransaction) -> ()
   var cancelTransaction: (InternalHistoryTransaction) -> ()
+  var openWalletSelectPopup: () -> ()
 }
 
 class KNTransactionHistoryViewModel {
@@ -86,6 +87,10 @@ class KNTransactionHistoryViewModel {
   
   func didSelectCancelTransaction(transaction: InternalHistoryTransaction) {
     actions?.cancelTransaction(transaction)
+  }
+  
+  func didTapSelectWallet() {
+    actions?.openWalletSelectPopup()
   }
   
 }
