@@ -22,11 +22,12 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
   
   var viewController: KNTransactionHistoryViewController?
   
-  init(navigationController: UINavigationController, session: KNSession, wallet: KNWalletObject, type: KNTransactionHistoryType) {
+  init(navigationController: UINavigationController, session: KNSession, type: KNTransactionHistoryType) {
     self.navigationController = navigationController
     self.session = session
-    self.wallet = wallet
     self.type = type
+    let address = session.wallet.addressString
+    self.wallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
   
   func start() {

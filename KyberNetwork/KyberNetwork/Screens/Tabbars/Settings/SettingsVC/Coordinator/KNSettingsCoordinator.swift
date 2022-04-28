@@ -108,7 +108,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
       guard let wallet = selectedWallet else { return }
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, wallet: wallet, type: .solana)
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
       coordinator.delegate = self
       coordinate(coordinator: coordinator)
     default:
