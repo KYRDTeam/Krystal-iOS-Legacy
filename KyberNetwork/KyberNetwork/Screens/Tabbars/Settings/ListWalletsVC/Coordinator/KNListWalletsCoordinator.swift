@@ -202,15 +202,28 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
   }
 
   fileprivate func showDeleteWallet(_ wallet: KNWalletObject) {
-    guard let wal = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == wallet.address.lowercased() }) else {
-      if wallet.address.lowercased() == self.session.wallet.addressString.lowercased(), let next = self.session.keystore.wallets.last {
-        self.listWalletsViewControllerDidSelectWallet(next)
+    if wallet.chainType == 2 {
+      let address = wallet.address
+      KNWalletStorage.shared.delete(walletAddress: address)
+      if address == self.session.wallet.addressString, let next = KNWalletStorage.shared.solanaWallet.last {
+        let solWal = Wallet(type: .solana(next.address, next.evmAddress, next.walletID))
+        self.listWalletsViewControllerDidSelectWallet(solWal)
+      } else {
+        self.rootViewController.coordinatorDidUpdateWalletsList()
+
       }
-      KNWalletStorage.shared.delete(wallet: wallet)
-      self.rootViewController.coordinatorDidUpdateWalletsList()
-      return
+    } else {
+      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == wallet.address.lowercased() }) else {
+        if wallet.address.lowercased() == self.session.wallet.addressString.lowercased(), let next = self.session.keystore.wallets.last {
+          self.listWalletsViewControllerDidSelectWallet(next)
+        }
+        KNWalletStorage.shared.delete(wallet: wallet)
+        self.rootViewController.coordinatorDidUpdateWalletsList()
+        return
+      }
+      self.listWalletsViewControllerDidSelectRemoveWallet(wal)
     }
-    self.listWalletsViewControllerDidSelectRemoveWallet(wal)
+    
   }
 }
 

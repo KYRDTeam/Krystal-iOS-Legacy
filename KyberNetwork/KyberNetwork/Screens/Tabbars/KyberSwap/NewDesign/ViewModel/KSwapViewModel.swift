@@ -886,6 +886,10 @@ class KSwapViewModel {
       }
     }
   }
+  
+  var shouldShowCommingSoon: Bool {
+    return KNGeneralProvider.shared.currentChain == .solana
+  }
 }
 
 extension KSwapViewModel {

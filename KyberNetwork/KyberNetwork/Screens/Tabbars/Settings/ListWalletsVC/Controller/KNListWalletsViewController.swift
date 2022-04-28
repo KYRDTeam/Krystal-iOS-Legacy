@@ -49,7 +49,7 @@ class KNListWalletsViewModel {
   }
   
   func titleForSection(section: Int) -> String {
-    guard !self.seedsCellModels.isEmpty && !self.nonSeedsCellModels.isEmpty else { return "" }
+//    guard !self.seedsCellModels.isEmpty && !self.nonSeedsCellModels.isEmpty else { return "" }
     if self.isDisplayWatchWallets {
       return ""
     } else {
@@ -108,7 +108,7 @@ class KNListWalletsViewModel {
 
   func isCurrentWallet(row: Int, section: Int) -> Bool {
     let cm = self.getCellModel(at: row, section: section)
-    return cm.wallet.address == self.curWallet.address
+    return cm.wallet.address == self.currentWalletAddress
   }
 
   func reloadDataSource(completion: @escaping () -> Void) {
@@ -165,6 +165,11 @@ class KNListWalletsViewModel {
       return data == element.wallet
     }
     return filterd != nil
+  }
+  
+  var currentWalletAddress: String {
+    guard !self.curWallet.isInvalidated else { return "" }
+    return self.curWallet.address
   }
 }
 
@@ -249,8 +254,12 @@ class KNListWalletsViewController: KNBaseViewController {
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
     self.viewModel.update(wallets: wallets, curWallet: currentWallet)
     self.updateEmptyView()
-    self.walletTableView.reloadData()
-    self.view.layoutIfNeeded()
+    self.viewModel.reloadDataSource {
+      DispatchQueue.main.async {
+        self.walletTableView.reloadData()
+        self.hideLoading()
+      }
+    }
   }
 
   fileprivate func updateEmptyView() {
@@ -261,11 +270,16 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   func coordinatorDidUpdateWalletsList() {
-    self.displayLoading()
-    self.viewModel.listWallets = KNWalletStorage.shared.wallets
+    DispatchQueue.main.async {
+      self.displayLoading()
+    }
+    self.viewModel.listWallets = KNWalletStorage.shared.cloneWallets
+    
     self.viewModel.reloadDataSource {
-      self.walletTableView.reloadData()
-      self.hideLoading()
+      DispatchQueue.main.async {
+        self.walletTableView.reloadData()
+        self.hideLoading()
+      }
     }
   }
 
@@ -291,7 +305,7 @@ extension KNListWalletsViewController: UITableViewDelegate {
     } else {
       guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return }
       var action = [UIAlertAction]()
-      if wallet.address.lowercased() != self.viewModel.curWallet.address.lowercased() {
+      if wallet.address.lowercased() != self.viewModel.currentWalletAddress.lowercased() {
         action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
           self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
         }))

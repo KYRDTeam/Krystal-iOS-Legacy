@@ -76,6 +76,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
   @IBOutlet weak var destAmountContainerView: UIView!
+  @IBOutlet weak var commingSoonView: UIView!
   
   
 //  fileprivate var estRateTimer: Timer?
@@ -111,6 +112,7 @@ class KSwapViewController: KNBaseViewController {
     }
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateUISwitchChain()
+    self.updateUICommingSoon()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -630,6 +632,10 @@ class KSwapViewController: KNBaseViewController {
       self.viewModel.approvingToken = nil
     }
   }
+  
+  fileprivate func updateUICommingSoon() {
+    self.commingSoonView.isHidden = !self.viewModel.shouldShowCommingSoon
+  }
 }
 
 // MARK: Update UIs
@@ -1085,6 +1091,7 @@ extension KSwapViewController {
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
     self.stopRateTimer()
+    self.updateUICommingSoon()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {

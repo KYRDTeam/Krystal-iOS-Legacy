@@ -21,6 +21,12 @@ class KNWalletStorage {
     return self.realm.objects(KNWalletObject.self)
       .filter { return !$0.address.isEmpty }
   }
+  
+  var cloneWallets: [KNWalletObject] {
+    return self.wallets.map { element in
+      return element.clone()
+    }
+  }
 
   var watchWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
@@ -88,5 +94,17 @@ class KNWalletStorage {
     try! realm.write {
       realm.delete(realm.objects(KNWalletObject.self))
     }
+  }
+  
+  func delete(walletAddress: String) {
+    
+    if self.realm == nil { return }
+    guard let obj = self.get(forPrimaryKey: walletAddress), !obj.isInvalidated else { return }
+    if realm.objects(KNWalletObject.self).isInvalidated { return }
+    self.realm.beginWrite()
+    
+    self.realm.delete(obj)
+    
+    try! self.realm.commitWrite()
   }
 }
