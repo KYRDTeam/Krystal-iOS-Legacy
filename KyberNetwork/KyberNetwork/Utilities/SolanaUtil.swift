@@ -28,7 +28,7 @@ class SolanaUtil {
     self.keychain = KeychainSwift(keyPrefix: Constants.keychainKeyPrefix)
     self.keychain.synchronizable = false
   }
-  
+
   // Generate seeds to private key object
   static func seedsToPrivateKey(_ seeds: String) -> PrivateKey {
     let hdWallet = HDWallet(mnemonic: seeds, passphrase: "")

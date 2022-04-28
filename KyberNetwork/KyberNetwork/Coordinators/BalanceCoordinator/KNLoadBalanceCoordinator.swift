@@ -355,7 +355,25 @@ class KNLoadBalanceCoordinator {
 
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getTotalBalance(address: self.session.wallet.addressString, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
+
+    var allAddress: [String] = [self.session.wallet.addressString]
+    if KNGeneralProvider.shared.currentChain == .solana {
+      // add EVM address if current wallet is solana
+      if !self.session.wallet.evmAddressString.isEmpty {
+        allAddress.append(self.session.wallet.evmAddressString)
+      }
+    } else {
+      // add sol address if current wallet is EVM
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let account = appDelegate.coordinator.keystore.matchWithEvmAccount(address: self.session.wallet.addressString) {
+        
+        if case .success(let seeds) = appDelegate.coordinator.keystore.exportMnemonics(account: account) {
+          let solAddress = SolanaUtil.seedsToPublicKey(seeds)
+          allAddress.append(solAddress)
+        }
+        
+      }
+    }
+    provider.request(.getTotalBalance(address: allAddress, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {

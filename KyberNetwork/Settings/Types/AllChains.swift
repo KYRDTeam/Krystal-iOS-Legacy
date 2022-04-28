@@ -263,7 +263,7 @@ public struct AllChains {
     endpoint: "",
     endpointKyber: "https://solana.knstats.com/v1/mainnet/geth?appId=\(KNEnvironment.default.endpointName)-krystal-ios",
     endpointAlchemy: "",
-    etherScanEndpoint: "",
+    etherScanEndpoint: "https://solscan.io/",
     ensAddress: "",
     wrappedAddress: "",
     apiEtherscanEndpoint: "",

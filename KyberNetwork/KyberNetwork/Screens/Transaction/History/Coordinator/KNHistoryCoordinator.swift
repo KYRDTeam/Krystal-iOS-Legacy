@@ -52,7 +52,7 @@ class KNHistoryCoordinator: NSObject, Coordinator {
   init(
     navigationController: UINavigationController,
     session: KNSession
-    ) {
+  ) {
     self.navigationController = navigationController
     self.session = session
     let address = self.session.wallet.addressString

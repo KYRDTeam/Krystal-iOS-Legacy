@@ -21,7 +21,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     return pageVC
   }()
   
-  var childListViewControllers: [KNTransactionListViewController] = []
+  var childListViewControllers: [BaseTransactionListViewController] = []
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
@@ -31,12 +31,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     self.setupPageViewController()
     self.setupUI()
     segmentedControl.highlightSelectedSegment()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    
-    self.reloadData()
   }
   
   func initChildViewControllers() {
@@ -50,8 +44,8 @@ class KNTransactionHistoryViewController: KNBaseViewController {
       completedVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.currentWallet)
       completedVC.delegate = self
       
-      let pendingVC = KNTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.currentWallet)
+      let pendingVC = PendingTransactionListViewController.instantiateFromNib()
+      pendingVC.viewModel = DIContainer.resolve(BasePendingTransactionListViewModel.self, argument: viewModel.currentWallet)
       pendingVC.delegate = self
       
       childListViewControllers = [completedVC, pendingVC]
@@ -60,8 +54,9 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   }
   
   func setupPageViewController() {
+    let defaultPageIndex = viewModel.hasPendingTransactions ? 1 : 0
     pageViewController.view.frame = self.pageContainer.bounds
-    pageViewController.setViewControllers([childListViewControllers[0]], direction: .forward, animated: true)
+    pageViewController.setViewControllers([childListViewControllers[defaultPageIndex]], direction: .forward, animated: true)
     pageViewController.dataSource = self
     pageContainer.addSubview(pageViewController.view)
     addChild(pageViewController)
@@ -75,7 +70,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
     self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
-    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.selectedSegmentIndex = viewModel.hasPendingTransactions ? 1 : 0
   }
 
   override func quickTutorialNextAction() {
@@ -93,12 +88,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     viewModel.didTapBack()
   }
 
-  @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
-    if sender.state == .ended {
-//      self.delegate?.historyViewController(self, run: .dismiss)
-    }
-  }
-
   @IBAction func filterButtonPressed(_ sender: Any) {
     viewModel.didTapFilter()
   }
@@ -110,7 +99,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   }
   
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
-//    self.delegate?.historyViewController(self, run: KNHistoryViewEvent.openWalletsListPopup)
+    viewModel.didTapSelectWallet()
   }
 }
 
@@ -149,7 +138,7 @@ extension KNTransactionHistoryViewController {
 
 extension KNTransactionHistoryViewController: KNTransactionFilterViewControllerDelegate {
   func transactionFilterViewController(_ controller: KNTransactionFilterViewController, apply filter: KNTransactionFilter) {
-    childListViewControllers.forEach { $0.applyFilter(filter: filter) }
+    
   }
 }
 
@@ -186,27 +175,31 @@ extension KNTransactionHistoryViewController: UIPageViewControllerDataSource {
 extension KNTransactionHistoryViewController: KNTransactionListViewControllerDelegate {
   
   func selectSwapNow(_ viewController: KNTransactionListViewController) {
-//    delegate?.historyViewController(self, run: .swap)
-  }
-  
-  func transactionListViewController(_ viewController: KNTransactionListViewController, speedupTransaction transaction: TransactionHistoryItem) {
-    // TODO: - Should create a SpeedUpableTransaction protocol instead
-    guard let transaction = transaction as? InternalHistoryTransaction else { return }
-//    delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction))
-  }
-  
-  func transactionListViewController(_ viewController: KNTransactionListViewController, cancelTransaction transaction: TransactionHistoryItem) {
-    // TODO: - Should create a CancellableTransaction protocol instead
-    guard let transaction = transaction as? InternalHistoryTransaction else { return }
-//    delegate?.historyViewController(self, run: .cancelTransaction(transaction: transaction))
-  }
-  
-  func refreshTransactions(_ viewController: KNTransactionListViewController) {
-//    delegate?.historyViewController(self, run: .reloadAllData)
+    viewModel.didTapSwap()
   }
   
   func transactionListViewController(_ viewController: KNTransactionListViewController, openDetail transaction: TransactionHistoryItem) {
     viewModel.didSelectTransaction(transaction: transaction)
   }
 
+}
+
+extension KNTransactionHistoryViewController: PendingTransactionListViewControllerDelegate {
+  
+  func selectSwapNow(_ viewController: PendingTransactionListViewController) {
+    viewModel.didTapSwap()
+  }
+  
+  func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, speedupTransaction transaction: InternalHistoryTransaction) {
+    viewModel.didSelectSpeedupTransaction(transaction: transaction)
+  }
+  
+  func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, cancelTransaction transaction: InternalHistoryTransaction) {
+    viewModel.didSelectCancelTransaction(transaction: transaction)
+  }
+  
+  func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, openDetail transaction: InternalHistoryTransaction) {
+    viewModel.didSelectPendingTransaction(transaction: transaction)
+  }
+  
 }

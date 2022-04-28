@@ -9,8 +9,7 @@ import Foundation
 import Moya
 
 class DefaultTransactionRepository: TransactionRepository {
-  
-  let provider = MoyaProvider<KrystalApi>(plugins: [NetworkLoggerPlugin()])
+  let provider = MoyaProvider<KrystalApi>(plugins: [NetworkLoggerPlugin(verbose: true)])
   let storage = SolanaTransactionStorage()
   
   func saveSolanaTransactions(address: String, transactions: [SolanaTransaction]) {

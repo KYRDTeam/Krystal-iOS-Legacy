@@ -17,6 +17,11 @@ struct KNTransactionHistoryViewModelActions {
   var closeTransactionHistory: () -> ()
   var openTransactionFilter: ([String], KNTransactionFilter) -> ()
   var openTransactionDetail: (TransactionHistoryItem) -> ()
+  var openPendingTransactionDetail: (InternalHistoryTransaction) -> ()
+  var openSwap: () -> ()
+  var speedupTransaction: (InternalHistoryTransaction) -> ()
+  var cancelTransaction: (InternalHistoryTransaction) -> ()
+  var openWalletSelectPopup: () -> ()
 }
 
 class KNTransactionHistoryViewModel {
@@ -31,6 +36,10 @@ class KNTransactionHistoryViewModel {
       return EtherscanTransactionStorage.shared.getInternalHistoryTokenSymbols()
     }
     return EtherscanTransactionStorage.shared.getEtherscanToken().map { $0.symbol }
+  }
+  
+  var hasPendingTransactions: Bool {
+    return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
   }
 
   init(currentWallet: KNWalletObject, type: KNTransactionHistoryType) {
@@ -60,6 +69,10 @@ class KNTransactionHistoryViewModel {
     actions?.closeTransactionHistory()
   }
   
+  func didTapSwap() {
+    actions?.openSwap()
+  }
+  
   func didTapFilter() {
     actions?.openTransactionFilter(tokenSymbols, filters)
   }
@@ -68,4 +81,20 @@ class KNTransactionHistoryViewModel {
     actions?.openTransactionDetail(transaction)
   }
 
+  func didSelectPendingTransaction(transaction: InternalHistoryTransaction) {
+    actions?.openTransactionDetail(transaction)
+  }
+  
+  func didSelectSpeedupTransaction(transaction: InternalHistoryTransaction) {
+    actions?.speedupTransaction(transaction)
+  }
+  
+  func didSelectCancelTransaction(transaction: InternalHistoryTransaction) {
+    actions?.cancelTransaction(transaction)
+  }
+  
+  func didTapSelectWallet() {
+    actions?.openWalletSelectPopup()
+  }
+  
 }
