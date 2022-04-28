@@ -112,6 +112,9 @@ class PendingTransactionListViewController: BaseTransactionListViewController {
 
 extension PendingTransactionListViewController: SwipeCollectionViewCellDelegate {
   func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    guard viewModel.isTransactionActionEnabled else {
+      return nil
+    }
     guard orientation == .right else {
       return nil
     }
@@ -206,6 +209,10 @@ extension PendingTransactionListViewController: UICollectionViewDataSource {
     guard !viewModel.isTransactionListEmpty else {
       let cell = collectionView.dequeueReusableCell(TransactionListEmptyCell.self, indexPath: indexPath)!
       cell.frame = collectionView.frame
+      cell.onTapSwap = { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.selectSwapNow(self)
+      }
       return cell
     }
     let cell = collectionView.dequeueReusableCell(KNHistoryTransactionCollectionViewCell.self, indexPath: indexPath)!

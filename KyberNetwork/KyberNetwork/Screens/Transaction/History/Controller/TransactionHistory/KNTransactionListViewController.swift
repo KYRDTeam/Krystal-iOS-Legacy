@@ -77,9 +77,7 @@ class KNTransactionListViewController: BaseTransactionListViewController {
   
   override func updateWallet(wallet: KNWalletObject) {
     startSkeletonAnimation()
-    DispatchQueue.global().async {
-      self.viewModel.updateWallet(wallet: wallet)
-    }
+    viewModel.updateWallet(wallet: wallet)
   }
   
   override func reload() {
@@ -163,6 +161,10 @@ extension KNTransactionListViewController {
     guard !viewModel.isTransactionListEmpty else {
       let cell = collectionView.dequeueReusableCell(TransactionListEmptyCell.self, indexPath: indexPath)!
       cell.frame = collectionView.frame
+      cell.onTapSwap = { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.selectSwapNow(self)
+      }
       return cell
     }
     let isLastSection = indexPath.section == viewModel.numberOfSections - 1

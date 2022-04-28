@@ -101,24 +101,18 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   @IBAction func walletSelectButtonTapped(_ sender: UIButton) {
     viewModel.didTapSelectWallet()
   }
+  
+  func updateWallet(wallet: KNWalletObject) {
+    self.viewModel.updateCurrentWallet(wallet)
+    self.childListViewControllers.forEach { $0.updateWallet(wallet: wallet) }
+  }
 }
 
 extension KNTransactionHistoryViewController {
-  func coordinatorUpdatePendingTransaction(currentWallet: KNWalletObject) {
-//    self.viewModel.reloadPendingTransactions()
-//    self.viewModel.reloadCompletedTransactions()
-    self.viewModel.updateCurrentWallet(currentWallet)
-    self.childListViewControllers.forEach { $0.updateWallet(wallet: currentWallet) }
-  }
 
   func coordinatorUpdateWalletObjects() {
     guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.viewModel.currentWallet.address) else { return }
-    self.viewModel.updateCurrentWallet(currentWallet)
-    self.childListViewControllers.forEach { $0.updateWallet(wallet: currentWallet) }
-  }
-
-  func coordinatorUpdateTokens() {
-    //TODO: handle update new token from etherscan
+    self.updateWallet(wallet: currentWallet)
   }
   
   func coordinatorDidUpdateCompletedKrystalTransaction() {
@@ -126,8 +120,7 @@ extension KNTransactionHistoryViewController {
   }
 
   func coordinatorUpdateNewSession(wallet: KNWalletObject) {
-    self.viewModel.updateCurrentWallet(wallet)
-    self.childListViewControllers.forEach { $0.updateWallet(wallet: wallet) }
+    self.updateWallet(wallet: wallet)
     self.walletSelectButton.setTitle(wallet.address, for: .normal)
   }
   

@@ -56,6 +56,9 @@
                                         <color key="value" name="buttonBackgroundColor"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onTapSwapNow:" destination="-1" eventType="touchUpInside" id="Vxn-YQ-5jq"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

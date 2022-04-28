@@ -8,10 +8,16 @@
 import UIKit
 
 class TransactionListEmptyCell: UICollectionViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
+  
+  var onTapSwap: (() -> ())?
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    
+  }
+  
+  @IBAction func onTapSwapNow(_ sender: Any) {
+    onTapSwap?()
+  }
+  
 }

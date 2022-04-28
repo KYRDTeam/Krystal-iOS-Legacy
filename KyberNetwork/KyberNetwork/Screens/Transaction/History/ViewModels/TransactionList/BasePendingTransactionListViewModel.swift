@@ -13,6 +13,7 @@ class BasePendingTransactionListViewModel {
   var transactions: [InternalHistoryTransaction] = []
   var headers: [String] = []
   var groupedTransactions: Observable<[String: [InternalHistoryTransaction]]> = .init([:])
+  var isTransactionActionEnabled: Bool = false
   
   init(wallet: KNWalletObject) {
     self.wallet = wallet
