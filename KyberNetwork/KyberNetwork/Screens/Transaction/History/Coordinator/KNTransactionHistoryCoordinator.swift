@@ -74,8 +74,11 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
   }
   
   private func openSwap() {
-    let coordinator = KNExchangeTokenCoordinator(navigationController: navigationController, session: session)
-    coordinate(coordinator: coordinator)
+    if navigationController.tabBarController?.selectedIndex == 1 {
+      navigationController.popToRootViewController(animated: true)
+    } else {
+      navigationController.tabBarController?.selectedIndex = 1
+    }
   }
   
   private func speedupTransaction(transaction: InternalHistoryTransaction) {
@@ -188,6 +191,7 @@ extension KNTransactionHistoryCoordinator: WalletsListViewControllerDelegate {
       guard let wal = self.session.keystore.matchWithWalletObject(wallet) else {
         return
       }
+      self.viewController?.updateWallet(wallet: wallet)
       self.delegate?.historyCoordinatorDidSelectWallet(wal)
     case .addWallet:
       self.delegate?.historyCoordinatorDidSelectAddWallet()
