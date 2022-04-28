@@ -159,11 +159,8 @@ jobs:
           
           chmod 600 private.key
           GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git
-          ls -al krystal-mobile-enviroment/
-          
           
           CONFIG_PATH=krystal-mobile-enviroment/ios/
-          ls -al $CONFIG_PATH
           
           echo "Using gpg to decrypt the sensitive files now"
 
@@ -172,11 +169,8 @@ jobs:
           gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
           gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
 
-          ls -al $CONFIG_PATH
-
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
-          # --- gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
       - name: Setup environments
         shell: bash
