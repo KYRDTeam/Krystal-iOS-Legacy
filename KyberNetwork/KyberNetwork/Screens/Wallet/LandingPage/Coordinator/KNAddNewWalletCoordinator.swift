@@ -171,7 +171,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType) {
     self.navigationController.dismiss(animated: true) {
       var isWatchWallet = false
       var solWalletId = ""
@@ -234,6 +234,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         chainType: importType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
+      KNGeneralProvider.shared.currentChain = selectedChain
       self.delegate?.addNewWalletCoordinator(add: wallet)
     }
   }

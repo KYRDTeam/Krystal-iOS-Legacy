@@ -258,8 +258,10 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType) {
+    KNGeneralProvider.shared.currentChain = selectedChain
     self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod)
+    
   }
 
   func importWalletCoordinatorDidClose() {
