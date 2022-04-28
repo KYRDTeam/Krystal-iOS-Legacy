@@ -103,7 +103,7 @@ struct KConfirmSendViewModel {
   var transactionFeeText: String { return "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")): " }
   var transactionFeeETHString: String {
     if let solTransaction = self.solTransaction {
-      return solTransaction.fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+      return solTransaction.fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9) + " \(KNGeneralProvider.shared.quoteToken)"
     }
     let fee: BigInt? = {
       guard let gasPrice = self.transaction?.gasPrice, let gasLimit = self.transaction?.gasLimit else { return nil }
@@ -132,7 +132,8 @@ struct KConfirmSendViewModel {
   }
   var transactionGasPriceString: String {
     if let solTransaction = self.solTransaction {
-      return String(format: NSLocalizedString("%@ (Lamport) * %@ (Signatures)", comment: ""), solTransaction.lamportPerSignature.displayRate(decimals: 0), solTransaction.totaSignature.displayRate(decimals: 0))
+      return ""
+//      return String(format: NSLocalizedString("%@ (Lamport) * %@ (Signatures)", comment: ""), solTransaction.lamportPerSignature.displayRate(decimals: 0), solTransaction.totaSignature.displayRate(decimals: 0))
     }
     let gasPrice: BigInt = self.transaction?.gasPrice ?? KNGasCoordinator.shared.fastKNGas
     let gasLimit: BigInt = self.transaction?.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault

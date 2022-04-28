@@ -339,12 +339,12 @@ extension KNTransactionCoordinator {
     self.shouldCheckInternalHistory()
     var interval: TimeInterval
     switch KNGeneralProvider.shared.currentChain {
-      case .eth:
-        interval = 15.0
-      case .solana:
-        interval = 5.0
-      default:
-        interval = 8.0
+    case .eth:
+      interval = 15.0
+    case .solana:
+      interval = 3.0
+    default:
+      interval = 8.0
     }
     self.pendingTxTimer = Timer.scheduledTimer(
       withTimeInterval: interval,
