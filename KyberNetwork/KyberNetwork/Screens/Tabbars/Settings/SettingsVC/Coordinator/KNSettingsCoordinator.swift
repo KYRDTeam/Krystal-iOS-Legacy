@@ -218,8 +218,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   func settingsViewControllerWalletsButtonPressed() {
-    self.listWalletsCoordinator?.stop()
-    self.listWalletsCoordinator = nil
     let coordinator = KNListWalletsCoordinator(
       navigationController: self.navigationController,
       session: self.session,
@@ -275,55 +273,59 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func showActionSheetBackupPhrase(walletObj: KNWalletObject) {
+    var wallet: Wallet?
     
-    
-    let wallet = walletObj.walletID.isEmpty ? self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() }) : Wallet(type: .solana(walletObj.address, "", walletObj.walletID))
-    
+    if walletObj.chainType == 2 {
+      wallet = !walletObj.evmAddress.isEmpty ? self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.evmAddress.lowercased() }) :  Wallet(type: .solana(walletObj.address, walletObj.evmAddress, walletObj.walletID))
+    } else {
+      wallet = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() })
+    }
+  
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-        var action = [UIAlertAction]()
+      var action = [UIAlertAction]()
       if let unwrap = wallet {
         if !unwrap.isSolanaWallet {
           action.append(UIAlertAction(
-              title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-              style: .default,
-              handler: { _ in
-                self.backupKeystore(wallet: unwrap)
-              }
-            ))
+            title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
+            style: .default,
+            handler: { _ in
+              self.backupKeystore(wallet: unwrap)
+            }
+          ))
         }
         
         action.append(UIAlertAction(
-            title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+          title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+          style: .default,
+          handler: { _ in
+            self.backupPrivateKey(wallet: unwrap)
+            self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
+          }
+        ))
+        if case .real(let account) = unwrap.type, case .success = self.session.keystore.exportMnemonics(account: account) {
+          action.append(UIAlertAction(
+            title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
             style: .default,
             handler: { _ in
-              self.backupPrivateKey(wallet: unwrap)
+              self.backupMnemonic(wallet: unwrap)
               self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
             }
           ))
-        if case .real(let account) = unwrap.type, case .success = self.session.keystore.exportMnemonics(account: account) {
-            action.append(UIAlertAction(
-              title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
-              style: .default,
-              handler: { _ in
-                self.backupMnemonic(wallet: unwrap)
-                self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
-              }
-            ))
         }
       }
       
       guard !action.isEmpty else { return }
-
-        action.append(UIAlertAction(
-            title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
-            style: .cancel,
-            handler: nil)
-          )
-        
-        let alertController = KNActionSheetAlertViewController(title: "", actions: action)
-        self.navigationController.hideLoading()
-        self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
+      
+      action.append(UIAlertAction(
+        title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
+        style: .cancel,
+        handler: nil)
+      )
+      
+      let alertController = KNActionSheetAlertViewController(title: "", actions: action)
+      self.navigationController.hideLoading()
+      self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
     }
   }
 

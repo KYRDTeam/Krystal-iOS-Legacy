@@ -49,15 +49,18 @@ class KNListWalletsCoordinator: Coordinator {
   }
 
   func start() {
-    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
-    if let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() }) {
-      self.rootViewController.updateView(
-        with: listWallets,
-        currentWallet: curWallet
-      )
-      
-      self.navigationController.pushViewController(self.rootViewController, animated: true)
-    }
+//    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+//    if let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() }) {
+//
+//      DispatchQueue.global(qos: .background).async {
+//        self.rootViewController.updateView(
+//          with: listWallets,
+//          currentWallet: curWallet
+//        )
+//      }
+//
+//    }
+    self.navigationController.pushViewController(self.rootViewController, animated: true)
   }
   
   func startEditWallet() {
