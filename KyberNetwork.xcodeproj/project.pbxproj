@@ -508,20 +508,20 @@
 		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
+		A64E17B6281932C400ED6E6D /* PendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */; };
+		A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */; };
+		A64E17BA28193AF700ED6E6D /* BaseTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */; };
+		A64E17BD2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */; };
 		A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A732818E3C6000FA9CE /* NavigationBar.swift */; };
 		A65C7A762818E3D5000FA9CE /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A752818E3D5000FA9CE /* NavigationBar.xib */; };
 		A65C7A792818E877000FA9CE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A772818E877000FA9CE /* WebViewController.swift */; };
-		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
 		A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A782818E877000FA9CE /* WebViewController.xib */; };
 		A65C7A802818EF75000FA9CE /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A7F2818EF74000FA9CE /* URL+.swift */; };
-		A64E17B6281932C400ED6E6D /* PendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
 		A693AFEF2819059B00880503 /* RewardHuntingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */; };
-		A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */; };
-		A64E17BA28193AF700ED6E6D /* BaseTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */; };
-		A64E17BD2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */; };
 		A6B3A85F27FAB4F200F84819 /* PairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3A85E27FAB4F100F84819 /* PairKey.swift */; };
 		A6B3CD3B281176E4005D0D66 /* KNTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD39281176E3005D0D66 /* KNTransactionListViewController.swift */; };
 		A6B3CD3C281176E4005D0D66 /* KNTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6B3CD3A281176E4005D0D66 /* KNTransactionListViewController.xib */; };
@@ -1449,20 +1449,20 @@
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
+		A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTransactionListViewController.xib; sourceTree = "<group>"; };
+		A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePendingTransactionListViewModel.swift; sourceTree = "<group>"; };
+		A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionListViewController.swift; sourceTree = "<group>"; };
+		A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeePopupDelegateCoordinator.swift; sourceTree = "<group>"; };
 		A65C7A732818E3C6000FA9CE /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		A65C7A752818E3D5000FA9CE /* NavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
 		A65C7A772818E877000FA9CE /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		A65C7A782818E877000FA9CE /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
-		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
-		A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		A65C7A7F2818EF74000FA9CE /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
 		A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewController.swift; sourceTree = "<group>"; };
-		A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePendingTransactionListViewModel.swift; sourceTree = "<group>"; };
-		A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionListViewController.swift; sourceTree = "<group>"; };
-		A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeePopupDelegateCoordinator.swift; sourceTree = "<group>"; };
 		A6B3A85E27FAB4F100F84819 /* PairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairKey.swift; sourceTree = "<group>"; };
 		A6B3CD39281176E3005D0D66 /* KNTransactionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KNTransactionListViewController.swift; sourceTree = "<group>"; };
 		A6B3CD3A281176E4005D0D66 /* KNTransactionListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KNTransactionListViewController.xib; sourceTree = "<group>"; };
@@ -4128,6 +4128,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A64E17BB281947F400ED6E6D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		A65C7A6D2818E146000FA9CE /* WebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -4154,14 +4162,6 @@
 				A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */,
 			);
 			path = RewardingHunting;
-			sourceTree = "<group>";
-		};
-A64E17BB281947F400ED6E6D /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
