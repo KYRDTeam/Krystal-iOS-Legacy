@@ -1306,7 +1306,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
   fileprivate func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, wallet: currentWallet, type: .solana)
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
       coordinator.delegate = self
       coordinate(coordinator: coordinator)
     default:
