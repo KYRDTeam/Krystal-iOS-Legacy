@@ -229,6 +229,9 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayEnsMessage: String? {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return nil
+    }
     if self.addressString.isEmpty { return nil }
     if self.address == nil { return "Invalid address or your ens is not mapped yet" }
     if Address(string: self.addressString) != nil { return nil }

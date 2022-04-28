@@ -457,7 +457,12 @@ extension KNTransactionCoordinator {
     if KNGeneralProvider.shared.currentChain == .solana {
       let signature = transaction.hash
       SolanaUtil.getTransactionStatus(signature: signature) { state in
-        if state == .done {
+        guard let state = state else {
+          return
+        }
+        transaction.state = state
+        if state == .done || state == .error {
+          EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
           KNNotificationUtil.postNotification(
             for: kTransactionDidUpdateNotificationKey,
             object: transaction,

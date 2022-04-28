@@ -192,7 +192,7 @@ class SolanaUtil {
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let resultJson = json["result"] as? JSONDictionary,
              let valueJsons = resultJson["value"] as? [JSONDictionary] {
-            valueJsons.forEach { value in
+            for value in valueJsons {
               if let pubKey = value["pubkey"] as? String {
                 completion(pubKey)
                 return
@@ -232,7 +232,7 @@ class SolanaUtil {
     }
   }
   
-  static func getTransactionStatus(signature: String, completion: @escaping (InternalTransactionState) -> Void) {
+  static func getTransactionStatus(signature: String, completion: @escaping (InternalTransactionState?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getSignatureStatuses(signature: signature)) { result in
       switch result {
@@ -248,17 +248,16 @@ class SolanaUtil {
               }
               completion(status)
               return
-            }else if let valueArray = resultJson["value"] as? Array<Any> {
+            } else if let valueArray = resultJson["value"] as? Array<Any> {
               completion(.done)
               return
             }
-            
           }
         }
-        completion(.error)
+        completion(nil)
       case .failure(let error):
         print("[Solana error] \(error.localizedDescription)")
-        completion(.error)
+        completion(nil)
       }
     }
   }
