@@ -36,22 +36,14 @@ class InvestViewController: KNBaseViewController {
     
     self.setupCollectionView()
     self.bindViewModel()
-    self.observeFeatureFlagChanged()
+    self.viewModel.onViewLoaded()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     
     self.updateUISwitchChain()
-    self.configFeatureFlag()
-  }
-  
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
+    self.viewModel.reloadMenuItems()
   }
   
   func setupCollectionView() {
@@ -82,30 +74,6 @@ class InvestViewController: KNBaseViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
-  fileprivate func observeFeatureFlagChanged() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(configFeatureFlag),
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
-  }
-  
-  @objc fileprivate func configFeatureFlag() {
-    let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
-    let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
-    var menuItems: [ExploreMenuItem] = [.swap, .transfer, .reward, .referral, .dapps, .multisend]
-    if isBuyCryptoEnabled {
-      menuItems.append(.buyCrypto)
-    }
-    if isPromoCodeEnabled {
-      menuItems.append(.promotion)
-    }
-    if viewModel.menuItems.value != menuItems {
-      viewModel.menuItems.value = menuItems
-    }
-  }
-  
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
@@ -131,6 +99,7 @@ class InvestViewController: KNBaseViewController {
       return
     }
     self.updateUISwitchChain()
+    self.viewModel.reloadMenuItems()
   }
 }
 
