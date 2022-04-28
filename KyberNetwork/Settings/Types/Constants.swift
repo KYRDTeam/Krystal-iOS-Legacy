@@ -79,7 +79,7 @@ public struct Constants {
   public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
   public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
   
-  static let rewardHuntingUrl = "https://dev-krystal-web-pr-339.knstats.com/reward-hunting"
+  static let rewardHuntingUrl = "https://defi-dev.krystal.team/reward-hunting"
 }
 
 public struct UnitConfiguration {
