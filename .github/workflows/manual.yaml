@@ -151,7 +151,7 @@ jobs:
                     
           rm -rf $HOME/krystal-mobile-enviroment
 
-          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git
+          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
           
           ls -al $HOME/krystal-mobile-enviroment/
           
