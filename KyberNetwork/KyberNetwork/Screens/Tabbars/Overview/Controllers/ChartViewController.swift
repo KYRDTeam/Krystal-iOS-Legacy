@@ -27,6 +27,14 @@ class ChartViewModel {
   }
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
+  let numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 18
+    formatter.minimumFractionDigits = 18
+    formatter.minimumIntegerDigits = 1
+    return formatter
+  }()
+
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
     self.currencyMode = currencyMode
@@ -57,7 +65,7 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    return String(format: "%.2f", self.detailInfo?.markets[self.currency]?.price ?? 0)
+    return self.numberFormatter.string(from: NSNumber(value: self.detailInfo?.markets[self.currency]?.price ?? 0))?.displayRate(meaningNumber: 2) ?? "0"
   }
 
   var display24hVol: String {
@@ -213,8 +221,8 @@ class ChartViewModel {
     let attributedText = NSMutableAttributedString()
     attributedText.append(NSAttributedString(string: dateString + " ", attributes: boldAttributes))
     attributedText.append(NSAttributedString(string: "  Price" + ": ", attributes: boldAttributes))
-    
-    let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber())
+
+    let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 18, maxFractionDigits: 18).displayRate(meaningNumber: 2)
     let displayString = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
     
     attributedText.append(NSAttributedString(string: displayString, attributes: normalAttributes))
@@ -314,6 +322,8 @@ class ChartViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.setupConstraints()
     self.chartView.showYLabelsAndGrid = false
     self.chartView.labelColor = UIColor(red: 164, green: 171, blue: 187)
     self.chartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
@@ -336,6 +346,10 @@ class ChartViewController: KNBaseViewController {
     }
   }
 
+  func setupConstraints() {
+    topBarHeight?.constant = UIScreen.statusBarHeight + 36 * 2 + 24
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.loadChartData()

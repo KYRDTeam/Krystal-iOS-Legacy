@@ -583,6 +583,10 @@ extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidClose() {
+    self.sendTokenCoordinator = nil
+  }
+  
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.appCoordinatorDidSelectAddToken(token)
   }
@@ -616,7 +620,7 @@ extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
   }
   
   func historyCoordinatorDidClose() {
-    
+    self.historyCoordinator = nil
   }
   
   func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {

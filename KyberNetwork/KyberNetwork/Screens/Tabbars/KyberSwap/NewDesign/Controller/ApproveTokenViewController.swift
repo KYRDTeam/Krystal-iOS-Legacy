@@ -7,9 +7,9 @@
 
 import UIKit
 import BigInt
+import TrustCore
 
 protocol ApproveTokenViewModel {
-  func getGasLimit() -> BigInt
   func getFee() -> BigInt
   func getFeeString() -> String
   func getFeeUSDString() -> String
@@ -20,22 +20,24 @@ protocol ApproveTokenViewModel {
   var state: Bool { get }
   var symbol: String { get }
   var toAddress: String? { get }
+  var tokenAddress: Address? { get }
+  var gasLimit: BigInt { get set }
 }
 
 class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
+  var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+
+  var tokenAddress: Address? {
+    return Address(string: self.address)
+  }
+
   let token: TokenObject?
   let remain: BigInt
   var gasPrice: BigInt = KNGasCoordinator.shared.defaultKNGas
   var toAddress: String?
 
-  func getGasLimit() -> BigInt {
-    if let gasApprove = self.token?.gasApproveDefault { return gasApprove }
-    return KNGasConfiguration.approveTokenGasLimitDefault
-  }
-
   func getFee() -> BigInt {
-    let gasLimit = self.getGasLimit()
-    let fee = self.gasPrice * gasLimit
+    let fee = self.gasPrice * self.gasLimit
     return fee
   }
 
@@ -74,7 +76,12 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
 }
 
 class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
-  
+  var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+
+  var tokenAddress: Address? {
+    return Address(string: self.address)
+  }
+
   var token: TokenObject?
   let address: String
   let remain: BigInt
@@ -90,13 +97,8 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
     self.symbol = symbol
   }
 
-  func getGasLimit() -> BigInt {
-    return KNGasConfiguration.approveTokenGasLimitDefault
-  }
-
   func getFee() -> BigInt {
-    let gasLimit = self.getGasLimit()
-    let fee = self.gasPrice * gasLimit
+    let fee = self.gasPrice * self.gasLimit
     return fee
   }
 
@@ -118,8 +120,9 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
 }
 
 protocol ApproveTokenViewControllerDelegate: class {
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt)
-  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?)
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt)
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt)
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address)
 }
 
 class ApproveTokenViewController: KNBaseViewController {
@@ -133,7 +136,7 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
-  let viewModel: ApproveTokenViewModel
+  var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
 
@@ -158,6 +161,10 @@ class ApproveTokenViewController: KNBaseViewController {
     self.descriptionLabel.text = self.viewModel.subTitleText
     let address = self.viewModel.toAddress ?? KNGeneralProvider.shared.proxyAddress
     self.contractAddressLabel.text = address
+    
+    if let tokenAddress = self.viewModel.tokenAddress {
+      self.delegate?.approveTokenViewControllerGetEstimateGas(self, tokenAddress: tokenAddress)
+    }
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
@@ -171,9 +178,9 @@ class ApproveTokenViewController: KNBaseViewController {
     }
     self.dismiss(animated: true, completion: {
       if let token = self.viewModel.token {
-        self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain)
+        self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain, gasLimit: self.viewModel.gasLimit)
       } else {
-        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress)
+        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress, gasLimit: self.viewModel.gasLimit)
       }
     })
   }
@@ -184,6 +191,13 @@ class ApproveTokenViewController: KNBaseViewController {
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
     self.dismiss(animated: true, completion: nil)
+  }
+  
+  func coordinatorDidUpdateGasLimit(_ gas: BigInt) {
+    self.viewModel.gasLimit = gas
+    guard self.isViewLoaded else { return }
+    self.gasFeeLabel.text = self.viewModel.getFeeString()
+    self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
   }
 }
 

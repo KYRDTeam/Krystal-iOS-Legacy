@@ -9,14 +9,54 @@ class KNTrackerRateStorage {
 
   static var shared = KNTrackerRateStorage()
   private(set) var realm: Realm!
-  private var allPrices: [TokenPrice]
+  private var allPrices: ThreadProtectedObject<[TokenPrice]> = .init(storageValue: [])
+  
+  private var ethAllPrices: [TokenPrice]
+  private var bscAllPrices: [TokenPrice]
+  private var polygonAllPrices: [TokenPrice]
+  private var avalancheAllPrices: [TokenPrice]
+  private var cronosAllPrices: [TokenPrice]
+  private var fantomAllPrices: [TokenPrice]
+  private var arbitrumAllPrices: [TokenPrice]
+  private var auroraAllPrices: [TokenPrice]
 
   init() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
+    
+    self.ethAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .eth)
+    self.bscAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .bsc)
+    self.polygonAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .polygon)
+    self.avalancheAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .avalanche)
+    self.cronosAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .cronos)
+    self.fantomAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .fantom)
+    self.arbitrumAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .arbitrum)
+    self.auroraAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .aurora)
   }
 
   func reloadData() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices.value)
+  }
+  
+  private func updateCacheRate(chain: ChainType, rates: [TokenPrice]) {
+    switch chain {
+    case .eth:
+      self.ethAllPrices = rates
+    case .bsc:
+      self.bscAllPrices = rates
+    case .polygon:
+      self.polygonAllPrices = rates
+    case .avalanche:
+      self.avalancheAllPrices = rates
+    case .cronos:
+      self.cronosAllPrices = rates
+    case .fantom:
+      self.fantomAllPrices = rates
+    case .arbitrum:
+      self.arbitrumAllPrices = rates
+    case .aurora:
+      self.auroraAllPrices = rates
+    }
   }
 
   //MARK: new implementation
@@ -24,60 +64,55 @@ class KNTrackerRateStorage {
     if KNEnvironment.default != .ropsten {
       return Storage.retrieve(KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName, as: [TokenPrice].self) ?? []
     } else {
-//      if let json = KNJSONLoaderUtil.jsonDataFromFile(with: "tokens_price") as? [String: JSONDictionary] {
-//        var result: [TokenPrice] = []
-//        json.keys.forEach { (key) in
-//          var dict = json[key]
-//          dict?["address"] = key
-//          if let notNil = dict {
-//            let price = TokenPrice(dictionary: notNil)
-//            result.append(price)
-//          }
-//        }
-//        return result
-//
-//      } else {
-//        return []
-//      }
-      //TODO: create new default price
       return []
     }
   }
   
   func getAllPrices() -> [TokenPrice] {
-    return self.allPrices
+    return self.allPrices.value
   }
   
   func getPriceWithAddress(_ address: String) -> TokenPrice? {
-    return self.allPrices.first { (item) -> Bool in
+    return getAllPrices().first { (item) -> Bool in
       return item.address.lowercased() == address.lowercased()
     }
   }
   
+  static func retrievePricesFromHardDisk(chainType: ChainType) -> [TokenPrice] {
+    let allPrices = Storage.retrieve(chainType.getChainDBPath() + Constants.coingeckoPricesStoreFileName, as: [TokenPrice].self) ?? []
+    return allPrices
+  }
+
+  private func getPricesFor(chainType: ChainType) -> [TokenPrice] {
+    switch chainType {
+    case .eth:
+      return self.ethAllPrices
+    case .bsc:
+      return self.bscAllPrices
+    case .polygon:
+      return self.polygonAllPrices
+    case .avalanche:
+      return self.avalancheAllPrices
+    case .cronos:
+      return self.cronosAllPrices
+    case .fantom:
+      return self.fantomAllPrices
+    case .arbitrum:
+      return self.arbitrumAllPrices
+    case .aurora:
+      return self.auroraAllPrices
+    }
+  }
+
   func getPriceWithAddress(_ address: String, chainType: ChainType) -> TokenPrice? {
-    let allPrices = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.coingeckoPricesStoreFileName, as: [TokenPrice].self) ?? []
+    let allPrices = self.getPricesFor(chainType: chainType)
     return allPrices.first { (item) -> Bool in
       return item.address.lowercased() == address.lowercased()
     }
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
-    switch chainType {
-    case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
-    case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
-    case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
-    case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
-    case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
-    case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
-    case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
-    }
+    return chainType.getChainDBPath()
   }
   
   func getLastPriceWith(address: String, currency: CurrencyMode) -> Double {
@@ -91,16 +126,8 @@ class KNTrackerRateStorage {
       return price.eth
     case .btc:
       return price.btc
-    case .bnb:
-      return price.bnb
-    case .matic:
-      return price.matic
-    case .avax:
-      return price.avax
-    case .cro:
-      return price.cro
-    case .ftm:
-      return price.ftm
+    default:
+      return price.quote
     }
   }
 
@@ -126,30 +153,14 @@ class KNTrackerRateStorage {
         saved.btcMarketCap = item.btcMarketCap
         saved.btc24hChange = item.btc24hChange
         
-        saved.bnb = item.bnb
-        saved.bnb24hVol = item.bnb24hVol
-        saved.bnbMarketCap = item.bnbMarketCap
-        saved.bnb24hChange = item.bnb24hChange
-        
-        saved.matic = item.matic
-        saved.matic24hVol = item.matic24hVol
-        saved.maticMarketCap = item.maticMarketCap
-        saved.matic24hChange = item.matic24hChange
-        
-        saved.cro = item.cro
-        saved.cro24hVol = item.cro24hVol
-        saved.croMarketCap = item.croMarketCap
-        saved.cro24hChange = item.cro24hChange
-        
-        saved.ftm = item.ftm
-        saved.ftm24hVol = item.ftm24hVol
-        saved.ftmMarketCap = item.ftmMarketCap
-        saved.ftm24hChange = item.ftm24hChange
+        saved.quote = item.quote
+        saved.quote24hVol = item.quote24hVol
+        saved.quoteMarketCap = item.quoteMarketCap
+        saved.quote24hChange = item.quote24hChange
       } else {
-        self.allPrices.append(item)
+        self.allPrices.value.append(item)
       }
     }
-    Storage.store(self.allPrices, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
+    Storage.store(self.allPrices.value, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
   }
 }
-

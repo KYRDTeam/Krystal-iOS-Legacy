@@ -6,24 +6,7 @@
 //
 
 import UIKit
-import FSPagerView
 import Kingfisher
-
-class InvestViewModel {
-  var dataSource: [Asset] = [] {
-    didSet {
-      self.bannerDataSource = self.dataSource.filter({ (item) -> Bool in
-        return item.type == .banner
-      })
-      self.partnerDataSource = self.dataSource.filter({ (item) -> Bool in
-        return item.type == .partner
-      })
-    }
-  }
-  
-  var bannerDataSource: [Asset] = []
-  var partnerDataSource: [Asset] = []
-}
 
 enum InvestViewEvent {
   case openLink(url: String)
@@ -35,6 +18,7 @@ enum InvestViewEvent {
   case multiSend
   case promoCode
   case buyCrypto
+  case rewardHunting
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -42,44 +26,64 @@ protocol InvestViewControllerDelegate: class {
 }
 
 class InvestViewController: KNBaseViewController {
-  @IBOutlet weak var bannerPagerView: FSPagerView! {
-    didSet {
-      self.bannerPagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
-    }
-  }
-  @IBOutlet weak var bannerPagerControl: FSPageControl!
-  @IBOutlet weak var patnerCollectionView: UICollectionView!
-  @IBOutlet weak var collectionViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var currentChainIcon: UIImageView!
+  @IBOutlet weak var collectionView: UICollectionView!
   
-  @IBOutlet weak var stackView: UIStackView!
-  @IBOutlet weak var buyCryptoView: UIView!
-  @IBOutlet weak var promoCodeContainerView: UIView!
-  
-  let viewModel: InvestViewModel = InvestViewModel()
+  let viewModel: ExploreViewModel = ExploreViewModel()
   weak var delegate: InvestViewControllerDelegate?
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.bannerPagerControl.setFillColor(UIColor(named: "buttonBackgroundColor"), for: .selected)
-    self.bannerPagerControl.setFillColor(UIColor(named: "normalTextColor"), for: .normal)
-    self.bannerPagerControl.numberOfPages = 0
-    self.bannerPagerControl.numberOfPages = self.viewModel.bannerDataSource.count
-    let nib = UINib(nibName: MarketingPartnerCollectionViewCell.className, bundle: nil)
-    self.patnerCollectionView.register(nib, forCellWithReuseIdentifier: MarketingPartnerCollectionViewCell.cellID)
-    self.updateUIBannerPagerView()
-    self.updateUIPartnerCollectionView()
-    self.updateFeatureFlagChanged()
+    
+    self.setupCollectionView()
+    self.bindViewModel()
+    self.observeFeatureFlagChanged()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    self.bannerPagerView.itemSize = self.bannerPagerView.frame.size
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
     self.updateUISwitchChain()
     self.configFeatureFlag()
   }
   
-  fileprivate func updateFeatureFlagChanged() {
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kUpdateFeatureFlag),
+      object: nil
+    )
+  }
+  
+  func setupCollectionView() {
+    collectionView.registerCellNib(MarketingPartnerCollectionViewCell.self)
+    collectionView.registerCellNib(ExploreBannersCell.self)
+    collectionView.registerCellNib(ExploreMenuCell.self)
+    collectionView.registerHeaderCellNib(ExploreSectionHeaderView.self)
+    collectionView.contentInset.bottom = 36
+    
+    collectionView.delegate = self
+    collectionView.dataSource = self
+  }
+  
+  func bindViewModel() {
+    viewModel.banners.bind { [weak self] _ in
+      self?.reloadSection(ofType: .banners)
+    }
+    viewModel.menuItems.bind { [weak self] _ in
+      self?.reloadSection(ofType: .menu)
+    }
+    viewModel.partners.bind { [weak self] _ in
+      self?.reloadSection(ofType: .partners)
+    }
+  }
+  
+  private func reloadSection(ofType type: ExploreSection) {
+    guard let index = viewModel.sections.index(of: type) else { return }
+    collectionView.reloadSections(.init(arrayLiteral: index))
+  }
+  
+  fileprivate func observeFeatureFlagChanged() {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(configFeatureFlag),
@@ -89,23 +93,23 @@ class InvestViewController: KNBaseViewController {
   }
   
   @objc fileprivate func configFeatureFlag() {
-    let shouldShowBuyCrypto = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
-    self.buyCryptoView.subviews.forEach { view in
-      view.isHidden = !shouldShowBuyCrypto
+    let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
+    let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+    let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+    
+    var menuItems: [ExploreMenuItem] = [.swap, .transfer, .reward, .referral, .dapps, .multisend]
+    if isBuyCryptoEnabled {
+      menuItems.append(.buyCrypto)
     }
-    self.buyCryptoView.backgroundColor = shouldShowBuyCrypto ? UIColor(named: "investButtonBgColor")! : .clear
-    self.stackView.removeArrangedSubview(self.buyCryptoView)
-    if !shouldShowBuyCrypto {
-      self.stackView.insertArrangedSubview(self.buyCryptoView, at: 3)
-    } else {
-      self.stackView.insertArrangedSubview(self.buyCryptoView, at: 2)
+    if isPromoCodeEnabled {
+      menuItems.append(.promotion)
     }
-
-    let shouldShowPromoCode = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
-    self.promoCodeContainerView.subviews.forEach { view in
-      view.isHidden = !shouldShowPromoCode
+    if isRewardHuntingEnabled {
+      menuItems.append(.rewardHunting)
     }
-    self.promoCodeContainerView.backgroundColor = shouldShowPromoCode ? UIColor(named: "investButtonBgColor")! : .clear
+    if viewModel.menuItems.value != menuItems {
+      viewModel.menuItems.value = menuItems
+    }
   }
   
   fileprivate func updateUISwitchChain() {
@@ -113,63 +117,19 @@ class InvestViewController: KNBaseViewController {
     self.currentChainIcon.image = icon
   }
 
-  @IBAction func swapButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .swap)
-  }
-
-  @IBAction func transferButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .transfer)
-  }
-
-  @IBAction func rewardButtonTapped(_ sender: Any) {
-    self.delegate?.investViewController(self, run: .reward)
-  }
-
-  @IBAction func krytalButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .krytal)
-  }
-  
-  @IBAction func dAppButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .dapp)
-  }
-
-  @IBAction func buyCryptoButtonTapped(_ sender: Any) {
-    self.delegate?.investViewController(self, run: .buyCrypto)
-  }
-  
-  @IBAction func multiSendButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .multiSend)
-  }
-
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = { selected in
+    popup.completionHandler = { [weak self] selected in
       let viewModel = SwitchChainWalletsListViewModel(selected: selected)
       let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self.present(secondPopup, animated: true, completion: nil)
+      self?.present(secondPopup, animated: true, completion: nil)
     }
     self.present(popup, animated: true, completion: nil)
   }
   
-  @IBAction func promoCodeButtonTapped(_ sender: UIButton) {
-    self.delegate?.investViewController(self, run: .promoCode)
-  }
-  
   func coordinatorDidUpdateMarketingAssets(_ assets: [Asset]) {
-    self.viewModel.dataSource = assets
-    guard self.isViewLoaded else { return }
-    self.updateUIBannerPagerView()
-    self.updateUIPartnerCollectionView()
-  }
-  
-  fileprivate func updateUIPartnerCollectionView() {
-    self.patnerCollectionView.reloadData()
-    self.collectionViewHeightContraint.constant = CGFloat( (round(CGFloat(self.viewModel.partnerDataSource.count / 3)) + 1) * MarketingPartnerCollectionViewCell.kMarketingPartnerCellHeight) + 50
-  }
-  
-  fileprivate func updateUIBannerPagerView() {
-    self.bannerPagerControl.numberOfPages = self.viewModel.bannerDataSource.count
-    self.bannerPagerView.reloadData()
+    self.viewModel.partners.value = assets.filter { $0.type == .partner }
+    self.viewModel.banners.value = assets.filter { $0.type == .banner }
   }
   
   func coordinatorDidUpdateChain() {
@@ -180,85 +140,139 @@ class InvestViewController: KNBaseViewController {
   }
 }
 
-extension InvestViewController: FSPagerViewDataSource {
-  public func numberOfItems(in pagerView: FSPagerView) -> Int {
-    return self.viewModel.bannerDataSource.count
-  }
-
-  public func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
-    let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-    let url = URL(string: self.viewModel.bannerDataSource[index].imageURL)
-    cell.imageView?.kf.setImage(with: url)
-    cell.imageView?.contentMode = .scaleAspectFit
-    cell.imageView?.clipsToBounds = true
-    return cell
-  }
-}
-
-extension InvestViewController: FSPagerViewDelegate {
-  func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
-    pagerView.deselectItem(at: index, animated: true)
-    pagerView.scrollToItem(at: index, animated: true)
-    self.delegate?.investViewController(self, run: .openLink(url: self.viewModel.bannerDataSource[index].url))
-  }
-
-  func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
-    self.bannerPagerControl.currentPage = targetIndex
-  }
-
-  func pagerViewDidEndScrollAnimation(_ pagerView: FSPagerView) {
-    self.bannerPagerControl.currentPage = pagerView.currentIndex
-  }
-}
-
 extension InvestViewController: UICollectionViewDelegateFlowLayout {
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return 12.0
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0)
+    return UIEdgeInsets(top: 6, left: 20, bottom: 6, right: 20)
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let cellWidth = (collectionView.frame.size.width - 24) / 3
-    return CGSize(
-      width: cellWidth,
-      height: MarketingPartnerCollectionViewCell.kMarketingPartnerCellHeight
-    )
+    let sectionType = viewModel.sections[indexPath.section]
+    
+    switch sectionType {
+    case .banners:
+      return .init(width: collectionView.frame.width, height: 240)
+    case .menu:
+      let cellWidth = (collectionView.frame.size.width - 76) / 4
+      return .init(width: cellWidth, height: cellWidth)
+    case .partners:
+      let cellWidth = (collectionView.frame.size.width - 64) / 3
+      return CGSize(
+        width: cellWidth,
+        height: MarketingPartnerCollectionViewCell.kMarketingPartnerCellHeight
+      )
+    }
   }
-
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    return CGSize(
-      width: 0,
-      height: 0
-    )
-  }
+  
 }
 
 extension InvestViewController: UICollectionViewDataSource {
+  
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
+    return viewModel.sections.count
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.viewModel.partnerDataSource.count
+    let sectionType = viewModel.sections[section]
+    switch sectionType {
+    case .banners:
+      return 1
+    case .menu:
+      return viewModel.menuItems.value.count
+    case .partners:
+      return viewModel.partners.value.count
+    }
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-    withReuseIdentifier: MarketingPartnerCollectionViewCell.cellID,
-    for: indexPath
-    ) as! MarketingPartnerCollectionViewCell
-    let url = URL(string: self.viewModel.partnerDataSource[indexPath.row].imageURL)
-    cell.bannerImageView.kf.setImage(with: url)
-    cell.bannerImageView.clipsToBounds = true
-    return cell
+    let sectionType = viewModel.sections[indexPath.section]
+    
+    switch sectionType {
+    case .banners:
+      let cell = collectionView.dequeueReusableCell(ExploreBannersCell.self, indexPath: indexPath)!
+      cell.configure(banners: viewModel.banners.value)
+      cell.onSelectBanner = { [weak self] asset in
+        guard let self = self else { return }
+        self.delegate?.investViewController(self, run: .openLink(url: asset.url))
+      }
+      return cell
+    case .menu:
+      let cell = collectionView.dequeueReusableCell(ExploreMenuCell.self, indexPath: indexPath)!
+      let item = ExploreMenuItemViewModel(item: viewModel.menuItems.value[indexPath.item])
+      cell.configure(item: item)
+      return cell
+    case .partners:
+      let cell = collectionView.dequeueReusableCell(MarketingPartnerCollectionViewCell.self, indexPath: indexPath)!
+      cell.configure(asset: viewModel.partners.value[indexPath.item])
+      return cell
+    }
   }
 }
 
 extension InvestViewController: UICollectionViewDelegate {
+  
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    let sectionType = viewModel.sections[indexPath.section]
+    
+    switch sectionType {
+    case .partners:
+      if kind == UICollectionView.elementKindSectionHeader {
+        let header = collectionView.dequeueReusableHeaderCell(ExploreSectionHeaderView.self, indexPath: indexPath)!
+        header.configure(title: Strings.supportedPlatforms)
+        return header
+      }
+      return UICollectionReusableView()
+    default:
+      return UICollectionReusableView()
+    }
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    let sectionType = viewModel.sections[section]
+    
+    switch sectionType {
+    case .partners:
+      return .init(width: collectionView.frame.width, height: 56)
+    default:
+      return .zero
+    }
+  }
+  
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    self.delegate?.investViewController(self, run: .openLink(url: self.viewModel.partnerDataSource[indexPath.row].url))
+    let sectionType = viewModel.sections[indexPath.section]
+
+    switch sectionType {
+    case .menu:
+      let menuItem = viewModel.menuItems.value[indexPath.item]
+      switch menuItem {
+      case .swap:
+        delegate?.investViewController(self, run: .swap)
+      case .transfer:
+        delegate?.investViewController(self, run: .transfer)
+      case .reward:
+        delegate?.investViewController(self, run: .reward)
+      case .referral:
+        delegate?.investViewController(self, run: .krytal)
+      case .dapps:
+        delegate?.investViewController(self, run: .dapp)
+      case .multisend:
+        delegate?.investViewController(self, run: .multiSend)
+      case .buyCrypto:
+        delegate?.investViewController(self, run: .buyCrypto)
+      case .promotion:
+        delegate?.investViewController(self, run: .promoCode)
+      case .rewardHunting:
+        delegate?.investViewController(self, run: .rewardHunting)
+      }
+    case .partners:
+      let partner = viewModel.partners.value[indexPath.item]
+      self.delegate?.investViewController(self, run: .openLink(url: partner.url))
+    default:
+      ()
+    }
   }
 }

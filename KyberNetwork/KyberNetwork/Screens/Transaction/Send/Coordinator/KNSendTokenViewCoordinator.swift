@@ -17,6 +17,7 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectManageWallet()
   func sendTokenCoordinatorDidSelectAddWallet()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func sendTokenCoordinatorDidClose()
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
@@ -113,7 +114,9 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   }
 
   func stop() {
-    self.navigationController.popViewController(animated: true)
+    self.navigationController.popViewController(animated: true) {
+      self.delegate?.sendTokenCoordinatorDidClose()
+    }
   }
 }
 
@@ -457,6 +460,7 @@ extension KNSendTokenViewCoordinator {
         historyTransaction.time = Date()
         historyTransaction.nonce = Int(provider.minTxCount - 1)
         historyTransaction.transactionObject = result.1?.toSignTransactionObject()
+        historyTransaction.toAddress = transaction.to?.description
         historyTransaction.eip1559Transaction = result.2
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)

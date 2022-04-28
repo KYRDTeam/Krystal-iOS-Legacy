@@ -10,104 +10,51 @@ import UIKit
 class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var nextButton: UIButton!
+  @IBOutlet weak var cancelButton: UIButton!
+  @IBOutlet weak var outsideBackgroundView: UIView!
   let transitor = TransitionDelegate()
-  
-  @IBOutlet weak var ethCheckMarkIcon: UIImageView!
-  @IBOutlet weak var bscCheckMarkIcon: UIImageView!
-  @IBOutlet weak var maticCheckMarkIcon: UIImageView!
-  @IBOutlet weak var avalancheCheckMarkIcon: UIImageView!
-  @IBOutlet weak var cronosCheckMarkIcon: UIImageView!
-  @IBOutlet weak var fantomCheckMarkIcon: UIImageView!
-  @IBOutlet weak var arbitrumCheckMarkIcon: UIImageView!
-  @IBOutlet weak var ethSelectBgView: UIView!
-  @IBOutlet weak var bscSelectBgView: UIView!
-  @IBOutlet weak var maticSelectBgView: UIView!
-  @IBOutlet weak var avalancheSelectBgView: UIView!
-  @IBOutlet weak var cronosSelectBgView: UIView!
-  @IBOutlet weak var fantomSelectBgView: UIView!
-  @IBOutlet weak var arbitrumSelectBgView: UIView!
-  
+  var dataSource:[ChainType] = []
   var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
-  @IBOutlet weak var nextButton: UIButton!
-  @IBOutlet weak var cancelButton: UIButton!
 
   init() {
     self.selectedChain = KNGeneralProvider.shared.currentChain
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
-    
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.initializeData()
+    self.setupUI()
+  }
+  
+  func setupUI() {
     self.updateSelectedChainUI()
     self.cancelButton.rounded(radius: 16)
     self.nextButton.rounded(radius: 16)
     self.nextButton.setTitle(self.nextButtonTitle, for: .normal)
+    self.tableView.registerCellNib(SwitchChainCell.self)
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.outsideBackgroundView.addGestureRecognizer(tapGesture)
   }
-  
-  fileprivate func updateSelectedChainUI() {
-    self.ethCheckMarkIcon.isHidden = !(self.selectedChain == .eth)
-    self.bscCheckMarkIcon.isHidden = !(self.selectedChain == .bsc)
-    self.maticCheckMarkIcon.isHidden = !(self.selectedChain == .polygon)
-    self.avalancheCheckMarkIcon.isHidden = !(self.selectedChain == .avalanche)
-    self.cronosCheckMarkIcon.isHidden = !(self.selectedChain == .cronos)
-    self.fantomCheckMarkIcon.isHidden = !(self.selectedChain == .fantom)
-    self.arbitrumCheckMarkIcon.isHidden = !(self.selectedChain == .arbitrum)
-    
-    self.ethSelectBgView.isHidden = !(self.selectedChain == .eth)
-    self.bscSelectBgView.isHidden = !(self.selectedChain == .bsc)
-    self.maticSelectBgView.isHidden = !(self.selectedChain == .polygon)
-    self.avalancheSelectBgView.isHidden = !(self.selectedChain == .avalanche)
-    self.cronosSelectBgView.isHidden = !(self.selectedChain == .cronos)
-    self.fantomSelectBgView.isHidden = !(self.selectedChain == .fantom)
-    self.arbitrumSelectBgView.isHidden = !(self.selectedChain == .arbitrum)
 
+  func initializeData() {
+    self.dataSource = ChainType.getAllChain()
+  }
+
+  fileprivate func updateSelectedChainUI() {
     let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
     self.nextButton.isEnabled = enableNextButton
     self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
-  }
-
-  @IBAction func ethButtonTapped(_ sender: UIButton) {
-    self.selectedChain = .eth
-    self.updateSelectedChainUI()
-  }
-  
-  @IBAction func bscButtonTapped(_ sender: UIButton) {
-    self.selectedChain = .bsc
-    self.updateSelectedChainUI()
-  }
-
-  @IBAction func polygonButtonTapped(_ sender: UIButton) {
-    self.selectedChain = .polygon
-    self.updateSelectedChainUI()
-  }
-  
-  @IBAction func avalancheButtonTapped(_ sender: UIButton) {
-    self.selectedChain = .avalanche
-    self.updateSelectedChainUI()
-  }
-
-  @IBAction func cronosButtonTapped(_ sender: Any) {
-    self.selectedChain = .cronos
-    self.updateSelectedChainUI()
-  }
-  
-  @IBAction func fantomButtonTapped(_ sender: Any) {
-    self.selectedChain = .fantom
-    self.updateSelectedChainUI()
-  }
-
-  @IBAction func arbitrumButtonTapped(_ sender: Any) {
-    self.selectedChain = .arbitrum
-    self.updateSelectedChainUI()
   }
 
   @IBAction func nextButtonTapped(_ sender: UIButton) {
@@ -120,8 +67,30 @@ class SwitchChainViewController: KNBaseViewController {
     self.dismiss(animated: true, completion: nil)
   }
 
-  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+  @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
+  }
+}
+
+extension SwitchChainViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.dataSource.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(SwitchChainCell.self, indexPath: indexPath)!
+    let chain = self.dataSource[indexPath.row]
+    cell.configCell(chain: chain, isSelected: self.selectedChain == chain)
+    return cell
+  }
+}
+
+extension SwitchChainViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let chain = self.dataSource[indexPath.row]
+    self.selectedChain = chain
+    self.updateSelectedChainUI()
+    self.tableView.reloadData()
   }
 }
 

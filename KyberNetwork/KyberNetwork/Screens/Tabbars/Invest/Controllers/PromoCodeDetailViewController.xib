@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -22,6 +22,7 @@
                 <outlet property="bannerImageView" destination="g4M-UX-vIL" id="aYC-Kq-8U6"/>
                 <outlet property="descriptionTextView" destination="ZIB-zd-Iex" id="Z1w-4E-dvD"/>
                 <outlet property="titleLabel" destination="Vcf-zC-oE7" id="hQf-Yu-iol"/>
+                <outlet property="topBarHeight" destination="qHd-Ua-T10" id="idU-uG-r94"/>
                 <outlet property="useNowButton" destination="Ihb-R5-QTa" id="rYW-N7-fcr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -35,13 +36,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsK-dp-7LG">
-                            <rect key="frame" x="138" y="73.5" width="99.5" height="23.5"/>
+                            <rect key="frame" x="138" y="63.5" width="99.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AEH-XD-wlf">
-                            <rect key="frame" x="16" y="67.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="7ck-Yv-HMZ"/>
                                 <constraint firstAttribute="width" constant="46" id="ThJ-S2-zfj"/>
@@ -55,7 +56,7 @@
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstItem="AEH-XD-wlf" firstAttribute="centerY" secondItem="YsK-dp-7LG" secondAttribute="centerY" id="4oX-Mn-CkD"/>
-                        <constraint firstAttribute="bottom" secondItem="YsK-dp-7LG" secondAttribute="bottom" constant="16" id="EeZ-xH-amT"/>
+                        <constraint firstAttribute="bottom" secondItem="YsK-dp-7LG" secondAttribute="bottom" constant="26" id="EeZ-xH-amT"/>
                         <constraint firstAttribute="height" constant="113" id="qHd-Ua-T10"/>
                         <constraint firstItem="YsK-dp-7LG" firstAttribute="centerX" secondItem="boa-kW-iHs" secondAttribute="centerX" id="qf5-0j-vjM"/>
                         <constraint firstItem="AEH-XD-wlf" firstAttribute="leading" secondItem="boa-kW-iHs" secondAttribute="leading" constant="16" id="y8r-6u-oDS"/>

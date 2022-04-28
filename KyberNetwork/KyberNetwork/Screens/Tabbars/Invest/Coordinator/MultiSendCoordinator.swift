@@ -419,7 +419,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 legacyTxs.append((item, tx))
               }
             }
-            
+
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.0.isEmpty else {
@@ -462,6 +462,56 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           self.approveVC = nil
         }
       }
+    case .estimateGas(items: let items):
+      guard case .real(let account) = self.session.wallet.type else {
+        return
+      }
+      
+      self.buildApproveDataList(items: items, isApproveUnlimit: true) { dataList in
+        var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
+        var legacyTxs: [(ApproveMultiSendItem, SignTransaction)] = []
+        let currentAddress = account.address.description
+        
+        let setting = ConfirmAdvancedSetting(
+          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
+          advancedGasLimit: nil,
+          advancedPriorityFee: nil,
+          avancedMaxFee: nil,
+          advancedNonce: nil
+        )
+        for (_, element) in dataList.enumerated() {
+          let item = element.0
+          let txNonce = 1
+          if KNGeneralProvider.shared.isUseEIP1559 {
+            let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            eipTxs.append((item, tx))
+          } else {
+            let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            legacyTxs.append((item, tx))
+          }
+        }
+        
+        var output: [(ApproveMultiSendItem, BigInt)] = []
+        var gasRequests: [(ApproveMultiSendItem, GasLimitRequestable)]  = KNGeneralProvider.shared.isUseEIP1559 ? eipTxs : legacyTxs
+        
+        let group = DispatchGroup()
+        gasRequests.forEach { item in
+          group.enter()
+          KNGeneralProvider.shared.getEstimateGasLimit(request: item.1.createGasLimitRequest()) { result in
+            switch result {
+            case.success(let gas):
+              output.append((item.0, gas))
+            default:
+              output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
+            }
+            group.leave()
+          }
+        }
+        group.notify(queue: .global()) {
+          controller.coordinatorDidUpdateGasLimit(gas: output)
+        }
+      }
     }
   }
 
@@ -500,7 +550,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         }
       }
       
-      let value = isApproveUnlimit ? BigInt(2).power(256) - BigInt(1) : item.0
+      let value = isApproveUnlimit ? Constants.maxValueBigInt : item.0
       group.enter()
 
       KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: value) { encodeResult in
@@ -511,7 +561,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           break
         }
         group.leave()
-        
       }
 
       group.notify(queue: .global()) {

@@ -6,12 +6,36 @@ import TrustCore
 import BigInt
 
 class KNSupportedTokenStorage {
-  private var supportedToken: [Token]
+  var supportedToken: [Token]
   private var favedTokens: [FavedToken]
   private var customTokens: [Token]
   private var disableTokens: [Token]
   private var deletedTokens: [Token]
   
+  private var ethDisableTokens: [Token]
+  private var ethDeletedTokens: [Token]
+  
+  private var bscDisableTokens: [Token]
+  private var bscDeletedTokens: [Token]
+  
+  private var polygonDisableTokens: [Token]
+  private var polygonDeletedTokens: [Token]
+  
+  private var avalancheDisableTokens: [Token]
+  private var avalancheDeletedTokens: [Token]
+  
+  private var cronosDisableTokens: [Token]
+  private var cronosDeletedTokens: [Token]
+  
+  private var fantomDisableTokens: [Token]
+  private var fantomDeletedTokens: [Token]
+  
+  private var arbitrumDisableTokens: [Token]
+  private var arbitrumDeletedTokens: [Token]
+  
+  private var auroraDisableTokens: [Token]
+  private var auroraDeletedTokens: [Token]
+
   var allActiveTokens: [Token] {
     return self.getActiveSupportedToken() + self.getActiveCustomToken()
   }
@@ -36,6 +60,31 @@ class KNSupportedTokenStorage {
     self.customTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.customTokenStoreFileName, as: [Token].self) ?? []
     self.disableTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
     self.deletedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
+    
+    self.ethDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .eth)
+    self.ethDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .eth)
+    
+    self.bscDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .bsc)
+    self.bscDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .bsc)
+    
+    self.polygonDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .polygon)
+    self.polygonDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .polygon)
+    
+    self.avalancheDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .avalanche)
+    self.avalancheDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .avalanche)
+    
+    self.cronosDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .cronos)
+    self.cronosDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .cronos)
+    
+    self.fantomDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .fantom)
+    self.fantomDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .fantom)
+    
+    self.arbitrumDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .arbitrum)
+    self.arbitrumDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .arbitrum)
+    
+    self.auroraDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .aurora)
+    self.auroraDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .aurora)
+    
     self.migrationCustomTokenIfNeeded()
   }
 
@@ -72,7 +121,7 @@ class KNSupportedTokenStorage {
   var bnbToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "BNB"
-    } ?? Token(name: "BNB", symbol: "BNB", address: Constants.bnbAddress, decimals: 18, logo: "bnb")
+    } ?? Token(name: "BNB", symbol: "BNB", address: AllChains.bscMainnetPRC.quoteTokenAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
@@ -86,28 +135,28 @@ class KNSupportedTokenStorage {
   var maticToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "MATIC"
-    } ?? Token(name: "MATIC", symbol: "MATIC", address: Constants.maticAddress, decimals: 18, logo: "bnb")
+    } ?? Token(name: "MATIC", symbol: "MATIC", address: AllChains.polygonMainnetPRC.quoteTokenAddress, decimals: 18, logo: "bnb")
     return token.toObject()
   }
 
   var avaxToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "AVAX"
-    } ?? Token(name: "AVAX", symbol: "AVAX", address: Constants.avaxAddress, decimals: 18, logo: "avax")
+    } ?? Token(name: "AVAX", symbol: "AVAX", address: AllChains.avalancheMainnetPRC.quoteTokenAddress, decimals: 18, logo: "avax")
     return token.toObject()
   }
   
   var cronosToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "CRO"
-    } ?? Token(name: "CRO", symbol: "CRO", address: Constants.cronosAddress, decimals: 18, logo: "cro")
+    } ?? Token(name: "CRO", symbol: "CRO", address: AllChains.cronosMainnetRPC.quoteTokenAddress, decimals: 18, logo: "cro")
     return token.toObject()
   }
   
   var fantomToken: TokenObject {
     let token = self.supportedToken.first { (token) -> Bool in
       return token.symbol == "FTM"
-    } ?? Token(name: "FTM", symbol: "FTM", address: Constants.fantomAddress, decimals: 18, logo: "ftm")
+    } ?? Token(name: "FTM", symbol: "FTM", address: AllChains.fantomMainnetRPC.quoteTokenAddress, decimals: 18, logo: "ftm")
     return token.toObject()
   }
   
@@ -233,6 +282,7 @@ class KNSupportedTokenStorage {
       self.deletedTokens.remove(at: index)
     }
     Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+    self.setCacheDeletedToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.deletedTokens)
   }
 
   func getTokenActiveStatus(_ token: Token) -> Bool {
@@ -253,6 +303,49 @@ class KNSupportedTokenStorage {
         Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
       }
     }
+    self.setCacheDisableToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.disableTokens)
+  }
+  
+  private func setCacheDisableToken(chain: ChainType, tokens: [Token]) {
+    switch chain {
+    case .eth:
+      self.ethDisableTokens = tokens
+    case .bsc:
+      self.bscDisableTokens = tokens
+    case .polygon:
+      self.polygonDisableTokens = tokens
+    case .avalanche:
+      self.avalancheDisableTokens = tokens
+    case .cronos:
+      self.cronosDisableTokens = tokens
+    case .fantom:
+      self.fantomDisableTokens = tokens
+    case .arbitrum:
+      self.arbitrumDisableTokens = tokens
+    case .aurora:
+      self.auroraDisableTokens = tokens
+    }
+  }
+  
+  private func setCacheDeletedToken(chain: ChainType, tokens: [Token]) {
+    switch chain {
+    case .eth:
+      self.ethDeletedTokens = tokens
+    case .bsc:
+      self.bscDeletedTokens = tokens
+    case .polygon:
+      self.polygonDeletedTokens = tokens
+    case .avalanche:
+      self.avalancheDeletedTokens = tokens
+    case .cronos:
+      self.cronosDeletedTokens = tokens
+    case .fantom:
+      self.fantomDeletedTokens = tokens
+    case .arbitrum:
+      self.arbitrumDeletedTokens = tokens
+    case .aurora:
+      self.auroraDeletedTokens = tokens
+    }
   }
 
   func changeAllTokensActiveStatus(isActive: Bool) {
@@ -266,6 +359,7 @@ class KNSupportedTokenStorage {
       self.disableTokens.append(contentsOf: manageToken)
     }
     Storage.store(self.disableTokens, as: KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName)
+    self.setCacheDisableToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.disableTokens)
   }
 
   func activeStatus() -> Bool {
@@ -294,6 +388,7 @@ class KNSupportedTokenStorage {
 
     self.deletedTokens.append(token)
     Storage.store(self.deletedTokens, as: KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName)
+    self.setCacheDeletedToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.deletedTokens)
   }
 
   func editCustomToken(address: String, newAddress: String, symbol: String, decimal: Int) {
@@ -419,29 +514,66 @@ class KNSupportedTokenStorage {
   }
   
   func getChainDBPath(chainType: ChainType) -> String {
+    return chainType.getChainDBPath()
+  }
+  
+  static func retrieveDisableTokensFromHardDisk(chainType: ChainType) -> [Token] {
+    let disableTokens = Storage.retrieve(chainType.getChainDBPath() + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
+    return disableTokens
+  }
+  
+  static func retrieveDeleteTokensFromHardDisk(chainType: ChainType) -> [Token] {
+    let deletedTokens = Storage.retrieve(chainType.getChainDBPath() + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
+    return deletedTokens
+  }
+  
+  private func getDisableTokensFor(chainType: ChainType) -> [Token] {
     switch chainType {
     case .eth:
-      return "eth" + "-" + KNEnvironment.default.displayName + "-"
+      return self.ethDisableTokens
     case .bsc:
-      return "bnb" + "-" + KNEnvironment.default.displayName + "-"
+      return self.bscDisableTokens
     case .polygon:
-      return "matic" + "-" + KNEnvironment.default.displayName + "-"
+      return self.polygonDisableTokens
     case .avalanche:
-      return "avax" + "-" + KNEnvironment.default.displayName + "-"
+      return self.avalancheDisableTokens
     case .cronos:
-      return "cro" + "-" + KNEnvironment.default.displayName + "-"
+      return self.cronosDisableTokens
     case .fantom:
-      return "ftm" + "-" + KNEnvironment.default.displayName + "-"
+      return self.fantomDisableTokens
     case .arbitrum:
-      return "aeth" + "-" + KNEnvironment.default.displayName + "-"
+      return self.arbitrumDisableTokens
+    case .aurora:
+      return self.auroraDisableTokens
+    }
+  }
+  
+  private func getDeletedTokensFor(chainType: ChainType) -> [Token] {
+    switch chainType {
+    case .eth:
+      return self.ethDeletedTokens
+    case .bsc:
+      return self.bscDeletedTokens
+    case .polygon:
+      return self.polygonDeletedTokens
+    case .avalanche:
+      return self.avalancheDeletedTokens
+    case .cronos:
+      return self.cronosDeletedTokens
+    case .fantom:
+      return self.fantomDeletedTokens
+    case .arbitrum:
+      return self.arbitrumDeletedTokens
+    case .aurora:
+      return self.auroraDeletedTokens
     }
   }
 
   func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType) -> BigInt {
     var total = BigInt(0)
 
-    let disableTokens = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
-    let deletedTokens = Storage.retrieve(self.getChainDBPath(chainType: chainType) + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
+    let disableTokens = self.getDisableTokensFor(chainType: chainType)
+    let deletedTokens = self.getDeletedTokensFor(chainType: chainType)
     let tokens = disableTokens + deletedTokens
 
     tokens.forEach { token in

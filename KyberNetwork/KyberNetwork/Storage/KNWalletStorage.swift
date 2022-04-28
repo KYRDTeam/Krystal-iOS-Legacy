@@ -4,6 +4,7 @@ import RealmSwift
 import TrustKeystore
 import TrustCore
 import BigInt
+import OneSignal
 
 class KNWalletStorage {
 
@@ -68,6 +69,11 @@ class KNWalletStorage {
     }
     
     try! self.realm.commitWrite()
+    
+    //Check empty storage
+    if self.wallets.isEmpty {
+      OneSignal.removeExternalUserId()
+    }
   }
 
   func deleteAll() {
