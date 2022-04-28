@@ -128,7 +128,7 @@ class KNListWalletsViewModel {
       if !self.watchCellModels.isEmpty {
         self.watchCellModels.removeAll()
       }
-      let isSolana = KNGeneralProvider.shared.currentChain == .solana
+
       for element in listData {
         if element.isWatchWallet {
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
@@ -139,9 +139,6 @@ class KNListWalletsViewModel {
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: true)
           self.seedsCellModels.append(cm)
         } else {
-          guard (element.chainType == .solana && isSolana) || (element.chainType != .solana && !isSolana) else {
-            continue
-          }
           let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
           self.nonSeedsCellModels.append(cm)
         }
@@ -305,11 +302,11 @@ extension KNListWalletsViewController: UITableViewDelegate {
     } else {
       guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return }
       var action = [UIAlertAction]()
-      if wallet.address.lowercased() != self.viewModel.currentWalletAddress.lowercased() {
-        action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
-          self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
-        }))
-      }
+//      if wallet.address.lowercased() != self.viewModel.currentWalletAddress.lowercased() {
+//        action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
+//          self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
+//        }))
+//      }
       action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
         self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
       }))
@@ -364,12 +361,13 @@ extension KNListWalletsViewController: UITableViewDataSource {
     let cm = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section)
     cell.updateCell(cellModel: cm)
     cell.delegate = self
-    if self.viewModel.isCurrentWallet(row: indexPath.row, section: indexPath.section) {
-      cell.accessoryType = .checkmark
-      cell.tintColor = UIColor.Kyber.SWGreen
-    } else {
-      cell.accessoryType = .none
-    }
+//    if self.viewModel.isCurrentWallet(row: indexPath.row, section: indexPath.section) {
+//      cell.accessoryType = .checkmark
+//      cell.tintColor = UIColor.Kyber.SWGreen
+//    } else {
+//      cell.accessoryType = .none
+//    }
+    cell.accessoryType = .none
     return cell
   }
 }

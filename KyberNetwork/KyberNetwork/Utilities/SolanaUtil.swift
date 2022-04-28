@@ -363,4 +363,19 @@ class SolanaUtil {
       }
     }
   }
+  
+  func matchWallet(walletID: String) -> WalletCore.Wallet? {
+    return self.keyStore.wallets.first { element in
+      return element.identifier == walletID
+    }
+  }
+  
+  func removeWallet(walletID: String) {
+    guard let wallet = self.matchWallet(walletID: walletID), let password = self.getPassword(for: wallet) else { return }
+    do {
+      _ = try self.keyStore.removeAccounts(wallet: wallet, coins: [.solana], password: password)
+    } catch {
+    }
+    
+  }
 }

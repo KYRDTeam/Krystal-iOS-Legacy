@@ -55,9 +55,7 @@ class KNListWalletsCoordinator: Coordinator {
         with: listWallets,
         currentWallet: curWallet
       )
-      guard !self.navigationController.viewControllers.contains(self.rootViewController) else {
-        return
-      }
+      
       self.navigationController.pushViewController(self.rootViewController, animated: true)
     }
   }
@@ -201,17 +199,38 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     self.delegate?.listWalletsCoordinatorShouldBackUpWallet(wallet)
   }
 
+  fileprivate func deleteSolWallet(_ wallet: KNWalletObject) {
+    let address = wallet.address
+    let walletID = wallet.walletID
+    KNWalletStorage.shared.delete(walletAddress: address)
+    self.session.keystore.solanaUtil.removeWallet(walletID: walletID)
+    if address == self.session.wallet.addressString, let next = KNWalletStorage.shared.solanaWallet.last {
+      let solWal = Wallet(type: .solana(next.address, next.evmAddress, next.walletID))
+      self.listWalletsViewControllerDidSelectWallet(solWal)
+    } else {
+      self.rootViewController.coordinatorDidUpdateWalletsList()
+    }
+  }
+
   fileprivate func showDeleteWallet(_ wallet: KNWalletObject) {
     if wallet.chainType == 2 {
-      let address = wallet.address
-      KNWalletStorage.shared.delete(walletAddress: address)
-      if address == self.session.wallet.addressString, let next = KNWalletStorage.shared.solanaWallet.last {
-        let solWal = Wallet(type: .solana(next.address, next.evmAddress, next.walletID))
-        self.listWalletsViewControllerDidSelectWallet(solWal)
-      } else {
-        self.rootViewController.coordinatorDidUpdateWalletsList()
-
-      }
+      let alertController = KNPrettyAlertController(
+        title: "Delete".toBeLocalised(),
+        message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""),
+        secondButtonTitle: "OK".toBeLocalised(),
+        firstButtonTitle: "Cancel".toBeLocalised(),
+        secondButtonAction: {
+          if self.navigationController.topViewController is KNEditWalletViewController {
+            self.navigationController.popViewController(animated: true, completion: {
+              self.deleteSolWallet(wallet)
+            })
+          } else {
+            self.deleteSolWallet(wallet)
+          }
+        },
+        firstButtonAction: nil
+      )
+      self.navigationController.topViewController?.present(alertController, animated: true, completion: nil)
     } else {
       guard let wal = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == wallet.address.lowercased() }) else {
         if wallet.address.lowercased() == self.session.wallet.addressString.lowercased(), let next = self.session.keystore.wallets.last {
