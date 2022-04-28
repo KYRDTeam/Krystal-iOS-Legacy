@@ -425,6 +425,7 @@ class OverviewMainViewModel {
       self.displayDataSource.value = [:]
       self.displayHeader.value = []
       self.displayNFTDataSource.value = [:]
+      self.displayNFTHeader.value = []
       let nftSections = BalanceStorage.shared.getAllNFTBalance()
       self.displayNFTHeader.value = nftSections
       nftSections.forEach({ item in

@@ -8,10 +8,10 @@ concurrency:
 
 env:
   LANG: en_US.UTF-8
-  # base64 service account credentials
-  GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
-  GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
-  GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
+  # # base64 service account credentials
+  # GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
+  # GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
+  # GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
 
 jobs:
   prepare:
@@ -105,9 +105,41 @@ jobs:
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
       # GCP 
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Get configuration items
+        run: |
+          echo $SSH_PRIVATE_KEY | base64 --decode > private.key
+
+          chmod 600 private.key
+                    
+          rm -rf $HOME/krystal-mobile-enviroment
+
+          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
+          
+          ls -al $HOME/krystal-mobile-enviroment/
+          
+          
+          CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
+          ls -al $CONFIG_PATH
+          
+          echo "Using gpg to decrypt the sensitive files now"
+
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
+
+          ls -al $CONFIG_PATH
+
+          mkdir -p /Users/runner/privates        
+          cp -va $CONFIG_PATH/* /Users/runner/privates
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -122,13 +154,13 @@ jobs:
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
 
-      - name: Setup Auth
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
+      # - name: Setup Auth
+      #   uses: 'google-github-actions/auth@v0'
+      #   with:
+      #     credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v0
 
       - name: Setup cache
         uses: actions/cache@v1
@@ -137,11 +169,6 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
-      - name: Get configuration items
-        run: |
-          mkdir -p /Users/runner/privates        
-          gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
 
       - name: Setup environments
         shell: bash

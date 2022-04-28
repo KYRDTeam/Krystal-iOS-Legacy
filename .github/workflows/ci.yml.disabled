@@ -1,10 +1,10 @@
-name: Testflight
+name: CI Build
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - 'release-*'
-      - ci-testflight
+      - main
 
 concurrency: 
   group: ${{ github.ref }}
@@ -12,10 +12,10 @@ concurrency:
 
 env:
   LANG: en_US.UTF-8
-  # # base64 service account credentials
-  # GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
-  # GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
-  # GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
+  # base64 service account credentials
+  GCS_SA_CREDENTIAL: ${{ secrets.GCS_SA_CREDENTIAL }}
+  GCS_PROJECT_ID: ${{ secrets.GCS_PROJECT_ID }}
+  GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
 
 jobs:
   prepare:
@@ -40,20 +40,17 @@ jobs:
             BRANCH=${raw/origin\/}
           fi
           echo "::set-output name=value::$BRANCH"
-
       - name: Get Git Commit Tag
         shell: bash
         id: commit_tag
         run: |
           COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
           echo "::set-output name=value::$COMMIT_HASH"
-
       - name: Get version tag
         id: version_tag
         run: |
           [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
           echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
-
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
       - name: Send notifications to a specify Telegram group
@@ -68,18 +65,30 @@ jobs:
   build-ios:
     needs:
       - prepare
+    strategy:
+      matrix: 
+        include:
+          - app_name: "Krystal: Develop"
+            env: dev
+            ota_key: DEV_OTA_URL
+            bump_build: true
+          - app_name: "Krystal: Staging"
+            env: stg
+            ota_key: STG_OTA_URL
+            bump_build: false
+            
     runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
-      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/devops_testflight.p12
+      DISTRIBUTE_CERT_PATH: /Users/runner/privates/certificates/distribution.p12
       DISTRIBUTE_CERT_PASSWORD: ${{ secrets.DISTRIBUTE_CERT_PASSWORD }}
       DEVELOPMENT_CERT_PATH: /Users/runner/privates/certificates/devops_development.p12
       DEVELOPMENT_CERT_PASSWORD: ${{ secrets.DEVELOPMENT_CERT_PASSWORD }}
       # xcode project environment
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
-      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}
+      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
@@ -101,49 +110,11 @@ jobs:
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
       # default actor
       GH_ACTOR: kyber-ci-bot
-      # testflight
-      APPLE_ID: ${{ secrets.APPLE_ID }}
-      APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
-      APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
-      APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
       # GCP 
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Get configuration items
-        run: |
-          echo $SSH_PRIVATE_KEY | base64 --decode > private.key
-
-          chmod 600 private.key
-                    
-          rm -rf $HOME/krystal-mobile-enviroment
-
-          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
-          
-          ls -al $HOME/krystal-mobile-enviroment/
-          
-          
-          CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
-          ls -al $CONFIG_PATH
-          
-          echo "Using gpg to decrypt the sensitive files now"
-
-          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
-          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_testflight.p12.gpg > $CONFIG_PATH/certificates/devops_testflight.p12
-          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
-          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
-          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
-
-          ls -al $CONFIG_PATH
-
-          mkdir -p /Users/runner/privates        
-          cp -va $CONFIG_PATH/* /Users/runner/privates
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -153,60 +124,72 @@ jobs:
           
       - name: Install Pod check
         run: gem install cocoapods-check
-
+          
       - name: Setup Sentry CLI
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
 
-      # - name: Setup Auth
-      #   uses: 'google-github-actions/auth@v0'
-      #   with:
-      #     credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
+      - name: Setup Auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
 
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v0
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
 
       - name: Setup cache
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
+      - name: Get configuration items
+        run: |
+          mkdir -p /Users/runner/privates        
+          gsutil -m cp -r gs://$GCS_BUCKET/ios/* /Users/runner/privates
       - name: Setup environments
         shell: bash
         env:
-          ENV: prod
+          ENV: ${{ matrix.env }}
         run: |
           cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
           cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
-
       - name: Pods install
         run: pod check || pod install
 
-      - name: Build and Upload to Testflight
+      - name: Build IPA
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: pre_release
+          lane: all
           bundle-install-path: "vendor/bundle"
+
+      - name: Deploy to OTA Server
+        shell: bash
+        env:
+          OTA_URL: ${{ secrets[matrix.ota_key] }}
+          APP_NAME: ${{ matrix.app_name }}
+          OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
+          OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
+        run: .github/deploy 
 
       - name: Prepare bump build number
         run: |
           git config user.name "$GH_ACTOR"
           git config user.email "$GH_ACTOR@users.noreply.github.com"
-
+                    
       - name: Bump Build number
+        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: bump_build_number
           bundle-install-path: "vendor/bundle"
 
       - name: Push commit 
+        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
         shell: bash
         run: | 
           git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
-
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
       - name: Send notifications to a specify Telegram group

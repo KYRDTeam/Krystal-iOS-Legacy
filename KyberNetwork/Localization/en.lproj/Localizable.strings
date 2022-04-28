@@ -814,6 +814,7 @@
 "buy.crypto" = "Buy Crypto";
 "promotion" = "Promotion";
 "supported.platforms" = "Supported Platforms";
+"reward.hunting" = "Reward Hunting";
 
 // Transaction History
 "from_colon_x" = "From: %@";

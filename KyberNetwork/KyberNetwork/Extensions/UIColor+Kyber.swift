@@ -94,6 +94,7 @@ extension UIColor {
 
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
     static let mainBg = UIColor(hex: "010101")
+    static var primaryGreenColor = UIColor(hex: "1DE9B6")
     static let evenBg = UIColor(hex: "0F0F0F")
     
     static var buttonColors: [UIColor] = [

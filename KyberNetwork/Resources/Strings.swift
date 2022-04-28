@@ -34,5 +34,6 @@ struct Strings {
   static let wallet = "wallet".toBeLocalised()
   static let fromColonX = "from_colon_x".toBeLocalised()
   static let toColonX = "to_colon_x".toBeLocalised()
+  static let rewardHunting = "reward.hunting".toBeLocalised()
   static let copied = "copied".toBeLocalised()
 }
