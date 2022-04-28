@@ -9,7 +9,7 @@ import UIKit
 import SwipeCellKit
 
 protocol PendingTransactionListViewControllerDelegate: AnyObject {
-  func selectSwapNow(_ viewController: KNTransactionListViewController)
+  func selectSwapNow(_ viewController: PendingTransactionListViewController)
   func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, speedupTransaction transaction: InternalHistoryTransaction)
   func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, cancelTransaction transaction: InternalHistoryTransaction)
   func pendingTransactionListViewController(_ viewController: PendingTransactionListViewController, openDetail transaction: InternalHistoryTransaction)
@@ -94,7 +94,7 @@ class PendingTransactionListViewController: BaseTransactionListViewController {
   }
   
   @IBAction func swapWasTapped(_ sender: Any) {
-//    delegate?.selectSwapNow(self)
+    delegate?.selectSwapNow(self)
   }
   
   override func updateWallet(wallet: KNWalletObject) {
