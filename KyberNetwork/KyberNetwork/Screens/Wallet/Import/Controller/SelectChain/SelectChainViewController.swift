@@ -10,7 +10,7 @@ import UIKit
 enum SelectChainEvent {
   case back
   case importMultiChain
-  case importEVM
+  case importEVM(type: ChainType)
   case importSolana
 }
 
@@ -69,7 +69,7 @@ extension SelectChainViewController: UITableViewDelegate {
     } else {
       let chain = ChainType.getAllChain()[indexPath.row - 1]
       self.selectedChain = chain
-      self.delegate?.selectChainViewController(self, run: chain == .solana ? .importSolana : .importEVM)
+      self.delegate?.selectChainViewController(self, run: chain == .solana ? .importSolana : .importEVM(type: chain))
     }
   }
 }

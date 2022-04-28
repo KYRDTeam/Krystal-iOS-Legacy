@@ -6,7 +6,7 @@ import TrustCore
 import TrustKeystore
 
 protocol KNImportWalletCoordinatorDelegate: class {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType)
   func importWalletCoordinatorDidClose()
   func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -55,10 +55,12 @@ extension KNImportWalletCoordinator: SelectChainDelegate {
       return
     case .importMultiChain:
       importVC.importType = .multiChain
-    case .importEVM:
+    case .importEVM(let type):
       importVC.importType = .evm
+      importVC.selectedChainType = type
     case .importSolana:
       importVC.importType = .solana
+      importVC.selectedChainType = .solana
     }
     self.navigationController.pushViewController(importVC, animated: true)
   }
@@ -69,18 +71,18 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     switch event {
     case .back:
       self.navigationController.popViewController(animated: true)
-    case .importJSON(let json, let password, let name, let importType):
-      self.importWallet(with: .keystore(string: json, password: password), name: name, importType: importType)
-    case .importPrivateKey(let privateKey, let name, let importType):
-      self.importWallet(with: .privateKey(privateKey: privateKey), name: name, importType: importType)
-    case .importSeeds(let seeds, let name, let importType):
-      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: importType)
+    case .importJSON(let json, let password, let name, let importType, let currentChain):
+      self.importWallet(with: .keystore(string: json, password: password), name: name, importType: importType, selectedChain: currentChain)
+    case .importPrivateKey(let privateKey, let name, let importType, let currentChain):
+      self.importWallet(with: .privateKey(privateKey: privateKey), name: name, importType: importType, selectedChain: currentChain)
+    case .importSeeds(let seeds, let name, let importType, let currentChain):
+      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: importType, selectedChain: currentChain)
     case .sendRefCode(code: let code):
       self.refCode = code
     }
   }
 
-  fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType) {
+  fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType, selectedChain: ChainType) {
     self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     if name == nil || name?.isEmpty == true {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
@@ -101,7 +103,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           if name == nil || name?.isEmpty == true { return "Imported" }
           return name ?? "Imported"
         }()
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType, importMethod: type.toStorageType())
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType, importMethod: type.toStorageType(), selectedChain: selectedChain)
         
         //TODO: add solana sign message
         if !self.refCode.isEmpty {
