@@ -54,8 +54,9 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   }
   
   func setupPageViewController() {
+    let defaultPageIndex = viewModel.hasPendingTransactions ? 1 : 0
     pageViewController.view.frame = self.pageContainer.bounds
-    pageViewController.setViewControllers([childListViewControllers[0]], direction: .forward, animated: true)
+    pageViewController.setViewControllers([childListViewControllers[defaultPageIndex]], direction: .forward, animated: true)
     pageViewController.dataSource = self
     pageContainer.addSubview(pageViewController.view)
     addChild(pageViewController)
@@ -69,7 +70,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
     self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
-    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.selectedSegmentIndex = viewModel.hasPendingTransactions ? 1 : 0
   }
 
   override func quickTutorialNextAction() {

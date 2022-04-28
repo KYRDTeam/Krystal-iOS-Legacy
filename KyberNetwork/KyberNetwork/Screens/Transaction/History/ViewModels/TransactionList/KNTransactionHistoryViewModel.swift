@@ -37,6 +37,10 @@ class KNTransactionHistoryViewModel {
     }
     return EtherscanTransactionStorage.shared.getEtherscanToken().map { $0.symbol }
   }
+  
+  var hasPendingTransactions: Bool {
+    return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
+  }
 
   init(currentWallet: KNWalletObject, type: KNTransactionHistoryType) {
     self.currentWallet = currentWallet

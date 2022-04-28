@@ -14,7 +14,7 @@ class GetSolanaTransactionsUseCase {
   let repository: TransactionRepository
   
   init(address: String, repository: TransactionRepository) {
-    self.address = "cqDeXT4WUEUSgVGwbydDj6S8o9waG7a1zchLcDmg8Tq" // address
+    self.address = address
     self.repository = repository
   }
   
