@@ -247,7 +247,7 @@ extension KNListWalletsCoordinator: CopyAddressViewControllerDelegate {
     }
     self.navigationController.popViewController(animated: true, completion: nil)
     var action = [UIAlertAction]()
-    if wallet.address.lowercased() != self.currentWallet.address.lowercased() {
+    if (wallet.address.lowercased() != self.currentWallet.address.lowercased()) || KNGeneralProvider.shared.currentChain != chain {
       action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
         if chain != KNGeneralProvider.shared.currentChain {
           KNGeneralProvider.shared.currentChain = chain
