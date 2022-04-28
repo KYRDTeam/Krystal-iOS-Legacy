@@ -17,7 +17,7 @@ class RewardHuntingCoordinator: Coordinator {
     self.navigationController = navigationController
     self.session = session
     let url = URL(string: Constants.rewardHuntingUrl)!
-      .appending("address", value: session.wallet.address.description)
+      .appending("address", value: session.wallet.addressString)
     self.url = url
   }
   
