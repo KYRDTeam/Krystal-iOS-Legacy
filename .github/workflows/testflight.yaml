@@ -108,6 +108,10 @@ jobs:
       APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
       # GCP 
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
