@@ -220,7 +220,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
           name: walletName + "-evm",
           isBackedUp: true,
           isWatchWallet: isWatchWallet,
-          chainType: .evm,
+          chainType: .multiChain,
           storageType: importMethod,
           evmAddress: "",
           walletID: walletID
