@@ -289,7 +289,7 @@ extension OverviewCoordinator: WalletsListViewControllerDelegate {
       UIPasteboard.general.string = wallet.address
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
       hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.label.text = Strings.copied
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
       guard let wal = self.session.keystore.matchWithWalletObject(wallet) else {
@@ -667,6 +667,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidStart()
     case .buyCrypto:
       self.delegate?.overviewCoordinatorBuyCrypto()
+    case .addNewWallet:
+      self.delegate?.overviewCoordinatorDidSelectAddWallet()
     }
   }
 }

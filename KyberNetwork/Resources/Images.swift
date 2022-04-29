@@ -22,4 +22,7 @@ struct Images {
   // History
   static let giftIcon = UIImage(named: "gift_icon")!
   static let warningRedIcon = UIImage(named: "warning_red_icon")!
+  
+  // Common
+  static let comingSoon = UIImage(named: "comming_soon")!
 }

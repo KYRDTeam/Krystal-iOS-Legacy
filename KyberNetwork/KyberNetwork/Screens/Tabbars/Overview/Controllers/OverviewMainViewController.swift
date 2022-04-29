@@ -237,6 +237,10 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
+    if KNGeneralProvider.shared.currentChain == .solana, !viewModel.session.wallet.hasEVMAddress {
+      delegate?.overviewMainViewController(self, run: .addNewWallet)
+      return
+    }
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       let viewModel = SwitchChainWalletsListViewModel(selected: selected)

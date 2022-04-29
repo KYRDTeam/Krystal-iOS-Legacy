@@ -79,7 +79,7 @@ extension KrystalSolanaTransactionItemViewModel {
     } else if isSolTransferTransaction {
       return solanaTransferTxAmountString
     }
-    return "Application"
+    return Strings.application
   }
   
   var transactionDetailsString: String {
@@ -124,9 +124,9 @@ extension KrystalSolanaTransactionItemViewModel {
     guard !transaction.details.solTransferTxs.isEmpty else { return "" }
     let tx = transaction.details.solTransferTxs[0]
     if isTransferToOther {
-      return String(format: "to_colon_x".toBeLocalised(), tx.destination)
+      return String(format: Strings.toColonX, tx.destination)
     } else {
-      return String(format: "from_colon_x".toBeLocalised(), tx.source)
+      return String(format: Strings.fromColonX, tx.source)
     }
   }
   
@@ -134,9 +134,9 @@ extension KrystalSolanaTransactionItemViewModel {
     guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
     let tx = transaction.details.tokensTransferTxs[0]
     if isTransferToOther {
-      return String(format: "to_colon_x".toBeLocalised(), tx.destinationOwner)
+      return String(format: Strings.toColonX, tx.destinationOwner)
     } else {
-      return String(format: "from_colon_x".toBeLocalised(), tx.sourceOwner)
+      return String(format: Strings.fromColonX, tx.sourceOwner)
     }
   }
   

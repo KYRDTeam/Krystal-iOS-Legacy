@@ -73,13 +73,6 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     segmentedControl.selectedSegmentIndex = viewModel.hasPendingTransactions ? 1 : 0
   }
 
-  override func quickTutorialNextAction() {
-    self.dismissTutorialOverlayer()
-//    self.animateResetReviewCellActionForTutorial()
-//    self.viewModel.isShowingQuickTutorial = false
-    self.reloadData()
-  }
-
   fileprivate func setupNavigationBar() {
     self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
   }
@@ -104,6 +97,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
   
   func updateWallet(wallet: KNWalletObject) {
     self.viewModel.updateCurrentWallet(wallet)
+    self.walletSelectButton.setTitle(wallet.address, for: .normal)
     self.childListViewControllers.forEach { $0.updateWallet(wallet: wallet) }
   }
 }
