@@ -23,6 +23,7 @@
                 <outlet property="headerContainerView" destination="gaQ-YO-jy8" id="h9d-J7-cNA"/>
                 <outlet property="pageContainer" destination="70B-Dp-o8C" id="fC9-Va-jGC"/>
                 <outlet property="segmentedControl" destination="RVy-7Y-G4X" id="WBl-RW-CdK"/>
+                <outlet property="topBarHeight" destination="88A-PP-VnU" id="ndQ-ye-rIS"/>
                 <outlet property="transactionsTextLabel" destination="GYJ-ao-QW0" id="3yV-HB-UvF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletSelectButton" destination="Pqe-0V-dgy" id="vRz-ax-2PV"/>
@@ -34,16 +35,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gaQ-YO-jy8">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HISTORY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYJ-ao-QW0">
-                            <rect key="frame" x="51" y="74.5" width="82" height="23.5"/>
+                            <rect key="frame" x="51" y="63.5" width="82" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1R-53-YNK">
-                            <rect key="frame" x="16" y="68.5" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="AXF-jF-TqZ"/>
                                 <constraint firstAttribute="height" constant="36" id="E2B-ga-408"/>
@@ -54,7 +55,7 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bHG-74-IjS">
-                            <rect key="frame" x="264" y="70.5" width="32" height="32"/>
+                            <rect key="frame" x="264" y="59.5" width="32" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="F4X-qz-Bek"/>
@@ -66,7 +67,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqe-0V-dgy">
-                            <rect key="frame" x="306" y="70.5" width="94" height="32"/>
+                            <rect key="frame" x="306" y="59.5" width="94" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="94" id="0m7-us-iVM"/>
@@ -86,7 +87,7 @@
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="114" id="88A-PP-VnU"/>
+                        <constraint firstAttribute="height" constant="113" id="88A-PP-VnU"/>
                         <constraint firstItem="GYJ-ao-QW0" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="51" id="Elr-fv-1p3"/>
                         <constraint firstAttribute="trailing" secondItem="bHG-74-IjS" secondAttribute="trailing" constant="118" id="JcL-Wd-WBP"/>
                         <constraint firstItem="n1R-53-YNK" firstAttribute="centerY" secondItem="GYJ-ao-QW0" secondAttribute="centerY" id="RPI-Uw-uMB"/>
@@ -94,7 +95,7 @@
                         <constraint firstItem="n1R-53-YNK" firstAttribute="leading" secondItem="gaQ-YO-jy8" secondAttribute="leading" constant="16" id="V3u-bQ-Yy9"/>
                         <constraint firstAttribute="trailing" secondItem="Pqe-0V-dgy" secondAttribute="trailing" constant="14" id="dF8-wR-IFP"/>
                         <constraint firstItem="bHG-74-IjS" firstAttribute="centerY" secondItem="GYJ-ao-QW0" secondAttribute="centerY" id="iWQ-0z-Crx"/>
-                        <constraint firstAttribute="bottom" secondItem="GYJ-ao-QW0" secondAttribute="bottom" constant="16" id="l1N-uc-0LO"/>
+                        <constraint firstAttribute="bottom" secondItem="GYJ-ao-QW0" secondAttribute="bottom" constant="26" id="l1N-uc-0LO"/>
                         <constraint firstItem="Pqe-0V-dgy" firstAttribute="leading" secondItem="bHG-74-IjS" secondAttribute="trailing" constant="10" id="xSC-iA-hLC"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -105,7 +106,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RVy-7Y-G4X" customClass="SegmentedControl" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
-                    <rect key="frame" x="20" y="114" width="197" height="32"/>
+                    <rect key="frame" x="20" y="113" width="197" height="32"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <segments>
                         <segment title="Completed" width="98"/>
@@ -118,7 +119,7 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70B-Dp-o8C">
-                    <rect key="frame" x="0.0" y="161" width="414" height="701"/>
+                    <rect key="frame" x="0.0" y="160" width="414" height="702"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
