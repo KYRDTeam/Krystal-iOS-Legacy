@@ -5236,7 +5236,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\n";
+			shellScript = "if [[ \"$CONFIGURATION\" == \"Release\" ]]\nthen \n  \"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\nfi\n";
 		};
 		C3D6996F2641454C004B34E1 /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
