@@ -68,6 +68,11 @@ struct Wallet {
       return evm
     }
   }
+  
+  var hasEVMAddress: Bool {
+    return !evmAddressString.isEmpty
+  }
+  
 }
 
 extension Wallet: Equatable {

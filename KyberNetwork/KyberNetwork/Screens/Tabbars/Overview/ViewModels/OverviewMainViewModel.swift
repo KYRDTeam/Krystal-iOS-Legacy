@@ -25,6 +25,7 @@ enum OverviewMainViewEvent {
   case didAppear
   case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
   case buyCrypto
+  case addNewWallet
 }
 
 enum OverviewMode {
