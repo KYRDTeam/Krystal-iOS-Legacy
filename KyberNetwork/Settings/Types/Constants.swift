@@ -79,15 +79,6 @@ public struct Constants {
   public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
   public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
   static let rewardHuntingUrl = "https://defi-dev.krystal.team/reward-hunting"
-
-  struct Tokens {
-    struct Decimals {
-      static let solana = 9
-    }
-    struct Symbol {
-      static let solana = "SOL"
-    }
-  }
 }
 
 public struct UnitConfiguration {

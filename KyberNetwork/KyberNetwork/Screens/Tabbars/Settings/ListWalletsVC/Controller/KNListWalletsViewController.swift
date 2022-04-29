@@ -361,6 +361,7 @@ extension KNListWalletsViewController: UITableViewDataSource {
     let cm = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section)
     cell.updateCell(cellModel: cm)
     cell.delegate = self
+    cell.selectionStyle = .none
 //    if self.viewModel.isCurrentWallet(row: indexPath.row, section: indexPath.section) {
 //      cell.accessoryType = .checkmark
 //      cell.tintColor = UIColor.Kyber.SWGreen

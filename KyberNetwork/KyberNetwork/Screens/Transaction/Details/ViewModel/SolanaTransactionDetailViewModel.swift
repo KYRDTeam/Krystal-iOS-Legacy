@@ -81,7 +81,8 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   
   var displayGasFee: String {
     let feeBigInt = BigInt(transaction.fee)
-    return feeBigInt.string(decimals: Constants.Tokens.Decimals.solana, minFractionDigits: 0, maxFractionDigits: 6) + " " + Constants.Tokens.Symbol.solana
+    let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    return feeBigInt.string(decimals: quoteToken.decimals, minFractionDigits: 0, maxFractionDigits: 6) + " " + quoteToken.symbol
   }
   
   var displayHash: String {
@@ -221,10 +222,11 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   private var solanaTransferTxAmountString: String {
     guard !transaction.details.solTransferTxs.isEmpty else { return "" }
     let tx = transaction.details.solTransferTxs[0]
-    let amountString = formattedAmount(amount: tx.amount, decimals: Constants.Tokens.Decimals.solana)
+    let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+    let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
     return isTransferToOther
-      ? "-\(amountString) \(Constants.Tokens.Symbol.solana)"
-      : "\(amountString) \(Constants.Tokens.Symbol.solana)"
+      ? "-\(amountString) \(quoteToken.symbol)"
+      : "\(amountString) \(quoteToken.symbol)"
   }
   
   private func formattedSwapRate(tx0: SolanaTransaction.Details.Event, tx1: SolanaTransaction.Details.Event) -> String {
