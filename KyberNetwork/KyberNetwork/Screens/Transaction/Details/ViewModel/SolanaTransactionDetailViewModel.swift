@@ -61,9 +61,9 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     if isSwapTransaction {
       return transaction.details.inputAccount.first?.account ?? ""
     } else if isTokenTransferTransaction {
-      return transaction.details.tokensTransferTxs.first?.sourceOwner ?? ""
+      return transaction.details.tokenTransfers.first?.sourceOwner ?? ""
     } else if isSolTransferTransaction {
-      return transaction.details.solTransferTxs.first?.source ?? ""
+      return transaction.details.solTransfers.first?.source ?? ""
     }
     return transaction.details.inputAccount.first?.account ?? ""
   }
@@ -72,9 +72,9 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     if isSwapTransaction {
       return interactApplication
     } else if isTokenTransferTransaction {
-      return transaction.details.tokensTransferTxs.first?.destinationOwner ?? ""
+      return transaction.details.tokenTransfers.first?.destinationOwner ?? ""
     } else if isSolTransferTransaction {
-      return transaction.details.solTransferTxs.first?.destination ?? ""
+      return transaction.details.solTransfers.first?.destination ?? ""
     }
     return interactApplication
   }
@@ -90,11 +90,11 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var isTokenTransferTransaction: Bool {
-    return !transaction.details.tokensTransferTxs.isEmpty
+    return !transaction.details.tokenTransfers.isEmpty
   }
   
   var isSolTransferTransaction: Bool {
-    return !transaction.details.solTransferTxs.isEmpty
+    return !transaction.details.solTransfers.isEmpty
   }
   
   var isSwapTransaction: Bool {
@@ -105,9 +105,9 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     if isSwapTransaction {
       return false
     } else if isTokenTransferTransaction {
-      return transaction.details.tokensTransferTxs.first?.sourceOwner == transaction.signer.first
+      return transaction.details.tokenTransfers.first?.sourceOwner == transaction.signer.first
     } else if isSolTransferTransaction {
-      return transaction.details.solTransferTxs.first?.source == transaction.signer.first
+      return transaction.details.solTransfers.first?.source == transaction.signer.first
     }
     return false
   }
@@ -161,12 +161,12 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var swapEvents: [SolanaTransaction.Details.Event] {
-    let unknownTransferTxs = transaction.details.unknownTransferTxs.flatMap(\.event)
-    let raydiumTransferTxs = transaction.details.raydiumTxs.compactMap { $0.swap }.flatMap { $0.event }
-    if !unknownTransferTxs.isEmpty {
-      return unknownTransferTxs
+    let unknownTransfers = transaction.details.unknownTransfers.flatMap(\.event)
+    let raydiumTransactions = transaction.details.raydiumTransactions.compactMap { $0.swap }.flatMap { $0.event }
+    if !unknownTransfers.isEmpty {
+      return unknownTransfers
     } else {
-      return raydiumTransferTxs
+      return raydiumTransactions
     }
   }
   
@@ -175,8 +175,8 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   private var solTransferString: String {
-    guard !transaction.details.solTransferTxs.isEmpty else { return "" }
-    let tx = transaction.details.solTransferTxs[0]
+    guard !transaction.details.solTransfers.isEmpty else { return "" }
+    let tx = transaction.details.solTransfers[0]
     if isTransferToOther {
       return String(format: "to_colon_x".toBeLocalised(), tx.destination)
     } else {
@@ -185,8 +185,8 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   private var tokenTransferInfoString: String {
-    guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
-    let tx = transaction.details.tokensTransferTxs[0]
+    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
+    let tx = transaction.details.tokenTransfers[0]
     if isTransferToOther {
       return String(format: Strings.toColonX, tx.destinationOwner)
     } else {
@@ -212,16 +212,16 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   private var tokenTransferTxAmountString: String {
-    guard !transaction.details.tokensTransferTxs.isEmpty else { return "" }
-    let tx = transaction.details.tokensTransferTxs[0]
+    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
+    let tx = transaction.details.tokenTransfers[0]
     let amountString = formattedAmount(amount: tx.amount, decimals: tx.token.decimals)
     let symbol = tx.token.symbol
     return isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
   }
   
   private var solanaTransferTxAmountString: String {
-    guard !transaction.details.solTransferTxs.isEmpty else { return "" }
-    let tx = transaction.details.solTransferTxs[0]
+    guard !transaction.details.solTransfers.isEmpty else { return "" }
+    let tx = transaction.details.solTransfers[0]
     let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
     let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
     return isTransferToOther

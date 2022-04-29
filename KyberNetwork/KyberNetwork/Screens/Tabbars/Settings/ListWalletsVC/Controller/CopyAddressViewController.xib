@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,6 +17,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CopyAddressViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <connections>
                 <outlet property="chainListTableView" destination="NPO-AZ-dFQ" id="Az8-Pp-bP6"/>
+                <outlet property="topBarHeight" destination="BPJ-zd-8bz" id="r9i-Yr-zLG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -29,13 +30,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-chain Wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjk-Kd-0fy">
-                            <rect key="frame" x="119.5" y="78" width="136" height="19"/>
+                            <rect key="frame" x="117" y="68" width="141" height="19"/>
                             <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-dY-IbX">
-                            <rect key="frame" x="19" y="69.5" width="46" height="36"/>
+                            <rect key="frame" x="19" y="59.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="JRx-jp-bJU"/>
                                 <constraint firstAttribute="height" constant="36" id="rDO-ag-RJY"/>
@@ -49,7 +50,7 @@
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
                         <constraint firstItem="7Qj-dY-IbX" firstAttribute="centerY" secondItem="yjk-Kd-0fy" secondAttribute="centerY" id="80F-qF-RJg"/>
-                        <constraint firstAttribute="bottom" secondItem="yjk-Kd-0fy" secondAttribute="bottom" constant="16" id="9Do-5P-TuN"/>
+                        <constraint firstAttribute="bottom" secondItem="yjk-Kd-0fy" secondAttribute="bottom" constant="26" id="9Do-5P-TuN"/>
                         <constraint firstAttribute="height" constant="113" id="BPJ-zd-8bz"/>
                         <constraint firstItem="yjk-Kd-0fy" firstAttribute="centerX" secondItem="Bf6-3r-mFx" secondAttribute="centerX" id="Hhq-Sb-qXO"/>
                         <constraint firstItem="7Qj-dY-IbX" firstAttribute="leading" secondItem="Bf6-3r-mFx" secondAttribute="leading" constant="19" id="aYj-OY-gwm"/>

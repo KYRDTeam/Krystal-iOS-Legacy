@@ -20,10 +20,10 @@ struct SolanaTransaction {
   
   struct Details {
     var recentBlockhash: String
-    var solTransferTxs: [SolTransferTx]
-    var tokensTransferTxs: [TokenTransferTx]
-    var unknownTransferTxs: [UnknownTransferTx]
-    var raydiumTxs: [RaydiumTx]
+    var solTransfers: [SolTransferTx]
+    var tokenTransfers: [TokenTransferTx]
+    var unknownTransfers: [UnknownTransferTx]
+    var raydiumTransactions: [RaydiumTx]
     var inputAccount: [InputAccount]
     
     struct InputAccount {
@@ -47,7 +47,7 @@ struct SolanaTransaction {
       var source: String
       var sourceOwner: String
       var token: Token
-      var type: String
+      var type: String?
 
       struct Token {
         var address: String

@@ -20,18 +20,18 @@ struct SolanaTransactionObject: Codable {
   
   struct DetailsObject: Codable {
     var recentBlockhash: String
-    var solTransferTxs: [SolTransferTxObject]
-    var tokensTransferTxs: [TokenTransferTxObject]
-    var unknownTransferTxs: [UnknownTransferTxObject]
-    var raydiumTxs: [RaydiumTxObject]
+    var solTransfers: [SolTransferTxObject]
+    var tokenTransfers: [TokenTransferTxObject]
+    var unknownTransfers: [UnknownTransferTxObject]
+    var raydiumTransactions: [RaydiumTxObject]
     var inputAccount: [InputAccountObject]
     
     init(_ details: SolanaTransaction.Details) {
       self.recentBlockhash = details.recentBlockhash
-      self.solTransferTxs = details.solTransferTxs.map(SolanaTransactionObject.DetailsObject.SolTransferTxObject.init)
-      self.tokensTransferTxs = details.tokensTransferTxs.map(SolanaTransactionObject.DetailsObject.TokenTransferTxObject.init)
-      self.unknownTransferTxs = details.unknownTransferTxs.map(SolanaTransactionObject.DetailsObject.UnknownTransferTxObject.init)
-      self.raydiumTxs = details.raydiumTxs.map(SolanaTransactionObject.DetailsObject.RaydiumTxObject.init)
+      self.solTransfers = details.solTransfers.map(SolanaTransactionObject.DetailsObject.SolTransferTxObject.init)
+      self.tokenTransfers = details.tokenTransfers.map(SolanaTransactionObject.DetailsObject.TokenTransferTxObject.init)
+      self.unknownTransfers = details.unknownTransfers.map(SolanaTransactionObject.DetailsObject.UnknownTransferTxObject.init)
+      self.raydiumTransactions = details.raydiumTransactions.map(SolanaTransactionObject.DetailsObject.RaydiumTxObject.init)
       self.inputAccount = details.inputAccount.map(SolanaTransactionObject.DetailsObject.InputAccountObject.init)
     }
     
@@ -79,7 +79,7 @@ struct SolanaTransactionObject: Codable {
         self.source = tx.source
         self.sourceOwner = tx.sourceOwner
         self.token = TokenObject(tx.token)
-        self.type = tx.type
+        self.type = tx.type ?? ""
       }
 
       struct TokenObject: Codable {
@@ -220,10 +220,10 @@ extension SolanaTransactionObject.DetailsObject {
   
   func toDomain() -> SolanaTransaction.Details {
     return .init(recentBlockhash: recentBlockhash,
-                 solTransferTxs: solTransferTxs.map { $0.toDomain() },
-                 tokensTransferTxs: tokensTransferTxs.map { $0.toDomain() },
-                 unknownTransferTxs: unknownTransferTxs.map { $0.toDomain() },
-                 raydiumTxs: raydiumTxs.map { $0.toDomain() },
+                 solTransfers: solTransfers.map { $0.toDomain() },
+                 tokenTransfers: tokenTransfers.map { $0.toDomain() },
+                 unknownTransfers: unknownTransfers.map { $0.toDomain() },
+                 raydiumTransactions: raydiumTransactions.map { $0.toDomain() },
                  inputAccount: inputAccount.map { $0.toDomain() })
   }
   

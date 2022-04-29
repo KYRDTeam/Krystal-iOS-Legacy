@@ -200,7 +200,7 @@ extension KNTransactionListViewController {
 extension KNTransactionListViewController: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSource {
   
   func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 3
+    return 5
   }
   
   func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {

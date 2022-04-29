@@ -29,24 +29,15 @@ struct SolanaTransactionDTO: Decodable {
   var lamport: Int
   var signer: [String]
   var details: DetailsDTO
-  var parsedInstruction: [InstructionDTO]
+  var parsedInstruction: [InstructionDTO]?
   
   struct DetailsDTO: Decodable {
     var recentBlockhash: String
-    var solTransferTxs: [SolTransferTxDTO]?
-    var tokensTransferTxs: [TokenTransferTxDTO]?
-    var unknownTransferTxs: [UnknownTransferTxDTO]?
-    var raydiumTxs: [RaydiumTxDTO]?
+    var solTransfers: [SolTransferTxDTO]?
+    var tokenTransfers: [TokenTransferTxDTO]?
+    var unknownTransfers: [UnknownTransferTxDTO]?
+    var raydiumTransactions: [RaydiumTxDTO]?
     var inputAccount: [InputAccountDTO]?
-    
-    enum CodingKeys: String, CodingKey {
-      case recentBlockhash
-      case solTransferTxs = "sol_transfer_txs"
-      case tokensTransferTxs = "tokens_transfer_txs"
-      case unknownTransferTxs = "unknown_transfer_txs"
-      case raydiumTxs = "raydium_txs"
-      case inputAccount
-    }
     
     struct InputAccountDTO: Decodable {
       var account: String
@@ -69,7 +60,7 @@ struct SolanaTransactionDTO: Decodable {
       var source: String
       var sourceOwner: String
       var token: TokenDTO
-      var type: String
+      var type: String?
       
       enum CodingKeys: String, CodingKey {
         case amount, destination, source, token, type
@@ -164,7 +155,7 @@ extension SolanaTransactionDTO {
                  lamport: lamport,
                  signer: signer,
                  details: details.toDomain(),
-                 parsedInstruction: parsedInstruction.map { $0.toDomain() }
+                 parsedInstruction: parsedInstruction?.map { $0.toDomain() } ?? []
     )
   }
   
@@ -182,10 +173,10 @@ extension SolanaTransactionDTO.DetailsDTO {
   
   func toDomain() -> SolanaTransaction.Details {
     return .init(recentBlockhash: recentBlockhash,
-                 solTransferTxs: solTransferTxs?.map { $0.toDomain() } ?? [],
-                 tokensTransferTxs: tokensTransferTxs?.map { $0.toDomain() } ?? [],
-                 unknownTransferTxs: unknownTransferTxs?.map { $0.toDomain() } ?? [],
-                 raydiumTxs: raydiumTxs?.map { $0.toDomain() } ?? [],
+                 solTransfers: solTransfers?.map { $0.toDomain() } ?? [],
+                 tokenTransfers: tokenTransfers?.map { $0.toDomain() } ?? [],
+                 unknownTransfers: unknownTransfers?.map { $0.toDomain() } ?? [],
+                 raydiumTransactions: raydiumTransactions?.map { $0.toDomain() } ?? [],
                  inputAccount: inputAccount?.map { $0.toDomain() } ?? [])
   }
   
