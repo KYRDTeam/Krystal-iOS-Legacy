@@ -172,6 +172,8 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
   }
   
   func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType) {
+    KNGeneralProvider.shared.currentChain = selectedChain
+    KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: wallet.addressString)
     self.navigationController.dismiss(animated: true) {
       var isWatchWallet = false
       var solWalletId = ""
