@@ -41,11 +41,16 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
       openSwap: openSwap,
       speedupTransaction: speedupTransaction,
       cancelTransaction: cancelTransaction,
-      openWalletSelectPopup: openWalletSelectPopup
+      openWalletSelectPopup: openWalletSelectPopup,
+      onUpdateWallet: onWalletUpdated
     )
     
     self.viewController = vc
     self.navigationController.pushViewController(vc, animated: true)
+  }
+  
+  private func onWalletUpdated(wallet: KNWalletObject) {
+    self.wallet = wallet
   }
   
   private func closeTransactionHistory() {

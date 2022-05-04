@@ -22,6 +22,7 @@ struct KNTransactionHistoryViewModelActions {
   var speedupTransaction: (InternalHistoryTransaction) -> ()
   var cancelTransaction: (InternalHistoryTransaction) -> ()
   var openWalletSelectPopup: () -> ()
+  var onUpdateWallet: (KNWalletObject) -> ()
 }
 
 class KNTransactionHistoryViewModel {
@@ -63,6 +64,7 @@ class KNTransactionHistoryViewModel {
 
   func updateCurrentWallet(_ currentWallet: KNWalletObject) {
     self.currentWallet = currentWallet
+    actions?.onUpdateWallet(currentWallet)
   }
   
   func didTapBack() {
