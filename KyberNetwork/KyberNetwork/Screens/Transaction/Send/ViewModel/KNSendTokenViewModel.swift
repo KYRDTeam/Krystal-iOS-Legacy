@@ -72,7 +72,12 @@ class KNSendTokenViewModel: NSObject {
   var allTokenBalanceString: String {
     if self.from.isQuoteToken {
       let balance = self.from.getBalanceBigInt()
-      let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
+      var availableValue = BigInt(0)
+      if KNGeneralProvider.shared.currentChain == .solana {
+        availableValue = max(BigInt(0), balance - self.solanaFeeBigInt)
+      } else {
+        availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
+      }
       let string = availableValue.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
