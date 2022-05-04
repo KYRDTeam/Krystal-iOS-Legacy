@@ -98,4 +98,46 @@ struct SolanaTransaction {
     var type: String
   }
   
+  enum SolanaTransactionType {
+    case swap
+    case solTransfer
+    case splTransfer
+    case other
+  }
+  
+  var type: SolanaTransactionType {
+    if swapEvents.count >= 2 {
+      return .swap
+    } else if !details.tokenTransfers.isEmpty {
+      return .splTransfer
+    } else if !details.solTransfers.isEmpty {
+      return .solTransfer
+    } else {
+      return .other
+    }
+  }
+  
+  var swapEvents: [Details.Event] {
+    let unknownTransfers = details.unknownTransfers.flatMap(\.event)
+    let raydiumTransactions = details.raydiumTransactions.compactMap { $0.swap }.flatMap { $0.event }
+    if !unknownTransfers.isEmpty {
+      return unknownTransfers
+    } else {
+      return raydiumTransactions
+    }
+  }
+  
+  var isTransferToOther: Bool {
+    switch type {
+    case .swap:
+      return false
+    case .splTransfer:
+      return details.tokenTransfers.first?.sourceOwner == signer.first
+    case .solTransfer:
+      return details.solTransfers.first?.source == signer.first
+    default:
+      return false
+    }
+  }
+  
 }

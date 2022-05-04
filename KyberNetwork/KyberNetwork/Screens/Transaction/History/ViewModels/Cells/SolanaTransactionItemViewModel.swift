@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import BigInt
 
-class KrystalSolanaTransactionItemViewModel: TransactionHistoryItemViewModelProtocol {
+class SolanaTransactionItemViewModel: TransactionHistoryItemViewModelProtocol {
   
   let transaction: SolanaTransaction
   
@@ -18,78 +18,53 @@ class KrystalSolanaTransactionItemViewModel: TransactionHistoryItemViewModelProt
   }
 }
 
-extension KrystalSolanaTransactionItemViewModel {
+extension SolanaTransactionItemViewModel {
   
   var interactProgram: String {
     return transaction.details.inputAccount.last?.account ?? ""
   }
   
   var fromIconSymbol: String {
-    if isSwapTransaction {
-      return swapEvents.first!.symbol
-    }
-    return ""
+    return swapEvents.first?.symbol ?? ""
   }
   
   var toIconSymbol: String {
-    if isSwapTransaction {
-      return swapEvents.last!.symbol
-    }
-    return ""
+    return swapEvents.last?.symbol ?? ""
   }
   
   var txType: HistoryModelType {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return .swap
-    } else if isTokenTransferTransaction || isSolTransferTransaction {
+    case .solTransfer, .splTransfer:
       return .transferToken
-    } else {
+    default:
       return .contractInteraction
     }
   }
   
-  var isTokenTransferTransaction: Bool {
-    return !transaction.details.tokenTransfers.isEmpty
-  }
-  
-  var isSolTransferTransaction: Bool {
-    return !transaction.details.solTransfers.isEmpty
-  }
-  
-  var isSwapTransaction: Bool {
-    return swapEvents.count >= 2
-  }
-  
-  var isTransferToOther: Bool {
-    if isSwapTransaction {
-      return false
-    } else if isTokenTransferTransaction {
-      return transaction.details.tokenTransfers.first?.sourceOwner == transaction.signer.first
-    } else if isSolTransferTransaction {
-      return transaction.details.solTransfers.first?.source == transaction.signer.first
-    }
-    return false
-  }
-  
   var displayedAmountString: String {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return tokenSwapAmountString
-    } else if isTokenTransferTransaction {
+    case .splTransfer:
       return tokenTransferTxAmountString
-    } else if isSolTransferTransaction {
+    case .solTransfer:
       return solanaTransferTxAmountString
+    default:
+      return Strings.application
     }
-    return Strings.application
   }
   
   var transactionDetailsString: String {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return swapRateString
-    } else if isTokenTransferTransaction {
+    case .splTransfer:
       return tokenTransferInfoString
-    } else if isSolTransferTransaction {
+    case .solTransfer:
       return solTransferString
-    } else {
+    default:
       return interactProgram
     }
   }
@@ -123,7 +98,7 @@ extension KrystalSolanaTransactionItemViewModel {
   private var solTransferString: String {
     guard !transaction.details.solTransfers.isEmpty else { return "" }
     let tx = transaction.details.solTransfers[0]
-    if isTransferToOther {
+    if transaction.isTransferToOther {
       return String(format: Strings.toColonX, tx.destination)
     } else {
       return String(format: Strings.fromColonX, tx.source)
@@ -133,7 +108,7 @@ extension KrystalSolanaTransactionItemViewModel {
   private var tokenTransferInfoString: String {
     guard !transaction.details.tokenTransfers.isEmpty else { return "" }
     let tx = transaction.details.tokenTransfers[0]
-    if isTransferToOther {
+    if transaction.isTransferToOther {
       return String(format: Strings.toColonX, tx.destinationOwner)
     } else {
       return String(format: Strings.fromColonX, tx.sourceOwner)
@@ -162,7 +137,7 @@ extension KrystalSolanaTransactionItemViewModel {
     let tx = transaction.details.tokenTransfers[0]
     let amountString = formattedAmount(amount: tx.amount, decimals: tx.token.decimals)
     let symbol = tx.token.symbol
-    return isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
+    return transaction.isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
   }
   
   private var solanaTransferTxAmountString: String {
@@ -170,7 +145,7 @@ extension KrystalSolanaTransactionItemViewModel {
     let tx = transaction.details.solTransfers[0]
     let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
     let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
-    return isTransferToOther
+    return transaction.isTransferToOther
       ? "-\(amountString) \(quoteToken.symbol)"
       : "\(amountString) \(quoteToken.symbol)"
   }

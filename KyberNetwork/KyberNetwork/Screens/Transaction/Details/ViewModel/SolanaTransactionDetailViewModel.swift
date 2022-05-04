@@ -35,7 +35,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayTxStatusColor: UIColor {
-    return isError ? UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
+    return isError ? UIColor.Kyber.errorText : UIColor.Kyber.SWGreen
   }
   
   var displayTxTypeString: String {
@@ -47,36 +47,40 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayAmountString: String {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return tokenSwapAmountString
-    } else if isTokenTransferTransaction {
+    case .splTransfer:
       return tokenTransferTxAmountString
-    } else if isSolTransferTransaction {
+    case .solTransfer:
       return solanaTransferTxAmountString
+    default:
+      return "--"
     }
-    return "--"
   }
   
   var displayFromAddress: String {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return transaction.details.inputAccount.first?.account ?? ""
-    } else if isTokenTransferTransaction {
+    case .splTransfer:
       return transaction.details.tokenTransfers.first?.sourceOwner ?? ""
-    } else if isSolTransferTransaction {
+    case .solTransfer:
       return transaction.details.solTransfers.first?.source ?? ""
+    default:
+      return transaction.details.inputAccount.first?.account ?? ""
     }
-    return transaction.details.inputAccount.first?.account ?? ""
   }
   
   var displayToAddress: String {
-    if isSwapTransaction {
-      return interactApplication
-    } else if isTokenTransferTransaction {
+    switch transaction.type {
+    case .splTransfer:
       return transaction.details.tokenTransfers.first?.destinationOwner ?? ""
-    } else if isSolTransferTransaction {
+    case .solTransfer:
       return transaction.details.solTransfers.first?.destination ?? ""
+    default:
+      return interactApplication
     }
-    return interactApplication
   }
   
   var displayGasFee: String {
@@ -89,57 +93,30 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     return transaction.txHash
   }
   
-  var isTokenTransferTransaction: Bool {
-    return !transaction.details.tokenTransfers.isEmpty
-  }
-  
-  var isSolTransferTransaction: Bool {
-    return !transaction.details.solTransfers.isEmpty
-  }
-  
-  var isSwapTransaction: Bool {
-    return swapEvents.count >= 2
-  }
-  
-  var isTransferToOther: Bool {
-    if isSwapTransaction {
-      return false
-    } else if isTokenTransferTransaction {
-      return transaction.details.tokenTransfers.first?.sourceOwner == transaction.signer.first
-    } else if isSolTransferTransaction {
-      return transaction.details.solTransfers.first?.source == transaction.signer.first
-    }
-    return false
-  }
-  
   var fromIconSymbol: String {
-    if isSwapTransaction {
-      return swapEvents.first!.symbol
-    }
-    return ""
+    return swapEvents.first?.symbol ?? ""
   }
   
   var toIconSymbol: String {
-    if isSwapTransaction {
-      return swapEvents.last!.symbol
-    }
-    return ""
+    return swapEvents.last?.symbol ?? ""
   }
   
   var fromFieldTitle: String {
-    if isTokenTransferTransaction || isSolTransferTransaction {
-      if !isTransferToOther {
-        return Strings.fromWallet
-      }
+    switch transaction.type {
+    case .solTransfer, .splTransfer:
+      return transaction.isTransferToOther ? Strings.wallet : Strings.fromWallet
+    default:
+      return Strings.wallet
     }
-    return Strings.wallet
   }
   
   var toFieldTitle: String {
-    if isTokenTransferTransaction || isSolTransferTransaction {
+    switch transaction.type {
+    case .solTransfer, .splTransfer:
       return Strings.toWallet
+    default:
+      return Strings.application
     }
-    return Strings.application
   }
   
   var transactionTypeImage: UIImage {
@@ -151,23 +128,18 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var txType: HistoryModelType {
-    if isSwapTransaction {
+    switch transaction.type {
+    case .swap:
       return .swap
-    } else if isTokenTransferTransaction || isSolTransferTransaction {
+    case .solTransfer, .splTransfer:
       return .transferToken
-    } else {
+    default:
       return .contractInteraction
     }
   }
   
   var swapEvents: [SolanaTransaction.Details.Event] {
-    let unknownTransfers = transaction.details.unknownTransfers.flatMap(\.event)
-    let raydiumTransactions = transaction.details.raydiumTransactions.compactMap { $0.swap }.flatMap { $0.event }
-    if !unknownTransfers.isEmpty {
-      return unknownTransfers
-    } else {
-      return raydiumTransactions
-    }
+    return transaction.swapEvents
   }
   
   var interactApplication: String {
@@ -177,17 +149,17 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   private var solTransferString: String {
     guard !transaction.details.solTransfers.isEmpty else { return "" }
     let tx = transaction.details.solTransfers[0]
-    if isTransferToOther {
-      return String(format: "to_colon_x".toBeLocalised(), tx.destination)
+    if transaction.isTransferToOther {
+      return String(format: Strings.toColonX, tx.destination)
     } else {
-      return String(format: "from_colon_x".toBeLocalised(), tx.source)
+      return String(format: Strings.fromColonX, tx.source)
     }
   }
   
   private var tokenTransferInfoString: String {
     guard !transaction.details.tokenTransfers.isEmpty else { return "" }
     let tx = transaction.details.tokenTransfers[0]
-    if isTransferToOther {
+    if transaction.isTransferToOther {
       return String(format: Strings.toColonX, tx.destinationOwner)
     } else {
       return String(format: Strings.fromColonX, tx.sourceOwner)
@@ -216,7 +188,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     let tx = transaction.details.tokenTransfers[0]
     let amountString = formattedAmount(amount: tx.amount, decimals: tx.token.decimals)
     let symbol = tx.token.symbol
-    return isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
+    return transaction.isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
   }
   
   private var solanaTransferTxAmountString: String {
@@ -224,7 +196,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     let tx = transaction.details.solTransfers[0]
     let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
     let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
-    return isTransferToOther
+    return transaction.isTransferToOther
       ? "-\(amountString) \(quoteToken.symbol)"
       : "\(amountString) \(quoteToken.symbol)"
   }

@@ -56,9 +56,9 @@ struct SolanaTransactionDTO: Decodable {
     struct TokenTransferTxDTO: Decodable {
       var amount: String
       var destination: String
-      var destinationOwner: String
+      var destinationOwner: String?
       var source: String
-      var sourceOwner: String
+      var sourceOwner: String?
       var token: TokenDTO
       var type: String?
       
@@ -201,7 +201,7 @@ extension SolanaTransactionDTO.DetailsDTO.SolTransferTxDTO {
 extension SolanaTransactionDTO.DetailsDTO.TokenTransferTxDTO {
   
   func toDomain() -> SolanaTransaction.Details.TokenTransferTx {
-    return .init(amount: Double(amount) ?? 0, destination: destination, destinationOwner: destinationOwner, source: source, sourceOwner: sourceOwner, token: token.toDomain(), type: type)
+    return .init(amount: Double(amount) ?? 0, destination: destination, destinationOwner: destinationOwner ?? "", source: source, sourceOwner: sourceOwner ?? "", token: token.toDomain(), type: type)
   }
   
 }

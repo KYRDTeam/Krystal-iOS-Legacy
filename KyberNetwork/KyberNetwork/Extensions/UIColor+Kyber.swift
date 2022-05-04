@@ -92,6 +92,7 @@ extension UIColor {
     static var SWWhiteTextColor = UIColor(red: 245, green: 246, blue: 249)
     static var SWSelectedBlueColor = UIColor(red: 1, green: 38, blue: 51)
 
+    static var errorText = UIColor(red: 255, green: 110, blue: 64)
     static var lightPeriwinkle = UIColor(red: 225, green: 228, blue: 235)
     static let mainBg = UIColor(hex: "010101")
     static var primaryGreenColor = UIColor(hex: "1DE9B6")

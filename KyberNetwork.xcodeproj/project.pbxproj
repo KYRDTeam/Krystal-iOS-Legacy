@@ -558,7 +558,7 @@
 		A6DA40FE27F7007A0078C58E /* ExploreSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6DA40FC27F700790078C58E /* ExploreSectionHeaderView.xib */; };
 		A6DA410027F7129E0078C58E /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40FF27F7129E0078C58E /* UIScreen+.swift */; };
 		A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA410127F974B40078C58E /* ThreadProtectedObject.swift */; };
-		A6E26FD8281289DC0054427E /* KrystalSolanaTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FD7281289DC0054427E /* KrystalSolanaTransactionItemViewModel.swift */; };
+		A6E26FD8281289DC0054427E /* SolanaTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FD7281289DC0054427E /* SolanaTransactionItemViewModel.swift */; };
 		A6E26FDA28129B790054427E /* InternalHistoryTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FD928129B780054427E /* InternalHistoryTransaction.swift */; };
 		A6E26FDC28129BA90054427E /* HistoryTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FDB28129BA90054427E /* HistoryTransaction.swift */; };
 		A6E26FDE28129BF20054427E /* TransactionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E26FDD28129BF20054427E /* TransactionFactory.swift */; };
@@ -1499,7 +1499,7 @@
 		A6DA40FC27F700790078C58E /* ExploreSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExploreSectionHeaderView.xib; sourceTree = "<group>"; };
 		A6DA40FF27F7129E0078C58E /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		A6DA410127F974B40078C58E /* ThreadProtectedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadProtectedObject.swift; sourceTree = "<group>"; };
-		A6E26FD7281289DC0054427E /* KrystalSolanaTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalSolanaTransactionItemViewModel.swift; sourceTree = "<group>"; };
+		A6E26FD7281289DC0054427E /* SolanaTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		A6E26FD928129B780054427E /* InternalHistoryTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalHistoryTransaction.swift; sourceTree = "<group>"; };
 		A6E26FDB28129BA90054427E /* HistoryTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTransaction.swift; sourceTree = "<group>"; };
 		A6E26FDD28129BF20054427E /* TransactionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFactory.swift; sourceTree = "<group>"; };
@@ -4213,7 +4213,7 @@
 				A6B3CD542811C07B005D0D66 /* PendingHistoryTransactonViewModel.swift */,
 				A6B3CD552811C07B005D0D66 /* PendingInternalHistoryTransactonViewModel.swift */,
 				A6B3CD502811BF84005D0D66 /* TransactionHistoryItemViewModelProtocol.swift */,
-				A6E26FD7281289DC0054427E /* KrystalSolanaTransactionItemViewModel.swift */,
+				A6E26FD7281289DC0054427E /* SolanaTransactionItemViewModel.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5606,7 +5606,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\n";
+			shellScript = "# \"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/KyberNetwork/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		C3D6996F2641454C004B34E1 /* Run Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6264,7 +6265,7 @@
 				C3A6592025F1EC3300A89241 /* EarnOverviewViewController.swift in Sources */,
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
-				A6E26FD8281289DC0054427E /* KrystalSolanaTransactionItemViewModel.swift in Sources */,
+				A6E26FD8281289DC0054427E /* SolanaTransactionItemViewModel.swift in Sources */,
 				A6E6C9C92817000600EEB2E6 /* SolanaTransaction.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
