@@ -637,7 +637,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       return false
     } else {
       if KNGeneralProvider.shared.currentChain == .solana {
-        if text.isValidSolanaAddress() {
+        if text.isValidSolanaAddress() && !self.viewModel.from.isQuoteToken {
           self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
             self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
             
