@@ -19,12 +19,16 @@ protocol GasLimitRequestable {
 class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
+  let walletManagerFactory = WalletManagerFactory()
 
   var currentChain: ChainType {
     didSet {
       Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
+      self.walletManager = walletManagerFactory.create(chain: self.currentChain)
     }
   }
+  
+  var walletManager: WalletManager
   
   var customRPC: CustomRPC {
     return self.currentChain.customRPC()
@@ -138,6 +142,7 @@ class KNGeneralProvider {
     } else {
       self.currentChain = .eth
     }
+    walletManager = walletManagerFactory.create(chain: self.currentChain)
   }
 
   // MARK: Balance

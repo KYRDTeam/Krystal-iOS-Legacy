@@ -453,3 +453,7 @@ open class EtherKeystore: Keystore {
         }
     }
 }
+
+protocol WalletSecurable {
+  
+}

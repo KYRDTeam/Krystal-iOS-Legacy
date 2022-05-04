@@ -351,6 +351,14 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupPrivateKey(wallet: Wallet) {
+    let result = KNGeneralProvider.shared.walletManager.exportPrivateKey(wallet: wallet)
+    switch result {
+    case .success(let privateKey):
+      self.openShowBackUpView(data: privateKey, wallet: wallet)
+    case .failure(let error):
+      self.navigationController.topViewController?.displayError(error: error)
+    }
+    
     if case .solana(let address, _, let walletID) = wallet.type {
       guard let pk = self.session.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
       let keypair = SolanaUtil.exportKeyPair(privateKey: pk)

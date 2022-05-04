@@ -22,11 +22,7 @@ class AddWatchWalletViewModel {
   
   var isAddressValid: Bool {
     guard !self.addressString.isEmpty else { return false }
-    if KNGeneralProvider.shared.currentChain == .solana {
-      return SolanaUtil.isVaildSolanaAddress(self.addressString)
-    } else {
-      return Address.isAddressValid(self.addressString)
-    }
+    return KNGeneralProvider.shared.walletManager.isAddressValid(addressString)
   }
 
   func updateAddress(_ address: String) {
