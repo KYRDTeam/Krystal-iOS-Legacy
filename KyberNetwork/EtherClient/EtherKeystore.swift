@@ -147,12 +147,7 @@ open class EtherKeystore: Keystore {
           do {
             let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
             _ = setPassword(newPassword, for: account)
-            if importType == .solana {
-              let publicKey = SolanaUtil.seedsToPublicKey(key)
-              completion(.success(Wallet(type: .solana(publicKey, account.address.description, ""))))
-            } else {
-              completion(.success(Wallet(type: .real(account))))
-            }
+            completion(.success(Wallet(type: .real(account))))
           } catch let error {
             if case KeyStore.Error.accountAlreadyExists = error {
               completion(.failure(.duplicateAccount))

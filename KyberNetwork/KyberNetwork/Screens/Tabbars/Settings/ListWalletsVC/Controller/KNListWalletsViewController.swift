@@ -117,13 +117,11 @@ class KNListWalletsViewModel {
     let allMultiChainAddress = multiChainWallet.map { wallet in
       return wallet.address.lowercased()
     }
-
     let singleWallet = self.listWallets.filter { walletObject in
       return walletObject.chainType != 0 && !allMultiChainAddress.contains(walletObject.evmAddress.lowercased())
     }
     
-    var wallets: [KNWalletObject] = multiChainWallet + singleWallet
-    
+    let wallets: [KNWalletObject] = multiChainWallet + singleWallet
     let listData = wallets.map { e in
       return e.toData()
     }

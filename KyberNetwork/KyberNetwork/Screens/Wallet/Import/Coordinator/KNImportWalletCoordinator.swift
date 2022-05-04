@@ -103,7 +103,8 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           if name == nil || name?.isEmpty == true { return "Imported" }
           return name ?? "Imported"
         }()
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: importType, importMethod: type.toStorageType(), selectedChain: selectedChain)
+
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: type.toStorageType() == .seeds ? .multiChain : importType, importMethod: type.toStorageType(), selectedChain: selectedChain)
         
         //TODO: add solana sign message
         if !self.refCode.isEmpty {
