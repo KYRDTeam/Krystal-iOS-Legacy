@@ -17,6 +17,7 @@ struct WalletData: Equatable {
   let chainType: ImportWalletChainType
   let storageType: StorageType
   let evmAddress: String
+  let solanaAddress: String
   let walletID: String
   
   static func == (lhs: WalletData, rhs: WalletData) -> Bool {

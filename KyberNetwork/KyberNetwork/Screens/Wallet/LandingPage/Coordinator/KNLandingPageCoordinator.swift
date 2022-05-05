@@ -135,54 +135,81 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportWalletChainType, importMethod: StorageType) {
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportType, importMethod: StorageType, importChainType: ImportWalletChainType) {
+    var isWatchWallet = false
+    var solWalletId = ""
+    if case WalletType.watch(_) = wallet.type {
+      isWatchWallet = true
+    }
+    
+    if case WalletType.solana(_, _, let walletID) = wallet.type {
+      solWalletId = walletID
+    }
+
+    var finalImportChainType = importChainType
+    var solanaAddress = ""
+    
+    if case .mnemonic(let words, _) = importType {
+      finalImportChainType = .multiChain
+      let key = words.joined(separator: " ")
+      let address = SolanaUtil.seedsToPublicKey(key)
+      solanaAddress = address
+    }
+    
+    if importChainType == .solana {
+      solanaAddress = wallet.addressString
+    }
+    
     let walletObject = KNWalletObject(
       address: wallet.addressString,
       name: name ?? "Untitled",
       isBackedUp: isBackUp,
-      chainType: importType,
+      isWatchWallet: isWatchWallet,
+      chainType: finalImportChainType,
       storageType: importMethod,
-      evmAddress: wallet.evmAddressString
+      evmAddress: wallet.evmAddressString,
+      solanaAddress: solanaAddress,
+      walletID: solWalletId
     )
-    var wallets = [walletObject]
-    if case .multiChain = importType, case .real(let account) = wallet.type {
-      let result = self.keystore.exportMnemonics(account: account)
-      if case .success(let seeds) = result {
-        let publicKey = SolanaUtil.seedsToPublicKey(seeds)
-        let solName = name ?? "Untitled"
-        let solWalletObject = KNWalletObject(
-          address: publicKey,
-          name: solName + "-sol",
-          isBackedUp: true,
-          isWatchWallet: false,
-          chainType: .solana,
-          storageType: importMethod,
-          evmAddress: wallet.evmAddressString,
-          walletID: ""
-        )
-        wallets.append(solWalletObject)
-      }
-    }
-    if case .solana = importType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
-      let walletName = name ?? "Untitled"
-      let evmWalletObject = KNWalletObject(
-        address: evmAddress,
-        name: walletName + "-evm",
-        isBackedUp: true,
-        isWatchWallet: false,
-        chainType: .evm,
-        storageType: importMethod,
-        evmAddress: "",
-        walletID: walletID
-      )
-      wallets.append(evmWalletObject)
-    }
+    let wallets = [walletObject]
+//    if case .multiChain = importType, case .real(let account) = wallet.type {
+//      let result = self.keystore.exportMnemonics(account: account)
+//      if case .success(let seeds) = result {
+//        let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+//        let solName = name ?? "Untitled"
+//        let solWalletObject = KNWalletObject(
+//          address: publicKey,
+//          name: solName + "-sol",
+//          isBackedUp: true,
+//          isWatchWallet: false,
+//          chainType: .solana,
+//          storageType: importMethod,
+//          evmAddress: wallet.evmAddressString,
+//          walletID: ""
+//        )
+//        wallets.append(solWalletObject)
+//      }
+//    }
+//    if case .solana = importType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
+//      let walletName = name ?? "Untitled"
+//      let evmWalletObject = KNWalletObject(
+//        address: evmAddress,
+//        name: walletName + "-evm",
+//        isBackedUp: true,
+//        isWatchWallet: false,
+//        chainType: .evm,
+//        storageType: importMethod,
+//        evmAddress: "",
+//        walletID: walletID
+//      )
+//      wallets.append(evmWalletObject)
+//    }
     KNWalletStorage.shared.add(wallets: wallets)
     if addToContact {
       let contact = KNContact(
         address: wallet.addressString,
         name: name ?? "Untitled",
-        chainType: importType.rawValue
+        chainType: finalImportChainType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
     }
@@ -258,9 +285,9 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
     KNGeneralProvider.shared.currentChain = selectedChain
-    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod)
+    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod, importChainType: importChainType)
     
   }
 
@@ -302,8 +329,12 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
   }
 
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
-    guard let wallet = wallet else { return }
-    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp, importType: .multiChain, importMethod: .seeds)
+    guard let wallet = wallet, case .real(let acc) = wallet.type else { return }
+    let seedResult = self.keystore.exportMnemonics(account: acc)
+    guard case .success(let mnemonics) = seedResult else { return }
+    let seeds = mnemonics.split(separator: " ").map({ return String($0) })
+
+    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp, importType: .mnemonic(words: seeds, password: ""), importMethod: .seeds, importChainType: .multiChain)
   }
 }
 

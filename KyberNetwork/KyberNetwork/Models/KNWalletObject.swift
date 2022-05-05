@@ -22,9 +22,10 @@ class KNWalletObject: Object {
   @objc dynamic var chainType: Int = 0
   @objc dynamic var storateType: Int = 0
   @objc dynamic var evmAddress: String = ""
+  @objc dynamic var solanaAddress: String = ""
   @objc dynamic var walletID: String = ""
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow, evmAddress: String = "", walletID: String = "") {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow, evmAddress: String = "", solanaAddress: String = "", walletID: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -35,10 +36,11 @@ class KNWalletObject: Object {
     self.chainType = chainType.rawValue
     self.storateType = storageType.rawValue
     self.evmAddress = evmAddress
+    self.solanaAddress = solanaAddress
     self.walletID = walletID
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow, evmAddress: String = "", walletID: String = "") {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow, evmAddress: String = "", solanaAddress: String = "", walletID: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -49,6 +51,7 @@ class KNWalletObject: Object {
     self.chainType = chainType.rawValue
     self.storateType = storageType.rawValue
     self.evmAddress = evmAddress
+    self.solanaAddress = solanaAddress
     self.walletID = walletID
   }
 
@@ -63,6 +66,7 @@ class KNWalletObject: Object {
       chainType: ImportWalletChainType(rawValue: self.chainType)!,
       storageType: StorageType(rawValue: self.storateType)!,
       evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
       walletID: self.walletID
     )
   }
@@ -82,6 +86,7 @@ class KNWalletObject: Object {
       chainType: ImportWalletChainType(rawValue: self.chainType)!,
       storageType: StorageType(rawValue: self.storateType)!,
       evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
       walletID: self.walletID
     )
   }
@@ -97,6 +102,7 @@ class KNWalletObject: Object {
       chainType: ImportWalletChainType(rawValue: self.chainType)!,
       storageType: StorageType(rawValue: self.storateType)!,
       evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
       walletID: self.walletID
     )
   }

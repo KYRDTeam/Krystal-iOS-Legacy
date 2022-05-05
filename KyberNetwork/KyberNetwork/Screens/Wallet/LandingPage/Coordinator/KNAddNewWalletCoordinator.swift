@@ -107,40 +107,58 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
   }
   
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
-    guard let wallet = wallet else { return }
+    guard let wallet = wallet, case .real(let acc) = wallet.type else { return }
+    let seedResult = self.keystore.exportMnemonics(account: acc)
+    guard case .success(let mnemonics) = seedResult else { return }
+
     self.navigationController.dismiss(animated: true) {
       var isWatchWallet = false
+      var solWalletId = ""
       if case WalletType.watch(_) = wallet.type {
         isWatchWallet = true
       }
+      
+      if case WalletType.solana(_, _, let walletID) = wallet.type {
+        solWalletId = walletID
+      }
+
+      let finalImportChainType: ImportWalletChainType = .multiChain
+      var solanaAddress = ""
+      
+      let address = SolanaUtil.seedsToPublicKey(mnemonics)
+      solanaAddress = address
+
       let walletObject = KNWalletObject(
         address: wallet.addressString,
         name: name ?? "Untitled",
         isBackedUp: isBackUp,
         isWatchWallet: isWatchWallet,
-        chainType: .multiChain,
-        storageType: .seeds
+        chainType: finalImportChainType,
+        storageType: .seeds,
+        evmAddress: wallet.evmAddressString,
+        solanaAddress: solanaAddress,
+        walletID: solWalletId
       )
-      var wallets = [walletObject]
+      let wallets = [walletObject]
       
-      if case .real(let account) = wallet.type {
-        let result = self.keystore.exportMnemonics(account: account)
-        if case .success(let seeds) = result {
-          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
-          let solName = name ?? "Untitled"
-          let solWalletObject = KNWalletObject(
-            address: publicKey,
-            name: solName + "-sol",
-            isBackedUp: true,
-            isWatchWallet: isWatchWallet,
-            chainType: .solana,
-            storageType: .seeds,
-            evmAddress: wallet.evmAddressString,
-            walletID: ""
-          )
-          wallets.append(solWalletObject)
-        }
-      }
+//      if case .real(let account) = wallet.type {
+//        let result = self.keystore.exportMnemonics(account: account)
+//        if case .success(let seeds) = result {
+//          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+//          let solName = name ?? "Untitled"
+//          let solWalletObject = KNWalletObject(
+//            address: publicKey,
+//            name: solName + "-sol",
+//            isBackedUp: true,
+//            isWatchWallet: isWatchWallet,
+//            chainType: .solana,
+//            storageType: .seeds,
+//            evmAddress: wallet.evmAddressString,
+//            walletID: ""
+//          )
+//          wallets.append(solWalletObject)
+//        }
+//      }
       
       let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
       KNWalletStorage.shared.add(wallets: wallets)
@@ -171,7 +189,7 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportWalletChainType, importMethod: StorageType, selectedChain: ChainType) {
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
     KNGeneralProvider.shared.currentChain = selectedChain
     KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: wallet.addressString)
     self.navigationController.dismiss(animated: true) {
@@ -184,56 +202,71 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       if case WalletType.solana(_, _, let walletID) = wallet.type {
         solWalletId = walletID
       }
+
+      var finalImportChainType = importChainType
+      var solanaAddress = ""
+      
+      if case .mnemonic(let words, _) = importType {
+        finalImportChainType = .multiChain
+        let key = words.joined(separator: " ")
+        let address = SolanaUtil.seedsToPublicKey(key)
+        solanaAddress = address
+      }
+      
+      if importChainType == .solana {
+        solanaAddress = wallet.addressString
+      }
       
       let walletObject = KNWalletObject(
         address: wallet.addressString,
         name: name ?? "Untitled",
         isBackedUp: true,
         isWatchWallet: isWatchWallet,
-        chainType: importType,
+        chainType: finalImportChainType,
         storageType: importMethod,
         evmAddress: wallet.evmAddressString,
+        solanaAddress: solanaAddress,
         walletID: solWalletId
       )
-      var wallets = [walletObject]
-      if case .multiChain = importType, case .real(let account) = wallet.type {
-        let result = self.keystore.exportMnemonics(account: account)
-        if case .success(let seeds) = result {
-          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
-          let solName = name ?? "Untitled"
-          let solWalletObject = KNWalletObject(
-            address: publicKey,
-            name: solName + "-sol",
-            isBackedUp: true,
-            isWatchWallet: isWatchWallet,
-            chainType: .solana,
-            storageType: importMethod,
-            evmAddress: wallet.evmAddressString,
-            walletID: solWalletId
-          )
-          wallets.append(solWalletObject)
-        }
-      }
-      
-      if case .solana = importType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
-        let walletName = name ?? "Untitled"
-        let evmWalletObject = KNWalletObject(
-          address: evmAddress,
-          name: walletName + "-evm",
-          isBackedUp: true,
-          isWatchWallet: isWatchWallet,
-          chainType: .multiChain,
-          storageType: importMethod,
-          evmAddress: "",
-          walletID: walletID
-        )
-        wallets.append(evmWalletObject)
-      }
+      let wallets = [walletObject]
+//      if case .multiChain = importChainType, case .real(let account) = wallet.type { //NOTE: add solana address to wallet object
+//        let result = self.keystore.exportMnemonics(account: account)
+//        if case .success(let seeds) = result {
+//          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
+//          let solName = name ?? "Untitled"
+//          let solWalletObject = KNWalletObject(
+//            address: publicKey,
+//            name: solName + "-sol",
+//            isBackedUp: true,
+//            isWatchWallet: isWatchWallet,
+//            chainType: .solana,
+//            storageType: importMethod,
+//            evmAddress: wallet.evmAddressString,
+//            walletID: solWalletId
+//          )
+//          wallets.append(solWalletObject)
+//        }
+//      }
+//
+//      if case .solana = importChainType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
+//        let walletName = name ?? "Untitled"
+//        let evmWalletObject = KNWalletObject(
+//          address: evmAddress,
+//          name: walletName + "-evm",
+//          isBackedUp: true,
+//          isWatchWallet: isWatchWallet,
+//          chainType: .multiChain,
+//          storageType: importMethod,
+//          evmAddress: "",
+//          walletID: walletID
+//        )
+//        wallets.append(evmWalletObject)
+//      }
       KNWalletStorage.shared.add(wallets: wallets)
       let contact = KNContact(
         address: wallet.addressString,
         name: name ?? "Untitled",
-        chainType: importType.rawValue
+        chainType: finalImportChainType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
       KNGeneralProvider.shared.currentChain = selectedChain
