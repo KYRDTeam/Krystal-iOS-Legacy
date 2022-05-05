@@ -561,8 +561,9 @@ extension KSendTokenViewController {
 
   func coordinatorDidValidateSolTransferTransaction() {
     let transferType = self.viewModel.from.isQuoteToken ? SolTransferType.sol(destination: self.viewModel.addressString) : SolTransferType.splToken(self.viewModel.from)
-    
-    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: self.viewModel.solanaFeeBigInt, transferType: transferType)
+    let fee = self.estGasFeeValueLabel.text == self.viewModel.solFeeString ? self.viewModel.solanaFeeBigInt : self.viewModel.solanaFeeBigInt + self.viewModel.minimumRentExemption
+
+    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: fee, transferType: transferType)
     unconfirmedSolTransaction.mintTokenAddress = self.viewModel.from.address
     unconfirmedSolTransaction.decimal = self.viewModel.from.decimals
 
