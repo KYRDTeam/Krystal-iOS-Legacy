@@ -8,6 +8,7 @@
 import Foundation
 
 struct SolanaTransaction {
+  var userAddress: String
   var blockTime: Int
   var slot: Int
   var txHash: String
@@ -66,7 +67,6 @@ struct SolanaTransaction {
       var swap: Swap?
       
       struct Swap {
-        var coin: Coin
         var event: [Event]
         
         struct Coin {
@@ -76,7 +76,6 @@ struct SolanaTransaction {
           var tokenAddress: String
         }
       }
-      
     }
     
     struct Event {
@@ -102,6 +101,7 @@ struct SolanaTransaction {
     case swap
     case solTransfer
     case splTransfer
+    case unknownTransfer
     case other
   }
   
@@ -112,6 +112,8 @@ struct SolanaTransaction {
       return .splTransfer
     } else if !details.solTransfers.isEmpty {
       return .solTransfer
+    } else if !details.unknownTransfers.isEmpty {
+      return .unknownTransfer
     } else {
       return .other
     }
@@ -132,9 +134,11 @@ struct SolanaTransaction {
     case .swap:
       return false
     case .splTransfer:
-      return details.tokenTransfers.first?.sourceOwner == signer.first
+      return details.tokenTransfers.first?.sourceOwner == userAddress
     case .solTransfer:
-      return details.solTransfers.first?.source == signer.first
+      return details.solTransfers.first?.source == userAddress
+    case .unknownTransfer:
+      return details.unknownTransfers.first?.event.first?.source == userAddress
     default:
       return false
     }

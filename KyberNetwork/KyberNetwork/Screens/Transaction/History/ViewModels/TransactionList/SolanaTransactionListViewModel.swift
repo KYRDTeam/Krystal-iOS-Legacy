@@ -94,6 +94,7 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
   override func updateWallet(wallet: KNWalletObject) {
     self.wallet = wallet
     self.getSolanaTransactionsUseCase.address = wallet.address
+    self.reload()
   }
   
 }
