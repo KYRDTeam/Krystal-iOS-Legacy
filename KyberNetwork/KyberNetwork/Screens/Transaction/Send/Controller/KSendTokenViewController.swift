@@ -451,6 +451,21 @@ extension KSendTokenViewController {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
   }
+  
+  func checkTokenAccountForReceiptAddress() {
+    guard KNGeneralProvider.shared.currentChain == .solana else {
+      return
+    }
+    if let text = self.addressTextField.text, text.isValidSolanaAddress() && !self.viewModel.from.isQuoteToken {
+      self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
+        self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
+        
+        self.viewModel.updateAddress(text)
+        self.updateUIEnsMessage()
+        self.view.layoutIfNeeded()
+      }
+    }
+  }
 }
 
 // MARK: Update from coordinator
@@ -460,6 +475,7 @@ extension KSendTokenViewController {
     self.viewModel.resetAdvancedSettings()
     self.updateUIFromTokenDidChange()
     self.updateGasFeeUI()
+    self.checkTokenAccountForReceiptAddress()
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {
@@ -784,6 +800,7 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
     self.viewModel.updateAddress(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
+    self.checkTokenAccountForReceiptAddress()
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 
