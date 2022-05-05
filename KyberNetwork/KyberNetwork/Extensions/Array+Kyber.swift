@@ -33,3 +33,9 @@ extension Array where Element: Equatable {
     return self.contains(where: { element in other.contains(element) })
   }
 }
+
+extension Array {
+  var isNotEmpty: Bool {
+    return !isEmpty
+  }
+}

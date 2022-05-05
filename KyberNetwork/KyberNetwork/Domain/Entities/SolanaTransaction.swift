@@ -97,48 +97,91 @@ struct SolanaTransaction {
     var type: String
   }
   
+}
+
+extension SolanaTransaction {
+  
   enum SolanaTransactionType {
-    case swap
-    case solTransfer
-    case splTransfer
-    case unknownTransfer
-    case other
+    case swap(data: SwapData)
+    case transfer(data: TransferData)
+    case other(programId: String)
+  }
+  
+  struct TransferData {
+    var symbol: String
+    var decimals: Int
+    var amount: Double
+    var sourceAddress: String
+    var destinationAddress: String
+  }
+  
+  struct SwapData {
+    var sourceSymbol: String
+    var sourceAmount: Double
+    var sourceDecimals: Int
+    var destinationSymbol: String
+    var destinationAmount: Double
+    var destinationDecimals: Int
+    var programId: String
   }
   
   var type: SolanaTransactionType {
     if swapEvents.count >= 2 {
-      return .swap
-    } else if !details.tokenTransfers.isEmpty {
-      return .splTransfer
-    } else if !details.solTransfers.isEmpty {
-      return .solTransfer
-    } else if !details.unknownTransfers.isEmpty {
-      return .unknownTransfer
+      let tx0 = swapEvents.first!
+      let tx1 = swapEvents.last!
+      let data = SwapData(sourceSymbol: tx0.symbol,
+                          sourceAmount: tx0.amount,
+                          sourceDecimals: tx0.decimals,
+                          destinationSymbol: tx1.symbol,
+                          destinationAmount: tx1.amount,
+                          destinationDecimals: tx1.decimals,
+                          programId: details.inputAccount.last?.account ?? "")
+      return .swap(data: data)
+    } else if details.tokenTransfers.isNotEmpty {
+      let tx = details.tokenTransfers[0]
+      let data = TransferData(symbol: tx.token.symbol,
+                              decimals: tx.token.decimals,
+                              amount: tx.amount,
+                              sourceAddress: tx.sourceOwner,
+                              destinationAddress: tx.destinationOwner)
+      return .transfer(data: data)
+    } else if details.solTransfers.isNotEmpty {
+      let tx = details.solTransfers[0]
+      let data = TransferData(symbol: AllChains.solana.symbol,
+                              decimals: 9,
+                              amount: tx.amount,
+                              sourceAddress: tx.source,
+                              destinationAddress: tx.destination)
+      return .transfer(data: data)
+    } else if details.unknownTransfers.isNotEmpty, let tx = details.unknownTransfers[0].event.first {
+      let data = TransferData(symbol: tx.symbol,
+                              decimals: tx.decimals,
+                              amount: tx.amount,
+                              sourceAddress: tx.source ?? "",
+                              destinationAddress: tx.destination ?? "")
+      return .transfer(data: data)
     } else {
-      return .other
+      return .other(programId: details.inputAccount.last?.account ?? "")
     }
   }
   
   var swapEvents: [Details.Event] {
-    let unknownTransfers = details.unknownTransfers.flatMap(\.event)
-    let raydiumTransactions = details.raydiumTransactions.compactMap { $0.swap }.flatMap { $0.event }
-    if !unknownTransfers.isEmpty {
-      return unknownTransfers
+    let unknownTxEvents = details.unknownTransfers.flatMap(\.event)
+    if unknownTxEvents.count >= 2 {
+      return unknownTxEvents
     } else {
-      return raydiumTransactions
+      let raydiumTxEvents = details.raydiumTransactions
+        .compactMap(\.swap)
+        .filter { !$0.event.contains { event in event.symbol.isEmpty } }
+        .flatMap { $0.event }
+      return raydiumTxEvents
     }
   }
   
   var isTransferToOther: Bool {
     switch type {
-    case .swap:
-      return false
-    case .splTransfer:
-      return details.tokenTransfers.first?.sourceOwner == userAddress
-    case .solTransfer:
-      return details.solTransfers.first?.source == userAddress
-    case .unknownTransfer:
-      return details.unknownTransfers.first?.event.first?.source == userAddress
+    case .transfer(let data):
+      return data.sourceAddress == userAddress
     default:
       return false
     }

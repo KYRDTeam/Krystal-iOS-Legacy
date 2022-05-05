@@ -298,7 +298,7 @@ extension SolanaTransactionObject.DetailsObject.RaydiumTxObject.SwapObject.CoinO
 extension SolanaTransactionObject.DetailsObject.EventObject {
   
   func toDomain() -> SolanaTransaction.Details.Event {
-    return .init(amount: Double(amount) ?? 0, decimals: decimals, symbol: symbol, type: type)
+    return .init(amount: Double(amount), decimals: decimals, symbol: symbol, type: type)
   }
   
 }
