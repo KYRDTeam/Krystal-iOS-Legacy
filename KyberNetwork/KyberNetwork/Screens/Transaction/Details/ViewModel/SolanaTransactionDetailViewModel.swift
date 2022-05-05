@@ -54,6 +54,8 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
       return tokenTransferTxAmountString
     case .solTransfer:
       return solanaTransferTxAmountString
+    case .unknownTransfer:
+      return unknownTransferTxAmountString
     default:
       return "--"
     }
@@ -94,12 +96,23 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var fromIconSymbol: String {
-    return swapEvents.first?.symbol ?? ""
+    switch transaction.type {
+    case .swap:
+      return swapEvents.first?.symbol ?? ""
+    default:
+      return ""
+    }
   }
   
   var toIconSymbol: String {
-    return swapEvents.last?.symbol ?? ""
+    switch transaction.type {
+    case .swap:
+      return swapEvents.last?.symbol ?? ""
+    default:
+      return ""
+    }
   }
+  
   
   var fromFieldTitle: String {
     switch transaction.type {
@@ -131,8 +144,8 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     switch transaction.type {
     case .swap:
       return .swap
-    case .solTransfer, .splTransfer:
-      return .transferToken
+    case .solTransfer, .splTransfer, .unknownTransfer:
+      return transaction.isTransferToOther ? .transferToken : .receiveToken
     default:
       return .contractInteraction
     }
@@ -146,34 +159,6 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     return transaction.details.inputAccount.last?.account ?? ""
   }
   
-  private var solTransferString: String {
-    guard !transaction.details.solTransfers.isEmpty else { return "" }
-    let tx = transaction.details.solTransfers[0]
-    if transaction.isTransferToOther {
-      return String(format: Strings.toColonX, tx.destination)
-    } else {
-      return String(format: Strings.fromColonX, tx.source)
-    }
-  }
-  
-  private var tokenTransferInfoString: String {
-    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
-    let tx = transaction.details.tokenTransfers[0]
-    if transaction.isTransferToOther {
-      return String(format: Strings.toColonX, tx.destinationOwner)
-    } else {
-      return String(format: Strings.fromColonX, tx.sourceOwner)
-    }
-  }
-  
-  private var swapRateString: String {
-    guard swapEvents.count > 1 else { return "" }
-    let tx0 = swapEvents.first!
-    let tx1 = swapEvents.last!
-    let formattedRate = formattedSwapRate(tx0: tx0, tx1: tx1)
-    return "1 \(tx0.symbol) = \(formattedRate) \(tx1.symbol)"
-  }
-  
   private var tokenSwapAmountString: String {
     guard swapEvents.count > 1 else { return "" }
     let tx0 = swapEvents.first!
@@ -184,21 +169,26 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   private var tokenTransferTxAmountString: String {
-    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
-    let tx = transaction.details.tokenTransfers[0]
+    guard let tx = transaction.details.tokenTransfers.first else { return "" }
     let amountString = formattedAmount(amount: tx.amount, decimals: tx.token.decimals)
     let symbol = tx.token.symbol
     return transaction.isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
   }
   
   private var solanaTransferTxAmountString: String {
-    guard !transaction.details.solTransfers.isEmpty else { return "" }
-    let tx = transaction.details.solTransfers[0]
+    guard let tx = transaction.details.solTransfers.first else { return "" }
     let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
     let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
     return transaction.isTransferToOther
       ? "-\(amountString) \(quoteToken.symbol)"
       : "\(amountString) \(quoteToken.symbol)"
+  }
+  
+  private var unknownTransferTxAmountString: String {
+    guard let tx = transaction.details.unknownTransfers.first?.event.first else { return "" }
+    let amountString = formattedAmount(amount: tx.amount, decimals: tx.decimals)
+    let symbol = tx.symbol
+    return transaction.isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
   }
   
   private func formattedSwapRate(tx0: SolanaTransaction.Details.Event, tx1: SolanaTransaction.Details.Event) -> String {
