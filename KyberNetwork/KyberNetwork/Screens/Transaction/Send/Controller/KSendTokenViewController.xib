@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -203,11 +203,22 @@
                             <rect key="frame" x="37" y="184" width="301" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recipient address/ENS" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mKI-g6-kJR">
-                                    <rect key="frame" x="16" y="0.0" width="245" height="42"/>
+                                    <rect key="frame" x="16" y="0.0" width="213" height="42"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zaI-gv-i83">
+                                    <rect key="frame" x="237" y="9" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="fNx-6Z-4Wj"/>
+                                        <constraint firstAttribute="width" constant="24" id="rlE-aU-lXf"/>
+                                    </constraints>
+                                    <state key="normal" image="contact_icon"/>
+                                    <connections>
+                                        <action selector="contactButonWasTapped:" destination="-1" eventType="touchUpInside" id="fel-ps-sqE"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEJ-Se-4NU">
                                     <rect key="frame" x="269" y="9" width="24" height="24"/>
                                     <constraints>
@@ -222,12 +233,14 @@
                             </subviews>
                             <color key="backgroundColor" name="toolbarBgColor"/>
                             <constraints>
-                                <constraint firstItem="WEJ-Se-4NU" firstAttribute="leading" secondItem="mKI-g6-kJR" secondAttribute="trailing" constant="8" id="CIc-PJ-Jts"/>
+                                <constraint firstItem="zaI-gv-i83" firstAttribute="leading" secondItem="mKI-g6-kJR" secondAttribute="trailing" constant="8" id="22c-Im-Qa7"/>
                                 <constraint firstAttribute="height" constant="42" id="D8Z-1O-CTs"/>
                                 <constraint firstAttribute="trailing" secondItem="WEJ-Se-4NU" secondAttribute="trailing" constant="8" id="Dtf-ys-0jx"/>
                                 <constraint firstItem="mKI-g6-kJR" firstAttribute="top" secondItem="LQy-gu-Ayb" secondAttribute="top" id="NUV-WF-1WR"/>
                                 <constraint firstItem="WEJ-Se-4NU" firstAttribute="centerY" secondItem="LQy-gu-Ayb" secondAttribute="centerY" id="O2n-c9-7pe"/>
                                 <constraint firstAttribute="bottom" secondItem="mKI-g6-kJR" secondAttribute="bottom" id="OII-vr-8bU"/>
+                                <constraint firstItem="WEJ-Se-4NU" firstAttribute="leading" secondItem="zaI-gv-i83" secondAttribute="trailing" constant="8" id="cdG-mi-lcr"/>
+                                <constraint firstItem="zaI-gv-i83" firstAttribute="centerY" secondItem="WEJ-Se-4NU" secondAttribute="centerY" id="hGk-Ed-hu7"/>
                                 <constraint firstItem="mKI-g6-kJR" firstAttribute="leading" secondItem="LQy-gu-Ayb" secondAttribute="leading" constant="16" id="v9j-pE-3F5"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
@@ -496,6 +509,7 @@
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
+        <image name="contact_icon" width="21" height="18"/>
         <image name="gas_config_icon" width="36" height="36"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="qr_code_blue_icon" width="20" height="20"/>

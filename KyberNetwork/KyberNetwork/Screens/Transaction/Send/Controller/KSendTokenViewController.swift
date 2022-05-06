@@ -15,7 +15,7 @@ enum KSendTokenViewEvent {
   case validate(transaction: UnconfirmedTransaction, ens: String?)
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case addContact(address: String, ens: String?)
-  case contactSelectMore
+  case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
@@ -226,6 +226,11 @@ class KSendTokenViewController: KNBaseViewController {
     }()
     self.present(qrcodeReaderVC, animated: true, completion: nil)
   }
+  
+  @IBAction func contactButonWasTapped(_ sender: Any) {
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
+  }
+  
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
@@ -234,7 +239,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
