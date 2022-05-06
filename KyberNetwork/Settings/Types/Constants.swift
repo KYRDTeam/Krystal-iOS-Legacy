@@ -93,4 +93,15 @@ public struct DecimalNumber {
   public static let quote = 4
 }
 
+public struct SolConstant {
+  public static let PUBLIC_KEY_LENGTH = 32
+  public static let UINT_16_LENGTH = 2
+  public static let UINT_32_LENGTH = 4
+  public static let UINT_64_LENGTH = 8
+  public static let UINT_128_LENGTH = 16
+  public static let ACCOUNT_INFO_DATA_LENGTH: Int = (PUBLIC_KEY_LENGTH + PUBLIC_KEY_LENGTH
+              + UINT_64_LENGTH + UINT_32_LENGTH + PUBLIC_KEY_LENGTH + 1
+              + UINT_32_LENGTH + UINT_64_LENGTH + UINT_64_LENGTH
+              + UINT_32_LENGTH + PUBLIC_KEY_LENGTH)
 
+}
