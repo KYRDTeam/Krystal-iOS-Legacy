@@ -22,6 +22,7 @@ class KNLoadBalanceCoordinator {
 
   fileprivate var fetchBalanceTimer: Timer?
   fileprivate var fetchTotalBalanceTimer: Timer?
+  fileprivate var fetchTokenBalanceTimer: Timer?
   fileprivate var isFetchNonSupportedBalance: Bool = false
 
   fileprivate var lastRefreshTime: Date = Date()
@@ -60,36 +61,30 @@ class KNLoadBalanceCoordinator {
     }
 
     group.enter()
-    let span3 = tx.startChild(operation: "load-token-balances")
-    self.loadTokenBalancesFromApi { success in
-      span3.finish()
-      group.leave()
-    }
-    group.enter()
-    let span4 = tx.startChild(operation: "load-nft-balances")
+    let span3 = tx.startChild(operation: "load-nft-balances")
     self.loadNFTBalance { success in
-      span4.finish()
+      span3.finish()
       group.leave()
     }
     
     group.enter()
-    let span5 = tx.startChild(operation: "load-custom-nft-balances")
+    let span4 = tx.startChild(operation: "load-custom-nft-balances")
     self.loadCustomNFTBalane { success in
+      span4.finish()
+      group.leave()
+    }
+
+    group.enter()
+    let span5 = tx.startChild(operation: "load-liquidity-pool")
+    self.loadLiquidityPool { success in
       span5.finish()
       group.leave()
     }
 
     group.enter()
-    let span6 = tx.startChild(operation: "load-liquidity-pool")
-    self.loadLiquidityPool { success in
-      span6.finish()
-      group.leave()
-    }
-
-    group.enter()
-    let span7 = tx.startChild(operation: "load-total-balance")
+    let span6 = tx.startChild(operation: "load-total-balance")
     self.loadTotalBalance { success in
-      span7.finish()
+      span6.finish()
       group.leave()
     }
 
@@ -108,6 +103,19 @@ class KNLoadBalanceCoordinator {
       }
     )
     self.loadAllBalances()
+    
+    fetchTokenBalanceTimer?.invalidate()
+    fetchTokenBalanceTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds15,
+      repeats: true,
+      block: { [weak self] timer in
+        self?.loadTokenBalancesFromApi(completion: { _ in
+        })
+      }
+    )
+    self.loadTokenBalancesFromApi(completion: { _ in
+    })
+    
     fetchTotalBalanceTimer?.invalidate()
     fetchTotalBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds60,
@@ -130,7 +138,10 @@ class KNLoadBalanceCoordinator {
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = nil
     isFetchNonSupportedBalance = true
-    
+
+    fetchTokenBalanceTimer?.invalidate()
+    fetchTokenBalanceTimer = nil
+
     fetchTotalBalanceTimer?.invalidate()
     fetchTotalBalanceTimer = nil
   }

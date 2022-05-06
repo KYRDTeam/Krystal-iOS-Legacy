@@ -176,13 +176,6 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
-    if KNGeneralProvider.shared.currentChain == .solana && tx.state == .done {
-      if tx.fromSymbol == KNGeneralProvider.shared.quoteToken {
-        self.updateSolBalance()
-      } else {
-        self.updateSPLBalance(tokenAddress: tx.tokenAddress ?? "")
-      }
-    }
     if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
@@ -190,28 +183,7 @@ extension KNSendTokenViewCoordinator {
     }
     return false
   }
-  
-  func updateSolBalance() {
-    SolanaUtil.getBalance(address: self.session.wallet.addressString) { balance in
-      guard let balance = balance else {
-        return
-      }
-      BalanceStorage.shared.updateBalanceForAddress(KNGeneralProvider.shared.customRPC.quoteTokenAddress, value: balance)
-    }
-  }
-  
-  func updateSPLBalance(tokenAddress: String) {
-    guard !tokenAddress.isEmpty else {
-      return
-    }
-    SolanaUtil.getTokenAccountsByOwner(ownerAddress: self.session.wallet.addressString, tokenAddress: tokenAddress) { balance, senderTokenAddress in
-      guard let balance = balance else {
-        return
-      }
-      BalanceStorage.shared.updateBalanceForAddress(tokenAddress, value: BigInt(Int(balance) ?? 0))
-    }
-  }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController?.coordinatorDidUpdatePendingTx()
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()

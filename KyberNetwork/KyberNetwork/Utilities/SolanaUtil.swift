@@ -254,7 +254,7 @@ class SolanaUtil {
             if let valueArray = resultJson["value"] as? [JSONDictionary] {
               var status: InternalTransactionState = valueArray.isEmpty ? .done : .pending
               valueArray.forEach { valueJson in
-                if let statusString = valueJson["confirmationStatus"] as? String, statusString == "finalized" {
+                if let statusString = valueJson["confirmationStatus"] as? String, statusString == "confirmed" || statusString == "finalized" {
                   status = .done
                 }
               }
