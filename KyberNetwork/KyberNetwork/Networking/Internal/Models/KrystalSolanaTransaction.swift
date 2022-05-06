@@ -21,6 +21,7 @@ struct SolanaTransactionListDTO: Decodable {
 }
 
 struct SolanaTransactionDTO: Decodable {
+  var userAddress: String
   var blockTime: Int
   var slot: Int
   var txHash: String
@@ -85,7 +86,6 @@ struct SolanaTransactionDTO: Decodable {
       var swap: SwapDTO?
       
       struct SwapDTO: Decodable {
-        var coin: CoinDTO
         var event: [EventDTO]
         
         struct CoinDTO: Decodable {
@@ -147,7 +147,8 @@ struct SolanaTransactionDTO: Decodable {
 extension SolanaTransactionDTO {
   
   func toDomain() -> SolanaTransaction {
-    return .init(blockTime: blockTime,
+    return .init(userAddress: userAddress,
+                 blockTime: blockTime,
                  slot: slot,
                  txHash: txHash,
                  fee: fee,
@@ -233,7 +234,7 @@ extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO {
 extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO.SwapDTO {
   
   func toDomain() -> SolanaTransaction.Details.RaydiumTx.Swap {
-    return .init(coin: coin.toDomain(), event: event.map { $0.toDomain() })
+    return .init(event: event.map { $0.toDomain() })
   }
   
 }
@@ -250,7 +251,7 @@ extension SolanaTransactionDTO.DetailsDTO.RaydiumTxDTO.SwapDTO.CoinDTO {
 extension SolanaTransactionDTO.DetailsDTO.EventDTO {
   
   func toDomain() -> SolanaTransaction.Details.Event {
-    return .init(amount: Double(amount) ?? 0, decimals: decimals, symbol: symbol, type: type)
+    return .init(amount: Double(amount) ?? 0, decimals: decimals, destination: destination, destinationOwner: destinationOwner, source: source, sourceOwner: sourceOwner, symbol: symbol, type: type)
   }
   
 }

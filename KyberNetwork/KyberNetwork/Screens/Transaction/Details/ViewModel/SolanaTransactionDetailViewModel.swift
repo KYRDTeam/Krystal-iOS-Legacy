@@ -48,12 +48,10 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   
   var displayAmountString: String {
     switch transaction.type {
-    case .swap:
-      return tokenSwapAmountString
-    case .splTransfer:
-      return tokenTransferTxAmountString
-    case .solTransfer:
-      return solanaTransferTxAmountString
+    case .swap(let swapData):
+      return getSwapAmountString(swapData: swapData)
+    case .transfer(let txData):
+      return getTransferAmountString(txData: txData)
     default:
       return "--"
     }
@@ -62,24 +60,22 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   var displayFromAddress: String {
     switch transaction.type {
     case .swap:
-      return transaction.details.inputAccount.first?.account ?? ""
-    case .splTransfer:
-      return transaction.details.tokenTransfers.first?.sourceOwner ?? ""
-    case .solTransfer:
-      return transaction.details.solTransfers.first?.source ?? ""
-    default:
-      return transaction.details.inputAccount.first?.account ?? ""
+      return transaction.userAddress
+    case .transfer(let txData):
+      return txData.sourceAddress
+    case .other(let programId):
+      return programId
     }
   }
   
   var displayToAddress: String {
     switch transaction.type {
-    case .splTransfer:
-      return transaction.details.tokenTransfers.first?.destinationOwner ?? ""
-    case .solTransfer:
-      return transaction.details.solTransfers.first?.destination ?? ""
-    default:
-      return interactApplication
+    case .transfer(let txData):
+      return txData.destinationAddress
+    case .swap(let swapData):
+      return swapData.programId
+    case .other(let programId):
+      return programId
     }
   }
   
@@ -94,16 +90,26 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var fromIconSymbol: String {
-    return swapEvents.first?.symbol ?? ""
+    switch transaction.type {
+    case .swap(let data):
+      return data.sourceSymbol
+    default:
+      return ""
+    }
   }
   
   var toIconSymbol: String {
-    return swapEvents.last?.symbol ?? ""
+    switch transaction.type {
+    case .swap(let data):
+      return data.destinationSymbol
+    default:
+      return ""
+    }
   }
   
   var fromFieldTitle: String {
     switch transaction.type {
-    case .solTransfer, .splTransfer:
+    case .transfer:
       return transaction.isTransferToOther ? Strings.wallet : Strings.fromWallet
     default:
       return Strings.wallet
@@ -112,7 +118,7 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   
   var toFieldTitle: String {
     switch transaction.type {
-    case .solTransfer, .splTransfer:
+    case .transfer:
       return Strings.toWallet
     default:
       return Strings.application
@@ -131,84 +137,24 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
     switch transaction.type {
     case .swap:
       return .swap
-    case .solTransfer, .splTransfer:
-      return .transferToken
+    case .transfer:
+      return transaction.isTransferToOther ? .transferToken : .receiveToken
     default:
       return .contractInteraction
     }
   }
   
-  var swapEvents: [SolanaTransaction.Details.Event] {
-    return transaction.swapEvents
-  }
-  
-  var interactApplication: String {
-    return transaction.details.inputAccount.last?.account ?? ""
-  }
-  
-  private var solTransferString: String {
-    guard !transaction.details.solTransfers.isEmpty else { return "" }
-    let tx = transaction.details.solTransfers[0]
-    if transaction.isTransferToOther {
-      return String(format: Strings.toColonX, tx.destination)
-    } else {
-      return String(format: Strings.fromColonX, tx.source)
-    }
-  }
-  
-  private var tokenTransferInfoString: String {
-    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
-    let tx = transaction.details.tokenTransfers[0]
-    if transaction.isTransferToOther {
-      return String(format: Strings.toColonX, tx.destinationOwner)
-    } else {
-      return String(format: Strings.fromColonX, tx.sourceOwner)
-    }
-  }
-  
-  private var swapRateString: String {
-    guard swapEvents.count > 1 else { return "" }
-    let tx0 = swapEvents.first!
-    let tx1 = swapEvents.last!
-    let formattedRate = formattedSwapRate(tx0: tx0, tx1: tx1)
-    return "1 \(tx0.symbol) = \(formattedRate) \(tx1.symbol)"
-  }
-  
-  private var tokenSwapAmountString: String {
-    guard swapEvents.count > 1 else { return "" }
-    let tx0 = swapEvents.first!
-    let tx1 = swapEvents.last!
-    let fromAmount = formattedAmount(amount: tx0.amount, decimals: tx0.decimals)
-    let toAmount = formattedAmount(amount: tx1.amount, decimals: tx1.decimals)
-    return String(format: "%@ %@ → %@ %@", fromAmount, tx0.symbol, toAmount, tx1.symbol)
-  }
-  
-  private var tokenTransferTxAmountString: String {
-    guard !transaction.details.tokenTransfers.isEmpty else { return "" }
-    let tx = transaction.details.tokenTransfers[0]
-    let amountString = formattedAmount(amount: tx.amount, decimals: tx.token.decimals)
-    let symbol = tx.token.symbol
-    return transaction.isTransferToOther ? "-\(amountString) \(symbol)": "\(amountString) \(symbol)"
-  }
-  
-  private var solanaTransferTxAmountString: String {
-    guard !transaction.details.solTransfers.isEmpty else { return "" }
-    let tx = transaction.details.solTransfers[0]
-    let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
-    let amountString = formattedAmount(amount: tx.amount, decimals: quoteToken.decimals)
+  private func getTransferAmountString(txData: SolanaTransaction.TransferData) -> String {
+    let amountString = formattedAmount(amount: txData.amount, decimals: txData.decimals)
     return transaction.isTransferToOther
-      ? "-\(amountString) \(quoteToken.symbol)"
-      : "\(amountString) \(quoteToken.symbol)"
+      ? "-\(amountString) \(txData.symbol)"
+      : "\(amountString) \(txData.symbol)"
   }
   
-  private func formattedSwapRate(tx0: SolanaTransaction.Details.Event, tx1: SolanaTransaction.Details.Event) -> String {
-    let sourceAmountBigInt = BigInt(tx0.amount)
-    let destAmountBigInt = BigInt(tx1.amount)
-    
-    let amountFrom = sourceAmountBigInt * BigInt(10).power(18) / BigInt(10).power(tx0.decimals)
-    let amountTo = destAmountBigInt * BigInt(10).power(18) / BigInt(10).power(tx1.decimals)
-    let rate = amountTo * BigInt(10).power(18) / amountFrom
-    return rate.displayRate(decimals: 18)
+  private func getSwapAmountString(swapData: SolanaTransaction.SwapData) -> String {
+    let fromAmount = formattedAmount(amount: swapData.sourceAmount, decimals: swapData.sourceDecimals)
+    let toAmount = formattedAmount(amount: swapData.destinationAmount, decimals: swapData.destinationDecimals)
+    return String(format: "%@ %@ → %@ %@", fromAmount, swapData.sourceSymbol, toAmount, swapData.destinationSymbol)
   }
   
   private func formattedAmount(amount: Double, decimals: Int) -> String {

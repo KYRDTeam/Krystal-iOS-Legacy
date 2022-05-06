@@ -42,6 +42,7 @@ class KNNewContactViewModel {
 
   var displayEnsMessage: String? {
     if self.addressString.isEmpty { return nil }
+    if KNGeneralProvider.shared.currentChain == .solana && self.addressString.isValidSolanaAddress() { return nil }
     if self.address == nil { return "Invalid address or your ens is not mapped yet" }
     if Address(string: self.addressString) != nil { return nil }
     let address = self.address?.description ?? ""
@@ -49,8 +50,9 @@ class KNNewContactViewModel {
   }
 
   var displayEnsMessageColor: UIColor {
-    if self.address == nil { return UIColor.Kyber.strawberry }
-    return UIColor.Kyber.blueGreen
+    if KNGeneralProvider.shared.currentChain == .solana && self.addressString.isValidSolanaAddress() { return UIColor.Kyber.blueGreen }
+    if self.address != nil { return UIColor.Kyber.blueGreen }
+    return UIColor.Kyber.strawberry
   }
 
   func updateViewModel(address: String) {
@@ -183,16 +185,30 @@ class KNNewContactViewController: KNBaseViewController {
       self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
     }
-    guard let text = self.addressTextField.text, text.has0xPrefix, let address = Address(string: text) else {
-      self.showErrorTopBannerMessage(
-        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
-        time: 2.0
-      )
-      return
+    var contactAddress = ""
+    if KNGeneralProvider.shared.currentChain == .solana {
+      guard let text = self.addressTextField.text, text.isValidSolanaAddress() else {
+        self.showErrorTopBannerMessage(
+          with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
+          message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
+          time: 2.0
+        )
+        return
+      }
+      contactAddress = text
+    } else {
+      guard let text = self.addressTextField.text, text.has0xPrefix, let address = Address(string: text) else {
+        self.showErrorTopBannerMessage(
+          with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
+          message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
+          time: 2.0
+        )
+        return
+      }
+      contactAddress = address.description.lowercased()
     }
     let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
-    let contact = KNContact(address: address.description.lowercased(), name: name, chainType: chainType)
+    let contact = KNContact(address: contactAddress, name: name, chainType: chainType)
     KNContactStorage.shared.update(contacts: [contact])
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
     self.delegate?.newContactViewController(self, run: .dismiss)
@@ -287,6 +303,9 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
   }
 
   fileprivate func getEnsAddressFromName(_ name: String) {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return
+    }
     if Address(string: name) != nil { return }
     if !name.contains(".") {
       self.viewModel.updateAddressFromENS(name: name, ensAddr: nil)

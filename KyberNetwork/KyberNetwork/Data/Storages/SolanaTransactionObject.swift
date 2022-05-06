@@ -8,6 +8,7 @@
 import Foundation
 
 struct SolanaTransactionObject: Codable {
+  var userAddress: String
   var blockTime: Int
   var slot: Int
   var txHash: String
@@ -115,11 +116,9 @@ struct SolanaTransactionObject: Codable {
       }
       
       struct SwapObject: Codable {
-        var coin: CoinObject
         var event: [EventObject]
         
         init(_ swap: SolanaTransaction.Details.RaydiumTx.Swap) {
-          coin = CoinObject(swap.coin)
           event = swap.event.map { EventObject($0) }
         }
         
@@ -128,7 +127,7 @@ struct SolanaTransactionObject: Codable {
           var decimals: Int
           var symbol: String
           var tokenAddress: String
-          
+
           init(_ coin: SolanaTransaction.Details.RaydiumTx.Swap.Coin) {
             amount = coin.amount
             decimals = coin.decimals
@@ -178,6 +177,7 @@ struct SolanaTransactionObject: Codable {
   }
   
   init(_ transaction: SolanaTransaction) {
+    self.userAddress = transaction.userAddress
     self.blockTime = transaction.blockTime
     self.slot = transaction.slot
     self.txHash = transaction.txHash
@@ -194,7 +194,8 @@ struct SolanaTransactionObject: Codable {
 extension SolanaTransactionObject {
   
   func toDomain() -> SolanaTransaction {
-    return .init(blockTime: blockTime,
+    return .init(userAddress: userAddress,
+                 blockTime: blockTime,
                  slot: slot,
                  txHash: txHash,
                  fee: fee,
@@ -280,24 +281,24 @@ extension SolanaTransactionObject.DetailsObject.RaydiumTxObject {
 extension SolanaTransactionObject.DetailsObject.RaydiumTxObject.SwapObject {
   
   func toDomain() -> SolanaTransaction.Details.RaydiumTx.Swap {
-    return .init(coin: coin.toDomain(), event: event.map { $0.toDomain() })
+    return .init(event: event.map { $0.toDomain() })
   }
   
 }
 
 extension SolanaTransactionObject.DetailsObject.RaydiumTxObject.SwapObject.CoinObject {
-  
+
   func toDomain() -> SolanaTransaction.Details.RaydiumTx.Swap.Coin {
     return .init(amount: amount, decimals: decimals, symbol: symbol, tokenAddress: tokenAddress)
   }
-  
+
 }
       
 
 extension SolanaTransactionObject.DetailsObject.EventObject {
   
   func toDomain() -> SolanaTransaction.Details.Event {
-    return .init(amount: Double(amount) ?? 0, decimals: decimals, symbol: symbol, type: type)
+    return .init(amount: Double(amount), decimals: decimals, symbol: symbol, type: type)
   }
   
 }
