@@ -97,16 +97,28 @@ class KConfirmSendViewController: KNBaseViewController {
     self.cancelButton.isEnabled = false
     var symbol = ""
     var type: HistoryModelType = .transferToken
-    switch self.viewModel.transaction?.transferType {
-    case .ether:
-      type = .transferETH
-      symbol = KNGeneralProvider.shared.quoteToken
-    case .token(let token):
-      type = .transferToken
-      symbol = token.symbol
-    case .none:
-      type = .transferToken
+    if KNGeneralProvider.shared.currentChain == .solana {
+      switch self.viewModel.solTransaction?.transferType {
+      case .sol:
+        symbol = KNGeneralProvider.shared.quoteToken
+      case .splToken(let tokenObject):
+        symbol = tokenObject.symbol
+      case .none:
+        type = .transferToken
+      }
+    } else {
+      switch self.viewModel.transaction?.transferType {
+      case .ether:
+        type = .transferETH
+        symbol = KNGeneralProvider.shared.quoteToken
+      case .token(let token):
+        type = .transferToken
+        symbol = token.symbol
+      case .none:
+        type = .transferToken
+      }
     }
+    
     let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0, reservedGasLimit: ""), eip1559Tx: nil) //TODO: add case eip1559
     historyTransaction.transactionSuccessDescription = "-\(self.viewModel.totalAmountString) to \(self.viewModel.shortAddress.lowercased())"
     

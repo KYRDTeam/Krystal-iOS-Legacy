@@ -176,12 +176,40 @@ extension KNSendTokenViewCoordinator {
   }
 
   func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if KNGeneralProvider.shared.currentChain == .solana && tx.state == .done {
+      if tx.fromSymbol == KNGeneralProvider.shared.quoteToken {
+        self.updateSolBalance()
+      } else {
+        self.updateSPLBalance(tokenAddress: tx.tokenAddress ?? "")
+      }
+    }
     if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let txHash = self.transactionStatusVC?.transaction.hash, txHash == tx.hash {
       self.transactionStatusVC?.updateView(with: tx)
       return true
     }
     return false
+  }
+  
+  func updateSolBalance() {
+    SolanaUtil.getBalance(address: self.session.wallet.addressString) { balance in
+      guard let balance = balance else {
+        return
+      }
+      BalanceStorage.shared.updateBalanceForAddress(KNGeneralProvider.shared.customRPC.quoteTokenAddress, value: balance)
+    }
+  }
+  
+  func updateSPLBalance(tokenAddress: String) {
+    guard !tokenAddress.isEmpty else {
+      return
+    }
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: self.session.wallet.addressString, tokenAddress: tokenAddress) { balance, senderTokenAddress in
+      guard let balance = balance else {
+        return
+      }
+      BalanceStorage.shared.updateBalanceForAddress(tokenAddress, value: BigInt(Int(balance) ?? 0))
+    }
   }
   
   func coordinatorDidUpdatePendingTx() {
@@ -487,13 +515,13 @@ extension KNSendTokenViewCoordinator {
 
   fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
     self.rootViewController?.showLoadingHUD()
-    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { senderTokenAddress in
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { sendTokenBalance, senderTokenAddress in
       guard let senderTokenAddress = senderTokenAddress else {
         self.rootViewController?.hideLoading()
         completion(nil)
         return
       }
-      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { recipientAccount in
+      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { receiptTokenBalance, recipientAccount in
         var recipientTokenAddress = ""
         var signedEncodedString = ""
 
@@ -566,6 +594,7 @@ extension KNSendTokenViewCoordinator {
     let feeString = transaction.fee.description
     
     historyTransaction.toAddress = receiptAddress
+    historyTransaction.tokenAddress = transaction.mintTokenAddress
     historyTransaction.transactionObject = SignTransactionObject(value: transaction.value.string(decimals: tokenDecimal, minFractionDigits: 0, maxFractionDigits: tokenDecimal), from: walletAddress, to: receiptAddress, nonce: 0, data: Data(), gasPrice: feeString, gasLimit: feeString, chainID: AllChains.solana.chainID, reservedGasLimit: "")
 
     if transaction.mintTokenAddress != AllChains.solana.quoteTokenAddress {

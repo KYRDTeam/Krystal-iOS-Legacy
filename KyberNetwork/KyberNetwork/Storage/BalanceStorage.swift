@@ -77,6 +77,17 @@ class BalanceStorage {
     return balance
   }
   
+  func updateBalanceForAddress(_ address: String, value: BigInt) {
+    guard let unwrapped = self.wallet else {
+      return
+    }
+    let balance = self.allBalance.first { (balance) -> Bool in
+      return balance.address.lowercased() == address.lowercased()
+    }
+    balance?.balance = String(value)
+    Storage.store(self.allBalance, as: KNEnvironment.default.envPrefix + unwrapped.addressString.lowercased() + Constants.balanceStoreFileName)
+  }
+  
   private func retrieveBalancesInHardDisk(address: String, chainType: ChainType) -> [TokenBalance] {
     let allBalance = Storage.retrieve(self.getChainDBPath(chainType: chainType) + address + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
     return allBalance

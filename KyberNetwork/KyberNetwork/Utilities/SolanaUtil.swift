@@ -10,6 +10,7 @@ import WalletCore
 import SwiftUI
 import KeychainSwift
 import Moya
+import BigInt
 
 class SolanaUtil {
   
@@ -184,7 +185,7 @@ class SolanaUtil {
     }
   }
   
-  static func getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String, completion: @escaping (String?) -> Void) {
+  static func getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String, completion: @escaping (String?, String?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getTokenAccountsByOwner(ownerAddress: ownerAddress, tokenAddress: tokenAddress)) { result in
       switch result {
@@ -194,15 +195,26 @@ class SolanaUtil {
              let valueJsons = resultJson["value"] as? [JSONDictionary] {
             for value in valueJsons {
               if let pubKey = value["pubkey"] as? String {
-                completion(pubKey)
+                let account = value["account"] as? JSONDictionary
+                let data = account?["data"] as? JSONDictionary
+                let parsed = data?["parsed"] as? JSONDictionary
+                let info = parsed?["info"] as? JSONDictionary
+                let tokenAmount = info?["tokenAmount"] as? JSONDictionary
+                
+                if let amount = tokenAmount?["amount"] as? String {
+                  completion(amount, pubKey)
+                  return
+                }
+                
+                completion(nil, pubKey)
                 return
               }
             }
           }
         }
-        completion(nil)
+        completion(nil, nil)
       case .failure(let error):
-        completion(nil)
+        completion(nil, nil)
         print("[Solana error] \(error.localizedDescription)")
       }
     }
@@ -242,13 +254,34 @@ class SolanaUtil {
             if let valueArray = resultJson["value"] as? [JSONDictionary] {
               var status: InternalTransactionState = valueArray.isEmpty ? .done : .pending
               valueArray.forEach { valueJson in
-                if let statusString = valueJson["confirmationStatus"] as? String, statusString == "confirmed" || statusString == "finalized" {
+                if let statusString = valueJson["confirmationStatus"] as? String, statusString == "finalized" {
                   status = .done
                 }
               }
               completion(status)
               return
             }          }
+        }
+        completion(nil)
+      case .failure(let error):
+        print("[Solana error] \(error.localizedDescription)")
+        completion(nil)
+      }
+    }
+  }
+  
+  static func getBalance(address: String, completion: @escaping (BigInt?) -> Void) {
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    provider.request(.getBalance(address: address)) { result in
+      switch result {
+      case .success(let data):
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let resultJson = json["result"] as? JSONDictionary {
+            if let value = resultJson["value"] as? Int {
+              completion(BigInt(value))
+              return
+            }
+          }
         }
         completion(nil)
       case .failure(let error):
