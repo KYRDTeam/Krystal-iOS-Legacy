@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
-      options.tracesSampleRate = 1.0
+      options.tracesSampleRate = KNEnvironment.default == .production ? 0.2 : 1.0
       options.environment = KNEnvironment.default.displayName
     }
   }
@@ -92,7 +92,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       shouldConfigTrackingTool = status == .authorized
     }
     guard shouldConfigTrackingTool else { return }
-
     MixPanelManager.shared.configClient()
     guard !SentrySDK.isEnabled else { return }
     self.setupSentry()
