@@ -72,8 +72,7 @@ class EarnCoordinator: NSObject, Coordinator {
   fileprivate weak var earnSwapViewController: EarnSwapViewController?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.addressString
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   weak var delegate: EarnCoordinatorDelegate?

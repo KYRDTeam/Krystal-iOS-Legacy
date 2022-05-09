@@ -47,8 +47,7 @@ class DappCoordinator: NSObject, Coordinator {
   }()
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.addressString
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   private var browserViewController: BrowserViewController?

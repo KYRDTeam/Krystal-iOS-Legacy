@@ -82,9 +82,7 @@ class KNWalletStorage {
   var availableWalletObjects: [KNWalletObject] {
     return self.getAvailableWalletForChain(KNGeneralProvider.shared.currentChain)
   }
-  
-  
-  
+
   func getAvailableWalletForChain(_ chain: ChainType) -> [KNWalletObject] {
     let allWallets = self.wallets
     if chain == .solana {

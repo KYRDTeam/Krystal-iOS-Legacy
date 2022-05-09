@@ -47,8 +47,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.addressString
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   var approvingItems: [ApproveMultiSendItem] = []

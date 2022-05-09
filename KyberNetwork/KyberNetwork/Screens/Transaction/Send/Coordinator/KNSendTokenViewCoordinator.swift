@@ -31,9 +31,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate var nftItem: NFTItem = NFTItem()
   fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.addressString
-
-    return KNWalletStorage.shared.getAvailableWalletObject(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
 
   var rootViewController: KSendTokenViewController?

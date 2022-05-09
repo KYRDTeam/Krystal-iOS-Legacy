@@ -22,6 +22,11 @@ class KNSession {
   private(set) var tokenStorage: KNTokenStorage
 
   private(set) var transacionCoordinator: KNTransactionCoordinator?
+  
+  var currentWalletObject: KNWalletObject {
+    let address = self.wallet.addressString
+    return KNWalletStorage.shared.getAvailableWalletObject(forPrimaryKey: address) ?? KNWalletObject(address: address)
+  }
 
   init(keystore: Keystore,
        wallet: Wallet) {

@@ -94,8 +94,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   fileprivate var loadTimer: Timer?
   var historyProvider: MoyaProvider<KrytalService>?
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.addressString
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
 
   lazy var rootViewController: BuyCryptoViewController = {
