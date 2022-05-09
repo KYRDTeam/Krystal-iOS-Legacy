@@ -39,10 +39,9 @@ protocol Keystore {
 }
 
 extension Keystore {
-  func matchWithWalletObject(_ object: KNWalletObject) -> Wallet? {
-    let chainType = ImportWalletChainType(rawValue: object.chainType) ?? .multiChain
+  func matchWithWalletObject(_ object: KNWalletObject, chainType: ImportWalletChainType = .multiChain) -> Wallet? {
     if chainType == .solana {
-      return Wallet(type: .solana(object.address, object.evmAddress, object.walletID))
+      return object.toSolanaWallet()
     } else {
       let wal = self.wallets.first(where: { $0.addressString == object.address })
       return wal

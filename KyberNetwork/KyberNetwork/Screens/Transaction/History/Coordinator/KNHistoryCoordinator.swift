@@ -318,7 +318,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     break
     case .openWalletsListPopup:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)

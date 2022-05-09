@@ -42,9 +42,16 @@ class KNWalletStorage {
   }
   
   var solanaWallet: [KNWalletObject] {
-    return self.wallets.filter { (object) -> Bool in
+    let allWallets = self.wallets
+    let solWallets = allWallets.filter { (object) -> Bool in
       return object.chainType == 2
     }
+    
+    let multichainWallet = allWallets.filter { (object) -> Bool in
+      return object.chainType == 0
+    }
+    
+    return solWallets + multichainWallet
   }
   
   var nonSolanaWallet: [KNWalletObject] {
@@ -58,6 +65,43 @@ class KNWalletStorage {
       return object.address.lowercased() == address.lowercased()
     }
     return existed != nil
+  }
+  
+  func checkSolanaAddressExisted(_ address: String) -> Bool {
+    let existed = self.get(forSolanaAddress: address)
+    return existed != nil
+  }
+  
+  func get(forSolanaAddress address: String) -> KNWalletObject? {
+    let existed = self.wallets.first { (object) -> Bool in
+      return object.solanaAddress == address
+    }
+    return existed
+  }
+  
+  var availableWalletObjects: [KNWalletObject] {
+    return self.getAvailableWalletForChain(KNGeneralProvider.shared.currentChain)
+  }
+  
+  func getAvailableWalletForChain(_ chain: ChainType) -> [KNWalletObject] {
+    let allWallets = self.wallets
+    if chain == .solana {
+      let solWallets = allWallets.filter { (object) -> Bool in
+        return object.chainType == 2
+      }
+      
+      let multichainWallet = allWallets.filter { (object) -> Bool in
+        return object.chainType == 0
+      }
+      
+      let solFromMultichainWallet = multichainWallet.map { element in
+        return element.toSolanaWalletObject()
+      }
+      
+      return solWallets + solFromMultichainWallet
+    } else {
+      return allWallets
+    }
   }
 
   func get(forPrimaryKey key: String) -> KNWalletObject? {

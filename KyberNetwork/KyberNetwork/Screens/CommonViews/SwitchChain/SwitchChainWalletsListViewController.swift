@@ -14,20 +14,14 @@ class SwitchChainWalletsListViewModel {
   init(selected: ChainType) {
     self.selectedChain = selected
     
-    let wallets = KNWalletStorage.shared.wallets.filter { element in
-      if selected == .solana {
-        return element.chainType == 2
-      } else {
-        return element.chainType != 2
-      }
-    }
+    let wallets = KNWalletStorage.shared.getAvailableWalletForChain(selected)
 
     self.dataSource = wallets.map({ (obj) -> KNWalletTableCellViewModel in
       return KNWalletTableCellViewModel(wallet: obj)
     })
-    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-      self.selectedAddress = appDelegate.coordinator.session.wallet.addressString
-    }
+//    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+//      self.selectedAddress = appDelegate.coordinator.session.wallet.addressString
+//    }
   }
   
   var title: String {
@@ -75,6 +69,9 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    if self.viewModel.selectedAddress.isEmpty {
+      self.viewModel.selectedAddress = self.viewModel.dataSource.first?.wallet.address ?? ""
+    }
     self.dismiss(animated: true) {
       KNGeneralProvider.shared.currentChain = self.viewModel.selectedChain
       KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.viewModel.selectedAddress)

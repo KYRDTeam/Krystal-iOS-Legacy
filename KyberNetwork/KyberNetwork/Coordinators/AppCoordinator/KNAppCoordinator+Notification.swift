@@ -201,13 +201,20 @@ extension KNAppCoordinator {
   
   @objc func chainDidUpdateNotification(_ sender: Notification) {
     if let address = sender.object as? String {
-      let walletObject = KNWalletStorage.shared.wallets.first { element in
+      let walletObject = KNWalletStorage.shared.availableWalletObjects.first { element in
         return element.address == address
       }
-      if let unwrap = walletObject, let wal = self.keystore.matchWithWalletObject(unwrap) {
-        self.restartNewSession(wal)
+      if let unwrap = walletObject {
+        var wal: Wallet?
+        if KNGeneralProvider.shared.currentChain == .solana {
+          wal = unwrap.toSolanaWallet()
+        } else {
+          wal = self.keystore.matchWithWalletObject(unwrap)
+        }
+        if let unwrapWal = wal {
+          self.restartNewSession(unwrapWal)
+        }
       }
-     
     }
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()

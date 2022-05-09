@@ -125,7 +125,7 @@ class KNSendTokenViewModel: NSObject {
   }
   
   var walletName: String {
-    let wallet = KNWalletStorage.shared.wallets.first { obj in
+    let wallet = KNWalletStorage.shared.availableWalletObjects.first { obj in
       return self.currentWalletAddress.lowercased() == obj.address.lowercased()
     }
     return wallet?.name ?? "---"

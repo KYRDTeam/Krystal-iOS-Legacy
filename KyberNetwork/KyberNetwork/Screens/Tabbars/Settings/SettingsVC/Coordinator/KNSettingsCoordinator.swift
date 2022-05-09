@@ -275,7 +275,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     var wallet: Wallet?
     
     if walletObj.chainType == 2 {
-      wallet = !walletObj.evmAddress.isEmpty ? self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.evmAddress.lowercased() }) :  Wallet(type: .solana(walletObj.address, walletObj.evmAddress, walletObj.walletID))
+      wallet = Wallet(type: .solana(walletObj.address, walletObj.evmAddress, walletObj.walletID))
     } else {
       wallet = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() })
     }
@@ -302,6 +302,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
             self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
           }
         ))
+        
         if case .real(let account) = unwrap.type, case .success = self.session.keystore.exportMnemonics(account: account) {
           action.append(UIAlertAction(
             title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
@@ -309,6 +310,16 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
             handler: { _ in
               self.backupMnemonic(wallet: unwrap)
               self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
+            }
+          ))
+        } else if case .solana(_, let evmAddress, _) = unwrap.type, let account = self.session.keystore.matchWithEvmAccount(address: evmAddress), case .success = self.session.keystore.exportMnemonics(account: account) {
+          action.append(UIAlertAction(
+            title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
+            style: .default,
+            handler: { _ in
+              let seedsWallet = Wallet(type: .real(account))
+              self.backupMnemonic(wallet: seedsWallet)
+              self.saveBackedUpWallet(wallet: seedsWallet, name: walletObj.name)
             }
           ))
         }
@@ -329,12 +340,12 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func saveBackedUpWallet(wallet: Wallet, name: String) {
-    let walletObject = KNWalletObject(
-      address: wallet.addressString,
-      name: name,
-      isBackedUp: true
-    )
-    KNWalletStorage.shared.add(wallets: [walletObject])
+    let walletObject = self.selectedWallet?.clone()
+    walletObject?.name = name
+    if let unwrap = walletObject {
+      KNWalletStorage.shared.add(wallets: [unwrap])
+    }
+    
   }
 
   fileprivate func showAuthPasscode() {
@@ -351,10 +362,19 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
 
   fileprivate func backupPrivateKey(wallet: Wallet) {
-    if case .solana(let address, _, let walletID) = wallet.type {
-      guard let pk = self.session.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
-      let keypair = SolanaUtil.exportKeyPair(privateKey: pk)
-      self.openShowBackUpView(data: keypair, wallet: wallet)
+    if case .solana(let address, let evmAddress, let walletID) = wallet.type {
+      if !walletID.isEmpty {
+        guard let pk = self.session.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
+        let keypair = SolanaUtil.exportKeyPair(privateKey: pk)
+        self.openShowBackUpView(data: keypair, wallet: wallet)
+      } else {
+        guard let account = self.session.keystore.matchWithEvmAccount(address: evmAddress) else { return }
+        let seedResult = self.session.keystore.exportMnemonics(account: account)
+        guard case .success(let mnemonics) = seedResult else { return }
+        let privateKey = SolanaUtil.seedsToKeyPair(mnemonics)
+        self.openShowBackUpView(data: privateKey, wallet: wallet)
+      }
+      
     } else {
       self.navigationController.displayLoading()
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
@@ -452,7 +472,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
   
   func appCoordinatorDidSelectExportWallet() {
-    let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
+    let listWallets: [KNWalletObject] = KNWalletStorage.shared.availableWalletObjects
     let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() })!
     self.settingsViewControllerBackUpButtonPressed(wallet: curWallet)
   }

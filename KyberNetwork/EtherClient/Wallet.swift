@@ -72,7 +72,6 @@ struct Wallet {
   var hasEVMAddress: Bool {
     return !evmAddressString.isEmpty
   }
-  
 }
 
 extension Wallet: Equatable {
@@ -81,7 +80,7 @@ extension Wallet: Equatable {
     }
 
   func getWalletObject() -> KNWalletObject? {
-    let walletObject = KNWalletStorage.shared.wallets.first { obj in
+    let walletObject = KNWalletStorage.shared.availableWalletObjects.first { obj in
       let address = self.addressString.lowercased()
       let objAddress = obj.address.lowercased()
 

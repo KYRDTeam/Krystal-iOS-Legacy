@@ -12,7 +12,7 @@ extension KNAppCoordinator {
     
     if KNGeneralProvider.shared.currentChain == .solana {
       if !wallet.isSolanaWallet {
-        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject) {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
           aWallet = solWallet
         }
       }

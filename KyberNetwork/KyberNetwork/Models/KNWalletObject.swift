@@ -110,6 +110,26 @@ class KNWalletObject: Object {
   func getWalletChainType() -> ImportWalletChainType {
     return ImportWalletChainType(rawValue: self.chainType) ?? .multiChain
   }
+  
+  func toSolanaWallet() -> Wallet? {
+    return Wallet(type: .solana(self.solanaAddress, self.evmAddress, self.walletID))
+  }
+  
+  func toSolanaWalletObject() -> KNWalletObject {
+    return KNWalletObject(
+      address: self.solanaAddress,
+      name: self.name,
+      icon: self.icon,
+      date: self.date,
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet,
+      chainType: .solana,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
+      walletID: self.walletID
+    )
+  }
 }
 
 class KNWalletPromoInfoStorage: NSObject {

@@ -317,7 +317,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
 
   fileprivate func openWalletListView() {
     let viewModel = WalletsListViewModel(
-      walletObjects: KNWalletStorage.shared.wallets,
+      walletObjects: KNWalletStorage.shared.availableWalletObjects,
       currentWallet: self.currentWallet
     )
     let walletsList = WalletsListViewController(viewModel: viewModel)

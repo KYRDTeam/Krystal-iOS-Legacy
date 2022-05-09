@@ -141,7 +141,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   func openQRCodeScreen() {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) else { return }
+    let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) ?? KNWalletObject(address: self.session.wallet.addressString)
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
       navigationController: self.navigationController,
       walletObject: walletObject
@@ -566,7 +566,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.openChartView(token: token)
     case .selectListWallet:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)

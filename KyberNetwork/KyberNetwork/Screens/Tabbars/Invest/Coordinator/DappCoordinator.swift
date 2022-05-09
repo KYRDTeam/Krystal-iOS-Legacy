@@ -66,7 +66,7 @@ class DappCoordinator: NSObject, Coordinator {
   
   fileprivate func openWalletListView() {
     let viewModel = WalletsListViewModel(
-      walletObjects: KNWalletStorage.shared.wallets,
+      walletObjects: KNWalletStorage.shared.availableWalletObjects,
       currentWallet: self.currentWallet
     )
     let walletsList = WalletsListViewController(viewModel: viewModel)

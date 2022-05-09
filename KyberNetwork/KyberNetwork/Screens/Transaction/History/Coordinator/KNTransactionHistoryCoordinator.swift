@@ -58,7 +58,7 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
   }
   
   private func openWalletSelectPopup() {
-    let viewModel = WalletsListViewModel(walletObjects: KNWalletStorage.shared.wallets, currentWallet: wallet)
+    let viewModel = WalletsListViewModel(walletObjects: KNWalletStorage.shared.availableWalletObjects, currentWallet: wallet)
     let walletsList = WalletsListViewController(viewModel: viewModel)
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)

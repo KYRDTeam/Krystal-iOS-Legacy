@@ -166,7 +166,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
