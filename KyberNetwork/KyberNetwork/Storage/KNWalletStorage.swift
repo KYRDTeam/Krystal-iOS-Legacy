@@ -83,6 +83,8 @@ class KNWalletStorage {
     return self.getAvailableWalletForChain(KNGeneralProvider.shared.currentChain)
   }
   
+  
+  
   func getAvailableWalletForChain(_ chain: ChainType) -> [KNWalletObject] {
     let allWallets = self.wallets
     if chain == .solana {
@@ -107,6 +109,12 @@ class KNWalletStorage {
   func get(forPrimaryKey key: String) -> KNWalletObject? {
     if self.realm == nil { return nil }
     return self.realm.object(ofType: KNWalletObject.self, forPrimaryKey: key)
+  }
+  
+  func getAvailableWalletObject(forPrimaryKey key: String) -> KNWalletObject? {
+    return self.availableWalletObjects.first { element in
+      return element.address == key
+    }
   }
 
   func add(wallets: [KNWalletObject]) {
