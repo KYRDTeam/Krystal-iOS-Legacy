@@ -349,6 +349,8 @@ extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
   }
 
   func didSendRate() {
-    self.rateContainView.isHidden = true
+    [oneStarButton, twoStarButton, threeStarButton, fourStarButton, fiveStarButton].forEach { button in
+      button.isUserInteractionEnabled = false
+    }
   }
 }
