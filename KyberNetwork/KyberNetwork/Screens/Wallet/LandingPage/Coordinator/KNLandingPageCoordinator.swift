@@ -172,38 +172,7 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
       walletID: solWalletId
     )
     let wallets = [walletObject]
-//    if case .multiChain = importType, case .real(let account) = wallet.type {
-//      let result = self.keystore.exportMnemonics(account: account)
-//      if case .success(let seeds) = result {
-//        let publicKey = SolanaUtil.seedsToPublicKey(seeds)
-//        let solName = name ?? "Untitled"
-//        let solWalletObject = KNWalletObject(
-//          address: publicKey,
-//          name: solName + "-sol",
-//          isBackedUp: true,
-//          isWatchWallet: false,
-//          chainType: .solana,
-//          storageType: importMethod,
-//          evmAddress: wallet.evmAddressString,
-//          walletID: ""
-//        )
-//        wallets.append(solWalletObject)
-//      }
-//    }
-//    if case .solana = importType, case .solana(_ , let evmAddress, let walletID) = wallet.type {
-//      let walletName = name ?? "Untitled"
-//      let evmWalletObject = KNWalletObject(
-//        address: evmAddress,
-//        name: walletName + "-evm",
-//        isBackedUp: true,
-//        isWatchWallet: false,
-//        chainType: .evm,
-//        storageType: importMethod,
-//        evmAddress: "",
-//        walletID: walletID
-//      )
-//      wallets.append(evmWalletObject)
-//    }
+
     KNWalletStorage.shared.add(wallets: wallets)
     if addToContact {
       let contact = KNContact(
@@ -217,7 +186,7 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
     
-    if self.keystore.wallets.count == 1 {
+    if KNWalletStorage.shared.wallets.count == 1 {
       KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
     } else {
