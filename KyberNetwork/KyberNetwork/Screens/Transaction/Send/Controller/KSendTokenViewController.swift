@@ -729,7 +729,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
 extension KSendTokenViewController {
   func checkIfReceivedWalletHasTokenAccount(walletAddress: String, completion: @escaping (String?) -> Void) {
     self.navigationController?.showLoadingHUD()
-    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { recipientAccount in
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { amount, recipientAccount in
       completion(recipientAccount)
       self.navigationController?.hideLoading()
     }

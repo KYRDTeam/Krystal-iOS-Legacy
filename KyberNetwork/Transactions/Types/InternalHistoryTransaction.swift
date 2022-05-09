@@ -19,6 +19,7 @@ class InternalHistoryTransaction: Codable {
   let transactionDetailDescription: String
   var transactionSuccessDescription: String?
   var earnTransactionSuccessDescription: String?
+  var tokenAddress: String?
   var transactionObject: SignTransactionObject?
   var toAddress: String?
   var eip1559Transaction: EIP1559Transaction?
