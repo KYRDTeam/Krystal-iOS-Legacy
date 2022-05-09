@@ -100,6 +100,18 @@ enum KNEnvironment: Int {
       return ""
     }
   }
+  
+  var krystalWebUrl: String {
+    switch self {
+    case .production:
+      return KNSecret.productionKrystalWebURL
+    case .staging:
+      return KNSecret.stagingKrystalWebURL
+    default:
+      return KNSecret.devKrystalWebURL
+    }
+  }
+
 
   var supportedTokenEndpoint: String {
     let baseString: String = {
