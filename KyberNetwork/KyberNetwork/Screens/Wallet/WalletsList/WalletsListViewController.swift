@@ -60,7 +60,8 @@ class WalletsListViewModel {
   var dataSource: [Any] {
     var data: [Any] = []
     let realSectionViewModels = self.realWallets.map { (object) -> WalletListTableViewCellViewModel in
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: object.address.lowercased() == self.currentWallet.address.lowercased())
+      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
+      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
     }
     if !realSectionViewModels.isEmpty {
       let sectionViewModel = WalletListSectionTableViewCellViewModel(sectionTile: "Change Wallets", isFirstSection: true)
@@ -69,7 +70,8 @@ class WalletsListViewModel {
     }
 
     let watchSectionViewModels = self.watchWallets.map { (object) -> WalletListTableViewCellViewModel in
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: object.address.lowercased() == self.currentWallet.address.lowercased())
+      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
+      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
     }
     if !watchSectionViewModels.isEmpty {
       let sectionModel = WalletListSectionTableViewCellViewModel(sectionTile: "Watch wallets", isFirstSection: data.isEmpty)
