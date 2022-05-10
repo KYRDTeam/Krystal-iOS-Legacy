@@ -40,7 +40,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
-  var currentCurrencyType: CurrencyMode = .usd
+  var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
 
   lazy var rootViewController: OverviewMainViewController = {
     let viewModel = OverviewMainViewModel(session: self.session)
