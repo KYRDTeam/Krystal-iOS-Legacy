@@ -16,7 +16,7 @@ class RewardHuntingCoordinator: Coordinator {
   init(navigationController: UINavigationController, session: KNSession) {
     self.navigationController = navigationController
     self.session = session
-    let url = URL(string: Constants.rewardHuntingUrl)!
+    let url = URL(string: KNEnvironment.default.krystalWebUrl + "/" + Constants.rewardHuntingPath)!
       .appending("address", value: session.wallet.address.description)
     self.url = url
   }
