@@ -111,7 +111,7 @@ class KNWalletObject: Object {
     return ImportWalletChainType(rawValue: self.chainType) ?? .multiChain
   }
   
-  func toSolanaWallet() -> Wallet? {
+  func toSolanaWallet() -> Wallet {
     return Wallet(type: .solana(self.solanaAddress, self.evmAddress, self.walletID))
   }
   

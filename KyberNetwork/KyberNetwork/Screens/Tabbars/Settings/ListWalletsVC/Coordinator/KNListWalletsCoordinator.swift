@@ -25,7 +25,7 @@ class KNListWalletsCoordinator: Coordinator {
 
   lazy var rootViewController: KNListWalletsViewController = {
     let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
-    let curWallet: KNWalletObject = listWallets.first! //TODO: removed current select logc
+    let curWallet: KNWalletObject = listWallets.first ?? KNWalletObject(address: "") //TODO: removed current select logc
     let viewModel = KNListWalletsViewModel(listWallets: listWallets, curWallet: curWallet, keyStore: self.session.keystore)
     let controller = KNListWalletsViewController(viewModel: viewModel)
     controller.loadViewIfNeeded()
@@ -89,12 +89,10 @@ class KNListWalletsCoordinator: Coordinator {
   func updateNewSession(_ session: KNSession) {
     self.session = session
     let listWallets: [KNWalletObject] = KNWalletStorage.shared.wallets
-    if let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() }) {
-      self.rootViewController.updateView(
-        with: listWallets,
-        currentWallet: curWallet
-      )
-    }
+    self.rootViewController.updateView(
+      with: listWallets,
+      currentWallet: listWallets.first ?? KNWalletObject(address: "")
+    )
   }
 }
 
@@ -189,10 +187,10 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     KNContactStorage.shared.update(contacts: [contact])
     KNWalletStorage.shared.update(wallets: [walletObject])
     let wallets: [KNWalletObject] = KNWalletStorage.shared.wallets
-    let curWallet: KNWalletObject = wallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() })!
+    
     self.rootViewController.updateView(
-      with: KNWalletStorage.shared.wallets,
-      currentWallet: curWallet
+      with: wallets,
+      currentWallet: KNWalletObject(address: "")
     )
     self.delegate?.listWalletsCoordinatorDidUpdateWalletObjects()
   }
@@ -204,6 +202,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
   fileprivate func deleteSolWallet(_ wallet: KNWalletObject) {
     let address = wallet.address
     let walletID = wallet.walletID
+    let wal = wallet.toSolanaWallet()
     KNWalletStorage.shared.delete(walletAddress: address)
     self.session.keystore.solanaUtil.removeWallet(walletID: walletID)
     if address == self.session.wallet.addressString, let next = KNWalletStorage.shared.solanaWallet.last {
@@ -212,6 +211,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     } else {
       self.rootViewController.coordinatorDidUpdateWalletsList()
     }
+    self.delegate?.listWalletsCoordinatorDidSelectRemoveWallet(wal)
   }
 
   fileprivate func showDeleteWallet(_ wallet: KNWalletObject) {

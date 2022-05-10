@@ -190,18 +190,14 @@ extension KNAppCoordinator {
     
     if KNGeneralProvider.shared.currentChain == .solana {
       if !wallet.isSolanaWallet {
-        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject) {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
           aWallet = solWallet
-        } else {
-          return
         }
       }
     } else {
       if wallet.isSolanaWallet {
         if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
           aWallet = nonSolWallet
-        } else {
-          return
         }
       }
     }
@@ -258,7 +254,7 @@ extension KNAppCoordinator {
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
     self.navigationController.displayLoading(text: NSLocalizedString("removing", value: "Removing", comment: ""), animated: true)
-    if self.keystore.wallets.count == 1 {
+    if KNWalletStorage.shared.wallets.count <= 1 {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
         self.stopAllSessions()
         self.navigationController.hideLoading()

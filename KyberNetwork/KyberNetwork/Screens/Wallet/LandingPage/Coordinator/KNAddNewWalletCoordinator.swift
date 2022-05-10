@@ -141,25 +141,6 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
       )
       let wallets = [walletObject]
       
-//      if case .real(let account) = wallet.type {
-//        let result = self.keystore.exportMnemonics(account: account)
-//        if case .success(let seeds) = result {
-//          let publicKey = SolanaUtil.seedsToPublicKey(seeds)
-//          let solName = name ?? "Untitled"
-//          let solWalletObject = KNWalletObject(
-//            address: publicKey,
-//            name: solName + "-sol",
-//            isBackedUp: true,
-//            isWatchWallet: isWatchWallet,
-//            chainType: .solana,
-//            storageType: .seeds,
-//            evmAddress: wallet.evmAddressString,
-//            walletID: ""
-//          )
-//          wallets.append(solWalletObject)
-//        }
-//      }
-      
       let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
       KNWalletStorage.shared.add(wallets: wallets)
       let contact = KNContact(
@@ -168,7 +149,13 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
         chainType: chainType
       )
       KNContactStorage.shared.update(contacts: [contact])
-      self.delegate?.addNewWalletCoordinator(add: wallet)
+      
+      var newWallet = wallet
+      if KNGeneralProvider.shared.currentChain == .solana {
+        newWallet = walletObject.toSolanaWallet()
+      }
+      
+      self.delegate?.addNewWalletCoordinator(add: newWallet)
     }
   }
 
