@@ -17,7 +17,7 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
   @IBOutlet weak var ethButton: UIButton!
   @IBOutlet weak var btcButton: UIButton!
   @IBOutlet weak var quoteTokenLabel: UILabel!
-  
+  @IBOutlet weak var tapOutsideBackgroundView: UIView!
   var selected: CurrencyMode = .usd
   var completeHandle: ((CurrencyMode) -> Void)?
   
@@ -66,6 +66,13 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
       width: self.selected == .btc ? selectedWidth : normalWidth,
       radius: 8
     )
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+    self.tapOutsideBackgroundView.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc func tapOutside() {
+    self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func currencyTypeButtonTapped(_ sender: UIButton) {
@@ -79,9 +86,7 @@ class OverviewChangeCurrencyViewController: KNBaseViewController {
     default:
       self.selected = .usd
     }
-
     self.updateUI()
-    
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {

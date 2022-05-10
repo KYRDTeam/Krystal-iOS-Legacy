@@ -609,13 +609,15 @@ extension OverviewMainViewController: UITableViewDelegate {
 
 extension OverviewMainViewController: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    guard scrollView != self.infoCollectionView && self.viewModel.overviewMode == .overview else {
-      return
+    if self.viewModel.overviewMode == .summary {
+      self.totalBalanceContainerView.alpha = 1
+    } else {
+      let alpha = self.tableView.contentOffset.y <= 0 ? abs(self.tableView.contentOffset.y) / 200.0 : 0.0
+      self.totalBalanceContainerView.alpha = pow(alpha, 3)
+      self.infoCollectionView.isScrollEnabled = alpha > 0.8
     }
-    let alpha = scrollView.contentOffset.y <= 0 ? abs(scrollView.contentOffset.y) / 200.0 : 0.0
-    self.totalBalanceContainerView.alpha = alpha
   }
-  
+
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     guard scrollView == self.infoCollectionView else {
       return
