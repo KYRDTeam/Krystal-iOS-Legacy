@@ -161,6 +161,10 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.tabbarController.selectedIndex = 1
   }
 
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func overviewCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }

@@ -13,6 +13,7 @@ import WalletConnect
 import WalletConnectSwift
 
 protocol OverviewCoordinatorDelegate: class {
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func overviewCoordinatorDidSelectManageWallet()
@@ -667,6 +668,9 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorBuyCrypto()
     case .addNewWallet:
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
+    case .addChainWallet(let chain):
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
+      
     }
   }
 }

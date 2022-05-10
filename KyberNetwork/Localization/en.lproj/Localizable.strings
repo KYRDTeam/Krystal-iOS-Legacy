@@ -549,6 +549,8 @@
 "Switch Wallet" = "Switch Wallet";
 "Switch" = "Switch";
 "Choose your action" = "Choose your action";
+"choose.chain.wallet" = "Choose %@ Wallet";
+"not.have.chain.wallet.please.create.or.import" = "You haven't got any %@ Wallet, please create a new one or import your wallet";
 
 // Native sign in/up
 "Email Address" = "Email Address";

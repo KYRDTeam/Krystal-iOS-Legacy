@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular_Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateChainWalletMenuViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="ND9-mq-gd3" id="03Q-9w-h5r"/>
+                <outlet property="messageLabel" destination="Ldf-Ti-mfj" id="EWX-cF-ik9"/>
+                <outlet property="titleLabel" destination="3JO-Qj-awz" id="uOG-Gu-NWD"/>
+                <outlet property="topConstraint" destination="unz-0f-FeT" id="Fga-3I-9rm"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ND9-mq-gd3">
+                    <rect key="frame" x="0.0" y="587" width="414" height="309"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hle-rG-dud">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="275"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Choose wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3JO-Qj-awz">
+                                    <rect key="frame" x="24" y="32" width="366" height="23.5"/>
+                                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                                    <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't got any Solana Wallet, please create a new one or import your wallet" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldf-Ti-mfj">
+                                    <rect key="frame" x="24" y="87.5" width="366" height="37.5"/>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KiC-UD-BVS">
+                                    <rect key="frame" x="37" y="157" width="340" height="36"/>
+                                    <color key="backgroundColor" red="0.1137254902" green="0.91372549020000005" blue="0.71372549019999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="36" id="9Jx-3O-mOY"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="15"/>
+                                    <state key="normal" title="Create new wallet">
+                                        <color key="titleColor" red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="18"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="createNewWasTapped:" destination="-1" eventType="touchUpInside" id="fGS-pr-stM"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Tw-5p-e30">
+                                    <rect key="frame" x="37" y="213" width="340" height="38"/>
+                                    <color key="backgroundColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="38" id="x2X-x6-hMz"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Karla-Regular_Bold" family="Karla" pointSize="15"/>
+                                    <state key="normal" title="Import wallet">
+                                        <color key="titleColor" red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="18"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="importWasTapped:" destination="-1" eventType="touchUpInside" id="9aK-mC-LS4"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="3JO-Qj-awz" firstAttribute="leading" secondItem="hle-rG-dud" secondAttribute="leading" constant="24" id="2pc-sA-Hd0"/>
+                                <constraint firstItem="Ldf-Ti-mfj" firstAttribute="leading" secondItem="hle-rG-dud" secondAttribute="leading" constant="24" id="5dC-3g-nFR"/>
+                                <constraint firstItem="7Tw-5p-e30" firstAttribute="top" secondItem="KiC-UD-BVS" secondAttribute="bottom" constant="20" id="BEQ-Mc-oJc"/>
+                                <constraint firstItem="Ldf-Ti-mfj" firstAttribute="top" secondItem="3JO-Qj-awz" secondAttribute="bottom" constant="32" id="QQc-uS-rI5"/>
+                                <constraint firstItem="3JO-Qj-awz" firstAttribute="top" secondItem="hle-rG-dud" secondAttribute="top" constant="32" id="VeU-WS-a9b"/>
+                                <constraint firstAttribute="trailing" secondItem="3JO-Qj-awz" secondAttribute="trailing" constant="24" id="cHh-t0-bcw"/>
+                                <constraint firstItem="KiC-UD-BVS" firstAttribute="top" secondItem="Ldf-Ti-mfj" secondAttribute="bottom" constant="32" id="o46-ab-POf"/>
+                                <constraint firstAttribute="trailing" secondItem="Ldf-Ti-mfj" secondAttribute="trailing" constant="24" id="oGa-1H-Lmj"/>
+                                <constraint firstAttribute="trailing" secondItem="7Tw-5p-e30" secondAttribute="trailing" constant="37" id="obH-1c-ybI"/>
+                                <constraint firstItem="KiC-UD-BVS" firstAttribute="leading" secondItem="hle-rG-dud" secondAttribute="leading" constant="37" id="ogD-G0-CaK"/>
+                                <constraint firstItem="7Tw-5p-e30" firstAttribute="leading" secondItem="hle-rG-dud" secondAttribute="leading" constant="37" id="rpm-w6-JMg"/>
+                                <constraint firstAttribute="trailing" secondItem="KiC-UD-BVS" secondAttribute="trailing" constant="37" id="upg-WL-gRY"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="hle-rG-dud" firstAttribute="top" secondItem="ND9-mq-gd3" secondAttribute="top" id="hTk-GU-FJ0"/>
+                        <constraint firstAttribute="trailing" secondItem="hle-rG-dud" secondAttribute="trailing" id="hyr-IG-RHi"/>
+                        <constraint firstItem="hle-rG-dud" firstAttribute="leading" secondItem="ND9-mq-gd3" secondAttribute="leading" id="qlw-hO-kfJ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="hle-rG-dud" secondAttribute="bottom" id="TAy-bk-GSu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ND9-mq-gd3" secondAttribute="trailing" id="mbY-yP-Tgv"/>
+                <constraint firstItem="ND9-mq-gd3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ogO-fD-l1U"/>
+                <constraint firstAttribute="bottom" secondItem="ND9-mq-gd3" secondAttribute="bottom" id="t6R-H3-QlY"/>
+                <constraint firstItem="ND9-mq-gd3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="543" id="unz-0f-FeT"/>
+            </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="49w-JY-E47" appends="YES" id="Hlz-da-hui"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
+        </view>
+        <tapGestureRecognizer id="49w-JY-E47">
+            <connections>
+                <action selector="outsideWasTapped:" destination="-1" id="c9j-eO-ZHw"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <namedColor name="popupBackgroundColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
