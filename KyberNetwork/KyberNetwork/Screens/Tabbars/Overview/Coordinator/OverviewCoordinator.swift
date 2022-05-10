@@ -542,9 +542,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
     }))
     actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
-      if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(self.session.wallet.addressString)") {
-        self.rootViewController.openSafari(with: url)
-      }
+      let url = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.session.wallet.addressString)"
+      self.rootViewController.openSafari(with: url)
     }))
     self.navigationController.present(actionController, animated: true, completion: nil)
   }
