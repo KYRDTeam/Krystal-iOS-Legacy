@@ -76,7 +76,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func start() {
     self.addMissingWalletObjects()
-
+    //TODO: need improve by check condition to show landing or start session
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()

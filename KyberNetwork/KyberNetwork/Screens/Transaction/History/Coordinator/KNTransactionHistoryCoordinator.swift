@@ -194,7 +194,7 @@ extension KNTransactionHistoryCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = Strings.copied
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.viewController?.updateWallet(wallet: wallet)

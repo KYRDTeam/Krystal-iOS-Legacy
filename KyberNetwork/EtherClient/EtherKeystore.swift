@@ -64,9 +64,15 @@ open class EtherKeystore: Keystore {
         }
         get {
             let address = keychain.get(Keys.recentlyUsedAddress)
+          
+          if KNGeneralProvider.shared.currentChain == .solana {
+            let walletObject = KNWalletStorage.shared.getAvailableWalletObject(forPrimaryKey: address ?? "")
+            return walletObject?.toSolanaWallet()
+          } else {
             return wallets.filter {
                 $0.address?.description == address || $0.addressString == address?.lowercased()
             }.first
+          }
         }
     }
 

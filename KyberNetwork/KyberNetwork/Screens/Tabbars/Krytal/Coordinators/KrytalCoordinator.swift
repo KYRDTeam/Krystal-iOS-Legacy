@@ -235,7 +235,7 @@ extension KrytalCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.krytalCoordinatorDidSelectWallet(wal)
