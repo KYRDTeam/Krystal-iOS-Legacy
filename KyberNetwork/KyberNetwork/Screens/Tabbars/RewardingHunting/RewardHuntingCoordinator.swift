@@ -26,7 +26,7 @@ class RewardHuntingCoordinator: Coordinator {
     let viewModel = RewardHuntingViewModel(url: url)
     viewModel.actions = RewardHuntingViewModelActions(goBack: goBack, openRewards: openRewards)
     vc.viewModel = viewModel
-    vc.hidesBottomBarWhenPushed = true
+    vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true)
   }
   
