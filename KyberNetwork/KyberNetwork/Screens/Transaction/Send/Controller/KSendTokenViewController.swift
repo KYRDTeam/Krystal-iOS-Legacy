@@ -193,6 +193,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
+    self.view.endEditing(true)
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
