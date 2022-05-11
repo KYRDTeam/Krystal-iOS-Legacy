@@ -36,11 +36,10 @@ class SolFeeCoordinator {
   }
 
   func resume() {
-//    self.loadSavedGasPrice()
     fetchTimer?.invalidate()
     fetchSolFee(nil)
     fetchTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.minutes5,
+      timeInterval: KNLoadingInterval.seconds30,
       target: self,
       selector: #selector(fetchSolFee(_:)),
       userInfo: nil,
