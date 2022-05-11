@@ -206,7 +206,7 @@ extension KNListWalletsCoordinator: KNEditWalletViewControllerDelegate {
     KNWalletStorage.shared.delete(walletAddress: address)
     self.session.keystore.solanaUtil.removeWallet(walletID: walletID)
     if address == self.session.wallet.addressString, let next = KNWalletStorage.shared.solanaWallet.last {
-      let solWal = Wallet(type: .solana(next.address, next.evmAddress, next.walletID))
+      let solWal = Wallet(type: .solana(next.solanaAddress, next.evmAddress, next.walletID))
       self.listWalletsViewControllerDidSelectWallet(solWal)
     } else {
       self.rootViewController.coordinatorDidUpdateWalletsList()

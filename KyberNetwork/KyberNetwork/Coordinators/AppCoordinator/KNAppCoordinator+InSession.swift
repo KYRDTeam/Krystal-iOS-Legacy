@@ -25,10 +25,10 @@ extension KNAppCoordinator {
     }
     
     self.keystore.recentlyUsedWallet = aWallet
-    self.currentWallet = wallet
+    self.currentWallet = aWallet
     self.session = KNSession(keystore: self.keystore, wallet: aWallet)
     self.session.startSession()
-    OneSignal.setExternalUserId(wallet.addressString)
+    OneSignal.setExternalUserId(aWallet.addressString)
     DispatchQueue.global(qos: .background).async {
       _ = KNSupportedTokenStorage.shared
       _ = BalanceStorage.shared
@@ -148,8 +148,7 @@ extension KNAppCoordinator {
 
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-    
-//    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+
     self.doLogin { completed in
     }
   }
@@ -209,9 +208,9 @@ extension KNAppCoordinator {
       EtherscanTransactionStorage.shared.updateCurrentWallet(aWallet)
       BalanceStorage.shared.updateCurrentWallet(aWallet)
       OneSignal.removeExternalUserId { _ in
-        OneSignal.setExternalUserId(wallet.addressString)
+        OneSignal.setExternalUserId(aWallet.addressString)
       } withFailure: { _ in
-        OneSignal.setExternalUserId(wallet.addressString)
+        OneSignal.setExternalUserId(aWallet.addressString)
       }
     }
 
@@ -308,7 +307,10 @@ extension KNAppCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       } else {
         self.loadBalanceCoordinator?.restartNewSession(self.session)
-        guard !wallet.isSolanaWallet else { return }
+        self.navigationController.hideLoading()
+        guard !wallet.isSolanaWallet else {
+          return
+        }
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
