@@ -12,7 +12,7 @@ import Moya
 class SolFeeCoordinator {
   static let shared: SolFeeCoordinator = SolFeeCoordinator()
   static let defaultLamportPerSignature = BigInt(5000)
-  static let defaultMinimumRentExemption = BigInt(1238880)
+  static let defaultMinimumRentExemption = BigInt(2039280)
   fileprivate let provider = MoyaProvider<KyberNetworkService>()
   fileprivate var fetchTimer: Timer?
 
