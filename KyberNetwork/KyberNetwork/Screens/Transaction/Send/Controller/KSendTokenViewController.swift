@@ -24,6 +24,7 @@ enum KSendTokenViewEvent {
   case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case estimateGasLimitTransferNFT(to: String, item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
   case openMultiSend
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -393,10 +394,16 @@ class KSendTokenViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = { selected in
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self.present(secondPopup, animated: true, completion: nil)
+    popup.completionHandler = { [weak self] selected in
+      guard let self = self else { return }
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.kSendTokenViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }

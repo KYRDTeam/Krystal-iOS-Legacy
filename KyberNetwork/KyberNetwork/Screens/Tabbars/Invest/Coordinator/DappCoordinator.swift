@@ -23,6 +23,7 @@ protocol DappCoordinatorDelegate: class {
   func dAppCoordinatorDidSelectAddWallet()
   func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
   func dAppCoordinatorDidSelectManageWallet()
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class DappCoordinator: NSObject, Coordinator {
@@ -148,6 +149,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       self.navigationController.present(controller, animated: true, completion: nil)
     case .switchChain:
       break
+    case .addChainWallet(let chainType):
+      delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   

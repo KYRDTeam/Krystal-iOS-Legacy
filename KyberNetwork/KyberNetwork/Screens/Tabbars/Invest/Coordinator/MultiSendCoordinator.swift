@@ -173,6 +173,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .useLastMultisend:
       break
+    case .addChainWallet(let chainType):
+      delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   
