@@ -73,6 +73,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
     let quoteToken = KNGeneralProvider.shared.quoteToken.uppercased()
     self.infoLabel.text = "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds"
     self.addressTypeLabel.text = "\(token) address"
+    self.scanButton.setTitle("View on " + KNGeneralProvider.shared.currentChain.customRPC().webScanName, for: .normal)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
