@@ -25,8 +25,7 @@ open class EtherKeystore: Keystore {
     private let defaultKeychainAccess: KeychainSwiftAccessOptions = .accessibleWhenUnlockedThisDeviceOnly
     let keysDirectory: URL
     let userDefaults: UserDefaults
-  
-  let solanaUtil = SolanaUtil()
+    let solanaUtil = SolanaUtil()
 
     public init(
         keychain: KeychainSwift = KeychainSwift(keyPrefix: Constants.keychainKeyPrefix),
