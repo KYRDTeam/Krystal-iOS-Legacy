@@ -12,7 +12,7 @@ import Moya
 class SolFeeCoordinator {
   static let shared: SolFeeCoordinator = SolFeeCoordinator()
   static let defaultLamportPerSignature = BigInt(5000)
-  static let defaultMinimumRentExemption = BigInt(1238880)
+  static let defaultMinimumRentExemption = BigInt(2039280)
   fileprivate let provider = MoyaProvider<KyberNetworkService>()
   fileprivate var fetchTimer: Timer?
 
@@ -36,11 +36,10 @@ class SolFeeCoordinator {
   }
 
   func resume() {
-//    self.loadSavedGasPrice()
     fetchTimer?.invalidate()
     fetchSolFee(nil)
     fetchTimer = Timer.scheduledTimer(
-      timeInterval: KNLoadingInterval.minutes5,
+      timeInterval: KNLoadingInterval.seconds30,
       target: self,
       selector: #selector(fetchSolFee(_:)),
       userInfo: nil,
