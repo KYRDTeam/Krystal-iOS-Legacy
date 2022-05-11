@@ -117,12 +117,12 @@ class OverviewMainViewController: KNBaseViewController {
         return indexPaths
       }
       
-      if self.viewModel.hiddenSections.contains(section) {
-        self.viewModel.hiddenSections.remove(section)
+      if self.viewModel.hiddenNFTSections.contains(section) {
+        self.viewModel.hiddenNFTSections.remove(section)
         self.tableView.insertRows(at: indexPathsForSection(),
                                   with: .fade)
       } else {
-        self.viewModel.hiddenSections.insert(section)
+        self.viewModel.hiddenNFTSections.insert(section)
         self.tableView.deleteRows(at: indexPathsForSection(),
                                   with: .fade)
       }
