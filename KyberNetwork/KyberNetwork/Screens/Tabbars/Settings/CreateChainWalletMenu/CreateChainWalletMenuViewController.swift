@@ -7,19 +7,13 @@
 
 import UIKit
 
-protocol CreateChainWalletMenuViewProtocol: AnyObject {
-  
-}
-
-class CreateChainWalletMenuViewController: UIViewController, CreateChainWalletMenuViewProtocol {
+class CreateChainWalletMenuViewController: UIViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var messageLabel: UILabel!
   @IBOutlet weak var contentView: UIView!
-  
   @IBOutlet weak var topConstraint: NSLayoutConstraint!
   
-  var coordinator: CreateChainWalletMenuCoordinator?
-  var presenter: CreateChainWalletMenuPresenterProtocol?
+  var viewModel: CreateChainWalletMenuViewModel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,22 +22,20 @@ class CreateChainWalletMenuViewController: UIViewController, CreateChainWalletMe
   }
   
   func setupViews() {
-    titleLabel.text = presenter?.title
-    messageLabel.text = presenter?.subtitle
+    titleLabel.text = viewModel.title
+    messageLabel.text = viewModel.subtitle
   }
   
   @IBAction func createNewWasTapped(_ sender: Any) {
-    coordinator?.selectCreateNewWallet()
+    viewModel.didTapCreateNewWallet()
   }
   
   @IBAction func importWasTapped(_ sender: Any) {
-    coordinator?.selectImportWallet()
+    viewModel.didTapImportWallet()
   }
   
   @IBAction func outsideWasTapped(_ sender: Any) {
-    dismiss(animated: true) { [weak self] in
-      self?.coordinator?.onClose()
-    }
+    viewModel.didTapClose()
   }
   
 }

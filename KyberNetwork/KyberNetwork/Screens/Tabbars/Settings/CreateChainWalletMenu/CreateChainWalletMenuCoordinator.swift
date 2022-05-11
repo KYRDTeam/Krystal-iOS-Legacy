@@ -17,6 +17,7 @@ class CreateChainWalletMenuCoordinator: Coordinator {
   
   var chainType: ChainType
   var parentViewController: UIViewController
+  var viewController: UIViewController?
   weak var delegate: CreateChainWalletMenuCoordinatorDelegate?
   var transitionDelegate = TransitionDelegate()
   
@@ -31,15 +32,24 @@ class CreateChainWalletMenuCoordinator: Coordinator {
     vc.modalPresentationStyle = .custom
     vc.transitioningDelegate = transitionDelegate
     
-    let presenter = CreateChainWalletMenuPresenter(view: vc, chainType: chainType)
-    vc.presenter = presenter
-    vc.coordinator = self
-    
+    let viewModel = CreateChainWalletMenuViewModel(
+      chainType: chainType,
+      actions: CreateChainWalletMenuViewModelActions(
+        onSelectCreateNewWallet: selectCreateNewWallet,
+        onSelectImportWallet: selectImportWallet,
+        onClose: onClose
+      )
+    )
+    vc.viewModel = viewModel
+    viewController = vc
     parentViewController.present(vc, animated: true, completion: nil)
   }
   
   func onClose() {
-    parentViewController.dismiss(animated: true)
+    viewController?.dismiss(animated: true) { [weak self] in
+      self?.parentViewController.dismiss(animated: true)
+    }
+    
   }
   
   func selectCreateNewWallet() {

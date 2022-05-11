@@ -41,7 +41,7 @@ extension KNAppCoordinator: KNSessionDelegate {
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   
-  func exchangeTokenCoordinatorDidSelectAddChainWallet(_ chainType: ChainType) {
+  func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
   }
   

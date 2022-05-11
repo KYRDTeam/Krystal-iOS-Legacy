@@ -548,7 +548,7 @@
 		A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */; };
 		A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */; };
 		A6D9BE6B282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */; };
-		A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuPresenter.swift */; };
+		A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */; };
 		A6DA40E227F6B11B0078C58E /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E127F6B11B0078C58E /* ExploreViewModel.swift */; };
 		A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E427F6DAB30078C58E /* Strings.swift */; };
 		A6DA40E727F6DC8D0078C58E /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E627F6DC8C0078C58E /* Images.swift */; };
@@ -1493,7 +1493,7 @@
 		A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuViewController.swift; sourceTree = "<group>"; };
 		A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateChainWalletMenuViewController.xib; sourceTree = "<group>"; };
 		A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuCoordinator.swift; sourceTree = "<group>"; };
-		A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuPresenter.swift; sourceTree = "<group>"; };
+		A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuViewModel.swift; sourceTree = "<group>"; };
 		A6DA40E127F6B11B0078C58E /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		A6DA40E427F6DAB30078C58E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		A6DA40E627F6DC8C0078C58E /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -4273,7 +4273,7 @@
 				A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */,
 				A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */,
 				A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */,
-				A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuPresenter.swift */,
+				A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */,
 			);
 			path = CreateChainWalletMenu;
 			sourceTree = "<group>";
@@ -6249,7 +6249,7 @@
 				25CE6F8E2073E05A00A3A2F9 /* KNHistoryCoordinator.swift in Sources */,
 				C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */,
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,
-				A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuPresenter.swift in Sources */,
+				A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuViewModel.swift in Sources */,
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
 				C3299D652773258D00D1065A /* SearchEngine.swift in Sources */,
 				25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */,
