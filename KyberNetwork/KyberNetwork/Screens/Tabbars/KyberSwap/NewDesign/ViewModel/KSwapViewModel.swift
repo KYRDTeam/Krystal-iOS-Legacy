@@ -352,11 +352,19 @@ class KSwapViewModel {
   }
 
   var displayMinDestAmount: String {
-    return self.minDestQty.string(decimals: self.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.to.symbol
+    return self.minDestQty.string(
+      decimals: self.to.decimals,
+      minFractionDigits: min(self.to.decimals, 5),
+      maxFractionDigits: min(self.to.decimals, 5)
+    ) + " " + self.to.symbol
   }
 
   var displayMaxSoldAmount: String {
-    return self.maxAmtSold.string(decimals: self.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.from.symbol
+    return self.maxAmtSold.string(
+      decimals: self.from.decimals,
+      minFractionDigits: min(self.to.decimals, 5),
+      maxFractionDigits: min(self.to.decimals, 5)
+    ) + " " + self.from.symbol
   }
 
   var displayExpectedReceiveValue: String {
