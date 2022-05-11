@@ -162,6 +162,7 @@ class AddWatchWalletViewController: UIViewController {
   }
 
   func updateUIEnsMessage() {
+    
     self.ensAddressLabel.isHidden = true
   }
 }

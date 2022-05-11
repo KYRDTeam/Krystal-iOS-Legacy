@@ -254,13 +254,24 @@ extension KNAppCoordinator {
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
     self.navigationController.displayLoading(text: NSLocalizedString("removing", value: "Removing", comment: ""), animated: true)
-    if KNWalletStorage.shared.wallets.count <= 1 {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-        self.stopAllSessions()
-        self.navigationController.hideLoading()
+    if wallet.isSolanaWallet {
+      if KNWalletStorage.shared.wallets.count < 1 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+          self.stopAllSessions()
+          self.navigationController.hideLoading()
+        }
+        return
       }
-      return
+    } else {
+      if self.keystore.wallets.count == 1 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+          self.stopAllSessions()
+          self.navigationController.hideLoading()
+        }
+        return
+      }
     }
+
     // User remove current wallet, switch to another wallet first
     if self.session == nil {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -297,6 +308,7 @@ extension KNAppCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       } else {
         self.loadBalanceCoordinator?.restartNewSession(self.session)
+        guard !wallet.isSolanaWallet else { return }
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")
