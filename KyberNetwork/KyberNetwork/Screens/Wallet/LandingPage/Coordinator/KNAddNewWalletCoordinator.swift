@@ -218,12 +218,24 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       let wallets = [walletObject]
 
       KNWalletStorage.shared.add(wallets: wallets)
+      
+      var contacts: [KNContact] = []
       let contact = KNContact(
         address: wallet.addressString,
         name: name ?? "Untitled",
         chainType: finalImportChainType.rawValue
       )
-      KNContactStorage.shared.update(contacts: [contact])
+      contacts.append(contact)
+      if !solanaAddress.isEmpty && wallet.addressString != solanaAddress {
+        let solContact = KNContact(
+          address: solanaAddress,
+          name: name ?? "Untitled",
+          chainType: ImportWalletChainType.solana.rawValue// finalImportChainType.rawValue
+        )
+        contacts.append(solContact)
+      }
+      
+      KNContactStorage.shared.update(contacts: contacts)
       KNGeneralProvider.shared.currentChain = selectedChain
       self.delegate?.addNewWalletCoordinator(add: wallet)
     }

@@ -450,6 +450,8 @@ extension KSendTokenViewController {
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
+    self.gasSettingButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.multiSendButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
   }
   
   func checkTokenAccountForReceiptAddress() {
