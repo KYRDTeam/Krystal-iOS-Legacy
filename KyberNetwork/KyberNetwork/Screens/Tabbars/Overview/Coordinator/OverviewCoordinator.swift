@@ -13,6 +13,7 @@ import WalletConnect
 import WalletConnectSwift
 
 protocol OverviewCoordinatorDelegate: class {
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func overviewCoordinatorDidSelectManageWallet()
@@ -348,6 +349,10 @@ extension OverviewCoordinator: QRCodeReaderDelegate {
 }
 
 extension OverviewCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.overviewCoordinatorDidSelectAddToken(token)
   }
@@ -392,6 +397,10 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -418,6 +427,10 @@ extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
 }
 
 extension OverviewCoordinator: WithdrawCoordinatorDelegate {
+  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.overviewCoordinatorDidSelectAddToken(token)
   }
@@ -667,6 +680,9 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorBuyCrypto()
     case .addNewWallet:
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
+    case .addChainWallet(let chain):
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
+      
     }
   }
 }

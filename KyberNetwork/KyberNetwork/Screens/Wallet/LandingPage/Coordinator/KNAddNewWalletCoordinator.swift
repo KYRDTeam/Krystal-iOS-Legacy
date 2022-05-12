@@ -15,6 +15,7 @@ enum AddNewWalletType {
   case full
   case onlyReal
   case watch
+  case chain(chainType: ChainType)
 }
 
 class KNAddNewWalletCoordinator: Coordinator {
@@ -69,11 +70,22 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
-      let popup = CreateWalletMenuViewController(isFull: type == .full)
+      let isFull: Bool = {
+        switch type {
+        case .full:
+          return true
+        default:
+          return false
+        }
+      }()
+      let popup = CreateWalletMenuViewController(isFull: isFull)
       popup.delegate = self
       self.navigationController.present(popup, animated: true, completion: {})
     case .watch:
       self.createWatchWallet(wallet)
+    case .chain(let chainType):
+      let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chainType, delegate: self)
+      coordinate(coordinator: coordinator)
     }
   }
 
@@ -354,4 +366,16 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
       }
     }
   }
+}
+
+extension KNAddNewWalletCoordinator: CreateChainWalletMenuCoordinatorDelegate {
+  
+  func onSelectCreateNewWallet() {
+    createNewWallet()
+  }
+  
+  func onSelectImportWallet() {
+    importAWallet()
+  }
+  
 }

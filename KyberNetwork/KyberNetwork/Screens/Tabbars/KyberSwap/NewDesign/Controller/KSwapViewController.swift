@@ -26,6 +26,7 @@ enum KSwapViewEvent {
   case signAndSendTx(tx: SignTransaction)
   case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, rawTx: RawSwapTransaction)
   case getRefPrice(from: TokenObject, to: TokenObject)
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol KSwapViewControllerDelegate: class {
@@ -456,9 +457,14 @@ class KSwapViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       self.viewModel.isFromDeepLink = false
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self.present(secondPopup, animated: true, completion: nil)
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.kSwapViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }

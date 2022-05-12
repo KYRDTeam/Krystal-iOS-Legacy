@@ -15,6 +15,7 @@ protocol KNHistoryCoordinatorDelegate: class {
   func historyCoordinatorDidSelectManageWallet()
   func historyCoordinatorDidSelectAddWallet()
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNHistoryCoordinator: NSObject, Coordinator {
@@ -573,6 +574,10 @@ extension KNHistoryCoordinator: QRCodeReaderDelegate {
 }
 
 extension KNHistoryCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.historyCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }

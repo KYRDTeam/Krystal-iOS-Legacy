@@ -20,6 +20,7 @@ protocol WithdrawCoordinatorDelegate: class {
   func withdrawCoordinatorDidSelectHistory()
   func withdrawCoordinatorDidSelectEarnMore(balance: LendingBalance)
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class WithdrawCoordinator: NSObject, Coordinator {
@@ -995,6 +996,10 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
 }
 
 extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.withdrawCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     
   }

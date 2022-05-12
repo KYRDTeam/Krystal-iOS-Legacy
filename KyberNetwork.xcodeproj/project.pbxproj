@@ -545,6 +545,10 @@
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
+		A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */; };
+		A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */; };
+		A6D9BE6B282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */; };
+		A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */; };
 		A6DA40E227F6B11B0078C58E /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E127F6B11B0078C58E /* ExploreViewModel.swift */; };
 		A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E427F6DAB30078C58E /* Strings.swift */; };
 		A6DA40E727F6DC8D0078C58E /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DA40E627F6DC8C0078C58E /* Images.swift */; };
@@ -1486,6 +1490,10 @@
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
+		A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuViewController.swift; sourceTree = "<group>"; };
+		A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateChainWalletMenuViewController.xib; sourceTree = "<group>"; };
+		A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuCoordinator.swift; sourceTree = "<group>"; };
+		A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuViewModel.swift; sourceTree = "<group>"; };
 		A6DA40E127F6B11B0078C58E /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
 		A6DA40E427F6DAB30078C58E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		A6DA40E627F6DC8C0078C58E /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -2716,6 +2724,7 @@
 		257C9FCB2078FB2000EE0128 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */,
 				C3137203260779AF003D432B /* CustomTokenList */,
 				C322EB0825B1A285009746FB /* CreateWalletMenu */,
 				C31BE89525B044960070A832 /* AddWatchWallet */,
@@ -4258,6 +4267,17 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */ = {
+			isa = PBXGroup;
+			children = (
+				A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */,
+				A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */,
+				A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */,
+				A6D9BE6C28292B180009EEB4 /* CreateChainWalletMenuViewModel.swift */,
+			);
+			path = CreateChainWalletMenu;
+			sourceTree = "<group>";
+		};
 		A6DA40E027F6B0FC0078C58E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -5306,6 +5326,7 @@
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
+				A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */,
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
 				25929C9320DA5CC10045CFA3 /* SFCompactText-Medium.otf in Resources */,
@@ -6141,6 +6162,7 @@
 				C65D31E821D4CF27005D0B04 /* UILabel+Kyber.swift in Sources */,
 				25968731211DEC1D0080A33F /* KConfirmSwapViewController.swift in Sources */,
 				775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */,
+				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
 				C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */,
 				A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */,
@@ -6227,6 +6249,7 @@
 				25CE6F8E2073E05A00A3A2F9 /* KNHistoryCoordinator.swift in Sources */,
 				C35E9DEC27DB2BE000E1E7CE /* PromoCodeCoordinator.swift in Sources */,
 				664D11A12007D59F0041A0B0 /* EstimateGasRequest.swift in Sources */,
+				A6D9BE6D28292B190009EEB4 /* CreateChainWalletMenuViewModel.swift in Sources */,
 				299B5E2B1FCA9A640051361C /* ApproveERC20.swift in Sources */,
 				C3299D652773258D00D1065A /* SearchEngine.swift in Sources */,
 				25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */,
@@ -6272,6 +6295,7 @@
 				25FCB18C2100405A00F030A8 /* KNGeneralProvider.swift in Sources */,
 				2502AC1B20947794007F23CD /* KNWalletObject.swift in Sources */,
 				C326C68A256D04B000B35E8F /* InputPopUpViewController.swift in Sources */,
+				A6D9BE6B282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift in Sources */,
 				257C9FD32078FB5700EE0128 /* KNSettingsCoordinator.swift in Sources */,
 				C31F74BB25DD32A6008B21F7 /* OverviewDepositTableViewCell.swift in Sources */,
 				255F6F2020BBC49800EF808F /* KNWalletQRCodeViewModel.swift in Sources */,

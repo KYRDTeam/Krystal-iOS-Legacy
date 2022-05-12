@@ -14,7 +14,6 @@ public protocol BottomPopUpAbstract {
   func getPopupContentView() -> UIView
 }
 
-
 class TransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
   
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
