@@ -286,12 +286,23 @@ extension KNAppCoordinator {
     let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
-      guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else {
-        self.navigationController.hideLoading()
-        return
+      if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
+        self.restartNewSession(newWallet, isLoading: false)
+        delayTime = 0.25
+      } else {
+        let obj = KNWalletStorage.shared.wallets.last { element in
+          return element.address != wallet.addressString
+        }
+        if let unwrap = obj, unwrap.chainType == 2 {
+          let wal = unwrap.toSolanaWallet()
+          self.restartNewSession(wal, isLoading: false)
+          KNGeneralProvider.shared.currentChain = .solana
+          delayTime = 0.25
+        } else {
+          self.navigationController.hideLoading()
+          return
+        }
       }
-      self.restartNewSession(newWallet, isLoading: false)
-      delayTime = 0.25
     }
     self.loadBalanceCoordinator?.exit()
     DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
