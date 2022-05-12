@@ -14,13 +14,13 @@ class SwitchChainWalletsListViewModel {
   init(selected: ChainType) {
     self.selectedChain = selected
     
-    let wallets = KNWalletStorage.shared.wallets.filter { element in
-      if selected == .solana {
-          return element.chainType == 2
-      } else {
+    var wallets: [KNWalletObject] = []
+    if selected == .solana {
+      wallets = KNWalletStorage.shared.getAvailableWalletForChain(selected)
+    } else {
+      wallets = KNWalletStorage.shared.wallets.filter({ element in
         return element.chainType != 2
-      }
-      
+      })
     }
 
     self.dataSource = wallets.map({ (obj) -> KNWalletTableCellViewModel in
