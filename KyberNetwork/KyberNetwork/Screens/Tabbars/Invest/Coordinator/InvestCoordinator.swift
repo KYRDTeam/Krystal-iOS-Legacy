@@ -228,10 +228,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       if isImportedWallet(address: session.wallet.address.description) {
         self.openRewardHunting()
       } else {
-        self.rootViewController.showAlert(
-          title: Strings.rewardHunting,
-          message: Strings.rewardHuntingWatchWalletErrorMessage
-        )
+        self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
     }
   }
