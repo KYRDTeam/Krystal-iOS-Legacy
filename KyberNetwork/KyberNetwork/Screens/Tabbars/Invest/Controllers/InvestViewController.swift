@@ -19,6 +19,7 @@ enum InvestViewEvent {
   case promoCode
   case buyCrypto
   case rewardHunting
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -83,9 +84,15 @@ class InvestViewController: KNBaseViewController {
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { [weak self] selected in
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self?.present(secondPopup, animated: true, completion: nil)
+      guard let self = self else { return }
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.investViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }

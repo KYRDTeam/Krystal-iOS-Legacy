@@ -14,6 +14,7 @@ protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
   func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func investCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class InvestCoordinator: Coordinator {
@@ -233,11 +234,17 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.promoCodeCoordinator = coordinator
     case .rewardHunting:
       self.openRewardHunting()
+    case .addChainWallet(let chainType):
+      delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -264,6 +271,10 @@ extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
 }
 
 extension InvestCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
   }
@@ -332,5 +343,9 @@ extension InvestCoordinator: DappCoordinatorDelegate {
   
   func dAppCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+  
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }

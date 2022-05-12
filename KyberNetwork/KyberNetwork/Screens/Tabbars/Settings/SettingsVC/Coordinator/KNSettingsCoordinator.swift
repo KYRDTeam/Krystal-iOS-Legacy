@@ -13,6 +13,7 @@ protocol KNSettingsCoordinatorDelegate: class {
   func settingsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func settingsCoordinatorDidSelectManageWallet()
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
+  func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNSettingsCoordinator: NSObject, Coordinator {
@@ -634,6 +635,10 @@ extension KNSettingsCoordinator: MFMailComposeViewControllerDelegate {
 }
 
 extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.settingsCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil
   }
@@ -666,6 +671,10 @@ extension KNSettingsCoordinator: AddTokenCoordinatorDelegate {
 }
 
 extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.settingsCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.appCoordinatorDidSelectAddToken(token)
   }

@@ -15,7 +15,7 @@ enum KrystalApi: TargetType {
 extension KrystalApi {
   
   var baseURL: URL {
-    return URL(string: "https://api-dev.krystal.team")!
+    return URL(string: KNEnvironment.default.krytalAPIEndPoint)!
   }
   
   var path: String {

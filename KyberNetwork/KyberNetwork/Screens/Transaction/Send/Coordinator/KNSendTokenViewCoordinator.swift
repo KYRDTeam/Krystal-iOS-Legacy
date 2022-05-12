@@ -19,6 +19,7 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectAddWallet()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
   func sendTokenCoordinatorDidClose()
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
@@ -310,6 +311,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .openMultiSend:
       self.multiSendCoordinator.start()
       KNCrashlyticsUtil.logCustomEvent(withName: "transfer_click_multiple_transfer", customAttributes: nil)
+    case .addChainWallet(let chainType):
+      self.delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 

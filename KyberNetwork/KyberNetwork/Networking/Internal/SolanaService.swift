@@ -9,6 +9,7 @@ import Foundation
 import Moya
 
 enum SolanaService {
+  case getHealth
   case getBalance(address: String)
   case getRecentBlockhash
   case getMinimumBalanceForRentExemption
@@ -37,6 +38,13 @@ extension SolanaService: TargetType {
   
   var task: Task {
     switch self {
+    case .getHealth:
+      let json: JSONDictionary = [
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": self.methodName()
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
     case .getBalance(let address):
       let json: JSONDictionary = [
         "jsonrpc": "2.0",
@@ -93,6 +101,8 @@ extension SolanaService: TargetType {
 
   func methodName() -> String {
     switch self {
+    case .getHealth:
+      return "getHealth"
     case .getBalance:
       return "getBalance"
     case .getRecentBlockhash:

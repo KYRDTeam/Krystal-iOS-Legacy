@@ -15,6 +15,7 @@ import WalletConnectSwift
 import MBProgressHUD
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
+  func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
   func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectAddWallet()
@@ -676,6 +677,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       }
+    case .addChainWallet(let chainType):
+      delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 
@@ -1003,6 +1006,10 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
   }
@@ -1628,6 +1635,10 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil
   }

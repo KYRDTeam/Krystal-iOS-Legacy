@@ -40,6 +40,11 @@ extension KNAppCoordinator: KNSessionDelegate {
 
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  
+  func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
@@ -115,6 +120,10 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
+  
+  func earnCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
@@ -161,6 +170,10 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.tabbarController.selectedIndex = 1
   }
 
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func overviewCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }
@@ -200,6 +213,10 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: InvestCoordinatorDelegate {
+  func investCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func investCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
@@ -221,6 +238,10 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
+  
+  func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
   
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
     self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "\(KNGeneralProvider.shared.customRPC.chainID)")

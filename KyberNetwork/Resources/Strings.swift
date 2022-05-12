@@ -36,4 +36,8 @@ struct Strings {
   static let toColonX = "to_colon_x".toBeLocalised()
   static let rewardHunting = "reward.hunting".toBeLocalised()
   static let copied = "copied".toBeLocalised()
+  
+  // Wallet
+  static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
+  static let notHaveChainWalletPleaseCreateOrImport = "not.have.chain.wallet.please.create.or.import".toBeLocalised()
 }
