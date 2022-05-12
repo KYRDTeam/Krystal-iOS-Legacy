@@ -52,4 +52,11 @@ extension UIViewController {
     if #available(iOS 11, *) { return 0.0 }
     return 50.0
   }
+  
+  func showAlert(title: String, message: String) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: Strings.ok, style: .cancel, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
+  
 }

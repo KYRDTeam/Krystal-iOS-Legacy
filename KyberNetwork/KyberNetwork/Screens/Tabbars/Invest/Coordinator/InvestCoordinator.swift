@@ -225,7 +225,20 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       coordinator.start()
       self.promoCodeCoordinator = coordinator
     case .rewardHunting:
-      self.openRewardHunting()
+      if isImportedWallet(address: session.wallet.address.description) {
+        self.openRewardHunting()
+      } else {
+        self.rootViewController.showAlert(
+          title: Strings.rewardHunting,
+          message: Strings.rewardHuntingWatchWalletErrorMessage
+        )
+      }
+    }
+  }
+  
+  private func isImportedWallet(address: String) -> Bool {
+    return KNWalletStorage.shared.realWallets.contains { wallet in
+      wallet.address.description == address
     }
   }
 }
