@@ -19,19 +19,22 @@ struct RealmConfiguration {
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(address.lowercased())-\(chainID).realm")
       config.schemaVersion = 15
       config.migrationBlock = { migration, oldVersion in
-        switch oldVersion {
-        case 0:
-            migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-            migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-        case 1:
+        if oldVersion < 1 {
+          migration.enumerateObjects(ofType: "Transaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+          migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+        }
+        
+        if oldVersion < 2 {
           migration.enumerateObjects(ofType: "KNOrderObject") { (_, new) in
             new?["side_trade"] = nil
           }
-        case 14:
+        }
+        
+        if oldVersion < 15 {
           migration.enumerateObjects(ofType: "KNWalletObject") { (_, new) in
             new?["chainType"] = 0
             new?["storateType"] = 0
@@ -41,7 +44,6 @@ struct RealmConfiguration {
           migration.enumerateObjects(ofType: "KNContact") { (_, new) in
             new?["chainType"] = 1
           }
-        default: break
         }
       }
       return config
@@ -52,19 +54,31 @@ struct RealmConfiguration {
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
       config.schemaVersion = 15
       config.migrationBlock = { migration, oldVersion in
-        switch oldVersion {
-        case 0:
-            migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-            migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-        case 1:
+        if oldVersion < 1 {
+          migration.enumerateObjects(ofType: "Transaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+          migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+        }
+        
+        if oldVersion < 2 {
           migration.enumerateObjects(ofType: "KNOrderObject") { (_, new) in
             new?["side_trade"] = nil
           }
-        default: break
+        }
+        
+        if oldVersion < 15 {
+          migration.enumerateObjects(ofType: "KNWalletObject") { (_, new) in
+            new?["chainType"] = 0
+            new?["storateType"] = 0
+            new?["evmAddress"] = ""
+            new?["walletID"] = ""
+          }
+          migration.enumerateObjects(ofType: "KNContact") { (_, new) in
+            new?["chainType"] = 1
+          }
         }
       }
       return config
