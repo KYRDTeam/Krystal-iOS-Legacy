@@ -133,6 +133,10 @@ class KNWalletObject: Object {
       walletID: self.walletID
     )
   }
+  
+  func isNeedMigration() -> Bool {
+    return self.chainType == 0 && self.storateType == 0 && self.evmAddress.isEmpty && self.walletID.isEmpty
+  }
 }
 
 class KNWalletPromoInfoStorage: NSObject {

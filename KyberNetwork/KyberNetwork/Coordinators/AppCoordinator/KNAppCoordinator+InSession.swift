@@ -8,6 +8,8 @@ extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
     
+    KNWalletStorage.shared.migrateDateIfNeeded(keyStore: self.keystore)
+    
     var aWallet = wallet
     
     if KNGeneralProvider.shared.currentChain == .solana {
