@@ -262,7 +262,7 @@ extension KNAppCoordinator {
         return
       }
     } else {
-      if self.keystore.wallets.count == 1 && KNWalletStorage.shared.wallets.count < 1 {
+      if self.keystore.wallets.count == 1 && KNWalletStorage.shared.onlySolanaWallet.isEmpty {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
           self.stopAllSessions()
           self.navigationController.hideLoading()

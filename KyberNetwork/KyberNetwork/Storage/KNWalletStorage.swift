@@ -59,6 +59,14 @@ class KNWalletStorage {
       return object.chainType != 2
     }
   }
+  
+  var onlySolanaWallet: [KNWalletObject] {
+    let allWallets = self.wallets
+    let solWallets = allWallets.filter { (object) -> Bool in
+      return object.chainType == 2
+    }
+    return solWallets
+  }
 
   func checkAddressExisted(_ address: String) -> Bool {
     let existed = self.wallets.first { (object) -> Bool in
