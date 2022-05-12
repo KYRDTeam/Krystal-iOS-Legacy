@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WebKit
 
 class RewardHuntingViewController: WebViewController {
   
@@ -17,8 +18,9 @@ class RewardHuntingViewController: WebViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    load(webType: .link(url: viewModel.url))
+    bindViewModel()
+    viewModel.onViewLoaded()
+    reloadWebView()
   }
   
   override func setupNavigationBar() {
@@ -33,6 +35,16 @@ class RewardHuntingViewController: WebViewController {
     }
     navigationBar.setRightButtonAction { [weak self] in
       self?.viewModel.didTapRewards()
+    }
+  }
+  
+  func reloadWebView() {
+    loadNewPage(webType: .link(url: viewModel.url))
+  }
+  
+  func bindViewModel() {
+    viewModel.onUpdateSession = { [weak self] in
+      self?.reloadWebView()
     }
   }
   

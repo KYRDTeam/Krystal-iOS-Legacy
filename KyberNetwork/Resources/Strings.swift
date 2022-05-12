@@ -8,6 +8,8 @@
 import Foundation
 
 struct Strings {
+  // Common
+  static let ok = "ok".toBeLocalised()
   
   // Explore screen
   static let explore = "explore".toBeLocalised()
@@ -21,4 +23,5 @@ struct Strings {
   static let promotion = "promotion".toBeLocalised()
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
   static let rewardHunting = "reward.hunting".toBeLocalised()
+  static let rewardHuntingWatchWalletErrorMessage = "reward.hunting.watch.wallet.not.supported".toBeLocalised()
 }

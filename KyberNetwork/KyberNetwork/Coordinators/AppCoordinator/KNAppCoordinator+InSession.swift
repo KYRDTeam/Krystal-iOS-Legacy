@@ -213,6 +213,12 @@ extension KNAppCoordinator {
       self.doLogin { completed in
       }
       if isLoading { self.navigationController.hideLoading() }
+      
+      NotificationCenter.default.post(
+        name: Notification.Name(kAppDidUpdateNewSession),
+        object: nil,
+        userInfo: ["session": self.session]
+      )
       MixPanelManager.shared.updateWalletAddress(address: wallet.address.description.lowercased())
     }
   }

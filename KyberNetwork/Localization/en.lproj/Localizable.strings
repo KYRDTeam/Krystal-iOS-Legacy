@@ -811,4 +811,5 @@
 "promotion" = "Promotion";
 "supported.platforms" = "Supported Platforms";
 "reward.hunting" = "Reward Hunting";
-
+"reward.hunting.watch.wallet.not.supported" = "Please switch to imported wallet to access reward hunting system";
+"ok" = "OK";

@@ -10,24 +10,24 @@ import UIKit
 class RewardHuntingCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
-  let session: KNSession
-  let url: URL
+  var session: KNSession
   
   init(navigationController: UINavigationController, session: KNSession) {
     self.navigationController = navigationController
     self.session = session
-    let url = URL(string: KNEnvironment.default.krystalWebUrl + "/" + Constants.rewardHuntingPath)!
-      .appending("address", value: session.wallet.address.description)
-    self.url = url
   }
   
   func start() {
     let vc = RewardHuntingViewController()
-    let viewModel = RewardHuntingViewModel(url: url)
-    viewModel.actions = RewardHuntingViewModelActions(goBack: goBack, openRewards: openRewards)
+    let viewModel = RewardHuntingViewModel(session: session)
+    viewModel.actions = RewardHuntingViewModelActions(goBack: goBack, openRewards: openRewards, onUpdateSession: onUpdateSession, onClose: onClose)
     vc.viewModel = viewModel
     vc.hidesBottomBarWhenPushed = false
     navigationController.pushViewController(vc, animated: true)
+  }
+  
+  private func onUpdateSession(session: KNSession) {
+    self.session = session
   }
   
   private func goBack() {
@@ -37,6 +37,10 @@ class RewardHuntingCoordinator: Coordinator {
   private func openRewards() {
     let coordinator = RewardCoordinator(navigationController: navigationController, session: session)
     coordinator.start()
+  }
+  
+  private func onClose() {
+    navigationController.popViewController(animated: true, completion: nil)
   }
   
 }
