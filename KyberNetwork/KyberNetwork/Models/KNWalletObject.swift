@@ -112,6 +112,9 @@ class KNWalletObject: Object {
   }
   
   func toSolanaWallet() -> Wallet {
+    if self.isWatchWallet {
+      return Wallet(type: .solana(self.address, self.evmAddress, self.walletID))
+    }
     return Wallet(type: .solana(self.solanaAddress, self.evmAddress, self.walletID))
   }
   
