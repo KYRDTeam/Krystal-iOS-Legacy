@@ -200,6 +200,10 @@ extension KNAppCoordinator {
         }
       }
     }
+    
+    if !aWallet.isSolanaWallet && KNGeneralProvider.shared.currentChain == .solana {
+      KNGeneralProvider.shared.currentChain = .eth
+    }
 
     if isLoading { self.navigationController.displayLoading() }
 
@@ -282,7 +286,10 @@ extension KNAppCoordinator {
     let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
-      guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
+      guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else {
+        self.navigationController.hideLoading()
+        return
+      }
       self.restartNewSession(newWallet, isLoading: false)
       delayTime = 0.25
     }
