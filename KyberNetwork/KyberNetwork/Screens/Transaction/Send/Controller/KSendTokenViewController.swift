@@ -437,6 +437,7 @@ extension KSendTokenViewController {
     self.updateUIEnsMessage()
     if isAddressChanged { self.shouldUpdateEstimatedGasLimit(nil) }
     self.view.layoutIfNeeded()
+    self.checkTokenAccountForReceiptAddress()
   }
 
   func updateUIEnsMessage() {
@@ -590,6 +591,7 @@ extension KSendTokenViewController {
 
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {

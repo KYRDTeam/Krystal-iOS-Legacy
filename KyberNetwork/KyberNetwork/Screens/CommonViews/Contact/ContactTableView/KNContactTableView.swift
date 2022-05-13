@@ -128,6 +128,8 @@ class KNContactTableView: XibLoaderView {
     var contactsArray = isFull ? contacts : Array(contacts.prefix(2))
     if KNGeneralProvider.shared.currentChain == .solana {
       contactsArray = contactsArray.filter { $0.address.isValidSolanaAddress() }
+    } else {
+      contactsArray = contactsArray.filter { !$0.address.isValidSolanaAddress() }
     }
     self.contacts = contactsArray
     self.tableView.reloadData()
