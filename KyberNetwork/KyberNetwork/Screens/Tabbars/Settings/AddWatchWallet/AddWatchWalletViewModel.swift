@@ -33,7 +33,7 @@ class AddWatchWalletViewModel {
   var wallet: KNWalletObject? {
     didSet {
       if let wallet = self.wallet {
-        self.inputAddress = wallet.address.lowercased()
+        self.inputAddress = KNGeneralProvider.shared.currentChain == .solana ? wallet.address : wallet.address.lowercased()
       }
     }
   }
