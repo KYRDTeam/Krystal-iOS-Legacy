@@ -12,17 +12,8 @@ class SwitchChainWalletsListViewModel {
   var selectedAddress: String = ""
   let selectedChain: ChainType
   init(selected: ChainType) {
-    self.selectedChain = selected
-    
-    var wallets: [KNWalletObject] = []
-    if selected == .solana {
-      wallets = KNWalletStorage.shared.getAvailableWalletForChain(selected)
-    } else {
-      wallets = KNWalletStorage.shared.wallets.filter({ element in
-        return element.chainType != 2
-      })
-    }
-
+    self.selectedChain = selected    
+    let wallets = KNWalletStorage.shared.getAvailableWalletForChain(selected)
     self.dataSource = wallets.map({ (obj) -> KNWalletTableCellViewModel in
       return KNWalletTableCellViewModel(wallet: obj)
     })

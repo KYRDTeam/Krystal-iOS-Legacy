@@ -108,7 +108,7 @@ class KNWalletStorage {
       
       return solWallets + solFromMultichainWallet
     } else {
-      return allWallets
+      return allWallets.filter { $0.chainType != 2 } 
     }
   }
 
