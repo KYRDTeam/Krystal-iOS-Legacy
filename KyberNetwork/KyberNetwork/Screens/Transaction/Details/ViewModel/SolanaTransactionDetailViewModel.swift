@@ -58,20 +58,13 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayFromAddress: String {
-    switch transaction.type {
-    case .swap:
-      return transaction.userAddress
-    case .transfer(let txData):
-      return txData.sourceAddress
-    case .other(let programId):
-      return programId
-    }
+    return transaction.userAddress
   }
   
   var displayToAddress: String {
     switch transaction.type {
     case .transfer(let txData):
-      return txData.destinationAddress
+      return transaction.isTransferToOther ? txData.destinationAddress : txData.sourceAddress
     case .swap(let swapData):
       return swapData.programId
     case .other(let programId):
@@ -108,18 +101,13 @@ class SolanaTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var fromFieldTitle: String {
-    switch transaction.type {
-    case .transfer:
-      return transaction.isTransferToOther ? Strings.wallet : Strings.fromWallet
-    default:
-      return Strings.wallet
-    }
+    return Strings.wallet
   }
   
   var toFieldTitle: String {
     switch transaction.type {
     case .transfer:
-      return Strings.toWallet
+      return transaction.isTransferToOther ? Strings.to : Strings.from
     default:
       return Strings.application
     }

@@ -38,6 +38,8 @@ struct Strings {
   static let toColonX = "to_colon_x".toBeLocalised()
   static let rewardHunting = "reward.hunting".toBeLocalised()
   static let copied = "copied".toBeLocalised()
+  static let to = "to".toBeLocalised()
+  static let from = "from".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
