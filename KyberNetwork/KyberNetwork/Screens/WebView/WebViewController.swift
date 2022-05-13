@@ -14,11 +14,11 @@ enum WebType {
 }
 
 class WebViewController: KNBaseViewController {
-  
   @IBOutlet weak var navigationBar: NavigationBar!
   @IBOutlet weak var progressView: UIProgressView!
-  @IBOutlet weak var webView: WKWebView!
-
+  @IBOutlet weak var webViewContainer: UIView!
+  
+  var webView: WKWebView!
   let refreshControl = UIRefreshControl()
   
   private var progressObservation: NSKeyValueObservation?
@@ -27,10 +27,24 @@ class WebViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    disableZooming()
+    initWebView()
     setupNavigationBar()
+  }
+  
+  func initWebView() {
+    webView?.removeFromSuperview()
+    webView = WKWebView(frame: .zero)
+    webViewContainer.addSubview(webView)
+    webView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      webView.leadingAnchor.constraint(equalTo: webViewContainer.leadingAnchor),
+      webView.trailingAnchor.constraint(equalTo: webViewContainer.trailingAnchor),
+      webView.topAnchor.constraint(equalTo: progressView.bottomAnchor),
+      webView.bottomAnchor.constraint(equalTo: webViewContainer.bottomAnchor),
+    ])
     setupRefreshControl()
     setupObservations()
+    disableZooming()
   }
   
   func setupNavigationBar() {
@@ -87,6 +101,11 @@ class WebViewController: KNBaseViewController {
     case .htmlContent(let content):
       webView.loadHTMLString(content, baseURL: nil)
     }
+  }
+  
+  func loadNewPage(webType: WebType) {
+    initWebView()
+    load(webType: webType)
   }
   
   deinit {

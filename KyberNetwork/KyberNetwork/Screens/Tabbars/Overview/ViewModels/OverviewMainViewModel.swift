@@ -198,7 +198,7 @@ class OverviewMainViewModel {
   }
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode
-  var hiddenSections = Set<Int>()
+  var hiddenNFTSections = Set<Int>()
   var isHidingSmallAssetsToken = true
   var isRefreshingTableView = false
   var didTapAddNFTHeader: (() -> Void)?
@@ -500,12 +500,11 @@ class OverviewMainViewModel {
     guard !self.isEmpty() else {
       return 1
     }
-    guard !self.hiddenSections.contains(section) else {
-      return 0
-    }
-    
     switch self.currentMode {
     case .nft:
+      guard !self.hiddenNFTSections.contains(section) else {
+        return 0
+      }
       let key = self.displayNFTHeader.value[section].collectibleName
       return self.displayNFTDataSource.value[key]?.count ?? 0
     case .asset:

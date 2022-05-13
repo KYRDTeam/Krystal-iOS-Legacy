@@ -819,10 +819,12 @@
 "reward.hunting" = "Reward Hunting";
 
 // Transaction History
+"reward.hunting.watch.wallet.not.supported" = "Please switch to imported wallet to access reward hunting system";
 "from_colon_x" = "From: %@";
 "to_colon_x" = "To: %@";
 "to.wallet" = "To Wallet";
 "from.wallet" = "From Wallet";
+"ok" = "OK";
 "application" = "Application";
 "wallet" = "Wallet";
 "copied" = "Copied";

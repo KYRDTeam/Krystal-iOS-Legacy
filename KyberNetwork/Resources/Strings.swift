@@ -8,6 +8,8 @@
 import Foundation
 
 struct Strings {
+  // Common
+  static let ok = "ok".toBeLocalised()
   
   // Errors
   static let privateKeyError = "private.key.error".toBeLocalised()
@@ -39,5 +41,6 @@ struct Strings {
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
+  static let rewardHuntingWatchWalletErrorMessage = "reward.hunting.watch.wallet.not.supported".toBeLocalised()
   static let notHaveChainWalletPleaseCreateOrImport = "not.have.chain.wallet.please.create.or.import".toBeLocalised()
 }
