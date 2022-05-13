@@ -508,6 +508,7 @@
 		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		A63A88AA282D128400C6C373 /* AddWatchWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */; };
 		A64E17B5281932C400ED6E6D /* PendingTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */; };
 		A64E17B6281932C400ED6E6D /* PendingTransactionListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */; };
 		A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */; };
@@ -1453,6 +1454,7 @@
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWatchWalletViewModel.swift; sourceTree = "<group>"; };
 		A64E17B3281932C400ED6E6D /* PendingTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionListViewController.swift; sourceTree = "<group>"; };
 		A64E17B4281932C400ED6E6D /* PendingTransactionListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTransactionListViewController.xib; sourceTree = "<group>"; };
 		A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePendingTransactionListViewModel.swift; sourceTree = "<group>"; };
@@ -4516,6 +4518,7 @@
 			children = (
 				C31BE89625B045700070A832 /* AddWatchWalletViewController.swift */,
 				C31BE89725B045700070A832 /* AddWatchWalletViewController.xib */,
+				A63A88A9282D128300C6C373 /* AddWatchWalletViewModel.swift */,
 			);
 			path = AddWatchWallet;
 			sourceTree = "<group>";
@@ -6086,6 +6089,7 @@
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,
 				C3D560AA260C641E00408875 /* OverviewClaimViewController.swift in Sources */,
 				29CA4B791F6FBFD50032313D /* Balance.swift in Sources */,
+				A63A88AA282D128400C6C373 /* AddWatchWalletViewModel.swift in Sources */,
 				A6B3CD3B281176E4005D0D66 /* KNTransactionListViewController.swift in Sources */,
 				291F52A71F6B766100B369AB /* BalanceRequest.swift in Sources */,
 				C3377ACF25E650B00035A18D /* ChartViewController.swift in Sources */,
