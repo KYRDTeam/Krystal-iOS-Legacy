@@ -181,18 +181,16 @@ class KNWalletStorage {
     let clones = found.map { element in
       return element.clone()
     }
-    DispatchQueue.global(qos: .background).async {
-      clones.forEach { obj in
-        if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
-          let solAddress = SolanaUtil.seedsToPublicKey(seeds)
-          obj.evmAddress = obj.address
-          obj.solanaAddress = solAddress
-        } else {
-          obj.chainType = 1
-          obj.evmAddress = obj.address
-        }
+    clones.forEach { obj in
+      if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
+        let solAddress = SolanaUtil.seedsToPublicKey(seeds)
+        obj.evmAddress = obj.address
+        obj.solanaAddress = solAddress
+      } else {
+        obj.chainType = 1
+        obj.evmAddress = obj.address
       }
-      self.update(wallets: clones)
     }
+    self.update(wallets: clones)
   }
 }
