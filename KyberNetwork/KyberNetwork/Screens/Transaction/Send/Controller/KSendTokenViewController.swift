@@ -437,6 +437,7 @@ extension KSendTokenViewController {
     self.updateUIEnsMessage()
     if isAddressChanged { self.shouldUpdateEstimatedGasLimit(nil) }
     self.view.layoutIfNeeded()
+    self.checkTokenAccountForReceiptAddress()
   }
 
   func updateUIEnsMessage() {
