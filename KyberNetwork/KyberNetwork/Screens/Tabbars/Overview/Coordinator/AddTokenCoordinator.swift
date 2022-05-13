@@ -45,6 +45,10 @@ class AddTokenCoordinator: NSObject, Coordinator {
     }
   }
   
+  func start() {
+    self.start(showList: false, token: nil)
+  }
+  
   func stop() {
     self.navigationController.popViewController(animated: true)
   }

@@ -37,7 +37,7 @@ class PromoCodeCoordinator: Coordinator {
 extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   fileprivate func claimPromotionCode(_ code: String) {
     self.navigationController.displayLoading()
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.claimPromotion(code: code, address: address)) { result in
       switch result {
@@ -82,7 +82,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
         }
       }
     case .loadUsedCode:
-      let address = self.session.wallet.address.description
+      let address = self.session.wallet.addressString
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getPromotions(code: "", address: address)) { result in
         switch result {
@@ -115,6 +115,4 @@ extension PromoCodeCoordinator: PromoCodeDetailViewControllerDelegate {
       self.claimPromotionCode(code)
     }
   }
-  
-  
 }

@@ -19,6 +19,7 @@ enum InvestViewEvent {
   case promoCode
   case buyCrypto
   case rewardHunting
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -37,22 +38,14 @@ class InvestViewController: KNBaseViewController {
     
     self.setupCollectionView()
     self.bindViewModel()
-    self.observeFeatureFlagChanged()
+    self.viewModel.onViewLoaded()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     self.updateUISwitchChain()
-    self.configFeatureFlag()
-  }
-  
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
+    self.viewModel.reloadMenuItems()
   }
   
   func setupCollectionView() {
@@ -83,35 +76,6 @@ class InvestViewController: KNBaseViewController {
     collectionView.reloadSections(.init(arrayLiteral: index))
   }
   
-  fileprivate func observeFeatureFlagChanged() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(configFeatureFlag),
-      name: Notification.Name(kUpdateFeatureFlag),
-      object: nil
-    )
-  }
-  
-  @objc fileprivate func configFeatureFlag() {
-    let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
-    let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
-    let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
-    
-    var menuItems: [ExploreMenuItem] = [.swap, .transfer, .reward, .referral, .dapps, .multisend]
-    if isBuyCryptoEnabled {
-      menuItems.append(.buyCrypto)
-    }
-    if isPromoCodeEnabled {
-      menuItems.append(.promotion)
-    }
-    if isRewardHuntingEnabled {
-      menuItems.append(.rewardHunting)
-    }
-    if viewModel.menuItems.value != menuItems {
-      viewModel.menuItems.value = menuItems
-    }
-  }
-  
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
@@ -120,9 +84,15 @@ class InvestViewController: KNBaseViewController {
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
     popup.completionHandler = { [weak self] selected in
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self?.present(secondPopup, animated: true, completion: nil)
+      guard let self = self else { return }
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.investViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }
@@ -137,6 +107,7 @@ class InvestViewController: KNBaseViewController {
       return
     }
     self.updateUISwitchChain()
+    self.viewModel.reloadMenuItems()
   }
 }
 

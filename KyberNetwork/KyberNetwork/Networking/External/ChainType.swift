@@ -37,6 +37,8 @@ enum ChainType: Codable, CaseIterable {
       self = .arbitrum
     case 7:
       self = .aurora
+    case 8:
+      self = .solana
     default:
       throw CodingError.unknownValue
     }
@@ -61,6 +63,8 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(6, forKey: .rawValue)
     case .aurora:
       try container.encode(7, forKey: .rawValue)
+    case .solana:
+      try container.encode(8, forKey: .rawValue)
     }
   }
 
@@ -74,6 +78,11 @@ enum ChainType: Codable, CaseIterable {
     if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
       allChains = allChains.filter { $0 != .aurora }
     }
+    
+//    let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
+//    if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
+//      allChains = allChains.filter { $0 != .solana }
+//    }
     return allChains
   }
 
@@ -109,6 +118,8 @@ enum ChainType: Codable, CaseIterable {
         return AllChains.arbitrumMainnetRPC
     case .aurora:
       return AllChains.auroraMainnetRPC
+    case .solana:
+      return AllChains.solana
     }
   }
 
@@ -248,6 +259,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .aurora:
         return KNSupportedTokenStorage.shared.usdcToken
+    case .solana:
+        return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -283,6 +296,7 @@ enum ChainType: Codable, CaseIterable {
   case fantom
   case arbitrum
   case aurora
+  case solana
 }
 
 enum CurrencyMode: Int {

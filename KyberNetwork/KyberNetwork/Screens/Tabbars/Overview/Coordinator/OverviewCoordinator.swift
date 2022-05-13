@@ -13,6 +13,7 @@ import WalletConnect
 import WalletConnectSwift
 
 protocol OverviewCoordinatorDelegate: class {
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func overviewCoordinatorDidSelectManageWallet()
@@ -40,7 +41,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
-  var currentCurrencyType: CurrencyMode = .usd
+  var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
 
   lazy var rootViewController: OverviewMainViewController = {
     let viewModel = OverviewMainViewModel(session: self.session)
@@ -56,8 +57,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }()
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
 
   weak var delegate: OverviewCoordinatorDelegate?
@@ -141,7 +141,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   func openQRCodeScreen() {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return }
+    let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) ?? KNWalletObject(address: self.session.wallet.addressString)
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
       navigationController: self.navigationController,
       walletObject: walletObject
@@ -157,14 +157,21 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      coordinator.delegate = self
+      coordinate(coordinator: coordinator)
+    default:
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
+    }
   }
 }
 
@@ -282,10 +289,10 @@ extension OverviewCoordinator: WalletsListViewControllerDelegate {
       UIPasteboard.general.string = wallet.address
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
       hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+      hud.label.text = Strings.copied
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.overviewCoordinatorDidSelectWallet(wal)
@@ -342,6 +349,10 @@ extension OverviewCoordinator: QRCodeReaderDelegate {
 }
 
 extension OverviewCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.overviewCoordinatorDidSelectAddToken(token)
   }
@@ -386,6 +397,10 @@ extension OverviewCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -412,6 +427,10 @@ extension OverviewCoordinator: KNSendTokenViewCoordinatorDelegate {
 }
 
 extension OverviewCoordinator: WithdrawCoordinatorDelegate {
+  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chainType)
+  }
+  
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.overviewCoordinatorDidSelectAddToken(token)
   }
@@ -503,7 +522,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     }))
     
     actionController.addAction(Action(ActionData(title: "Copy Address", image: UIImage(named: "copy_actionsheet_icon")!), style: .default, handler: { _ in
-      UIPasteboard.general.string = self.session.wallet.address.description
+      UIPasteboard.general.string = self.session.wallet.addressString
       let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
       hud.mode = .text
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
@@ -513,7 +532,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     actionController.addAction(Action(ActionData(title: "Share Address", image: UIImage(named: "share_actionsheet_icon")!), style: .default, handler: { _ in
       let activityItems: [Any] = {
         var items: [Any] = []
-        items.append(self.session.wallet.address.description)
+        items.append(self.session.wallet.addressString)
         return items
       }()
       let activityViewController = UIActivityViewController(
@@ -536,9 +555,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidSelectDeleteWallet()
     }))
     actionController.addAction(Action(ActionData(title: KNGeneralProvider.shared.currentChain.blockExploreName(), image: UIImage(named: "etherscan_actionsheet_icon")!), style: .default, handler: { _ in
-      if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)address/\(self.session.wallet.address.description)") {
-        self.rootViewController.openSafari(with: url)
-      }
+      let url = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.session.wallet.addressString)"
+      self.rootViewController.openSafari(with: url)
     }))
     self.navigationController.present(actionController, animated: true, completion: nil)
   }
@@ -559,7 +577,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.openChartView(token: token)
     case .selectListWallet:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -660,6 +678,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidStart()
     case .buyCrypto:
       self.delegate?.overviewCoordinatorBuyCrypto()
+    case .addNewWallet:
+      self.delegate?.overviewCoordinatorDidSelectAddWallet()
+    case .addChainWallet(let chain):
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
+      
     }
   }
 }
@@ -692,7 +715,7 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
               controller.hideLoading()
               switch ownerResult {
               case .success(let owner):
-                if owner.lowercased() == self.session.wallet.address.description.lowercased() {
+                if owner.lowercased() == self.session.wallet.addressString.lowercased() {
                   KNGeneralProvider.shared.getERC721Name(address: address) { nameResult in
                     switch nameResult {
                     case.success(let name):
@@ -781,10 +804,11 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
       session: self.session,
       nftItem: item,
       supportERC721: supportERC721,
-      nftCategory: category
+      nftCategory: category,
+      sendNFT: true
     )
     coordinator.delegate = self
-    coordinator.start(sendNFT: true)
+    coordinator.start()
     self.sendCoordinator = coordinator
   }
   
@@ -813,7 +837,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
         case .success(let signedData):
           print("[Send favorite nft] success")
           let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-          provider.request(.registerNFTFavorite(address: self.session.wallet.address.description, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+          provider.request(.registerNFTFavorite(address: self.session.wallet.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))

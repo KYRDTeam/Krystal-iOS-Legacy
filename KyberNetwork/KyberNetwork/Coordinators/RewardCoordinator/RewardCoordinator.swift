@@ -91,7 +91,7 @@ class RewardCoordinator: Coordinator {
       self.rootViewController.hideLoading()
       return
     }
-    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+    guard let loginToken = Storage.retrieve(self.session.wallet.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -99,7 +99,7 @@ class RewardCoordinator: Coordinator {
       return
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
 
     provider.request(.getRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
@@ -156,7 +156,7 @@ class RewardCoordinator: Coordinator {
       self.rootViewController.hideLoading()
       return
     }
-    guard let loginToken = Storage.retrieve(self.session.wallet.address.description + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
+    guard let loginToken = Storage.retrieve(self.session.wallet.addressString + Constants.loginTokenStoreFileName, as: LoginToken.self) else {
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -164,7 +164,7 @@ class RewardCoordinator: Coordinator {
       return
     }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
 
     provider.request(.getClaimRewards(address: address, accessToken: loginToken.token)) { (result) in
       DispatchQueue.main.async {
@@ -207,7 +207,7 @@ class RewardCoordinator: Coordinator {
 
   func checkEligibleWallet(completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     provider.request(.checkEligibleWallet(address: address)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let isEligible = json["result"] as? Bool {
         completion(isEligible)
@@ -226,7 +226,7 @@ class RewardCoordinator: Coordinator {
       case .success(let hash):
           self.currentHash = hash
           provider.minTxCount += 1
-          let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.address.description, type: .withdraw)
+          let tx = transaction.toTransaction(hash: hash, fromAddr: self.session.wallet.addressString, type: .withdraw)
           self.session.addNewPendingTransaction(tx)
           let description = self.rootViewController.viewModel.totalBalanceString()
           let detailDescription = tx.to
@@ -473,7 +473,6 @@ extension RewardCoordinator: SpeedUpCustomGasSelectDelegate {
             }
           }
         }
-        
       } else {
         self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
       }
@@ -698,7 +697,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
   
   fileprivate func saveUseGasTokenState(_ state: Bool) {
@@ -706,7 +705,7 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
   
@@ -717,6 +716,6 @@ extension RewardCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }

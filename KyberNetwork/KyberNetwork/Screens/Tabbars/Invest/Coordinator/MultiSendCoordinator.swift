@@ -47,8 +47,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   var approvingItems: [ApproveMultiSendItem] = []
@@ -166,7 +165,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -174,6 +173,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .useLastMultisend:
       break
+    case .addChainWallet(let chainType):
+      delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   
@@ -198,7 +199,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     
     provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
       if case .success(let resp) = result {
@@ -979,7 +980,7 @@ extension MultiSendCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)

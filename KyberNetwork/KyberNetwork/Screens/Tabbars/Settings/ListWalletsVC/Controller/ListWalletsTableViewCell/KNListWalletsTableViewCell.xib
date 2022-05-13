@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,13 +24,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="bhG-uN-zik">
-                        <rect key="frame" x="16" y="11" width="268" height="19"/>
+                        <rect key="frame" x="28" y="11" width="256" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x2262d4f6312805851e3b27c40db2c7282e6e4a49" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="f3Q-dq-bf1">
-                        <rect key="frame" x="16" y="35" width="202" height="17"/>
+                        <rect key="frame" x="28" y="35" width="190" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
@@ -41,7 +41,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="bhG-uN-zik" secondAttribute="trailing" constant="20" id="LHx-vv-fwD"/>
                     <constraint firstItem="f3Q-dq-bf1" firstAttribute="top" secondItem="bhG-uN-zik" secondAttribute="bottom" constant="5" id="Pdl-Fv-pLI"/>
                     <constraint firstItem="f3Q-dq-bf1" firstAttribute="leading" secondItem="bhG-uN-zik" secondAttribute="leading" id="SnD-WF-2lG"/>
-                    <constraint firstItem="bhG-uN-zik" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="eHa-2v-jtp"/>
+                    <constraint firstItem="bhG-uN-zik" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="28" id="eHa-2v-jtp"/>
                     <constraint firstAttribute="trailingMargin" secondItem="f3Q-dq-bf1" secondAttribute="trailing" constant="86" id="io6-Id-I0T"/>
                     <constraint firstItem="bhG-uN-zik" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="mna-aa-eHW"/>
                 </constraints>

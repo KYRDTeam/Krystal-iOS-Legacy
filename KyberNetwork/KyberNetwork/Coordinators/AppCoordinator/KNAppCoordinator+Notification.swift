@@ -200,8 +200,21 @@ extension KNAppCoordinator {
   }
   
   @objc func chainDidUpdateNotification(_ sender: Notification) {
-    if let address = sender.object as? String, let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == address.lowercased() }) {
-      self.restartNewSession(wal)
+    if let address = sender.object as? String {
+      let walletObject = KNWalletStorage.shared.availableWalletObjects.first { element in
+        return element.address == address
+      }
+      if let unwrap = walletObject {
+        var wal: Wallet?
+        if KNGeneralProvider.shared.currentChain == .solana {
+          wal = unwrap.toSolanaWallet()
+        } else {
+          wal = self.keystore.matchWithWalletObject(unwrap)
+        }
+        if let unwrapWal = wal {
+          self.restartNewSession(unwrapWal)
+        }
+      }
     }
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()
@@ -212,9 +225,13 @@ extension KNAppCoordinator {
     KNRateCoordinator.shared.resume()
     KNTrackerRateStorage.shared.reloadData()
     
-    KNGasCoordinator.shared.pause()
-    KNGasCoordinator.shared.resume()
-
+    if KNGeneralProvider.shared.currentChain == .solana {
+      SolFeeCoordinator.shared.resume()
+    } else {
+      KNGasCoordinator.shared.pause()
+      KNGasCoordinator.shared.resume()
+    }
+    
     self.exchangeCoordinator?.appCoordinatorDidUpdateChain()
     self.overviewTabCoordinator?.appCoordinatorDidUpdateChain()
     self.investCoordinator?.appCoordinatorDidUpdateChain()
@@ -337,8 +354,8 @@ extension KNAppCoordinator {
     
     if transaction.type == .earn {
       let tokenTx = transaction.tokenTransactions.first { (tx) -> Bool in
-        let address = self.session.wallet.address
-        return tx.to.lowercased() == address.description.lowercased()
+        let address = self.session.wallet.addressString
+        return tx.to.lowercased() == address
       }
 
       if let unwrapped = tokenTx, let amount = BigInt(unwrapped.value), let decimals = Int(unwrapped.tokenDecimal) {

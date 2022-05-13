@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "groupCopy.png",
+      "filename" : "history_receive_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "groupCopy@2x.png",
+      "filename" : "history_receive_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "groupCopy@3x.png",
+      "filename" : "history_receive_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

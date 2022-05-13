@@ -26,6 +26,7 @@ enum KSwapViewEvent {
   case signAndSendTx(tx: SignTransaction)
   case getGasLimit(from: TokenObject, to: TokenObject, srcAmount: BigInt, rawTx: RawSwapTransaction)
   case getRefPrice(from: TokenObject, to: TokenObject)
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol KSwapViewControllerDelegate: class {
@@ -76,6 +77,7 @@ class KSwapViewController: KNBaseViewController {
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
   @IBOutlet weak var destAmountContainerView: UIView!
+  @IBOutlet weak var commingSoonView: UIView!
   
   
 //  fileprivate var estRateTimer: Timer?
@@ -111,6 +113,7 @@ class KSwapViewController: KNBaseViewController {
     }
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.updateUISwitchChain()
+    self.updateUICommingSoon()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -454,9 +457,14 @@ class KSwapViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       self.viewModel.isFromDeepLink = false
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self.present(secondPopup, animated: true, completion: nil)
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.kSwapViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }
@@ -482,7 +490,7 @@ class KSwapViewController: KNBaseViewController {
         KNGeneralProvider.shared.currentChain = chainType
         var selectedAddress = ""
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-          selectedAddress = appDelegate.coordinator.session.wallet.address.description
+          selectedAddress = appDelegate.coordinator.session.wallet.addressString
         }
         self.viewModel.isFromDeepLink = true
         KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
@@ -630,6 +638,10 @@ class KSwapViewController: KNBaseViewController {
       self.viewModel.approvingToken = nil
     }
   }
+  
+  fileprivate func updateUICommingSoon() {
+    self.commingSoonView.isHidden = !self.viewModel.shouldShowCommingSoon
+  }
 }
 
 // MARK: Update UIs
@@ -673,6 +685,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAllowance() {
+    guard KNGeneralProvider.shared.currentChain != .solana else { return }
     guard !(self.viewModel.from.isWrapToken && self.viewModel.to.isQuoteToken) else { return }
     self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
@@ -732,6 +745,7 @@ extension KSwapViewController {
    Update new session when current wallet is changed, update all UIs
    */
   func coordinatorUpdateNewSession(wallet: Wallet) {
+    
     self.viewModel.updateWallet(wallet)
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
@@ -1083,6 +1097,7 @@ extension KSwapViewController {
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.setUpChangeRateButton()
     self.stopRateTimer()
+    self.updateUICommingSoon()
   }
 
   func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {

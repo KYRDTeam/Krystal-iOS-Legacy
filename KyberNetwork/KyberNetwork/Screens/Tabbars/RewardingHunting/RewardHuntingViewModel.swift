@@ -25,7 +25,7 @@ class RewardHuntingViewModel {
   
   var url: URL {
     return URL(string: KNEnvironment.default.krystalWebUrl + "/" + Constants.rewardHuntingPath)!
-      .appending("address", value: session.wallet.address.description)
+      .appending("address", value: session.wallet.addressString)
   }
   
   func didTapBack() {
@@ -52,7 +52,7 @@ class RewardHuntingViewModel {
     self.session = session
     
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
-    let isImportedWallet = isImportedWallet(address: session.wallet.address.description)
+    let isImportedWallet = isImportedWallet(address: session.wallet.addressString)
     
     if isRewardHuntingEnabled && isImportedWallet {
       self.onUpdateSession?()

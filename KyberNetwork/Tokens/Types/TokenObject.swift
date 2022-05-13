@@ -150,9 +150,13 @@ class TokenObject: Object {
   var isAETH: Bool {
     return self.address.lowercased() == AllChains.arbitrumMainnetRPC.quoteTokenAddress.lowercased()
   }
+  
+  var isSOL: Bool {
+    return self.address.lowercased() == AllChains.solana.quoteTokenAddress.lowercased()
+  }
 
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isAETH
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isAETH || self.isSOL
   }
 
     var isWETH: Bool {

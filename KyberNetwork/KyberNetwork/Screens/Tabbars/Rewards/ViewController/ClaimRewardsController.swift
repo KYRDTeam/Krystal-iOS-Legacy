@@ -224,7 +224,7 @@ class ClaimRewardsController: KNBaseViewController {
     } else {
       return false
     }
-    return data[self.viewModel.session.wallet.address.description] ?? false
+    return data[self.viewModel.session.wallet.addressString] ?? false
   }
 
   @IBAction func selectGasPriceButtonTapped(_ sender: Any) {

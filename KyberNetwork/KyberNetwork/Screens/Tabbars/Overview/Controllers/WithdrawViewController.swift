@@ -267,7 +267,7 @@ class WithdrawViewController: KNBaseViewController {
   }
 
   fileprivate func loadWithdrawableAmount() {
-    self.delegate?.withdrawViewController(self, run: .getWithdrawableAmount(platform: self.viewModel.platform, userAddress: self.viewModel.session.wallet.address.description, tokenAddress: self.viewModel.balance.address))
+    self.delegate?.withdrawViewController(self, run: .getWithdrawableAmount(platform: self.viewModel.platform, userAddress: self.viewModel.session.wallet.addressString, tokenAddress: self.viewModel.balance.address))
   }
 
   fileprivate func buildTx() {

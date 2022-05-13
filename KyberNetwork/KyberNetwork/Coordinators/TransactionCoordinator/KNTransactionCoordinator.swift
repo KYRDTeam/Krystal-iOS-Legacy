@@ -98,7 +98,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
-    provider.request(.getTransactionsHistory(address: self.wallet.address.description, lastBlock: isInit ? "0" : lastBlock)) { result in
+    provider.request(.getTransactionsHistory(address: self.wallet.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -294,7 +294,7 @@ extension KNTransactionCoordinator {
     let savedTokens: [TokenObject] = self.tokenStorage.tokens
     transactions.forEach { tx in
       // receive token tx only
-      if !tx.isInvalidated, self.wallet.address.description.lowercased() == tx.to.lowercased(),
+      if !tx.isInvalidated, self.wallet.addressString == tx.to.lowercased(),
         let token = tx.getTokenObject(), !tokenObjects.contains(token),
         !savedTokens.contains(token) {
         tokenObjects.append(token)
@@ -307,9 +307,9 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func handleReceiveEtherOrToken(_ transactions: [Transaction]) {
-    if transactions.isEmpty { return }
-    if KNAppTracker.transactionLoadState(for: wallet.address) != .done { return }
-    let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.address.description.lowercased() && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
+    guard !transactions.isEmpty, let addressObj = wallet.address else { return }
+    if KNAppTracker.transactionLoadState(for: addressObj) != .done { return }
+    let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.addressString && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
     // last transaction is received, and less than 5 mins ago
     if let latestReceiveTx = receivedTxs.first, Date().timeIntervalSince(latestReceiveTx.date) <= 5.0 * 60.0 {
       let title = NSLocalizedString("received.token", value: "Received %@", comment: "")
@@ -337,7 +337,15 @@ extension KNTransactionCoordinator {
     self.pendingTxTimer?.invalidate()
     self.pendingTxTimer = nil
     self.shouldCheckInternalHistory()
-    let interval: TimeInterval = KNGeneralProvider.shared.currentChain == .eth ? 15.0 : 8.0
+    var interval: TimeInterval
+    switch KNGeneralProvider.shared.currentChain {
+    case .eth:
+      interval = 15.0
+    case .solana:
+      interval = 3.0
+    default:
+      interval = 8.0
+    }
     self.pendingTxTimer = Timer.scheduledTimer(
       withTimeInterval: interval,
       repeats: true,
@@ -401,7 +409,7 @@ extension KNTransactionCoordinator {
         }
         if transaction.date.addingTimeInterval(60) < Date() {
           let minedTxs = self.transactionStorage.transferNonePendingObjects
-          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.address.description.lowercased() }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
+          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.addressString }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
             if nonce >= txNonce && tx.id.lowercased() != transaction.id.lowercased() {
               self.removeTransactionHasBeenLost(transaction)
             }
@@ -443,60 +451,80 @@ extension KNTransactionCoordinator {
     }
   }
 
+  
+  
   fileprivate func checkInternalHistory(_ transaction: InternalHistoryTransaction) {
-    self.externalProvider?.getReceipt(hash: transaction.hash, completion: { [weak self] (result) in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let receipt):
-        transaction.state = receipt.status == "1" ? .done : .error
-        if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-          EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
-        } else {
-          EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+    if KNGeneralProvider.shared.currentChain == .solana {
+      let signature = transaction.hash
+      SolanaUtil.getTransactionStatus(signature: signature) { state in
+        guard let state = state else {
+          return
         }
-        
-        KNNotificationUtil.postNotification(
-          for: kTransactionDidUpdateNotificationKey,
-          object: transaction,
-          userInfo: nil
-        )
-      case .failure:
-        self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
-          if case .responseError(let err) = error, let respError = err as? JSONRPCError {
-            switch respError {
-//            case .responseError:
-//              transaction.state = .error
-//              if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-//                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
-//              } else {
-//                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
-//              }
-//              KNNotificationUtil.postNotification(
-//                for: kTransactionDidUpdateNotificationKey,
-//                object: transaction,
-//                userInfo: nil
-//              )
-            case .resultObjectParseError:
-              guard transaction.time.addingTimeInterval(900) < Date() else {
-                return
-              }
-              transaction.state = .drop
-              if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
-                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
-              } else {
-                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
-              }
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: transaction,
-                userInfo: nil
-              )
-            default: break
-            }
-          }
-        })
+        transaction.state = state
+        if state == .done || state == .error {
+          EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: transaction,
+            userInfo: nil
+          )
+        }
       }
-    })
+    } else {
+      self.externalProvider?.getReceipt(hash: transaction.hash, completion: { [weak self] (result) in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let receipt):
+          transaction.state = receipt.status == "1" ? .done : .error
+          if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+            EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+          } else {
+            EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+          }
+          
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: transaction,
+            userInfo: nil
+          )
+        case .failure:
+          self.externalProvider?.getTransactionByHash(transaction.hash, completion: { pendingTransaction, error in
+            if case .responseError(let err) = error, let respError = err as? JSONRPCError {
+              switch respError {
+  //            case .responseError:
+  //              transaction.state = .error
+  //              if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+  //                EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+  //              } else {
+  //                EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+  //              }
+  //              KNNotificationUtil.postNotification(
+  //                for: kTransactionDidUpdateNotificationKey,
+  //                object: transaction,
+  //                userInfo: nil
+  //              )
+              case .resultObjectParseError:
+                guard transaction.time.addingTimeInterval(900) < Date() else {
+                  return
+                }
+                transaction.state = .drop
+                if KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
+                  EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(transaction.hash)
+                } else {
+                  EtherscanTransactionStorage.shared.updateInternalHistoryTransactionForUnsupportedChain(transaction)
+                }
+                KNNotificationUtil.postNotification(
+                  for: kTransactionDidUpdateNotificationKey,
+                  object: transaction,
+                  userInfo: nil
+                )
+              default: break
+              }
+            }
+          })
+        }
+      })
+    }
   }
 
   fileprivate func removeTransactionHasBeenLost(_ transaction: KNTransaction) {
@@ -535,7 +563,7 @@ extension UnconfirmedTransaction {
     return Transaction(
       id: hash,
       blockNumber: 0,
-      from: wallet.address.description,
+      from: wallet.addressString,
       to: self.to?.description ?? "",
       value: self.value.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: token.decimals),
       gas: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",

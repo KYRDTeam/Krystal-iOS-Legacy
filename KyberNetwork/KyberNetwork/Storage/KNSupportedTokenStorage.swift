@@ -11,30 +11,8 @@ class KNSupportedTokenStorage {
   private var customTokens: [Token]
   private var disableTokens: [Token]
   private var deletedTokens: [Token]
-  
-  private var ethDisableTokens: [Token]
-  private var ethDeletedTokens: [Token]
-  
-  private var bscDisableTokens: [Token]
-  private var bscDeletedTokens: [Token]
-  
-  private var polygonDisableTokens: [Token]
-  private var polygonDeletedTokens: [Token]
-  
-  private var avalancheDisableTokens: [Token]
-  private var avalancheDeletedTokens: [Token]
-  
-  private var cronosDisableTokens: [Token]
-  private var cronosDeletedTokens: [Token]
-  
-  private var fantomDisableTokens: [Token]
-  private var fantomDeletedTokens: [Token]
-  
-  private var arbitrumDisableTokens: [Token]
-  private var arbitrumDeletedTokens: [Token]
-  
-  private var auroraDisableTokens: [Token]
-  private var auroraDeletedTokens: [Token]
+  private var chainDisableTokens: [ChainType : [Token]]
+  private var chainDeletedTokens: [ChainType : [Token]]
 
   var allActiveTokens: [Token] {
     return self.getActiveSupportedToken() + self.getActiveCustomToken()
@@ -61,30 +39,16 @@ class KNSupportedTokenStorage {
     self.disableTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.disableTokenStoreFileName, as: [Token].self) ?? []
     self.deletedTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
     
-    self.ethDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .eth)
-    self.ethDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .eth)
+    var chainDisableTokensDic: [ChainType : [Token]] = [:]
+    var chainDeletedTokensDic: [ChainType : [Token]] = [:]
     
-    self.bscDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .bsc)
-    self.bscDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .bsc)
-    
-    self.polygonDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .polygon)
-    self.polygonDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .polygon)
-    
-    self.avalancheDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .avalanche)
-    self.avalancheDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .avalanche)
-    
-    self.cronosDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .cronos)
-    self.cronosDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .cronos)
-    
-    self.fantomDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .fantom)
-    self.fantomDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .fantom)
-    
-    self.arbitrumDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .arbitrum)
-    self.arbitrumDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .arbitrum)
-    
-    self.auroraDisableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: .aurora)
-    self.auroraDeletedTokens = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: .aurora)
-    
+    ChainType.getAllChain().forEach { chain in
+      chainDisableTokensDic[chain] = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: chain)
+      chainDeletedTokensDic[chain] = KNSupportedTokenStorage.retrieveDeleteTokensFromHardDisk(chainType: chain)
+    }
+    self.chainDisableTokens = chainDisableTokensDic
+    self.chainDeletedTokens = chainDeletedTokensDic
+
     self.migrationCustomTokenIfNeeded()
   }
 
@@ -307,45 +271,11 @@ class KNSupportedTokenStorage {
   }
   
   private func setCacheDisableToken(chain: ChainType, tokens: [Token]) {
-    switch chain {
-    case .eth:
-      self.ethDisableTokens = tokens
-    case .bsc:
-      self.bscDisableTokens = tokens
-    case .polygon:
-      self.polygonDisableTokens = tokens
-    case .avalanche:
-      self.avalancheDisableTokens = tokens
-    case .cronos:
-      self.cronosDisableTokens = tokens
-    case .fantom:
-      self.fantomDisableTokens = tokens
-    case .arbitrum:
-      self.arbitrumDisableTokens = tokens
-    case .aurora:
-      self.auroraDisableTokens = tokens
-    }
+    self.chainDisableTokens[chain] = tokens
   }
   
   private func setCacheDeletedToken(chain: ChainType, tokens: [Token]) {
-    switch chain {
-    case .eth:
-      self.ethDeletedTokens = tokens
-    case .bsc:
-      self.bscDeletedTokens = tokens
-    case .polygon:
-      self.polygonDeletedTokens = tokens
-    case .avalanche:
-      self.avalancheDeletedTokens = tokens
-    case .cronos:
-      self.cronosDeletedTokens = tokens
-    case .fantom:
-      self.fantomDeletedTokens = tokens
-    case .arbitrum:
-      self.arbitrumDeletedTokens = tokens
-    case .aurora:
-      self.auroraDeletedTokens = tokens
-    }
+    self.chainDeletedTokens[chain] = tokens
   }
 
   func changeAllTokensActiveStatus(isActive: Bool) {
@@ -528,45 +458,11 @@ class KNSupportedTokenStorage {
   }
   
   private func getDisableTokensFor(chainType: ChainType) -> [Token] {
-    switch chainType {
-    case .eth:
-      return self.ethDisableTokens
-    case .bsc:
-      return self.bscDisableTokens
-    case .polygon:
-      return self.polygonDisableTokens
-    case .avalanche:
-      return self.avalancheDisableTokens
-    case .cronos:
-      return self.cronosDisableTokens
-    case .fantom:
-      return self.fantomDisableTokens
-    case .arbitrum:
-      return self.arbitrumDisableTokens
-    case .aurora:
-      return self.auroraDisableTokens
-    }
+    return self.chainDisableTokens[chainType] ?? []
   }
   
   private func getDeletedTokensFor(chainType: ChainType) -> [Token] {
-    switch chainType {
-    case .eth:
-      return self.ethDeletedTokens
-    case .bsc:
-      return self.bscDeletedTokens
-    case .polygon:
-      return self.polygonDeletedTokens
-    case .avalanche:
-      return self.avalancheDeletedTokens
-    case .cronos:
-      return self.cronosDeletedTokens
-    case .fantom:
-      return self.fantomDeletedTokens
-    case .arbitrum:
-      return self.arbitrumDeletedTokens
-    case .aurora:
-      return self.auroraDeletedTokens
-    }
+    self.chainDeletedTokens[chainType] ?? []
   }
 
   func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType) -> BigInt {
@@ -618,7 +514,7 @@ class KNSupportedTokenStorage {
       let secondToken = array2[index]
 
       //just 1 param different then we will consider there are updates from api
-      if firstToken.address.lowercased() != secondToken.address.lowercased()
+      if firstToken.address != secondToken.address
           || firstToken.decimals != secondToken.decimals
           || firstToken.name.lowercased() != secondToken.name.lowercased()
           || firstToken.symbol.lowercased() != secondToken.symbol.lowercased()

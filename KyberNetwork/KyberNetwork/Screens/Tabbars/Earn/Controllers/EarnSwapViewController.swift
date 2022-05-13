@@ -176,7 +176,7 @@ class EarnSwapViewModel {
       return 0
     }
     let refPrice = self.getRefPrice(from: self.fromTokenData, to: self.toTokenData)
-    let price = self.getSwapRate(from: self.fromTokenData.address.description, to: self.toTokenData.address.description, amount: self.amountFromBigInt, platform: self.currentFlatform)
+    let price = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
 
     guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
       return 0
@@ -565,7 +565,7 @@ class EarnSwapViewModel {
     } else {
       return false
     }
-    return data[self.wallet.address.description] ?? false
+    return data[self.wallet.addressString] ?? false
   }
 
   func updateExchangeMinRatePercent(_ percent: Double) {

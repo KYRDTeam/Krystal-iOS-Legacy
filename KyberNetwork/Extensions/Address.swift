@@ -17,3 +17,9 @@ enum Errors: LocalizedError {
         }
     }
 }
+
+extension Address {
+  static func isAddressValid(_ string: String) -> Bool {
+    return Address(string: string) != nil
+  }
+}

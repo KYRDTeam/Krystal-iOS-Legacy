@@ -15,6 +15,7 @@ import WalletConnectSwift
 import MBProgressHUD
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
+  func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
   func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectAddWallet()
@@ -31,12 +32,12 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
 
 //swiftlint:disable file_length
 class KNExchangeTokenCoordinator: NSObject, Coordinator {
-
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   fileprivate(set) var session: KNSession
   var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
-  var coordinators: [Coordinator] = []
+//  var coordinators: [Coordinator] = []
   /// src and dest token used for deeplink
   var srcTokenAddress, destTokenAddress: String?
   var priceImpactSource: [String] = []
@@ -49,13 +50,12 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
 
   lazy var rootViewController: KSwapViewController = {
     let (from, to): (TokenObject, TokenObject) = {
-      let address = self.session.wallet.address.description
+      let address = self.session.wallet.addressString
       let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address)
       return (KNSupportedTokenStorage.shared.ethToken, KNSupportedTokenStorage.shared.kncToken)
     }()
@@ -74,7 +74,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.address.description) else { return nil }
+    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) else { return nil }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
       navigationController: self.navigationController,
       walletObject: walletObject
@@ -88,11 +88,11 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   deinit {
     self.stop()
   }
-
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
-    ) {
+  ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     self.session = session
@@ -579,7 +579,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       self.openHistoryScreen()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -677,6 +677,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       }
+    case .addChainWallet(let chainType):
+      delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 
@@ -746,7 +748,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -896,7 +898,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
 
   fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
       provider.request(.getPreScreeningWallet(address: address)) { result in
@@ -937,14 +939,21 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      coordinator.delegate = self
+      coordinate(coordinator: coordinator)
+    default:
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
+    }
   }
 
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
@@ -986,7 +995,7 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
   }
   
   func addNewWalletCoordinator(add wallet: Wallet) {
-    let address = wallet.address.description
+    let address = wallet.addressString
     let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
     self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
   }
@@ -997,6 +1006,10 @@ extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
   }
@@ -1338,7 +1351,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
 
@@ -1349,7 +1362,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
 
   fileprivate func isAccountUseGasToken() -> Bool {
@@ -1359,7 +1372,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }
 
@@ -1379,7 +1392,7 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wal)
@@ -1622,6 +1635,10 @@ extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendTokenCoordinator = nil
   }
