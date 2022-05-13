@@ -8,12 +8,18 @@
 import Foundation
 
 struct Strings {
+  // Actions
+  static let add = "add".toBeLocalised()
+  static let edit = "edit".toBeLocalised()
+  static let addWatchWallet = "add.watched.wallet".toBeLocalised()
+  static let editWatchWallet = "edit.watched.wallet".toBeLocalised()
   
   // Errors
   static let privateKeyError = "private.key.error".toBeLocalised()
   static let canNotGetPrivateKey = "can.not.get.private.key".toBeLocalised()
   static let invalidSession = "invalid.session".toBeLocalised()
   static let invalidSessionTryOtherQR = "invalid.session.try.other.qr".toBeLocalised()
+  static let invalidEns = "invalid.ens".toBeLocalised()
   
   // Explore screen
   static let explore = "explore".toBeLocalised()

@@ -808,6 +808,9 @@
 "can.not.get.private.key" = "Can not get Private key";
 "invalid.session" = "Invalid session";
 "invalid.session.try.other.qr" = "Your session is invalid, please try with another QR code";
+"invalid.ens" = "Invalid address or your ens is not mapped yet";
+"add.watched.wallet" = "Add watched wallet";
+"edit.watched.wallet" = "Edit watched wallet";
 
 "reward" = "Reward";
 "referral" = "Referral";
