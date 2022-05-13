@@ -4,27 +4,17 @@ import BigInt
 
 extension BigInt {
   
-  static var etherFormatterCache: [PairKey<Int, Int>: EtherNumberFormatter] = [:]
-
-  func getFormatter(minFractionDigits: Int, maxFractionDigits: Int) -> EtherNumberFormatter {
-    if let formatter = BigInt.etherFormatterCache[PairKey(key1: minFractionDigits, key2: maxFractionDigits)] {
-      return formatter
-    } else {
-      let formatter = EtherNumberFormatter()
-      formatter.maximumFractionDigits = maxFractionDigits
-      formatter.minimumFractionDigits = minFractionDigits
-      BigInt.etherFormatterCache[PairKey(key1: minFractionDigits, key2: maxFractionDigits)] = formatter
-      return formatter
-    }
-  }
-  
   func string(units: EthereumUnit, minFractionDigits: Int, maxFractionDigits: Int) -> String {
-    let formatter = getFormatter(minFractionDigits: minFractionDigits, maxFractionDigits: maxFractionDigits)
+    let formatter = EtherNumberFormatter()
+    formatter.maximumFractionDigits = maxFractionDigits
+    formatter.minimumFractionDigits = minFractionDigits
     return formatter.string(from: self, units: units)
   }
 
   func string(decimals: Int, minFractionDigits: Int, maxFractionDigits: Int) -> String {
-    let formatter = getFormatter(minFractionDigits: minFractionDigits, maxFractionDigits: maxFractionDigits)
+    let formatter = EtherNumberFormatter()
+    formatter.maximumFractionDigits = maxFractionDigits
+    formatter.minimumFractionDigits = minFractionDigits
     return formatter.string(from: self, decimals: decimals)
   }
 
