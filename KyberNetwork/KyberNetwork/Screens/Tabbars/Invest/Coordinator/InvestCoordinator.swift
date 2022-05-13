@@ -245,7 +245,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   }
   
   private func isImportedWallet(address: String) -> Bool {
-    return KNWalletStorage.shared.realWallets.contains { wallet in
+    return !KNWalletStorage.shared.watchWallets.contains { wallet in
       wallet.address.description == address
     }
   }
