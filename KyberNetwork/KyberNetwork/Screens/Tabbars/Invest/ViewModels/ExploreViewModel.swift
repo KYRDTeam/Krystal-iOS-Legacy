@@ -49,9 +49,12 @@ class ExploreViewModel {
   @objc func reloadMenuItems() {
     let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
+    let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+    
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)
     menuItems.append(.transfer)
+    
     if KNGeneralProvider.shared.currentChain != .solana {
       menuItems.append(contentsOf: [.reward, .referral, .dapps, .multisend])
       
@@ -61,6 +64,10 @@ class ExploreViewModel {
       if isPromoCodeEnabled {
         menuItems.append(.promotion)
       }
+    }
+    
+    if isRewardHuntingEnabled {
+      menuItems.append(.rewardHunting)
     }
     if self.menuItems.value != menuItems {
       self.menuItems.value = menuItems
