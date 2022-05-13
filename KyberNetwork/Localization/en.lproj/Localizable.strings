@@ -824,6 +824,8 @@
 "to_colon_x" = "To: %@";
 "to.wallet" = "To Wallet";
 "from.wallet" = "From Wallet";
+"from" = "From";
+"to" = "To";
 "ok" = "OK";
 "application" = "Application";
 "wallet" = "Wallet";
