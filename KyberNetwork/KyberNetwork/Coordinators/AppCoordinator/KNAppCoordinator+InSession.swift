@@ -297,8 +297,8 @@ extension KNAppCoordinator {
         }
         if let unwrap = obj, unwrap.chainType == 2 {
           let wal = unwrap.toSolanaWallet()
-          self.restartNewSession(wal, isLoading: false)
           KNGeneralProvider.shared.currentChain = .solana
+          self.restartNewSession(wal, isLoading: false)
           delayTime = 0.25
         } else {
           self.navigationController.hideLoading()
