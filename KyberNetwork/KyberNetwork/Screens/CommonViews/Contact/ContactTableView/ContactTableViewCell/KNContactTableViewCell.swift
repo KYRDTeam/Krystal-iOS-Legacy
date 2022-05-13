@@ -56,7 +56,7 @@ struct KNWalletTableCellViewModel {
 
   var displayedName: String { return self.wallet.name }
   var displayedAddress: String {
-    let address = self.wallet.address.description.lowercased()
+    let address = self.wallet.address
     return "\(address.prefix(20))...\(address.suffix(6))"
   }
 }
