@@ -591,6 +591,7 @@ extension KSendTokenViewController {
 
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
