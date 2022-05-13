@@ -5,6 +5,7 @@ import TrustKeystore
 import TrustCore
 import BigInt
 import OneSignal
+import UIKit
 
 class KNWalletStorage {
 
@@ -172,7 +173,7 @@ class KNWalletStorage {
     try! self.realm.commitWrite()
   }
   
-  func migrateDateIfNeeded(keyStore: Keystore) {
+  func migrateDataIfNeeded(keyStore: Keystore, vc: UIViewController) {
     let found = self.wallets.filter { element in
       return element.isNeedMigration()
     }
@@ -181,6 +182,7 @@ class KNWalletStorage {
     let clones = found.map { element in
       return element.clone()
     }
+    vc.displayLoading(text: "Migrating", animated: true)
     clones.forEach { obj in
       if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
         let solAddress = SolanaUtil.seedsToPublicKey(seeds)
@@ -192,5 +194,6 @@ class KNWalletStorage {
       }
     }
     self.update(wallets: clones)
+    vc.hideLoading()
   }
 }

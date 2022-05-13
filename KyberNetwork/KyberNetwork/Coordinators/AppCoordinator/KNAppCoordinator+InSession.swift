@@ -7,9 +7,7 @@ import OneSignal
 extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
-    
-    KNWalletStorage.shared.migrateDateIfNeeded(keyStore: self.keystore)
-    
+
     var aWallet = wallet
     
     if KNGeneralProvider.shared.currentChain == .solana {
@@ -153,6 +151,8 @@ extension KNAppCoordinator {
 
     self.doLogin { completed in
     }
+    
+    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.tabbarController)
   }
 
   func stopAllSessions() {
