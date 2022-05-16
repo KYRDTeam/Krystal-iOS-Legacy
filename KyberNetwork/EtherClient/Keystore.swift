@@ -43,8 +43,12 @@ extension Keystore {
     if chainType == .solana {
       return object.toSolanaWallet()
     } else {
-      let wal = self.wallets.first(where: { $0.addressString == object.address })
-      return wal
+      if object.isWatchWallet, let address = Address(string: object.address) {
+        return Wallet(type: .watch(address))
+      } else {
+        let wal = self.wallets.first(where: { $0.addressString == object.address })
+        return wal
+      }
     }
   }
 
