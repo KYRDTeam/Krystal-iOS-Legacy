@@ -24,6 +24,16 @@ struct Strings {
   static let invalidSessionTryOtherQR = "invalid.session.try.other.qr".toBeLocalised()
   static let invalidEns = "invalid.ens".toBeLocalised()
   
+  // Overview
+  static let balanceIsEmpty = "your.balance.is.empty".toBeLocalised()
+  static let notHaveLiquidityPool = "dont.have.any.liquidity.pool".toBeLocalised()
+  static let notSuppliedAnyToken = "not.supply.any.token".toBeLocalised()
+  static let noFavoriteToken = "no.favorite.token.yet".toBeLocalised()
+  static let tokenListIsEmpty = "token.list.is.empty".toBeLocalised()
+  static let notHaveAnyNFT = "not.have.any.nft".toBeLocalised()
+  static let addNFT = "add.nft".toBeLocalised()
+  static let supplyTokensToEarnInterest = "supply.tokens.to.earn.interest".toBeLocalised()
+  
   // Explore screen
   static let explore = "explore".toBeLocalised()
   static let swap = "swap".toBeLocalised()
