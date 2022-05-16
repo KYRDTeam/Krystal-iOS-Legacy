@@ -8,12 +8,11 @@ protocol KNPasscodeCoordinatorDelegate: class {
   func passcodeCoordinatorDidCreatePasscode()
 }
 
-class KNPasscodeCoordinator: NSObject, Coordinator {
-
+class KNPasscodeCoordinator: Coordinator {
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
-  var coordinators: [Coordinator] = []
 
   weak var delegate: KNPasscodeCoordinatorDelegate?
 
@@ -22,22 +21,21 @@ class KNPasscodeCoordinator: NSObject, Coordinator {
     controller.loadViewIfNeeded()
     return controller
   }()
-
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     type: KNPasscodeViewType
-    ) {
+  ) {
     self.navigationController = navigationController
     self.type = type
-    super.init()
     if case .authenticate(let isUpdating) = self.type, !isUpdating {
       self.window.windowLevel = UIWindow.Level.statusBar + 1.0
       self.window.rootViewController = self.passcodeViewController
       self.window.isHidden = true
     }
   }
-
-  func start(isLaunch: Bool = false) {
+  
+  func start() {
     if KNPasscodeUtil.shared.currentPasscode() == nil, case .authenticate = self.type { return }
     self.passcodeViewController.resetUI()
     if case .authenticate(let isUpdating) = self.type {

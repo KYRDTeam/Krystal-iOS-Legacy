@@ -25,6 +25,8 @@ enum OverviewMainViewEvent {
   case didAppear
   case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
   case buyCrypto
+  case addNewWallet
+  case addChainWallet(chain: ChainType)
 }
 
 enum OverviewMode {
@@ -196,7 +198,7 @@ class OverviewMainViewModel {
   }
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode
-  var hiddenSections = Set<Int>()
+  var hiddenNFTSections = Set<Int>()
   var isHidingSmallAssetsToken = true
   var isRefreshingTableView = false
   var didTapAddNFTHeader: (() -> Void)?
@@ -257,7 +259,7 @@ class OverviewMainViewModel {
     
     //convert đang bị nil ở đây
     let totalDoubleValue = totalBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())//Double(totalBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()))
-    self.summaryDataSource.value.removeAll()
+//    self.summaryDataSource.value.removeAll()
     let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
       //re-calculate value and percent for each chain by subtract to hide or delete tokens
       if let unitValueModel = summaryModel.quotes[self.currencyMode.toString()] {
@@ -273,7 +275,7 @@ class OverviewMainViewModel {
       viewModel.hideBalanceStatus = self.hideBalanceStatus
       return viewModel
     })
-    self.summaryDataSource.value.append(contentsOf: array)
+    self.summaryDataSource.value = array
   }
   
   func reloadAllData() {
@@ -498,12 +500,11 @@ class OverviewMainViewModel {
     guard !self.isEmpty() else {
       return 1
     }
-    guard !self.hiddenSections.contains(section) else {
-      return 0
-    }
-    
     switch self.currentMode {
     case .nft:
+      guard !self.hiddenNFTSections.contains(section) else {
+        return 0
+      }
       let key = self.displayNFTHeader.value[section].collectibleName
       return self.displayNFTDataSource.value[key]?.count ?? 0
     case .asset:

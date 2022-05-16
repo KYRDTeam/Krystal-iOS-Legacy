@@ -160,7 +160,7 @@ class RewardsViewController: KNBaseViewController {
       KNGeneralProvider.shared.currentChain = selected
       var selectedAddress = ""
       if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.address.description
+        selectedAddress = appDelegate.coordinator.session.wallet.addressString
       }
       KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
       if selected == .bsc {

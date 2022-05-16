@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="TransactionListEmptyCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="239" height="394"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="239" height="394"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2OU-eF-epv">
+                        <rect key="frame" x="0.0" y="0.0" width="239" height="394"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="empty_transaction" translatesAutoresizingMaskIntoConstraints="NO" id="o9D-zQ-UZO">
+                                <rect key="frame" x="74.5" y="60" width="90" height="107"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transactions yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rBi-ki-kEi">
+                                <rect key="frame" x="54" y="195" width="131.5" height="18.5"/>
+                                <fontDescription key="fontDescription" name="Kailasa" family="Kailasa" pointSize="14"/>
+                                <color key="textColor" red="0.54117647059999996" green="0.64313725489999995" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cI6-Oz-LMk">
+                                <rect key="frame" x="54" y="250.5" width="131.5" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="MBP-yA-fT6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                                <state key="normal" title="Swap Now">
+                                    <color key="titleColor" name="buttonBackgroundColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customRadius">
+                                        <real key="value" value="18"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customBorderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customBorderColor">
+                                        <color key="value" name="buttonBackgroundColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onTapSwapNow:" destination="-1" eventType="touchUpInside" id="Vxn-YQ-5jq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="rBi-ki-kEi" firstAttribute="top" secondItem="o9D-zQ-UZO" secondAttribute="bottom" constant="28" id="5bM-7D-6mp"/>
+                            <constraint firstItem="rBi-ki-kEi" firstAttribute="centerX" secondItem="o9D-zQ-UZO" secondAttribute="centerX" id="AWB-ZF-B9w"/>
+                            <constraint firstItem="cI6-Oz-LMk" firstAttribute="top" secondItem="rBi-ki-kEi" secondAttribute="bottom" constant="37" id="ERQ-N2-DyH"/>
+                            <constraint firstItem="cI6-Oz-LMk" firstAttribute="trailing" secondItem="rBi-ki-kEi" secondAttribute="trailing" id="JHr-KB-Xi0"/>
+                            <constraint firstItem="cI6-Oz-LMk" firstAttribute="leading" secondItem="rBi-ki-kEi" secondAttribute="leading" id="K28-Rr-NBs"/>
+                            <constraint firstItem="o9D-zQ-UZO" firstAttribute="centerX" secondItem="2OU-eF-epv" secondAttribute="centerX" id="ffO-f2-CUE"/>
+                            <constraint firstItem="o9D-zQ-UZO" firstAttribute="top" secondItem="2OU-eF-epv" secondAttribute="top" constant="60" id="g0H-Db-l77"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="2OU-eF-epv" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Cl8-yF-Tmn"/>
+                <constraint firstAttribute="bottom" secondItem="2OU-eF-epv" secondAttribute="bottom" id="fYU-ms-gNi"/>
+                <constraint firstAttribute="trailing" secondItem="2OU-eF-epv" secondAttribute="trailing" id="ga6-zU-9d9"/>
+                <constraint firstItem="2OU-eF-epv" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="k0K-xG-ogh"/>
+            </constraints>
+            <size key="customSize" width="239" height="394"/>
+            <point key="canvasLocation" x="274.63768115942031" y="72.321428571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="empty_transaction" width="90" height="107"/>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

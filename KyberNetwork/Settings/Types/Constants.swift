@@ -78,8 +78,8 @@ public struct Constants {
   public static let currentCurrencyMode = "current_currency_mode"
   public static let multisendBscAddress = "0xA58573970cfFAd93309071cE9aff46b8A35eC62B"
   public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
-  
-  static let rewardHuntingUrl = "https://dev-krystal-web-pr-339.knstats.com/reward-hunting"
+  public static let rewardHuntingPath = "reward-hunting"
+    
 }
 
 public struct UnitConfiguration {
@@ -92,4 +92,17 @@ public struct DecimalNumber {
   public static let usd = 2
   public static let btc = 5
   public static let quote = 4
+}
+
+public struct SolConstant {
+  public static let PUBLIC_KEY_LENGTH = 32
+  public static let UINT_16_LENGTH = 2
+  public static let UINT_32_LENGTH = 4
+  public static let UINT_64_LENGTH = 8
+  public static let UINT_128_LENGTH = 16
+  public static let ACCOUNT_INFO_DATA_LENGTH: Int = (PUBLIC_KEY_LENGTH + PUBLIC_KEY_LENGTH
+              + UINT_64_LENGTH + UINT_32_LENGTH + PUBLIC_KEY_LENGTH + 1
+              + UINT_32_LENGTH + UINT_64_LENGTH + UINT_64_LENGTH
+              + UINT_32_LENGTH + PUBLIC_KEY_LENGTH)
+
 }

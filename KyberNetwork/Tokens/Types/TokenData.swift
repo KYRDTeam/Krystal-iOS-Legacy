@@ -19,7 +19,7 @@ class Token: Codable, Equatable, Hashable {
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
     self.symbol = dictionary["symbol"] as? String ?? ""
-    self.address = (dictionary["address"] as? String ?? "").lowercased()
+    self.address = (dictionary["address"] as? String ?? "")
     self.decimals = dictionary["decimals"] as? Int ?? 0
     self.logo = dictionary["logo"] as? String ?? ""
     if let tag = dictionary["tag"] as? String, !tag.isEmpty {

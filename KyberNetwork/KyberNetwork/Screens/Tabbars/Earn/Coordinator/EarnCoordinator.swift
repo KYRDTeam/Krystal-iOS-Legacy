@@ -27,6 +27,7 @@ protocol EarnCoordinatorDelegate: class {
   func earnCoordinatorDidSelectWallet(_ wallet: Wallet)
   func earnCoordinatorDidSelectManageWallet()
   func earnCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func earnCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 //swiftlint:disable function_body_length
 class EarnCoordinator: NSObject, Coordinator {
@@ -72,8 +73,7 @@ class EarnCoordinator: NSObject, Coordinator {
   fileprivate weak var earnSwapViewController: EarnSwapViewController?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   weak var delegate: EarnCoordinatorDelegate?
@@ -145,10 +145,9 @@ class EarnCoordinator: NSObject, Coordinator {
   }
   
   func loadCachedLendingTokens() {
-    if let tokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self) {
-      self.lendingTokens = tokens
-      self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
-    }
+    let tokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self) ?? []
+    self.lendingTokens = tokens
+    self.menuViewController.coordinatorDidUpdateLendingToken(self.lendingTokens)
   }
   
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -237,6 +236,9 @@ extension EarnCoordinator: EarnMenuViewControllerDelegate {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData) {
     self.openEarnViewController(token: token)
   }
+  func earnMenuViewControllerDidSelectAddChainWallet(controller: EarnMenuViewController, chainType: ChainType) {
+    delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
 }
 
 extension EarnCoordinator: EarnViewControllerDelegate {
@@ -265,7 +267,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.buildSwapAndDepositTx(
                         lendingPlatform: platform,
-                        userAddress: self.session.wallet.address.description,
+                        userAddress: self.session.wallet.addressString,
                         src: src,
                         dest: dest,
                         srcAmount: amount,
@@ -291,7 +293,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         guard let `self` = self else { return }
         self.buildTx(
           lendingPlatform: platform,
-          userAddress: self.session.wallet.address.description,
+          userAddress: self.session.wallet.addressString,
           src: src,
           dest: dest,
           srcAmount: amount,
@@ -464,7 +466,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.buildSwapAndDepositTx(
                       lendingPlatform: lendingPlatform,
-                      userAddress: self.session.wallet.address.description,
+                      userAddress: self.session.wallet.addressString,
                       src: src,
                       dest: dest,
                       srcAmount: srcAmount,
@@ -494,7 +496,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -535,7 +537,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     } else {
       return false
     }
-    return data[self.session.wallet.address.description] ?? false
+    return data[self.session.wallet.addressString] ?? false
   }
 }
 
@@ -757,7 +759,7 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.address.description)
+    return data.keys.contains(self.session.wallet.addressString)
   }
   
   fileprivate func saveUseGasTokenState(_ state: Bool) {
@@ -765,7 +767,7 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.address.description] = state
+    data[self.session.wallet.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
 }
@@ -1304,14 +1306,21 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
   }
   
   fileprivate func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      coordinator.delegate = self
+      coordinate(coordinator: coordinator)
+    default:
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
+    }
   }
 }
 
@@ -1341,7 +1350,7 @@ extension EarnCoordinator: NavigationBarDelegate {
   
   func viewControllerDidSelectWallets(_ controller: KNBaseViewController) {
     let viewModel = WalletsListViewModel(
-      walletObjects: KNWalletStorage.shared.wallets,
+      walletObjects: KNWalletStorage.shared.availableWalletObjects,
       currentWallet: self.currentWallet
     )
     let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -1366,7 +1375,7 @@ extension EarnCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.earnCoordinatorDidSelectWallet(wal)
@@ -1419,6 +1428,10 @@ extension EarnCoordinator: QRCodeReaderDelegate {
 }
 
 extension EarnCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
   }
@@ -1441,6 +1454,10 @@ extension EarnCoordinator: KNHistoryCoordinatorDelegate {
 }
 
 extension EarnCoordinator: EarnOverviewViewControllerDelegate {
+  func earnOverviewViewControllerAddChainWallet(_ controller: EarnOverviewViewController, chainType: ChainType) {
+    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController) {
     self.navigationController.pushViewController(self.menuViewController, animated: true)
   }
@@ -1469,6 +1486,10 @@ extension EarnCoordinator: OverviewDepositViewControllerDelegate {
 }
 
 extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -1492,9 +1513,14 @@ extension EarnCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.earnCoordinatorDidSelectAddWallet()
   }
+  
 }
 
 extension EarnCoordinator: WithdrawCoordinatorDelegate {
+  func withdrawCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.earnCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func withdrawCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.earnCoordinatorDidSelectAddToken(token)
   }

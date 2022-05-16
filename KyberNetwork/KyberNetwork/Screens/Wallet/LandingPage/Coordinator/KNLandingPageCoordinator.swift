@@ -135,22 +135,58 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     self.keystore = keystore
   }
 
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool) {
-    // add new wallet into database in case user exits app
-    let walletObject = KNWalletObject(address: wallet.address.description, name: name ?? "Untitled", isBackedUp: isBackUp)
-    KNWalletStorage.shared.add(wallets: [walletObject])
+  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportType, importMethod: StorageType, importChainType: ImportWalletChainType) {
+    var isWatchWallet = false
+    var solWalletId = ""
+    if case WalletType.watch(_) = wallet.type {
+      isWatchWallet = true
+    }
+    
+    if case WalletType.solana(_, _, let walletID) = wallet.type {
+      solWalletId = walletID
+    }
+
+    var finalImportChainType = importChainType
+    var solanaAddress = ""
+    
+    if case .mnemonic(let words, _) = importType {
+      finalImportChainType = .multiChain
+      let key = words.joined(separator: " ")
+      let address = SolanaUtil.seedsToPublicKey(key)
+      solanaAddress = address
+    }
+    
+    if importChainType == .solana {
+      solanaAddress = wallet.addressString
+    }
+    
+    let walletObject = KNWalletObject(
+      address: wallet.addressString,
+      name: name ?? "Untitled",
+      isBackedUp: isBackUp,
+      isWatchWallet: isWatchWallet,
+      chainType: finalImportChainType,
+      storageType: importMethod,
+      evmAddress: wallet.evmAddressString,
+      solanaAddress: solanaAddress,
+      walletID: solWalletId
+    )
+    let wallets = [walletObject]
+
+    KNWalletStorage.shared.add(wallets: wallets)
     if addToContact {
       let contact = KNContact(
-        address: wallet.address.description,
-        name: name ?? "Untitled"
+        address: wallet.addressString,
+        name: name ?? "Untitled",
+        chainType: finalImportChainType.rawValue
       )
       KNContactStorage.shared.update(contacts: [contact])
     }
     self.newWallet = wallet
     self.isCreate = isCreate
     self.keystore.recentlyUsedWallet = wallet
-
-    if self.keystore.wallets.count == 1 {
+    
+    if KNWalletStorage.shared.wallets.count == 1 {
       KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
     } else {
@@ -218,8 +254,10 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?) {
-    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
+    KNGeneralProvider.shared.currentChain = selectedChain
+    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod, importChainType: importChainType)
+    
   }
 
   func importWalletCoordinatorDidClose() {
@@ -260,8 +298,12 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
   }
 
   func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
-    guard let wallet = wallet else { return }
-    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp)
+    guard let wallet = wallet, case .real(let acc) = wallet.type else { return }
+    let seedResult = self.keystore.exportMnemonics(account: acc)
+    guard case .success(let mnemonics) = seedResult else { return }
+    let seeds = mnemonics.split(separator: " ").map({ return String($0) })
+
+    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp, importType: .mnemonic(words: seeds, password: ""), importMethod: .seeds, importChainType: .multiChain)
   }
 }
 

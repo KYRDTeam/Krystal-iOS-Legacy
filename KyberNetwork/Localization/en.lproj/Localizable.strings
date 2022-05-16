@@ -549,6 +549,8 @@
 "Switch Wallet" = "Switch Wallet";
 "Switch" = "Switch";
 "Choose your action" = "Choose your action";
+"choose.chain.wallet" = "Choose %@ Wallet";
+"not.have.chain.wallet.please.create.or.import" = "You haven't got any %@ Wallet, please create a new one or import your wallet";
 
 // Native sign in/up
 "Email Address" = "Email Address";
@@ -802,6 +804,13 @@
 "nonce.help" = "Sequential running number for an address, beginning with 0 for the first transaction. For example, if the nonce of a transaction is 10, it would be the 11th transaction sent from the sender's address.";
 "gas.limit.legacy.help" = "Gas limit is the maximum amount of units of gas you are willing to spend.";
 "gas.price.legacy.help" = "Gas price is the amount you will pay per unit of gas. This network requires a “Gas price” field when submitting a transaction.";
+"private.key.error" = "Private Key Error";
+"can.not.get.private.key" = "Can not get Private key";
+"invalid.session" = "Invalid session";
+"invalid.session.try.other.qr" = "Your session is invalid, please try with another QR code";
+"invalid.ens" = "Invalid address or your ens is not mapped yet";
+"add.watched.wallet" = "Add watched wallet";
+"edit.watched.wallet" = "Edit watched wallet";
 
 "reward" = "Reward";
 "referral" = "Referral";
@@ -812,3 +821,15 @@
 "supported.platforms" = "Supported Platforms";
 "reward.hunting" = "Reward Hunting";
 
+// Transaction History
+"reward.hunting.watch.wallet.not.supported" = "Please switch to imported wallet to access reward hunting system";
+"from_colon_x" = "From: %@";
+"to_colon_x" = "To: %@";
+"to.wallet" = "To Wallet";
+"from.wallet" = "From Wallet";
+"from" = "From";
+"to" = "To";
+"ok" = "OK";
+"application" = "Application";
+"wallet" = "Wallet";
+"copied" = "Copied";

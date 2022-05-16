@@ -8,6 +8,8 @@ import JSONRPCKit
 
 protocol Coordinator: class {
   var coordinators: [Coordinator] { get set }
+  
+  func start()
 }
 
 extension Coordinator {
@@ -21,6 +23,11 @@ extension Coordinator {
   
   func removeAllCoordinators() {
     coordinators.removeAll()
+  }
+  
+  func coordinate(coordinator: Coordinator) {
+    addCoordinator(coordinator)
+    coordinator.start()
   }
   
   func showErrorMessage(_ error: AnyError, viewController: UIViewController) {

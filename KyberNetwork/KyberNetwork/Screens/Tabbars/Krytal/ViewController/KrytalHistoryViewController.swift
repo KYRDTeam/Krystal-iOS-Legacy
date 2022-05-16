@@ -75,7 +75,7 @@ class KrytalHistoryViewController: KNBaseViewController {
   
   fileprivate func updateUI() {
     self.historyTableView.reloadData()
-    self.walletListButton.setTitle(self.viewModel.wallet?.address.description, for: .normal)
+    self.walletListButton.setTitle(self.viewModel.wallet?.addressString, for: .normal)
   }
 
   func coordinatorDidUpdateClaimedTransaction(_ items: [Claim]) {

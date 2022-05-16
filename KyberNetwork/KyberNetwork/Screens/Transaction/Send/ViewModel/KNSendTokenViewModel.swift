@@ -24,6 +24,13 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
   fileprivate(set) var addressString: String = ""
   fileprivate(set) var isUsingEns: Bool = false
+  
+  ///solana default lamport per signature
+  fileprivate(set) var lamportPerSignature: BigInt = SolFeeCoordinator.shared.lamportPerSignature
+  fileprivate(set) var minimumRentExemption: BigInt = SolFeeCoordinator.shared.minimumRentExemption
+  fileprivate(set) var totalSignature: BigInt = BigInt(1)
+  
+
   var isSendAllBalanace: Bool = false
 
   var advancedGasLimit: String? {
@@ -65,7 +72,12 @@ class KNSendTokenViewModel: NSObject {
   var allTokenBalanceString: String {
     if self.from.isQuoteToken {
       let balance = self.from.getBalanceBigInt()
-      let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
+      var availableValue = BigInt(0)
+      if KNGeneralProvider.shared.currentChain == .solana {
+        availableValue = max(BigInt(0), balance - self.solanaFeeBigInt)
+      } else {
+        availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
+      }
       let string = availableValue.string(
         decimals: self.from.decimals,
         minFractionDigits: 0,
@@ -113,7 +125,7 @@ class KNSendTokenViewModel: NSObject {
   }
   
   var walletName: String {
-    let wallet = KNWalletStorage.shared.wallets.first { obj in
+    let wallet = KNWalletStorage.shared.availableWalletObjects.first { obj in
       return self.currentWalletAddress.lowercased() == obj.address.lowercased()
     }
     return wallet?.name ?? "---"
@@ -158,10 +170,23 @@ class KNSendTokenViewModel: NSObject {
     }
     return "\(feeString) \(sourceToken) (\(typeString))"
   }
+  
+  fileprivate func formatSolFeeStringFor(fee: BigInt) -> String {
+    let feeString: String = fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)
+    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
+  }
 
   var gasFeeString: String {
     self.updateSelectedGasPriceType(self.selectedGasPriceType)
     return self.formatFeeStringFor(gasPrice: self.gasPrice)
+  }
+  
+  var solFeeString: String {
+    return self.formatSolFeeStringFor(fee: self.solanaFeeBigInt)
+  }
+  
+  var solFeeWithRentTokenAccountFeeString: String {
+    return self.formatSolFeeStringFor(fee: self.solanaFeeBigInt + self.minimumRentExemption)
   }
 
   var balanceText: String {
@@ -209,6 +234,9 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayEnsMessage: String? {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return nil
+    }
     if self.addressString.isEmpty { return nil }
     if self.address == nil { return "Invalid address or your ens is not mapped yet" }
     if Address(string: self.addressString) != nil { return nil }
@@ -244,11 +272,18 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAddressValid: Bool {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return self.addressString.isValidSolanaAddress()
+    }
     return self.address != nil && self.addressString.has0xPrefix
   }
 
   var ethFeeBigInt: BigInt {
     return self.gasPrice * self.gasLimit
+  }
+  
+  var solanaFeeBigInt: BigInt {
+    return self.lamportPerSignature * self.totalSignature
   }
 
   var isHavingEnoughETHForFee: Bool {
@@ -256,6 +291,11 @@ class KNSendTokenViewModel: NSObject {
     if self.from.isETH || self.from.isBNB { fee += self.amountBigInt }
     let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
+  }
+  
+  var isHavingEnoughSolForFee: Bool {
+    let solBalance = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
+    return solBalance > self.solanaFeeBigInt
   }
 
   var unconfirmTransaction: UnconfirmedTransaction {
@@ -339,6 +379,10 @@ class KNSendTokenViewModel: NSObject {
       )
     }
   }
+  
+//  var solanaUnconfirmTransaction: UnconfirmedTransaction {
+//
+//  }
 
   var isNeedUpdateEstFeeForTransferingAllBalance: Bool = false
 

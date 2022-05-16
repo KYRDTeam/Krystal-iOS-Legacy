@@ -9,7 +9,7 @@ struct RealmConfiguration {
 
     static func configuration(for account: Wallet, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
         return RealmConfiguration.configuration(
-          for: account.address.description,
+          for: account.addressString,
           chainID: chainID
         )
     }
@@ -17,21 +17,33 @@ struct RealmConfiguration {
     static func configuration(for address: String, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
       var config = Realm.Configuration()
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(address.lowercased())-\(chainID).realm")
-      config.schemaVersion = 14
+      config.schemaVersion = 15
       config.migrationBlock = { migration, oldVersion in
-        switch oldVersion {
-        case 0:
-            migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-            migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-        case 1:
+        if oldVersion < 1 {
+          migration.enumerateObjects(ofType: "Transaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+          migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+        }
+        
+        if oldVersion < 2 {
           migration.enumerateObjects(ofType: "KNOrderObject") { (_, new) in
             new?["side_trade"] = nil
           }
-        default: break
+        }
+        
+        if oldVersion < 15 {
+          migration.enumerateObjects(ofType: "KNWalletObject") { (_, new) in
+            new?["chainType"] = 0
+            new?["storateType"] = 0
+            new?["evmAddress"] = ""
+            new?["walletID"] = ""
+          }
+          migration.enumerateObjects(ofType: "KNContact") { (_, new) in
+            new?["chainType"] = 1
+          }
         }
       }
       return config
@@ -40,21 +52,33 @@ struct RealmConfiguration {
     static func globalConfiguration(for chainID: Int = 1) -> Realm.Configuration {
       var config = Realm.Configuration()
       config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("kybernetworkwallet-global-\(chainID).realm")
-      config.schemaVersion = 14
+      config.schemaVersion = 15
       config.migrationBlock = { migration, oldVersion in
-        switch oldVersion {
-        case 0:
-            migration.enumerateObjects(ofType: "Transaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-            migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
-              new?["internalType"] = TransactionType.normal.rawValue
-            }
-        case 1:
+        if oldVersion < 1 {
+          migration.enumerateObjects(ofType: "Transaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+          migration.enumerateObjects(ofType: "KNTransaction") { (_, new) in
+            new?["internalType"] = TransactionType.normal.rawValue
+          }
+        }
+        
+        if oldVersion < 2 {
           migration.enumerateObjects(ofType: "KNOrderObject") { (_, new) in
             new?["side_trade"] = nil
           }
-        default: break
+        }
+        
+        if oldVersion < 15 {
+          migration.enumerateObjects(ofType: "KNWalletObject") { (_, new) in
+            new?["chainType"] = 0
+            new?["storateType"] = 0
+            new?["evmAddress"] = ""
+            new?["walletID"] = ""
+          }
+          migration.enumerateObjects(ofType: "KNContact") { (_, new) in
+            new?["chainType"] = 1
+          }
         }
       }
       return config

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CopyAddressViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <connections>
+                <outlet property="chainListTableView" destination="NPO-AZ-dFQ" id="Az8-Pp-bP6"/>
+                <outlet property="topBarHeight" destination="BPJ-zd-8bz" id="r9i-Yr-zLG"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bf6-3r-mFx">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multi-chain Wallets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjk-Kd-0fy">
+                            <rect key="frame" x="117" y="68" width="141" height="19"/>
+                            <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Qj-dY-IbX">
+                            <rect key="frame" x="19" y="59.5" width="46" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="JRx-jp-bJU"/>
+                                <constraint firstAttribute="height" constant="36" id="rDO-ag-RJY"/>
+                            </constraints>
+                            <state key="normal" image="back_blue_icon"/>
+                            <connections>
+                                <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="6Ej-eN-5bz"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="7Qj-dY-IbX" firstAttribute="centerY" secondItem="yjk-Kd-0fy" secondAttribute="centerY" id="80F-qF-RJg"/>
+                        <constraint firstAttribute="bottom" secondItem="yjk-Kd-0fy" secondAttribute="bottom" constant="26" id="9Do-5P-TuN"/>
+                        <constraint firstAttribute="height" constant="113" id="BPJ-zd-8bz"/>
+                        <constraint firstItem="yjk-Kd-0fy" firstAttribute="centerX" secondItem="Bf6-3r-mFx" secondAttribute="centerX" id="Hhq-Sb-qXO"/>
+                        <constraint firstItem="7Qj-dY-IbX" firstAttribute="leading" secondItem="Bf6-3r-mFx" secondAttribute="leading" constant="19" id="aYj-OY-gwm"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NPO-AZ-dFQ">
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="pEo-HV-KgQ"/>
+                        <outlet property="delegate" destination="-1" id="zGO-2d-OJa"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="mainViewBgColor"/>
+            <constraints>
+                <constraint firstItem="NPO-AZ-dFQ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="6IG-Vf-Wle"/>
+                <constraint firstItem="Bf6-3r-mFx" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="cXW-ki-yky"/>
+                <constraint firstItem="NPO-AZ-dFQ" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="cfk-oR-DlL"/>
+                <constraint firstItem="Bf6-3r-mFx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="d66-Gy-Qsl"/>
+                <constraint firstItem="NPO-AZ-dFQ" firstAttribute="top" secondItem="Bf6-3r-mFx" secondAttribute="bottom" id="gRN-UN-ExR"/>
+                <constraint firstItem="Bf6-3r-mFx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pIA-72-oGx"/>
+                <constraint firstItem="NPO-AZ-dFQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="vHj-Lm-cPI"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="89.505247376311857"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_blue_icon" width="22" height="18"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

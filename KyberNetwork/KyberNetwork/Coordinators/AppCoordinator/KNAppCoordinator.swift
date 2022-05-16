@@ -76,7 +76,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   func start() {
     self.addMissingWalletObjects()
-
+    //TODO: need improve by check condition to show landing or start session
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -92,8 +92,8 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate func addMissingWalletObjects() {
     let walletObjects = self.keystore.wallets.filter {
-      return KNWalletStorage.shared.get(forPrimaryKey: $0.address.description) == nil
-    }.map { return KNWalletObject(address: $0.address.description) }
+      return KNWalletStorage.shared.get(forPrimaryKey: $0.addressString) == nil
+    }.map { return KNWalletObject(address: $0.addressString) }
     KNWalletStorage.shared.add(wallets: walletObjects)
   }
 
@@ -120,7 +120,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   func showBackupWalletIfNeeded() -> Bool {
     guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
     guard let walletObj = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
-      return object.isBackedUp == false && object.address.lowercased() == currentWallet.address.description.lowercased() && !object.isWatchWallet
+      return object.isBackedUp == false && object.address.lowercased() == currentWallet.addressString && !object.isWatchWallet
     }) else {
       return false
     }
@@ -169,7 +169,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       switch result {
       case .success(let signedData):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.registerReferrer(address: self.session.wallet.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+        provider.request(.registerReferrer(address: self.session.wallet.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
           if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
             if let isSuccess = json["success"] as? Bool, isSuccess {
               self.tabbarController.showTopBannerView(message: "Success register referral code")
@@ -192,7 +192,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     }
     DispatchQueue.global(qos: .background).async {
       let timestamp = Int(NSDate().timeIntervalSince1970)
-      let message = "\(self.session.wallet.address.description)_\(timestamp)"
+      let message = "\(self.session.wallet.addressString)_\(timestamp)"
       let data = Data(message.utf8)
       let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
       let sendData = prefix + data
@@ -200,13 +200,13 @@ class KNAppCoordinator: NSObject, Coordinator {
       switch result {
       case .success(let signedData):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.login(address: self.session.wallet.address.description, timestamp: timestamp, signature: signedData.hexEncoded)) { (result) in
+        provider.request(.login(address: self.session.wallet.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { (result) in
           if case .success(let resp) = result {
             print(resp.debugDescription)
             let decoder = JSONDecoder()
             do {
               let data = try decoder.decode(LoginToken.self, from: resp.data)
-              Storage.store(data, as: self.session.wallet.address.description + Constants.loginTokenStoreFileName)
+              Storage.store(data, as: self.session.wallet.addressString + Constants.loginTokenStoreFileName)
               completion(true)
             } catch let error {
               print("[Login][Error] \(error.localizedDescription)")
@@ -227,7 +227,7 @@ class KNAppCoordinator: NSObject, Coordinator {
 extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
-    self.authenticationCoordinator.start(isLaunch: true)
+    self.authenticationCoordinator.start()
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
@@ -250,9 +250,7 @@ extension KNAppCoordinator {
     KNAppTracker.removeHistoryFilterData()
     KNAppTracker.updateShouldShowUserTranserConsentPopUp(true)
 
-    if let session = self.session {
-      FeatureFlagManager.shared.configClient(session: session)
-    }
+    FeatureFlagManager.shared.configClient(session: session)
   }
 
   func appDidBecomeActive() {

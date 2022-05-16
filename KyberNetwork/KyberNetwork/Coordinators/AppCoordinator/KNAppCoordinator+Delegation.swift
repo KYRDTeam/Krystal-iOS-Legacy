@@ -40,6 +40,11 @@ extension KNAppCoordinator: KNSessionDelegate {
 
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  
+  func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
@@ -60,7 +65,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
   }
 
   func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
-    guard let wallet = self.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else { return }
+    guard let wallet = self.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else { return }
     if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
     self.restartNewSession(wallet)
   }
@@ -115,6 +120,10 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
+  
+  func earnCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
@@ -161,6 +170,10 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.tabbarController.selectedIndex = 1
   }
 
+  func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func overviewCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }
@@ -200,6 +213,10 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: InvestCoordinatorDelegate {
+  func investCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+  
   func investCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
@@ -221,6 +238,10 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
+  
+  func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
   
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?) {
     self.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: srcToken?.address, destTokenAddress: destToken?.address, chainIdString: "\(KNGeneralProvider.shared.customRPC.chainID)")
@@ -279,7 +300,10 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
   
   func addNewWalletCoordinator(add wallet: Wallet) {
     // reset loading state
-    KNAppTracker.updateAllTransactionLastBlockLoad(0, for: wallet.address)
+    if let unwrap = wallet.address {
+      KNAppTracker.updateAllTransactionLastBlockLoad(0, for: unwrap)
+    }
+    
     if self.tabbarController == nil {
       self.startNewSession(with: wallet)
     } else {
@@ -295,7 +319,7 @@ extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
 extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
   func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
     self.navigationController.popViewController(animated: true) {
-      let address = wallet.address.description
+      let address = wallet.addressString
       KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
         address: address,
         destinationToken: destinationToken ?? "",

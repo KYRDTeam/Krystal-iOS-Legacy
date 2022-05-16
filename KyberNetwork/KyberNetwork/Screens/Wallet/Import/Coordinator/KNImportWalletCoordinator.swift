@@ -6,7 +6,7 @@ import TrustCore
 import TrustKeystore
 
 protocol KNImportWalletCoordinatorDelegate: class {
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?)
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType)
   func importWalletCoordinatorDidClose()
   func importWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -28,13 +28,9 @@ class KNImportWalletCoordinator: Coordinator {
   }
 
   func start() {
-    let importVC: KNImportWalletViewController = {
-      let controller = KNImportWalletViewController()
-      controller.delegate = self
-      controller.loadViewIfNeeded()
-      return controller
-    }()
-    self.navigationController.pushViewController(importVC, animated: true)
+    let selectChainVC = SelectChainViewController()
+    selectChainVC.delegate = self
+    self.navigationController.pushViewController(selectChainVC, animated: true)
   }
 
   func stop(completion: (() -> Void)? = nil) {
@@ -45,30 +41,55 @@ class KNImportWalletCoordinator: Coordinator {
   }
 }
 
+extension KNImportWalletCoordinator: SelectChainDelegate {
+  func selectChainViewController(_ controller: SelectChainViewController, run event: SelectChainEvent) {
+    let importVC: KNImportWalletViewController = {
+      let controller = KNImportWalletViewController()
+      controller.delegate = self
+      controller.loadViewIfNeeded()
+      return controller
+    }()
+    switch event {
+    case .back:
+      self.stop()
+      return
+    case .importMultiChain:
+      importVC.importType = .multiChain
+    case .importEVM(let type):
+      importVC.importType = .evm
+      importVC.selectedChainType = type
+    case .importSolana:
+      importVC.importType = .solana
+      importVC.selectedChainType = .solana
+    }
+    self.navigationController.pushViewController(importVC, animated: true)
+  }
+}
+
 extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   func importWalletViewController(_ controller: KNImportWalletViewController, run event: KNImportWalletViewEvent) {
     switch event {
     case .back:
-      self.stop()
-    case .importJSON(let json, let password, let name):
-      self.importWallet(with: .keystore(string: json, password: password), name: name)
-    case .importPrivateKey(let privateKey, let name):
-      self.importWallet(with: .privateKey(privateKey: privateKey), name: name)
-    case .importSeeds(let seeds, let name):
-      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name)
+      self.navigationController.popViewController(animated: true)
+    case .importJSON(let json, let password, let name, let importType, let currentChain):
+      self.importWallet(with: .keystore(string: json, password: password), name: name, importType: importType, selectedChain: currentChain)
+    case .importPrivateKey(let privateKey, let name, let importType, let currentChain):
+      self.importWallet(with: .privateKey(privateKey: privateKey), name: name, importType: importType, selectedChain: currentChain)
+    case .importSeeds(let seeds, let name, let importType, let currentChain):
+      self.importWallet(with: .mnemonic(words: seeds, password: ""), name: name, importType: importType, selectedChain: currentChain)
     case .sendRefCode(code: let code):
       self.refCode = code
     }
   }
 
-  fileprivate func importWallet(with type: ImportType, name: String?) {
+  fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType, selectedChain: ChainType) {
     self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     if name == nil || name?.isEmpty == true {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
     } else {
       KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_not_empty"])
     }
-    self.keystore.importWallet(type: type) { [weak self] result in
+    self.keystore.importWallet(type: type, importType: importType) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.topViewController?.hideLoading()
       switch result {
@@ -82,7 +103,10 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           if name == nil || name?.isEmpty == true { return "Imported" }
           return name ?? "Imported"
         }()
-        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName)
+
+        self.delegate?.importWalletCoordinatorDidImport(wallet: wallet, name: walletName, importType: type, importMethod: type.toStorageType(), selectedChain: selectedChain, importChainType: type.toStorageType() == .seeds ? .multiChain : importType)
+        
+        //TODO: add solana sign message
         if !self.refCode.isEmpty {
           if case .real(let account) = wallet.type {
             self.sendRefCode(self.refCode, account: account)
@@ -113,7 +137,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
       }
     }
   }
-  
+
   func sendRefCode(_ code: String, account: Account) {
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!

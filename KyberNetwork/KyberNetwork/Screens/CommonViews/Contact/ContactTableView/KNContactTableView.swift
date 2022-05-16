@@ -125,7 +125,13 @@ class KNContactTableView: XibLoaderView {
 
   func updateView(with contacts: [KNContact], isFull: Bool = false) {
     self.isFull = isFull
-    self.contacts = isFull ? contacts : Array(contacts.prefix(2))
+    var contactsArray = isFull ? contacts : Array(contacts.prefix(2))
+    if KNGeneralProvider.shared.currentChain == .solana {
+      contactsArray = contactsArray.filter { $0.address.isValidSolanaAddress() }
+    } else {
+      contactsArray = contactsArray.filter { !$0.address.isValidSolanaAddress() }
+    }
+    self.contacts = contactsArray
     self.tableView.reloadData()
     self.delegate?.contactTableView(
       self.tableView,

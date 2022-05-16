@@ -3,6 +3,14 @@
 import UIKit
 import RealmSwift
 
+enum StorageType: Int {
+  case unknow = 0
+  case json
+  case privateKey
+  case seeds
+  case watch
+}
+
 class KNWalletObject: Object {
 
   @objc dynamic var address: String = ""
@@ -11,8 +19,13 @@ class KNWalletObject: Object {
   @objc dynamic var isBackedUp: Bool = true
   @objc dynamic var isWatchWallet: Bool = false
   @objc dynamic var date: Date = Date()
+  @objc dynamic var chainType: Int = 0
+  @objc dynamic var storateType: Int = 0
+  @objc dynamic var evmAddress: String = ""
+  @objc dynamic var solanaAddress: String = ""
+  @objc dynamic var walletID: String = ""
 
-  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false) {
+  convenience init(address: String, name: String = "Untitled", isBackedUp: Bool = false, isWatchWallet: Bool = false, chainType: ImportWalletChainType = .multiChain, storageType: StorageType = .unknow, evmAddress: String = "", solanaAddress: String = "", walletID: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -20,9 +33,14 @@ class KNWalletObject: Object {
     self.date = Date()
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
+    self.chainType = chainType.rawValue
+    self.storateType = storageType.rawValue
+    self.evmAddress = evmAddress
+    self.solanaAddress = solanaAddress
+    self.walletID = walletID
   }
 
-  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool) {
+  convenience init(address: String, name: String, icon: String, date: Date, isBackedUp: Bool = false, isWatchWallet: Bool, chainType: ImportWalletChainType, storageType: StorageType = .unknow, evmAddress: String = "", solanaAddress: String = "", walletID: String = "") {
     self.init()
     self.address = address
     self.name = name
@@ -30,6 +48,11 @@ class KNWalletObject: Object {
     self.date = date
     self.isBackedUp = isBackedUp
     self.isWatchWallet = isWatchWallet
+    self.chainType = chainType.rawValue
+    self.storateType = storageType.rawValue
+    self.evmAddress = evmAddress
+    self.solanaAddress = solanaAddress
+    self.walletID = walletID
   }
 
   func copy(withNewName newName: String) -> KNWalletObject {
@@ -39,7 +62,12 @@ class KNWalletObject: Object {
       icon: self.icon,
       date: self.date,
       isBackedUp: self.isBackedUp,
-      isWatchWallet: self.isWatchWallet
+      isWatchWallet: self.isWatchWallet,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
+      walletID: self.walletID
     )
   }
 
@@ -54,8 +82,60 @@ class KNWalletObject: Object {
       icon: self.icon,
       date: self.date,
       isBackedUp: self.isBackedUp,
-      isWatchWallet: self.isWatchWallet
+      isWatchWallet: self.isWatchWallet,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
+      walletID: self.walletID
     )
+  }
+
+  func toData() -> WalletData {
+    return WalletData(
+      address: self.address,
+      name: self.name,
+      icon: self.icon,
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet,
+      date: self.date,
+      chainType: ImportWalletChainType(rawValue: self.chainType)!,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
+      walletID: self.walletID
+    )
+  }
+
+  func getWalletChainType() -> ImportWalletChainType {
+    return ImportWalletChainType(rawValue: self.chainType) ?? .multiChain
+  }
+  
+  func toSolanaWallet() -> Wallet {
+    if self.isWatchWallet {
+      return Wallet(type: .solana(self.address, self.evmAddress, self.walletID))
+    }
+    return Wallet(type: .solana(self.solanaAddress, self.evmAddress, self.walletID))
+  }
+  
+  func toSolanaWalletObject() -> KNWalletObject {
+    return KNWalletObject(
+      address: self.solanaAddress,
+      name: self.name,
+      icon: self.icon,
+      date: self.date,
+      isBackedUp: self.isBackedUp,
+      isWatchWallet: self.isWatchWallet,
+      chainType: .solana,
+      storageType: StorageType(rawValue: self.storateType)!,
+      evmAddress: self.evmAddress,
+      solanaAddress: self.solanaAddress,
+      walletID: self.walletID
+    )
+  }
+  
+  func isNeedMigration() -> Bool {
+    return self.chainType == 0 && self.storateType == 0 && self.evmAddress.isEmpty && self.walletID.isEmpty
   }
 }
 

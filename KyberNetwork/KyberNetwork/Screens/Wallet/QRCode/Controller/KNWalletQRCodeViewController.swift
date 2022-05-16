@@ -9,11 +9,12 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var qrcodeImageView: UIImageView!
   @IBOutlet weak var addressLabel: UILabel!
-
+  @IBOutlet weak var qrcodeImageContainer: UIView!
   @IBOutlet weak var copyWalletButton: UIButton!
   @IBOutlet weak var shareButton: UIButton!
   @IBOutlet weak var infoLabel: UILabel!
-
+  @IBOutlet weak var addressTypeLabel: UILabel!
+  @IBOutlet weak var scanButton: UIButton!
   fileprivate var viewModel: KNWalletQRCodeViewModel
 
   fileprivate let style = KNAppStyleType.current
@@ -41,6 +42,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   fileprivate func setupWalletData() {
     self.titleLabel.text = self.viewModel.wallet.name
     self.addressLabel.text = self.viewModel.displayedAddress
+    self.qrcodeImageContainer.rounded(radius: 16)
     let text = self.viewModel.address
     DispatchQueue.global(qos: .background).async {
       let image = UIImage.generateQRCode(from: text)
@@ -69,16 +71,9 @@ class KNWalletQRCodeViewController: KNBaseViewController {
     )
     let token = KNGeneralProvider.shared.tokenType
     let quoteToken = KNGeneralProvider.shared.quoteToken.uppercased()
-    let attributedString = NSMutableAttributedString(string: "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds", attributes: [
-      .font: UIFont.Kyber.regular(with: 14),
-      .foregroundColor: UIColor.Kyber.SWWhiteTextColor,
-      .kern: 0.0,
-    ])
-    if let range = attributedString.string.range(of: "Only send \(quoteToken) or any \(token)".toBeLocalised()) {
-      let r = NSRange(range, in: attributedString.string)
-      attributedString.addAttribute(.font, value: UIFont.Kyber.regular(with: 14), range: r)
-    }
-    self.infoLabel.attributedText = attributedString
+    self.infoLabel.text = "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds"
+    self.addressTypeLabel.text = "\(token) address"
+    self.scanButton.setTitle("View on " + KNGeneralProvider.shared.currentChain.customRPC().webScanName, for: .normal)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -93,6 +88,10 @@ class KNWalletQRCodeViewController: KNBaseViewController {
     )
   }
 
+  @IBAction func scanButtonTapped(_ sender: Any) {
+    let urlString = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.viewModel.displayedAddress)"
+    self.openSafari(with: urlString)
+  }
   @IBAction func shareButtonPressed(_ sender: UIButton) {
     let activityItems: [Any] = {
       var items: [Any] = []

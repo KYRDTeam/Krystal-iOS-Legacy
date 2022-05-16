@@ -15,7 +15,7 @@
                 <outlet property="progressView" destination="gy9-L0-RrJ" id="Lgg-px-FxS"/>
                 <outlet property="topBarHeight" destination="SWi-h0-Fbh" id="d5w-OA-gm0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="webView" destination="WUu-KU-9H4" id="m5F-bf-FNG"/>
+                <outlet property="webViewContainer" destination="BBB-N5-TXO" id="TTm-Ui-hhE"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

@@ -76,7 +76,7 @@ class KSwapViewModel {
        supportedTokens: [TokenObject]
     ) {
     self.wallet = wallet
-    let addr = wallet.address.description
+    let addr = wallet.addressString
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr)?.clone() ?? KNWalletObject(address: addr)
     self.from = from.clone()
     self.to = to.clone()
@@ -352,11 +352,19 @@ class KSwapViewModel {
   }
 
   var displayMinDestAmount: String {
-    return self.minDestQty.string(decimals: self.to.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.to.symbol
+    return self.minDestQty.string(
+      decimals: self.to.decimals,
+      minFractionDigits: min(self.to.decimals, 5),
+      maxFractionDigits: min(self.to.decimals, 5)
+    ) + " " + self.to.symbol
   }
 
   var displayMaxSoldAmount: String {
-    return self.maxAmtSold.string(decimals: self.from.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.from.symbol
+    return self.maxAmtSold.string(
+      decimals: self.from.decimals,
+      minFractionDigits: min(self.to.decimals, 5),
+      maxFractionDigits: min(self.to.decimals, 5)
+    ) + " " + self.from.symbol
   }
 
   var displayExpectedReceiveValue: String {
@@ -441,7 +449,7 @@ class KSwapViewModel {
   // MARK: Update data
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
-    let address = wallet.address.description
+    let address = wallet.addressString
     self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
 
     self.resetDefaultTokensPair()
@@ -740,7 +748,7 @@ class KSwapViewModel {
 
   func buildRawSwapTx() -> RawSwapTransaction {
     return RawSwapTransaction(
-      userAddress: self.wallet.address.description,
+      userAddress: self.wallet.addressString,
       src: self.from.address ,
       dest: self.to.address,
       srcQty: self.amountFromBigInt.description,
@@ -885,6 +893,10 @@ class KSwapViewModel {
         return BigInt(0)
       }
     }
+  }
+  
+  var shouldShowCommingSoon: Bool {
+    return KNGeneralProvider.shared.currentChain == .solana
   }
 }
 
