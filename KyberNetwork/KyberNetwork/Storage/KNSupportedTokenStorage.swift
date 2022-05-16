@@ -465,9 +465,11 @@ class KNSupportedTokenStorage {
     self.chainDeletedTokens[chainType] ?? []
   }
 
-  func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType) -> BigInt {
+  func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType?) -> BigInt {
     var total = BigInt(0)
-
+    guard let chainType = chainType else {
+      return total
+    }
     let disableTokens = self.getDisableTokensFor(chainType: chainType)
     let deletedTokens = self.getDeletedTokensFor(chainType: chainType)
     let tokens = disableTokens + deletedTokens
