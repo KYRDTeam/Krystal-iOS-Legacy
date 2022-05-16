@@ -210,6 +210,10 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
         let key = words.joined(separator: " ")
         let address = SolanaUtil.seedsToPublicKey(key)
         solanaAddress = address
+        
+        if let existSolanaWallet = KNWalletStorage.shared.get(forSolanaAddress: solanaAddress) {
+          KNWalletStorage.shared.delete(wallet: existSolanaWallet)
+        }
       }
       
       if importChainType == .solana {
