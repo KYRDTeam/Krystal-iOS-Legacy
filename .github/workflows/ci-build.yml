@@ -7,6 +7,7 @@ on:
       - main
       - ci-test
       - testflight-build
+      - sre-cache-ci
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -74,11 +75,11 @@ jobs:
             ota_key: DEV_OTA_URL
             krystal_ota_key: KRYSTAL_DEV_OTA_URL
             bump_build: true
-          - app_name: "Krystal: Staging"
-            env: stg
-            ota_key: STG_OTA_URL
-            krystal_ota_key: KRYSTAL_STG_OTA_URL
-            bump_build: false
+          # - app_name: "Krystal: Staging"
+          #   env: stg
+          #   ota_key: STG_OTA_URL
+          #   krystal_ota_key: KRYSTAL_STG_OTA_URL
+          #   bump_build: false
             
     runs-on: macos-11
     env:
@@ -151,6 +152,14 @@ jobs:
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
 
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -163,24 +172,6 @@ jobs:
       - name: Setup Sentry CLI
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
-
-      # don't need anymore
-      # - name: Setup Auth
-      #   uses: 'google-github-actions/auth@v0'
-      #   with:
-      #     credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
-      #
-      # don't need anymore
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v0
-
-      - name: Setup cache
-        uses: actions/cache@v1
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
 
       - name: Setup environments
         shell: bash
