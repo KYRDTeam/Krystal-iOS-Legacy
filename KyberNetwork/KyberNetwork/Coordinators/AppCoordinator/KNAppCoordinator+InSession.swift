@@ -291,10 +291,15 @@ extension KNAppCoordinator {
       }
       return
     }
-    let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
+    let isRemovingCurrentWallet: Bool = (self.session.wallet.addressString == wallet.addressString || self.session.wallet.evmAddressString.lowercased() == wallet.addressString.lowercased())
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
       if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
+        
+        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: {$0.evmAddress == self.currentWallet.evmAddressString}) {
+          KNWalletStorage.shared.delete(wallet: solWalletObject)
+        }
+        
         self.restartNewSession(newWallet, isLoading: false)
         delayTime = 0.25
       } else {
