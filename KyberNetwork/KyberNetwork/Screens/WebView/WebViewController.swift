@@ -19,7 +19,6 @@ class WebViewController: KNBaseViewController {
   @IBOutlet weak var webViewContainer: UIView!
   
   var webView: WKWebView!
-  let refreshControl = UIRefreshControl()
   
   private var progressObservation: NSKeyValueObservation?
   private var pageTitleObservation: NSKeyValueObservation?
@@ -34,8 +33,10 @@ class WebViewController: KNBaseViewController {
   func initWebView() {
     webView?.removeFromSuperview()
     webView = WKWebView(frame: .zero)
-    webViewContainer.addSubview(webView)
     webView.translatesAutoresizingMaskIntoConstraints = false
+    webView.scrollView.showsVerticalScrollIndicator = false
+    webViewContainer.addSubview(webView)
+    
     NSLayoutConstraint.activate([
       webView.leadingAnchor.constraint(equalTo: webViewContainer.leadingAnchor),
       webView.trailingAnchor.constraint(equalTo: webViewContainer.trailingAnchor),
@@ -52,6 +53,7 @@ class WebViewController: KNBaseViewController {
   }
   
   func setupRefreshControl() {
+    let refreshControl = UIRefreshControl()
     refreshControl.tintColor = UIColor.white.withAlphaComponent(0.8)
     refreshControl.addTarget(self, action: #selector(reloadWeb), for: .valueChanged)
     webView.scrollView.addSubview(refreshControl)
