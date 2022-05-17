@@ -63,6 +63,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
+  let keyboardUtil = KeyboardUtil()
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
@@ -671,24 +672,24 @@ extension KSendTokenViewController: UITextFieldDelegate {
             self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
             
             self.viewModel.updateAddress(text)
-            self.updateUIEnsMessage()
-            self.getEnsAddressFromName(text)
             self.view.layoutIfNeeded()
           }
         } else {
           self.estGasFeeValueLabel.text = self.viewModel.solFeeString
           self.viewModel.updateAddress(text)
-          self.updateUIEnsMessage()
-          self.getEnsAddressFromName(text)
           self.view.layoutIfNeeded()
         }
       } else {
         self.viewModel.updateAddress(text)
-        self.updateUIEnsMessage()
-        self.getEnsAddressFromName(text)
         self.view.layoutIfNeeded()
       }
-      return true
+      textField.text = text
+      self.keyboardUtil.action = {
+        self.ensAddressLabel.isHidden = true
+        self.getEnsAddressFromName(text)
+      }
+      self.keyboardUtil.start()
+      return false
     }
   }
 
@@ -725,6 +726,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
           if name != self.viewModel.addressString { return }
           if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
+            self.updateUIEnsMessage()
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
