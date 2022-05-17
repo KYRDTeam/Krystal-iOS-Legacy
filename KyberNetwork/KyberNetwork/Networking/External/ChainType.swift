@@ -65,6 +65,8 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(7, forKey: .rawValue)
     case .solana:
       try container.encode(8, forKey: .rawValue)
+    case .klaytn:
+      try container.encode(9, forKey: .rawValue)
     }
   }
 
@@ -120,6 +122,8 @@ enum ChainType: Codable, CaseIterable {
       return AllChains.auroraMainnetRPC
     case .solana:
       return AllChains.solana
+    case .klaytn:
+      return AllChains.klaytnMainnetRPC
     }
   }
 
@@ -261,6 +265,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .solana:
         return KNSupportedTokenStorage.shared.usdcToken
+    case .klaytn:
+      return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -297,6 +303,7 @@ enum ChainType: Codable, CaseIterable {
   case arbitrum
   case aurora
   case solana
+  case klaytn
 }
 
 enum CurrencyMode: Int {

@@ -685,7 +685,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAllowance() {
-    guard KNGeneralProvider.shared.currentChain != .solana else { return }
+    guard KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn else { return }
     guard !(self.viewModel.from.isWrapToken && self.viewModel.to.isQuoteToken) else { return }
     self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
   }
