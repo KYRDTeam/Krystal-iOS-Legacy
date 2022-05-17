@@ -191,7 +191,7 @@ extension KNAppCoordinator {
     
     if KNGeneralProvider.shared.currentChain == .solana {
       if !wallet.isSolanaWallet {
-        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first(where: {$0.evmAddress != self.currentWallet.evmAddressString}), let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
           aWallet = solWallet
         }
       }
@@ -291,7 +291,7 @@ extension KNAppCoordinator {
       }
       return
     }
-    let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
+    let isRemovingCurrentWallet: Bool = (self.session.wallet == wallet || self.session.wallet.evmAddressString == wallet.evmAddressString)
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
       if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
