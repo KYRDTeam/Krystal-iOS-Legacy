@@ -293,7 +293,7 @@ class KSwapViewController: KNBaseViewController {
   
   fileprivate func updateApproveButton() {
     guard let from = viewModel.from else { return }
-    self.approveButton.setTitle("Approve".toBeLocalised() + " " + from.symbol, for: .normal)
+    self.approveButton.setTitle(Strings.approve + " " + from.symbol, for: .normal)
   }
 
   fileprivate func setUpChangeRateButton() {

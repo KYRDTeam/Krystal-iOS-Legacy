@@ -10,6 +10,7 @@ import Foundation
 struct Strings {
   // Common
   static let ok = "ok".toBeLocalised()
+  static let approve = "approve".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -82,4 +83,5 @@ struct Strings {
   static let pleaseWaitForExpectedRateUpdate = "please.wait.for.expected.rate.updated".toBeLocalised()
   static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
   static let selectToken = "select.token".toBeLocalised()
+  static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
 }

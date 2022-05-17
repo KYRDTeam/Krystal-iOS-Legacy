@@ -717,7 +717,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.platformTableView.reloadData()
     
     self.hintToNavigateToSwapViewLabel.attributedText = self.viewModel.hintSwapNowText
-    self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", token.symbol.uppercased())
+    self.selectDepositTitleLabel.text = String(format: Strings.selectPlatformToSupply, token.symbol.uppercased())
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {

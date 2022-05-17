@@ -10,15 +10,13 @@ extension UIView {
       withVisualFormat: "H:|-0-[subview]-0-|",
       options: NSLayoutConstraint.FormatOptions(),
       metrics: nil,
-      views: ["subview": self]
-    )
+      views: ["subview": self])
     )
     superView.addConstraints(NSLayoutConstraint.constraints(
       withVisualFormat: "V:|-0-[subview]-0-|",
       options: NSLayoutConstraint.FormatOptions(),
       metrics: nil,
-      views: ["subview": self]
-    )
+      views: ["subview": self])
     )
   }
   

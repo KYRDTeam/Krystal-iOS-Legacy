@@ -1238,7 +1238,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
       self.fromAmountFieldTrailing.constant = 8
       self.fromTokenButton.setTitle(token.symbol.uppercased(), for: .normal)
       self.fromTokenButton.setTitleColor(.white, for: .normal)
-      self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", self.viewModel.toTokenData.symbol.uppercased())
+      self.selectDepositTitleLabel.text = String(format: Strings.selectPlatformToSupply, self.viewModel.toTokenData.symbol.uppercased())
       self.updateRefPrice()
     } else {
       self.fromAmountFieldTrailing.constant = -30
