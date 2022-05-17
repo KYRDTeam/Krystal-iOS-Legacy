@@ -212,8 +212,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBAction func sendButtonPressed(_ sender: Any) {
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
-    
-    
+
     if KNGeneralProvider.shared.currentChain == .solana {
       self.delegate?.kSendTokenViewController(self, run: .validateSolana)
     } else {
@@ -688,13 +687,14 @@ extension KSendTokenViewController: UITextFieldDelegate {
         self.getEnsAddressFromName(text)
         self.view.layoutIfNeeded()
       }
-      return true
+      return false
     }
   }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.viewModel.isSendAllBalanace = false
     self.amountTextField.textColor = UIColor.white
+    
     if textField == self.addressTextField {
       self.addressTextField.text = self.viewModel.addressString
     }
