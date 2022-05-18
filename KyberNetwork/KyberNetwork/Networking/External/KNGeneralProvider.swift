@@ -10,6 +10,10 @@ import JavaScriptKit
 import CryptoSwift
 import UIKit
 
+protocol GasLimitRequestable {
+  func createGasLimitRequest() -> KNEstimateGasLimitRequest
+}
+
 //swiftlint:disable file_length
 //swiftlint:disable type_body_length
 class KNGeneralProvider {
@@ -1282,6 +1286,20 @@ extension KNGeneralProvider {
       gasPrice: BigInt(eip1559Tx.maxGasFee.drop0x, radix: 16) ?? BigInt(0)
     )
 
+    Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
+      switch result {
+      case .success(let value):
+        var limit = BigInt(value.drop0x, radix: 16) ?? BigInt()
+        limit += (limit * 20 / 100)
+        completion(.success(limit))
+      case .failure(let error):
+        NSLog("------ Estimate gas used failed: \(error.localizedDescription) ------")
+        completion(.failure(AnyError(error)))
+      }
+    }
+  }
+  
+  func getEstimateGasLimit(request: KNEstimateGasLimitRequest, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     Session.send(EtherServiceAlchemyRequest(batch: BatchFactory().create(request))) { result in
       switch result {
       case .success(let value):

@@ -10,10 +10,15 @@ struct KNWalletQRCodeViewModel {
   }
 
   var displayedAddress: String {
-    return self.address.lowercased()
+    return self.address
   }
 
-  var address: String { return self.wallet.address.lowercased() }
+  var address: String {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      return self.wallet.address
+    }
+    return self.wallet.address.lowercased()
+  }
 
   var shareText: String {
     return "\(self.displayedAddress)"

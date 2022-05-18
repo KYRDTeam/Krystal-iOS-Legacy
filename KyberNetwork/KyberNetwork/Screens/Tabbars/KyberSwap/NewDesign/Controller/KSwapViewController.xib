@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -36,6 +36,7 @@
                 <outlet property="balanceLabel" destination="fk0-fr-Th3" id="gYr-4c-t3e"/>
                 <outlet property="bottomPaddingConstraintForScrollView" destination="oxA-wg-TwX" id="ooe-8a-ZBl"/>
                 <outlet property="changeRateButton" destination="9PL-XD-kXQ" id="X6D-zG-BpU"/>
+                <outlet property="commingSoonView" destination="RjH-R0-UEz" id="7eg-58-3zn"/>
                 <outlet property="continueButton" destination="YJW-Oi-0g6" id="8t8-Bj-5r4"/>
                 <outlet property="currentChainIcon" destination="LsP-oY-uMF" id="TDC-DU-AI1"/>
                 <outlet property="destAmountContainerView" destination="EfQ-Sl-42G" id="mfa-ct-YqC"/>
@@ -60,6 +61,7 @@
                 <outlet property="slippageLabel" destination="nrV-j9-Z3y" id="QPP-Fw-5Xf"/>
                 <outlet property="toAmountTextField" destination="2ue-dF-Sxj" id="dYw-AF-iPd"/>
                 <outlet property="toTokenButton" destination="Hu8-ec-ud1" id="M3b-9x-WfE"/>
+                <outlet property="topBarHeight" destination="ftb-Ys-LFW" id="4tv-5a-8V3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="icW-gp-OKH" id="W75-MW-b8y"/>
             </connections>
@@ -594,17 +596,34 @@
                         <constraint firstItem="zIN-Er-xzM" firstAttribute="trailing" secondItem="EfQ-Sl-42G" secondAttribute="trailing" id="zuq-mO-avp"/>
                     </constraints>
                 </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RjH-R0-UEz">
+                    <rect key="frame" x="0.0" y="113" width="375" height="554"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="comming_soon" translatesAutoresizingMaskIntoConstraints="NO" id="A4D-sf-cTm">
+                            <rect key="frame" x="50.5" y="157" width="274" height="240"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="A4D-sf-cTm" firstAttribute="centerY" secondItem="RjH-R0-UEz" secondAttribute="centerY" id="nuW-2g-o3c"/>
+                        <constraint firstItem="A4D-sf-cTm" firstAttribute="centerX" secondItem="RjH-R0-UEz" secondAttribute="centerX" id="zPw-CP-yjo"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="P3a-OW-m6C" secondAttribute="trailing" id="0hB-5h-k5m"/>
+                <constraint firstItem="RjH-R0-UEz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BIL-Uj-Mvo"/>
                 <constraint firstItem="P3a-OW-m6C" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FQa-m0-Zea"/>
                 <constraint firstItem="P3a-OW-m6C" firstAttribute="top" secondItem="vbp-fJ-pmC" secondAttribute="bottom" id="HJb-tJ-pCk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vbp-fJ-pmC" secondAttribute="trailing" id="Yy5-BR-ozj"/>
+                <constraint firstItem="RjH-R0-UEz" firstAttribute="top" secondItem="vbp-fJ-pmC" secondAttribute="bottom" id="eVS-0d-y9e"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="RjH-R0-UEz" secondAttribute="trailing" id="gHM-1K-6Ex"/>
                 <constraint firstItem="P3a-OW-m6C" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="mik-8b-USq"/>
                 <constraint firstItem="vbp-fJ-pmC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="n21-y4-LLc"/>
+                <constraint firstAttribute="bottom" secondItem="RjH-R0-UEz" secondAttribute="bottom" id="n4k-92-Liw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="P3a-OW-m6C" secondAttribute="bottom" id="oxA-wg-TwX"/>
                 <constraint firstItem="vbp-fJ-pmC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="znu-IY-YDZ"/>
             </constraints>
@@ -625,6 +644,7 @@
         <image name="arrow_down_template" width="24" height="24"/>
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
+        <image name="comming_soon" width="274" height="240"/>
         <image name="gas_config_icon" width="36" height="36"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="info_waring_blue_icon" width="14" height="14"/>

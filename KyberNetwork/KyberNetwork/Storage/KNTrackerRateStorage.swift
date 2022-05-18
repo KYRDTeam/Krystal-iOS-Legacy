@@ -9,54 +9,25 @@ class KNTrackerRateStorage {
 
   static var shared = KNTrackerRateStorage()
   private(set) var realm: Realm!
-  private var allPrices: [TokenPrice]
-  
-  private var ethAllPrices: [TokenPrice]
-  private var bscAllPrices: [TokenPrice]
-  private var polygonAllPrices: [TokenPrice]
-  private var avalancheAllPrices: [TokenPrice]
-  private var cronosAllPrices: [TokenPrice]
-  private var fantomAllPrices: [TokenPrice]
-  private var arbitrumAllPrices: [TokenPrice]
-  private var auroraAllPrices: [TokenPrice]
+  private var allPrices: ThreadProtectedObject<[TokenPrice]> = .init(storageValue: [])
+  private var chainAllPrices: [ChainType : [TokenPrice]]
 
   init() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
-    
-    self.ethAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .eth)
-    self.bscAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .bsc)
-    self.polygonAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .polygon)
-    self.avalancheAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .avalanche)
-    self.cronosAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .cronos)
-    self.fantomAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .fantom)
-    self.arbitrumAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .arbitrum)
-    self.auroraAllPrices = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: .aurora)
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
+    var chainAllPricesDic: [ChainType : [TokenPrice]] = [:]
+    ChainType.getAllChain().forEach { chain in
+      chainAllPricesDic[chain] = KNTrackerRateStorage.retrievePricesFromHardDisk(chainType: chain)
+    }
+    self.chainAllPrices = chainAllPricesDic
   }
 
   func reloadData() {
-    self.allPrices = KNTrackerRateStorage.loadPricesFromLocalData()
-    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices)
+    self.allPrices.value = KNTrackerRateStorage.loadPricesFromLocalData()
+    self.updateCacheRate(chain: KNGeneralProvider.shared.currentChain, rates: self.allPrices.value)
   }
   
   private func updateCacheRate(chain: ChainType, rates: [TokenPrice]) {
-    switch chain {
-    case .eth:
-      self.ethAllPrices = rates
-    case .bsc:
-      self.bscAllPrices = rates
-    case .polygon:
-      self.polygonAllPrices = rates
-    case .avalanche:
-      self.avalancheAllPrices = rates
-    case .cronos:
-      self.cronosAllPrices = rates
-    case .fantom:
-      self.fantomAllPrices = rates
-    case .arbitrum:
-      self.arbitrumAllPrices = rates
-    case .aurora:
-      self.auroraAllPrices = rates
-    }
+    self.chainAllPrices[chain] = rates
   }
 
   //MARK: new implementation
@@ -69,11 +40,11 @@ class KNTrackerRateStorage {
   }
   
   func getAllPrices() -> [TokenPrice] {
-    return self.allPrices
+    return self.allPrices.value
   }
   
   func getPriceWithAddress(_ address: String) -> TokenPrice? {
-    return self.allPrices.first { (item) -> Bool in
+    return getAllPrices().first { (item) -> Bool in
       return item.address.lowercased() == address.lowercased()
     }
   }
@@ -84,24 +55,7 @@ class KNTrackerRateStorage {
   }
 
   private func getPricesFor(chainType: ChainType) -> [TokenPrice] {
-    switch chainType {
-    case .eth:
-      return self.ethAllPrices
-    case .bsc:
-      return self.bscAllPrices
-    case .polygon:
-      return self.polygonAllPrices
-    case .avalanche:
-      return self.avalancheAllPrices
-    case .cronos:
-      return self.cronosAllPrices
-    case .fantom:
-      return self.fantomAllPrices
-    case .arbitrum:
-      return self.arbitrumAllPrices
-    case .aurora:
-      return self.auroraAllPrices
-    }
+    return self.chainAllPrices[chainType] ?? []
   }
 
   func getPriceWithAddress(_ address: String, chainType: ChainType) -> TokenPrice? {
@@ -158,9 +112,9 @@ class KNTrackerRateStorage {
         saved.quoteMarketCap = item.quoteMarketCap
         saved.quote24hChange = item.quote24hChange
       } else {
-        self.allPrices.append(item)
+        self.allPrices.value.append(item)
       }
     }
-    Storage.store(self.allPrices, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
+    Storage.store(self.allPrices.value, as: KNEnvironment.default.envPrefix + Constants.coingeckoPricesStoreFileName)
   }
 }

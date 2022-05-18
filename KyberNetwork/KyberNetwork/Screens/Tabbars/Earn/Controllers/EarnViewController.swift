@@ -355,7 +355,7 @@ class EarnViewModel {
     } else {
       return false
     }
-    return data[self.wallet.address.description] ?? false
+    return data[self.wallet.addressString] ?? false
   }
   
   var displayCompInfo: String {

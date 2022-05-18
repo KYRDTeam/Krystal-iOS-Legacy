@@ -13,6 +13,7 @@ enum EtherKeystoreError: LocalizedError {
 }
 
 open class EtherKeystore: Keystore {
+  
     struct Keys {
         static let recentlyUsedAddress: String = "recentlyUsedAddress"
         static let watchAddresses = "watchAddresses"
@@ -24,6 +25,7 @@ open class EtherKeystore: Keystore {
     private let defaultKeychainAccess: KeychainSwiftAccessOptions = .accessibleWhenUnlockedThisDeviceOnly
     let keysDirectory: URL
     let userDefaults: UserDefaults
+    let solanaUtil = SolanaUtil()
 
     public init(
         keychain: KeychainSwift = KeychainSwift(keyPrefix: Constants.keychainKeyPrefix),
@@ -57,13 +59,19 @@ open class EtherKeystore: Keystore {
 
     var recentlyUsedWallet: Wallet? {
         set {
-            keychain.set(newValue?.address.description ?? "", forKey: Keys.recentlyUsedAddress, withAccess: defaultKeychainAccess)
+          keychain.set(newValue?.addressString ?? "", forKey: Keys.recentlyUsedAddress, withAccess: defaultKeychainAccess)
         }
         get {
             let address = keychain.get(Keys.recentlyUsedAddress)
+          
+          if KNGeneralProvider.shared.currentChain == .solana {
+            let walletObject = KNWalletStorage.shared.getAvailableWalletObject(forPrimaryKey: address ?? "")
+            return walletObject?.toSolanaWallet()
+          } else {
             return wallets.filter {
-                $0.address.description == address || $0.address.description.lowercased() == address?.lowercased()
+                $0.address?.description == address || $0.addressString == address?.lowercased()
             }.first
+          }
         }
     }
 
@@ -94,7 +102,7 @@ open class EtherKeystore: Keystore {
         return account
     }
 
-    func importWallet(type: ImportType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void) {
+  func importWallet(type: ImportType, importType: ImportWalletChainType, completion: @escaping (Result<Wallet, KeystoreError>) -> Void) {
         let newPassword = PasswordGenerator.generateRandom()
         switch type {
         case .keystore(let string, let password):
@@ -111,6 +119,19 @@ open class EtherKeystore: Keystore {
                 }
             }
         case .privateKey(let privateKey):
+          if importType == .solana {
+            let result = self.solanaUtil.importKeyPair(privateKey)
+            if let address = result.0, let walletIdentity = result.2 {
+              if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                completion(.failure(.duplicateAccount))
+              } else {
+                completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+              }
+              
+            } else {
+              completion(.failure(.failedToCreateWallet))
+            }
+          } else {
             keystore(for: privateKey, password: newPassword) { result in
                 switch result {
                 case .success(let value):
@@ -130,6 +151,7 @@ open class EtherKeystore: Keystore {
                     completion(.failure(error))
                 }
             }
+          }
         case .mnemonic(let words, let password):
           let key = words.joined(separator: " ")
           do {
@@ -143,13 +165,20 @@ open class EtherKeystore: Keystore {
               completion(.failure(.failedToImport(error)))
             }
           }
-        case .watch(let address):
-            let addressString = address.description
+        case .watch(let address, let name):
+          if importType == .solana {
+            self.solanaUtil.addWatchWallet(name: name, address: address)
+            completion(.success(Wallet(type: .solana(address, "", ""))))
+          } else {
+            let addressString = address
             guard !watchAddresses.contains(addressString) else {
-                return completion(.failure(.duplicateAccount))
+              return completion(.failure(.duplicateAccount))
             }
             self.watchAddresses = [watchAddresses, [addressString]].flatMap { $0 }
-            completion(.success(Wallet(type: .watch(address))))
+            if let addressObj = Address(string: address) {
+              completion(.success(Wallet(type: .watch(addressObj))))
+            }
+          }
         }
     }
 
@@ -215,7 +244,7 @@ open class EtherKeystore: Keystore {
         ].flatMap { $0 }
     }
 
-    func export(account: Account, password: String, newPassword: String) -> Result<String, KeystoreError> {
+  func export(account: Account, password: String, newPassword: String, importType: ImportWalletChainType = .multiChain) -> Result<String, KeystoreError> {
         let result = self.exportData(account: account, password: password, newPassword: newPassword)
         switch result {
         case .success(let data):
@@ -226,16 +255,16 @@ open class EtherKeystore: Keystore {
         }
     }
 
-    func export(account: Account, password: String, newPassword: String, completion: @escaping (Result<String, KeystoreError>) -> Void) {
+  func export(account: Account, password: String, newPassword: String, importType: ImportWalletChainType = .multiChain, completion: @escaping (Result<String, KeystoreError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let result = self.export(account: account, password: password, newPassword: newPassword)
+            let result = self.export(account: account, password: password, newPassword: newPassword, importType: importType)
             DispatchQueue.main.async {
                 completion(result)
             }
         }
     }
 
-    func exportData(account: Account, password: String, newPassword: String) -> Result<Data, KeystoreError> {
+  func exportData(account: Account, password: String, newPassword: String, importType: ImportWalletChainType = .multiChain) -> Result<Data, KeystoreError> {
         guard let account = getAccount(for: account.address) else {
             return .failure(.accountNotFound)
         }
@@ -310,6 +339,9 @@ open class EtherKeystore: Keystore {
         case .watch(let address):
             watchAddresses = watchAddresses.filter { $0 != address.description }
             return .success(())
+        case .solana(let address):
+          //Note: implement delete
+          return .failure(.failedToDeleteAccount)
         }
     }
 
@@ -403,48 +435,6 @@ open class EtherKeystore: Keystore {
             return .failure(.failedToSignTransaction)
         }
     }
-
-//    func signLimitOrder(_ order: KNLimitOrder) -> Result<Data, KeystoreError> {
-//      guard let account = keyStore.account(for: order.account.address) else {
-//        return .failure(.failedMissingAccountOrPassword)
-//      }
-//      guard let _ = getPassword(for: account) else {
-//        return .failure(.failedMissingAccountOrPassword)
-//      }
-//
-//      let sha3 = SHA3(variant: .keccak256)
-//
-//      var data = [UInt8]()
-//      // sender
-//      data.append(contentsOf: order.sender.data.bytes)
-//      // nonce
-//      var numberArr = order.nonce.drop0x.hexaToBytes
-//      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
-//      data.append(contentsOf: numberArr)
-//      // src token
-//      data.append(contentsOf: order.from.addressObj.data.bytes)
-//      // src amount
-//      numberArr = BigUInt(order.srcAmount).serialize().bytes
-//      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
-//      data.append(contentsOf: numberArr)
-//      // dest token
-//      data.append(contentsOf: order.to.addressObj.data.bytes)
-//      // dest address
-//      data.append(contentsOf: order.sender.data.bytes)
-//      // min rate
-//      numberArr = BigUInt(order.targetRate * BigInt(10).power(18 - order.to.decimals)).serialize().bytes
-//      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
-//      data.append(contentsOf: numberArr)
-//      // fee
-//      numberArr = BigUInt(order.fee).serialize().bytes
-//      while numberArr.count != 32 { numberArr.insert(0, at: 0) }
-//      data.append(contentsOf: numberArr)
-//
-//      // hash
-//      let hashData = Data(bytes: sha3.calculate(for: data))
-//      let prefix = "\u{19}Ethereum Signed Message:\n\(hashData.count)".data(using: .utf8)!
-//      return signMessage(prefix + hashData, for: account)
-//    }
 
     func getPassword(for account: Account) -> String? {
         return keychain.get(account.address.description.lowercased())

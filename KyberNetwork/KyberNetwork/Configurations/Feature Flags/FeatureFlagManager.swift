@@ -11,13 +11,18 @@ public struct FeatureFlagKeys {
   public static let bifinityIntegration = "bifinity-integration"
   public static let promotionCodeIntegration = "promotion-code"
   public static let auroraChainIntegration = "aurora-chain"
+  public static let rewardHunting = "reward-hunting"
+  public static let solanaChainIntegration = "solana-chain"
 }
 
 class FeatureFlagManager {
   static let shared = FeatureFlagManager()
 
-  func configClient(session: KNSession) {
-    let currentAddress = session.wallet.address.description.lowercased()
+  func configClient(session: KNSession?) {
+    var currentAddress = session?.wallet.addressString ?? ""
+    if KNGeneralProvider.shared.currentChain != .solana {
+      currentAddress = currentAddress.lowercased()
+    }
 
     var config = LDConfig(mobileKey: KNEnvironment.default.mobileKey)
     config.backgroundFlagPollingInterval = 60

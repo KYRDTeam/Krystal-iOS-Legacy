@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -28,6 +28,7 @@
                 <outlet property="doneButton" destination="sSh-ox-nfP" id="nPI-kW-dnc"/>
                 <outlet property="symbolField" destination="YCD-po-quv" id="d1y-Nq-rrt"/>
                 <outlet property="titleHeader" destination="xXP-3m-yG8" id="moG-eI-ljf"/>
+                <outlet property="topBarHeight" destination="a3m-oH-XFo" id="uKw-sR-AkI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -40,13 +41,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Custom Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXP-3m-yG8">
-                            <rect key="frame" x="99.5" y="68" width="176.5" height="23.5"/>
+                            <rect key="frame" x="99.5" y="63.5" width="176.5" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJU-Tb-jaV">
-                            <rect key="frame" x="16" y="62" width="46" height="36"/>
+                            <rect key="frame" x="16" y="57.5" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="Pw5-po-mxh"/>
                                 <constraint firstAttribute="height" constant="36" id="ald-Fa-VZc"/>
@@ -60,10 +61,10 @@
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstItem="xXP-3m-yG8" firstAttribute="top" secondItem="u4A-55-mi9" secondAttribute="top" constant="68" id="Kuh-fA-Pw7"/>
                         <constraint firstItem="BJU-Tb-jaV" firstAttribute="leading" secondItem="u4A-55-mi9" secondAttribute="leading" constant="16" id="Xhd-xR-2o9"/>
                         <constraint firstAttribute="height" constant="113" id="a3m-oH-XFo"/>
                         <constraint firstItem="xXP-3m-yG8" firstAttribute="centerX" secondItem="u4A-55-mi9" secondAttribute="centerX" id="bLA-1g-vZf"/>
+                        <constraint firstAttribute="bottom" secondItem="xXP-3m-yG8" secondAttribute="bottom" constant="26" id="rzL-BV-feB"/>
                         <constraint firstItem="BJU-Tb-jaV" firstAttribute="centerY" secondItem="xXP-3m-yG8" secondAttribute="centerY" id="xmm-67-mwT"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

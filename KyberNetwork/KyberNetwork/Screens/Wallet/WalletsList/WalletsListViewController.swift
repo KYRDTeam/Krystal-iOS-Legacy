@@ -39,20 +39,29 @@ class WalletsListViewModel {
 
   var watchWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
-      return object.isWatchWallet
+      if KNGeneralProvider.shared.currentChain == .solana {
+          return object.chainType == 2 && object.isWatchWallet
+      } else {
+        return object.chainType != 2 && object.isWatchWallet
+      }
     }
   }
 
   var realWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
-      return !object.isWatchWallet
+      if KNGeneralProvider.shared.currentChain == .solana {
+          return object.chainType == 2 && !object.isWatchWallet
+      } else {
+        return object.chainType != 2 && !object.isWatchWallet
+      }
     }
   }
 
   var dataSource: [Any] {
     var data: [Any] = []
     let realSectionViewModels = self.realWallets.map { (object) -> WalletListTableViewCellViewModel in
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: object.address.lowercased() == self.currentWallet.address.lowercased())
+      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
+      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
     }
     if !realSectionViewModels.isEmpty {
       let sectionViewModel = WalletListSectionTableViewCellViewModel(sectionTile: "Change Wallets", isFirstSection: true)
@@ -61,7 +70,8 @@ class WalletsListViewModel {
     }
 
     let watchSectionViewModels = self.watchWallets.map { (object) -> WalletListTableViewCellViewModel in
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: object.address.lowercased() == self.currentWallet.address.lowercased())
+      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
+      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
     }
     if !watchSectionViewModels.isEmpty {
       let sectionModel = WalletListSectionTableViewCellViewModel(sectionTile: "Watch wallets", isFirstSection: data.isEmpty)
@@ -108,13 +118,13 @@ class WalletsListViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableViewHeightContraint: NSLayoutConstraint!
-
+  @IBOutlet weak var manageWalletTopConstraint: NSLayoutConstraint!
   fileprivate var viewModel: WalletsListViewModel
 
   fileprivate let kWalletTableViewCellID: String = "WalletListTableViewCell"
   fileprivate let kWalletSectionTableViewCellID: String = "WalletListSectionTableViewCell"
   let transitor = TransitionDelegate()
-  var delegate: WalletsListViewControllerDelegate?
+  weak var delegate: WalletsListViewControllerDelegate?
 
   init(viewModel: WalletsListViewModel) {
     self.viewModel = viewModel
@@ -137,6 +147,8 @@ class WalletsListViewController: KNBaseViewController {
 
     self.walletsTableViewHeightContraint.constant = self.viewModel.walletTableViewHeight
     self.walletTableView.allowsSelection = true
+    self.connectWalletButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.manageWalletTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 12 : 66
   }
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
@@ -233,7 +245,8 @@ extension WalletsListViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.viewModel.walletTableViewHeight + 179
+    let padding = KNGeneralProvider.shared.currentChain == .solana ? 125 : 179
+    return self.viewModel.walletTableViewHeight + CGFloat(padding)
   }
 
   func getPopupContentView() -> UIView {

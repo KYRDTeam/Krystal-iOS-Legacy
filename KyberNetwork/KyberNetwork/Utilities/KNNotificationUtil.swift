@@ -61,6 +61,9 @@ let kNewReceivedTransactionKey = "kNewReceivedTransactionKey"
 // Update feature flag
 let kUpdateFeatureFlag = "kUpdateFeatureFlag"
 
+// App events
+let kAppDidUpdateNewSession = "kAppDidUpdateNewSession"
+
 class KNNotificationUtil {
 
   static func postNotification(for key: String, object: Any? = nil, userInfo: [AnyHashable: Any]? = nil) {

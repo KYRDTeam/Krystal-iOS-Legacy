@@ -25,6 +25,8 @@ enum OverviewMainViewEvent {
   case didAppear
   case pullToRefreshed(current: ViewMode, overviewMode: OverviewMode)
   case buyCrypto
+  case addNewWallet
+  case addChainWallet(chain: ChainType)
 }
 
 enum OverviewMode {
@@ -39,7 +41,7 @@ enum ViewMode: Equatable, Codable {
   case supply
   case favourite(rightMode: RightMode)
   case nft
-
+  
   public static func == (lhs: ViewMode, rhs: ViewMode) -> Bool {
     switch (lhs, rhs) {
     case ( .market, .market):
@@ -47,7 +49,7 @@ enum ViewMode: Equatable, Codable {
     case ( .asset, .asset):
       return true
     case ( .showLiquidityPool, .showLiquidityPool):
-        return true
+      return true
     case ( .supply, .supply):
       return true
     case ( .favourite, .favourite):
@@ -77,10 +79,10 @@ enum ViewMode: Equatable, Codable {
     case .nft:
       try container.encode(true, forKey: .nft)
     case .showLiquidityPool:
-        try container.encode(true, forKey: .showLiquidityPool)
+      try container.encode(true, forKey: .showLiquidityPool)
     }
   }
-
+  
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let key = container.allKeys.first
@@ -100,7 +102,7 @@ enum ViewMode: Equatable, Codable {
     case .supply:
       self = .supply
     case .showLiquidityPool:
-        self = .showLiquidityPool
+      self = .showLiquidityPool
     case .favourite:
       let mode = try container.decode(
         RightMode.self,
@@ -143,7 +145,7 @@ enum RightMode: Codable {
       throw CodingError.unknownValue
     }
   }
-
+  
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
@@ -155,7 +157,7 @@ enum RightMode: Codable {
       try container.encode(2, forKey: .rawValue)
     }
   }
-
+  
   case lastPrice
   case value
   case ch24
@@ -177,14 +179,18 @@ class OverviewMainViewModel {
     }
   }
   var overviewMode: OverviewMode = .overview
-  var dataSource: [String: [OverviewMainCellViewModel]] = [:]
-  var displayDataSource: [String: [OverviewMainCellViewModel]] = [:]
-  var displayNFTDataSource: [String: [OverviewNFTCellViewModel]] = [:]
-  var displayNFTHeader: [NFTSection] = []
-  var summaryDataSource: [OverviewSummaryCellViewModel] = []
-  var displayLPDataSource: [String: [OverviewLiquidityPoolViewModel]] = [:]
-  var displayHeader: [String] = []
-  var displayTotalValues: [String: String] = [:]
+  
+  var dataSource: ThreadProtectedObject<[String: [OverviewMainCellViewModel]]> = .init(storageValue: [:])
+  var displayDataSource: ThreadProtectedObject<[String: [OverviewMainCellViewModel]]> = .init(storageValue: [:])
+  var displayNFTDataSource: ThreadProtectedObject<[String: [OverviewNFTCellViewModel]]> = .init(storageValue: [:])
+  var displayNFTHeader: ThreadProtectedObject<[NFTSection]> = .init(storageValue: [])
+  var summaryDataSource: ThreadProtectedObject<[OverviewSummaryCellViewModel]> = .init(storageValue: [])
+  
+  var displayLPDataSource: ThreadProtectedObject<[String: [OverviewLiquidityPoolViewModel]]> = .init(storageValue: [:])
+  var displayHeader: ThreadProtectedObject<[String]> = .init(storageValue: [])
+  
+  var displayTotalValues: ThreadProtectedObject<[String: String]> = .init(storageValue: [:])
+  
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
     didSet {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
@@ -192,11 +198,13 @@ class OverviewMainViewModel {
   }
   var marketSortType: MarketSortType = .ch24(des: true)
   var currencyMode: CurrencyMode
-  var hiddenSections = Set<Int>()
+  var hiddenNFTSections = Set<Int>()
   var isHidingSmallAssetsToken = true
   var isRefreshingTableView = false
   var didTapAddNFTHeader: (() -> Void)?
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
+  let queue = DispatchQueue(label: "overview.property.lock.queue")
+  
   init(session: KNSession) {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
       self.currencyMode = savedCurrencyMode.isQuoteCurrency ? KNGeneralProvider.shared.quoteCurrency : savedCurrencyMode
@@ -205,18 +213,18 @@ class OverviewMainViewModel {
     }
     self.session = session
   }
-
+  
   func isEmpty() -> Bool {
     switch self.currentMode {
     case .asset, .market, .favourite:
-      return self.dataSource[""]?.isEmpty ?? true
+      return self.dataSource.value[""]?.isEmpty ?? true
     case .supply, .showLiquidityPool:
-      return self.displayHeader.isEmpty
+      return self.displayHeader.value.isEmpty
     case .nft:
-      return self.displayNFTHeader.isEmpty
+      return self.displayNFTHeader.value.isEmpty
     }
   }
-
+  
   func filterSmallAssetTokens(tokens: [Token]) -> [Token] {
     let filteredTokens = tokens.filter({ token in
       let rateBigInt = BigInt(token.getTokenLastPrice(self.currencyMode) * pow(10.0, 18.0))
@@ -228,22 +236,22 @@ class OverviewMainViewModel {
     })
     return filteredTokens
   }
-
+  
   func shouldShowHideButton() -> Bool {
     let assetTokens = KNSupportedTokenStorage.shared.getAssetTokens()
     let filteredTokens = filterSmallAssetTokens(tokens: assetTokens)
     return assetTokens.count != filteredTokens.count
   }
-
+  
   func updateCurrencyMode(mode: CurrencyMode) {
     self.currencyMode = mode
     self.reloadSummaryChainData()
   }
-
+  
   func reloadSummaryChainData() {
     let summaryChainModels = BalanceStorage.shared.getSummaryChainModels()
     var total = 0.0
-    self.summaryDataSource.forEach { data in
+    self.summaryDataSource.value.forEach { data in
       total += data.value
     }
     let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
@@ -251,7 +259,7 @@ class OverviewMainViewModel {
     
     //convert đang bị nil ở đây
     let totalDoubleValue = totalBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())//Double(totalBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()))
-    self.summaryDataSource.removeAll()
+//    self.summaryDataSource.value.removeAll()
     let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
       //re-calculate value and percent for each chain by subtract to hide or delete tokens
       if let unitValueModel = summaryModel.quotes[self.currencyMode.toString()] {
@@ -267,9 +275,9 @@ class OverviewMainViewModel {
       viewModel.hideBalanceStatus = self.hideBalanceStatus
       return viewModel
     })
-    self.summaryDataSource.append(contentsOf: array)
+    self.summaryDataSource.value = array
   }
-
+  
   func reloadAllData() {
     reloadSummaryChainData()
     switch self.currentMode {
@@ -288,31 +296,27 @@ class OverviewMainViewModel {
           return des ? left.getMarketCap(self.currencyMode) > right.getMarketCap(self.currencyMode) : left.getMarketCap(self.currencyMode) < right.getMarketCap(self.currencyMode)
         }
       }
-      self.displayHeader.removeAll()
+      self.displayHeader.value = []
       let models = marketToken.map { (item) -> OverviewMainCellViewModel in
         return OverviewMainCellViewModel(mode: .market(token: item, rightMode: mode), currency: self.currencyMode)
       }
-      self.dataSource.removeAll()
-      self.dataSource.appendOtherDictionary(["": models])
-      self.displayDataSource = ["": models]
-      self.displayTotalValues.removeAll()
-      self.displayNFTHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+      self.dataSource.value = ["": models]
+      self.displayDataSource.value = ["": models]
+      self.displayTotalValues.value = [:]
+      self.displayNFTHeader.value = []
+      self.displayNFTDataSource.value = [:]
     case .asset(let mode):
       var assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
         return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
       }
-
-      self.displayHeader.removeAll()
-      self.displayTotalValues.removeAll()
-
+      self.displayHeader.value = []
+      self.displayTotalValues.value = [:]
       let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
         let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
         viewModel.tag = item.tag
         return viewModel
       }
-      self.dataSource.removeAll()
-      self.dataSource.appendOtherDictionary(["": models])
+      self.dataSource.value = ["": models]
       // filter to hide small assets
       if self.isHidingSmallAssetsToken {
         assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
@@ -324,19 +328,18 @@ class OverviewMainViewModel {
         viewModel.tag = item.tag
         return viewModel
       }
-      self.displayDataSource = ["": displayModels]
+      self.displayDataSource.value = ["": displayModels]
       let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-      self.displayTotalValues["all"] = displayTotalString
-      self.displayNFTHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+      self.displayTotalValues.value["all"] = displayTotalString
+      self.displayNFTHeader.value = []
+      self.displayNFTDataSource.value = [:]
     case .supply:
       let supplyBalance = BalanceStorage.shared.getSupplyBalances()
-      self.displayHeader.removeAll()
-      self.displayHeader.append(contentsOf: supplyBalance.0)
+      self.displayHeader.value = supplyBalance.0
       let data = supplyBalance.1
       var models: [String: [OverviewMainCellViewModel]] = [:]
       var total = BigInt(0)
-      self.displayHeader.forEach { (key) in
+      self.displayHeader.value.forEach { (key) in
         var sectionModels: [OverviewMainCellViewModel] = []
         var totalSection = BigInt(0)
         data[key]?.forEach({ (item) in
@@ -352,51 +355,47 @@ class OverviewMainViewModel {
         })
         models[key] = sectionModels
         let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-        self.displayTotalValues[key] = displayTotalSection
+        self.displayTotalValues.value[key] = displayTotalSection
         total += totalSection
       }
-      self.dataSource.removeAll()
-      self.dataSource.appendOtherDictionary(models)
-      self.displayDataSource = models
-      self.displayTotalValues["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-      self.displayNFTHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+      self.dataSource.value = models
+      self.displayDataSource.value = models
+      self.displayTotalValues.value["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+      self.displayNFTHeader.value = []
+      self.displayNFTDataSource.value = [:]
     case .showLiquidityPool:
-        let liquidityPoolData = BalanceStorage.shared.getLiquidityPools(currency: self.currencyMode)
-      self.displayHeader.removeAll()
-      self.displayHeader.append(contentsOf: liquidityPoolData.0)
-        let data = liquidityPoolData.1
-        var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
-        var total = 0.0
-        let currencyFormatter = StringFormatter()
-      self.displayTotalValues.removeAll()
-        self.displayHeader.forEach { (key) in
-          var sectionModels: [OverviewLiquidityPoolViewModel] = []
-          //value for total balance of current pool
-          var totalSection = 0.0
-          data[key.lowercased()]?.forEach({ (item) in
-            if let poolPairToken = item as? [LPTokenModel] {
-              poolPairToken.forEach { token in
-                //add total value of each token in current pair
-                totalSection += token.getTokenValue(self.currencyMode)
-              }
-              sectionModels.append(OverviewLiquidityPoolViewModel(currency: self.currencyMode, pairToken: poolPairToken))
+      let liquidityPoolData = BalanceStorage.shared.getLiquidityPools(currency: self.currencyMode)
+      self.displayHeader.value = liquidityPoolData.0
+      let data = liquidityPoolData.1
+      var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
+      var total = 0.0
+      let currencyFormatter = StringFormatter()
+      self.displayHeader.value.forEach { (key) in
+        var sectionModels: [OverviewLiquidityPoolViewModel] = []
+        //value for total balance of current pool
+        var totalSection = 0.0
+        data[key.lowercased()]?.forEach({ (item) in
+          if let poolPairToken = item as? [LPTokenModel] {
+            poolPairToken.forEach { token in
+              //add total value of each token in current pair
+              totalSection += token.getTokenValue(self.currencyMode)
             }
-          })
-
-          models[key] = sectionModels
-          let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
-          let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
-
-          self.displayTotalValues[key] = displayTotalSection
-          total += totalSection
-        }
-      self.displayLPDataSource.removeAll()
-      self.displayLPDataSource.appendOtherDictionary(models)
-        let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
-        self.displayTotalValues["all"] = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
-      self.displayNFTHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+            sectionModels.append(OverviewLiquidityPoolViewModel(currency: self.currencyMode, pairToken: poolPairToken))
+          }
+        })
+        
+        models[key] = sectionModels
+        let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
+        let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+        
+        self.displayTotalValues.value[key] = displayTotalSection
+        total += totalSection
+      }
+      self.displayLPDataSource.value = models
+      let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
+      self.displayTotalValues.value["all"] = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+      self.displayNFTHeader.value = []
+      self.displayNFTDataSource.value = [:]
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allActiveTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -414,23 +413,23 @@ class OverviewMainViewModel {
       }.filter { (token) -> Bool in
         return KNSupportedTokenStorage.shared.getFavedStatusWithAddress(token.address)
       }
-      self.displayHeader.removeAll()
+      self.displayHeader.value = []
       let models = marketToken.map { (item) -> OverviewMainCellViewModel in
         return OverviewMainCellViewModel(mode: .market(token: item, rightMode: mode), currency: self.currencyMode)
       }
-      self.dataSource.removeAll()
-      self.dataSource.appendOtherDictionary(["": models])
-      self.displayDataSource = ["": models]
-      self.displayTotalValues.removeAll()
-      self.displayNFTHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+      self.dataSource.value = ["": models]
+      self.displayDataSource.value = ["": models]
+      self.displayTotalValues.value.removeAll()
+      self.displayNFTHeader.value = []
+      self.displayNFTDataSource.value = [:]
     case .nft:
-      self.dataSource.removeAll()
-      self.displayDataSource = [:]
-      self.displayHeader.removeAll()
-      self.displayNFTDataSource.removeAll()
+      self.dataSource.value = [:]
+      self.displayDataSource.value = [:]
+      self.displayHeader.value = []
+      self.displayNFTDataSource.value = [:]
+      self.displayNFTHeader.value = []
       let nftSections = BalanceStorage.shared.getAllNFTBalance()
-      self.displayNFTHeader.append(contentsOf: nftSections)
+      self.displayNFTHeader.value = nftSections
       nftSections.forEach({ item in
         var viewModels: [OverviewNFTCellViewModel] = []
         if !item.items.isEmpty {
@@ -444,13 +443,13 @@ class OverviewMainViewModel {
             viewModels.append(contentsOf: vm)
           }
         }
-        self.displayNFTDataSource[item.collectibleName] = viewModels
+        self.displayNFTDataSource.value[item.collectibleName] = viewModels
       })
-
+      
       let favedItems = BalanceStorage.shared.getAllFavedItems()
       if !favedItems.isEmpty {
         let favSection = NFTSection(collectibleName: "Favorite NFT", collectibleAddress: "", collectibleSymbol: "FAV", collectibleLogo: "", items: [])
-        self.displayNFTHeader.insert(favSection, at: 0)
+        self.displayNFTHeader.value.insert(favSection, at: 0)
         var viewModels: [OverviewNFTCellViewModel] = []
         if favedItems.count <= 2 {
           viewModels.append(OverviewNFTCellViewModel(item1: favedItems[safeIndex: 0]?.0, item2: favedItems[safeIndex: 1]?.0, category1: favedItems[safeIndex: 0]?.1, category2: favedItems[safeIndex: 1]?.1))
@@ -461,65 +460,64 @@ class OverviewMainViewModel {
           }
           viewModels.append(contentsOf: vm)
         }
-        self.displayNFTDataSource[favSection.collectibleName] = viewModels
+        self.displayNFTDataSource.value[favSection.collectibleName] = viewModels
       }
-      if !self.displayNFTHeader.isEmpty {
+      if !self.displayNFTHeader.value.isEmpty {
         let addMoreSection = NFTSection(collectibleName: "add-more-krystal", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
-        self.displayNFTHeader.append(addMoreSection)
+        self.displayNFTHeader.value.append(addMoreSection)
       }
     }
   }
-
+  
   var numberOfSections: Int {
     if self.overviewMode == .summary {
       return 1
     }
-
+    
     guard !self.isEmpty() else {
       return 1
     }
     if self.currentMode == .nft {
-      return self.displayNFTHeader.count
+      return self.displayNFTHeader.value.count
     } else {
-      return self.displayHeader.isEmpty ? 1 : self.displayHeader.count
+      return self.displayHeader.value.isEmpty ? 1 : self.displayHeader.value.count
     }
   }
-
+  
   func getViewModelsForSection(_ section: Int) -> [OverviewMainCellViewModel] {
-    guard !self.displayHeader.isEmpty else {
-      return self.displayDataSource[""] ?? []
+    guard !self.displayHeader.value.isEmpty else {
+      return self.displayDataSource.value[""] ?? []
     }
-
-    let key = self.displayHeader[section]
-    return self.displayDataSource[key] ?? []
+    
+    let key = self.displayHeader.value[section]
+    return self.displayDataSource.value[key] ?? []
   }
-
+  
   func numberOfRowsInSection(section: Int) -> Int {
     if self.overviewMode == .summary {
-      return self.summaryDataSource.count
+      return self.summaryDataSource.value.count
     }
     guard !self.isEmpty() else {
       return 1
     }
-    guard !self.hiddenSections.contains(section) else {
-        return 0
-    }
-
     switch self.currentMode {
     case .nft:
-      let key = self.displayNFTHeader[section].collectibleName
-      return self.displayNFTDataSource[key]?.count ?? 0
+      guard !self.hiddenNFTSections.contains(section) else {
+        return 0
+      }
+      let key = self.displayNFTHeader.value[section].collectibleName
+      return self.displayNFTDataSource.value[key]?.count ?? 0
     case .asset:
       // + 1 row for hide/show small asset cell
       return self.getViewModelsForSection(section).count + 1
     case .showLiquidityPool:
-      let key = self.displayHeader[section]
-      return self.displayLPDataSource[key]?.count ?? 0
+      let key = self.displayHeader.value[section]
+      return self.displayLPDataSource.value[key]?.count ?? 0
     default:
-        return self.getViewModelsForSection(section).count
+      return self.getViewModelsForSection(section).count
     }
   }
-
+  
   func heightForRowAt(_ indexPath: IndexPath) -> CGFloat {
     if self.overviewMode == .summary {
       return 80
@@ -533,12 +531,12 @@ class OverviewMainViewModel {
     case.supply:
       return OverviewDepositTableViewCell.kCellHeight
     case.showLiquidityPool:
-        return OverviewLiquidityPoolCell.kCellHeight
+      return OverviewLiquidityPoolCell.kCellHeight
     case .nft:
       return OverviewNFTTableViewCell.kCellHeight
     }
   }
-
+  
   func heightForHeaderInSection() -> CGFloat {
     guard self.overviewMode == .overview else {
       return 0
@@ -548,19 +546,19 @@ class OverviewMainViewModel {
     }
     return 40
   }
-
+  
   @objc func addNFTButtonTapped(sender: UIButton) {
     if let didTapAddNFTHeader = didTapAddNFTHeader {
       didTapAddNFTHeader()
     }
   }
-
+  
   @objc func sectionButtonTapped(sender: UIButton) {
     if let didTapSectionButtonHeader = didTapSectionButtonHeader {
       didTapSectionButtonHeader(sender)
     }
   }
-
+  
   func viewForHeaderInSection(_ tableView: UITableView, section: Int) -> UIView? {
     guard self.overviewMode == .overview else {
       return nil
@@ -568,14 +566,14 @@ class OverviewMainViewModel {
     guard self.currentMode == .supply || self.currentMode == .nft || self.currentMode == .showLiquidityPool else {
       return nil
     }
-    guard !self.displayHeader.isEmpty || !self.displayNFTHeader.isEmpty else {
+    guard !self.displayHeader.value.isEmpty || !self.displayNFTHeader.value.isEmpty else {
       return nil
     }
     guard !self.isEmpty() else {
       return nil
     }
     if self.currentMode == .nft {
-      let sectionItem = self.displayNFTHeader[section]
+      let sectionItem = self.displayNFTHeader.value[section]
       let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
       view.backgroundColor = .clear
       guard sectionItem.collectibleSymbol != "ADDMORE" else {
@@ -588,7 +586,7 @@ class OverviewMainViewModel {
         view.addSubview(button)
         return view
       }
-
+      
       let icon = UIImageView(frame: CGRect(x: 29, y: 0, width: 32, height: 32))
       icon.center.y = view.center.y
       if sectionItem.collectibleSymbol == "FAV" {
@@ -596,16 +594,16 @@ class OverviewMainViewModel {
       } else {
         icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
       }
-
+      
       view.addSubview(icon)
-
+      
       let titleLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 200, height: 40))
       titleLabel.center.y = view.center.y
       titleLabel.text = sectionItem.collectibleName
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
-
+      
       let arrowIcon = UIImageView(frame: CGRect(x: tableView.frame.size.width - 27 - 24, y: 0, width: 24, height: 24))
       arrowIcon.image = UIImage(named: "arrow_down_template")
       arrowIcon.tintColor = UIColor(named: "textWhiteColor")
@@ -622,18 +620,18 @@ class OverviewMainViewModel {
       let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
       let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
       titleLabel.center.y = view.center.y
-      titleLabel.text = self.displayHeader[section]
+      titleLabel.text = self.displayHeader.value[section]
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
-
+      
       let valueLabel = UILabel(frame: CGRect(x: tableView.frame.size.width - rightLabelWidth - 35, y: 0, width: rightLabelWidth, height: 40))
       valueLabel.text = rightTextString
       valueLabel.font = UIFont.Kyber.regular(with: 18)
       valueLabel.textAlignment = .right
       valueLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(valueLabel)
-
+      
       return view
     }
   }
@@ -645,63 +643,63 @@ class OverviewMainViewModel {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    return self.displayTotalValues["all"] ?? ""
+    return self.displayTotalValues.value["all"] ?? ""
   }
-
+  
   func getTotalValueForSection(_ section: Int) -> String {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-    let key = self.displayHeader[section]
-    return self.displayTotalValues[key] ?? ""
+    let key = self.displayHeader.value[section]
+    return self.displayTotalValues.value[key] ?? ""
   }
-
+  
   var displayTotalValue: String {
     guard !self.hideBalanceStatus else {
       return "********"
     }
-
-    guard let isDefaultValue = self.summaryDataSource.first?.isDefaultValue, isDefaultValue == false else {
+    
+    guard let isDefaultValue = self.summaryDataSource.value.first?.isDefaultValue, isDefaultValue == false else {
       return self.defaultDisplayTotalValue
     }
-    let currentChainViewModel = self.summaryDataSource.first { viewModel in
+    let currentChainViewModel = self.summaryDataSource.value.first { viewModel in
       viewModel.chainType == KNGeneralProvider.shared.currentChain
     }
     guard let total = currentChainViewModel?.value else {
       return self.defaultDisplayTotalValue
     }
-
+    
     let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currencyMode, chainType: KNGeneralProvider.shared.currentChain)
     let displayValue = BigInt(total * pow(10.0, 18.0)) - hideAndDeleteTotal
     return self.currencyMode.symbol() + displayValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
-
+  
   var defaultDisplayTotalValue: String {
     let total = BalanceStorage.shared.getTotalBalance(self.currencyMode)
     return self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 6, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
-
+  
   var displayTotalSummaryValue: String {
-    guard let isDefaultValue = self.summaryDataSource.first?.isDefaultValue, isDefaultValue == false else {
+    guard let isDefaultValue = self.summaryDataSource.value.first?.isDefaultValue, isDefaultValue == false else {
       return "--"
     }
     guard !self.hideBalanceStatus else {
       return "********"
     }
     var total = 0.0
-    self.summaryDataSource.forEach { data in
+    self.summaryDataSource.value.forEach { data in
       total += data.value
     }
-
+    
     let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
     let displayValue = BigInt(total * pow(10.0, 18.0)) - hideAndDeleteTotal
     return self.currencyMode.symbol() + displayValue.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
   }
-
+  
   var displayHideBalanceImage: UIImage {
     return self.hideBalanceStatus ? UIImage(named: "hide_eye_icon")! : UIImage(named: "show_eye_icon")!
   }
-
+  
   var displayCurrentPageName: String {
     switch self.currentMode {
     case .asset:
@@ -711,7 +709,7 @@ class OverviewMainViewModel {
     case .supply:
       return "Supply"
     case .showLiquidityPool:
-        return "Liquidity Pool"
+      return "Liquidity Pool"
     case .favourite:
       return "Favourite"
     case .nft:

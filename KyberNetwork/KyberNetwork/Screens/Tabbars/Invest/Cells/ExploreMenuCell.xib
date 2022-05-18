@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ExploreMenuCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="82" height="76"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="82" height="76"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whx-ai-TMU">
+                        <rect key="frame" x="0.0" y="0.0" width="82" height="76"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="LUf-Es-LBe">
+                                <rect key="frame" x="8" y="13.5" width="66" height="49.5"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bqS-xa-esZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="66" height="32"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="swap_inverst_icon" translatesAutoresizingMaskIntoConstraints="NO" id="3Rr-cq-AXQ">
+                                                <rect key="frame" x="17" y="0.0" width="32" height="32"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="BZh-2Z-ieT"/>
+                                            <constraint firstItem="3Rr-cq-AXQ" firstAttribute="centerY" secondItem="bqS-xa-esZ" secondAttribute="centerY" id="Ie4-2A-ZBd"/>
+                                            <constraint firstItem="3Rr-cq-AXQ" firstAttribute="centerX" secondItem="bqS-xa-esZ" secondAttribute="centerX" id="QTZ-pf-dVc"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swap" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VG8-uV-Tdy">
+                                        <rect key="frame" x="0.0" y="35" width="66" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="12"/>
+                                        <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" name="investButtonBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="LUf-Es-LBe" secondAttribute="trailing" constant="8" id="0TU-pJ-DUK"/>
+                            <constraint firstItem="LUf-Es-LBe" firstAttribute="centerY" secondItem="whx-ai-TMU" secondAttribute="centerY" id="15v-aG-d1Q"/>
+                            <constraint firstItem="LUf-Es-LBe" firstAttribute="leading" secondItem="whx-ai-TMU" secondAttribute="leading" constant="8" id="twm-NQ-fD5"/>
+                            <constraint firstItem="LUf-Es-LBe" firstAttribute="centerX" secondItem="whx-ai-TMU" secondAttribute="centerX" id="z2l-Jn-RtP"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="whx-ai-TMU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Vj2-rH-QzT"/>
+                <constraint firstAttribute="bottom" secondItem="whx-ai-TMU" secondAttribute="bottom" id="hlY-9q-BP9"/>
+                <constraint firstItem="whx-ai-TMU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="o72-4W-aG1"/>
+                <constraint firstAttribute="trailing" secondItem="whx-ai-TMU" secondAttribute="trailing" id="xsl-qN-Zqb"/>
+            </constraints>
+            <size key="customSize" width="82" height="76"/>
+            <connections>
+                <outlet property="iconImageView" destination="3Rr-cq-AXQ" id="RK5-Cp-7EJ"/>
+                <outlet property="titleLabel" destination="VG8-uV-Tdy" id="Fz1-AO-KC6"/>
+            </connections>
+            <point key="canvasLocation" x="157.97101449275362" y="106.47321428571428"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="swap_inverst_icon" width="32" height="32"/>
+        <namedColor name="investButtonBgColor">
+            <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

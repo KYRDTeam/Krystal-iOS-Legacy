@@ -10,6 +10,7 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 import JSONRPCKit
+import WalletCore
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
@@ -18,21 +19,20 @@ protocol KNSendTokenViewCoordinatorDelegate: class {
   func sendTokenCoordinatorDidSelectAddWallet()
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
   func sendTokenCoordinatorDidClose()
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class KNSendTokenViewCoordinator: NSObject, Coordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
-
+  var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   fileprivate var session: KNSession
-  var coordinators: [Coordinator] = []
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
   fileprivate var nftItem: NFTItem = NFTItem()
   fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
 
   var rootViewController: KSendTokenViewController?
@@ -43,7 +43,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate(set) var confirmVC: KConfirmSendViewController?
   fileprivate(set) weak var gasPriceSelector: GasFeeSelectorPopupViewController?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
-  
+  let sendNFT: Bool
   fileprivate var isSupportERC721 = true
 
   lazy var addContactVC: KNNewContactViewController = {
@@ -60,6 +60,22 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     return coordinator
   }()
 
+  var solanaPrivateKey: PrivateKey? {
+    if let key = self.session.keystore.solanaUtil.exportKeyPair(walletID: self.currentWallet.walletID) {
+      return key
+    } else if let account = self.session.keystore.matchWithEvmAccount(address: self.currentWallet.evmAddress) {
+      let result = self.session.keystore.exportMnemonics(account: account)
+      if case .success(let seeds) = result {
+        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
+        return privateKey
+      } else {
+        return nil
+      }
+    } else {
+      return nil
+    }
+  }
+
   deinit {
     self.rootViewController?.removeObserveNotification()
   }
@@ -68,12 +84,14 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     navigationController: UINavigationController,
     session: KNSession,
     balances: [String: Balance],
-    from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
-    ) {
+    from: TokenObject = KNGeneralProvider.shared.quoteTokenObject,
+    sendNFT: Bool = false
+  ) {
     self.navigationController = navigationController
     self.session = session
     self.balances = balances
     self.from = from
+    self.sendNFT = sendNFT
   }
   
   init(
@@ -81,7 +99,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     session: KNSession,
     nftItem: NFTItem,
     supportERC721: Bool,
-    nftCategory: NFTSection
+    nftCategory: NFTSection,
+    sendNFT: Bool = false
   ) {
     self.navigationController = navigationController
     self.session = session
@@ -89,16 +108,17 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     self.nftCategory = nftCategory
     self.from = KNGeneralProvider.shared.quoteTokenObject
     self.isSupportERC721 = supportERC721
+    self.sendNFT = sendNFT
   }
 
-  func start(sendNFT: Bool = false) {
+  func start() {
     if sendNFT {
       let controller = SendNFTViewController(viewModel: SendNFTViewModel(item: self.nftItem, category: self.nftCategory, supportERC721: self.isSupportERC721))
       controller.delegate = self
       self.sendNFTController = controller
       self.navigationController.pushViewController(controller, animated: true)
     } else {
-      let address = self.session.wallet.address.description
+      let address = self.session.wallet.addressString
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
@@ -163,7 +183,7 @@ extension KNSendTokenViewCoordinator {
     }
     return false
   }
-  
+
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController?.coordinatorDidUpdatePendingTx()
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
@@ -199,6 +219,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
         self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
         return
       }
+
       controller.displayLoading()
       self.sendGetPreScreeningWalletRequest { [weak self] (result) in
         controller.hideLoading()
@@ -221,11 +242,15 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
           self.rootViewController?.coordinatorDidValidateTransferTransaction()
         }
       }
+    case .validateSolana:
+      self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
     case .send(let transaction, let ens):
       self.openConfirmTransfer(transaction: transaction, ens: ens)
+    case .sendSolana(transaction: let transaction):
+      self.openConfirmSolTransfer(transaction: transaction)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
-    case .contactSelectMore:
+    case .openContactList:
       self.openListContactsView()
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)
@@ -258,7 +283,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -286,11 +311,13 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .openMultiSend:
       self.multiSendCoordinator.start()
       KNCrashlyticsUtil.logCustomEvent(withName: "transfer_click_multiple_transfer", customAttributes: nil)
+    case .addChainWallet(let chainType):
+      self.delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
 
   fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
       provider.request(.getPreScreeningWallet(address: address)) { result in
@@ -338,6 +365,17 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   fileprivate func openConfirmTransfer(transaction: UnconfirmedTransaction, ens: String?) {
     self.confirmVC = {
       let viewModel = KConfirmSendViewModel(transaction: transaction, ens: ens)
+      let controller = KConfirmSendViewController(viewModel: viewModel)
+      controller.delegate = self
+      controller.loadViewIfNeeded()
+      return controller
+    }()
+    self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
+  }
+  
+  fileprivate func openConfirmSolTransfer(transaction: UnconfirmedSolTransaction) {
+    self.confirmVC = {
+      let viewModel = KConfirmSendViewModel(solTransaction: transaction)
       let controller = KConfirmSendViewController(viewModel: viewModel)
       controller.delegate = self
       controller.loadViewIfNeeded()
@@ -403,6 +441,10 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
+    case .confirmSolana(let transaction, let historyTransaction):
+      controller.dismiss(animated: true) {
+        self.didConfirmSolTransfer(transaction, historyTransaction)
+      }
     case .cancel:
       controller.dismiss(animated: true) {
         self.confirmVC = nil
@@ -444,6 +486,102 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
+
+  fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    self.rootViewController?.showLoadingHUD()
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { sendTokenBalance, senderTokenAddress in
+      guard let senderTokenAddress = senderTokenAddress else {
+        self.rootViewController?.hideLoading()
+        completion(nil)
+        return
+      }
+      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { receiptTokenBalance, recipientAccount in
+        var recipientTokenAddress = ""
+        var signedEncodedString = ""
+
+        SolanaUtil.getRecentBlockhash { recentBlockHash in
+          guard let recentBlockHash = recentBlockHash else {
+            self.rootViewController?.hideLoading()
+            completion(nil)
+            return
+          }
+          if let recipientAccount = recipientAccount {
+            recipientTokenAddress = recipientAccount
+            signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+          } else {
+            recipientTokenAddress = SolanaUtil.generateTokenAccountAddress(receiptWalletAddress: receiptAddress, tokenMintAddress: tokenAddress)
+            signedEncodedString = SolanaUtil.signCreateAndTransferToken(recipientMainAddress: receiptAddress, tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
+          }
+
+          SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+            self.rootViewController?.hideLoading()
+            guard let signature = signature else {
+              completion(nil)
+              return
+            }
+            completion(signature)
+          }
+        }
+      }
+    }
+  }
+
+  fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
+    self.rootViewController?.showLoadingHUD()
+    SolanaUtil.getRecentBlockhash { recentBlockHash in
+      guard let recentBlockHash = recentBlockHash else {
+        self.rootViewController?.hideLoading()
+        completion(nil)
+        return
+      }
+      
+      let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
+      SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
+        self.rootViewController?.hideLoading()
+        guard let signature = signature else {
+          completion(nil)
+          return
+        }
+        completion(signature)
+      }
+    }
+  }
+  
+  fileprivate func getTransactionStatus(signature: String?, historyTransaction: InternalHistoryTransaction) {
+    guard let signature = signature else {
+      return
+    }
+    historyTransaction.hash = signature
+    historyTransaction.time = Date()
+    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+    self.openTransactionStatusPopUp(transaction: historyTransaction)
+    self.rootViewController?.coordinatorSuccessSendTransaction()
+  }
+  
+  fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
+    guard let pk = self.solanaPrivateKey else { return }
+    let receiptAddress = transaction.to
+    let privateKeyData = pk.data
+    let walletAddress = self.session.wallet.addressString
+    
+    let tokenDecimal = transaction.decimal ?? 0
+    let feeString = transaction.fee.description
+    
+    historyTransaction.toAddress = receiptAddress
+    historyTransaction.tokenAddress = transaction.mintTokenAddress
+    historyTransaction.transactionObject = SignTransactionObject(value: transaction.value.string(decimals: tokenDecimal, minFractionDigits: 0, maxFractionDigits: tokenDecimal), from: walletAddress, to: receiptAddress, nonce: 0, data: Data(), gasPrice: feeString, gasLimit: feeString, chainID: AllChains.solana.chainID, reservedGasLimit: "")
+
+    if transaction.mintTokenAddress != AllChains.solana.quoteTokenAddress {
+      self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
+        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+      }
+    } else {
+      self.sendSOL(privateKeyData: privateKeyData, receiptAddress: receiptAddress, amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
+        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
+      }
+    }
+  }
+
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
     guard let provider = self.session.externalProvider else {
       return
@@ -460,6 +598,7 @@ extension KNSendTokenViewCoordinator {
         historyTransaction.time = Date()
         historyTransaction.nonce = Int(provider.minTxCount - 1)
         historyTransaction.transactionObject = result.1?.toSignTransactionObject()
+        historyTransaction.toAddress = transaction.to?.description
         historyTransaction.eip1559Transaction = result.2
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
@@ -795,7 +934,7 @@ extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)

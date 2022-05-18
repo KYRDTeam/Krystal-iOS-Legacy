@@ -13,15 +13,18 @@ enum KSendTokenViewEvent {
   case estimateGas(transaction: UnconfirmedTransaction)
   case setGasPrice(gasPrice: BigInt, gasLimit: BigInt)
   case validate(transaction: UnconfirmedTransaction, ens: String?)
+  case validateSolana
   case send(transaction: UnconfirmedTransaction, ens: String?)
+  case sendSolana(transaction: UnconfirmedSolTransaction)
   case addContact(address: String, ens: String?)
-  case contactSelectMore
+  case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
   case sendNFT(item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, to: String, amount: Int, ens: String?, isERC721: Bool, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case estimateGasLimitTransferNFT(to: String, item: NFTItem, category: NFTSection, gasPrice: BigInt, gasLimit: BigInt, amount: Int, isERC721: Bool)
   case openMultiSend
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol KSendTokenViewControllerDelegate: class {
@@ -32,33 +35,24 @@ protocol KSendTokenViewControllerDelegate: class {
 class KSendTokenViewController: KNBaseViewController {
 
   @IBOutlet weak var navTitleLabel: UILabel!
-
   @IBOutlet weak var headerContainerView: UIView!
-
   @IBOutlet weak var amountTextField: UITextField!
   @IBOutlet weak var tokenBalanceLabel: UILabel!
-
   @IBOutlet weak var scrollContainerView: UIScrollView!
-
   @IBOutlet weak var moreContactButton: UIButton!
   @IBOutlet weak var recentContactView: UIView!
   @IBOutlet weak var recentContactLabel: UILabel!
   @IBOutlet weak var recentContactTableView: KNContactTableView!
   @IBOutlet weak var recentContactHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var recentContactTableViewHeightConstraint: NSLayoutConstraint!
-
   @IBOutlet weak var ensAddressLabel: UILabel!
   @IBOutlet weak var addressTextField: UITextField!
   @IBOutlet weak var sendButton: UIButton!
-
   @IBOutlet weak var bottomPaddingConstraintForScrollView: NSLayoutConstraint!
-
+  @IBOutlet weak var selectedMaxFeeLabel: UILabel!
   @IBOutlet weak var selectedGasFeeLabel: UILabel!
   @IBOutlet weak var maxAmountButton: UIButton!
   @IBOutlet weak var sendMessageLabel: UILabel!
-
-  fileprivate var isViewSetup: Bool = false
-  fileprivate var isViewDisappeared: Bool = false
   @IBOutlet weak var currentTokenButton: UIButton!
   @IBOutlet weak var walletsSelectButton: UIButton!
   @IBOutlet weak var pendingTxIndicatorView: UIView!
@@ -66,6 +60,12 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var estGasFeeTitleLabel: UILabel!
   @IBOutlet weak var estGasFeeValueLabel: UILabel!
   @IBOutlet weak var gasFeeTittleLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var gasSettingButton: UIButton!
+  @IBOutlet weak var multiSendButton: UIButton!
+  @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
+
+  fileprivate var isViewSetup: Bool = false
+  fileprivate var isViewDisappeared: Bool = false
 
   lazy var toolBar: KNCustomToolbar = {
     return KNCustomToolbar(
@@ -130,6 +130,9 @@ class KSendTokenViewController: KNBaseViewController {
 
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.updateGasFeeUI()
+    self.gasSettingButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.multiSendButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.recentContactViewTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 0 : 42
   }
 
   func removeObserveNotification() {
@@ -191,6 +194,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   @IBAction func tokenButtonPressed(_ sender: Any) {
     self.delegate?.kSendTokenViewController(self, run: .searchToken(selectedToken: self.viewModel.from))
+    self.view.endEditing(true)
   }
 
   @IBAction func gasFeeAreaTapped(_ sender: UIButton) {
@@ -209,11 +213,17 @@ class KSendTokenViewController: KNBaseViewController {
     KNCrashlyticsUtil.logCustomEvent(withName: "transfer_submit", customAttributes: nil)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
-    let event = KSendTokenViewEvent.validate(
-      transaction: self.viewModel.unconfirmTransaction,
-      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
-    )
-    self.delegate?.kSendTokenViewController(self, run: event)
+    
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      self.delegate?.kSendTokenViewController(self, run: .validateSolana)
+    } else {
+      let event = KSendTokenViewEvent.validate(
+        transaction: self.viewModel.unconfirmTransaction,
+        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+      )
+      self.delegate?.kSendTokenViewController(self, run: event)
+    }
   }
 
   @IBAction func scanQRCodeButtonPressed(_ sender: Any) {
@@ -227,6 +237,11 @@ class KSendTokenViewController: KNBaseViewController {
     }()
     self.present(qrcodeReaderVC, animated: true, completion: nil)
   }
+  
+  @IBAction func contactButonWasTapped(_ sender: Any) {
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
+  }
+  
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
@@ -235,7 +250,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
@@ -255,17 +270,24 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   fileprivate func updateGasFeeUI() {
-    self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      self.estGasFeeTitleLabel.isHidden = false
-      self.estGasFeeValueLabel.isHidden = false
-      self.gasFeeTittleLabelTopContraint.constant = 54
+    self.selectedGasFeeLabel.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.selectedMaxFeeLabel.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    if KNGeneralProvider.shared.currentChain == .solana {
+      self.estGasFeeValueLabel.text = self.viewModel.solFeeString
+      self.estGasFeeTitleLabel.text = "Network fee"
     } else {
-      self.estGasFeeTitleLabel.isHidden = true
-      self.estGasFeeValueLabel.isHidden = true
-      self.gasFeeTittleLabelTopContraint.constant = 20
+      self.selectedGasFeeLabel.text = self.viewModel.gasFeeString
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        self.estGasFeeTitleLabel.isHidden = false
+        self.estGasFeeValueLabel.isHidden = false
+        self.gasFeeTittleLabelTopContraint.constant = 54
+      } else {
+        self.estGasFeeTitleLabel.isHidden = true
+        self.estGasFeeValueLabel.isHidden = true
+        self.gasFeeTittleLabelTopContraint.constant = 20
+      }
+      self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
     }
-    self.estGasFeeValueLabel.text = self.viewModel.displayEstGas
   }
 
   @objc func keyboardSendAllButtonPressed(_ sender: Any) {
@@ -314,14 +336,27 @@ class KSendTokenViewController: KNBaseViewController {
   fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
     if !isConfirming && self.isViewDisappeared { return false }
     if isConfirming {
-      guard self.viewModel.isHavingEnoughETHForFee else {
-        let quoteToken = KNGeneralProvider.shared.quoteToken
-        let fee = self.viewModel.ethFeeBigInt
-        self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
-          message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
-        )
-        return true
+      
+      if KNGeneralProvider.shared.currentChain == .solana {
+        guard self.viewModel.isHavingEnoughSolForFee else {
+          let quoteToken = KNGeneralProvider.shared.quoteToken
+          let fee = self.viewModel.solanaFeeBigInt
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+            message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          )
+          return true
+        }
+      } else {
+        guard self.viewModel.isHavingEnoughETHForFee else {
+          let quoteToken = KNGeneralProvider.shared.quoteToken
+          let fee = self.viewModel.ethFeeBigInt
+          self.showWarningTopBannerMessage(
+            with: NSLocalizedString("Insufficient \(quoteToken) for transaction", value: "Insufficient \(quoteToken) for transaction", comment: ""),
+            message: String(format: "Deposit more \(quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+          )
+          return true
+        }
       }
     }
     guard !self.viewModel.amount.isEmpty else {
@@ -366,10 +401,16 @@ class KSendTokenViewController: KNBaseViewController {
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController()
-    popup.completionHandler = { selected in
-      let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-      let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-      self.present(secondPopup, animated: true, completion: nil)
+    popup.completionHandler = { [weak self] selected in
+      guard let self = self else { return }
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.kSendTokenViewController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }
@@ -402,6 +443,7 @@ extension KSendTokenViewController {
     self.updateUIEnsMessage()
     if isAddressChanged { self.shouldUpdateEstimatedGasLimit(nil) }
     self.view.layoutIfNeeded()
+    self.checkTokenAccountForReceiptAddress()
   }
 
   func updateUIEnsMessage() {
@@ -423,6 +465,23 @@ extension KSendTokenViewController {
   fileprivate func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.currentChainIcon.image = icon
+    self.gasSettingButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.multiSendButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+  }
+  
+  func checkTokenAccountForReceiptAddress() {
+    guard KNGeneralProvider.shared.currentChain == .solana else {
+      return
+    }
+    if let text = self.addressTextField.text, text.isValidSolanaAddress() && !self.viewModel.from.isQuoteToken {
+      self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
+        self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
+        
+        self.viewModel.updateAddress(text)
+        self.updateUIEnsMessage()
+        self.view.layoutIfNeeded()
+      }
+    }
   }
 }
 
@@ -433,6 +492,7 @@ extension KSendTokenViewController {
     self.viewModel.resetAdvancedSettings()
     self.updateUIFromTokenDidChange()
     self.updateGasFeeUI()
+    self.checkTokenAccountForReceiptAddress()
   }
 
   func coordinatorUpdateBalances(_ balances: [String: Balance]) {
@@ -516,6 +576,17 @@ extension KSendTokenViewController {
     self.delegate?.kSendTokenViewController(self, run: event)
   }
 
+  func coordinatorDidValidateSolTransferTransaction() {
+    let transferType = self.viewModel.from.isQuoteToken ? SolTransferType.sol(destination: self.viewModel.addressString) : SolTransferType.splToken(self.viewModel.from)
+    let fee = self.estGasFeeValueLabel.text == self.viewModel.solFeeString ? self.viewModel.solanaFeeBigInt : self.viewModel.solanaFeeBigInt + self.viewModel.minimumRentExemption
+
+    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: fee, transferType: transferType)
+    unconfirmedSolTransaction.mintTokenAddress = self.viewModel.from.address
+    unconfirmedSolTransaction.decimal = self.viewModel.from.decimals
+
+    self.delegate?.kSendTokenViewController(self, run: .sendSolana(transaction: unconfirmedSolTransaction))
+  }
+
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
     self.viewModel.updateSelectedGasPriceType(type)
     self.viewModel.updateGasPrice(value)
@@ -526,10 +597,11 @@ extension KSendTokenViewController {
 
   func coordinatorDidUpdatePendingTx() {
     self.updateUIPendingTxIndicatorView()
+    KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
   func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.currentWalletAddress = wallet.address.description
+    self.viewModel.currentWalletAddress = wallet.addressString
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
@@ -576,6 +648,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.viewModel.updateAmount("")
       self.view.layoutIfNeeded()
     } else {
+      self.estGasFeeValueLabel.text = self.viewModel.solFeeString
       self.viewModel.updateAddress("")
       self.updateUIAddressQRCode()
       self.getEnsAddressFromName("")
@@ -598,10 +671,29 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.view.layoutIfNeeded()
       return false
     } else {
-      self.viewModel.updateAddress(text)
-      self.updateUIEnsMessage()
-      self.getEnsAddressFromName(text)
-      self.view.layoutIfNeeded()
+      if KNGeneralProvider.shared.currentChain == .solana {
+        if text.isValidSolanaAddress() && !self.viewModel.from.isQuoteToken {
+          self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
+            self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
+            
+            self.viewModel.updateAddress(text)
+            self.updateUIEnsMessage()
+            self.getEnsAddressFromName(text)
+            self.view.layoutIfNeeded()
+          }
+        } else {
+          self.estGasFeeValueLabel.text = self.viewModel.solFeeString
+          self.viewModel.updateAddress(text)
+          self.updateUIEnsMessage()
+          self.getEnsAddressFromName(text)
+          self.view.layoutIfNeeded()
+        }
+      } else {
+        self.viewModel.updateAddress(text)
+        self.updateUIEnsMessage()
+        self.getEnsAddressFromName(text)
+        self.view.layoutIfNeeded()
+      }
       return true
     }
   }
@@ -648,6 +740,16 @@ extension KSendTokenViewController: UITextFieldDelegate {
           self.updateUIAddressQRCode()
         }
       }
+    }
+  }
+}
+
+extension KSendTokenViewController {
+  func checkIfReceivedWalletHasTokenAccount(walletAddress: String, completion: @escaping (String?) -> Void) {
+    self.navigationController?.showLoadingHUD()
+    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: self.viewModel.from.address) { amount, recipientAccount in
+      completion(recipientAccount)
+      self.navigationController?.hideLoading()
     }
   }
 }
@@ -717,6 +819,7 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
     let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
     self.viewModel.updateAddress(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
+    self.checkTokenAccountForReceiptAddress()
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 

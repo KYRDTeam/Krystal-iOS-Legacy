@@ -53,10 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
     OneSignal.promptForPushNotifications(userResponse: { accepted in
       print("User accepted notifications: \(accepted)")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.requestAcceptTrackingFirebaseIfNeeded()
+      }
     })
-    
-    self.setupFirebase()
-    
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
   }
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     SentrySDK.start { options in
       options.dsn = KNSecret.sentryURL
       options.debug = true // Enabled debug when first installing is always helpful
-      options.tracesSampleRate = 1.0
+      options.tracesSampleRate = KNEnvironment.default == .production ? 0.2 : 1.0
       options.environment = KNEnvironment.default.displayName
     }
   }
@@ -73,30 +73,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationWillResignActive(_ application: UIApplication) {
   }
 
-  fileprivate func setupFirebase() {
+  fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
-          guard !SentrySDK.isEnabled else { return }
-          if KNEnvironment.default == .production {
-            FirebaseApp.configure()
-          } else {
-            let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
-            guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
-              return
-            }
-            FirebaseApp.configure(options: fileopts)
-          }
-          
-          self.setupSentry()
+          self.setupFirebase()
         }
       }
+    } else {
+      self.setupFirebase()
     }
   }
   
+  fileprivate func setupTrackingTools() {
+    var shouldConfigTrackingTool = true
+    if #available(iOS 14, *) {
+      let status = ATTrackingManager.trackingAuthorizationStatus
+      shouldConfigTrackingTool = status == .authorized
+    }
+    guard shouldConfigTrackingTool else { return }
+    MixPanelManager.shared.configClient()
+    guard !SentrySDK.isEnabled else { return }
+    self.setupSentry()
+  }
+  
+  fileprivate func setupFirebase() {
+    if KNEnvironment.default == .production {
+      FirebaseApp.configure()
+    } else {
+      let filePath = Bundle.main.path(forResource: "GoogleService-Info-Dev", ofType: "plist")
+      guard let fileopts = FirebaseOptions(contentsOfFile: filePath!) else {
+        return
+      }
+      FirebaseApp.configure(options: fileopts)
+    }
+  }
+
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
+    self.setupTrackingTools()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {

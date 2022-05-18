@@ -23,6 +23,7 @@ protocol DappCoordinatorDelegate: class {
   func dAppCoordinatorDidSelectAddWallet()
   func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
   func dAppCoordinatorDidSelectManageWallet()
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class DappCoordinator: NSObject, Coordinator {
@@ -47,8 +48,7 @@ class DappCoordinator: NSObject, Coordinator {
   }()
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   private var browserViewController: BrowserViewController?
@@ -66,7 +66,7 @@ class DappCoordinator: NSObject, Coordinator {
   
   fileprivate func openWalletListView() {
     let viewModel = WalletsListViewModel(
-      walletObjects: KNWalletStorage.shared.wallets,
+      walletObjects: KNWalletStorage.shared.availableWalletObjects,
       currentWallet: self.currentWallet
     )
     let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -149,6 +149,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       self.navigationController.present(controller, animated: true, completion: nil)
     case .switchChain:
       break
+    case .addChainWallet(let chainType):
+      delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   
@@ -170,7 +172,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       case .signMessage(let hexMessage):
         let vm = SignMessageConfirmViewModel(
           url: url,
-          address: self.session.wallet.address.description,
+          address: self.session.wallet.addressString,
           message: hexMessage,
           onConfirm: {
             self.signMessage(with: .message(hexMessage.toHexData), callbackID: callbackID)
@@ -185,7 +187,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       case .signPersonalMessage(let hexMessage):
         let vm = SignMessageConfirmViewModel(
           url: url,
-          address: self.session.wallet.address.description,
+          address: self.session.wallet.addressString,
           message: hexMessage,
           onConfirm: {
             self.signMessage(with: .personalMessage(hexMessage.toHexData), callbackID: callbackID)
@@ -200,7 +202,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       case .signTypedMessage(let typedData):
         let vm = SignMessageConfirmViewModel(
           url: url,
-          address: self.session.wallet.address.description,
+          address: self.session.wallet.addressString,
           message: typedData.first?.value.string ?? "0x",
           onConfirm: {
             self.signMessage(with: .typedMessage(typedData), callbackID: callbackID)
@@ -215,7 +217,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
       case .signTypedMessageV3(let typedData):
         let vm = SignMessageConfirmViewModel(
           url: url,
-          address: self.session.wallet.address.description,
+          address: self.session.wallet.addressString,
           message: typedData.message["functionSignature"]?.stringValue ?? "0x",
           onConfirm: {
             self.signMessage(with: .eip712v3And4(typedData), callbackID: callbackID)
@@ -265,7 +267,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             firstButtonTitle: "Cancel".toBeLocalised(),
             secondButtonAction: {
               KNGeneralProvider.shared.currentChain = chainType
-              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.address.description)
+              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.addressString)
             },
             firstButtonAction: {
               let error = DAppError.cancelled
@@ -292,7 +294,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
             firstButtonTitle: "Cancel".toBeLocalised(),
             secondButtonAction: {
               KNGeneralProvider.shared.currentChain = chainType
-              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.address.description)
+              KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.session.wallet.addressString)
             },
             firstButtonAction: {
               let error = DAppError.cancelled
@@ -317,6 +319,8 @@ extension DappCoordinator: BrowserViewControllerDelegate {
         case .walletAddEthereumChain, .walletSwitchEthereumChain:
           return performDappAction(account: account)
         }
+    case .solana(_):
+      break //NOTE: implement handle
     }
   }
 
@@ -571,7 +575,7 @@ extension DappCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.dAppCoordinatorDidSelectWallet(wal)
@@ -1004,7 +1008,7 @@ extension DappCoordinator: WKUIDelegate {
 //    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
 //      data = saved
 //    }
-//    data[self.session.wallet.address.description] = state
+//    data[self.session.wallet.addressString] = state
 //    UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
 //  }
 //
@@ -1015,7 +1019,7 @@ extension DappCoordinator: WKUIDelegate {
 //    } else {
 //      return false
 //    }
-//    return data.keys.contains(self.session.wallet.address.description)
+//    return data.keys.contains(self.session.wallet.addressString)
 //  }
 //
 //  fileprivate func isAccountUseGasToken() -> Bool {
@@ -1025,6 +1029,6 @@ extension DappCoordinator: WKUIDelegate {
 //    } else {
 //      return false
 //    }
-//    return data[self.session.wallet.address.description] ?? false
+//    return data[self.session.wallet.addressString] ?? false
 //  }
 //}

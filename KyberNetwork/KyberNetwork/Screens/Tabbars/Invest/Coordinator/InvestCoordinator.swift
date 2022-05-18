@@ -14,6 +14,7 @@ protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectManageWallet()
   func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
+  func investCoordinatorDidSelectAddChainWallet(chainType: ChainType)
 }
 
 class InvestCoordinator: Coordinator {
@@ -26,6 +27,7 @@ class InvestCoordinator: Coordinator {
   var rewardCoordinator: RewardCoordinator?
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
+  var webViewCoordinator: RewardHuntingCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -134,14 +136,21 @@ class InvestCoordinator: Coordinator {
   }
   
   func openHistoryScreen() {
-    self.historyCoordinator = nil
-    self.historyCoordinator = KNHistoryCoordinator(
-      navigationController: self.navigationController,
-      session: self.session
-    )
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-    self.historyCoordinator?.start()
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      coordinator.delegate = self
+      coordinate(coordinator: coordinator)
+    default:
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
+    }
   }
   
   func openDappBrowserScreen() {
@@ -158,6 +167,12 @@ class InvestCoordinator: Coordinator {
     coordinator.delegate = self
     coordinator.start()
     self.buyCryptoCoordinator = coordinator
+  }
+  
+  func openRewardHunting() {
+    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, session: session)
+    coordinator.start()
+    self.webViewCoordinator = coordinator
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -217,11 +232,30 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.start()
       self.promoCodeCoordinator = coordinator
+    case .rewardHunting:
+      if isImportedWallet(address: session.wallet.addressString) {
+        self.openRewardHunting()
+      } else {
+        self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
+      }
+    case .addChainWallet(let chainType):
+      delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+
+    }
+  }
+  
+  private func isImportedWallet(address: String) -> Bool {
+    return !KNWalletStorage.shared.watchWallets.contains { wallet in
+      wallet.address.description == address
     }
   }
 }
 
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
+  func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func sendTokenCoordinatorDidClose() {
     self.sendCoordinator = nil
   }
@@ -248,6 +282,10 @@ extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
 }
 
 extension InvestCoordinator: KNHistoryCoordinatorDelegate {
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+  
   func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
   }
@@ -316,5 +354,9 @@ extension InvestCoordinator: DappCoordinatorDelegate {
   
   func dAppCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+  
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }

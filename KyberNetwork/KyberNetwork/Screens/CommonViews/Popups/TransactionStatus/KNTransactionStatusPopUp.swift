@@ -99,7 +99,6 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.updateView(with: self.transaction)
-    self.updateViewTransactionDidChange()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -141,7 +140,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
       self.subTitleDetailLabel.isHidden = true
       self.firstButton.setTitle("speed up".toBeLocalised(), for: .normal)
       self.secondButton.setTitle("cancel".toBeLocalised(), for: .normal)
-
+      if KNGeneralProvider.shared.currentChain == .solana {
+        self.firstButton.isHidden = true
+        self.secondButton.isHidden = true
+      }
       self.view.layoutSubviews()
     } else if self.transaction.state == .done {
       self.titleIconImageView.image = UIImage(named: "tx_success_icon")
@@ -210,6 +212,10 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         self.secondButton.setTitle("New transfer".toBeLocalised().capitalized, for: .normal)
       } else {
         self.txHashTopConstraintToLoadingImage.constant += 30
+        if KNGeneralProvider.shared.currentChain == .solana {
+          self.firstButton.isHidden = false
+          self.secondButton.isHidden = false
+        }
         self.firstButton.setTitle("New Transfer".toBeLocalised().capitalized, for: .normal)
         self.secondButton.setTitle("Swap".toBeLocalised().capitalized, for: .normal)
       }
@@ -360,6 +366,8 @@ extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
   }
 
   func didSendRate() {
-    self.rateContainView.isHidden = true
+    [oneStarButton, twoStarButton, threeStarButton, fourStarButton, fiveStarButton].forEach { button in
+      button.isUserInteractionEnabled = false
+    }
   }
 }

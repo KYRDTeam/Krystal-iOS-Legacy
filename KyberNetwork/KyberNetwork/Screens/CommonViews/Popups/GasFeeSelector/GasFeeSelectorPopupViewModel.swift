@@ -185,10 +185,6 @@ class GasFeeSelectorPopupViewModel {
     self.gasLimit = value
   }
 
-  var advancedSettingsHeight: CGFloat {
-    return 650
-  }
-
   func attributedString(for gasPrice: BigInt, text: String) -> NSAttributedString {
     let gasPriceString: String = gasPrice.string(units: .gwei, minFractionDigits: 2, maxFractionDigits: 2)
     let gasPriceAttributes: [NSAttributedString.Key: Any] = [

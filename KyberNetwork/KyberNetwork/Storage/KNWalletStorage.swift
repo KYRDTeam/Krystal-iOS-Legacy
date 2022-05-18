@@ -4,6 +4,8 @@ import RealmSwift
 import TrustKeystore
 import TrustCore
 import BigInt
+import OneSignal
+import UIKit
 
 class KNWalletStorage {
 
@@ -21,6 +23,12 @@ class KNWalletStorage {
     return self.realm.objects(KNWalletObject.self)
       .filter { return !$0.address.isEmpty }
   }
+  
+  var cloneWallets: [KNWalletObject] {
+    return self.wallets.map { element in
+      return element.clone()
+    }
+  }
 
   var watchWallets: [KNWalletObject] {
     return self.wallets.filter { (object) -> Bool in
@@ -33,17 +41,87 @@ class KNWalletStorage {
       return !object.isWatchWallet
     }
   }
+  
+  var solanaWallet: [KNWalletObject] {
+    let allWallets = self.wallets
+    let solWallets = allWallets.filter { (object) -> Bool in
+      return object.chainType == 2
+    }
+    
+    let multichainWallet = allWallets.filter { (object) -> Bool in
+      return object.chainType == 0
+    }
+    
+    return solWallets + multichainWallet
+  }
+  
+  var nonSolanaWallet: [KNWalletObject] {
+    return self.wallets.filter { (object) -> Bool in
+      return object.chainType != 2
+    }
+  }
+  
+  var onlySolanaWallet: [KNWalletObject] {
+    let allWallets = self.wallets
+    let solWallets = allWallets.filter { (object) -> Bool in
+      return object.chainType == 2
+    }
+    return solWallets
+  }
 
-  func checkAddressExisted(_ address: Address) -> Bool {
+  func checkAddressExisted(_ address: String) -> Bool {
     let existed = self.wallets.first { (object) -> Bool in
-      return object.address.lowercased() == address.description.lowercased()
+      return object.address.lowercased() == address.lowercased()
     }
     return existed != nil
+  }
+  
+  func checkSolanaAddressExisted(_ address: String) -> Bool {
+    let existed = self.get(forSolanaAddress: address)
+    return existed != nil
+  }
+  
+  func get(forSolanaAddress address: String) -> KNWalletObject? {
+    let existed = self.wallets.first { (object) -> Bool in
+      return object.solanaAddress == address
+    }
+    return existed
+  }
+  
+  var availableWalletObjects: [KNWalletObject] {
+    return self.getAvailableWalletForChain(KNGeneralProvider.shared.currentChain)
+  }
+
+  func getAvailableWalletForChain(_ chain: ChainType) -> [KNWalletObject] {
+    let allWallets = self.wallets
+    if chain == .solana {
+      let solWallets = allWallets.filter { (object) -> Bool in
+        return object.chainType == 2
+      }
+      
+      let multichainWallet = allWallets.filter { (object) -> Bool in
+        return object.chainType == 0
+      }
+      
+      let solFromMultichainWallet = multichainWallet.map { element in
+        return element.toSolanaWalletObject()
+      }
+      
+      return solWallets + solFromMultichainWallet
+    } else {
+      return allWallets.filter { $0.chainType != 2 } 
+    }
   }
 
   func get(forPrimaryKey key: String) -> KNWalletObject? {
     if self.realm == nil { return nil }
     return self.realm.object(ofType: KNWalletObject.self, forPrimaryKey: key)
+  }
+  
+  func getAvailableWalletObject(forPrimaryKey key: String) -> KNWalletObject? {
+    return self.availableWalletObjects.first { element in
+      return element.address == key
+    }
   }
 
   func add(wallets: [KNWalletObject]) {
@@ -68,6 +146,11 @@ class KNWalletStorage {
     }
     
     try! self.realm.commitWrite()
+    
+    //Check empty storage
+    if self.wallets.isEmpty {
+      OneSignal.removeExternalUserId()
+    }
   }
 
   func deleteAll() {
@@ -76,5 +159,41 @@ class KNWalletStorage {
     try! realm.write {
       realm.delete(realm.objects(KNWalletObject.self))
     }
+  }
+  
+  func delete(walletAddress: String) {
+    
+    if self.realm == nil { return }
+    guard let obj = self.get(forPrimaryKey: walletAddress), !obj.isInvalidated else { return }
+    if realm.objects(KNWalletObject.self).isInvalidated { return }
+    self.realm.beginWrite()
+    
+    self.realm.delete(obj)
+    
+    try! self.realm.commitWrite()
+  }
+  
+  func migrateDataIfNeeded(keyStore: Keystore, vc: UIViewController) {
+    let found = self.wallets.filter { element in
+      return element.isNeedMigration()
+    }
+    
+    guard found.isNotEmpty else { return }
+    let clones = found.map { element in
+      return element.clone()
+    }
+    vc.displayLoading(text: "Migrating", animated: true)
+    clones.forEach { obj in
+      if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
+        let solAddress = SolanaUtil.seedsToPublicKey(seeds)
+        obj.evmAddress = obj.address
+        obj.solanaAddress = solAddress
+      } else {
+        obj.chainType = 1
+        obj.evmAddress = obj.address
+      }
+    }
+    self.update(wallets: clones)
+    vc.hideLoading()
   }
 }

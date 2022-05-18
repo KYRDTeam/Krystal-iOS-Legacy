@@ -1,15 +1,34 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import OneSignal
 
 // MARK: This file for handling in session
 extension KNAppCoordinator {
   //swiftlint:disable function_body_length
   func startNewSession(with wallet: Wallet) {
-    self.keystore.recentlyUsedWallet = wallet
-    self.currentWallet = wallet
-    self.session = KNSession(keystore: self.keystore, wallet: wallet)
+
+    var aWallet = wallet
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if !wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
+          aWallet = solWallet
+        }
+      }
+    } else {
+      if wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = nonSolWallet
+        }
+      }
+    }
+    
+    self.keystore.recentlyUsedWallet = aWallet
+    self.currentWallet = aWallet
+    self.session = KNSession(keystore: self.keystore, wallet: aWallet)
     self.session.startSession()
+    OneSignal.setExternalUserId(aWallet.addressString)
     DispatchQueue.global(qos: .background).async {
       _ = KNSupportedTokenStorage.shared
       _ = BalanceStorage.shared
@@ -129,10 +148,11 @@ extension KNAppCoordinator {
 
     let transactions = self.session.transactionStorage.kyberPendingTransactions
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-    
-//    self.balanceTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate(transactions: transactions)
+
     self.doLogin { completed in
     }
+    
+    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.tabbarController)
   }
 
   func stopAllSessions() {
@@ -167,15 +187,41 @@ extension KNAppCoordinator {
 
   // Switching account, restart a new session
   func restartNewSession(_ wallet: Wallet, isLoading: Bool = true) {
+    var aWallet = wallet
+    
+    if KNGeneralProvider.shared.currentChain == .solana {
+      if !wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
+          aWallet = solWallet
+        }
+      }
+    } else {
+      if wallet.isSolanaWallet {
+        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
+          aWallet = nonSolWallet
+        }
+      }
+    }
+    
+    if !aWallet.isSolanaWallet && KNGeneralProvider.shared.currentChain == .solana {
+      KNGeneralProvider.shared.currentChain = .eth
+    }
+
     if isLoading { self.navigationController.displayLoading() }
+
     DispatchQueue.global(qos: .background).async {
       self.loadBalanceCoordinator?.exit()
-      EtherscanTransactionStorage.shared.updateCurrentWallet(wallet)
-      BalanceStorage.shared.updateCurrentWallet(wallet)
+      EtherscanTransactionStorage.shared.updateCurrentWallet(aWallet)
+      BalanceStorage.shared.updateCurrentWallet(aWallet)
+      OneSignal.removeExternalUserId { _ in
+        OneSignal.setExternalUserId(aWallet.addressString)
+      } withFailure: { _ in
+        OneSignal.setExternalUserId(aWallet.addressString)
+      }
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      self.session.switchSession(wallet)
+      self.session.switchSession(aWallet)
       FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(
@@ -205,7 +251,14 @@ extension KNAppCoordinator {
 
       self.doLogin { completed in
       }
-      if isLoading { self.navigationController.hideLoading() }
+      self.navigationController.hideLoading()
+      
+      NotificationCenter.default.post(
+        name: Notification.Name(kAppDidUpdateNewSession),
+        object: nil,
+        userInfo: ["session": self.session]
+      )
+  
       MixPanelManager.shared.updateWalletAddress(address: wallet.address.description.lowercased())
       KNCrashlyticsUtil.updateUserId(userId: wallet.address.description.lowercased())
     }
@@ -214,13 +267,24 @@ extension KNAppCoordinator {
   // Remove a wallet
   func removeWallet(_ wallet: Wallet) {
     self.navigationController.displayLoading(text: NSLocalizedString("removing", value: "Removing", comment: ""), animated: true)
-    if self.keystore.wallets.count == 1 {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-        self.stopAllSessions()
-        self.navigationController.hideLoading()
+    if wallet.isSolanaWallet {
+      if KNWalletStorage.shared.wallets.count < 1 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+          self.stopAllSessions()
+          self.navigationController.hideLoading()
+        }
+        return
       }
-      return
+    } else {
+      if self.keystore.wallets.count == 1 && KNWalletStorage.shared.onlySolanaWallet.isEmpty {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+          self.stopAllSessions()
+          self.navigationController.hideLoading()
+        }
+        return
+      }
     }
+
     // User remove current wallet, switch to another wallet first
     if self.session == nil {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -229,12 +293,31 @@ extension KNAppCoordinator {
       }
       return
     }
-    let isRemovingCurrentWallet: Bool = self.session.wallet == wallet
+    let isRemovingCurrentWallet: Bool = (self.session.wallet.addressString == wallet.addressString || self.session.wallet.evmAddressString.lowercased() == wallet.addressString.lowercased())
     var delayTime: Double = 0.0
     if isRemovingCurrentWallet {
-      guard let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) else { return }
-      self.restartNewSession(newWallet, isLoading: false)
-      delayTime = 0.25
+      if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
+        
+        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: {$0.evmAddress == self.currentWallet.evmAddressString}) {
+          KNWalletStorage.shared.delete(wallet: solWalletObject)
+        }
+        
+        self.restartNewSession(newWallet, isLoading: false)
+        delayTime = 0.25
+      } else {
+        let obj = KNWalletStorage.shared.wallets.last { element in
+          return element.address != wallet.addressString
+        }
+        if let unwrap = obj, unwrap.chainType == 2 {
+          let wal = unwrap.toSolanaWallet()
+          KNGeneralProvider.shared.currentChain = .solana
+          self.restartNewSession(wal, isLoading: false)
+          delayTime = 0.25
+        } else {
+          self.navigationController.hideLoading()
+          return
+        }
+      }
     }
     self.loadBalanceCoordinator?.exit()
     DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
@@ -257,6 +340,10 @@ extension KNAppCoordinator {
         KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
       } else {
         self.loadBalanceCoordinator?.restartNewSession(self.session)
+        self.navigationController.hideLoading()
+        guard !wallet.isSolanaWallet else {
+          return
+        }
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
           message: NSLocalizedString("something.went.wrong.can.not.remove.wallet", value: "Something went wrong. Can not remove wallet.", comment: "")

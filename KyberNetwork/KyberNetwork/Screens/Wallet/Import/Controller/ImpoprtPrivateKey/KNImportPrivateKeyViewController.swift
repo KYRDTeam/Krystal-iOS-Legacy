@@ -25,9 +25,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var refCodeField: UITextField!
   @IBOutlet weak var containerRefCodeView: UIView!
   @IBOutlet weak var refCodeTitleLabel: UILabel!
+  var importType: ImportWalletChainType = .multiChain
+  var limitCharacter = 0
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.limitCharacter = importType == .solana ? 88 : 64
     self.setupUI()
   }
 
@@ -36,7 +39,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextLabel.addLetterSpacing()
     self.enterPrivateKeyTextField.delegate = self
 
-    self.privateKeyNoteLabel.text = "*\(NSLocalizedString("private.key.has.to.be.64.characters", value: "Private key has to be 64 characters", comment: ""))"
+    self.privateKeyNoteLabel.text = "*Private key has to be \(self.limitCharacter) characters"
     self.privateKeyNoteLabel.addLetterSpacing()
 
     self.nextButton.rounded(radius: 16)
@@ -73,7 +76,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 
   fileprivate func updateNextButton() {
     let enabled: Bool = {
-      if let text = self.enterPrivateKeyTextField.text, text.count == 64 { return true }
+      if let text = self.enterPrivateKeyTextField.text, text.count == self.limitCharacter { return true }
       return false
     }()
     self.nextButton.isEnabled = enabled

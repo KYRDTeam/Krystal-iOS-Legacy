@@ -47,8 +47,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
   
   fileprivate var currentWallet: KNWalletObject {
-    let address = self.session.wallet.address.description
-    return KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
+    return self.session.currentWalletObject
   }
   
   var approvingItems: [ApproveMultiSendItem] = []
@@ -166,7 +165,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.wallets,
+        walletObjects: KNWalletStorage.shared.availableWalletObjects,
         currentWallet: self.currentWallet
       )
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -174,6 +173,8 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .useLastMultisend:
       break
+    case .addChainWallet(let chainType):
+      delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }
   }
   
@@ -198,7 +199,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.address.description
+    let address = self.session.wallet.addressString
     
     provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
       if case .success(let resp) = result {
@@ -419,7 +420,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 legacyTxs.append((item, tx))
               }
             }
-            
+
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.0.isEmpty else {
@@ -460,6 +461,56 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         controller.dismiss(animated: true) {
           self.rootViewController.coordinatorDidFinishApproveTokens()
           self.approveVC = nil
+        }
+      }
+    case .estimateGas(items: let items):
+      guard case .real(let account) = self.session.wallet.type else {
+        return
+      }
+      
+      self.buildApproveDataList(items: items, isApproveUnlimit: true) { dataList in
+        var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
+        var legacyTxs: [(ApproveMultiSendItem, SignTransaction)] = []
+        let currentAddress = account.address.description
+        
+        let setting = ConfirmAdvancedSetting(
+          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
+          advancedGasLimit: nil,
+          advancedPriorityFee: nil,
+          avancedMaxFee: nil,
+          advancedNonce: nil
+        )
+        for (_, element) in dataList.enumerated() {
+          let item = element.0
+          let txNonce = 1
+          if KNGeneralProvider.shared.isUseEIP1559 {
+            let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            eipTxs.append((item, tx))
+          } else {
+            let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            legacyTxs.append((item, tx))
+          }
+        }
+        
+        var output: [(ApproveMultiSendItem, BigInt)] = []
+        var gasRequests: [(ApproveMultiSendItem, GasLimitRequestable)]  = KNGeneralProvider.shared.isUseEIP1559 ? eipTxs : legacyTxs
+        
+        let group = DispatchGroup()
+        gasRequests.forEach { item in
+          group.enter()
+          KNGeneralProvider.shared.getEstimateGasLimit(request: item.1.createGasLimitRequest()) { result in
+            switch result {
+            case.success(let gas):
+              output.append((item.0, gas))
+            default:
+              output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
+            }
+            group.leave()
+          }
+        }
+        group.notify(queue: .global()) {
+          controller.coordinatorDidUpdateGasLimit(gas: output)
         }
       }
     }
@@ -511,7 +562,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           break
         }
         group.leave()
-        
       }
 
       group.notify(queue: .global()) {
@@ -930,7 +980,7 @@ extension MultiSendCoordinator: WalletsListViewControllerDelegate {
       hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
       hud.hide(animated: true, afterDelay: 1.5)
     case .select(let wallet):
-      guard let wal = self.session.keystore.wallets.first(where: { $0.address.description.lowercased() == wallet.address.lowercased() }) else {
+      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
         return
       }
       self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)

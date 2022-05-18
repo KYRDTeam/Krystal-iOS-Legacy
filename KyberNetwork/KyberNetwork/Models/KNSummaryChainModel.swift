@@ -52,8 +52,8 @@ class KNSummaryChainModel: Codable {
     self.quotes = quoteArray
   }
 
-  func chainType() -> ChainType {
-    return ChainType.make(chainID: chainId) ?? .eth
+  func chainType() -> ChainType? {
+    return ChainType.make(chainID: chainId)// ?? .eth
   }
   
   static func defaultValue(chainId: Int) -> KNSummaryChainModel {

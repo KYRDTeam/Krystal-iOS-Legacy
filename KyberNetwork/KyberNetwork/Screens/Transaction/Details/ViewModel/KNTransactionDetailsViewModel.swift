@@ -447,7 +447,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     guard self.transaction.state != .cancel else {
       return self.displayFromAddress
     }
-    if let toAddress = self.transaction.transactionObject?.to {
+    if let toAddress = self.transaction.toAddress {
       return toAddress
     } else if let toAddressEIP = self.transaction.eip1559Transaction?.toAddress {
       return toAddressEIP
@@ -457,6 +457,14 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
 
   var displayGasFee: String {
+    if KNGeneralProvider.shared.currentChain == .solana {
+      guard let fee = BigInt(self.transaction.transactionObject?.gasPrice ?? "") else {
+        return ""
+      }
+      return "\(fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9)) \(KNGeneralProvider.shared.quoteToken)"
+    }
+    
+    
     if KNGeneralProvider.shared.isUseEIP1559 {
       guard let gasPrice = BigInt(self.transaction.eip1559Transaction?.maxGasFee.drop0x ?? "", radix: 16), let gasLimit = BigInt(self.transaction.eip1559Transaction?.gasLimit.drop0x ?? "", radix: 16) else {
         return ""
