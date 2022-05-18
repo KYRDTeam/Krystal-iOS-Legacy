@@ -25,6 +25,7 @@ class InvestCoordinator: Coordinator {
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
+  var bridgeCoordinator: BridgeCoordinator?
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
   var webViewCoordinator: RewardHuntingCoordinator?
@@ -135,6 +136,12 @@ class InvestCoordinator: Coordinator {
     self.rewardCoordinator = coordinator
   }
   
+  fileprivate func openBridgeView() {
+    let coordinator = BridgeCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.start()
+    self.bridgeCoordinator = coordinator
+  }
+  
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
@@ -238,6 +245,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       } else {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
+    case .bridge:
+      self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
 

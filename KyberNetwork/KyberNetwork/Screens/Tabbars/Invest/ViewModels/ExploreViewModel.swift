@@ -17,6 +17,7 @@ enum ExploreMenuItem: CaseIterable {
   case buyCrypto
   case promotion
   case rewardHunting
+  case bridge
 }
 
 enum ExploreSection {
@@ -50,6 +51,7 @@ class ExploreViewModel {
     let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+    let isBridgeEnabled = true //FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
     
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)
@@ -68,6 +70,9 @@ class ExploreViewModel {
     
     if isRewardHuntingEnabled {
       menuItems.append(.rewardHunting)
+    }
+    if isBridgeEnabled {
+      menuItems.append(.bridge)
     }
     if self.menuItems.value != menuItems {
       self.menuItems.value = menuItems

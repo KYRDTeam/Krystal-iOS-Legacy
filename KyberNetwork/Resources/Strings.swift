@@ -57,6 +57,7 @@ struct Strings {
   static let copied = "copied".toBeLocalised()
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
+  static let bridge = "bridge".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
