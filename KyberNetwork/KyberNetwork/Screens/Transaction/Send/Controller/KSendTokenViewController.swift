@@ -63,7 +63,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
-  let keyboardUtil = KeyboardUtil()
+  let keyboardUtil = KeyboardTypingUtil()
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
@@ -684,9 +684,9 @@ extension KSendTokenViewController: UITextFieldDelegate {
         self.view.layoutIfNeeded()
       }
       textField.text = text
-      self.keyboardUtil.action = {
-        self.ensAddressLabel.isHidden = true
-        self.getEnsAddressFromName(text)
+      self.keyboardUtil.action = { [weak self] in
+        self?.ensAddressLabel.isHidden = true
+        self?.getEnsAddressFromName(text)
       }
       self.keyboardUtil.start()
       return false

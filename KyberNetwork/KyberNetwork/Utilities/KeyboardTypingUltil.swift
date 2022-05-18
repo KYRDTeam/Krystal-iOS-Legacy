@@ -7,7 +7,7 @@
 
 import Foundation
 
-class KeyboardUtil {
+class KeyboardTypingUtil {
   var action: (() -> Void)?
   var keyboardTimer: Timer?
   
@@ -16,7 +16,7 @@ class KeyboardUtil {
     self.keyboardTimer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
-            selector: #selector(KeyboardUtil.keyboardPauseTyping),
+            selector: #selector(KeyboardTypingUtil.keyboardPauseTyping),
             userInfo: nil,
             repeats: false
     )
@@ -27,8 +27,6 @@ class KeyboardUtil {
   }
   
   @objc func keyboardPauseTyping(timer: Timer) {
-    if let unwrap = self.action {
-      unwrap()
-    }
+    self.action?()
   }
 }

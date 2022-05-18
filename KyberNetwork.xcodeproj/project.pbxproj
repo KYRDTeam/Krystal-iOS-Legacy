@@ -696,7 +696,7 @@
 		C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C331133D2629753200E6F7E1 /* GetSymbol.swift */; };
 		C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */; };
 		C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */; };
-		C334A865283354C3006B3D55 /* KeyboardUltil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A864283354C3006B3D55 /* KeyboardUltil.swift */; };
+		C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */; };
 		C3357DB524768C400028F4A9 /* CustomFCTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3357DB424768C400028F4A9 /* CustomFCTheme.plist */; };
 		C335C21F26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */; };
 		C335C22026672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */; };
@@ -1645,7 +1645,7 @@
 		C331133D2629753200E6F7E1 /* GetSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSymbol.swift; sourceTree = "<group>"; };
 		C333A6C727BA5123003A6C6B /* ApproveTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveTokenCell.swift; sourceTree = "<group>"; };
 		C333A6C827BA5123003A6C6B /* ApproveTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApproveTokenCell.xib; sourceTree = "<group>"; };
-		C334A864283354C3006B3D55 /* KeyboardUltil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardUltil.swift; sourceTree = "<group>"; };
+		C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTypingUltil.swift; sourceTree = "<group>"; };
 		C3357DB424768C400028F4A9 /* CustomFCTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CustomFCTheme.plist; sourceTree = "<group>"; };
 		C335C21D26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchChainWalletsListViewController.swift; sourceTree = "<group>"; };
 		C335C21E26672E8E00AD7E20 /* SwitchChainWalletsListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchChainWalletsListViewController.xib; sourceTree = "<group>"; };
@@ -2014,7 +2014,7 @@
 				A6DA40E827F6E08E0078C58E /* Dynamic.swift */,
 				A693AFE72819017500880503 /* ClosureSleeve.swift */,
 				C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */,
-				C334A864283354C3006B3D55 /* KeyboardUltil.swift */,
+				C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -6202,7 +6202,7 @@
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
-				C334A865283354C3006B3D55 /* KeyboardUltil.swift in Sources */,
+				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
