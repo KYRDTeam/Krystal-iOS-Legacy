@@ -668,7 +668,7 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayTxStatusColor: UIColor {
-    return self.data.isError ?  UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
+    return self.data.isError ? UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
   }
   
   var displayTxTypeString: String {

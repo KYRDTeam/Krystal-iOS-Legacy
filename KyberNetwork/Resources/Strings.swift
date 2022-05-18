@@ -59,6 +59,12 @@ struct Strings {
   static let copied = "copied".toBeLocalised()
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
+  static let transactionSuccess = "transaction.success".toBeLocalised()
+  static let transactionFailed = "transaction.failed".toBeLocalised()
+  static let transactionBeingMined = "transaction.being.mined".toBeLocalised()
+  static let transactionBroadcasted = "transaction.being.broadcasted".toBeLocalised()
+  static let cannotCreateTransaction = "can.not.create.transaction".toBeLocalised()
+  static let noTransactionFound = "no.transaction.found".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()

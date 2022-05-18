@@ -35,5 +35,7 @@ struct Images {
   // Common
   static let comingSoon = UIImage(named: "comming_soon")!
   static let dropdown = UIImage(named: "arrow_down")!
-
+  static let success = UIImage(named: "success")!
+  static let failure = UIImage(named: "fail")!
+  static let pending = UIImage(named: "loading_icon")!
 }
