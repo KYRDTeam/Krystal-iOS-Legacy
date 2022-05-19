@@ -885,7 +885,7 @@ enum KrytalService {
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: [String], forceSync: Bool, _ chains: String?)
-  case getGasPrice2
+  case getGasPriceV2
   case getCryptoFiatPair
   case buyCrypto(buyCryptoModel: BifinityOrder)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
@@ -995,8 +995,6 @@ extension KrytalService: TargetType {
       return "/v1/account/eligible"
     case .getTotalBalance:
       return "/v1/account/totalBalances"
-    case .getGasPrice2:
-      return "/v1/gasPrice"
     case .getCryptoFiatPair:
       return "v1/fiat/cryptos"
     case .buyCrypto:
@@ -1011,6 +1009,8 @@ extension KrytalService: TargetType {
       return "v1/fiat/orders"
     case .sendRate:
       return "/v1/tracking/ratings"
+    case .getGasPriceV2:
+      return "/v2/gasPrice"
     }
   }
 
@@ -1283,7 +1283,7 @@ extension KrytalService: TargetType {
 //        json["chains"] = chains
 //      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getGasPrice2:
+    case .getGasPriceV2:
       return .requestPlain
     case .getCryptoFiatPair:
       return .requestPlain
