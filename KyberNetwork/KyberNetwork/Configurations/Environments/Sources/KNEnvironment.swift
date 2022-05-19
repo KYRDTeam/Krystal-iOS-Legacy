@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .production
+    return .staging
   }
 
   var isMainnet: Bool {

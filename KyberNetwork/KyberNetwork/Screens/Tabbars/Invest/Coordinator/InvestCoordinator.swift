@@ -138,6 +138,7 @@ class InvestCoordinator: Coordinator {
   
   fileprivate func openBridgeView() {
     let coordinator = BridgeCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
     coordinator.start()
     self.bridgeCoordinator = coordinator
   }
@@ -195,7 +196,7 @@ class InvestCoordinator: Coordinator {
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.buyCryptoCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
-    
+    self.bridgeCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -212,6 +213,7 @@ class InvestCoordinator: Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
     self.multiSendCoordinator.appCoordinatorDidUpdateChain()
+    self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -367,5 +369,23 @@ extension InvestCoordinator: DappCoordinatorDelegate {
   
   func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+}
+
+extension InvestCoordinator: BridgeCoordinatorDelegate {
+  func didSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+
+  func didSelectWallet(_ wallet: Wallet) {
+    self.delegate?.investCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func didSelectAddWallet() {
+    self.delegate?.investCoordinatorDidSelectAddWallet()
+  }
+
+  func didSelectManageWallet() {
+    self.delegate?.investCoordinatorDidSelectManageWallet()
   }
 }

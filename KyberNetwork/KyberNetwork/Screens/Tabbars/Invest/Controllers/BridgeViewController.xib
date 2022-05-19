@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -22,6 +22,7 @@
                 <outlet property="chainIcon" destination="nNW-qP-S4F" id="JCb-QI-Peh"/>
                 <outlet property="tableView" destination="J7S-3l-1sn" id="XGE-nd-gyN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="walletsListButton" destination="jqR-bc-zqg" id="WwG-qa-Kbk"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

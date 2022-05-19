@@ -12,6 +12,7 @@ enum BridgeEvent {
   case switchChain
   case openHistory
   case openWalletsList
+  case addChainWallet(chainType: ChainType)
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -62,11 +63,21 @@ enum ToSectionRows: CaseIterable {
 }
 
 class BridgeViewModel {
+  fileprivate(set) var wallet: Wallet
   var showFromPoolInfo: Bool = true
   var showToPoolInfo: Bool = true
   var showSendAddress: Bool = true
   var showReminder: Bool = true
   var showError: Bool = false
+  var data: [SourceBridgeToken] = []
+  
+  init(wallet: Wallet) {
+    self.wallet = wallet
+  }
+
+  func updateWallet(_ wallet: Wallet) {
+    self.wallet = wallet
+  }
 
   func fromDataSource() -> [FromSectionRows] {
     return FromSectionRows.sectionRows(showPoolInfo: self.showFromPoolInfo)
@@ -111,18 +122,25 @@ class BridgeViewModel {
       switch self.fromDataSource()[indexPath.row] {
       case .selectChainRow:
         let cell = tableView.dequeueReusableCell(SelectChainCell.self, indexPath: indexPath)!
+        cell.nameLabel.text = KNGeneralProvider.shared.currentChain.chainName()
+        cell.arrowIcon.isHidden = false
         return cell
       case .poolInfoRow:
         let cell = tableView.dequeueReusableCell(ChainInfoCell.self, indexPath: indexPath)!
         return cell
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
+        cell.selectTokenBlock = {
+          
+        }
         return cell
       }
     } else {
       switch self.toDataSource()[indexPath.row] {
       case .selectChainRow:
         let cell = tableView.dequeueReusableCell(SelectChainCell.self, indexPath: indexPath)!
+        cell.nameLabel.text = ""
+        cell.arrowIcon.isHidden = false
         return cell
       case .poolInfoRow:
         let cell = tableView.dequeueReusableCell(ChainInfoCell.self, indexPath: indexPath)!
@@ -135,7 +153,8 @@ class BridgeViewModel {
         return cell
       case .addressRow:
         let cell = tableView.dequeueReusableCell(SelectChainCell.self, indexPath: indexPath)!
-          cell.arrowIcon.isHidden = true
+        cell.arrowIcon.isHidden = true
+        cell.nameLabel.text = ""
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
@@ -148,13 +167,28 @@ class BridgeViewModel {
       }
     }
   }
+  
+  func didSelectRow(indexPath: IndexPath) {
+    
+  }
 }
 
 class BridgeViewController: KNBaseViewController {
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var walletsListButton: UIButton!
   weak var delegate: BridgeViewControllerDelegate?
-  let viewModel = BridgeViewModel()
+  var viewModel: BridgeViewModel
+  
+  init(viewModel: BridgeViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: BridgeViewController.className, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
@@ -167,10 +201,26 @@ class BridgeViewController: KNBaseViewController {
     self.tableView.registerCellNib(BridgeSendToCell.self)
     self.tableView.registerCellNib(BridgeReminderCell.self)
     self.tableView.registerCellNib(BridgeSwapButtonCell.self)
+    self.updateUISwitchChain()
+  }
+  
+  func updateUISwitchChain() {
+    let icon = KNGeneralProvider.shared.chainIconImage
+    self.chainIcon.image = icon
+    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+  }
+  
+  func coordinatorDidUpdateChain() {
+    self.updateUISwitchChain()
+  }
+  
+  func coordinatorUpdateNewSession(wallet: Wallet) {
+    self.viewModel.updateWallet(wallet)
+    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
 
   @IBAction func switchWalletButtonTapped(_ sender: Any) {
-    
+    self.delegate?.bridgeViewControllerController(self, run: .openWalletsList)
   }
 
   @IBAction func backButtonTapped(_ sender: Any) {
@@ -178,11 +228,30 @@ class BridgeViewController: KNBaseViewController {
   }
 
   @IBAction func switchChainButtonTapped(_ sender: Any) {
-    
+    let popup = SwitchChainViewController()
+    popup.completionHandler = { selected in
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
+    }
+    self.present(popup, animated: true, completion: nil)
   }
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {
     
+  }
+}
+
+extension BridgeViewController {
+  func coordinatorDidUpdateData(tokens: [SourceBridgeToken]) {
+    guard tokens.isNotEmpty else { return }
+    self.viewModel.data = tokens
+    self.tableView.reloadData()
   }
 }
 
@@ -215,5 +284,10 @@ extension BridgeViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return section == 0 ? self.viewModel.viewForFooter() : nil
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    self.viewModel.didSelectRow(indexPath: indexPath)
   }
 }

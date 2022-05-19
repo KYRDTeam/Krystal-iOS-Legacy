@@ -893,6 +893,7 @@ enum KrytalService {
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
+  case getServerInfo(chainId: Int)
 }
 
 extension KrytalService: TargetType {
@@ -911,7 +912,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -1011,6 +1012,8 @@ extension KrytalService: TargetType {
       return "v1/fiat/orders"
     case .sendRate:
       return "/v1/tracking/ratings"
+    case .getServerInfo:
+      return "/v1/crosschain/serverInfo"
     }
   }
 
@@ -1339,6 +1342,11 @@ extension KrytalService: TargetType {
     case .getOrders(userWallet: let userWallet):
       let json: JSONDictionary = [
         "userWallet": userWallet
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getServerInfo(chainId: let chainId):
+      let json: JSONDictionary = [
+        "chainId": chainId
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
