@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -32,10 +32,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xkg-vl-y05">
-                                <rect key="frame" x="230" y="23" width="86" height="22"/>
+                                <rect key="frame" x="238" y="23" width="78" height="22"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wBr-MA-L2j">
-                                        <rect key="frame" x="12" y="5" width="62" height="12"/>
+                                        <rect key="frame" x="8" y="5" width="62" height="12"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tx_success_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Rya-yQ-CBh">
                                                 <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
@@ -55,9 +55,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="wBr-MA-L2j" firstAttribute="leading" secondItem="Xkg-vl-y05" secondAttribute="leading" constant="8" id="2NT-Nl-Ucy"/>
                                     <constraint firstItem="wBr-MA-L2j" firstAttribute="centerX" secondItem="Xkg-vl-y05" secondAttribute="centerX" id="Cs5-8V-46C"/>
-                                    <constraint firstAttribute="width" constant="86" id="S63-29-zUo"/>
                                     <constraint firstAttribute="height" constant="22" id="l6v-dx-8de"/>
+                                    <constraint firstAttribute="trailing" secondItem="wBr-MA-L2j" secondAttribute="trailing" constant="8" id="ui5-qf-bc0"/>
                                     <constraint firstItem="wBr-MA-L2j" firstAttribute="centerY" secondItem="Xkg-vl-y05" secondAttribute="centerY" id="wXw-ec-bg4"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -102,7 +103,7 @@
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0x6d6790e…3415b" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-TG-nRI">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0x6d6790e…3415b" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brc-TG-nRI">
                                 <rect key="frame" x="104" y="100" width="188" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -124,7 +125,7 @@
                                 <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0x6d6790e…3415b" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aKQ-dE-zqs">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0x6d6790e…3415b" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aKQ-dE-zqs">
                                 <rect key="frame" x="104" y="131" width="188" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -183,6 +184,8 @@
                 <outlet property="amountLabel" destination="8kJ-Ep-09w" id="he6-2c-rfT"/>
                 <outlet property="chainIconImageView" destination="gmd-tE-Cyd" id="4Dz-NI-pk1"/>
                 <outlet property="chainNameLabel" destination="QQh-a4-yBx" id="5O5-Vf-cDe"/>
+                <outlet property="copyImageView" destination="ZAL-VZ-7rE" id="cXd-OJ-N1K"/>
+                <outlet property="linkImageView" destination="Zzx-ir-WLi" id="m8S-S5-E0c"/>
                 <outlet property="resultContainerView" destination="Xkg-vl-y05" id="UHw-GI-hU7"/>
                 <outlet property="resultIcon" destination="Rya-yQ-CBh" id="tV1-R5-VfI"/>
                 <outlet property="resultLabel" destination="TCD-hr-Fa3" id="39f-bv-mrZ"/>

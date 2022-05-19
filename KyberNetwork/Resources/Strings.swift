@@ -49,6 +49,10 @@ struct Strings {
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
   
   // History
+  static let success = "success".toBeLocalised()
+  static let failure = "failed".toBeLocalised()
+  static let pending = "pending".toBeLocalised()
+  static let unknown = "unknown".toBeLocalised()
   static let application = "application".toBeLocalised()
   static let fromWallet = "from.wallet".toBeLocalised()
   static let toWallet = "to.wallet".toBeLocalised()
@@ -59,12 +63,20 @@ struct Strings {
   static let copied = "copied".toBeLocalised()
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
+  static let receive = "receive".toBeLocalised()
+  static let bridge = "bridge".toBeLocalised()
+  static let contractExecution = "contract.execution".toBeLocalised()
+  static let approval = "approval".toBeLocalised()
+  static let claimReward = "claim.reward".toBeLocalised()
   static let transactionSuccess = "transaction.success".toBeLocalised()
   static let transactionFailed = "transaction.failed".toBeLocalised()
   static let transactionBeingMined = "transaction.being.mined".toBeLocalised()
   static let transactionBroadcasted = "transaction.being.broadcasted".toBeLocalised()
   static let cannotCreateTransaction = "can.not.create.transaction".toBeLocalised()
   static let noTransactionFound = "no.transaction.found".toBeLocalised()
+  static let bridgeFee = "bridge.fee".toBeLocalised();
+  static let estimatedTimeOfArrival = "estimated.time.of.arrival".toBeLocalised()
+  static let xMins = "x.mins".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()

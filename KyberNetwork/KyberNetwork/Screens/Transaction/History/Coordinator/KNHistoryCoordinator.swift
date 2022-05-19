@@ -334,9 +334,11 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       coordinator.start()
       self.txDetailsCoordinator = coordinator
     case .selectCompletedKrystalTransaction(data: let data):
-      let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
-      coordinator.start()
-      self.txDetailsCoordinator = coordinator
+      let module = TransactionDetailModule.build(tx: data.historyItem)
+      navigationController.pushViewController(module, animated: true)
+//      let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
+//      coordinator.start()
+//      self.txDetailsCoordinator = coordinator
     case .swap:
       if self.navigationController.tabBarController?.selectedIndex == 1 {
         self.navigationController.popToRootViewController(animated: true)

@@ -9,7 +9,7 @@ import UIKit
 import BigInt
 
 class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewModelProtocol {
-
+  
   var fromIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.sendToken?.symbol ?? ""
@@ -23,7 +23,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return ""
     }
   }
-
+  
   var toIconSymbol: String {
     if self.historyItem.isSwapTokenType {
       return self.historyItem.extraData?.receiveToken?.symbol ?? ""
@@ -95,7 +95,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return self.historyItem.to
     }
   }
-
+  
   var transactionTypeString: String {
     if self.historyItem.type == "Swap" {
       return "SWAP"
@@ -135,7 +135,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return UIImage(named: "history_contract_interaction_icon")!
     }
   }
-
+  
   var displayTime: String {
     let date = Date(timeIntervalSince1970: Double(self.historyItem.timestamp))
     return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: date)

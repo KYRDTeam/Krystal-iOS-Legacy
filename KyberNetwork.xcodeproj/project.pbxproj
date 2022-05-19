@@ -514,8 +514,21 @@
 		A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */; };
 		A64E17BA28193AF700ED6E6D /* BaseTransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */; };
 		A64E17BD2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */; };
-		A65561952835036700944624 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65561932835036700944624 /* TransactionDetailViewController.swift */; };
-		A65561962835036700944624 /* TransactionDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65561942835036700944624 /* TransactionDetailViewController.xib */; };
+		A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194312835F13D008F4AEB /* TransactionDetailContract.swift */; };
+		A65194392835F13D008F4AEB /* TransactionDetailModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194322835F13D008F4AEB /* TransactionDetailModule.swift */; };
+		A651943A2835F13D008F4AEB /* TransactionDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194332835F13D008F4AEB /* TransactionDetailPresenter.swift */; };
+		A651943B2835F13D008F4AEB /* TransactionDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194342835F13D008F4AEB /* TransactionDetailRouter.swift */; };
+		A651943C2835F13D008F4AEB /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194352835F13D008F4AEB /* TransactionDetailViewController.swift */; };
+		A651943D2835F13D008F4AEB /* TransactionDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65194362835F13D008F4AEB /* TransactionDetailInteractor.swift */; };
+		A651943E2835F13D008F4AEB /* TransactionDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65194372835F13D008F4AEB /* TransactionDetailViewController.xib */; };
+		A651944128360674008F4AEB /* TransactionStepSeparatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A651943F28360674008F4AEB /* TransactionStepSeparatorCell.swift */; };
+		A651944228360674008F4AEB /* TransactionStepSeparatorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A651944028360674008F4AEB /* TransactionStepSeparatorCell.xib */; };
+		A651944628361AA6008F4AEB /* TransactionHistoryItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A651944528361AA6008F4AEB /* TransactionHistoryItemType.swift */; };
+		A651944828361ABB008F4AEB /* TransactionDetailRowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A651944728361ABB008F4AEB /* TransactionDetailRowType.swift */; };
+		A651944B28361AE3008F4AEB /* TransactionTypeInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A651944928361AE3008F4AEB /* TransactionTypeInfoCell.swift */; };
+		A651944C28361AE3008F4AEB /* TransactionTypeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A651944A28361AE3008F4AEB /* TransactionTypeInfoCell.xib */; };
+		A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A651944D28362E53008F4AEB /* TxInfoCell.swift */; };
+		A651945028362E54008F4AEB /* TxInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A651944E28362E53008F4AEB /* TxInfoCell.xib */; };
 		A655619A283503A900944624 /* BridgeSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6556198283503A900944624 /* BridgeSubTransactionCell.swift */; };
 		A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6556199283503A900944624 /* BridgeSubTransactionCell.xib */; };
 		A655619E28350D7600944624 /* TransactionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655619D28350D7600944624 /* TransactionStatus.swift */; };
@@ -1467,8 +1480,21 @@
 		A64E17B7281934A700ED6E6D /* BasePendingTransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePendingTransactionListViewModel.swift; sourceTree = "<group>"; };
 		A64E17B928193AF700ED6E6D /* BaseTransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionListViewController.swift; sourceTree = "<group>"; };
 		A64E17BC2819484700ED6E6D /* GasFeePopupDelegateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeePopupDelegateCoordinator.swift; sourceTree = "<group>"; };
-		A65561932835036700944624 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
-		A65561942835036700944624 /* TransactionDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionDetailViewController.xib; sourceTree = "<group>"; };
+		A65194312835F13D008F4AEB /* TransactionDetailContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailContract.swift; sourceTree = "<group>"; };
+		A65194322835F13D008F4AEB /* TransactionDetailModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailModule.swift; sourceTree = "<group>"; };
+		A65194332835F13D008F4AEB /* TransactionDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailPresenter.swift; sourceTree = "<group>"; };
+		A65194342835F13D008F4AEB /* TransactionDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailRouter.swift; sourceTree = "<group>"; };
+		A65194352835F13D008F4AEB /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
+		A65194362835F13D008F4AEB /* TransactionDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailInteractor.swift; sourceTree = "<group>"; };
+		A65194372835F13D008F4AEB /* TransactionDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionDetailViewController.xib; sourceTree = "<group>"; };
+		A651943F28360674008F4AEB /* TransactionStepSeparatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStepSeparatorCell.swift; sourceTree = "<group>"; };
+		A651944028360674008F4AEB /* TransactionStepSeparatorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionStepSeparatorCell.xib; sourceTree = "<group>"; };
+		A651944528361AA6008F4AEB /* TransactionHistoryItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryItemType.swift; sourceTree = "<group>"; };
+		A651944728361ABB008F4AEB /* TransactionDetailRowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailRowType.swift; sourceTree = "<group>"; };
+		A651944928361AE3008F4AEB /* TransactionTypeInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTypeInfoCell.swift; sourceTree = "<group>"; };
+		A651944A28361AE3008F4AEB /* TransactionTypeInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTypeInfoCell.xib; sourceTree = "<group>"; };
+		A651944D28362E53008F4AEB /* TxInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TxInfoCell.swift; sourceTree = "<group>"; };
+		A651944E28362E53008F4AEB /* TxInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxInfoCell.xib; sourceTree = "<group>"; };
 		A6556198283503A900944624 /* BridgeSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeSubTransactionCell.swift; sourceTree = "<group>"; };
 		A6556199283503A900944624 /* BridgeSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSubTransactionCell.xib; sourceTree = "<group>"; };
 		A655619D28350D7600944624 /* TransactionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatus.swift; sourceTree = "<group>"; };
@@ -2433,6 +2459,7 @@
 		25682B6E20EE0421009738C4 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				A655619F2835EE3C00944624 /* DetailV2 */,
 				C31F152423F538D9006CCACE /* Speedup */,
 				25BE32972090967100D760FB /* History */,
 				25D3259C20C06D51008BB235 /* Send */,
@@ -2470,7 +2497,6 @@
 				25682B7820EE09AB009738C4 /* Coordinator */,
 				25682B7720EE09A2009738C4 /* ViewModel */,
 				25682B7620EE098C009738C4 /* Controller */,
-				A65561972835037B00944624 /* Cells */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -2480,8 +2506,6 @@
 			children = (
 				25682B7220EE06CD009738C4 /* KNTransactionDetailsViewController.swift */,
 				25682B7320EE06CD009738C4 /* KNTransactionDetailsViewController.xib */,
-				A65561932835036700944624 /* TransactionDetailViewController.swift */,
-				A65561942835036700944624 /* TransactionDetailViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4175,11 +4199,36 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		A651944328361A77008F4AEB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A65561972835037B00944624 /* Cells */,
+				A65194352835F13D008F4AEB /* TransactionDetailViewController.swift */,
+				A65194372835F13D008F4AEB /* TransactionDetailViewController.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A651944428361A8D008F4AEB /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				A651944528361AA6008F4AEB /* TransactionHistoryItemType.swift */,
+				A651944728361ABB008F4AEB /* TransactionDetailRowType.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		A65561972835037B00944624 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				A6556198283503A900944624 /* BridgeSubTransactionCell.swift */,
 				A6556199283503A900944624 /* BridgeSubTransactionCell.xib */,
+				A651943F28360674008F4AEB /* TransactionStepSeparatorCell.swift */,
+				A651944028360674008F4AEB /* TransactionStepSeparatorCell.xib */,
+				A651944928361AE3008F4AEB /* TransactionTypeInfoCell.swift */,
+				A651944A28361AE3008F4AEB /* TransactionTypeInfoCell.xib */,
+				A651944D28362E53008F4AEB /* TxInfoCell.swift */,
+				A651944E28362E53008F4AEB /* TxInfoCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4190,6 +4239,20 @@
 				A655619D28350D7600944624 /* TransactionStatus.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		A655619F2835EE3C00944624 /* DetailV2 */ = {
+			isa = PBXGroup;
+			children = (
+				A651944428361A8D008F4AEB /* Enums */,
+				A651944328361A77008F4AEB /* View */,
+				A65194312835F13D008F4AEB /* TransactionDetailContract.swift */,
+				A65194322835F13D008F4AEB /* TransactionDetailModule.swift */,
+				A65194332835F13D008F4AEB /* TransactionDetailPresenter.swift */,
+				A65194342835F13D008F4AEB /* TransactionDetailRouter.swift */,
+				A65194362835F13D008F4AEB /* TransactionDetailInteractor.swift */,
+			);
+			path = DetailV2;
 			sourceTree = "<group>";
 		};
 		A65C7A6D2818E146000FA9CE /* WebView */ = {
@@ -5385,6 +5448,7 @@
 				A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */,
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
+				A651943E2835F13D008F4AEB /* TransactionDetailViewController.xib in Resources */,
 				25929C9320DA5CC10045CFA3 /* SFCompactText-Medium.otf in Resources */,
 				C3263B0825EDE837005FBB60 /* WithdrawViewController.xib in Resources */,
 				25073D1E211AF20D00833C92 /* Montserrat-SemiBold.ttf in Resources */,
@@ -5446,6 +5510,7 @@
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
+				A651945028362E54008F4AEB /* TxInfoCell.xib in Resources */,
 				C35E9DFD27E1BDF500E1E7CE /* PromoCodeDetailViewController.xib in Resources */,
 				C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */,
 				25929C6420DA5C760045CFA3 /* SF-Pro-Text-Heavy.otf in Resources */,
@@ -5457,6 +5522,7 @@
 				C3F71C8B2618A57B00285935 /* ClaimHistoryTableViewCell.xib in Resources */,
 				C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */,
 				7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */,
+				A651944C28361AE3008F4AEB /* TransactionTypeInfoCell.xib in Resources */,
 				25929C8F20DA5CC10045CFA3 /* SFCompactDisplay-Regular.otf in Resources */,
 				2561454D20C64B2200FB00CF /* KNContactTableView.xib in Resources */,
 				255F6F2420BBC6B500EF808F /* KNWalletQRCodeViewController.xib in Resources */,
@@ -5471,7 +5537,7 @@
 				C3D560AB260C641E00408875 /* OverviewClaimViewController.xib in Resources */,
 				7E913AF9273CF6DA00B6E67C /* intro_manage.json in Resources */,
 				C3EE06C3267A15E50090B432 /* Karla-Regular.ttf in Resources */,
-				A65561962835036700944624 /* TransactionDetailViewController.xib in Resources */,
+				A651944228360674008F4AEB /* TransactionStepSeparatorCell.xib in Resources */,
 				7E8C62D9271D319200A6C9DB /* ClaimRewardsController.xib in Resources */,
 				25485B052272F938004B7454 /* KNTransactionFilterTableViewCell.xib in Resources */,
 				A6DA40FE27F7007A0078C58E /* ExploreSectionHeaderView.xib in Resources */,
@@ -5886,6 +5952,7 @@
 				29FF12FE1F75EA3F00AFD326 /* Keystore.swift in Sources */,
 				2561454B20C64B1900FB00CF /* KNContactTableView.swift in Sources */,
 				7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */,
+				A65194392835F13D008F4AEB /* TransactionDetailModule.swift in Sources */,
 				C680C1202382958700A621CB /* KNVersionControlManager.swift in Sources */,
 				C31F152C23F54A21006CCACE /* SpeedUpCustomGasSelectViewModel.swift in Sources */,
 				C385D8C727BCD7A300BB226D /* MultiSendConfirmViewController.swift in Sources */,
@@ -5913,6 +5980,7 @@
 				C60BB88E23959794006FE37D /* KNGetAddressFromResolverRequest.swift in Sources */,
 				C32017BA27BE41910055130B /* MultiSendAddressCell.swift in Sources */,
 				25E9E201208F34ED00A9090D /* KNPasscodeCoordinator.swift in Sources */,
+				A651943D2835F13D008F4AEB /* TransactionDetailInteractor.swift in Sources */,
 				C347DA3F25C03144000D6E81 /* EarnMenuTableViewCell.swift in Sources */,
 				251C29C0232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.swift in Sources */,
 				257C9FC92078F6A600EE0128 /* KNCreatePasswordViewController.swift in Sources */,
@@ -5942,6 +6010,7 @@
 				257A377E205B7BFA00E86794 /* UINavigationController+Kyber.swift in Sources */,
 				7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */,
 				C32BD4A3268DDC7E00ABAA59 /* UISegmentedControl+Kyber.swift in Sources */,
+				A651943B2835F13D008F4AEB /* TransactionDetailRouter.swift in Sources */,
 				A64E17BA28193AF700ED6E6D /* BaseTransactionListViewController.swift in Sources */,
 				25F96F8021537B6400D7F927 /* KNHoldingDocumentInfoPopUp.swift in Sources */,
 				A6E26FDC28129BA90054427E /* HistoryTransaction.swift in Sources */,
@@ -5957,6 +6026,7 @@
 				C32656B5266F55E200C69561 /* KrystalActionSheetCell.swift in Sources */,
 				C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */,
 				A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */,
+				A651944628361AA6008F4AEB /* TransactionHistoryItemType.swift in Sources */,
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
 				C33696102595A387000EDD5D /* ApproveTokenViewController.swift in Sources */,
 				294EC1DA1FD8E4E60065EB20 /* GasPriceRequest.swift in Sources */,
@@ -6060,11 +6130,11 @@
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
 				29FC0CB81F8299510036089F /* Coordinator.swift in Sources */,
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
-				A65561952835036700944624 /* TransactionDetailViewController.swift in Sources */,
 				25CE6F77207291EC00A3A2F9 /* KNEtherScanService.swift in Sources */,
 				251ABCC2205792170069687F /* UIColor+Kyber.swift in Sources */,
 				7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */,
 				25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */,
+				A651943A2835F13D008F4AEB /* TransactionDetailPresenter.swift in Sources */,
 				C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
 				2996F14D1F6CA743005C33AE /* UIViewController.swift in Sources */,
@@ -6084,6 +6154,7 @@
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
+				A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
@@ -6126,6 +6197,7 @@
 				C30292F0260317EA001929E1 /* MarketingPartnerCollectionViewCell.swift in Sources */,
 				C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */,
 				25CC0A912057D7340009D0D5 /* KNLoadBalanceCoordinator.swift in Sources */,
+				A651944128360674008F4AEB /* TransactionStepSeparatorCell.swift in Sources */,
 				A6B3CD8228125737005D0D66 /* KrystalApi.swift in Sources */,
 				29F114EE1FA65DEF00114A29 /* ImportType.swift in Sources */,
 				25F9C7692213D0D80001064D /* Double.swift in Sources */,
@@ -6149,6 +6221,7 @@
 				A63A88AA282D128400C6C373 /* AddWatchWalletViewModel.swift in Sources */,
 				A6B3CD3B281176E4005D0D66 /* KNTransactionListViewController.swift in Sources */,
 				291F52A71F6B766100B369AB /* BalanceRequest.swift in Sources */,
+				A651943C2835F13D008F4AEB /* TransactionDetailViewController.swift in Sources */,
 				C3377ACF25E650B00035A18D /* ChartViewController.swift in Sources */,
 				251ABCBC205790210069687F /* KNEnvironment.swift in Sources */,
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
@@ -6261,6 +6334,7 @@
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
 				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
+				A651944828361ABB008F4AEB /* TransactionDetailRowType.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
 				25682B7A20EE09C8009738C4 /* KNTransactionDetailsViewModel.swift in Sources */,
 				A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */,
@@ -6306,6 +6380,7 @@
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */,
 				25682ABE229FC3C7004AB452 /* KNApproveTokenViewController.swift in Sources */,
+				A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
 				25D3D3EA20F61C110071D599 /* KNTrackerRate.swift in Sources */,
@@ -6380,6 +6455,7 @@
 				25759623216D8E0D00AC490D /* Locale+Kyber.swift in Sources */,
 				C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */,
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
+				A651944B28361AE3008F4AEB /* TransactionTypeInfoCell.swift in Sources */,
 				C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,

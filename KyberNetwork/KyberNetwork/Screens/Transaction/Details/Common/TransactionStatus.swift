@@ -7,14 +7,23 @@
 
 import Foundation
 
-enum TransactionStatus: String {
-  case success = "success"
-  case failure = "failure"
-  case pending = "pending"
-  case unknown
+enum TransactionStatus {
+  case success
+  case failure
+  case pending
+  case other(title: String)
   
   init(status: String) {
-    self = TransactionStatus(rawValue: status.lowercased()) ?? .unknown
+    switch status.lowercased() {
+    case "success":
+      self = .success
+    case "failure", "failed":
+      self = .failure
+    case "pending":
+      self = .pending
+    default:
+      self = .other(title: status)
+    }
   }
   
 }

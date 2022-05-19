@@ -845,8 +845,17 @@
 "copied" = "Copied";
 "approve" = "Approve";
 "select.platform.to.supply.x" = "Select the platform to supply %@";
+"bridge" = "Bridge";
+"contract.execution" = "Contract execution";
+"approval" = "Approval";
+"claim.reward" = "Claim reward";
+"bridge.fee" = "Bridge fee";
+"estimated.time.of.arrival" = "Estimated time of arrival";
+"x.mins" = "%@ mins";
 
 // Receive screen
 "receive_screen_warning_text" = "Send only %@ token or %@ to this address. Sending any other token may result in loss of your deposit.";
 "%@.address" = "%@ address";
 "view.on.%@" = "View on %@";
+
+

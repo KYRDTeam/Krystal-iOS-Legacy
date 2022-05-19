@@ -6,6 +6,13 @@ class DateFormatterUtil {
 
   static let shared = DateFormatterUtil()
 
+  lazy var MMMddYYYHHmma: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.dateFormat = "MMMM dd, YYYY HH:mm a"
+    return formatter
+  }()
+  
   lazy var priceAlertAPIFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
