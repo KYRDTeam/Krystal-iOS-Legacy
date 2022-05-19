@@ -33,7 +33,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var authenticationCoordinator: KNPasscodeCoordinator = {
-    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false))
+    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false), self.keystore)
     passcode.delegate = self
     return passcode
   }()
@@ -228,7 +228,6 @@ extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start()
-    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.tabbarController)
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()

@@ -173,7 +173,7 @@ class KNWalletStorage {
     try! self.realm.commitWrite()
   }
   
-  func migrateDataIfNeeded(keyStore: Keystore, vc: UIViewController) {
+  func migrateDataIfNeeded(keyStore: Keystore) {
     let found = self.wallets.filter { element in
       return element.isNeedMigration()
     }
@@ -182,18 +182,21 @@ class KNWalletStorage {
     let clones = found.map { element in
       return element.clone()
     }
-    vc.displayLoading(text: "Migrating", animated: true)
-    clones.forEach { obj in
-      if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
-        let solAddress = SolanaUtil.seedsToPublicKey(seeds)
-        obj.evmAddress = obj.address
-        obj.solanaAddress = solAddress
-      } else {
-        obj.chainType = 1
-        obj.evmAddress = obj.address
+    let vc = UIApplication.shared.keyWindow?.rootViewController
+    vc?.displayLoading(text: "Migrating", animated: true)
+    DispatchQueue.main.async {
+      clones.forEach { obj in
+        if let account = keyStore.matchWithEvmAccount(address: obj.address.lowercased()), case .success(let seeds) = keyStore.exportMnemonics(account: account) {
+          let solAddress = SolanaUtil.seedsToPublicKey(seeds)
+          obj.evmAddress = obj.address
+          obj.solanaAddress = solAddress
+        } else {
+          obj.chainType = 1
+          obj.evmAddress = obj.address
+        }
       }
+      self.update(wallets: clones)
+      vc?.hideLoading()
     }
-    self.update(wallets: clones)
-    vc.hideLoading()
   }
 }
