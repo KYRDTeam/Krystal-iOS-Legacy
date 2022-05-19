@@ -33,7 +33,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var authenticationCoordinator: KNPasscodeCoordinator = {
-    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false))
+    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false), self.keystore)
     passcode.delegate = self
     return passcode
   }()

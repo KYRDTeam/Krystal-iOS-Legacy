@@ -151,8 +151,6 @@ extension KNAppCoordinator {
 
     self.doLogin { completed in
     }
-    
-    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.tabbarController)
   }
 
   func stopAllSessions() {
