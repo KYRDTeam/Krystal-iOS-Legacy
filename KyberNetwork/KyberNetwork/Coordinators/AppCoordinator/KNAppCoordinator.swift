@@ -228,6 +228,7 @@ extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start()
+    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.tabbarController)
     IQKeyboardManager.shared().isEnabled = true
     IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
