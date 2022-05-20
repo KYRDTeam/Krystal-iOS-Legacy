@@ -155,6 +155,7 @@
 "receive" = "Receive";
 "from" = "From";
 "to" = "To";
+"select.token" = "Select Token";
 "you.are.all.set" = "You are all set";
 "none.completed" = "None completed";
 "you.do.not.have.any.pending.transactions" = "You do not have any pending transactions.";
@@ -507,6 +508,8 @@
 "Transfer Now" = "Transfer Now";
 "Deposit more ETH or click Advanced to lower GAS fee" = "Deposit more ETH or click Advanced to lower GAS fee. Transaction fee: %@ ETH";
 "Insufficient ETH for transaction" = "Insufficient ETH for transaction";
+"deposit.more.x.or.click.advanced.to.lower.gas.fee" = "Deposit more %@ or click Advanced to lower GAS fee";
+"insufficient.x.for.transaction" = "Insufficient %@ for transaction";
 "This password is needed to unlock your JSON file. Please remember it carefully." = "This password is needed to unlock your JSON file. Please remember it carefully.";
 
 // Promo code error messages
@@ -840,3 +843,5 @@
 "application" = "Application";
 "wallet" = "Wallet";
 "copied" = "Copied";
+"approve" = "Approve";
+"select.platform.to.supply.x" = "Select the platform to supply %@";
