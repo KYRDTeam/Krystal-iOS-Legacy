@@ -89,6 +89,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   weak var delegate: BridgeCoordinatorDelegate?
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
+  var data: [SourceBridgeToken] = []
   
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
@@ -105,8 +106,9 @@ class BridgeCoordinator: NSObject, Coordinator {
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
-    self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) { tokens in
-      self.rootViewController.coordinatorDidUpdateData(tokens: tokens)
+    
+    self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) {
+      self.rootViewController.coordinatorDidUpdateData()
     }
   }
   
@@ -120,7 +122,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
   }
   
-  func getServerInfo(chainId: Int, completion: @escaping (([SourceBridgeToken]) -> Void)) {
+  func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
     
@@ -136,11 +138,14 @@ class BridgeCoordinator: NSObject, Coordinator {
             let sourceBridgeToken = SourceBridgeToken(json: dataJson)
             tokens.append(sourceBridgeToken)
           }
+          if tokens.isNotEmpty {
+            self.data = tokens
+          }
         }
       case .failure(let error):
         print("[Get Server Info] \(error.localizedDescription)")
       }
-      completion(tokens)
+      completion()
     }
   }
 }
@@ -162,6 +167,56 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .addChainWallet(let chainType):
       self.delegate?.didSelectAddChainWallet(chainType: chainType)
+    case .selectDestChain:
+      guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return }
+      let currentData = self.data.first {
+        $0.address.lowercased() ==  sourceToken.address.lowercased()
+      }
+      guard let currentData = currentData else {
+        return
+      }
+      let sourceChain = currentData.destChains.keys.map { key -> ChainType in
+        let chainId = Int(key) ?? 0
+        return ChainType.getAllChain().first { $0.getChainId() == chainId } ?? .eth
+      }
+      self.rootViewController.openSwitchChainPopup(sourceChain, false)
+    case .selectSourceToken:
+      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
+        
+      let supportedAddress = self.data.map { return $0.address.lowercased() }
+      tokens = tokens.filter({
+        supportedAddress.contains($0.address.lowercased())
+      })
+        
+      let viewModel = KNSearchTokenViewModel(
+        supportedTokens: tokens
+      )
+      let controller = KNSearchTokenViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      self.rootViewController.present(controller, animated: true, completion: nil)
+    case .selectDestToken:
+      let tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
+      let viewModel = KNSearchTokenViewModel(
+        supportedTokens: tokens
+      )
+      let controller = KNSearchTokenViewController(viewModel: viewModel)
+      controller.loadViewIfNeeded()
+      controller.delegate = self
+      self.rootViewController.present(controller, animated: true, completion: nil)
+    }
+  }
+}
+
+extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
+  func searchTokenViewController(_ controller: KNSearchTokenViewController, run event: KNSearchTokenViewEvent) {
+    controller.dismiss(animated: true, completion: nil)
+    switch event {
+    case .select(let token):
+      self.rootViewController.viewModel.currentSourceToken = token
+      self.rootViewController.coordinatorDidUpdateData()
+    default:
+      return
     }
   }
 }

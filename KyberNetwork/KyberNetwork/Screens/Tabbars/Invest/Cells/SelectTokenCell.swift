@@ -8,7 +8,8 @@
 import UIKit
 
 class SelectTokenCell: UITableViewCell {
-  var selectTokenBlock: (() -> Void)? = nil
+  @IBOutlet weak var selectTokenButton: UIButton!
+  var selectTokenBlock: (() -> Void)?
   override func awakeFromNib() {
       super.awakeFromNib()
       // Initialization code

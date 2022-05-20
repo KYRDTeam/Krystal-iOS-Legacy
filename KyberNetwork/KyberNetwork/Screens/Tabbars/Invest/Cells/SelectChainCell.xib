@@ -35,13 +35,24 @@
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FDG-oF-vxE">
+                                <rect key="frame" x="0.0" y="0.0" width="231" height="42"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="onSelectChainButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="2yy-H8-Rs0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="toolbarBgColor"/>
                         <constraints>
                             <constraint firstItem="3bc-No-SQi" firstAttribute="centerY" secondItem="BKd-BS-4iO" secondAttribute="centerY" id="3pH-j8-wjo"/>
+                            <constraint firstItem="FDG-oF-vxE" firstAttribute="top" secondItem="BKd-BS-4iO" secondAttribute="top" id="9IL-Uj-qAQ"/>
+                            <constraint firstAttribute="bottom" secondItem="FDG-oF-vxE" secondAttribute="bottom" id="E51-7A-SwR"/>
                             <constraint firstAttribute="trailing" secondItem="3bc-No-SQi" secondAttribute="trailing" constant="16" id="EQd-jv-pbr"/>
                             <constraint firstAttribute="height" constant="42" id="Ors-XD-WsD"/>
                             <constraint firstItem="rgl-ma-vP4" firstAttribute="centerY" secondItem="BKd-BS-4iO" secondAttribute="centerY" id="TUp-Wc-9c1"/>
+                            <constraint firstItem="FDG-oF-vxE" firstAttribute="leading" secondItem="BKd-BS-4iO" secondAttribute="leading" id="cUK-mB-awc"/>
+                            <constraint firstAttribute="trailing" secondItem="FDG-oF-vxE" secondAttribute="trailing" id="hFv-iW-7i7"/>
                             <constraint firstItem="3bc-No-SQi" firstAttribute="leading" secondItem="BKd-BS-4iO" secondAttribute="leading" constant="16" id="hde-z0-noc"/>
                             <constraint firstAttribute="trailing" secondItem="rgl-ma-vP4" secondAttribute="trailing" constant="16" id="sad-RH-7PU"/>
                         </constraints>
@@ -66,7 +77,7 @@
                 <outlet property="arrowIcon" destination="rgl-ma-vP4" id="max-GV-5bX"/>
                 <outlet property="nameLabel" destination="3bc-No-SQi" id="JDN-Be-Xkj"/>
             </connections>
-            <point key="canvasLocation" x="128.2608695652174" y="134.93303571428569"/>
+            <point key="canvasLocation" x="128.2608695652174" y="134.26339285714286"/>
         </tableViewCell>
     </objects>
     <resources>

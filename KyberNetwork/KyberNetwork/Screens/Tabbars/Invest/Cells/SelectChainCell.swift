@@ -10,9 +10,17 @@ import UIKit
 class SelectChainCell: UITableViewCell {
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var arrowIcon: UIImageView!
+  
+  var selectionBlock: (() -> Void)?
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
+  }
+
+  @IBAction func onSelectChainButtonTapped(_ sender: Any) {
+    if let selectionBlock = selectionBlock {
+      selectionBlock()
+    }
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {

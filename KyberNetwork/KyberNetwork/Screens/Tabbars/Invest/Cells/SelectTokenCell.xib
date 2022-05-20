@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -29,18 +29,18 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9cN-nL-gLA">
                         <rect key="frame" x="38" y="9" width="267" height="42"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="30" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Pnk-22-vDf">
-                                <rect key="frame" x="16" y="0.0" width="139" height="42"/>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.000" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Pnk-22-vDf">
+                                <rect key="frame" x="16" y="0.0" width="123" height="42"/>
                                 <color key="tintColor" name="buttonBackgroundColor"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AdC-9m-Ftm">
-                                <rect key="frame" x="200" y="0.0" width="59" height="42"/>
+                                <rect key="frame" x="184" y="0.0" width="75" height="42"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
-                                <state key="normal" title="KNC">
+                                <state key="normal" title="Select">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -51,7 +51,7 @@
                                 <rect key="frame" x="241" y="18" width="10" height="6"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zMV-Jo-VK4">
-                                <rect key="frame" x="163" y="12" width="29" height="18"/>
+                                <rect key="frame" x="147" y="12" width="29" height="18"/>
                                 <color key="backgroundColor" name="buttonBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="29" id="ZPa-os-be5"/>
@@ -113,6 +113,9 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="selectTokenButton" destination="AdC-9m-Ftm" id="jzR-OK-wx4"/>
+            </connections>
             <point key="canvasLocation" x="154.34782608695653" y="145.64732142857142"/>
         </tableViewCell>
     </objects>
