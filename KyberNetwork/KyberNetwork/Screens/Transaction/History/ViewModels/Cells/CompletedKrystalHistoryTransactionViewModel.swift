@@ -111,6 +111,8 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   
   var transactionTypeString: String {
     switch transactionType {
+    case .swap:
+      return Strings.swap.uppercased()
     case .receive:
       return Strings.receive.uppercased()
     case .transfer:

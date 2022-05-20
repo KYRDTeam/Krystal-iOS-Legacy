@@ -98,6 +98,10 @@ extension UIColor {
     static let mainBg = UIColor(hex: "010101")
     static var primaryGreenColor = UIColor(hex: "1DE9B6")
     static let evenBg = UIColor(hex: "0F0F0F")
+    static let buttonBg = UIColor(named: "buttonBackgroundColor")!
+    static let navButtonBg = UIColor(named: "navButtonBgColor")!
+    static let mainViewBg = UIColor(named: "mainViewBgColor")!
+    static let normalText = UIColor(named: "normalTextColor")!
     
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,

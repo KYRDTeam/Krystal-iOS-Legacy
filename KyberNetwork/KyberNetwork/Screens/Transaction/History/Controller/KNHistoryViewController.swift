@@ -79,6 +79,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
+      isBridge: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
@@ -101,6 +102,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
+      isBridge: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()

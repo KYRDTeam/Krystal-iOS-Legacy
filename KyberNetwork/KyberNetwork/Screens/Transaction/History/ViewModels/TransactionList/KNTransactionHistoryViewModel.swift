@@ -58,6 +58,7 @@ class KNTransactionHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
+      isBridge: true,
       tokens: []
     )
   }

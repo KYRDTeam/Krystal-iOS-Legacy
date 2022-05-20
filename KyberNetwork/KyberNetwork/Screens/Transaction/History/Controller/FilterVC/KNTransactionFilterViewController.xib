@@ -27,6 +27,7 @@
             <connections>
                 <outlet property="approveButton" destination="gLc-gI-luH" id="5JS-Qo-Fz9"/>
                 <outlet property="bottomPaddingForButtonConstraint" destination="EZg-8H-jbs" id="zFh-1m-pXu"/>
+                <outlet property="bridgeButton" destination="XMW-f7-Al4" id="OPy-ia-1Cn"/>
                 <outlet property="claimRewardButton" destination="YVW-aJ-91q" id="M60-sL-Ks3"/>
                 <outlet property="contractInteractionButton" destination="AHl-Ss-t5i" id="CY1-ik-cJs"/>
                 <outlet property="fromDateTimeView" destination="4wa-DK-Evy" id="Ub4-qk-ag1"/>
@@ -390,11 +391,34 @@
                                 <action selector="claimRewardButtonTapped:" destination="-1" eventType="touchUpInside" id="Q7u-3a-jkO"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMW-f7-Al4">
+                            <rect key="frame" x="136" y="269" width="96" height="36"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="96" id="wKx-Cq-Prh"/>
+                                <constraint firstAttribute="height" constant="36" id="zKC-Ou-Tu4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                            <state key="normal" title="Bridge">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="bridgeWasTapped:" destination="-1" eventType="touchUpInside" id="cSZ-Yd-lQI"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Cdb-Tn-2wK" firstAttribute="top" secondItem="61g-Ey-lNd" secondAttribute="bottom" constant="15" id="0dl-C0-mNS"/>
                         <constraint firstItem="TrJ-az-hN9" firstAttribute="leading" secondItem="4wa-DK-Evy" secondAttribute="trailing" constant="30" id="0eD-bq-fzm"/>
+                        <constraint firstItem="XMW-f7-Al4" firstAttribute="centerY" secondItem="YVW-aJ-91q" secondAttribute="centerY" id="5Pm-Uq-5nf"/>
                         <constraint firstItem="7uq-tZ-DF7" firstAttribute="top" secondItem="YVW-aJ-91q" secondAttribute="bottom" constant="44" id="60H-eR-NBg"/>
                         <constraint firstAttribute="trailing" secondItem="XIv-Nj-ULc" secondAttribute="trailing" constant="20" id="8FY-ip-Ogx"/>
                         <constraint firstItem="QDY-eY-qXH" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="8SL-5p-fbh"/>
@@ -403,6 +427,7 @@
                         <constraint firstItem="9av-Jz-r19" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" symbolic="YES" id="B7R-aH-3e0"/>
                         <constraint firstItem="AHl-Ss-t5i" firstAttribute="leading" secondItem="EkI-B8-sBF" secondAttribute="trailing" constant="20" id="BPR-MN-uIb"/>
                         <constraint firstItem="YVW-aJ-91q" firstAttribute="leading" secondItem="9av-Jz-r19" secondAttribute="leading" id="C0w-sm-Yd9"/>
+                        <constraint firstItem="XMW-f7-Al4" firstAttribute="leading" secondItem="YVW-aJ-91q" secondAttribute="trailing" constant="20" id="CAs-gt-266"/>
                         <constraint firstItem="ERQ-5G-6yC" firstAttribute="centerY" secondItem="if6-e1-R9s" secondAttribute="centerY" id="Cah-fE-g68"/>
                         <constraint firstAttribute="bottom" secondItem="Cdb-Tn-2wK" secondAttribute="bottom" constant="60" id="EZg-8H-jbs"/>
                         <constraint firstItem="Cdb-Tn-2wK" firstAttribute="centerX" secondItem="3xY-JY-b3T" secondAttribute="centerX" id="FQ7-jF-m3E"/>
