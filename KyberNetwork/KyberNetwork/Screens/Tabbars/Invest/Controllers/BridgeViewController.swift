@@ -8,12 +8,12 @@
 import UIKit
 
 enum BridgeEvent {
-  case switchChain
   case openHistory
   case openWalletsList
   case addChainWallet(chainType: ChainType)
   case selectSourceToken
-  case selectDestChain
+  case willSelectDestChain
+  case didSelectDestChain(chain: ChainType)
   case selectDestToken
 }
 
@@ -63,7 +63,7 @@ class BridgeViewController: KNBaseViewController {
     }
     
     self.viewModel.selectDestChainBlock = {
-      self.delegate?.bridgeViewControllerController(self, run: .selectDestChain)
+      self.delegate?.bridgeViewControllerController(self, run: .willSelectDestChain)
     }
     
     self.viewModel.selectDestTokenBlock = {
@@ -87,13 +87,12 @@ class BridgeViewController: KNBaseViewController {
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
   }
   
-  func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChainWallet: Bool = true) {
+  func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {
     let popup = SwitchChainViewController()
     popup.dataSource = chainTypes
     popup.completionHandler = { selected in
-      if !shouldChainWallet {
-        self.viewModel.currentDestChain = selected
-        self.tableView.reloadData()
+      if !shouldChangeWallet {
+        self.delegate?.bridgeViewControllerController(self, run: .didSelectDestChain(chain: selected))
       } else if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
         self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
         return

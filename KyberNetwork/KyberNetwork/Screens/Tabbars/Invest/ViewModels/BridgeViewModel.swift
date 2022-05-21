@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BigInt
 
 enum FromSectionRows: CaseIterable {
   case selectChainRow
@@ -64,7 +65,10 @@ class BridgeViewModel {
   var currentSourceChain: ChainType?
   var currentSourceToken: TokenObject?
   var currentDestChain: ChainType?
-  var currentDestToken: TokenObject?
+  
+  
+  var currentDestTokenAddress: String = ""
+  var currentDestTokenSymbol: String = ""
 
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -127,10 +131,23 @@ class BridgeViewModel {
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
         cell.selectTokenBlock = self.selectSourceTokenBlock
-        if let currentSourceToken = currentSourceToken {
+        if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
+          let bal: BigInt = currentSourceToken.getBalanceBigInt()
+          let string = bal.string(
+            decimals: currentSourceToken.decimals,
+            minFractionDigits: 0,
+            maxFractionDigits: min(currentSourceToken.decimals, 5)
+          )
+          if let double = Double(string.removeGroupSeparator()), double == 0 {
+            cell.balanceLabel.text = "0"
+          } else {
+            cell.balanceLabel.text = "\(string.prefix(15)) \(currentSourceToken.symbol)"
+          }
+          
         } else {
           cell.selectTokenButton.setTitle("Select", for: .normal)
+          cell.balanceLabel.text = "0"
         }
         return cell
       }
@@ -151,6 +168,9 @@ class BridgeViewModel {
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
         cell.selectTokenBlock = self.selectDestTokenBlock
+        cell.balanceLabel.text = ""
+        cell.selectTokenButton.setTitle(self.currentDestTokenSymbol, for: .normal)
+        
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!

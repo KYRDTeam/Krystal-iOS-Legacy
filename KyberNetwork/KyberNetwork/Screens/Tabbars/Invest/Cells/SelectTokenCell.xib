@@ -114,6 +114,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="balanceLabel" destination="cTd-xp-Vvl" id="8Cv-QG-tFo"/>
                 <outlet property="selectTokenButton" destination="AdC-9m-Ftm" id="jzR-OK-wx4"/>
             </connections>
             <point key="canvasLocation" x="154.34782608695653" y="145.64732142857142"/>

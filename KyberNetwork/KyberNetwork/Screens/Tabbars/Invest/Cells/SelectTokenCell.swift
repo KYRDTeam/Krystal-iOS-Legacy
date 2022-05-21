@@ -9,6 +9,7 @@ import UIKit
 
 class SelectTokenCell: UITableViewCell {
   @IBOutlet weak var selectTokenButton: UIButton!
+  @IBOutlet weak var balanceLabel: UILabel!
   var selectTokenBlock: (() -> Void)?
   override func awakeFromNib() {
       super.awakeFromNib()

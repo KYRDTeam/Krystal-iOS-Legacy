@@ -140,6 +140,14 @@ class BridgeCoordinator: NSObject, Coordinator {
           }
           if tokens.isNotEmpty {
             self.data = tokens
+            
+            var allTokens = KNSupportedTokenStorage.shared.getAllTokenObject()
+              
+            let supportedAddress = self.data.map { return $0.address.lowercased() }
+            allTokens = allTokens.filter({
+              supportedAddress.contains($0.address.lowercased())
+            })
+            self.rootViewController.viewModel.currentSourceToken = allTokens.first
           }
         }
       case .failure(let error):
@@ -153,8 +161,26 @@ class BridgeCoordinator: NSObject, Coordinator {
 extension BridgeCoordinator: BridgeViewControllerDelegate {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
-    case .switchChain:
-      print("")
+    case .didSelectDestChain(chain: let newChain):
+      self.rootViewController.viewModel.currentDestChain = newChain
+        
+        if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
+          if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
+          }) {
+            let currentDestChain = currentBridgeToken.destChains[newChain.getChainId().toString()]
+            self.rootViewController.viewModel.currentDestTokenAddress = currentDestChain?.address ?? ""
+            self.rootViewController.viewModel.currentDestTokenSymbol = currentDestChain?.symbol ?? ""
+          }
+          
+          
+        }
+        
+        
+        
+        
+        
+//        self.rootViewController.viewModel.currentDestToken = self.da
+      self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
       print("")
     case .openWalletsList:
@@ -167,7 +193,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .addChainWallet(let chainType):
       self.delegate?.didSelectAddChainWallet(chainType: chainType)
-    case .selectDestChain:
+    case .willSelectDestChain:
       guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return }
       let currentData = self.data.first {
         $0.address.lowercased() ==  sourceToken.address.lowercased()
