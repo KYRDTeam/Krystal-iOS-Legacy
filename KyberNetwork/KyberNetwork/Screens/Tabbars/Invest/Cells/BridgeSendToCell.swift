@@ -9,6 +9,8 @@ import UIKit
 
 class BridgeSendToCell: UITableViewCell {
   @IBOutlet weak var icon: UIImageView!
+  var sendButtonTapped: (() -> Void)?
+  
   override func awakeFromNib() {
     super.awakeFromNib()
   }
@@ -19,4 +21,9 @@ class BridgeSendToCell: UITableViewCell {
       // Configure the view for the selected state
   }
     
+  @IBAction func onSendToButtonTapped(_ sender: Any) {
+    if let sendButtonTapped = self.sendButtonTapped {
+      sendButtonTapped()
+    }
+  }
 }

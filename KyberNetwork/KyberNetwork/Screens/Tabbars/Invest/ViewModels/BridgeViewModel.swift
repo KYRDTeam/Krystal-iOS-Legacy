@@ -61,17 +61,18 @@ class BridgeViewModel {
   var selectSourceTokenBlock: (() -> Void)?
   var selectDestChainBlock: (() -> Void)?
   var selectDestTokenBlock: (() -> Void)?
+  var selectSenToBlock: (() -> Void)?
   
   var currentSourceChain: ChainType?
   var currentSourceToken: TokenObject?
   var currentDestChain: ChainType?
-  
-  
   var currentDestTokenAddress: String = ""
   var currentDestTokenSymbol: String = ""
+  var currentSendToAddress: String = ""
 
   init(wallet: Wallet) {
     self.wallet = wallet
+    self.currentSendToAddress = wallet.addressString
   }
 
   func updateWallet(_ wallet: Wallet) {
@@ -174,11 +175,12 @@ class BridgeViewModel {
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
+        cell.sendButtonTapped = self.selectSenToBlock
+        cell.icon.image = self.showSendAddress ? UIImage(named: "green_subtract_icon") : UIImage(named: "green_plus_icon")
         return cell
       case .addressRow:
-        let cell = tableView.dequeueReusableCell(SelectChainCell.self, indexPath: indexPath)!
-        cell.arrowIcon.isHidden = true
-        cell.nameLabel.text = ""
+        let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
+        cell.textField.text = self.currentSendToAddress
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!

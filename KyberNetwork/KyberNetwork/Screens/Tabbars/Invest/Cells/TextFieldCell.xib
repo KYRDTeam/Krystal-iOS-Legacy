@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="45" id="KGk-i7-Jjw" customClass="TextFieldCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="321" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="321" height="45"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n5F-Pb-7oO">
+                        <rect key="frame" x="38" y="0.0" width="245" height="42"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fQX-8i-Z51">
+                                <rect key="frame" x="17" y="0.0" width="211" height="42"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" name="toolbarBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="42" id="2kD-h2-aNi"/>
+                            <constraint firstAttribute="trailing" secondItem="fQX-8i-Z51" secondAttribute="trailing" constant="17" id="ChU-b7-RLr"/>
+                            <constraint firstItem="fQX-8i-Z51" firstAttribute="top" secondItem="n5F-Pb-7oO" secondAttribute="top" id="Xvj-C7-qGt"/>
+                            <constraint firstAttribute="bottom" secondItem="fQX-8i-Z51" secondAttribute="bottom" id="dM3-OZ-TrN"/>
+                            <constraint firstItem="fQX-8i-Z51" firstAttribute="leading" secondItem="n5F-Pb-7oO" secondAttribute="leading" constant="17" id="rfT-Dj-SCC"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstItem="n5F-Pb-7oO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="G6h-Jl-4g0"/>
+                    <constraint firstAttribute="bottom" secondItem="n5F-Pb-7oO" secondAttribute="bottom" id="TbO-qt-tl0"/>
+                    <constraint firstItem="n5F-Pb-7oO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="WXZ-gU-D65"/>
+                    <constraint firstAttribute="trailing" secondItem="n5F-Pb-7oO" secondAttribute="trailing" constant="38" id="w13-cY-KgZ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="textField" destination="fQX-8i-Z51" id="tEa-cM-lJb"/>
+            </connections>
+            <point key="canvasLocation" x="138.40579710144928" y="126.89732142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="toolbarBgColor">
+            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

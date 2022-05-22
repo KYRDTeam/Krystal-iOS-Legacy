@@ -15,6 +15,7 @@ enum BridgeEvent {
   case willSelectDestChain
   case didSelectDestChain(chain: ChainType)
   case selectDestToken
+  case changeDestAddress
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -50,6 +51,7 @@ class BridgeViewController: KNBaseViewController {
     self.tableView.registerCellNib(BridgeSendToCell.self)
     self.tableView.registerCellNib(BridgeReminderCell.self)
     self.tableView.registerCellNib(BridgeSwapButtonCell.self)
+    self.tableView.registerCellNib(TextFieldCell.self)
     self.updateUISwitchChain()
   }
   
@@ -68,6 +70,10 @@ class BridgeViewController: KNBaseViewController {
     
     self.viewModel.selectDestTokenBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectDestToken)
+    }
+    
+    self.viewModel.selectSenToBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .changeDestAddress)
     }
   }
   

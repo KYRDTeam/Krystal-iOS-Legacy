@@ -171,14 +171,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             self.rootViewController.viewModel.currentDestTokenAddress = currentDestChain?.address ?? ""
             self.rootViewController.viewModel.currentDestTokenSymbol = currentDestChain?.symbol ?? ""
           }
-          
-          
         }
-        
-        
-        
-        
-        
 //        self.rootViewController.viewModel.currentDestToken = self.da
       self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
@@ -230,6 +223,9 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.rootViewController.present(controller, animated: true, completion: nil)
+    case .changeDestAddress:
+      self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
+      self.rootViewController.coordinatorDidUpdateData()
     }
   }
 }

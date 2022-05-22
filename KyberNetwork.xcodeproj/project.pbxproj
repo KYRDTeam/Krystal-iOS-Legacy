@@ -483,6 +483,8 @@
 		7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AFF273D09FB00B6E67C /* intro_swap.json */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
+		7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */; };
+		7EA694DC2839D5EB0033E5D2 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */; };
 		7EB2199627C5DD1500CF243C /* BuyCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */; };
 		7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */; };
 		7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */; };
@@ -1442,6 +1444,8 @@
 		7E913AFF273D09FB00B6E67C /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
+		7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
 		7EB2199427C5DD1500CF243C /* BuyCryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoViewController.swift; sourceTree = "<group>"; };
 		7EB2199527C5DD1500CF243C /* BuyCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuyCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB2199827C6177300CF243C /* BuyCryptoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyCryptoCoordinator.swift; sourceTree = "<group>"; };
@@ -4487,6 +4491,8 @@
 				7E1EBE48283500A800793B6D /* BridgeReminderCell.xib */,
 				7E1EBE4B283507E200793B6D /* BridgeSwapButtonCell.swift */,
 				7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */,
+				7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */,
+				7EA694DA2839D5EB0033E5D2 /* TextFieldCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5570,6 +5576,7 @@
 				C35E9DF027DB2ED900E1E7CE /* PromoCodeListViewController.xib in Resources */,
 				25C45ADB20AD40F400CDA1FF /* KNImportPrivateKeyViewController.xib in Resources */,
 				C37CC099245803CA0081FB32 /* Roboto-Italic.ttf in Resources */,
+				7EA694DC2839D5EB0033E5D2 /* TextFieldCell.xib in Resources */,
 				C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */,
 				7E1EBE422834DC1D00793B6D /* ChainInfoCell.xib in Resources */,
 				C32670402579E4B70063AA1F /* GasFeeSelectorPopupViewController.xib in Resources */,
@@ -5908,6 +5915,7 @@
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				A6DA40F327F6E15D0078C58E /* ExploreMenuCell.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,
+				7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */,
 				7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */,
 				255709BF20DCB50800B5BC9E /* KNNewContactViewController.swift in Sources */,
 				C35E9DFC27E1BDF500E1E7CE /* PromoCodeDetailViewController.swift in Sources */,
