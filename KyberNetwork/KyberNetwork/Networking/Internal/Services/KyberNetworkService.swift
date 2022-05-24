@@ -893,11 +893,14 @@ enum KrytalService {
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
+  case getDappList
 }
 
 extension KrytalService: TargetType {
   var baseURL: URL {
     switch self {
+    case .getDappList:
+      return URL(string: "http://192.168.1.67:8080")!
     case .getHint(let path):
       var urlComponents = URLComponents(string: KNEnvironment.default.krystalEndpoint + "/v1/swap/buildHint")!
       var queryItems: [URLQueryItem] = []
@@ -1011,6 +1014,8 @@ extension KrytalService: TargetType {
       return "/v1/tracking/ratings"
     case .getGasPriceV2:
       return "/v2/gasPrice"
+    case.getDappList:
+      return "/dapps"
     }
   }
 
@@ -1341,6 +1346,8 @@ extension KrytalService: TargetType {
         "userWallet": userWallet
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getDappList:
+      return .requestPlain
     }
   }
 

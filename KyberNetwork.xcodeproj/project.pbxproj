@@ -445,6 +445,8 @@
 		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
 		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
 		7E16B8D42769DB3300F9A234 /* ReferralTiersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */; };
+		7E2DE74F283CC8840018FD7A /* MiniAppDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DE74D283CC8840018FD7A /* MiniAppDetailViewController.swift */; };
+		7E2DE750283CC8840018FD7A /* MiniAppDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E2DE74E283CC8840018FD7A /* MiniAppDetailViewController.xib */; };
 		7E4039F7283B8C33000A90CE /* HubCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4039F6283B8C33000A90CE /* HubCoordinator.swift */; };
 		7E4039FA283B8E7A000A90CE /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4039F8283B8E7A000A90CE /* HubViewController.swift */; };
 		7E4039FB283B8E7A000A90CE /* HubViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E4039F9283B8E7A000A90CE /* HubViewController.xib */; };
@@ -1403,6 +1405,8 @@
 		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
 		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
 		7E16B8D22769DB3300F9A234 /* ReferralTiersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersCell.xib; sourceTree = "<group>"; };
+		7E2DE74D283CC8840018FD7A /* MiniAppDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAppDetailViewController.swift; sourceTree = "<group>"; };
+		7E2DE74E283CC8840018FD7A /* MiniAppDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MiniAppDetailViewController.xib; sourceTree = "<group>"; };
 		7E4039F6283B8C33000A90CE /* HubCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HubCoordinator.swift; sourceTree = "<group>"; };
 		7E4039F8283B8E7A000A90CE /* HubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
 		7E4039F9283B8E7A000A90CE /* HubViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HubViewController.xib; sourceTree = "<group>"; };
@@ -4983,6 +4987,8 @@
 				7E4039F9283B8E7A000A90CE /* HubViewController.xib */,
 				7E403A09283C94D5000A90CE /* MiniAppListController.swift */,
 				7E403A0A283C94D5000A90CE /* MiniAppListController.xib */,
+				7E2DE74D283CC8840018FD7A /* MiniAppDetailViewController.swift */,
+				7E2DE74E283CC8840018FD7A /* MiniAppDetailViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -5376,6 +5382,7 @@
 				25369F0820F88835007231FE /* welcome_screen_data.json in Resources */,
 				7EFE441227167F2A006CF502 /* RewardDetailCell.xib in Resources */,
 				C38E5D7525F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.xib in Resources */,
+				7E2DE750283CC8840018FD7A /* MiniAppDetailViewController.xib in Resources */,
 				25A4B4B421242DE000924351 /* KNCreateWalletViewController.xib in Resources */,
 				C313720726077A44003D432B /* CustomTokenListViewController.xib in Resources */,
 				C3EE06C4267A15E50090B432 /* Karla-SemiBoldItalic.ttf in Resources */,
@@ -5917,6 +5924,7 @@
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
+				7E2DE74F283CC8840018FD7A /* MiniAppDetailViewController.swift in Sources */,
 				25D325A520C0708E008BB235 /* KNSendTokenViewModel.swift in Sources */,
 				A6DA40F327F6E15D0078C58E /* ExploreMenuCell.swift in Sources */,
 				2963B6B11F9891F5003063C1 /* UIButton.swift in Sources */,

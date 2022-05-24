@@ -12,6 +12,9 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Italic.ttf">
+            <string>Karla-Italic</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -44,16 +47,41 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nJv-4V-Oea">
+                                <rect key="frame" x="279.5" y="20" width="8.5" height="16"/>
+                                <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 reviews" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGm-VM-ymN">
+                                <rect key="frame" x="241.5" y="38" width="58.5" height="16"/>
+                                <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="green_star_icon" translatesAutoresizingMaskIntoConstraints="NO" id="yrv-nc-7z1">
+                                <rect key="frame" x="288" y="22" width="12" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="12" id="G06-Hd-E9B"/>
+                                    <constraint firstAttribute="height" constant="12" id="sWp-Sm-PLD"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" name="investButtonBgColor"/>
                         <constraints>
+                            <constraint firstItem="yrv-nc-7z1" firstAttribute="trailing" secondItem="oGm-VM-ymN" secondAttribute="trailing" id="0Rt-j2-7r8"/>
                             <constraint firstAttribute="width" constant="320" id="Cqk-ma-EvH"/>
                             <constraint firstItem="uSv-Hj-m2n" firstAttribute="leading" secondItem="GDo-4H-BNg" secondAttribute="leading" constant="20" id="Rgr-zy-VkD"/>
+                            <constraint firstItem="oGm-VM-ymN" firstAttribute="trailing" secondItem="uSv-Hj-m2n" secondAttribute="trailing" id="W92-Qe-eMb"/>
+                            <constraint firstItem="yrv-nc-7z1" firstAttribute="centerY" secondItem="nJv-4V-Oea" secondAttribute="centerY" id="WqJ-qq-CKC"/>
                             <constraint firstAttribute="bottom" secondItem="uSv-Hj-m2n" secondAttribute="bottom" constant="20" id="XZo-Jl-t8P"/>
                             <constraint firstAttribute="trailing" secondItem="uSv-Hj-m2n" secondAttribute="trailing" constant="20" id="Xcx-Vz-oYx"/>
                             <constraint firstAttribute="height" constant="200" id="Z2f-q2-Prr"/>
+                            <constraint firstItem="yrv-nc-7z1" firstAttribute="leading" secondItem="nJv-4V-Oea" secondAttribute="trailing" id="ghb-KA-RgB"/>
                             <constraint firstItem="uSv-Hj-m2n" firstAttribute="top" secondItem="RDV-UO-sJw" secondAttribute="bottom" constant="10" id="iOH-qh-QcI"/>
+                            <constraint firstItem="oGm-VM-ymN" firstAttribute="top" secondItem="yrv-nc-7z1" secondAttribute="bottom" constant="4" id="mXw-5P-yb6"/>
                             <constraint firstItem="RDV-UO-sJw" firstAttribute="leading" secondItem="GDo-4H-BNg" secondAttribute="leading" constant="20" id="oZ6-qc-aEl"/>
+                            <constraint firstItem="uSv-Hj-m2n" firstAttribute="top" secondItem="oGm-VM-ymN" secondAttribute="bottom" constant="6" id="rdo-LD-vNc"/>
                             <constraint firstItem="RDV-UO-sJw" firstAttribute="top" secondItem="GDo-4H-BNg" secondAttribute="top" constant="20" id="uHa-ng-VwM"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -73,11 +101,18 @@
                 <constraint firstAttribute="trailing" secondItem="GDo-4H-BNg" secondAttribute="trailing" constant="10" id="o7Z-26-vZa"/>
             </constraints>
             <size key="customSize" width="340" height="220"/>
+            <connections>
+                <outlet property="icon" destination="uSv-Hj-m2n" id="Fwy-4o-59K"/>
+                <outlet property="nameLabel" destination="RDV-UO-sJw" id="BXf-uk-WYS"/>
+                <outlet property="ratingLabel" destination="nJv-4V-Oea" id="vMO-rP-m4i"/>
+                <outlet property="reviewsLabel" destination="oGm-VM-ymN" id="SRl-6o-3iv"/>
+            </connections>
             <point key="canvasLocation" x="340.57971014492756" y="119.19642857142857"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="explore_default_banner_1" width="800" height="426.5"/>
+        <image name="green_star_icon" width="38" height="32"/>
         <namedColor name="investButtonBgColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

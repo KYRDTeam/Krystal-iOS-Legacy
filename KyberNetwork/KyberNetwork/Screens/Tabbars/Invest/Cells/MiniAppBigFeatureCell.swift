@@ -9,9 +9,12 @@ import UIKit
 
 class MiniAppBigFeatureCell: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+  @IBOutlet weak var ratingLabel: UILabel!
+  @IBOutlet weak var reviewsLabel: UILabel!
+  @IBOutlet weak var icon: UIImageView!
+  @IBOutlet weak var nameLabel: UILabel!
+  override func awakeFromNib() {
+    super.awakeFromNib()
+  }
 
 }
