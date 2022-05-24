@@ -12,16 +12,22 @@ let FEATURE_CATEGORY = "Feature"
 
 class HubViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var searchTextField: UITextField!
   var dataSource: [MiniApp] = []
   var category: [String] = []
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.registerCellNib(MiniAppsCell.self)
+    self.searchTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.getData()
+  }
+  
+  @objc func textFieldDidChange(_ textField: UITextField) {
+    let keyword = textField.text
   }
 }
 
