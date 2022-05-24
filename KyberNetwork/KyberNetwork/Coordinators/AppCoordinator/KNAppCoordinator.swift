@@ -18,6 +18,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
+  internal var hubCoordinator: HubCoordinator?
 //  internal var balanceTabCoordinator: KNBalanceTabCoordinator?
   internal var overviewTabCoordinator: OverviewCoordinator?
   internal var settingsCoordinator: KNSettingsCoordinator?

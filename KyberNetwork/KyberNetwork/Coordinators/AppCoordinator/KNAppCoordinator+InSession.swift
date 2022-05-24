@@ -59,6 +59,13 @@ extension KNAppCoordinator {
     }()
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
+    
+    self.hubCoordinator = {
+      let coordinator = HubCoordinator( session: self.session)
+      
+      return coordinator
+    }()
+    self.hubCoordinator?.start()
 
     // Settings tab
     self.settingsCoordinator = {
@@ -69,10 +76,10 @@ extension KNAppCoordinator {
       return coordinator
     }()
     
-    let investCoordinator = InvestCoordinator(session: self.session)
-    investCoordinator.delegate = self
-    investCoordinator.start()
-    self.investCoordinator = investCoordinator
+//    let investCoordinator = InvestCoordinator(session: self.session)
+//    investCoordinator.delegate = self
+//    investCoordinator.start()
+//    self.investCoordinator = investCoordinator
 
     self.earnCoordinator = {
       let coordinator = EarnCoordinator(session: self.session)
@@ -87,7 +94,8 @@ extension KNAppCoordinator {
     self.tabbarController.viewControllers = [
       self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
-      self.investCoordinator!.navigationController,
+      self.hubCoordinator!.navigationController,
+//      self.investCoordinator!.navigationController,
       self.earnCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,
     ]
