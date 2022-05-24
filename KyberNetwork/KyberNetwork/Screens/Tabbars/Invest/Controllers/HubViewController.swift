@@ -11,13 +11,19 @@ import Moya
 let FEATURE_CATEGORY = "Feature"
 
 class HubViewController: KNBaseViewController {
+  @IBOutlet weak var searchViewLeading: NSLayoutConstraint!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchTextField: UITextField!
+  @IBOutlet weak var backButton: UIButton!
+  var isSearching: Bool = false
   var dataSource: [MiniApp] = []
+  var displayDataSource: [MiniApp] = []
   var category: [String] = []
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.tableView.delegate = self
     self.tableView.registerCellNib(MiniAppsCell.self)
+    self.tableView.registerCellNib(MiniAppDetailCell.self)
     self.searchTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
   }
   
@@ -28,31 +34,78 @@ class HubViewController: KNBaseViewController {
   
   @objc func textFieldDidChange(_ textField: UITextField) {
     let keyword = textField.text
+    self.displayDataSource = self.dataSource.filter { element in
+      if let keyword = keyword {
+        return element.name.lowercased().contains(keyword.lowercased())
+      } else {
+        return true
+      }
+    }
+    self.tableView.reloadData()
+  }
+  
+  @IBAction func backButtonTapped(_ sender: Any) {
+    self.searchTextField.text = ""
+    self.view.endEditing(true)
+    self.searchViewLeading.constant = 40
+    self.backButton.isHidden = true
+    self.isSearching = false
+    self.displayDataSource = self.dataSource
+    self.tableView.reloadData()
+  }
+}
+
+extension HubViewController: UITextFieldDelegate {
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.isSearching = true
+    self.tableView.reloadData()
+    self.searchViewLeading.constant = 80
+    self.backButton.isHidden = false
+    return true
   }
 }
 
 extension HubViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return self.category.count + 1
+    return self.isSearching ? 1 : self.category.count + 1
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return self.isSearching ? self.displayDataSource.count : 1
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(MiniAppsCell.self, indexPath: indexPath)!
+    if self.isSearching {
+      return self.searchingCell(indexPath: indexPath)
+    } else {
+      return self.normalCell(indexPath: indexPath)
+    }
+  }
+  
+  func searchingCell(indexPath: IndexPath) -> UITableViewCell {
+    let cell = self.tableView.dequeueReusableCell(MiniAppDetailCell.self, indexPath: indexPath)!
+    let miniApp = self.displayDataSource[indexPath.row]
+    cell.titleLabel.text = miniApp.name
+    if let url = URL(string: miniApp.icon) {
+      cell.icon.setImage(with: url, placeholder: nil)
+    }
+    
+    return cell
+  }
+  
+  func normalCell(indexPath: IndexPath) -> UITableViewCell {
+    let cell = self.tableView.dequeueReusableCell(MiniAppsCell.self, indexPath: indexPath)!
     cell.isSpecialApp = indexPath.section == 0
     cell.selectCompletion = { miniApp in
       let detailVC = MiniAppDetailViewController(miniApp: miniApp)
       self.navigationController?.show(detailVC, sender: nil)
     }
     if indexPath.section == 0 {
-      let miniApps = self.dataSource.filter { $0.category == FEATURE_CATEGORY }
+      let miniApps = self.displayDataSource.filter { $0.category == FEATURE_CATEGORY }
       cell.dataSource = miniApps
     } else {
       let category = self.category[indexPath.section - 1]
-      let miniApps = self.dataSource.filter { $0.category == category }
+      let miniApps = self.displayDataSource.filter { $0.category == category }
       cell.dataSource = miniApps
     }
     
@@ -63,11 +116,23 @@ extension HubViewController: UITableViewDataSource {
 
 extension HubViewController: UITableViewDelegate {
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if self.isSearching {
+      let miniApp = self.displayDataSource[indexPath.row]
+      let detailVC = MiniAppDetailViewController(miniApp: miniApp)
+      self.navigationController?.show(detailVC, sender: nil)
+    }
+  }
+  
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return indexPath.section == 0 ? 220 : 156
+    if self.isSearching {
+      return 76
+    } else {
+      return indexPath.section == 0 ? 220 : 156
+    }
   }
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 50
+    return self.isSearching ? 0.01 : 50
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -75,6 +140,9 @@ extension HubViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if self.isSearching {
+      return nil
+    }
     let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
     
     let title = section == 0 ? FEATURE_CATEGORY : self.category[section - 1]
@@ -129,6 +197,7 @@ extension HubViewController {
             }
             self.dataSource.append(miniApp)
           }
+          self.displayDataSource = self.dataSource
           self.tableView.reloadData()
         } catch let error {
           print("[Krytal] \(error.localizedDescription)")
