@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Moya
 
 class MiniAppDetailViewController: KNBaseViewController {
   @IBOutlet weak var fiveStarButton: UIButton!
@@ -19,8 +20,9 @@ class MiniAppDetailViewController: KNBaseViewController {
   @IBOutlet weak var icon: UIImageView!
   @IBOutlet weak var detailLabel: UILabel!
   @IBOutlet weak var chainLabel: UILabel!
+  @IBOutlet weak var favoriteButton: UIButton!
   var currentMiniApp: MiniApp
-  
+  var isFavorite: Bool = false
   init(miniApp: MiniApp) {
     self.currentMiniApp = miniApp
     super.init(nibName: MiniAppDetailViewController.className, bundle: nil)
@@ -43,14 +45,37 @@ class MiniAppDetailViewController: KNBaseViewController {
     self.detailLabel.text = self.currentMiniApp.description
     
     let rate = self.currentMiniApp.rating
-    self.oneStarButton.setImage(rate >= 0.5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.twoStarButton.setImage(rate >= 1.5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.threeStarButton.setImage(rate >= 2.5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.fourStarButton.setImage(rate >= 3.5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    self.fiveStarButton.setImage(rate >= 4.5 ? UIImage(named: "green_star_icon") : UIImage(named: "star_icon"), for: .normal)
-    
+    self.updateRateUI(rate: rate)
+    self.favoriteButton.setImage(self.isFavorite ? UIImage(named: "heart_icon_red") : UIImage(named: "heart_icon"), for: .normal)
+  }
+  
+  func updateRateUI(rate: Double) {
+    self.oneStarButton.configStarRate(isHighlight: rate >= 0.5)
+    self.twoStarButton.configStarRate(isHighlight: rate >= 1.5)
+    self.threeStarButton.configStarRate(isHighlight: rate >= 2.5)
+    self.fourStarButton.configStarRate(isHighlight: rate >= 3.5)
+    self.fiveStarButton.configStarRate(isHighlight: rate >= 4.5)
   }
 
+  @IBAction func favoriteButtonTapped(_ sender: Any) {
+    self.isFavorite = !self.isFavorite
+    self.favoriteButton.setImage(self.isFavorite ? UIImage(named: "heart_icon_red") : UIImage(named: "heart_icon"), for: .normal)
+    if self.isFavorite {
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      self.showLoadingHUD()
+      provider.request(.addFavorite(address: "0x8D61aB7571b117644A52240456DF66EF846cd999", url: self.currentMiniApp.url)) { (result) in
+        DispatchQueue.main.async {
+          self.hideLoading()
+        }
+        if case .success(let resp) = result {
+          print("Success")
+        } else {
+          print("Error")
+        }
+      }
+    }
+  }
+  
   @IBAction func backButtonTapped(_ sender: Any) {
     self.navigationController?.popViewController(animated: true)
   }
@@ -61,4 +86,35 @@ class MiniAppDetailViewController: KNBaseViewController {
     }
   }
   
+  @IBAction func rateButtonTapped(_ sender: UIButton) {
+    self.updateRateUI(rate: Double(sender.tag))
+    let vc = RateTransactionPopupViewController(currentRate: sender.tag, txHash: "")
+    vc.delegate = self
+    self.present(vc, animated: true, completion: nil)
+  }
+}
+
+extension MiniAppDetailViewController: RateTransactionPopupDelegate {
+  func didUpdateRate(rate: Int) {
+    
+  }
+
+  func didSendRate() {
+    
+  }
+  
+  func didSendRate(rate: Int, comment: String) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.showLoadingHUD()
+    provider.request(.addReview(address: "0x8D61aB7571b117644A52240456DF66EF846cd999", url: self.currentMiniApp.url, rating: Double(rate), comment: comment)) { (result) in
+      DispatchQueue.main.async {
+        self.hideLoading()
+      }
+      if case .success(let resp) = result {
+        print("Success")
+      } else {
+        print("Error")
+      }
+    }
+  }
 }

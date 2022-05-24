@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic-VariableFont_wght.ttf">
+        <array key="Karla-Italic.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-Regular.ttf">
@@ -24,6 +24,7 @@
             <connections>
                 <outlet property="chainLabel" destination="MKX-0d-Fhv" id="1bH-3e-Etf"/>
                 <outlet property="detailLabel" destination="r3b-H6-ieM" id="gt4-pS-PZI"/>
+                <outlet property="favoriteButton" destination="zcU-0Y-w9M" id="oE3-O6-fUm"/>
                 <outlet property="fiveStarButton" destination="fci-qj-v4p" id="xwi-tf-MOw"/>
                 <outlet property="fourStarButton" destination="leH-0g-tyq" id="jb1-c4-lzY"/>
                 <outlet property="icon" destination="knW-As-20B" id="mLa-TA-4we"/>
@@ -62,6 +63,18 @@
                                 <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="G0e-Hg-Any"/>
                             </connections>
                         </button>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zcU-0Y-w9M">
+                            <rect key="frame" x="366" y="61.5" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="1XS-4Q-IYn"/>
+                                <constraint firstAttribute="width" constant="32" id="iOG-Bj-ag5"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="heart_icon"/>
+                            <connections>
+                                <action selector="favoriteButtonTapped:" destination="-1" eventType="touchUpInside" id="tHE-Bp-fZM"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
@@ -71,7 +84,9 @@
                         <constraint firstAttribute="trailing" secondItem="bcK-Vd-6t0" secondAttribute="trailing" constant="16" id="YFJ-r3-tdy"/>
                         <constraint firstAttribute="bottom" secondItem="fSY-Sj-W42" secondAttribute="bottom" constant="17.5" id="dgo-aB-j7l"/>
                         <constraint firstAttribute="height" constant="113" id="dlH-ct-YiF"/>
+                        <constraint firstItem="zcU-0Y-w9M" firstAttribute="centerY" secondItem="bcK-Vd-6t0" secondAttribute="centerY" id="f81-aa-bO0"/>
                         <constraint firstItem="fSY-Sj-W42" firstAttribute="leading" secondItem="MpJ-R3-5R5" secondAttribute="leading" constant="20" id="kV1-Ot-YvT"/>
+                        <constraint firstAttribute="trailing" secondItem="zcU-0Y-w9M" secondAttribute="trailing" constant="16" id="nrZ-by-FD6"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -119,6 +134,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="star_icon" backgroundImage="star_icon"/>
+                    <connections>
+                        <action selector="rateButtonTapped:" destination="-1" eventType="touchUpInside" id="TRy-vB-yzP"/>
+                    </connections>
                 </button>
                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fci-qj-v4p">
                     <rect key="frame" x="296" y="167" width="32" height="30"/>
@@ -128,6 +146,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="star_icon"/>
+                    <connections>
+                        <action selector="rateButtonTapped:" destination="-1" eventType="touchUpInside" id="NPl-yv-p1y"/>
+                    </connections>
                 </button>
                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBn-C4-w7p">
                     <rect key="frame" x="194" y="167" width="32" height="30"/>
@@ -137,6 +158,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="star_icon"/>
+                    <connections>
+                        <action selector="rateButtonTapped:" destination="-1" eventType="touchUpInside" id="VAv-4Z-ojN"/>
+                    </connections>
                 </button>
                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leH-0g-tyq">
                     <rect key="frame" x="262" y="167" width="32" height="30"/>
@@ -146,6 +170,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="star_icon"/>
+                    <connections>
+                        <action selector="rateButtonTapped:" destination="-1" eventType="touchUpInside" id="Khw-Vu-trC"/>
+                    </connections>
                 </button>
                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugB-Gp-WN2">
                     <rect key="frame" x="160" y="167" width="32" height="30"/>
@@ -155,6 +182,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" image="green_star_icon"/>
+                    <connections>
+                        <action selector="rateButtonTapped:" destination="-1" eventType="touchUpInside" id="L0l-uN-WnF"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qkF-y8-bbK">
                     <rect key="frame" x="38" y="309" width="338" height="42"/>
@@ -177,8 +207,11 @@
                         <action selector="onOpenDappTapped:" destination="-1" eventType="touchUpInside" id="tYo-Uf-uTL"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 Ratings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3b-H6-ieM">
-                    <rect key="frame" x="38" y="435" width="338" height="16.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 Ratings" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3b-H6-ieM">
+                    <rect key="frame" x="38" y="435" width="338" height="160"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="160" id="zT6-1v-f3g"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                     <color key="textColor" name="normalTextColor"/>
                     <nil key="highlightedColor"/>
@@ -232,6 +265,7 @@
     </objects>
     <resources>
         <image name="green_star_icon" width="38" height="32"/>
+        <image name="heart_icon" width="32" height="32"/>
         <image name="left_arrow_icon" width="24" height="24"/>
         <image name="star_icon" width="38" height="32"/>
         <namedColor name="buttonBackgroundColor">
