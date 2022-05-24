@@ -23,6 +23,7 @@ class MiniAppDetailViewController: KNBaseViewController {
   @IBOutlet weak var favoriteButton: UIButton!
   var currentMiniApp: MiniApp
   var isFavorite: Bool = false
+  var favoriteData: [String: Bool]? = UserDefaults.standard.value(forKey: "MiniAppData") as? [String: Bool]
   init(miniApp: MiniApp) {
     self.currentMiniApp = miniApp
     super.init(nibName: MiniAppDetailViewController.className, bundle: nil)
@@ -47,6 +48,12 @@ class MiniAppDetailViewController: KNBaseViewController {
     let rate = self.currentMiniApp.rating
     self.updateRateUI(rate: rate)
     self.favoriteButton.setImage(self.isFavorite ? UIImage(named: "heart_icon_red") : UIImage(named: "heart_icon"), for: .normal)
+    
+    if let favoriteData = self.favoriteData, let favorite = favoriteData[self.currentMiniApp.url], favorite == true {
+      self.favoriteButton.setImage(UIImage(named: "heart_icon_red"), for: .normal)
+    } else {
+      self.favoriteButton.setImage(UIImage(named: "heart_icon"), for: .normal)
+    }
   }
   
   func updateRateUI(rate: Double) {
@@ -59,6 +66,10 @@ class MiniAppDetailViewController: KNBaseViewController {
 
   @IBAction func favoriteButtonTapped(_ sender: Any) {
     self.isFavorite = !self.isFavorite
+    if var favoriteData = self.favoriteData {
+      favoriteData[self.currentMiniApp.url] = self.isFavorite
+      UserDefaults.standard.set(favoriteData, forKey: "MiniAppData")
+    }
     self.favoriteButton.setImage(self.isFavorite ? UIImage(named: "heart_icon_red") : UIImage(named: "heart_icon"), for: .normal)
     if self.isFavorite {
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
