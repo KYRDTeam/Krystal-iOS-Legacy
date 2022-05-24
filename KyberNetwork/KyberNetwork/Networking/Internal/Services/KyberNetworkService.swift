@@ -1028,7 +1028,7 @@ extension KrytalService: TargetType {
 
   var method: Moya.Method {
     switch self {
-      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto, .addReview:
+      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto, .addReview, .addFavorite:
       return .post
     default:
       return .get
