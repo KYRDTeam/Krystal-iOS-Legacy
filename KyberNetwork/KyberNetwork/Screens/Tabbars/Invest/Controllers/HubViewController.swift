@@ -190,7 +190,7 @@ extension HubViewController: UITableViewDelegate {
   @objc func seeAllButtonTapped(_ sender: UIButton) {
     var data: [MiniApp] = []
     if sender.tag == 0 {
-      
+      data = self.dataSource.filter { $0.category == FEATURE_CATEGORY }
     } else {
       let category = self.category[sender.tag - 1]
       data = self.dataSource.filter { $0.category == category }
