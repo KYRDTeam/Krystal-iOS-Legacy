@@ -110,6 +110,9 @@ class MiniAppDetailViewController: KNBaseViewController {
     if var favoriteData = self.favoriteData {
       favoriteData[self.currentMiniApp.url] = self.isFavorite
       UserDefaults.standard.set(favoriteData, forKey: "MiniAppData")
+    } else {
+      let newFavoriteData = [self.currentMiniApp.url : self.isFavorite]
+      UserDefaults.standard.set(newFavoriteData, forKey: "MiniAppData")
     }
     self.favoriteButton.setImage(self.isFavorite ? UIImage(named: "heart_icon_red") : UIImage(named: "heart_icon"), for: .normal)
     if self.isFavorite {
