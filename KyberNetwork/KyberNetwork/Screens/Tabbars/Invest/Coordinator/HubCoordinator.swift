@@ -13,7 +13,7 @@ class HubCoordinator: Coordinator {
   var session: KNSession
   
   lazy var rootViewController: HubViewController = {
-    let controller = HubViewController()
+    let controller = HubViewController(session: self.session)
     return controller
   }()
 

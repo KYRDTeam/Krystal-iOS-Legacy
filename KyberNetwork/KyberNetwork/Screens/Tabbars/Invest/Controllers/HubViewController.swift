@@ -15,10 +15,22 @@ class HubViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var backButton: UIButton!
+  var session: KNSession
   var isSearching: Bool = false
   var dataSource: [MiniApp] = []
   var displayDataSource: [MiniApp] = []
   var category: [String] = []
+  
+  init(session: KNSession) {
+    self.session = session
+    super.init(nibName: HubViewController.className, bundle: nil)
+    self.modalPresentationStyle = .custom
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.delegate = self
@@ -97,7 +109,7 @@ extension HubViewController: UITableViewDataSource {
     let cell = self.tableView.dequeueReusableCell(MiniAppsCell.self, indexPath: indexPath)!
     cell.isSpecialApp = indexPath.section == 0
     cell.selectCompletion = { miniApp in
-      let detailVC = MiniAppDetailViewController(miniApp: miniApp)
+      let detailVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
       self.navigationController?.show(detailVC, sender: nil)
     }
     if indexPath.section == 0 {
@@ -119,7 +131,7 @@ extension HubViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if self.isSearching {
       let miniApp = self.displayDataSource[indexPath.row]
-      let detailVC = MiniAppDetailViewController(miniApp: miniApp)
+      let detailVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
       self.navigationController?.show(detailVC, sender: nil)
     }
   }
@@ -173,7 +185,7 @@ extension HubViewController: UITableViewDelegate {
       data = self.dataSource.filter { $0.category == category }
       
     }
-    let detailVC = MiniAppListController(dataSource: data)
+    let detailVC = MiniAppListController(dataSource: data, session: self.session)
     self.navigationController?.show(detailVC, sender: nil)
   }
 }

@@ -11,9 +11,11 @@ class MiniAppListController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
   var dataSource: [MiniApp]
+  var session: KNSession
   
-  init(dataSource: [MiniApp]) {
+  init(dataSource: [MiniApp], session: KNSession) {
     self.dataSource = dataSource
+    self.session = session
     super.init(nibName: MiniAppListController.className, bundle: nil)
     self.modalPresentationStyle = .custom
   }
@@ -55,7 +57,7 @@ extension MiniAppListController: UITableViewDataSource {
 extension MiniAppListController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let miniApp = self.dataSource[indexPath.row]
-    let detaiVC = MiniAppDetailViewController(miniApp: miniApp)
+    let detaiVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
     self.show(detaiVC, sender: nil)
   }
 }
