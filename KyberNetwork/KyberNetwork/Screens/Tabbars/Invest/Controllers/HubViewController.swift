@@ -196,7 +196,26 @@ extension HubViewController: UITableViewDelegate {
       
     }
     let detailVC = MiniAppListController(dataSource: data, session: self.session)
+    detailVC.delegate = self
     self.navigationController?.show(detailVC, sender: nil)
+  }
+}
+
+extension HubViewController: MiniAppListControllerDelegate {
+  func didSelectAddWallet() {
+    self.delegate?.dAppCoordinatorDidSelectAddWallet()
+  }
+  
+  func didSelectWallet(_ wallet: Wallet) {
+    self.delegate?.dAppCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func didSelectManageWallet() {
+    self.delegate?.dAppCoordinatorDidSelectManageWallet()
+  }
+  
+  func didSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }
 

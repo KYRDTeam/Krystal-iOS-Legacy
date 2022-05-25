@@ -8,10 +8,10 @@
 import UIKit
 
 protocol MiniAppListControllerDelegate: class {
-  func dAppCoordinatorDidSelectAddWallet()
-  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
-  func dAppCoordinatorDidSelectManageWallet()
-  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType)
+  func didSelectAddWallet()
+  func didSelectWallet(_ wallet: Wallet)
+  func didSelectManageWallet()
+  func didSelectAddChainWallet(chainType: ChainType)
 }
 
 class MiniAppListController: KNBaseViewController {
@@ -73,18 +73,18 @@ extension MiniAppListController: UITableViewDelegate {
 
 extension MiniAppListController: MiniAppDetailDelegate {
   func dAppCoordinatorDidSelectAddWallet() {
-    self.delegate?.dAppCoordinatorDidSelectAddWallet()
+    self.delegate?.didSelectAddWallet()
   }
   
   func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.dAppCoordinatorDidSelectWallet(wallet)
+    self.delegate?.didSelectWallet(wallet)
   }
   
   func dAppCoordinatorDidSelectManageWallet() {
-    self.delegate?.dAppCoordinatorDidSelectManageWallet()
+    self.delegate?.didSelectManageWallet()
   }
   
   func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    self.delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
+    self.delegate?.didSelectAddChainWallet(chainType: chainType)
   }
 }
