@@ -236,6 +236,25 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
   }
 }
 
+extension KNAppCoordinator: HubCoordinatorDelegate {
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.addNewWallet(type: .chain(chainType: chainType))
+  }
+
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.restartNewSession(wallet)
+  }
+  
+  func dAppCoordinatorDidSelectManageWallet() {
+    self.tabbarController.selectedIndex = 4
+    self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
+  }
+  
+  func dAppCoordinatorDidSelectAddWallet() {
+    self.addNewWallet(type: .full)
+  }
+}
+
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
   

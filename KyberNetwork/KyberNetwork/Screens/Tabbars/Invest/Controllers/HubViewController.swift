@@ -10,11 +10,19 @@ import Moya
 
 let FEATURE_CATEGORY = "Feature"
 
+protocol HubViewControllerDelegate: class {
+  func dAppCoordinatorDidSelectAddWallet()
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func dAppCoordinatorDidSelectManageWallet()
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType)
+}
+
 class HubViewController: KNBaseViewController {
   @IBOutlet weak var searchViewLeading: NSLayoutConstraint!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchTextField: UITextField!
   @IBOutlet weak var backButton: UIButton!
+  weak var delegate: HubViewControllerDelegate?
   var session: KNSession
   var isSearching: Bool = false
   var dataSource: [MiniApp] = []
@@ -110,6 +118,7 @@ extension HubViewController: UITableViewDataSource {
     cell.isSpecialApp = indexPath.section == 0
     cell.selectCompletion = { miniApp in
       let detailVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
+      detailVC.delegate = self
       self.navigationController?.show(detailVC, sender: nil)
     }
     if indexPath.section == 0 {
@@ -132,6 +141,7 @@ extension HubViewController: UITableViewDelegate {
     if self.isSearching {
       let miniApp = self.displayDataSource[indexPath.row]
       let detailVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
+      detailVC.delegate = self
       self.navigationController?.show(detailVC, sender: nil)
     }
   }
@@ -187,6 +197,24 @@ extension HubViewController: UITableViewDelegate {
     }
     let detailVC = MiniAppListController(dataSource: data, session: self.session)
     self.navigationController?.show(detailVC, sender: nil)
+  }
+}
+
+extension HubViewController: MiniAppDetailDelegate {
+  func dAppCoordinatorDidSelectAddWallet() {
+    self.delegate?.dAppCoordinatorDidSelectAddWallet()
+  }
+  
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.dAppCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func dAppCoordinatorDidSelectManageWallet() {
+    self.delegate?.dAppCoordinatorDidSelectManageWallet()
+  }
+  
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }
 

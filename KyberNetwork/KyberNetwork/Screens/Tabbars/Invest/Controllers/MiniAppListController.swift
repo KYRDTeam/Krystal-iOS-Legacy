@@ -7,9 +7,17 @@
 
 import UIKit
 
+protocol MiniAppListControllerDelegate: class {
+  func dAppCoordinatorDidSelectAddWallet()
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet)
+  func dAppCoordinatorDidSelectManageWallet()
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType)
+}
+
 class MiniAppListController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var tableView: UITableView!
+  weak var delegate: MiniAppListControllerDelegate?
   var dataSource: [MiniApp]
   var session: KNSession
   
@@ -58,6 +66,25 @@ extension MiniAppListController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let miniApp = self.dataSource[indexPath.row]
     let detaiVC = MiniAppDetailViewController(miniApp: miniApp, session: self.session)
+    detaiVC.delegate = self
     self.show(detaiVC, sender: nil)
+  }
+}
+
+extension MiniAppListController: MiniAppDetailDelegate {
+  func dAppCoordinatorDidSelectAddWallet() {
+    self.delegate?.dAppCoordinatorDidSelectAddWallet()
+  }
+  
+  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.dAppCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func dAppCoordinatorDidSelectManageWallet() {
+    self.delegate?.dAppCoordinatorDidSelectManageWallet()
+  }
+  
+  func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.dAppCoordinatorDidSelectAddChainWallet(chainType: chainType)
   }
 }
