@@ -275,9 +275,8 @@ extension HubViewController {
               favoriteDataSource.append(favoriteApp)
             }
           }
-          
-          
-          self.displayDataSource = favoriteDataSource + self.dataSource
+          self.dataSource = favoriteDataSource + self.dataSource
+          self.displayDataSource = self.dataSource
           self.tableView.reloadData()
         } catch let error {
           print("[Krytal] \(error.localizedDescription)")
