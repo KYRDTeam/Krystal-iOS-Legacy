@@ -80,6 +80,15 @@ class HubViewController: KNBaseViewController {
     vc.hidesBottomBarWhenPushed = true
     navigationController?.pushViewController(vc, animated: true)
   }
+  
+  @IBAction func voteWasTapped(_ sender: Any) {
+    getUnverifiedApps { [weak self] apps in
+      guard let self = self else { return }
+      let listVC = MiniAppListController(dataSource: apps, session: self.session, title: "Vote")
+      listVC.delegate = self
+      self.navigationController?.show(listVC, sender: nil)
+    }
+  }
 
 }
 
@@ -201,9 +210,8 @@ extension HubViewController: UITableViewDelegate {
     } else {
       let category = self.category[sender.tag - 1]
       data = self.dataSource.filter { $0.category == category }
-      
     }
-    let detailVC = MiniAppListController(dataSource: data, session: self.session)
+    let detailVC = MiniAppListController(dataSource: data, session: self.session, title: self.dataSource.first?.category ?? "")
     detailVC.delegate = self
     self.navigationController?.show(detailVC, sender: nil)
   }
@@ -246,10 +254,31 @@ extension HubViewController: MiniAppDetailDelegate {
 }
 
 extension HubViewController {
+  
+  func getUnverifiedApps(completion: @escaping ([MiniApp]) -> ()) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    
+    provider.request(.getDappList(status: "unverified")) { (result) in
+      switch result {
+      case .success(let resp):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(MiniAppResponse.self, from: resp.data)
+          completion(data.dapps)
+        } catch {
+          completion([])
+        }
+      default:
+        completion([])
+      }
+      }
+    
+  }
+  
   func getData() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.showLoadingHUD()
-    provider.request(.getDappList) { (result) in
+    provider.request(.getDappList(status: "")) { (result) in
       self.hideLoading()
       switch result {
       case .success(let resp):
@@ -306,6 +335,7 @@ struct MiniApp: Codable {
   let numberOfFavourites: Int
   let socialLinks: [String: String]
   let status: String
+  let voteCount: Int = 0
 }
 
 struct MiniAppReview: Codable {

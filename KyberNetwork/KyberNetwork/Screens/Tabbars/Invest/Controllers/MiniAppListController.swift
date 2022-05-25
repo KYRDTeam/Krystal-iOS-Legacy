@@ -20,10 +20,12 @@ class MiniAppListController: KNBaseViewController {
   weak var delegate: MiniAppListControllerDelegate?
   var dataSource: [MiniApp]
   var session: KNSession
+  var listTitle: String
   
-  init(dataSource: [MiniApp], session: KNSession) {
+  init(dataSource: [MiniApp], session: KNSession, title: String) {
     self.dataSource = dataSource
     self.session = session
+    self.listTitle = title
     super.init(nibName: MiniAppListController.className, bundle: nil)
     self.modalPresentationStyle = .custom
   }
@@ -35,9 +37,7 @@ class MiniAppListController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.registerCellNib(MiniAppDetailCell.self)
-    if let miniApp = self.dataSource.first {
-      self.titleLabel.text = miniApp.category
-    }
+    self.titleLabel.text = listTitle
   }
 
   @IBAction func onBackButtonTapped(_ sender: Any) {
@@ -57,7 +57,7 @@ extension MiniAppListController: UITableViewDataSource {
     if let url = URL(string: miniApp.icon) {
       cell.icon.setImage(with: url, placeholder: nil)
     }
-    
+    cell.configure(voteCount: miniApp.voteCount, needShowVote: listTitle == "Vote")
     return cell
   }
 }

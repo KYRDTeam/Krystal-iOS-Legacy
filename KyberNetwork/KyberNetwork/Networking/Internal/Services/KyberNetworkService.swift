@@ -893,7 +893,7 @@ enum KrytalService {
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
-  case getDappList
+  case getDappList(status: String)
   case addReview(address: String, url: String, rating: Double, comment: String)
   case addFavorite(address: String, url: String)
   case getDetail(url: String)
@@ -1356,8 +1356,11 @@ extension KrytalService: TargetType {
         "userWallet": userWallet
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getDappList:
-      return .requestPlain
+    case .getDappList(let status):
+      let json: JSONDictionary = [
+        "status": status
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
         
     case .addReview(address: let address, url: let url, rating: let rating, comment: let comment):
       var json: JSONDictionary = [
