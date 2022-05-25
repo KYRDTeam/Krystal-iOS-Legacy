@@ -70,6 +70,10 @@ extension MiniAppListController: UITableViewDelegate {
     detaiVC.delegate = self
     self.show(detaiVC, sender: nil)
   }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 80
+  }
 }
 
 extension MiniAppListController: MiniAppDetailDelegate {
