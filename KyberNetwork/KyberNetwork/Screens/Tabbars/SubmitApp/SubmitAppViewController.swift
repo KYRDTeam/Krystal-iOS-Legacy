@@ -25,11 +25,14 @@ class SubmitAppViewController: UIViewController {
   @IBOutlet weak var shortDescriptionLabel: UITextField!
   @IBOutlet weak var tagsField: UITextField!
   @IBOutlet weak var protocolsLabel: UILabel!
-    
+  
+  var imagePicker: ImagePicker!
   var appInfo: DappInfo = .init()
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    imagePicker = ImagePicker(presentationController: self, delegate: self)
     
     navigationController?.setNavigationBarHidden(true, animated: true)
     
@@ -53,9 +56,14 @@ class SubmitAppViewController: UIViewController {
     navigationController?.popViewController(animated: true, completion: nil)
   }
   @IBAction func imageWasTapped(_ sender: Any) {
-    let picker = ImagePicker(presentationController: self, delegate: self)
-    picker.present(from: imageButton)
+    imagePicker.present(from: imageButton)
   }
+  
+  @IBAction func submitWasTapped(_ sender: Any) {
+    navigationController?.showTopBannerView(message: "Submit DApp successfully")
+    navigationController?.popViewController(animated: true, completion: nil)
+  }
+  
   
   func resetViews() {
     appInfo.image = UIImage(named: "add-image")
@@ -68,8 +76,14 @@ class SubmitAppViewController: UIViewController {
 extension SubmitAppViewController: ImagePickerDelegate {
   
   func didSelect(image: UIImage?) {
-    appInfo.image = image ?? UIImage(named: "add-image")
-    imageButton.setImage(image, for: .normal)
+    appInfo.image = image
+    if let image = image {
+      imageButton.setImage(image, for: .normal)
+      imageButton.imageEdgeInsets = .zero
+    } else {
+      imageButton.setImage(UIImage(named: "add-image"), for: .normal)
+      imageButton.imageEdgeInsets = .init(top: 20, left: 20, bottom: 20, right: 20)
+    }
   }
   
 }
