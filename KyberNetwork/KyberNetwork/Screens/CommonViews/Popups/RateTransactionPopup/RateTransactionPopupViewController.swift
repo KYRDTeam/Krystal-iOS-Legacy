@@ -11,6 +11,7 @@ import Moya
 protocol RateTransactionPopupDelegate: class {
   func didUpdateRate(rate: Int)
   func didSendRate()
+  func didSendRate(rate: Int, comment: String)
 }
 
 class RateTransactionPopupViewController: KNBaseViewController {
@@ -63,6 +64,7 @@ class RateTransactionPopupViewController: KNBaseViewController {
   @IBAction func closeButtonTapped(_ sender: Any) {
     self.dismiss(animated: true) {
       self.delegate?.didSendRate()
+      self.delegate?.didSendRate(rate: self.currentRate, comment: self.detailTextView.text)
     }
   }
 

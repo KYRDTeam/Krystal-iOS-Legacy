@@ -59,6 +59,13 @@ extension KNAppCoordinator {
     }()
     self.addCoordinator(self.exchangeCoordinator!)
     self.exchangeCoordinator?.start()
+    
+    self.hubCoordinator = {
+      let coordinator = HubCoordinator( session: self.session)
+      
+      return coordinator
+    }()
+    self.hubCoordinator?.start()
 
     // Settings tab
     self.settingsCoordinator = {
@@ -69,10 +76,10 @@ extension KNAppCoordinator {
       return coordinator
     }()
     
-    let investCoordinator = InvestCoordinator(session: self.session)
-    investCoordinator.delegate = self
-    investCoordinator.start()
-    self.investCoordinator = investCoordinator
+//    let investCoordinator = InvestCoordinator(session: self.session)
+//    investCoordinator.delegate = self
+//    investCoordinator.start()
+//    self.investCoordinator = investCoordinator
 
     self.earnCoordinator = {
       let coordinator = EarnCoordinator(session: self.session)
@@ -87,7 +94,8 @@ extension KNAppCoordinator {
     self.tabbarController.viewControllers = [
       self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
-      self.investCoordinator!.navigationController,
+      self.hubCoordinator!.navigationController,
+//      self.investCoordinator!.navigationController,
       self.earnCoordinator!.navigationController,
       self.settingsCoordinator!.navigationController,
     ]
@@ -117,10 +125,17 @@ extension KNAppCoordinator {
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
 
-    self.investCoordinator?.navigationController.tabBarItem.tag = 2
-    self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
+//    self.investCoordinator?.navigationController.tabBarItem.tag = 2
+//    self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
+//      title: nil,
+//      image: UIImage(named: "tabbar_invest_icon"),
+//      selectedImage: nil
+//    )
+    
+    self.hubCoordinator?.navigationController.tabBarItem.tag = 2
+    self.hubCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
-      image: UIImage(named: "tabbar_invest_icon"),
+      image: UIImage(named: "krystal_hub_icon"),
       selectedImage: nil
     )
 

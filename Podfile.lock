@@ -263,13 +263,14 @@ DEPENDENCIES:
   - Web3
 
 SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Eureka
   trunk:
     - Alamofire
     - APIKit
     - BigInt
     - Charts
     - CryptoSwift
-    - Eureka
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -412,6 +413,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: a854168fe8894ad084b507c6022a16a56a7058dc
+PODFILE CHECKSUM: 97c3154b70318d9c9e24a671a7e5a826cba96643
 
 COCOAPODS: 1.11.3

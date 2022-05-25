@@ -359,4 +359,7 @@ extension KNTransactionStatusPopUp: RateTransactionPopupDelegate {
       button.isUserInteractionEnabled = false
     }
   }
+  func didSendRate(rate: Int, comment: String) {
+    
+  }
 }

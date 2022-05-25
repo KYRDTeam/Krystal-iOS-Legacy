@@ -893,11 +893,17 @@ enum KrytalService {
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
+  case getDappList
+  case addReview(address: String, url: String, rating: Double, comment: String)
+  case addFavorite(address: String, url: String)
+  case getDetail(url: String)
 }
 
 extension KrytalService: TargetType {
   var baseURL: URL {
     switch self {
+      case .getDappList, .addReview, .addFavorite, .getDetail:
+      return URL(string: "http://192.168.1.67:8080")!
     case .getHint(let path):
       var urlComponents = URLComponents(string: KNEnvironment.default.krystalEndpoint + "/v1/swap/buildHint")!
       var queryItems: [URLQueryItem] = []
@@ -1011,12 +1017,21 @@ extension KrytalService: TargetType {
       return "/v1/tracking/ratings"
     case .getGasPriceV2:
       return "/v2/gasPrice"
+    case.getDappList:
+      return "/dapps"
+    case .addReview(address: let address, url: let url, rating: let rating, comment: let comment):
+      let url = "/users/" + address + "/addReview"
+      return url
+    case .addFavorite(address: let address, url: let url):
+      return "/users/\(address)/addFavourite"
+    case .getDetail(url: let url):
+      return "/dappDetails"
     }
   }
 
   var method: Moya.Method {
     switch self {
-    case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto:
+      case .registerReferrer, .login, .registerNFTFavorite, .buildMultiSendTx, .claimPromotion, .sendRate, .buyCrypto, .addReview, .addFavorite:
       return .post
     default:
       return .get
@@ -1339,6 +1354,27 @@ extension KrytalService: TargetType {
     case .getOrders(userWallet: let userWallet):
       let json: JSONDictionary = [
         "userWallet": userWallet
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getDappList:
+      return .requestPlain
+        
+    case .addReview(address: let address, url: let url, rating: let rating, comment: let comment):
+      var json: JSONDictionary = [
+        "dappUrl": url,
+        "rating": rating,
+        "comment": comment
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+        
+    case .addFavorite(address: let address, url: let url):
+      var json: JSONDictionary = [
+        "dappUrl": url
+      ]
+      return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getDetail(url: let url):
+      let json: JSONDictionary = [
+        "url": url
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
