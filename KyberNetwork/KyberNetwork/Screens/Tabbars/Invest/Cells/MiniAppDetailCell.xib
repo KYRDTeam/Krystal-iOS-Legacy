@@ -22,31 +22,31 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="88" id="KGk-i7-Jjw" customClass="MiniAppDetailCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="276" height="88"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="276" height="88"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Krystal Dapp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syD-6O-beV">
-                        <rect key="frame" x="96" y="16" width="122.5" height="24"/>
+                        <rect key="frame" x="76" y="8" width="184" height="24"/>
                         <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                         <color key="textColor" name="textWhiteColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="krystalgo" translatesAutoresizingMaskIntoConstraints="NO" id="DXj-kY-LbE">
-                        <rect key="frame" x="16" y="8" width="60" height="60"/>
+                        <rect key="frame" x="16" y="8" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="60" id="IOL-mi-eGC"/>
-                            <constraint firstAttribute="height" constant="60" id="UOi-kY-P97"/>
+                            <constraint firstAttribute="width" constant="40" id="IOL-mi-eGC"/>
+                            <constraint firstAttribute="height" constant="40" id="UOi-kY-P97"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="30"/>
+                                <integer key="value" value="20"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A very good Dapp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g4-hq-lt2">
-                        <rect key="frame" x="96" y="48" width="124.5" height="19"/>
+                        <rect key="frame" x="76" y="40" width="184" height="19"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" name="navButtonBgColor"/>
                         <nil key="highlightedColor"/>
@@ -57,11 +57,13 @@
                     <constraint firstItem="DXj-kY-LbE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="0Ht-Zo-Szg"/>
                     <constraint firstItem="DXj-kY-LbE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="7CC-S9-p0W"/>
                     <constraint firstItem="DXj-kY-LbE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9UR-Hh-vJz"/>
+                    <constraint firstAttribute="trailing" secondItem="syD-6O-beV" secondAttribute="trailing" constant="16" id="Df5-rv-QKx"/>
                     <constraint firstItem="syD-6O-beV" firstAttribute="leading" secondItem="DXj-kY-LbE" secondAttribute="trailing" constant="20" id="NpS-LI-RHa"/>
-                    <constraint firstItem="syD-6O-beV" firstAttribute="top" secondItem="DXj-kY-LbE" secondAttribute="top" constant="8" id="SHm-Ir-oi6"/>
+                    <constraint firstItem="syD-6O-beV" firstAttribute="top" secondItem="DXj-kY-LbE" secondAttribute="top" id="SHm-Ir-oi6"/>
                     <constraint firstItem="8g4-hq-lt2" firstAttribute="top" secondItem="syD-6O-beV" secondAttribute="bottom" constant="8" id="WrK-LH-hGS"/>
-                    <constraint firstAttribute="bottom" secondItem="DXj-kY-LbE" secondAttribute="bottom" constant="8" id="chW-MW-I7N"/>
+                    <constraint firstAttribute="bottom" secondItem="DXj-kY-LbE" secondAttribute="bottom" constant="30" id="chW-MW-I7N"/>
                     <constraint firstItem="8g4-hq-lt2" firstAttribute="leading" secondItem="DXj-kY-LbE" secondAttribute="trailing" constant="20" id="nqa-9C-kem"/>
+                    <constraint firstAttribute="trailing" secondItem="8g4-hq-lt2" secondAttribute="trailing" constant="16" id="yNg-sK-rWy"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
