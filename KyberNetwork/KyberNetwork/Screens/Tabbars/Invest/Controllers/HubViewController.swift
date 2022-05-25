@@ -74,6 +74,13 @@ class HubViewController: KNBaseViewController {
     self.displayDataSource = self.dataSource
     self.tableView.reloadData()
   }
+  
+  @IBAction func addAppWasTapped(_ sender: Any) {
+    let vc = SubmitAppViewController()
+    vc.hidesBottomBarWhenPushed = true
+    navigationController?.pushViewController(vc, animated: true)
+  }
+
 }
 
 extension HubViewController: UITextFieldDelegate {

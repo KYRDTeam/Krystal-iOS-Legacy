@@ -536,6 +536,13 @@
 		A65C7A792818E877000FA9CE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A772818E877000FA9CE /* WebViewController.swift */; };
 		A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A782818E877000FA9CE /* WebViewController.xib */; };
 		A65C7A802818EF75000FA9CE /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A7F2818EF74000FA9CE /* URL+.swift */; };
+		A66929CC283DE6B0000BC3A0 /* SubmitAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66929CA283DE6B0000BC3A0 /* SubmitAppViewController.swift */; };
+		A66929CD283DE6B0000BC3A0 /* SubmitAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66929CB283DE6B0000BC3A0 /* SubmitAppViewController.xib */; };
+		A66929D0283E00A5000BC3A0 /* SelectDAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66929CE283E00A4000BC3A0 /* SelectDAppViewController.swift */; };
+		A66929D1283E00A5000BC3A0 /* SelectDAppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66929CF283E00A4000BC3A0 /* SelectDAppViewController.xib */; };
+		A66929D4283E01DB000BC3A0 /* SelectAppProtocolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66929D2283E01DB000BC3A0 /* SelectAppProtocolCell.swift */; };
+		A66929D5283E01DB000BC3A0 /* SelectAppProtocolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66929D3283E01DB000BC3A0 /* SelectAppProtocolCell.xib */; };
+		A66929D7283E0E31000BC3A0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66929D6283E0E30000BC3A0 /* ImagePicker.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
@@ -1501,6 +1508,13 @@
 		A65C7A772818E877000FA9CE /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		A65C7A782818E877000FA9CE /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		A65C7A7F2818EF74000FA9CE /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
+		A66929CA283DE6B0000BC3A0 /* SubmitAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAppViewController.swift; sourceTree = "<group>"; };
+		A66929CB283DE6B0000BC3A0 /* SubmitAppViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubmitAppViewController.xib; sourceTree = "<group>"; };
+		A66929CE283E00A4000BC3A0 /* SelectDAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDAppViewController.swift; sourceTree = "<group>"; };
+		A66929CF283E00A4000BC3A0 /* SelectDAppViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectDAppViewController.xib; sourceTree = "<group>"; };
+		A66929D2283E01DB000BC3A0 /* SelectAppProtocolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAppProtocolCell.swift; sourceTree = "<group>"; };
+		A66929D3283E01DB000BC3A0 /* SelectAppProtocolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAppProtocolCell.xib; sourceTree = "<group>"; };
+		A66929D6283E0E30000BC3A0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
@@ -2441,6 +2455,7 @@
 		25682B6D20EE0365009738C4 /* Tabbars */ = {
 			isa = PBXGroup;
 			children = (
+				A66929C5283DDCA1000BC3A0 /* SubmitApp */,
 				A693AFE92819052000880503 /* RewardingHunting */,
 				7EFE43FD2714449C006CF502 /* Rewards */,
 				C3ED1DC32616EE650024970C /* Notification */,
@@ -4213,6 +4228,20 @@
 			path = NavigationBar;
 			sourceTree = "<group>";
 		};
+		A66929C5283DDCA1000BC3A0 /* SubmitApp */ = {
+			isa = PBXGroup;
+			children = (
+				A66929CA283DE6B0000BC3A0 /* SubmitAppViewController.swift */,
+				A66929CB283DE6B0000BC3A0 /* SubmitAppViewController.xib */,
+				A66929CE283E00A4000BC3A0 /* SelectDAppViewController.swift */,
+				A66929CF283E00A4000BC3A0 /* SelectDAppViewController.xib */,
+				A66929D2283E01DB000BC3A0 /* SelectAppProtocolCell.swift */,
+				A66929D3283E01DB000BC3A0 /* SelectAppProtocolCell.xib */,
+				A66929D6283E0E30000BC3A0 /* ImagePicker.swift */,
+			);
+			path = SubmitApp;
+			sourceTree = "<group>";
+		};
 		A66B9C6A280818E3001B7A3D /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -5341,6 +5370,7 @@
 				C3EEA45C2671EF840011DB97 /* OverviewMainViewCell.xib in Resources */,
 				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
 				C3F08B582620AD9200DA6FCB /* TermsAndConditionsViewController.xib in Resources */,
+				A66929CD283DE6B0000BC3A0 /* SubmitAppViewController.xib in Resources */,
 				C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
 				25929C9820DA5CC10045CFA3 /* SFCompactText-Semibold.otf in Resources */,
@@ -5479,6 +5509,7 @@
 				251C29C1232A59F000E1FB6B /* KNPDPAUpdateInfoPopUp.xib in Resources */,
 				C3F71C8B2618A57B00285935 /* ClaimHistoryTableViewCell.xib in Resources */,
 				C3233EFB2807DAEC0086C2BC /* CopyAddressViewController.xib in Resources */,
+				A66929D5283E01DB000BC3A0 /* SelectAppProtocolCell.xib in Resources */,
 				7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */,
 				25929C8F20DA5CC10045CFA3 /* SFCompactDisplay-Regular.otf in Resources */,
 				2561454D20C64B2200FB00CF /* KNContactTableView.xib in Resources */,
@@ -5605,6 +5636,7 @@
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				A66929D1283E00A5000BC3A0 /* SelectDAppViewController.xib in Resources */,
 				7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */,
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
@@ -6093,6 +6125,7 @@
 				7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */,
 				25C45AC320AC3D9F00CDA1FF /* KNLandingPageViewController.swift in Sources */,
 				C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */,
+				A66929D4283E01DB000BC3A0 /* SelectAppProtocolCell.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
 				2996F14D1F6CA743005C33AE /* UIViewController.swift in Sources */,
 				2959961F1FAE759700DB66A8 /* RawTransaction.swift in Sources */,
@@ -6201,6 +6234,7 @@
 				7EB2199927C6177300CF243C /* BuyCryptoCoordinator.swift in Sources */,
 				259925B920EF2D4900CCF2D6 /* KNContactTableViewCell.swift in Sources */,
 				C331133E2629753200E6F7E1 /* GetSymbol.swift in Sources */,
+				A66929CC283DE6B0000BC3A0 /* SubmitAppViewController.swift in Sources */,
 				2561455B20C795AF00FB00CF /* KNChartObject.swift in Sources */,
 				C3308F5C27B66D510045C569 /* MultiSendApproveViewController.swift in Sources */,
 				C32656AF266F546100C69561 /* ActionCell.swift in Sources */,
@@ -6286,6 +6320,7 @@
 				C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */,
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,
+				A66929D7283E0E31000BC3A0 /* ImagePicker.swift in Sources */,
 				2912CCF91F6A830700C6CBE3 /* AppDelegate.swift in Sources */,
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
@@ -6414,6 +6449,7 @@
 				2502AC18209475BE007F23CD /* KNListWalletsTableViewCell.swift in Sources */,
 				C35A133326F1CEBA002B627C /* SRCountdownTimer.swift in Sources */,
 				C3299D5F27730B9D00D1065A /* BrowserViewController.swift in Sources */,
+				A66929D0283E00A5000BC3A0 /* SelectDAppViewController.swift in Sources */,
 				C35136E626CCE53D006A55F4 /* OverviewNFTTableViewCell.swift in Sources */,
 				7E8C62D8271D319200A6C9DB /* ClaimRewardsController.swift in Sources */,
 			);
