@@ -263,13 +263,14 @@ DEPENDENCIES:
   - Web3
 
 SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Eureka
   trunk:
     - Alamofire
     - APIKit
     - BigInt
     - Charts
     - CryptoSwift
-    - Eureka
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
