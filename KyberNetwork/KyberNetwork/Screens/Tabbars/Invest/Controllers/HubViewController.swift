@@ -300,7 +300,7 @@ extension HubViewController {
                 self.category = [FAVORITE_CATEGORY] + self.category
               }
               
-              let favoriteApp = MiniApp(url: app.url, icon: app.icon, featureImage: app.featureImage, name: app.name, chains: app.chains, description: app.description, category: FAVORITE_CATEGORY, rating: app.rating, numberOfReviews: app.numberOfReviews, numberOfFavourites: app.numberOfFavourites, socialLinks: app.socialLinks, status: app.status)
+                let favoriteApp = MiniApp(url: app.url, icon: app.icon, featureImage: app.featureImage, name: app.name, chains: app.chains, description: app.description, category: FAVORITE_CATEGORY, rating: app.rating, numberOfReviews: app.numberOfReviews, numberOfFavourites: app.numberOfFavourites, socialLinks: app.socialLinks, status: app.status, voteCount: app.voteCount)
               favoriteDataSource.append(favoriteApp)
             }
           }
@@ -335,7 +335,7 @@ struct MiniApp: Codable {
   let numberOfFavourites: Int
   let socialLinks: [String: String]
   let status: String
-  let voteCount: Int = 0
+  let voteCount: Int
 }
 
 struct MiniAppReview: Codable {

@@ -26,7 +26,7 @@ class MiniAppDetailCell: UITableViewCell {
     guard let vote = Int(voteCountLabel.text ?? "") else {
       return
     }
-    voteCountLabel.text = "\(vote) + 1"
+    voteCountLabel.text = "\(vote + 1)"
     voteCountLabel.textColor = UIColor.Kyber.primaryGreenColor
     voteContainer.backgroundColor = UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.1)
     voteArrow.image = UIImage(named: "change_up")
