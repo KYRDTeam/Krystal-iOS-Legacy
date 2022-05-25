@@ -896,12 +896,13 @@ enum KrytalService {
   case getDappList
   case addReview(address: String, url: String, rating: Double, comment: String)
   case addFavorite(address: String, url: String)
+  case getDetail(url: String)
 }
 
 extension KrytalService: TargetType {
   var baseURL: URL {
     switch self {
-      case .getDappList, .addReview, .addFavorite:
+      case .getDappList, .addReview, .addFavorite, .getDetail:
       return URL(string: "http://192.168.1.67:8080")!
     case .getHint(let path):
       var urlComponents = URLComponents(string: KNEnvironment.default.krystalEndpoint + "/v1/swap/buildHint")!
@@ -1023,6 +1024,8 @@ extension KrytalService: TargetType {
       return url
     case .addFavorite(address: let address, url: let url):
       return "/users/\(address)/addFavourite"
+    case .getDetail(url: let url):
+      return "/dappDetails"
     }
   }
 
@@ -1369,6 +1372,11 @@ extension KrytalService: TargetType {
         "dappUrl": url
       ]
       return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    case .getDetail(url: let url):
+      let json: JSONDictionary = [
+        "url": url
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
 

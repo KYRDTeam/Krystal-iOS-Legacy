@@ -9,6 +9,8 @@ import UIKit
 
 class MiniAppBigFeatureCell: UICollectionViewCell {
 
+  @IBOutlet weak var descriptionView: UIView!
+  @IBOutlet weak var descriptionLabel: UILabel!
   @IBOutlet weak var ratingLabel: UILabel!
   @IBOutlet weak var reviewsLabel: UILabel!
   @IBOutlet weak var icon: UIImageView!

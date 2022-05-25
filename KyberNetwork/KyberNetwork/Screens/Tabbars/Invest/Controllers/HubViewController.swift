@@ -275,6 +275,7 @@ struct MiniAppResponse: Codable {
 struct MiniApp: Codable {
   let url: String
   let icon: String
+  let featureImage: String
   let name: String
   let chains: String
   let description: String
@@ -284,4 +285,11 @@ struct MiniApp: Codable {
   let numberOfFavourites: Int
   let socialLinks: [String: String]
   let status: String
+}
+
+struct MiniAppReview: Codable {
+  let userId: String
+  let dappUrl: String
+  let score: Double
+  let comment: String
 }

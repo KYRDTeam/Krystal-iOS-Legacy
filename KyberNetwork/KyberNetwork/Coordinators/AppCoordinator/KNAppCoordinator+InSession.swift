@@ -125,10 +125,17 @@ extension KNAppCoordinator {
     )
     self.exchangeCoordinator?.navigationController.tabBarItem.tag = 1
 
-    self.investCoordinator?.navigationController.tabBarItem.tag = 2
-    self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
+//    self.investCoordinator?.navigationController.tabBarItem.tag = 2
+//    self.investCoordinator?.navigationController.tabBarItem = UITabBarItem(
+//      title: nil,
+//      image: UIImage(named: "tabbar_invest_icon"),
+//      selectedImage: nil
+//    )
+    
+    self.hubCoordinator?.navigationController.tabBarItem.tag = 2
+    self.hubCoordinator?.navigationController.tabBarItem = UITabBarItem(
       title: nil,
-      image: UIImage(named: "tabbar_invest_icon"),
+      image: UIImage(named: "krystal_hub_icon"),
       selectedImage: nil
     )
 

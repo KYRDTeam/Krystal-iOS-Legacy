@@ -39,11 +39,12 @@ class MiniAppDetailViewController: KNBaseViewController {
   @IBOutlet weak var detailLabel: UILabel!
   @IBOutlet weak var chainLabel: UILabel!
   @IBOutlet weak var favoriteButton: UIButton!
+  @IBOutlet weak var tableView: UITableView!
   private var browserViewController: BrowserViewController?
   private var transactionConfirm: DappBrowerTransactionConfirmPopup?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   weak var delegate: MiniAppDetailDelegate?
-  
+  var dataSource: [MiniAppReview] = []
   var session: KNSession
   var currentMiniApp: MiniApp
   var isFavorite: Bool = false
@@ -84,6 +85,9 @@ class MiniAppDetailViewController: KNBaseViewController {
     } else {
       self.favoriteButton.setImage(UIImage(named: "heart_icon"), for: .normal)
     }
+    
+    self.tableView.registerCellNib(MiniAppReviewCell.self)
+    self.getDetailData()
   }
   
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
@@ -144,6 +148,51 @@ class MiniAppDetailViewController: KNBaseViewController {
     let vc = RateTransactionPopupViewController(currentRate: sender.tag, txHash: "")
     vc.delegate = self
     self.present(vc, animated: true, completion: nil)
+  }
+  
+  func getDetailData() {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.showLoadingHUD()
+    provider.request(.getDetail(url: self.currentMiniApp.url)) { (result) in
+      DispatchQueue.main.async {
+        self.hideLoading()
+      }
+      switch result {
+      case .success(let data):
+        var reviews: [MiniAppReview] = []
+        if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let reviewsJsons = json["reviews"] as? [JSONDictionary] {
+            for reviewsJson in reviewsJsons {
+              if let userId = reviewsJson["userId"] as? String,
+                let dappUrl = reviewsJson["dappUrl"] as? String,
+                let score = reviewsJson["score"] as? Double,
+                let comment = reviewsJson["comment"] as? String {
+                let review = MiniAppReview(userId: userId, dappUrl: dappUrl, score: score, comment: comment)
+              reviews.append(review)
+              }
+            }
+          }
+          self.dataSource = reviews
+          self.tableView.reloadData()
+        }
+      case .failure(let error):
+        print("[Get miniapp detail] \(error.localizedDescription)")
+      }
+    }
+  }
+}
+
+extension MiniAppDetailViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = self.tableView.dequeueReusableCell(MiniAppReviewCell.self, indexPath: indexPath)!
+    let review = self.dataSource[indexPath.row]
+    cell.updateRateUI(rate: review.score)
+    cell.reviewLabel.text = review.comment
+    return cell
+  }
+
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.dataSource.count
   }
 }
 

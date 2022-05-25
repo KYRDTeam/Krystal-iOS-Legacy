@@ -465,6 +465,8 @@
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
+		7E698B0D283DF97900040328 /* MiniAppReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E698B0B283DF97900040328 /* MiniAppReviewCell.swift */; };
+		7E698B0E283DF97900040328 /* MiniAppReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E698B0C283DF97900040328 /* MiniAppReviewCell.xib */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -1424,6 +1426,8 @@
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
+		7E698B0B283DF97900040328 /* MiniAppReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAppReviewCell.swift; sourceTree = "<group>"; };
+		7E698B0C283DF97900040328 /* MiniAppReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MiniAppReviewCell.xib; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -4499,6 +4503,8 @@
 				7E403A06283BA4C8000A90CE /* MiniAppBigFeatureCell.xib */,
 				7E403A0D283C966B000A90CE /* MiniAppDetailCell.swift */,
 				7E403A0E283C966B000A90CE /* MiniAppDetailCell.xib */,
+				7E698B0B283DF97900040328 /* MiniAppReviewCell.swift */,
+				7E698B0C283DF97900040328 /* MiniAppReviewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5491,6 +5497,7 @@
 				2567B3F1216B10060006D963 /* index.html in Resources */,
 				C37CC097245803CA0081FB32 /* Roboto-BoldItalic.ttf in Resources */,
 				25929C6D20DA5C760045CFA3 /* SF-Pro-Display-Heavy.otf in Resources */,
+				7E698B0E283DF97900040328 /* MiniAppReviewCell.xib in Resources */,
 				257740C620579457003323EB /* KNSplashScreenViewController.xib in Resources */,
 				C37CC09E245803CA0081FB32 /* Roboto-Black.ttf in Resources */,
 				2503440020DA37F700528810 /* KNSaveContactViewController.xib in Resources */,
@@ -5984,6 +5991,7 @@
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				A6E26FE228129C780054427E /* TxObject.swift in Sources */,
 				C32656AD266F546100C69561 /* ActionController.swift in Sources */,
+				7E698B0D283DF97900040328 /* MiniAppReviewCell.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
 				A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,

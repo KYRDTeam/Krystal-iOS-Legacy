@@ -35,12 +35,14 @@ extension MiniAppsCell: UICollectionViewDataSource {
     let miniApp = self.dataSource[indexPath.row]
     if self.isSpecialApp {
       let cell = collectionView.dequeueReusableCell(MiniAppBigFeatureCell.self, indexPath: indexPath)!
-      if let url = URL(string: miniApp.icon) {
+      if let url = URL(string: miniApp.featureImage) {
         cell.icon.setImage(with: url, placeholder: nil)
       }
       cell.ratingLabel.text = String(format: "%.1f", miniApp.rating)
       cell.reviewsLabel.text = "\(miniApp.numberOfReviews) reviews"
       cell.nameLabel.text = miniApp.name
+      cell.descriptionLabel.text = miniApp.description
+      cell.descriptionView.isHidden = miniApp.description.isEmpty
       return cell
     } else {
       let cell = collectionView.dequeueReusableCell(MiniAppCollectionCell.self, indexPath: indexPath)!

@@ -35,7 +35,7 @@
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explore_default_banner_1" translatesAutoresizingMaskIntoConstraints="NO" id="uSv-Hj-m2n">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explore_default_banner_1" translatesAutoresizingMaskIntoConstraints="NO" id="uSv-Hj-m2n">
                                 <rect key="frame" x="20" y="60" width="280" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="usb-iA-kLR"/>
@@ -66,12 +66,34 @@
                                     <constraint firstAttribute="height" constant="12" id="sWp-Sm-PLD"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0E9-to-VvS">
+                                <rect key="frame" x="0.0" y="170" width="320" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJy-Lg-OBd">
+                                        <rect key="frame" x="16" y="0.0" width="288" height="30"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
+                                        <color key="textColor" name="textWhiteColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="0.29614756058673469" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="RJy-Lg-OBd" firstAttribute="top" secondItem="0E9-to-VvS" secondAttribute="top" id="HkB-rQ-1Mi"/>
+                                    <constraint firstAttribute="height" constant="30" id="HuY-pa-zCA"/>
+                                    <constraint firstAttribute="bottom" secondItem="RJy-Lg-OBd" secondAttribute="bottom" id="SPs-3J-Brx"/>
+                                    <constraint firstItem="RJy-Lg-OBd" firstAttribute="leading" secondItem="0E9-to-VvS" secondAttribute="leading" constant="16" id="XDc-Tp-hT0"/>
+                                    <constraint firstAttribute="trailing" secondItem="RJy-Lg-OBd" secondAttribute="trailing" constant="16" id="YLC-Ue-KOe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" name="investButtonBgColor"/>
                         <constraints>
                             <constraint firstItem="yrv-nc-7z1" firstAttribute="trailing" secondItem="oGm-VM-ymN" secondAttribute="trailing" id="0Rt-j2-7r8"/>
+                            <constraint firstAttribute="bottom" secondItem="0E9-to-VvS" secondAttribute="bottom" id="AxK-88-wAV"/>
                             <constraint firstAttribute="width" constant="320" id="Cqk-ma-EvH"/>
                             <constraint firstItem="uSv-Hj-m2n" firstAttribute="leading" secondItem="GDo-4H-BNg" secondAttribute="leading" constant="20" id="Rgr-zy-VkD"/>
+                            <constraint firstAttribute="trailing" secondItem="0E9-to-VvS" secondAttribute="trailing" id="Td9-ng-0vC"/>
                             <constraint firstItem="oGm-VM-ymN" firstAttribute="trailing" secondItem="uSv-Hj-m2n" secondAttribute="trailing" id="W92-Qe-eMb"/>
                             <constraint firstItem="yrv-nc-7z1" firstAttribute="centerY" secondItem="nJv-4V-Oea" secondAttribute="centerY" id="WqJ-qq-CKC"/>
                             <constraint firstAttribute="bottom" secondItem="uSv-Hj-m2n" secondAttribute="bottom" constant="20" id="XZo-Jl-t8P"/>
@@ -83,6 +105,7 @@
                             <constraint firstItem="RDV-UO-sJw" firstAttribute="leading" secondItem="GDo-4H-BNg" secondAttribute="leading" constant="20" id="oZ6-qc-aEl"/>
                             <constraint firstItem="uSv-Hj-m2n" firstAttribute="top" secondItem="oGm-VM-ymN" secondAttribute="bottom" constant="6" id="rdo-LD-vNc"/>
                             <constraint firstItem="RDV-UO-sJw" firstAttribute="top" secondItem="GDo-4H-BNg" secondAttribute="top" constant="20" id="uHa-ng-VwM"/>
+                            <constraint firstItem="0E9-to-VvS" firstAttribute="leading" secondItem="GDo-4H-BNg" secondAttribute="leading" id="vIy-ft-2Ap"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -102,6 +125,8 @@
             </constraints>
             <size key="customSize" width="340" height="220"/>
             <connections>
+                <outlet property="descriptionLabel" destination="RJy-Lg-OBd" id="B2B-BJ-nBf"/>
+                <outlet property="descriptionView" destination="0E9-to-VvS" id="9M5-tU-EM1"/>
                 <outlet property="icon" destination="uSv-Hj-m2n" id="Fwy-4o-59K"/>
                 <outlet property="nameLabel" destination="RDV-UO-sJw" id="BXf-uk-WYS"/>
                 <outlet property="ratingLabel" destination="nJv-4V-Oea" id="vMO-rP-m4i"/>
