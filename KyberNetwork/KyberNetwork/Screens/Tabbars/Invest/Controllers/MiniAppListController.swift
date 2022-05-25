@@ -57,6 +57,7 @@ extension MiniAppListController: UITableViewDataSource {
     if let url = URL(string: miniApp.icon) {
       cell.icon.setImage(with: url, placeholder: nil)
     }
+    cell.detailLabel.text = miniApp.description
     cell.configure(voteCount: miniApp.voteCount, needShowVote: listTitle == "Vote")
     return cell
   }
