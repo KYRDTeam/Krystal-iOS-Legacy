@@ -67,12 +67,12 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0E9-to-VvS">
-                                <rect key="frame" x="0.0" y="170" width="320" height="30"/>
+                                <rect key="frame" x="0.0" y="176" width="320" height="24"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJy-Lg-OBd">
-                                        <rect key="frame" x="16" y="0.0" width="288" height="30"/>
+                                        <rect key="frame" x="16" y="0.0" width="288" height="24"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="12"/>
                                         <color key="textColor" name="textWhiteColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -80,7 +80,7 @@
                                 <color key="backgroundColor" red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="0.29614756058673469" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="RJy-Lg-OBd" firstAttribute="top" secondItem="0E9-to-VvS" secondAttribute="top" id="HkB-rQ-1Mi"/>
-                                    <constraint firstAttribute="height" constant="30" id="HuY-pa-zCA"/>
+                                    <constraint firstAttribute="height" constant="24" id="HuY-pa-zCA"/>
                                     <constraint firstAttribute="bottom" secondItem="RJy-Lg-OBd" secondAttribute="bottom" id="SPs-3J-Brx"/>
                                     <constraint firstItem="RJy-Lg-OBd" firstAttribute="leading" secondItem="0E9-to-VvS" secondAttribute="leading" constant="16" id="XDc-Tp-hT0"/>
                                     <constraint firstAttribute="trailing" secondItem="RJy-Lg-OBd" secondAttribute="trailing" constant="16" id="YLC-Ue-KOe"/>

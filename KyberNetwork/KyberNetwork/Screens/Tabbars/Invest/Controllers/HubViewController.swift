@@ -9,6 +9,7 @@ import UIKit
 import Moya
 
 let FEATURE_CATEGORY = "Feature"
+let FAVORITE_CATEGORY = "Favorite"
 
 protocol HubViewControllerDelegate: class {
   func dAppCoordinatorDidSelectAddWallet()
@@ -256,7 +257,20 @@ extension HubViewController {
             }
             self.dataSource.append(miniApp)
           }
-          self.displayDataSource = self.dataSource
+          var favoriteDataSource: [MiniApp] = []
+          self.dataSource.forEach { app in
+            if let favoriteData = UserDefaults.standard.value(forKey: "MiniAppData") as? [String: Bool], favoriteData[app.url] == true {
+              if !self.category.contains(FAVORITE_CATEGORY) {
+                self.category = [FAVORITE_CATEGORY] + self.category
+              }
+              
+              let favoriteApp = MiniApp(url: app.url, icon: app.icon, featureImage: app.featureImage, name: app.name, chains: app.chains, description: app.description, category: FAVORITE_CATEGORY, rating: app.rating, numberOfReviews: app.numberOfReviews, numberOfFavourites: app.numberOfFavourites, socialLinks: app.socialLinks, status: app.status)
+              favoriteDataSource.append(favoriteApp)
+            }
+          }
+          
+          
+          self.displayDataSource = favoriteDataSource + self.dataSource
           self.tableView.reloadData()
         } catch let error {
           print("[Krytal] \(error.localizedDescription)")
