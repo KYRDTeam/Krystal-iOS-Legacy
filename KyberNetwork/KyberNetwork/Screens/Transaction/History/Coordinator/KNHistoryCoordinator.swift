@@ -334,8 +334,9 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       coordinator.start()
       self.txDetailsCoordinator = coordinator
     case .selectCompletedKrystalTransaction(data: let data):
-      switch data.historyItem.type {
-      case "BridgeFrom":
+      let type = TransactionHistoryItemType(rawValue: data.historyItem.type) ?? .contractInteraction
+      switch type {
+      case .bridgeTo, .bridgeFrom:
         let module = TransactionDetailModule.build(tx: data.historyItem)
         navigationController.pushViewController(module, animated: true)
       default:
