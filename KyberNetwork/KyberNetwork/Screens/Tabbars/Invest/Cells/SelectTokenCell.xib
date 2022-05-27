@@ -35,6 +35,9 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="lWD-Wn-7fP"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AdC-9m-Ftm">
                                 <rect key="frame" x="184" y="0.0" width="75" height="42"/>
@@ -114,6 +117,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="amountTextField" destination="Pnk-22-vDf" id="p0t-Z6-6Ar"/>
                 <outlet property="balanceLabel" destination="cTd-xp-Vvl" id="8Cv-QG-tFo"/>
                 <outlet property="selectTokenButton" destination="AdC-9m-Ftm" id="jzR-OK-wx4"/>
             </connections>

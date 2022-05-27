@@ -18,6 +18,10 @@ class DestBridgeToken: Codable {
   var decimals: Int = 0
   var maximumSwap: Double = 0.0
   var minimumSwap: Double = 0.0
+  var bigValueThreshold: Double = 0.0
+  var swapFeeRatePerMillion: Double = 0.0
+  var maximumSwapFee: Double = 0.0
+  var minimumSwapFee: Double = 0.0
   
   init(json: JSONDictionary) {
     if let underlyingJson = json["underlying"] as? JSONDictionary {
@@ -35,8 +39,13 @@ class DestBridgeToken: Codable {
         self.decimals = anyTokenJson["decimals"] as? Int ?? 0
       }
     }
-    self.maximumSwap = json["maximumSwap"] as? Double ?? 0.0
-    self.minimumSwap = json["minimumSwap"] as? Double ?? 0.0
+    
+    self.maximumSwap = Double(json["maximumSwap"] as? String ?? "0.0") ?? 0
+    self.minimumSwap = Double(json["minimumSwap"] as? String ?? "0.0") ?? 0
+    self.bigValueThreshold = Double(json["bigValueThreshold"] as? String ?? "0.0") ?? 0
+    self.swapFeeRatePerMillion = json["swapFeeRatePerMillion"] as? Double ?? 0.0
+    self.maximumSwapFee = Double(json["maximumSwapFee"] as? String ?? "0.0") ?? 0
+    self.minimumSwapFee = Double(json["minimumSwapFee"] as? String ?? "0.0") ?? 0
   }
 }
 
@@ -45,7 +54,7 @@ class SourceBridgeToken: Codable {
   var name: String = ""
   var symbol: String = ""
   var decimals: Int = 0
-  var destChains: [String : DestBridgeToken] = [:]
+  var destChains: [String: DestBridgeToken] = [:]
   
   init(json: JSONDictionary) {
     if let underlyingJson = json["underlying"] as? JSONDictionary {
@@ -161,18 +170,19 @@ class BridgeCoordinator: NSObject, Coordinator {
 extension BridgeCoordinator: BridgeViewControllerDelegate {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
+    case .changeAmount(amount: let amount):
+      self.rootViewController.viewModel.sourceAmount = amount
+      self.rootViewController.coordinatorDidUpdateData()
     case .didSelectDestChain(chain: let newChain):
       self.rootViewController.viewModel.currentDestChain = newChain
-        
-        if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
-          if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
-          }) {
-            let currentDestChain = currentBridgeToken.destChains[newChain.getChainId().toString()]
-            self.rootViewController.viewModel.currentDestTokenAddress = currentDestChain?.address ?? ""
-            self.rootViewController.viewModel.currentDestTokenSymbol = currentDestChain?.symbol ?? ""
-          }
+      self.rootViewController.viewModel.showReminder = true
+      if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
+        if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
+        }) {
+          let currentDestChain = currentBridgeToken.destChains[newChain.getChainId().toString()]
+          self.rootViewController.viewModel.currentDestToken = currentDestChain
         }
-//        self.rootViewController.viewModel.currentDestToken = self.da
+      }
       self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
       print("")

@@ -54,7 +54,7 @@ class BridgeViewModel {
   var showFromPoolInfo: Bool = false
   var showToPoolInfo: Bool = false
   var showSendAddress: Bool = false
-  var showReminder: Bool = true
+  var showReminder: Bool = false
   var showError: Bool = false
   
   var selectSourceChainBlock: (() -> Void)?
@@ -62,13 +62,14 @@ class BridgeViewModel {
   var selectDestChainBlock: (() -> Void)?
   var selectDestTokenBlock: (() -> Void)?
   var selectSenToBlock: (() -> Void)?
+  var changeAmountBlock: ((String) -> Void)?
   
   var currentSourceChain: ChainType?
   var currentSourceToken: TokenObject?
   var currentDestChain: ChainType?
-  var currentDestTokenAddress: String = ""
-  var currentDestTokenSymbol: String = ""
+  var currentDestToken: DestBridgeToken?
   var currentSendToAddress: String = ""
+  var sourceAmount: Double = 0.0
 
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -96,6 +97,18 @@ class BridgeViewModel {
       return self.fromDataSource().count
     }
     return self.toDataSource().count
+  }
+  
+  func calculateFee() -> Double {
+    guard let currentDestToken = self.currentDestToken else {
+      return 0.0
+    }
+    let destAmount = self.sourceAmount
+    var fee = destAmount * currentDestToken.swapFeeRatePerMillion / 100
+    fee = max(fee, currentDestToken.minimumSwapFee)
+    fee = min(fee, currentDestToken.maximumSwapFee)
+
+    return fee
   }
   
   func viewForHeader(section: Int) -> UIView {
@@ -131,7 +144,10 @@ class BridgeViewModel {
         return cell
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
+        cell.amountTextField.isUserInteractionEnabled = true
         cell.selectTokenBlock = self.selectSourceTokenBlock
+        cell.amountChangeBlock = self.changeAmountBlock
+          
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
           let bal: BigInt = currentSourceToken.getBalanceBigInt()
@@ -170,8 +186,9 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
         cell.selectTokenBlock = self.selectDestTokenBlock
         cell.balanceLabel.text = ""
-        cell.selectTokenButton.setTitle(self.currentDestTokenSymbol, for: .normal)
-        
+        cell.selectTokenButton.setTitle(self.currentDestToken?.symbol ?? "", for: .normal)
+        cell.amountTextField.isUserInteractionEnabled = false
+        cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount - self.calculateFee())
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
@@ -184,6 +201,16 @@ class BridgeViewModel {
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
+          if let currentDestToken = self.currentDestToken {
+            let crossChainFee = currentDestToken.maximumSwapFee == currentDestToken.minimumSwapFee ? "0.0" : String(format: "%.1f", currentDestToken.swapFeeRatePerMillion)
+            let fee = self.calculateFee()
+            let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentDestToken.symbol)"
+            let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentDestToken.symbol)"
+            let thresholdString = StringFormatter.amountString(value: currentDestToken.bigValueThreshold) + " \(currentDestToken.symbol)"
+            
+            cell.updateReminderText(crossChainFee: crossChainFee, gasFeeString: String(format: "%.1f \(currentDestToken.symbol)", fee), miniAmount: miniAmount, maxAmount: maxAmount, thresholdString: thresholdString)
+          }
+          
         return cell
       case .errorRow:
         return UITableViewCell()

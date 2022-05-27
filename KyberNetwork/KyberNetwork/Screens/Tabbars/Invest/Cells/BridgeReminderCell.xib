@@ -82,6 +82,7 @@ Crosschain amount larger than 5,000,000 USDT could take up to 12 hours.</string>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="dashView" destination="BZS-iq-BaI" id="huP-te-Sov"/>
+                <outlet property="reminderLabel" destination="j23-WS-VsP" id="ppe-oj-6uY"/>
             </connections>
             <point key="canvasLocation" x="169.56521739130437" y="177.12053571428569"/>
         </tableViewCell>
