@@ -65,7 +65,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       } else {
         return defaultAmountString
       }
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return defaultAmountString
       }
@@ -97,7 +97,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return "To: \(self.historyItem.to)"
     case .receive:
       return "From: \(self.historyItem.from)"
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return ""
       }
@@ -123,7 +123,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Strings.contractExecution.uppercased()
     case .claimReward:
       return Strings.claimReward.uppercased()
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       return Strings.bridge.uppercased()
     default:
       return Strings.contractExecution.uppercased()
@@ -146,7 +146,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Images.historyApprove
     case .claimReward:
       return Images.historyClaimReward
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       return Images.historyBridge
     default:
       return Images.historyContractInteraction
@@ -164,7 +164,11 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
     self.historyItem = item
   }
   
-  private func getChain(chainID: String) -> ChainType? {
+  private func getChain(chainID: String?) -> ChainType? {
+    guard let chainID = chainID else {
+      return nil
+    }
+
     return ChainType.getAllChain().first { chain in
       chain.customRPC().chainID == Int(chainID)
     }

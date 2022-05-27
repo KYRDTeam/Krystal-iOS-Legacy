@@ -30,7 +30,7 @@ class TransactionTypeInfoCell: UITableViewCell {
       return Images.historyContractInteraction
     case .claimReward:
       return Images.historyClaimReward
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       return Images.historyBridge
     default:
       return nil
@@ -49,7 +49,7 @@ class TransactionTypeInfoCell: UITableViewCell {
       return Strings.contractExecution
     case .claimReward:
       return Strings.claimReward
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       return Strings.bridge
     default:
       return nil

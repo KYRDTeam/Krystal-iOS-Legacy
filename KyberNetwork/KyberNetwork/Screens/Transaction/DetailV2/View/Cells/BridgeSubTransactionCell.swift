@@ -105,7 +105,10 @@ class BridgeSubTransactionCell: UITableViewCell {
     }
   }
   
-  func getChainIcon(chainID: String) -> UIImage? {
+  func getChainIcon(chainID: String?) -> UIImage? {
+    guard let chainID = chainID else {
+      return nil
+    }
     return ChainType.getAllChain()
       .first { chain in
         chain.customRPC().chainID == Int(chainID)
@@ -114,7 +117,10 @@ class BridgeSubTransactionCell: UITableViewCell {
   }
   
   @objc func onTapTxHash() {
-    delegate?.openTxDetail(cell: self, hash: tx.tx, chainID: tx.chainId)
+    guard let chainID = tx.chainId else {
+      return
+    }
+    delegate?.openTxDetail(cell: self, hash: tx.tx, chainID: chainID)
   }
   
   @objc func onTapCopyAddress() {

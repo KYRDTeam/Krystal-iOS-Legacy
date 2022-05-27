@@ -263,7 +263,7 @@ DEPENDENCIES:
   - Web3
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - APIKit
     - BigInt

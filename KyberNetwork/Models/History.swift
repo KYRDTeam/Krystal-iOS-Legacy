@@ -58,8 +58,8 @@ struct ExtraData: Codable {
 struct ExtraBridgeTransaction: Codable {
   var address: String
   var amount: String
-  var chainId: String
-  var chainName: String
+  var chainId: String?
+  var chainName: String?
   var decimals: Int
   var token: String
   var tx: String

@@ -27,7 +27,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   func getTransactionItems(tx: KrystalHistoryTransaction) -> [TransactionDetailRowType] {
     let type = TransactionHistoryItemType(rawValue: tx.type) ?? .contractInteraction
     switch type {
-    case .bridge:
+    case .bridgeFrom, .bridgeTo:
       guard let from = tx.extraData?.from, let to = tx.extraData?.to else {
         return []
       }
@@ -61,7 +61,11 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     router.goBack()
   }
   
-  private func getChain(chainID: String) -> ChainType? {
+  private func getChain(chainID: String?) -> ChainType? {
+    guard let chainID = chainID else {
+      return nil
+    }
+
     return ChainType.getAllChain().first { chain in
       chain.customRPC().chainID == Int(chainID)
     }
