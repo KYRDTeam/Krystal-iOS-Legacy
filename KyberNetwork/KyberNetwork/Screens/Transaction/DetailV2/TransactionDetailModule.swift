@@ -14,8 +14,9 @@ class TransactionDetailModule {
     let view = TransactionDetailViewController()
     let interactor = TransactionDetailInteractor()
     let router = TransactionDetailRouter()
-    let presenter = TransactionDetailPresenter(view: view, interactor: interactor, router: router, tx: tx)
+    let presenter = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
     
+    presenter.setupTransaction(tx: tx)
     view.hidesBottomBarWhenPushed = true
     view.presenter = presenter
     interactor.presenter = presenter

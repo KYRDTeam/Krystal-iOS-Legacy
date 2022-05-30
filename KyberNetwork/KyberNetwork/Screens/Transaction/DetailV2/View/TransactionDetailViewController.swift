@@ -74,6 +74,7 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
       return cell
     }
   }
+  
 }
 
 extension TransactionDetailViewController: BridgeSubTransactionCellDelegate {

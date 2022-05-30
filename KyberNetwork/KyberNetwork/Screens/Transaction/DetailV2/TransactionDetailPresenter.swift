@@ -17,15 +17,22 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   let minEstimatedTimeInMinutes = 9
   let maxEstimatedTimeInMinutes = 30
   
-  init(view: TransactionDetailViewProtocol, interactor: TransactionDetailInteractorProtocol, router: TransactionDetailRouterProtocol, tx: KrystalHistoryTransaction) {
+  init(view: TransactionDetailViewProtocol, interactor: TransactionDetailInteractorProtocol, router: TransactionDetailRouterProtocol) {
     self.interactor = interactor
     self.router = router
     self.view = view
-    self.items = getTransactionItems(tx: tx)
   }
 
+  func setupTransaction(tx: KrystalHistoryTransaction) {
+    self.items = getTransactionItems(tx: tx)
+  }
+  
+  func getTransactionType(txType: String) -> TransactionHistoryItemType {
+    return TransactionHistoryItemType(rawValue: txType) ?? .contractInteraction
+  }
+  
   func getTransactionItems(tx: KrystalHistoryTransaction) -> [TransactionDetailRowType] {
-    let type = TransactionHistoryItemType(rawValue: tx.type) ?? .contractInteraction
+    let type = getTransactionType(txType: tx.type)
     switch type {
     case .bridgeFrom, .bridgeTo:
       guard let from = tx.extraData?.from, let to = tx.extraData?.to else {
