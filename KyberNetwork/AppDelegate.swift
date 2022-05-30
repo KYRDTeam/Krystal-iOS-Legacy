@@ -107,6 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       }
       FirebaseApp.configure(options: fileopts)
     }
+    KNCrashlyticsUtil.updateUserId(userId: self.coordinator.session.currentWalletObject.address)
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {

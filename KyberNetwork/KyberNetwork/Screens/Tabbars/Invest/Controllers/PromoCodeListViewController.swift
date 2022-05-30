@@ -267,6 +267,7 @@ extension PromoCodeListViewController: UITextFieldDelegate {
 
 extension PromoCodeListViewController: PromoCodeCellDelegate {
   func promoCodeCell(_ cell: PromoCodeCell, claim code: String) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "promotion_claim", customAttributes: nil)
     self.delegate?.promoCodeListViewController(self, run: .claim(code: code))
   }
 }

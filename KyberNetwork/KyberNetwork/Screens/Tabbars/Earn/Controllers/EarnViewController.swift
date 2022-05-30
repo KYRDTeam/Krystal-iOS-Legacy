@@ -631,6 +631,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "earn_submit", customAttributes: nil)
     //TODO: validate data before send
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return

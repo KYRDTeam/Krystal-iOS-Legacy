@@ -256,7 +256,9 @@ extension KNAppCoordinator {
         object: nil,
         userInfo: ["session": self.session]
       )
+  
       MixPanelManager.shared.updateWalletAddress(address: aWallet.addressString)
+      KNCrashlyticsUtil.updateUserId(userId: aWallet.addressString)
     }
   }
 

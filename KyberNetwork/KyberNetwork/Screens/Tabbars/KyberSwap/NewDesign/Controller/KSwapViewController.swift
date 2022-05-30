@@ -364,6 +364,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "swap_submit", customAttributes: nil)
     self.openSwapConfirm()
   }
 

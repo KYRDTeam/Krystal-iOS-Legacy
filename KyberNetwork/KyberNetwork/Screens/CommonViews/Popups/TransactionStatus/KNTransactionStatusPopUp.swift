@@ -276,6 +276,17 @@ class KNTransactionStatusPopUp: KNBaseViewController {
   @IBAction func firstButtonPressed(_ sender: Any) {
     self.dismiss(animated: true) {
       if self.transaction.state == .pending || self.transaction.state == .speedup || self.transaction.state == .cancel {
+        
+        switch self.transaction.type {
+        case .swap:
+          KNCrashlyticsUtil.logCustomEvent(withName: "swap_speedup", customAttributes: nil)
+        case .earn:
+          KNCrashlyticsUtil.logCustomEvent(withName: "earn_speedup", customAttributes: nil)
+        case .transferETH:
+          KNCrashlyticsUtil.logCustomEvent(withName: "transfer_speedup", customAttributes: nil)
+          default:
+            print("Send other log here if needed")
+        }
         self.delegate?.transactionStatusPopUp(self, action: .speedUp(tx: self.transaction))
       } else if self.transaction.state == .done {
         guard self.transaction.type != .earn else {
