@@ -618,6 +618,7 @@ extension OverviewMainViewController: UIScrollViewDelegate {
       let alpha = self.tableView.contentOffset.y <= 0 ? abs(self.tableView.contentOffset.y) / 200.0 : 0.0
       self.totalBalanceContainerView.alpha = pow(alpha, 3)
       self.infoCollectionView.isScrollEnabled = alpha > 0.8
+      self.infoCollectionView.isUserInteractionEnabled = self.tableView.contentOffset.y < -180
     }
   }
 
