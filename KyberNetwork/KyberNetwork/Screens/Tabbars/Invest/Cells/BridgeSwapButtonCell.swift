@@ -8,6 +8,7 @@
 import UIKit
 
 class BridgeSwapButtonCell: UITableViewCell {
+  @IBOutlet weak var swapButton: UIButton!
   var swapBlock: (() -> Void)?
   override func awakeFromNib() {
     super.awakeFromNib()

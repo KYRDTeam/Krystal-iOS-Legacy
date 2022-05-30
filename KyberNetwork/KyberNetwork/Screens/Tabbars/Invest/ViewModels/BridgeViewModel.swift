@@ -56,6 +56,7 @@ class BridgeViewModel {
   var showSendAddress: Bool = false
   var showReminder: Bool = false
   var showError: Bool = false
+  var isNeedApprove: Bool = false
   
   var selectSourceChainBlock: (() -> Void)?
   var selectSourceTokenBlock: (() -> Void)?
@@ -234,6 +235,11 @@ class BridgeViewModel {
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
         cell.swapBlock = self.swapBlock
+        if let currentSourceToken = currentSourceToken {
+          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Swap Now", for: .normal)
+        } else {
+          cell.swapButton.setTitle("Swap Now", for: .normal)
+        }
         return cell
       }
     }

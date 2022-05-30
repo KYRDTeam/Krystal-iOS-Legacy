@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BigInt
 
 enum BridgeEvent {
   case openHistory
@@ -19,6 +20,7 @@ enum BridgeEvent {
   case changeAmount(amount: Double)
   case changeDestAddress(address: String)
   case selectSwap
+  case checkAllowance(token: TokenObject)
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -45,6 +47,20 @@ class BridgeViewController: KNBaseViewController {
     super.viewDidLoad()
     self.setupUI()
     self.setupViewModel()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.updateAllowance()
+  }
+  
+  fileprivate func updateAllowance() {
+    guard KNGeneralProvider.shared.currentChain != .solana else { return }
+    guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
+    guard !currentSourceToken.isWrapToken && !currentSourceToken.isQuoteToken else { return }
+
+//    self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
+    self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
   func setupUI() {
@@ -109,6 +125,21 @@ class BridgeViewController: KNBaseViewController {
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+  }
+  
+  func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
+    guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
+    
+    guard !currentSourceToken.isQuoteToken else {
+//      self.updateUIForSendApprove(isShowApproveButton: false)
+      return
+    }
+    self.viewModel.isNeedApprove = currentSourceToken.getBalanceBigInt() > allowance
+    self.tableView.reloadData()
+  }
+
+  func coordinatorDidFailUpdateAllowance(token: TokenObject) {
+    
   }
   
   func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {

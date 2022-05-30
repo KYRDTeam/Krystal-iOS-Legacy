@@ -310,17 +310,34 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .changeDestAddress(address: let address):
       self.rootViewController.viewModel.currentSendToAddress = address
       self.rootViewController.coordinatorDidUpdateData()
+    case .checkAllowance(token: let from):
+      self.getAllowance(token: from)
     case .selectSwap:
-        let viewModel = self.rootViewController.viewModel
-        if let currentSourceToken = viewModel.currentSourceToken {
-          let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-          let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
-          let fee = "0.0253 ETH"
+      let viewModel = self.rootViewController.viewModel
+      if let currentSourceToken = viewModel.currentSourceToken {
+        let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
+        let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
+        let fee = "0.0253 ETH"
 
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
-          let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
-          self.navigationController.present(vc, animated: true, completion: nil)
-        }
+        let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
+        let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
+        self.navigationController.present(vc, animated: true, completion: nil)
+      }
+    }
+  }
+  
+  func getAllowance(token: TokenObject) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getAllowance(token: token) { [weak self] getAllowanceResult in
+      guard let `self` = self else { return }
+      switch getAllowanceResult {
+      case .success(let res):
+        self.rootViewController.coordinatorDidUpdateAllowance(token: token, allowance: res)
+      case .failure:
+        self.rootViewController.coordinatorDidFailUpdateAllowance(token: token)
+      }
     }
   }
 }
@@ -334,6 +351,7 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       self.rootViewController.viewModel.sourceAmount = 0.0
       self.rootViewController.viewModel.currentDestChain = nil
       self.rootViewController.viewModel.currentDestToken = nil
+      self.getAllowance(token: token)
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return
