@@ -10,7 +10,8 @@ import Moya
 import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
-
+import BigInt
+import TrustCore
 
 class PoolInfo: Codable {
   var anyToken: String = ""
@@ -315,14 +316,18 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .selectSwap:
       let viewModel = self.rootViewController.viewModel
       if let currentSourceToken = viewModel.currentSourceToken {
-        let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-        let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
-        let fee = "0.0253 ETH"
+      let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
+      let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
+      let fee = "0.0253 ETH"
 
-        let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
-        let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
-        self.navigationController.present(vc, animated: true, completion: nil)
+      let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
+      let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
+      self.navigationController.present(vc, animated: true, completion: nil)
       }
+    case .sendApprove(token: let token, remain: let remain):
+      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
     }
   }
   
@@ -340,6 +345,21 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       }
     }
   }
+}
+
+extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
+    
+  }
+  
+  func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
+    
+  }
+  
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
+    
+  }
+  
 }
 
 extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {

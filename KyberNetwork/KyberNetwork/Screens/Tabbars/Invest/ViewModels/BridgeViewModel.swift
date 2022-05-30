@@ -57,6 +57,7 @@ class BridgeViewModel {
   var showReminder: Bool = false
   var showError: Bool = false
   var isNeedApprove: Bool = false
+  var remainApprovedAmount: (TokenObject, BigInt)?
   
   var selectSourceChainBlock: (() -> Void)?
   var selectSourceTokenBlock: (() -> Void)?

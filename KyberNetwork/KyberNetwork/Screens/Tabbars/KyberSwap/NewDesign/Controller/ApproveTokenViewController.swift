@@ -136,6 +136,10 @@ class ApproveTokenViewController: KNBaseViewController {
   @IBOutlet weak var confirmButton: UIButton!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
+  @IBOutlet weak var editIcon: UIImageView!
+  @IBOutlet weak var editLabel: UILabel!
+  @IBOutlet weak var editButton: UIButton!
+  
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
@@ -185,6 +189,10 @@ class ApproveTokenViewController: KNBaseViewController {
     })
   }
 
+  @IBAction func editButtonTapped(_ sender: Any) {
+    
+  }
+
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
     self.dismiss(animated: true, completion: nil)
   }
@@ -207,7 +215,7 @@ extension ApproveTokenViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 350
+    return 380
   }
 
   func getPopupContentView() -> UIView {

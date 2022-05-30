@@ -21,6 +21,7 @@ enum BridgeEvent {
   case changeDestAddress(address: String)
   case selectSwap
   case checkAllowance(token: TokenObject)
+  case sendApprove(token: TokenObject, remain: BigInt)
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -106,7 +107,14 @@ class BridgeViewController: KNBaseViewController {
     }
     
     self.viewModel.swapBlock = {
-      self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
+      if self.viewModel.isNeedApprove {
+        guard let remain = self.viewModel.remainApprovedAmount else {
+          return
+        }
+        self.delegate?.bridgeViewControllerController(self, run: .sendApprove(token: remain.0, remain: remain.1))
+      } else {
+        self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
+      }
     }
   }
   
@@ -135,6 +143,9 @@ class BridgeViewController: KNBaseViewController {
       return
     }
     self.viewModel.isNeedApprove = currentSourceToken.getBalanceBigInt() > allowance
+    if currentSourceToken.getBalanceBigInt() > allowance {
+      self.viewModel.remainApprovedAmount = (token, allowance)
+    }
     self.tableView.reloadData()
   }
 
