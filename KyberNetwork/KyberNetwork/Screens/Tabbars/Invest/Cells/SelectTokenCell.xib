@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -118,7 +118,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="amountTextField" destination="Pnk-22-vDf" id="p0t-Z6-6Ar"/>
+                <outlet property="arrowDownIcon" destination="kU5-bS-EZd" id="DBA-vM-aT1"/>
                 <outlet property="balanceLabel" destination="cTd-xp-Vvl" id="8Cv-QG-tFo"/>
+                <outlet property="maxButton" destination="zMV-Jo-VK4" id="QDl-Os-6af"/>
+                <outlet property="selectButtonTrailling" destination="dfk-aS-yDr" id="ugR-eo-swK"/>
                 <outlet property="selectTokenButton" destination="AdC-9m-Ftm" id="jzR-OK-wx4"/>
             </connections>
             <point key="canvasLocation" x="154.34782608695653" y="145.64732142857142"/>

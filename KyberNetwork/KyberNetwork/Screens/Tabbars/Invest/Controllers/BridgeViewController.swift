@@ -15,8 +15,10 @@ enum BridgeEvent {
   case willSelectDestChain
   case didSelectDestChain(chain: ChainType)
   case selectDestToken
-  case changeDestAddress
+  case changeShowDestAddress
   case changeAmount(amount: Double)
+  case changeDestAddress(address: String)
+  case selectSwap
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -74,13 +76,21 @@ class BridgeViewController: KNBaseViewController {
     }
     
     self.viewModel.selectSenToBlock = {
-      self.delegate?.bridgeViewControllerController(self, run: .changeDestAddress)
+      self.delegate?.bridgeViewControllerController(self, run: .changeShowDestAddress)
     }
     
     self.viewModel.changeAmountBlock = { amount in
       if let doubleAmount = Double(amount) {
         self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: doubleAmount))
       }
+    }
+    
+    self.viewModel.changeAddressBlock = { address in
+      self.delegate?.bridgeViewControllerController(self, run: .changeDestAddress(address: address))
+    }
+    
+    self.viewModel.swapBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
     }
   }
   
@@ -93,6 +103,7 @@ class BridgeViewController: KNBaseViewController {
   
   func coordinatorDidUpdateChain() {
     self.updateUISwitchChain()
+    self.setupViewModel()
   }
   
   func coordinatorUpdateNewSession(wallet: Wallet) {

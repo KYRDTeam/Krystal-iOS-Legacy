@@ -11,6 +11,32 @@ import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
 
+
+class PoolInfo: Codable {
+  var anyToken: String = ""
+  var decimals: Int = 0
+  var liquidity: String = ""
+  var logoUrl: String = ""
+  var name: String = ""
+  var symbol: String = ""
+
+  init(json: JSONDictionary) {
+    self.anyToken = json["anyToken"] as? String ?? ""
+    self.decimals = json["decimals"] as? Int ?? 0
+    self.liquidity = json["liquidity"] as? String ?? ""
+    self.logoUrl = json["logoUrl"] as? String ?? ""
+    self.name = json["name"] as? String ?? ""
+    self.symbol = json["symbol"] as? String ?? ""
+  }
+  
+  func liquidityPoolString() -> String {
+    let liquidity = Double(self.liquidity) ?? 0
+    let displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
+    let displayLiquiditySring = StringFormatter.amountString(value: displayLiquidity)
+    return " Pool: \(displayLiquiditySring) \(self.symbol)"
+  }
+}
+
 class DestBridgeToken: Codable {
   var address: String = ""
   var name: String = ""
@@ -115,15 +141,29 @@ class BridgeCoordinator: NSObject, Coordinator {
 
   func start() {
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
-    
-    self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) {
-      self.rootViewController.coordinatorDidUpdateData()
-    }
+    self.fetchData()
   }
   
+  func fetchData() {
+    self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) {
+      if let address = self.rootViewController.viewModel.currentSourceToken?.address {
+        self.getPoolInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId(), tokenAddress: address) { poolInfo in
+          if let poolInfo = poolInfo {
+            self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
+            self.rootViewController.viewModel.showFromPoolInfo = true
+          }
+          self.rootViewController.coordinatorDidUpdateData()
+        }
+      } else {
+        self.rootViewController.coordinatorDidUpdateData()
+      }
+    }
+  }
+
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.viewModel = BridgeViewModel(wallet: self.session.wallet)
     self.rootViewController.coordinatorDidUpdateChain()
+    self.fetchData()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
@@ -165,6 +205,29 @@ class BridgeCoordinator: NSObject, Coordinator {
       completion()
     }
   }
+  
+  func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.rootViewController.showLoadingHUD()
+    
+    provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
+      DispatchQueue.main.async {
+        self.rootViewController.hideLoading()
+      }
+      
+      switch result {
+      case .success(let result):
+        if let json = try? result.mapJSON() as? JSONDictionary ?? [:] {
+          let poolInfo = PoolInfo(json: json)
+          completion(poolInfo)
+        } else {
+          completion(nil)
+        }
+      case .failure(let error):
+        completion(nil)
+      }
+    }
+  }
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
@@ -179,8 +242,16 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
         if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
         }) {
-          let currentDestChain = currentBridgeToken.destChains[newChain.getChainId().toString()]
-          self.rootViewController.viewModel.currentDestToken = currentDestChain
+          let currentDestChainToken = currentBridgeToken.destChains[newChain.getChainId().toString()]
+          self.rootViewController.viewModel.currentDestToken = currentDestChainToken
+
+          if let address = currentDestChainToken?.address {
+            self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
+              self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
+              self.rootViewController.viewModel.showToPoolInfo = true
+              self.rootViewController.coordinatorDidUpdateData()
+            }
+          }
         }
       }
       self.rootViewController.coordinatorDidUpdateData()
@@ -233,9 +304,23 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.rootViewController.present(controller, animated: true, completion: nil)
-    case .changeDestAddress:
+    case .changeShowDestAddress:
       self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
       self.rootViewController.coordinatorDidUpdateData()
+    case .changeDestAddress(address: let address):
+      self.rootViewController.viewModel.currentSendToAddress = address
+      self.rootViewController.coordinatorDidUpdateData()
+    case .selectSwap:
+        let viewModel = self.rootViewController.viewModel
+        if let currentSourceToken = viewModel.currentSourceToken {
+          let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
+          let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
+          let fee = "0.0253 ETH"
+
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
+          let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
+          self.navigationController.present(vc, animated: true, completion: nil)
+        }
     }
   }
 }
@@ -246,6 +331,9 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
     switch event {
     case .select(let token):
       self.rootViewController.viewModel.currentSourceToken = token
+      self.rootViewController.viewModel.sourceAmount = 0.0
+      self.rootViewController.viewModel.currentDestChain = nil
+      self.rootViewController.viewModel.currentDestToken = nil
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return

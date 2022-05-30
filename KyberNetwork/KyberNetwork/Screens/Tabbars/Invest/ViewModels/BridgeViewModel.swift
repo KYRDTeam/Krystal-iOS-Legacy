@@ -63,9 +63,13 @@ class BridgeViewModel {
   var selectDestTokenBlock: (() -> Void)?
   var selectSenToBlock: (() -> Void)?
   var changeAmountBlock: ((String) -> Void)?
+  var changeAddressBlock: ((String) -> Void)?
+  var swapBlock: (() -> Void)?
   
-  var currentSourceChain: ChainType?
+  var currentSourceChain: ChainType? = KNGeneralProvider.shared.currentChain
   var currentSourceToken: TokenObject?
+  var currentSourcePoolInfo: PoolInfo?
+  var currentDestPoolInfo: PoolInfo?
   var currentDestChain: ChainType?
   var currentDestToken: DestBridgeToken?
   var currentSendToAddress: String = ""
@@ -111,6 +115,10 @@ class BridgeViewModel {
     return fee
   }
   
+  func calculateDesAmount() -> String {
+    return StringFormatter.amountString(value: self.sourceAmount - self.calculateFee())
+  }
+  
   func viewForHeader(section: Int) -> UIView {
     let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32))
     view.backgroundColor = UIColor(named: "mainViewBgColor")!
@@ -141,13 +149,17 @@ class BridgeViewModel {
         return cell
       case .poolInfoRow:
         let cell = tableView.dequeueReusableCell(ChainInfoCell.self, indexPath: indexPath)!
+        if let currentSourcePoolInfo = self.currentSourcePoolInfo {
+          cell.icon.image = KNGeneralProvider.shared.currentChain.chainIcon()
+          cell.titleLabel.text = KNGeneralProvider.shared.currentChain.chainName() + currentSourcePoolInfo.liquidityPoolString()
+        }
         return cell
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
-        cell.amountTextField.isUserInteractionEnabled = true
+        cell.setDisableSelectToken(shouldDisable: false)
         cell.selectTokenBlock = self.selectSourceTokenBlock
         cell.amountChangeBlock = self.changeAmountBlock
-          
+        cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
           let bal: BigInt = currentSourceToken.getBalanceBigInt()
@@ -181,14 +193,18 @@ class BridgeViewModel {
         return cell
       case .poolInfoRow:
         let cell = tableView.dequeueReusableCell(ChainInfoCell.self, indexPath: indexPath)!
+        if let currentDestPoolInfo = self.currentDestPoolInfo, let currentDestChain = self.currentDestChain {
+          cell.icon.image = currentDestChain.chainIcon()
+          cell.titleLabel.text = currentDestChain.chainName() + currentDestPoolInfo.liquidityPoolString()
+        }
         return cell
       case .selectTokenRow:
         let cell = tableView.dequeueReusableCell(SelectTokenCell.self, indexPath: indexPath)!
         cell.selectTokenBlock = self.selectDestTokenBlock
         cell.balanceLabel.text = ""
         cell.selectTokenButton.setTitle(self.currentDestToken?.symbol ?? "", for: .normal)
-        cell.amountTextField.isUserInteractionEnabled = false
-        cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount - self.calculateFee())
+        cell.setDisableSelectToken(shouldDisable: true)
+        cell.amountTextField.text = self.calculateDesAmount()
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
@@ -198,6 +214,7 @@ class BridgeViewModel {
       case .addressRow:
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
+        cell.textChangeBlock = self.changeAddressBlock
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
@@ -215,8 +232,9 @@ class BridgeViewModel {
       case .errorRow:
         return UITableViewCell()
       case .swapRow:
-          let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
-          return cell
+        let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
+        cell.swapBlock = self.swapBlock
+        return cell
       }
     }
   }

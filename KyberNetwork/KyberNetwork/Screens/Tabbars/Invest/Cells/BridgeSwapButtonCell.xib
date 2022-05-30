@@ -43,6 +43,9 @@
                                 <integer key="value" value="16"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="swapButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="voE-0v-LDa"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by Multichain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oo3-AO-cLx">
                         <rect key="frame" x="103.5" y="82" width="112" height="15"/>
