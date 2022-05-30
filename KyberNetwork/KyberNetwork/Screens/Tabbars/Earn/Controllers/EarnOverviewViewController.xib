@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -37,23 +37,23 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjs-6P-8Nn">
-                            <rect key="frame" x="37" y="63.5" width="51.5" height="23.5"/>
-                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                            <rect key="frame" x="37" y="65.5" width="46.5" height="21.5"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vM-tm-Nr8">
-                            <rect key="frame" x="226" y="59.5" width="94" height="32"/>
+                            <rect key="frame" x="218" y="60.5" width="102" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="94" id="JKw-JZ-Zlh"/>
+                                <constraint firstAttribute="width" constant="102" id="JKw-JZ-Zlh"/>
                                 <constraint firstAttribute="height" constant="32" id="zaQ-Mf-ked"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="27" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="72" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="0xb2…f2cgldjlkgjflg" image="arrow_down_template">
+                            <state key="normal" title="Imported" image="arrow_down_template">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <userDefinedRuntimeAttributes>
@@ -67,7 +67,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UOz-TX-1yR">
-                            <rect key="frame" x="352" y="62.5" width="6" height="6"/>
+                            <rect key="frame" x="352" y="63.5" width="6" height="6"/>
                             <color key="backgroundColor" name="secondaryColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="6" id="koc-k6-WDi"/>
@@ -81,7 +81,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JPv-ML-Fas">
-                            <rect key="frame" x="151" y="59.5" width="63" height="32"/>
+                            <rect key="frame" x="149" y="60.5" width="63" height="32"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_switch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Itd-vu-znu">
                                     <rect key="frame" x="38" y="6" width="20" height="20"/>
@@ -121,7 +121,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8UZ-Ei-oCv">
-                            <rect key="frame" x="326" y="59.5" width="32" height="32"/>
+                            <rect key="frame" x="326" y="60.5" width="32" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="CGC-1N-FAO"/>
@@ -145,7 +145,7 @@
                         <constraint firstAttribute="trailing" secondItem="8UZ-Ei-oCv" secondAttribute="trailing" constant="17" id="9vW-Cf-6PB"/>
                         <constraint firstItem="UOz-TX-1yR" firstAttribute="top" secondItem="8UZ-Ei-oCv" secondAttribute="top" constant="3" id="Auw-gc-s3R"/>
                         <constraint firstAttribute="height" constant="113" id="DjA-NJ-ouz"/>
-                        <constraint firstItem="2vM-tm-Nr8" firstAttribute="leading" secondItem="JPv-ML-Fas" secondAttribute="trailing" constant="12" id="Gd4-x9-MZH"/>
+                        <constraint firstItem="2vM-tm-Nr8" firstAttribute="leading" secondItem="JPv-ML-Fas" secondAttribute="trailing" constant="6" id="Gd4-x9-MZH"/>
                         <constraint firstItem="8UZ-Ei-oCv" firstAttribute="centerY" secondItem="kjs-6P-8Nn" secondAttribute="centerY" id="Irf-St-XdO"/>
                         <constraint firstItem="8UZ-Ei-oCv" firstAttribute="centerY" secondItem="JPv-ML-Fas" secondAttribute="centerY" id="MXs-sZ-sGe"/>
                         <constraint firstAttribute="bottom" secondItem="kjs-6P-8Nn" secondAttribute="bottom" constant="26" id="TeS-0w-xyf"/>
