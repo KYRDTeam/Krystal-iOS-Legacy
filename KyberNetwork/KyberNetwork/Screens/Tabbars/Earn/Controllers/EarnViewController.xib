@@ -57,14 +57,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0A-k7-oVV">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lgl-SE-yW3">
-                            <rect key="frame" x="51" y="63.5" width="56" height="23.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lgl-SE-yW3">
+                            <rect key="frame" x="51" y="63" width="51.5" height="24"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au7-Ch-oql">
-                            <rect key="frame" x="326" y="59.5" width="32" height="32"/>
+                            <rect key="frame" x="326" y="59" width="32" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="pbU-Zz-Luz"/>
@@ -82,7 +82,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF5-8x-RN9">
-                            <rect key="frame" x="23" y="57.5" width="46" height="36"/>
+                            <rect key="frame" x="23" y="57" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="2Xq-Cd-UPI"/>
                                 <constraint firstAttribute="height" constant="36" id="85j-PH-vSj"/>
@@ -96,7 +96,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bTq-X6-59I">
-                            <rect key="frame" x="352" y="62.5" width="6" height="6"/>
+                            <rect key="frame" x="352" y="62" width="6" height="6"/>
                             <color key="backgroundColor" name="secondaryColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="6" id="GRu-Fm-4p8"/>
@@ -110,11 +110,11 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BHm-zh-OUh">
-                            <rect key="frame" x="226" y="59.5" width="94" height="32"/>
+                            <rect key="frame" x="218" y="59" width="102" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="3O0-jW-Ecg"/>
-                                <constraint firstAttribute="width" constant="94" id="nGw-fl-qKz"/>
+                                <constraint firstAttribute="width" constant="102" id="nGw-fl-qKz"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>

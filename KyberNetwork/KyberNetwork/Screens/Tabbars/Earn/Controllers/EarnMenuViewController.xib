@@ -9,14 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
         <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
             <string>Lato-Bold</string>
-        </array>
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
         </array>
     </customFonts>
     <objects>
@@ -44,16 +44,16 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EARN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-Gi-nXw">
                             <rect key="frame" x="51" y="66" width="46.5" height="21"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-Af-9Vz">
-                            <rect key="frame" x="226" y="60.5" width="94" height="32"/>
+                            <rect key="frame" x="218" y="60.5" width="102" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="mrT-Uv-xfP"/>
-                                <constraint firstAttribute="width" constant="94" id="wdz-KK-CA9"/>
+                                <constraint firstAttribute="width" constant="102" id="wdz-KK-CA9"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="tintColor" red="0.81568627449999997" green="0.83137254900000002" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -101,7 +101,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J4n-mQ-C4h">
-                            <rect key="frame" x="151" y="60.5" width="63" height="32"/>
+                            <rect key="frame" x="149" y="60.5" width="63" height="32"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_switch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Swu-Pe-eRC">
                                     <rect key="frame" x="38" y="6" width="20" height="20"/>
@@ -164,7 +164,7 @@
                         <constraint firstItem="KOL-Gi-nXw" firstAttribute="leading" secondItem="ztD-1o-LWC" secondAttribute="leading" constant="51" id="1Ta-t7-JLl"/>
                         <constraint firstAttribute="height" constant="113" id="65t-4O-0zI"/>
                         <constraint firstItem="hjs-AV-lyC" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="DKj-Qe-RHh"/>
-                        <constraint firstItem="QS9-Af-9Vz" firstAttribute="leading" secondItem="J4n-mQ-C4h" secondAttribute="trailing" constant="12" id="Lcj-bt-wpy"/>
+                        <constraint firstItem="QS9-Af-9Vz" firstAttribute="leading" secondItem="J4n-mQ-C4h" secondAttribute="trailing" constant="6" id="Lcj-bt-wpy"/>
                         <constraint firstItem="QS9-Af-9Vz" firstAttribute="centerY" secondItem="KOL-Gi-nXw" secondAttribute="centerY" id="QsB-uH-xd7"/>
                         <constraint firstItem="698-Yp-2Cp" firstAttribute="top" secondItem="hjs-AV-lyC" secondAttribute="top" constant="3" id="RNe-LZ-HQq"/>
                         <constraint firstAttribute="bottom" secondItem="KOL-Gi-nXw" secondAttribute="bottom" constant="26" id="W7A-1k-gyT"/>
