@@ -153,6 +153,21 @@ class BridgeViewController: KNBaseViewController {
     
   }
   
+  func coordinatorSuccessApprove(token: TokenObject) {
+    self.viewModel.isNeedApprove = false
+    self.tableView.reloadData()
+  }
+
+  func coordinatorFailApprove(token: TokenObject) {
+    self.showWarningTopBannerMessage(
+      with: "",
+      message: "Something went wrong, please try again later".toBeLocalised(),
+      time: 2.0
+    )
+    self.viewModel.isNeedApprove = true
+    self.tableView.reloadData()
+  }
+  
   func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {
     let popup = SwitchChainViewController()
     popup.dataSource = chainTypes

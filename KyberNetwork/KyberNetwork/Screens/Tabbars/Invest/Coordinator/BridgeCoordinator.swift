@@ -12,6 +12,9 @@ import QRCodeReaderViewController
 import WalletConnectSwift
 import BigInt
 import TrustCore
+import JSONRPCKit
+import APIKit
+import Result
 
 class PoolInfo: Codable {
   var anyToken: String = ""
@@ -345,19 +348,127 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       }
     }
   }
+  
+  fileprivate func saveUseGasTokenState(_ state: Bool) {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    }
+    data[self.session.wallet.addressString] = state
+    UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
+  }
+  
+  fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    if remain.isZero {
+      completion(.success(true))
+      return
+    }
+    let gasPrice = KNGasCoordinator.shared.defaultKNGas
+    provider.sendApproveERCToken(
+      for: token,
+      value: BigInt(0),
+      gasPrice: gasPrice,
+      gasLimit: gasLimit
+    ) { result in
+      switch result {
+      case .success:
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
 }
 
 extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
-    
+    self.navigationController.displayLoading()
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    self.resetAllowanceForTokenIfNeeded(token, remain: remain, gasLimit: gasLimit) { [weak self] resetResult in
+      guard let `self` = self else { return }
+      self.navigationController.hideLoading()
+      switch resetResult {
+      case .success:
+        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
+          switch result {
+          case .success:
+            self.rootViewController.coordinatorSuccessApprove(token: token)
+          case .failure(let error):
+            var errorMessage = error.description
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(
+              with: "Error",
+              message: errorMessage,
+              time: 1.5
+            )
+            self.rootViewController.coordinatorFailApprove(token: token)
+          }
+        }
+      case .failure:
+        self.rootViewController.coordinatorFailApprove(token: token)
+      }
+    }
   }
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
-    
+    self.navigationController.displayLoading()
+    guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
+      return
+    }
+    provider.sendApproveERCTokenAddress(
+      for: gasTokenAddress,
+      value: Constants.maxValueBigInt,
+      gasPrice: KNGasCoordinator.shared.defaultKNGas,
+      gasLimit: gasLimit
+    ) { approveResult in
+      self.navigationController.hideLoading()
+      switch approveResult {
+      case .success:
+        self.saveUseGasTokenState(state)
+//        self.rootViewController.coordinatorUpdateIsUseGasToken(state)
+//        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(state)
+      case .failure(let error):
+        var errorMessage = error.description
+        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+            errorMessage = message
+          }
+        }
+        self.navigationController.showErrorTopBannerMessage(
+          with: "Error",
+          message: errorMessage,
+          time: 1.5
+        )
+//        self.rootViewController.coordinatorUpdateIsUseGasToken(!state)
+//        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(!state)
+      }
+    }
   }
   
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
-    
+    guard case .real(let account) = self.session.wallet.type else {
+      return
+    }
+    KNGeneralProvider.shared.buildSignTxForApprove(tokenAddress: tokenAddress, account: account) { signTx in
+      guard let unwrap = signTx else { return }
+      KNGeneralProvider.shared.getEstimateGasLimit(transaction: unwrap) { result in
+        switch result {
+        case.success(let estGas):
+          controller.coordinatorDidUpdateGasLimit(estGas)
+        default:
+          break
+        }
+      }
+    }
   }
   
 }
