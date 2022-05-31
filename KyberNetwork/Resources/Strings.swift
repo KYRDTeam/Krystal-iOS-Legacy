@@ -13,6 +13,7 @@ struct Strings {
   static let approve = "approve".toBeLocalised()
   
   // Actions
+  static let receive = "receive".toBeLocalised()
   static let add = "add".toBeLocalised()
   static let edit = "edit".toBeLocalised()
   static let addWatchWallet = "add.watched.wallet".toBeLocalised()
