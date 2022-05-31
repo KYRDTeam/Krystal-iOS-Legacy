@@ -49,6 +49,20 @@ class OverviewMainViewController: KNBaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  var insetViewHeight: CGFloat {
+    switch viewModel.overviewMode {
+    case .overview:
+      switch viewModel.currentMode {
+      case .market:
+        return 280
+      default:
+        return 264
+      }
+    case .summary:
+      return 200
+    }
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -91,7 +105,6 @@ class OverviewMainViewController: KNBaseViewController {
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
     
-    self.tableView.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
     self.configPullToRefresh()
     self.configHeaderTapped()
   }
@@ -174,6 +187,7 @@ class OverviewMainViewController: KNBaseViewController {
         self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
         self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
         self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+        self.insestView.frame.size.height = self.insetViewHeight
         self.updateCh24Button()
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
@@ -375,7 +389,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-15.0) : CGFloat(-10.0)
     self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
-    self.insestView.frame.size.height = isSummary ? CGFloat(0) : CGFloat(80)
+    self.insestView.frame.size.height = insetViewHeight
     self.tableView.reloadData()
     self.configPullToRefresh()
   }
@@ -611,16 +625,6 @@ extension OverviewMainViewController: UITableViewDelegate {
 }
 
 extension OverviewMainViewController: UIScrollViewDelegate {
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if self.viewModel.overviewMode == .summary {
-      self.totalBalanceContainerView.alpha = 1
-    } else {
-      let alpha = self.tableView.contentOffset.y <= 0 ? abs(self.tableView.contentOffset.y) / 200.0 : 0.0
-      self.totalBalanceContainerView.alpha = pow(alpha, 3)
-      self.infoCollectionView.isScrollEnabled = alpha > 0.8
-      self.infoCollectionView.isUserInteractionEnabled = self.tableView.contentOffset.y < -180
-    }
-  }
 
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     guard scrollView == self.infoCollectionView else {
