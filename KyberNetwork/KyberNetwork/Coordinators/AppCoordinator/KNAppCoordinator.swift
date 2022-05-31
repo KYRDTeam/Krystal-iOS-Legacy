@@ -108,11 +108,12 @@ class KNAppCoordinator: NSObject, Coordinator {
       KNPasscodeUtil.shared.currentPasscode() != nil {
       if case .real(let account) = wallet.type {
         // Check case if password for account is not exist, cancel start new session
-        guard let _ =  keystore.getPassword(for: account) else {
+        guard let _ = keystore.getPassword(for: account) else {
            return
         }
       }
       self.startNewSession(with: wallet)
+      KNCrashlyticsUtil.updateUserId(userId: session.currentWalletObject.address)
     }
   }
 
