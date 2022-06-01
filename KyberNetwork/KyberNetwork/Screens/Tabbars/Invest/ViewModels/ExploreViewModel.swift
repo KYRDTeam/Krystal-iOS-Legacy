@@ -55,7 +55,7 @@ class ExploreViewModel {
     menuItems.append(.swap)
     menuItems.append(.transfer)
     
-    if KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn {
+    if KNGeneralProvider.shared.currentChain.isSupportSwap() {
       menuItems.append(contentsOf: [.reward, .referral, .dapps, .multisend])
       
       if isBuyCryptoEnabled {

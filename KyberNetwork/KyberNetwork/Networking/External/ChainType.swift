@@ -284,6 +284,10 @@ enum ChainType: Codable, CaseIterable {
   func blockExploreName() -> String {
     return "Block Explorer"
   }
+  
+  func isSupportSwap() -> Bool {
+    return KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn
+  }
 
   func isSupportedHistoryAPI() -> Bool {
     switch self {

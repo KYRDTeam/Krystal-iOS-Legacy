@@ -429,7 +429,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    guard KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn else { return }
+    guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     provider.request(.getLendingBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
