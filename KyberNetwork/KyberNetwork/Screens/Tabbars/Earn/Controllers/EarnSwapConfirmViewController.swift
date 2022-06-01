@@ -19,8 +19,8 @@ struct EarnSwapConfirmViewModel {
   let transaction: SignTransaction?
   let eip1559Transaction: EIP1559Transaction?
   let rawTransaction: TxObject
-  let minReceiveAmount: String
-  let minReceiveTitle: String
+  let minReceiveAmount: String?
+  let minReceiveTitle: String?
   let priceImpact: Double
   let maxSlippage: Double
   

@@ -17,7 +17,7 @@ enum KSendTokenViewEvent {
   case send(transaction: UnconfirmedTransaction, ens: String?)
   case sendSolana(transaction: UnconfirmedSolTransaction)
   case addContact(address: String, ens: String?)
-  case contactSelectMore
+  case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case openHistory
   case openWalletsList
@@ -63,6 +63,7 @@ class KSendTokenViewController: KNBaseViewController {
   @IBOutlet weak var gasSettingButton: UIButton!
   @IBOutlet weak var multiSendButton: UIButton!
   @IBOutlet weak var recentContactViewTopConstraint: NSLayoutConstraint!
+  let keyboardUtil = KeyboardTypingUtil()
 
   fileprivate var isViewSetup: Bool = false
   fileprivate var isViewDisappeared: Bool = false
@@ -210,6 +211,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_submit", customAttributes: nil)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     
@@ -236,6 +238,11 @@ class KSendTokenViewController: KNBaseViewController {
     }()
     self.present(qrcodeReaderVC, animated: true, completion: nil)
   }
+  
+  @IBAction func contactButonWasTapped(_ sender: Any) {
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
+  }
+  
 
   @IBAction func screenEdgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {
     if sender.state == .ended {
@@ -244,7 +251,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
@@ -671,24 +678,24 @@ extension KSendTokenViewController: UITextFieldDelegate {
             self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
             
             self.viewModel.updateAddress(text)
-            self.updateUIEnsMessage()
-            self.getEnsAddressFromName(text)
             self.view.layoutIfNeeded()
           }
         } else {
           self.estGasFeeValueLabel.text = self.viewModel.solFeeString
           self.viewModel.updateAddress(text)
-          self.updateUIEnsMessage()
-          self.getEnsAddressFromName(text)
           self.view.layoutIfNeeded()
         }
       } else {
         self.viewModel.updateAddress(text)
-        self.updateUIEnsMessage()
-        self.getEnsAddressFromName(text)
         self.view.layoutIfNeeded()
       }
-      return true
+      textField.text = text
+      self.keyboardUtil.action = { [weak self] in
+        self?.ensAddressLabel.isHidden = true
+        self?.getEnsAddressFromName(text)
+      }
+      self.keyboardUtil.start()
+      return false
     }
   }
 
@@ -725,6 +732,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
           if name != self.viewModel.addressString { return }
           if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
+            self.updateUIEnsMessage()
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {

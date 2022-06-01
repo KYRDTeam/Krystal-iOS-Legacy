@@ -175,6 +175,7 @@ extension KNContactTableView: UITableViewDataSource {
       contact: contact,
       index: isFull ? indexPath.row : 0
     )
+    cell.selectionStyle = .none
     cell.update(with: viewModel)
     return cell
   }

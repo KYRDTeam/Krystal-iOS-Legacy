@@ -287,7 +287,7 @@ enum ChainType: Codable, CaseIterable {
 
   func isSupportedHistoryAPI() -> Bool {
     switch self {
-    case .cronos, .aurora:
+    case .cronos:
       return false
     default:
       return true

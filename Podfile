@@ -1,6 +1,10 @@
 platform :ios, '12.0'
 inhibit_all_warnings!
-source 'https://cdn.cocoapods.org/'
+
+source 'https://github.com/CocoaPods/Specs.git'
+# source 'https://cdn.cocoapods.org/'
+# tmp fix the CDN outage: https://github.com/CocoaPods/CocoaPods/issues/10078#issuecomment-696481185
+# https://github.com/CocoaPods/CocoaPods/issues/11355
 
 def firebasePods
   pod 'Firebase/Analytics'

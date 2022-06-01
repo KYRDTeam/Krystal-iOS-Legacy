@@ -250,7 +250,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.openConfirmSolTransfer(transaction: transaction)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
-    case .contactSelectMore:
+    case .openContactList:
       self.openListContactsView()
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)

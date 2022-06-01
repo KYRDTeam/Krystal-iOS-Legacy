@@ -404,43 +404,44 @@ extension OverviewMainViewController: UITableViewDataSource {
     ) as! OverviewEmptyTableViewCell
     switch self.viewModel.currentMode {
     case .asset:
-      cell.imageIcon.image = UIImage(named: "empty_asset_icon")
-      cell.titleLabel.text = "Your balance is empty"
-      cell.button1.setTitle("Buy Crypto", for: .normal)
+      cell.imageIcon.image = Images.emptyAsset
+      cell.titleLabel.text = Strings.balanceIsEmpty
+      cell.button1.setTitle(Strings.buyCrypto, for: .normal)
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .buyCrypto)
       }
       cell.button1.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
       cell.button2.isHidden = true
     case .favourite:
-      cell.imageIcon.image = UIImage(named: "empty_fav_token")
-      cell.titleLabel.text = "No Favourite Token yet"
+      cell.imageIcon.image = Images.emptyFavToken
+      cell.titleLabel.text = Strings.noFavoriteToken
       cell.button1.isHidden = true
       cell.button2.isHidden = true
     case .supply:
-      cell.imageIcon.image = UIImage(named: "deposit_empty_icon")
-      cell.titleLabel.text = "You've not supplied any token to earn interest"
+      cell.imageIcon.image = Images.emptyDeposit
+      cell.titleLabel.text = Strings.notSuppliedAnyToken
+      cell.button1.setTitle(Strings.supplyTokensToEarnInterest, for: .normal)
       cell.button1.isHidden = false
       cell.button2.isHidden = false
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .depositMore)
       }
     case .showLiquidityPool:
-      cell.imageIcon.image = UIImage(named: "liquidity_pool_empty_icon")
-      cell.titleLabel.text = "You don't have any liquidity pool".toBeLocalised()
+      cell.imageIcon.image = Images.emptyLiquidityPool
+      cell.titleLabel.text = Strings.notHaveLiquidityPool
       cell.button1.isHidden = true
       cell.button2.isHidden = true
     case .market:
-      cell.imageIcon.image = UIImage(named: "empty_token_token")
-      cell.titleLabel.text = "Your token list is empty"
+      cell.imageIcon.image = Images.emptyTokens
+      cell.titleLabel.text = Strings.tokenListIsEmpty
       cell.button1.isHidden = true
       cell.button2.isHidden = true
     case .nft:
-      cell.imageIcon.image = UIImage(named: "empty_nft")
-      cell.titleLabel.text = "You have not any NFT"
+      cell.imageIcon.image = Images.emptyNFT
+      cell.titleLabel.text = Strings.notHaveAnyNFT
       cell.button1.isHidden = false
       cell.button2.isHidden = true
-      cell.button1.setTitle("Add NFT", for: .normal)
+      cell.button1.setTitle(Strings.addNFT, for: .normal)
       cell.action = {
         self.delegate?.overviewMainViewController(self, run: .addNFT)
       }
@@ -617,6 +618,7 @@ extension OverviewMainViewController: UIScrollViewDelegate {
       let alpha = self.tableView.contentOffset.y <= 0 ? abs(self.tableView.contentOffset.y) / 200.0 : 0.0
       self.totalBalanceContainerView.alpha = pow(alpha, 3)
       self.infoCollectionView.isScrollEnabled = alpha > 0.8
+      self.infoCollectionView.isUserInteractionEnabled = self.tableView.contentOffset.y < -180
     }
   }
 

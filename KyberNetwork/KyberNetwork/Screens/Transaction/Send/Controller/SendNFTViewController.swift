@@ -436,7 +436,7 @@ class SendNFTViewController: KNBaseViewController {
   }
 
   @IBAction func recentContactMoreButtonPressed(_ sender: Any) {
-    self.delegate?.kSendTokenViewController(self, run: .contactSelectMore)
+    self.delegate?.kSendTokenViewController(self, run: .openContactList)
   }
   
   @IBAction func sendButtonPressed(_ sender: Any) {

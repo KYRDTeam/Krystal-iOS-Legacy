@@ -92,11 +92,7 @@ class PendingTransactionListViewController: BaseTransactionListViewController {
       self.animatingCell = nil
     })
   }
-  
-  @IBAction func swapWasTapped(_ sender: Any) {
-    delegate?.selectSwapNow(self)
-  }
-  
+
   override func updateWallet(wallet: KNWalletObject) {
     DispatchQueue.global().async {
       self.viewModel.updateWallet(wallet: wallet)

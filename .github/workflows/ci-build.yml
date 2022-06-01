@@ -159,6 +159,9 @@ jobs:
           
       - name: Install Pod check
         run: gem install cocoapods-check
+        
+      - name: Install Pod binary
+        run: gem install cocoapods-binary
           
       - name: Setup Sentry CLI
         shell: bash

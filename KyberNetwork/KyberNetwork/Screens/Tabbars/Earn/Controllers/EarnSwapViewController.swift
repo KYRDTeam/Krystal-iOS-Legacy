@@ -10,7 +10,7 @@ import BigInt
 import TrustCore
 //swiftlint:disable file_length
 class EarnSwapViewModel {
-  fileprivate var fromTokenData: TokenData
+  fileprivate var fromTokenData: TokenData?
   fileprivate var toTokenData: TokenData
   fileprivate var platformDataSource: [EarnSelectTableViewCellViewModel]
   var isSwapAllBalance: Bool = false
@@ -66,12 +66,12 @@ class EarnSwapViewModel {
   }
   var remainApprovedAmount: (TokenData, BigInt)?
   var latestNonce: Int = -1
-  var refPrice: (TokenData, TokenData, String, [String])
+  var refPrice: (from: TokenData, to: TokenData, priceString: String, sources: [String])?
   fileprivate(set) var minRatePercent: Double = 0.5
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
 
-  init(to: TokenData, from: TokenData, wallet: Wallet) {
+  init(to: TokenData, from: TokenData?, wallet: Wallet) {
     self.fromTokenData = from
     self.toTokenData = to
     let dataSource = self.toTokenData.lendingPlatforms.map { EarnSelectTableViewCellViewModel(platform: $0) }
@@ -83,8 +83,6 @@ class EarnSwapViewModel {
     }
     self.platformDataSource = dataSource
     self.wallet = wallet
-    
-    self.refPrice = (self.fromTokenData, self.toTokenData, "", [])
   }
   
   func updateFocusingField(_ isSource: Bool) {
@@ -101,7 +99,7 @@ class EarnSwapViewModel {
   func resetBalances() {
   }
 
-  var displayExpectedReceiveValue: String {
+  var displayExpectedReceiveValue: String? {
     return self.isFocusingFromAmount ? self.displayMinDestAmount : self.displayMaxSoldAmount
   }
 
@@ -109,18 +107,24 @@ class EarnSwapViewModel {
     return self.isFocusingFromAmount ? "Minimum received" : "Maximum sold"
   }
 
-  var displayBalance: String {
-    let string = self.fromTokenData.getBalanceBigInt().string(
-      decimals: self.fromTokenData.decimals,
+  var displayBalance: String? {
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+    let string = fromTokenData.getBalanceBigInt().string(
+      decimals: fromTokenData.decimals,
       minFractionDigits: 0,
-      maxFractionDigits: min(self.fromTokenData.decimals, 5)
+      maxFractionDigits: min(fromTokenData.decimals, 5)
     )
     if let double = Double(string.removeGroupSeparator()), double == 0 { return "0" }
     return "\(string.prefix(15))"
   }
 
-  var totalBalanceText: String {
-    return "\(self.displayBalance) \(self.fromTokenData.symbol)"
+  var totalBalanceText: String? {
+    guard let fromTokenData = fromTokenData, let displayBalance = displayBalance else {
+      return nil
+    }
+    return "\(displayBalance) \(fromTokenData.symbol)"
   }
 
   func updateAmount(_ amount: String, isSource: Bool, forSendAllETH: Bool = false) {
@@ -140,43 +144,56 @@ class EarnSwapViewModel {
   }
 
   var isAmountTooSmall: Bool {
-    if self.fromTokenData.symbol == "ETH" { return false }
+    guard let fromTokenData = fromTokenData else {
+      return false
+    }
+    if fromTokenData.symbol == "ETH" { return false }
     return self.amountFromBigInt == BigInt(0)
   }
 
   var isAmountTooBig: Bool {
-    let balanceVal = self.fromTokenData.getBalanceBigInt()
+    guard let fromTokenData = fromTokenData else {
+      return false
+    }
+    let balanceVal = fromTokenData.getBalanceBigInt()
     return self.amountFromBigInt > balanceVal
   }
   
   var amountFromBigInt: BigInt {
-    return self.amountFrom.removeGroupSeparator().amountBigInt(decimals: self.fromTokenData.decimals) ?? BigInt(0)
+    guard let decimals = fromTokenData?.decimals else { return BigInt(0) }
+    return self.amountFrom.removeGroupSeparator().amountBigInt(decimals: decimals) ?? BigInt(0)
   }
   
   var allETHBalanceFee: BigInt {
     return self.gasPrice * self.gasLimit
   }
   
-  var allTokenBalanceString: String {
-    if self.fromTokenData.isQuoteToken {
-      let balance = self.fromTokenData.getBalanceBigInt()
+  var allTokenBalanceString: String? {
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+    if fromTokenData.isQuoteToken {
+      let balance = fromTokenData.getBalanceBigInt()
       let availableValue = max(BigInt(0), balance - self.allETHBalanceFee)
       let string = availableValue.string(
-        decimals: self.fromTokenData.decimals,
+        decimals: fromTokenData.decimals,
         minFractionDigits: 0,
-        maxFractionDigits: min(self.fromTokenData.decimals, 5)
+        maxFractionDigits: min(fromTokenData.decimals, 5)
       ).removeGroupSeparator()
       return "\(string.prefix(12))"
     }
-    return self.displayBalance.removeGroupSeparator()
+    return self.displayBalance?.removeGroupSeparator()
   }
   
   var priceImpactValue: Double {
+    guard let fromTokenData = fromTokenData else {
+      return 0
+    }
     guard !self.amountFrom.isEmpty else {
       return 0
     }
-    let refPrice = self.getRefPrice(from: self.fromTokenData, to: self.toTokenData)
-    let price = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+    let refPrice = self.getRefPrice(from: fromTokenData, to: self.toTokenData)
+    let price = self.getSwapRate(from: fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
 
     guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
       return 0
@@ -260,8 +277,11 @@ class EarnSwapViewModel {
     return self.minDestQty.string(decimals: self.toTokenData.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.toTokenData.symbol
   }
   
-  var displayMaxSoldAmount: String {
-    return self.maxAmtSold.string(decimals: self.fromTokenData.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + self.fromTokenData.symbol
+  var displayMaxSoldAmount: String? {
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+    return self.maxAmtSold.string(decimals: fromTokenData.decimals, minFractionDigits: 4, maxFractionDigits: 4) + " " + fromTokenData.symbol
   }
 
   @discardableResult
@@ -383,12 +403,15 @@ class EarnSwapViewModel {
     }
   }
   
+  private func isAmountChanged(amount: BigInt) -> Bool {
+    guard let fromTokenData = fromTokenData else { return false }
+    if self.amountFromBigInt == amount { return false }
+    let doubleValue = Double(amount) / pow(10.0, Double(fromTokenData.decimals))
+    return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
+  }
+  
   func getSwapRate(from: String, to: String, amount: BigInt, platform: String) -> String {
-    let isAmountChanged: Bool = {
-      if self.amountFromBigInt == amount { return false }
-      let doubleValue = Double(amount) / pow(10.0, Double(self.fromTokenData.decimals))
-      return !(self.amountFromBigInt.isZero && doubleValue == 0.001)
-    }()
+    let isAmountChanged = isAmountChanged(amount: amount)
 
     guard from == self.swapRates.0, to == self.swapRates.1, !isAmountChanged else {
       return ""
@@ -412,18 +435,25 @@ class EarnSwapViewModel {
   }
   
   func getCurrentRate() -> BigInt? {
-    let rateString: String = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+
+    let rateString: String = self.getSwapRate(from: fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     return BigInt(rateString)
   }
   
   var expectedReceivedAmountText: String {
+    guard let fromTokenData = fromTokenData else {
+      return ""
+    }
     guard !self.amountFromBigInt.isZero else {
       return ""
     }
     let expectedRate = self.getCurrentRate() ?? BigInt(0)
     let expectedAmount: BigInt = {
       let amount = self.amountFromBigInt
-      return expectedRate * amount * BigInt(10).power(self.toTokenData.decimals) / BigInt(10).power(18) / BigInt(10).power(self.fromTokenData.decimals)
+      return expectedRate * amount * BigInt(10).power(self.toTokenData.decimals) / BigInt(10).power(18) / BigInt(10).power(fromTokenData.decimals)
     }()
     return expectedAmount.string(
       decimals: self.toTokenData.decimals,
@@ -433,19 +463,22 @@ class EarnSwapViewModel {
   }
   
   var expectedExchangeAmountText: String {
+    guard let fromTokenData = fromTokenData else {
+      return ""
+    }
     guard !self.amountToBigInt.isZero else {
       return ""
     }
     let rate = self.getCurrentRate() ?? BigInt(0)
     let expectedExchange: BigInt = {
       if rate.isZero { return BigInt(0) }
-      let amount = self.amountToBigInt * BigInt(10).power(18) * BigInt(10).power(self.fromTokenData.decimals)
+      let amount = self.amountToBigInt * BigInt(10).power(18) * BigInt(10).power(fromTokenData.decimals)
       return amount / rate / BigInt(10).power(self.toTokenData.decimals)
     }()
     return expectedExchange.string(
-      decimals: self.fromTokenData.decimals,
-      minFractionDigits: self.fromTokenData.decimals,
-      maxFractionDigits: self.fromTokenData.decimals
+      decimals: fromTokenData.decimals,
+      minFractionDigits: fromTokenData.decimals,
+      maxFractionDigits: fromTokenData.decimals
     ).removeGroupSeparator()
   }
   //TODO: buid display usd amount
@@ -490,7 +523,7 @@ class EarnSwapViewModel {
     }
   }
 
-  var exchangeRateText: String {
+  var exchangeRateText: String? {
     if self.showingRevertRate {
       return self.displayRevertRate
     } else {
@@ -498,36 +531,46 @@ class EarnSwapViewModel {
     }
   }
 
-  var displayExchangeRate: String {
-    let rateString: String = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+  var displayExchangeRate: String? {
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+
+    let rateString: String = self.getSwapRate(from:fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate {
-      return notNilRate.isZero ? "---" : "Rate: 1 \(self.fromTokenData.symbol) = \(notNilRate.displayRate(decimals: 18)) \(self.toTokenData.symbol)"
+      return notNilRate.isZero ? "---" : "Rate: 1 \(fromTokenData.symbol) = \(notNilRate.displayRate(decimals: 18)) \(self.toTokenData.symbol)"
     } else {
       return "---"
     }
   }
   
-  var displayRevertRate: String {
-    let rateString: String = self.getSwapRate(from: self.fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
+  var displayRevertRate: String? {
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+    let rateString: String = self.getSwapRate(from: fromTokenData.address.lowercased(), to: self.toTokenData.address.lowercased(), amount: self.amountFromBigInt, platform: self.currentFlatform)
     let rate = BigInt(rateString)
     if let notNilRate = rate, notNilRate != BigInt(0) {
       let revertRate = BigInt(10).power(36) / notNilRate
-      return notNilRate.isZero ? "---" : "Rate: 1 \(self.toTokenData.symbol) = \(revertRate.displayRate(decimals: 18)) \(self.fromTokenData.symbol)"
+      return notNilRate.isZero ? "---" : "Rate: 1 \(self.toTokenData.symbol) = \(revertRate.displayRate(decimals: 18)) \(fromTokenData.symbol)"
     } else {
       return "---"
     }
   }
   
   func getRefPrice(from: TokenData, to: TokenData) -> String {
-    guard from == self.refPrice.0, to == self.refPrice.1 else {
+    guard let refPrice = refPrice, from == refPrice.from, to == refPrice.to else {
       return ""
     }
-    return self.refPrice.2
+    return refPrice.priceString
   }
   
   var refPriceDiffText: String {
-    guard !self.getRefPrice(from: self.fromTokenData, to: self.toTokenData).isEmpty else {
+    guard let fromTokenData = fromTokenData else {
+      return "---"
+    }
+    guard !self.getRefPrice(from: fromTokenData, to: self.toTokenData).isEmpty else {
       return "---"
     }
     let change = self.priceImpactValue
@@ -582,8 +625,11 @@ class EarnSwapViewModel {
   }
   
   var equivalentUSDAmount: BigInt? {
-    if let usdRate = KNTrackerRateStorage.shared.getPriceWithAddress(self.fromTokenData.address) {
-      return self.amountFromBigInt * BigInt(usdRate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.fromTokenData.decimals)
+    guard let fromTokenData = fromTokenData else {
+      return nil
+    }
+    if let usdRate = KNTrackerRateStorage.shared.getPriceWithAddress(fromTokenData.address) {
+      return self.amountFromBigInt * BigInt(usdRate.usd * pow(10.0, 18.0)) / BigInt(10).power(fromTokenData.decimals)
     }
     return nil
   }
@@ -601,7 +647,10 @@ class EarnSwapViewModel {
   
   var isHavingEnoughETHForFee: Bool {
     var fee = self.gasPrice * self.gasLimit
-    if self.fromTokenData.isQuoteToken { fee += self.amountFromBigInt }
+    guard let fromTokenData = fromTokenData else {
+      return true
+    }
+    if fromTokenData.isQuoteToken { fee += self.amountFromBigInt }
     let ethBal = KNGeneralProvider.shared.quoteTokenObject.getBalanceBigInt()
     return ethBal >= fee
   }
@@ -639,6 +688,47 @@ class EarnSwapViewModel {
       }
     }
   }
+  
+  typealias SwapValidationError = (title: String, message: String)
+  
+  func validate(isConfirming: Bool) -> ValidationResult<SwapValidationError> {
+    guard let fromTokenData = fromTokenData else {
+      return isConfirming
+      ? .failure(error: (title: Strings.invalidInput, message: Strings.pleaseSelectSourceToken))
+      : .success
+    }
+
+    let estRate = getSwapRate(from: fromTokenData.address.lowercased(),
+                              to: toTokenData.address.lowercased(),
+                              amount: amountFromBigInt,
+                              platform: currentFlatform)
+    let estRateBigInt = BigInt(estRate)
+    if estRateBigInt?.isZero == true {
+      return .failure(error: (title: "", message: Strings.canNotFindExchangeRate))
+    }
+    guard fromTokenData.address != self.toTokenData.address else {
+      return .failure(error: (title: Strings.unsupported, message: Strings.canNotSwapSameToken))
+    }
+    guard !self.amountTo.isEmpty else {
+      return .failure(error: (title: Strings.invalidInput, message: Strings.pleaseEnterAmountToContinue))
+    }
+    guard !self.isAmountTooSmall else {
+      return .failure(error: (title: Strings.invalidAmount, message: Strings.amountToSendGreaterThanZero))
+    }
+    guard !self.isAmountTooBig else {
+      return .failure(error: (title: Strings.amountTooBig, message: Strings.balanceNotEnoughToMakeTransaction))
+    }
+    if isConfirming {
+      guard self.isHavingEnoughETHForFee else {
+        let fee = self.gasFeeBigInt
+        let title = String(format: Strings.insufficientXForTransaction.toBeLocalised(), KNGeneralProvider.shared.quoteToken)
+        let message = String(format: Strings.depositMoreXOrClickAdvancedToLowerGasFee.toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
+        return .failure(error: (title: title, message: message))
+      }
+    }
+    return .success
+  }
+  
 }
 
 class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
@@ -652,7 +742,9 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   @IBOutlet weak var fromTokenButton: UIButton!
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var fromAmountTextField: UITextField!
+  @IBOutlet weak var maxFromAmountButton: UIButton!
   @IBOutlet weak var equivalentUSDValueLabel: UILabel!
+  @IBOutlet weak var fromAmountFieldTrailing: NSLayoutConstraint!
   @IBOutlet weak var exchangeRateLabel: UILabel!
   @IBOutlet weak var rateWarningLabel: UILabel!
   @IBOutlet weak var changeRateButton: UIButton!
@@ -710,6 +802,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUIForSendApprove(isShowApproveButton: false)
     self.toTokenButton.setTitle(self.viewModel.toTokenData.symbol.uppercased(), for: .normal)
     self.updateUITokenDidChange(self.viewModel.fromTokenData)
+    self.resetBalanceValues()
     self.updateUIWalletSelectButton()
     self.setUpGasFeeView()
     self.setupHideRateAndFeeViews(shouldHideInfo: true)
@@ -764,6 +857,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.estGasLimitTimer?.invalidate()
     self.estGasLimitTimer = nil
   }
+  
+  func resetBalanceValues() {
+    balanceLabel.text = nil
+    equivalentUSDValueLabel.text = nil
+  }
 
   fileprivate func updateInforMessageUI() {
     if self.viewModel.isCompound {
@@ -777,9 +875,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   func updateGasLimit() {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     let event = EarnViewEvent.getGasLimit(
       lendingPlatform: self.viewModel.selectedPlatform,
-      src: self.viewModel.fromTokenData.address,
+      src: fromTokenData.address,
       dest: self.viewModel.toTokenData.address,
       srcAmount: self.viewModel.amountToBigInt.description,
       minDestAmount: self.viewModel.minDestQty.description,
@@ -790,9 +889,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   func buildTx() {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     let event = EarnViewEvent.buildTx(
       lendingPlatform: self.viewModel.selectedPlatform,
-      src: self.viewModel.fromTokenData.address,
+      src: fromTokenData.address,
       dest: self.viewModel.toTokenData.address,
       srcAmount: self.viewModel.amountFromBigInt.description,
       minDestAmount: self.viewModel.minDestQty.description,
@@ -803,7 +903,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateRefPrice() {
-    self.delegate?.earnViewController(self, run: .getRefPrice(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData))
+    guard let fromTokenData = viewModel.fromTokenData else { return }
+    self.delegate?.earnViewController(self, run: .getRefPrice(from: fromTokenData, to: self.viewModel.toTokenData))
   }
 
   fileprivate func updateAmountFieldUIForTransferAllETHIfNeeded() {
@@ -838,7 +939,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateApproveButton() {
-    self.approveButton.setTitle("Approve".toBeLocalised() + " " + self.viewModel.fromTokenData.symbol, for: .normal)
+    guard let fromTokenData = viewModel.fromTokenData else {
+      return
+    }
+    self.approveButton.setTitle("Approve".toBeLocalised() + " " + fromTokenData.symbol, for: .normal)
   }
 
   fileprivate func updateUIWalletSelectButton() {
@@ -852,7 +956,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     guard self.isViewLoaded else {
       return
     }
-    if let unwrapped = token, unwrapped.contract.lowercased() != self.viewModel.fromTokenData.address.lowercased() {
+    if let unwrapped = token, let fromTokenData = viewModel.fromTokenData, unwrapped.contract.lowercased() != fromTokenData.address.lowercased() {
       return
     }
     self.updateApproveButton()
@@ -910,14 +1014,16 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateAllowance() {
-    guard !(self.viewModel.fromTokenData.isWrapToken && self.viewModel.toTokenData.isQuoteToken) else { return }
-    self.delegate?.earnViewController(self, run: .checkAllowance(token: self.viewModel.fromTokenData))
+    guard let fromTokenData = viewModel.fromTokenData else { return }
+    guard !(fromTokenData.isWrapToken && self.viewModel.toTokenData.isQuoteToken) else { return }
+    self.delegate?.earnViewController(self, run: .checkAllowance(token: fromTokenData))
   }
 
   @IBAction func warningRateButtonTapped(_ sender: UIButton) {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     guard !self.viewModel.refPriceDiffText.isEmpty else { return }
     var message = ""
-    if self.viewModel.getRefPrice(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData).isEmpty {
+    if self.viewModel.getRefPrice(from: fromTokenData, to: self.viewModel.toTokenData).isEmpty {
       message = " Missing price impact. Please swap with caution."
     } else {
       message = String(format: KNGeneralProvider.shared.priceAlertMessage.toBeLocalised(), self.viewModel.refPriceDiffText)
@@ -954,9 +1060,10 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func changeRateButtonTapped(_ sender: UIButton) {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     let rates = self.viewModel.swapRates.3
     if rates.count >= 2 {
-      self.delegate?.earnViewController(self, run: .openChooseRate(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice, amountFrom: self.viewModel.amountFrom))
+      self.delegate?.earnViewController(self, run: .openChooseRate(from: fromTokenData, to: self.viewModel.toTokenData, rates: rates, gasPrice: self.viewModel.gasPrice, amountFrom: self.viewModel.amountFrom))
     }
   }
   
@@ -1006,12 +1113,13 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   func keyboardSwapAllButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
     self.viewModel.updateFocusingField(true)
-    self.fromAmountTextField.text = self.viewModel.allTokenBalanceString.removeGroupSeparator()
-    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSendAllETH: self.viewModel.fromTokenData.isQuoteToken)
+    guard let fromTokenData = viewModel.fromTokenData else { return }
+    self.fromAmountTextField.text = self.viewModel.allTokenBalanceString?.removeGroupSeparator()
+    self.viewModel.updateAmount(self.fromAmountTextField.text ?? "", isSource: true, forSendAllETH: fromTokenData.isQuoteToken)
     self.updateViewAmountDidChange()
     self.updateAllRates()
     if sender as? KSwapViewController != self {
-      if self.viewModel.fromTokenData.isQuoteToken {
+      if fromTokenData.isQuoteToken {
         self.showSuccessTopBannerMessage(
           with: "",
           message: "A small amount of \(KNGeneralProvider.shared.quoteToken) will be used for transaction fee",
@@ -1055,11 +1163,12 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   func coordinatorDidUpdateSuccessTxObject(txObject: TxObject) {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     let tx = self.viewModel.buildSignSwapTx(txObject)
     let eip1559Tx = self.viewModel.buildEIP1559Tx(txObject)
-    let priceImpactValue = self.viewModel.getRefPrice(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
+    let priceImpactValue = self.viewModel.getRefPrice(from: fromTokenData, to: self.viewModel.toTokenData).isEmpty ? -1000.0 : self.viewModel.priceImpactValue
     let event = EarnViewEvent.confirmTx(
-      fromToken: self.viewModel.fromTokenData,
+      fromToken: fromTokenData,
       toToken: self.viewModel.toTokenData,
       platform: self.viewModel.selectedPlatformData,
       fromAmount: self.viewModel.amountFromBigInt,
@@ -1123,10 +1232,20 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.balanceLabel.text = self.viewModel.totalBalanceText
   }
   
-  fileprivate func updateUITokenDidChange(_ token: TokenData) {
-    self.fromTokenButton.setTitle(token.symbol.uppercased(), for: .normal)
-    self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", self.viewModel.toTokenData.symbol.uppercased())
-    self.updateRefPrice()
+  fileprivate func updateUITokenDidChange(_ token: TokenData?) {
+    if let token = token {
+      self.maxFromAmountButton.isHidden = false
+      self.fromAmountFieldTrailing.constant = 8
+      self.fromTokenButton.setTitle(token.symbol.uppercased(), for: .normal)
+      self.fromTokenButton.setTitleColor(.white, for: .normal)
+      self.selectDepositTitleLabel.text = String(format: Strings.selectPlatformToSupply, self.viewModel.toTokenData.symbol.uppercased())
+      self.updateRefPrice()
+    } else {
+      self.fromAmountFieldTrailing.constant = -30
+      self.maxFromAmountButton.isHidden = true
+      self.fromTokenButton.setTitle(Strings.selectToken, for: .normal)
+      self.fromTokenButton.setTitleColor(.white.withAlphaComponent(0.5), for: .normal)
+    }
   }
   
   fileprivate func updateUIPendingTxIndicatorView() {
@@ -1143,11 +1262,11 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   func coordinatorDidUpdateAllowance(token: TokenData, allowance: BigInt) {
-    guard !self.viewModel.fromTokenData.isQuoteToken else {
+    guard let fromTokenData = self.viewModel.fromTokenData, !fromTokenData.isQuoteToken else {
       self.updateUIForSendApprove(isShowApproveButton: false)
       return
     }
-    if self.viewModel.fromTokenData.getBalanceBigInt() > allowance {
+    if fromTokenData.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
       self.updateUIForSendApprove(isShowApproveButton: true, token: token.toObject())
     } else {
@@ -1214,6 +1333,8 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
+    self.equivalentUSDValueLabel.text = nil
+    self.rateBlockerView.isHidden = false
     if self.viewModel.fromTokenData == self.viewModel.toTokenData {
       self.showWarningTopBannerMessage(
         with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
@@ -1312,15 +1433,17 @@ extension EarnSwapViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     let cleanedText = text.cleanStringToNumber()
-    if textField == self.fromAmountTextField && cleanedText.amountBigInt(decimals: self.viewModel.fromTokenData.decimals) == nil { return false }
+    if textField == self.fromAmountTextField, let fromTokenData = viewModel.fromTokenData, cleanedText.amountBigInt(decimals: fromTokenData.decimals) == nil { return false }
     if textField == self.toAmountTextField && cleanedText.amountBigInt(decimals: self.viewModel.toTokenData.decimals) == nil { return false }
     let double: Double = {
-      if textField == self.fromAmountTextField {
-        let bigInt = Double(text.amountBigInt(decimals: self.viewModel.fromTokenData.decimals) ?? BigInt(0))
-        return Double(bigInt) / pow(10.0, Double(self.viewModel.fromTokenData.decimals))
+      if textField == self.fromAmountTextField, let fromTokenData = viewModel.fromTokenData {
+        let bigInt = Double(text.amountBigInt(decimals: fromTokenData.decimals) ?? BigInt(0))
+        return Double(bigInt) / pow(10.0, Double(fromTokenData.decimals))
+      } else if textField == self.toAmountTextField {
+        let bigInt = Double(text.amountBigInt(decimals: self.viewModel.toTokenData.decimals) ?? BigInt(0))
+        return Double(bigInt) / pow(10.0, Double(self.viewModel.toTokenData.decimals))
       }
-      let bigInt = Double(text.amountBigInt(decimals: self.viewModel.toTokenData.decimals) ?? BigInt(0))
-      return Double(bigInt) / pow(10.0, Double(self.viewModel.toTokenData.decimals))
+      return 0
     }()
     textField.text = text
     self.viewModel.updateFocusingField(textField == self.fromAmountTextField)
@@ -1347,55 +1470,16 @@ extension EarnSwapViewController: UITextFieldDelegate {
 
   fileprivate func showWarningInvalidAmountDataIfNeeded(isConfirming: Bool = false) -> Bool {
     if !isConfirming && self.isViewDisappeared { return false }
-    let estRate = self.viewModel.getSwapRate(from: self.viewModel.fromTokenData.address.lowercased(), to: self.viewModel.toTokenData.address.lowercased(), amount: self.viewModel.amountFromBigInt, platform: self.viewModel.currentFlatform)
-    let estRateBigInt = BigInt(estRate)
-    if estRateBigInt?.isZero == true {
-      self.showWarningTopBannerMessage(
-        with: "",
-        message: "Can not find the exchange rate"
-      )
+    
+    let validationResult = viewModel.validate(isConfirming: isConfirming)
+    
+    switch validationResult {
+    case .success:
+      return false
+    case .failure(let error):
+      showWarningTopBannerMessage(with: error.title, message: error.message)
       return true
     }
-    guard self.viewModel.fromTokenData.address != self.viewModel.toTokenData.address else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("unsupported", value: "Unsupported", comment: ""),
-        message: NSLocalizedString("can.not.swap.same.token", value: "Can not swap the same token", comment: ""),
-        time: 1.5
-      )
-      return true
-    }
-    guard !self.viewModel.amountTo.isEmpty else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.input", value: "Invalid input", comment: ""),
-        message: NSLocalizedString("please.enter.an.amount.to.continue", value: "Please enter an amount to continue", comment: "")
-      )
-      return true
-    }
-    guard !self.viewModel.isAmountTooSmall else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("invalid.amount", value: "Invalid amount", comment: ""),
-        message: NSLocalizedString("amount.to.send.greater.than.zero", value: "Amount to transfer should be greater than zero", comment: "")
-      )
-      return true
-    }
-    guard !self.viewModel.isAmountTooBig else {
-      self.showWarningTopBannerMessage(
-        with: NSLocalizedString("amount.too.big", value: "Amount too big", comment: ""),
-        message: NSLocalizedString("balance.not.enough.to.make.transaction", value: "Balance is not be enough to make the transaction.", comment: "")
-      )
-      return true
-    }
-    if isConfirming {
-      guard self.viewModel.isHavingEnoughETHForFee else {
-        let fee = self.viewModel.gasFeeBigInt
-        self.showWarningTopBannerMessage(
-          with: NSLocalizedString("Insufficient \(KNGeneralProvider.shared.quoteToken) for transaction", value: "Insufficient ETH for transaction", comment: ""),
-          message: String(format: "Deposit more \(KNGeneralProvider.shared.quoteToken) or click Advanced to lower GAS fee".toBeLocalised(), fee.shortString(units: .ether, maxFractionDigits: 6))
-        )
-        return true
-      }
-    }
-    return false
   }
 
   fileprivate func updateViewAmountDidChange() {
@@ -1418,8 +1502,9 @@ extension EarnSwapViewController: UITextFieldDelegate {
   }
 
   fileprivate func updateAllRates() {
+    guard let fromTokenData = viewModel.fromTokenData else { return }
     let amount = self.viewModel.isFocusingFromAmount ? self.viewModel.amountFromBigInt : self.viewModel.amountToBigInt
-    let event = EarnViewEvent.getAllRates(from: self.viewModel.fromTokenData, to: self.viewModel.toTokenData, amount: amount, focusSrc: self.viewModel.isFocusingFromAmount)
+    let event = EarnViewEvent.getAllRates(from: fromTokenData, to: self.viewModel.toTokenData, amount: amount, focusSrc: self.viewModel.isFocusingFromAmount)
     self.delegate?.earnViewController(self, run: event)
   }
 }

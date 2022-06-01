@@ -118,7 +118,8 @@ class WalletsListViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableViewHeightContraint: NSLayoutConstraint!
-
+  @IBOutlet weak var manageWalletTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var qrCodeIcon: UIImageView!
   fileprivate var viewModel: WalletsListViewModel
 
   fileprivate let kWalletTableViewCellID: String = "WalletListTableViewCell"
@@ -147,6 +148,9 @@ class WalletsListViewController: KNBaseViewController {
 
     self.walletsTableViewHeightContraint.constant = self.viewModel.walletTableViewHeight
     self.walletTableView.allowsSelection = true
+    self.connectWalletButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.qrCodeIcon.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.manageWalletTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 12 : 66
   }
 
   func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
@@ -243,7 +247,8 @@ extension WalletsListViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.viewModel.walletTableViewHeight + 179
+    let padding = KNGeneralProvider.shared.currentChain == .solana ? 125 : 179
+    return self.viewModel.walletTableViewHeight + CGFloat(padding)
   }
 
   func getPopupContentView() -> UIView {
