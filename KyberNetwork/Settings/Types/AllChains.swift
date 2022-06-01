@@ -290,7 +290,7 @@ public struct AllChains {
   
   public static let klaytnMainnetRPC = CustomRPC (
     chainID: 8217,
-    type: " KIP-7",
+    type: "KIP-7",
     name: "Klaytn Mainnet Cypress",
     symbol: "KLAY",
     endpoint: "https://public-node-api.klaytnapi.com/v1/cypress",
@@ -303,7 +303,7 @@ public struct AllChains {
     apiEtherscanEndpoint: "",
     proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5",
     quoteTokenAddress: "0x089fa00784cca541409947e9bd098ae816d00822",
-    chainIcon: "chain_aurora_icon",
+    chainIcon: "chain_klaytn_icon",
     quoteToken: "KLAY",
     apiChainPath: "klaytn"
   )
