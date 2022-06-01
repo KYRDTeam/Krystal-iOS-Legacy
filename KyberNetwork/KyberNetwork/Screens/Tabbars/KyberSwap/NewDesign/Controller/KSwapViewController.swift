@@ -673,7 +673,7 @@ extension KSwapViewController {
   }
 
   fileprivate func updateAllowance() {
-    guard KNGeneralProvider.shared.currentChain != .solana else { return }
+    guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     guard let from = viewModel.from, !from.isWrapToken, let to = viewModel.to, !to.isWrapToken else {
       return
     }

@@ -65,6 +65,8 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(7, forKey: .rawValue)
     case .solana:
       try container.encode(8, forKey: .rawValue)
+    case .klaytn:
+      try container.encode(9, forKey: .rawValue)
     }
   }
 
@@ -120,6 +122,8 @@ enum ChainType: Codable, CaseIterable {
       return AllChains.auroraMainnetRPC
     case .solana:
       return AllChains.solana
+    case .klaytn:
+      return AllChains.klaytnMainnetRPC
     }
   }
 
@@ -234,7 +238,7 @@ enum ChainType: Codable, CaseIterable {
 
   func getChainDBPath() -> String {
     switch self {
-    case .arbitrum, .aurora:
+    case .arbitrum, .aurora, .klaytn:
       return "\(self.customRPC().chainID)" + "-" + KNEnvironment.default.displayName + "-"
     default:
       return self.customRPC().quoteToken.lowercased() + "-" + KNEnvironment.default.displayName + "-"
@@ -261,6 +265,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .solana:
         return KNSupportedTokenStorage.shared.usdcToken
+    case .klaytn:
+      return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -277,6 +283,10 @@ enum ChainType: Codable, CaseIterable {
 
   func blockExploreName() -> String {
     return "Block Explorer"
+  }
+  
+  func isSupportSwap() -> Bool {
+    return KNGeneralProvider.shared.currentChain != .solana || KNGeneralProvider.shared.currentChain != .klaytn
   }
 
   func isSupportedHistoryAPI() -> Bool {
@@ -297,6 +307,7 @@ enum ChainType: Codable, CaseIterable {
   case arbitrum
   case aurora
   case solana
+  case klaytn
 }
 
 enum CurrencyMode: Int {
