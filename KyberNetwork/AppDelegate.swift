@@ -26,8 +26,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       print("EtherKeystore init issue.")
     }
     KNReachability.shared.startNetworkReachabilityObserver()
-
-    // Remove this method to stop OneSignal Debugging
+    
+    setupFirebase()
+    setupOneSignal(launchOptions)
+    
+    // promptForPushNotifications will show the native iOS notification permission prompt.
+    // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
+    OneSignal.promptForPushNotifications(userResponse: { accepted in
+      print("User accepted notifications: \(accepted)")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        self.requestAcceptTrackingFirebaseIfNeeded()
+      }
+    })
+    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
+    return true
+  }
+  
+  func setupOneSignal(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
     OneSignal.setLogLevel(.LL_VERBOSE, visualLevel: .LL_NONE)
     // OneSignal initialization
     OneSignal.initWithLaunchOptions(launchOptions)
@@ -48,17 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
     }
     OneSignal.setNotificationOpenedHandler(notificationOpenedBlock)
-    
-    // promptForPushNotifications will show the native iOS notification permission prompt.
-    // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
-    OneSignal.promptForPushNotifications(userResponse: { accepted in
-      print("User accepted notifications: \(accepted)")
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.requestAcceptTrackingFirebaseIfNeeded()
-      }
-    })
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
-    return true
   }
   
   fileprivate func setupSentry() {
@@ -70,18 +74,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
   }
 
-  func applicationWillResignActive(_ application: UIApplication) {
-  }
-
   fileprivate func requestAcceptTrackingFirebaseIfNeeded() {
     if #available(iOS 14, *) {
       ATTrackingManager.requestTrackingAuthorization { (status) in
         if status == .authorized {
-          self.setupFirebase()
+          self.setupTrackingTools()
         }
       }
-    } else {
-      self.setupFirebase()
     }
   }
   
@@ -113,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
     KNReachability.shared.startNetworkReachabilityObserver()
-    self.setupTrackingTools()
   }
 
   func applicationDidEnterBackground(_ application: UIApplication) {
