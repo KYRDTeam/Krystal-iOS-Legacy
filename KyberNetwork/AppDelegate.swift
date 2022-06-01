@@ -79,6 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
           self.setupTrackingTools()
         }
       }
+    } else {
+      self.setupTrackingTools()
     }
   }
   
