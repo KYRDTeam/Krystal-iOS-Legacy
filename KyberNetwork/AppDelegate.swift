@@ -13,8 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
 
-  
-  
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
     do {
@@ -107,7 +105,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       }
       FirebaseApp.configure(options: fileopts)
     }
-    KNCrashlyticsUtil.updateUserId(userId: self.coordinator.session.currentWalletObject.address)
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
