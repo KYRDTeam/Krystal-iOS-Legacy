@@ -85,6 +85,11 @@ enum ChainType: Codable, CaseIterable {
     if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
       allChains = allChains.filter { $0 != .solana }
     }
+    
+    let shouldShowKlaytn = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.klaytnChainIntegration)
+    if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
+      allChains = allChains.filter { $0 != .klaytn }
+    }
     return allChains
   }
 
