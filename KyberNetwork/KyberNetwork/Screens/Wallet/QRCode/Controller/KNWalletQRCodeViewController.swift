@@ -15,6 +15,8 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   @IBOutlet weak var infoLabel: UILabel!
   @IBOutlet weak var addressTypeLabel: UILabel!
   @IBOutlet weak var scanButton: UIButton!
+  @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+  
   fileprivate var viewModel: KNWalletQRCodeViewModel
 
   fileprivate let style = KNAppStyleType.current
@@ -40,14 +42,17 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
 
   fileprivate func setupWalletData() {
-    self.titleLabel.text = self.viewModel.wallet.name
+    self.titleLabel.text = Strings.receive
     self.addressLabel.text = self.viewModel.displayedAddress
     self.qrcodeImageContainer.rounded(radius: 16)
     let text = self.viewModel.address
+    self.loadingIndicator.startAnimating()
     DispatchQueue.global(qos: .background).async {
       let image = UIImage.generateQRCode(from: text)
       DispatchQueue.main.async {
         self.qrcodeImageView.image = image
+        self.loadingIndicator.stopAnimating()
+        self.loadingIndicator.isHidden = true
       }
     }
   }
@@ -61,19 +66,13 @@ class KNWalletQRCodeViewController: KNBaseViewController {
       width: 1.0,
       radius: 16
     )
-    self.copyWalletButton.setTitle(
-      NSLocalizedString("copy", value: "Copy", comment: ""),
-      for: .normal
-    )
-    self.shareButton.setTitle(
-      NSLocalizedString("share", value: "Share", comment: ""),
-      for: .normal
-    )
+    self.copyWalletButton.setTitle(Strings.copy, for: .normal)
+    self.shareButton.setTitle(Strings.share, for: .normal)
     let token = KNGeneralProvider.shared.tokenType
     let quoteToken = KNGeneralProvider.shared.quoteToken.uppercased()
-    self.infoLabel.text = "Only send \(quoteToken) or any \(token) token to this address\n\n*Sending any other tokens may result in loss of your funds"
-    self.addressTypeLabel.text = "\(token) address"
-    self.scanButton.setTitle("View on " + KNGeneralProvider.shared.currentChain.customRPC().webScanName, for: .normal)
+    self.infoLabel.text = String(format: Strings.receiveWarningText, token, quoteToken)
+    self.addressTypeLabel.text = String(format: Strings.tokenTypeAddress, token)
+    self.scanButton.setTitle(String(format: Strings.viewOnX, KNGeneralProvider.shared.currentChain.customRPC().webScanName), for: .normal)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -83,9 +82,7 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   @IBAction func copyWalletButtonPressed(_ sender: Any) {
     UIPasteboard.general.string = self.viewModel.address
 
-    self.showMessageWithInterval(
-      message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
-    )
+    self.showMessageWithInterval(message: Strings.addressCopied)
   }
 
   @IBAction func scanButtonTapped(_ sender: Any) {

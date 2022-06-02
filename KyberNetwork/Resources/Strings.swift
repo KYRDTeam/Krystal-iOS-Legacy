@@ -13,6 +13,7 @@ struct Strings {
   static let approve = "approve".toBeLocalised()
   
   // Actions
+  static let receive = "receive".toBeLocalised()
   static let add = "add".toBeLocalised()
   static let edit = "edit".toBeLocalised()
   static let addWatchWallet = "add.watched.wallet".toBeLocalised()
@@ -84,4 +85,12 @@ struct Strings {
   static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
   static let selectToken = "select.token".toBeLocalised()
   static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
+  
+  // Receive screen
+  static let receiveWarningText = "receive_screen_warning_text".toBeLocalised()
+  static let copy = "copy".toBeLocalised()
+  static let share = "share".toBeLocalised()
+  static let tokenTypeAddress = "%@.address".toBeLocalised()
+  static let viewOnX = "view.on.%@".toBeLocalised()
+  static let addressCopied = "address.copied".toBeLocalised()
 }

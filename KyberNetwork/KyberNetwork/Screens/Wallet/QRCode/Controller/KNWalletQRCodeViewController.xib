@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -25,6 +25,7 @@
                 <outlet property="copyWalletButton" destination="soD-bJ-naO" id="5ZJ-k4-TLi"/>
                 <outlet property="headerContainerView" destination="ayx-K1-otl" id="Kxh-Ft-jfa"/>
                 <outlet property="infoLabel" destination="rTe-ow-Na9" id="4bz-aV-Kn5"/>
+                <outlet property="loadingIndicator" destination="LGk-s7-KKq" id="vNL-yG-9VF"/>
                 <outlet property="qrcodeImageContainer" destination="MFP-0H-wfs" id="ueq-Qc-Ky5"/>
                 <outlet property="qrcodeImageView" destination="9wd-Gg-Jw3" id="Uus-CP-kOq"/>
                 <outlet property="scanButton" destination="jCp-mW-a6Z" id="rqA-GW-aTs"/>
@@ -44,19 +45,24 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9wd-Gg-Jw3">
                             <rect key="frame" x="15" y="15" width="110" height="110"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.25409881161971831" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="9wd-Gg-Jw3" secondAttribute="height" multiplier="1:1" id="QMN-E6-rvI"/>
                                 <constraint firstAttribute="width" constant="110" id="VwS-Kb-r3s"/>
                             </constraints>
                         </imageView>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="LGk-s7-KKq">
+                            <rect key="frame" x="60" y="60" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="9wd-Gg-Jw3" firstAttribute="centerY" secondItem="MFP-0H-wfs" secondAttribute="centerY" id="8JM-ld-fNb"/>
                         <constraint firstAttribute="width" constant="140" id="8rY-u6-P4u"/>
                         <constraint firstAttribute="height" constant="140" id="CoD-75-pKW"/>
+                        <constraint firstItem="LGk-s7-KKq" firstAttribute="centerY" secondItem="9wd-Gg-Jw3" secondAttribute="centerY" id="QvD-9Y-0Qe"/>
                         <constraint firstItem="9wd-Gg-Jw3" firstAttribute="centerX" secondItem="MFP-0H-wfs" secondAttribute="centerX" id="lhu-XV-ANJ"/>
+                        <constraint firstItem="LGk-s7-KKq" firstAttribute="centerX" secondItem="9wd-Gg-Jw3" secondAttribute="centerX" id="oaA-zH-aQl"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="My Ethereum wallet address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6US-bk-Sk8">

@@ -845,3 +845,8 @@
 "copied" = "Copied";
 "approve" = "Approve";
 "select.platform.to.supply.x" = "Select the platform to supply %@";
+
+// Receive screen
+"receive_screen_warning_text" = "Send only %@ token or %@ to this address. Sending any other token may result in loss of your deposit.";
+"%@.address" = "%@ address";
+"view.on.%@" = "View on %@";
