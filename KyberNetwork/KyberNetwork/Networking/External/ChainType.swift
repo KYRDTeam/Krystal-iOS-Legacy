@@ -39,6 +39,8 @@ enum ChainType: Codable, CaseIterable {
       self = .aurora
     case 8:
       self = .solana
+    case 9:
+      self = .klaytn
     default:
       throw CodingError.unknownValue
     }
@@ -84,6 +86,11 @@ enum ChainType: Codable, CaseIterable {
     let shouldShowSolana = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.solanaChainIntegration)
     if !shouldShowSolana && KNGeneralProvider.shared.currentChain != .solana {
       allChains = allChains.filter { $0 != .solana }
+    }
+    
+    let shouldShowKlaytn = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.klaytnChainIntegration)
+    if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
+      allChains = allChains.filter { $0 != .klaytn }
     }
     return allChains
   }

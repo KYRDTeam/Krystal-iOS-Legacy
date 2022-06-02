@@ -291,7 +291,7 @@ public struct AllChains {
   public static let klaytnMainnetRPC = CustomRPC (
     chainID: 8217,
     type: "KIP-7",
-    name: "Klaytn Mainnet Cypress",
+    name: "Klaytn",
     symbol: "KLAY",
     endpoint: "https://public-node-api.klaytnapi.com/v1/cypress",
     endpointKyber: "https://public-node-api.klaytnapi.com/v1/cypress",
