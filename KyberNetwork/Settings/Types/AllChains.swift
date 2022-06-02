@@ -302,7 +302,7 @@ public struct AllChains {
     wrappedAddress: "",
     apiEtherscanEndpoint: "",
     proxyAddress: "0x864F01c5E46b0712643B956BcA607bF883e0dbC5",
-    quoteTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    quoteTokenAddress: "0x1111111111111111111111111111111111111111",
     chainIcon: "chain_klaytn_icon",
     quoteToken: "KLAY",
     apiChainPath: "klaytn"
