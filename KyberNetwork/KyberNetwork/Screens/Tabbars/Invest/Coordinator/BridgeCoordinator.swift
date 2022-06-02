@@ -130,12 +130,29 @@ class BridgeCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   var data: [SourceBridgeToken] = []
   
+  
+  var advancedGasLimit: String?
+  var advancedMaxPriorityFee: String?
+  var advancedMaxFee: String?
+  var advancedNonce: String?
+
+  fileprivate(set) var currentSignTransaction: SignTransaction?
+  fileprivate(set) var bridgeContract: String = ""
+  fileprivate(set) var minRatePercent: Double = 0.5
+  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
+  fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
+  fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
+  fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
     let controller = BridgeViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
   }()
+  
+  var confirmVC: ConfirmBridgeViewController?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -227,9 +244,104 @@ class BridgeCoordinator: NSObject, Coordinator {
         } else {
           completion(nil)
         }
-      case .failure(let error):
+      case .failure( _):
         completion(nil)
       }
+    }
+  }
+  
+  func buildSwapChainTx(completion: @escaping ((TxObject?) -> Void)) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let fromAddress = self.session.wallet.addressString
+    let toAddress = self.rootViewController.viewModel.currentSendToAddress
+    let fromChainId = self.rootViewController.viewModel.currentSourceChain?.getChainId() ?? 0
+    let toChainId = self.rootViewController.viewModel.currentDestChain?.getChainId() ?? 0
+    let tokenAddress = self.rootViewController.viewModel.currentSourceToken?.address ?? ""
+    
+    let decimal = self.rootViewController.viewModel.currentSourceToken?.decimals ?? 0
+    
+    let amount = BigInt(self.rootViewController.viewModel.sourceAmount * pow(10.0, Double(decimal)))
+    let amountString = String(amount)
+    
+    provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
+      if case .success(let resp) = result {
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(TransactionResponse.self, from: resp.data)
+          completion(data.txObject)
+          
+        } catch let error {
+          self.navigationController.showTopBannerView(message: error.localizedDescription)
+        }
+      } else {
+        self.navigationController.showTopBannerView(message: "Build Tx request is failed")
+      }
+    }
+  }
+  
+  fileprivate func isAccountUseGasToken() -> Bool {
+    var data: [String: Bool] = [:]
+    if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
+      data = saved
+    } else {
+      return false
+    }
+    return data[self.session.wallet.addressString] ?? false
+  }
+  
+  fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    provider.getTransactionCount { result in
+      switch result {
+      case .success(let res):
+        completion(.success(res))
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  fileprivate func buildSignTx(_ object: TxObject) -> SignTransaction? {
+    guard
+      let value = BigInt(object.value.drop0x, radix: 16),
+      var gasPrice = BigInt(object.gasPrice.drop0x, radix: 16),
+      var gasLimit = BigInt(object.gasLimit.drop0x, radix: 16),
+      
+        // sai o day nay
+      var nonce = Int(object.nonce.drop0x, radix: 16)
+    else
+    {
+      return nil
+    }
+    
+    if let unwrap = self.advancedMaxFee, let value = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+      gasPrice = value
+    }
+
+    if let unwrap = self.advancedGasLimit, let value = BigInt(unwrap) {
+      gasLimit = value
+    }
+
+    if let unwrap = self.advancedNonce, let value = Int(unwrap) {
+      nonce = value
+    }
+    
+    if case let .real(account) = self.session.wallet.type {
+      return SignTransaction(
+        value: value,
+        account: account,
+        to: Address(string: object.to),
+        nonce: nonce,
+        data: Data(hex: object.data.drop0x),
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        chainID: KNGeneralProvider.shared.customRPC.chainID
+      )
+    } else {
+      //TODO: handle watch wallet type
+      return nil
     }
   }
 }
@@ -258,6 +370,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           }
         }
       }
+      self.getBuildTx()
       self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
       print("")
@@ -317,16 +430,19 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .checkAllowance(token: let from):
       self.getAllowance(token: from)
     case .selectSwap:
-      let viewModel = self.rootViewController.viewModel
-      if let currentSourceToken = viewModel.currentSourceToken {
-      let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-      let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
-      let fee = "0.0253 ETH"
+        let viewModel = self.rootViewController.viewModel
+        if let currentSourceToken = viewModel.currentSourceToken {
+          let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
+          let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
+          let fee = self.gasPrice * self.baseGasLimit
+          let feeString: String = fee.displayRate(decimals: 18)
 
-      let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, fee: fee)
-      let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
-      self.navigationController.present(vc, animated: true, completion: nil)
-      }
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, fee: feeString, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
+          vc.delegate = self
+          self.confirmVC = vc
+          self.navigationController.present(vc, animated: true, completion: nil)
+        }
     case .sendApprove(token: let token, remain: let remain):
       let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
       vc.delegate = self
@@ -334,11 +450,39 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     }
   }
   
-  func getAllowance(token: TokenObject) {
-    guard let provider = self.session.externalProvider else {
+  func getBuildTx() {
+    self.getLatestNonce { result in
+      switch result {
+      case .success(let nonce):
+        self.buildSwapChainTx { txObject in
+          if let txObject = txObject {
+            let viewModel = self.rootViewController.viewModel
+            let decimal = viewModel.currentSourceToken?.decimals ?? 0
+            let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
+            self.bridgeContract = txObject.to
+            guard let signTx = self.buildSignTx(newTxObject) else { return }
+            self.currentSignTransaction = signTx
+            self.baseGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+            self.getAllowance(token: viewModel.currentSourceToken)
+          }
+        }
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(message: error.description)
+      }
+    }
+  }
+  
+  func getAllowance(token: TokenObject?) {
+    guard let provider = self.session.externalProvider, let token = token else {
       return
     }
-    provider.getAllowance(token: token) { [weak self] getAllowanceResult in
+    
+    guard !self.bridgeContract.isEmpty else {
+      return
+    }
+    let networkAddress: Address = Address(string: self.bridgeContract)!
+    let sourceTokenAddress: Address = Address(string: token.address ?? "")!
+    provider.getAllowance(tokenAddress: sourceTokenAddress, toAddress: networkAddress) { [weak self] getAllowanceResult in
       guard let `self` = self else { return }
       switch getAllowanceResult {
       case .success(let res):
@@ -383,6 +527,155 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
   }
 }
 
+extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
+  
+  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+    let controller = KNTransactionStatusPopUp(transaction: transaction)
+    controller.delegate = self
+    self.navigationController.present(controller, animated: true, completion: nil)
+    self.transactionStatusVC = controller
+  }
+  
+  func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
+    guard let provider = self.session.externalProvider else {
+      return
+    }
+    self.navigationController.displayLoading()
+    provider.signTransactionData(from: signTransaction) { [weak self] result in
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let signedData):
+        KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+          self.navigationController.hideLoading()
+          switch sendResult {
+          case .success(let hash):
+            provider.minTxCount += 1
+            internalHistoryTransaction.hash = hash
+            internalHistoryTransaction.nonce = signTransaction.nonce
+            internalHistoryTransaction.time = Date()
+            
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
+            controller.dismiss(animated: true) {
+              self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
+            }
+            self.rootViewController.coordinatorSuccessSendTransaction()
+          case .failure(let error):
+            var errorMessage = error.description
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(
+              with: "Error",
+              message: errorMessage
+            )
+          }
+        })
+      case .failure:
+        self.rootViewController.coordinatorFailSendTransaction()
+      }
+    }
+  }
+  
+  func didConfirm(_ controller: ConfirmBridgeViewController, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
+    
+  }
+  
+  func didCancel(_ controller: ConfirmBridgeViewController) {
+    
+  }
+  
+  func openGasPriceSelect() {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.estimateGasLimit, selectType: self.selectedGasPriceType, currentRatePercentage: self.minRatePercent, isUseGasToken: self.isAccountUseGasToken())
+
+    viewModel.baseGasLimit = self.baseGasLimit
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.advancedGasLimit = self.advancedGasLimit
+    viewModel.advancedMaxPriorityFee = self.advancedMaxPriorityFee
+    viewModel.advancedMaxFee = self.advancedMaxFee
+    viewModel.advancedNonce = self.advancedNonce
+
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    self.confirmVC?.present(vc, animated: true, completion: nil)
+    self.getLatestNonce { result in
+      switch result {
+      case .success(let nonce):
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(message: error.description)
+      }
+    }
+  }
+}
+
+extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
+    switch event {
+    case .gasPriceChanged(let type, let value):
+      self.advancedGasLimit = nil
+      self.advancedMaxPriorityFee = nil
+      self.advancedMaxFee = nil
+      self.selectedGasPriceType = type
+      self.gasPrice = value
+      let feeString: String = (self.gasPrice * self.baseGasLimit).displayRate(decimals: 18)
+      self.confirmVC?.coordinatorDidUpdateFee(feeString: feeString)
+    case .minRatePercentageChanged(let percent):
+      self.minRatePercent = Double(percent)
+    case .helpPressed(let tag):
+      var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
+      switch tag {
+      case 1:
+        message = KNGeneralProvider.shared.isUseEIP1559 ? "gas.limit.help".toBeLocalised() : "gas.limit.legacy.help".toBeLocalised()
+      case 2:
+        message = "max.priority.fee.help".toBeLocalised()
+      case 3:
+        message = KNGeneralProvider.shared.isUseEIP1559 ? "max.fee.help".toBeLocalised() : "gas.price.legacy.help".toBeLocalised()
+      case 4:
+        message = "nonce.help".toBeLocalised()
+      default:
+        break
+      }
+      self.navigationController.showBottomBannerView(
+        message: message,
+        icon: UIImage(named: "help_icon_large") ?? UIImage(),
+        time: 10
+      )
+    case .useChiStatusChanged(let status):
+      break
+    case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
+      self.advancedGasLimit = gasLimit
+      self.advancedMaxPriorityFee = maxPriorityFee
+      self.advancedMaxFee = maxFee
+      self.selectedGasPriceType = .custom
+    case .updateAdvancedNonce(let nonce):
+      self.advancedNonce = nonce
+    default:
+      break
+    }
+  }
+}
+
+extension BridgeCoordinator: KNTransactionStatusPopUpDelegate {
+  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
+    self.transactionStatusVC = nil
+    switch action {
+    case .openLink(let url):
+      self.navigationController.openSafari(with: url)
+    case .goToSupport:
+      self.navigationController.openSafari(with: "https://docs.krystal.app/")
+    default:
+      break
+    }
+  }
+}
+
 extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
     self.navigationController.displayLoading()
@@ -394,25 +687,60 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
-          switch result {
-          case .success:
-            self.rootViewController.coordinatorSuccessApprove(token: token)
-          case .failure(let error):
-            var errorMessage = error.description
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
+//        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
+//          switch result {
+//          case .success:
+//            self.rootViewController.coordinatorSuccessApprove(token: token)
+//          case .failure(let error):
+//            var errorMessage = error.description
+//            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+//              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+//                errorMessage = message
+//              }
+//            }
+//            self.navigationController.showErrorTopBannerMessage(
+//              with: "Error",
+//              message: errorMessage,
+//              time: 1.5
+//            )
+//            self.rootViewController.coordinatorFailApprove(token: token)
+//          }
+//        }
+          let sourceTokenAddress: Address = Address(string: self.rootViewController.viewModel.currentSourceToken?.address ?? "")!
+          
+          provider.sendApproveERCTokenAddress(
+            for: sourceTokenAddress,
+            value: Constants.maxValueBigInt,
+            gasPrice: KNGasCoordinator.shared.defaultKNGas,
+            gasLimit: BigInt(100000),
+            toAddress: self.bridgeContract) { result in
+              switch result {
+              case .success:
+                self.rootViewController.coordinatorSuccessApprove(token: token)
+              case .failure(let error):
+                var errorMessage = error.description
+                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                    errorMessage = message
+                  }
+                }
+                self.navigationController.showErrorTopBannerMessage(
+                  with: "Error",
+                  message: errorMessage,
+                  time: 1.5
+                )
+                self.rootViewController.coordinatorFailApprove(token: token)
               }
-            }
-            self.navigationController.showErrorTopBannerMessage(
-              with: "Error",
-              message: errorMessage,
-              time: 1.5
-            )
-            self.rootViewController.coordinatorFailApprove(token: token)
           }
-        }
+          
+          
+          
+          
+          
+          
+          
+          
+          
       case .failure:
         self.rootViewController.coordinatorFailApprove(token: token)
       }
@@ -434,8 +762,6 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
       switch approveResult {
       case .success:
         self.saveUseGasTokenState(state)
-//        self.rootViewController.coordinatorUpdateIsUseGasToken(state)
-//        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(state)
       case .failure(let error):
         var errorMessage = error.description
         if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
@@ -448,8 +774,6 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           message: errorMessage,
           time: 1.5
         )
-//        self.rootViewController.coordinatorUpdateIsUseGasToken(!state)
-//        self.gasFeeSelectorVC?.coordinatorDidUpdateUseGasTokenState(!state)
       }
     }
   }
@@ -470,7 +794,6 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
       }
     }
   }
-  
 }
 
 extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
@@ -482,7 +805,6 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       self.rootViewController.viewModel.sourceAmount = 0.0
       self.rootViewController.viewModel.currentDestChain = nil
       self.rootViewController.viewModel.currentDestToken = nil
-      self.getAllowance(token: token)
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return
@@ -531,7 +853,6 @@ extension BridgeCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-
       if case .real(let account) = self.session.wallet.type {
         let result = self.session.keystore.exportPrivateKey(account: account)
         switch result {
@@ -545,7 +866,6 @@ extension BridgeCoordinator: QRCodeReaderDelegate {
             )
             self.navigationController.present(controller, animated: true, completion: nil)
           }
-          
         case .failure(_):
           self.navigationController.showTopBannerView(
             with: "Private Key Error",

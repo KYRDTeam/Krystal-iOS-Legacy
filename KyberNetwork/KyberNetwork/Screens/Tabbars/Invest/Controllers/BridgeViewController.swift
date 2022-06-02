@@ -153,6 +153,16 @@ class BridgeViewController: KNBaseViewController {
     
   }
   
+  func coordinatorSuccessSendTransaction() {
+//    self.resetAdvancedSetting()
+    self.hideLoading()
+  }
+  
+  func coordinatorFailSendTransaction() {
+    self.showErrorMessage()
+    self.hideLoading()
+  }
+  
   func coordinatorSuccessApprove(token: TokenObject) {
     self.viewModel.isNeedApprove = false
     self.tableView.reloadData()
@@ -168,6 +178,14 @@ class BridgeViewController: KNBaseViewController {
     self.tableView.reloadData()
   }
   
+  fileprivate func showErrorMessage() {
+    self.showWarningTopBannerMessage(
+      with: "",
+      message: "Something went wrong, please try again later".toBeLocalised(),
+      time: 2.0
+    )
+  }
+
   func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {
     let popup = SwitchChainViewController()
     popup.dataSource = chainTypes
