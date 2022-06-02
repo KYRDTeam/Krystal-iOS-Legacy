@@ -117,8 +117,8 @@ class BridgeViewModel {
     return fee
   }
   
-  func calculateDesAmount() -> String {
-    return StringFormatter.amountString(value: self.sourceAmount - self.calculateFee())
+  func calculateDesAmountString() -> String {
+    return StringFormatter.amountString(value: self.sourceAmount < self.calculateFee() ? 0 : self.sourceAmount - self.calculateFee())
   }
   
   func viewForHeader(section: Int) -> UIView {
@@ -180,6 +180,16 @@ class BridgeViewModel {
           cell.selectTokenButton.setTitle("Select", for: .normal)
           cell.balanceLabel.text = "0"
         }
+        var errMsg: String?
+        if let currentDestToken = self.currentDestToken {
+          if currentDestToken.minimumSwap > self.sourceAmount {
+            errMsg = "Too small"
+          }
+          if currentDestToken.maximumSwap < self.sourceAmount {
+            errMsg = "Too big"
+          }
+        }
+        cell.showErrorIfNeed(errorMsg: errMsg)
         return cell
       }
     } else {
@@ -206,7 +216,8 @@ class BridgeViewModel {
         cell.balanceLabel.text = ""
         cell.selectTokenButton.setTitle(self.currentDestToken?.symbol ?? "", for: .normal)
         cell.setDisableSelectToken(shouldDisable: true)
-        cell.amountTextField.text = self.calculateDesAmount()
+        cell.amountTextField.text = self.calculateDesAmountString()
+        cell.showErrorIfNeed(errorMsg: nil)
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
@@ -226,10 +237,8 @@ class BridgeViewModel {
             let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentDestToken.symbol)"
             let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentDestToken.symbol)"
             let thresholdString = StringFormatter.amountString(value: currentDestToken.bigValueThreshold) + " \(currentDestToken.symbol)"
-            
             cell.updateReminderText(crossChainFee: crossChainFee, gasFeeString: String(format: "%.1f \(currentDestToken.symbol)", fee), miniAmount: miniAmount, maxAmount: maxAmount, thresholdString: thresholdString)
           }
-          
         return cell
       case .errorRow:
         return UITableViewCell()

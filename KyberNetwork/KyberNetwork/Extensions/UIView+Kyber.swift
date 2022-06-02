@@ -203,7 +203,7 @@ extension UIView {
   }
   
   func shakeViewError() {
-    self.layer.borderColor = UIColor.red.cgColor
+    self.layer.borderColor = UIColor(named: "textRedColor")!.cgColor
     self.layer.borderWidth = 1.0
     let animation = CABasicAnimation(keyPath: "position")
     animation.duration = 0.07

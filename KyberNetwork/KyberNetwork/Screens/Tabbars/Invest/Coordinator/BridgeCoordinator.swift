@@ -230,12 +230,10 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    
     provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
-      
       switch result {
       case .success(let result):
         if let json = try? result.mapJSON() as? JSONDictionary ?? [:] {
@@ -433,7 +431,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         let viewModel = self.rootViewController.viewModel
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-          let toValue = "\(viewModel.calculateDesAmount()) \(currentSourceToken.symbol)"
+          let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
           let fee = self.gasPrice * self.baseGasLimit
           let feeString: String = fee.displayRate(decimals: 18)
 
@@ -687,60 +685,32 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-//        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
-//          switch result {
-//          case .success:
-//            self.rootViewController.coordinatorSuccessApprove(token: token)
-//          case .failure(let error):
-//            var errorMessage = error.description
-//            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-//              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-//                errorMessage = message
-//              }
-//            }
-//            self.navigationController.showErrorTopBannerMessage(
-//              with: "Error",
-//              message: errorMessage,
-//              time: 1.5
-//            )
-//            self.rootViewController.coordinatorFailApprove(token: token)
-//          }
-//        }
-          let sourceTokenAddress: Address = Address(string: self.rootViewController.viewModel.currentSourceToken?.address ?? "")!
-          
-          provider.sendApproveERCTokenAddress(
-            for: sourceTokenAddress,
-            value: Constants.maxValueBigInt,
-            gasPrice: KNGasCoordinator.shared.defaultKNGas,
-            gasLimit: BigInt(100000),
-            toAddress: self.bridgeContract) { result in
-              switch result {
-              case .success:
-                self.rootViewController.coordinatorSuccessApprove(token: token)
-              case .failure(let error):
-                var errorMessage = error.description
-                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                    errorMessage = message
-                  }
+        let sourceTokenAddress: Address = Address(string: self.rootViewController.viewModel.currentSourceToken?.address ?? "")!
+        
+        provider.sendApproveERCTokenAddress(
+          for: sourceTokenAddress,
+          value: Constants.maxValueBigInt,
+          gasPrice: KNGasCoordinator.shared.defaultKNGas,
+          gasLimit: BigInt(100000),
+          toAddress: self.bridgeContract) { result in
+            switch result {
+            case .success:
+              self.rootViewController.coordinatorSuccessApprove(token: token)
+            case .failure(let error):
+              var errorMessage = error.description
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
                 }
-                self.navigationController.showErrorTopBannerMessage(
-                  with: "Error",
-                  message: errorMessage,
-                  time: 1.5
-                )
-                self.rootViewController.coordinatorFailApprove(token: token)
               }
-          }
-          
-          
-          
-          
-          
-          
-          
-          
-          
+              self.navigationController.showErrorTopBannerMessage(
+                with: "Error",
+                message: errorMessage,
+                time: 1.5
+              )
+              self.rootViewController.coordinatorFailApprove(token: token)
+            }
+        }
       case .failure:
         self.rootViewController.coordinatorFailApprove(token: token)
       }
@@ -805,6 +775,16 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       self.rootViewController.viewModel.sourceAmount = 0.0
       self.rootViewController.viewModel.currentDestChain = nil
       self.rootViewController.viewModel.currentDestToken = nil
+      self.rootViewController.viewModel.currentDestPoolInfo = nil
+      self.rootViewController.viewModel.showToPoolInfo = false
+      self.rootViewController.viewModel.showReminder = false
+      if let currentSourceChain = self.rootViewController.viewModel.currentSourceChain {
+        self.getPoolInfo(chainId: currentSourceChain.getChainId(), tokenAddress: token.address) { poolInfo in
+          self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
+          self.rootViewController.viewModel.showFromPoolInfo = true
+          self.rootViewController.coordinatorDidUpdateData()
+        }
+      }
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return

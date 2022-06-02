@@ -12,9 +12,11 @@ class SelectTokenCell: UITableViewCell {
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var amountTextField: UITextField!
   @IBOutlet weak var maxButton: UIButton!
-  
+  @IBOutlet weak var balanceLabelTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var inputContainView: UIView!
   @IBOutlet weak var selectButtonTrailling: NSLayoutConstraint!
   @IBOutlet weak var arrowDownIcon: UIImageView!
+  @IBOutlet weak var errorLabel: UILabel!
   var selectTokenBlock: (() -> Void)?
   var amountChangeBlock: ((String) -> Void)?
 
@@ -38,6 +40,20 @@ class SelectTokenCell: UITableViewCell {
     self.maxButton.isHidden = shouldDisable
     self.arrowDownIcon.isHidden = shouldDisable
     self.selectButtonTrailling.constant = shouldDisable ? 0 : 8
+  }
+  
+  func showErrorIfNeed(errorMsg: String?) {
+    if let errorMsg = errorMsg {
+      self.errorLabel.text = errorMsg
+      self.balanceLabelTopContraint.constant = 35
+      self.errorLabel.isHidden = false
+      self.inputContainView.shakeViewError()
+    } else {
+      self.inputContainView.layer.borderColor = UIColor.clear.cgColor
+      self.inputContainView.layer.borderWidth = 1.0
+      self.balanceLabelTopContraint.constant = 12
+      self.errorLabel.isHidden = true
+    }
   }
     
   @IBAction func selectTokenButtonTapped(_ sender: Any) {
