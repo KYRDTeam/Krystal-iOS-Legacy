@@ -39,6 +39,8 @@ enum ChainType: Codable, CaseIterable {
       self = .aurora
     case 8:
       self = .solana
+    case 9:
+      self = .klaytn
     default:
       throw CodingError.unknownValue
     }
