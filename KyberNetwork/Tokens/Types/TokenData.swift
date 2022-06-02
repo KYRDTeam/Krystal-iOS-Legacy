@@ -66,9 +66,13 @@ class Token: Codable, Equatable, Hashable {
   var isFtm: Bool {
     return self.address.lowercased() == AllChains.fantomMainnetRPC.quoteTokenAddress.lowercased()
   }
+  
+  var isKlay: Bool {
+    return self.address.lowercased() == AllChains.klaytnMainnetRPC.quoteTokenAddress.lowercased()
+  }
 
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isKlay
   }
 
   func toObject(isCustom: Bool = false) -> TokenObject {
