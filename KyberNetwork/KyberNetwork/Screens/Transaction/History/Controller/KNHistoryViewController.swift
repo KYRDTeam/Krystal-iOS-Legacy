@@ -79,6 +79,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
+      isBridge: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
@@ -101,6 +102,7 @@ struct KNHistoryViewModel {
       isTrade: true,
       isContractInteraction: true,
       isClaimReward: true,
+      isBridge: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
@@ -349,7 +351,8 @@ struct KNHistoryViewModel {
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
     let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
+    let matchedBridge = (tx.type == "BridgeFrom" || tx.type == "BridgeTo") && filters.isBridge
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchedBridge
 
     var tokenMatched = false
     var transactionToken: [String] = []

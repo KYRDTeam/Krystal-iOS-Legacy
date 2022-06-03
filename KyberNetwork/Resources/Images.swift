@@ -23,6 +23,14 @@ struct Images {
   // History
   static let giftIcon = UIImage(named: "gift_icon")!
   static let warningRedIcon = UIImage(named: "warning_red_icon")!
+  static let pendingTx = UIImage(named: "pending_tx_icon")!
+  static let historyBridge = UIImage(named: "history_bridge")!
+  static let historyTransfer = UIImage(named: "history_send_icon")!
+  static let historyReceive = UIImage(named: "history_receive_icon")!
+  static let historyApprove = UIImage(named: "history_approve_icon")!
+  static let historyContractInteraction = UIImage(named: "history_contract_interaction_icon")!
+  static let historyClaimReward = UIImage(named: "history_claim_reward_icon")!
+  static let historyMultisend = UIImage(named: "multiSend_icon")!
   
   // Overview
   static let emptyAsset = UIImage(named: "empty_asset_icon")
@@ -35,5 +43,8 @@ struct Images {
   // Common
   static let comingSoon = UIImage(named: "comming_soon")!
   static let dropdown = UIImage(named: "arrow_down")!
-
+  static let success = UIImage(named: "success")!
+  static let failure = UIImage(named: "fail")!
+  static let pending = UIImage(named: "loading_icon")!
+  static let txSuccess = UIImage(named: "tx_success_icon")!
 }
