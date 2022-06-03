@@ -64,10 +64,10 @@ struct KNHistoryViewModel {
   init(
     tokens: [Token] = EtherscanTransactionStorage.shared.getEtherscanToken(),
     currentWallet: KNWalletObject
-    ) {
+  ) {
     self.tokens = tokens
     self.currentWallet = currentWallet
-    self.isShowingPending = true
+    self.isShowingPending = hasPendingTransactions
     self.filters = KNTransactionFilter(
       from: nil,
       to: nil,
@@ -82,6 +82,10 @@ struct KNHistoryViewModel {
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
+  }
+  
+  var hasPendingTransactions: Bool {
+    return EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isNotEmpty
   }
 
   mutating func updateIsShowingPending(_ isShowingPending: Bool) {
@@ -474,7 +478,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
     self.swapNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.swapNowButton.frame.size.height / 2)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
-    segmentedControl.selectedSegmentIndex = 1
+    segmentedControl.selectedSegmentIndex = self.viewModel.isShowingPending ? 1 : 0
   }
 
   override func quickTutorialNextAction() {
