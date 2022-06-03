@@ -45,7 +45,6 @@ struct ConfirmBridgeViewModel {
 protocol ConfirmBridgeViewControllerDelegate: class {
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func didConfirm(_ controller: ConfirmBridgeViewController, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
-  func didCancel(_ controller: ConfirmBridgeViewController)
   func openGasPriceSelect()
 }
 

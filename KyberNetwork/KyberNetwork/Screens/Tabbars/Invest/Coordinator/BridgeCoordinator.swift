@@ -129,19 +129,18 @@ class BridgeCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var data: [SourceBridgeToken] = []
-  
-  
+
   var advancedGasLimit: String?
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
   var advancedNonce: String?
+  var approveGasLimit = BigInt(100000)
 
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
   fileprivate(set) var minRatePercent: Double = 0.5
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
-  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   
@@ -432,7 +431,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let fee = self.gasPrice * self.baseGasLimit
+          let fee = self.gasPrice * self.estimateGasLimit
           let feeString: String = fee.displayRate(decimals: 18)
 
           let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, fee: feeString, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
@@ -460,7 +459,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             self.bridgeContract = txObject.to
             guard let signTx = self.buildSignTx(newTxObject) else { return }
             self.currentSignTransaction = signTx
-            self.baseGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+            self.estimateGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
             self.getAllowance(token: viewModel.currentSourceToken)
           }
         }
@@ -474,7 +473,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     guard let provider = self.session.externalProvider, let token = token else {
       return
     }
-    
     guard !self.bridgeContract.isEmpty else {
       return
     }
@@ -526,7 +524,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
 }
 
 extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
-  
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
     let controller = KNTransactionStatusPopUp(transaction: transaction)
     controller.delegate = self
@@ -579,15 +576,11 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   func didConfirm(_ controller: ConfirmBridgeViewController, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
     
   }
-  
-  func didCancel(_ controller: ConfirmBridgeViewController) {
-    
-  }
-  
-  func openGasPriceSelect() {
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.estimateGasLimit, selectType: self.selectedGasPriceType, currentRatePercentage: self.minRatePercent, isUseGasToken: self.isAccountUseGasToken())
 
-    viewModel.baseGasLimit = self.baseGasLimit
+  func openGasPriceSelect() {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.estimateGasLimit, selectType: self.selectedGasPriceType, currentRatePercentage: self.minRatePercent, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: false)
+
+    viewModel.baseGasLimit = self.estimateGasLimit
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -622,7 +615,7 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.advancedMaxFee = nil
       self.selectedGasPriceType = type
       self.gasPrice = value
-      let feeString: String = (self.gasPrice * self.baseGasLimit).displayRate(decimals: 18)
+      let feeString: String = (self.gasPrice * self.estimateGasLimit).displayRate(decimals: 18)
       self.confirmVC?.coordinatorDidUpdateFee(feeString: feeString)
     case .minRatePercentageChanged(let percent):
       self.minRatePercent = Double(percent)
@@ -691,7 +684,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           for: sourceTokenAddress,
           value: Constants.maxValueBigInt,
           gasPrice: KNGasCoordinator.shared.defaultKNGas,
-          gasLimit: BigInt(100000),
+          gasLimit: self.approveGasLimit,
           toAddress: self.bridgeContract) { result in
             switch result {
             case .success:
