@@ -154,9 +154,13 @@ class TokenObject: Object {
   var isSOL: Bool {
     return self.address.lowercased() == AllChains.solana.quoteTokenAddress.lowercased()
   }
+  
+  var isKlay: Bool {
+    return self.address.lowercased() == AllChains.klaytnMainnetRPC.quoteTokenAddress.lowercased()
+  }
 
   var isQuoteToken: Bool {
-    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isAETH || self.isSOL
+    return self.isETH || self.isBNB || self.isMatic || self.isAvax || self.isFtm || self.isCro || self.isAETH || self.isSOL || self.isKlay
   }
 
     var isWETH: Bool {
