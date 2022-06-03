@@ -139,7 +139,6 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
   fileprivate(set) var minRatePercent: Double = 0.5
-  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
@@ -525,13 +524,16 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
 
 extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
-    let controller = KNTransactionStatusPopUp(transaction: transaction)
-    controller.delegate = self
+    let controller = BridgeTransactionStatusPopup(transaction: transaction)
     self.navigationController.present(controller, animated: true, completion: nil)
-    self.transactionStatusVC = controller
+
   }
   
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
+//    controller.dismiss(animated: true) {
+//      self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
+//    }
+//    return
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -647,20 +649,6 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.selectedGasPriceType = .custom
     case .updateAdvancedNonce(let nonce):
       self.advancedNonce = nonce
-    default:
-      break
-    }
-  }
-}
-
-extension BridgeCoordinator: KNTransactionStatusPopUpDelegate {
-  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
-    self.transactionStatusVC = nil
-    switch action {
-    case .openLink(let url):
-      self.navigationController.openSafari(with: url)
-    case .goToSupport:
-      self.navigationController.openSafari(with: "https://docs.krystal.app/")
     default:
       break
     }

@@ -450,8 +450,6 @@ extension KNTransactionCoordinator {
       self.checkInternalHistory(transaction)
     }
   }
-
-  
   
   fileprivate func checkInternalHistory(_ transaction: InternalHistoryTransaction) {
     if KNGeneralProvider.shared.currentChain == .solana {
