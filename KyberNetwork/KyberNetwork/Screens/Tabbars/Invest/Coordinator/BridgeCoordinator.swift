@@ -442,9 +442,62 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           self.navigationController.present(vc, animated: true, completion: nil)
         }
     case .sendApprove(token: let token, remain: let remain):
-      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
-      vc.delegate = self
-      self.navigationController.present(vc, animated: true, completion: nil)
+      self.estimateGasForApprove(tokenAddress: token.address) { estGas in
+        let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
+        vm.gasLimit = estGas
+        let vc = ApproveTokenViewController(viewModel: vm)
+        vc.delegate = self
+        self.navigationController.present(vc, animated: true, completion: nil)
+      }
+    }
+  }
+  
+  func estimateGasForApprove(tokenAddress: String, completion: @escaping (BigInt) -> Void) {
+    guard let bridgeAddress = Address(string: self.bridgeContract) else {
+      completion(KNGasConfiguration.approveTokenGasLimitDefault)
+      return
+    }
+    guard case .real(let account) = self.session.wallet.type else {
+      completion(KNGasConfiguration.approveTokenGasLimitDefault)
+      return
+    }
+    
+    KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeAddress, value: Constants.maxValueBigInt) { encodeResult in
+      switch encodeResult {
+      case .success(let data):
+        let setting = ConfirmAdvancedSetting(
+          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
+          advancedGasLimit: nil,
+          advancedPriorityFee: nil,
+          avancedMaxFee: nil,
+          advancedNonce: nil
+        )
+        let currentAddress = account.address.description
+        if KNGeneralProvider.shared.isUseEIP1559 {
+          let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: tokenAddress, nonce: 1, data: data, setting: setting)
+          KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { result in
+            switch result {
+            case .success(let estGas):
+              completion(estGas)
+            case .failure(_):
+              completion(KNGasConfiguration.approveTokenGasLimitDefault)
+            }
+          }
+        } else {
+          let tx = TransactionFactory.buildLegacyTransaction(account: account, to: tokenAddress, nonce: 1, data: data, setting: setting)
+          KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
+            switch result {
+            case .success(let estGas):
+              completion(estGas)
+            case .failure(_):
+              completion(KNGasConfiguration.approveTokenGasLimitDefault)
+            }
+          }
+        }
+      case .failure( _):
+        completion(KNGasConfiguration.approveTokenGasLimitDefault)
+      }
     }
   }
   
