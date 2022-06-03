@@ -462,6 +462,8 @@
 		7E1EBE4E283507E200793B6D /* BridgeSwapButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */; };
 		7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E448D022808064E00C1617F /* SelectChainViewController.swift */; };
 		7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E448D032808064E00C1617F /* SelectChainViewController.xib */; };
+		7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */; };
+		7E44DBEB2849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E44DBE92849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib */; };
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
@@ -1425,6 +1427,8 @@
 		7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSwapButtonCell.xib; sourceTree = "<group>"; };
 		7E448D022808064E00C1617F /* SelectChainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChainViewController.swift; sourceTree = "<group>"; };
 		7E448D032808064E00C1617F /* SelectChainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectChainViewController.xib; sourceTree = "<group>"; };
+		7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTransactionStatusPopup.swift; sourceTree = "<group>"; };
+		7E44DBE92849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeTransactionStatusPopup.xib; sourceTree = "<group>"; };
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
@@ -4982,6 +4986,8 @@
 				7E1EBE342834C9C900793B6D /* BridgeViewController.xib */,
 				7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */,
 				7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */,
+				7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */,
+				7E44DBE92849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -5593,6 +5599,7 @@
 				25929C7120DA5C820045CFA3 /* SF Pro Font License.rtf in Resources */,
 				C3A58E2526D49BCF00EE3801 /* OverviewAddNFTViewController.xib in Resources */,
 				25929C5320DA5C760045CFA3 /* SF-Pro-Display-Regular.otf in Resources */,
+				7E44DBEB2849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib in Resources */,
 				7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */,
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
@@ -6286,6 +6293,7 @@
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,
 				25C45ADD20AD5EF900CDA1FF /* KNImportWalletCoordinator.swift in Sources */,
+				7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */,
 				257A37A9205DA06400E86794 /* KNTransactionStatusCoordinator.swift in Sources */,
 				C3C0B0CB2602F8C6001A1710 /* Marketing.swift in Sources */,
 				C3053AF82685D2990079B505 /* OverviewSearchTokenViewController.swift in Sources */,
