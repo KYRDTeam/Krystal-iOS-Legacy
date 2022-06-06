@@ -455,6 +455,33 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
+    case .selectMaxSource:
+      guard let from = self.rootViewController.viewModel.currentSourceToken else { return }
+      if from.isQuoteToken {
+        let balance = from.getBalanceBigInt()
+        let fee = self.gasPrice * self.estimateGasLimit
+        if balance <= fee {
+          self.rootViewController.viewModel.sourceAmount = 0
+        }
+        
+        let availableToSwap = max(BigInt(0), balance - fee)
+        let doubleValue = Double(availableToSwap.string(
+          decimals: from.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(from.decimals, 5)
+        ).removeGroupSeparator()) ?? 0
+        self.rootViewController.viewModel.sourceAmount = doubleValue
+      } else {
+        let bal: BigInt = from.getBalanceBigInt()
+        let string = bal.string(
+          decimals: from.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(from.decimals, 5)
+        )
+        let doubleValue = Double(string.removeGroupSeparator()) ?? 0
+        self.rootViewController.viewModel.sourceAmount = doubleValue
+      }
+      self.rootViewController.coordinatorDidUpdateData()
     }
   }
   

@@ -20,6 +20,7 @@ enum BridgeEvent {
   case changeAmount(amount: Double)
   case changeDestAddress(address: String)
   case selectSwap
+  case selectMaxSource
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
 }
@@ -115,6 +116,9 @@ class BridgeViewController: KNBaseViewController {
       } else {
         self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
       }
+    }
+    self.viewModel.selectMaxBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
     }
   }
   

@@ -60,6 +60,7 @@ class BridgeViewModel {
   var remainApprovedAmount: (TokenObject, BigInt)?
   
   var selectSourceChainBlock: (() -> Void)?
+  var selectMaxBlock: (() -> Void)?
   var selectSourceTokenBlock: (() -> Void)?
   var selectDestChainBlock: (() -> Void)?
   var selectDestTokenBlock: (() -> Void)?
@@ -161,6 +162,7 @@ class BridgeViewModel {
         cell.setDisableSelectToken(shouldDisable: false)
         cell.selectTokenBlock = self.selectSourceTokenBlock
         cell.amountChangeBlock = self.changeAmountBlock
+        cell.selectMaxBlock = self.selectMaxBlock
         cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
