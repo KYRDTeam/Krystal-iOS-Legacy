@@ -543,7 +543,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       }
     }
   
-  func getBuildTx() {
+  func getBuildTx(_ completion: (() -> Void)? = nil) {
     self.getLatestNonce { result in
       switch result {
       case .success(let nonce):
@@ -553,10 +553,18 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             let decimal = viewModel.currentSourceToken?.decimals ?? 0
             let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
             self.bridgeContract = txObject.to
-            guard let signTx = self.buildSignTx(newTxObject) else { return }
+            guard let signTx = self.buildSignTx(newTxObject) else {
+              if let completion = completion {
+                completion()
+              }
+              return
+            }
             self.currentSignTransaction = signTx
             self.estimateGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
             self.getAllowance(token: viewModel.currentSourceToken)
+            if let completion = completion {
+              completion()
+            }
           }
         }
       case .failure(let error):
@@ -627,47 +635,45 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   }
   
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
-//    controller.dismiss(animated: true) {
-//      self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
-//    }
-//    return
-    guard let provider = self.session.externalProvider else {
-      return
-    }
     self.navigationController.displayLoading()
-    provider.signTransactionData(from: signTransaction) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let signedData):
-        KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-          self.navigationController.hideLoading()
-          switch sendResult {
-          case .success(let hash):
-            provider.minTxCount += 1
-            internalHistoryTransaction.hash = hash
-            internalHistoryTransaction.nonce = signTransaction.nonce
-            internalHistoryTransaction.time = Date()
-            
-            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
-            controller.dismiss(animated: true) {
-              self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
-            }
-            self.rootViewController.coordinatorSuccessSendTransaction()
-          case .failure(let error):
-            var errorMessage = error.description
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
+    self.getBuildTx {
+      guard let provider = self.session.externalProvider else {
+        return
+      }
+      provider.signTransactionData(from: self.currentSignTransaction ?? signTransaction) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let signedData):
+          KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
+            self.navigationController.hideLoading()
+            switch sendResult {
+            case .success(let hash):
+              provider.minTxCount += 1
+              internalHistoryTransaction.hash = hash
+              internalHistoryTransaction.nonce = signTransaction.nonce
+              internalHistoryTransaction.time = Date()
+              
+              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
+              controller.dismiss(animated: true) {
+                self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
               }
+              self.rootViewController.coordinatorSuccessSendTransaction()
+            case .failure(let error):
+              var errorMessage = error.description
+              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                  errorMessage = message
+                }
+              }
+              self.navigationController.showErrorTopBannerMessage(
+                with: "Error",
+                message: errorMessage
+              )
             }
-            self.navigationController.showErrorTopBannerMessage(
-              with: "Error",
-              message: errorMessage
-            )
-          }
-        })
-      case .failure:
-        self.rootViewController.coordinatorFailSendTransaction()
+          })
+        case .failure:
+          self.rootViewController.coordinatorFailSendTransaction()
+        }
       }
     }
   }
