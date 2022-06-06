@@ -120,6 +120,7 @@ protocol BridgeCoordinatorDelegate: class {
   func didSelectWallet(_ wallet: Wallet)
   func didSelectAddWallet()
   func didSelectManageWallet()
+  func didSelectOpenHistoryList()
 
 }
 
@@ -188,6 +189,10 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.rootViewController.coordinatorDidUpdatePendingTx()
   }
   
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
@@ -381,7 +386,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.getBuildTx()
       self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
-      print("")
+        self.delegate?.didSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
         walletObjects: KNWalletStorage.shared.availableWalletObjects,

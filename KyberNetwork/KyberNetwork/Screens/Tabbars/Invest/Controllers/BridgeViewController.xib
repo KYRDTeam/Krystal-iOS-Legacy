@@ -17,9 +17,10 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BridgeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BridgeViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="chainIcon" destination="nNW-qP-S4F" id="JCb-QI-Peh"/>
+                <outlet property="pendingTxIndicatorView" destination="BJc-2u-Tru" id="Gts-9R-Gym"/>
                 <outlet property="tableView" destination="J7S-3l-1sn" id="XGE-nd-gyN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsListButton" destination="jqR-bc-zqg" id="WwG-qa-Kbk"/>
