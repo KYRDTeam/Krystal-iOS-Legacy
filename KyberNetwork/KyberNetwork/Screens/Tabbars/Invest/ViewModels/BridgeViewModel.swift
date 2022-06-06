@@ -185,10 +185,18 @@ class BridgeViewModel {
         var errMsg: String?
         if let currentDestToken = self.currentDestToken {
           if currentDestToken.minimumSwap > self.sourceAmount {
-            errMsg = "Too small"
+            errMsg = "Insufficient".toBeLocalised() + " \(currentDestToken.symbol) " + "balance".toBeLocalised()
           }
           if currentDestToken.maximumSwap < self.sourceAmount {
-            errMsg = "Too big"
+            errMsg = "Swap limit exceeded".toBeLocalised()
+          }
+          
+          if let currentSourceToken = self.currentSourceToken {
+            let amountString = currentSourceToken.getBalanceBigInt().fullString(decimals: currentSourceToken.decimals)
+            let amountDouble = Double(amountString) ?? 0.0
+            if self.sourceAmount > amountDouble {
+              errMsg = "Insufficient".toBeLocalised() + " \(currentDestToken.symbol) " + "balance".toBeLocalised()
+            }
           }
         }
         cell.showErrorIfNeed(errorMsg: errMsg)
