@@ -275,6 +275,18 @@ class BridgeCoordinator: NSObject, Coordinator {
     }
   }
   
+  func getTransactionStatus(txHash: String, chainId: String) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.rootViewController.showLoadingHUD()
+    provider.request(.checkTxStatus(txHash: txHash, chainId: chainId)) { result in
+      DispatchQueue.main.async {
+        self.rootViewController.hideLoading()
+      }
+      
+      //TODO: parse pending transaction here
+    }
+  }
+  
   fileprivate func isAccountUseGasToken() -> Bool {
     var data: [String: Bool] = [:]
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {

@@ -896,7 +896,7 @@ enum KrytalService {
   case getServerInfo(chainId: Int)
   case getPoolInfo(chainId: Int, tokenAddress: String)
   case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
-  case checkTxStatus(txHash: String)
+  case checkTxStatus(txHash: String, chainId: String)
 }
 
 extension KrytalService: TargetType {
@@ -1374,9 +1374,10 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .checkTxStatus(txHash: let txHash):
+    case .checkTxStatus(txHash: let txHash, chainId: let chainId):
       let json: JSONDictionary = [
-        "txHash": txHash
+        "txHash": txHash,
+        "chainId": chainId
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
