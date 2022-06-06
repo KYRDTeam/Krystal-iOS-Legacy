@@ -207,7 +207,7 @@ class BridgeViewController: KNBaseViewController {
 
   func openSwitchChainPopup(_ chainTypes: [ChainType] = ChainType.getAllChain(), _ shouldChangeWallet: Bool = true) {
     let popup = SwitchChainViewController()
-    popup.dataSource = chainTypes
+    popup.dataSource = chainTypes.filter({ $0 != .solana })
     popup.completionHandler = { selected in
       if !shouldChangeWallet {
         self.delegate?.bridgeViewControllerController(self, run: .didSelectDestChain(chain: selected))
