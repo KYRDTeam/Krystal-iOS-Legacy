@@ -93,7 +93,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
     self.toChainTokenValueLabel.text = self.viewModel.toValue
     self.toAddressLabel.text = self.viewModel.toAddress
-    self.feeValueLabel.text = self.viewModel.fee
+    self.feeValueLabel.text = self.viewModel.fee + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
   }
   
   @objc func tapOutside() {
@@ -101,7 +101,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
   }
   
   func coordinatorDidUpdateFee(feeString: String) {
-    self.feeValueLabel.text = feeString
+    self.feeValueLabel.text = feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
   }
   
   @IBAction func editButtonTapped(_ sender: Any) {
