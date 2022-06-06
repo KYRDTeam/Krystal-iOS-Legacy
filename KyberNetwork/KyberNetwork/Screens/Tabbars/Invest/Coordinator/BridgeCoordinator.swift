@@ -744,7 +744,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           for: sourceTokenAddress,
           value: Constants.maxValueBigInt,
           gasPrice: KNGasCoordinator.shared.defaultKNGas,
-          gasLimit: BigInt(100000),
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault,
           toAddress: self.bridgeContract) { result in
             switch result {
             case .success:
