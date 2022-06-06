@@ -51,7 +51,7 @@ class ExploreViewModel {
     let isBuyCryptoEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
-    let isBridgeEnabled = true //FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
+    let isBridgeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bridgeIntegration)
     
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)
