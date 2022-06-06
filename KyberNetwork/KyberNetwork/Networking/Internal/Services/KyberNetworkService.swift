@@ -885,7 +885,7 @@ enum KrytalService {
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
   case getTotalBalance(address: [String], forceSync: Bool, _ chains: String?)
-  case getGasPrice2
+  case getGasPriceV2
   case getCryptoFiatPair
   case buyCrypto(buyCryptoModel: BifinityOrder)
   case buildMultiSendTx(sender: String, items: [MultiSendItem])
@@ -896,7 +896,7 @@ enum KrytalService {
   case getServerInfo(chainId: Int)
   case getPoolInfo(chainId: Int, tokenAddress: String)
   case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
-  case checkTxStatus(txHash: String)
+  case checkTxStatus(txHash: String, chainId: String)
 }
 
 extension KrytalService: TargetType {
@@ -999,8 +999,6 @@ extension KrytalService: TargetType {
       return "/v1/account/eligible"
     case .getTotalBalance:
       return "/v1/account/totalBalances"
-    case .getGasPrice2:
-      return "/v1/gasPrice"
     case .getCryptoFiatPair:
       return "v1/fiat/cryptos"
     case .buyCrypto:
@@ -1015,6 +1013,8 @@ extension KrytalService: TargetType {
       return "v1/fiat/orders"
     case .sendRate:
       return "/v1/tracking/ratings"
+    case .getGasPriceV2:
+      return "/v2/gasPrice"
     case .getServerInfo:
       return "/v1/crosschain/serverInfo"
     case .getPoolInfo:
@@ -1295,7 +1295,7 @@ extension KrytalService: TargetType {
 //        json["chains"] = chains
 //      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getGasPrice2:
+    case .getGasPriceV2:
       return .requestPlain
     case .getCryptoFiatPair:
       return .requestPlain
@@ -1374,9 +1374,10 @@ extension KrytalService: TargetType {
         "amount": amount
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .checkTxStatus(txHash: let txHash):
+    case .checkTxStatus(txHash: let txHash, chainId: let chainId):
       let json: JSONDictionary = [
-        "txHash": txHash
+        "txHash": txHash,
+        "chainId": chainId
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

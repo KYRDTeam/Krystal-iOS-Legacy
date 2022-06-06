@@ -119,6 +119,7 @@ class WalletsListViewController: KNBaseViewController {
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var walletsTableViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var manageWalletTopConstraint: NSLayoutConstraint!
+  @IBOutlet weak var qrCodeIcon: UIImageView!
   fileprivate var viewModel: WalletsListViewModel
 
   fileprivate let kWalletTableViewCellID: String = "WalletListTableViewCell"
@@ -148,6 +149,7 @@ class WalletsListViewController: KNBaseViewController {
     self.walletsTableViewHeightContraint.constant = self.viewModel.walletTableViewHeight
     self.walletTableView.allowsSelection = true
     self.connectWalletButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
+    self.qrCodeIcon.isHidden = KNGeneralProvider.shared.currentChain == .solana
     self.manageWalletTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 12 : 66
   }
 

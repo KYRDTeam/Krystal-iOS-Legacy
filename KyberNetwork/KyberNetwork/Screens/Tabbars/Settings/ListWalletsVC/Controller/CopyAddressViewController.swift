@@ -22,11 +22,20 @@ class CopyAddressViewModel {
     var result: [CopyAddressCellModel] = []
     for element in allChains {
       if element == .solana {
-        if let account = keyStore.matchWithEvmAccount(address: self.walletData.address), case .success(let seeds) = self.keyStore.exportMnemonics(account: account) {
-          let address = SolanaUtil.seedsToPublicKey(seeds)
-          let solData = WalletData(address: address, name: "", icon: "", isBackedUp: true, isWatchWallet: false, date: Date(), chainType: .solana, storageType: .seeds, evmAddress: data.evmAddress, solanaAddress: data.solanaAddress, walletID: data.walletID)
-          result.append(CopyAddressCellModel(type: element, data: solData))
-        }
+        let solData = WalletData(
+          address: data.solanaAddress,
+          name: "",
+          icon: "",
+          isBackedUp: true,
+          isWatchWallet: false,
+          date: Date(),
+          chainType: .solana,
+          storageType: .seeds,
+          evmAddress: data.evmAddress,
+          solanaAddress: data.solanaAddress,
+          walletID: data.walletID
+        )
+        result.append(CopyAddressCellModel(type: element, data: solData))
       } else {
         result.append(CopyAddressCellModel(type: element, data: data))
       }

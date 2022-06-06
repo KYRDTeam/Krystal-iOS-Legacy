@@ -185,6 +185,7 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.bridgeCoordinator?.coordinatorDidUpdatePendingTx()
     self.buyCryptoCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
@@ -387,5 +388,9 @@ extension InvestCoordinator: BridgeCoordinatorDelegate {
 
   func didSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+  
+  func didSelectOpenHistoryList() {
+    self.openHistoryScreen()
   }
 }

@@ -21,6 +21,7 @@
                 <outlet property="contentViewTopContraint" destination="zQU-Am-Qrf" id="PiF-jY-Sry"/>
                 <outlet property="manageWalletButton" destination="16g-oT-S4q" id="nNK-MW-B0N"/>
                 <outlet property="manageWalletTopConstraint" destination="jtQ-yF-xOv" id="Uef-Jk-UPm"/>
+                <outlet property="qrCodeIcon" destination="plp-pS-lvt" id="RZx-1H-KVn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletTableView" destination="AbD-5x-c9Z" id="Kf9-LN-SgL"/>
                 <outlet property="walletsTableViewHeightContraint" destination="ukf-hb-yWp" id="GtP-rN-z5d"/>

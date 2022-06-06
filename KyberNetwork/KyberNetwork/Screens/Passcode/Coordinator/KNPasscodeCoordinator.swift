@@ -13,6 +13,7 @@ class KNPasscodeCoordinator: Coordinator {
   let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
+  internal var keystore: Keystore? = nil
 
   weak var delegate: KNPasscodeCoordinatorDelegate?
 
@@ -24,10 +25,12 @@ class KNPasscodeCoordinator: Coordinator {
   
   init(
     navigationController: UINavigationController = UINavigationController(),
-    type: KNPasscodeViewType
+    type: KNPasscodeViewType,
+    _ keystore: Keystore? = nil
   ) {
     self.navigationController = navigationController
     self.type = type
+    self.keystore = keystore
     if case .authenticate(let isUpdating) = self.type, !isUpdating {
       self.window.windowLevel = UIWindow.Level.statusBar + 1.0
       self.window.rootViewController = self.passcodeViewController
@@ -80,6 +83,9 @@ class KNPasscodeCoordinator: Coordinator {
         }
       } else if case .verifyPasscode = self.type {
         self.navigationController.dismiss(animated: true, completion: completion)
+      }
+      if let keystore = self.keystore {
+        KNWalletStorage.shared.migrateDataIfNeeded(keyStore: keystore)
       }
     }
   }

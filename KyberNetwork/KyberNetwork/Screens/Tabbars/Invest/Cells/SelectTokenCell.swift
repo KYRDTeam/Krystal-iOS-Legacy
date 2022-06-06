@@ -18,6 +18,7 @@ class SelectTokenCell: UITableViewCell {
   @IBOutlet weak var arrowDownIcon: UIImageView!
   @IBOutlet weak var errorLabel: UILabel!
   var selectTokenBlock: (() -> Void)?
+  var selectMaxBlock: (() -> Void)?
   var amountChangeBlock: ((String) -> Void)?
 
   override func awakeFromNib() {
@@ -32,6 +33,11 @@ class SelectTokenCell: UITableViewCell {
   @objc func textFieldDidChange(_ textField: UITextField) {
     if let amountChangeBlock = amountChangeBlock, let text = textField.text {
       amountChangeBlock(text)
+    }
+  }
+  @IBAction func maxButtonTapped(_ sender: Any) {
+    if let selectMaxBlock = self.selectMaxBlock {
+      selectMaxBlock()
     }
   }
   

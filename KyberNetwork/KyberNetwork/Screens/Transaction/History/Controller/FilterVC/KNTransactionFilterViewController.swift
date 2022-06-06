@@ -13,6 +13,7 @@ struct KNTransactionFilter: Codable {
   let isTrade: Bool
   let isContractInteraction: Bool
   let isClaimReward: Bool
+  let isBridge: Bool
   let tokens: [String]
 }
 
@@ -27,6 +28,7 @@ class KNTransactionFilterViewModel {
   var isWithdraw: Bool = false
   var isContractInteraction: Bool = false
   var isClaimReward: Bool = false
+  var isBridge: Bool = false
   private(set) var tokens: [String] = []
   private(set) var supportedTokens: [String] = []
   private(set) var isSelectAll: Bool = true
@@ -43,6 +45,7 @@ class KNTransactionFilterViewModel {
     self.isTrade = filter.isTrade
     self.isContractInteraction = filter.isContractInteraction
     self.isClaimReward = filter.isClaimReward
+    self.isBridge = filter.isBridge
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
@@ -139,6 +142,8 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var withdrawButton: UIButton!
   @IBOutlet weak var tradeButton: UIButton!
   @IBOutlet weak var contractInteractionButton: UIButton!
+  @IBOutlet weak var bridgeButton: UIButton!
+  
   @IBOutlet weak var claimRewardButton: UIButton!
   @IBOutlet weak var selectButton: UIButton!
   @IBOutlet weak var tokenTextLabel: UILabel!
@@ -316,7 +321,15 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.claimRewardButton.backgroundColor = UIColor(named: "navButtonBgColor")
         self.claimRewardButton.setTitleColor(UIColor(named: "normalTextColor"), for: .normal)
       }
-
+      
+      if self.viewModel.isBridge {
+        self.bridgeButton.backgroundColor = UIColor.Kyber.buttonBg
+        self.bridgeButton.setTitleColor(UIColor.Kyber.mainViewBg, for: .normal)
+      } else {
+        self.bridgeButton.backgroundColor = UIColor.Kyber.navButtonBg
+        self.bridgeButton.setTitleColor(UIColor.Kyber.normalText, for: .normal)
+      }
+      
       if let date = self.viewModel.from {
         self.fromDatePicker.setDate(date, animated: false)
         self.fromDatePickerDidChange(self.fromDatePicker)
@@ -411,6 +424,11 @@ class KNTransactionFilterViewController: KNBaseViewController {
     self.viewModel.isSeeMore = !self.viewModel.isSeeMore
     self.updateUI()
   }
+  
+  @IBAction func bridgeWasTapped(_ sender: Any) {
+    viewModel.isBridge.toggle()
+    updateUI(isUpdatingTokens: false)
+  }
 
   @objc func fromDatePickerDidChange(_ sender: UIDatePicker) {
     let dob = DateFormatterUtil.shared.kycDateFormatter.string(from: self.fromDatePicker.date)
@@ -451,6 +469,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
       isTrade: self.viewModel.isTrade,
       isContractInteraction: self.viewModel.isContractInteraction,
       isClaimReward: self.viewModel.isClaimReward,
+      isBridge: self.viewModel.isBridge,
       tokens: self.viewModel.tokens
     )
     self.navigationController?.popViewController(animated: true, completion: {

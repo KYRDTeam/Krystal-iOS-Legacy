@@ -82,6 +82,13 @@ target 'KyberNetwork' do
     inherit! :search_paths
     # Pods for testing
   end
+  
+  target 'KrystalUnitTests' do
+    inherit! :search_paths
+    
+    pod 'Quick'
+    pod 'Nimble'
+  end
 
   target 'KyberNetworkUITests' do
     inherit! :search_paths

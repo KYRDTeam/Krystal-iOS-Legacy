@@ -49,4 +49,19 @@ struct ExtraData: Codable {
   let tokenAddress, tokenName, value: String?
   let sendToken: Token?
   let sendValue: String?
+  var from: ExtraBridgeTransaction?
+  var to: ExtraBridgeTransaction?
+  var type: String?
+  var error: String?
+}
+
+struct ExtraBridgeTransaction: Codable {
+  var address: String
+  var amount: String
+  var chainId: String?
+  var chainName: String?
+  var decimals: Int
+  var token: String
+  var tx: String
+  var txStatus: String
 }

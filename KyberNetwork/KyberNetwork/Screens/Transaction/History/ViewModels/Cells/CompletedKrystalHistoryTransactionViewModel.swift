@@ -9,69 +9,77 @@ import UIKit
 import BigInt
 
 class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewModelProtocol {
-
+  
+  var transactionType: TransactionHistoryItemType {
+    return TransactionHistoryItemType(rawValue: historyItem.type) ?? .contractInteraction
+  }
+  
   var fromIconSymbol: String {
-    if self.historyItem.isSwapTokenType {
+    switch transactionType {
+    case .swap, .supply, .withdraw:
       return self.historyItem.extraData?.sendToken?.symbol ?? ""
-    } else if historyItem.type == "Received" {
-      return ""
-    } else if historyItem.type == "Transfer" {
-      return ""
-    } else if historyItem.type == "Approval" {
-      return ""
-    } else {
+    default:
       return ""
     }
   }
-
+  
   var toIconSymbol: String {
-    if self.historyItem.isSwapTokenType {
+    switch transactionType {
+    case .swap, .supply, .withdraw:
       return self.historyItem.extraData?.receiveToken?.symbol ?? ""
-    } else if historyItem.type == "Received" {
-      return ""
-    } else if historyItem.type == "Transfer" {
-      return ""
-    } else if historyItem.type == "Approval" {
-      return ""
-    } else {
+    default:
       return ""
     }
   }
   
   var displayedAmountString: String {
-    if self.historyItem.isSwapTokenType {
+    let defaultAmountString = "--/--"
+    switch transactionType {
+    case .swap, .supply, .withdraw:
       if self.isError {
-        return "--/--"
+        return defaultAmountString
       }
       var result = ""
       let sendValueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
       let sendValueString = sendValueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      result += "\(sendValueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "") -> "
+      result += "\(sendValueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "") → "
       let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       result += "\(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
       
       return result
-    } else if historyItem.type == "Received" {
-      let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
-      let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
-      return "+ \(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
-    } else if historyItem.type == "Transfer" {
+    case .transfer:
       let valueBigInt = BigInt(self.historyItem.extraData?.sendValue ?? "") ?? BigInt(0)
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.sendToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       return "- \(valueString) \(self.historyItem.extraData?.sendToken?.symbol ?? "")"
-    } else if historyItem.type == "Approval" {
+    case .receive:
+      let valueBigInt = BigInt(self.historyItem.extraData?.receiveValue ?? "") ?? BigInt(0)
+      let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
+      return "+ \(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
+    case .approval:
       return self.historyItem.extraData?.token?.name ?? ""
-    } else if historyItem.type == "ClaimReward", let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
-      guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
-      return "+" + " " + receiveValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: 4) + " \(symbol)"
-    } else {
-      return "--/--"
+    case .claimReward:
+      if let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
+        guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
+        return "+" + " " + receiveValue.string(decimals: decimal, minFractionDigits: 0, maxFractionDigits: 4) + " \(symbol)"
+      } else {
+        return defaultAmountString
+      }
+    case .bridgeFrom, .bridgeTo:
+      guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
+        return defaultAmountString
+      }
+      let fromAmountString = BigInt(from.amount)?.fullString(decimals: from.decimals) ?? "0"
+      let toAmountString = BigInt(to.amount)?.fullString(decimals: to.decimals) ?? "0"
+      return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
+    case .contractInteraction:
+      return defaultAmountString
     }
   }
   
   var transactionDetailsString: String {
-    if self.historyItem.isSwapTokenType {
+    switch transactionType {
+    case .swap, .supply, .withdraw:
       if self.isError {
         return ""
       }
@@ -85,34 +93,40 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       let rate = amountTo * BigInt(10).power(18) / amountFrom
       let rateString = rate.displayRate(decimals: 18)
       return "1 \(self.historyItem.extraData?.sendToken?.symbol ?? "") = \(rateString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
-    } else if historyItem.type == "Received" {
-      return "From: \(self.historyItem.from)"
-    } else if historyItem.type == "Transfer" {
+    case .transfer:
       return "To: \(self.historyItem.to)"
-    } else if historyItem.type == "Approval" {
-      return self.historyItem.to
-    } else {
+    case .receive:
+      return "From: \(self.historyItem.from)"
+    case .bridgeFrom, .bridgeTo:
+      guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
+        return ""
+      }
+      let srcChainName = getChain(chainID: from.chainId)?.chainName() ?? ""
+      let destChainName = getChain(chainID: to.chainId)?.chainName() ?? ""
+      return "\(srcChainName) → \(destChainName)"
+    default:
       return self.historyItem.to
     }
   }
-
+  
   var transactionTypeString: String {
-    if self.historyItem.type == "Swap" {
-      return "SWAP"
-    } else if historyItem.type == "Received" {
-      return "RECEIVED"
-    } else if historyItem.type == "Transfer" {
-      return "TRANSFER"
-    } else if historyItem.type == "Approval" {
-      return "APPROVAL"
-    } else if self.historyItem.type == "Supply" {
-      return "SUPPLY"
-    } else if self.historyItem.type == "Withdraw" {
-      return "WITHDRAW"
-    } else if self.historyItem.type == "ClaimReward" {
-      return "CLAIM REWARD"
-    } else {
-      return "CONTRACT INTERACTION"
+    switch transactionType {
+    case .swap:
+      return Strings.swap.uppercased()
+    case .receive:
+      return Strings.receive.uppercased()
+    case .transfer:
+      return Strings.transfer.uppercased()
+    case .approval:
+      return Strings.approval.uppercased()
+    case .contractInteraction:
+      return Strings.contractExecution.uppercased()
+    case .claimReward:
+      return Strings.claimReward.uppercased()
+    case .bridgeFrom, .bridgeTo:
+      return Strings.bridge.uppercased()
+    default:
+      return Strings.contractExecution.uppercased()
     }
   }
   
@@ -121,21 +135,24 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   }
   
   var transactionTypeImage: UIImage {
-    if self.historyItem.isSwapTokenType {
+    switch transactionType {
+    case .swap, .supply, .withdraw:
       return UIImage()
-    } else if historyItem.type == "Received" {
-      return UIImage(named: "history_receive_icon")!
-    } else if historyItem.type == "Transfer" {
-      return UIImage(named: "history_send_icon")!
-    } else if historyItem.type == "Approval" {
-      return UIImage(named: "history_approve_icon")!
-    } else if historyItem.type == "ClaimReward" {
-      return UIImage(named: "history_claim_reward_icon")!
-    } else {
-      return UIImage(named: "history_contract_interaction_icon")!
+    case .receive:
+      return Images.historyReceive
+    case .transfer:
+      return Images.historyTransfer
+    case .approval:
+      return Images.historyApprove
+    case .claimReward:
+      return Images.historyClaimReward
+    case .bridgeFrom, .bridgeTo:
+      return Images.historyBridge
+    default:
+      return Images.historyContractInteraction
     }
   }
-
+  
   var displayTime: String {
     let date = Date(timeIntervalSince1970: Double(self.historyItem.timestamp))
     return DateFormatterUtil.shared.historyTransactionDateFormatter.string(from: date)
@@ -145,5 +162,15 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   
   init(item: KrystalHistoryTransaction) {
     self.historyItem = item
+  }
+  
+  private func getChain(chainID: String?) -> ChainType? {
+    guard let chainID = chainID else {
+      return nil
+    }
+
+    return ChainType.getAllChain().first { chain in
+      chain.customRPC().chainID == Int(chainID)
+    }
   }
 }

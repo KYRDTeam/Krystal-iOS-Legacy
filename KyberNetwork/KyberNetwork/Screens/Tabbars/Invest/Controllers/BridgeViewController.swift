@@ -20,6 +20,7 @@ enum BridgeEvent {
   case changeAmount(amount: Double)
   case changeDestAddress(address: String)
   case selectSwap
+  case selectMaxSource
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt)
 }
@@ -32,6 +33,7 @@ class BridgeViewController: KNBaseViewController {
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var walletsListButton: UIButton!
+  @IBOutlet weak var pendingTxIndicatorView: UIView!
   weak var delegate: BridgeViewControllerDelegate?
   var viewModel: BridgeViewModel
   
@@ -55,12 +57,20 @@ class BridgeViewController: KNBaseViewController {
     self.updateAllowance()
   }
   
+  fileprivate func updateUIPendingTxIndicatorView() {
+    guard self.isViewLoaded else {
+      return
+    }
+    let pendingTransaction = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().first { transaction in
+      transaction.state == .pending
+    }
+    self.pendingTxIndicatorView.isHidden = pendingTransaction == nil
+  }
+  
   fileprivate func updateAllowance() {
     guard KNGeneralProvider.shared.currentChain != .solana else { return }
     guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
     guard !currentSourceToken.isWrapToken && !currentSourceToken.isQuoteToken else { return }
-
-//    self.delegate?.kSwapViewController(self, run: .checkAllowance(token: self.viewModel.from))
     self.delegate?.bridgeViewControllerController(self, run: .checkAllowance(token: currentSourceToken))
   }
   
@@ -73,6 +83,7 @@ class BridgeViewController: KNBaseViewController {
     self.tableView.registerCellNib(BridgeSwapButtonCell.self)
     self.tableView.registerCellNib(TextFieldCell.self)
     self.updateUISwitchChain()
+    self.updateUIPendingTxIndicatorView()
   }
   
   func setupViewModel() {
@@ -116,6 +127,9 @@ class BridgeViewController: KNBaseViewController {
         self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
       }
     }
+    self.viewModel.selectMaxBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+    }
   }
   
   func updateUISwitchChain() {
@@ -133,6 +147,11 @@ class BridgeViewController: KNBaseViewController {
   func coordinatorUpdateNewSession(wallet: Wallet) {
     self.viewModel.updateWallet(wallet)
     self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.updateUIPendingTxIndicatorView()
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.updateUIPendingTxIndicatorView()
   }
   
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
@@ -217,7 +236,7 @@ class BridgeViewController: KNBaseViewController {
   }
 
   @IBAction func showHistoryButtonTapped(_ sender: Any) {
-    
+    self.delegate?.bridgeViewControllerController(self, run: .openHistory)
   }
 }
 

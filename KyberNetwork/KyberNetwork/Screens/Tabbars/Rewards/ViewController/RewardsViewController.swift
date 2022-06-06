@@ -133,6 +133,7 @@ class RewardsViewController: KNBaseViewController {
   }
 
   func claimRewardsButtonTapped() {
+    KNCrashlyticsUtil.logCustomEvent(withName: "promotion_claim", customAttributes: nil)
     // check current chain is in supported chain or not ? if not then show popup switch chain
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
       let alertController = KNPrettyAlertController(

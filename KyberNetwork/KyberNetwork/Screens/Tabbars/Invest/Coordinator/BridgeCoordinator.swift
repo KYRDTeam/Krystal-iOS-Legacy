@@ -120,6 +120,7 @@ protocol BridgeCoordinatorDelegate: class {
   func didSelectWallet(_ wallet: Wallet)
   func didSelectAddWallet()
   func didSelectManageWallet()
+  func didSelectOpenHistoryList()
 
 }
 
@@ -129,19 +130,17 @@ class BridgeCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var data: [SourceBridgeToken] = []
-  
-  
+
   var advancedGasLimit: String?
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
   var advancedNonce: String?
+  var approveGasLimit = BigInt(100000)
 
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
   fileprivate(set) var minRatePercent: Double = 0.5
-  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
-  fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   
@@ -190,6 +189,10 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+  }
+  
+  func coordinatorDidUpdatePendingTx() {
+    self.rootViewController.coordinatorDidUpdatePendingTx()
   }
   
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
@@ -274,6 +277,18 @@ class BridgeCoordinator: NSObject, Coordinator {
       } else {
         self.navigationController.showTopBannerView(message: "Build Tx request is failed")
       }
+    }
+  }
+  
+  func getTransactionStatus(txHash: String, chainId: String) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    self.rootViewController.showLoadingHUD()
+    provider.request(.checkTxStatus(txHash: txHash, chainId: chainId)) { result in
+      DispatchQueue.main.async {
+        self.rootViewController.hideLoading()
+      }
+      
+      //TODO: parse pending transaction here
     }
   }
   
@@ -371,7 +386,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.getBuildTx()
       self.rootViewController.coordinatorDidUpdateData()
     case .openHistory:
-      print("")
+        self.delegate?.didSelectOpenHistoryList()
     case .openWalletsList:
       let viewModel = WalletsListViewModel(
         walletObjects: KNWalletStorage.shared.availableWalletObjects,
@@ -432,7 +447,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let fee = self.gasPrice * self.baseGasLimit
+          let fee = self.gasPrice * self.estimateGasLimit
           let feeString: String = fee.displayRate(decimals: 18)
 
           let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, fee: feeString, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
@@ -442,62 +457,36 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           self.navigationController.present(vc, animated: true, completion: nil)
         }
     case .sendApprove(token: let token, remain: let remain):
-      self.estimateGasForApprove(tokenAddress: token.address) { estGas in
-        let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
-        vm.gasLimit = estGas
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    }
-  }
-  
-  func estimateGasForApprove(tokenAddress: String, completion: @escaping (BigInt) -> Void) {
-    guard let bridgeAddress = Address(string: self.bridgeContract) else {
-      completion(KNGasConfiguration.approveTokenGasLimitDefault)
-      return
-    }
-    guard case .real(let account) = self.session.wallet.type else {
-      completion(KNGasConfiguration.approveTokenGasLimitDefault)
-      return
-    }
-    
-    KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeAddress, value: Constants.maxValueBigInt) { encodeResult in
-      switch encodeResult {
-      case .success(let data):
-        let setting = ConfirmAdvancedSetting(
-          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
-          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
-          advancedGasLimit: nil,
-          advancedPriorityFee: nil,
-          avancedMaxFee: nil,
-          advancedNonce: nil
-        )
-        let currentAddress = account.address.description
-        if KNGeneralProvider.shared.isUseEIP1559 {
-          let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: tokenAddress, nonce: 1, data: data, setting: setting)
-          KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { result in
-            switch result {
-            case .success(let estGas):
-              completion(estGas)
-            case .failure(_):
-              completion(KNGasConfiguration.approveTokenGasLimitDefault)
-            }
-          }
-        } else {
-          let tx = TransactionFactory.buildLegacyTransaction(account: account, to: tokenAddress, nonce: 1, data: data, setting: setting)
-          KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
-            switch result {
-            case .success(let estGas):
-              completion(estGas)
-            case .failure(_):
-              completion(KNGasConfiguration.approveTokenGasLimitDefault)
-            }
-          }
+      let vc = ApproveTokenViewController(viewModel: ApproveTokenViewModelForTokenObject(token: token, res: remain))
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
+    case .selectMaxSource:
+      guard let from = self.rootViewController.viewModel.currentSourceToken else { return }
+      if from.isQuoteToken {
+        let balance = from.getBalanceBigInt()
+        let fee = self.gasPrice * self.estimateGasLimit
+        if balance <= fee {
+          self.rootViewController.viewModel.sourceAmount = 0
         }
-      case .failure( _):
-        completion(KNGasConfiguration.approveTokenGasLimitDefault)
+        
+        let availableToSwap = max(BigInt(0), balance - fee)
+        let doubleValue = Double(availableToSwap.string(
+          decimals: from.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(from.decimals, 5)
+        ).removeGroupSeparator()) ?? 0
+        self.rootViewController.viewModel.sourceAmount = doubleValue
+      } else {
+        let bal: BigInt = from.getBalanceBigInt()
+        let string = bal.string(
+          decimals: from.decimals,
+          minFractionDigits: 0,
+          maxFractionDigits: min(from.decimals, 5)
+        )
+        let doubleValue = Double(string.removeGroupSeparator()) ?? 0
+        self.rootViewController.viewModel.sourceAmount = doubleValue
       }
+      self.rootViewController.coordinatorDidUpdateData()
     }
   }
   
@@ -513,7 +502,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
             self.bridgeContract = txObject.to
             guard let signTx = self.buildSignTx(newTxObject) else { return }
             self.currentSignTransaction = signTx
-            self.baseGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+            self.estimateGasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? KNGasConfiguration.exchangeTokensGasLimitDefault
             self.getAllowance(token: viewModel.currentSourceToken)
           }
         }
@@ -527,7 +516,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     guard let provider = self.session.externalProvider, let token = token else {
       return
     }
-    
     guard !self.bridgeContract.isEmpty else {
       return
     }
@@ -579,15 +567,17 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
 }
 
 extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
-  
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
-    let controller = KNTransactionStatusPopUp(transaction: transaction)
-    controller.delegate = self
+    let controller = BridgeTransactionStatusPopup(transaction: transaction)
     self.navigationController.present(controller, animated: true, completion: nil)
-    self.transactionStatusVC = controller
+
   }
   
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
+//    controller.dismiss(animated: true) {
+//      self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
+//    }
+//    return
     guard let provider = self.session.externalProvider else {
       return
     }
@@ -632,15 +622,11 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   func didConfirm(_ controller: ConfirmBridgeViewController, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
     
   }
-  
-  func didCancel(_ controller: ConfirmBridgeViewController) {
-    
-  }
-  
-  func openGasPriceSelect() {
-    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.estimateGasLimit, selectType: self.selectedGasPriceType, currentRatePercentage: self.minRatePercent, isUseGasToken: self.isAccountUseGasToken())
 
-    viewModel.baseGasLimit = self.baseGasLimit
+  func openGasPriceSelect() {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: self.estimateGasLimit, selectType: self.selectedGasPriceType, currentRatePercentage: self.minRatePercent, isUseGasToken: self.isAccountUseGasToken(), isContainSlippageSection: false)
+
+    viewModel.baseGasLimit = self.estimateGasLimit
     viewModel.updateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -675,7 +661,7 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.advancedMaxFee = nil
       self.selectedGasPriceType = type
       self.gasPrice = value
-      let feeString: String = (self.gasPrice * self.baseGasLimit).displayRate(decimals: 18)
+      let feeString: String = (self.gasPrice * self.estimateGasLimit).displayRate(decimals: 18)
       self.confirmVC?.coordinatorDidUpdateFee(feeString: feeString)
     case .minRatePercentageChanged(let percent):
       self.minRatePercent = Double(percent)
@@ -713,20 +699,6 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   }
 }
 
-extension BridgeCoordinator: KNTransactionStatusPopUpDelegate {
-  func transactionStatusPopUp(_ controller: KNTransactionStatusPopUp, action: KNTransactionStatusPopUpEvent) {
-    self.transactionStatusVC = nil
-    switch action {
-    case .openLink(let url):
-      self.navigationController.openSafari(with: url)
-    case .goToSupport:
-      self.navigationController.openSafari(with: "https://docs.krystal.app/")
-    default:
-      break
-    }
-  }
-}
-
 extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
     self.navigationController.displayLoading()
@@ -744,7 +716,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           for: sourceTokenAddress,
           value: Constants.maxValueBigInt,
           gasPrice: KNGasCoordinator.shared.defaultKNGas,
-          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault,
+          gasLimit: self.approveGasLimit,
           toAddress: self.bridgeContract) { result in
             switch result {
             case .success:
