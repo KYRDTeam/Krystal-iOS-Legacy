@@ -42,6 +42,7 @@ class OverviewAddNFTViewController: KNBaseViewController {
   
   @IBAction func doneButtonTapped(_ sender: UIButton) {
     guard let address = self.tokenAddressField.text, let id = self.tokenIDField.text, !address.isEmpty, !id.isEmpty else {
+      self.showErrorTopBannerMessage(message: "Invaild input")
       return
     }
     self.delegate?.addTokenViewController(self, run: .done(address: address, id: id))

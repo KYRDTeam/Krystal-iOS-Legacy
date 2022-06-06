@@ -142,7 +142,7 @@ class MultiSendApproveViewModel {
   var transactionGasPriceString: String {
     let gasPriceText = self.gasPrice.shortString(
       units: .gwei,
-      maxFractionDigits: 1
+      maxFractionDigits: 5
     )
     let totalGasLimit = BigInt(self.estNoTx) * self.gasLimit
     let gasLimitText = EtherNumberFormatter.short.string(from: totalGasLimit, decimals: 0)

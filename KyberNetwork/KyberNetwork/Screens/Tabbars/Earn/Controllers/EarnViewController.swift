@@ -414,7 +414,7 @@ enum EarnViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, isSwap: Bool, minRatePercent: Double, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
-  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject, minReceiveDest: (String, String), priceImpact: Double, maxSlippage: Double)
+  case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject, minReceiveDest: (String?, String?), priceImpact: Double, maxSlippage: Double)
   case openEarnSwap(token: TokenData, wallet: Wallet)
   case getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt, amountFrom: String)
@@ -631,6 +631,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "earn_submit", customAttributes: nil)
     //TODO: validate data before send
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return
@@ -717,7 +718,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.platformTableView.reloadData()
     
     self.hintToNavigateToSwapViewLabel.attributedText = self.viewModel.hintSwapNowText
-    self.selectDepositTitleLabel.text = String(format: "Select the platform to supply %@", token.symbol.uppercased())
+    self.selectDepositTitleLabel.text = String(format: Strings.selectPlatformToSupply, token.symbol.uppercased())
   }
 
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {

@@ -10,6 +10,7 @@ import Foundation
 struct Strings {
   // Common
   static let ok = "ok".toBeLocalised()
+  static let approve = "approve".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -47,6 +48,10 @@ struct Strings {
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
   
   // History
+  static let success = "success".toBeLocalised()
+  static let failure = "failed".toBeLocalised()
+  static let pending = "pending".toBeLocalised()
+  static let unknown = "unknown".toBeLocalised()
   static let application = "application".toBeLocalised()
   static let fromWallet = "from.wallet".toBeLocalised()
   static let toWallet = "to.wallet".toBeLocalised()
@@ -57,10 +62,52 @@ struct Strings {
   static let copied = "copied".toBeLocalised()
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
+  static let receive = "receive".toBeLocalised()
   static let bridge = "bridge".toBeLocalised()
+  static let contractExecution = "contract.execution".toBeLocalised()
+  static let approval = "approval".toBeLocalised()
+  static let claimReward = "claim.reward".toBeLocalised()
+  static let transactionSuccess = "transaction.success".toBeLocalised()
+  static let transactionFailed = "transaction.failed".toBeLocalised()
+  static let transactionBeingMined = "transaction.being.mined".toBeLocalised()
+  static let transactionBroadcasted = "transaction.being.broadcasted".toBeLocalised()
+  static let cannotCreateTransaction = "can.not.create.transaction".toBeLocalised()
+  static let noTransactionFound = "no.transaction.found".toBeLocalised()
+  static let bridgeFee = "bridge.fee".toBeLocalised();
+  static let estimatedTimeOfArrival = "estimated.time.of.arrival".toBeLocalised()
+  static let xMins = "x.mins".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
   static let rewardHuntingWatchWalletErrorMessage = "reward.hunting.watch.wallet.not.supported".toBeLocalised()
   static let notHaveChainWalletPleaseCreateOrImport = "not.have.chain.wallet.please.create.or.import".toBeLocalised()
+
+  // Swap
+  static let invalidInput = "invalid.input".toBeLocalised()
+  static let unsupported = "unsupported".toBeLocalised()
+  static let amountTooBig = "amount.too.big".toBeLocalised()
+  static let invalidAmount = "invalid.amount".toBeLocalised()
+  static let rateMightChange = "rate.might.change".toBeLocalised()
+  
+  static let pleaseSelectSourceToken = "please.select.source.token".toBeLocalised()
+  static let pleaseSelectDestToken = "please.select.dest.token".toBeLocalised()
+  static let canNotSwapSameToken = "can.not.swap.same.token".toBeLocalised()
+  static let pleaseEnterAmountToContinue = "please.enter.an.amount.to.continue".toBeLocalised()
+  static let canNotFindExchangeRate = "Can not find the exchange rate".toBeLocalised()
+  static let balanceNotEnoughToMakeTransaction = "balance.not.enough.to.make.transaction".toBeLocalised()
+  static let amountTooSmallToSwap = "amount.too.small.to.perform.swap".toBeLocalised()
+  static let depositMoreXOrClickAdvancedToLowerGasFee = "deposit.more.x.or.click.advanced.to.lower.gas.fee".toBeLocalised()
+  static let insufficientXForTransaction = "insufficient.x.for.transaction".toBeLocalised()
+  static let pleaseWaitForExpectedRateUpdate = "please.wait.for.expected.rate.updated".toBeLocalised()
+  static let amountToSendGreaterThanZero = "amount.to.send.greater.than.zero".toBeLocalised()
+  static let selectToken = "select.token".toBeLocalised()
+  static let selectPlatformToSupply = "select.platform.to.supply.x".toBeLocalised()
+  
+  // Receive screen
+  static let receiveWarningText = "receive_screen_warning_text".toBeLocalised()
+  static let copy = "copy".toBeLocalised()
+  static let share = "share".toBeLocalised()
+  static let tokenTypeAddress = "%@.address".toBeLocalised()
+  static let viewOnX = "view.on.%@".toBeLocalised()
+  static let addressCopied = "address.copied".toBeLocalised()
 }

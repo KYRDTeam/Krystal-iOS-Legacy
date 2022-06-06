@@ -19,8 +19,8 @@ struct EarnSwapConfirmViewModel {
   let transaction: SignTransaction?
   let eip1559Transaction: EIP1559Transaction?
   let rawTransaction: TxObject
-  let minReceiveAmount: String
-  let minReceiveTitle: String
+  let minReceiveAmount: String?
+  let minReceiveTitle: String?
   let priceImpact: Double
   let maxSlippage: Double
   
@@ -87,7 +87,7 @@ struct EarnSwapConfirmViewModel {
   var transactionGasPriceString: String {
     let gasPriceText = self.gasPrice.shortString(
       units: .gwei,
-      maxFractionDigits: 1
+      maxFractionDigits: 5
     )
     let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)

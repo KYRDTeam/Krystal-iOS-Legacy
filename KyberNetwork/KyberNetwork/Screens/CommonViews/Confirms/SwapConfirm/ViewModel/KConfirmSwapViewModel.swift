@@ -141,7 +141,7 @@ struct KConfirmSwapViewModel {
     let gasLimit: BigInt = self.transactionGasLimit
     let gasPriceText = gasPrice.shortString(
       units: .gwei,
-      maxFractionDigits: 1
+      maxFractionDigits: 5
     )
     let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)

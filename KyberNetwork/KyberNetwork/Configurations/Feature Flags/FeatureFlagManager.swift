@@ -13,6 +13,7 @@ public struct FeatureFlagKeys {
   public static let auroraChainIntegration = "aurora-chain"
   public static let rewardHunting = "reward-hunting"
   public static let solanaChainIntegration = "solana-chain"
+  public static let klaytnChainIntegration = "klaytn-chain"
 }
 
 class FeatureFlagManager {

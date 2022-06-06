@@ -71,7 +71,7 @@ struct EarnConfirmViewModel {
   var transactionGasPriceString: String {
     let gasPriceText = self.gasPrice.shortString(
       units: .gwei,
-      maxFractionDigits: 1
+      maxFractionDigits: 5
     )
     let gasLimitText = EtherNumberFormatter.short.string(from: self.gasLimit, decimals: 0)
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
@@ -192,6 +192,7 @@ class EarnConfirmViewController: KNBaseViewController {
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    KNCrashlyticsUtil.logCustomEvent(withName: "earn_cancel", customAttributes: nil)
     self.dismiss(animated: true, completion: nil)
   }
   

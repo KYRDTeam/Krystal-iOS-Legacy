@@ -627,13 +627,13 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
   var displayGasFee: String {
     if let transaction = self.data.data.transacton.first {
       let gasPrice = BigInt(transaction.gasPrice) ?? BigInt(0)
-      let gasLimit = BigInt(transaction.gasUsed) ?? BigInt(0)
-      let fee = gasPrice * gasLimit
+      let gasUsed = BigInt(transaction.gasUsed) ?? BigInt(0)
+      let fee = gasPrice * gasUsed
       return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
     } else if let tokenTx = self.data.data.tokenTransactions.first {
       let gasPrice = BigInt(tokenTx.gasPrice) ?? BigInt(0)
-      let gasLimit = BigInt(tokenTx.gasUsed) ?? BigInt(0)
-      let fee = gasPrice * gasLimit
+      let gasUsed = BigInt(tokenTx.gasUsed) ?? BigInt(0)
+      let fee = gasPrice * gasUsed
       return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
     } else {
       return "---"
@@ -668,7 +668,7 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   }
   
   var displayTxStatusColor: UIColor {
-    return self.data.isError ?  UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
+    return self.data.isError ? UIColor(red: 255, green: 110, blue: 64) : UIColor.Kyber.SWGreen
   }
   
   var displayTxTypeString: String {
@@ -694,8 +694,8 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   
   var displayGasFee: String {
     let gasPrice = BigInt(self.data.historyItem.gasPrice) ?? BigInt(0)
-    let gasLimit = BigInt(self.data.historyItem.gasLimit)
-    let fee = gasPrice * gasLimit
+    let gasUsed = BigInt(self.data.historyItem.gasUsed)
+    let fee = gasPrice * gasUsed
     return "\(fee.displayRate(decimals: 18)) \(KNGeneralProvider.shared.quoteToken)"
   }
   

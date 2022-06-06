@@ -11,6 +11,10 @@ class KNCrashlyticsUtil {
       Analytics.logEvent(name, parameters: customAttributes)
 //    }
   }
+  
+  static func updateUserId(userId: String) {
+    Analytics.setUserID(userId)
+  }
 }
 
 class PerformanceUtil {

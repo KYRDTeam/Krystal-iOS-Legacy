@@ -529,7 +529,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         self.navigationController.hideLoading()
         switch result {
         case .success:
-            self.showConfirmSwapScreen(data: data, transaction: tx, eip1559: nil, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, maxSlippage: maxSlippage)
+            self.showConfirmSwapScreen(data: data, transaction: tx, eip1559: nil, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1 ?? "", minReceiveTitle: minReceivedData.0 ?? "", maxSlippage: maxSlippage)
         case .failure(let error):
           var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
@@ -546,7 +546,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       }
-    case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let pair, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
+    case .openGasPriceSelect(let gasLimit, let baseGasLimit, let type, let percent, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimit, selectType: type, currentRatePercentage: percent, isUseGasToken: self.isAccountUseGasToken())
       viewModel.baseGasLimit = baseGasLimit
       viewModel.updateGasPrices(
@@ -555,7 +555,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         slow: KNGasCoordinator.shared.lowKNGas,
         superFast: KNGasCoordinator.shared.superFastKNGas
       )
-      viewModel.updatePairToken(pair)
       viewModel.advancedGasLimit = advancedGasLimit
       viewModel.advancedMaxPriorityFee = advancedPriorityFee
       viewModel.advancedMaxFee = advancedMaxFee
@@ -660,7 +659,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         switch result {
         case .success:
           print("[EIP1559] success est gas")
-          self.showConfirmSwapScreen(data: data, transaction: nil, eip1559: tx, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1, minReceiveTitle: minReceivedData.0, maxSlippage: maxSlippage)
+          self.showConfirmSwapScreen(data: data, transaction: nil, eip1559: tx, priceImpact: priceImpact, platform: platform, rawTransaction: rawTransaction, minReceiveAmount: minReceivedData.1 ?? "", minReceiveTitle: minReceivedData.0 ?? "", maxSlippage: maxSlippage)
         case .failure(let error):
           var errorMessage = "Can not estimate Gas Limit"
           if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
@@ -682,7 +681,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     }
   }
 
-  fileprivate func openSearchToken(from: TokenObject, to: TokenObject, isSource: Bool) {
+  fileprivate func openSearchToken(from: TokenObject?, to: TokenObject?, isSource: Bool) {
     if let topVC = self.navigationController.topViewController, topVC is KNSearchTokenViewController { return }
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.getAllTokenObject()

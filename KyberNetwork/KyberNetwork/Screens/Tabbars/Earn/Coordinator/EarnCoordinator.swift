@@ -383,8 +383,14 @@ extension EarnCoordinator: EarnViewControllerDelegate {
         }
       }
     case .openEarnSwap(let token, let wallet):
-      let fromToken = KNGeneralProvider.shared.quoteTokenObject.toTokenData()
-      let viewModel = EarnSwapViewModel(to: token, from: fromToken, wallet: wallet)
+      let viewModel: EarnSwapViewModel = {
+        let quoteToken = KNGeneralProvider.shared.quoteTokenObject.toTokenData()
+        if token == quoteToken {
+          return EarnSwapViewModel(to: token, from: nil, wallet: wallet)
+        } else {
+          return EarnSwapViewModel(to: token, from: quoteToken, wallet: wallet)
+        }
+      }()
       let controller = EarnSwapViewController(viewModel: viewModel)
       controller.delegate = self
       controller.navigationDelegate = self
