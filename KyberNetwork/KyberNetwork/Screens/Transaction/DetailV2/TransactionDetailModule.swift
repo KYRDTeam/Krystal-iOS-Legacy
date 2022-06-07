@@ -25,4 +25,19 @@ class TransactionDetailModule {
     return view
   }
   
+  static func build(internalTx: InternalHistoryTransaction) -> UIViewController {
+    let view = TransactionDetailViewController()
+    let interactor = TransactionDetailInteractor()
+    let router = TransactionDetailRouter()
+    let presenter = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
+    
+    presenter.setupTransaction(internalTx: internalTx)
+    view.hidesBottomBarWhenPushed = true
+    view.presenter = presenter
+    interactor.presenter = presenter
+    router.view = view
+    
+    return view
+  }
+  
 }

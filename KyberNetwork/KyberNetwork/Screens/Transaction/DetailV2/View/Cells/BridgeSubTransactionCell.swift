@@ -61,7 +61,7 @@ class BridgeSubTransactionCell: UITableViewCell {
     chainNameLabel.text = tx.chainName
     chainIconImageView.image = getChainIcon(chainID: tx.chainId)
     
-    let amountString = BigInt(tx.amount)?.fullString(decimals: tx.decimals) ?? "0"
+    let amountString = tx.amount.fullString(decimals: tx.decimals)
     amountLabel.text = amountString + " " + tx.token
     txHashLabel.text = tx.tx
     addressLabel.text = tx.address
@@ -117,10 +117,7 @@ class BridgeSubTransactionCell: UITableViewCell {
   }
   
   @objc func onTapTxHash() {
-    guard let chainID = tx.chainId else {
-      return
-    }
-    delegate?.openTxDetail(cell: self, hash: tx.tx, chainID: chainID)
+    delegate?.openTxDetail(cell: self, hash: tx.tx, chainID: tx.chainId)
   }
   
   @objc func onTapCopyAddress() {

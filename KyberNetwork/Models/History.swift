@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 // MARK: - HistoryResponse
 struct HistoryResponse: Codable {
@@ -53,15 +54,56 @@ struct ExtraData: Codable {
   var to: ExtraBridgeTransaction?
   var type: String?
   var error: String?
+  var crosschainStatus: String?
 }
 
 struct ExtraBridgeTransaction: Codable {
   var address: String
-  var amount: String
-  var chainId: String?
-  var chainName: String?
+  var amount: BigInt
+  var chainId: String
+  var chainName: String
   var decimals: Int
   var token: String
   var tx: String
   var txStatus: String
+  
+  enum CodingKeys: String, CodingKey {
+    case address, token, amount, chainId, chainName, tx, txStatus, decimals
+  }
+  
+  init(address: String, token: String, amount: BigInt, chainId: String, chainName: String, tx: String, txStatus: String, decimals: Int) {
+    self.address = address
+    self.token = token
+    self.amount = amount
+    self.chainId = chainId
+    self.chainName = chainName
+    self.tx = tx
+    self.txStatus = txStatus
+    self.decimals = decimals
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.address = try container.decode(String.self, forKey: .address)
+    self.token = try container.decode(String.self, forKey: .token)
+    self.amount = BigInt(try container.decode(String.self, forKey: .amount)) ?? BigInt(0)
+    self.chainId = try container.decode(String.self, forKey: .chainId)
+    self.chainName = try container.decode(String.self, forKey: .chainName)
+    self.tx = try container.decode(String.self, forKey: .tx)
+    self.txStatus = try container.decode(String.self, forKey: .txStatus)
+    self.decimals = try container.decode(Int.self, forKey: .decimals)
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(address, forKey: .address)
+    try container.encode(token, forKey: .token)
+    try container.encode("\(amount)", forKey: .amount)
+    try container.encode(chainId, forKey: .chainId)
+    try container.encode(chainName, forKey: .chainName)
+    try container.encode(tx, forKey: .tx)
+    try container.encode(txStatus, forKey: .txStatus)
+    try container.encode(decimals, forKey: .decimals)
+  }
+  
 }

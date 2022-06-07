@@ -118,8 +118,12 @@ class BridgeViewModel {
     return fee
   }
   
+  var estimatedDestAmount: Double {
+    return self.sourceAmount < self.calculateFee() ? 0 : self.sourceAmount - self.calculateFee()
+  }
+  
   func calculateDesAmountString() -> String {
-    return StringFormatter.amountString(value: self.sourceAmount < self.calculateFee() ? 0 : self.sourceAmount - self.calculateFee())
+    return StringFormatter.amountString(value: estimatedDestAmount)
   }
   
   func viewForHeader(section: Int) -> UIView {

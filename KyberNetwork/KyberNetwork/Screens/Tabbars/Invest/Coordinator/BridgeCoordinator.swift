@@ -121,12 +121,13 @@ protocol BridgeCoordinatorDelegate: class {
   func didSelectAddWallet()
   func didSelectManageWallet()
   func didSelectOpenHistoryList()
-
 }
 
 class BridgeCoordinator: NSObject, Coordinator {
   fileprivate var session: KNSession
   weak var delegate: BridgeCoordinatorDelegate?
+  var historyCoordinator: KNHistoryCoordinator?
+  
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
   var data: [SourceBridgeToken] = []
@@ -276,18 +277,6 @@ class BridgeCoordinator: NSObject, Coordinator {
       } else {
         self.navigationController.showTopBannerView(message: "Build Tx request is failed")
       }
-    }
-  }
-  
-  func getTransactionStatus(txHash: String, chainId: String) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    self.rootViewController.showLoadingHUD()
-    provider.request(.checkTxStatus(txHash: txHash, chainId: chainId)) { result in
-      DispatchQueue.main.async {
-        self.rootViewController.hideLoading()
-      }
-      
-      //TODO: parse pending transaction here
     }
   }
   
@@ -636,7 +625,10 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
     self.navigationController.displayLoading()
     self.getBuildTx {
-      guard let provider = self.session.externalProvider else {
+      guard let provider = self.session.externalProvider else { return }
+      let viewModel = rootViewController.viewModel
+      guard let sourceToken = viewModel.currentSourceToken, let sourceChain = viewModel.currentSourceChain,
+            let destToken = viewModel.currentDestToken, let destChain = viewModel.currentDestChain else {
         return
       }
       provider.signTransactionData(from: self.currentSignTransaction ?? signTransaction) { [weak self] result in
@@ -652,6 +644,32 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
               internalHistoryTransaction.nonce = signTransaction.nonce
               internalHistoryTransaction.time = Date()
               
+              let extraData = InternalHistoryExtraData(
+                from: ExtraBridgeTransaction(
+                  address: signTransaction.account.address.description,
+                  token: sourceToken.symbol,
+                  amount: BigInt(viewModel.sourceAmount * pow(10, Double(sourceToken.decimals))),
+                  chainId: sourceChain.getChainId().toString(),
+                  chainName: sourceChain.chainName(),
+                  tx: hash,
+                  txStatus: "PENDING",
+                  decimals: sourceToken.decimals
+                ),
+                to: ExtraBridgeTransaction(
+                  address: signTransaction.account.address.description,
+                  token: destToken.symbol,
+                  amount: BigInt(viewModel.estimatedDestAmount * pow(10, Double(destToken.decimals))),
+                  chainId: destChain.getChainId().toString(),
+                  chainName: destChain.chainName(),
+                  tx: "",
+                  txStatus: "PENDING",
+                  decimals: destToken.decimals
+                ),
+                type: "crosschain",
+                crosschainStatus: "PENDING"
+              )
+              
+              internalHistoryTransaction.extraData = extraData
               EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
               controller.dismiss(animated: true) {
                 self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
@@ -706,6 +724,23 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
       case .failure(let error):
         self.navigationController.showErrorTopBannerMessage(message: error.description)
       }
+    }
+  }
+  
+  func openHistoryScreen() {
+    switch KNGeneralProvider.shared.currentChain {
+    case .solana:
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      coordinate(coordinator: coordinator)
+    default:
+      self.historyCoordinator = nil
+      self.historyCoordinator = KNHistoryCoordinator(
+        navigationController: self.navigationController,
+        session: self.session
+      )
+      self.historyCoordinator?.delegate = self
+      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.start()
     }
   }
 }
@@ -939,4 +974,38 @@ extension BridgeCoordinator: QRCodeReaderDelegate {
       }
     }
   }
+}
+
+extension BridgeCoordinator: KNHistoryCoordinatorDelegate {
+  
+  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
+    delegate?.didSelectAddChainWallet(chainType: chainType)
+  }
+  
+  func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
+    
+  }
+  
+  func historyCoordinatorDidSelectAddWallet() {
+    self.delegate?.didSelectAddWallet()
+  }
+
+  func historyCoordinatorDidSelectManageWallet() {
+    self.delegate?.didSelectManageWallet()
+  }
+
+  func historyCoordinatorDidClose() {
+    self.historyCoordinator = nil
+  }
+
+  func historyCoordinatorDidUpdateWalletObjects() {
+    
+  }
+  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
+    
+  }
+  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
+    self.delegate?.didSelectWallet(wallet)
+  }
+  
 }

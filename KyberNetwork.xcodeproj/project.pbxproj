@@ -558,6 +558,7 @@
 		A655619A283503A900944624 /* BridgeSubTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6556198283503A900944624 /* BridgeSubTransactionCell.swift */; };
 		A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6556199283503A900944624 /* BridgeSubTransactionCell.xib */; };
 		A655619E28350D7600944624 /* TransactionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655619D28350D7600944624 /* TransactionStatus.swift */; };
+		A6573B80284DE16000A25CBF /* CrosschainTransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */; };
 		A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A732818E3C6000FA9CE /* NavigationBar.swift */; };
 		A65C7A762818E3D5000FA9CE /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A752818E3D5000FA9CE /* NavigationBar.xib */; };
 		A65C7A792818E877000FA9CE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A772818E877000FA9CE /* WebViewController.swift */; };
@@ -1559,6 +1560,7 @@
 		A6556198283503A900944624 /* BridgeSubTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeSubTransactionCell.swift; sourceTree = "<group>"; };
 		A6556199283503A900944624 /* BridgeSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSubTransactionCell.xib; sourceTree = "<group>"; };
 		A655619D28350D7600944624 /* TransactionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatus.swift; sourceTree = "<group>"; };
+		A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosschainTransactionService.swift; sourceTree = "<group>"; };
 		A65C7A732818E3C6000FA9CE /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		A65C7A752818E3D5000FA9CE /* NavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
 		A65C7A772818E877000FA9CE /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -3255,7 +3257,7 @@
 		25CC0A922057DD2A0009D0D5 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				A6B3CD8628125ED8005D0D66 /* Common */,
+				A6573B7E284DE14300A25CBF /* Services */,
 				258C47EA2081F20600BD4068 /* Reachability */,
 				25CC0AAC2059186E0009D0D5 /* Internal */,
 				25CC0A942057DD3D0009D0D5 /* External */,
@@ -4377,6 +4379,14 @@
 			path = DetailV2;
 			sourceTree = "<group>";
 		};
+		A6573B7E284DE14300A25CBF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A65C7A6D2818E146000FA9CE /* WebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -4498,13 +4508,6 @@
 				A6B3CD8128125737005D0D66 /* KrystalApi.swift */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		A6B3CD8628125ED8005D0D66 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */ = {
@@ -6404,6 +6407,7 @@
 				A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */,
 				7721A6BE202A5677004DB16C /* DecryptError.swift in Sources */,
 				A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */,
+				A6573B80284DE16000A25CBF /* CrosschainTransactionService.swift in Sources */,
 				61FC5ECF1FCFBAE500CCB12A /* EtherNumberFormatter.swift in Sources */,
 				C3ED1DD32616F2D40024970C /* NotificationTableViewCell.swift in Sources */,
 				73200B672044B22600118A82 /* TokensDataStore.swift in Sources */,

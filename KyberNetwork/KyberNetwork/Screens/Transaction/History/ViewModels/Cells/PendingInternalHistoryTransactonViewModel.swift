@@ -21,7 +21,20 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
   }
   
   var displayedAmountString: String {
-    return self.internalTransaction.transactionDescription
+    switch self.internalTransaction.type {
+    case .bridge:
+      guard !isError else {
+        return "--"
+      }
+      guard let from = internalTransaction.extraData?.from, let to = internalTransaction.extraData?.to else {
+        return "--"
+      }
+      let fromAmountString = from.amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 5)
+      let toAmountString = to.amount.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 5)
+      return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
+    default:
+      return self.internalTransaction.transactionDescription
+    }
   }
   
   var transactionDetailsString: String {
@@ -31,6 +44,16 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
         return NSLocalizedString("To", value: "To", comment: "") + ": \(toAddress)"
       }
       return ""
+    case .bridge:
+      guard !isError else {
+        return "--"
+      }
+      guard let from = internalTransaction.extraData?.from, let to = internalTransaction.extraData?.to else {
+        return "--"
+      }
+      let srcChainName = getChain(chainID: from.chainId)?.chainName() ?? ""
+      let destChainName = getChain(chainID: to.chainId)?.chainName() ?? ""
+      return "\(srcChainName) → \(destChainName)"
     default:
       return self.internalTransaction.transactionDetailDescription
     }
@@ -76,6 +99,8 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
       return "CLAIM REWARD"
     case .multiSend:
       return "MULTISEND"
+    case .bridge:
+      return "BRIDGE"
     }
   }
 
@@ -119,6 +144,8 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
       return UIImage(named: "multiSend_icon")!
     case .claimReward:
       return UIImage(named: "history_claim_reward_icon")!
+    case .bridge:
+      return Images.historyBridge
     }
   }
 
@@ -128,5 +155,15 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
 
   init(transaction: InternalHistoryTransaction) {
     self.internalTransaction = transaction
+  }
+  
+  private func getChain(chainID: String?) -> ChainType? {
+    guard let chainID = chainID else {
+      return nil
+    }
+
+    return ChainType.getAllChain().first { chain in
+      chain.customRPC().chainID == Int(chainID)
+    }
   }
 }

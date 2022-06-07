@@ -66,11 +66,14 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
         return defaultAmountString
       }
     case .bridgeFrom, .bridgeTo:
+      guard !isError else {
+        return "--"
+      }
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return defaultAmountString
       }
-      let fromAmountString = BigInt(from.amount)?.fullString(decimals: from.decimals) ?? "0"
-      let toAmountString = BigInt(to.amount)?.fullString(decimals: to.decimals) ?? "0"
+      let fromAmountString = from.amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 5)
+      let toAmountString = to.amount.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 5)
       return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
     case .contractInteraction:
       return defaultAmountString
@@ -98,6 +101,9 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
     case .receive:
       return "From: \(self.historyItem.from)"
     case .bridgeFrom, .bridgeTo:
+      guard !isError else {
+        return historyItem.txHash
+      }
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return ""
       }
@@ -131,7 +137,13 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   }
   
   var isError: Bool {
-    return self.historyItem.status != "success"
+    switch transactionType {
+    case .bridgeTo, .bridgeFrom:
+      return historyItem.status.isEmpty || historyItem.extraData?.crosschainStatus?.isEmpty ?? true
+    default:
+      return historyItem.status != "success"
+    }
+    
   }
   
   var transactionTypeImage: UIImage {

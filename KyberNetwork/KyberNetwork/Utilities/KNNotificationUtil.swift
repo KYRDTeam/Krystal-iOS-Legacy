@@ -7,6 +7,7 @@ import UserNotifications
 let kTransactionDidUpdateNotificationKey = "kTransactionDidUpdateNotificationKey"
 let kTransactionListDidUpdateNotificationKey = "kTransactionListDidUpdateNotificationKey"
 let kOpenExchangeTokenViewKey = "kOpenExchangeTokenViewKey"
+let kBridgeTransactionUpdateNotificationKey = "kBridgeTransactionUpdateNotificationKey"
 
 // Token Transaction Key
 let kTokenTransactionListDidUpdateNotificationKey = "kTokenTransactionListDidUpdateNotificationKey"

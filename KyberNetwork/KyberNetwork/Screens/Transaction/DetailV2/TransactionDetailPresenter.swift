@@ -12,10 +12,17 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   private var interactor: TransactionDetailInteractorProtocol
   private var router: TransactionDetailRouterProtocol
   weak var view: TransactionDetailViewProtocol!
+  let crosschainTxService = CrosschainTransactionService()
   
   var items: [TransactionDetailRowType] = []
   let minEstimatedTimeInMinutes = 9
   let maxEstimatedTimeInMinutes = 30
+  var txHash: String = ""
+  
+  enum TransactionType {
+    case completed(tx: KrystalHistoryTransaction)
+    case pending(tx: InternalHistoryTransaction)
+  }
   
   init(view: TransactionDetailViewProtocol, interactor: TransactionDetailInteractorProtocol, router: TransactionDetailRouterProtocol) {
     self.interactor = interactor
@@ -24,7 +31,13 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   }
 
   func setupTransaction(tx: KrystalHistoryTransaction) {
+    self.txHash = tx.txHash
     self.items = getTransactionItems(tx: tx)
+  }
+  
+  func setupTransaction(internalTx: InternalHistoryTransaction) {
+    self.txHash = internalTx.txHash
+    self.items = getTransactionItems(internalTx: internalTx)
   }
   
   func getTransactionType(txType: String) -> TransactionHistoryItemType {
@@ -42,6 +55,34 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18) ?? "0"
       var rows: [TransactionDetailRowType] = [
         .common(type: type, timestamp: tx.timestamp),
+        .bridgeSubTx(from: true, tx: from),
+        .stepSeparator,
+        .bridgeSubTx(from: false, tx: to),
+        .bridgeFee(fee: bridgeFee + " " + quoteToken)
+      ]
+      let fromStatus = TransactionStatus(status: from.txStatus)
+      let toStatus = TransactionStatus(status: to.txStatus)
+      if !isTxCompleted(fromStatus: fromStatus, toStatus: toStatus) {
+        let timeString = String(format: Strings.xMins,
+                                "\(minEstimatedTimeInMinutes)-\(maxEstimatedTimeInMinutes)")
+        rows.append(.estimatedBridgeTime(time: timeString))
+      }
+      return rows
+    default:
+      return []
+    }
+  }
+  
+  func getTransactionItems(internalTx: InternalHistoryTransaction) -> [TransactionDetailRowType] {
+    switch internalTx.type {
+    case .bridge:
+      guard let from = internalTx.extraData?.from, let to = internalTx.extraData?.to else {
+        return []
+      }
+      let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
+      let bridgeFee = internalTx.gasFee.fullString(decimals: 18)
+      var rows: [TransactionDetailRowType] = [
+        .common(type: .bridgeFrom, timestamp: Int(internalTx.time.timeIntervalSince1970)),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
@@ -96,5 +137,4 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     }
     router.openTxUrl(url: url)
   }
-  
 }
