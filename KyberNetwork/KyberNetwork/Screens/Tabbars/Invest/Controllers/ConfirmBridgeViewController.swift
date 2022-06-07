@@ -114,9 +114,9 @@ class ConfirmBridgeViewController: KNBaseViewController {
   
   @IBAction func confirmButtonTapped(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
-    if let unwrap = self.viewModel.signTransaction {
-      let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.token.symbol, transactionDescription: "transactionDescription", transactionDetailDescription: "self.viewModel.displayEstimatedRate", transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
-      internalHistory.transactionSuccessDescription = "transactionSuccessDescription"//\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
+    if let unwrap = self.viewModel.signTransaction, let fromChain = viewModel.fromChain, let toChain = viewModel.toChain {
+      let internalHistory = InternalHistoryTransaction(type: .bridge, state: .pending, fromSymbol: self.viewModel.token.symbol, toSymbol: self.viewModel.token.symbol, transactionDescription: "", transactionDetailDescription: "", transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
+      
       self.delegate?.didConfirm(self, signTransaction: unwrap, internalHistoryTransaction: internalHistory)
     }
 //    if let unwrap = self.viewModel.eip1559Transaction {

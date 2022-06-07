@@ -22,6 +22,7 @@ class KNSession {
   private(set) var tokenStorage: KNTokenStorage
 
   private(set) var transacionCoordinator: KNTransactionCoordinator?
+  var crosschainTxService: CrosschainTransactionService
   
   var currentWalletObject: KNWalletObject {
     let address = self.wallet.addressString
@@ -57,6 +58,7 @@ class KNSession {
     if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
       self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
     }
+    self.crosschainTxService = CrosschainTransactionService()
   }
 
   func startSession() {
@@ -69,6 +71,7 @@ class KNSession {
       wallet: self.wallet
     )
     self.transacionCoordinator?.start()
+    self.crosschainTxService.scheduleFetchPendingTransaction()
     BalanceStorage.shared.updateCurrentWallet(self.wallet)
     EtherscanTransactionStorage.shared.updateCurrentWallet(self.wallet)
   }
@@ -76,7 +79,7 @@ class KNSession {
   func stopSession() {
     self.transacionCoordinator?.stop()
     self.transacionCoordinator = nil
-
+    self.crosschainTxService.scheduleFetchPendingTransaction()
     self.keystore.wallets.forEach { self.removeWallet($0) }
     KNAppTracker.resetAllAppTrackerData()
     self.keystore.recentlyUsedWallet = nil
@@ -86,6 +89,7 @@ class KNSession {
   func switchSession(_ wallet: Wallet) {
     self.transacionCoordinator?.stop()
     self.transacionCoordinator = nil
+    self.crosschainTxService.cancelScheduledFetching()
 
     self.wallet = wallet
     self.keystore.recentlyUsedWallet = wallet
@@ -112,6 +116,7 @@ class KNSession {
         wallet: self.wallet
       )
       self.transacionCoordinator?.start()
+      self.crosschainTxService.scheduleFetchPendingTransaction()
       let pendingTxs = self.transactionStorage.kyberPendingTransactions
       if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
         self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
@@ -125,6 +130,7 @@ class KNSession {
     if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet {
       self.transacionCoordinator?.stop()
       self.transacionCoordinator = nil
+      self.crosschainTxService.cancelScheduledFetching()
     }
     // delete all storage for each wallet
     let deleteResult = self.keystore.delete(wallet: wallet)

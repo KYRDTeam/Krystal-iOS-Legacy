@@ -51,6 +51,8 @@ enum HistoryModelType: Codable {
       self = .claimReward
     case 14:
       self = .multiSend
+    case 15:
+      self = .bridge
     default:
       throw CodingError.unknownValue
     }
@@ -89,6 +91,8 @@ enum HistoryModelType: Codable {
       try container.encode(13, forKey: .rawValue)
     case .multiSend:
       try container.encode(14, forKey: .rawValue)
+    case .bridge:
+      try container.encode(15, forKey: .rawValue)
     }
   }
 
@@ -107,6 +111,7 @@ enum HistoryModelType: Codable {
   case receiveNFT
   case claimReward
   case multiSend
+  case bridge
 
   init(type: String) {
     switch type.lowercased() {
@@ -138,6 +143,8 @@ enum HistoryModelType: Codable {
       self = .claimReward
     case "multisend":
       self = .multiSend
+    case "bridge":
+      self = .bridge
     default:
       self = .contractInteraction
     }
@@ -206,6 +213,8 @@ extension HistoryModelType {
       return "CLAIM REWARD"
     case .multiSend:
       return "MULTISEND"
+    case .bridge:
+      return "BRIDGE"
     }
   }
   
@@ -216,31 +225,33 @@ extension HistoryModelType {
     case .withdraw:
       return UIImage()
     case .transferETH:
-      return UIImage(named: "history_send_icon")!
+      return Images.historyTransfer
     case .receiveETH:
-      return UIImage(named: "history_receive_icon")!
+      return Images.historyReceive
     case .transferToken:
-      return UIImage(named: "history_send_icon")!
+      return Images.historyTransfer
     case .receiveToken:
-      return UIImage(named: "history_receive_icon")!
+      return Images.historyReceive
     case .allowance:
-      return UIImage(named: "history_approve_icon")!
+      return Images.historyApprove
     case .earn:
       return UIImage()
     case .contractInteraction:
-      return UIImage(named: "history_contract_interaction_icon")!
+      return Images.historyContractInteraction
     case .selfTransfer:
-      return UIImage(named: "history_send_icon")!
+      return Images.historyTransfer
     case .createNFT:
-      return UIImage(named: "history_receive_icon")!
+      return Images.historyReceive
     case .transferNFT:
-      return UIImage(named: "history_send_icon")!
+      return Images.historyTransfer
     case .receiveNFT:
-      return UIImage(named: "history_receive_icon")!
+      return Images.historyReceive
     case .claimReward:
-      return UIImage(named: "history_claim_reward_icon")!
+      return Images.historyClaimReward
     case .multiSend:
-      return UIImage(named: "multiSend_icon")!
+      return Images.historyMultisend
+    case .bridge:
+      return Images.historyBridge
     }
   }
   
