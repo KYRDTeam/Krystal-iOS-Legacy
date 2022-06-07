@@ -104,6 +104,10 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.feeValueLabel.text = feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
   }
   
+  @IBAction func closeButton(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+  }
+
   @IBAction func editButtonTapped(_ sender: Any) {
     self.delegate?.openGasPriceSelect()
   }
