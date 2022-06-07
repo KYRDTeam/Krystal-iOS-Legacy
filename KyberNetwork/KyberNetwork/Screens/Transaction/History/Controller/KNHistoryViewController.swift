@@ -549,7 +549,6 @@ class KNHistoryViewController: KNBaseViewController {
     self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
     //TODO: set address text for address select button
 //    self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
-    self.updateDisplayTxsType(self.viewModel.isShowingPending)
   }
 
   fileprivate func setupCollectionView() {
@@ -570,7 +569,6 @@ class KNHistoryViewController: KNBaseViewController {
       return
     }
     self.emptyStateContainerView.isHidden = self.viewModel.isEmptyStateHidden
-
     self.transactionCollectionView.isHidden = self.viewModel.isTransactionCollectionViewHidden
     self.transactionCollectionViewBottomConstraint.constant = self.viewModel.transactionCollectionViewBottomPaddingConstraint + self.bottomPaddingSafeArea()
     
@@ -664,14 +662,14 @@ extension KNHistoryViewController {
 
   func coordinatorDidUpdateCompletedTransaction(sections: [String], data: [String: [HistoryTransaction]]) {
     self.viewModel.update(completedTxData: data, completedTxHeaders: sections)
-    self.transactionCollectionView.reloadData()
+    self.updateUIWhenDataDidChange()
   }
   
   func coordinatorDidUpdateCompletedKrystalTransaction(sections: [String], data: [String: [KrystalHistoryTransaction]]) {
     self.refreshControl.endRefreshing()
     self.viewModel.update(completedKrystalTxData: data, completedKrystalTxHeaders: sections)
     self.viewModel.update(completedTxData: [:], completedTxHeaders: [])
-    self.transactionCollectionView.reloadData()
+    self.updateUIWhenDataDidChange()
   }
 
   func coordinatorUpdateNewSession(wallet: KNWalletObject) {
