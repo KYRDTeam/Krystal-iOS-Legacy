@@ -106,4 +106,8 @@ struct ExtraBridgeTransaction: Codable {
     try container.encode(decimals, forKey: .decimals)
   }
   
+  var isCompleted: Bool {
+    return txStatus.lowercased() == "success" || txStatus.lowercased() == "failure" || txStatus.lowercased() == "failed"
+  }
+  
 }

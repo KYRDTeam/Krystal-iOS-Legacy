@@ -38,6 +38,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   func setupTransaction(internalTx: InternalHistoryTransaction) {
     self.txHash = internalTx.txHash
     self.items = getTransactionItems(internalTx: internalTx)
+    self.observeTxStatus()
   }
   
   func getTransactionType(txType: String) -> TransactionHistoryItemType {
@@ -137,4 +138,65 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     }
     router.openTxUrl(url: url)
   }
+  
+}
+
+// Support Bridge Transaction
+extension TransactionDetailPresenter {
+  
+  func removeObserver() {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      object: nil
+    )
+  }
+  
+  func observeTxStatus() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(onBridgeTxUpdate(_:)),
+      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      object: nil
+    )
+  }
+  
+  @objc func onBridgeTxUpdate(_ notification: Notification) {
+    if let tx = notification.object as? InternalHistoryTransaction {
+      guard tx.txHash == self.txHash else {
+        return
+      }
+      let chainID = KNGeneralProvider.shared.currentChain.getChainId().toString()
+      self.crosschainTxService.getTransactionStatus(txHash: txHash, chainId: chainID) { [weak self] extra in
+        self?.acceptBridgeExtraData(extra: tx.extraData)
+      }
+    } else if let tx = notification.userInfo?["transaction"] as? InternalHistoryTransaction {
+      guard tx.txHash == self.txHash else {
+        return
+      }
+      self.acceptBridgeExtraData(extra: tx.extraData)
+    }
+  }
+  
+  func acceptBridgeExtraData(extra: InternalHistoryExtraData?) {
+    if let from = extra?.from, from.isCompleted, let index = getFromTxRowIndex(isFrom: true) {
+      items[index] = .bridgeSubTx(from: true, tx: from)
+    }
+    if let to = extra?.to, to.isCompleted, let index = getFromTxRowIndex(isFrom: false) {
+      items[index] = .bridgeSubTx(from: false, tx: to)
+    }
+    view.reloadItems()
+  }
+  
+  private func getFromTxRowIndex(isFrom: Bool) -> Int? {
+    return items.firstIndex { rowType in
+      switch rowType {
+      case .bridgeSubTx(let isFrom, _):
+        return isFrom
+      default:
+        return false
+      }
+    }
+  }
+  
 }

@@ -140,7 +140,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   func refreshTransactionStatus(completion: @escaping (InternalHistoryExtraData?) -> ()) {
     let chainID = "\(transaction.chain.getChainId())"
     self.crosschainTxService.getTransactionStatus(txHash: transaction.hash, chainId: chainID) { [weak self] extra in
-      self?.transaction.acceptExtraData(extraData: extra)
+      completion(extra)
     }
   }
   

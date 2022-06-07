@@ -626,7 +626,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
     self.navigationController.displayLoading()
     self.getBuildTx {
       guard let provider = self.session.externalProvider else { return }
-      let viewModel = rootViewController.viewModel
+      let viewModel = self.rootViewController.viewModel
       guard let sourceToken = viewModel.currentSourceToken, let sourceChain = viewModel.currentSourceChain,
             let destToken = viewModel.currentDestToken, let destChain = viewModel.currentDestChain else {
         return

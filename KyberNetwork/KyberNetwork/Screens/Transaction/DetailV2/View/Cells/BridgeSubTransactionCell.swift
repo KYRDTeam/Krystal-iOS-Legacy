@@ -100,8 +100,8 @@ class BridgeSubTransactionCell: UITableViewCell {
       return Strings.failure
     case .pending:
       return Strings.pending
-    case .other(let title):
-      return title
+    case .other:
+      return Strings.pending
     }
   }
   
