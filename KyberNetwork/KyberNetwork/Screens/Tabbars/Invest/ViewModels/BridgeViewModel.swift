@@ -163,7 +163,9 @@ class BridgeViewModel {
         cell.selectTokenBlock = self.selectSourceTokenBlock
         cell.amountChangeBlock = self.changeAmountBlock
         cell.selectMaxBlock = self.selectMaxBlock
-        cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
+        if self.sourceAmount > 0 {
+          cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
+        }
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
           let bal: BigInt = currentSourceToken.getBalanceBigInt()
@@ -206,7 +208,7 @@ class BridgeViewModel {
       switch self.toDataSource()[indexPath.row] {
       case .selectChainRow:
         let cell = tableView.dequeueReusableCell(SelectChainCell.self, indexPath: indexPath)!
-        cell.nameLabel.text = ""
+        cell.nameLabel.text = "Select Network"
         cell.arrowIcon.isHidden = false
         cell.selectionBlock = self.selectDestChainBlock
         if let currentDestChain = self.currentDestChain {
@@ -226,7 +228,10 @@ class BridgeViewModel {
         cell.balanceLabel.text = ""
         cell.selectTokenButton.setTitle(self.currentDestToken?.symbol ?? "", for: .normal)
         cell.setDisableSelectToken(shouldDisable: true)
-        cell.amountTextField.text = self.calculateDesAmountString()
+        if self.sourceAmount > 0 {
+          cell.amountTextField.text = self.calculateDesAmountString()
+        }
+        
         cell.showErrorIfNeed(errorMsg: nil)
         return cell
       case .sendToRow:

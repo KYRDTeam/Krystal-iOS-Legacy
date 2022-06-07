@@ -24,6 +24,7 @@ class SelectTokenCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     self.amountTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidEnd)
+    self.amountTextField.setPlaceholder(text: "0.0", color: UIColor(named: "navButtonBgColor")!)
   }
 
   override func setSelected(_ selected: Bool, animated: Bool) {
