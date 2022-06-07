@@ -307,8 +307,16 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .dismiss:
       self.stop()
     case .cancelTransaction(let transaction):
+      guard KNGeneralProvider.shared.currentChain != .klaytn else {
+        self.navigationController.showErrorTopBannerMessage(message: "Unsupported action")
+        return
+      }
       self.openTransactionCancelConfirmPopUpFor(transaction: transaction)
     case .speedUpTransaction(let transaction):
+      guard KNGeneralProvider.shared.currentChain != .klaytn else {
+        self.navigationController.showErrorTopBannerMessage(message: "Unsupported action")
+        return
+      }
       self.openTransactionSpeedUpViewController(transaction: transaction)
     case .quickTutorial(let pointsAndRadius):
       break
