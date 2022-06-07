@@ -19,11 +19,6 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   let maxEstimatedTimeInMinutes = 30
   var txHash: String = ""
   
-  enum TransactionType {
-    case completed(tx: KrystalHistoryTransaction)
-    case pending(tx: InternalHistoryTransaction)
-  }
-  
   init(view: TransactionDetailViewProtocol, interactor: TransactionDetailInteractorProtocol, router: TransactionDetailRouterProtocol) {
     self.interactor = interactor
     self.router = router

@@ -180,7 +180,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
   }
   
   private func extraBridgeTransaction(status: String) -> ExtraBridgeTransaction {
-    return ExtraBridgeTransaction(address: "", amount: "", chainId: "56", decimals: 0, token: "", tx: "", txStatus: status)
+    ExtraBridgeTransaction(address: "", token: "", amount: "", chainId: "56", chainName: "", tx: "", txStatus: status, decimals: 18)
   }
   
   private func extraData(from: ExtraBridgeTransaction?, to: ExtraBridgeTransaction?) -> ExtraData {
