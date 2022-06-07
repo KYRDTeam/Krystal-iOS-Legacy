@@ -214,13 +214,6 @@ class BridgeCoordinator: NSObject, Coordinator {
           }
           if tokens.isNotEmpty {
             self.data = tokens
-            
-            var allTokens = KNSupportedTokenStorage.shared.getAllTokenObject()
-              
-            let supportedAddress = self.data.map { return $0.address.lowercased() }
-            allTokens = allTokens.filter({
-              supportedAddress.contains($0.address.lowercased())
-            })
           }
         }
       case .failure(let error):
