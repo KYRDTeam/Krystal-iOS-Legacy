@@ -343,7 +343,7 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .selectCompletedKrystalTransaction(data: let data):
       let type = TransactionHistoryItemType(rawValue: data.historyItem.type) ?? .contractInteraction
       switch type {
-      case .bridgeTo, .bridgeFrom:
+      case .bridge:
         if data.isError {
           self.openEtherScanForTransaction(with: data.historyItem.txHash)
         } else {

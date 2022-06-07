@@ -43,7 +43,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   func getTransactionItems(tx: KrystalHistoryTransaction) -> [TransactionDetailRowType] {
     let type = getTransactionType(txType: tx.type)
     switch type {
-    case .bridgeFrom, .bridgeTo:
+    case .bridge:
       guard let from = tx.extraData?.from, let to = tx.extraData?.to else {
         return []
       }
@@ -78,7 +78,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
       let bridgeFee = internalTx.gasFee.fullString(decimals: 18)
       var rows: [TransactionDetailRowType] = [
-        .common(type: .bridgeFrom, timestamp: Int(internalTx.time.timeIntervalSince1970)),
+        .common(type: .bridge, timestamp: Int(internalTx.time.timeIntervalSince1970)),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
