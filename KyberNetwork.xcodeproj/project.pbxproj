@@ -467,6 +467,7 @@
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
+		7E66D7A9284F2B98006B0B35 /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
 		7E6F51082733895D002DA0B2 /* OverviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */; };
@@ -1465,6 +1466,7 @@
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
+		7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
 		7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewSummaryCell.swift; sourceTree = "<group>"; };
@@ -4151,6 +4153,14 @@
 			path = MixPanel;
 			sourceTree = "<group>";
 		};
+		7E66D7A7284F2A8A006B0B35 /* BridgeOverView */ = {
+			isa = PBXGroup;
+			children = (
+				7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */,
+			);
+			path = BridgeOverView;
+			sourceTree = "<group>";
+		};
 		7E6F5115273A572B002DA0B2 /* LottieJSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -4274,6 +4284,7 @@
 		A6394B4E2840D4EF0084C923 /* History */ = {
 			isa = PBXGroup;
 			children = (
+				7E66D7A7284F2A8A006B0B35 /* BridgeOverView */,
 				A6394B502840D4FA0084C923 /* TransactionDetail */,
 			);
 			path = History;
@@ -6787,6 +6798,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E66D7A9284F2B98006B0B35 /* BridgeTest.swift in Sources */,
 				A6394B582840D5680084C923 /* MockTransactionDetailView.swift in Sources */,
 				A6394B562840D5360084C923 /* MockTransactionDetailRouter.swift in Sources */,
 				A6790C2F284485E0007CE0CD /* MockTransactionDetailPresenter.swift in Sources */,
