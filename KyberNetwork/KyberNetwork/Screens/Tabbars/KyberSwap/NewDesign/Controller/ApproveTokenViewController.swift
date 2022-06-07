@@ -180,12 +180,13 @@ class ApproveTokenViewController: KNBaseViewController {
       )
       return
     }
+    if let token = self.viewModel.token {
+      self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain, gasLimit: self.viewModel.gasLimit)
+    } else {
+      self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress, gasLimit: self.viewModel.gasLimit)
+    }
     self.dismiss(animated: true, completion: {
-      if let token = self.viewModel.token {
-        self.delegate?.approveTokenViewControllerDidApproved(self, token: token, remain: self.viewModel.remain, gasLimit: self.viewModel.gasLimit)
-      } else {
-        self.delegate?.approveTokenViewControllerDidApproved(self, address: self.viewModel.address, remain: self.viewModel.remain, state: self.viewModel.state, toAddress: self.viewModel.toAddress, gasLimit: self.viewModel.gasLimit)
-      }
+      
     })
   }
 

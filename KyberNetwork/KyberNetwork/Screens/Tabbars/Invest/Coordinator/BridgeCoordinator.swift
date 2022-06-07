@@ -135,7 +135,6 @@ class BridgeCoordinator: NSObject, Coordinator {
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
   var advancedNonce: String?
-  var approveGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
 
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
@@ -456,13 +455,11 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           self.navigationController.present(vc, animated: true, completion: nil)
         }
     case .sendApprove(token: let token, remain: let remain):
-      self.estimateGasForApprove(tokenAddress: token.address) { estGas in
-        let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
-        vm.gasLimit = estGas
-        let vc = ApproveTokenViewController(viewModel: vm)
-        vc.delegate = self
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
+      let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
+      let vc = ApproveTokenViewController(viewModel: vm)
+      vc.delegate = self
+      self.navigationController.present(vc, animated: true, completion: nil)
+      
     case .selectMaxSource:
       guard let from = self.rootViewController.viewModel.currentSourceToken else { return }
       if from.isQuoteToken {
@@ -774,7 +771,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           for: sourceTokenAddress,
           value: Constants.maxValueBigInt,
           gasPrice: KNGasCoordinator.shared.defaultKNGas,
-          gasLimit: self.approveGasLimit,
+          gasLimit: gasLimit,
           toAddress: self.bridgeContract) { result in
             switch result {
             case .success:
@@ -832,19 +829,8 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   }
   
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
-    guard case .real(let account) = self.session.wallet.type else {
-      return
-    }
-    KNGeneralProvider.shared.buildSignTxForApprove(tokenAddress: tokenAddress, account: account) { signTx in
-      guard let unwrap = signTx else { return }
-      KNGeneralProvider.shared.getEstimateGasLimit(transaction: unwrap) { result in
-        switch result {
-        case.success(let estGas):
-          controller.coordinatorDidUpdateGasLimit(estGas)
-        default:
-          break
-        }
-      }
+    self.estimateGasForApprove(tokenAddress: tokenAddress.description) { estGas in
+      controller.coordinatorDidUpdateGasLimit(estGas)
     }
   }
 }
