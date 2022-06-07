@@ -649,7 +649,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                   decimals: sourceToken.decimals
                 ),
                 to: ExtraBridgeTransaction(
-                  address: signTransaction.account.address.description,
+                  address: viewModel.currentSendToAddress,
                   token: destToken.symbol,
                   amount: BigInt(viewModel.estimatedDestAmount * pow(10, Double(destToken.decimals))),
                   chainId: destChain.getChainId().toString(),
