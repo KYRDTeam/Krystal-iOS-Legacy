@@ -22,7 +22,7 @@ enum BridgeEvent {
   case selectSwap
   case selectMaxSource
   case checkAllowance(token: TokenObject)
-  case sendApprove(token: TokenObject, remain: BigInt)
+  case sendApprove(token: TokenObject, remain: BigInt, value: BigInt)
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -122,7 +122,7 @@ class BridgeViewController: KNBaseViewController {
         guard let remain = self.viewModel.remainApprovedAmount else {
           return
         }
-        self.delegate?.bridgeViewControllerController(self, run: .sendApprove(token: remain.0, remain: remain.1))
+        self.delegate?.bridgeViewControllerController(self, run: .sendApprove(token: remain.0, remain: remain.1, value: BigInt(self.viewModel.sourceAmount * pow(10, Double(self.viewModel.currentSourceToken?.decimals ?? 18)))))
       } else {
         self.delegate?.bridgeViewControllerController(self, run: .selectSwap)
       }
@@ -242,6 +242,7 @@ class BridgeViewController: KNBaseViewController {
 
 extension BridgeViewController {
   func coordinatorDidUpdateData() {
+    self.updateAllowance()
     self.tableView.reloadData()
   }
 }

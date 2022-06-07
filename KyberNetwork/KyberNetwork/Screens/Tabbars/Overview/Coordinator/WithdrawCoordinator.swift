@@ -591,7 +591,7 @@ extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
 }
 
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
     
   }
 

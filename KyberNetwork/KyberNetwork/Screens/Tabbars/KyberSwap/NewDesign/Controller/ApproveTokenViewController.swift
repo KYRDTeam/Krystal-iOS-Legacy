@@ -22,10 +22,12 @@ protocol ApproveTokenViewModel {
   var toAddress: String? { get }
   var tokenAddress: Address? { get }
   var gasLimit: BigInt { get set }
+  var value: BigInt { get set }
 }
 
 class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+  var value: BigInt = Constants.maxValueBigInt
 
   var tokenAddress: Address? {
     return Address(string: self.address)
@@ -77,6 +79,7 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
 
 class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
+  var value: BigInt = Constants.maxValueBigInt
 
   var tokenAddress: Address? {
     return Address(string: self.address)
@@ -122,7 +125,7 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
 protocol ApproveTokenViewControllerDelegate: class {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt)
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt)
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address)
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt)
 }
 
 class ApproveTokenViewController: KNBaseViewController {
@@ -143,6 +146,10 @@ class ApproveTokenViewController: KNBaseViewController {
   var viewModel: ApproveTokenViewModel
   let transitor = TransitionDelegate()
   weak var delegate: ApproveTokenViewControllerDelegate?
+  
+  var approveValue: BigInt {
+    return self.viewModel.value
+  }
 
   init(viewModel: ApproveTokenViewModel) {
     self.viewModel = viewModel
@@ -167,7 +174,7 @@ class ApproveTokenViewController: KNBaseViewController {
     self.contractAddressLabel.text = address
     
     if let tokenAddress = self.viewModel.tokenAddress {
-      self.delegate?.approveTokenViewControllerGetEstimateGas(self, tokenAddress: tokenAddress)
+      self.delegate?.approveTokenViewControllerGetEstimateGas(self, tokenAddress: tokenAddress, value: self.viewModel.value)
     }
   }
 

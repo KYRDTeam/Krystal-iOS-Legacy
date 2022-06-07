@@ -454,8 +454,9 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           self.confirmVC = vc
           self.navigationController.present(vc, animated: true, completion: nil)
         }
-    case .sendApprove(token: let token, remain: let remain):
+    case .sendApprove(token: let token, remain: let remain, value: let value):
       let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
+      vm.value = value
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
@@ -490,7 +491,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     }
   }
   
-  func estimateGasForApprove(tokenAddress: String, completion: @escaping (BigInt) -> Void) {
+  func estimateGasForApprove(tokenAddress: String, value: BigInt, completion: @escaping (BigInt) -> Void) {
       guard let bridgeAddress = Address(string: self.bridgeContract) else {
         completion(KNGasConfiguration.approveTokenGasLimitDefault)
         return
@@ -500,7 +501,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         return
       }
       
-      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeAddress, value: Constants.maxValueBigInt) { encodeResult in
+      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeAddress, value: value) { encodeResult in
         switch encodeResult {
         case .success(let data):
           let setting = ConfirmAdvancedSetting(
@@ -769,7 +770,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
         
         provider.sendApproveERCTokenAddress(
           for: sourceTokenAddress,
-          value: Constants.maxValueBigInt,
+          value: controller.approveValue,
           gasPrice: KNGasCoordinator.shared.defaultKNGas,
           gasLimit: gasLimit,
           toAddress: self.bridgeContract) { result in
@@ -804,7 +805,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
     }
     provider.sendApproveERCTokenAddress(
       for: gasTokenAddress,
-      value: Constants.maxValueBigInt,
+      value: controller.approveValue,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
       gasLimit: gasLimit
     ) { approveResult in
@@ -828,8 +829,8 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
     }
   }
   
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address) {
-    self.estimateGasForApprove(tokenAddress: tokenAddress.description) { estGas in
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
+    self.estimateGasForApprove(tokenAddress: tokenAddress.description, value: value) { estGas in
       controller.coordinatorDidUpdateGasLimit(estGas)
     }
   }
