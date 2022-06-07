@@ -220,7 +220,6 @@ class BridgeCoordinator: NSObject, Coordinator {
             allTokens = allTokens.filter({
               supportedAddress.contains($0.address.lowercased())
             })
-            self.rootViewController.viewModel.currentSourceToken = allTokens.first
           }
         }
       case .failure(let error):
