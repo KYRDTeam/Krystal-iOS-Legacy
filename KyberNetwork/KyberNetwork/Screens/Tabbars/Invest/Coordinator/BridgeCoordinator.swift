@@ -726,23 +726,6 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
       }
     }
   }
-  
-  func openHistoryScreen() {
-    switch KNGeneralProvider.shared.currentChain {
-    case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
-      coordinate(coordinator: coordinator)
-    default:
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController,
-        session: self.session
-      )
-      self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
-      self.historyCoordinator?.start()
-    }
-  }
 }
 
 extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
@@ -974,38 +957,4 @@ extension BridgeCoordinator: QRCodeReaderDelegate {
       }
     }
   }
-}
-
-extension BridgeCoordinator: KNHistoryCoordinatorDelegate {
-  
-  func historyCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
-    delegate?.didSelectAddChainWallet(chainType: chainType)
-  }
-  
-  func historyCoordinatorDidSelectAddToken(_ token: TokenObject) {
-    
-  }
-  
-  func historyCoordinatorDidSelectAddWallet() {
-    self.delegate?.didSelectAddWallet()
-  }
-
-  func historyCoordinatorDidSelectManageWallet() {
-    self.delegate?.didSelectManageWallet()
-  }
-
-  func historyCoordinatorDidClose() {
-    self.historyCoordinator = nil
-  }
-
-  func historyCoordinatorDidUpdateWalletObjects() {
-    
-  }
-  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    
-  }
-  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.didSelectWallet(wallet)
-  }
-  
 }

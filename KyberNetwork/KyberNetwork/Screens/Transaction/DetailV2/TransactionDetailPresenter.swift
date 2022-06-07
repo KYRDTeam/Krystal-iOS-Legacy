@@ -139,6 +139,10 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     router.openTxUrl(url: url)
   }
   
+  deinit {
+    removeObserver()
+  }
+  
 }
 
 // Support Bridge Transaction
@@ -168,7 +172,7 @@ extension TransactionDetailPresenter {
       }
       let chainID = KNGeneralProvider.shared.currentChain.getChainId().toString()
       self.crosschainTxService.getTransactionStatus(txHash: txHash, chainId: chainID) { [weak self] extra in
-        self?.acceptBridgeExtraData(extra: tx.extraData)
+        self?.acceptBridgeExtraData(extra: extra)
       }
     } else if let tx = notification.userInfo?["transaction"] as? InternalHistoryTransaction {
       guard tx.txHash == self.txHash else {

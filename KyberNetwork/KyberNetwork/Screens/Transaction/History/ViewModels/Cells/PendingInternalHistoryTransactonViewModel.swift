@@ -166,4 +166,13 @@ class PendingInternalHistoryTransactonViewModel: TransactionHistoryItemViewModel
       chain.customRPC().chainID == Int(chainID)
     }
   }
+  
+  var canSpeedUpOrCancel: Bool {
+    switch internalTransaction.type {
+    case .bridge:
+      return false
+    default:
+      return true
+    }
+  }
 }
