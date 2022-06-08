@@ -185,12 +185,12 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.viewModel = BridgeViewModel(wallet: self.session.wallet)
     self.rootViewController.coordinatorDidUpdateChain()
-    self.fetchData()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.fetchData()
   }
   
   func coordinatorDidUpdatePendingTx() {
@@ -429,10 +429,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let fee = self.gasPrice * self.estimateGasLimit
-          let feeString: String = fee.displayRate(decimals: 18)
-
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, fee: feeString, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc
@@ -730,8 +727,7 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.advancedMaxFee = nil
       self.selectedGasPriceType = type
       self.gasPrice = value
-      let feeString: String = (self.gasPrice * self.estimateGasLimit).displayRate(decimals: 18)
-      self.confirmVC?.coordinatorDidUpdateFee(feeString: feeString)
+      self.confirmVC?.coordinatorDidUpdateFee(gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit)
     case .minRatePercentageChanged(let percent):
       self.minRatePercent = Double(percent)
     case .helpPressed(let tag):
