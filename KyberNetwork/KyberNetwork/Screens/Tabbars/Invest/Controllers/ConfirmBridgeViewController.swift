@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BigInt
 
 struct ConfirmBridgeViewModel {
   let fromChain: ChainType?
@@ -15,7 +16,8 @@ struct ConfirmBridgeViewModel {
   let toValue: String
   let toAddress: String
   let token: TokenObject
-  let fee: String
+  var gasPrice: BigInt
+  var gasLimit: BigInt
   let signTransaction: SignTransaction?
   let eip1559Transaction: EIP1559Transaction?
   
@@ -26,7 +28,8 @@ struct ConfirmBridgeViewModel {
        toValue: String,
        toAddress: String,
        token: TokenObject,
-       fee: String,
+       gasPrice: BigInt,
+       gasLimit: BigInt,
        signTransaction: SignTransaction?,
        eip1559Transaction: EIP1559Transaction?) {
     self.fromChain = fromChain
@@ -36,9 +39,35 @@ struct ConfirmBridgeViewModel {
     self.toValue = toValue
     self.toAddress = toAddress
     self.token = token
-    self.fee = fee
+    self.gasPrice = gasPrice
+    self.gasLimit = gasLimit
     self.signTransaction = signTransaction
     self.eip1559Transaction = eip1559Transaction
+  }
+  
+  var feeUSDString: String {
+    guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
+    let usd = self.fee * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
+    let valueString: String = usd.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate()
+    return "~ \(valueString) USD"
+  }
+  
+  var transactionGasPriceString: String {
+    let gasPriceText = gasPrice.shortString(
+      units: .gwei,
+      maxFractionDigits: 5
+    )
+    let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
+    let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
+    return labelText
+  }
+  
+  var feeString: String {
+    return self.fee.displayRate(decimals: 18)
+  }
+  
+  var fee: BigInt {
+    return self.gasPrice * self.gasLimit
   }
 }
 
@@ -58,14 +87,13 @@ class ConfirmBridgeViewController: KNBaseViewController {
   @IBOutlet weak var toChainLabel: UILabel!
   @IBOutlet weak var toChainTokenValueLabel: UILabel!
   @IBOutlet weak var toAddressLabel: UILabel!
-  
+  @IBOutlet weak var gasDescriptionLabel: UILabel!
+  @IBOutlet weak var usdValueLabel: UILabel!
   @IBOutlet weak var estimatedTimeLabel: UIButton!
-  
   @IBOutlet weak var feeValueLabel: UILabel!
   @IBOutlet weak var tapOutsideView: UIView!
   @IBOutlet weak var contentView: UIScrollView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
-  @IBOutlet weak var containViewHeighConstraint: NSLayoutConstraint!
   fileprivate var viewModel: ConfirmBridgeViewModel
   weak var delegate: ConfirmBridgeViewControllerDelegate?
   let transitor = TransitionDelegate()
@@ -93,15 +121,21 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
     self.toChainTokenValueLabel.text = self.viewModel.toValue
     self.toAddressLabel.text = self.viewModel.toAddress
-    self.feeValueLabel.text = self.viewModel.fee + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
+    self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
+    self.usdValueLabel.text = self.viewModel.feeUSDString
+    self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString
   }
   
   @objc func tapOutside() {
     self.dismiss(animated: true, completion: nil)
   }
   
-  func coordinatorDidUpdateFee(feeString: String) {
-    self.feeValueLabel.text = feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
+  func coordinatorDidUpdateFee(gasPrice: BigInt, gasLimit: BigInt) {
+    self.viewModel.gasPrice = gasPrice
+    self.viewModel.gasLimit = gasLimit
+    self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
+    self.usdValueLabel.text = self.viewModel.feeUSDString
+    self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString
   }
   
   @IBAction func closeButton(_ sender: Any) {
@@ -134,7 +168,7 @@ extension ConfirmBridgeViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return self.containViewHeighConstraint.constant
+    return 640
   }
 
   func getPopupContentView() -> UIView {
