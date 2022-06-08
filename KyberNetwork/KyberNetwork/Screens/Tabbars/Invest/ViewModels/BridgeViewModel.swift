@@ -236,8 +236,15 @@ class BridgeViewModel {
         if self.sourceAmount > 0 {
           cell.amountTextField.text = self.calculateDesAmountString()
         }
-        
-        cell.showErrorIfNeed(errorMsg: nil)
+        var errMsg: String?
+        if let currentDestPoolInfo = self.currentDestPoolInfo {
+          let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
+          let decimal = self.currentDestToken?.decimals ?? 0
+          if liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
+            errMsg = "Sorry, we will find some peg to input here".toBeLocalised()
+          }
+        }
+        cell.showErrorIfNeed(errorMsg: errMsg)
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
