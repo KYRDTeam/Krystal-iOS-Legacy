@@ -189,7 +189,8 @@ class BridgeViewModel {
           cell.balanceLabel.text = "0"
         }
         var errMsg: String?
-        if let currentDestToken = self.currentDestToken {
+        let currentSourceText = cell.amountTextField.text ?? ""
+        if let currentDestToken = self.currentDestToken, !currentSourceText.isEmpty {
           if let currentSourceToken = self.currentSourceToken {
             let amountString = currentSourceToken.getBalanceBigInt().fullString(decimals: currentSourceToken.decimals)
             let amountDouble = Double(amountString) ?? 0.0
