@@ -193,7 +193,7 @@ class BridgeViewModel {
         if let currentDestToken = self.currentDestToken, !currentSourceText.isEmpty {
           if let currentSourceToken = self.currentSourceToken {
             let amountString = currentSourceToken.getBalanceBigInt().fullString(decimals: currentSourceToken.decimals)
-            let amountDouble = Double(amountString) ?? 0.0
+            let amountDouble = amountString.doubleValue
             if self.sourceAmount > amountDouble {
               errMsg = "Insufficient".toBeLocalised() + " \(currentDestToken.symbol) " + "balance".toBeLocalised()
             }
