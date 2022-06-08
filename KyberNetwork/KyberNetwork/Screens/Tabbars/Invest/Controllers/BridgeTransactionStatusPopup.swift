@@ -152,6 +152,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
 
   @IBAction func copyFromWalletTapped(_ sender: Any) {
     UIPasteboard.general.string = transaction.extraData?.from?.address
+    self.showMessageWithInterval(message: Strings.addressCopied)
   }
 
 
@@ -162,6 +163,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   
   @IBAction func copyToWalletTapped(_ sender: Any) {
     UIPasteboard.general.string = transaction.extraData?.to?.address
+    self.showMessageWithInterval(message: Strings.addressCopied)
   }
   
   private func getChain(chainID: String?) -> ChainType? {
