@@ -169,6 +169,8 @@ class BridgeViewModel {
         cell.selectMaxBlock = self.selectMaxBlock
         if self.sourceAmount > 0 {
           cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
+        } else {
+          cell.amountTextField.text = ""
         }
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
@@ -240,7 +242,7 @@ class BridgeViewModel {
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
           let decimal = self.currentDestToken?.decimals ?? 0
-          if liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
+          if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
             errMsg = "Sorry, we will find some peg to input here".toBeLocalised()
           }
         }

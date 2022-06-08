@@ -47,6 +47,7 @@ class SelectTokenCell: UITableViewCell {
     self.maxButton.isHidden = shouldDisable
     self.arrowDownIcon.isHidden = shouldDisable
     self.selectButtonTrailling.constant = shouldDisable ? 0 : 8
+    self.selectTokenButton.isUserInteractionEnabled = !shouldDisable
   }
   
   func showErrorIfNeed(errorMsg: String?) {
