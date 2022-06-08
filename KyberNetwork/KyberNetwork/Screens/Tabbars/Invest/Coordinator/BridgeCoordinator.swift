@@ -185,12 +185,12 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.viewModel = BridgeViewModel(wallet: self.session.wallet)
     self.rootViewController.coordinatorDidUpdateChain()
-    self.fetchData()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.fetchData()
   }
   
   func coordinatorDidUpdatePendingTx() {

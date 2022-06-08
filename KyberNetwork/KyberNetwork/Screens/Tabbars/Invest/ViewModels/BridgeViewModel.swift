@@ -85,6 +85,21 @@ class BridgeViewModel {
 
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
+    // reset info when update wallet
+    self.resetUI()
+  }
+  
+  func resetUI() {
+    self.currentSourceToken = nil
+    self.currentSourcePoolInfo = nil
+    self.currentDestPoolInfo = nil
+    self.currentDestChain = nil
+    self.currentDestToken = nil
+    self.currentSendToAddress = ""
+    self.sourceAmount = 0
+    self.showFromPoolInfo = false
+    self.showToPoolInfo = false
+    
   }
 
   func fromDataSource() -> [FromSectionRows] {
@@ -237,6 +252,8 @@ class BridgeViewModel {
         cell.setDisableSelectToken(shouldDisable: true)
         if self.sourceAmount > 0 {
           cell.amountTextField.text = self.calculateDesAmountString()
+        } else {
+          cell.amountTextField.text = ""
         }
         var errMsg: String?
         if let currentDestPoolInfo = self.currentDestPoolInfo {
