@@ -158,10 +158,11 @@ class BridgeViewController: KNBaseViewController {
     guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
     
     guard !currentSourceToken.isQuoteToken else {
-//      self.updateUIForSendApprove(isShowApproveButton: false)
+      self.viewModel.isNeedApprove = false
+      self.tableView.reloadData()
       return
     }
-    self.viewModel.isNeedApprove = currentSourceToken.getBalanceBigInt() > allowance
+    self.viewModel.isNeedApprove = BigInt(self.viewModel.sourceAmount * pow(10.0, Double(currentSourceToken.decimals))) > allowance
     if currentSourceToken.getBalanceBigInt() > allowance {
       self.viewModel.remainApprovedAmount = (token, allowance)
     }
