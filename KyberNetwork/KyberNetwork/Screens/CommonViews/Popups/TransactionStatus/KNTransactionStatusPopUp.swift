@@ -253,6 +253,11 @@ class KNTransactionStatusPopUp: KNBaseViewController {
 
       self.view.layoutSubviews()
     }
+    
+    if KNGeneralProvider.shared.currentChain == .klaytn {
+      self.firstButton.isHidden = true
+      self.secondButton.isHidden = true
+    }
   }
 
   func updateView(with transaction: InternalHistoryTransaction) {

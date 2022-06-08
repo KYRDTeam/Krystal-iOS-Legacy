@@ -662,8 +662,16 @@ extension KNSendTokenViewCoordinator: KNTransactionStatusPopUpDelegate {
     case .swap:
       KNNotificationUtil.postNotification(for: kOpenExchangeTokenViewKey)
     case .speedUp(let tx):
+      guard KNGeneralProvider.shared.currentChain != .klaytn else {
+        self.navigationController.showErrorTopBannerMessage(message: "Unsupported action")
+        return
+      }
       self.openTransactionSpeedUpViewController(transaction: tx)
     case .cancel(let tx):
+      guard KNGeneralProvider.shared.currentChain != .klaytn else {
+        self.navigationController.showErrorTopBannerMessage(message: "Unsupported action")
+        return
+      }
       self.openTransactionCancelConfirmPopUpFor(transaction: tx)
     case .openLink(let url):
       self.navigationController.openSafari(with: url)

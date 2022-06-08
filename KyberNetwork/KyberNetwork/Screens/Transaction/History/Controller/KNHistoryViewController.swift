@@ -772,6 +772,9 @@ extension KNHistoryViewController: SwipeCollectionViewCellDelegate {
     guard orientation == .right else {
       return nil
     }
+    guard KNGeneralProvider.shared.currentChain != .klaytn else {
+      return nil
+    }
     guard let transaction = self.viewModel.pendingTransaction(for: indexPath.row, at: indexPath.section), transaction.canSpeedUpOrCancel else { return nil }
     let speedUp = SwipeAction(style: .default, title: nil) { (_, _) in
       self.delegate?.historyViewController(self, run: .speedUpTransaction(transaction: transaction.internalTransaction))

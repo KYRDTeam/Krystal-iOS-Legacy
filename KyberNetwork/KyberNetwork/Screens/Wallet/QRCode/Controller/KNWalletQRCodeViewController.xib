@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNWalletQRCodeViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="addressLabel" destination="6US-bk-Sk8" id="3IM-nn-s6r"/>
                 <outlet property="addressTypeLabel" destination="by2-bu-5Jb" id="Unw-bX-D9r"/>
@@ -152,7 +152,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explore-arrow" translatesAutoresizingMaskIntoConstraints="NO" id="SRO-Hm-Cm7">
-                    <rect key="frame" x="275" y="357.66666666666669" width="16" height="16"/>
+                    <rect key="frame" x="291" y="357.66666666666669" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="Dq6-hh-HtU"/>
                         <constraint firstAttribute="width" constant="16" id="FKL-5K-Qkn"/>
@@ -201,7 +201,7 @@
                 <constraint firstItem="JIX-CP-yTw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="34" id="tjj-3f-6lb"/>
                 <constraint firstItem="rTe-ow-Na9" firstAttribute="top" secondItem="6US-bk-Sk8" secondAttribute="bottom" constant="59" id="wOr-r4-zhX"/>
                 <constraint firstItem="soD-bJ-naO" firstAttribute="leading" secondItem="JIX-CP-yTw" secondAttribute="trailing" constant="15" id="xQ3-6h-6dM"/>
-                <constraint firstItem="SRO-Hm-Cm7" firstAttribute="leading" secondItem="jCp-mW-a6Z" secondAttribute="trailing" constant="-32" id="yEV-LQ-825"/>
+                <constraint firstItem="SRO-Hm-Cm7" firstAttribute="leading" secondItem="jCp-mW-a6Z" secondAttribute="trailing" constant="-16" id="yEV-LQ-825"/>
                 <constraint firstItem="rTe-ow-Na9" firstAttribute="top" secondItem="jCp-mW-a6Z" secondAttribute="bottom" id="zXB-j0-xSx"/>
             </constraints>
             <connections>
