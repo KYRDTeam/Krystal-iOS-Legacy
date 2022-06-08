@@ -65,12 +65,15 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       } else {
         return defaultAmountString
       }
-    case .bridgeFrom, .bridgeTo:
+    case .bridge:
+      guard !isError else {
+        return "--"
+      }
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return defaultAmountString
       }
-      let fromAmountString = BigInt(from.amount)?.fullString(decimals: from.decimals) ?? "0"
-      let toAmountString = BigInt(to.amount)?.fullString(decimals: to.decimals) ?? "0"
+      let fromAmountString = from.amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 5)
+      let toAmountString = to.amount.string(decimals: to.decimals, minFractionDigits: 0, maxFractionDigits: 5)
       return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
     case .contractInteraction:
       return defaultAmountString
@@ -97,7 +100,10 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return "To: \(self.historyItem.to)"
     case .receive:
       return "From: \(self.historyItem.from)"
-    case .bridgeFrom, .bridgeTo:
+    case .bridge:
+      guard !isError else {
+        return historyItem.txHash
+      }
       guard let from = historyItem.extraData?.from, let to = historyItem.extraData?.to else {
         return ""
       }
@@ -123,7 +129,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Strings.contractExecution.uppercased()
     case .claimReward:
       return Strings.claimReward.uppercased()
-    case .bridgeFrom, .bridgeTo:
+    case .bridge:
       return Strings.bridge.uppercased()
     default:
       return Strings.contractExecution.uppercased()
@@ -131,7 +137,13 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   }
   
   var isError: Bool {
-    return self.historyItem.status != "success"
+    switch transactionType {
+    case .bridge:
+      return historyItem.status.isEmpty || historyItem.extraData?.crosschainStatus?.isEmpty ?? true
+    default:
+      return historyItem.status != "success"
+    }
+    
   }
   
   var transactionTypeImage: UIImage {
@@ -146,7 +158,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Images.historyApprove
     case .claimReward:
       return Images.historyClaimReward
-    case .bridgeFrom, .bridgeTo:
+    case .bridge:
       return Images.historyBridge
     default:
       return Images.historyContractInteraction

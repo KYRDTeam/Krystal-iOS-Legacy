@@ -10,6 +10,7 @@ import Foundation
 import Quick
 import Nimble
 import UIKit
+import BigInt
 
 class TransactionDetailViewControllerSpec: QuickSpec {
   
@@ -24,10 +25,10 @@ class TransactionDetailViewControllerSpec: QuickSpec {
         sut.presenter = presenter
         _ = sut.view
         
-        let tx = ExtraBridgeTransaction(address: "0xabcdef", amount: "12000000000000000000", decimals: 18, token: "anyUSDT", tx: "0x010101", txStatus: "success")
+        let tx = ExtraBridgeTransaction(address: "0xabcdef", token: "anyUSDT", amount: BigInt("12000000000000000000"), chainId: "56", chainName: "BNB", tx: "0x010101", txStatus: "success", decimals: 18)
         
         presenter.items = [
-          .common(type: .bridgeFrom, timestamp: 123456789),
+          .common(type: .bridge, timestamp: 123456789),
           .bridgeSubTx(from: true, tx: tx),
           .stepSeparator,
           .bridgeFee(fee: "0.0001234 BNB"),

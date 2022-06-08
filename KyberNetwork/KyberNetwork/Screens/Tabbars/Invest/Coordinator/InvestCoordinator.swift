@@ -25,6 +25,7 @@ class InvestCoordinator: Coordinator {
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var rewardCoordinator: RewardCoordinator?
+  var bridgeCoordinator: BridgeCoordinator?
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
   var webViewCoordinator: RewardHuntingCoordinator?
@@ -135,6 +136,13 @@ class InvestCoordinator: Coordinator {
     self.rewardCoordinator = coordinator
   }
   
+  fileprivate func openBridgeView() {
+    let coordinator = BridgeCoordinator(navigationController: self.navigationController, session: self.session)
+    coordinator.delegate = self
+    coordinator.start()
+    self.bridgeCoordinator = coordinator
+  }
+  
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
@@ -177,8 +185,10 @@ class InvestCoordinator: Coordinator {
   
   func appCoordinatorPendingTransactionsDidUpdate() {
     self.sendCoordinator?.coordinatorDidUpdatePendingTx()
+    self.bridgeCoordinator?.coordinatorDidUpdatePendingTx()
     self.buyCryptoCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
+    self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
@@ -188,7 +198,7 @@ class InvestCoordinator: Coordinator {
     self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.buyCryptoCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
-    
+    self.bridgeCoordinator?.appCoordinatorDidUpdateNewSession(session)
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -196,6 +206,7 @@ class InvestCoordinator: Coordinator {
     if self.rewardCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.historyCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
@@ -205,6 +216,7 @@ class InvestCoordinator: Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateChain()
     self.dappCoordinator?.appCoordinatorDidUpdateChain()
     self.multiSendCoordinator.appCoordinatorDidUpdateChain()
+    self.bridgeCoordinator?.appCoordinatorDidUpdateChain()
   }
 }
 
@@ -238,6 +250,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       } else {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
+    case .bridge:
+      self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
 
@@ -358,5 +372,27 @@ extension InvestCoordinator: DappCoordinatorDelegate {
   
   func dAppCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+}
+
+extension InvestCoordinator: BridgeCoordinatorDelegate {
+  func didSelectAddChainWallet(chainType: ChainType) {
+    self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+  }
+
+  func didSelectWallet(_ wallet: Wallet) {
+    self.delegate?.investCoordinatorDidSelectWallet(wallet)
+  }
+  
+  func didSelectAddWallet() {
+    self.delegate?.investCoordinatorDidSelectAddWallet()
+  }
+
+  func didSelectManageWallet() {
+    self.delegate?.investCoordinatorDidSelectManageWallet()
+  }
+  
+  func didSelectOpenHistoryList() {
+    self.openHistoryScreen()
   }
 }

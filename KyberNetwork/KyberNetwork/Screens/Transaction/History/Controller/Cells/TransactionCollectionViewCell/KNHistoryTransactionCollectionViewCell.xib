@@ -9,14 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNHistoryTransactionCollectionViewCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KNHistoryTransactionCollectionViewCell" customModule="Krystal" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -39,8 +39,8 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isHiddenWhenSkeletonIsActive" value="NO"/>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="1 KNC = 0.002602 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4f-Li-Doz">
-                        <rect key="frame" x="51" y="36" width="269.5" height="12"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="752" text="1 KNC = 0.002602 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4f-Li-Doz">
+                        <rect key="frame" x="51" y="36" width="237" height="12"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -143,9 +143,9 @@
                 <constraint firstItem="ysG-jl-Pun" firstAttribute="leading" secondItem="onX-I3-OM9" secondAttribute="trailing" constant="7" id="Dij-Ox-Pq3"/>
                 <constraint firstItem="3Zu-cl-MKE" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Hxd-dt-0WN"/>
                 <constraint firstItem="Vh4-pY-66L" firstAttribute="leading" secondItem="1Mo-mW-pBI" secondAttribute="leading" constant="10" id="MlB-UP-Err"/>
+                <constraint firstItem="smC-Xt-XHs" firstAttribute="leading" secondItem="g4f-Li-Doz" secondAttribute="trailing" constant="16" id="Oqw-1t-A05"/>
                 <constraint firstItem="g4f-Li-Doz" firstAttribute="top" secondItem="gTI-Nj-zlU" secondAttribute="bottom" constant="4" id="PH1-Kk-Ybh"/>
                 <constraint firstItem="gTI-Nj-zlU" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="WpT-cR-e0b"/>
-                <constraint firstItem="g4f-Li-Doz" firstAttribute="trailing" secondItem="gTI-Nj-zlU" secondAttribute="trailing" id="agM-Tw-sQh"/>
                 <constraint firstItem="g4f-Li-Doz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="51" id="dpp-d4-Ias"/>
                 <constraint firstItem="3Zu-cl-MKE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="17" id="dsJ-W1-3OX"/>
                 <constraint firstItem="ysG-jl-Pun" firstAttribute="trailing" secondItem="smC-Xt-XHs" secondAttribute="trailing" id="e3N-qb-wL9"/>

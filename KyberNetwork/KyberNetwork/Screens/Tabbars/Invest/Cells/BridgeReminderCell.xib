@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
+            <string>Karla-Italic</string>
+        </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="227" id="KGk-i7-Jjw" customClass="BridgeReminderCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="374" height="227"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="374" height="227"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="note_icon" translatesAutoresizingMaskIntoConstraints="NO" id="F6g-sP-akx">
+                        <rect key="frame" x="38" y="25" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="f9P-iD-2GO"/>
+                            <constraint firstAttribute="height" constant="20" id="zGJ-ho-fWU"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mQU-Gh-K21">
+                        <rect key="frame" x="65" y="26.5" width="65" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="65" id="3LM-OI-Pem"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="textWhiteColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BZS-iq-BaI">
+                        <rect key="frame" x="141" y="39.5" width="195" height="1"/>
+                        <color key="backgroundColor" name="mainViewBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="o6m-D5-Qml"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j23-WS-VsP">
+                        <rect key="frame" x="38" y="59" width="298" height="154"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="154" id="on9-Pa-53G"/>
+                        </constraints>
+                        <string key="text">Crosschain Fee is 0.00 %, Gas fee 0.9 USDT for your cross-chain transaction on destination chain.
+Minimum Crosschain Amount is 12 USDT.
+Maximum Crosschain Amount is 20,000,000 USDT.
+Estimated Time of Crosschain Arrival is 10-30 min.
+Crosschain amount larger than 5,000,000 USDT could take up to 12 hours.</string>
+                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="j23-WS-VsP" secondAttribute="trailing" constant="38" id="J3e-tX-e5F"/>
+                    <constraint firstItem="F6g-sP-akx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="JCE-TJ-Ke7"/>
+                    <constraint firstItem="mQU-Gh-K21" firstAttribute="leading" secondItem="F6g-sP-akx" secondAttribute="trailing" constant="7" id="LRG-IJ-ZZ6"/>
+                    <constraint firstItem="j23-WS-VsP" firstAttribute="top" secondItem="F6g-sP-akx" secondAttribute="bottom" constant="14" id="O6a-lj-EvE"/>
+                    <constraint firstItem="mQU-Gh-K21" firstAttribute="centerY" secondItem="F6g-sP-akx" secondAttribute="centerY" id="XVC-s6-Itd"/>
+                    <constraint firstItem="j23-WS-VsP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="YDX-Of-W8m"/>
+                    <constraint firstAttribute="trailing" secondItem="BZS-iq-BaI" secondAttribute="trailing" constant="38" id="bW6-AT-WBd"/>
+                    <constraint firstItem="BZS-iq-BaI" firstAttribute="bottom" secondItem="mQU-Gh-K21" secondAttribute="bottom" constant="-3" id="dO9-PS-2Wi"/>
+                    <constraint firstItem="F6g-sP-akx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="lFB-uF-iqY"/>
+                    <constraint firstAttribute="bottom" secondItem="j23-WS-VsP" secondAttribute="bottom" constant="14" id="nlb-pi-Rs5"/>
+                    <constraint firstItem="BZS-iq-BaI" firstAttribute="leading" secondItem="mQU-Gh-K21" secondAttribute="trailing" constant="11" id="vjZ-ZX-iX0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="dashView" destination="BZS-iq-BaI" id="huP-te-Sov"/>
+                <outlet property="reminderLabel" destination="j23-WS-VsP" id="ppe-oj-6uY"/>
+            </connections>
+            <point key="canvasLocation" x="169.56521739130437" y="177.12053571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="note_icon" width="20" height="20"/>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

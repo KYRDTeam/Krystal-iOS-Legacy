@@ -334,9 +334,16 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
     case .selectPendingTransaction(transaction: let transaction):
-      let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, transaction: transaction)
-      coordinator.start()
-      self.txDetailsCoordinator = coordinator
+      switch transaction.type {
+      case .bridge:
+        let module = TransactionDetailModule.build(internalTx: transaction)
+        navigationController.pushViewController(module, animated: true)
+      default:
+        let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, transaction: transaction)
+        coordinator.start()
+        self.txDetailsCoordinator = coordinator
+      }
+      
     case .selectCompletedTransaction(data: let data):
       let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
       coordinator.start()
@@ -344,9 +351,13 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     case .selectCompletedKrystalTransaction(data: let data):
       let type = TransactionHistoryItemType(rawValue: data.historyItem.type) ?? .contractInteraction
       switch type {
-      case .bridgeTo, .bridgeFrom:
-        let module = TransactionDetailModule.build(tx: data.historyItem)
-        navigationController.pushViewController(module, animated: true)
+      case .bridge:
+        if data.isError {
+          self.openEtherScanForTransaction(with: data.historyItem.txHash)
+        } else {
+          let module = TransactionDetailModule.build(tx: data.historyItem)
+          navigationController.pushViewController(module, animated: true)
+        }
       default:
         let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
         coordinator.start()
@@ -380,9 +391,14 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
     )
     controller.tabBarController!.view.addSubview(overlayer)
   }
+  
+  func openMultichainTransaction(hash: String) {
+    if let url = URL(string: Constants.multichainExplorerURL + "/tx/" + hash) {
+      self.rootViewController.openSafari(with: url)
+    }
+  }
 
   fileprivate func openEtherScanForTransaction(with hash: String) {
-    
     if let etherScanEndpoint = self.session.externalProvider?.customRPC.etherScanEndpoint, let url = URL(string: "\(etherScanEndpoint)tx/\(hash)") {
       self.rootViewController.openSafari(with: url)
     }

@@ -267,7 +267,9 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     case .claimReward:
       return UIImage(named: "history_claim_reward_icon")!
     case .multiSend:
-      return UIImage(named: "multiSend_icon")!
+      return Images.historyMultisend
+    case .bridge:
+      return Images.historyBridge
     }
   }
   
@@ -323,6 +325,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
       return "Wallet".toBeLocalised()
+    case .bridge:
+      return Strings.wallet
     }
   }
   
@@ -358,6 +362,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
       return "Application".toBeLocalised()
+    case .bridge:
+      return Strings.wallet
     }
   }
   
@@ -418,6 +424,8 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
       return "claimReward".toBeLocalised().uppercased()
     case .multiSend:
       return "multisend".toBeLocalised().uppercased()
+    case .bridge:
+      return Strings.bridge.uppercased()
     }
   }
   
@@ -539,6 +547,8 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
       return "Wallet".toBeLocalised()
+    case .bridge:
+      return Strings.wallet
     }
   }
 
@@ -574,6 +584,8 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
       return "Application".toBeLocalised()
+    case .bridge:
+      return "Wallet"
     }
   }
 

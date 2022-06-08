@@ -893,6 +893,10 @@ enum KrytalService {
   case claimPromotion(code: String, address: String)
   case sendRate(star: Int, detail: String, txHash: String)
   case getOrders(userWallet: String)
+  case getServerInfo(chainId: Int)
+  case getPoolInfo(chainId: Int, tokenAddress: String)
+  case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
+  case checkTxStatus(txHash: String, chainId: String)
 }
 
 extension KrytalService: TargetType {
@@ -911,7 +915,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -1011,6 +1015,14 @@ extension KrytalService: TargetType {
       return "/v1/tracking/ratings"
     case .getGasPriceV2:
       return "/v2/gasPrice"
+    case .getServerInfo:
+      return "/v1/crosschain/serverInfo"
+    case .getPoolInfo:
+      return "/v1/crosschain/poolInfo"
+    case .buildSwapChainTx:
+      return "/v1/crosschain/buildSwapChainTx"
+    case .checkTxStatus:
+      return "/v1/crosschain/checkTxStatus"
     }
   }
 
@@ -1339,6 +1351,33 @@ extension KrytalService: TargetType {
     case .getOrders(userWallet: let userWallet):
       let json: JSONDictionary = [
         "userWallet": userWallet
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getServerInfo(chainId: let chainId):
+      let json: JSONDictionary = [
+        "chainId": chainId
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getPoolInfo(chainId: let chainId, tokenAddress: let tokenAddress):
+      let json: JSONDictionary = [
+        "chainId": chainId,
+        "tokenAddress": tokenAddress
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .buildSwapChainTx(fromAddress: let fromAddress, toAddress: let toAddress, fromChainId: let fromChainId, toChainId: let toChainId, tokenAddress: let tokenAddress, amount: let amount):
+      let json: JSONDictionary = [
+        "fromAddress": fromAddress,
+        "toAddress": toAddress,
+        "fromChainId": fromChainId,
+        "toChainId": toChainId,
+        "tokenAddress": tokenAddress,
+        "amount": amount
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .checkTxStatus(txHash: let txHash, chainId: let chainId):
+      let json: JSONDictionary = [
+        "txHash": txHash,
+        "chainId": chainId
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

@@ -19,7 +19,7 @@ struct Images {
   static let exploreBuyCryptoIcon = UIImage(named: "buy_crypto_invest_icon")!
   static let explorePromotionIcon = UIImage(named: "promo_code_icon")!
   static let exploreRewardHuntingIcon = UIImage(named: "reward_hunting_icon")!
-  
+  static let exploreBridgeIcon = UIImage(named: "bridge_icon")!
   // History
   static let giftIcon = UIImage(named: "gift_icon")!
   static let warningRedIcon = UIImage(named: "warning_red_icon")!

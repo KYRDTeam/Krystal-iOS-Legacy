@@ -15,7 +15,6 @@ enum TransactionHistoryItemType: String {
   case supply = "Supply"
   case withdraw = "Withdraw"
   case claimReward = "ClaimReward"
-  case bridgeFrom = "BridgeFrom"
-  case bridgeTo = "BridgeTo"
+  case bridge = "Bridge"
   case contractInteraction = "ContractInteration"
 }

@@ -29,9 +29,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
       describe("getTransactionType") {
         it("should be correct type") {
           sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
-          expect(sut.getTransactionType(txType: "BridgeFrom")).to(equal(.bridgeFrom))
-          expect(sut.getTransactionType(txType: "BridgeTo")).to(equal(.bridgeTo))
-          expect(sut.getTransactionType(txType: "Bridge")).to(equal(.contractInteraction))
+          expect(sut.getTransactionType(txType: "Bridge")).to(equal(.bridge))
           expect(sut.getTransactionType(txType: "Swap")).to(equal(.swap))
         }
       }
@@ -42,7 +40,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
           it("returns 0 items") {
             let from = self.extraBridgeTransaction(status: "success")
             let extraData = self.extraData(from: from, to: nil)
-            let tx = self.transaction(type: "BridgeFrom", extraData: extraData)
+            let tx = self.transaction(type: "Bridge", extraData: extraData)
             
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
@@ -52,7 +50,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
           it("returns 0 items") {
             let to = self.extraBridgeTransaction(status: "success")
             let extraData = self.extraData(from: nil, to: to)
-            let tx = self.transaction(type: "BridgeFrom", extraData: extraData)
+            let tx = self.transaction(type: "Bridge", extraData: extraData)
             
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
@@ -65,12 +63,12 @@ class TransactionDetailPresenterSpec: QuickSpec {
             let from = self.extraBridgeTransaction(status: "success")
             let to = self.extraBridgeTransaction(status: "success")
             let extraData = self.extraData(from: from, to: to)
-            let tx = self.transaction(type: "BridgeFrom", extraData: extraData)
+            let tx = self.transaction(type: "Bridge", extraData: extraData)
             
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
             expect(sut.items.count).to(equal(5))
-            expect(sut.items[0]).to(equal(.common(type: .bridgeFrom, timestamp: 123456789)))
+            expect(sut.items[0]).to(equal(.common(type: .bridge, timestamp: 123456789)))
             expect(sut.items[1]).to(equal(.bridgeSubTx(from: true, tx: from)))
             expect(sut.items[2]).to(equal(.stepSeparator))
             expect(sut.items[3]).to(equal(.bridgeSubTx(from: false, tx: to)))
@@ -78,13 +76,13 @@ class TransactionDetailPresenterSpec: QuickSpec {
           }
         }
         
-        context("transaction type is BridgeFrom and status is not success") {
+        context("transaction type is Bridge and status is not success") {
           
           it("returns 6 items") {
             let from = self.extraBridgeTransaction(status: "success")
             let to = self.extraBridgeTransaction(status: "other")
             let extraData = self.extraData(from: from, to: to)
-            let tx = self.transaction(type: "BridgeFrom", extraData: extraData)
+            let tx = self.transaction(type: "Bridge", extraData: extraData)
             
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
@@ -96,7 +94,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
             let from = self.extraBridgeTransaction(status: "pending")
             let to = self.extraBridgeTransaction(status: "other")
             let extraData = self.extraData(from: from, to: to)
-            let tx = self.transaction(type: "BridgeFrom", extraData: extraData)
+            let tx = self.transaction(type: "Bridge", extraData: extraData)
             
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
@@ -106,7 +104,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
           
         }
         
-        context("transaction type is not BridgeFrom or BridgeTo") {
+        context("transaction type is not Bridge") {
           
           it("returns 0 items") {
             let from = self.extraBridgeTransaction(status: "success")
@@ -180,7 +178,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
   }
   
   private func extraBridgeTransaction(status: String) -> ExtraBridgeTransaction {
-    return ExtraBridgeTransaction(address: "", amount: "", chainId: "56", decimals: 0, token: "", tx: "", txStatus: status)
+    ExtraBridgeTransaction(address: "", token: "", amount: "", chainId: "56", chainName: "", tx: "", txStatus: status, decimals: 18)
   }
   
   private func extraData(from: ExtraBridgeTransaction?, to: ExtraBridgeTransaction?) -> ExtraData {
@@ -188,7 +186,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
   }
   
   private func transaction(type: String, extraData: ExtraData) -> KrystalHistoryTransaction {
-    return KrystalHistoryTransaction(hash: "", blockNumber: 0, timestamp: 123456789, from: "", to: "", status: "", value: "", valueQuote: 0, gasLimit: 0, gasUsed: 0, gasPrice: "", gasPriceQuote: 0, gasCost: "123450000000000", gasCostQuote: 0, type: "BridgeFrom", nonce: 0, extraData: extraData)
+    return KrystalHistoryTransaction(hash: "", blockNumber: 0, timestamp: 123456789, from: "", to: "", status: "", value: "", valueQuote: 0, gasLimit: 0, gasUsed: 0, gasPrice: "", gasPriceQuote: 0, gasCost: "123450000000000", gasCostQuote: 0, type: "Bridge", nonce: 0, extraData: extraData)
   }
   
 }

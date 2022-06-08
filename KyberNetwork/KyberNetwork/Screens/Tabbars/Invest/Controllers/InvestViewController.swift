@@ -19,6 +19,7 @@ enum InvestViewEvent {
   case promoCode
   case buyCrypto
   case rewardHunting
+  case bridge
   case addChainWallet(chainType: ChainType)
 }
 
@@ -238,6 +239,8 @@ extension InvestViewController: UICollectionViewDelegate {
         delegate?.investViewController(self, run: .promoCode)
       case .rewardHunting:
         delegate?.investViewController(self, run: .rewardHunting)
+      case .bridge:
+        delegate?.investViewController(self, run: .bridge)
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

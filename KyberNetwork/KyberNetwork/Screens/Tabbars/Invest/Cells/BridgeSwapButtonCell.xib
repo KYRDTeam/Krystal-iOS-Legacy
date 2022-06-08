@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+        <array key="Karla-Italic.ttf">
+            <string>Karla-Italic</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="125" id="KGk-i7-Jjw" customClass="BridgeSwapButtonCell" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="125"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="319" height="125"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zHp-Pe-xbx">
+                        <rect key="frame" x="38" y="18" width="243" height="42"/>
+                        <color key="backgroundColor" name="buttonBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="42" id="GVT-Bk-bwG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Swap Now">
+                            <color key="titleColor" name="buttonTextColor"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="swapButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="voE-0v-LDa"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by Multichain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oo3-AO-cLx">
+                        <rect key="frame" x="103.5" y="82" width="112" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="Lvw-Z7-FfX"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="12"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" name="mainViewBgColor"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Oo3-AO-cLx" secondAttribute="bottom" constant="28" id="AHv-yU-z7L"/>
+                    <constraint firstItem="Oo3-AO-cLx" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Dzu-6E-caR"/>
+                    <constraint firstItem="zHp-Pe-xbx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="Wsy-8R-C0b"/>
+                    <constraint firstAttribute="trailing" secondItem="zHp-Pe-xbx" secondAttribute="trailing" constant="38" id="Yg4-86-QRf"/>
+                    <constraint firstItem="Oo3-AO-cLx" firstAttribute="top" secondItem="zHp-Pe-xbx" secondAttribute="bottom" constant="22" id="hnc-8d-JLm"/>
+                    <constraint firstItem="zHp-Pe-xbx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="kkt-6M-Ond"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="swapButton" destination="zHp-Pe-xbx" id="tgS-gO-H3D"/>
+            </connections>
+            <point key="canvasLocation" x="131.15942028985509" y="142.96875"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="buttonBackgroundColor">
+            <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="mainViewBgColor">
+            <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

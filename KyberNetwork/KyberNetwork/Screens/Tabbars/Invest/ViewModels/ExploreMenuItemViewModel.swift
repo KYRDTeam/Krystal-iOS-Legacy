@@ -36,6 +36,8 @@ class ExploreMenuItemViewModel {
       return Strings.promotion
     case .rewardHunting:
       return Strings.rewardHunting
+    case .bridge:
+      return Strings.bridge
     }
   }
   
@@ -59,6 +61,8 @@ class ExploreMenuItemViewModel {
       return Images.explorePromotionIcon
     case .rewardHunting:
       return Images.exploreRewardHuntingIcon
+    case .bridge:
+      return Images.exploreBridgeIcon
     }
   }
   

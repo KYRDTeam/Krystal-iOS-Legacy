@@ -36,6 +36,8 @@ class KNPasscodeCoordinator: Coordinator {
       self.window.rootViewController = self.passcodeViewController
       self.window.isHidden = true
     }
+    
+//    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.window.rootViewController)
   }
   
   func start() {

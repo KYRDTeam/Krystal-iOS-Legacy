@@ -14,6 +14,7 @@ public struct FeatureFlagKeys {
   public static let rewardHunting = "reward-hunting"
   public static let solanaChainIntegration = "solana-chain"
   public static let klaytnChainIntegration = "klaytn-chain"
+  public static let bridgeIntegration = "cross-chain-bridge"
 }
 
 class FeatureFlagManager {
