@@ -23,6 +23,7 @@ class PoolInfo: Codable {
   var logoUrl: String = ""
   var name: String = ""
   var symbol: String = ""
+  var isUnlimited: Bool = false
 
   init(json: JSONDictionary) {
     self.anyToken = json["anyToken"] as? String ?? ""
@@ -31,6 +32,7 @@ class PoolInfo: Codable {
     self.logoUrl = json["logoUrl"] as? String ?? ""
     self.name = json["name"] as? String ?? ""
     self.symbol = json["symbol"] as? String ?? ""
+    self.isUnlimited = json["isUnlimited"] as? Bool ?? false
   }
   
   func liquidityPoolString() -> String {
@@ -357,7 +359,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           if let address = currentDestChainToken?.address {
             self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
               self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
-              self.rootViewController.viewModel.showToPoolInfo = true
+              self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
               self.rootViewController.coordinatorDidUpdateData()
             }
           }
