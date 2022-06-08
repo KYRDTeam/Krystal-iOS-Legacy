@@ -116,32 +116,25 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
       guard tx.txHash == self.transaction.txHash else {
         return
       }
-      self.refreshTransactionStatus { [weak self] extra in
+      let chainID = "\(transaction.chain.getChainId())"
+      self.crosschainTxService.getTransactionStatus(txHash: transaction.hash, chainId: chainID) { [weak self] extra in
         self?.transaction.acceptExtraData(extraData: extra)
-        self?.removeObserver()
         DispatchQueue.main.async {
           self?.reloadData()
         }
       }
-    } else if let tx = notification.userInfo?["transaction"] as? InternalHistoryTransaction {
-      guard tx.txHash == self.transaction.txHash else {
+    } else if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
+      guard let txHash = notification.userInfo?["txHash"] as? String, txHash == self.transaction.txHash else {
         return
       }
-      self.transaction.acceptExtraData(extraData: tx.extraData)
+      self.transaction.acceptExtraData(extraData: extraData)
       self.reloadData()
     }
-    
   }
 
   @objc func tapOutside() {
+    self.removeObserver()
     self.dismiss(animated: true, completion: nil)
-  }
-  
-  func refreshTransactionStatus(completion: @escaping (InternalHistoryExtraData?) -> ()) {
-    let chainID = "\(transaction.chain.getChainId())"
-    self.crosschainTxService.getTransactionStatus(txHash: transaction.hash, chainId: chainID) { [weak self] extra in
-      completion(extra)
-    }
   }
   
   func getChainIcon(chainID: String) -> UIImage? {

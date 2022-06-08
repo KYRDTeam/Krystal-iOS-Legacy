@@ -67,10 +67,10 @@ class InternalHistoryTransaction: Codable {
       return
     }
     self.extraData?.crosschainStatus = extraData.crosschainStatus
-    if extraData.from?.txStatus.lowercased() == "success" {
-      self.extraData?.from = extraData.from
+    if let from = extraData.from, ExtraData.terminatedStatuses.contains(from.txStatus.lowercased()) {
+      self.extraData?.from = from
     }
-    if extraData.to?.txStatus.lowercased() == "success" {
+    if let to = extraData.to, ExtraData.terminatedStatuses.contains(to.txStatus.lowercased()) {
       self.extraData?.to = extraData.to
     }
   }
@@ -83,8 +83,8 @@ struct InternalHistoryExtraData: Codable {
   var type: String
   var crosschainStatus: String
   
-  var isSuccess: Bool {
-    return crosschainStatus.lowercased() == "success"
+  var isCompleted: Bool {
+    return ExtraData.terminatedStatuses.contains(crosschainStatus.lowercased())
   }
 
 }

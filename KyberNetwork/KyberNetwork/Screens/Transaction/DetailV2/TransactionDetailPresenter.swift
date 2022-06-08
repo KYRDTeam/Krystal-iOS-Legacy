@@ -169,11 +169,11 @@ extension TransactionDetailPresenter {
       self.crosschainTxService.getTransactionStatus(txHash: txHash, chainId: chainID) { [weak self] extra in
         self?.acceptBridgeExtraData(extra: extra)
       }
-    } else if let tx = notification.userInfo?["transaction"] as? InternalHistoryTransaction {
-      guard tx.txHash == self.txHash else {
+    } else if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
+      guard let txHash = notification.userInfo?["txHash"] as? String, txHash == self.txHash else {
         return
       }
-      self.acceptBridgeExtraData(extra: tx.extraData)
+      self.acceptBridgeExtraData(extra: extraData)
     }
   }
   

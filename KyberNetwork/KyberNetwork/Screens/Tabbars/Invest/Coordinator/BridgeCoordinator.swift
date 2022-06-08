@@ -661,6 +661,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
               )
               
               internalHistoryTransaction.extraData = extraData
+              self.session.crosschainTxService.addPendingTxHash(txHash: hash)
               EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
               controller.dismiss(animated: true) {
                 self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
