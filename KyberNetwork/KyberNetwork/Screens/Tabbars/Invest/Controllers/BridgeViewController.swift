@@ -108,9 +108,7 @@ class BridgeViewController: KNBaseViewController {
     }
     
     self.viewModel.changeAmountBlock = { amount in
-      if let doubleAmount = Double(amount) {
-        self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: doubleAmount))
-      }
+      self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: amount.doubleValue ))
     }
     
     self.viewModel.changeAddressBlock = { address in

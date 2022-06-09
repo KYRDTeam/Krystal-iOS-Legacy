@@ -9,8 +9,11 @@ import UIKit
 
 class TextFieldCell: UITableViewCell {
   @IBOutlet weak var textField: UITextField!
+  @IBOutlet weak var inputContainView: UIView!
+  @IBOutlet weak var containViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var errorLabel: UILabel!
   var textChangeBlock: ((String) -> Void)?
-  
+
   override func awakeFromNib() {
     super.awakeFromNib()
     self.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidEnd)
@@ -20,8 +23,27 @@ class TextFieldCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
   
+  func showErrorIfNeed(errorMsg: String?) {
+    if let errorMsg = errorMsg {
+      self.containViewBottomConstraint.constant = 35
+      self.errorLabel.text = errorMsg
+      self.errorLabel.isHidden = false
+      self.inputContainView.shakeViewError()
+    } else {
+      self.inputContainView.layer.borderColor = UIColor.clear.cgColor
+      self.inputContainView.layer.borderWidth = 1.0
+      self.containViewBottomConstraint.constant = 0.0
+      self.errorLabel.isHidden = true
+    }
+  }
+  
   @objc func textFieldDidChange(_ textField: UITextField) {
     if let textChangeBlock = self.textChangeBlock, let text = textField.text {
+      if CryptoAddressValidator.isValidAddress(text) {
+        self.showErrorIfNeed(errorMsg: nil)
+      } else {
+        self.showErrorIfNeed(errorMsg: "Invalid Address".toBeLocalised())
+      }
       textChangeBlock(text)
     }
   }

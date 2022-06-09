@@ -339,6 +339,12 @@ class BridgeCoordinator: NSObject, Coordinator {
       return nil
     }
   }
+  
+  func isValidBridge() -> Bool {
+//    if self.rootViewController.viewModel.sourceAmount
+    
+    return true
+  }
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
@@ -452,20 +458,19 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         }
         
         let availableToSwap = max(BigInt(0), balance - fee)
-        let doubleValue = Double(availableToSwap.string(
+        let doubleValue = availableToSwap.string(
           decimals: from.decimals,
           minFractionDigits: 0,
           maxFractionDigits: min(from.decimals, 5)
-        ).removeGroupSeparator()) ?? 0
+        ).doubleValue
         self.rootViewController.viewModel.sourceAmount = doubleValue
       } else {
         let bal: BigInt = from.getBalanceBigInt()
-        let string = bal.string(
+        let doubleValue = bal.string(
           decimals: from.decimals,
           minFractionDigits: 0,
           maxFractionDigits: min(from.decimals, 5)
-        )
-        let doubleValue = Double(string.removeGroupSeparator()) ?? 0
+        ).doubleValue
         self.rootViewController.viewModel.sourceAmount = doubleValue
       }
       self.rootViewController.coordinatorDidUpdateData()

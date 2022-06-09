@@ -77,6 +77,7 @@ class BridgeViewModel {
   var currentDestToken: DestBridgeToken?
   var currentSendToAddress: String = ""
   var sourceAmount: Double = 0.0
+//  var isContaintError: Bool = false
 
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -260,7 +261,7 @@ class BridgeViewModel {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
           let decimal = self.currentDestToken?.decimals ?? 0
           if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
-            errMsg = "Sorry, we will find some peg to input here".toBeLocalised()
+            errMsg = "Insufficient pool".toBeLocalised()
           }
         }
         cell.showErrorIfNeed(errorMsg: errMsg)
