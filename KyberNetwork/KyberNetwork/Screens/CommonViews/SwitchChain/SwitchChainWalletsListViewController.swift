@@ -17,9 +17,9 @@ class SwitchChainWalletsListViewModel {
     self.dataSource = wallets.map({ (obj) -> KNWalletTableCellViewModel in
       return KNWalletTableCellViewModel(wallet: obj)
     })
-//    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//      self.selectedAddress = appDelegate.coordinator.session.wallet.addressString
-//    }
+    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+      self.selectedAddress = selected == .solana ? appDelegate.coordinator.session.currentWalletObject.solanaAddress : appDelegate.coordinator.session.wallet.addressString
+    }
   }
   
   var title: String {
@@ -33,7 +33,8 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var walletsTableView: UITableView!
   @IBOutlet var backgroundView: UIView!
-
+  @IBOutlet weak var nextButton: UIButton!
+  
   let kContactTableViewCellID: String = "kContactTableViewCellID"
   let transitor = TransitionDelegate()
   let viewModel: SwitchChainWalletsListViewModel
@@ -60,6 +61,7 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.title
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     backgroundView.addGestureRecognizer(tapGesture)
+    self.updateUINextButton(isActive: !self.viewModel.selectedAddress.isEmpty)
   }
 
   @objc func tapOutside() {
@@ -84,6 +86,15 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
     self.dismiss(animated: true, completion: nil)
   }
   
+  private func updateUINextButton(isActive: Bool) {
+    if isActive {
+      self.nextButton.alpha = 1
+      self.nextButton.isEnabled = true
+    } else {
+      self.nextButton.alpha = 0.2
+      self.nextButton.isEnabled = false
+    }
+  }
 }
 
 extension SwitchChainWalletsListViewController: BottomPopUpAbstract {
@@ -106,6 +117,7 @@ extension SwitchChainWalletsListViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     let cellModel = self.viewModel.dataSource[indexPath.row]
     self.viewModel.selectedAddress = cellModel.wallet.address.description
+    self.updateUINextButton(isActive: !self.viewModel.selectedAddress.isEmpty)
     tableView.reloadData()
   }
 }

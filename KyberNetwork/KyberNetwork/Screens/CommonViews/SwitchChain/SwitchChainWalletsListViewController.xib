@@ -19,6 +19,7 @@
                 <outlet property="backgroundView" destination="Zbi-cz-xSz" id="zuU-s8-N0Y"/>
                 <outlet property="contentView" destination="EGp-ZY-9Jx" id="nXt-pV-Aoa"/>
                 <outlet property="contentViewTopContraint" destination="7SR-cc-rJU" id="iZE-6y-TE1"/>
+                <outlet property="nextButton" destination="jlI-Bm-BD6" id="Td4-u0-Cof"/>
                 <outlet property="titleLabel" destination="7Sy-GM-5kx" id="0B1-Er-pnu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletsTableView" destination="URN-YH-RzQ" id="rfW-oq-SuY"/>
