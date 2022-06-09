@@ -735,8 +735,7 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         self.advancedMaxFee = nil
         self.selectedGasPriceType = type
         self.gasPrice = value
-        let feeString: String = (self.gasPrice * self.estimateGasLimit).displayRate(decimals: 18)
-        self.confirmVC?.coordinatorDidUpdateFee(feeString: feeString)
+        self.confirmVC?.coordinatorDidUpdateFee(gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit)
       }
     case .helpPressed(let tag):
       var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
