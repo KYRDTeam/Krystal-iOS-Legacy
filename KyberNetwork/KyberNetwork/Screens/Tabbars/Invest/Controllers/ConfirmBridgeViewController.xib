@@ -220,10 +220,10 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Transaction fee" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5w4-fX-GcG">
-                            <rect key="frame" x="45.000000000000007" y="460" width="83.666666666666686" height="20"/>
+                            <rect key="frame" x="45" y="460" width="85" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="VwR-92-2IC"/>
-                                <constraint firstAttribute="width" constant="83.670000000000002" id="yEH-Vq-Hhe"/>
+                                <constraint firstAttribute="width" constant="85" id="yEH-Vq-Hhe"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                             <color key="textColor" name="normalTextColor"/>

@@ -77,6 +77,7 @@ class BridgeViewModel {
   var currentDestToken: DestBridgeToken?
   var currentSendToAddress: String = ""
   var sourceAmount: Double = 0.0
+  var isValidSourceAmount: Bool = false
 
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -95,7 +96,6 @@ class BridgeViewModel {
     self.currentDestPoolInfo = nil
     self.currentDestChain = nil
     self.currentDestToken = nil
-    self.currentSendToAddress = ""
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
@@ -159,7 +159,7 @@ class BridgeViewModel {
     view.addSubview(icon)
     return view
   }
-  
+
   func cellForRows(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
       switch self.fromDataSource()[indexPath.row] {
@@ -223,6 +223,7 @@ class BridgeViewModel {
             errMsg = "Maximum Crosschain Amount is".toBeLocalised() + " \(currentDestToken.maximumSwap)"
           }
         }
+        self.isValidSourceAmount = errMsg == nil && !currentSourceText.isEmpty
         cell.showErrorIfNeed(errorMsg: errMsg)
         return cell
       }
@@ -260,7 +261,7 @@ class BridgeViewModel {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
           let decimal = self.currentDestToken?.decimals ?? 0
           if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
-            errMsg = "Sorry, we will find some peg to input here".toBeLocalised()
+            errMsg = "Insufficient pool".toBeLocalised()
           }
         }
         cell.showErrorIfNeed(errorMsg: errMsg)
@@ -290,6 +291,13 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
+        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
+          cell.swapButton.isEnabled = true
+          cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
+        } else {
+          cell.swapButton.isEnabled = false
+          cell.swapButton.setBackgroundColor(UIColor.gray, forState: .normal)
+        }
         cell.swapBlock = self.swapBlock
         if let currentSourceToken = currentSourceToken {
           cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Swap Now", for: .normal)

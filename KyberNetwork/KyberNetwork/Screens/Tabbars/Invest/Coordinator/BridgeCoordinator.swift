@@ -166,7 +166,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     self.fetchData()
   }
   
-  func fetchData() {
+  func fetchData(completion: (() -> Void)? = nil) {
     self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) {
       if let address = self.rootViewController.viewModel.currentSourceToken?.address {
         self.getPoolInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId(), tokenAddress: address) { poolInfo in
@@ -175,9 +175,15 @@ class BridgeCoordinator: NSObject, Coordinator {
             self.rootViewController.viewModel.showFromPoolInfo = true
           }
           self.rootViewController.coordinatorDidUpdateData()
+          if let completion = completion {
+            completion()
+          }
         }
       } else {
         self.rootViewController.coordinatorDidUpdateData()
+        if let completion = completion {
+          completion()
+        }
       }
     }
   }
@@ -339,11 +345,20 @@ class BridgeCoordinator: NSObject, Coordinator {
       return nil
     }
   }
+  
+  func pullToRefresh() {
+    self.fetchData {
+      self.rootViewController.isRefreshingTableView = false
+      self.rootViewController.refreshControl.endRefreshing()
+    }
+  }
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
+    case .pullToRefresh:
+      self.pullToRefresh()
     case .changeAmount(amount: let amount):
       self.rootViewController.viewModel.sourceAmount = amount
       self.rootViewController.coordinatorDidUpdateData()
@@ -452,20 +467,19 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         }
         
         let availableToSwap = max(BigInt(0), balance - fee)
-        let doubleValue = Double(availableToSwap.string(
+        let doubleValue = availableToSwap.string(
           decimals: from.decimals,
           minFractionDigits: 0,
           maxFractionDigits: min(from.decimals, 5)
-        ).removeGroupSeparator()) ?? 0
+        ).doubleValue
         self.rootViewController.viewModel.sourceAmount = doubleValue
       } else {
         let bal: BigInt = from.getBalanceBigInt()
-        let string = bal.string(
+        let doubleValue = bal.string(
           decimals: from.decimals,
           minFractionDigits: 0,
           maxFractionDigits: min(from.decimals, 5)
-        )
-        let doubleValue = Double(string.removeGroupSeparator()) ?? 0
+        ).doubleValue
         self.rootViewController.viewModel.sourceAmount = doubleValue
       }
       self.rootViewController.coordinatorDidUpdateData()
