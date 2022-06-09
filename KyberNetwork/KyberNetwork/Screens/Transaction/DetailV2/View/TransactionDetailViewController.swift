@@ -85,6 +85,7 @@ extension TransactionDetailViewController: BridgeSubTransactionCellDelegate {
   
   func copyTxAddress(cell: BridgeSubTransactionCell, address: String) {
     UIPasteboard.general.string = address
+    self.showMessageWithInterval(message: Strings.addressCopied)
   }
   
 }
