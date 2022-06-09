@@ -23,6 +23,7 @@ enum BridgeEvent {
   case selectMaxSource
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt, value: BigInt)
+  case pullToRefresh
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -36,6 +37,8 @@ class BridgeViewController: KNBaseViewController {
   @IBOutlet weak var pendingTxIndicatorView: UIView!
   weak var delegate: BridgeViewControllerDelegate?
   var viewModel: BridgeViewModel
+  let refreshControl = UIRefreshControl()
+  var isRefreshingTableView = false
   
   init(viewModel: BridgeViewModel) {
     self.viewModel = viewModel
@@ -84,6 +87,18 @@ class BridgeViewController: KNBaseViewController {
     self.tableView.registerCellNib(TextFieldCell.self)
     self.updateUISwitchChain()
     self.updateUIPendingTxIndicatorView()
+    self.refreshControl.tintColor = .lightGray
+    self.refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+    self.tableView.addSubview(self.refreshControl)
+  }
+  
+  @objc func refresh(_ sender: AnyObject) {
+    if self.isRefreshingTableView {
+      return
+    }
+    self.refreshControl.beginRefreshing()
+    self.isRefreshingTableView = true
+    self.delegate?.bridgeViewControllerController(self, run: .pullToRefresh)
   }
   
   func setupViewModel() {

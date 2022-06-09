@@ -166,7 +166,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     self.fetchData()
   }
   
-  func fetchData() {
+  func fetchData(completion: (() -> Void)? = nil) {
     self.getServerInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId()) {
       if let address = self.rootViewController.viewModel.currentSourceToken?.address {
         self.getPoolInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId(), tokenAddress: address) { poolInfo in
@@ -175,9 +175,15 @@ class BridgeCoordinator: NSObject, Coordinator {
             self.rootViewController.viewModel.showFromPoolInfo = true
           }
           self.rootViewController.coordinatorDidUpdateData()
+          if let completion = completion {
+            completion()
+          }
         }
       } else {
         self.rootViewController.coordinatorDidUpdateData()
+        if let completion = completion {
+          completion()
+        }
       }
     }
   }
@@ -340,16 +346,19 @@ class BridgeCoordinator: NSObject, Coordinator {
     }
   }
   
-  func isValidBridge() -> Bool {
-//    if self.rootViewController.viewModel.sourceAmount
-    
-    return true
+  func pullToRefresh() {
+    self.fetchData {
+      self.rootViewController.isRefreshingTableView = false
+      self.rootViewController.refreshControl.endRefreshing()
+    }
   }
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
+    case .pullToRefresh:
+      self.pullToRefresh()
     case .changeAmount(amount: let amount):
       self.rootViewController.viewModel.sourceAmount = amount
       self.rootViewController.coordinatorDidUpdateData()
