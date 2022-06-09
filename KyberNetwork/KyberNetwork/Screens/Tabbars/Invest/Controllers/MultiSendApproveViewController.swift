@@ -211,8 +211,7 @@ class MultiSendApproveViewController: KNBaseViewController {
   @IBOutlet weak var tokensTableViewHeightContraint: NSLayoutConstraint!
   @IBOutlet weak var backButton: UIButton!
   @IBOutlet weak var approveButton: UIButton!
-  
-  
+
   @IBOutlet weak var tokensTableView: UITableView!
   let transitor = TransitionDelegate()
   

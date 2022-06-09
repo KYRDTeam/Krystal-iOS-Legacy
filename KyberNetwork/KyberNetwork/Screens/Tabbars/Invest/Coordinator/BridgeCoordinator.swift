@@ -145,6 +145,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var estimateGasLimit: BigInt = KNGasConfiguration.exchangeTokensGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
@@ -154,6 +155,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   }()
   
   var confirmVC: ConfirmBridgeViewController?
+  var approveVC: ApproveTokenViewController?
   
   init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
     self.navigationController = navigationController
@@ -453,10 +455,11 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .sendApprove(token: let token, remain: let remain, value: let value):
       let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
       vm.value = value
+      vm.showEditSettingButton = true
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
-      
+      self.approveVC = vc
     case .selectMaxSource:
       guard let from = self.rootViewController.viewModel.currentSourceToken else { return }
       if from.isQuoteToken {
@@ -595,7 +598,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
   }
   
   fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
+    guard let provider = self.session.externalProvider, let address = Address(string: self.bridgeContract) else {
       return
     }
     if remain.isZero {
@@ -607,7 +610,8 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       for: token,
       value: BigInt(0),
       gasPrice: gasPrice,
-      gasLimit: gasLimit
+      gasLimit: gasLimit,
+      address: address
     ) { result in
       switch result {
       case .success:
@@ -718,7 +722,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
     viewModel.advancedMaxPriorityFee = self.advancedMaxPriorityFee
     viewModel.advancedMaxFee = self.advancedMaxFee
     viewModel.advancedNonce = self.advancedNonce
-
+    self.isOpenGasSettingForApprove = false
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.confirmVC?.present(vc, animated: true, completion: nil)
@@ -737,14 +741,16 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
-      self.advancedGasLimit = nil
-      self.advancedMaxPriorityFee = nil
-      self.advancedMaxFee = nil
-      self.selectedGasPriceType = type
-      self.gasPrice = value
-      self.confirmVC?.coordinatorDidUpdateFee(gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit)
-    case .minRatePercentageChanged(let percent):
-      self.minRatePercent = Double(percent)
+      if self.isOpenGasSettingForApprove {
+        self.approveVC?.coordinatorDidUpdateGasPriceType(type, value: value)
+      } else {
+        self.advancedGasLimit = nil
+        self.advancedMaxPriorityFee = nil
+        self.advancedMaxFee = nil
+        self.selectedGasPriceType = type
+        self.gasPrice = value
+        self.confirmVC?.coordinatorDidUpdateFee(gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit)
+      }
     case .helpPressed(let tag):
       var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
       switch tag {
@@ -764,15 +770,21 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         icon: UIImage(named: "help_icon_large") ?? UIImage(),
         time: 10
       )
-    case .useChiStatusChanged(let status):
-      break
     case .updateAdvancedSetting(let gasLimit, let maxPriorityFee, let maxFee):
-      self.advancedGasLimit = gasLimit
-      self.advancedMaxPriorityFee = maxPriorityFee
-      self.advancedMaxFee = maxFee
-      self.selectedGasPriceType = .custom
+      if self.isOpenGasSettingForApprove {
+        self.approveVC?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      } else {
+        self.advancedGasLimit = gasLimit
+        self.advancedMaxPriorityFee = maxPriorityFee
+        self.advancedMaxFee = maxFee
+        self.selectedGasPriceType = .custom
+      }
     case .updateAdvancedNonce(let nonce):
-      self.advancedNonce = nonce
+      if self.isOpenGasSettingForApprove {
+        self.approveVC?.coordinatorDidUpdateAdvancedNonce(nonce)
+      } else {
+        self.advancedNonce = nonce
+      }
     default:
       break
     }
@@ -780,6 +792,10 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 }
 
 extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    self.openGasPriceSelectView(gasLimit, selectType, baseGasLimit, advancedGasLimit, advancedPriorityFee, advancedMaxFee, advancedNonce, controller)
+  }
+  
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
     self.navigationController.displayLoading()
     guard let provider = self.session.externalProvider else {
@@ -795,7 +811,7 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
         provider.sendApproveERCTokenAddress(
           for: sourceTokenAddress,
           value: controller.approveValue,
-          gasPrice: KNGasCoordinator.shared.defaultKNGas,
+          gasPrice: controller.selectedGasPrice,
           gasLimit: gasLimit,
           toAddress: self.bridgeContract) { result in
             switch result {
@@ -857,6 +873,35 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
     self.estimateGasForApprove(tokenAddress: tokenAddress.description, value: value) { estGas in
       controller.coordinatorDidUpdateGasLimit(estGas)
     }
+  }
+  
+  fileprivate func openGasPriceSelectView(_ gasLimit: BigInt, _ selectType: KNSelectedGasPriceType, _ baseGasLimit: BigInt, _ advancedGasLimit: String?, _ advancedPriorityFee: String?, _ advancedMaxFee: String?, _ advancedNonce: String?, _ controller: UIViewController) {
+    let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: false, gasLimit: gasLimit, selectType: selectType, isContainSlippageSection: false)
+    viewModel.baseGasLimit = baseGasLimit
+    viewModel.updateGasPrices(
+      fast: KNGasCoordinator.shared.fastKNGas,
+      medium: KNGasCoordinator.shared.standardKNGas,
+      slow: KNGasCoordinator.shared.lowKNGas,
+      superFast: KNGasCoordinator.shared.superFastKNGas
+    )
+    viewModel.advancedGasLimit = advancedGasLimit
+    viewModel.advancedMaxPriorityFee = advancedPriorityFee
+    viewModel.advancedMaxFee = advancedMaxFee
+    viewModel.advancedNonce = advancedNonce
+    self.isOpenGasSettingForApprove = true
+    let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
+    vc.delegate = self
+    
+    self.getLatestNonce { result in
+      switch result {
+      case .success(let nonce):
+        vc.coordinatorDidUpdateCurrentNonce(nonce)
+      case .failure(let error):
+        self.navigationController.showErrorTopBannerMessage(message: error.description)
+      }
+    }
+    
+    controller.present(vc, animated: true, completion: nil)
   }
 }
 
