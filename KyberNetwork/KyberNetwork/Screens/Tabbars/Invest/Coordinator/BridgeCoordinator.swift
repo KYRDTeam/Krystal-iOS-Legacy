@@ -23,6 +23,7 @@ class PoolInfo: Codable {
   var logoUrl: String = ""
   var name: String = ""
   var symbol: String = ""
+  var isUnlimited: Bool = false
 
   init(json: JSONDictionary) {
     self.anyToken = json["anyToken"] as? String ?? ""
@@ -31,6 +32,7 @@ class PoolInfo: Codable {
     self.logoUrl = json["logoUrl"] as? String ?? ""
     self.name = json["name"] as? String ?? ""
     self.symbol = json["symbol"] as? String ?? ""
+    self.isUnlimited = json["isUnlimited"] as? Bool ?? false
   }
   
   func liquidityPoolString() -> String {
@@ -185,12 +187,12 @@ class BridgeCoordinator: NSObject, Coordinator {
   func appCoordinatorDidUpdateChain() {
     self.rootViewController.viewModel = BridgeViewModel(wallet: self.session.wallet)
     self.rootViewController.coordinatorDidUpdateChain()
-    self.fetchData()
   }
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.fetchData()
   }
   
   func coordinatorDidUpdatePendingTx() {
@@ -359,7 +361,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           if let address = currentDestChainToken?.address {
             self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
               self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
-              self.rootViewController.viewModel.showToPoolInfo = true
+              self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
               self.rootViewController.coordinatorDidUpdateData()
             }
           }
@@ -429,10 +431,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let fee = self.gasPrice * self.estimateGasLimit
-          let feeString: String = fee.displayRate(decimals: 18)
-
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, fee: feeString, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc
@@ -665,6 +664,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
               )
               
               internalHistoryTransaction.extraData = extraData
+              self.session.crosschainTxService.addPendingTxHash(txHash: hash)
               EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
               controller.dismiss(animated: true) {
                 self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)

@@ -85,6 +85,21 @@ class BridgeViewModel {
 
   func updateWallet(_ wallet: Wallet) {
     self.wallet = wallet
+    // reset info when update wallet
+    self.resetUI()
+  }
+  
+  func resetUI() {
+    self.currentSourceToken = nil
+    self.currentSourcePoolInfo = nil
+    self.currentDestPoolInfo = nil
+    self.currentDestChain = nil
+    self.currentDestToken = nil
+    self.currentSendToAddress = ""
+    self.sourceAmount = 0
+    self.showFromPoolInfo = false
+    self.showToPoolInfo = false
+    
   }
 
   func fromDataSource() -> [FromSectionRows] {
@@ -169,6 +184,8 @@ class BridgeViewModel {
         cell.selectMaxBlock = self.selectMaxBlock
         if self.sourceAmount > 0 {
           cell.amountTextField.text = StringFormatter.amountString(value: self.sourceAmount)
+        } else {
+          cell.amountTextField.text = ""
         }
         if let currentSourceToken = self.currentSourceToken {
           cell.selectTokenButton.setTitle(currentSourceToken.symbol, for: .normal)
@@ -193,7 +210,7 @@ class BridgeViewModel {
         if let currentDestToken = self.currentDestToken, !currentSourceText.isEmpty {
           if let currentSourceToken = self.currentSourceToken {
             let amountString = currentSourceToken.getBalanceBigInt().fullString(decimals: currentSourceToken.decimals)
-            let amountDouble = Double(amountString) ?? 0.0
+            let amountDouble = amountString.doubleValue
             if self.sourceAmount > amountDouble {
               errMsg = "Insufficient".toBeLocalised() + " \(currentDestToken.symbol) " + "balance".toBeLocalised()
             }
@@ -235,12 +252,14 @@ class BridgeViewModel {
         cell.setDisableSelectToken(shouldDisable: true)
         if self.sourceAmount > 0 {
           cell.amountTextField.text = self.calculateDesAmountString()
+        } else {
+          cell.amountTextField.text = ""
         }
         var errMsg: String?
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
           let decimal = self.currentDestToken?.decimals ?? 0
-          if liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
+          if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
             errMsg = "Sorry, we will find some peg to input here".toBeLocalised()
           }
         }

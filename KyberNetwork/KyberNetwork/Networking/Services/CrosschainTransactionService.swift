@@ -11,6 +11,7 @@ import Moya
 class CrosschainTransactionService {
   
   var timer: Timer?
+  var pendingTxHashes: [String] = []
   
   deinit {
     timer?.invalidate()
@@ -18,8 +19,13 @@ class CrosschainTransactionService {
   }
   
   func cancelScheduledFetching() {
+    pendingTxHashes = []
     timer?.invalidate()
     timer = nil
+  }
+  
+  func addPendingTxHash(txHash: String) {
+    self.pendingTxHashes.append(txHash)
   }
   
   func scheduleFetchPendingTransaction() {
@@ -29,21 +35,17 @@ class CrosschainTransactionService {
   }
   
   func refreshPendingTransactionStatus() {
-    let pendingTxs = EtherscanTransactionStorage.shared.getInternalHistoryTransaction().filter { $0.type == .bridge }
-    guard let tx = pendingTxs.last else { return }
-    getTransactionStatus(txHash: tx.txHash, chainId: "\(tx.chain.getChainId())") { extraData in
+    guard let txHash = pendingTxHashes.last else { return }
+    getTransactionStatus(txHash: txHash, chainId: "\(KNGeneralProvider.shared.currentChain.getChainId())") { [weak self] extraData in
       guard let extraData = extraData else {
         return
       }
-      if extraData.isSuccess {
-        EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(tx.txHash)
-      } else {
-        EtherscanTransactionStorage.shared.removeInternalHistoryTransactionWithHash(tx.hash)
-        tx.acceptExtraData(extraData: extraData)
-        EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(tx)
+      if extraData.isCompleted {
+        self?.pendingTxHashes.removeAll { $0 == txHash }
       }
       var userInfo: [String: Any] = [:]
-      userInfo["transaction"] = tx
+      userInfo["extraDa"] = extraData
+      userInfo["txHash"] = txHash
       KNNotificationUtil.postNotification(
         for: kTransactionDidUpdateNotificationKey,
         object: nil,

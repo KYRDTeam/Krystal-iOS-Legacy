@@ -55,6 +55,13 @@ struct ExtraData: Codable {
   var type: String?
   var error: String?
   var crosschainStatus: String?
+  
+  static let terminatedStatuses: [String] = [
+    "success",
+    "failure",
+    "timeout",
+    "exceed_limit"
+  ]
 }
 
 struct ExtraBridgeTransaction: Codable {
@@ -107,7 +114,7 @@ struct ExtraBridgeTransaction: Codable {
   }
   
   var isCompleted: Bool {
-    return txStatus.lowercased() == "success" || txStatus.lowercased() == "failure" || txStatus.lowercased() == "failed"
+    return ExtraData.terminatedStatuses.contains(txStatus.lowercased())
   }
   
 }
