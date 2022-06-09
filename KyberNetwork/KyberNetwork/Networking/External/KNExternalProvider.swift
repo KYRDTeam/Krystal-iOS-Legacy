@@ -458,6 +458,28 @@ class KNExternalProvider {
         }
     }
   }
+  
+  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, address: Address, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    KNGeneralProvider.shared.approve(
+      token: token,
+      value: value,
+      account: self.account,
+      keystore: self.keystore,
+      currentNonce: self.minTxCount,
+      networkAddress: address,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit
+    ) { [weak self] result in
+        guard let `self` = self else { return }
+        switch result {
+        case .success(let txCount):
+          self.minTxCount = txCount
+          completion(.success(true))
+        case .failure(let error):
+          completion(.failure(error))
+        }
+    }
+  }
 
   func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     var address: Address?

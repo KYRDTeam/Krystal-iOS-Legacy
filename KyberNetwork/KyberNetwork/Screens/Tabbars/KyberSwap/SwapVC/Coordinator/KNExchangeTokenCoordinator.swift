@@ -1408,6 +1408,10 @@ extension KNExchangeTokenCoordinator: ChooseRateViewControllerDelegate {
 }
 
 extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
+    
+  }
+  
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
     guard case .real(let account) = self.session.wallet.type else {
       return

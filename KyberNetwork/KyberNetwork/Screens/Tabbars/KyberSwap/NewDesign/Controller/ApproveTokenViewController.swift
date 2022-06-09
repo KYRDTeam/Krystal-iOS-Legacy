@@ -23,9 +23,20 @@ protocol ApproveTokenViewModel {
   var tokenAddress: Address? { get }
   var gasLimit: BigInt { get set }
   var value: BigInt { get set }
+  var selectedGasPriceType: KNSelectedGasPriceType { get set }
+  var advancedGasLimit: String? { get set }
+  var advancedMaxPriorityFee: String? { get set }
+  var advancedMaxFee: String? { get set }
+  var advancedNonce: String? { get set }
+  var customSetting: ConfirmAdvancedSetting { get }
+  var showEditSettingButton: Bool { get set }
+  var gasPrice: BigInt { get set }
+  func resetAdvancedSettings()
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType)
 }
 
 class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
+  var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
 
@@ -70,6 +81,71 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   var symbol: String {
     return self.token?.symbol ?? ""
   }
+  
+  var selectedGasPriceType: KNSelectedGasPriceType = .medium
+  
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+  
+  var customSetting: ConfirmAdvancedSetting {
+    return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
+  }
+  
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
+    default: return
+    }
+  }
+  
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    self.advancedNonce = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
 
   init(token: TokenObject, res: BigInt) {
     self.token = token
@@ -78,6 +154,7 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
 }
 
 class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
+  var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
 
@@ -120,12 +197,78 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
   var subTitleText: String {
     return "You need to approve Krystal to spend \(self.symbol.uppercased())"
   }
+  
+  var selectedGasPriceType: KNSelectedGasPriceType = .medium
+  
+  var advancedGasLimit: String? {
+    didSet {
+      if self.advancedGasLimit != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxPriorityFee: String? {
+    didSet {
+      if self.advancedMaxPriorityFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedMaxFee: String? {
+    didSet {
+      if self.advancedMaxFee != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+
+  var advancedNonce: String? {
+    didSet {
+      if self.advancedNonce != nil {
+        self.selectedGasPriceType = .custom
+      }
+    }
+  }
+  
+  var customSetting: ConfirmAdvancedSetting {
+    return ConfirmAdvancedSetting(gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, advancedGasLimit: self.advancedGasLimit, advancedPriorityFee: self.advancedMaxPriorityFee, avancedMaxFee: self.advancedMaxFee, advancedNonce: Int(self.advancedNonce ?? ""))
+  }
+  
+  func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType) {
+    self.selectedGasPriceType = type
+    switch type {
+    case .fast: self.gasPrice = KNGasCoordinator.shared.fastKNGas
+    case .medium: self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    case .slow: self.gasPrice = KNGasCoordinator.shared.lowKNGas
+    case .custom:
+      if let customGasPrice = self.advancedMaxFee?.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+          let customGasLimitString = self.advancedGasLimit,
+          let customGasLimit = BigInt(customGasLimitString) {
+        self.gasPrice = customGasPrice
+        self.gasLimit = customGasLimit
+      }
+    default: return
+    }
+  }
+  
+  func resetAdvancedSettings() {
+    self.advancedGasLimit = nil
+    self.advancedMaxPriorityFee = nil
+    self.advancedMaxFee = nil
+    self.advancedNonce = nil
+    if self.selectedGasPriceType == .custom {
+      self.selectedGasPriceType = .medium
+    }
+  }
 }
 
 protocol ApproveTokenViewControllerDelegate: class {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt)
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt)
   func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt)
+  func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
 class ApproveTokenViewController: KNBaseViewController {
@@ -149,6 +292,10 @@ class ApproveTokenViewController: KNBaseViewController {
   
   var approveValue: BigInt {
     return self.viewModel.value
+  }
+  
+  var selectedGasPrice: BigInt {
+    return self.viewModel.gasPrice
   }
 
   init(viewModel: ApproveTokenViewModel) {
@@ -176,6 +323,12 @@ class ApproveTokenViewController: KNBaseViewController {
     if let tokenAddress = self.viewModel.tokenAddress {
       self.delegate?.approveTokenViewControllerGetEstimateGas(self, tokenAddress: tokenAddress, value: self.viewModel.value)
     }
+    
+    if !self.viewModel.showEditSettingButton {
+      self.editIcon.isHidden = true
+      self.editLabel.isHidden = true
+      self.editButton.isHidden = true
+    }
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {
@@ -198,7 +351,7 @@ class ApproveTokenViewController: KNBaseViewController {
   }
 
   @IBAction func editButtonTapped(_ sender: Any) {
-    
+    self.delegate?.approveTokenViewControllerDidSelectGasSetting(self, gasLimit: self.viewModel.gasLimit, baseGasLimit: self.viewModel.gasLimit, selectType: self.viewModel.selectedGasPriceType, advancedGasLimit: self.viewModel.advancedGasLimit, advancedPriorityFee: self.viewModel.advancedMaxPriorityFee, advancedMaxFee: self.viewModel.advancedMaxFee, advancedNonce: self.viewModel.advancedNonce)
   }
 
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
@@ -209,11 +362,35 @@ class ApproveTokenViewController: KNBaseViewController {
     self.dismiss(animated: true, completion: nil)
   }
   
+  fileprivate func updateGasFeeUI() {
+    self.gasFeeLabel.text = self.viewModel.getFeeString()
+    self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
+  }
+  
   func coordinatorDidUpdateGasLimit(_ gas: BigInt) {
     self.viewModel.gasLimit = gas
     guard self.isViewLoaded else { return }
-    self.gasFeeLabel.text = self.viewModel.getFeeString()
-    self.gasFeeEstUSDLabel.text = self.viewModel.getFeeUSDString()
+    updateGasFeeUI()
+  }
+  
+  func coordinatorDidUpdateAdvancedSettings(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    self.viewModel.advancedGasLimit = gasLimit
+    self.viewModel.advancedMaxPriorityFee = maxPriorityFee
+    self.viewModel.advancedMaxFee = maxFee
+    self.viewModel.selectedGasPriceType = .custom
+    self.updateGasFeeUI()
+  }
+  
+  func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {
+    self.viewModel.advancedNonce = nonce
+  }
+  
+  func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
+    self.viewModel.selectedGasPriceType = type
+    self.viewModel.gasPrice = value
+    self.viewModel.updateSelectedGasPriceType(type)
+    self.updateGasFeeUI()
+    self.viewModel.resetAdvancedSettings()
   }
 }
 
