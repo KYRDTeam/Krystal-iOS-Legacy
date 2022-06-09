@@ -96,7 +96,6 @@ class BridgeViewModel {
     self.currentDestPoolInfo = nil
     self.currentDestChain = nil
     self.currentDestToken = nil
-    self.currentSendToAddress = ""
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
