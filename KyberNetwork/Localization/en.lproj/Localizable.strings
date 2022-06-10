@@ -260,7 +260,7 @@
 "importing.wallet" = "Importing Wallet";
 "confirm" = "Confirm";
 "rate" = "Rate";
-"transaction.fee" = "GAS Fee";
+"gas.fee" = "GAS Fee";
 "version" = "Version";
 "fee" = "Fee";
 "fast" = "Fast";
@@ -853,6 +853,7 @@
 "bridge.fee" = "Bridge fee";
 "estimated.time.of.arrival" = "Estimated time of arrival";
 "x.mins" = "%@ mins";
+"transaction.fee" = "Transaction fee";
 
 // Receive screen
 "receive_screen_warning_text" = "Send only %@ token or %@ to this address. Sending any other token may result in loss of your deposit.";

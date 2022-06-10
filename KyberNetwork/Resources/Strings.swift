@@ -73,7 +73,8 @@ struct Strings {
   static let transactionBroadcasted = "transaction.being.broadcasted".toBeLocalised()
   static let cannotCreateTransaction = "can.not.create.transaction".toBeLocalised()
   static let noTransactionFound = "no.transaction.found".toBeLocalised()
-  static let bridgeFee = "bridge.fee".toBeLocalised();
+  static let bridgeFee = "bridge.fee".toBeLocalised()
+  static let transactionFee = "transaction.fee".toBeLocalised()
   static let estimatedTimeOfArrival = "estimated.time.of.arrival".toBeLocalised()
   static let xMins = "x.mins".toBeLocalised()
   

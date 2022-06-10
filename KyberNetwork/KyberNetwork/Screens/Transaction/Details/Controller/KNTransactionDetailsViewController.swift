@@ -64,7 +64,7 @@ class KNTransactionDetailsViewController: KNBaseViewController {
   fileprivate func setupUI() {
     self.navigationTitleLabel.text = NSLocalizedString("transaction.details", value: "Transaction Details", comment: "")
 
-    self.feeTextLabel.text = NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")
+    self.feeTextLabel.text = Strings.transactionFee
     self.fromAddressContainerView.rounded(radius: 8)
     self.toAddressContainerView.rounded(radius: 8)
   }

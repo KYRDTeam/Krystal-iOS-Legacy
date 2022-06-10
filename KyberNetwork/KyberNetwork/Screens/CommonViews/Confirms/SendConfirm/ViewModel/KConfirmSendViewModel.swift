@@ -100,7 +100,7 @@ struct KConfirmSendViewModel {
     return "~ \(displayString) USD"
   }
 
-  var transactionFeeText: String { return "\(NSLocalizedString("transaction.fee", value: "Transaction Fee", comment: "")): " }
+  var transactionFeeText: String { return "\(Strings.transactionFee): " }
   var transactionFeeETHString: String {
     if let solTransaction = self.solTransaction {
       return solTransaction.fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9) + " \(KNGeneralProvider.shared.quoteToken)"

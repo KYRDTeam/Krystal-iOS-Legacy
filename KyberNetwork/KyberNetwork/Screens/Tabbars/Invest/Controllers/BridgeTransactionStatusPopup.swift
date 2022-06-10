@@ -35,7 +35,6 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   
   fileprivate(set) var transaction: InternalHistoryTransaction
   let transitor = TransitionDelegate()
-  let crosschainTxService = CrosschainTransactionService()
   
   init(transaction: InternalHistoryTransaction) {
     self.transaction = transaction
@@ -97,7 +96,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   func removeObserver() {
     NotificationCenter.default.removeObserver(
       self,
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      name: Notification.Name(kBridgeExtraDataUpdateNotificationKey),
       object: nil
     )
   }
@@ -106,24 +105,13 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(onBridgeTxUpdate(_:)),
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      name: Notification.Name(kBridgeExtraDataUpdateNotificationKey),
       object: nil
     )
   }
   
   @objc func onBridgeTxUpdate(_ notification: Notification) {
-    if let tx = notification.object as? InternalHistoryTransaction {
-      guard tx.txHash == self.transaction.txHash else {
-        return
-      }
-      let chainID = "\(transaction.chain.getChainId())"
-      self.crosschainTxService.getTransactionStatus(txHash: transaction.hash, chainId: chainID) { [weak self] extra in
-        self?.transaction.acceptExtraData(extraData: extra)
-        DispatchQueue.main.async {
-          self?.reloadData()
-        }
-      }
-    } else if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
+    if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
       guard let txHash = notification.userInfo?["txHash"] as? String, txHash == self.transaction.txHash else {
         return
       }

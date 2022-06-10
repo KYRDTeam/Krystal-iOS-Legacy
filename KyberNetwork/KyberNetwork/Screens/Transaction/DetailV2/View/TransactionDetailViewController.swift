@@ -64,7 +64,7 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
       return cell
     case .bridgeFee(let feeString):
       let cell = tableView.dequeueReusableCell(TxInfoCell.self, indexPath: indexPath)!
-      cell.configure(title: Strings.bridgeFee, value: feeString, showHelpIcon: true)
+      cell.configure(title: Strings.transactionFee, value: feeString, showHelpIcon: false)
       cell.selectionStyle = .none
       return cell
     case .estimatedBridgeTime(let timeString):

@@ -25,7 +25,9 @@ class CrosschainTransactionService {
   }
   
   func addPendingTxHash(txHash: String) {
-    self.pendingTxHashes.append(txHash)
+    if !pendingTxHashes.contains(txHash) {
+      self.pendingTxHashes.append(txHash)
+    }
   }
   
   func scheduleFetchPendingTransaction() {
@@ -40,14 +42,14 @@ class CrosschainTransactionService {
       guard let extraData = extraData else {
         return
       }
-      if extraData.isCompleted {
+      if extraData.from?.isCompleted == true, extraData.to?.isCompleted == true {
         self?.pendingTxHashes.removeAll { $0 == txHash }
       }
       var userInfo: [String: Any] = [:]
-      userInfo["extraDa"] = extraData
+      userInfo["extraData"] = extraData
       userInfo["txHash"] = txHash
       KNNotificationUtil.postNotification(
-        for: kTransactionDidUpdateNotificationKey,
+        for: kBridgeExtraDataUpdateNotificationKey,
         object: nil,
         userInfo: userInfo
       )
