@@ -167,6 +167,12 @@ class BridgeViewController: KNBaseViewController {
     self.updateUIPendingTxIndicatorView()
   }
   
+  func coordinatorDidSuccessApprove(state: InternalTransactionState) {
+    self.hideLoading()
+    self.viewModel.isNeedApprove = state != .done
+    self.tableView.reloadData()
+  }
+  
   func coordinatorDidUpdateAllowance(token: TokenObject, allowance: BigInt) {
     guard let currentSourceToken = self.viewModel.currentSourceToken else { return }
     
@@ -196,9 +202,8 @@ class BridgeViewController: KNBaseViewController {
     self.hideLoading()
   }
   
-  func coordinatorSuccessApprove(token: TokenObject) {
-    self.viewModel.isNeedApprove = false
-    self.tableView.reloadData()
+  func coordinatorStartApprove(token: TokenObject) {
+    self.showLoadingHUD()
   }
 
   func coordinatorFailApprove(token: TokenObject) {

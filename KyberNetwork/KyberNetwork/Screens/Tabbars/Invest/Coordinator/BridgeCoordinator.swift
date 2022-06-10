@@ -85,6 +85,7 @@ class SourceBridgeToken: Codable {
   var address: String = ""
   var name: String = ""
   var symbol: String = ""
+  var logoUrl: String = ""
   var decimals: Int = 0
   var destChains: [String: DestBridgeToken] = [:]
   
@@ -112,8 +113,9 @@ class SourceBridgeToken: Codable {
           self.destChains[key] = destBridgeToken
         }
       }
-      print(self)
     }
+
+    self.logoUrl = json["logoUrl"] as? String ?? ""
   }
 }
 
@@ -197,12 +199,23 @@ class BridgeCoordinator: NSObject, Coordinator {
   
   func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
     self.session = session
+    self.gasPrice = KNGasCoordinator.shared.standardKNGas
+    self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
+    self.selectedGasPriceType = .medium
     self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
     self.fetchData()
   }
   
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController.coordinatorDidUpdatePendingTx()
+  }
+  
+  func coordinatorDidUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+    if tx.state == .pending {
+      return false
+    }
+    self.rootViewController.coordinatorDidSuccessApprove(state: tx.state)
+    return true
   }
   
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
@@ -410,15 +423,19 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       }
       self.rootViewController.openSwitchChainPopup(sourceChain, false)
     case .selectSourceToken:
-      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
+//      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
+//      let supportedAddress = self.data.map { return $0.address.lowercased() }
+//      tokens = tokens.filter({
+//        supportedAddress.contains($0.address.lowercased())
+//      })
         
-      let supportedAddress = self.data.map { return $0.address.lowercased() }
-      tokens = tokens.filter({
-        supportedAddress.contains($0.address.lowercased())
-      })
+      let supportedTokens = self.data.map { sourceBridgeToken -> TokenObject in
+        let token = TokenObject(name: sourceBridgeToken.name, symbol: sourceBridgeToken.symbol, address: sourceBridgeToken.address, decimals: sourceBridgeToken.decimals, logo: sourceBridgeToken.logoUrl)
+        return token
+      }
         
       let viewModel = KNSearchTokenViewModel(
-        supportedTokens: tokens
+        supportedTokens: supportedTokens
       )
       let controller = KNSearchTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
@@ -820,7 +837,8 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
           toAddress: self.bridgeContract) { result in
             switch result {
             case .success:
-              self.rootViewController.coordinatorSuccessApprove(token: token)
+              // TODO show loading approve here
+              self.rootViewController.coordinatorStartApprove(token: token)
             case .failure(let error):
               var errorMessage = error.description
               if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {

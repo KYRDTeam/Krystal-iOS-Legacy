@@ -207,6 +207,7 @@ class InvestCoordinator: Coordinator {
     if self.dappCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.multiSendCoordinator.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.historyCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
+    if self.bridgeCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     return false
   }
   
