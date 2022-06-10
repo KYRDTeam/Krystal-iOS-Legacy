@@ -78,6 +78,7 @@ class BridgeViewModel {
   var currentSendToAddress: String = ""
   var sourceAmount: Double = 0.0
   var isValidSourceAmount: Bool = false
+  var isValidDestAmount: Bool = false
 
   init(wallet: Wallet) {
     self.wallet = wallet
@@ -273,6 +274,7 @@ class BridgeViewModel {
           cell.amountTextField.text = ""
         }
         var errMsg: String?
+        let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
           let decimal = self.currentDestToken?.decimals ?? 0
@@ -280,6 +282,7 @@ class BridgeViewModel {
             errMsg = "Insufficient pool".toBeLocalised()
           }
         }
+        self.isValidDestAmount = errMsg == nil && !currentDestText.isEmpty
         cell.showErrorIfNeed(errorMsg: errMsg)
         return cell
       case .sendToRow:
@@ -309,7 +312,7 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
-        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil {
+        if self.isValidSourceAmount && self.isValidDestAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {
