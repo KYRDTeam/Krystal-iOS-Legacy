@@ -140,7 +140,17 @@ class BridgeViewModel {
   }
   
   var estimatedDestAmount: Double {
-    return self.sourceAmount < self.calculateFee() ? 0 : self.sourceAmount - self.calculateFee()
+    guard let currentSourceToken = currentSourceToken else {
+      return 0.0
+    }
+    let feeBigInt = BigInt(self.calculateFee() * pow(10.0, Double(currentSourceToken.decimals)))
+    let sourcAmountBigInt = BigInt(self.sourceAmount * pow(10.0, Double(currentSourceToken.decimals)))
+    if sourcAmountBigInt > feeBigInt {
+      let destAmountBigInt = sourcAmountBigInt - feeBigInt
+      return destAmountBigInt.fullString(decimals: currentSourceToken.decimals).doubleValue
+    } else {
+      return 0.0
+    }
   }
   
   func calculateDesAmountString() -> String {
