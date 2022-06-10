@@ -32,6 +32,7 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var tapOutsideView: UIView!
   @IBOutlet weak var feeLabel: UILabel!
+  @IBOutlet weak var contentWidth: NSLayoutConstraint!
   
   fileprivate(set) var transaction: InternalHistoryTransaction
   let transitor = TransitionDelegate()
@@ -87,6 +88,12 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
     self.tapOutsideView.addGestureRecognizer(tapGesture)
     self.reloadData()
     self.observeTxStatus()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    contentWidth.constant = UIScreen.main.bounds.width
   }
   
   deinit {
