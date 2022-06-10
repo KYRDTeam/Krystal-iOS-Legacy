@@ -304,6 +304,15 @@ enum ChainType: Codable, CaseIterable {
       return true
     }
   }
+  
+  func isSupportedBridge() -> Bool {
+    switch self {
+    case .solana, .klaytn:
+      return false
+    default:
+      return true
+    }
+  }
 
   case eth
   case bsc

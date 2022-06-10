@@ -37,13 +37,19 @@ class TextFieldCell: UITableViewCell {
     }
   }
   
-  @objc func textFieldDidChange(_ textField: UITextField) {
-    if let textChangeBlock = self.textChangeBlock, let text = textField.text {
+  func updateUI() {
+    if let text = self.textField.text {
       if CryptoAddressValidator.isValidAddress(text) {
         self.showErrorIfNeed(errorMsg: nil)
       } else {
         self.showErrorIfNeed(errorMsg: "Invalid Address".toBeLocalised())
       }
+    }
+  }
+  
+  @objc func textFieldDidChange(_ textField: UITextField) {
+    if let textChangeBlock = self.textChangeBlock, let text = textField.text {
+      self.updateUI()
       textChangeBlock(text)
     }
   }

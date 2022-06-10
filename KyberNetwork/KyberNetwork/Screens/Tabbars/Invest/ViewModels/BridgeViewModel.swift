@@ -99,7 +99,13 @@ class BridgeViewModel {
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
-    
+    self.currentSendToAddress = self.wallet.addressString
+  }
+  
+  func resetAddressIfNeed() {
+    if !CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
+      self.currentSendToAddress = self.wallet.addressString
+    }
   }
 
   func fromDataSource() -> [FromSectionRows] {
@@ -134,7 +140,17 @@ class BridgeViewModel {
   }
   
   var estimatedDestAmount: Double {
-    return self.sourceAmount < self.calculateFee() ? 0 : self.sourceAmount - self.calculateFee()
+    guard let currentSourceToken = currentSourceToken else {
+      return 0.0
+    }
+    let feeBigInt = BigInt(self.calculateFee() * pow(10.0, Double(currentSourceToken.decimals)))
+    let sourcAmountBigInt = BigInt(self.sourceAmount * pow(10.0, Double(currentSourceToken.decimals)))
+    if sourcAmountBigInt > feeBigInt {
+      let destAmountBigInt = sourcAmountBigInt - feeBigInt
+      return destAmountBigInt.fullString(decimals: currentSourceToken.decimals).doubleValue
+    } else {
+      return 0.0
+    }
   }
   
   func calculateDesAmountString() -> String {
@@ -275,6 +291,7 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
+        cell.updateUI()
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
@@ -291,7 +308,7 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
-        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
+        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {

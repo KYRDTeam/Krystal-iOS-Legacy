@@ -174,7 +174,7 @@ class BridgeCoordinator: NSObject, Coordinator {
         self.getPoolInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId(), tokenAddress: address) { poolInfo in
           if let poolInfo = poolInfo {
             self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
-            self.rootViewController.viewModel.showFromPoolInfo = true
+            self.rootViewController.viewModel.showFromPoolInfo = poolInfo.isUnlimited == false
           }
           self.rootViewController.coordinatorDidUpdateData()
           if let completion = completion {
@@ -435,6 +435,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.rootViewController.present(controller, animated: true, completion: nil)
     case .changeShowDestAddress:
       self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
+      self.rootViewController.viewModel.resetAddressIfNeed()
       self.rootViewController.coordinatorDidUpdateData()
     case .changeDestAddress(address: let address):
       self.rootViewController.viewModel.currentSendToAddress = address
@@ -778,6 +779,9 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         self.advancedMaxPriorityFee = maxPriorityFee
         self.advancedMaxFee = maxFee
         self.selectedGasPriceType = .custom
+        if let advancedMaxFee = self.advancedMaxFee, let gasPrice = advancedMaxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let advancedGasLimit = self.advancedGasLimit, let gasLimit = BigInt(advancedGasLimit) {
+          self.confirmVC?.coordinatorDidUpdateFee(gasPrice: gasPrice, gasLimit: gasLimit)
+        }
       }
     case .updateAdvancedNonce(let nonce):
       if self.isOpenGasSettingForApprove {
@@ -920,7 +924,7 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       if let currentSourceChain = self.rootViewController.viewModel.currentSourceChain {
         self.getPoolInfo(chainId: currentSourceChain.getChainId(), tokenAddress: token.address) { poolInfo in
           self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
-          self.rootViewController.viewModel.showFromPoolInfo = true
+          self.rootViewController.viewModel.showFromPoolInfo = poolInfo?.isUnlimited == false
           self.rootViewController.coordinatorDidUpdateData()
         }
       }
