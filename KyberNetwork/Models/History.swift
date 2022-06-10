@@ -62,6 +62,10 @@ struct ExtraData: Codable {
     "timeout",
     "exceed_limit"
   ]
+  
+  var isBridgeCompleted: Bool {
+    return from?.isCompleted == true && to?.isCompleted == true
+  }
 }
 
 struct ExtraBridgeTransaction: Codable {

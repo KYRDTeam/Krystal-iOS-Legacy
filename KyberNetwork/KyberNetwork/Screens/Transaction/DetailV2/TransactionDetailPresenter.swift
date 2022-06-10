@@ -23,14 +23,20 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     self.interactor = interactor
     self.router = router
     self.view = view
+    self.crosschainTxService.scheduleFetchPendingTransaction()
   }
 
   func setupTransaction(tx: KrystalHistoryTransaction) {
-    self.txHash = tx.txHash
     self.items = getTransactionItems(tx: tx)
+    if TransactionHistoryItemType(rawValue: tx.type) == .bridge && tx.extraData?.isBridgeCompleted == false, let hash = tx.extraData?.from?.tx, !hash.isEmpty {
+      self.txHash = hash
+      self.crosschainTxService.addPendingTxHash(txHash: hash)
+      self.observeTxStatus()
+    }
   }
   
   func setupTransaction(internalTx: InternalHistoryTransaction) {
+    self.crosschainTxService.addPendingTxHash(txHash: internalTx.txHash)
     self.txHash = internalTx.txHash
     self.items = getTransactionItems(internalTx: internalTx)
     self.observeTxStatus()
@@ -146,7 +152,7 @@ extension TransactionDetailPresenter {
   func removeObserver() {
     NotificationCenter.default.removeObserver(
       self,
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      name: Notification.Name(kBridgeExtraDataUpdateNotificationKey),
       object: nil
     )
   }
@@ -155,21 +161,13 @@ extension TransactionDetailPresenter {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(onBridgeTxUpdate(_:)),
-      name: Notification.Name(kTransactionDidUpdateNotificationKey),
+      name: Notification.Name(kBridgeExtraDataUpdateNotificationKey),
       object: nil
     )
   }
   
   @objc func onBridgeTxUpdate(_ notification: Notification) {
-    if let tx = notification.object as? InternalHistoryTransaction {
-      guard tx.txHash == self.txHash else {
-        return
-      }
-      let chainID = KNGeneralProvider.shared.currentChain.getChainId().toString()
-      self.crosschainTxService.getTransactionStatus(txHash: txHash, chainId: chainID) { [weak self] extra in
-        self?.acceptBridgeExtraData(extra: extra)
-      }
-    } else if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
+    if let extraData = notification.userInfo?["extraData"] as? InternalHistoryExtraData {
       guard let txHash = notification.userInfo?["txHash"] as? String, txHash == self.txHash else {
         return
       }
@@ -181,7 +179,7 @@ extension TransactionDetailPresenter {
     if let from = extra?.from, from.isCompleted, let index = getFromTxRowIndex(isFrom: true) {
       items[index] = .bridgeSubTx(from: true, tx: from)
     }
-    if let to = extra?.to, to.isCompleted, let index = getFromTxRowIndex(isFrom: false) {
+    if let to = extra?.to, !to.tx.isEmpty, let index = getFromTxRowIndex(isFrom: false) {
       items[index] = .bridgeSubTx(from: false, tx: to)
     }
     view.reloadItems()
@@ -190,8 +188,8 @@ extension TransactionDetailPresenter {
   private func getFromTxRowIndex(isFrom: Bool) -> Int? {
     return items.firstIndex { rowType in
       switch rowType {
-      case .bridgeSubTx(let isFrom, _):
-        return isFrom
+      case .bridgeSubTx(let isFromSubTx, _):
+        return isFrom == isFromSubTx
       default:
         return false
       }
