@@ -435,6 +435,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.rootViewController.present(controller, animated: true, completion: nil)
     case .changeShowDestAddress:
       self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
+      self.rootViewController.viewModel.resetAddressIfNeed()
       self.rootViewController.coordinatorDidUpdateData()
     case .changeDestAddress(address: let address):
       self.rootViewController.viewModel.currentSendToAddress = address

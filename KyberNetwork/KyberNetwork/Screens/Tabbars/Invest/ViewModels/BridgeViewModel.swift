@@ -99,7 +99,13 @@ class BridgeViewModel {
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
-    
+    self.currentSendToAddress = self.wallet.addressString
+  }
+  
+  func resetAddressIfNeed() {
+    if !CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
+      self.currentSendToAddress = self.wallet.addressString
+    }
   }
 
   func fromDataSource() -> [FromSectionRows] {
@@ -275,6 +281,7 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
+        cell.updateUI()
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
