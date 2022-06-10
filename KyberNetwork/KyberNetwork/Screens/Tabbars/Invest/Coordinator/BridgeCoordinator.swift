@@ -778,6 +778,9 @@ extension BridgeCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         self.advancedMaxPriorityFee = maxPriorityFee
         self.advancedMaxFee = maxFee
         self.selectedGasPriceType = .custom
+        if let advancedMaxFee = self.advancedMaxFee, let gasPrice = advancedMaxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit), let advancedGasLimit = self.advancedGasLimit, let gasLimit = BigInt(advancedGasLimit) {
+          self.confirmVC?.coordinatorDidUpdateFee(gasPrice: gasPrice, gasLimit: gasLimit)
+        }
       }
     case .updateAdvancedNonce(let nonce):
       if self.isOpenGasSettingForApprove {
