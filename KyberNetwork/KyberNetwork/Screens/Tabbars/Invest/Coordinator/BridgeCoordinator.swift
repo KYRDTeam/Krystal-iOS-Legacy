@@ -174,7 +174,7 @@ class BridgeCoordinator: NSObject, Coordinator {
         self.getPoolInfo(chainId: KNGeneralProvider.shared.currentChain.getChainId(), tokenAddress: address) { poolInfo in
           if let poolInfo = poolInfo {
             self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
-            self.rootViewController.viewModel.showFromPoolInfo = true
+            self.rootViewController.viewModel.showFromPoolInfo = poolInfo.isUnlimited == false
           }
           self.rootViewController.coordinatorDidUpdateData()
           if let completion = completion {
@@ -924,7 +924,7 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
       if let currentSourceChain = self.rootViewController.viewModel.currentSourceChain {
         self.getPoolInfo(chainId: currentSourceChain.getChainId(), tokenAddress: token.address) { poolInfo in
           self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
-          self.rootViewController.viewModel.showFromPoolInfo = true
+          self.rootViewController.viewModel.showFromPoolInfo = poolInfo?.isUnlimited == false
           self.rootViewController.coordinatorDidUpdateData()
         }
       }

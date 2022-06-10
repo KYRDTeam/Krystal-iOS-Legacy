@@ -298,7 +298,7 @@ class BridgeViewModel {
         return UITableViewCell()
       case .swapRow:
         let cell = tableView.dequeueReusableCell(BridgeSwapButtonCell.self, indexPath: indexPath)!
-        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
+        if self.isValidSourceAmount && CryptoAddressValidator.isValidAddress(self.currentSendToAddress) && self.currentDestChain != nil {
           cell.swapButton.isEnabled = true
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {
