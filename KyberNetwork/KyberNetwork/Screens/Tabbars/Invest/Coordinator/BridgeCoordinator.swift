@@ -460,6 +460,9 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .checkAllowance(token: let from):
       self.getAllowance(token: from)
     case .selectSwap:
+      self.navigationController.displayLoading()
+      self.getBuildTx {
+        self.navigationController.hideLoading()
         let viewModel = self.rootViewController.viewModel
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
@@ -470,6 +473,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
           self.confirmVC = vc
           self.navigationController.present(vc, animated: true, completion: nil)
         }
+      }
     case .sendApprove(token: let token, remain: let remain, value: let value):
       let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
       vm.value = value
