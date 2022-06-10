@@ -21,6 +21,7 @@
             <connections>
                 <outlet property="containerView" destination="9wt-vG-3Cw" id="P2y-SM-AJf"/>
                 <outlet property="contentViewTopContraint" destination="E8S-Iv-kD2" id="BNX-wI-WiR"/>
+                <outlet property="contentWidth" destination="Zgz-Dw-UJr" id="9e5-wr-Dj9"/>
                 <outlet property="feeLabel" destination="kzF-vF-B83" id="6w8-3m-2X7"/>
                 <outlet property="fromChainIcon" destination="1iD-6v-Uix" id="vuV-BO-pSD"/>
                 <outlet property="fromChainNameLabel" destination="KiM-tv-gCu" id="qes-nB-pxk"/>
@@ -400,7 +401,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Transaction fee" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeZ-Nm-CNg">
-                            <rect key="frame" x="45.000000000000007" y="497" width="83.666666666666686" height="20"/>
+                            <rect key="frame" x="45" y="497" width="258.66666666666669" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="ZzS-LX-4Ra"/>
                             </constraints>
@@ -434,7 +435,7 @@
                                 <constraint firstAttribute="width" constant="24" id="w9U-oQ-Fih"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="123" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzF-vF-B83">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="123" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzF-vF-B83">
                             <rect key="frame" x="307.66666666666669" y="497" width="21.333333333333314" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="a1A-xY-EpY"/>
@@ -462,6 +463,7 @@
                         <constraint firstItem="ebd-p1-Bkx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QAa-dS-uuV" secondAttribute="trailing" constant="10" id="U2T-RL-ZCa"/>
                         <constraint firstItem="6qJ-6z-Exi" firstAttribute="top" secondItem="A6j-zt-EQO" secondAttribute="bottom" constant="15" id="Uro-Aa-5fj"/>
                         <constraint firstAttribute="height" constant="678" id="ZIQ-gI-yK4"/>
+                        <constraint firstAttribute="width" constant="375" id="Zgz-Dw-UJr"/>
                         <constraint firstItem="A6j-zt-EQO" firstAttribute="top" secondItem="8Rk-RI-043" secondAttribute="bottom" constant="35" id="aIS-90-ive"/>
                         <constraint firstItem="OeZ-Nm-CNg" firstAttribute="top" secondItem="kyf-uZ-u6V" secondAttribute="bottom" constant="21" id="etF-4g-jzx"/>
                         <constraint firstItem="ebd-p1-Bkx" firstAttribute="centerY" secondItem="QAa-dS-uuV" secondAttribute="centerY" id="foL-F2-z7u"/>
