@@ -18,7 +18,11 @@ class SwitchChainWalletsListViewModel {
       return KNWalletTableCellViewModel(wallet: obj)
     })
     if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-      self.selectedAddress = selected == .solana ? appDelegate.coordinator.session.currentWalletObject.solanaAddress : appDelegate.coordinator.session.wallet.addressString
+      let address = selected == .solana ? appDelegate.coordinator.session.currentWalletObject.solanaAddress : appDelegate.coordinator.session.wallet.addressString
+      let foundWallet = wallets.first { element in
+        return element.address == address
+      }
+      self.selectedAddress = foundWallet != nil ? address : ""
     }
   }
   
