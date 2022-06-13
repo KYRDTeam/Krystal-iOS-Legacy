@@ -256,18 +256,14 @@ class OverviewMainViewModel {
     }
     let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
     let totalBigInt = BigInt(total * pow(10.0, 18.0)) - hideAndDeleteTotal
-    
-    //convert đang bị nil ở đây
-    let totalDoubleValue = totalBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())//Double(totalBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()))
-//    self.summaryDataSource.value.removeAll()
+
     let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
       //re-calculate value and percent for each chain by subtract to hide or delete tokens
       if let unitValueModel = summaryModel.quotes[self.currencyMode.toString()] {
         let hideAndDeleteBigInt = KNSupportedTokenStorage.shared.getHideAndDeleteTokensBalanceUSD(self.currencyMode, chainType: summaryModel.chainType())
-        let hideAndDeleteValue = hideAndDeleteBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())
-        let chainBalanceValue = unitValueModel.value - hideAndDeleteValue
-        if totalDoubleValue > 0 {
-          summaryModel.percentage = chainBalanceValue / totalDoubleValue
+        let chainBalanceBigInt = BigInt(unitValueModel.value * pow(10.0, 18.0)) - hideAndDeleteBigInt
+        if totalBigInt > 0 {
+          summaryModel.percentage = chainBalanceBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber()) / totalBigInt.doubleUSDValue(currencyDecimal: self.currencyMode.decimalNumber())
         }
       }
       
