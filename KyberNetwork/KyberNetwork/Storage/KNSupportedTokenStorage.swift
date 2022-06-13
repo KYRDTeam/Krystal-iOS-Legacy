@@ -485,13 +485,9 @@ class KNSupportedTokenStorage {
   
   func getAllChainHideAndDeleteTokensBalanceUSD( _ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .eth)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .bsc)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .polygon)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .avalanche)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .fantom)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .cronos)
-    total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: .arbitrum)
+    ChainType.getAllChain().forEach { chain in
+      total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: chain)
+    }
     return total
   }
 
