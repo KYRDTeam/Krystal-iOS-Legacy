@@ -65,6 +65,9 @@ class OverviewSearchTokenViewModel {
 
 class OverviewSearchTokenViewController: KNBaseViewController {
   
+  @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var topView: UIView!
+  @IBOutlet weak var topViewHeight: NSLayoutConstraint!
   @IBOutlet weak var searchField: UITextField!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var emptyView: UIView!
@@ -73,7 +76,7 @@ class OverviewSearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var suggestSearchTItle: UILabel!
   @IBOutlet weak var suggestSearchTagList: TagListView!
   @IBOutlet weak var suggestSearchTitleTopContraint: NSLayoutConstraint!
-  
+  @IBOutlet weak var cancelButton: UIButton!
   let viewModel = OverviewSearchTokenViewModel()
   weak var delegate: OverviewSearchTokenViewControllerDelegate?
   
@@ -112,6 +115,28 @@ class OverviewSearchTokenViewController: KNBaseViewController {
       }
     } else {
       self.emptyView.isHidden = true
+    }
+  }
+  
+  func updateUIStartSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 77
+      self.topViewHeight.constant = 0
+      self.topView.isHidden = true
+      self.cancelButton.isHidden = false
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func updateUIEndSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 21
+      self.topViewHeight.constant = 90
+      self.topView.isHidden = false
+      self.cancelButton.isHidden = true
+      self.view.layoutIfNeeded()
     }
   }
   
@@ -157,6 +182,16 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
 }
 
 extension OverviewSearchTokenViewController: UITextFieldDelegate {
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.updateUIStartSearchingMode()
+    return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.updateUIEndSearchingMode()
+  }
+  
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
     self.viewModel.searchText = text
