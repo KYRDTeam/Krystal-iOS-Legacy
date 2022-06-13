@@ -140,6 +140,11 @@ class OverviewSearchTokenViewController: KNBaseViewController {
     }
   }
   
+  @IBAction func cancelButtonTapped(_ sender: Any) {
+    self.searchField.resignFirstResponder()
+    self.updateUIEndSearchingMode()
+  }
+
   func coordinatorUpdateCurrency(_ mode: CurrencyMode) {
     self.viewModel.currencyMode = mode
   }
