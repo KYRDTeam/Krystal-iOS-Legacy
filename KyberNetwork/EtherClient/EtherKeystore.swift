@@ -120,16 +120,30 @@ open class EtherKeystore: Keystore {
             }
         case .privateKey(let privateKey):
           if importType == .solana {
-            let result = self.solanaUtil.importKeyPair(privateKey)
-            if let address = result.0, let walletIdentity = result.2 {
-              if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
-                completion(.failure(.duplicateAccount))
+            if privateKey.isSoletPrivateKey {
+              let result = self.solanaUtil.importSoletString(privateKey)
+              if let address = result.0, let walletIdentity = result.2 {
+                if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                  completion(.failure(.duplicateAccount))
+                } else {
+                  completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                }
+                
               } else {
-                completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                completion(.failure(.failedToCreateWallet))
               }
-              
             } else {
-              completion(.failure(.failedToCreateWallet))
+              let result = self.solanaUtil.importKeyPair(privateKey)
+              if let address = result.0, let walletIdentity = result.2 {
+                if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                  completion(.failure(.duplicateAccount))
+                } else {
+                  completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                }
+                
+              } else {
+                completion(.failure(.failedToCreateWallet))
+              }
             }
           } else {
             keystore(for: privateKey, password: newPassword) { result in
