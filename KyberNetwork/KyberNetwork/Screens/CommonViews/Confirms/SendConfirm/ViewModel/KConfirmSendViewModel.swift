@@ -88,9 +88,9 @@ struct KConfirmSendViewModel {
 
   var usdValueString: String {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
-//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: self.token) else { return "" }
+
     let displayString: String = {
-      let usd = self.transaction?.value ?? BigInt(1) * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
+      let usd = (self.transaction?.value ?? BigInt(1)) * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
     return usd.string(
       units: EthereumUnit.ether,
       minFractionDigits: 0,
@@ -130,6 +130,7 @@ struct KConfirmSendViewModel {
     let valueString: String = usd.displayRate(decimals: 18)
     return "~ \(valueString) USD"
   }
+
   var transactionGasPriceString: String {
     if let solTransaction = self.solTransaction {
       return ""
