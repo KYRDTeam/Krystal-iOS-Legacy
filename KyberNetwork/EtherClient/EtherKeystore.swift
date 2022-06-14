@@ -168,17 +168,33 @@ open class EtherKeystore: Keystore {
           }
         case .mnemonic(let words, let password):
           let key = words.joined(separator: " ")
-          do {
-            let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
-            _ = setPassword(newPassword, for: account)
-            completion(.success(Wallet(type: .real(account))))
-          } catch let error {
-            if case KeyStore.Error.accountAlreadyExists = error {
-              completion(.failure(.duplicateAccount))
+          if words.count == 24 && importType == .solana {
+            let result = self.solanaUtil.importSoletSeeds(key)
+            if let address = result.0, let walletIdentity = result.2 {
+              if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                completion(.failure(.duplicateAccount))
+              } else {
+                completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+              }
+              
             } else {
-              completion(.failure(.failedToImport(error)))
+              completion(.failure(.failedToCreateWallet))
+            }
+            
+          } else {
+            do {
+              let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
+              _ = setPassword(newPassword, for: account)
+              completion(.success(Wallet(type: .real(account))))
+            } catch let error {
+              if case KeyStore.Error.accountAlreadyExists = error {
+                completion(.failure(.duplicateAccount))
+              } else {
+                completion(.failure(.failedToImport(error)))
+              }
             }
           }
+          
         case .watch(let address, let name):
           if importType == .solana {
             self.solanaUtil.addWatchWallet(name: name, address: address)
