@@ -65,7 +65,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       guard let seeds = self.seedsTextField.text?.trimmed else { return false }
       var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      return self.importType == .solana ? words.count == 24 :  words.count == self.numberWords
+      return self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
     if enabled {
@@ -98,7 +98,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       }
       var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      let isVaild = self.importType == .solana ? words.count == 24 :  words.count == self.numberWords
+      let isVaild = self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
       if isVaild {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
@@ -165,7 +165,7 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
     words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
     self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
-    let isVaild = self.importType == .solana ? words.count == 24 :  words.count == self.numberWords
+    let isVaild = self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
     let color = words.isEmpty || isVaild ? UIColor.Kyber.border : UIColor.Kyber.strawberry
     self.wordsCountLabel.textColor = color
     self.wordsCountLabel.addLetterSpacing()
