@@ -26,7 +26,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   @IBOutlet weak var suggestSearchTagList: TagListView!
   @IBOutlet weak var suggestSearchTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
-  
+  @IBOutlet weak var searchFieldActionButton: UIButton!
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -41,6 +41,11 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
     self.updateUIEmptyView()
   }
   
+  @IBAction func closeButtonTapped(_ sender: Any) {
+    self.searchField.text = ""
+    self.updateUIEndSearchingMode()
+  }
+
   @IBAction func backButtonTapped(_ sender: UIButton) {
     self.navigationController?.popViewController(animated: true)
   }
@@ -72,6 +77,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
       self.topViewHeight.constant = 0
       self.topView.isHidden = true
       self.cancelButton.isHidden = false
+      self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
       self.view.layoutIfNeeded()
     }
   }
@@ -83,6 +89,8 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
       self.topViewHeight.constant = 90
       self.topView.isHidden = false
       self.cancelButton.isHidden = true
+      self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
+      self.view.endEditing(true)
       self.view.layoutIfNeeded()
     }
   }

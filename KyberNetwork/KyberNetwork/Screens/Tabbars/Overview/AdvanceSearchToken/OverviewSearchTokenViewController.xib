@@ -24,6 +24,7 @@
                 <outlet property="recentSearchTagList" destination="n3W-KU-Gsj" id="I98-vt-wli"/>
                 <outlet property="recentSearchTitle" destination="YQ0-4h-jAu" id="0cc-Ty-Qwg"/>
                 <outlet property="searchField" destination="wR3-b1-dUM" id="haR-hV-qhD"/>
+                <outlet property="searchFieldActionButton" destination="3af-Az-EFO" id="bmA-3l-ufm"/>
                 <outlet property="searchViewRightConstraint" destination="cbf-Ty-FYo" id="aob-zn-hbO"/>
                 <outlet property="suggestSearchTItle" destination="rws-Xa-NEr" id="Dkf-R0-EhH"/>
                 <outlet property="suggestSearchTagList" destination="gM2-Su-00S" id="wEs-L3-QAK"/>
@@ -95,8 +96,14 @@
                                 <constraint firstAttribute="height" constant="24" id="GGF-O4-mV0"/>
                                 <constraint firstAttribute="width" constant="24" id="rmz-cs-FeU"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="9"/>
                             <color key="tintColor" name="textWhiteColor"/>
-                            <state key="normal" image="search_blue_icon"/>
+                            <state key="normal" image="close-search-icon">
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                            </state>
+                            <connections>
+                                <action selector="closeButtonTapped:" destination="-1" eventType="touchUpInside" id="xsd-fg-UQa"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" name="innerContainerBgColor"/>
@@ -267,7 +274,7 @@
     </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
-        <image name="search_blue_icon" width="16" height="16"/>
+        <image name="close-search-icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
