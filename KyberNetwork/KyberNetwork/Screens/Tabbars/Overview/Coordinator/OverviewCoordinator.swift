@@ -592,10 +592,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.start()
       self.notificationsCoordinator = coordinator
     case .search:
-      let searchController = OverviewSearchTokenViewController()
-      searchController.coordinatorUpdateCurrency(self.currentCurrencyType)
-      searchController.delegate = self
-      self.navigationController.pushViewController(searchController, animated: true)
+      let module = AdvanceSearchTokenRouter.createModule(currencyMode: self.currentCurrencyType)
+      navigationController.pushViewController(module, animated: true)
     case .withdrawBalance(platform: let platform, balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.platform = platform
@@ -687,11 +685,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
 }
 
-extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
-  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
-    self.openChartView(token: token)
-  }
-}
+//extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
+//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
+//    self.openChartView(token: token)
+//  }
+//}
 
 extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
   func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {

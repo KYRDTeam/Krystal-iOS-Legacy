@@ -8,63 +8,12 @@
 import UIKit
 import TagListView
 
-protocol OverviewSearchTokenViewControllerDelegate: class {
-  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token)
-}
+//protocol OverviewSearchTokenViewControllerDelegate: class {
+//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token)
+//}
 
-class OverviewSearchTokenViewModel {
-  var searchText = ""
-  var dataSource: [OverviewMainCellViewModel] = []
-  var currencyMode: CurrencyMode = .usd
-  
-  func reloadAllData() {
-    guard !self.searchText.isEmpty else {
-      self.dataSource.removeAll()
-      return
-    }
-    
-    var tokens = KNSupportedTokenStorage.shared.allActiveTokens
-    tokens = tokens.filter({ (item) -> Bool in
-      return item.symbol.lowercased().contains(self.searchText.lowercased())
-    })
-    tokens.sort { (left, right) -> Bool in
-      return left.symbol < right.symbol
-    }
-    let viewModels = tokens.map { (token) -> OverviewMainCellViewModel in
-      return OverviewMainCellViewModel(mode: .search(token: token), currency: self.currencyMode)
-    }
-    self.dataSource = viewModels
-  }
-  
-  func getRecentSearchTag() -> [String] {
-    if let tags = UserDefaults.standard.object(forKey: KNEnvironment.default.envPrefix + "Recent-search") as? [String] {
-      return tags
-    } else {
-      return []
-    }
-  }
-  
-  func saveNewSearchTag(_ tag: String) {
-    if var tags = UserDefaults.standard.object(forKey: KNEnvironment.default.envPrefix + "Recent-search") as? [String] {
-      if !tags.contains(tag) {
-        tags.append(tag)
-        if tags.count > 8 {
-          tags.remove(at: 0)
-        }
-        UserDefaults.standard.setValue(tags, forKey: KNEnvironment.default.envPrefix + "Recent-search")
-      }
-    } else {
-      UserDefaults.standard.setValue([tag], forKey: KNEnvironment.default.envPrefix + "Recent-search")
-    }
-  }
-  
-  var recommendTags: [String] {
-    return KNGeneralProvider.shared.currentChain.recommendTags()
-  }
-}
-
-class OverviewSearchTokenViewController: KNBaseViewController {
-  
+class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchTokenViewProtocol {
+  var presenter: AdvanceSearchTokenPresenterProtocol!
   @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
   @IBOutlet weak var topView: UIView!
   @IBOutlet weak var topViewHeight: NSLayoutConstraint!
@@ -77,8 +26,6 @@ class OverviewSearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var suggestSearchTagList: TagListView!
   @IBOutlet weak var suggestSearchTitleTopContraint: NSLayoutConstraint!
   @IBOutlet weak var cancelButton: UIButton!
-  let viewModel = OverviewSearchTokenViewModel()
-  weak var delegate: OverviewSearchTokenViewControllerDelegate?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -90,7 +37,7 @@ class OverviewSearchTokenViewController: KNBaseViewController {
     )
     self.recentSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
     self.suggestSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
-    self.suggestSearchTagList.addTags(self.viewModel.recommendTags)
+    self.suggestSearchTagList.addTags(presenter.recommendTags)
     self.updateUIEmptyView()
   }
   
@@ -99,9 +46,9 @@ class OverviewSearchTokenViewController: KNBaseViewController {
   }
   
   func updateUIEmptyView() {
-    if self.viewModel.dataSource.isEmpty {
+    if presenter.dataSource.isEmpty {
       self.emptyView.isHidden = false
-      let recentTags = self.viewModel.getRecentSearchTag()
+      let recentTags = presenter.getRecentSearchTag()
       self.recentSearchTagList.removeAllTags()
       self.recentSearchTagList.addTags(recentTags)
       if recentTags.isEmpty {
@@ -145,15 +92,12 @@ class OverviewSearchTokenViewController: KNBaseViewController {
     self.updateUIEndSearchingMode()
   }
 
-  func coordinatorUpdateCurrency(_ mode: CurrencyMode) {
-    self.viewModel.currencyMode = mode
-  }
 }
 
 extension OverviewSearchTokenViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.dataSource.count
+    return presenter.dataSource.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -162,7 +106,7 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
       for: indexPath
     ) as! OverviewMainViewCell
     
-    let cellModel = self.viewModel.dataSource[indexPath.row]
+    let cellModel = presenter.dataSource[indexPath.row]
     cell.updateCell(cellModel)
     return cell
   }
@@ -171,11 +115,11 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
 extension OverviewSearchTokenViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    let cellModel = self.viewModel.dataSource[indexPath.row]
+    let cellModel = presenter.dataSource[indexPath.row]
     switch cellModel.mode {
     case .search(token: let token):
-      self.delegate?.overviewSearchTokenViewController(self, open: token)
-      self.viewModel.saveNewSearchTag(token.symbol)
+      presenter.openChartToken(token: token)
+      presenter.saveNewSearchTag(token.symbol)
     default:
       break
     }
@@ -199,8 +143,8 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    self.viewModel.searchText = text
-    self.viewModel.reloadAllData()
+    presenter.searchText = text
+    presenter.reloadAllData()
     self.tableView.reloadData()
     self.updateUIEmptyView()
     return true
@@ -217,7 +161,7 @@ extension OverviewSearchTokenViewController: TagListViewDelegate {
     if let found = tokens.first(where: { (token) -> Bool in
       return token.symbol.lowercased() == title.lowercased()
     }) {
-      self.delegate?.overviewSearchTokenViewController(self, open: found)
+      presenter.openChartToken(token: found)
     }
   }
 }
