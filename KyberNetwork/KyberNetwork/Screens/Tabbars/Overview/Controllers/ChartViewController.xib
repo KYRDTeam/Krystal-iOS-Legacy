@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -24,10 +24,14 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChartViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChartViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="athLabel" destination="mSV-g5-nVV" id="rpP-YW-U85"/>
                 <outlet property="atlLabel" destination="ZFU-cs-HXo" id="oP5-pL-Kax"/>
+                <outlet property="chainAddressLabel" destination="jDc-fa-w5Z" id="fJP-W9-VvJ"/>
+                <outlet property="chainIcon" destination="Dww-Qh-cvZ" id="rdo-Rj-brZ"/>
+                <outlet property="chainView" destination="TZA-ye-PLf" id="ooP-G5-wMB"/>
+                <outlet property="chainViewLeadingConstraint" destination="zON-Fc-Za2" id="DSv-hb-eP2"/>
                 <outlet property="chartDetailLabel" destination="aFB-ff-HUe" id="SBH-EX-ap5"/>
                 <outlet property="chartView" destination="ueJ-8I-pMk" id="mhm-uU-lyR"/>
                 <outlet property="descriptionTextView" destination="yx2-K4-ikS" id="rud-bP-2OX"/>
@@ -42,6 +46,7 @@
                 <outlet property="tagImageView" destination="Shb-Ii-4mW" id="xhw-zW-hqV"/>
                 <outlet property="tagLabel" destination="45R-jO-Dpx" id="iXT-ya-KRf"/>
                 <outlet property="tagView" destination="yUG-8q-zbi" id="PO7-pA-d0s"/>
+                <outlet property="tagViewTralingToChainViewConstraint" destination="1Gl-mI-iFx" id="PU3-YN-19N"/>
                 <outlet property="titleView" destination="7Xw-zE-84E" id="oMU-dq-mBA"/>
                 <outlet property="topBarHeight" destination="EIK-2V-Dtf" id="MYR-0D-9gp"/>
                 <outlet property="transferButton" destination="VQr-Jp-lwB" id="RcI-qA-xA1"/>
@@ -95,7 +100,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUG-8q-zbi">
-                            <rect key="frame" x="128" y="95" width="119.5" height="28"/>
+                            <rect key="frame" x="20" y="95" width="133" height="28"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blueTick_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Shb-Ii-4mW">
                                     <rect key="frame" x="8" y="4" width="20" height="20"/>
@@ -104,8 +109,8 @@
                                         <constraint firstAttribute="height" constant="20" id="WFQ-cu-7so"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verified Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45R-jO-Dpx">
-                                    <rect key="frame" x="30" y="7" width="76.5" height="14.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untrusted Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45R-jO-Dpx">
+                                    <rect key="frame" x="30" y="7" width="90" height="14.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" name="textWhiteColor70"/>
                                     <nil key="highlightedColor"/>
@@ -128,19 +133,59 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TZA-ye-PLf">
+                            <rect key="frame" x="169" y="95" width="183" height="28"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_bsc_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Dww-Qh-cvZ">
+                                    <rect key="frame" x="8" y="6" width="16" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="16" id="kMw-cj-YLt"/>
+                                        <constraint firstAttribute="width" constant="16" id="lHX-19-mkn"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0xdefa478IOPNJyt78" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDc-fa-w5Z">
+                                    <rect key="frame" x="30" y="7" width="140" height="14.5"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="140" id="4r6-Um-LJo"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                                    <color key="textColor" name="textWhiteColor70"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" name="innerContainerBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="LuR-yz-hBU"/>
+                                <constraint firstAttribute="trailing" secondItem="jDc-fa-w5Z" secondAttribute="trailing" constant="13" id="LuY-qs-vgl"/>
+                                <constraint firstItem="jDc-fa-w5Z" firstAttribute="centerY" secondItem="Dww-Qh-cvZ" secondAttribute="centerY" id="Wqj-hd-vEV"/>
+                                <constraint firstItem="Dww-Qh-cvZ" firstAttribute="centerY" secondItem="TZA-ye-PLf" secondAttribute="centerY" id="Zak-eE-omy"/>
+                                <constraint firstItem="Dww-Qh-cvZ" firstAttribute="leading" secondItem="TZA-ye-PLf" secondAttribute="leading" constant="8" id="eUt-id-LPL"/>
+                                <constraint firstItem="jDc-fa-w5Z" firstAttribute="leading" secondItem="Dww-Qh-cvZ" secondAttribute="trailing" constant="6" id="sc1-35-PDN"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstItem="yUG-8q-zbi" firstAttribute="centerX" secondItem="fxb-dr-nSP" secondAttribute="centerX" id="1jh-t7-hug"/>
+                        <constraint firstItem="TZA-ye-PLf" firstAttribute="leading" secondItem="yUG-8q-zbi" secondAttribute="trailing" constant="16" id="1Gl-mI-iFx"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TZA-ye-PLf" secondAttribute="trailing" constant="20" id="9GQ-PO-hMR"/>
                         <constraint firstItem="r3Q-Ff-reg" firstAttribute="leading" secondItem="fxb-dr-nSP" secondAttribute="leading" constant="23" id="BfU-Vw-GPt"/>
                         <constraint firstAttribute="height" constant="123" id="EIK-2V-Dtf"/>
                         <constraint firstAttribute="bottom" secondItem="7Xw-zE-84E" secondAttribute="bottom" constant="36" id="IT7-Wf-gfg"/>
                         <constraint firstItem="7Xw-zE-84E" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r3Q-Ff-reg" secondAttribute="trailing" constant="5" id="NMA-6Z-xcN"/>
                         <constraint firstItem="ak7-Ym-9X3" firstAttribute="centerY" secondItem="7Xw-zE-84E" secondAttribute="centerY" id="O57-fz-zNh"/>
+                        <constraint firstItem="TZA-ye-PLf" firstAttribute="centerY" secondItem="yUG-8q-zbi" secondAttribute="centerY" id="Y18-Yl-JCB"/>
                         <constraint firstItem="7Xw-zE-84E" firstAttribute="centerX" secondItem="fxb-dr-nSP" secondAttribute="centerX" id="fN0-Wk-KNm"/>
                         <constraint firstItem="7Xw-zE-84E" firstAttribute="centerY" secondItem="r3Q-Ff-reg" secondAttribute="centerY" id="rzD-jM-EII"/>
+                        <constraint firstItem="yUG-8q-zbi" firstAttribute="leading" secondItem="fxb-dr-nSP" secondAttribute="leading" constant="20" id="vaj-L9-I2I"/>
                         <constraint firstItem="yUG-8q-zbi" firstAttribute="top" secondItem="7Xw-zE-84E" secondAttribute="bottom" constant="8" id="yRb-MG-KQF"/>
                         <constraint firstAttribute="trailing" secondItem="ak7-Ym-9X3" secondAttribute="trailing" constant="17" id="yXq-o5-Msf"/>
+                        <constraint firstItem="TZA-ye-PLf" firstAttribute="leading" secondItem="fxb-dr-nSP" secondAttribute="leading" constant="20" id="zON-Fc-Za2"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -148,6 +193,11 @@
                             <integer key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="zON-Fc-Za2"/>
+                        </mask>
+                    </variation>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wC0-1c-nRc">
                     <rect key="frame" x="0.0" y="123" width="375" height="817"/>
@@ -494,7 +544,7 @@
                                 <constraint firstAttribute="height" constant="36" id="ijB-qa-TzD"/>
                             </constraints>
                         </stackView>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yx2-K4-ikS" customClass="GrowingTextView" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yx2-K4-ikS" customClass="GrowingTextView" customModule="Krystal" customModuleProvider="target">
                             <rect key="frame" x="15" y="623" width="345" height="200"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -588,6 +638,7 @@
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="blueTick_icon" width="24" height="24"/>
+        <image name="chain_bsc_icon" width="24" height="24"/>
         <image name="etherscan_chart_icon" width="22" height="22"/>
         <image name="twitter_chart_icon" width="24" height="24"/>
         <image name="unFav_star_icon" width="22" height="21"/>

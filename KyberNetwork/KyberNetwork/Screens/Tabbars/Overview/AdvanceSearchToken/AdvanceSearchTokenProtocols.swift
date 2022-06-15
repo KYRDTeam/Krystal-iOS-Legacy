@@ -14,7 +14,7 @@ import Foundation
 protocol AdvanceSearchTokenWireframeProtocol: class {
   var coordinator: OverviewCoordinator? { get set }
   func createModule(currencyMode: CurrencyMode, coordinator: OverviewCoordinator) -> UIViewController
-  func openChartTokenView(token: Token, currencyMode: CurrencyMode)
+  func openChartTokenView(token: ResultToken, currencyMode: CurrencyMode)
 }
 //MARK: Presenter -
 protocol AdvanceSearchTokenPresenterProtocol: class {
@@ -22,7 +22,7 @@ protocol AdvanceSearchTokenPresenterProtocol: class {
   var dataSource: SearchResult? { get set }
   func reloadAllData(result: SearchResult?)
   func doSearch(keyword: String)
-  func openChartToken(token: Token)
+  func openChartToken(token: ResultToken)
   func saveNewSearchTag(_ tag: String)
   func getRecentSearchTag() -> [String]
 }

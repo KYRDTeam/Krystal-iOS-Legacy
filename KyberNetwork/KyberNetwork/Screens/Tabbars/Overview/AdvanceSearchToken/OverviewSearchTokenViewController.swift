@@ -149,8 +149,7 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
       
     } else {
       if let token = presenter.dataSource?.tokens[indexPath.row] {
-        let tokenModel = Token(name: token.name, symbol: token.symbol, address: token.id, decimals: token.decimals, logo: token.logo)
-        presenter.openChartToken(token: tokenModel)
+        presenter.openChartToken(token: token)
         presenter.saveNewSearchTag(token.symbol)
       }
     }
@@ -190,8 +189,8 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
 
 extension OverviewSearchTokenViewController: TagListViewDelegate {
   func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-    let tokens = KNSupportedTokenStorage.shared.allActiveTokens
-    if let found = tokens.first(where: { (token) -> Bool in
+    let tokens = presenter.dataSource?.tokens
+    if let found = tokens?.first(where: { (token) -> Bool in
       return token.symbol.lowercased() == title.lowercased()
     }) {
       presenter.openChartToken(token: found)

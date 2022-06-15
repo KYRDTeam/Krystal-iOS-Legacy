@@ -29,13 +29,74 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     return view
   }
   
-  func openChartTokenView(token: Token, currencyMode: CurrencyMode) {
-    let viewModel = ChartViewModel(token: token, currencyMode: currencyMode)
+  func openChartTokenView(token: ResultToken, currencyMode: CurrencyMode) {
+    let tokenModel = Token(name: token.name, symbol: token.symbol, address: token.id, decimals: token.decimals, logo: token.logo)
+    let viewModel = ChartViewModel(token: tokenModel, currencyMode: currencyMode)
+    viewModel.chainId = token.chainId
     let controller = ChartViewController(viewModel: viewModel)
-    if let coordinator = coordinator {
-      controller.delegate = coordinator
-    }
-    
+    controller.delegate = self
     viewController?.navigationController?.pushViewController(controller, animated: true)
+  }
+}
+
+extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
+  func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
+    switch event {
+    case .getChartData(let address, let from, let to, let currency):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        var chainPath = KNGeneralProvider.shared.chainPath
+        if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+          chainPath = chainType.chainPath()
+        }
+        
+        provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
+            controller.coordinatorDidUpdateChartData(data.prices)
+          } catch let error {
+            print("[Debug]" + error.localizedDescription)
+          }
+        }
+      }
+    case .getTokenDetailInfo(address: let address):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      
+        var chainPath = KNGeneralProvider.shared.chainPath
+        if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+          chainPath = chainType.chainPath()
+        }
+        
+        provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(TokenDetailResponse.self, from: resp.data)
+            controller.coordinatorDidUpdateTokenDetailInfo(data.result)
+          } catch let error {
+            print("[Debug]" + error.localizedDescription)
+          }
+        }
+      }
+    case .transfer(token: let token):
+      self.coordinator?.openSendTokenView(token)
+    case .swap(token: let token):
+      self.coordinator?.openSwapView(token: token, isBuy: true)
+    case .invest(token: let token):
+      self.coordinator?.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
+    case .openEtherscan(address: let address):
+      self.coordinator?.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
+    case .openWebsite(url: let url):
+      self.coordinator?.openCommunityURL(url)
+    case .openTwitter(name: let name):
+      self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
+    }
   }
 }

@@ -180,7 +180,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     switch event {
     case .getChartData(let address, let from, let to, let currency):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getChartData(address: address, quote: currency, from: from)) { result in
+      provider.request(.getChartData(chainPath: KNGeneralProvider.shared.chainPath, address: address, quote: currency, from: from)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -196,7 +196,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .getTokenDetailInfo(address: let address):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTokenDetail(address: address)) { (result) in
+      provider.request(.getTokenDetail(chainPath: KNGeneralProvider.shared.chainPath, address: address)) { (result) in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -225,11 +225,11 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     }
   }
 
-  fileprivate func openCommunityURL(_ url: String) {
+  func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
   }
 
-  fileprivate func openSendTokenView(_ token: Token?) {
+  func openSendTokenView(_ token: Token?) {
     let from: TokenObject = {
       if let fromToken = token {
         return fromToken.toObject()
@@ -248,7 +248,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     self.sendCoordinator = coordinator
   }
 
-  fileprivate func openSwapView(token: Token, isBuy: Bool) {
+  func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
 }
