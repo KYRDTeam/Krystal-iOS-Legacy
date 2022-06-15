@@ -897,6 +897,7 @@ enum KrytalService {
   case getPoolInfo(chainId: Int, tokenAddress: String)
   case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
   case checkTxStatus(txHash: String, chainId: String)
+  case advancedSearch(query: String, limit: Int)
 }
 
 extension KrytalService: TargetType {
@@ -915,7 +916,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
@@ -1023,6 +1024,8 @@ extension KrytalService: TargetType {
       return "/v1/crosschain/buildSwapChainTx"
     case .checkTxStatus:
       return "/v1/crosschain/checkTxStatus"
+    case .advancedSearch:
+      return "/v1/advancedSearch/search"
     }
   }
 
@@ -1291,9 +1294,6 @@ extension KrytalService: TargetType {
         "address": address.joined(separator: ","),
         "forceSync": forceSync
       ]
-//      if let chains = chains {
-//        json["chains"] = chains
-//      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPriceV2:
       return .requestPlain
@@ -1378,6 +1378,13 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "txHash": txHash,
         "chainId": chainId
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+        
+    case .advancedSearch(query: let query, limit: let limit):
+      let json: JSONDictionary = [
+        "query": query,
+        "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

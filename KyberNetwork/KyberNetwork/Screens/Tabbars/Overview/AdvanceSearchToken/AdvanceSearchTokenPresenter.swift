@@ -14,32 +14,31 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
   weak private var view: AdvanceSearchTokenViewProtocol?
   var interactor: AdvanceSearchTokenInteractorProtocol?
   private let router: AdvanceSearchTokenWireframeProtocol
-  
-  
-  var searchText = ""
-  var dataSource: [OverviewMainCellViewModel] = []
+
+  var dataSource: SearchResult?
   var currencyMode: CurrencyMode = .usd
   var recommendTags: [String] {
     return KNGeneralProvider.shared.currentChain.recommendTags()
   }
-  
-  func reloadAllData() {
-    guard !self.searchText.isEmpty else {
-      self.dataSource.removeAll()
+
+  func doSearch(keyword: String) {
+    view?.showLoading()
+    interactor?.getSearchData(keyword: keyword)
+  }
+
+  func reloadAllData(result: SearchResult?) {
+    view?.hideLoading()
+    guard let result = result else {
+      dataSource = nil
+      view?.reloadData()
       return
     }
+
     
-    var tokens = KNSupportedTokenStorage.shared.allActiveTokens
-    tokens = tokens.filter({ (item) -> Bool in
-      return item.symbol.lowercased().contains(self.searchText.lowercased())
-    })
-    tokens.sort { (left, right) -> Bool in
-      return left.symbol < right.symbol
+    if result.tokens.isNotEmpty || result.portfolios.isNotEmpty {
+      dataSource = result
     }
-    let viewModels = tokens.map { (token) -> OverviewMainCellViewModel in
-      return OverviewMainCellViewModel(mode: .search(token: token), currency: self.currencyMode)
-    }
-    self.dataSource = viewModels
+    view?.reloadData()
   }
   
   func getRecentSearchTag() -> [String] {
