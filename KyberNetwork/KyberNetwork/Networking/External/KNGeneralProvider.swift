@@ -55,6 +55,13 @@ class KNGeneralProvider {
   var chainIconImage: UIImage? {
     return self.currentChain.chainIcon()
   }
+  
+  var currentWalletAddress: String {
+    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+      return appDelegate.coordinator.session.wallet.addressString
+    }
+    return ""
+  }
 
   var proxyAddress: String {
     return self.currentChain.proxyAddress()
