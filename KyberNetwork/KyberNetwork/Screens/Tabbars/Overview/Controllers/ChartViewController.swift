@@ -20,6 +20,7 @@ class ChartViewModel {
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
+  var chainId: Int?
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
     didSet {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
@@ -308,6 +309,12 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var tagImageView: UIImageView!
   @IBOutlet weak var tagLabel: UILabel!
   @IBOutlet weak var tagView: UIView!
+  @IBOutlet weak var chainView: UIView!
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainAddressLabel: UILabel!
+  @IBOutlet weak var chainViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var tagViewTralingToChainViewConstraint: NSLayoutConstraint!
+
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -402,7 +409,6 @@ class ChartViewController: KNBaseViewController {
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
   }
   
-  
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
   }
@@ -427,9 +433,21 @@ class ChartViewController: KNBaseViewController {
       self.tagImageView.image = image
       self.tagLabel.text = self.viewModel.tagLabel
       self.tagView.isHidden = false
+      self.chainViewLeadingConstraint.isActive = false
+      self.tagViewTralingToChainViewConstraint.isActive = true
     } else {
       self.tagView.isHidden = true
+      self.chainViewLeadingConstraint.isActive = true
+      self.tagViewTralingToChainViewConstraint.isActive = false
     }
+    
+    if let chainId = self.viewModel.chainId, let chain = ChainType.make(chainID: chainId) {
+      self.chainIcon.image = chain.chainIcon()
+    } else {
+      self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
+    }
+
+    self.chainAddressLabel.text = KNGeneralProvider.shared.currentWalletAddress
   }
 
   fileprivate func loadChartData() {

@@ -63,7 +63,7 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
     }
   }
   
-  func openChartToken(token: Token) {
+  func openChartToken(token: ResultToken) {
     KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
     router.openChartTokenView(token: token, currencyMode: self.currencyMode)
   }
