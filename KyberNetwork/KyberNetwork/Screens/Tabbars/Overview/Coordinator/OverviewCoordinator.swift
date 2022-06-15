@@ -592,7 +592,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.start()
       self.notificationsCoordinator = coordinator
     case .search:
-      let module = AdvanceSearchTokenRouter.createModule(currencyMode: self.currentCurrencyType)
+      let router = AdvanceSearchTokenRouter()
+      let module = router.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
       navigationController.pushViewController(module, animated: true)
     case .withdrawBalance(platform: let platform, balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session)

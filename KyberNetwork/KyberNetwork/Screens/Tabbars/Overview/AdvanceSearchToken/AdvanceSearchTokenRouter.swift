@@ -9,27 +9,33 @@
 //
 
 import UIKit
+import Moya
 
 class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     
   weak var viewController: UIViewController?
+  var coordinator: OverviewCoordinator?
     
-  static func createModule(currencyMode: CurrencyMode) -> UIViewController {
+  func createModule(currencyMode: CurrencyMode, coordinator: OverviewCoordinator) -> UIViewController {
     // Change to get view from storyboard if not using progammatic UI
     let view = OverviewSearchTokenViewController()
     let interactor = AdvanceSearchTokenInteractor()
-    let router = AdvanceSearchTokenRouter()
-    let presenter = AdvanceSearchTokenPresenter(interface: view, interactor: interactor, router: router)
+    let presenter = AdvanceSearchTokenPresenter(interface: view, interactor: interactor, router: self)
     presenter.currencyMode = currencyMode
     view.presenter = presenter
     interactor.presenter = presenter
-    router.viewController = view
+    self.viewController = view
+    self.coordinator = coordinator
     return view
   }
   
   func openChartTokenView(token: Token, currencyMode: CurrencyMode) {
     let viewModel = ChartViewModel(token: token, currencyMode: currencyMode)
     let controller = ChartViewController(viewModel: viewModel)
+    if let coordinator = coordinator {
+      controller.delegate = coordinator
+    }
+    
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
 }
