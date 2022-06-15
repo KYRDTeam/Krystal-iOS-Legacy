@@ -4,6 +4,11 @@ import UIKit
 import JdenticonSwift
 import Kingfisher
 
+let VERIFIED_TAG   = "VERIFIED"
+let PROMOTION_TAG  = "PROMOTION"
+let SCAM_TAG       = "SCAM"
+let UNVERIFIED_TAG = "UNVERIFIED"
+
 extension UIImage {
 
   static let imageCache = NSCache<AnyObject, AnyObject>()
@@ -25,6 +30,19 @@ extension UIImage {
   static func generateImage(with size: CGFloat, hash: Data) -> UIImage? {
     guard let cgImage = IconGenerator(size: size, hash: hash).render() else { return nil }
     return UIImage(cgImage: cgImage)
+  }
+  
+  static func imageWithTag(tag: String) -> UIImage? {
+    if tag == VERIFIED_TAG {
+      return UIImage(named: "blueTick_icon")
+    } else if tag == PROMOTION_TAG {
+      return UIImage(named: "green-checked-tag-icon")
+    } else if tag == SCAM_TAG {
+      return UIImage(named: "warning-tag-icon")
+    } else if tag == UNVERIFIED_TAG {
+      return nil
+    }
+    return nil
   }
 
   var noir: UIImage? {

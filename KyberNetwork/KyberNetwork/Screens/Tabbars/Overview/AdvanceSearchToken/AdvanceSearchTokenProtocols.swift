@@ -17,9 +17,9 @@ protocol AdvanceSearchTokenWireframeProtocol: class {
 //MARK: Presenter -
 protocol AdvanceSearchTokenPresenterProtocol: class {
   var recommendTags: [String] { get }
-  var dataSource: [OverviewMainCellViewModel] { get }
-  var searchText: String { get set }
-  func reloadAllData()
+  var dataSource: SearchResult? { get set }
+  func reloadAllData(result: SearchResult?)
+  func doSearch(keyword: String)
   func openChartToken(token: Token)
   func saveNewSearchTag(_ tag: String)
   func getRecentSearchTag() -> [String]
@@ -27,12 +27,14 @@ protocol AdvanceSearchTokenPresenterProtocol: class {
 
 //MARK: Interactor -
 protocol AdvanceSearchTokenInteractorProtocol: class {
-
   var presenter: AdvanceSearchTokenPresenterProtocol?  { get set }
+  func getSearchData(keyword: String)
 }
 
 //MARK: View -
 protocol AdvanceSearchTokenViewProtocol: class {
-
   var presenter: AdvanceSearchTokenPresenterProtocol!  { get set }
+  func reloadData()
+  func showLoading()
+  func hideLoading()
 }
