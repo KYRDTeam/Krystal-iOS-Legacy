@@ -237,3 +237,13 @@ lane :bump_build_number do
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
 end
+
+lane :firebase_distribution do
+    firebase_app_distribution(
+      ipa_path: sh("pwd | tr -d '\n'").concat("/archives/KyberSwap.ipa"),
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      groups: "sample-user-group",
+      release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+    )
+end
