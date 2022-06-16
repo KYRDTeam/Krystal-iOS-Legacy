@@ -37,18 +37,39 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     controller.delegate = self
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
+  
+  func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+    let popup = SwitchChainViewController()
+    var newChain = KNGeneralProvider.shared.currentChain
+    if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+      newChain = chainType
+    }
+    popup.selectedChain = newChain
+    popup.nextButtonTitle = "Confirm"
+    popup.completionHandler = { selected in
+      KNGeneralProvider.shared.currentChain = selected
+      var selectedAddress = ""
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        selectedAddress = appDelegate.coordinator.session.wallet.addressString
+      }
+      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+      if selected == newChain {
+        completion()
+      }
+    }
+    viewController?.present(popup, animated: true, completion: nil)
+  }
 }
 
 extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
-    case .getChartData(let address, let from, let to, let currency):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      case .getChartData(let address, let from, _, let currency):
         var chainPath = KNGeneralProvider.shared.chainPath
         if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
           chainPath = chainType.chainPath()
         }
-        
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
         provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         switch result {
         case .failure(let error):
@@ -86,9 +107,52 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         }
       }
     case .transfer(token: let token):
-      self.coordinator?.openSendTokenView(token)
+        var chainPath = KNGeneralProvider.shared.chainPath
+        if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+          chainPath = chainType.chainPath()
+        }
+        if chainPath != KNGeneralProvider.shared.chainPath {
+          let alertController = KNPrettyAlertController(
+            title: "",
+            message: "Please switch to \(chainPath) to transfer".toBeLocalised(),
+            secondButtonTitle: "OK".toBeLocalised(),
+            firstButtonTitle: "Cancel".toBeLocalised(),
+            secondButtonAction: {
+              self.showPopupSwitchChain(controller) {
+                self.coordinator?.openSendTokenView(token)
+              }
+            },
+            firstButtonAction: nil
+          )
+          alertController.popupHeight = 300
+          viewController?.present(alertController, animated: true, completion: nil)
+        } else {
+          self.coordinator?.openSendTokenView(token)
+        }
     case .swap(token: let token):
-      self.coordinator?.openSwapView(token: token, isBuy: true)
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+        chainPath = chainType.chainPath()
+      }
+      if chainPath != KNGeneralProvider.shared.chainPath {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: "Please switch to \(chainPath) to swap".toBeLocalised(),
+          secondButtonTitle: "OK".toBeLocalised(),
+          firstButtonTitle: "Cancel".toBeLocalised(),
+          secondButtonAction: {
+            self.showPopupSwitchChain(controller) {
+              self.coordinator?.openSwapView(token: token, isBuy: true)
+            }
+          },
+          firstButtonAction: nil
+        )
+        alertController.popupHeight = 300
+        viewController?.present(alertController, animated: true, completion: nil)
+      } else {
+        //TODO: check màn hình swap đang bị reset lại thông tin token swap
+        self.coordinator?.openSwapView(token: token, isBuy: true)
+      }
     case .invest(token: let token):
       self.coordinator?.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
     case .openEtherscan(address: let address):
@@ -99,4 +163,5 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
     }
   }
+
 }
