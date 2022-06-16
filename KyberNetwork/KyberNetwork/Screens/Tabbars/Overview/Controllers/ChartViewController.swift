@@ -314,7 +314,10 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chainAddressLabel: UILabel!
   @IBOutlet weak var chainViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet weak var tagViewTralingToChainViewConstraint: NSLayoutConstraint!
-
+  @IBOutlet weak var infoSegment: SegmentedControl!
+  @IBOutlet weak var poolTableView: UITableView!
+  @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var poolView: UIView!
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -331,6 +334,11 @@ class ChartViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupConstraints()
+    self.infoSegment.highlightSelectedSegment()
+    self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
+    self.infoSegment.selectedSegmentIndex = 0
+    self.poolTableView.registerCellNib(AdvanceSearchTokenCell.self)
+
     self.chartView.showYLabelsAndGrid = false
     self.chartView.labelColor = UIColor(red: 164, green: 171, blue: 187)
     self.chartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
@@ -363,6 +371,31 @@ class ChartViewController: KNBaseViewController {
     self.loadTokenDetailInfo()
     self.updateUIChartInfo()
     self.updateUITokenInfo()
+  }
+  
+  func showPoolView() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.poolView.isHidden = false
+      self.tableViewHeight.priority = .required
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func hidePoolView() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.poolView.isHidden = true
+      self.tableViewHeight.priority = .fittingSizeLevel
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+    self.infoSegment.underlinePosition()
+    if sender.selectedSegmentIndex == 1 {
+      self.hidePoolView()
+    } else {
+      self.showPoolView()
+    }
   }
 
   @IBAction func changeChartPeriodButtonTapped(_ sender: UIButton) {
@@ -529,5 +562,18 @@ extension ChartViewController: ChartDelegate {
   
   func didEndTouchingChart(_ chart: Chart) {
     
+  }
+}
+
+extension ChartViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 15
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
+//    let token = presenter.dataSource?.tokens[indexPath.row]
+//    cell.updateUI(token: token)
+    return cell
   }
 }
