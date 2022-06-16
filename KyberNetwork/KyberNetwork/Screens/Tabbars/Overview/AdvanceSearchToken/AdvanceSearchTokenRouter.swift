@@ -15,6 +15,7 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     
   weak var viewController: UIViewController?
   var coordinator: OverviewCoordinator?
+  var pendingAction: (() -> Void)?
     
   func createModule(currencyMode: CurrencyMode, coordinator: OverviewCoordinator) -> UIViewController {
     // Change to get view from storyboard if not using progammatic UI
@@ -39,6 +40,7 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
   }
   
   func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+    self.pendingAction = nil
     let popup = SwitchChainViewController()
     var newChain = KNGeneralProvider.shared.currentChain
     if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
@@ -54,10 +56,16 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
       }
       KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
       if selected == newChain {
-        completion()
+        self.pendingAction = completion
       }
     }
     viewController?.present(popup, animated: true, completion: nil)
+  }
+  
+  func appCoordinatorDidUpdateNewSession() {
+    if let pendingAction = pendingAction {
+      pendingAction()
+    }
   }
 }
 
@@ -114,7 +122,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if chainPath != KNGeneralProvider.shared.chainPath {
           let alertController = KNPrettyAlertController(
             title: "",
-            message: "Please switch to \(chainPath) to transfer".toBeLocalised(),
+            message: "Please switch to \(chainPath.dropFirst().uppercased()) to transfer".toBeLocalised(),
             secondButtonTitle: "OK".toBeLocalised(),
             firstButtonTitle: "Cancel".toBeLocalised(),
             secondButtonAction: {
@@ -137,7 +145,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       if chainPath != KNGeneralProvider.shared.chainPath {
         let alertController = KNPrettyAlertController(
           title: "",
-          message: "Please switch to \(chainPath) to swap".toBeLocalised(),
+          message: "Please switch to \(chainPath.dropFirst().uppercased()) to swap".toBeLocalised(),
           secondButtonTitle: "OK".toBeLocalised(),
           firstButtonTitle: "Cancel".toBeLocalised(),
           secondButtonAction: {

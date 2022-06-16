@@ -41,6 +41,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
+  var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
 
   lazy var rootViewController: OverviewMainViewController = {
@@ -106,6 +107,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.searchRouter.appCoordinatorDidUpdateNewSession()
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -592,8 +594,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.start()
       self.notificationsCoordinator = coordinator
     case .search:
-      let router = AdvanceSearchTokenRouter()
-      let module = router.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
+      let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
       navigationController.pushViewController(module, animated: true)
     case .withdrawBalance(platform: let platform, balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session)
