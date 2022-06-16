@@ -31,6 +31,7 @@ protocol ApproveTokenViewModel {
   var customSetting: ConfirmAdvancedSetting { get }
   var showEditSettingButton: Bool { get set }
   var gasPrice: BigInt { get set }
+  var headerTitle: String { get set }
   func resetAdvancedSettings()
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType)
 }
@@ -39,6 +40,7 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
+  var headerTitle: String = "Approve Token"
 
   var tokenAddress: Address? {
     return Address(string: self.address)
@@ -157,7 +159,7 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
-
+  var headerTitle: String = "Approve Token"
   var tokenAddress: Address? {
     return Address(string: self.address)
   }
@@ -329,6 +331,7 @@ class ApproveTokenViewController: KNBaseViewController {
       self.editLabel.isHidden = true
       self.editButton.isHidden = true
     }
+    self.headerTitle.text = self.viewModel.headerTitle
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {

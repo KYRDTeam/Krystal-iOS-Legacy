@@ -450,10 +450,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.rootViewController.present(controller, animated: true, completion: nil)
-    case .changeShowDestAddress:
-      self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
-      self.rootViewController.viewModel.resetAddressIfNeed()
-      self.rootViewController.coordinatorDidUpdateData()
     case .changeDestAddress(address: let address):
       self.rootViewController.viewModel.currentSendToAddress = address
       self.rootViewController.coordinatorDidUpdateData()
@@ -478,6 +474,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
       vm.value = value
       vm.showEditSettingButton = true
+      vm.headerTitle = "Approve Transfer"
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)

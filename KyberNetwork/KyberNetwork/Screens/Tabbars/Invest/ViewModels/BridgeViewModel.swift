@@ -32,13 +32,10 @@ enum ToSectionRows: CaseIterable {
   case errorRow
   case swapRow
   
-  static func sectionRows(showPoolInfo: Bool, showSendAddress: Bool, showReminder: Bool, showError: Bool) -> [ToSectionRows] {
+  static func sectionRows(showPoolInfo: Bool, showReminder: Bool, showError: Bool) -> [ToSectionRows] {
     var allRows = ToSectionRows.allCases
     if !showPoolInfo {
       allRows = allRows.filter { $0 != .poolInfoRow }
-    }
-    if !showSendAddress {
-      allRows = allRows.filter { $0 != .addressRow }
     }
     if !showReminder {
       allRows = allRows.filter { $0 != .reminderRow }
@@ -53,7 +50,6 @@ class BridgeViewModel {
   fileprivate(set) var wallet: Wallet
   var showFromPoolInfo: Bool = false
   var showToPoolInfo: Bool = false
-  var showSendAddress: Bool = false
   var showReminder: Bool = false
   var showError: Bool = false
   var isNeedApprove: Bool = false
@@ -64,7 +60,6 @@ class BridgeViewModel {
   var selectSourceTokenBlock: (() -> Void)?
   var selectDestChainBlock: (() -> Void)?
   var selectDestTokenBlock: (() -> Void)?
-  var selectSenToBlock: (() -> Void)?
   var changeAmountBlock: ((String) -> Void)?
   var changeAddressBlock: ((String) -> Void)?
   var swapBlock: (() -> Void)?
@@ -114,7 +109,7 @@ class BridgeViewModel {
   }
   
   func toDataSource() -> [ToSectionRows] {
-    return ToSectionRows.sectionRows(showPoolInfo: self.showToPoolInfo, showSendAddress: self.showSendAddress, showReminder: self.showReminder, showError: self.showError)
+    return ToSectionRows.sectionRows(showPoolInfo: self.showToPoolInfo, showReminder: self.showReminder, showError: self.showError)
   }
 
   func numberOfSection() -> Int {
@@ -287,8 +282,6 @@ class BridgeViewModel {
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
-        cell.sendButtonTapped = self.selectSenToBlock
-        cell.icon.image = self.showSendAddress ? UIImage(named: "green_subtract_icon") : UIImage(named: "green_plus_icon")
         return cell
       case .addressRow:
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
@@ -300,12 +293,11 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
           if let currentDestToken = self.currentDestToken {
             let crossChainFee = currentDestToken.maximumSwapFee == currentDestToken.minimumSwapFee ? "0.0" : String(format: "%.1f", currentDestToken.swapFeeRatePerMillion)
-            let fee = self.calculateFee()
-            let feeString = "\(fee)".displayRate() + " \(currentDestToken.symbol)"
+            let minFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+            let maxFeeString = StringFormatter.amountString(value: currentDestToken.maximumSwapFee) + " \(currentDestToken.symbol)"
             let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentDestToken.symbol)"
             let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentDestToken.symbol)"
-            let thresholdString = StringFormatter.amountString(value: currentDestToken.bigValueThreshold) + " \(currentDestToken.symbol)"
-            cell.updateReminderText(crossChainFee: crossChainFee, gasFeeString: feeString, miniAmount: miniAmount, maxAmount: maxAmount, thresholdString: thresholdString)
+            cell.updateReminderText(crossChainFee: crossChainFee, miniAmount: miniAmount, maxAmount: maxAmount, minFeeString: minFeeString, maxFeeString: maxFeeString)
           }
         return cell
       case .errorRow:
@@ -321,9 +313,9 @@ class BridgeViewModel {
         }
         cell.swapBlock = self.swapBlock
         if let currentSourceToken = currentSourceToken {
-          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Swap Now", for: .normal)
+          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
         } else {
-          cell.swapButton.setTitle("Swap Now", for: .normal)
+          cell.swapButton.setTitle("Review Transfer", for: .normal)
         }
         return cell
       }
