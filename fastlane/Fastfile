@@ -213,6 +213,13 @@ lane :build do
       }
     }
   )
+  firebase_app_distribution(
+    # ipa_path: "./archives/KyberSwap.ipa",
+    app: ENV["FIREBASE_APP_ID"],
+    firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+    groups: "sample-user-group",
+    release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+  )
 end
 
 lane :sentry_upload do 
@@ -238,12 +245,12 @@ lane :bump_build_number do
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
 end
 
-lane :firebase_distribution do
-    firebase_app_distribution(
-      ipa_path: "./archives/KyberSwap.ipa",
-      app: ENV["FIREBASE_APP_ID"],
-      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-      groups: "sample-user-group",
-      release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
-    )
-end
+# lane :firebase_distribution do
+#     firebase_app_distribution(
+#       ipa_path: "./archives/KyberSwap.ipa",
+#       app: ENV["FIREBASE_APP_ID"],
+#       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+#       groups: "sample-user-group",
+#       release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+#     )
+# end
