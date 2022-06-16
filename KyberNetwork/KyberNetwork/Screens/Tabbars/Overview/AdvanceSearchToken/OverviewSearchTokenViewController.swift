@@ -189,11 +189,8 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
 
 extension OverviewSearchTokenViewController: TagListViewDelegate {
   func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-    let tokens = presenter.dataSource?.tokens
-    if let found = tokens?.first(where: { (token) -> Bool in
-      return token.symbol.lowercased() == title.lowercased()
-    }) {
-      presenter.openChartToken(token: found)
-    }
+    self.searchField.text = title
+    self.updateUIStartSearchingMode()
+    self.doSearch()
   }
 }
