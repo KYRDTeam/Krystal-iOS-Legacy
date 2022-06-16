@@ -240,7 +240,7 @@ end
 
 lane :firebase_distribution do
     firebase_app_distribution(
-      ipa_path: ENV["GITHUB_WORKSPACE"].concat("/archives/KyberSwap.ipa"),
+      ipa_path: "./archives/KyberSwap.ipa",
       app: ENV["FIREBASE_APP_ID"],
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       groups: "sample-user-group",
