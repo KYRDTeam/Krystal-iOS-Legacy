@@ -16,7 +16,6 @@ enum BridgeEvent {
   case willSelectDestChain
   case didSelectDestChain(chain: ChainType)
   case selectDestToken
-  case changeShowDestAddress
   case changeAmount(amount: Double)
   case changeDestAddress(address: String)
   case selectSwap
@@ -117,11 +116,7 @@ class BridgeViewController: KNBaseViewController {
     self.viewModel.selectDestTokenBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectDestToken)
     }
-    
-    self.viewModel.selectSenToBlock = {
-      self.delegate?.bridgeViewControllerController(self, run: .changeShowDestAddress)
-    }
-    
+
     self.viewModel.changeAmountBlock = { amount in
       self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: amount.doubleValue ))
     }

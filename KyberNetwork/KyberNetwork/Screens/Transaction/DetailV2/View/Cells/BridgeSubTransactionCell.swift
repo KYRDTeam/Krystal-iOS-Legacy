@@ -65,7 +65,7 @@ class BridgeSubTransactionCell: UITableViewCell {
     amountLabel.text = amountString + " " + tx.token
     txHashLabel.text = tx.tx
     addressLabel.text = tx.address
-    addressTitle.text = isSourceTransaction ? Strings.from : Strings.receive
+    addressTitle.text = isSourceTransaction ? Strings.sender : Strings.receiver
   }
   
   func color(forStatus status: TransactionStatus) -> UIColor? {
