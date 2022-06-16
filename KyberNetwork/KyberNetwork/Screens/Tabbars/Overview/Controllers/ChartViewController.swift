@@ -317,7 +317,10 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var infoSegment: SegmentedControl!
   @IBOutlet weak var poolTableView: UITableView!
   @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var poolView: UIView!
+  @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
+  
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -363,6 +366,7 @@ class ChartViewController: KNBaseViewController {
 
   func setupConstraints() {
     topBarHeight?.constant = UIScreen.statusBarHeight + 36 * 2 + 24
+    self.textViewLeadingConstraint.constant = UIScreen.main.bounds.size.width + 20
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -375,16 +379,18 @@ class ChartViewController: KNBaseViewController {
   
   func showPoolView() {
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-      self.poolView.isHidden = false
       self.tableViewHeight.priority = .required
+      self.poolViewTrailingConstraint.constant = 0
+      self.textViewLeadingConstraint.constant = UIScreen.main.bounds.size.width + 20
       self.view.layoutIfNeeded()
     }
   }
   
   func hidePoolView() {
     UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
-      self.poolView.isHidden = true
       self.tableViewHeight.priority = .fittingSizeLevel
+      self.poolViewTrailingConstraint.constant = UIScreen.main.bounds.size.width
+      self.textViewLeadingConstraint.constant = 20
       self.view.layoutIfNeeded()
     }
   }
