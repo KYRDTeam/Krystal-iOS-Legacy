@@ -675,7 +675,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 from: ExtraBridgeTransaction(
                   address: signTransaction.account.address.description,
                   token: sourceToken.symbol,
-                  amount: BigInt(viewModel.sourceAmount * pow(10, Double(sourceToken.decimals))),
+                  amount: "\(viewModel.sourceAmount)".amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
                   chainId: sourceChain.getChainId().toString(),
                   chainName: sourceChain.chainName(),
                   tx: hash,
@@ -685,7 +685,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 to: ExtraBridgeTransaction(
                   address: viewModel.currentSendToAddress,
                   token: destToken.symbol,
-                  amount: BigInt(viewModel.estimatedDestAmount * pow(10, Double(destToken.decimals))),
+                  amount: "\(viewModel.estimatedDestAmount)".amountBigInt(decimals: destToken.decimals) ?? BigInt(0),
                   chainId: destChain.getChainId().toString(),
                   chainName: destChain.chainName(),
                   tx: "",
