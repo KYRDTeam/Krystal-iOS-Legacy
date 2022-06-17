@@ -80,6 +80,7 @@ public struct Constants {
   public static let maxValueBigInt = BigInt(2).power(256) - BigInt(1)
   public static let rewardHuntingPath = "reward-hunting"
   public static let multichainExplorerURL = "https://anyswap.net/explorer"
+  static let maxFractionDigits: Int = 5
 }
 
 public struct UnitConfiguration {
