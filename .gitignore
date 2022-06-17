@@ -32,7 +32,7 @@ xcuserdata/
 
 ## Obj-C/Swift specific
 *.hmap
-# *.ipa
+*.ipa
 *.dSYM.zip
 *.dSYM
 
@@ -95,7 +95,7 @@ Trust.zip
 node_modules
 JS/staging
 
-# archives/
+archives/
 .privates/
 
 Gemfile.lock
