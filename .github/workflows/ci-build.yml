@@ -163,14 +163,17 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      - name: Install gem dependencies
-        run: bundle install
+      # - name: Install gem dependencies
+      #   run: bundle install
           
       - name: Install Pod check
         run: gem install cocoapods-check
         
       - name: Install Pod binary
         run: gem install cocoapods-binary
+      
+      - name: Install Fastlane
+        run: gem install fastlane
           
       - name: Setup Sentry CLI
         shell: bash
