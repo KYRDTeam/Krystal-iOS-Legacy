@@ -163,6 +163,7 @@ jobs:
         run: |
           yarn global add firebase-tools
           echo "::add-path::$(yarn global bin)"
+          which firebase
 
       - name: Install gem dependencies
         run: bundle install
