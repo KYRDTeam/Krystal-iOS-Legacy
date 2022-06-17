@@ -229,8 +229,8 @@
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Estimated time of arrival" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pft-Eb-IPT">
-                            <rect key="frame" x="45" y="457.66666666666663" width="136.33333333333334" height="20"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Estimated time to transfer" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pft-Eb-IPT">
+                            <rect key="frame" x="45" y="457.66666666666663" width="145.33333333333334" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="L6h-bd-fcT"/>
                             </constraints>
