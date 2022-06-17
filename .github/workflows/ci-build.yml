@@ -161,9 +161,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
-          yarn global add firebase-tools
-          echo "::add-path::$(yarn global bin)"
-          which firebase
+          curl -sL https://firebase.tools | bash
 
       - name: Install gem dependencies
         run: bundle install
