@@ -213,13 +213,13 @@ lane :build do
       }
     }
   )
-  firebase_app_distribution(
-    ipa_path: ENV["IPA_OUTPUT_PATH"],
-    app: ENV["FIREBASE_APP_ID"],
-    firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-    groups: "sample-user-group",
-    release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
-  )
+  # firebase_app_distribution(
+  #   ipa_path: ENV["IPA_OUTPUT_PATH"],
+  #   app: ENV["FIREBASE_APP_ID"],
+  #   firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+  #   groups: "sample-user-group",
+  #   release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+  # )
 end
 
 lane :sentry_upload do 
