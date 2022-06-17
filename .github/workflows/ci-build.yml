@@ -69,10 +69,10 @@ jobs:
     strategy:
       matrix: 
         include:
-          - firebase_app_id: ${{ secrets.KRYSTAL_DEV_FIREBASE_APP_ID }}
+          - firebase_app_id: KRYSTAL_DEV_FIREBASE_APP_ID
             env: dev
             bump_build: true
-          - firebase_app_id: ${{ secrets.KRYSTAL_STG_FIREBASE_APP_ID }}
+          - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
             env: stg
             bump_build: false
             
