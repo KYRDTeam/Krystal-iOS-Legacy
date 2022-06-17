@@ -52,7 +52,7 @@ lane :all do
   install_profiles
   update_project
   build
-  # firebase_distribution
+  firebase_distribution
 #  sentry_upload
 end
 

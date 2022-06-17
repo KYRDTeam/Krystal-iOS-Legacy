@@ -201,22 +201,11 @@ jobs:
           lane: all
           bundle-install-path: "vendor/bundle"
 
-      - uses: actions/upload-artifact@master
-        with:
-          name: ipa-artifact
-          path: archives
-          retention-days: 1
-
-      - uses: actions/download-artifact@master
-        with:
-          name: ipa-artifact
-          path: archives
-
-      - name: Deploy to FDA
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: firebase_distribution
-          bundle-install-path: "vendor/bundle"
+      # - name: Deploy to FDA
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   with:
+      #     lane: firebase_distribution
+      #     bundle-install-path: "vendor/bundle"
 
       # - name: Prepare bump build number
       #   run: |
