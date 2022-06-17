@@ -180,7 +180,7 @@ jobs:
 
       - name: Install fda fastlane plguin
         shell: bash
-        run: fastlane add_plugin firebase_app_distribution
+        run:  bundle exec fastlane add_plugin firebase_app_distribution
         
       # don't need anymore
       # - name: Setup Auth
@@ -242,13 +242,6 @@ jobs:
       #     FIREBASE_CLI_TOKEN: ${{ secrets.KRYSTAL_DEV_FIREBASE_CLI_TOKEN }}
       #     FIREBASE_APP_ID: ${{ secrets.KRYSTAL_DEV_FIREBASE_APP_ID }}
 
-      - name: upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.KRYSTAL_DEV_FIREBASE_APP_ID}}
-          token: ${{secrets.KRYSTAL_DEV_FIREBASE_CLI_TOKEN}}
-          groups: sample-user-group
-          file: $IPA_OUTPUT_PATH
       - name: Prepare bump build number
         run: |
           git config user.name "$GH_ACTOR"
