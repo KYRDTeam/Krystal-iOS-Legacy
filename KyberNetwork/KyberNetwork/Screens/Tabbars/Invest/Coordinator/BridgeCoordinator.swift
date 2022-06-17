@@ -369,6 +369,50 @@ class BridgeCoordinator: NSObject, Coordinator {
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
+  
+  func didSelectDestChain(newChain: ChainType) {
+    self.rootViewController.viewModel.currentDestChain = newChain
+    self.rootViewController.viewModel.showReminder = true
+    if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
+      if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
+      }) {
+        let currentDestChainToken = currentBridgeToken.destChains[newChain.getChainId().toString()]
+        self.rootViewController.viewModel.currentDestToken = currentDestChainToken
+
+        if let address = currentDestChainToken?.address {
+          self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
+            self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
+            self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
+            self.rootViewController.coordinatorDidUpdateData()
+          }
+        }
+      }
+    }
+    self.getBuildTx()
+    self.rootViewController.coordinatorDidUpdateData()
+  }
+  
+  func currentDestChains() -> [ChainType]? {
+    guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return nil }
+    let currentData = self.data.first {
+      $0.address.lowercased() ==  sourceToken.address.lowercased()
+    }
+    guard let currentData = currentData else {
+      return nil
+    }
+    let sourceChain = currentData.destChains.keys.map { key -> ChainType in
+      let chainId = Int(key) ?? 0
+      return ChainType.getAllChain().first { $0.getChainId() == chainId } ?? .eth
+    }
+    return sourceChain
+  }
+  
+  func willSelectDestChain() {
+    if let destChains = self.currentDestChains() {
+      self.rootViewController.openSwitchChainPopup(destChains, false)
+    }
+  }
+  
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
     case .pullToRefresh:
@@ -377,25 +421,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.rootViewController.viewModel.sourceAmount = amount
       self.rootViewController.coordinatorDidUpdateData()
     case .didSelectDestChain(chain: let newChain):
-      self.rootViewController.viewModel.currentDestChain = newChain
-      self.rootViewController.viewModel.showReminder = true
-      if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
-        if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
-        }) {
-          let currentDestChainToken = currentBridgeToken.destChains[newChain.getChainId().toString()]
-          self.rootViewController.viewModel.currentDestToken = currentDestChainToken
-
-          if let address = currentDestChainToken?.address {
-            self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
-              self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
-              self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
-              self.rootViewController.coordinatorDidUpdateData()
-            }
-          }
-        }
-      }
-      self.getBuildTx()
-      self.rootViewController.coordinatorDidUpdateData()
+      self.didSelectDestChain(newChain: newChain)
     case .openHistory:
         self.delegate?.didSelectOpenHistoryList()
     case .openWalletsList:
@@ -409,18 +435,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .addChainWallet(let chainType):
       self.delegate?.didSelectAddChainWallet(chainType: chainType)
     case .willSelectDestChain:
-      guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return }
-      let currentData = self.data.first {
-        $0.address.lowercased() ==  sourceToken.address.lowercased()
-      }
-      guard let currentData = currentData else {
-        return
-      }
-      let sourceChain = currentData.destChains.keys.map { key -> ChainType in
-        let chainId = Int(key) ?? 0
-        return ChainType.getAllChain().first { $0.getChainId() == chainId } ?? .eth
-      }
-      self.rootViewController.openSwitchChainPopup(sourceChain, false)
+      self.willSelectDestChain()
     case .selectSourceToken:
 //      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
 //      let supportedAddress = self.data.map { return $0.address.lowercased() }
@@ -953,6 +968,19 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
           self.rootViewController.viewModel.currentSourcePoolInfo = poolInfo
           self.rootViewController.viewModel.showFromPoolInfo = poolInfo?.isUnlimited == false
           self.rootViewController.coordinatorDidUpdateData()
+        }
+      }
+      if let destChains = self.currentDestChains() {
+        var selectedDestChain: ChainType? = nil
+        if self.rootViewController.viewModel.currentSourceChain == .bsc {
+          selectedDestChain = destChains.contains(.polygon) ? .polygon : destChains.first
+        } else if self.rootViewController.viewModel.currentSourceChain == .polygon {
+          selectedDestChain = destChains.contains(.bsc) ? .bsc : destChains.first
+        } else {
+          selectedDestChain = destChains.contains(.bsc) ? .bsc : (destChains.contains(.polygon) ? .polygon : destChains.first)
+        }
+        if let selectedDestChain = selectedDestChain {
+          self.didSelectDestChain(newChain: selectedDestChain)
         }
       }
       self.rootViewController.coordinatorDidUpdateData()
