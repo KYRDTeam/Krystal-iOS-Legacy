@@ -113,7 +113,7 @@ jobs:
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-      FIREBASE_APP_ID: $${{ matrix.firebase_app_id }}
+      FIREBASE_APP_ID: ${{ matrix.firebase_app_id }}
 
       IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
 
