@@ -135,22 +135,23 @@ class BridgeViewModel {
     return fee
   }
   
-  var estimatedDestAmount: Double {
+  var estimatedDestAmount: BigInt {
     guard let currentSourceToken = currentSourceToken else {
-      return 0.0
+      return BigInt(0)
     }
-    let feeBigInt = BigInt(self.calculateFee() * pow(10.0, Double(currentSourceToken.decimals)))
-    let sourcAmountBigInt = BigInt(self.sourceAmount * pow(10.0, Double(currentSourceToken.decimals)))
+    let feeBigInt = self.calculateFee().amountBigInt(decimals: currentSourceToken.decimals) ?? BigInt(0)
+    let sourcAmountBigInt = self.sourceAmount.amountBigInt(decimals: currentSourceToken.decimals) ?? BigInt(0)
     if sourcAmountBigInt > feeBigInt {
       let destAmountBigInt = sourcAmountBigInt - feeBigInt
-      return destAmountBigInt.fullString(decimals: currentSourceToken.decimals).doubleValue
+      return destAmountBigInt
     } else {
-      return 0.0
+      return BigInt(0)
     }
   }
   
   func calculateDesAmountString() -> String {
-    return StringFormatter.amountString(value: estimatedDestAmount)
+    guard let decimals = currentSourceToken?.decimals else { return "0" }
+    return estimatedDestAmount.string(decimals: decimals, minFractionDigits: 0, maxFractionDigits: Constants.maxFractionDigits)
   }
   
   func viewForHeader(section: Int) -> UIView {
@@ -272,8 +273,7 @@ class BridgeViewModel {
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
-          let decimal = self.currentDestToken?.decimals ?? 0
-          if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
+          if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
         }

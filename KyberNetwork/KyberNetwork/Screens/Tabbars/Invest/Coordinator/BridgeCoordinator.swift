@@ -276,8 +276,8 @@ class BridgeCoordinator: NSObject, Coordinator {
     
     let decimal = self.rootViewController.viewModel.currentSourceToken?.decimals ?? 0
     
-    let amount = BigInt(self.rootViewController.viewModel.sourceAmount * pow(10.0, Double(decimal)))
-    let amountString = String(amount)
+    let amount = self.rootViewController.viewModel.sourceAmount).amountBigInt(decimals: decimal) ?? BigInt(0)
+    let amountString = amount.description
     
     provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
       if case .success(let resp) = result {
@@ -564,7 +564,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         self.buildSwapChainTx { txObject in
           if let txObject = txObject {
             let viewModel = self.rootViewController.viewModel
-            let decimal = viewModel.currentSourceToken?.decimals ?? 0
             let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
             self.bridgeContract = txObject.to
             guard let signTx = self.buildSignTx(newTxObject) else {
@@ -685,7 +684,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 to: ExtraBridgeTransaction(
                   address: viewModel.currentSendToAddress,
                   token: destToken.symbol,
-                  amount: "\(viewModel.estimatedDestAmount)".amountBigInt(decimals: destToken.decimals) ?? BigInt(0),
+                  amount: viewModel.estimatedDestAmount,
                   chainId: destChain.getChainId().toString(),
                   chainName: destChain.chainName(),
                   tx: "",
