@@ -218,6 +218,7 @@ jobs:
       #     bundle-install-path: "vendor/bundle"
       
       - name: Deploy mock to FDA
+        uses: maierj/fastlane-action@v2.0.1
         with:
           lane: firebase_distribution
           bundle-install-path: "vendor/bundle"
