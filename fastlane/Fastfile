@@ -218,7 +218,7 @@ end
 
 lane :firebase_distribution do
   firebase_app_distribution(
-    ipa_path: "/Users/runner/work/Krystal-iOS/Krystal-iOS/archives/bitbar-ios-sample.ipa",
+    ipa_path: ENV["IPA_OUTPUT_PATH"],
     app: ENV["FIREBASE_APP_ID"],
     firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
     groups: "sample-user-group",
