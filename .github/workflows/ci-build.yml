@@ -116,6 +116,8 @@ jobs:
       # GCP 
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      FIREBASE_CLI_TOKEN: ${{ secrets.KRYSTAL_DEV_FIREBASE_CLI_TOKEN }}
+      FIREBASE_APP_ID: ${{ secrets.KRYSTAL_DEV_FIREBASE_APP_ID }}
 
       IOS_PASSPHRASE: ${{ secrets.IOS_PASSPHRASE }}
 
@@ -163,9 +165,6 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # - name: Install gem dependencies
-      #   run: bundle install
-          
       - name: Install Pod check
         run: gem install cocoapods-check
         
@@ -179,6 +178,10 @@ jobs:
         shell: bash
         run: curl -sL https://sentry.io/get-cli/ | bash
 
+      - name: Install fda fastlane plguin
+        shell: bash
+        run: fastlane add_plugin firebase_app_distribution
+        
       # don't need anymore
       # - name: Setup Auth
       #   uses: 'google-github-actions/auth@v0'
@@ -210,9 +213,6 @@ jobs:
 
       - name: Build IPA
         uses: maierj/fastlane-action@v2.0.1
-        env:
-          FIREBASE_CLI_TOKEN: ${{ secrets.KRYSTAL_DEV_FIREBASE_CLI_TOKEN }}
-          FIREBASE_APP_ID: ${{ secrets.KRYSTAL_DEV_FIREBASE_APP_ID }}
         with:
           lane: all
           bundle-install-path: "vendor/bundle"
