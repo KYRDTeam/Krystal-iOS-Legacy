@@ -211,10 +211,15 @@ jobs:
       - name: Pods install
         run: pod check || pod install
 
-      - name: Build IPA
-        uses: maierj/fastlane-action@v2.0.1
+      # - name: Build IPA
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   with:
+      #     lane: all
+      #     bundle-install-path: "vendor/bundle"
+      
+      - name: Deploy mock to FDA
         with:
-          lane: all
+          lane: firebase_distribution
           bundle-install-path: "vendor/bundle"
 
       # tmp disable as 413 status code from ota server
@@ -242,23 +247,23 @@ jobs:
       #     FIREBASE_CLI_TOKEN: ${{ secrets.KRYSTAL_DEV_FIREBASE_CLI_TOKEN }}
       #     FIREBASE_APP_ID: ${{ secrets.KRYSTAL_DEV_FIREBASE_APP_ID }}
 
-      - name: Prepare bump build number
-        run: |
-          git config user.name "$GH_ACTOR"
-          git config user.email "$GH_ACTOR@users.noreply.github.com"
+      # - name: Prepare bump build number
+      #   run: |
+      #     git config user.name "$GH_ACTOR"
+      #     git config user.email "$GH_ACTOR@users.noreply.github.com"
                     
-      - name: Bump Build number
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: bump_build_number
-          bundle-install-path: "vendor/bundle"
+      # - name: Bump Build number
+      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   with:
+      #     lane: bump_build_number
+      #     bundle-install-path: "vendor/bundle"
 
-      - name: Push commit 
-        if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
-        shell: bash
-        run: | 
-          git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+      # - name: Push commit 
+      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
+      #   shell: bash
+      #   run: | 
+      #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
