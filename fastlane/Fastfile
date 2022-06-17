@@ -223,6 +223,7 @@ lane :firebase_distribution do
     firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
     groups: "sample-user-group",
     release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+    debug: true
   )
 end
 
