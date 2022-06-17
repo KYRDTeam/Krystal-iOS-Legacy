@@ -200,13 +200,13 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-pods-
 
-      - name: Setup environments
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
+      # - name: Setup environments
+      #   shell: bash
+      #   env:
+      #     ENV: ${{ matrix.env }}
+      #   run: |
+      #     cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+      #     cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
 
       # - name: Pods install
       #   run: pod check || pod install
