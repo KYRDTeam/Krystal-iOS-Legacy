@@ -22,7 +22,7 @@ class BridgeReminderCell: UITableViewCell {
   }
   
   func updateReminderText(crossChainFee: String, miniAmount: String, maxAmount: String, minFeeString: String, maxFeeString: String) {
-    let text = "•  Transaction fee is \(crossChainFee)% (min fees \(minFeeString) | max \(maxFeeString) & it is paid to nodes facilitating token transfer \n•  Minimum transfer amount is \(miniAmount) (Maximum \(maxAmount))\n•  Estimated time to transfer is 10 - 30 mins"
+    let text = "•  Transaction fee is \(crossChainFee)% (min fees \(minFeeString) | max \(maxFeeString)) & it is paid to nodes facilitating token transfer \n•  Minimum transfer amount is \(miniAmount) (Maximum \(maxAmount))\n•  Estimated time to transfer is 10 - 30 mins"
     let attributedString = NSMutableAttributedString(string: text)
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineSpacing = 5

@@ -23,6 +23,7 @@ enum BridgeEvent {
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt, value: BigInt)
   case pullToRefresh
+  case scanAddress
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -137,6 +138,10 @@ class BridgeViewController: KNBaseViewController {
     }
     self.viewModel.selectMaxBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+    }
+    
+    self.viewModel.scanQRBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .scanAddress)
     }
   }
   

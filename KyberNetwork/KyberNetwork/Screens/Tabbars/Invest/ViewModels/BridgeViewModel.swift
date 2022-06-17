@@ -63,6 +63,7 @@ class BridgeViewModel {
   var changeAmountBlock: ((String) -> Void)?
   var changeAddressBlock: ((String) -> Void)?
   var swapBlock: (() -> Void)?
+  var scanQRBlock: (() -> Void)?
   
   var currentSourceChain: ChainType? = KNGeneralProvider.shared.currentChain
   var currentSourceToken: TokenObject?
@@ -287,6 +288,7 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
+        cell.scanQRBlock = self.scanQRBlock
         cell.updateUI()
         return cell
       case .reminderRow:
