@@ -218,12 +218,12 @@ end
 
 lane :firebase_distribution do
   firebase_app_distribution(
-    ipa_path: ENV["IPA_OUTPUT_PATH"],
+    ipa_path: "/Users/runner/work/Krystal-iOS/Krystal-iOS/archives/KyberSwap.ipa",
     app: ENV["FIREBASE_APP_ID"],
     firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
     groups: "sample-user-group",
     release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
-    debug: true
+    # debug: true
   )
 end
 
