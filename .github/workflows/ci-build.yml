@@ -199,7 +199,7 @@ jobs:
         uses: maierj/fastlane-action@v2.0.1
         with:
           lane: all
-          bundle-install-path: "vendor/bundle"
+          FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
 
       # - name: Deploy to FDA
       #   uses: maierj/fastlane-action@v2.0.1
