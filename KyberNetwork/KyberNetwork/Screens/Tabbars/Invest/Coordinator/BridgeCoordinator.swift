@@ -276,7 +276,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     
     let decimal = self.rootViewController.viewModel.currentSourceToken?.decimals ?? 0
     
-    let amount = self.rootViewController.viewModel.sourceAmount).amountBigInt(decimals: decimal) ?? BigInt(0)
+    let amount = self.rootViewController.viewModel.sourceAmount.amountBigInt(decimals: decimal) ?? BigInt(0)
     let amountString = amount.description
     
     provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
