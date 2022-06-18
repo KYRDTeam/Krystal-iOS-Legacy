@@ -72,9 +72,9 @@ jobs:
           - firebase_app_id: KRYSTAL_DEV_FIREBASE_APP_ID
             env: dev
             bump_build: true
-          - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
-            env: stg
-            bump_build: false
+          # - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
+          #   env: stg
+          #   bump_build: false
             
     runs-on: macos-11
     env:
@@ -201,13 +201,6 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
         with:
           lane: all
-          
-
-      # - name: Deploy to FDA
-      #   uses: maierj/fastlane-action@v2.0.1
-      #   with:
-      #     lane: firebase_distribution
-      #     bundle-install-path: "vendor/bundle"
 
       # - name: Prepare bump build number
       #   run: |
