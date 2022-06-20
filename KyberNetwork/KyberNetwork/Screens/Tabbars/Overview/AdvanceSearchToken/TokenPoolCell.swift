@@ -37,9 +37,9 @@ class TokenPoolCell: UITableViewCell {
     
     self.pairNameLabel.text = "\(poolDetail.token0.symbol)/\(poolDetail.token1.symbol)"
     self.fullNameLabel.text = poolDetail.token0.name
-//    self.valueLabel.text =
+    self.valueLabel.text = "$\(poolDetail.token0.usdValue)"
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
-//    self.totalValueLabel.text =
+    self.totalValueLabel.text = "$\(poolDetail.tvl)"
   }
 }
