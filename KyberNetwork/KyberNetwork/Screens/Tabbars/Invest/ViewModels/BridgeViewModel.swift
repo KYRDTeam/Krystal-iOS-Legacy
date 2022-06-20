@@ -311,7 +311,7 @@ class BridgeViewModel {
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {
           cell.swapButton.isEnabled = false
-          cell.swapButton.setBackgroundColor(UIColor.gray, forState: .normal)
+          cell.swapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
         }
         cell.swapBlock = self.swapBlock
         if let currentSourceToken = currentSourceToken {
