@@ -11,6 +11,6 @@ extension Double {
   }
   
   func amountBigInt(decimals: Int) -> BigInt? {
-    return "\(self)".amountBigInt(decimals: decimals)
+    return BigInt(self * pow(10.0, Double(decimals)))
   }
 }
