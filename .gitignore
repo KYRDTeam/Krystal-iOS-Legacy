@@ -102,3 +102,5 @@ Gemfile.lock
 *.env
 
 .profiles/
+
+./firebase_udids

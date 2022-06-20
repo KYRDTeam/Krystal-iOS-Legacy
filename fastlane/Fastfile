@@ -227,6 +227,15 @@ lane :firebase_distribution do
   )
 end
 
+# Instruct fastlane to get device UDIDs from Firebase
+# https://firebase.google.com/docs/app-distribution/register-additional-devices
+lane :download_udids do
+  firebase_app_distribution_get_udids(
+      app: ENV["FIREBASE_APP_ID"],
+      output_file: "./firebase_udids",
+  )
+end
+
 lane :sentry_upload do 
   sentry_upload_dsym(
     auth_token: sentry_token,
