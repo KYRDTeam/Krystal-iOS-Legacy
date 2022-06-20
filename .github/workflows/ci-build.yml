@@ -159,74 +159,75 @@ jobs:
         run: |
           # curl -sL https://firebase.tools | bash
           echo -n "${{ secrets.DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
-      - name: Install Pod check
-        run: gem install cocoapods-check
+          echo -n "${{ secrets.DEV_OTA_URL }}" >> foo && cut -c1-3 foo && cut -c4- foo
+      # - name: Install Pod check
+      #   run: gem install cocoapods-check
         
-      - name: Install Pod binary
-        run: gem install cocoapods-binary
+      # - name: Install Pod binary
+      #   run: gem install cocoapods-binary
       
-      - name: Install Fastlane
-        run: gem install fastlane
+      # - name: Install Fastlane
+      #   run: gem install fastlane
           
-      - name: Setup Sentry CLI
-        shell: bash
-        run: curl -sL https://sentry.io/get-cli/ | bash
+      # - name: Setup Sentry CLI
+      #   shell: bash
+      #   run: curl -sL https://sentry.io/get-cli/ | bash
 
-      - name: Install fda fastlane plguin
-        shell: bash
-        run:  bundle exec fastlane add_plugin firebase_app_distribution
+      # - name: Install fda fastlane plguin
+      #   shell: bash
+      #   run:  bundle exec fastlane add_plugin firebase_app_distribution
 
-      - name: Setup cache
-        uses: actions/cache@v1
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-
-      - name: Setup environments
-        shell: bash
-        env:
-          ENV: ${{ matrix.env }}
-        run: |
-          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
-
-      - name: Pods install
-        run: pod check || pod install
-
-      - name: Build IPA
-        uses: maierj/fastlane-action@v2.0.1
-        env:
-          FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
-        with:
-          lane: all
-
-      # - name: Prepare bump build number
-      #   run: |
-      #     git config user.name "$GH_ACTOR"
-      #     git config user.email "$GH_ACTOR@users.noreply.github.com"
-                    
-      # - name: Bump Build number
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
-      #   uses: maierj/fastlane-action@v2.0.1
+      # - name: Setup cache
+      #   uses: actions/cache@v1
       #   with:
-      #     lane: bump_build_number
-      #     bundle-install-path: "vendor/bundle"
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
 
-      # - name: Push commit 
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
+      # - name: Setup environments
       #   shell: bash
-      #   run: | 
-      #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
-
-      # # This step will automatically run if any of the previous steps fail.
-      # # DO NOT CHANGE IT
-      # - name: Send notifications to a specify Telegram group
-      #   if: failure()
       #   env:
-      #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-      #     RUN_ID: ${{ github.run_id }}
-      #   shell: bash
-      #   run: .github/failure
+      #     ENV: ${{ matrix.env }}
+      #   run: |
+      #     cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+      #     cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
+
+      # - name: Pods install
+      #   run: pod check || pod install
+
+      # - name: Build IPA
+      #   uses: maierj/fastlane-action@v2.0.1
+      #   env:
+      #     FIREBASE_APP_ID: ${{ secrets[matrix.firebase_app_id] }}
+      #   with:
+      #     lane: all
+
+      # # - name: Prepare bump build number
+      # #   run: |
+      # #     git config user.name "$GH_ACTOR"
+      # #     git config user.email "$GH_ACTOR@users.noreply.github.com"
+                    
+      # # - name: Bump Build number
+      # #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
+      # #   uses: maierj/fastlane-action@v2.0.1
+      # #   with:
+      # #     lane: bump_build_number
+      # #     bundle-install-path: "vendor/bundle"
+
+      # # - name: Push commit 
+      # #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
+      # #   shell: bash
+      # #   run: | 
+      # #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+
+      # # # This step will automatically run if any of the previous steps fail.
+      # # # DO NOT CHANGE IT
+      # # - name: Send notifications to a specify Telegram group
+      # #   if: failure()
+      # #   env:
+      # #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      # #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+      # #     RUN_ID: ${{ github.run_id }}
+      # #   shell: bash
+      # #   run: .github/failure
