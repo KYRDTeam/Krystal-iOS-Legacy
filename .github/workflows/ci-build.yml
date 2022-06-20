@@ -72,9 +72,9 @@ jobs:
           - firebase_app_id: KRYSTAL_DEV_FIREBASE_APP_ID
             env: dev
             bump_build: true
-          # - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
-          #   env: stg
-          #   bump_build: false
+          - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
+            env: stg
+            bump_build: false
             
     runs-on: macos-11
     env:
