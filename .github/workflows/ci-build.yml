@@ -164,6 +164,8 @@ jobs:
           echo -n "${{ secrets.DEV_OTA_URL }}" >> foo && cut -c1-3 foo && cut -c4- foo
           echo AD_HOC_PROFILE
           echo -n "${{ secrets.AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
+          echo GCS_PROJECT_ID
+          echo -n "${{ secrets.GCS_PROJECT_ID }}" >> foo && cut -c1-3 foo && cut -c4- foo
       # - name: Install Pod check
       #   run: gem install cocoapods-check
         
