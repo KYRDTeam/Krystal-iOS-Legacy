@@ -26,6 +26,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   var historyCoordinator: KNHistoryCoordinator?
   weak var delegate: KNSettingsCoordinatorDelegate?
   var notificationCoordinator: NotificationCoordinator?
+  var deleteWallet: Wallet?
 
   lazy var rootViewController: KNSettingsTabViewController = {
     let controller = KNSettingsTabViewController()
@@ -576,9 +577,15 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidEvaluatePIN() {
     if case .verifyPasscode = self.passcodeCoordinator.type {
       self.passcodeCoordinator.stop {
-        guard let wallet = self.selectedWallet else { return }
-        self.showActionSheetBackupPhrase(walletObj: wallet)
-        self.selectedWallet = nil
+        if let wallet = self.selectedWallet {
+          self.showActionSheetBackupPhrase(walletObj: wallet)
+          self.selectedWallet = nil
+        }
+
+        if let wallet = self.deleteWallet {
+          self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
+          self.deleteWallet = nil
+        }
       }
     } else {
       self.passcodeCoordinator.stop {
@@ -595,6 +602,7 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCancel() {
     self.passcodeCoordinator.stop {
       self.selectedWallet = nil
+      self.deleteWallet = nil
     }
   }
 }
@@ -612,7 +620,9 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
   }
 
   func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
+    
+    self.deleteWallet = wallet
+    self.showAuthPasscode()
   }
 
   func listWalletsCoordinatorDidUpdateWalletObjects() {

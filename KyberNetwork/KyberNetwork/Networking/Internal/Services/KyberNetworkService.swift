@@ -898,6 +898,7 @@ enum KrytalService {
   case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
   case checkTxStatus(txHash: String, chainId: String)
   case advancedSearch(query: String, limit: Int)
+  case getPoolList(tokenAddress: String, chainId: Int, limit: Int)
   case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
 }
 
@@ -917,7 +918,8 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getTradingViewData:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData:
+:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1029,7 +1031,9 @@ extension KrytalService: TargetType {
       return "/v1/crosschain/checkTxStatus"
     case .advancedSearch:
       return "/v1/advancedSearch/search"
-    case .getTradingViewData:
+    case .getPoolList:
+      return "/v1/pool/list"
+	case .getTradingViewData:
       return "/v1/tradingview/history"
     }
   }
@@ -1392,7 +1396,14 @@ extension KrytalService: TargetType {
         "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getTradingViewData(chainPath: let chainPath, address: let address, quote: let quote, from: let from):
+    case .getPoolList(tokenAddress: let address, chainId: let chainId, limit: let limit):
+      let json: JSONDictionary = [
+        "token": address,
+        "chainId": chainId,
+        "limit": limit
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+	case .getTradingViewData(chainPath: let chainPath, address: let address, quote: let quote, from: let from):
       let current = Int(NSDate().timeIntervalSince1970 * 1000)
       let json: JSONDictionary = [
         "network": chainPath,

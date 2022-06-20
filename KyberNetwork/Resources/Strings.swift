@@ -63,6 +63,8 @@ struct Strings {
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
   static let receive = "receive".toBeLocalised()
+  static let sender = "Sender".toBeLocalised()
+  static let receiver = "Receiver".toBeLocalised()
   static let bridge = "bridge".toBeLocalised()
   static let contractExecution = "contract.execution".toBeLocalised()
   static let approval = "approval".toBeLocalised()

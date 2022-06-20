@@ -29,6 +29,44 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorBuyCrypto()
 }
 
+class PoolPairToken: Codable {
+  var address: String
+  var name: String
+  var symbol: String
+  var logo: String
+  var tvl: Double
+  var decimals: Int
+  var usdValue: Double
+
+  init(json: JSONDictionary) {
+    self.address = json["id"] as? String ?? ""
+    self.name = json["name"] as? String ?? ""
+    self.symbol = json["symbol"] as? String ?? ""
+    self.decimals = json["decimals"] as? Int ?? 0
+    self.logo = json["logo"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.usdValue = json["usdValue"] as? Double ?? 0.0
+  }
+}
+
+class TokenPoolDetail: Codable {
+  var address: String
+  var tvl: Double
+  var chainId: Int
+  
+  var token0: PoolPairToken
+  var token1: PoolPairToken
+  
+  init(json: JSONDictionary) {
+    self.address = json["address"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.chainId = json["chainId"] as? Int ?? 0
+    
+    self.token0 = PoolPairToken(json: json["token0"] as? JSONDictionary ?? JSONDictionary())
+    self.token1 = PoolPairToken(json: json["token1"] as? JSONDictionary ?? JSONDictionary())
+  }
+}
+
 class OverviewCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
@@ -180,6 +218,23 @@ class OverviewCoordinator: NSObject, Coordinator {
 extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
+    case .getPoolList(address: let address, chainId: let chainId):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          var allPools: [TokenPoolDetail] = []
+          if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
+            jsonData.forEach { poolJson in
+              let tokenPoolDetail = TokenPoolDetail(json: poolJson)
+              allPools.append(tokenPoolDetail)
+            }
+          }
+          controller.coordinatorDidUpdatePoolData(poolData: allPools)
+        }
+      }
     case .getChartData(let address, let from, let to, let currency):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.request(.getChartData(chainPath: KNGeneralProvider.shared.chainPath, address: address, quote: currency, from: from)) { result in

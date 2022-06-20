@@ -43,7 +43,7 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     self.pendingAction = nil
     let popup = SwitchChainViewController()
     var newChain = KNGeneralProvider.shared.currentChain
-    if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+    if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
     popup.selectedChain = newChain
@@ -72,9 +72,25 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
 extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
+      case .getPoolList(address: let address, chainId: let chainId):
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
+          switch result {
+          case .failure(let error):
+            controller.coordinatorFailUpdateApi(error)
+          case .success(let resp):
+            let decoder = JSONDecoder()
+  //            do {
+  //              let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
+  //              controller.coordinatorDidUpdateChartData(data.prices)
+  //            } catch let error {
+  //              print("[Debug]" + error.localizedDescription)
+  //            }
+          }
+        }
       case .getChartData(let address, let from, _, let currency):
         var chainPath = KNGeneralProvider.shared.chainPath
-        if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+        if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
@@ -97,6 +113,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       
         var chainPath = KNGeneralProvider.shared.chainPath
         if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+        if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
         
@@ -117,6 +134,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     case .transfer(token: let token):
         var chainPath = KNGeneralProvider.shared.chainPath
         if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+        if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
         if chainPath != KNGeneralProvider.shared.chainPath {
@@ -139,7 +157,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         }
     case .swap(token: let token):
       var chainPath = KNGeneralProvider.shared.chainPath
-      if let chainId = controller.viewModel.chainId, let chainType = ChainType.make(chainID: chainId) {
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
         chainPath = chainType.chainPath()
       }
       if chainPath != KNGeneralProvider.shared.chainPath {

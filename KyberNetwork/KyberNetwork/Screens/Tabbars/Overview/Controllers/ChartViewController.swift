@@ -11,6 +11,7 @@ import BigInt
 import LightweightCharts
 
 class ChartViewModel {
+  var poolData: [TokenPoolDetail] = []
   var xLabels: [Double] = []
   let token: Token
   var periodType: ChartPeriodType = .oneDay
@@ -20,7 +21,7 @@ class ChartViewModel {
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
-  var chainId: Int?
+  var chainId = KNGeneralProvider.shared.currentChain.getChainId()
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
     didSet {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
@@ -275,7 +276,7 @@ enum ChartViewEvent {
   case openEtherscan(address: String)
   case openWebsite(url: String)
   case openTwitter(name: String)
-  
+  case getPoolList(address: String, chainId: Int)
 }
 
 enum ChartPeriodType: Int {
@@ -364,8 +365,7 @@ class ChartViewController: KNBaseViewController {
     self.infoSegment.highlightSelectedSegment()
     self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
     self.infoSegment.selectedSegmentIndex = 0
-    self.poolTableView.registerCellNib(AdvanceSearchTokenCell.self)
-
+    self.poolTableView.registerCellNib(TokenPoolCell.self)
     self.updateUIPeriodSelectButtons()
     self.titleView.text = self.viewModel.headerTitle
     self.transferButton.rounded(radius: 16)
@@ -458,6 +458,7 @@ class ChartViewController: KNBaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.loadChartData()
+    self.getPoolList()
     self.loadTokenDetailInfo()
     self.updateUIChartInfo()
     self.updateUITokenInfo()
@@ -566,7 +567,7 @@ class ChartViewController: KNBaseViewController {
       self.tagViewTralingToChainViewConstraint.isActive = false
     }
     
-    if let chainId = self.viewModel.chainId, let chain = ChainType.make(chainID: chainId) {
+    if let chain = ChainType.make(chainID: self.viewModel.chainId) {
       self.chainIcon.image = chain.chainIcon()
     } else {
       self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
@@ -583,6 +584,10 @@ class ChartViewController: KNBaseViewController {
   fileprivate func loadTokenDetailInfo() {
     self.delegate?.chartViewController(self, run: .getTokenDetailInfo(address: self.viewModel.token.address))
   }
+  
+  fileprivate func getPoolList() {
+    self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+  }
 
   fileprivate func updateUIPeriodSelectButtons() {
     self.periodChartSelectButtons.forEach { (button) in
@@ -594,6 +599,11 @@ class ChartViewController: KNBaseViewController {
         button.backgroundColor = .clear
       }
     }
+  }
+  
+  func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
+    self.viewModel.poolData = poolData
+    self.poolTableView.reloadData()
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
@@ -629,6 +639,19 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
 
+    return cell
+  }
+}
+
+extension ChartViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.poolData.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
+    let poolData = self.viewModel.poolData[indexPath.row]
+    cell.updateUI(poolDetail: poolData)
     return cell
   }
 }

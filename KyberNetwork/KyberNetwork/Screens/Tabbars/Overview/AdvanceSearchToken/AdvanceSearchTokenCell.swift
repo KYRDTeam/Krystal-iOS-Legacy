@@ -29,10 +29,6 @@ class AdvanceSearchTokenCell: UITableViewCell {
     guard let token = token else {
       return
     }
-//    if let url = URL(string: token.chainLogo) {
-//      tokenIcon.setImage(with: url, placeholder: UIImage(named: "default_token"))
-//    }
-    
     tokenIcon.setSymbolImage(symbol: token.symbol)
     if let image = UIImage.imageWithTag(tag: token.tag) {
       tagIcon.image = image
@@ -47,6 +43,10 @@ class AdvanceSearchTokenCell: UITableViewCell {
       chainIcon.image = chainType.chainIcon()
     }
     addressLabel.text = token.id
+  }
+  
+  func updateUI(poolData: TokenPoolDetail) {
+    
   }
     
 }
