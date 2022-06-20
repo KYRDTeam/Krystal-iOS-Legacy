@@ -273,7 +273,8 @@ class BridgeViewModel {
         var errMsg: String?
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
-          let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
+          // calculate with same decimal of source token
+          let liquidity = currentDestPoolInfo.liquidity.amountBigInt(decimals: self.currentSourceToken?.decimals ?? 0) ?? BigInt(0)
           if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
