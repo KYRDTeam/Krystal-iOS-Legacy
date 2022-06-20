@@ -83,16 +83,6 @@
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YX4-eG-tH8">
-                                <rect key="frame" x="167.5" y="47" width="16" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="16" id="GW1-YX-sFd"/>
-                                    <constraint firstAttribute="height" constant="16" id="IAN-Oi-pgX"/>
-                                </constraints>
-                                <color key="tintColor" name="normalTextColor"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="open_link_icon_blue"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" name="innerContainerBgColor"/>
                         <constraints>
@@ -100,16 +90,13 @@
                             <constraint firstItem="dBl-mg-VyW" firstAttribute="leading" secondItem="2PT-OT-0Xr" secondAttribute="trailing" constant="4" id="30O-oA-KLd"/>
                             <constraint firstItem="CB5-AV-0UJ" firstAttribute="leading" secondItem="DSf-Dr-QTt" secondAttribute="trailing" constant="-2" id="7GI-Ez-rX1"/>
                             <constraint firstItem="4aj-TF-AF1" firstAttribute="leading" secondItem="5Lj-dU-CHA" secondAttribute="trailing" constant="5" id="EON-zS-WP6"/>
-                            <constraint firstItem="qj7-fg-Z8l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YX4-eG-tH8" secondAttribute="trailing" constant="10" id="GdK-lZ-gUF"/>
                             <constraint firstAttribute="bottom" secondItem="5Lj-dU-CHA" secondAttribute="bottom" constant="13" id="HYE-ge-4Ic"/>
                             <constraint firstItem="4aj-TF-AF1" firstAttribute="centerY" secondItem="5Lj-dU-CHA" secondAttribute="centerY" id="ILy-Kd-WMH"/>
                             <constraint firstItem="2PT-OT-0Xr" firstAttribute="leading" secondItem="CB5-AV-0UJ" secondAttribute="trailing" constant="5" id="JPc-8H-KgO"/>
-                            <constraint firstItem="YX4-eG-tH8" firstAttribute="leading" secondItem="4aj-TF-AF1" secondAttribute="trailing" constant="5" id="NXQ-tT-s0h"/>
                             <constraint firstItem="2PT-OT-0Xr" firstAttribute="centerY" secondItem="DSf-Dr-QTt" secondAttribute="centerY" id="PfP-cO-cYs"/>
                             <constraint firstItem="dBl-mg-VyW" firstAttribute="centerY" secondItem="DSf-Dr-QTt" secondAttribute="centerY" id="T7Z-5Z-lUr"/>
                             <constraint firstAttribute="trailing" secondItem="Ski-Io-Y1x" secondAttribute="trailing" constant="21" id="VN1-5g-dVy"/>
                             <constraint firstAttribute="trailing" secondItem="cKc-2s-MIz" secondAttribute="trailing" constant="21" id="Xrw-9p-M0V"/>
-                            <constraint firstItem="YX4-eG-tH8" firstAttribute="centerY" secondItem="4aj-TF-AF1" secondAttribute="centerY" id="ZOa-Al-VFx"/>
                             <constraint firstAttribute="bottom" secondItem="cKc-2s-MIz" secondAttribute="bottom" constant="12" id="fFy-H3-Cl7"/>
                             <constraint firstItem="5Lj-dU-CHA" firstAttribute="leading" secondItem="0FW-XE-6Qa" secondAttribute="leading" constant="17" id="gJT-He-mlA"/>
                             <constraint firstItem="cKc-2s-MIz" firstAttribute="centerY" secondItem="qj7-fg-Z8l" secondAttribute="centerY" id="h5j-Ag-ThW"/>
@@ -153,7 +140,6 @@
     <resources>
         <image name="default_token" width="25" height="25"/>
         <image name="eth" width="32" height="32"/>
-        <image name="open_link_icon_blue" width="14" height="14"/>
         <namedColor name="innerContainerBgColor">
             <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
