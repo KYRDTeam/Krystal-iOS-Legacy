@@ -121,33 +121,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Get configuration items
-      #   run: |
-      #     echo $SSH_PRIVATE_KEY | base64 --decode > private.key
+      - name: Get configuration items
+        run: |
+          echo $SSH_PRIVATE_KEY | base64 --decode > private.key
 
-      #     chmod 600 private.key
+          chmod 600 private.key
                     
-      #     rm -rf $HOME/krystal-mobile-enviroment
+          rm -rf $HOME/krystal-mobile-enviroment
 
-      #     GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
+          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
           
-      #     ls -al $HOME/krystal-mobile-enviroment/
+          ls -al $HOME/krystal-mobile-enviroment/
           
           
-      #     CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
-      #     ls -al $CONFIG_PATH
+          CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
+          ls -al $CONFIG_PATH
           
-      #     echo "Using gpg to decrypt the sensitive files now"
+          echo "Using gpg to decrypt the sensitive files now"
 
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
 
-      #     ls -al $CONFIG_PATH
+          ls -al $CONFIG_PATH
 
-      #     mkdir -p /Users/runner/privates        
-      #     cp -va $CONFIG_PATH/* /Users/runner/privates
+          mkdir -p /Users/runner/privates        
+          cp -va $CONFIG_PATH/* /Users/runner/privates
 
       # - name: Setup Ruby
       #   uses: ruby/setup-ruby@v1
