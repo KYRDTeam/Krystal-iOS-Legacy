@@ -8,15 +8,15 @@
 import UIKit
 import SwiftChart
 import BigInt
+import LightweightCharts
 
 class ChartViewModel {
-  var dataSource: [(x: Double, y: Double)] = []
   var xLabels: [Double] = []
   let token: Token
   var periodType: ChartPeriodType = .oneDay
   var detailInfo: TokenDetailInfo?
   var chartData: [[Double]]?
-  var chartOriginTimeStamp: Double = 0
+
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
@@ -35,6 +35,15 @@ class ChartViewModel {
     formatter.minimumIntegerDigits = 1
     return formatter
   }()
+  
+  var tradingViewCandleData: [TradingViewData] = []
+  var candleSeries: CandlestickSeries!
+  
+  var areaSeries: AreaSeries!
+  
+  var tradingViewLineData: [SingleValueData] = []
+  
+  var isLineChartMode: Bool = true
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -46,23 +55,30 @@ class ChartViewModel {
   func updateChartData(_ data: [[Double]]) {
     guard !data.isEmpty else { return }
     self.chartData = data
-    let originTimeStamp = data[0][0]
-    self.chartOriginTimeStamp = originTimeStamp
-    self.dataSource = data.map { (item) -> (x: Double, y: Double) in
-      return (x: item[0] - originTimeStamp, y: item[1])
-    }
-    if let lastTimeStamp = data.last?[0] {
-      let interval = lastTimeStamp - originTimeStamp
-      let divide = interval / 7
-      self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
-    }
   }
-
-  var series: ChartSeries {
-    let series = ChartSeries(data: self.dataSource)
-    series.area = true
-    series.colors = (above: self.displayDiffColor!, below: UIColor(named: "mainViewBgColor")!, 0)
-    return series
+  
+  func generateCandleStickData() -> [CandlestickData] {
+    var output: [CandlestickData] = []
+    self.tradingViewCandleData.forEach { element in
+      //Format open time stamp Time object
+      let timestamp = Double(element.openTime / 1000)
+      let item = CandlestickData(time: .utc(timestamp: timestamp), open: element.datumOpen, high: element.high, low: element.low, close: element.close)
+      
+      output.append(item)
+    }
+    return output
+  }
+  
+  func generateSingleValueData() -> [SingleValueData] {
+    var output: [SingleValueData] = []
+    self.chartData?.forEach({ element in
+      let time = element.first ?? 0
+      let timestamp = Double(time / 1000)
+      let value = element.last ?? 0
+      let item = SingleValueData(time: .utc(timestamp: timestamp), value: value)
+      output.append(item)
+    })
+    return output
   }
   
   var displayPrice: String {
@@ -105,7 +121,12 @@ class ChartViewModel {
   }
   
   var displayUSDBalance: String {
-    guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
+    guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address),
+          let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address),
+          let balanceBigInt = BigInt(balance.balance)
+    else {
+      return "---"
+    }
     var price = self.token.getTokenLastPrice(self.currencyMode)
     
     let rateBigInt = BigInt(price * pow(10.0, 18.0))
@@ -181,7 +202,6 @@ class ChartViewModel {
      }
      return ""
   }
-    
 
   func formatPoints(_ number: Double) -> String {
     let thousand = number / 1000
@@ -247,6 +267,7 @@ class ChartViewModel {
 
 enum ChartViewEvent {
   case getChartData(address: String, from: Int, to: Int, currency: String)
+  case getCandleChartData(address: String, from: Int, to: Int, currency: String)
   case getTokenDetailInfo(address: String)
   case transfer(token: Token)
   case swap(token: Token)
@@ -288,7 +309,8 @@ protocol ChartViewControllerDelegate: class {
 }
 
 class ChartViewController: KNBaseViewController {
-  @IBOutlet weak var chartView: Chart!
+
+  @IBOutlet weak var chartContainerView: UIView!
   @IBOutlet var periodChartSelectButtons: [UIButton]!
   @IBOutlet weak var priceLabel: UILabel!
   @IBOutlet weak var priceDiffPercentageLabel: UILabel!
@@ -320,6 +342,8 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var poolView: UIView!
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
+  var candleChart: LightweightCharts?
+  var lineChart: LightweightCharts?
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
@@ -342,13 +366,6 @@ class ChartViewController: KNBaseViewController {
     self.infoSegment.selectedSegmentIndex = 0
     self.poolTableView.registerCellNib(AdvanceSearchTokenCell.self)
 
-    self.chartView.showYLabelsAndGrid = false
-    self.chartView.labelColor = UIColor(red: 164, green: 171, blue: 187)
-    self.chartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
-    self.chartView.axesColor = .clear
-    self.chartView.gridColor = .clear
-    self.chartView.backgroundColor = .clear
-    self.chartView.delegate = self
     self.updateUIPeriodSelectButtons()
     self.titleView.text = self.viewModel.headerTitle
     self.transferButton.rounded(radius: 16)
@@ -361,6 +378,75 @@ class ChartViewController: KNBaseViewController {
     if !self.viewModel.canEarn {
       self.investButton.removeFromSuperview()
       self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
+    }
+    
+    self.setupTradingView()
+  }
+  
+  fileprivate func setupCandleTradingView() {
+    let options = ChartOptions(crosshair: CrosshairOptions(mode: .normal))
+    let chart = LightweightCharts(options: options)
+    self.chartContainerView.addSubview(chart)
+    chart.translatesAutoresizingMaskIntoConstraints = false
+    chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
+    chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
+    chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
+    chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
+    
+    let series = chart.addCandlestickSeries(options: nil)
+    self.viewModel.candleSeries = series
+    self.candleChart = chart
+  }
+  
+  fileprivate func setupLineTradingView() {
+    let options = ChartOptions(
+        layout: LayoutOptions(fontFamily: "Lato-Regular"),
+        rightPriceScale: VisiblePriceScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
+        timeScale: TimeScaleOptions(borderColor: "rgba(197, 203, 206, 1)")
+    )
+    let chart = LightweightCharts(options: options)
+    self.chartContainerView.addSubview(chart)
+    chart.translatesAutoresizingMaskIntoConstraints = false
+    chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
+    chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
+    chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
+    chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
+    
+    let seriesOptions = AreaSeriesOptions(
+        topColor: "rgba(33, 150, 243, 0.56)",
+        bottomColor: "rgba(33, 150, 243, 0.04)",
+        lineColor: "rgba(33, 150, 243, 1)",
+        lineWidth: .two
+    )
+    let series = chart.addAreaSeries(options: seriesOptions)
+    self.viewModel.areaSeries = series
+    self.lineChart = chart
+    
+  }
+  
+  private func setupTradingView() {
+    if self.viewModel.isLineChartMode {
+      self.candleChart?.removeFromSuperview()
+      if let chart = self.lineChart {
+        self.chartContainerView.addSubview(chart)
+        chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
+        chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
+        chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
+        chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
+      } else {
+        self.setupLineTradingView()
+      }
+    } else {
+      self.lineChart?.removeFromSuperview()
+      if let chart = candleChart {
+        self.chartContainerView.addSubview(chart)
+        chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
+        chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
+        chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
+        chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
+      } else {
+        self.setupCandleTradingView()
+      }
     }
   }
 
@@ -513,32 +599,9 @@ class ChartViewController: KNBaseViewController {
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
     self.noDataLabel.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
-    self.chartView.removeAllSeries()
-    self.chartView.add(self.viewModel.series)
-    self.chartView.xLabels = self.viewModel.xLabels
     self.updateUIChartInfo()
-    self.chartView.xLabelsFormatter = { (labelIndex: Int, labelValue: Double) -> String in
-      let timestamp = labelValue + self.viewModel.chartOriginTimeStamp
-      let date = Date(timeIntervalSince1970: timestamp * 0.001)
-      let calendar = Calendar.current
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "EE"
-      let hour = calendar.component(.hour, from: date)
-      let minutes = calendar.component(.minute, from: date)
-      let day = calendar.component(.day, from: date)
-      let month = calendar.component(.month, from: date)
-      let year = calendar.component(.year, from: date)
-      switch self.viewModel.periodType {
-      case .oneDay:
-        return "\(hour):\(minutes)"
-      case .sevenDay:
-        return "\(dateFormatter.string(from: date)) \(hour)"
-      case .oneMonth, .threeMonth:
-        return "\(day)/\(month)"
-      case .oneYear:
-        return "\(month)/\(year)"
-      }
-    }
+    let data = self.viewModel.generateSingleValueData()
+    self.viewModel.areaSeries.setData(data: data)
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
@@ -548,26 +611,13 @@ class ChartViewController: KNBaseViewController {
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
-    self.chartView.removeAllSeries()
-    self.chartView.add(self.viewModel.series)
     self.updateUIChartInfo()
   }
-}
-
-extension ChartViewController: ChartDelegate {
-  func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
-    guard let index = indexes.first, let unwrappedIdx = index else {
-      return
-    }
-    self.chartDetailLabel.attributedText = self.viewModel.displayChartDetaiInfoAt(index: unwrappedIdx)
-  }
   
-  func didFinishTouchingChart(_ chart: Chart) {
-    
-  }
-  
-  func didEndTouchingChart(_ chart: Chart) {
-    
+  func coordinatorDidUpdateTradingViewData(_ data: [TradingViewData]) {
+    self.viewModel.tradingViewCandleData = data
+    let data = self.viewModel.generateCandleStickData()
+    self.viewModel.candleSeries.setData(data: data)
   }
 }
 
@@ -575,11 +625,10 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 15
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
-//    let token = presenter.dataSource?.tokens[indexPath.row]
-//    cell.updateUI(token: token)
+
     return cell
   }
 }

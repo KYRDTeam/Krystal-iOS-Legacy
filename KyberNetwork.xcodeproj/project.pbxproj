@@ -867,6 +867,7 @@
 		C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */; };
 		C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911025638DE700F57756 /* Lato-Light.ttf */; };
 		C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */; };
+		C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B79EC4285C70B8008547F5 /* TradingViewData.swift */; };
 		C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BA31FC27184367008E8DF6 /* GasPrice.swift */; };
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
 		C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */; };
@@ -1886,6 +1887,7 @@
 		C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C3A6911025638DE700F57756 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C3B79EC4285C70B8008547F5 /* TradingViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewData.swift; sourceTree = "<group>"; };
 		C3BA31FC27184367008E8DF6 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
 		C3BBC56225FB4ACE004E1FB6 /* InvestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestViewController.swift; sourceTree = "<group>"; };
@@ -2128,6 +2130,7 @@
 				7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */,
 				7E6F510A2733CA69002DA0B2 /* KNSummaryChainModel.swift */,
 				C3362D8E2806D0E500840884 /* WalletData.swift */,
+				C3B79EC4285C70B8008547F5 /* TradingViewData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6101,6 +6104,7 @@
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/LDSwiftEventSource/LDSwiftEventSource.framework",
 				"${BUILT_PRODUCTS_DIR}/LaunchDarkly/LaunchDarkly.framework",
+				"${BUILT_PRODUCTS_DIR}/LightweightCharts/LightweightCharts.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
@@ -6160,6 +6164,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LDSwiftEventSource.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LaunchDarkly.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LightweightCharts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
@@ -6501,6 +6506,7 @@
 				257A379B205CDA8100E86794 /* KNTransactionCoordinator.swift in Sources */,
 				A6DA40E527F6DAB30078C58E /* Strings.swift in Sources */,
 				A6DA40E927F6E08F0078C58E /* Dynamic.swift in Sources */,
+				C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */,
 				2542604521215C120015ECC7 /* KSwapViewController.swift in Sources */,
 				A6DA40E727F6DC8D0078C58E /* Images.swift in Sources */,
 				61DCE17B2001A6BE0053939F /* RLP.swift in Sources */,

@@ -169,6 +169,8 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
+    case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
+      break
     }
   }
 
