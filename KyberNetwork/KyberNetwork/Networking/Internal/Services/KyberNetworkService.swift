@@ -919,7 +919,6 @@ extension KrytalService: TargetType {
       urlComponents.queryItems = queryItems
       return urlComponents.url!
       case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData:
-:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
