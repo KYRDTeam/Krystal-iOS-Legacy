@@ -138,7 +138,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString
   }
   
-  @IBAction func closeButton(_ sender: Any) {
+  @IBAction func cancelButtonTapped(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
   }
 
@@ -168,7 +168,7 @@ extension ConfirmBridgeViewController: BottomPopUpAbstract {
   }
 
   func getPopupHeight() -> CGFloat {
-    return 640
+    return 650
   }
 
   func getPopupContentView() -> UIView {
