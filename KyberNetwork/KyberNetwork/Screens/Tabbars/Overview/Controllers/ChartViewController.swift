@@ -27,6 +27,7 @@ class ChartViewModel {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
     }
   }
+  var isExpandingPoolTable: Bool = false
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
   let numberFormatter: NumberFormatter = {
@@ -321,7 +322,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var poolView: UIView!
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
-  
+  @IBOutlet weak var showAllPoolButton: UIButton!
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -450,6 +451,12 @@ class ChartViewController: KNBaseViewController {
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
   }
   
+  @IBAction func showAllPoolButtonTapped(_ sender: Any) {
+    self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
+    self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? "SHOW LESS".toBeLocalised() : "SHOW ALL".toBeLocalised(), for: .normal)
+    self.updatePoolTableHeight()
+  }
+
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
   }
@@ -516,8 +523,21 @@ class ChartViewController: KNBaseViewController {
     }
   }
   
+  func updatePoolTableHeight() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      if self.viewModel.isExpandingPoolTable {
+        self.tableViewHeight.constant = CGFloat(self.viewModel.poolData.count * 92)
+      } else {
+        self.tableViewHeight.constant = CGFloat(460)
+      }
+      self.view.layoutIfNeeded()
+    }
+  }
+  
   func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
     self.viewModel.poolData = poolData
+    self.updatePoolTableHeight()
+    self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
   }
 

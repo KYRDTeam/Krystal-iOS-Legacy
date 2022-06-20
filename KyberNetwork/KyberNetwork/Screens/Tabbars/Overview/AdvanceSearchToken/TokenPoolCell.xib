@@ -142,8 +142,8 @@
                 <outlet property="chainIcon" destination="5Lj-dU-CHA" id="6s3-dX-Rck"/>
                 <outlet property="fullNameLabel" destination="dBl-mg-VyW" id="Dwu-qt-kh7"/>
                 <outlet property="pairNameLabel" destination="2PT-OT-0Xr" id="u6X-XV-NL2"/>
-                <outlet property="token0Icon" destination="DSf-Dr-QTt" id="I3t-NQ-hnT"/>
-                <outlet property="token1Icon" destination="CB5-AV-0UJ" id="hlm-S4-yMM"/>
+                <outlet property="token0Icon" destination="CB5-AV-0UJ" id="Xcd-5H-hFE"/>
+                <outlet property="token1Icon" destination="DSf-Dr-QTt" id="AMw-rB-m77"/>
                 <outlet property="totalValueLabel" destination="cKc-2s-MIz" id="mIt-2z-RSA"/>
                 <outlet property="valueLabel" destination="Ski-Io-Y1x" id="ifs-od-BGo"/>
             </connections>
