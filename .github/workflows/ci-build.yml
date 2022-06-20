@@ -160,7 +160,7 @@ jobs:
           # curl -sL https://firebase.tools | bash
           echo KRYSTAL_DEV_PROFILE
           echo -n "${{ secrets.KRYSTAL_DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
-          echo ######
+          echo #########
           sudo ls /Users/runner/privates/profiles
           cat "/Users/runner/privates/profiles/Krystal Dev.mobileprovision"
 
