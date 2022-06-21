@@ -46,6 +46,7 @@ class ChartViewModel {
   var tradingViewLineData: [SingleValueData] = []
   
   var isLineChartMode: Bool = true
+  var selectedPool: (String, String) = ("", "")
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -591,7 +592,7 @@ class ChartViewController: KNBaseViewController {
     if self.viewModel.isLineChartMode {
       self.loadLineChartData()
     } else {
-      self.loadCandleChartData()
+      self.loadCandleChartData(source: self.viewModel.selectedPool.0, quote: self.viewModel.selectedPool.1)
     }
   }
   
@@ -600,9 +601,10 @@ class ChartViewController: KNBaseViewController {
     self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
   }
   
-  fileprivate func loadCandleChartData() {
+  fileprivate func loadCandleChartData(source: String, quote: String) {
+    guard !source.isEmpty, !quote.isEmpty else { return }
     let current = NSDate().timeIntervalSince1970
-    self.delegate?.chartViewController(self, run: .getCandleChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: "0xe9e7cea3dedca5984780bafc599bd69add087d56"))
+    self.delegate?.chartViewController(self, run: .getCandleChartData(address: source, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: quote))
   }
 
   fileprivate func loadTokenDetailInfo() {
@@ -641,6 +643,9 @@ class ChartViewController: KNBaseViewController {
     self.updatePoolTableHeight()
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
+    if let firstPool = poolData.first {
+      self.viewModel.selectedPool = (firstPool.token0.address, firstPool.token1.address)
+    }
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
@@ -685,7 +690,10 @@ extension ChartViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     self.viewModel.isLineChartMode = false
-    self.loadCandleChartData()
+    let poolData = self.viewModel.poolData[indexPath.row]
+    let source = poolData.token0.address
+    let quote = poolData.token1.address
+    self.loadCandleChartData(source: source, quote: quote)
     self.setupTradingView()
   }
 }
