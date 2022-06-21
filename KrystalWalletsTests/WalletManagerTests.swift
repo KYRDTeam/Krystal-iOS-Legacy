@@ -13,17 +13,23 @@ class WalletManagerTests: XCTestCase {
   
   var sut: WalletManager = .shared
   
+  override func setUp() {
+    super.setUp()
+    
+    sut.removeAll()
+  }
+  
   func testImportMnemonic() {
     let wallet = try! sut.import(mnemonic: "rely gentle ready someone hub liar hurt tennis pact deliver income matrix", name: "test_wallet_import_from_mnemonic")
     let addresses = sut.getAllAddresses(walletID: wallet.id)
-    XCTAssertEqual(addresses[0].addressString, "0xE2dE5d59D937E11f11F6013502674a9B07D411b3")
-    XCTAssertEqual(addresses[1].addressString, "HTUyg4DkMsbU2G99yRxBYVDCW9AK2dQUi4FFNV6S4iiK")
+    XCTAssertEqual(addresses[0].addressString, "0x3e2f546dcf48b0ae79d13e7c1401c6f2e9cf0df2")
+    XCTAssertEqual(addresses[1].addressString, "9jHyieb6LF3MUbNcoSaC7yXYs9qc7Xbf7nDEhx1Wi7zL")
 
     let privateKey0 = try! sut.exportPrivateKey(walletID: wallet.id, addressType: .solana)
     XCTAssertEqual(privateKey0, "5o42V1bDDAvFvehNrNr9EXyVwy1C3Z9y69GLo5sebiYAaMqEGP6MsrZbuxom35kzVRJPupxUhpm4MRA4eicki7Ki")
 
     let privateKey1 = try! sut.exportPrivateKey(walletID: wallet.id, addressType: .evm)
-    XCTAssertEqual(privateKey1, "abcdef")
+    XCTAssertEqual(privateKey1, "5f34e6d8f153aa9f00245a7c56709f994e01f90fadbffedc11985af8bc58b7d9")
   }
   
   func testImportSolPrivateKey() {
@@ -54,7 +60,7 @@ class WalletManagerTests: XCTestCase {
     
     XCTAssertEqual(
       sut.getAllAddresses(walletID: wallet.id)[0].addressString,
-      "0xD5b7028406e01c68b7Ef55E9Ca0D75be9eC44C33"
+      "0xd5b7028406e01c68b7ef55e9ca0d75be9ec44c33"
     )
     
     let privateKey = try! sut.exportPrivateKey(walletID: wallet.id, addressType: .evm)

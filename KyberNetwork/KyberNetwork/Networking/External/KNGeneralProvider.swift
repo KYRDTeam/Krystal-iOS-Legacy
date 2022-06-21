@@ -21,8 +21,6 @@ class KNGeneralProvider {
 
   static let shared = KNGeneralProvider()
   
-  var web3Service: EthereumWeb3Service
-  
   var defaultChain: ChainType {
     return .eth
   }
@@ -30,7 +28,6 @@ class KNGeneralProvider {
   var currentChain: ChainType {
     didSet {
       Storage.store(self.currentChain, as: Constants.currentChainSaveFileName)
-      web3Service = EthereumWeb3Service(chain: self.currentChain)
     }
   }
   
@@ -146,10 +143,8 @@ class KNGeneralProvider {
   init() {
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
       self.currentChain = saved
-      self.web3Service = EthereumWeb3Service(chain: saved)
     } else {
       self.currentChain = .eth
-      self.web3Service = EthereumWeb3Service(chain: .eth)
     }
   }
 

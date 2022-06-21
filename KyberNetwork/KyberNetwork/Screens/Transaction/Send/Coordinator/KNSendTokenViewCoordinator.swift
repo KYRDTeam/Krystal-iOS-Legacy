@@ -45,10 +45,6 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   var currentAddress: KAddress {
     return AppDelegate.session.address
   }
-  
-  var web3Service: EthereumWeb3Service {
-    return KNGeneralProvider.shared.web3Service
-  }
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -440,11 +436,12 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
   }
   
   private func transferNFT(to: String, item: NFTItem, category: NFTSection, gasLimit: BigInt, gasPrice: BigInt, amount: Int, isERC721: Bool, advancedPriorityFee: String?, advancedMaxfee: String?, advancedNonce: String?, completion: @escaping (Result<TransferTransactionResultData, AnyError>) -> Void) {
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
     web3Service.getTransactionCount(for: currentAddress.addressString) { [weak self] txCountResult in
       guard let `self` = self else { return }
       switch txCountResult {
       case .success:
-        self.web3Service.requestDataForNFTTransfer(from: self.currentAddress.addressString, to: to, tokenID: item.tokenID, amount: amount, isERC721: isERC721) { dataResult in
+        web3Service.requestDataForNFTTransfer(from: self.currentAddress.addressString, to: to, tokenID: item.tokenID, amount: amount, isERC721: isERC721) { dataResult in
           switch dataResult {
           case .success(let data):
             let processor: TransactionProcessor = {

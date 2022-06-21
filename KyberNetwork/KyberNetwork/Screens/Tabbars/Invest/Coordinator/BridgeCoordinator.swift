@@ -142,10 +142,6 @@ class BridgeCoordinator: NSObject, Coordinator {
   var currentAddress: KAddress {
     return AppDelegate.session.address
   }
-  
-  var web3Service: EthereumWeb3Service {
-    return KNGeneralProvider.shared.web3Service
-  }
 
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
@@ -310,6 +306,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
   
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
     web3Service.getTransactionCount(for: currentAddress.addressString) { result in
       switch result {
       case .success(let res):
@@ -601,6 +598,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     guard !self.bridgeContract.isEmpty else {
       return
     }
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
     web3Service.getAllowance(for: currentAddress.addressString, networkAddress: bridgeContract, tokenAddress: token.address) { [weak self] result in
       guard let `self` = self else { return }
       switch result {

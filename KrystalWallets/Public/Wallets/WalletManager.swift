@@ -163,8 +163,10 @@ public extension WalletManager {
   
   func `import`(mnemonic: String, name: String) throws -> KWallet {
     do {
-      let wallet = try keystore.import(mnemonic: mnemonic, name: name, encryptPassword: "", coins: supportedAddressTypes.map(\.coinType))
+      let password = PasswordGenerator.generateRandom()
+      let wallet = try keystore.import(mnemonic: mnemonic, name: name, encryptPassword: password, coins: supportedAddressTypes.map(\.coinType))
       let walletObject = WalletObject(id: wallet.identifier, importType: .mnemonic, name: name)
+      keyManager.save(value: password, forKey: wallet.identifier)
       let addresses = try supportedAddressTypes.map { addressType -> AddressObject in
         let privateKey = try privateKey(wallet: walletObject.toWallet(), forAddressType: addressType)
         let address = getAddress(privateKey: privateKey, addressType: addressType)

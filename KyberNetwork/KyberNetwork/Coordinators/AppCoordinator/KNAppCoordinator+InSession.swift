@@ -184,13 +184,13 @@ extension KNAppCoordinator {
     
   }
   
-  private func switchToLastAddress() {
+  private func switchToLastImportedAddress() {
     if let address = walletManager.getAllAddresses().last {
       guard let chain = ChainType.allCases.first(where: { chainType in
         chainType.addressType == address.addressType
       }) else {
         try? self.walletManager.removeAddress(address: address)
-        self.switchToLastAddress()
+        self.switchToLastImportedAddress()
         return
       }
       if address.isWatchWallet {
@@ -199,7 +199,7 @@ extension KNAppCoordinator {
         self.switchWallet(wallet: wallet, chain: chain)
       } else {
         try? self.walletManager.removeAddress(address: address)
-        self.switchToLastAddress()
+        self.switchToLastImportedAddress()
         return
       }
     } else {
@@ -223,10 +223,10 @@ extension KNAppCoordinator {
       } else if let wallet = walletManager.wallet(forAddress: nextAddress) {
           switchWallet(wallet: wallet, chain: KNGeneralProvider.shared.currentChain)
       } else {
-        switchToLastAddress()
+        switchToLastImportedAddress()
       }
     } else {
-      switchToLastAddress()
+      switchToLastImportedAddress()
     }
   }
   

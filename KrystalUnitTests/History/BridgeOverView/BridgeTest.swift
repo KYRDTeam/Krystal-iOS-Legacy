@@ -19,7 +19,7 @@ class BridgeTest: QuickSpec {
       beforeEach {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let session = appDelegate.coordinator.session
-        sut = BridgeCoordinator(navigationController: UINavigationController(), session: session!)
+        sut = BridgeCoordinator(navigationController: UINavigationController())
         // pretend user update data via screen Bridge
         sut.rootViewController.viewModel.currentSendToAddress = "0x7cE5E5a679DA7Cc4B4A7D75dB7b2D4443DBC30bC"
         sut.rootViewController.viewModel.currentSourceChain = .polygon

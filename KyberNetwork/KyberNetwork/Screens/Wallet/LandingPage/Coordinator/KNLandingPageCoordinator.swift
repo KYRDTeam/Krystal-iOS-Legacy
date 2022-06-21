@@ -91,55 +91,15 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
       KNPasscodeUtil.shared.deletePasscode()
     }
     
-    // TODO: TUNG - Check what is newWallet???
-//    if let wallet = self.newWallet {
-//      self.navigationController.viewControllers = [self.rootViewController]
-//      self.createWalletCoordinator.updateNewWallet(wallet, name: "Untitled")
-//      self.createWalletCoordinator.start()
-//      return
-//    }
-    
     if !wallets.isEmpty {
       if KNPasscodeUtil.shared.currentPasscode() == nil {
         self.navigationController.viewControllers = [self.rootViewController]
+        self.newWallet = wallets.first
         self.passcodeCoordinator.start()
       }
     } else {
       self.navigationController.viewControllers = [self.rootViewController]
     }
-    // TODO: TUNG - Check this logic
-//    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
-//      if case .real(let account) = wallet.type {
-//         //In case backup with icloud/local backup there is no keychain so delete all keystore in keystore directory
-//         guard let _ =  keystore.getPassword(for: account) else {
-//            KNPasscodeUtil.shared.deletePasscode()
-//            let fileManager = FileManager.default
-//            do {
-//                let filePaths = try fileManager.contentsOfDirectory(atPath: keystore.keysDirectory.path)
-//                for filePath in filePaths {
-//                    let keyPath = URL(fileURLWithPath: keystore.keysDirectory.path).appendingPathComponent(filePath).absoluteURL
-//                    try fileManager.removeItem(at: keyPath)
-//                }
-//            } catch {
-//                print("Could not clear keystore folder: \(error)")
-//            }
-//            KNWalletStorage.shared.deleteAll()
-//            return
-//         }
-//
-//      }
-//      if KNPasscodeUtil.shared.currentPasscode() == nil {
-//        self.navigationController.viewControllers = [self.rootViewController]
-//        // In case user imported a wallet and kill the app during settings passcode
-//
-//        // TODO: - TUNG - Update new wallet
-//
-////        self.newWallet = wallet
-//        self.passcodeCoordinator.start()
-//      }
-//    } else {
-//      self.navigationController.viewControllers = [self.rootViewController]
-//    }
   }
 
   func updateNewWallet(wallet: KWallet) {
@@ -227,18 +187,11 @@ extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     didImportWallet(wallet: wallet, chain: chain)
-//    delegate?.landingPageCoordinator(import: wallet, chain: chain)
   }
   
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
-  
-//  func importWalletCoordinatorDidImport(wallet: KWallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
-//    KNGeneralProvider.shared.currentChain = selectedChain
-//    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod, importChainType: importChainType)
-    
-//  }
 
   func importWalletCoordinatorDidClose() {
   }
@@ -254,12 +207,16 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
   }
 
   func passcodeCoordinatorDidCreatePasscode() {
-    guard let wallet = self.newWallet, let chain = self.targetChain else { return }
-    self.navigationController.topViewController?.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
-      self.navigationController.topViewController?.hideLoading()
-      self.delegate?.landingPageCoordinator(import: wallet, chain: chain)
+    guard let wallet = self.newWallet else {
+      return
     }
+    guard let address = walletManager.address(forWalletID: wallet.id) else {
+      return
+    }
+    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
+      return
+    }
+    self.delegate?.landingPageCoordinator(import: wallet, chain: self.targetChain ?? chain)
   }
 }
 
