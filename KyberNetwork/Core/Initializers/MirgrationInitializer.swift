@@ -14,7 +14,7 @@ class MigrationInitializer: Initializer {
     let account: Wallet
     let chainID: Int
     lazy var config: Realm.Configuration = {
-        return RealmConfiguration.configuration(for: account, chainID: chainID)
+      return RealmConfiguration.configuration(for: account.addressString, chainID: chainID)
     }()
 
     init(

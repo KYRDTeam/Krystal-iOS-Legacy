@@ -64,10 +64,10 @@ class KNTransactionDetailsCoordinator: Coordinator {
     self.navigationController.popViewController(animated: true)
   }
 
-  func update(transaction: Transaction, currentWallet: KNWalletObject) {
+//  func update(transaction: Transaction) {
 //    self.transaction = transaction
-//    self.rootViewController.coordinator(update: transaction, currentWallet: currentWallet)
-  }
+//    self.rootViewController.coordinator(update: transaction)
+//  }
 //
   func updatePendingTransactions(_ transactions: [KNTransaction], currentWallet: KNWalletObject) {
 //    guard let tran = transactions.map({ $0.toTransaction() }).first(where: { $0.compoundKey == (self.transaction?.compoundKey ?? "") }) else {

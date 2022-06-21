@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KrystalWallets
 
 protocol BifinityOrderDelegate: class {
   func openWalletList()
@@ -33,9 +34,9 @@ class BifinityOrderViewModel {
     return filteredOrder
   }
   var isShowingPending: Bool = true
-  var wallet: Wallet
-  init(wallet: Wallet) {
-    self.wallet = wallet
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
 
   func numberOfRows() -> Int {
@@ -77,7 +78,7 @@ class BifinityOrderViewController: KNBaseViewController {
 
   func setupUI() {
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
+    self.walletSelectButton.setTitle(self.viewModel.currentAddress.addressString, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = 1
     segmentedControl.highlightSelectedSegment()
@@ -116,10 +117,10 @@ class BifinityOrderViewController: KNBaseViewController {
     self.updateCollectionView()
   }
 
-  func coordinatorDidUpdateWallet(_ wallet: Wallet) {
+  func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
-    self.viewModel.wallet = wallet
-    self.walletSelectButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
+//    self.viewModel.wallet = wallet
+    self.walletSelectButton.setTitle(self.viewModel.currentAddress.addressString, for: .normal)
   }
 }
 

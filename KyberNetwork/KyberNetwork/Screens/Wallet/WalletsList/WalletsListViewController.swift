@@ -7,10 +7,10 @@
 
 import UIKit
 import MBProgressHUD
+import KrystalWallets
 
 enum WalletsListViewEvent {
-  case select(wallet: KNWalletObject)
-  case copy(wallet: KNWalletObject)
+  case didSelect(address: KAddress)
   case manageWallet
   case connectWallet
   case addWallet
@@ -21,62 +21,55 @@ protocol WalletsListViewControllerDelegate: class {
 }
 
 class WalletsListViewModel {
-  var wallets: [KNWalletObject]
-  var currentWallet: KNWalletObject
-
-  init(
-    walletObjects: [KNWalletObject],
-    currentWallet: KNWalletObject
-    ) {
-    self.wallets = walletObjects
-    self.currentWallet = currentWallet
+  
+  let walletManager = WalletManager.shared
+  
+  var addresses: [KAddress]
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  init() {
+    let addressType = KNGeneralProvider.shared.chainAddressType
+    self.addresses = walletManager.getAllAddresses(addressType: addressType)
   }
 
-  func update(wallets: [KNWalletObject], currentWallet: KNWalletObject) {
-    self.wallets = wallets
-    self.currentWallet = currentWallet
+  var watchAddresses: [KAddress] {
+    return addresses.filter { $0.isWatchWallet }
   }
-
-  var watchWallets: [KNWalletObject] {
-    return self.wallets.filter { (object) -> Bool in
-      if KNGeneralProvider.shared.currentChain == .solana {
-          return object.chainType == 2 && object.isWatchWallet
-      } else {
-        return object.chainType != 2 && object.isWatchWallet
-      }
-    }
-  }
-
-  var realWallets: [KNWalletObject] {
-    return self.wallets.filter { (object) -> Bool in
-      if KNGeneralProvider.shared.currentChain == .solana {
-          return object.chainType == 2 && !object.isWatchWallet
-      } else {
-        return object.chainType != 2 && !object.isWatchWallet
-      }
-    }
+  
+  var realAddresses: [KAddress] {
+    return addresses.filter { !$0.isWatchWallet }
   }
 
   var dataSource: [Any] {
     var data: [Any] = []
-    let realSectionViewModels = self.realWallets.map { (object) -> WalletListTableViewCellViewModel in
-      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
+    let realAddressViewModels = realAddresses.map { address in
+      return WalletListTableViewCellViewModel(
+        walletName: address.name,
+        walletAddress: address.addressString,
+        isCurrentWallet: address == currentAddress
+      )
     }
-    if !realSectionViewModels.isEmpty {
+    if !realAddressViewModels.isEmpty {
       let sectionViewModel = WalletListSectionTableViewCellViewModel(sectionTile: "Change Wallets", isFirstSection: true)
       data.append(sectionViewModel)
-      data.append(contentsOf: realSectionViewModels)
+      data.append(contentsOf: realAddressViewModels)
+    }
+    
+    let watchAddressViewMoels = watchAddresses.map { address in
+      return WalletListTableViewCellViewModel(
+        walletName: address.name,
+        walletAddress: address.addressString,
+        isCurrentWallet: address == currentAddress
+      )
     }
 
-    let watchSectionViewModels = self.watchWallets.map { (object) -> WalletListTableViewCellViewModel in
-      let isCurrent = object.address == self.currentWallet.address && object.name == self.currentWallet.name
-      return WalletListTableViewCellViewModel(walletName: object.name, walletAddress: object.address, isCurrentWallet: isCurrent)
-    }
-    if !watchSectionViewModels.isEmpty {
+    if !watchAddressViewMoels.isEmpty {
       let sectionModel = WalletListSectionTableViewCellViewModel(sectionTile: "Watch wallets", isFirstSection: data.isEmpty)
       data.append(sectionModel)
-      data.append(contentsOf: watchSectionViewModels)
+      data.append(contentsOf: watchAddressViewMoels)
     }
 
     return data
@@ -89,26 +82,22 @@ class WalletsListViewModel {
   var walletCellSectionRowHeight: CGFloat {
     return 80.0
   }
-
-  func getWalletObject(address: String) -> KNWalletObject? {
-    return self.wallets.first { (object) -> Bool in
-      return object.address.lowercased() == address.lowercased()
-    }
+  
+  func getAddress(addressString: String) -> KAddress? {
+    return addresses.first { $0.addressString == addressString }
   }
 
   var walletTableViewHeight: CGFloat {
-    var realWalletCellsHeight = CGFloat(self.realWallets.count) * self.walletCellRowHeight
+    var realWalletCellsHeight = CGFloat(self.realAddresses.count) * self.walletCellRowHeight
     if realWalletCellsHeight > 0 {
       realWalletCellsHeight += self.walletCellSectionRowHeight
     }
-    var watchWalletCellsHeight = CGFloat(self.watchWallets.count) * self.walletCellRowHeight
+    var watchWalletCellsHeight = CGFloat(self.watchAddresses.count) * self.walletCellRowHeight
     if watchWalletCellsHeight > 0 {
       watchWalletCellsHeight += self.walletCellSectionRowHeight
     }
     return min(372.0, realWalletCellsHeight + watchWalletCellsHeight)
   }
-
-  func isCurrentWallet(row: Int) -> Bool { return self.wallets[row].address == self.currentWallet.address }
 }
 
 class WalletsListViewController: KNBaseViewController {
@@ -151,13 +140,6 @@ class WalletsListViewController: KNBaseViewController {
     self.connectWalletButton.isHidden = KNGeneralProvider.shared.currentChain == .solana
     self.qrCodeIcon.isHidden = KNGeneralProvider.shared.currentChain == .solana
     self.manageWalletTopConstraint.constant = KNGeneralProvider.shared.currentChain == .solana ? 12 : 66
-  }
-
-  func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
-    self.viewModel.update(wallets: wallets, currentWallet: currentWallet)
-    self.walletTableView.reloadData()
-    self.walletsTableViewHeightContraint.constant = self.viewModel.walletTableViewHeight
-    self.view.layoutIfNeeded()
   }
 
   @IBAction func manageWalletButtonTapped(_ sender: UIButton) {
@@ -219,14 +201,16 @@ extension WalletsListViewController: UITableViewDelegate {
 extension WalletsListViewController: WalletListTableViewCellDelegate {
   func walletListTableViewCell(_ controller: WalletListTableViewCell, run event: WalletListTableViewCellEvent) {
     switch event {
-    case .copy(let address):
-      if let wallet = self.viewModel.getWalletObject(address: address) {
-        self.delegate?.walletsListViewController(self, run: .copy(wallet: wallet))
+    case .copy(let addressString):
+      if let address = self.viewModel.getAddress(addressString: addressString) {
+        UIPasteboard.general.string = address.addressString
+        self.showMessage(text: Strings.copied)
       }
-    case .select(let address):
+    case .select(let addressString):
       self.dismiss(animated: true) {
-        if let wallet = self.viewModel.getWalletObject(address: address) {
-          self.delegate?.walletsListViewController(self, run: .select(wallet: wallet))
+        if let address = self.viewModel.getAddress(addressString: addressString) {
+          AppDelegate.session.switchAddress(address: address)
+          self.delegate?.walletsListViewController(self, run: .didSelect(address: address))
         }
       }
     }

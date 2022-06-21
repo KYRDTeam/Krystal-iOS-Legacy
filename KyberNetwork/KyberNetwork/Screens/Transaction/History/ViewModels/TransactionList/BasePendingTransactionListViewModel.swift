@@ -6,17 +6,18 @@
 //
 
 import Foundation
+import KrystalWallets
 
 class BasePendingTransactionListViewModel {
   let dateFormatter = DateFormatterUtil.shared.limitOrderFormatter
-  var wallet: KNWalletObject
+  var address: KAddress
   var transactions: [InternalHistoryTransaction] = []
   var headers: [String] = []
   var groupedTransactions: Observable<[String: [InternalHistoryTransaction]]> = .init([:])
   var isTransactionActionEnabled: Bool = false
   
-  init(wallet: KNWalletObject) {
-    self.wallet = wallet
+  init(address: KAddress) {
+    self.address = address
     self.observeTxNotifications()
   }
   
@@ -25,8 +26,8 @@ class BasePendingTransactionListViewModel {
     self.recalculate()
   }
   
-  func updateWallet(wallet: KNWalletObject) {
-    self.wallet = wallet
+  func updateAddress(address: KAddress) {
+    self.address = address
     self.reload()
   }
   

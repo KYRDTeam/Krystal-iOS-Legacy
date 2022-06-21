@@ -116,11 +116,11 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.fromIcon.image = self.viewModel.fromChain?.chainIcon()
     self.fromChainLabel.text = self.viewModel.fromChain?.chainName()
     self.fromTokenValueLabel.text = self.viewModel.fromValue
-    self.fromAddressLabel.text = self.viewModel.fromAddress
+    self.fromAddressLabel.text = "\(self.viewModel.fromAddress.prefix(20))...\(self.viewModel.fromAddress.suffix(4))"
     self.toIcon.image = self.viewModel.toChain?.chainIcon()
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
     self.toChainTokenValueLabel.text = self.viewModel.toValue
-    self.toAddressLabel.text = self.viewModel.toAddress
+    self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(20))...\(self.viewModel.toAddress.suffix(4))"
     self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
     self.usdValueLabel.text = self.viewModel.feeUSDString
     self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString

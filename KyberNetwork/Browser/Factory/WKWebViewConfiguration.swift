@@ -12,7 +12,7 @@ enum WebViewType {
 
 extension WKWebViewConfiguration {
 
-    static func make(forType type: WebViewType, address: Address, in messageHandler: WKScriptMessageHandler) -> WKWebViewConfiguration {
+    static func make(forType type: WebViewType, address: String, in messageHandler: WKScriptMessageHandler) -> WKWebViewConfiguration {
         let webViewConfig = WKWebViewConfiguration()
         var js = ""
 
@@ -71,11 +71,11 @@ extension WKWebViewConfiguration {
     }
 
 // swiftlint:disable function_body_length
-    fileprivate static func javaScriptForDappBrowser(address: Address) -> String {
+    fileprivate static func javaScriptForDappBrowser(address: String) -> String {
         return """
                //Space is needed here because it is sometimes cut off by websites. 
 
-               const addressHex = "\(address.eip55String)"
+               const addressHex = "\(address)"
                const rpcURL = "\(KNGeneralProvider.shared.customRPC.endpoint)"
                const chainID = "\(KNGeneralProvider.shared.customRPC.chainID)"
 

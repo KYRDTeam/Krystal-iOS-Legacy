@@ -6,10 +6,10 @@ import TrustCore
 import QRCodeReaderViewController
 import WalletConnect
 import Moya
+import KrystalWallets
 
 protocol KNCreateWalletCoordinatorDelegate: class {
-  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet)
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool)
+  func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType)
   func createWalletCoordinatorDidClose()
   func createWalletCoordinatorDidSendRefCode(_ code: String)
 }
@@ -18,26 +18,28 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  var keystore: Keystore
 
-  fileprivate var newWallet: Wallet?
+  fileprivate var newWallet: KWallet?
   fileprivate var name: String?
   fileprivate var refCode: String = ""
   weak var delegate: KNCreateWalletCoordinatorDelegate?
   var createWalletController: KNCreateWalletViewController?
+  var targetChain: ChainType
+  
+  let walletManager = WalletManager.shared
 
   fileprivate var isCreating: Bool = false
 
   init(
     navigationController: UINavigationController,
-    keystore: Keystore,
-    newWallet: Wallet?,
-    name: String?
-    ) {
+    newWallet: KWallet?,
+    name: String?,
+    targetChain: ChainType = KNGeneralProvider.shared.currentChain
+  ) {
     self.navigationController = navigationController
-    self.keystore = keystore
     self.newWallet = newWallet
     self.name = name
+    self.targetChain = targetChain
   }
 
   func start() {
@@ -56,7 +58,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     }
   }
 
-  func updateNewWallet(_ wallet: Wallet?, name: String?) {
+  func updateNewWallet(_ wallet: KWallet?, name: String?) {
     self.newWallet = wallet
     self.name = name
   }
@@ -65,32 +67,13 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
    Open back up wallet view for new wallet created from the app
    Always using 12 words seeds to back up the wallet
    */
-  fileprivate func openBackUpWallet(_ wallet: Wallet, name: String?) {
-    let walletObject: KNWalletObject = {
-      if let walletObject = KNWalletStorage.shared.get(forPrimaryKey: wallet.addressString) {
-        return walletObject
-      }
-      return KNWalletObject(
-        address: wallet.addressString,
-        isBackedUp: false
-      )
-    }()
-
-    let account: Account! = {
-      if case .real(let acc) = wallet.type { return acc }
-      // Failed to get account from wallet, show enter name
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, isBackUp: false)
-      fatalError("Wallet type is not real wallet")
-    }()
-
+  fileprivate func openBackUpWallet(_ wallet: KWallet, name: String?) {
     self.newWallet = wallet
     self.name = name
-    self.keystore.recentlyUsedWallet = wallet
-    KNWalletStorage.shared.add(wallets: [walletObject])
 
-    let seedResult = self.keystore.exportMnemonics(account: account)
-    if case .success(let mnemonics) = seedResult {
-      let seeds = mnemonics.split(separator: " ").map({ return String($0) })
+    do {
+      let mnemonic = try walletManager.exportMnemonic(walletID: wallet.id)
+      let seeds = mnemonic.split(separator: " ").map({ return String($0) })
       let backUpVC: KNBackUpWalletViewController = {
         let viewModel = KNBackUpWalletViewModel(seeds: seeds)
         let controller = KNBackUpWalletViewController(viewModel: viewModel)
@@ -98,22 +81,23 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
         return controller
       }()
       self.navigationController.pushViewController(backUpVC, animated: true)
-    } else {
-      // Failed to get seeds result, temporary open create name for wallet
-      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, isBackUp: false)
-      fatalError("Can not get seeds from account")
+    } catch {
+      self.delegate?.createWalletCoordinatorDidCreateWallet(self.newWallet, name: name, chain: self.targetChain)
+      print("Can not get seeds from account")
     }
   }
   
-  func sendRefCode(_ code: String, account: Account) {
+  func sendRefCode(_ code: String, wallet: KWallet) {
+    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+      return
+    }
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
     let sendData = prefix + data
-    let result = self.keystore.signMessage(sendData, for: account)
-    switch result {
-    case .success(let signedData):
+    do {
+      let signedData = try SignerFactory().getSigner(address: address).signMessage(address: address, data: sendData, addPrefix: false)
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+      provider.request(.registerReferrer(address: address.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let isSuccess = json["success"] as? Bool, isSuccess {
             self.navigationController.showTopBannerView(message: "Success register referral code")
@@ -124,7 +108,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
           }
         }
       }
-    case .failure(let error):
+    } catch {
       print("[Send ref code] \(error.localizedDescription)")
     }
   }
@@ -133,24 +117,13 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
 extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   func backupWalletViewControllerDidFinish() {
     guard let wallet = self.newWallet else { return }
-    let walletObject = KNWalletObject(
-      address: wallet.addressString,
-      name: self.name ?? "New Wallet",
-      isBackedUp: true
-    )
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, isBackUp: true)
+    WalletCache.shared.markWalletBackedUp(walletID: wallet.id)
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
   }
 
   func backupWalletViewControllerDidConfirmSkipWallet() {
     guard let wallet = self.newWallet else { return }
-    let walletObject = KNWalletObject(
-      address: wallet.addressString,
-      name: self.name ?? "New Wallet",
-      isBackedUp: false
-    )
-    KNWalletStorage.shared.add(wallets: [walletObject])
-    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, isBackUp: false)
+    self.delegate?.createWalletCoordinatorDidCreateWallet(wallet, name: self.name, chain: targetChain)
   }
   
   fileprivate func openQRCode(_ controller: UIViewController) {
@@ -169,23 +142,24 @@ extension KNCreateWalletCoordinator: KNCreateWalletViewControllerDelegate {
       }
     case .next(let name):
       self.navigationController.dismiss(animated: true) {
-        self.navigationController.displayLoading(text: "\(NSLocalizedString("creating", value: "Creating", comment: ""))...", animated: true)
-        DispatchQueue.global(qos: .userInitiated).async {
-          let account = self.keystore.create12wordsAccount(with: "")
+        self.navigationController.displayLoading(text: Strings.creating, animated: true)
+        do {
+          let wallet = try self.walletManager.createWallet(name: name)
           DispatchQueue.main.async {
             self.navigationController.hideLoading()
             self.navigationController.showSuccessTopBannerMessage(
-              with: NSLocalizedString("wallet.created", value: "Wallet Created", comment: ""),
-              message: NSLocalizedString("you.have.successfully.created.a.new.wallet", value: "You have successfully created a new wallet!", comment: ""),
+              with: Strings.walletCreated,
+              message: Strings.walletCreatedSuccess,
               time: 1
             )
-            let wallet = Wallet(type: WalletType.real(account))
             self.name = name
             self.openBackUpWallet(wallet, name: name)
             if !self.refCode.isEmpty {
-              self.sendRefCode(self.refCode.uppercased(), account: account)
+              self.sendRefCode(self.refCode.uppercased(), wallet: wallet)
             }
           }
+        } catch {
+          return
         }
       }
     case .openQR:

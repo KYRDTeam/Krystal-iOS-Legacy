@@ -5,6 +5,7 @@
 //  Created by Com1 on 10/01/2022.
 //
 import BigInt
+import KrystalWallets
 
 enum KNSelectedGasPriceType: Int {
   case fast = 0
@@ -53,11 +54,11 @@ enum GasFeeSelectorPopupViewEvent {
   case useChiStatusChanged(status: Bool)
   case updateAdvancedSetting(gasLimit: String, maxPriorityFee: String, maxFee: String)
   case updateAdvancedNonce(nonce: String)
-  case speedupTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
-  case cancelTransaction(transaction: EIP1559Transaction, original: InternalHistoryTransaction)
-  case speedupTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
-  case cancelTransactionLegacy(legacyTransaction: SignTransactionObject, original: InternalHistoryTransaction)
   case resetSetting
+  case cancelTransactionSuccessfully(cancelTransaction: InternalHistoryTransaction)
+  case cancelTransactionFailure(message: String)
+  case speedupTransactionSuccessfully(speedupTransaction: InternalHistoryTransaction)
+  case speedupTransactionFailure(message: String)
 }
 
 class GasFeeSelectorPopupViewModel {
@@ -101,6 +102,10 @@ class GasFeeSelectorPopupViewModel {
   var isSpeedupMode: Bool = false
   var isCancelMode: Bool = false
   var transaction: InternalHistoryTransaction?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 
   var advancedGasLimit: String? {
     didSet {

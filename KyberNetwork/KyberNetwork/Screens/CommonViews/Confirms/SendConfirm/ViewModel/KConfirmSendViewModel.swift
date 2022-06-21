@@ -5,32 +5,27 @@ import BigInt
 import JdenticonSwift
 
 struct KConfirmSendViewModel {
-  let solTransaction: UnconfirmedSolTransaction?
-  let transaction: UnconfirmedTransaction?
+  let transaction: UnconfirmedTransaction
   let ens: String?
+  
+  var currentChain = KNGeneralProvider.shared.currentChain
 
-  init(transaction: UnconfirmedTransaction? = nil, ens: String? = nil, solTransaction: UnconfirmedSolTransaction? = nil) {
+  init(transaction: UnconfirmedTransaction, ens: String? = nil) {
     self.transaction = transaction
     self.ens = ens
-    self.solTransaction = solTransaction
   }
 
   var token: TokenObject {
-    if let solTransaction = self.solTransaction {
-      return solTransaction.transferType.tokenObject()
-    }
-    if let transaction = transaction {
-      return transaction.transferType.tokenObject()
-    }
-    return TokenObject()
+    return transaction.transferType.tokenObject()
   }
 
   var addressToIcon: UIImage? {
-    if let solTransaction = self.solTransaction {
-      guard let data = SolanaUtil.convertBase58Data(addressString: solTransaction.to) else { return nil }
+    switch currentChain {
+    case .solana:
+      guard let data = SolanaUtil.convertBase58Data(addressString: transaction.to ?? "") else { return nil }
       return UIImage.generateImage(with: 75, hash: data)
-    } else {
-      guard let data = self.transaction?.to?.data else { return nil }
+    default:
+      guard let to = self.transaction.to, let data = Data(hexString: to) else { return nil }
       return UIImage.generateImage(with: 75, hash: data)
     }
   }
@@ -40,91 +35,86 @@ struct KConfirmSendViewModel {
   }
 
   var contactName: String {
-    var address = ""
-    if let solTransaction = self.solTransaction {
-      address = solTransaction.to
-    } else {
-      address = transaction?.to?.description ?? NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
+    guard let contact = KNContactStorage.shared.contacts.first(where: { $0.address == transaction.to }) else {
+      if let ens = ens {
+        return "\(ens) - \(Strings.notInContact)"
+      }
+      return Strings.notInContact
     }
-    guard let contact = KNContactStorage.shared.contacts.first(where: { address.lowercased() == $0.address.lowercased() }) else {
-      let text = NSLocalizedString("not.in.contact", value: "Not In Contact", comment: "")
-      if let ens = self.ens { return "\(ens) - \(text)" }
-      return text
+    guard let ens = ens else {
+      return contact.name
     }
-    if let ens = self.ens { return "\(ens) - \(contact.name)" }
-    return contact.name
+    return "\(ens) - \(contact.name)"
   }
 
   var address: String {
-    if let solTransaction = self.solTransaction {
-      return "\(solTransaction.to.prefix(20))...\(solTransaction.to.suffix(8))"
+    guard let to = transaction.to else { return "" }
+    switch currentChain {
+    case .solana:
+      return "\(to.prefix(20))...\(to.suffix(8))"
+    default:
+      return "\(to.prefix(20))...\(to.suffix(8))"
     }
-    let address = transaction?.to?.description ?? ""
-    return "\(address.prefix(20))...\(address.suffix(8))"
   }
 
   var shortAddress: String {
-    var address = ""
-    if let solTransaction = self.solTransaction {
-      address = solTransaction.to
-    } else {
-      address = transaction?.to?.description ?? ""
-    }
-    return "\(address.prefix(6))...\(address.suffix(6))"
+    guard let to = transaction.to else { return "" }
+    return "\(to.prefix(6))...\(to.suffix(6))"
   }
 
   var totalAmountString: String {
-    if let solTransaction = self.solTransaction {
-      let string = solTransaction.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: self.token.decimals)
+    switch currentChain {
+    case .solana:
+      let string = transaction.value.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: self.token.decimals)
+      return "\(string.prefix(15)) \(self.token.symbol)"
+    default:
+      let string = self.transaction.value.string(
+        decimals: self.token.decimals,
+        minFractionDigits: 0,
+        maxFractionDigits: min(self.token.decimals, 6)
+      )
       return "\(string.prefix(15)) \(self.token.symbol)"
     }
-    let string = self.transaction?.value.string(
-      decimals: self.token.decimals,
-      minFractionDigits: 0,
-      maxFractionDigits: min(self.token.decimals, 6)
-    ) ?? ""
-    return "\(string.prefix(15)) \(self.token.symbol)"
+    
   }
 
   var usdValueString: String {
     guard let rate = KNTrackerRateStorage.shared.getPriceWithAddress(self.token.address) else { return "" }
 
     let displayString: String = {
-      let usd = (self.transaction?.value ?? BigInt(1)) * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
-    return usd.string(
-      units: EthereumUnit.ether,
-      minFractionDigits: 0,
-      maxFractionDigits: 4
-    )
+      let usd = self.transaction.value * BigInt(rate.usd * pow(10.0, 18.0)) / BigInt(10).power(self.token.decimals)
+      return usd.string(
+        units: EthereumUnit.ether,
+        minFractionDigits: 0,
+        maxFractionDigits: 4
+      )
     }()
     return "~ \(displayString) USD"
   }
 
   var transactionFeeText: String { return "\(Strings.transactionFee): " }
+
   var transactionFeeETHString: String {
-    if let solTransaction = self.solTransaction {
-      return solTransaction.fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9) + " \(KNGeneralProvider.shared.quoteToken)"
+    switch currentChain {
+    case .solana:
+      let fee = transaction.estimatedFee ?? BigInt(0)
+      return fee.string(decimals: 9, minFractionDigits: 0, maxFractionDigits: 9) + " \(KNGeneralProvider.shared.quoteToken)"
+    default:
+      let fee: BigInt? = {
+        guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
+        return gasPrice * gasLimit
+      }()
+      let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
+      return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
     }
-    let fee: BigInt? = {
-      guard let gasPrice = self.transaction?.gasPrice, let gasLimit = self.transaction?.gasLimit else { return nil }
-      return gasPrice * gasLimit
-    }()
-    let feeString: String = fee?.displayRate(decimals: 18) ?? "---"
-    return "\(feeString) \(KNGeneralProvider.shared.quoteToken)"
   }
 
   var transactionFeeUSDString: String {
     let fee: BigInt? = {
-      guard let gasPrice = self.transaction?.gasPrice, let gasLimit = self.transaction?.gasLimit else { return nil }
+      guard let gasPrice = self.transaction.gasPrice, let gasLimit = self.transaction.gasLimit else { return nil }
       return gasPrice * gasLimit
     }()
     guard let feeBigInt = fee else { return "" }
-//    guard let trackerRate = KNTrackerRateStorage.shared.trackerRate(for: KNSupportedTokenStorage.shared.ethToken) else { return "" }
-//    let feeUSD: String = {
-//      let fee = feeBigInt * trackerRate.rateUSDBigInt / BigInt(EthereumUnit.ether.rawValue)
-//      return fee.displayRate(decimals: 18)
-//    }()
-//    return "~ \(feeUSD) USD"
     guard let price = KNTrackerRateStorage.shared.getETHPrice() else { return "" }
     let usd = feeBigInt * BigInt(price.usd * pow(10.0, 18.0)) / BigInt(10).power(18)
     let valueString: String = usd.displayRate(decimals: 18)
@@ -132,18 +122,19 @@ struct KConfirmSendViewModel {
   }
 
   var transactionGasPriceString: String {
-    if let solTransaction = self.solTransaction {
+    switch currentChain {
+    case .solana:
       return ""
-//      return String(format: NSLocalizedString("%@ (Lamport) * %@ (Signatures)", comment: ""), solTransaction.lamportPerSignature.displayRate(decimals: 0), solTransaction.totaSignature.displayRate(decimals: 0))
+    default:
+      let gasPrice: BigInt = self.transaction.gasPrice ?? KNGasCoordinator.shared.fastKNGas
+      let gasLimit: BigInt = self.transaction.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
+      let gasPriceText = gasPrice.shortString(
+        units: .gwei,
+        maxFractionDigits: 5
+      )
+      let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
+      let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
+      return labelText
     }
-    let gasPrice: BigInt = self.transaction?.gasPrice ?? KNGasCoordinator.shared.fastKNGas
-    let gasLimit: BigInt = self.transaction?.gasLimit ?? KNGasConfiguration.exchangeTokensGasLimitDefault
-    let gasPriceText = gasPrice.shortString(
-      units: .gwei,
-      maxFractionDigits: 5
-    )
-    let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
-    let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
-    return labelText
   }
 }

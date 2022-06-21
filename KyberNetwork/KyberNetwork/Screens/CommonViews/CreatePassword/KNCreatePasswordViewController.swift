@@ -2,9 +2,10 @@
 
 import UIKit
 import TrustKeystore
+import KrystalWallets
 
 protocol KNCreatePasswordViewControllerDelegate: class {
-  func createPasswordUserDidFinish(_ password: String, wallet: Wallet)
+  func createPasswordUserDidFinish(_ password: String, wallet: KWallet)
   func createPasswordDidCancel(sender: KNCreatePasswordViewController)
 }
 
@@ -24,10 +25,10 @@ class KNCreatePasswordViewController: KNBaseViewController {
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
 
   fileprivate weak var delegate: KNCreatePasswordViewControllerDelegate?
-  fileprivate let wallet: Wallet
+  fileprivate let wallet: KWallet
   let transitor = TransitionDelegate()
 
-  init(wallet: Wallet, delegate: KNCreatePasswordViewControllerDelegate) {
+  init(wallet: KWallet, delegate: KNCreatePasswordViewControllerDelegate) {
     self.delegate = delegate
     self.wallet = wallet
     super.init(nibName: "KNCreatePasswordViewController", bundle: nil)

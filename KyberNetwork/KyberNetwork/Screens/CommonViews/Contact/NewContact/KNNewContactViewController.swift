@@ -18,7 +18,7 @@ class KNNewContactViewModel {
 
   fileprivate(set) var contact: KNContact
   fileprivate(set) var isEditing: Bool
-  fileprivate(set) var address: Address?
+  fileprivate(set) var address: String?
   fileprivate(set) var addressString: String
 
   init(
@@ -32,7 +32,7 @@ class KNNewContactViewModel {
       self.contact = KNContact(address: address.lowercased(), name: ens ?? "", chainType: chainType)
       self.isEditing = false
     }
-    self.address = Address(string: address)
+    self.address = address
     self.addressString = ens ?? address
   }
 
@@ -57,10 +57,10 @@ class KNNewContactViewModel {
 
   func updateViewModel(address: String) {
     self.addressString = address
-    self.address = Address(string: address)
+    self.address = address
   }
 
-  func updateAddressFromENS(name: String, ensAddr: Address?) {
+  func updateAddressFromENS(name: String, ensAddr: String?) {
     self.addressString = name
     self.address = ensAddr
     if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (ensAddr?.description.lowercased() ?? "") }) {
@@ -317,7 +317,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
+          if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
             self.viewModel.updateAddressFromENS(name: name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name: name, ensAddr: nil)

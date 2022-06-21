@@ -12,7 +12,7 @@ import BigInt
 
 class SendNFTViewModel {
   fileprivate(set) var addressString: String = ""
-  var address: Address?
+  var address: String?
   fileprivate(set) var isUsingEns: Bool = false
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
@@ -65,13 +65,13 @@ class SendNFTViewModel {
 
   func updateAddress(_ address: String) {
     self.addressString = address
-    self.address = Address(string: address)
+//    self.address = Address(string: address)
     if self.address != nil {
       self.isUsingEns = false
     }
   }
 
-  func updateAddressFromENS(_ ens: String, ensAddr: Address?) {
+  func updateAddressFromENS(_ ens: String, ensAddr: String?) {
     if ens == self.addressString {
       self.address = ensAddr
       self.isUsingEns = ensAddr != nil
@@ -527,7 +527,7 @@ extension SendNFTViewController: QRCodeReaderDelegate {
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
+          if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)

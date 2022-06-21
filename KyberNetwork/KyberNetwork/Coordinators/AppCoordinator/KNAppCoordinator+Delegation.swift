@@ -1,23 +1,21 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import KrystalWallets
 
 // MARK: Landing Page Coordinator Delegate
 extension KNAppCoordinator: KNLandingPageCoordinatorDelegate {
+  
   func landingPageCoordinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
-
-  func landingPageCoordinator(import wallet: Wallet) {
-    if self.tabbarController == nil {
-      self.startNewSession(with: wallet)
-    } else {
-      self.restartNewSession(wallet)
-    }
+  
+  func landingPageCoordinator(import wallet: KWallet, chain: ChainType) {
+    switchWallet(wallet: wallet, chain: chain)
   }
-
-  func landingPageCoordinator(remove wallet: Wallet) {
-    self.removeWallet(wallet)
+  
+  func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType) {
+    
   }
 }
 
@@ -40,6 +38,17 @@ extension KNAppCoordinator: KNSessionDelegate {
 
 // MARK: Exchange Token Coordinator Delegate
 extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
+  func exchangeTokenCoordinatorRemoveWallet(_ wallet: KWallet) {
+    onRemoveWallet(wallet: wallet)
+  }
+  
+  func exchangeTokenCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    switchWallet(wallet: wallet, chain: chain)
+  }
+  
+  func exchangeTokenCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+    switchToWatchAddress(address: watchAddress, chain: chain)
+  }
   
   func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
@@ -63,17 +72,7 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
-
-  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject) {
-    guard let wallet = self.keystore.wallets.first(where: { $0.addressString == wallet.address.lowercased() }) else { return }
-    if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet { return }
-    self.restartNewSession(wallet)
-  }
-
-  func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet) {
-    self.removeWallet(wallet)
-  }
-
+  
   func exchangeTokenCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
   }
@@ -86,20 +85,6 @@ extension KNAppCoordinator: KNExchangeTokenCoordinatorDelegate {
 //    self.tabbarController.selectedIndex = 2
 //    self.limitOrderCoordinator?.appCoordinatorOpenManageOrder()
   }
-
-  func exchangeTokenCoordinatorDidUpdateWalletObjects() {
-//    self.balanceTabCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
-    
-  }
-
-  func exchangeTokenCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    self.removeWallet(wallet)
-  }
-
-  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
-  }
 }
 
 extension KNAppCoordinator: EarnCoordinatorDelegate {
@@ -110,10 +95,6 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
   
   func earnCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
-  }
-  
-  func earnCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
   }
   
   func earnCoordinatorDidSelectManageWallet() {
@@ -178,10 +159,6 @@ extension KNAppCoordinator: OverviewCoordinatorDelegate {
     self.addNewWallet(type: .full)
   }
 
-  func overviewCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
-  }
-
   func overviewCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
@@ -202,10 +179,6 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
     self.addNewWallet(type: .full)
   }
   
-  func krytalCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
-  }
-  
   func krytalCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
@@ -222,10 +195,6 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
     self.settingsCoordinator?.appCoordinatorDidSelectAddToken(token)
   }
   
-  func investCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
-  }
-  
   func investCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
@@ -238,7 +207,7 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
 
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
-  
+
   func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
   }
@@ -251,37 +220,40 @@ extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
     self.addNewWallet(type: .full)
   }
   
-  func settingsCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
-  }
-  
   func settingsCoordinatorDidSelectManageWallet() {
     self.tabbarController.selectedIndex = 4
     self.settingsCoordinator?.settingsViewControllerWalletsButtonPressed()
   }
   
-  func settingsCoordinatorUserDidUpdateWalletObjects() {
-    self.exchangeCoordinator?.appCoordinatorDidUpdateWalletObjects()
-  }
-
   func settingsCoordinatorUserDidSelectExit() {
     self.userDidClickExitSession()
   }
-
-  func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet) {
-    self.restartNewSession(wallet)
+  
+  func settingsCoordinatorUserDidRemoveWallet(_ wallet: KWallet) {
+    onRemoveWallet(wallet: wallet)
   }
-
-  func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet) {
-    self.removeWallet(wallet)
+  
+  func settingsCoordinatorUserDidRemoveWatchAddress(_ address: KAddress) {
+    onRemoveWatchAddress(address: address)
+  }
+  
+  func settingsCoordinatorUserDidSelectRemoveCurrentWallet() {
+    let currentAddress = session.address
+    if currentAddress.isWatchWallet {
+      try? walletManager.removeAddress(address: currentAddress)
+      onRemoveWatchAddress(address: currentAddress)
+    } else if let wallet = walletManager.wallet(forAddress: currentAddress) {
+      try? walletManager.remove(wallet: wallet)
+      onRemoveWallet(wallet: wallet)
+    } else {
+      switchToNextAddress(of: currentAddress)
+    }
   }
 
   func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType) {
     self.addNewWallet(type: type)
   }
 }
-
-
 
 // MARK: Transaction Status Delegate
 extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
@@ -294,39 +266,34 @@ extension KNAppCoordinator: KNTransactionStatusCoordinatorDelegate {
 
 // MARK: Add wallet coordinator delegate
 extension KNAppCoordinator: KNAddNewWalletCoordinatorDelegate {
+  
+  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    switchWallet(wallet: wallet, chain: chain)
+  }
+  
+  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+    switchToWatchAddress(address: watchAddress, chain: chain)
+  }
+  
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
     self.sendRefCode(code.uppercased())
   }
-  
-  func addNewWalletCoordinator(add wallet: Wallet) {
-    // reset loading state
-    if let unwrap = wallet.address {
-      KNAppTracker.updateAllTransactionLastBlockLoad(0, for: unwrap)
-    }
-    
-    if self.tabbarController == nil {
-      self.startNewSession(with: wallet)
-    } else {
-      self.restartNewSession(wallet)
-    }
-  }
 
-  func addNewWalletCoordinator(remove wallet: Wallet) {
-    self.removeWallet(wallet)
+  func addNewWalletCoordinator(remove wallet: KWallet) {
+
   }
 }
 
 extension KNAppCoordinator: KNPromoCodeCoordinatorDelegate {
-  func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
+  func promoCodeCoordinatorDidCreate(_ address: KAddress, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?) {
     self.navigationController.popViewController(animated: true) {
-      let address = wallet.addressString
       KNWalletPromoInfoStorage.shared.addWalletPromoInfo(
-        address: address,
+        address: address.addressString,
         destinationToken: destinationToken ?? "",
         destAddress: destAddress,
         expiredTime: expiredDate
       )
-      self.addNewWalletCoordinator(add: wallet)
+      self.session.switchAddress(address: address)
     }
   }
 }

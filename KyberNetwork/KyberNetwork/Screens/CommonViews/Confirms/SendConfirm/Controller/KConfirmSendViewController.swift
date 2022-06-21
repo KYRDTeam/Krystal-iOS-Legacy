@@ -5,7 +5,7 @@ import BigInt
 
 enum KConfirmViewEvent {
   case confirm(type: KNTransactionType, historyTransaction: InternalHistoryTransaction)
-  case confirmSolana(transaction: UnconfirmedSolTransaction, historyTransaction: InternalHistoryTransaction)
+//  case confirmSolana(transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction)
   case cancel
   case confirmNFT(nftItem: NFTItem, nftCategory: NFTSection, gasPrice: BigInt, gasLimit: BigInt, address: String, amount: Int, isSupportERC721: Bool, historyTransaction: InternalHistoryTransaction, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
@@ -91,44 +91,25 @@ class KConfirmSendViewController: KNBaseViewController {
     let chain = KNGeneralProvider.shared.chainName
     self.warningMessage.text = "Please sure that this address supports \(chain) network. You will lose your assets if this address doesn't support \(chain) compatible retrieval"
   }
-
+  
   @IBAction func confirmButtonPressed(_ sender: Any) {
     self.confirmButton.isEnabled = false
     self.cancelButton.isEnabled = false
     var symbol = ""
     var type: HistoryModelType = .transferToken
-    if KNGeneralProvider.shared.currentChain == .solana {
-      switch self.viewModel.solTransaction?.transferType {
-      case .sol:
-        symbol = KNGeneralProvider.shared.quoteToken
-      case .splToken(let tokenObject):
-        symbol = tokenObject.symbol
-      case .none:
-        type = .transferToken
-      }
-    } else {
-      switch self.viewModel.transaction?.transferType {
-      case .ether:
-        type = .transferETH
-        symbol = KNGeneralProvider.shared.quoteToken
-      case .token(let token):
-        type = .transferToken
-        symbol = token.symbol
-      case .none:
-        type = .transferToken
-      }
+    switch self.viewModel.transaction.transferType {
+    case .ether:
+      type = .transferETH
+      symbol = KNGeneralProvider.shared.quoteToken
+    case .token(let token):
+      type = .transferToken
+      symbol = token.symbol
     }
     
     let historyTransaction = InternalHistoryTransaction(type: type, state: .pending, fromSymbol: symbol, toSymbol: nil, transactionDescription: "-\(self.viewModel.totalAmountString)", transactionDetailDescription: "", transactionObj: SignTransactionObject(value: "", from: "", to: "", nonce: 0, data: Data(), gasPrice: "", gasLimit: "", chainID: 0, reservedGasLimit: ""), eip1559Tx: nil) //TODO: add case eip1559
     historyTransaction.transactionSuccessDescription = "-\(self.viewModel.totalAmountString) to \(self.viewModel.shortAddress.lowercased())"
-    
-    if let transaction = self.viewModel.transaction {
-      let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(transaction), historyTransaction: historyTransaction)
-      self.delegate?.kConfirmSendViewController(self, run: event)
-    } else if let solTransaction = self.viewModel.solTransaction {
-      self.delegate?.kConfirmSendViewController(self, run: .confirmSolana(transaction: solTransaction, historyTransaction: historyTransaction))
-    }
-    
+    let event = KConfirmViewEvent.confirm(type: KNTransactionType.transfer(viewModel.transaction), historyTransaction: historyTransaction)
+    self.delegate?.kConfirmSendViewController(self, run: event)
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {

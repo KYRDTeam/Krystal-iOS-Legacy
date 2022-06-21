@@ -14,7 +14,7 @@ struct KNExchangeRequestEncode: Web3Request {
   static let oldABI = "{\"constant\":false,\"inputs\":[{\"name\":\"src\",\"type\":\"address\"},{\"name\":\"srcAmount\",\"type\":\"uint256\"},{\"name\":\"dest\",\"type\":\"address\"},{\"name\":\"destAddress\",\"type\":\"address\"},{\"name\":\"maxDestAmount\",\"type\":\"uint256\"},{\"name\":\"minConversionRate\",\"type\":\"uint256\"},{\"name\":\"walletId\",\"type\":\"address\"},{\"name\":\"hint\",\"type\":\"bytes\"}],\"name\":\"tradeWithHint\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"}"
 
   let exchange: KNDraftExchangeTransaction
-  let address: Address
+  let address: String
 
   var type: Web3RequestType {
     let minRate: BigInt = {
@@ -24,14 +24,13 @@ struct KNExchangeRequestEncode: Web3Request {
     let platformWallet: String = Constants.platformWallet
 
     let destAddress: String = {
-      if let destAddr = KNWalletPromoInfoStorage.shared.getDestWallet(from: address.description), let wallet = Address(string: destAddr) { return wallet.description }
-      return address.description
+      return KNWalletPromoInfoStorage.shared.getDestWallet(from: address) ?? address
     }()
     let hint = self.exchange.hint ?? ""
     let run: String = {
-      let platformFeeBps: BigInt = BigInt(KNAppTracker.getPlatformFee(source: self.exchange.from.addressObj, dest: self.exchange.to.addressObj))
+      let platformFeeBps: BigInt = BigInt(KNAppTracker.getPlatformFee(source: self.exchange.from.contract, dest: self.exchange.to.contract))
       let hintEncode = hint.isEmpty ? hint.hexEncoded : hint
-      return "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.newABI), [\"\(exchange.from.address.description)\", \"\(exchange.amount.description)\", \"\(exchange.to.address.description)\", \"\(destAddress)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"\(platformWallet)\", \"\(platformFeeBps.description)\", \"\(hintEncode)\"])"
+      return "web3.eth.abi.encodeFunctionCall(\(KNExchangeRequestEncode.newABI), [\"\(exchange.from.address)\", \"\(exchange.amount.description)\", \"\(exchange.to.address)\", \"\(destAddress)\", \"\(exchange.maxDestAmount.description)\", \"\(minRate.description)\", \"\(platformWallet)\", \"\(platformFeeBps.description)\", \"\(hintEncode)\"])"
     }()
     return .script(command: run)
   }

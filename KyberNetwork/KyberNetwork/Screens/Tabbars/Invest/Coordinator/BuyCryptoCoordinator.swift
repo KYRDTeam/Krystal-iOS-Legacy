@@ -11,6 +11,7 @@ import Moya
 import Darwin
 import MBProgressHUD
 import UIKit
+import KrystalWallets
 
 // MARK: - FiatCryptoModel
 struct FiatCryptoResponse: Codable {
@@ -78,7 +79,6 @@ struct BifinityOrder: Codable {
 
 protocol BuyCryptoCoordinatorDelegate: class {
   func buyCryptoCoordinatorDidSelectAddWallet()
-  func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet)
   func buyCryptoCoordinatorDidSelectManageWallet()
   func buyCryptoCoordinatorDidClose()
 //  func buyCryptoCoordinatorOpenHistory()
@@ -86,26 +86,26 @@ protocol BuyCryptoCoordinatorDelegate: class {
 
 class BuyCryptoCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
-  var session: KNSession
   let navigationController: UINavigationController
   weak var delegate: BuyCryptoCoordinatorDelegate?
   var bifinityOrders: [BifinityOrder] = []
   var currentOrder: BifinityOrder?
   fileprivate var loadTimer: Timer?
   var historyProvider: MoyaProvider<KrytalService>?
-  fileprivate var currentWallet: KNWalletObject {
-    return self.session.currentWalletObject
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
 
   lazy var rootViewController: BuyCryptoViewController = {
-    let viewModel = BuyCryptoViewModel(wallet: self.session.wallet)
+    let viewModel = BuyCryptoViewModel()
     let controller = BuyCryptoViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
   }()
   
   lazy var ordersViewController: BifinityOrderViewController = {
-    let viewModel = BifinityOrderViewModel(wallet: self.session.wallet)
+    let viewModel = BifinityOrderViewModel()
     let controller = BifinityOrderViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
@@ -117,9 +117,8 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
   }
 
   func start() {
@@ -141,12 +140,11 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     )
   }
 
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
+  func appCoordinatorSwitchAddress() {
     let shouldShowBuyCrypto = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bifinityIntegration)
     if shouldShowBuyCrypto {
-      self.session = session
-      self.rootViewController.coordinatorDidUpdateWallet(self.session.wallet)
-      self.ordersViewController.coordinatorDidUpdateWallet(self.session.wallet)
+      self.rootViewController.coordinatorAppSwitchAddress()
+      self.ordersViewController.coordinatorAppSwitchAddress()
       self.getBifinityOrders()
     } else {
       self.rootViewController.navigationController?.popViewController(animated: true)
@@ -206,7 +204,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
 
     presentViewController.showLoadingHUD()
-    self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.addressString)) { (result) in
+    self.historyProvider!.request(.getOrders(userWallet: self.currentAddress.addressString)) { (result) in
       DispatchQueue.main.async {
         presentViewController.hideLoading()
       }
@@ -315,10 +313,7 @@ extension BuyCryptoCoordinator: BuyCryptoViewControllerDelegate {
   }
 
   fileprivate func openWalletListView() {
-    let viewModel = WalletsListViewModel(
-      walletObjects: KNWalletStorage.shared.availableWalletObjects,
-      currentWallet: self.currentWallet
-    )
+    let viewModel = WalletsListViewModel()
     let walletsList = WalletsListViewController(viewModel: viewModel)
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -376,17 +371,8 @@ extension BuyCryptoCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.buyCryptoCoordinatorDidSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.delegate?.buyCryptoCoordinatorDidSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.delegate?.buyCryptoCoordinatorDidSelectAddWallet()
     }

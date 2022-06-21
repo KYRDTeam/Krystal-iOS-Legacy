@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 enum FromSectionRows: CaseIterable {
   case selectChainRow
@@ -32,13 +33,10 @@ enum ToSectionRows: CaseIterable {
   case errorRow
   case swapRow
   
-  static func sectionRows(showPoolInfo: Bool, showSendAddress: Bool, showReminder: Bool, showError: Bool) -> [ToSectionRows] {
+  static func sectionRows(showPoolInfo: Bool, showReminder: Bool, showError: Bool) -> [ToSectionRows] {
     var allRows = ToSectionRows.allCases
     if !showPoolInfo {
       allRows = allRows.filter { $0 != .poolInfoRow }
-    }
-    if !showSendAddress {
-      allRows = allRows.filter { $0 != .addressRow }
     }
     if !showReminder {
       allRows = allRows.filter { $0 != .reminderRow }
@@ -50,10 +48,8 @@ enum ToSectionRows: CaseIterable {
   }
 }
 class BridgeViewModel {
-  fileprivate(set) var wallet: Wallet
   var showFromPoolInfo: Bool = false
   var showToPoolInfo: Bool = false
-  var showSendAddress: Bool = false
   var showReminder: Bool = false
   var showError: Bool = false
   var isNeedApprove: Bool = false
@@ -64,10 +60,10 @@ class BridgeViewModel {
   var selectSourceTokenBlock: (() -> Void)?
   var selectDestChainBlock: (() -> Void)?
   var selectDestTokenBlock: (() -> Void)?
-  var selectSenToBlock: (() -> Void)?
   var changeAmountBlock: ((String) -> Void)?
   var changeAddressBlock: ((String) -> Void)?
   var swapBlock: (() -> Void)?
+  var scanQRBlock: (() -> Void)?
   
   var currentSourceChain: ChainType? = KNGeneralProvider.shared.currentChain
   var currentSourceToken: TokenObject?
@@ -79,16 +75,13 @@ class BridgeViewModel {
   var sourceAmount: Double = 0.0
   var isValidSourceAmount: Bool = false
   var isValidDestAmount: Bool = false
-
-  init(wallet: Wallet) {
-    self.wallet = wallet
-    self.currentSendToAddress = wallet.addressString
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
 
-  func updateWallet(_ wallet: Wallet) {
-    self.wallet = wallet
-    // reset info when update wallet
-    self.resetUI()
+  init() {
+    self.currentSendToAddress = currentAddress.addressString
   }
   
   func resetUI() {
@@ -100,12 +93,12 @@ class BridgeViewModel {
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
-    self.currentSendToAddress = self.wallet.addressString
+    self.currentSendToAddress = self.currentAddress.addressString
   }
   
   func resetAddressIfNeed() {
     if !CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
-      self.currentSendToAddress = self.wallet.addressString
+      self.currentSendToAddress = self.currentAddress.addressString
     }
   }
 
@@ -114,7 +107,7 @@ class BridgeViewModel {
   }
   
   func toDataSource() -> [ToSectionRows] {
-    return ToSectionRows.sectionRows(showPoolInfo: self.showToPoolInfo, showSendAddress: self.showSendAddress, showReminder: self.showReminder, showError: self.showError)
+    return ToSectionRows.sectionRows(showPoolInfo: self.showToPoolInfo, showReminder: self.showReminder, showError: self.showError)
   }
 
   func numberOfSection() -> Int {
@@ -140,22 +133,23 @@ class BridgeViewModel {
     return fee
   }
   
-  var estimatedDestAmount: Double {
+  var estimatedDestAmount: BigInt {
     guard let currentSourceToken = currentSourceToken else {
-      return 0.0
+      return BigInt(0)
     }
-    let feeBigInt = BigInt(self.calculateFee() * pow(10.0, Double(currentSourceToken.decimals)))
-    let sourcAmountBigInt = BigInt(self.sourceAmount * pow(10.0, Double(currentSourceToken.decimals)))
+    let feeBigInt = self.calculateFee().amountBigInt(decimals: currentSourceToken.decimals) ?? BigInt(0)
+    let sourcAmountBigInt = self.sourceAmount.amountBigInt(decimals: currentSourceToken.decimals) ?? BigInt(0)
     if sourcAmountBigInt > feeBigInt {
       let destAmountBigInt = sourcAmountBigInt - feeBigInt
-      return destAmountBigInt.fullString(decimals: currentSourceToken.decimals).doubleValue
+      return destAmountBigInt
     } else {
-      return 0.0
+      return BigInt(0)
     }
   }
   
   func calculateDesAmountString() -> String {
-    return StringFormatter.amountString(value: estimatedDestAmount)
+    guard let decimals = currentSourceToken?.decimals else { return "0" }
+    return estimatedDestAmount.string(decimals: decimals, minFractionDigits: 0, maxFractionDigits: Constants.maxFractionDigits)
   }
   
   func viewForHeader(section: Int) -> UIView {
@@ -277,8 +271,7 @@ class BridgeViewModel {
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
-          let decimal = self.currentDestToken?.decimals ?? 0
-          if !currentDestPoolInfo.isUnlimited && liquidity < BigInt(self.estimatedDestAmount * pow(10.0, Double(decimal))) {
+          if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
         }
@@ -287,25 +280,23 @@ class BridgeViewModel {
         return cell
       case .sendToRow:
         let cell = tableView.dequeueReusableCell(BridgeSendToCell.self, indexPath: indexPath)!
-        cell.sendButtonTapped = self.selectSenToBlock
-        cell.icon.image = self.showSendAddress ? UIImage(named: "green_subtract_icon") : UIImage(named: "green_plus_icon")
         return cell
       case .addressRow:
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
+        cell.scanQRBlock = self.scanQRBlock
         cell.updateUI()
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
           if let currentDestToken = self.currentDestToken {
             let crossChainFee = currentDestToken.maximumSwapFee == currentDestToken.minimumSwapFee ? "0.0" : String(format: "%.1f", currentDestToken.swapFeeRatePerMillion)
-            let fee = self.calculateFee()
-            let feeString = "\(fee)".displayRate() + " \(currentDestToken.symbol)"
+            let minFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+            let maxFeeString = StringFormatter.amountString(value: currentDestToken.maximumSwapFee) + " \(currentDestToken.symbol)"
             let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentDestToken.symbol)"
             let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentDestToken.symbol)"
-            let thresholdString = StringFormatter.amountString(value: currentDestToken.bigValueThreshold) + " \(currentDestToken.symbol)"
-            cell.updateReminderText(crossChainFee: crossChainFee, gasFeeString: feeString, miniAmount: miniAmount, maxAmount: maxAmount, thresholdString: thresholdString)
+            cell.updateReminderText(crossChainFee: crossChainFee, miniAmount: miniAmount, maxAmount: maxAmount, minFeeString: minFeeString, maxFeeString: maxFeeString)
           }
         return cell
       case .errorRow:
@@ -321,9 +312,9 @@ class BridgeViewModel {
         }
         cell.swapBlock = self.swapBlock
         if let currentSourceToken = currentSourceToken {
-          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Swap Now", for: .normal)
+          cell.swapButton.setTitle(self.isNeedApprove ? "Approve \(currentSourceToken.symbol)" : "Review Transfer", for: .normal)
         } else {
-          cell.swapButton.setTitle("Swap Now", for: .normal)
+          cell.swapButton.setTitle("Review Transfer", for: .normal)
         }
         return cell
       }
