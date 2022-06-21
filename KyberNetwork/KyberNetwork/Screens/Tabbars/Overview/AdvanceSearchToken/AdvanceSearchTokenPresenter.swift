@@ -15,7 +15,7 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
   var interactor: AdvanceSearchTokenInteractorProtocol?
   private let router: AdvanceSearchTokenWireframeProtocol
 
-  var dataSource: SearchResult?
+  var searchResults: SearchResult?
   var currencyMode: CurrencyMode = .usd
   var recommendTags: [String] {
     return KNGeneralProvider.shared.currentChain.recommendTags()
@@ -26,17 +26,17 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
     interactor?.getSearchData(keyword: keyword)
   }
 
-  func reloadAllData(result: SearchResult?) {
+  func didGetSearchResult(result: SearchResult?) {
     view?.hideLoading()
     guard let result = result else {
-      dataSource = nil
+      searchResults = nil
       view?.reloadData()
       return
     }
 
     
     if result.tokens.isNotEmpty || result.portfolios.isNotEmpty {
-      dataSource = result
+      searchResults = result
     }
     view?.reloadData()
   }

@@ -515,6 +515,9 @@
 		7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */; };
 		7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */; };
 		7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */; };
+		7ECCB1F8286170C800499FA0 /* ResultToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1F7286170C800499FA0 /* ResultToken.swift */; };
+		7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1F9286170F700499FA0 /* Portfolio.swift */; };
+		7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1FB2861711800499FA0 /* SearchResult.swift */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
@@ -1524,6 +1527,9 @@
 		7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BifinityOrderViewController.xib; sourceTree = "<group>"; };
 		7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCryptoHistoryCell.swift; sourceTree = "<group>"; };
 		7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FiatCryptoHistoryCell.xib; sourceTree = "<group>"; };
+		7ECCB1F7286170C800499FA0 /* ResultToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultToken.swift; sourceTree = "<group>"; };
+		7ECCB1F9286170F700499FA0 /* Portfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
+		7ECCB1FB2861711800499FA0 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
@@ -4180,6 +4186,9 @@
 				7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */,
 				7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */,
 				7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */,
+				7ECCB1F7286170C800499FA0 /* ResultToken.swift */,
+				7ECCB1F9286170F700499FA0 /* Portfolio.swift */,
+				7ECCB1FB2861711800499FA0 /* SearchResult.swift */,
 			);
 			path = AdvanceSearchToken;
 			sourceTree = "<group>";
@@ -6284,6 +6293,7 @@
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
+				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
@@ -6419,6 +6429,7 @@
 				A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */,
 				C33BB80627955C9A00851BC6 /* ABIValue.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
+				7ECCB1F8286170C800499FA0 /* ResultToken.swift in Sources */,
 				29FC0CB81F8299510036089F /* Coordinator.swift in Sources */,
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
 				25CE6F77207291EC00A3A2F9 /* KNEtherScanService.swift in Sources */,
@@ -6442,6 +6453,7 @@
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
+				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,

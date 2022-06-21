@@ -138,9 +138,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if chainPath != KNGeneralProvider.shared.chainPath {
           let alertController = KNPrettyAlertController(
             title: "",
-            message: "Please switch to \(chainPath.dropFirst().uppercased()) to transfer".toBeLocalised(),
-            secondButtonTitle: "OK".toBeLocalised(),
-            firstButtonTitle: "Cancel".toBeLocalised(),
+            message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+            secondButtonTitle: Strings.OK,
+            firstButtonTitle: Strings.Cancel,
             secondButtonAction: {
               self.showPopupSwitchChain(controller) {
                 self.coordinator?.openSendTokenView(token)
@@ -161,9 +161,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       if chainPath != KNGeneralProvider.shared.chainPath {
         let alertController = KNPrettyAlertController(
           title: "",
-          message: "Please switch to \(chainPath.dropFirst().uppercased()) to swap".toBeLocalised(),
-          secondButtonTitle: "OK".toBeLocalised(),
-          firstButtonTitle: "Cancel".toBeLocalised(),
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
             self.showPopupSwitchChain(controller) {
               self.coordinator?.openSwapView(token: token, isBuy: true)

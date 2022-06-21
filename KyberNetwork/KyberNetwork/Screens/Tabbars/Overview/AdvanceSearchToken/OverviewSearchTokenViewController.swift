@@ -40,7 +40,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   
   @IBAction func closeButtonTapped(_ sender: Any) {
     searchField.text = ""
-    presenter.dataSource = nil
+    presenter.searchResults = nil
     updateUIEndSearchingMode()
     reloadData()
   }
@@ -63,7 +63,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   }
   
   func updateUIEmptyView() {
-    guard (presenter.dataSource) != nil else {
+    guard (presenter.searchResults) != nil else {
       self.emptyView.isHidden = false
       let recentTags = presenter.getRecentSearchTag()
       self.recentSearchTagList.removeAllTags()
@@ -121,7 +121,7 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let dataSource = presenter.dataSource else {
+    guard let dataSource = presenter.searchResults else {
       return 0
     }
     return section == 0 ? dataSource.portfolios.count : dataSource.tokens.count
@@ -130,12 +130,12 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
       let cell = tableView.dequeueReusableCell(AdvanceSearchPortfolioCell.self, indexPath: indexPath)!
-      let portfolio = presenter.dataSource?.portfolios[indexPath.row]
+      let portfolio = presenter.searchResults?.portfolios[indexPath.row]
       cell.updateUI(portfolio: portfolio)
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
-      let token = presenter.dataSource?.tokens[indexPath.row]
+      let token = presenter.searchResults?.tokens[indexPath.row]
       cell.updateUI(token: token)
       return cell
     }
@@ -148,7 +148,7 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
     if indexPath.section == 0 {
       
     } else {
-      if let token = presenter.dataSource?.tokens[indexPath.row] {
+      if let token = presenter.searchResults?.tokens[indexPath.row] {
         presenter.openChartToken(token: token)
         presenter.saveNewSearchTag(token.symbol)
       }

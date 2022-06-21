@@ -453,7 +453,7 @@ class ChartViewController: KNBaseViewController {
   
   @IBAction func showAllPoolButtonTapped(_ sender: Any) {
     self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
-    self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? "SHOW LESS".toBeLocalised() : "SHOW ALL".toBeLocalised(), for: .normal)
+    self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
     self.updatePoolTableHeight()
   }
 

@@ -1386,13 +1386,13 @@ extension KrytalService: TargetType {
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
         
-    case .advancedSearch(query: let query, limit: let limit):
+    case .advancedSearch(let query, let limit):
       let json: JSONDictionary = [
         "query": query,
         "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getPoolList(tokenAddress: let address, chainId: let chainId, limit: let limit):
+    case .getPoolList(let address, let chainId, let limit):
       let json: JSONDictionary = [
         "token": address,
         "chainId": chainId,

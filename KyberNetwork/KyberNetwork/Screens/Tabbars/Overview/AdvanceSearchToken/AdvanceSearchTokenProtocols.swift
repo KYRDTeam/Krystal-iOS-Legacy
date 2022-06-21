@@ -19,8 +19,8 @@ protocol AdvanceSearchTokenWireframeProtocol: class {
 //MARK: Presenter -
 protocol AdvanceSearchTokenPresenterProtocol: class {
   var recommendTags: [String] { get }
-  var dataSource: SearchResult? { get set }
-  func reloadAllData(result: SearchResult?)
+  var searchResults: SearchResult? { get set }
+  func didGetSearchResult(result: SearchResult?)
   func doSearch(keyword: String)
   func openChartToken(token: ResultToken)
   func saveNewSearchTag(_ tag: String)
