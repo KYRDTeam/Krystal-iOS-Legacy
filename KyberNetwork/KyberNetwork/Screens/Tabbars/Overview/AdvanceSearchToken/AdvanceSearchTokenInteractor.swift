@@ -11,62 +11,6 @@
 import UIKit
 import Moya
 
-class SearchResult: Codable {
-  var tokens: [ResultToken]
-  var portfolios: [Portfolio]
-  init(json: JSONDictionary) {
-    var tokensArray: [ResultToken] = []
-    var portfolioArray: [Portfolio] = []
-    if let tokens = json["tokens"] as? [JSONDictionary] {
-      tokens.forEach { tokenJson in
-        tokensArray.append(ResultToken(json: tokenJson))
-      }
-    }
-    if let portfolios = json["portfolios"] as? [JSONDictionary] {
-      portfolios.forEach { portfolioJson in
-        portfolioArray.append(Portfolio(json: portfolioJson))
-      }
-    }
-    self.tokens = tokensArray
-    self.portfolios = portfolioArray
-  }
-}
-
-class Portfolio: Codable {
-  var ens: String
-  var id: String
-  init(json: JSONDictionary) {
-    self.id = json["id"] as? String ?? ""
-    self.ens = json["ens"] as? String ?? ""
-  }
-}
-
-class ResultToken: Codable {
-  var id: String
-  var chainId: Int
-  var chainName: String
-  var chainLogo: String
-  var name: String
-  var symbol: String
-  var decimals: Int
-  var logo: String
-  var tag: String
-  var usdValue: Double
-  
-  init(json: JSONDictionary) {
-    self.id = json["id"] as? String ?? ""
-    self.chainId = json["chainId"] as? Int ?? 0
-    self.chainName = json["chainName"] as? String ?? ""
-    self.chainLogo = json["chainLogo"] as? String ?? ""
-    self.name = json["name"] as? String ?? ""
-    self.symbol = json["symbol"] as? String ?? ""
-    self.decimals = json["decimals"] as? Int ?? 0
-    self.logo = json["logo"] as? String ?? ""
-    self.tag = json["tag"] as? String ?? ""
-    self.usdValue = json["usdValue"] as? Double ?? 0.0
-  }
-}
-
 class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
   weak var presenter: AdvanceSearchTokenPresenterProtocol?
   
@@ -75,14 +19,14 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
     provider.request(.advancedSearch(query: keyword, limit: 10)) { result in
       switch result {
       case .failure(let error):
-        self.presenter?.reloadAllData(result: nil)
+        self.presenter?.didGetSearchResult(result: nil)
         print("[Get Search Data]" + error.localizedDescription)
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? JSONDictionary {
           let searchResult = SearchResult(json: jsonData)
-          self.presenter?.reloadAllData(result: searchResult)
+          self.presenter?.didGetSearchResult(result: searchResult)
         } else {
-          self.presenter?.reloadAllData(result: nil)
+          self.presenter?.didGetSearchResult(result: nil)
         }
       }
     }

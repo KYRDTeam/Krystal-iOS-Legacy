@@ -74,20 +74,20 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-//        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
-//          switch result {
-//          case .failure(let error):
-//            controller.coordinatorFailUpdateApi(error)
-//          case .success(let resp):
-//            let decoder = JSONDecoder()
-//  //            do {
-//  //              let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
-//  //              controller.coordinatorDidUpdateChartData(data.prices)
-//  //            } catch let error {
-//  //              print("[Debug]" + error.localizedDescription)
-//  //            }
-//          }
-//        }
+        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
+          switch result {
+          case .failure(let error):
+            controller.coordinatorFailUpdateApi(error)
+          case .success(let resp):
+            let decoder = JSONDecoder()
+  //            do {
+  //              let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
+  //              controller.coordinatorDidUpdateChartData(data.prices)
+  //            } catch let error {
+  //              print("[Debug]" + error.localizedDescription)
+  //            }
+          }
+        }
       case .getChartData(let address, let from, _, let currency):
         var chainPath = KNGeneralProvider.shared.chainPath
         if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
@@ -138,9 +138,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if chainPath != KNGeneralProvider.shared.chainPath {
           let alertController = KNPrettyAlertController(
             title: "",
-            message: "Please switch to \(chainPath.dropFirst().uppercased()) to transfer".toBeLocalised(),
-            secondButtonTitle: "OK".toBeLocalised(),
-            firstButtonTitle: "Cancel".toBeLocalised(),
+            message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+            secondButtonTitle: Strings.OK,
+            firstButtonTitle: Strings.Cancel,
             secondButtonAction: {
               self.showPopupSwitchChain(controller) {
                 self.coordinator?.openSendTokenView(token)
@@ -161,9 +161,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       if chainPath != KNGeneralProvider.shared.chainPath {
         let alertController = KNPrettyAlertController(
           title: "",
-          message: "Please switch to \(chainPath.dropFirst().uppercased()) to swap".toBeLocalised(),
-          secondButtonTitle: "OK".toBeLocalised(),
-          firstButtonTitle: "Cancel".toBeLocalised(),
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
             self.showPopupSwitchChain(controller) {
               self.coordinator?.openSwapView(token: token, isBuy: true)
@@ -185,10 +185,6 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
-    case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
-      break
-    case .selectPool(source: let source, quote: let quote):
-      break
     }
   }
 

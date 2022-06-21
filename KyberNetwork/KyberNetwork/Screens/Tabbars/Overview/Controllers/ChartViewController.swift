@@ -27,6 +27,7 @@ class ChartViewModel {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
     }
   }
+  var isExpandingPoolTable: Bool = false
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
   let numberFormatter: NumberFormatter = {
@@ -538,6 +539,12 @@ class ChartViewController: KNBaseViewController {
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
   }
   
+  @IBAction func showAllPoolButtonTapped(_ sender: Any) {
+    self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
+    self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
+    self.updatePoolTableHeight()
+  }
+
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
   }
@@ -617,8 +624,21 @@ class ChartViewController: KNBaseViewController {
     }
   }
   
+  func updatePoolTableHeight() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      if self.viewModel.isExpandingPoolTable {
+        self.tableViewHeight.constant = CGFloat(self.viewModel.poolData.count * 92)
+      } else {
+        self.tableViewHeight.constant = CGFloat(460)
+      }
+      self.view.layoutIfNeeded()
+    }
+  }
+  
   func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
     self.viewModel.poolData = poolData
+    self.updatePoolTableHeight()
+    self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
   }
 
@@ -666,5 +686,18 @@ extension ChartViewController: UITableViewDelegate {
     self.viewModel.isLineChartMode = false
     self.loadCandleChartData()
     self.setupTradingView()
+  }
+}
+
+extension ChartViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.poolData.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
+    let poolData = self.viewModel.poolData[indexPath.row]
+    cell.updateUI(poolDetail: poolData)
+    return cell
   }
 }

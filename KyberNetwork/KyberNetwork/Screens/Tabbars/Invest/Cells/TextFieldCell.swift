@@ -12,10 +12,15 @@ class TextFieldCell: UITableViewCell {
   @IBOutlet weak var inputContainView: UIView!
   @IBOutlet weak var containViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet weak var errorLabel: UILabel!
+  @IBOutlet weak var textFieldTrailingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var scanButton: UIButton!
   var textChangeBlock: ((String) -> Void)?
+  var scanQRBlock: (() -> Void)?
+  var isEditingAddress: Bool = false
 
   override func awakeFromNib() {
     super.awakeFromNib()
+    self.textField.delegate = self
     self.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidEnd)
   }
 
@@ -48,10 +53,27 @@ class TextFieldCell: UITableViewCell {
   }
   
   @objc func textFieldDidChange(_ textField: UITextField) {
+    self.scanButton.setImage(UIImage(named: "qr_code_blue_icon"), for: .normal)
+    self.isEditingAddress = false
     if let textChangeBlock = self.textChangeBlock, let text = textField.text {
       self.updateUI()
       textChangeBlock(text)
     }
   }
-    
+
+  @IBAction func scanButtonTapped(_ sender: Any) {
+    if self.isEditingAddress {
+      self.textField.text = ""
+      self.textFieldDidChange(self.textField)
+    } else if let scanQRBlock = self.scanQRBlock {
+      scanQRBlock()
+    }
+  }
+}
+
+extension TextFieldCell: UITextFieldDelegate {
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.scanButton.setImage(UIImage(named: "advanced_close_icon"), for: .normal)
+    self.isEditingAddress = true
+  }
 }

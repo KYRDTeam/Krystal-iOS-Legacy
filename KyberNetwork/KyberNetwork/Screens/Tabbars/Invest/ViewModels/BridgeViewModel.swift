@@ -63,6 +63,7 @@ class BridgeViewModel {
   var changeAmountBlock: ((String) -> Void)?
   var changeAddressBlock: ((String) -> Void)?
   var swapBlock: (() -> Void)?
+  var scanQRBlock: (() -> Void)?
   
   var currentSourceChain: ChainType? = KNGeneralProvider.shared.currentChain
   var currentSourceToken: TokenObject?
@@ -272,7 +273,8 @@ class BridgeViewModel {
         var errMsg: String?
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
-          let liquidity = currentDestPoolInfo.liquidity.bigInt ?? BigInt(0)
+          // calculate with same decimal of source token
+          let liquidity = currentDestPoolInfo.liquidity.amountBigInt(decimals: self.currentSourceToken?.decimals ?? 0) ?? BigInt(0)
           if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
@@ -287,6 +289,7 @@ class BridgeViewModel {
         let cell = tableView.dequeueReusableCell(TextFieldCell.self, indexPath: indexPath)!
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
+        cell.scanQRBlock = self.scanQRBlock
         cell.updateUI()
         return cell
       case .reminderRow:
@@ -309,7 +312,7 @@ class BridgeViewModel {
           cell.swapButton.setBackgroundColor(UIColor(named: "buttonBackgroundColor")!, forState: .normal)
         } else {
           cell.swapButton.isEnabled = false
-          cell.swapButton.setBackgroundColor(UIColor.gray, forState: .normal)
+          cell.swapButton.setBackgroundColor(UIColor(named: "navButtonBgColor")!, forState: .disabled)
         }
         cell.swapBlock = self.swapBlock
         if let currentSourceToken = currentSourceToken {

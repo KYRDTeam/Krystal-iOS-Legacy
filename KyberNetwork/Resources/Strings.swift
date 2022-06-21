@@ -10,6 +10,8 @@ import Foundation
 struct Strings {
   // Common
   static let ok = "ok".toBeLocalised()
+  static let OK = "OK".toBeLocalised()
+  static let Cancel = "Cancel".toBeLocalised()
   static let approve = "approve".toBeLocalised()
   
   // Actions
@@ -79,11 +81,14 @@ struct Strings {
   static let transactionFee = "transaction.fee".toBeLocalised()
   static let estimatedTimeOfArrival = "estimated.time.of.arrival".toBeLocalised()
   static let xMins = "x.mins".toBeLocalised()
+  static let showLess = "SHOW LESS".toBeLocalised()
+  static let showMore = "SHOW MORE".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
   static let rewardHuntingWatchWalletErrorMessage = "reward.hunting.watch.wallet.not.supported".toBeLocalised()
   static let notHaveChainWalletPleaseCreateOrImport = "not.have.chain.wallet.please.create.or.import".toBeLocalised()
+  static let pleaseSwitchTo = "Please switch to".toBeLocalised()
 
   // Swap
   static let invalidInput = "invalid.input".toBeLocalised()
@@ -91,6 +96,7 @@ struct Strings {
   static let amountTooBig = "amount.too.big".toBeLocalised()
   static let invalidAmount = "invalid.amount".toBeLocalised()
   static let rateMightChange = "rate.might.change".toBeLocalised()
+  static let toSwap = "to swap".toBeLocalised()
   
   static let pleaseSelectSourceToken = "please.select.source.token".toBeLocalised()
   static let pleaseSelectDestToken = "please.select.dest.token".toBeLocalised()

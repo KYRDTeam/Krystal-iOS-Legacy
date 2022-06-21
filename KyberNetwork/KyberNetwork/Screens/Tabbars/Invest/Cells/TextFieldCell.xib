@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -26,18 +26,34 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n5F-Pb-7oO">
                         <rect key="frame" x="38" y="0.0" width="257" height="42"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fQX-8i-Z51">
-                                <rect key="frame" x="17" y="0.0" width="223" height="42"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fQX-8i-Z51">
+                                <rect key="frame" x="17" y="0.0" width="190" height="42"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="upf-Jm-aMS"/>
+                                </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpQ-E7-Prh">
+                                <rect key="frame" x="220" y="9" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="H2h-Ip-Zz5"/>
+                                    <constraint firstAttribute="height" constant="24" id="U1P-BV-Il9"/>
+                                </constraints>
+                                <state key="normal" image="qr_code_blue_icon"/>
+                                <connections>
+                                    <action selector="scanButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="OaK-2y-ILf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="toolbarBgColor"/>
                         <constraints>
+                            <constraint firstItem="hpQ-E7-Prh" firstAttribute="centerY" secondItem="n5F-Pb-7oO" secondAttribute="centerY" id="1X8-G7-yyY"/>
                             <constraint firstAttribute="height" constant="42" id="2kD-h2-aNi"/>
-                            <constraint firstAttribute="trailing" secondItem="fQX-8i-Z51" secondAttribute="trailing" constant="17" id="ChU-b7-RLr"/>
+                            <constraint firstAttribute="trailing" secondItem="fQX-8i-Z51" secondAttribute="trailing" constant="50" id="ChU-b7-RLr"/>
                             <constraint firstItem="fQX-8i-Z51" firstAttribute="top" secondItem="n5F-Pb-7oO" secondAttribute="top" id="Xvj-C7-qGt"/>
+                            <constraint firstAttribute="trailing" secondItem="hpQ-E7-Prh" secondAttribute="trailing" constant="13" id="aIA-cb-NFp"/>
                             <constraint firstAttribute="bottom" secondItem="fQX-8i-Z51" secondAttribute="bottom" id="dM3-OZ-TrN"/>
                             <constraint firstItem="fQX-8i-Z51" firstAttribute="leading" secondItem="n5F-Pb-7oO" secondAttribute="leading" constant="17" id="rfT-Dj-SCC"/>
                         </constraints>
@@ -74,12 +90,15 @@
                 <outlet property="containViewBottomConstraint" destination="TbO-qt-tl0" id="RXA-8n-Kq8"/>
                 <outlet property="errorLabel" destination="myY-1I-3gn" id="6P8-zI-j06"/>
                 <outlet property="inputContainView" destination="n5F-Pb-7oO" id="9tG-BJ-TTe"/>
+                <outlet property="scanButton" destination="hpQ-E7-Prh" id="DFZ-C2-M4w"/>
                 <outlet property="textField" destination="fQX-8i-Z51" id="tEa-cM-lJb"/>
+                <outlet property="textFieldTrailingConstraint" destination="ChU-b7-RLr" id="IZp-h3-s77"/>
             </connections>
             <point key="canvasLocation" x="147.10144927536234" y="141.29464285714286"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="qr_code_blue_icon" width="20" height="20"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
