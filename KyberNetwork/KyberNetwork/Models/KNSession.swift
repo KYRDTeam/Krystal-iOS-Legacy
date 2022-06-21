@@ -6,6 +6,7 @@ import BigInt
 import TrustKeystore
 import TrustCore
 import RealmSwift
+import KrystalWallets
 
 protocol KNSessionDelegate: class {
   func userDidClickExitSession()
@@ -13,160 +14,149 @@ protocol KNSessionDelegate: class {
 
 class KNSession {
 
-  private(set) var keystore: Keystore
-  private(set) var wallet: Wallet
-  let web3Swift: Web3Swift
-  var externalProvider: KNExternalProvider?
-  private(set) var realm: Realm
-  private(set) var transactionStorage: TransactionsStorage
-  private(set) var tokenStorage: KNTokenStorage
-
-  private(set) var transacionCoordinator: KNTransactionCoordinator?
-  var crosschainTxService: CrosschainTransactionService
+  private(set) var keystore: Keystore!
+  private(set) var wallet: Wallet!
   
-  var currentWalletObject: KNWalletObject {
-    let address = self.wallet.addressString
-    return KNWalletStorage.shared.getAvailableWalletObject(forPrimaryKey: address) ?? KNWalletObject(address: address)
-  }
+  var address: KAddress
+  var web3Swift: Web3Swift!
+  var realm: Realm!
+  var externalProvider: KNExternalProvider!
+  let walletManager = WalletManager.shared
+  
+  private(set) var transactionStorage: TransactionsStorage!
+  private(set) var tokenStorage: KNTokenStorage!
 
-  init(keystore: Keystore,
-       wallet: Wallet) {
-    self.keystore = keystore
-    self.wallet = wallet
+  private(set) var transactionCoordinator: KNTransactionCoordinator?
+  var crosschainTxService = CrosschainTransactionService()
+
+  init(address: KAddress) {
+    self.address = address
+    self.configureDatabase()
+    self.configureWeb3()
+    self.configureStorages()
+    self.configureProvider()
+    self.configureTransactionCoordinator()
+  }
+  
+  func refreshCurrentAddressInfo() {
+    guard let address = WalletManager.shared.getAddress(id: address.id) else {
+      return
+    }
+    self.address = address
+    WalletCache.shared.lastUsedAddress = address
+    AppEventCenter.shared.currentAddressUpdated()
+  }
+  
+  func getCurrentWalletAddresses() -> [KAddress] {
+    return walletManager.getAllAddresses(walletID: address.walletID)
+  }
+  
+  func configureDatabase() {
+    let config = RealmConfiguration.configuration(for: address.addressString, chainID: KNGeneralProvider.shared.customRPC.chainID)
+    self.realm = try! Realm(configuration: config)
+  }
+  
+  func configureWeb3() {
     if let path = URL(string: KNGeneralProvider.shared.customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
       self.web3Swift = Web3Swift(url: path)
     } else {
       self.web3Swift = Web3Swift()
     }
-    // Wallet type should always be real(account)
-    //TODO: Add support solana account
-    var account: Account?
-    if case .real(let acc) = self.wallet.type {
-      account = acc
-    }
-    let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-    self.realm = try! Realm(configuration: config)
-    self.transactionStorage = TransactionsStorage(realm: self.realm)
-    self.tokenStorage = KNTokenStorage(realm: self.realm)
-    if let realAccount = account {
-      self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
-    } else {
-      self.externalProvider = nil
-    }
-
+  }
+  
+  func configureProvider() {
+    self.externalProvider = KNExternalProvider(address: address, web3: web3Swift)
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
-    if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
-      self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
+    guard let tx = pendingTxs.first(where: { $0.from.lowercased() == address.addressString.lowercased() }) else {
+      return
     }
-    self.crosschainTxService = CrosschainTransactionService()
+    guard let nonce = Int(tx.nonce) else {
+      return
+    }
+    self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+  }
+  
+  func configureStorages() {
+    self.transactionStorage = TransactionsStorage(realm: realm)
+    self.tokenStorage = KNTokenStorage(realm: realm)
+  }
+  
+  func configureTransactionCoordinator() {
+    self.transactionCoordinator?.stop()
+    self.transactionCoordinator = nil
+    self.transactionCoordinator = KNTransactionCoordinator(
+      transactionStorage: self.transactionStorage,
+      tokenStorage: self.tokenStorage,
+      externalProvider: self.externalProvider,
+      address: address
+    )
+    self.transactionCoordinator?.start()
+    self.crosschainTxService.scheduleFetchPendingTransaction()
+  }
+  
+  func switchAddress(address: KAddress) {
+    self.address = address
+    WalletCache.shared.lastUsedAddress = address
+    self.configureDatabase()
+    self.configureWeb3()
+    self.configureProvider()
+    self.configureStorages()
+    self.resetTransactionCoordinator()
+    AppEventCenter.shared.switchAddress(address: address)
+  }
+  
+  func resetTransactionCoordinator() {
+    self.crosschainTxService.cancelScheduledFetching()
+    self.transactionCoordinator?.stop()
+    self.transactionCoordinator = nil
+    self.configureTransactionCoordinator()
+    self.transactionCoordinator?.start()
+    self.crosschainTxService.scheduleFetchPendingTransaction()
   }
 
   func startSession() {
     self.web3Swift.start()
-    self.transacionCoordinator?.stop()
-    self.transacionCoordinator = KNTransactionCoordinator(
-      transactionStorage: self.transactionStorage,
-      tokenStorage: self.tokenStorage,
-      externalProvider: self.externalProvider,
-      wallet: self.wallet
-    )
-    self.transacionCoordinator?.start()
-    self.crosschainTxService.scheduleFetchPendingTransaction()
-    BalanceStorage.shared.updateCurrentWallet(self.wallet)
-    EtherscanTransactionStorage.shared.updateCurrentWallet(self.wallet)
+    self.transactionCoordinator?.start()
+    BalanceStorage.shared.updateCurrentWallet(address)
+    EtherscanTransactionStorage.shared.updateCurrentWallet(address)
   }
 
   func stopSession() {
-    self.transacionCoordinator?.stop()
-    self.transacionCoordinator = nil
-    self.crosschainTxService.scheduleFetchPendingTransaction()
-    self.keystore.wallets.forEach { self.removeWallet($0) }
-    KNAppTracker.resetAllAppTrackerData()
-    self.keystore.recentlyUsedWallet = nil
-  }
-
-  // Switch between wallets
-  func switchSession(_ wallet: Wallet) {
-    self.transacionCoordinator?.stop()
-    self.transacionCoordinator = nil
     self.crosschainTxService.cancelScheduledFetching()
+    self.transactionCoordinator?.stop()
+    self.transactionCoordinator = nil
 
-    self.wallet = wallet
-    self.keystore.recentlyUsedWallet = wallet
-
-    var account: Account?
-    if case .real(let acc) = self.wallet.type {
-      account = acc
-    }
-    DispatchQueue.main.async {
-      if let realAccount = account {
-        self.externalProvider = KNExternalProvider(web3: self.web3Swift, keystore: self.keystore, account: realAccount)
-      } else {
-        self.externalProvider = nil
-      }
-
-      let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-      self.realm = try! Realm(configuration: config)
-      self.transactionStorage = TransactionsStorage(realm: self.realm)
-      self.tokenStorage = KNTokenStorage(realm: self.realm)
-      self.transacionCoordinator = KNTransactionCoordinator(
-        transactionStorage: self.transactionStorage,
-        tokenStorage: self.tokenStorage,
-        externalProvider: self.externalProvider,
-        wallet: self.wallet
-      )
-      self.transacionCoordinator?.start()
-      self.crosschainTxService.scheduleFetchPendingTransaction()
-      let pendingTxs = self.transactionStorage.kyberPendingTransactions
-      if let tx = pendingTxs.first(where: { $0.from.lowercased() == wallet.addressString.lowercased() }), let nonce = Int(tx.nonce) {
-        self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
-      }
-    }
+    KNAppTracker.resetAllAppTrackerData()
+    WalletCache.shared.lastUsedAddress = nil
   }
 
-  // Remove a wallet, it should not be a current wallet
-  @discardableResult
-  func removeWallet(_ wallet: Wallet) -> Bool {
-    if let recentWallet = self.keystore.recentlyUsedWallet, recentWallet == wallet {
-      self.transacionCoordinator?.stop()
-      self.transacionCoordinator = nil
-      self.crosschainTxService.cancelScheduledFetching()
-    }
-    // delete all storage for each wallet
-    let deleteResult = self.keystore.delete(wallet: wallet)
-    switch deleteResult {
-    case .failure(let err):
-      if case .failedToDeleteAccount = err {
-        return false
-      }
-    default: break
-    }
-    KNAppTracker.resetAppTrackerData(for: wallet.address)
-    for env in KNEnvironment.allEnvironments() {
-      
-      let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-      let realm = try! Realm(configuration: config)
-      let transactionStorage = TransactionsStorage(realm: realm)
-      transactionStorage.deleteAll()
-      let tokenStorage = KNTokenStorage(realm: realm)
-      tokenStorage.deleteAll()
-
-      // Remove wallet storage
-      let globalConfig = RealmConfiguration.globalConfiguration()
-      let globalRealm = try! Realm(configuration: globalConfig)
-      if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: wallet.addressString) {
-        KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
-        try! globalRealm.write { globalRealm.delete(walletObject) }
+  func clearWalletData(wallet: KWallet) {
+    let addresses = walletManager.getAllAddresses(walletID: wallet.id)
+    addresses.forEach { address in
+      KNAppTracker.resetAppTrackerData(for: address.addressString)
+      for _ in KNEnvironment.allEnvironments() {
+        let config = RealmConfiguration.configuration(for: address.addressString, chainID: KNGeneralProvider.shared.customRPC.chainID)
+        let realm = try! Realm(configuration: config)
+        let transactionStorage = TransactionsStorage(realm: realm)
+        transactionStorage.deleteAll()
+        let tokenStorage = KNTokenStorage(realm: realm)
+        tokenStorage.deleteAll()
+        
+        let globalConfig = RealmConfiguration.globalConfiguration()
+        let globalRealm = try! Realm(configuration: globalConfig)
+        if let walletObject = globalRealm.object(ofType: KNWalletObject.self, forPrimaryKey: address.addressString) {
+          KNWalletPromoInfoStorage.shared.removeWalletPromoInfo(address: walletObject.address)
+          try! globalRealm.write { globalRealm.delete(walletObject) }
+        }
       }
     }
-    return true
   }
 
   func addNewPendingTransaction(_ transaction: Transaction) {
     // Put here to be able force update new pending transaction immmediately
     let kyberTx = KNTransaction.from(transaction: transaction)
     self.transactionStorage.addKyberTransactions([kyberTx])
-    self.transacionCoordinator?.updatePendingTransaction(kyberTx)
+    self.transactionCoordinator?.updatePendingTransaction(kyberTx)
     KNNotificationUtil.postNotification(
       for: kTransactionDidUpdateNotificationKey,
       object: transaction.id,
@@ -200,7 +190,7 @@ class KNSession {
     if isDebug { print("[Debug] call update original tx \(hashTx)") }
     if transactionStorage.updateKyberTransaction(forPrimaryKey: hashTx, state: .pending) {
       guard let transaction = transactionStorage.getKyberTransaction(forPrimaryKey: hashTx), transaction.isInvalidated == false else { return false }
-      self.transacionCoordinator?.updatePendingTransaction(transaction)
+      self.transactionCoordinator?.updatePendingTransaction(transaction)
       KNNotificationUtil.postNotification(
         for: kTransactionDidUpdateNotificationKey,
         object: transaction.id,
@@ -233,18 +223,13 @@ class KNSession {
 
 extension KNSession {
   var sessionID: String {
-    return KNSession.sessionID(from: self.wallet)
+    return KNSession.sessionID(from: address.addressString)
   }
 
-  static func sessionID(from wallet: Wallet) -> String {
-    guard let address = wallet.address else { return "" }
-    return KNSession.sessionID(from: address)
-  }
-
-  static func sessionID(from address: Address) -> String {
+  static func sessionID(from address: String) -> String {
     if KNEnvironment.default == .production {
-      return "sessionID-\(address.description)"
+      return "sessionID-\(address)"
     }
-    return "sessionID-\(KNEnvironment.default.displayName)-\(address.description)"
+    return "sessionID-\(KNEnvironment.default.displayName)-\(address)"
   }
 }

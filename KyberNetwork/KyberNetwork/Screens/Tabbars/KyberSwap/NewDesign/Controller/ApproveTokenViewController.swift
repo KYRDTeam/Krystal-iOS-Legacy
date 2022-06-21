@@ -20,7 +20,7 @@ protocol ApproveTokenViewModel {
   var state: Bool { get }
   var symbol: String { get }
   var toAddress: String? { get }
-  var tokenAddress: Address? { get }
+  var tokenAddress: String? { get }
   var gasLimit: BigInt { get set }
   var value: BigInt { get set }
   var selectedGasPriceType: KNSelectedGasPriceType { get set }
@@ -31,6 +31,7 @@ protocol ApproveTokenViewModel {
   var customSetting: ConfirmAdvancedSetting { get }
   var showEditSettingButton: Bool { get set }
   var gasPrice: BigInt { get set }
+  var headerTitle: String { get set }
   func resetAdvancedSettings()
   func updateSelectedGasPriceType(_ type: KNSelectedGasPriceType)
 }
@@ -39,9 +40,10 @@ class ApproveTokenViewModelForTokenObject: ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
+  var headerTitle: String = "Approve Token"
 
-  var tokenAddress: Address? {
-    return Address(string: self.address)
+  var tokenAddress: String? {
+    return self.address
   }
 
   let token: TokenObject?
@@ -157,9 +159,10 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
   var showEditSettingButton: Bool = false
   var gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault
   var value: BigInt = Constants.maxValueBigInt
+  var headerTitle: String = "Approve Token"
 
-  var tokenAddress: Address? {
-    return Address(string: self.address)
+  var tokenAddress: String? {
+    return self.address
   }
 
   var token: TokenObject?
@@ -267,7 +270,7 @@ class ApproveTokenViewModelForTokenAddress: ApproveTokenViewModel {
 protocol ApproveTokenViewControllerDelegate: class {
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt)
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt)
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt)
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt)
   func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
 }
 
@@ -329,6 +332,7 @@ class ApproveTokenViewController: KNBaseViewController {
       self.editLabel.isHidden = true
       self.editButton.isHidden = true
     }
+    self.headerTitle.text = self.viewModel.headerTitle
   }
 
   @IBAction func confirmButtonTapped(_ sender: UIButton) {

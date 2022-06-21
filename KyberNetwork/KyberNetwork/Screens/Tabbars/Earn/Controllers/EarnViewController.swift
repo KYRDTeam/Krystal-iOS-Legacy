@@ -8,6 +8,7 @@
 import UIKit
 import BigInt
 import TrustCore
+import KrystalWallets
 
 class EarnViewModel {
   fileprivate var tokenData: TokenData
@@ -20,9 +21,13 @@ class EarnViewModel {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
-  fileprivate(set) var wallet: Wallet
+//  fileprivate(set) var wallet: Wallet
   var remainApprovedAmount: (TokenData, BigInt)?
   var approvingToken: TokenObject?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
   
   var advancedGasLimit: String? {
     didSet {
@@ -56,7 +61,7 @@ class EarnViewModel {
     }
   }
 
-  init(data: TokenData, wallet: Wallet) {
+  init(data: TokenData) {
     self.tokenData = data
     let dataSource = self.tokenData.lendingPlatforms.map { EarnSelectTableViewCellViewModel(platform: $0) }
     let optimizeValue = dataSource.max { (left, right) -> Bool in
@@ -66,7 +71,7 @@ class EarnViewModel {
       notNilValue.isSelected = true
     }
     self.platformDataSource = dataSource
-    self.wallet = wallet
+//    self.wallet = wallet
   }
   
   func updateToken(_ token: TokenData) {
@@ -252,20 +257,20 @@ class EarnViewModel {
       nonce = value
     }
     
-    if case let .real(account) = self.wallet.type {
+    if currentAddress.isWatchWallet {
+      return nil
+    } else {
+      // TODO: - TUNG - check solana
       return SignTransaction(
         value: value,
-        account: account,
-        to: Address(string: object.to),
+        address: currentAddress.addressString,
+        to: object.to,
         nonce: nonce,
         data: Data(hex: object.data.drop0x),
         gasPrice: gasPrice,
         gasLimit: gasLimit,
         chainID: KNGeneralProvider.shared.customRPC.chainID
       )
-    } else {
-      //TODO: handle watch wallet type
-      return nil
     }
   }
   
@@ -355,7 +360,7 @@ class EarnViewModel {
     } else {
       return false
     }
-    return data[self.wallet.addressString] ?? false
+    return data[self.currentAddress.addressString] ?? false
   }
   
   var displayCompInfo: String {
@@ -415,7 +420,7 @@ enum EarnViewEvent {
   case getGasLimit(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case buildTx(lendingPlatform: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, isSwap: Bool)
   case confirmTx(fromToken: TokenData, toToken: TokenData, platform: LendingPlatformData, fromAmount: BigInt, toAmount: BigInt, gasPrice: BigInt, gasLimit: BigInt, transaction: SignTransaction?, eip1559Transaction: EIP1559Transaction?, isSwap: Bool, rawTransaction: TxObject, minReceiveDest: (String?, String?), priceImpact: Double, maxSlippage: Double)
-  case openEarnSwap(token: TokenData, wallet: Wallet)
+  case openEarnSwap(token: TokenData)
   case getAllRates(from: TokenData, to: TokenData, amount: BigInt, focusSrc: Bool)
   case openChooseRate(from: TokenData, to: TokenData, rates: [Rate], gasPrice: BigInt, amountFrom: String)
   case getRefPrice(from: TokenData, to: TokenData)
@@ -534,7 +539,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
 
   fileprivate func updateUIWalletSelectButton() {
-    self.walletsSelectButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsSelectButton.setTitle(viewModel.currentAddress.name, for: .normal)
   }
 
   fileprivate func updateGasFeeUI() {
@@ -640,7 +645,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func earnSwapMessageLabelTapped(_ sender: UITapGestureRecognizer) {
-    self.delegate?.earnViewController(self, run: .openEarnSwap(token: self.viewModel.tokenData, wallet: self.viewModel.wallet))
+    self.delegate?.earnViewController(self, run: .openEarnSwap(token: self.viewModel.tokenData))
   }
   
   @IBAction func fromTokenButtonTapped(_ sender: UIButton) {
@@ -726,8 +731,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateUIBalanceDidChange()
   }
 
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  func coordinatorAppSwitchAddress() {
     self.viewModel.resetBalances()
     self.updateUIBalanceDidChange()
     self.updateUIWalletSelectButton()

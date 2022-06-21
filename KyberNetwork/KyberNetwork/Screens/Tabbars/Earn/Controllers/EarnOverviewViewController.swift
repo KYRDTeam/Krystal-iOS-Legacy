@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 protocol EarnOverviewViewControllerDelegate: class {
   func earnOverviewViewControllerDidSelectExplore(_ controller: EarnOverviewViewController)
@@ -24,8 +25,11 @@ class EarnOverviewViewController: KNBaseViewController {
   weak var navigationDelegate: NavigationBarDelegate?
 
   let depositViewController: OverviewDepositViewController
-  var wallet: Wallet?
   var firstTimeLoaded: Bool = false
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 
   init(_ controller: OverviewDepositViewController) {
     self.depositViewController = controller
@@ -47,9 +51,7 @@ class EarnOverviewViewController: KNBaseViewController {
     self.depositViewController.view.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
     self.depositViewController.view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
     self.depositViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    if let notNil = self.wallet {
-      self.updateUIWalletSelectButton(notNil)
-    }
+    self.updateUIWalletSelectButton()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -116,15 +118,14 @@ class EarnOverviewViewController: KNBaseViewController {
     self.present(popup, animated: true, completion: nil)
   }
 
-  fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
-    self.walletListButton.setTitle(wallet.getWalletObject()?.name ?? "---", for: .normal)
+  fileprivate func updateUIWalletSelectButton() {
+    self.walletListButton.setTitle(currentAddress.name, for: .normal)
   }
-
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.wallet = wallet
+  
+  func coordinatorAppSwitchAddress() {
     if self.isViewLoaded {
-      self.updateUIWalletSelectButton(wallet)
-      self.depositViewController.coordinatorUpdateNewSession(wallet: wallet)
+      self.updateUIWalletSelectButton()
+      self.depositViewController.coordinatorAppSwitchAddress()
       self.updateUIPendingTxIndicatorView()
       self.updateUIPendingTxIndicatorView()
     }

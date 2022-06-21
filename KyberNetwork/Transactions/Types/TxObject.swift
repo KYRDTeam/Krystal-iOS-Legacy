@@ -17,7 +17,7 @@ struct TxObject: Codable {
 }
 
 extension TxObject {
-  func convertToSignTransaction(wallet: Wallet, advancedGasPrice: String? = nil, advancedGasLimit: String? = nil, advancedNonce: String? = nil) -> SignTransaction? {
+  func convertToSignTransaction(address: String, advancedGasPrice: String? = nil, advancedGasLimit: String? = nil, advancedNonce: String? = nil) -> SignTransaction? {
     guard
       let value = BigInt(self.value.drop0x, radix: 16),
       var gasPrice = BigInt(self.gasPrice.drop0x, radix: 16),
@@ -38,21 +38,16 @@ extension TxObject {
     if let unwrap = advancedNonce, let value = Int(unwrap) {
       nonce = value
     }
-    if case let .real(account) = wallet.type {
-      return SignTransaction(
-        value: value,
-        account: account,
-        to: Address(string: self.to),
-        nonce: nonce,
-        data: Data(hex: self.data.drop0x),
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        chainID: KNGeneralProvider.shared.customRPC.chainID
-      )
-    } else {
-      //TODO: handle watch wallet type
-      return nil
-    }
+    return SignTransaction(
+      value: value,
+      address: address,
+      to: self.to,
+      nonce: nonce,
+      data: Data(hex: self.data.drop0x),
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
   }
   
   func newTxObjectWithNonce(nonce: Int) -> TxObject {

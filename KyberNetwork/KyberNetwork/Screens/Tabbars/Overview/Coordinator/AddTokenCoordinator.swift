@@ -15,7 +15,6 @@ protocol AddTokenCoordinatorDelegate: class {
 class AddTokenCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  private(set) var session: KNSession
   weak var delegate: AddTokenCoordinatorDelegate?
   
   lazy var rootViewController: AddTokenViewController = {
@@ -30,10 +29,9 @@ class AddTokenCoordinator: NSObject, Coordinator {
     return controller
   }()
   
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
-    self.session = session
   }
   
   func start(showList: Bool = false, token: Token? = nil) {

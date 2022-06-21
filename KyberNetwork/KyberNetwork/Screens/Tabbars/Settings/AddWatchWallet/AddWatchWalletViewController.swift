@@ -8,11 +8,12 @@
 import UIKit
 import QRCodeReaderViewController
 import TrustCore
+import KrystalWallets
 
 protocol AddWatchWalletViewControllerDelegate: class {
   func addWatchWalletViewController(_ controller: AddWatchWalletViewController, didAddAddress address: String, name: String?)
   func addWatchWalletViewControllerDidClose(_ controller: AddWatchWalletViewController)
-  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: String, name: String?)
+  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, address: KAddress, addressString: String, name: String?)
 }
 
 class AddWatchWalletViewController: UIViewController {
@@ -50,8 +51,8 @@ class AddWatchWalletViewController: UIViewController {
     self.cancelButton.rounded(radius: 16)
     self.addButton.rounded(radius: 16)
     self.titleLabel.text = self.viewModel.displayTitle
-    self.walletLabelTextField.text = self.viewModel.wallet?.name
-    self.walletAddressTextField.text = self.viewModel.wallet?.address
+    self.walletLabelTextField.text = self.viewModel.address?.name
+    self.walletAddressTextField.text = self.viewModel.address?.addressString
     self.addButton.setTitle(self.viewModel.displayAddButtonTitle, for: .normal)
   }
   
@@ -63,19 +64,19 @@ class AddWatchWalletViewController: UIViewController {
   
   @IBAction func doneButtonTapped(_ sender: Any) {
     guard self.viewModel.isAddressValid else {
-      self.showErrorTopBannerMessage(message: "Please enter address".toBeLocalised())
+      self.showErrorTopBannerMessage(message: Strings.pleaseEnterAddress)
       return
     }
-    if self.viewModel.wallet == nil {
-      guard !KNWalletStorage.shared.checkAddressExisted(self.viewModel.addressString) else {
-        self.showErrorTopBannerMessage(message: "Address existed".toBeLocalised())
+    if self.viewModel.address == nil {
+      if WalletManager.shared.isWatchAddressExisted(address: viewModel.addressString) {
+        self.showErrorTopBannerMessage(message: Strings.addressExisted)
         return
       }
     }
     
     self.dismiss(animated: true) {
-      if let unwrapped = self.viewModel.wallet {
-        self.delegate?.addWatchWalletViewControllerDidEdit(self, wallet: unwrapped.clone(), address: self.viewModel.addressString, name: self.walletLabelTextField.text)
+      if let address = self.viewModel.address {
+        self.delegate?.addWatchWalletViewControllerDidEdit(self, address: address, addressString: self.viewModel.addressString, name: self.walletLabelTextField.text)
       } else {
         self.delegate?.addWatchWalletViewController(self, didAddAddress: self.viewModel.addressString, name: self.walletLabelTextField.text)
       }

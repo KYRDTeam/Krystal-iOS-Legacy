@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CreateChainWalletMenuCoordinatorDelegate: AnyObject {
-  func onSelectCreateNewWallet()
+  func onSelectCreateNewWallet(chain: ChainType)
   func onSelectImportWallet()
 }
 
@@ -54,7 +54,8 @@ class CreateChainWalletMenuCoordinator: Coordinator {
   
   func selectCreateNewWallet() {
     parentViewController.dismiss(animated: true) { [weak self] in
-      self?.delegate?.onSelectCreateNewWallet()
+      guard let self = self else { return }
+      self.delegate?.onSelectCreateNewWallet(chain: self.chainType)
     }
   }
   

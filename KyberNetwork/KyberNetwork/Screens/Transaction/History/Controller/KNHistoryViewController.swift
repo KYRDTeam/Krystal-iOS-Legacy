@@ -55,18 +55,20 @@ struct KNHistoryViewModel {
   fileprivate(set) var displayingPendingTxData: [String: [PendingInternalHistoryTransactonViewModel]] = [:]
   fileprivate(set) var displayingPendingTxHeaders: [String] = []
 
-  fileprivate(set) var currentWallet: KNWalletObject
+//  fileprivate(set) var currentWallet: KNWalletObject
 
   fileprivate(set) var isShowingPending: Bool = true
 
   fileprivate(set) var filters: KNTransactionFilter!
+  
+  var currentAddressString: String {
+    return AppDelegate.session.address.addressString
+  }
 
   init(
-    tokens: [Token] = EtherscanTransactionStorage.shared.getEtherscanToken(),
-    currentWallet: KNWalletObject
-  ) {
+    tokens: [Token] = EtherscanTransactionStorage.shared.getEtherscanToken()
+    ) {
     self.tokens = tokens
-    self.currentWallet = currentWallet
     self.isShowingPending = hasPendingTransactions
     self.filters = KNTransactionFilter(
       from: nil,
@@ -136,9 +138,9 @@ struct KNHistoryViewModel {
     self.updateDisplayingData(isPending: false)
   }
 
-  mutating func updateCurrentWallet(_ currentWallet: KNWalletObject) {
-    self.currentWallet = currentWallet
-  }
+//  mutating func updateCurrentWallet(_ currentWallet: KNWalletObject) {
+//    self.currentWallet = currentWallet
+//  }
 
   var isEmptyStateHidden: Bool {
     if self.isShowingPending {
@@ -478,7 +480,7 @@ class KNHistoryViewController: KNBaseViewController {
     self.setupCollectionView()
     self.filterButton.rounded(radius: 10)
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
+    self.walletSelectButton.setTitle(viewModel.currentAddressString, for: .normal)
     self.swapNowButton.rounded(color: UIColor(named: "buttonBackgroundColor")!, width: 1, radius: self.swapNowButton.frame.size.height / 2)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = self.viewModel.isShowingPending ? 1 : 0
@@ -546,9 +548,7 @@ class KNHistoryViewController: KNBaseViewController {
   }
 
   fileprivate func setupNavigationBar() {
-    self.transactionsTextLabel.text = NSLocalizedString("transactions", value: "Transactions", comment: "")
-    //TODO: set address text for address select button
-//    self.currentAddressLabel.text = self.viewModel.currentWallet.address.lowercased()
+    self.transactionsTextLabel.text = Strings.transactions
   }
 
   fileprivate func setupCollectionView() {
@@ -641,18 +641,10 @@ extension KNHistoryViewController {
     pendingData: [String: [InternalHistoryTransaction]],
     handledData: [String: [InternalHistoryTransaction]],
     pendingDates: [String],
-    handledDates: [String],
-    currentWallet: KNWalletObject
-    ) {
+    handledDates: [String]
+  ) {
     self.viewModel.update(pendingTxData: pendingData, pendingTxHeaders: pendingDates)
     self.viewModel.update(handledTxData: handledData, handledTxHeaders: handledDates)
-    self.viewModel.updateCurrentWallet(currentWallet)
-    self.updateUIWhenDataDidChange()
-  }
-
-  func coordinatorUpdateWalletObjects() {
-    guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.viewModel.currentWallet.address) else { return }
-    self.viewModel.updateCurrentWallet(currentWallet)
     self.updateUIWhenDataDidChange()
   }
 
@@ -671,10 +663,10 @@ extension KNHistoryViewController {
     self.viewModel.update(completedTxData: [:], completedTxHeaders: [])
     self.updateUIWhenDataDidChange()
   }
-
-  func coordinatorUpdateNewSession(wallet: KNWalletObject) {
-    self.viewModel.updateCurrentWallet(wallet)
-    self.walletSelectButton.setTitle(wallet.address, for: .normal)
+  
+  func coordinatorAppSwitchAddress() {
+//    self.viewModel.updateCurrentWallet(wallet)
+    self.walletSelectButton.setTitle(viewModel.currentAddressString, for: .normal)
     self.viewModel.update(tokens: EtherscanTransactionStorage.shared.getEtherscanToken())
   }
 }

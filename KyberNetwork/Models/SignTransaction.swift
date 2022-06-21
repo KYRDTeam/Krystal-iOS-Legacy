@@ -6,20 +6,35 @@ import TrustCore
 import TrustKeystore
 import Result
 
-public struct SignTransaction {
+struct SignTransaction {
     let value: BigInt
-    let account: Account
-    let to: Address?
+    let address: String
+    let to: String?
     let nonce: Int
     let data: Data
     let gasPrice: BigInt
     let gasLimit: BigInt
     let chainID: Int
+  
+  init(value: BigInt, account: Account, to: String?, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, chainID: Int) {
+    self.init(value: value, address: account.address.description, to: to, nonce: nonce, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: chainID)
+  }
+  
+  init(value: BigInt, address: String, to: String?, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, chainID: Int) {
+    self.value = value
+    self.address = address
+    self.to = to
+    self.nonce = nonce
+    self.data = data
+    self.gasPrice = gasPrice
+    self.gasLimit = gasLimit
+    self.chainID = chainID
+  }
 }
 
 extension SignTransaction {
   func toSignTransactionObject() -> SignTransactionObject {
-    return SignTransactionObject(value: self.value.description, from: self.account.address.description, to: self.to?.description, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID, reservedGasLimit: self.gasLimit.description)
+    return SignTransactionObject(value: self.value.description, from: address, to: self.to, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID, reservedGasLimit: self.gasLimit.description)
   }
   
   func send(provider: KNExternalProvider, completion: @escaping (Result<String, AnyError>) -> Void) {
@@ -65,7 +80,7 @@ extension SignTransaction {
 extension SignTransaction: GasLimitRequestable {
   func createGasLimitRequest() -> KNEstimateGasLimitRequest {
     let request = KNEstimateGasLimitRequest(
-      from: self.account.address.description,
+      from: address,
       to: self.to?.description,
       value: self.value,
       data: self.data,

@@ -3,10 +3,15 @@
 import UIKit
 import TrustCore
 import SwipeCellKit
+import KrystalWallets
 
 struct KNListWalletsTableViewCellModel {
-  let wallet: WalletData
-  let isMultipleWallet: Bool
+  let wallet: KWallet
+  let address: String
+}
+
+struct KNListWalletsWatchAddressCellModel {
+  let address: KAddress
 }
 
 class KNListWalletsTableViewCell: SwipeTableViewCell {
@@ -21,14 +26,13 @@ class KNListWalletsTableViewCell: SwipeTableViewCell {
     self.backgroundColor = .clear
   }
 
-  func updateCell(with wallet: KNWalletObject, id: Int) {
-    self.walletNameLabel.text = wallet.name
-    self.walletAddressLabel.text = wallet.address.lowercased()
-    self.layoutIfNeeded()
-  }
-  
   func updateCell(cellModel: KNListWalletsTableViewCellModel) {
     self.walletNameLabel.text = cellModel.wallet.name
-    self.walletAddressLabel.text = cellModel.isMultipleWallet ? "" : cellModel.wallet.address
+    self.walletAddressLabel.text = cellModel.address
+  }
+  
+  func configure(watchAddressCellModel cellModel: KNListWalletsWatchAddressCellModel) {
+    self.walletNameLabel.text = cellModel.address.name
+    self.walletAddressLabel.text = cellModel.address.addressString
   }
 }

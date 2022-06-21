@@ -3,8 +3,26 @@
 import BigInt
 import WalletCore
 
-extension String {
+extension Optional where Wrapped == String {
+  
+  func whenNilOrEmpty(_ value: String) -> String {
+    if let unwrapped = self, !unwrapped.isEmpty {
+      return unwrapped
+    }
+    return value
+  }
+  
+}
 
+extension String {
+  
+  func whenEmpty(_ value: String) -> String {
+    if isEmpty {
+      return value
+    }
+    return self
+  }
+  
   func removeGroupSeparator() -> String {
     return self.replacingOccurrences(of: EtherNumberFormatter.short.groupingSeparator, with: "")
   }
