@@ -11,13 +11,14 @@ import TrustKeystore
 import TrustCore
 import Moya
 import Sentry
+import KrystalWallets
 
 class KNTransactionCoordinator {
 
   let transactionStorage: TransactionsStorage
   let tokenStorage: KNTokenStorage
   let externalProvider: KNExternalProvider?
-  let wallet: Wallet
+  let address: KAddress
 
   lazy var addressToSymbol: [String: String] = {
     var maps: [String: String] = [:]
@@ -37,12 +38,12 @@ class KNTransactionCoordinator {
     transactionStorage: TransactionsStorage,
     tokenStorage: KNTokenStorage,
     externalProvider: KNExternalProvider?,
-    wallet: Wallet
-    ) {
+    address: KAddress
+  ) {
     self.transactionStorage = transactionStorage
     self.tokenStorage = tokenStorage
     self.externalProvider = externalProvider
-    self.wallet = wallet
+    self.address = address
   }
 
   func start(isReloadData: Bool = true) {
@@ -98,7 +99,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
-    provider.request(.getTransactionsHistory(address: self.wallet.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
+    provider.request(.getTransactionsHistory(address: address.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -294,7 +295,7 @@ extension KNTransactionCoordinator {
     let savedTokens: [TokenObject] = self.tokenStorage.tokens
     transactions.forEach { tx in
       // receive token tx only
-      if !tx.isInvalidated, self.wallet.addressString == tx.to.lowercased(),
+      if !tx.isInvalidated, address.addressString == tx.to.lowercased(),
         let token = tx.getTokenObject(), !tokenObjects.contains(token),
         !savedTokens.contains(token) {
         tokenObjects.append(token)
@@ -307,9 +308,10 @@ extension KNTransactionCoordinator {
   }
 
   fileprivate func handleReceiveEtherOrToken(_ transactions: [Transaction]) {
-    guard !transactions.isEmpty, let addressObj = wallet.address else { return }
-    if KNAppTracker.transactionLoadState(for: addressObj) != .done { return }
-    let receivedTxs = transactions.filter({ return $0.to.lowercased() == wallet.addressString && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
+    guard !transactions.isEmpty else { return }
+    let addressString = address.addressString
+    if KNAppTracker.transactionLoadState(for: addressString) != .done { return }
+    let receivedTxs = transactions.filter({ return $0.to.lowercased() == addressString && $0.state == .completed }).sorted(by: { return $0.date > $1.date })
     // last transaction is received, and less than 5 mins ago
     if let latestReceiveTx = receivedTxs.first, Date().timeIntervalSince(latestReceiveTx.date) <= 5.0 * 60.0 {
       let title = NSLocalizedString("received.token", value: "Received %@", comment: "")
@@ -395,7 +397,7 @@ extension KNTransactionCoordinator {
         }
         if transaction.date.addingTimeInterval(60) < Date() {
           let minedTxs = self.transactionStorage.transferNonePendingObjects
-          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.wallet.addressString }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
+          if let tx = minedTxs.first(where: { $0.from.lowercased() == self.address.addressString }), let nonce = Int(tx.nonce), let txNonce = Int(transaction.nonce) {
             if nonce >= txNonce && tx.id.lowercased() != transaction.id.lowercased() {
               self.removeTransactionHasBeenLost(transaction)
             }
@@ -527,38 +529,6 @@ extension KNTransactionCoordinator {
   func stopUpdatingPendingTransactions() {
     self.pendingTxTimer?.invalidate()
     self.pendingTxTimer = nil
-  }
-}
-
-extension UnconfirmedTransaction {
-  func toTransaction(wallet: Wallet, hash: String, nounce: Int, type: TransactionType = .normal) -> Transaction {
-    let token: TokenObject = self.transferType.tokenObject()
-
-    let localObject = LocalizedOperationObject(
-      from: token.contract,
-      to: "",
-      contract: nil,
-      type: "transfer",
-      value: self.value.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: token.decimals),
-      symbol: token.symbol,
-      name: token.name,
-      decimals: token.decimals
-    )
-    return Transaction(
-      id: hash,
-      blockNumber: 0,
-      from: wallet.addressString,
-      to: self.to?.description ?? "",
-      value: self.value.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: token.decimals),
-      gas: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      gasPrice: self.gasPrice?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      gasUsed: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      nonce: "\(nounce)",
-      date: Date(),
-      localizedOperations: [localObject],
-      state: .pending,
-      type: type
-    )
   }
 }
 

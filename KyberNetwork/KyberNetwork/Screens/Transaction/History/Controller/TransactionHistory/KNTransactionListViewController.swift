@@ -8,6 +8,7 @@
 import UIKit
 import SwipeCellKit
 import SkeletonView
+import KrystalWallets
 
 protocol KNTransactionListViewControllerDelegate: AnyObject {
   func selectSwapNow(_ viewController: KNTransactionListViewController)
@@ -75,9 +76,9 @@ class KNTransactionListViewController: BaseTransactionListViewController {
     self.reload()
   }
   
-  override func updateWallet(wallet: KNWalletObject) {
+  override func updateAddress(address: KAddress) {
     startSkeletonAnimation()
-    viewModel.updateWallet(wallet: wallet)
+    viewModel.updateWallet(address: address)
   }
   
   override func reload() {

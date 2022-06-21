@@ -126,8 +126,8 @@ class KNTransactionDetailsViewController: KNBaseViewController {
     hud.hide(animated: true, afterDelay: 1.5)
   }
 
-//  func coordinator(update transaction: Transaction, currentWallet: KNWalletObject) {
-//    self.viewModel.update(transaction: transaction, currentWallet: currentWallet)
+//  func coordinator(update transaction: Transaction) {
+//    self.viewModel.update(transaction: transaction)
 //    self.updateUI()
 //  }
 

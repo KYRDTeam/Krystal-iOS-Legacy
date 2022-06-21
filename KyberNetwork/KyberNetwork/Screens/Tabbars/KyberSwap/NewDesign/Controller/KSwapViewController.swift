@@ -5,6 +5,7 @@ import BigInt
 import Result
 import Moya
 import Kingfisher
+import KrystalWallets
 //swiftlint:disable file_length
 
 enum KSwapViewEvent {
@@ -160,7 +161,7 @@ class KSwapViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
-    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsListButton.setTitle(viewModel.addressName, for: .normal)
     self.bottomPaddingConstraintForScrollView.constant = self.bottomPaddingSafeArea()
     self.setupTokensView()
     self.setupContinueButton()
@@ -503,12 +504,8 @@ class KSwapViewController: KNBaseViewController {
       firstButtonTitle: "Cancel".toBeLocalised(),
       secondButtonAction: {
         KNGeneralProvider.shared.currentChain = chainType
-        var selectedAddress = ""
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-          selectedAddress = appDelegate.coordinator.session.wallet.addressString
-        }
         self.viewModel.isFromDeepLink = true
-        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
       },
       firstButtonAction: nil
     )
@@ -734,27 +731,21 @@ extension KSwapViewController {
   /*
    Update new session when current wallet is changed, update all UIs
    */
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    
-    self.viewModel.updateWallet(wallet)
+  func coordinatorAppDidUpdateAddress() {
+    self.viewModel.updateAddress()
     self.fromAmountTextField.text = ""
     self.toAmountTextField.text = ""
     self.viewModel.updateAmount("", isSource: true)
     self.viewModel.updateAmount("", isSource: false)
     self.updateTokensView()
     self.updateViewAmountDidChange()
-    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsListButton.setTitle(viewModel.addressName, for: .normal)
     self.balanceLabel.text = self.viewModel.balanceDisplayText
     self.updateUIPendingTxIndicatorView()
     self.stopRateTimer()
     self.view.layoutIfNeeded()
   }
-
-  func coordinatorUpdateWalletObjects() {
-    self.viewModel.updateWalletObject()
-    self.view.layoutIfNeeded()
-  }
-
+  
   func coordinatorUpdateTokenBalance(_ balances: [String: Balance]) {
     self.viewModel.updateBalance(balances)
     self.balanceLabel.text = self.viewModel.balanceDisplayText
@@ -810,7 +801,7 @@ extension KSwapViewController {
     // support for promo wallet
     let isUpdatedTo: Bool = {
       if token.isPromoToken, isSource,
-        let dest = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.viewModel.walletObject.address),
+         let dest = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.viewModel.currentAddress.addressString),
         let destToken = KNSupportedTokenStorage.shared.supportedTokens.first(where: { $0.symbol == dest.uppercased() }) {
         self.viewModel.updateSelectedToken(destToken, isSource: false)
         return true
@@ -975,8 +966,8 @@ extension KSwapViewController {
   func coordinatorSuccessUpdateEncodedTx(object: TxObject) {
     guard let from = viewModel.from, let to = viewModel.to else { return }
     self.hideLoading()
-    guard let signTx = self.viewModel.buildSignSwapTx(object) else { return } //TODO: eip1559 refactor
     let rate = self.viewModel.estRate ?? BigInt(0)
+    
     let amount: BigInt = {
       if self.viewModel.isFocusingFromAmount {
         if self.viewModel.isSwapAllBalance {
@@ -995,7 +986,22 @@ extension KSwapViewController {
       return expectedExchange
     }()
 
-//    let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.viewModel.estimateGasLimit
+    let gasPrice: BigInt = {
+      if let advancedMaxFee = viewModel.advancedMaxFee, let value = advancedMaxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+        return value
+      } else {
+        return BigInt(object.gasPrice.drop0x, radix: 16) ?? BigInt(0)
+      }
+    }()
+    
+    let gasLimit: BigInt = {
+      if let advancedGasLimit = viewModel.advancedGasLimit, let value = BigInt(advancedGasLimit) {
+        return value
+      } else {
+        return BigInt(object.gasLimit.drop0x, radix: 16) ?? BigInt(0)
+      }
+    }()
+    
     let exchange = KNDraftExchangeTransaction(
       from: from,
       to: to,
@@ -1003,8 +1009,8 @@ extension KSwapViewController {
       maxDestAmount: BigInt(2).power(255),
       expectedRate: rate,
       minRate: self.viewModel.minRate,
-      gasPrice: signTx.gasPrice,
-      gasLimit: signTx.gasLimit,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
       expectedReceivedString: self.viewModel.amountTo,
       hint: self.viewModel.getHint(from: from.address, to: to.address, amount: self.viewModel.fromAmount, platform: self.viewModel.currentFlatform)
     )
@@ -1022,6 +1028,7 @@ extension KSwapViewController {
         maxSlippage: self.viewModel.minRatePercent
       ))
     } else {
+      guard let signTx = self.viewModel.buildSignSwapTx(object) else { return }
       self.delegate?.kSwapViewController(self, run: .confirmSwap(
         data: exchange,
         tx: signTx,
@@ -1033,7 +1040,7 @@ extension KSwapViewController {
       ))
     }
   }
-
+  
   func coordinatorFailUpdateEncodedTx() {
     self.showErrorMessage()
     self.hideLoading()

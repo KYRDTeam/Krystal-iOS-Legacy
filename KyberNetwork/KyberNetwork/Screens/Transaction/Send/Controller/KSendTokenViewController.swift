@@ -15,7 +15,7 @@ enum KSendTokenViewEvent {
   case validate(transaction: UnconfirmedTransaction, ens: String?)
   case validateSolana
   case send(transaction: UnconfirmedTransaction, ens: String?)
-  case sendSolana(transaction: UnconfirmedSolTransaction)
+//  case sendSolana(transaction: UnconfirmedSolTransaction)
   case addContact(address: String, ens: String?)
   case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
@@ -144,7 +144,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.walletName, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.addressString, for: .normal)
   }
 
   fileprivate func setupTokenView() {
@@ -578,14 +578,10 @@ extension KSendTokenViewController {
   }
 
   func coordinatorDidValidateSolTransferTransaction() {
-    let transferType = self.viewModel.from.isQuoteToken ? SolTransferType.sol(destination: self.viewModel.addressString) : SolTransferType.splToken(self.viewModel.from)
     let fee = self.estGasFeeValueLabel.text == self.viewModel.solFeeString ? self.viewModel.solanaFeeBigInt : self.viewModel.solanaFeeBigInt + self.viewModel.minimumRentExemption
-
-    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: fee, transferType: transferType)
-    unconfirmedSolTransaction.mintTokenAddress = self.viewModel.from.address
-    unconfirmedSolTransaction.decimal = self.viewModel.from.decimals
-
-    self.delegate?.kSendTokenViewController(self, run: .sendSolana(transaction: unconfirmedSolTransaction))
+    let transferType: TransferType = self.viewModel.from.isQuoteToken ? .ether(destination: self.viewModel.addressString) : .token(viewModel.from)
+    let unconfirmTx = UnconfirmedTransaction(transferType: transferType, value: viewModel.amountBigInt, to: viewModel.addressString, data: Data(), gasLimit: nil, gasPrice: nil, nonce: nil, maxInclusionFeePerGas: nil, maxGasFee: nil, estimatedFee: fee)
+    self.delegate?.kSendTokenViewController(self, run: .send(transaction: unconfirmTx, ens: nil))
   }
 
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
@@ -601,8 +597,7 @@ extension KSendTokenViewController {
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.currentWalletAddress = wallet.addressString
+  func coordinatorAppSwitchAddress() {
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
@@ -730,7 +725,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
+          if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
             self.updateUIEnsMessage()
           } else {

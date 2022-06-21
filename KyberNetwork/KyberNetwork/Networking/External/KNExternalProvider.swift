@@ -7,30 +7,41 @@ import Result
 import TrustKeystore
 import TrustCore
 import JavaScriptKit
+import KrystalWallets
+//import KrystalWallets
 
 class KNExternalProvider {
 
-  let keystore: Keystore
-  fileprivate var account: Account
-  let web3Swift: Web3Swift
-  var networkAddress: Address {
-    let address = KNGeneralProvider.shared.proxyAddress
-    return Address(string: address)!
+  var keystore: Keystore!
+  var account: Account!
+//  let web3Swift: Web3Swift
+  
+  var networkAddress: String {
+    return KNGeneralProvider.shared.proxyAddress
   }
 
   var minTxCount: Int {
     didSet {
-      KNAppTracker.updateTransactionNonce(self.minTxCount, address: self.account.address)
+      KNAppTracker.updateTransactionNonce(self.minTxCount, address: self.address.addressString)
     }
   }
-
-  init(web3: Web3Swift, keystore: Keystore, account: Account) {
-    self.keystore = keystore
-    self.account = account
+  
+  var address: KAddress
+  let web3Swift: Web3Swift
+  
+  init(address: KAddress, web3: Web3Swift) {
+    self.address = address
     self.web3Swift = web3
-    
     self.minTxCount = 0
   }
+
+//  init(web3: Web3Swift, keystore: Keystore, account: Account) {
+//    self.keystore = keystore
+//    self.account = account
+//    self.web3 = web3
+//
+//    self.minTxCount = 0
+//  }
   
   var customRPC: CustomRPC {
     return KNGeneralProvider.shared.customRPC
@@ -38,7 +49,7 @@ class KNExternalProvider {
 
   func updateNonceWithLastRecordedTxNonce(_ nonce: Int) {
     KNGeneralProvider.shared.getTransactionCount(
-      for: self.account.address.description,
+      for: address.addressString,
       state: "pending") { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let txCount) = result {
@@ -46,23 +57,28 @@ class KNExternalProvider {
       }
     }
   }
-
-  func updateNewAccount(_ account: Account) {
-    self.account = account
+  
+  func updateAddress(address: KAddress) {
+    self.address = address
     self.minTxCount = 0
   }
+
+//  func updateNewAccount(_ account: Account) {
+//    self.account = account
+//    self.minTxCount = 0
+//  }
 
   // MARK: Balance
   public func getETHBalance(completion: @escaping (Result<Balance, AnyError>) -> Void) {
     KNGeneralProvider.shared.getETHBalanace(
-      for: self.account.address.description,
+      for: address.addressString,
       completion: completion
     )
   }
 
-  public func getTokenBalance(for contract: Address, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  public func getTokenBalance(for contract: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getTokenBalance(
-      for: self.account.address,
+      for: address.addressString,
       contract: contract,
       completion: completion
     )
@@ -70,7 +86,7 @@ class KNExternalProvider {
   
   public func getNFTBalance(for contract: String, id: String, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getNFTBalance(
-      for: self.account.address.description,
+      address: address.addressString,
       id: id,
       contract: contract,
       completion: completion
@@ -79,8 +95,7 @@ class KNExternalProvider {
 
   // MARK: Transaction
   func getTransactionCount(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    KNGeneralProvider.shared.getTransactionCount(
-    for: self.account.address.description) { [weak self] result in
+    KNGeneralProvider.shared.getTransactionCount(for: address.addressString) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let txCount):
@@ -103,7 +118,7 @@ class KNExternalProvider {
           case .success(let data):
             if transaction.maxInclusionFeePerGas != nil,
                 transaction.maxGasFee != nil {
-              if let eip1559Tx = transaction.toEIP1559Transaction(nonceInt: self.minTxCount, data: data, fromAddress: self.account.address.description),
+              if let eip1559Tx = transaction.toEIP1559Transaction(nonceInt: self.minTxCount, data: data, fromAddress: self.address.addressString),
                   let data = self.signContractGenericEIP1559Transaction(eip1559Tx) {
                 print("[EIP1559] send tx \(eip1559Tx)")
                 print("[EIP1559] hex tx \(data.hexString)")
@@ -193,7 +208,7 @@ class KNExternalProvider {
                 })
               }
             } else {
-              let signTx = SignTransaction(value: BigInt(0), account: self.account, to: Address(string: category.collectibleAddress), nonce: self.minTxCount, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: KNGeneralProvider.shared.customRPC.chainID)
+              let signTx = SignTransaction(value: BigInt(0), account: self.account, to: category.collectibleAddress, nonce: self.minTxCount, data: data, gasPrice: gasPrice, gasLimit: gasLimit, chainID: KNGeneralProvider.shared.customRPC.chainID)
               self.signTransactionData(from: signTx, completion: { signResult in
                 switch signResult {
                 case .success(let signData):
@@ -305,7 +320,7 @@ class KNExternalProvider {
       let from = txData["from"] as? String, let to = txData["to"] as? String,
       let gasPrice = (txData["gasPrice"] as? String ?? "").fullBigInt(decimals: 0),
       let gasLimit = (txData["gasLimit"] as? String ?? "").fullBigInt(decimals: 0),
-      from.lowercased() == self.account.address.description.lowercased(),
+          from.lowercased() == self.address.addressString.lowercased(),
       !gasPrice.isZero, !gasLimit.isZero else {
       completion(.success(nil))
       return
@@ -314,11 +329,6 @@ class KNExternalProvider {
     // Parse data from hex string
     let dataParse: Data? = (txData["data"] as? String ?? "").dataFromHex()
     guard let data = dataParse else {
-      completion(.success(nil))
-      return
-    }
-
-    guard let toAddr = Address(string: to) else {
       completion(.success(nil))
       return
     }
@@ -332,7 +342,7 @@ class KNExternalProvider {
         let signTx = SignTransaction(
           value: value,
           account: self.account,
-          to: toAddr,
+          to: to,
           nonce: self.minTxCount,
           data: data,
           gasPrice: gasPrice,
@@ -411,16 +421,16 @@ class KNExternalProvider {
   func getAllowance(token: TokenObject, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
       for: token,
-      address: self.account.address,
-      networkAddress: self.networkAddress,
+      address: address.addressString,
+      networkAddress: networkAddress,
       completion: completion
     )
   }
 
-  func getAllowance(tokenAddress: Address, toAddress: Address? = nil, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
+  func getAllowance(tokenAddress: String, toAddress: String? = nil, completion: @escaping (Result<BigInt, AnyError>) -> Void) {
     KNGeneralProvider.shared.getAllowance(
-      for: self.account.address,
-      networkAddress: toAddress ?? self.networkAddress,
+      for: address.addressString,
+      networkAddress: toAddress ?? networkAddress,
       tokenAddress: tokenAddress,
       completion: completion
     )
@@ -459,7 +469,7 @@ class KNExternalProvider {
     }
   }
   
-  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, address: Address, completion: @escaping (Result<Bool, AnyError>) -> Void) {
+  func sendApproveERCToken(for token: TokenObject, value: BigInt, gasPrice: BigInt, gasLimit: BigInt, address: String, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
       token: token,
       value: value,
@@ -481,29 +491,25 @@ class KNExternalProvider {
     }
   }
 
-  func sendApproveERCTokenAddress(for tokenAddress: Address, value: BigInt, gasPrice: BigInt, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    var address: Address?
-    if let unwrap = toAddress {
-      address = Address(string: unwrap)
-    }
+  func sendApproveERCTokenAddress(for tokenAddress: String, value: BigInt, gasPrice: BigInt, gasLimit: BigInt = KNGasConfiguration.approveTokenGasLimitDefault, toAddress: String? = nil, completion: @escaping (Result<Bool, AnyError>) -> Void) {
     KNGeneralProvider.shared.approve(
       tokenAddress: tokenAddress,
       value: value,
       account: self.account,
       keystore: self.keystore,
       currentNonce: self.minTxCount,
-      networkAddress: address ?? self.networkAddress,
+      networkAddress: toAddress ?? self.networkAddress,
       gasPrice: gasPrice,
       gasLimit: gasLimit
     ) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let txCount):
-          self.minTxCount = txCount
-          completion(.success(true))
-        case .failure(let error):
-          completion(.failure(error))
-        }
+      guard let `self` = self else { return }
+      switch result {
+      case .success(let txCount):
+        self.minTxCount = txCount
+        completion(.success(true))
+      case .failure(let error):
+        completion(.failure(error))
+      }
     }
   }
 
@@ -530,8 +536,8 @@ class KNExternalProvider {
       switch result {
       case .success(let data):
         KNExternalProvider.estimateGasLimit(
-          from: self.account.address.description,
-          to: self.addressToSend(transferTransaction)?.description,
+          from: self.address.addressString,
+          to: self.addressToSend(transferTransaction),
           gasPrice: transferTransaction.gasPrice ?? KNGasConfiguration.gasPriceDefault,
           value: self.valueToSend(transferTransaction),
           data: data,
@@ -622,8 +628,8 @@ class KNExternalProvider {
     }
   }
 
-  func getMultipleERC20Balances(_ tokens: [Address], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
-    KNGeneralProvider.shared.getMutipleERC20Balances(for: self.account.address, tokens: tokens, completion: completion)
+  func getMultipleERC20Balances(_ tokens: [String], completion: @escaping (Result<[BigInt], AnyError>) -> Void) {
+    KNGeneralProvider.shared.getMutipleERC20Balances(for: self.account.address.description, tokens: tokens, completion: completion)
   }
 
   // MARK: Sign transaction
@@ -631,7 +637,7 @@ class KNExternalProvider {
     let defaultGasLimit: BigInt = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: transaction.transferType.tokenObject())
     let signTransaction: SignTransaction = SignTransaction(
       value: self.valueToSend(transaction),
-      account: self.account,
+      address: address.addressString,
       to: self.addressToSend(transaction),
       nonce: nonce,
       data: data ?? Data(),
@@ -741,7 +747,7 @@ class KNExternalProvider {
   }
 
   func requestDataForTokenExchange(_ exchange: KNDraftExchangeTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    let encodeRequest = KNExchangeRequestEncode(exchange: exchange, address: self.account.address)
+    let encodeRequest = KNExchangeRequestEncode(exchange: exchange, address: self.account.address.description)
     self.web3Swift.request(request: encodeRequest) { result in
       switch result {
       case .success(let res):
@@ -758,14 +764,12 @@ class KNExternalProvider {
     return transaction.transferType.isETHTransfer() ? transaction.value : BigInt(0)
   }
 
-  private func addressToSend(_ transaction: UnconfirmedTransaction) -> Address? {
-    let address: Address? = {
-      switch transaction.transferType {
-      case .ether: return transaction.to
-      case .token(let token):
-        return token.addressObj
-      }
-    }()
-    return address
+  private func addressToSend(_ transaction: UnconfirmedTransaction) -> String? {
+    switch transaction.transferType {
+    case .ether:
+      return transaction.to
+    case .token(let token):
+      return token.contract
+    }
   }
 }

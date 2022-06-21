@@ -16,16 +16,16 @@ import JSONRPCKit
 import QRCodeReaderViewController
 import MBProgressHUD
 import WalletConnectSwift
+import KrystalWallets
 
 class MultiSendCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  var session: KNSession
   
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
   
   lazy var rootViewController: MultiSendViewController = {
-    let vm = MultiSendViewModel(wallet: self.session.wallet)
+    let vm = MultiSendViewModel()
     let controller = MultiSendViewController(viewModel: vm)
     controller.delegate = self
     return controller
@@ -45,19 +45,18 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
   fileprivate(set) var processingTx: TxObject?
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
-  
-  fileprivate var currentWallet: KNWalletObject {
-    return self.session.currentWalletObject
-  }
-  
+
   var approvingItems: [ApproveMultiSendItem] = []
   var allowance: [Token: BigInt] = [:]
   var approveRequestCountDown = 0
   var isRequestingApprove = false
   
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
   }
 
   func start() {
@@ -90,9 +89,8 @@ class MultiSendCoordinator: NSObject, Coordinator {
     self.rootViewController.coordinatorDidUpdateChain()
   }
   
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
-    self.session = session
-    self.rootViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
+  func appCoordinatorSwitchAddress() {
+    self.rootViewController.coordinatorAppSwitchAddress()
   }
 
   func coordinatorDidUpdatePendingTx() {
@@ -110,7 +108,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .addContact(address: let address):
       self.openNewContact(address: address, ens: nil)
     case .checkApproval(items: let items):
-      guard self.session.externalProvider != nil else {
+      if currentAddress.isWatchWallet {
         self.navigationController.showErrorTopBannerMessage(message: "You are using watch wallet")
         return
       }
@@ -164,10 +162,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .openHistory:
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
-      let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.availableWalletObjects,
-        currentWallet: self.currentWallet
-      )
+      let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -199,7 +194,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   
   fileprivate func requestBuildTx(items: [MultiSendItem], completion: @escaping (TxObject) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.addressString
+    let address = currentAddress.addressString
     
     provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
       if case .success(let resp) = result {
@@ -230,31 +225,28 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func checkAllowance(contractAddress: String, items: [ApproveMultiSendItem], completion: @escaping ([ApproveMultiSendItem]) -> Void) {
-    guard let provider = self.session.externalProvider else {
+    guard !currentAddress.isWatchWallet else {
       self.navigationController.showErrorTopBannerMessage(message: "You are using watch wallet")
       return
     }
     
     var remaining: [ApproveMultiSendItem] = []
     let group = DispatchGroup()
+    let web3Sevice = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
     
     items.forEach { item in
-      if let address = Address(string: item.1.address) {
-        group.enter()
-        
-        provider.getAllowance(tokenAddress: address, toAddress: Address(string: contractAddress)) { result in
-          switch result {
-          case .success(let res):
-            if item.0 > res {
-              remaining.append(item)
-              self.allowance[item.1] = res
-            }
-          case .failure:
-            break
+      group.enter()
+      web3Sevice.getAllowance(for: currentAddress.addressString, networkAddress: contractAddress, tokenAddress: item.1.address) { result in
+        switch result {
+        case .success(let response):
+          if item.0 > response {
+            remaining.append(item)
+            self.allowance[item.1] = response
           }
-          
-          group.leave()
+        default:
+          break
         }
+        group.leave()
       }
     }
     
@@ -393,11 +385,9 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       self.approveVC = nil
     
     case .approve(items: let items, isApproveUnlimit: let isApproveUnlimit, settings: let setting, estNoTx: let noTx):
-      guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
+      if currentAddress.isWatchWallet {
         return
       }
-
-      let currentAddress = account.address.description
       controller.displayLoading()
       self.approvingItems = items
       self.getLatestNonce { nonceResult in
@@ -413,10 +403,10 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
               let item = element.0
               let txNonce = nonce + index
               if KNGeneralProvider.shared.isUseEIP1559 {
-                let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+                let tx = TransactionFactory.buildEIP1559Transaction(from: self.currentAddress.addressString, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
                 eipTxs.append((item, tx))
               } else {
-                let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+                let tx = TransactionFactory.buildLegacyTransaction(address: self.currentAddress.addressString, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
                 legacyTxs.append((item, tx))
               }
             }
@@ -464,14 +454,14 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         }
       }
     case .estimateGas(items: let items):
-      guard case .real(let account) = self.session.wallet.type else {
+      if currentAddress.isWatchWallet {
         return
       }
       
       self.buildApproveDataList(items: items, isApproveUnlimit: true) { dataList in
         var eipTxs: [(ApproveMultiSendItem, EIP1559Transaction)] = []
         var legacyTxs: [(ApproveMultiSendItem, SignTransaction)] = []
-        let currentAddress = account.address.description
+        let currentAddress = self.currentAddress.addressString
         
         let setting = ConfirmAdvancedSetting(
           gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
@@ -488,7 +478,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
             let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
             eipTxs.append((item, tx))
           } else {
-            let tx = TransactionFactory.buildLegacyTransaction(account: account, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
+            let tx = TransactionFactory.buildLegacyTransaction(address: currentAddress, to: item.1.address, nonce: txNonce, data: element.1, setting: setting)
             legacyTxs.append((item, tx))
           }
         }
@@ -517,10 +507,10 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
   }
 
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
+    if currentAddress.isWatchWallet {
       return
     }
-    provider.getTransactionCount { result in
+    EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain).getTransactionCount(for: currentAddress.addressString) { result in
       switch result {
       case .success(let res):
         completion(.success(res))
@@ -531,7 +521,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
   }
   
   fileprivate func buildApproveDataList(items: [ApproveMultiSendItem], isApproveUnlimit: Bool, completion: @escaping ([(ApproveMultiSendItem, Data)]) -> Void) {
-    guard let addressStr = self.processingTx?.to, let address = Address(string: addressStr) else { return }
+    guard let addressStr = self.processingTx?.to else { return }
     var dataList: [(ApproveMultiSendItem, Data)] = []
     
     let group = DispatchGroup()
@@ -540,7 +530,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         let resetItem = (BigInt.zero, item.1)
         
         group.enter()
-        KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: BigInt.zero) { encodeResult in
+        KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: addressStr, value: BigInt.zero) { encodeResult in
           switch encodeResult {
           case .success(let data):
             dataList.append((resetItem, data))
@@ -554,7 +544,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       let value = isApproveUnlimit ? Constants.maxValueBigInt : item.0
       group.enter()
 
-      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: address, value: value) { encodeResult in
+      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: addressStr, value: value) { encodeResult in
         switch encodeResult {
         case .success(let data):
           dataList.append((item, data))
@@ -571,15 +561,16 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
   }
 
   fileprivate func sendEIP1559Txs(_ txs: [(ApproveMultiSendItem, EIP1559Transaction)], completion: @escaping (([ApproveMultiSendItem], [AnyError])) -> Void) {
-    guard let provider = self.session.externalProvider else {
-      self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
+    if currentAddress.isWatchWallet {
+      self.navigationController.showErrorTopBannerMessage(message: Strings.watchWalletNotSupportOperation)
       return
     }
     guard approveRequestCountDown == txs.count, !self.isRequestingApprove else { return }
     self.isRequestingApprove = true
     var signedData: [(ApproveMultiSendItem, EIP1559Transaction, Data)] = []
+    let signer = EIP1559TransactionSigner()
     txs.forEach { element in
-      if let data = provider.signContractGenericEIP1559Transaction(element.1) {
+      if let data = signer.signTransaction(address: currentAddress, eip1559Tx: element.1) {
         signedData.append((element.0, element.1, data))
       }
     }
@@ -617,58 +608,54 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
   }
   
   fileprivate func sendLegacyTxs(_ txs: [(ApproveMultiSendItem, SignTransaction)], completion: @escaping (([ApproveMultiSendItem], [AnyError])) -> Void) {
-    guard let provider = self.session.externalProvider else {
-      self.navigationController.showErrorTopBannerMessage(message: "Watch wallet doesn't support this operation")
+    if currentAddress.isWatchWallet {
+      self.navigationController.showErrorTopBannerMessage(message: Strings.watchWalletNotSupportOperation)
       return
     }
-    let group = DispatchGroup()
-    var signedData: [(ApproveMultiSendItem, SignTransaction, Data)] = []
-    txs.forEach { element in
-      group.enter()
-      provider.signTransactionData(from: element.1) { signResult in
-        if case .success(let resultData) = signResult {
-          signedData.append((element.0, element.1, resultData.0))
-        }
-
-        group.leave()
+    let signer = EthereumTransactionSigner()
+    let signedData: [(ApproveMultiSendItem, SignTransaction, Data)] = txs.compactMap { (item, signTx) in
+      let signResult = signer.signTransaction(address: currentAddress, transaction: signTx)
+      switch signResult {
+      case .success(let data):
+        return (item, signTx, data)
+      case .failure:
+        return nil
       }
-      group.wait()
     }
-    group.notify(queue: .global()) {
-      guard self.approveRequestCountDown == txs.count, !self.isRequestingApprove else { return }
-      self.isRequestingApprove = true
-      let sendGroup = DispatchGroup()
-      var unApproveItem: [ApproveMultiSendItem] = []
-      var errors: [AnyError] = []
-      signedData.forEach { txData in
-        sendGroup.enter()
-        let item = txData.0
+    
+    guard self.approveRequestCountDown == txs.count, !self.isRequestingApprove else { return }
+    self.isRequestingApprove = true
+    let sendGroup = DispatchGroup()
+    var unApproveItem: [ApproveMultiSendItem] = []
+    var errors: [AnyError] = []
+    signedData.forEach { txData in
+      sendGroup.enter()
+      let item = txData.0
 
-        KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            let message = item.0.isZero ? "Reset \(item.1.name) approval" : "Approve \(item.1.name)"
-            let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx: nil )
-            historyTx.hash = hash
-            historyTx.time = Date()
-            historyTx.nonce = txData.1.nonce
-            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-            
-          case .failure(let error):
-            unApproveItem.append(txData.0)
-            errors.append(error)
-          }
-          self.approveRequestCountDown -= 1
-          sendGroup.leave()
-        })
-        sendGroup.wait()
-      }
+      KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
+        switch sendResult {
+        case .success(let hash):
+          let message = item.0.isZero ? "Reset \(item.1.name) approval" : "Approve \(item.1.name)"
+          let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx: nil )
+          historyTx.hash = hash
+          historyTx.time = Date()
+          historyTx.nonce = txData.1.nonce
+          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
+          
+        case .failure(let error):
+          unApproveItem.append(txData.0)
+          errors.append(error)
+        }
+        self.approveRequestCountDown -= 1
+        sendGroup.leave()
+      })
+      sendGroup.wait()
+    }
 
-      sendGroup.notify(queue: .main) {
-        guard self.approveRequestCountDown == 0 else { return }
-        self.isRequestingApprove = false
-        completion((unApproveItem, errors))
-      }
+    sendGroup.notify(queue: .main) {
+      guard self.approveRequestCountDown == 0 else { return }
+      self.isRequestingApprove = false
+      completion((unApproveItem, errors))
     }
   }
   
@@ -705,101 +692,14 @@ extension MultiSendCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     case .updateAdvancedNonce(let nonce):
       self.approveVC?.coordinatorDidUpdateAdvancedNonce(nonce)
       self.confirmVC?.coordinatorDidUpdateAdvancedNonce(nonce)
-    case .speedupTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.showErrorMessage(error, viewController: self.navigationController)
-          }
-        })
-      }
-    case .cancelTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .cancel
-            savedTx?.type = .transferETH
-            savedTx?.transactionSuccessDescription = "-0 ETH"
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.showErrorMessage(error, viewController: self.navigationController)
-          }
-        })
-      }
-    case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-       
-        let speedupTx = transaction.toSignTransaction(account: account)
-        speedupTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            print("GasSelector][Legacy][Speedup][Sent] \(hash)")
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.showErrorMessage(error, viewController: self.navigationController)
-          }
-        }
-      }
-    case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        
-        let cancelTx = transaction.toSignTransaction(account: account)
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.state = .cancel
-            saved?.type = .transferETH
-            saved?.transactionSuccessDescription = "-0 ETH"
-            saved?.hash = hash
-            print("GasSelector][Legacy][Cancel][Sent] \(hash)")
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.showErrorMessage(error, viewController: self.navigationController)
-          }
-        }
-      }
+    case .speedupTransactionSuccessfully(let speedupTransaction):
+      self.openTransactionStatusPopUp(transaction: speedupTransaction)
+    case .cancelTransactionSuccessfully(let cancelTransaction):
+      self.openTransactionStatusPopUp(transaction: cancelTransaction)
+    case .speedupTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
+    case .cancelTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
     default:
       break
     }
@@ -815,10 +715,9 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       self.confirmVC = nil
       self.processingTx = nil
     case .confirm(setting: let setting):
-      guard case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider else {
+      if currentAddress.isWatchWallet {
         return
       }
-      
       guard let tx = self.processingTx else { return }
       let valueBigInt = BigInt(tx.value.drop0x, radix: 16) ?? BigInt.zero
       let valueString = valueBigInt.string(
@@ -832,7 +731,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
       self.navigationController.displayLoading()
       if KNGeneralProvider.shared.isUseEIP1559 {
         let tx = TransactionFactory.buildEIP1559Transaction(txObject: tx, setting: setting)
-        guard let data = provider.signContractGenericEIP1559Transaction(tx) else {
+        guard let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: tx) else {
           return
         }
         KNGeneralProvider.shared.sendRawTransactionWithInfura(data, completion: { sendResult in
@@ -851,32 +750,29 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
           }
         })
       } else {
-        let tx = TransactionFactory.buildLegaryTransaction(txObject: tx, account: account, setting: setting)
+        let tx = TransactionFactory.buildLegacyTransaction(txObject: tx, address: currentAddress.addressString, setting: setting)
         KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
           self.navigationController.hideLoading()
           switch result {
           case .success(_):
-            provider.signTransactionData(from: tx) { result in
-              switch result {
-              case .success(let signedData):
-                print(signedData.0.hexEncoded)
-                KNGeneralProvider.shared.sendRawTransactionWithInfura(signedData.0) { sendResult in
-                  switch sendResult {
-                  case .success(let hash):
-                    let historyTransaction = InternalHistoryTransaction(type: .multiSend, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: valueText, transactionDetailDescription: toAddress, transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
-                    historyTransaction.hash = hash
-                    historyTransaction.time = Date()
-                    historyTransaction.nonce = tx.nonce
-                    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-                    self.openTransactionStatusPopUp(transaction: historyTransaction)
-                  case .failure(let error):
-                    self.showErrorMessage(error, viewController: self.navigationController)
-                  }
+            let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: tx)
+            switch signResult {
+            case .success(let data):
+              KNGeneralProvider.shared.sendRawTransactionWithInfura(data) { sendResult in
+                switch sendResult {
+                case .success(let hash):
+                  let historyTransaction = InternalHistoryTransaction(type: .multiSend, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: valueText, transactionDetailDescription: toAddress, transactionObj: tx.toSignTransactionObject(), eip1559Tx: nil)
+                  historyTransaction.hash = hash
+                  historyTransaction.time = Date()
+                  historyTransaction.nonce = tx.nonce
+                  EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                  self.openTransactionStatusPopUp(transaction: historyTransaction)
+                case .failure(let error):
+                  self.showErrorMessage(error, viewController: self.navigationController)
                 }
-              case .failure(let error):
-                self.showErrorMessage(error, viewController: self.navigationController)
               }
-
+            case .failure(let error):
+              self.showErrorMessage(error, viewController: self.navigationController)
             }
           case .failure(let error):
             self.showErrorMessage(error, viewController: self.navigationController)
@@ -973,17 +869,8 @@ extension MultiSendCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
     }
@@ -999,34 +886,28 @@ extension MultiSendCoordinator: QRCodeReaderDelegate {
     reader.dismiss(animated: true) {
       guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
-          with: "Invalid session".toBeLocalised(),
-          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          with: Strings.invalidSession,
+          message: Strings.invalidSessionTryOtherQR,
           time: 1.5
         )
         return
       }
 
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-          
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: "Private Key Error",
-            message: "Can not get Private key",
-            time: 1.5
+      do {
+        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
+        DispatchQueue.main.async {
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            pk: privateKey
           )
+          self.navigationController.present(controller, animated: true, completion: nil)
         }
+      } catch {
+        self.navigationController.showTopBannerView(
+          with: Strings.privateKeyError,
+          message: Strings.canNotGetPrivateKey,
+          time: 1.5
+        )
       }
     }
   }

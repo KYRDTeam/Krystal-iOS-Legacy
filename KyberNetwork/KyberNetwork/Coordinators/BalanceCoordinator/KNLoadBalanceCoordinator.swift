@@ -10,10 +10,11 @@ import Moya
 import Sentry
 import FirebasePerformance
 import Firebase
+import KrystalWallets
 
 class KNLoadBalanceCoordinator {
 
-  fileprivate var session: KNSession! //TODO: use general provider to load balance instead of external provider
+//  fileprivate var session: KNSession! //TODO: use general provider to load balance instead of external provider
 
   fileprivate var fetchOtherTokensBalanceTimer: Timer?
   fileprivate var isFetchingOtherTokensBalance: Bool = false
@@ -27,17 +28,21 @@ class KNLoadBalanceCoordinator {
 
   fileprivate var lastRefreshTime: Date = Date()
 
+  var address: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  var tokenStorage: KNTokenStorage {
+    return AppDelegate.session.tokenStorage
+  }
+  
   deinit {
     self.exit()
   }
 
-  init(session: KNSession) {
-    self.session = session
-  }
-
   func restartNewSession(_ session: KNSession) {
-    self.session = session
-    self.resume()
+//    self.session = session
+//    self.resume()
   }
 
   func loadAllBalances() {
@@ -150,117 +155,8 @@ class KNLoadBalanceCoordinator {
     pause()
   }
 
-  /*
-  @objc func fetchNonSupportedTokensBalancesNew(_ sender: Any?) {
-    if self.isFetchNonSupportedBalance { return }
-    self.isFetchNonSupportedBalance = true
-    let tokenContracts = self.session.tokenStorage.tokens.filter({ return !$0.isETH && !$0.isSupported }).map({ $0.contract })
-
-    let tokens = tokenContracts.map({ return Address(string: $0)! })
-
-    self.fetchTokenBalances(tokens: tokens) { [weak self] result in
-      guard let `self` = self else { return }
-      self.isFetchNonSupportedBalance = false
-      switch result {
-      case .success(let isLoaded):
-        if !isLoaded {
-          self.fetchNonSupportedTokensBalancesChunked()
-        } else {
-          let tokens = self.session.tokenStorage.tokens.filter({ return !$0.isSupported && $0.valueBigInt == BigInt(0) })
-          self.session.tokenStorage.disableUnsupportedTokensWithZeroBalance(tokens: tokens)
-        }
-      case .failure(let error):
-        if error.code == NSURLErrorNotConnectedToInternet { return }
-        self.fetchNonSupportedTokensBalancesChunked()
-      }
-    }
-  }
-
-  func fetchNonSupportedTokensBalancesChunked(chunkedNum: Int = 20) {
-    if self.isFetchNonSupportedBalance { return }
-    self.isFetchNonSupportedBalance = true
-    let sortedTokens = self.session.tokenStorage.tokens.filter({ return !$0.isETH && !$0.isSupported }).sorted { (left, right) -> Bool in
-      return left.value > right.value
-    }
-    let sortedAddress = sortedTokens.map({ $0.contract }).map({ return Address(string: $0)! })
-    let chunkedAddress = sortedAddress.chunked(into: chunkedNum)
-    let group = DispatchGroup()
-    chunkedAddress.forEach { (addresses) in
-      group.enter()
-      self.fetchTokenBalances(tokens: addresses) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let isLoaded):
-          if !isLoaded {
-            self.fetchNonSupportedTokensBalances(addresses: addresses)
-          } else {
-            let tokens = self.session.tokenStorage.tokens.filter({ return !$0.isSupported && $0.valueBigInt == BigInt(0) })
-            self.session.tokenStorage.disableUnsupportedTokensWithZeroBalance(tokens: tokens)
-          }
-        case .failure(let error):
-          if error.code == NSURLErrorNotConnectedToInternet { return }
-          self.fetchNonSupportedTokensBalances(addresses: addresses)
-        }
-        group.leave()
-      }
-    }
-    group.notify(queue: .main) {
-      self.isFetchNonSupportedBalance = false
-    }
-  }
- 
-  func fetchNonSupportedTokensBalances(addresses: [Address]) {
-    guard let provider = self.session.externalProvider else {
-      return
-    }
-    var isBalanceChanged: Bool = false
-    let currentWallet = self.session.wallet
-    var zeroBalanceAddresses: [String] = []
-    let group = DispatchGroup()
-    var delay = 0.2
-    self.isFetchNonSupportedBalance = true
-    addresses.forEach { (address) in
-      group.enter()
-      DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-        if self.session == nil { group.leave(); return }
-        provider.getTokenBalance(for: address, completion: { [weak self] result in
-          guard let `self` = self else { group.leave(); return }
-          if self.session == nil || currentWallet != self.session.wallet { group.leave(); return }
-          switch result {
-          case .success(let bigInt):
-            let balance = Balance(value: bigInt)
-            if self.otherTokensBalance[address.description.lowercased()] == nil || self.otherTokensBalance[address.description.lowercased()]!.value != bigInt {
-              isBalanceChanged = true
-            }
-            self.otherTokensBalance[address.description.lowercased()] = balance
-            self.session.tokenStorage.updateBalance(for: address, balance: bigInt)
-            if bigInt == BigInt(0) { zeroBalanceAddresses.append(address.description.lowercased()) }
-            NSLog("---- Balance: Fetch token balance for contract \(address.description) successfully: \(bigInt.shortString(decimals: 0))")
-          case .failure(let error):
-            NSLog("---- Balance: Fetch token balance failed with error: \(error.description). ----")
-          }
-          group.leave()
-        })
-      }
-      delay += 0.2
-    }
-
-    group.notify(queue: .main) {
-      self.isFetchNonSupportedBalance = false
-      if isBalanceChanged {
-        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-      }
-      if !zeroBalanceAddresses.isEmpty {
-        let tokens = self.session.tokenStorage.tokens.filter({
-          return zeroBalanceAddresses.contains($0.contract.lowercased())
-        })
-        self.session.tokenStorage.disableUnsupportedTokensWithZeroBalance(tokens: tokens)
-      }
-    }
-  }
-   */
-  fileprivate func fetchTokenBalances(tokens: [Address], completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
+  fileprivate func fetchTokenBalances(tokens: [String], completion: @escaping (Result<Bool, AnyError>) -> Void) {
+    guard let provider = AppDelegate.session.externalProvider else {
       return
     }
     if tokens.isEmpty {
@@ -283,7 +179,7 @@ class KNLoadBalanceCoordinator {
               isBalanceChanged = true
             }
             self.otherTokensBalance[addr.lowercased()] = balance
-            self.session.tokenStorage.updateBalance(for: tokens[id], balance: values[id])
+            self.tokenStorage.updateBalance(for: tokens[id], balance: values[id])
             if isDebug {
               NSLog("---- Balance: Fetch token balance for contract \(addr) successfully: \(values[id].shortString(decimals: 0))")
             }
@@ -303,24 +199,25 @@ class KNLoadBalanceCoordinator {
 
   //MARK:-new balance load implementation
   func loadAllTokenBalance() {
-    let tokens = KNSupportedTokenStorage.shared.getSupportedTokens()
-    var erc20Address: [Address] = []
-    tokens.forEach { (token) in
-      if let address = Address(string: token.address) {
-        erc20Address.append(address)
-      }
-    }
-    guard !erc20Address.isEmpty else {
+    let tokens = KNSupportedTokenStorage.shared.getSupportedTokens().map(\.address)
+//    var erc20Address: [Address] = []
+//    tokens.forEach { (token) in
+//      if let address = Address(string: token.address) {
+//        erc20Address.append(address)
+//      }
+//    }
+    
+    guard !tokens.isEmpty else {
       return
     }
-    guard let address = self.session.wallet.address else { return }
-    KNGeneralProvider.shared.getMutipleERC20Balances(for: address, tokens: erc20Address) { result in
+    let address = AppDelegate.session.address.addressString
+    KNGeneralProvider.shared.getMutipleERC20Balances(for: address, tokens: tokens) { result in
       switch result {
       case .success(let values):
-        if values.count == erc20Address.count {
+        if values.count == tokens.count {
           var balances: [TokenBalance] = []
           for id in 0..<values.count {
-            let balance = TokenBalance(address: erc20Address[id].description.lowercased(), balance: values[id].description)
+            let balance = TokenBalance(address: tokens[id].lowercased(), balance: values[id].description)
             balances.append(balance)
           }
           BalanceStorage.shared.setBalances(balances)
@@ -336,7 +233,7 @@ class KNLoadBalanceCoordinator {
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getBalances(address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
+    provider.request(.getBalances(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -366,25 +263,8 @@ class KNLoadBalanceCoordinator {
 
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-
-    var allAddress: [String] = [self.session.wallet.addressString]
-    if KNGeneralProvider.shared.currentChain == .solana {
-      // add EVM address if current wallet is solana
-      if !self.session.wallet.evmAddressString.isEmpty {
-        allAddress.append(self.session.wallet.evmAddressString)
-      }
-    } else {
-      // add sol address if current wallet is EVM
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let account = appDelegate.coordinator.keystore.matchWithEvmAccount(address: self.session.wallet.addressString) {
-        
-        if case .success(let seeds) = appDelegate.coordinator.keystore.exportMnemonics(account: account) {
-          let solAddress = SolanaUtil.seedsToPublicKey(seeds)
-          allAddress.append(solAddress)
-        }
-        
-      }
-    }
-    provider.request(.getTotalBalance(address: allAddress, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
+    let addresses = AppDelegate.session.getCurrentWalletAddresses().map(\.addressString)
+    provider.request(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
@@ -407,7 +287,7 @@ class KNLoadBalanceCoordinator {
 
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getNTFBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { result in
+    provider.request(.getNTFBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -431,7 +311,7 @@ class KNLoadBalanceCoordinator {
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getLendingBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
+    provider.request(.getLendingBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
         var balances: [LendingPlatformBalance] = []
         result.forEach { (element) in
@@ -458,7 +338,7 @@ class KNLoadBalanceCoordinator {
     guard !KNGeneralProvider.shared.lendingDistributionPlatform.isEmpty else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
 
-    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: self.session.wallet.addressString, forceSync: forceSync)) { (result) in
+    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: address.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)
@@ -472,7 +352,7 @@ class KNLoadBalanceCoordinator {
 
   func loadLiquidityPool(forceSync: Bool = false, completion:  @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = self.session.wallet.addressString
+    let address = AppDelegate.session.address.addressString
     let chain = KNGeneralProvider.shared.chainName
     provider.request(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
@@ -493,7 +373,7 @@ class KNLoadBalanceCoordinator {
   }
 
   func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
-    guard let provider = self.session.externalProvider else {
+    guard let provider = AppDelegate.session.externalProvider else {
       return
     }
 
@@ -510,9 +390,7 @@ class KNLoadBalanceCoordinator {
               KNGeneralProvider.shared.getOwnerOf(address: sectionItem.collectibleAddress, id: nftItem.tokenID) { ownerResult in
                 switch ownerResult {
                 case .success(let owner):
-                  if owner.lowercased() == self.session.wallet.addressString.lowercased() {
-                    //do nothing
-                  } else {
+                  if owner != self.address.addressString {
                     BalanceStorage.shared.removeCustomNFT(categoryAddress: sectionItem.collectibleAddress, itemID: nftItem.tokenID)
                   }
                 default:

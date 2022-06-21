@@ -2,15 +2,21 @@
 
 import UIKit
 import SwipeCellKit
-
+import KrystalWallets
 
 enum KNListWalletsViewEvent {
   case close
-  case select(wallet: KNWalletObject)
-  case remove(wallet: KNWalletObject)
-  case edit(wallet: KNWalletObject)
+  case removeWallet(wallet: KWallet)
+  case removeWatchAddress(address: KAddress)
+  case editWatchAddress(address: KAddress)
+  case editWallet(wallet: KWallet, addressType: KAddressType)
   case addWallet(type: AddNewWalletType)
-  case copy(data: WalletData)
+  case open(wallet: KWallet)
+}
+
+enum WalletListSection {
+  case multichainWallets
+  case normalWallets
 }
 
 protocol KNListWalletsViewControllerDelegate: class {
@@ -18,157 +24,94 @@ protocol KNListWalletsViewControllerDelegate: class {
 }
 
 class KNListWalletsViewModel {
-  var listWallets: [KNWalletObject] = []
-  var curWallet: KNWalletObject
-  var isDisplayWatchWallets: Bool = false
-  let keyStore: Keystore
+  var isWatchWalletsTabSelecting: Bool = false
   var seedsCellModels: [KNListWalletsTableViewCellModel] = []
   var nonSeedsCellModels: [KNListWalletsTableViewCellModel] = []
-  var watchCellModels: [KNListWalletsTableViewCellModel] = []
+  var watchCellModels: [KNListWalletsWatchAddressCellModel] = []
 
-  init(listWallets: [KNWalletObject], curWallet: KNWalletObject, keyStore: Keystore) {
-    self.listWallets = listWallets
-    self.curWallet = curWallet
-    self.keyStore = keyStore
+  var wallets: [KWallet] = []
+  var watchAddresses: [KAddress] = []
+  var walletSections: [WalletListSection] = []
+  
+  var walletsImportedFromSeed: [KWallet] {
+    return wallets.filter { $0.importType == .mnemonic }
   }
-
-  var displayWallets: [KNWalletObject] {
-    return self.listWallets.filter { (object) -> Bool in
-      return object.isWatchWallet == self.isDisplayWatchWallets
+  
+  var walletsImportedFromKey: [KWallet] {
+    return wallets.filter { $0.importType == .privateKey }
+  }
+  
+  var isListEmpty: Bool {
+    if isWatchWalletsTabSelecting {
+      return watchAddresses.isEmpty
+    } else {
+      return wallets.isEmpty
     }
   }
   
+  init() {
+    reloadData()
+  }
+  
+  func reloadData() {
+    wallets = WalletManager.shared.getAllWallets()
+    watchAddresses = WalletManager.shared.watchAddresses()
+    self.walletSections = []
+    if !walletsImportedFromSeed.isEmpty {
+      walletSections.append(.multichainWallets)
+    }
+    walletSections.append(.normalWallets)
+  }
+  
   var numberSections: Int {
-    if self.isDisplayWatchWallets {
+    if self.isWatchWalletsTabSelecting {
       return 1
-    } else if !self.seedsCellModels.isEmpty && !self.nonSeedsCellModels.isEmpty {
-      return 2
     } else {
-      return 1
+      return walletSections.count
     }
   }
   
   func titleForSection(section: Int) -> String {
-//    guard !self.seedsCellModels.isEmpty && !self.nonSeedsCellModels.isEmpty else { return "" }
-    if self.isDisplayWatchWallets {
+    if self.isWatchWalletsTabSelecting {
       return ""
     } else {
-      if section == 0 {
-        if self.seedsCellModels.isEmpty {
-          return "WALLETS"
-        } else {
-          return "MULTI-CHAIN WALLETS"
-        }
-      } else {
+      switch walletSections[section] {
+      case .multichainWallets:
+        return "MULTI-CHAIN WALLETS"
+      default:
         return "WALLETS"
       }
     }
   }
 
   func numberRows(section: Int) -> Int {
-    if self.isDisplayWatchWallets {
+    if self.isWatchWalletsTabSelecting {
       return self.watchCellModels.count
     } else {
-      if section == 0 {
-        if self.seedsCellModels.isEmpty {
-          return self.nonSeedsCellModels.count
-        } else {
-          return self.seedsCellModels.count
-        }
-      } else {
-        return self.nonSeedsCellModels.count
+      switch walletSections[section] {
+      case .multichainWallets:
+        return seedsCellModels.count
+      case .normalWallets:
+        return nonSeedsCellModels.count
       }
     }
-  }
-
-  func getCellModel(at row: Int, section: Int) -> KNListWalletsTableViewCellModel {
-    if self.isDisplayWatchWallets {
-      return self.watchCellModels[row]
-    } else {
-      if section == 0 {
-        if self.seedsCellModels.isEmpty {
-          return self.nonSeedsCellModels[row]
-        } else {
-          return self.seedsCellModels[row]
-        }
-      } else {
-        return self.nonSeedsCellModels[row]
-      }
-    }
-  }
-
-  func getWallet(at row: Int, section: Int) -> KNWalletObject? {
-    let cm = self.getCellModel(at: row, section: section)
-    let address = cm.wallet.address
-    let filterd = self.listWallets.first { element in
-      return element.address == address
-    }
-    return filterd
-  }
-
-  func isCurrentWallet(row: Int, section: Int) -> Bool {
-    let cm = self.getCellModel(at: row, section: section)
-    return cm.wallet.address == self.currentWalletAddress
   }
 
   func reloadDataSource(completion: @escaping () -> Void) {
-    
-    let listData = listWallets.map { e in
-      return e.toData()
+    reloadData()
+    seedsCellModels = walletsImportedFromSeed.map { wallet in
+      return KNListWalletsTableViewCellModel(wallet: wallet, address: "")
     }
-    DispatchQueue.global(qos: .background).async {
-      let group = DispatchGroup()
-
-      group.enter()
-      if !self.seedsCellModels.isEmpty {
-        self.seedsCellModels.removeAll()
-      }
-      if !self.nonSeedsCellModels.isEmpty {
-        self.nonSeedsCellModels.removeAll()
-      }
-      if !self.watchCellModels.isEmpty {
-        self.watchCellModels.removeAll()
-      }
-
-      for element in listData {
-        if element.isWatchWallet {
-          let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
-          self.watchCellModels.append(cm)
-          continue
-        }
-        if element.chainType == .multiChain {
-          let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: true)
-          self.seedsCellModels.append(cm)
-        } else {
-          let cm = KNListWalletsTableViewCellModel(wallet: element, isMultipleWallet: false)
-          self.nonSeedsCellModels.append(cm)
-        }
-      }
-
-      group.leave()
-
-      group.notify(queue: .main) {
-        completion()
-      }
+    nonSeedsCellModels = walletsImportedFromKey.map { wallet in
+      let address = WalletManager.shared.getAllAddresses(walletID: wallet.id).first
+      return KNListWalletsTableViewCellModel(wallet: wallet, address: address?.addressString ?? "")
     }
+    watchCellModels = watchAddresses.map { address in
+      return KNListWalletsWatchAddressCellModel(address: address)
+    }
+    completion()
   }
 
-  func update(wallets: [KNWalletObject], curWallet: KNWalletObject) {
-    self.listWallets = wallets
-    self.curWallet = curWallet
-  }
-  
-  func isMultichainWallet(data: WalletData) -> Bool {
-    let filterd = self.seedsCellModels.first { element in
-      return data == element.wallet
-    }
-    return filterd != nil
-  }
-  
-  var currentWalletAddress: String {
-    guard !self.curWallet.isInvalidated else { return "" }
-    return self.curWallet.address
-  }
 }
 
 class KNListWalletsViewController: KNBaseViewController {
@@ -224,7 +167,7 @@ class KNListWalletsViewController: KNBaseViewController {
 
   @IBAction func segmentedControlDidChange(_ sender: UISegmentedControl) {
     segmentedControl.underlinePosition()
-    self.viewModel.isDisplayWatchWallets = self.segmentedControl.selectedSegmentIndex == 1
+    self.viewModel.isWatchWalletsTabSelecting = self.segmentedControl.selectedSegmentIndex == 1
     self.updateEmptyView()
     self.walletTableView.reloadData()
   }
@@ -249,8 +192,7 @@ class KNListWalletsViewController: KNBaseViewController {
     self.view.layoutIfNeeded()
   }
 
-  func updateView(with wallets: [KNWalletObject], currentWallet: KNWalletObject) {
-    self.viewModel.update(wallets: wallets, curWallet: currentWallet)
+  func reloadData() {
     self.updateEmptyView()
     self.viewModel.reloadDataSource {
       DispatchQueue.main.async {
@@ -261,24 +203,10 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   fileprivate func updateEmptyView() {
-    self.emptyView.isHidden = !self.viewModel.displayWallets.isEmpty
+    self.emptyView.isHidden = !self.viewModel.isListEmpty
     let walletString = self.segmentedControl.selectedSegmentIndex == 0 ? "wallet" : "watched wallet"
     self.emptyMessageLabel.text = "Your list of \(walletString)s is empty.".toBeLocalised()
     self.addWalletButton.setTitle("Add " + walletString, for: .normal)
-  }
-
-  func coordinatorDidUpdateWalletsList() {
-    DispatchQueue.main.async {
-      self.displayLoading()
-    }
-    self.viewModel.listWallets = KNWalletStorage.shared.cloneWallets
-    
-    self.viewModel.reloadDataSource {
-      DispatchQueue.main.async {
-        self.walletTableView.reloadData()
-        self.hideLoading()
-      }
-    }
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
@@ -290,34 +218,46 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   @IBAction func emptyViewAddButtonTapped(_ sender: UIButton) {
-    self.delegate?.listWalletsViewController(self, run: self.viewModel.isDisplayWatchWallets ? .addWallet(type: .watch) : .addWallet(type: .onlyReal))
+    self.delegate?.listWalletsViewController(self, run: self.viewModel.isWatchWalletsTabSelecting ? .addWallet(type: .watch) : .addWallet(type: .onlyReal))
   }
 }
 
 extension KNListWalletsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    let cm = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section)
-    if cm.isMultipleWallet {
-      self.delegate?.listWalletsViewController(self, run: .copy(data: cm.wallet))
-    } else {
-      guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return }
+    if viewModel.isWatchWalletsTabSelecting {
+      let watchAddress = viewModel.watchAddresses[indexPath.row]
       var action = [UIAlertAction]()
-//      if wallet.address.lowercased() != self.viewModel.currentWalletAddress.lowercased() {
-//        action.append(UIAlertAction(title: NSLocalizedString("Switch Wallet", comment: ""), style: .default, handler: { _ in
-//          self.delegate?.listWalletsViewController(self, run: .select(wallet: wallet))
-//        }))
-//      }
-      action.append(UIAlertAction(title: NSLocalizedString("edit", value: "Edit", comment: ""), style: .default, handler: { _ in
-        self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
+      action.append(UIAlertAction(title: Strings.edit, style: .default, handler: { _ in
+        self.delegate?.listWalletsViewController(self, run: .editWatchAddress(address: watchAddress))
       }))
-      action.append(UIAlertAction(title: NSLocalizedString("delete", value: "Delete", comment: ""), style: .destructive, handler: { _ in
-        self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
+      action.append(UIAlertAction(title: Strings.delete, style: .destructive, handler: { _ in
+        self.delegate?.listWalletsViewController(self, run: .removeWatchAddress(address: watchAddress))
       }))
-      action.append(UIAlertAction(title: NSLocalizedString("cancel", value: "Cancel", comment: ""), style: .cancel, handler: nil))
-
+      action.append(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
       let alertController = KNActionSheetAlertViewController(title: "", actions: action)
       self.present(alertController, animated: true, completion: nil)
+    } else {
+      switch viewModel.walletSections[indexPath.section] {
+      case .multichainWallets:
+        let wallet = viewModel.walletsImportedFromSeed[indexPath.row]
+        delegate?.listWalletsViewController(self, run: .open(wallet: wallet))
+      case .normalWallets:
+        let wallet = viewModel.walletsImportedFromKey[indexPath.row]
+        guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+          return
+        }
+        var action = [UIAlertAction]()
+        action.append(UIAlertAction(title: Strings.edit, style: .default, handler: { _ in
+          self.delegate?.listWalletsViewController(self, run: .editWallet(wallet: wallet, addressType: address.addressType))
+        }))
+        action.append(UIAlertAction(title: Strings.delete, style: .destructive, handler: { _ in
+          self.delegate?.listWalletsViewController(self, run: .removeWallet(wallet: wallet))
+        }))
+        action.append(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
+        let alertController = KNActionSheetAlertViewController(title: "", actions: action)
+        self.present(alertController, animated: true, completion: nil)
+      }
     }
   }
   
@@ -335,7 +275,7 @@ extension KNListWalletsViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard !self.viewModel.isDisplayWatchWallets else { return 0 }
+    guard !self.viewModel.isWatchWalletsTabSelecting else { return 0 }
     return 40
   }
 }
@@ -359,17 +299,20 @@ extension KNListWalletsViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: kCellID, for: indexPath) as! KNListWalletsTableViewCell
-    let cm = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section)
-    cell.updateCell(cellModel: cm)
     cell.delegate = self
     cell.selectionStyle = .none
-//    if self.viewModel.isCurrentWallet(row: indexPath.row, section: indexPath.section) {
-//      cell.accessoryType = .checkmark
-//      cell.tintColor = UIColor.Kyber.SWGreen
-//    } else {
-//      cell.accessoryType = .none
-//    }
     cell.accessoryType = .none
+    if viewModel.isWatchWalletsTabSelecting {
+      cell.configure(watchAddressCellModel: viewModel.watchCellModels[indexPath.row])
+      return cell
+    } else {
+      switch viewModel.walletSections[indexPath.section] {
+      case .multichainWallets:
+        cell.updateCell(cellModel: viewModel.seedsCellModels[indexPath.row])
+      case .normalWallets:
+        cell.updateCell(cellModel: viewModel.nonSeedsCellModels[indexPath.row])
+      }
+    }
     return cell
   }
 }
@@ -379,17 +322,23 @@ extension KNListWalletsViewController: SwipeTableViewCellDelegate {
     guard orientation == .right else {
       return nil
     }
-    guard let wallet = self.viewModel.getWallet(at: indexPath.row, section: indexPath.section) else { return nil }
-
-    let copy = SwipeAction(style: .default, title: nil) { (_, _) in
-      let data = self.viewModel.getCellModel(at: indexPath.row, section: indexPath.section).wallet
-      if self.viewModel.isMultichainWallet(data: data) {
-        self.delegate?.listWalletsViewController(self, run: .copy(data: data))
+    let copy = SwipeAction(style: .default, title: nil) { [weak self] (_, _) in
+      guard let self = self else { return }
+      if self.viewModel.isWatchWalletsTabSelecting {
+        let address = self.viewModel.watchAddresses[indexPath.row]
+        UIPasteboard.general.string = address.addressString
+        self.showMessageWithInterval(message: Strings.addressCopied)
       } else {
-        UIPasteboard.general.string = wallet.address
-        self.showMessageWithInterval(
-          message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
-        )
+        switch self.viewModel.walletSections[indexPath.section] {
+        case .multichainWallets:
+          let wallet = self.viewModel.walletsImportedFromSeed[indexPath.row]
+          self.delegate?.listWalletsViewController(self, run: .open(wallet: wallet))
+          return
+        case .normalWallets:
+          let cellModel = self.viewModel.nonSeedsCellModels[indexPath.row]
+          UIPasteboard.general.string = cellModel.address
+          self.showMessageWithInterval(message: Strings.addressCopied)
+        }
       }
     }
     copy.hidesWhenSelected = true
@@ -400,16 +349,47 @@ extension KNListWalletsViewController: SwipeTableViewCellDelegate {
     let resized = bgImg.resizeImage(to: CGSize(width: 1000, height: 60))!
     copy.backgroundColor = UIColor(patternImage: resized)
 
-    let edit = SwipeAction(style: .default, title: nil) { _, _ in
-      self.delegate?.listWalletsViewController(self, run: .edit(wallet: wallet))
+    let edit = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+      guard let self = self else { return }
+      if self.viewModel.isWatchWalletsTabSelecting {
+        let address = self.viewModel.watchAddresses[indexPath.row]
+        self.delegate?.listWalletsViewController(self, run: .editWatchAddress(address: address))
+      } else {
+        switch self.viewModel.walletSections[indexPath.section] {
+        case .multichainWallets:
+          let wallet = self.viewModel.walletsImportedFromSeed[indexPath.row]
+          self.delegate?.listWalletsViewController(self, run: .editWallet(wallet: wallet, addressType: .evm))
+          return
+        case .normalWallets:
+          let wallet = self.viewModel.walletsImportedFromKey[indexPath.row]
+          guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+            return
+          }
+          self.delegate?.listWalletsViewController(self, run: .editWallet(wallet: wallet, addressType: address.addressType))
+        }
+      }
     }
     edit.title = "edit".toBeLocalised().uppercased()
     edit.textColor = UIColor(named: "normalTextColor")
     edit.font = UIFont.Kyber.medium(with: 12)
     edit.backgroundColor = UIColor(patternImage: resized)
 
-    let delete = SwipeAction(style: .default, title: nil) { _, _ in
-      self.delegate?.listWalletsViewController(self, run: .remove(wallet: wallet))
+    let delete = SwipeAction(style: .default, title: nil) { [weak self] _, _ in
+      guard let self = self else { return }
+      if self.viewModel.isWatchWalletsTabSelecting {
+        let address = self.viewModel.watchAddresses[indexPath.row]
+        self.delegate?.listWalletsViewController(self, run: .removeWatchAddress(address: address))
+      } else {
+        switch self.viewModel.walletSections[indexPath.section] {
+        case .multichainWallets:
+          let wallet = self.viewModel.walletsImportedFromSeed[indexPath.row]
+          self.delegate?.listWalletsViewController(self, run: .removeWallet(wallet: wallet))
+          return
+        case .normalWallets:
+          let wallet = self.viewModel.walletsImportedFromKey[indexPath.row]
+          self.delegate?.listWalletsViewController(self, run: .removeWallet(wallet: wallet))
+        }
+      }
     }
     delete.title = "delete".toBeLocalised().uppercased()
     delete.textColor = UIColor(named: "normalTextColor")

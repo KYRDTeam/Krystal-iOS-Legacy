@@ -14,6 +14,7 @@ import TrustCore
 import JSONRPCKit
 import APIKit
 import Result
+import KrystalWallets
 
 class PoolInfo: Codable {
   var anyToken: String = ""
@@ -120,14 +121,12 @@ class SourceBridgeToken: Codable {
 
 protocol BridgeCoordinatorDelegate: class {
   func didSelectAddChainWallet(chainType: ChainType)
-  func didSelectWallet(_ wallet: Wallet)
   func didSelectAddWallet()
   func didSelectManageWallet()
   func didSelectOpenHistoryList()
 }
 
 class BridgeCoordinator: NSObject, Coordinator {
-  fileprivate var session: KNSession
   weak var delegate: BridgeCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
   
@@ -139,6 +138,14 @@ class BridgeCoordinator: NSObject, Coordinator {
   var advancedMaxPriorityFee: String?
   var advancedMaxFee: String?
   var advancedNonce: String?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  var web3Service: EthereumWeb3Service {
+    return KNGeneralProvider.shared.web3Service
+  }
 
   fileprivate(set) var currentSignTransaction: SignTransaction?
   fileprivate(set) var bridgeContract: String = ""
@@ -149,7 +156,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
   lazy var rootViewController: BridgeViewController = {
-    let viewModel = BridgeViewModel(wallet: self.session.wallet)
+    let viewModel = BridgeViewModel()
     let controller = BridgeViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
@@ -158,9 +165,8 @@ class BridgeCoordinator: NSObject, Coordinator {
   var confirmVC: ConfirmBridgeViewController?
   var approveVC: ApproveTokenViewController?
   
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
     self.navigationController.setNavigationBarHidden(true, animated: false)
   }
 
@@ -192,16 +198,15 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
 
   func appCoordinatorDidUpdateChain() {
-    self.rootViewController.viewModel = BridgeViewModel(wallet: self.session.wallet)
+    self.rootViewController.viewModel = BridgeViewModel()
     self.rootViewController.coordinatorDidUpdateChain()
   }
   
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
-    self.session = session
+  func appCoordinatorSwitchAddress() {
     self.gasPrice = KNGasCoordinator.shared.standardKNGas
     self.estimateGasLimit = KNGasConfiguration.exchangeTokensGasLimitDefault
     self.selectedGasPriceType = .medium
-    self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
+    self.rootViewController.appDidSwitchAddress()
     self.fetchData()
   }
   
@@ -267,7 +272,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   
   func buildSwapChainTx(completion: @escaping ((TxObject?) -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let fromAddress = self.session.wallet.addressString
+    let fromAddress = self.currentAddress.addressString
     let toAddress = self.rootViewController.viewModel.currentSendToAddress
     let fromChainId = self.rootViewController.viewModel.currentSourceChain?.getChainId() ?? 0
     let toChainId = self.rootViewController.viewModel.currentDestChain?.getChainId() ?? 0
@@ -301,14 +306,11 @@ class BridgeCoordinator: NSObject, Coordinator {
     } else {
       return false
     }
-    return data[self.session.wallet.addressString] ?? false
+    return data[self.currentAddress.addressString] ?? false
   }
   
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
-      return
-    }
-    provider.getTransactionCount { result in
+    web3Service.getTransactionCount(for: currentAddress.addressString) { result in
       switch result {
       case .success(let res):
         completion(.success(res))
@@ -343,21 +345,16 @@ class BridgeCoordinator: NSObject, Coordinator {
       nonce = value
     }
     
-    if case let .real(account) = self.session.wallet.type {
-      return SignTransaction(
-        value: value,
-        account: account,
-        to: Address(string: object.to),
-        nonce: nonce,
-        data: Data(hex: object.data.drop0x),
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        chainID: KNGeneralProvider.shared.customRPC.chainID
-      )
-    } else {
-      //TODO: handle watch wallet type
-      return nil
-    }
+    return SignTransaction(
+      value: value,
+      address: currentAddress.addressString,
+      to: object.to,
+      nonce: nonce,
+      data: Data(hex: object.data.drop0x),
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
   }
   
   func pullToRefresh() {
@@ -425,10 +422,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .openHistory:
         self.delegate?.didSelectOpenHistoryList()
     case .openWalletsList:
-      let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.availableWalletObjects,
-        currentWallet: self.session.currentWalletObject
-      )
+      let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -477,7 +471,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.currentAddress.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc
@@ -533,53 +527,43 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
   }
   
   func estimateGasForApprove(tokenAddress: String, value: BigInt, completion: @escaping (BigInt) -> Void) {
-      guard let bridgeAddress = Address(string: self.bridgeContract) else {
-        completion(KNGasConfiguration.approveTokenGasLimitDefault)
-        return
-      }
-      guard case .real(let account) = self.session.wallet.type else {
-        completion(KNGasConfiguration.approveTokenGasLimitDefault)
-        return
-      }
-      
-      KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeAddress, value: value) { encodeResult in
-        switch encodeResult {
-        case .success(let data):
-          let setting = ConfirmAdvancedSetting(
-            gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
-            gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
-            advancedGasLimit: nil,
-            advancedPriorityFee: nil,
-            avancedMaxFee: nil,
-            advancedNonce: nil
-          )
-          let currentAddress = account.address.description
-          if KNGeneralProvider.shared.isUseEIP1559 {
-            let tx = TransactionFactory.buildEIP1559Transaction(from: currentAddress, to: tokenAddress, nonce: 1, data: data, setting: setting)
-            KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { result in
-              switch result {
-              case .success(let estGas):
-                completion(estGas)
-              case .failure(_):
-                completion(KNGasConfiguration.approveTokenGasLimitDefault)
-              }
-            }
-          } else {
-            let tx = TransactionFactory.buildLegacyTransaction(account: account, to: tokenAddress, nonce: 1, data: data, setting: setting)
-            KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
-              switch result {
-              case .success(let estGas):
-                completion(estGas)
-              case .failure(_):
-                completion(KNGasConfiguration.approveTokenGasLimitDefault)
-              }
+    KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: bridgeContract, value: value) { encodeResult in
+      switch encodeResult {
+      case .success(let data):
+        let setting = ConfirmAdvancedSetting(
+          gasPrice: KNGasCoordinator.shared.defaultKNGas.description,
+          gasLimit: KNGasConfiguration.approveTokenGasLimitDefault.description,
+          advancedGasLimit: nil,
+          advancedPriorityFee: nil,
+          avancedMaxFee: nil,
+          advancedNonce: nil
+        )
+        if KNGeneralProvider.shared.isUseEIP1559 {
+          let tx = TransactionFactory.buildEIP1559Transaction(from: self.currentAddress.addressString, to: tokenAddress, nonce: 1, data: data, setting: setting)
+          KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: tx) { result in
+            switch result {
+            case .success(let estGas):
+              completion(estGas)
+            case .failure(_):
+              completion(KNGasConfiguration.approveTokenGasLimitDefault)
             }
           }
-        case .failure( _):
-          completion(KNGasConfiguration.approveTokenGasLimitDefault)
+        } else {
+          let tx = TransactionFactory.buildLegacyTransaction(address: self.currentAddress.addressString, to: tokenAddress, nonce: 1, data: data, setting: setting)
+          KNGeneralProvider.shared.getEstimateGasLimit(transaction: tx) { result in
+            switch result {
+            case .success(let estGas):
+              completion(estGas)
+            case .failure(_):
+              completion(KNGasConfiguration.approveTokenGasLimitDefault)
+            }
+          }
         }
+      case .failure( _):
+        completion(KNGasConfiguration.approveTokenGasLimitDefault)
       }
     }
+  }
   
   func getBuildTx(_ completion: (() -> Void)? = nil) {
     self.getLatestNonce { result in
@@ -611,17 +595,15 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
   }
   
   func getAllowance(token: TokenObject?) {
-    guard let provider = self.session.externalProvider, let token = token else {
+    guard let token = token else {
       return
     }
     guard !self.bridgeContract.isEmpty else {
       return
     }
-    let networkAddress: Address = Address(string: self.bridgeContract)!
-    let sourceTokenAddress: Address = Address(string: token.address ?? "")!
-    provider.getAllowance(tokenAddress: sourceTokenAddress, toAddress: networkAddress) { [weak self] getAllowanceResult in
+    web3Service.getAllowance(for: currentAddress.addressString, networkAddress: bridgeContract, tokenAddress: token.address) { [weak self] result in
       guard let `self` = self else { return }
-      switch getAllowanceResult {
+      switch result {
       case .success(let res):
         self.rootViewController.coordinatorDidUpdateAllowance(token: token, allowance: res)
       case .failure:
@@ -635,26 +617,18 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.addressString] = state
+    data[self.currentAddress.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
   
   fileprivate func resetAllowanceForTokenIfNeeded(_ token: TokenObject, remain: BigInt, gasLimit: BigInt, completion: @escaping (Result<Bool, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider, let address = Address(string: self.bridgeContract) else {
-      return
-    }
     if remain.isZero {
       completion(.success(true))
       return
     }
     let gasPrice = KNGasCoordinator.shared.defaultKNGas
-    provider.sendApproveERCToken(
-      for: token,
-      value: BigInt(0),
-      gasPrice: gasPrice,
-      gasLimit: gasLimit,
-      address: address
-    ) { result in
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: token.contract, value: BigInt(0), gasPrice: gasPrice, gasLimit: gasLimit, toAddress: bridgeContract) { result in
       switch result {
       case .success:
         completion(.success(true))
@@ -675,73 +649,71 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
   func didConfirm(_ controller: ConfirmBridgeViewController, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction) {
     self.navigationController.displayLoading()
     self.getBuildTx {
-      guard let provider = self.session.externalProvider else { return }
       let viewModel = self.rootViewController.viewModel
       guard let sourceToken = viewModel.currentSourceToken, let sourceChain = viewModel.currentSourceChain,
             let destToken = viewModel.currentDestToken, let destChain = viewModel.currentDestChain else {
         return
       }
-      provider.signTransactionData(from: self.currentSignTransaction ?? signTransaction) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let signedData):
-          KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-            self.navigationController.hideLoading()
-            switch sendResult {
-            case .success(let hash):
-              provider.minTxCount += 1
-              internalHistoryTransaction.hash = hash
-              internalHistoryTransaction.nonce = signTransaction.nonce
-              internalHistoryTransaction.time = Date()
-              
-              let extraData = InternalHistoryExtraData(
-                from: ExtraBridgeTransaction(
-                  address: signTransaction.account.address.description,
-                  token: sourceToken.symbol,
-                  amount: viewModel.sourceAmount.amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
-                  chainId: sourceChain.getChainId().toString(),
-                  chainName: sourceChain.chainName(),
-                  tx: hash,
-                  txStatus: "PENDING",
-                  decimals: sourceToken.decimals
-                ),
-                to: ExtraBridgeTransaction(
-                  address: viewModel.currentSendToAddress,
-                  token: destToken.symbol,
-                  amount: viewModel.estimatedDestAmount,
-                  chainId: destChain.getChainId().toString(),
-                  chainName: destChain.chainName(),
-                  tx: "",
-                  txStatus: "PENDING",
-                  decimals: sourceToken.decimals
-                ),
-                type: "crosschain",
-                crosschainStatus: "PENDING"
-              )
-              
-              internalHistoryTransaction.extraData = extraData
-              self.session.crosschainTxService.addPendingTxHash(txHash: hash)
-              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
-              controller.dismiss(animated: true) {
-                self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
-              }
-              self.rootViewController.coordinatorSuccessSendTransaction()
-            case .failure(let error):
-              var errorMessage = error.description
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showErrorTopBannerMessage(
-                with: "Error",
-                message: errorMessage
-              )
+      let ethTxSigner = EthereumTransactionSigner()
+      let signResult = ethTxSigner.signTransaction(address: self.currentAddress, transaction: self.currentSignTransaction ?? signTransaction)
+      switch signResult {
+      case .success(let signedData):
+        KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
+          self.navigationController.hideLoading()
+          switch sendResult {
+          case .success(let hash):
+            NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: KNGeneralProvider.shared.currentChain)
+            internalHistoryTransaction.hash = hash
+            internalHistoryTransaction.nonce = signTransaction.nonce
+            internalHistoryTransaction.time = Date()
+            
+            let extraData = InternalHistoryExtraData(
+              from: ExtraBridgeTransaction(
+                address: signTransaction.address,
+                token: sourceToken.symbol,
+                amount: viewModel.sourceAmount.amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
+                chainId: sourceChain.getChainId().toString(),
+                chainName: sourceChain.chainName(),
+                tx: hash,
+                txStatus: "PENDING",
+                decimals: sourceToken.decimals
+              ),
+              to: ExtraBridgeTransaction(
+                address: viewModel.currentSendToAddress,
+                token: destToken.symbol,
+                amount: viewModel.estimatedDestAmount,
+                chainId: destChain.getChainId().toString(),
+                chainName: destChain.chainName(),
+                tx: "",
+                txStatus: "PENDING",
+                decimals: destToken.decimals
+              ),
+              type: "crosschain",
+              crosschainStatus: "PENDING"
+            )
+            
+            internalHistoryTransaction.extraData = extraData
+            AppDelegate.session.crosschainTxService.addPendingTxHash(txHash: hash)
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
+            controller.dismiss(animated: true) {
+              self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
             }
-          })
-        case .failure:
-          self.rootViewController.coordinatorFailSendTransaction()
-        }
+            self.rootViewController.coordinatorSuccessSendTransaction()
+          case .failure(let error):
+            var errorMessage = error.description
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(
+              with: "Error",
+              message: errorMessage
+            )
+          }
+        })
+      case .failure:
+        self.rootViewController.coordinatorFailSendTransaction()
       }
     }
   }
@@ -843,18 +815,15 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
     self.navigationController.displayLoading()
-    guard let provider = self.session.externalProvider else {
-      return
-    }
     self.resetAllowanceForTokenIfNeeded(token, remain: remain, gasLimit: gasLimit) { [weak self] resetResult in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        let sourceTokenAddress: Address = Address(string: self.rootViewController.viewModel.currentSourceToken?.address ?? "")!
-        
-        provider.sendApproveERCTokenAddress(
-          for: sourceTokenAddress,
+        let sourceTokenAddress = self.rootViewController.viewModel.currentSourceToken?.address ?? ""
+        EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain).sendApproveERCTokenAddress(
+          owner: self.currentAddress,
+          tokenAddress: sourceTokenAddress,
           value: controller.approveValue,
           gasPrice: controller.selectedGasPrice,
           gasLimit: gasLimit,
@@ -886,11 +855,9 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
     self.navigationController.displayLoading()
-    guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
-      return
-    }
-    provider.sendApproveERCTokenAddress(
-      for: gasTokenAddress,
+    EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain).sendApproveERCTokenAddress(
+      owner: self.currentAddress,
+      tokenAddress: address,
       value: controller.approveValue,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
       gasLimit: gasLimit
@@ -915,8 +882,8 @@ extension BridgeCoordinator: ApproveTokenViewControllerDelegate {
     }
   }
   
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
-    self.estimateGasForApprove(tokenAddress: tokenAddress.description, value: value) { estGas in
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
+    self.estimateGasForApprove(tokenAddress: tokenAddress, value: value) { estGas in
       controller.coordinatorDidUpdateGasLimit(estGas)
     }
   }
@@ -999,17 +966,8 @@ extension BridgeCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.didSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.delegate?.didSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.delegate?.didSelectAddWallet()
     }

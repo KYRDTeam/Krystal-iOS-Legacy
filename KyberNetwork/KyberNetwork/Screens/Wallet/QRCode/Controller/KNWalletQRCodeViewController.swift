@@ -43,12 +43,12 @@ class KNWalletQRCodeViewController: KNBaseViewController {
 
   fileprivate func setupWalletData() {
     self.titleLabel.text = Strings.receive
-    self.addressLabel.text = self.viewModel.displayedAddress
+    self.addressLabel.text = viewModel.addressString
     self.qrcodeImageContainer.rounded(radius: 16)
-    let text = self.viewModel.address
     self.loadingIndicator.startAnimating()
+    let addressString = self.viewModel.addressString
     DispatchQueue.global(qos: .background).async {
-      let image = UIImage.generateQRCode(from: text)
+      let image = UIImage.generateQRCode(from: addressString)
       DispatchQueue.main.async {
         self.qrcodeImageView.image = image
         self.loadingIndicator.stopAnimating()
@@ -80,13 +80,13 @@ class KNWalletQRCodeViewController: KNBaseViewController {
   }
 
   @IBAction func copyWalletButtonPressed(_ sender: Any) {
-    UIPasteboard.general.string = self.viewModel.address
+    UIPasteboard.general.string = self.viewModel.addressString
 
     self.showMessageWithInterval(message: Strings.addressCopied)
   }
 
   @IBAction func scanButtonTapped(_ sender: Any) {
-    let urlString = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.viewModel.displayedAddress)"
+    let urlString = "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.viewModel.addressString)"
     self.openSafari(with: urlString)
   }
   @IBAction func shareButtonPressed(_ sender: UIButton) {

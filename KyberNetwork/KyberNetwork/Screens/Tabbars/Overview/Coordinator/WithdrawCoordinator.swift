@@ -12,10 +12,10 @@ import TrustCore
 import Result
 import APIKit
 import JSONRPCKit
+import KrystalWallets
 
 protocol WithdrawCoordinatorDelegate: class {
   func withdrawCoordinatorDidSelectAddWallet()
-  func withdrawCoordinatorDidSelectWallet(_ wallet: Wallet)
   func withdrawCoordinatorDidSelectManageWallet()
   func withdrawCoordinatorDidSelectHistory()
   func withdrawCoordinatorDidSelectEarnMore(balance: LendingBalance)
@@ -26,7 +26,6 @@ protocol WithdrawCoordinatorDelegate: class {
 class WithdrawCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  private(set) var session: KNSession
   var platform: String?
   var balance: LendingBalance?
   var claimBalance: LendingDistributionBalance?
@@ -34,6 +33,20 @@ class WithdrawCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate weak var gasPriceSelectVC: GasFeeSelectorPopupViewController?
   weak var delegate: WithdrawCoordinatorDelegate?
+  
+  var currentChain: ChainType {
+    return KNGeneralProvider.shared.currentChain
+  }
+  
+  let etherWeb3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  var isUsingWatchAddress: Bool {
+    return currentAddress.isWatchWallet
+  }
 
   lazy var rootViewController: WithdrawConfirmPopupViewController? = {
     guard let balance = self.balance else { return nil }
@@ -45,7 +58,7 @@ class WithdrawCoordinator: NSObject, Coordinator {
 
   lazy var withdrawViewController: WithdrawViewController? = {
     guard let balance = self.balance, let platform = self.platform else { return nil }
-    let viewModel = WithdrawViewModel(platform: platform, session: self.session, balance: balance)
+    let viewModel = WithdrawViewModel(platform: platform, balance: balance)
     let controller = WithdrawViewController(viewModel: viewModel)
     controller.delegate = self
     return controller
@@ -59,9 +72,8 @@ class WithdrawCoordinator: NSObject, Coordinator {
     return controller
   }()
 
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
     self.navigationController.setNavigationBarHidden(true, animated: false)
   }
 
@@ -97,15 +109,15 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         }
       }
     case .buildWithdrawTx(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxGas: let advancedMaxGas, advancedNonce: let advancedNonce, historyTransaction: let historyTransaction):
-      guard let blockchainProvider = self.session.externalProvider else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+      if isUsingWatchAddress {
+        self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
       controller.displayLoading()
       self.getLatestNonce { [weak self] (nonce) in
         guard let `self` = self else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
+        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.currentAddress.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
           if case .success(let resp) = result {
             let decoder = JSONDecoder()
             do {
@@ -115,13 +127,13 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                   KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: transaction) { result in
                     switch result {
                     case .success:
-                      if let data = blockchainProvider.signContractGenericEIP1559Transaction(transaction) {
+                      if let data = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: transaction) {
                         KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
                           controller.hideLoading()
                           switch sendResult {
                           case .success(let hash):
                             print(hash)
-                            blockchainProvider.minTxCount += 1
+                            NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: KNGeneralProvider.shared.currentChain)
                             
                             historyTransaction.hash = hash
                             historyTransaction.time = Date()
@@ -150,43 +162,38 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
                   }
                 }
               } else {
-                if let transaction = data.txObject.convertToSignTransaction(wallet: self.session.wallet, advancedGasPrice: advancedMaxGas, advancedGasLimit: advancedGasLimit, advancedNonce: advancedNonce) {
+                if let transaction = data.txObject.convertToSignTransaction(address: self.currentAddress.addressString, advancedGasPrice: advancedMaxGas, advancedGasLimit: advancedGasLimit, advancedNonce: advancedNonce) {
                   KNGeneralProvider.shared.getEstimateGasLimit(transaction: transaction) { (result) in
                     switch result {
                     case .success:
-                      blockchainProvider.signTransactionData(from: transaction) { [weak self] result in
-                        guard let `self` = self else { return }
-                        switch result {
-                        case .success(let signedData):
-                          KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-                            controller.hideLoading()
-                            switch sendResult {
-                            case .success(let hash):
-                              print(hash)
-                              blockchainProvider.minTxCount += 1
-                              
-                              historyTransaction.hash = hash
-                              historyTransaction.time = Date()
-                              historyTransaction.nonce = transaction.nonce
-                              historyTransaction.transactionObject = transaction.toSignTransactionObject()
-                              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-
-                              controller.dismiss(animated: true) {
-                                self.openTransactionStatusPopUp(transaction: historyTransaction)
-                              }
-                            case .failure(let error):
-                              var errorMessage = error.description
-                              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                                  errorMessage = message
-                                }
-                              }
-                              self.navigationController.showTopBannerView(message: errorMessage)
-                            }
-                          })
-                        case .failure:
+                      let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: transaction)
+                      switch signResult {
+                      case .success(let signedData):
+                        KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
                           controller.hideLoading()
-                        }
+                          switch sendResult {
+                          case .success(let hash):
+                            historyTransaction.hash = hash
+                            historyTransaction.time = Date()
+                            historyTransaction.nonce = transaction.nonce
+                            historyTransaction.transactionObject = transaction.toSignTransactionObject()
+                            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+
+                            controller.dismiss(animated: true) {
+                              self.openTransactionStatusPopUp(transaction: historyTransaction)
+                            }
+                          case .failure(let error):
+                            var errorMessage = error.description
+                            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                                errorMessage = message
+                              }
+                            }
+                            self.navigationController.showTopBannerView(message: errorMessage)
+                          }
+                        })
+                      case .failure:
+                        controller.hideLoading()
                       }
                     case .failure(let error):
                       self.navigationController.hideLoading()
@@ -214,7 +221,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
+      provider.request(.buildWithdrawTx(platform: platform, userAddress: currentAddress.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
@@ -228,18 +235,18 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
         }
       }
     case .checkAllowance(tokenAddress: let tokenAddress, toAddress: let to):
-      guard let provider = self.session.externalProvider, let address = Address(string: tokenAddress) else {
+      if currentAddress.isWatchWallet {
         return
       }
-      provider.getAllowance(tokenAddress: address, toAddress: Address(string: to)) { [weak self] getAllowanceResult in
+      etherWeb3Service.getAllowance(for: currentAddress.addressString, networkAddress: to, tokenAddress: tokenAddress, completion: { [weak self] result in
         guard let `self` = self else { return }
-        switch getAllowanceResult {
+        switch result {
         case .success(let res):
           self.withdrawViewController?.coordinatorDidUpdateAllowance(token: tokenAddress, allowance: res)
         case .failure:
           self.withdrawViewController?.coordinatorDidFailUpdateAllowance(token: tokenAddress)
         }
-      }
+      })
     case .sendApprove(tokenAddress: let tokenAddress, remain: let remain, symbol: let symbol, toAddress: let toAddress):
       let vm = ApproveTokenViewModelForTokenAddress(address: tokenAddress, remain: remain, state: false, symbol: symbol)
       vm.toAddress = toAddress
@@ -271,10 +278,10 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
   }
 
   func getLatestNonce(completion: @escaping (Int) -> Void) {
-    guard let provider = self.session.externalProvider else {
+    if currentAddress.isWatchWallet {
       return
     }
-    provider.getTransactionCount { [weak self] result in
+    etherWeb3Service.getTransactionCount(for: currentAddress.addressString) { [weak self] result in
       guard let `self` = self else { return }
       switch result {
       case .success(let res):
@@ -336,39 +343,6 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.gasPriceSelectVC = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isSpeedupMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.gasPriceSelectVC = vc
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
-      let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      navigationController.present(controller, animated: true)
-    }
-    */
   }
 
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
@@ -433,7 +407,6 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
-      session: self.session,
       balances: self.balances,
       from: from
     )
@@ -450,157 +423,18 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
   }
 }
 
-extension WithdrawCoordinator: SpeedUpCustomGasSelectDelegate {
-  func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
-    switch event {
-    case .done(let transaction, let newValue):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-        savedTx?.state = .speedup
-        if KNGeneralProvider.shared.isUseEIP1559 {
-          if let speedupTx = transaction.eip1559Transaction?.toSpeedupTransaction(gasPrice: newValue), let data = provider.signContractGenericEIP1559Transaction(speedupTx) {
-            KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-              switch sendResult {
-              case .success(let hash):
-                savedTx?.hash = hash
-                if let unwrapped = savedTx {
-                  self.openTransactionStatusPopUp(transaction: unwrapped)
-                  KNNotificationUtil.postNotification(
-                    for: kTransactionDidUpdateNotificationKey,
-                    object: unwrapped,
-                    userInfo: nil
-                  )
-                }
-              case .failure(let error):
-                var errorMessage = "Speedup failed"
-                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                    errorMessage = message
-                  }
-                }
-                self.navigationController.showTopBannerView(message: errorMessage)
-              }
-            })
-          }
-        } else {
-          if let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) {
-            speedupTx.send(provider: provider) { (result) in
-              switch result {
-              case .success(let hash):
-                savedTx?.hash = hash
-                if let unwrapped = savedTx {
-                  self.openTransactionStatusPopUp(transaction: unwrapped)
-                  KNNotificationUtil.postNotification(
-                    for: kTransactionDidUpdateNotificationKey,
-                    object: unwrapped,
-                    userInfo: nil
-                  )
-                }
-              case .failure(let error):
-                var errorMessage = "Speedup failed"
-                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                    errorMessage = message
-                  }
-                }
-                self.navigationController.showTopBannerView(message: errorMessage)
-              }
-            }
-          }
-        }
-      } else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
-      }
-    case .invaild:
-      self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "your.gas.must.be.10.percent.higher".toBeLocalised(),
-        time: 1.5
-      )
-    }
-  }
-}
-
-extension WithdrawCoordinator: KNConfirmCancelTransactionPopUpDelegate {
-  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
-    if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-      
-      if KNGeneralProvider.shared.isUseEIP1559 {
-        if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
-          saved?.state = .cancel
-          saved?.type = .transferETH
-          saved?.transactionSuccessDescription = "-0 ETH"
-          print(data.hexString)
-          KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-            switch sendResult {
-            case .success(let hash):
-              saved?.hash = hash
-              if let unwrapped = saved {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Cancel failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          })
-        }
-      } else {
-        if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
-          saved?.state = .cancel
-          saved?.type = .transferETH
-          saved?.transactionSuccessDescription = "-0 ETH"
-          cancelTx.send(provider: provider) { (result) in
-            switch result {
-            case .success(let hash):
-              saved?.hash = hash
-              if let unwrapped = saved {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Cancel failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          }
-        }
-      }
-    } else {
-      self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
-    }
-  }
-}
-
 extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
   func approveTokenViewControllerDidSelectGasSetting(_ controller: ApproveTokenViewController, gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?) {
     
   }
   
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
     
   }
 
-  fileprivate func sendApprove(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
-    provider.sendApproveERCTokenAddress(for: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+  fileprivate func sendApprove(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
         if address.lowercased() == Constants.gasTokenAddress.lowercased() {
@@ -621,24 +455,25 @@ extension WithdrawCoordinator: ApproveTokenViewControllerDelegate {
   }
   
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
-    guard let provider = self.session.externalProvider, let tokenAddress = Address(string: address) else {
+    if currentAddress.isWatchWallet {
       return
     }
     guard remain.isZero else {
-      self.resetAllowanceBeforeSend(provider, tokenAddress, toAddress, address, gasLimit)
+      self.resetAllowanceBeforeSend(address, toAddress, address, gasLimit)
       return
     }
-    self.sendApprove(provider, tokenAddress, toAddress, address, gasLimit)
+    self.sendApprove(address, toAddress, address, gasLimit)
   }
 
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, token: TokenObject, remain: BigInt, gasLimit: BigInt) {
   }
 
-  fileprivate func resetAllowanceBeforeSend(_ provider: KNExternalProvider, _ tokenAddress: Address, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
-    provider.sendApproveERCTokenAddress(for: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
+  fileprivate func resetAllowanceBeforeSend(_ tokenAddress: String, _ toAddress: String?, _ address: String, _ gasLimit: BigInt) {
+    let processor = EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+    processor.sendApproveERCTokenAddress(owner: self.currentAddress, tokenAddress: tokenAddress, value: BigInt(0), gasPrice: KNGasCoordinator.shared.defaultKNGas, toAddress: toAddress) { approveResult in
       switch approveResult {
       case .success:
-        self.sendApprove(provider, tokenAddress, toAddress, address, gasLimit)
+        self.sendApprove(tokenAddress, toAddress, address, gasLimit)
       case .failure(let error):
         self.navigationController.showErrorTopBannerMessage(
           with: NSLocalizedString("error", value: "Error", comment: ""),
@@ -673,15 +508,12 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         time: 10
       )
     case .useChiStatusChanged(let status):
-      guard let provider = self.session.externalProvider else {
+      if currentAddress.isWatchWallet {
         return
       }
-
       if status {
-        guard let tokenAddress = Address(string: Constants.gasTokenAddress) else {
-          return
-        }
-        provider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
+        let networkAddress = KNGeneralProvider.shared.networkAddress
+        etherWeb3Service.getAllowance(for: currentAddress.addressString, networkAddress: networkAddress, tokenAddress: Constants.gasTokenAddress) { [weak self] result in
           guard let `self` = self else { return }
           switch result {
           case .success(let res):
@@ -711,98 +543,14 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
       self.withdrawViewController?.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.withdrawViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
-    case .speedupTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
-          }
-        })
-      }
-    case .cancelTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .cancel
-            savedTx?.type = .transferETH
-            savedTx?.transactionSuccessDescription = "-0 ETH"
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
-          }
-        })
-      }
-    case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        let speedupTx = transaction.toSignTransaction(account: account)
-        speedupTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            print("GasSelector][Legacy][Speedup][Sent] \(hash)")
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
-          }
-        }
-      }
-    case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        let cancelTx = transaction.toSignTransaction(account: account)
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.state = .cancel
-            saved?.type = .transferETH
-            saved?.transactionSuccessDescription = "-0 ETH"
-            saved?.hash = hash
-            print("GasSelector][Legacy][Cancel][Sent] \(hash)")
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            self.navigationController.showTopBannerView(message: error.description)
-          }
-        }
-      }
+    case .speedupTransactionSuccessfully(let speedupTransaction):
+      self.openTransactionStatusPopUp(transaction: speedupTransaction)
+    case .cancelTransactionSuccessfully(let cancelTransaction):
+      self.openTransactionStatusPopUp(transaction: cancelTransaction)
+    case .speedupTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
+    case .cancelTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
     default:
       break
     }
@@ -815,7 +563,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.addressString)
+    return data.keys.contains(currentAddress.addressString)
   }
   
   fileprivate func saveUseGasTokenState(_ state: Bool) {
@@ -823,7 +571,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.addressString] = state
+    data[currentAddress.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
   
@@ -834,7 +582,7 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
     } else {
       return false
     }
-    return data[self.session.wallet.addressString] ?? false
+    return data[currentAddress.addressString] ?? false
   }
 }
 
@@ -851,15 +599,15 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
 
   func withdrawConfirmPopupViewControllerDidSelectSecondButton(_ controller: WithdrawConfirmPopupViewController, balance: LendingBalance?) {
     if controller == self.claimViewController {
-      guard let blockchainProvider = self.session.externalProvider else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+      if currentAddress.isWatchWallet {
+        self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
       controller.dismiss(animated: true) {
         self.navigationController.displayLoading()
         if self.claimViewController != nil {
           self.getLatestNonce { (nonce) in
-            self.buildClaimTx(address: self.session.wallet.addressString, nonce: nonce) { (result) in
+            self.buildClaimTx(address: self.currentAddress.addressString, nonce: nonce) { (result) in
               self.navigationController.hideLoading()
               switch result {
               case .success(let txObj):
@@ -868,13 +616,13 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                     KNGeneralProvider.shared.getEstimateGasLimit(eip1559Tx: transaction) { result in
                       switch result {
                       case .success:
-                        if let data = blockchainProvider.signContractGenericEIP1559Transaction(transaction) {
+                        if let data = EIP1559TransactionSigner().signTransaction(address: self.currentAddress, eip1559Tx: transaction) {
                           KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
                             controller.hideLoading()
                             switch sendResult {
                             case .success(let hash):
                               print(hash)
-                              blockchainProvider.minTxCount += 1
+                              NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: self.currentChain)
                               let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: nil, eip1559Tx: transaction)
                               historyTransaction.hash = hash
                               historyTransaction.time = Date()
@@ -911,43 +659,40 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
                     self.navigationController.showErrorTopBannerMessage(message: "Watched wallet is not supported")
                   }
                 } else {
-                  if let transaction = txObj.convertToSignTransaction(wallet: self.session.wallet) {
+                  if let transaction = txObj.convertToSignTransaction(address: self.currentAddress.addressString) {
                     KNGeneralProvider.shared.getEstimateGasLimit(transaction: transaction) { (result) in
                       switch result {
                       case .success:
-                        blockchainProvider.signTransactionData(from: transaction) { [weak self] result in
-                          guard let `self` = self else { return }
-                          switch result {
-                          case .success(let signedData):
-                            KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-                              controller.hideLoading()
-                              switch sendResult {
-                              case .success(let hash):
-                                print(hash)
-                                blockchainProvider.minTxCount += 1
-
-                                let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
-                                historyTransaction.hash = hash
-                                historyTransaction.time = Date()
-                                historyTransaction.nonce = transaction.nonce
-                                EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-                                controller.dismiss(animated: true) {
-                                  self.openTransactionStatusPopUp(transaction: historyTransaction)
-                                }
-                              case .failure(let error):
-                                controller.hideLoading()
-                                var errorMessage = "Can not estimate Gas limit"
-                                if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                                  if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                                    errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
-                                  }
-                                }
-                                self.navigationController.showTopBannerView(message: errorMessage)
-                              }
-                            })
-                          case .failure:
+                        let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: transaction)
+                        
+                        switch signResult {
+                        case .success(let signedData):
+                          KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
                             controller.hideLoading()
-                          }
+                            switch sendResult {
+                            case .success(let hash):
+                              NonceCache.shared.increaseNonce(address: self.currentAddress.addressString, chain: self.currentChain)
+                              let historyTransaction = InternalHistoryTransaction(type: .contractInteraction, state: .pending, fromSymbol: "", toSymbol: "", transactionDescription: "Claim", transactionDetailDescription: "", transactionObj: transaction.toSignTransactionObject(), eip1559Tx: nil)
+                              historyTransaction.hash = hash
+                              historyTransaction.time = Date()
+                              historyTransaction.nonce = transaction.nonce
+                              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+                              controller.dismiss(animated: true) {
+                                self.openTransactionStatusPopUp(transaction: historyTransaction)
+                              }
+                            case .failure(let error):
+                              controller.hideLoading()
+                              var errorMessage = "Can not estimate Gas limit"
+                              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+                                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                                  errorMessage = "Cannot estimate gas, please try again later. Error: \(message)"
+                                }
+                              }
+                              self.navigationController.showTopBannerView(message: errorMessage)
+                            }
+                          })
+                        case .failure:
+                          controller.hideLoading()
                         }
                       case .failure(let error):
                         var errorMessage = "Can not estimate Gas Limit"
@@ -1012,10 +757,6 @@ extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
     self.delegate?.withdrawCoordinatorDidSelectAddToken(token)
   }
   
-  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.withdrawCoordinatorDidSelectWallet(wallet)
-  }
-  
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
     self.delegate?.withdrawCoordinatorDidSelectHistory()
   }
@@ -1027,6 +768,5 @@ extension WithdrawCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddWallet() {
     self.delegate?.withdrawCoordinatorDidSelectAddWallet()
   }
-  
   
 }

@@ -54,7 +54,30 @@ class TransactionFactory {
     return SignTransaction(
       value: value,
       account: account,
-      to: Address(string: to),
+      to: to,
+      nonce: nonce,
+      data: data,
+      gasPrice: maxGasBigInt ?? BigInt.zero,
+      gasLimit: gasLimitBigInt ?? BigInt.zero,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
+  }
+  
+  static func buildLegacyTransaction(address: String, to: String, nonce: Int, data: Data, value: BigInt = BigInt.zero, setting: ConfirmAdvancedSetting) -> SignTransaction {
+    var gasLimitBigInt = BigInt(setting.gasLimit)
+    if let unwrap = setting.advancedGasLimit {
+      gasLimitBigInt = BigInt(unwrap)
+    }
+
+    var maxGasBigInt = BigInt(setting.gasPrice)
+    if let unwrap = setting.avancedMaxFee {
+      maxGasBigInt = unwrap.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+    }
+
+    return SignTransaction(
+      value: value,
+      address: address,
+      to: to,
       nonce: nonce,
       data: data,
       gasPrice: maxGasBigInt ?? BigInt.zero,
@@ -83,7 +106,36 @@ class TransactionFactory {
     return SignTransaction(
       value: value ?? BigInt.zero,
       account: account,
-      to: Address(string: txObject.to),
+      to: txObject.to,
+      nonce: nonce ?? 0,
+      data: Data(hex: txObject.data.drop0x),
+      gasPrice: gasPrice ?? BigInt.zero,
+      gasLimit: gasLimit ?? BigInt.zero,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
+  }
+  
+  static func buildLegacyTransaction(txObject: TxObject, address: String, setting: ConfirmAdvancedSetting) -> SignTransaction {
+    var gasPrice = BigInt(txObject.gasPrice.drop0x, radix: 16)
+    var gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16)
+    var nonce = Int(txObject.nonce.drop0x, radix: 16)
+    let value = BigInt(txObject.value.drop0x, radix: 16)
+    if let value = BigInt(setting.gasPrice) {
+      gasPrice = value
+    }
+    
+    if let unwrap = setting.advancedGasLimit, let value = BigInt(unwrap) {
+      gasLimit = value
+    }
+    
+    if let value = setting.advancedNonce {
+      nonce = value
+    }
+
+    return SignTransaction(
+      value: value ?? BigInt.zero,
+      address: address,
+      to: txObject.to,
       nonce: nonce ?? 0,
       data: Data(hex: txObject.data.drop0x),
       gasPrice: gasPrice ?? BigInt.zero,

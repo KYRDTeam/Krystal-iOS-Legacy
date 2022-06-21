@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KrystalWallets
 
 protocol EarnMenuViewControllerDelegate: class {
   func earnMenuViewControllerDidSelectToken(controller: EarnMenuViewController, token: TokenData)
@@ -14,7 +15,10 @@ protocol EarnMenuViewControllerDelegate: class {
 
 class EarnMenuViewModel {
   var dataSource: [EarnMenuTableViewCellViewModel] = []
-  var wallet: Wallet?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 }
 
 class EarnMenuViewController: KNBaseViewController {
@@ -50,9 +54,7 @@ class EarnMenuViewController: KNBaseViewController {
       forCellReuseIdentifier: EarnMenuTableViewCell.kCellID
     )
     self.menuTableView.rowHeight = EarnMenuTableViewCell.kCellHeight
-    if let notNil = self.viewModel.wallet {
-      self.updateUIWalletSelectButton(notNil)
-    }
+    self.updateUIWalletSelectButton()
     self.menuTableView.tableFooterView = self.warningContainerView
     let attributedString = NSMutableAttributedString(string: "Select the token you wish to supply to earn interest. Interest rate may change as per market dynamics.\n", attributes: [
       .font: UIFont(name: "Karla-Regular", size: 16.0)!,
@@ -87,8 +89,8 @@ class EarnMenuViewController: KNBaseViewController {
     self.currentChainIcon.image = icon
   }
   
-  fileprivate func updateUIWalletSelectButton(_ wallet: Wallet) {
-    self.walletsSelectButton.setTitle(wallet.getWalletObject()?.name ?? "---", for: .normal)
+  fileprivate func updateUIWalletSelectButton() {
+    self.walletsSelectButton.setTitle(viewModel.currentAddress.name, for: .normal)
   }
 
   @IBAction func historyButtonTapped(_ sender: UIButton) {
@@ -155,11 +157,10 @@ class EarnMenuViewController: KNBaseViewController {
       
     }
   }
-
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  
+  func coordinatorAppSwitchAddress() {
     if self.isViewSetup {
-      self.updateUIWalletSelectButton(wallet)
+      self.updateUIWalletSelectButton()
       self.updateUIPendingTxIndicatorView()
     }
   }

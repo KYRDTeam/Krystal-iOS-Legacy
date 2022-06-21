@@ -7,8 +7,14 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 class RewardsViewControllerViewModel {
+  
+  var address: KAddress {
+    return AppDelegate.session.address
+  }
+  
   var rewardDataSource: [KNRewardModel] = []
   var rewardDetailDataSource: [KNRewardModel] = []
   var rewardDetailDisplayDataSource: [KNRewardModel] = []
@@ -69,7 +75,6 @@ class RewardsViewController: KNBaseViewController {
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var emptyLabel: UILabel!
 
-  var session: KNSession?
   weak var delegate: RewardsViewControllerDelegate?
   let viewModel: RewardsViewControllerViewModel = RewardsViewControllerViewModel()
 
@@ -79,14 +84,13 @@ class RewardsViewController: KNBaseViewController {
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    guard case .real(let account) = self.session?.wallet.type else {
-      // current wallet is watch wallet
+    
+    if viewModel.address.isWatchWallet {
       emptyView.isHidden = false
       emptyLabel.text = "You are using watch wallet".toBeLocalised()
       emptyButton.isHidden = true
       return
     }
-    
     emptyButton.isHidden = false
     emptyLabel.text = "You don't have any reward".toBeLocalised()
   }
@@ -138,9 +142,9 @@ class RewardsViewController: KNBaseViewController {
     if !self.viewModel.supportedChains.contains(KNGeneralProvider.shared.customRPC.chainID) {
       let alertController = KNPrettyAlertController(
         title: "",
-        message: "Please switch to BSC to claim rewards".toBeLocalised(),
-        secondButtonTitle: "OK".toBeLocalised(),
-        firstButtonTitle: "Cancel".toBeLocalised(),
+        message: Strings.switchToBSCToClaimRewards,
+        secondButtonTitle: Strings.ok,
+        firstButtonTitle: Strings.cancel,
         secondButtonAction: {
           self.showPopupSwitchChain()
         },
@@ -156,14 +160,10 @@ class RewardsViewController: KNBaseViewController {
   func showPopupSwitchChain() {
     let popup = SwitchChainViewController()
     popup.selectedChain = .bsc
-    popup.nextButtonTitle = "Confirm"
+    popup.nextButtonTitle = Strings.confirm
     popup.completionHandler = { selected in
       KNGeneralProvider.shared.currentChain = selected
-      var selectedAddress = ""
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.addressString
-      }
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
       if selected == .bsc {
         self.claimRewards()
       }

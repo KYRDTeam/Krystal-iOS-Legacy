@@ -9,6 +9,7 @@ import UIKit
 import WebKit
 import TrustKeystore
 import MBProgressHUD
+import KrystalWallets
 
 ///Reason for this class: https://stackoverflow.com/questions/26383031/wkwebview-causes-my-view-controller-to-leak
 final class ScriptMessageProxy: NSObject, WKScriptMessageHandler {
@@ -40,11 +41,11 @@ protocol BrowserViewControllerDelegate: class {
 
 class BrowserViewModel {
   var url: URL
-  var account: Account
+  var address: KAddress
   
-  init(url: URL, account: Account) {
+  init(url: URL, address: KAddress) {
     self.url = url
-    self.account = account
+    self.address = address
   }
   
   var webIconURL: String {
@@ -62,7 +63,7 @@ class BrowserViewController: KNBaseViewController {
   weak var delegate: BrowserViewControllerDelegate?
   
   lazy var config: WKWebViewConfiguration = {
-    let config = WKWebViewConfiguration.make(forType: .dappBrowser, address: self.viewModel.account.address, in: ScriptMessageProxy(delegate: self))
+    let config = WKWebViewConfiguration.make(forType: .dappBrowser, address: self.viewModel.address.addressString, in: ScriptMessageProxy(delegate: self))
       config.websiteDataStore = WKWebsiteDataStore.default()
       return config
   }()

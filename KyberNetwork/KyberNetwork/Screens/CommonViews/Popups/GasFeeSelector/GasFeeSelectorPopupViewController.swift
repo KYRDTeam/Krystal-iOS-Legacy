@@ -7,6 +7,8 @@
 
 import UIKit
 import BigInt
+import APIKit
+import JSONRPCKit
 
 protocol GasFeeSelectorPopupViewControllerDelegate: class {
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent)
@@ -490,14 +492,12 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         let maxFee = self.advancedMaxFeeField.text ?? ""
         if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
           if self.viewModel.isSpeedupMode, let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransaction(transaction: tx.toSpeedupTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-            print("[GasSelector][EIP1559][Speedup] \(gasLimit) \(maxPriorityFee) \(maxFee)")
+            self.speedupTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             return
           }
 
           if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.eip1559Transaction {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransaction(transaction: tx.toCancelTransaction(gasLimit: gasLimit, priorityFee: maxPriorityFee, maxGasFee: maxFee), original: original))
-            print("[GasSelector][EIP1559][Cancel] \(gasLimit) \(maxPriorityFee) \(maxFee)")
+            self.cancelTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             return
           }
         } else {
@@ -505,7 +505,6 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
             if self.viewModel.isAllAdvancedSettingsValid {
               self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedSetting(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee))
             }
-            print("[GasSelector][EIP1559][Select] \(gasLimit) \(maxPriorityFee) \(maxFee)")
           } else {
             self.delegate?.gasFeeSelectorPopupViewController(self, run: .gasPriceChanged(type: self.viewModel.selectedType, value: self.viewModel.valueForSelectedType(type: self.viewModel.selectedType)))
             print("[GasSelector][EIP1559][Select] \(self.viewModel.selectedType.rawValue)")
@@ -513,17 +512,19 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         }
       } else {
         let gasLimit = self.advancedGasLimitField.text ?? ""
+        let maxPriorityFee = self.advancedPriorityFeeField.text ?? ""
         let maxFee = self.advancedMaxFeeField.text ?? ""
         if self.viewModel.isSpeedupMode || self.viewModel.isCancelMode {
           let gasLimitBigInt = BigInt(gasLimit) ?? BigInt(0)
           let maxFeeBigInt = maxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
+          let maxPriorityFeeBigInt = maxPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) ?? BigInt(0)
           if self.viewModel.isSpeedupMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransactionLegacy(legacyTransaction: tx.toSpeedupTransaction(gasPrice: maxFeeBigInt.description, gasLimit: gasLimitBigInt.description), original: original))
+            self.speedupTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             print("[GasSelector][Legacy][Speedup] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }
 
           if self.viewModel.isCancelMode, let original = self.viewModel.transaction, let tx = original.transactionObject {
-            self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransactionLegacy(legacyTransaction: tx.toCancelTransaction(gasPrice: maxFeeBigInt.description, gasLimit: gasLimitBigInt.description), original: original))
+            self.cancelTransaction(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
             print("[GasSelector][Legacy][Cancel] \(gasLimitBigInt.description) \(maxFeeBigInt.description)")
           }
         } else {
@@ -545,6 +546,88 @@ class GasFeeSelectorPopupViewController: KNBaseViewController {
         self.delegate?.gasFeeSelectorPopupViewController(self, run: .updateAdvancedNonce(nonce: nonceString))
       }
     })
+  }
+  
+  func speedupTransaction(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    guard let transaction = viewModel.transaction else { return }
+    
+    let processor: TransactionProcessor = {
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        return EthereumEIP1559TransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+      } else {
+        return EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+      }
+    }()
+    
+    let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+    
+    processor.speedUp(address: viewModel.currentAddress, transaction: transaction, gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxGasFee: maxFee) { result in
+      switch result {
+      case .success(let hash):
+        savedTx?.state = .speedup
+        savedTx?.hash = hash
+        if let unwrapped = savedTx {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransactionSuccessfully(speedupTransaction: transaction))
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: unwrapped,
+            userInfo: nil
+          )
+        }
+      case .failure(let error):
+        var errorMessage = "Cancel failed"
+        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+            errorMessage = message
+          }
+        }
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .speedupTransactionFailure(message: errorMessage))
+      }
+    }
+  }
+  
+  func cancelTransaction(gasLimit: String, maxPriorityFee: String, maxFee: String) {
+    guard let transaction = viewModel.transaction else { return }
+    
+    let processor: TransactionProcessor = {
+      if KNGeneralProvider.shared.isUseEIP1559 {
+        return EthereumEIP1559TransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+      } else {
+        return EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+      }
+    }()
+    
+    let gasLimit = self.advancedGasLimitField.text ?? ""
+    let maxPriorityFee = self.advancedPriorityFeeField.text ?? ""
+    let maxFee = self.advancedMaxFeeField.text ?? ""
+    
+    let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
+    
+    processor.cancel(address: viewModel.currentAddress, transaction: transaction, gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxGasFee: maxFee) { result in
+      switch result {
+      case .success(let hash):
+        savedTx?.state = .cancel
+        savedTx?.type = .transferETH
+        savedTx?.transactionSuccessDescription = "-0 ETH"
+        savedTx?.hash = hash
+        if let unwrapped = savedTx {
+          self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransactionSuccessfully(cancelTransaction: unwrapped))
+          KNNotificationUtil.postNotification(
+            for: kTransactionDidUpdateNotificationKey,
+            object: unwrapped,
+            userInfo: nil
+          )
+        }
+      case .failure(let error):
+        var errorMessage = "Cancel failed"
+        if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+          if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+            errorMessage = message
+          }
+        }
+        self.delegate?.gasFeeSelectorPopupViewController(self, run: .cancelTransactionFailure(message: errorMessage))
+      }
+    }
   }
 
   func showSpeedupCancelErrorAlert() {

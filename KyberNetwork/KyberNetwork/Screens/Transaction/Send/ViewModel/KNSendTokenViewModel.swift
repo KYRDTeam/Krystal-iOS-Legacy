@@ -108,7 +108,7 @@ class KNSendTokenViewModel: NSObject {
     return isAmountValid ? UIColor.white : UIColor.red
   }
 
-  var address: Address?
+  var address: String?
 
   var currentWalletAddress: String
 
@@ -121,14 +121,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var navTitle: String {
-    return "transfer".toBeLocalised().uppercased()
-  }
-  
-  var walletName: String {
-    let wallet = KNWalletStorage.shared.availableWalletObjects.first { obj in
-      return self.currentWalletAddress.lowercased() == obj.address.lowercased()
-    }
-    return wallet?.name ?? "---"
+    return Strings.transfer.uppercased()
   }
 
   var tokenButtonAttributedText: NSAttributedString {
@@ -316,7 +309,7 @@ class KNSendTokenViewModel: NSObject {
     }()
 
     if KNGeneralProvider.shared.isUseEIP1559 {
-      var nonce: BigInt? = nil
+      var nonce: BigInt?
       if let customNonce = self.advancedNonce, let customNonceInt = Int(customNonce) {
         let customNonceBigInt = BigInt(customNonceInt)
         nonce = customNonceBigInt
@@ -328,7 +321,7 @@ class KNSendTokenViewModel: NSObject {
         return UnconfirmedTransaction(
           transferType: transferType,
           value: amount,
-          to: self.address,
+          to: self.address ?? "",
           data: nil,
           gasLimit: gasLimit,
           gasPrice: self.gasPrice,
@@ -337,12 +330,12 @@ class KNSendTokenViewModel: NSObject {
           maxGasFee: maxGasFeeString
         )
       } else {
-        let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
+//        let baseFeeBigInt = KNGasCoordinator.shared.baseFee ?? BigInt(0)
         let priorityFeeBigIntDefault = self.selectedPriorityFee
         return UnconfirmedTransaction(
           transferType: transferType,
           value: amount,
-          to: self.address,
+          to: self.address ?? "",
           data: nil,
           gasLimit: self.gasLimit,
           gasPrice: self.gasPrice,
@@ -369,7 +362,7 @@ class KNSendTokenViewModel: NSObject {
       return UnconfirmedTransaction(
         transferType: transferType,
         value: amount,
-        to: self.address,
+        to: self.address ?? "",
         data: nil,
         gasLimit: txGasLimit,
         gasPrice: txGasPrice,
@@ -444,13 +437,15 @@ class KNSendTokenViewModel: NSObject {
 
   func updateAddress(_ address: String) {
     self.addressString = address
-    self.address = Address(string: address)
+    
+    // TODO: Replace with validator
+    self.address = address
     if self.address != nil {
       self.isUsingEns = false
     }
   }
 
-  func updateAddressFromENS(_ ens: String, ensAddr: Address?) {
+  func updateAddressFromENS(_ ens: String, ensAddr: String?) {
     if ens == self.addressString {
       self.address = ensAddr
       self.isUsingEns = ensAddr != nil

@@ -4,15 +4,16 @@ import Foundation
 import RealmSwift
 import TrustKeystore
 import TrustCore
+//import KrystalWallets
 
 struct RealmConfiguration {
 
-    static func configuration(for account: Wallet, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
-        return RealmConfiguration.configuration(
-          for: account.addressString,
-          chainID: chainID
-        )
-    }
+//    static func configuration(for address: String, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
+//        return RealmConfiguration.configuration(
+//          for: address,
+//          chainID: chainID
+//        )
+//    }
 
     static func configuration(for address: String, chainID: Int = KNGeneralProvider.shared.customRPC.chainID) -> Realm.Configuration {
       var config = Realm.Configuration()

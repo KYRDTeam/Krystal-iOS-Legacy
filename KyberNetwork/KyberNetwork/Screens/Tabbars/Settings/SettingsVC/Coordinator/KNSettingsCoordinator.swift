@@ -2,15 +2,15 @@
 
 import UIKit
 import MessageUI
+import KrystalWallets
 
 protocol KNSettingsCoordinatorDelegate: class {
-  func settingsCoordinatorUserDidSelectNewWallet(_ wallet: Wallet)
   func settingsCoordinatorUserDidSelectExit()
-  func settingsCoordinatorUserDidRemoveWallet(_ wallet: Wallet)
-  func settingsCoordinatorUserDidUpdateWalletObjects()
+  func settingsCoordinatorUserDidRemoveWallet(_ wallet: KWallet)
+  func settingsCoordinatorUserDidRemoveWatchAddress(_ address: KAddress)
+  func settingsCoordinatorUserDidSelectRemoveCurrentWallet()
   func settingsCoordinatorUserDidSelectAddWallet(type: AddNewWalletType)
   func settingsCoordinatorDidSelectAddWallet()
-  func settingsCoordinatorDidSelectWallet(_ wallet: Wallet)
   func settingsCoordinatorDidSelectManageWallet()
   func settingsCoordinatorDidImportDeepLinkTokens(srcToken: TokenObject?, destToken: TokenObject?)
   func settingsCoordinatorDidSelectAddChainWallet(chainType: ChainType)
@@ -22,12 +22,15 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   private(set) var session: KNSession
   fileprivate(set) var balances: [String: Balance] = [:]
-  var selectedWallet: KNWalletObject?
+  
   var historyCoordinator: KNHistoryCoordinator?
   weak var delegate: KNSettingsCoordinatorDelegate?
   var notificationCoordinator: NotificationCoordinator?
-  var deleteWallet: Wallet?
-
+  
+  var deleteWallet: KWallet?
+  var selectedWallet: KWallet?
+  var selectedAddressType: KAddressType?
+  
   lazy var rootViewController: KNSettingsTabViewController = {
     let controller = KNSettingsTabViewController()
     controller.loadViewIfNeeded()
@@ -54,7 +57,7 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }()
   
   lazy var customTokenCoordinator: AddTokenCoordinator = {
-    let coordinator = AddTokenCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = AddTokenCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     return coordinator
   }()
@@ -62,6 +65,10 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
 //  fileprivate var manageAlertCoordinator: KNManageAlertCoordinator?
 
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     session: KNSession
@@ -72,19 +79,34 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   }
 
   func start() {
+    self.observeAppEvents()
     self.navigationController.viewControllers = [self.rootViewController]
   }
 
   func stop() {
+    self.removeObservers()
     self.navigationController.popToRootViewController(animated: false)
   }
 
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
-    self.session = session
-    if resetRoot {
-      self.navigationController.popToRootViewController(animated: true)
-    }
-    self.listWalletsCoordinator?.updateNewSession(self.session)
+  func removeObservers() {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  func observeAppEvents() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appDidSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  @objc func appDidSwitchAddress() {
+    self.listWalletsCoordinator?.appDidSwitchAddress()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(balances: [String: Balance]) {
@@ -109,17 +131,16 @@ class KNSettingsCoordinator: NSObject, Coordinator {
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
       coordinator.delegate = self
       coordinate(coordinator: coordinator)
     default:
       self.historyCoordinator = nil
       self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController,
-        session: self.session
+        navigationController: self.navigationController
       )
       self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.appDidSwitchAddress()
       self.historyCoordinator?.start()
     }
   }
@@ -257,7 +278,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     self.navigationController.present(debugVC, animated: true, completion: nil)
   }
 
-  func settingsViewControllerBackUpButtonPressed(wallet: KNWalletObject) {
+  func settingsViewControllerBackUpButtonPressed(wallet: KWallet, addressType: KAddressType) {
     let alertController = KNPrettyAlertController(
       title: "Export at your own risk!",
       isWarning: true,
@@ -266,6 +287,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       firstButtonTitle: NSLocalizedString("cancel", value: "Cancel", comment: ""),
       secondButtonAction: {
         self.selectedWallet = wallet
+        self.selectedAddressType = addressType
         self.showAuthPasscode()
       }, firstButtonAction: {
       }
@@ -273,59 +295,39 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     self.navigationController.present(alertController, animated: true, completion: nil)
   }
 
-  fileprivate func showActionSheetBackupPhrase(walletObj: KNWalletObject) {
-    var wallet: Wallet?
-    
-    if walletObj.chainType == 2 {
-      wallet = Wallet(type: .solana(walletObj.address, walletObj.evmAddress, walletObj.walletID))
-    } else {
-      wallet = self.session.keystore.wallets.first(where: { $0.addressString.lowercased() == walletObj.address.lowercased() })
-    }
-  
+  fileprivate func showActionSheetBackupPhrase(wallet: KWallet, addressType: KAddressType) {
     self.navigationController.displayLoading()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
       var action = [UIAlertAction]()
-      if let unwrap = wallet {
-        if !unwrap.isSolanaWallet {
-          action.append(UIAlertAction(
-            title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-            style: .default,
-            handler: { _ in
-              self.backupKeystore(wallet: unwrap)
-            }
-          ))
-        }
-        
+      
+      switch wallet.importType {
+      case .mnemonic:
         action.append(UIAlertAction(
-          title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+          title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
           style: .default,
           handler: { _ in
-            self.backupPrivateKey(wallet: unwrap)
-            self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
+            self.backupMnemonic(wallet: wallet)
           }
         ))
-        
-        if case .real(let account) = unwrap.type, case .success = self.session.keystore.exportMnemonics(account: account) {
-          action.append(UIAlertAction(
-            title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
-            style: .default,
-            handler: { _ in
-              self.backupMnemonic(wallet: unwrap)
-              self.saveBackedUpWallet(wallet: unwrap, name: walletObj.name)
-            }
-          ))
-        } else if case .solana(_, let evmAddress, _) = unwrap.type, let account = self.session.keystore.matchWithEvmAccount(address: evmAddress), case .success = self.session.keystore.exportMnemonics(account: account) {
-          action.append(UIAlertAction(
-            title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
-            style: .default,
-            handler: { _ in
-              let seedsWallet = Wallet(type: .real(account))
-              self.backupMnemonic(wallet: seedsWallet)
-              self.saveBackedUpWallet(wallet: seedsWallet, name: walletObj.name)
-            }
-          ))
-        }
+      case .privateKey:
+        // TODO: - TUNG - not for solana
+        break
       }
+      
+      action.append(UIAlertAction(
+        title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
+        style: .default,
+        handler: { _ in
+          self.backupKeystore(wallet: wallet)
+        }
+      ))
+      action.append(UIAlertAction(
+        title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+        style: .default,
+        handler: { _ in
+          self.backupPrivateKey(wallet: wallet, addressType: addressType)
+        }
+      ))
       
       guard !action.isEmpty else { return }
       
@@ -341,96 +343,51 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     }
   }
 
-  fileprivate func saveBackedUpWallet(wallet: Wallet, name: String) {
-    let walletObject = self.selectedWallet?.clone()
-    walletObject?.name = name
-    if let unwrap = walletObject {
-      KNWalletStorage.shared.add(wallets: [unwrap])
-    }
-    
-  }
-
   fileprivate func showAuthPasscode() {
     self.passcodeCoordinator = KNPasscodeCoordinator(navigationController: self.navigationController, type: .verifyPasscode)
     self.passcodeCoordinator.delegate = self
     self.passcodeCoordinator.start()
   }
 
-  fileprivate func backupKeystore(wallet: Wallet) {
+  fileprivate func backupKeystore(wallet: KWallet) {
     let createPassword = KNCreatePasswordViewController(wallet: wallet, delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
     createPassword.modalTransitionStyle = .crossDissolve
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
   }
 
-  fileprivate func backupPrivateKey(wallet: Wallet) {
-    if case .solana(let address, let evmAddress, let walletID) = wallet.type {
-      if !walletID.isEmpty {
-        guard let pk = self.session.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
-        let keypair = SolanaUtil.exportKeyPair(privateKey: pk)
-        self.openShowBackUpView(data: keypair, wallet: wallet)
-      } else {
-        guard let account = self.session.keystore.matchWithEvmAccount(address: evmAddress) else { return }
-        let seedResult = self.session.keystore.exportMnemonics(account: account)
-        guard case .success(let mnemonics) = seedResult else { return }
-        let privateKey = SolanaUtil.seedsToKeyPair(mnemonics)
-        self.openShowBackUpView(data: privateKey, wallet: wallet)
-      }
-      
-    } else {
-      self.navigationController.displayLoading()
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-        if case .real(let account) = wallet.type {
-          let result = self.session.keystore.exportPrivateKey(account: account)
-          self.navigationController.hideLoading()
-          switch result {
-          case .success(let data):
-            self.openShowBackUpView(data: data.hexString, wallet: wallet)
-          case .failure(let error):
-            self.navigationController.topViewController?.displayError(error: error)
-          }
-        } else {
-          self.navigationController.hideLoading()
-        }
-      }
-    }
-    
-    
-  }
-
-  fileprivate func backupMnemonic(wallet: Wallet) {
-    self.navigationController.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
-      if case .real(let account) = wallet.type {
-        let result = self.session.keystore.exportMnemonics(account: account)
-        self.navigationController.hideLoading()
-        switch result {
-        case .success(let data):
-          self.openShowBackUpView(data: data, wallet: wallet)
-        case .failure(let error):
-          self.navigationController.topViewController?.displayError(error: error)
-        }
-      } else {
-        self.navigationController.hideLoading()
-      }
+  fileprivate func backupPrivateKey(wallet: KWallet, addressType: KAddressType) {
+    do {
+      let privateKey = try WalletManager.shared.exportPrivateKey(walletID: wallet.id, addressType: addressType)
+      self.openShowBackUpView(data: privateKey, wallet: wallet)
+    } catch {
+      self.navigationController.topViewController?.displayError(error: error)
     }
   }
 
-  fileprivate func openShowBackUpView(data: String, wallet: Wallet) {
+  fileprivate func backupMnemonic(wallet: KWallet) {
+    do {
+      let mnemonic = try WalletManager.shared.exportMnemonic(walletID: wallet.id)
+      self.openShowBackUpView(data: mnemonic, wallet: wallet)
+    } catch {
+      self.navigationController.topViewController?.displayError(error: error)
+    }
+  }
+
+  fileprivate func openShowBackUpView(data: String, wallet: KWallet) {
+    guard let address = WalletManager.shared.getAllAddresses(walletID: wallet.id).first?.addressString else {
+      return
+    }
     let showBackUpVC = KNShowBackUpDataViewController(
-      wallet: wallet.addressString,
+      address: address,
       backupData: data
     )
     showBackUpVC.loadViewIfNeeded()
     self.navigationController.pushViewController(showBackUpVC, animated: true)
   }
-
-  fileprivate func copyAddress(wallet: Wallet) {
-    UIPasteboard.general.string = wallet.addressString
-  }
-
-  fileprivate func exportDataString(_ value: String, wallet: Wallet) {
-    let fileName = "krystal_backup_\(wallet.addressString)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
+  
+  fileprivate func exportDataString(_ value: String, address: KAddress) {
+    let fileName = "krystal_backup_\(address.addressString)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try value.data(using: .utf8)!.write(to: url)
@@ -474,43 +431,33 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
   }
   
   func appCoordinatorDidSelectExportWallet() {
-    let listWallets: [KNWalletObject] = KNWalletStorage.shared.availableWalletObjects
-    let curWallet: KNWalletObject = listWallets.first(where: { $0.address.lowercased() == self.session.wallet.addressString.lowercased() })!
-    self.settingsViewControllerBackUpButtonPressed(wallet: curWallet)
+    if currentAddress.isWatchWallet {
+      return
+    }
+    guard let wallet = WalletManager.shared.wallet(forAddress: currentAddress) else {
+      return
+    }
+    self.settingsViewControllerBackUpButtonPressed(wallet: wallet, addressType: currentAddress.addressType)
   }
   
   func appCoordinatorDidSelectDeleteWallet() {
     let alert = UIAlertController(title: "", message: NSLocalizedString("do.you.want.to.remove.this.wallet", value: "Do you want to remove this wallet?", comment: ""), preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", value: "Cacnel", comment: ""), style: .cancel, handler: nil))
     alert.addAction(UIAlertAction(title: NSLocalizedString("remove", value: "Remove", comment: ""), style: .destructive, handler: { _ in
-      self.delegate?.settingsCoordinatorUserDidRemoveWallet(self.session.wallet)
+      self.delegate?.settingsCoordinatorUserDidSelectRemoveCurrentWallet()
     }))
     self.navigationController.present(alert, animated: true, completion: nil)
   }
 }
 
 extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
-  func createPasswordUserDidFinish(_ password: String, wallet: Wallet) {
-    if case .real(let account) = wallet.type {
-      var name = "New Wallet"
-      if let walletObject = KNWalletStorage.shared.wallets.first(where: { (item) -> Bool in
-        return item.address.lowercased() == wallet.addressString.lowercased()
-      }) {
-        name = walletObject.name
-      }
-      self.saveBackedUpWallet(wallet: wallet, name: name)
-      if let currentPassword = self.session.keystore.getPassword(for: account) {
-        self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("preparing.data", value: "Preparing data", comment: ""))...", animated: true)
-        self.session.keystore.export(account: account, password: currentPassword, newPassword: password, importType: .multiChain, completion: { [weak self] result in //NOTE: remove later
-          self?.navigationController.topViewController?.hideLoading()
-          switch result {
-          case .success(let value):
-            self?.exportDataString(value, wallet: wallet)
-          case .failure(let error):
-            self?.navigationController.topViewController?.displayError(error: error)
-          }
-        })
-      }
+  func createPasswordUserDidFinish(_ password: String, wallet: KWallet) {
+    do {
+      // TODO: Tung - export keystore
+//      let key = try WalletManager.shared.exportKeystore(wallet: wallet, password: password)
+//      self.exportDataString(key)
+    } catch {
+      self.navigationController.topViewController?.displayError(error: error)
     }
   }
 
@@ -543,7 +490,6 @@ extension KNSettingsCoordinator: KNListContactViewControllerDelegate {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     self.sendTokenCoordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
-      session: self.session,
       balances: self.balances,
       from: from
     )
@@ -567,8 +513,8 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidCreatePasscode() {
     self.passcodeCoordinator.stop {
       self.navigationController.showSuccessTopBannerMessage(
-        with: NSLocalizedString("success", value: "Success", comment: ""),
-        message: NSLocalizedString("your.pin.has.been.update.successfully", value: "Your PIN has been updated successfully!", comment: ""),
+        with: Strings.success,
+        message: Strings.pinCodeUpdated,
         time: 1.5
       )
     }
@@ -577,12 +523,13 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
   func passcodeCoordinatorDidEvaluatePIN() {
     if case .verifyPasscode = self.passcodeCoordinator.type {
       self.passcodeCoordinator.stop {
-        if let wallet = self.selectedWallet {
-          self.showActionSheetBackupPhrase(walletObj: wallet)
+        if let wallet = self.selectedWallet, let selectedAddressType = self.selectedAddressType {
+          self.showActionSheetBackupPhrase(wallet: wallet, addressType: selectedAddressType)
           self.selectedWallet = nil
+          self.selectedAddressType = nil
         }
-
         if let wallet = self.deleteWallet {
+          try? WalletManager.shared.remove(wallet: wallet)
           self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
           self.deleteWallet = nil
         }
@@ -613,28 +560,21 @@ extension KNSettingsCoordinator: KNListWalletsCoordinatorDelegate {
     self.listWalletsCoordinator = nil
   }
 
-  func listWalletsCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.listWalletsCoordinator?.stop()
-    if wallet == self.session.wallet { return }
-    self.delegate?.settingsCoordinatorUserDidSelectNewWallet(wallet)
+  func listWalletsCoordinatorDidRemoveWatchAddress(_ address: KAddress) {
+    self.delegate?.settingsCoordinatorUserDidRemoveWatchAddress(address)
   }
 
-  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    
+  func listWalletsCoordinatorDidSelectRemoveWallet(_ wallet: KWallet) {
     self.deleteWallet = wallet
     self.showAuthPasscode()
-  }
-
-  func listWalletsCoordinatorDidUpdateWalletObjects() {
-    self.delegate?.settingsCoordinatorUserDidUpdateWalletObjects()
   }
 
   func listWalletsCoordinatorDidSelectAddWallet(type: AddNewWalletType) {
     self.delegate?.settingsCoordinatorUserDidSelectAddWallet(type: type)
   }
 
-  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KNWalletObject) {
-    self.settingsViewControllerBackUpButtonPressed(wallet: wallet)
+  func listWalletsCoordinatorShouldBackUpWallet(_ wallet: KWallet, addressType: KAddressType) {
+    self.settingsViewControllerBackUpButtonPressed(wallet: wallet, addressType: addressType)
   }
 }
 
@@ -655,10 +595,6 @@ extension KNSettingsCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.appCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.settingsCoordinatorDidSelectWallet(wallet)
   }
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
@@ -691,10 +627,6 @@ extension KNSettingsCoordinator: KNHistoryCoordinatorDelegate {
   
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
-  }
-  
-  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.settingsCoordinatorDidSelectWallet(wallet)
   }
   
   func historyCoordinatorDidSelectManageWallet() {

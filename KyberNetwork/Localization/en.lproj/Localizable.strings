@@ -860,4 +860,12 @@
 "%@.address" = "%@ address";
 "view.on.%@" = "View on %@";
 
+"watch.wallet.can.not.do.this.operation" = "Watched wallet can not do this operation";
+"please.enter.address" = "Please enter address";
 
+// Rewards
+"switch.to.bsc.to.claim.rewards" = "Please switch to BSC to claim rewards";
+"edit.wallet.success" = "Edit wallet successful";
+
+"imported" = "Imported";
+"watch.wallet.does.not.support.operation" = "Watched wallet does not support this operation";

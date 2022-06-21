@@ -167,7 +167,7 @@ class OverviewDepositViewController: KNBaseViewController, OverviewViewControlle
     self.updateUITotalValue()
   }
 
-  func coordinatorUpdateNewSession(wallet: Wallet) {
+  func coordinatorAppSwitchAddress() {
     self.viewModel.reloadAllData()
     guard self.isViewLoaded else { return }
     self.reloadUI()

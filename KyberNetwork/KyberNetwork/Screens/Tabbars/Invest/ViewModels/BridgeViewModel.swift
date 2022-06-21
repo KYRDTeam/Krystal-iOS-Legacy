@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 enum FromSectionRows: CaseIterable {
   case selectChainRow
@@ -47,7 +48,6 @@ enum ToSectionRows: CaseIterable {
   }
 }
 class BridgeViewModel {
-  fileprivate(set) var wallet: Wallet
   var showFromPoolInfo: Bool = false
   var showToPoolInfo: Bool = false
   var showReminder: Bool = false
@@ -75,16 +75,13 @@ class BridgeViewModel {
   var sourceAmount: Double = 0.0
   var isValidSourceAmount: Bool = false
   var isValidDestAmount: Bool = false
-
-  init(wallet: Wallet) {
-    self.wallet = wallet
-    self.currentSendToAddress = wallet.addressString
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
 
-  func updateWallet(_ wallet: Wallet) {
-    self.wallet = wallet
-    // reset info when update wallet
-    self.resetUI()
+  init() {
+    self.currentSendToAddress = currentAddress.addressString
   }
   
   func resetUI() {
@@ -96,12 +93,12 @@ class BridgeViewModel {
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
-    self.currentSendToAddress = self.wallet.addressString
+    self.currentSendToAddress = self.currentAddress.addressString
   }
   
   func resetAddressIfNeed() {
     if !CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
-      self.currentSendToAddress = self.wallet.addressString
+      self.currentSendToAddress = self.currentAddress.addressString
     }
   }
 

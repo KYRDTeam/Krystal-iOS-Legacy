@@ -3,6 +3,7 @@
 import UIKit
 import SwipeCellKit
 import Swinject
+import KrystalWallets
 
 class KNTransactionHistoryViewController: KNBaseViewController {
 
@@ -41,11 +42,11 @@ class KNTransactionHistoryViewController: KNBaseViewController {
       childListViewControllers = []
     case .solana:
       let completedVC = KNTransactionListViewController.instantiateFromNib()
-      completedVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.currentWallet)
+      completedVC.viewModel = DIContainer.resolve(SolanaTransactionListViewModel.self, argument: viewModel.address)
       completedVC.delegate = self
       
       let pendingVC = PendingTransactionListViewController.instantiateFromNib()
-      pendingVC.viewModel = DIContainer.resolve(BasePendingTransactionListViewModel.self, argument: viewModel.currentWallet)
+      pendingVC.viewModel = DIContainer.resolve(BasePendingTransactionListViewModel.self, argument: viewModel.address)
       pendingVC.delegate = self
       
       childListViewControllers = [completedVC, pendingVC]
@@ -68,7 +69,7 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     self.setupNavigationBar()
     self.filterButton.rounded(radius: 10)
     self.walletSelectButton.rounded(radius: self.walletSelectButton.frame.size.height / 2)
-    self.walletSelectButton.setTitle(self.viewModel.currentWallet.address, for: .normal)
+    self.walletSelectButton.setTitle(self.viewModel.address.addressString, for: .normal)
     segmentedControl.frame = CGRect(x: self.segmentedControl.frame.minX, y: self.segmentedControl.frame.minY, width: segmentedControl.frame.width, height: 30)
     segmentedControl.selectedSegmentIndex = viewModel.hasPendingTransactions ? 1 : 0
   }
@@ -95,27 +96,16 @@ class KNTransactionHistoryViewController: KNBaseViewController {
     viewModel.didTapSelectWallet()
   }
   
-  func updateWallet(wallet: KNWalletObject) {
-    self.viewModel.updateCurrentWallet(wallet)
-    self.walletSelectButton.setTitle(wallet.address, for: .normal)
-    self.childListViewControllers.forEach { $0.updateWallet(wallet: wallet) }
+  func updateWallet(address: KAddress) {
+    self.walletSelectButton.setTitle(address.addressString, for: .normal)
+    self.childListViewControllers.forEach { $0.updateAddress(address: address) }
   }
 }
 
 extension KNTransactionHistoryViewController {
-
-  func coordinatorUpdateWalletObjects() {
-    guard let currentWallet = KNWalletStorage.shared.get(forPrimaryKey: self.viewModel.currentWallet.address) else { return }
-    self.updateWallet(wallet: currentWallet)
-  }
   
   func coordinatorDidUpdateCompletedKrystalTransaction() {
     self.reloadData()
-  }
-
-  func coordinatorUpdateNewSession(wallet: KNWalletObject) {
-    self.updateWallet(wallet: wallet)
-    self.walletSelectButton.setTitle(wallet.address, for: .normal)
   }
   
   func reloadData() {

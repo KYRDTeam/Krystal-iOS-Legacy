@@ -148,7 +148,7 @@ class BridgeViewController: KNBaseViewController {
   func updateUISwitchChain() {
     let icon = KNGeneralProvider.shared.chainIconImage
     self.chainIcon.image = icon
-    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
     self.tableView.reloadData()
   }
   
@@ -157,9 +157,8 @@ class BridgeViewController: KNBaseViewController {
     self.setupViewModel()
   }
   
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.updateWallet(wallet)
-    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+  func appDidSwitchAddress() {
+    self.walletsListButton.setTitle(viewModel.currentAddress.name, for: .normal)
     self.updateUIPendingTxIndicatorView()
   }
   

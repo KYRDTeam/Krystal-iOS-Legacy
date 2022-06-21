@@ -4,9 +4,10 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import Moya
+import KrystalWallets
 
 protocol KNPromoCodeCoordinatorDelegate: class {
-  func promoCodeCoordinatorDidCreate(_ wallet: Wallet, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?)
+  func promoCodeCoordinatorDidCreate(_ address: KAddress, expiredDate: TimeInterval, destinationToken: String?, destAddress: String?, name: String?)
 }
 
 class KNPromoCodeCoordinator: Coordinator {
@@ -78,21 +79,16 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                   return
                 }
                 self.rootViewController.displayLoading(text: NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""), animated: true)
-                self.keystore.importWallet(type: ImportType.privateKey(privateKey: privateKey), importType: .multiChain) { [weak self] result in
-                  guard let `self` = self else { return }
-                  self.rootViewController.hideLoading()
-                  switch result {
-                  case .success(let wallet):
-                    self.didSuccessUnlockPromoCode(
-                      wallet: wallet,
-                      name: name,
-                      expiredDate: expiredDate,
-                      destinationToken: destinationToken,
-                      destAddress: destAddress
-                    )
-                  case .failure(let error):
-                    self.navigationController.displayError(error: error)
+                
+                do {
+                  let wallet = try WalletManager.shared.import(privateKey: privateKey, addressType: .evm, name: name)
+                  guard let address = WalletManager.shared.getAllAddresses(walletID: wallet.id, addressType: .evm).first else {
+                    return
                   }
+                  self.rootViewController.hideLoading()
+                  self.didSuccessUnlockPromoCode(address: address, name: name, expiredDate: expiredDate, destinationToken: destinationToken, destAddress: destAddress)
+                } catch {
+                  self.navigationController.displayError(error: error)
                 }
               } else {
                 let error = json["error"] as? String ?? ""
@@ -116,12 +112,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
     self.stop()
   }
 
-  fileprivate func didSuccessUnlockPromoCode(wallet: Wallet, name: String, expiredDate: TimeInterval, destinationToken: String, destAddress: String?) {
-    let walletObject = KNWalletObject(
-      address: wallet.addressString,
-      name: name
-    )
-    KNWalletStorage.shared.add(wallets: [walletObject])
+  fileprivate func didSuccessUnlockPromoCode(address: KAddress, name: String, expiredDate: TimeInterval, destinationToken: String, destAddress: String?) {
     let expiredString: String = {
       let formatter = DateFormatter()
       formatter.dateFormat = "dd MMM yyyy, HH:mm"
@@ -133,7 +124,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
       time: 5
     )
     self.delegate?.promoCodeCoordinatorDidCreate(
-      wallet,
+      address,
       expiredDate: expiredDate,
       destinationToken: destinationToken,
       destAddress: destAddress,

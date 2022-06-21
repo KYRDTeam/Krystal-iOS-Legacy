@@ -3,6 +3,7 @@
 import UIKit
 import TrustCore
 import SwipeCellKit
+import KrystalWallets
 
 struct KNContactTableViewCellModel {
   let contact: KNContact
@@ -47,16 +48,18 @@ struct KNContactTableViewCellModel {
 }
 
 struct KNWalletTableCellViewModel {
-  let wallet: KNWalletObject
+  let address: KAddress
   
   var addressImage: UIImage? {
-    guard let data = Address(string: self.wallet.address.description)?.data else { return nil }
+    guard let data = Data(hexString: address.addressString) else {
+      return nil
+    }
     return UIImage.generateImage(with: 32, hash: data)
   }
 
-  var displayedName: String { return self.wallet.name }
+  var displayedName: String { return self.address.name }
   var displayedAddress: String {
-    let address = self.wallet.address
+    let address = self.address.addressString
     return "\(address.prefix(20))...\(address.suffix(6))"
   }
 }
@@ -90,13 +93,13 @@ class KNContactTableViewCell: SwipeTableViewCell {
     self.layoutIfNeeded()
   }
 
-  func update(with viewModel: KNWalletTableCellViewModel, selected: String) {
+  func update(with viewModel: KNWalletTableCellViewModel, selected: KAddress?) {
     self.addressImageView.image = viewModel.addressImage
     self.contactNameLabel.text = viewModel.displayedName
     self.contactNameLabel.addLetterSpacing()
     self.contactAddressLabel.text = viewModel.displayedAddress
     self.contactAddressLabel.addLetterSpacing()
-    let isSelected = viewModel.wallet.address.description.lowercased() == selected.lowercased()
+    let isSelected = viewModel.address.addressString == selected?.addressString
     self.addressImageLeftPaddingContraint.constant = (isSelected ? 66.0 : 24.0)
     self.checkIcon.isHidden = !isSelected
     self.layoutIfNeeded()

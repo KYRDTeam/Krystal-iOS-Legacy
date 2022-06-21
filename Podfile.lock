@@ -197,11 +197,11 @@ PODS:
     - CryptoSwift
     - TrezorCrypto
     - TrustCore
-  - TrustWalletCore (2.6.36):
-    - TrustWalletCore/Core (= 2.6.36)
-  - TrustWalletCore/Core (2.6.36):
+  - TrustWalletCore (2.9.0):
+    - TrustWalletCore/Core (= 2.9.0)
+  - TrustWalletCore/Core (2.9.0):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.6.36):
+  - TrustWalletCore/Types (2.9.0):
     - SwiftProtobuf
   - WalletConnect (0.1.0):
     - CryptoSwift
@@ -234,6 +234,7 @@ DEPENDENCIES:
   - JavaScriptKit (~> 1.0.0)
   - JdenticonSwift (~> 0.0.1)
   - JSONRPCKit (~> 3.0.0)
+  - KeychainSwift
   - KeychainSwift (~> 13.0.0)
   - Kingfisher (~> 7.0)
   - LaunchDarkly (~> 5.4)
@@ -261,13 +262,21 @@ DEPENDENCIES:
   - TagListView (from `https://github.com/Expensify/TagListView.git`)
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
-  - TrustWalletCore (~> 2.6.29)
+  - TrustWalletCore (~> 2.9)
   - WalletConnect (from `https://github.com/trustwallet/wallet-connect-swift`)
   - WalletConnectSwift
   - Web3
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Nimble
+    - Quick
+    - SwiftProtobuf
+    - TrezorCrypto
+    - TrustCore
+    - TrustKeystore
+    - TrustWalletCore
+  trunk:
     - Alamofire
     - APIKit
     - BigInt
@@ -301,12 +310,10 @@ SPEC REPOS:
     - Mixpanel-swift
     - Moya
     - nanopb
-    - Nimble
     - OneSignal
     - PromiseKit
     - PromisesObjC
     - QRCodeReaderViewController
-    - Quick
     - Realm
     - RealmSwift
     - Result
@@ -319,13 +326,8 @@ SPEC REPOS:
     - SwiftAlgorithms
     - SwiftLint
     - SwiftMessages
-    - SwiftProtobuf
     - Swinject
     - SwipeCellKit
-    - TrezorCrypto
-    - TrustCore
-    - TrustKeystore
-    - TrustWalletCore
     - WalletConnectSwift
     - Web3
 
@@ -415,11 +417,11 @@ SPEC CHECKSUMS:
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
-  TrustWalletCore: f546b9eac65d7eb65fc6b0184f1f9a65ffc7bcbe
+  TrustWalletCore: ab3c0ecc39d3c3509b7f0d70e37a85b5922b72b2
   WalletConnect: c5be4e3ed9efbefb8480ab27e1766d4549a92709
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 81105e4ff1330c803e387f364bcb3c794689b7bf
+PODFILE CHECKSUM: caf301892229633e7396ba73e5ab04d95e029a2d
 
 COCOAPODS: 1.11.3
