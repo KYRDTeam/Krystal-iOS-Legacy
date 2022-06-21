@@ -1395,7 +1395,7 @@ extension KrytalService: TargetType {
         "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getPoolList(tokenAddress: let address, chainId: let chainId, limit: let limit):
+    case .getPoolList(let address, let chainId, let limit):
       let json: JSONDictionary = [
         "token": address,
         "chainId": chainId,
