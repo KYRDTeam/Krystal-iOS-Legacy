@@ -42,7 +42,8 @@ class AdvanceSearchTokenCell: UITableViewCell {
     if let chainType = ChainType.make(chainID: token.chainId) {
       chainIcon.image = chainType.chainIcon()
     }
-    addressLabel.text = token.id
+    addressLabel.text = "\(token.id.prefix(7))...\(token.id.suffix(4))"
+    totalValueLabel.text = StringFormatter.usdString(value: token.tvl)
   }
   
   func updateUI(poolData: TokenPoolDetail) {

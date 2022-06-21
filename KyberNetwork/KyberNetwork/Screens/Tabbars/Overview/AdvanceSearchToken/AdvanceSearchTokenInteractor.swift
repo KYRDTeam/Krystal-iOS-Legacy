@@ -52,6 +52,7 @@ class ResultToken: Codable {
   var logo: String
   var tag: String
   var usdValue: Double
+  var tvl: Double
   
   init(json: JSONDictionary) {
     self.id = json["id"] as? String ?? ""
@@ -64,6 +65,7 @@ class ResultToken: Codable {
     self.logo = json["logo"] as? String ?? ""
     self.tag = json["tag"] as? String ?? ""
     self.usdValue = json["usdValue"] as? Double ?? 0.0
+    self.tvl = json["tvl"] as? Double ?? 0.0
   }
 }
 
