@@ -46,7 +46,7 @@
                 <outlet property="poolViewTrailingConstraint" destination="8i8-9k-Jfw" id="PCE-bK-FCi"/>
                 <outlet property="priceDiffPercentageLabel" destination="rig-RH-skP" id="gEG-fm-naP"/>
                 <outlet property="priceLabel" destination="Lcl-Qq-nU6" id="0Hv-Ji-cky"/>
-                <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Joc-iO-9sf"/>
+                <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Wyo-th-Vej"/>
                 <outlet property="swapButton" destination="7pU-d9-FWK" id="Kte-g2-IIz"/>
                 <outlet property="tableViewHeight" destination="i2V-nn-eYr" id="wUn-wn-15v"/>
                 <outlet property="tagImageView" destination="Shb-Ii-4mW" id="xhw-zW-hqV"/>

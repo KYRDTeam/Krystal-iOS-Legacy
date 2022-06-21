@@ -44,7 +44,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoC-ua-6fa">
-                            <rect key="frame" x="156" y="40.5" width="63" height="23.5"/>
+                            <rect key="frame" x="154.5" y="40.5" width="66" height="23.5"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -174,7 +174,7 @@
                             </connections>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggestion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rws-Xa-NEr">
-                            <rect key="frame" x="26" y="180" width="81" height="19"/>
+                            <rect key="frame" x="26" y="180" width="83.5" height="19"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
@@ -264,6 +264,14 @@
             <point key="canvasLocation" x="-13.6" y="93.103448275862078"/>
         </view>
     </objects>
+    <designables>
+        <designable name="gM2-Su-00S">
+            <size key="intrinsicContentSize" width="323" height="36"/>
+        </designable>
+        <designable name="n3W-KU-Gsj">
+            <size key="intrinsicContentSize" width="323" height="36"/>
+        </designable>
+    </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
         <image name="search_blue_icon" width="16" height="16"/>

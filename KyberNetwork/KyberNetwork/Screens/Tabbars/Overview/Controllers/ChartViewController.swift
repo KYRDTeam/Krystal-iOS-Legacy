@@ -347,6 +347,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
   var candleChart: LightweightCharts?
   var lineChart: LightweightCharts?
+  @IBOutlet weak var showAllPoolButton: UIButton!
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
@@ -686,18 +687,5 @@ extension ChartViewController: UITableViewDelegate {
     self.viewModel.isLineChartMode = false
     self.loadCandleChartData()
     self.setupTradingView()
-  }
-}
-
-extension ChartViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.viewModel.poolData.count
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
-    let poolData = self.viewModel.poolData[indexPath.row]
-    cell.updateUI(poolDetail: poolData)
-    return cell
   }
 }
