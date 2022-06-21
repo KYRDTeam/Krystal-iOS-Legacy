@@ -147,7 +147,7 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 0 {
-      
+      self.openSafari(with: "https://docs.krystal.app/")
     } else {
       if let token = presenter.searchResults?.tokens[indexPath.row] {
         presenter.openChartToken(token: token)

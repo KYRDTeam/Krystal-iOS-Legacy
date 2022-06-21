@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -34,7 +34,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MiV-TQ-68C">
-                                <rect key="frame" x="49" y="14.5" width="34.5" height="21"/>
+                                <rect key="frame" x="49" y="14.5" width="311" height="21"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
@@ -48,6 +48,7 @@
                         </subviews>
                         <color key="backgroundColor" name="innerContainerBgColor"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="MiV-TQ-68C" secondAttribute="trailing" constant="21" id="2MS-sP-FT6"/>
                             <constraint firstItem="MiV-TQ-68C" firstAttribute="leading" secondItem="vFg-4l-Npc" secondAttribute="trailing" constant="7" id="4Qb-M7-pSK"/>
                             <constraint firstItem="vFg-4l-Npc" firstAttribute="top" secondItem="ugP-45-xEe" secondAttribute="top" constant="13" id="H4w-le-hND"/>
                             <constraint firstAttribute="trailing" secondItem="B3I-6r-n12" secondAttribute="trailing" constant="21" id="LdO-US-m9Q"/>
