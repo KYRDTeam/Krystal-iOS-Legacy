@@ -79,13 +79,14 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           case .failure(let error):
             controller.coordinatorFailUpdateApi(error)
           case .success(let resp):
-            let decoder = JSONDecoder()
-  //            do {
-  //              let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
-  //              controller.coordinatorDidUpdateChartData(data.prices)
-  //            } catch let error {
-  //              print("[Debug]" + error.localizedDescription)
-  //            }
+            var allPools: [TokenPoolDetail] = []
+            if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
+              jsonData.forEach { poolJson in
+                let tokenPoolDetail = TokenPoolDetail(json: poolJson)
+                allPools.append(tokenPoolDetail)
+              }
+            }
+            controller.coordinatorDidUpdatePoolData(poolData: allPools)
           }
         }
       case .getChartData(let address, let from, _, let currency):
