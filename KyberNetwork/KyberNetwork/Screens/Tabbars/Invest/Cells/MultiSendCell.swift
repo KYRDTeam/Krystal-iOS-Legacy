@@ -134,6 +134,9 @@ class MultiSendCellModel {
     if !self.isAddressValid {
       return .error(description: "Invalid address")
     }
+    if self.from.address.isEmpty {
+      return .error(description: "Please select an token to continue")
+    }
     if self.isBalanceTooLow {
       return .error(description: "Please enter an amount to continue")
     }
