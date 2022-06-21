@@ -277,6 +277,7 @@ enum ChartViewEvent {
   case openWebsite(url: String)
   case openTwitter(name: String)
   case getPoolList(address: String, chainId: Int)
+  case selectPool(source: String, quote: String)
 }
 
 enum ChartPeriodType: Int {
@@ -428,6 +429,7 @@ class ChartViewController: KNBaseViewController {
     if self.viewModel.isLineChartMode {
       self.candleChart?.removeFromSuperview()
       if let chart = self.lineChart {
+        guard !chart.isDescendant(of: self.chartContainerView) else { return }
         self.chartContainerView.addSubview(chart)
         chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
         chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
@@ -439,6 +441,7 @@ class ChartViewController: KNBaseViewController {
     } else {
       self.lineChart?.removeFromSuperview()
       if let chart = candleChart {
+        guard !chart.isDescendant(of: self.chartContainerView) else { return }
         self.chartContainerView.addSubview(chart)
         chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
         chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
@@ -577,8 +580,21 @@ class ChartViewController: KNBaseViewController {
   }
 
   fileprivate func loadChartData() {
+    if self.viewModel.isLineChartMode {
+      self.loadLineChartData()
+    } else {
+      self.loadCandleChartData()
+    }
+  }
+  
+  fileprivate func loadLineChartData() {
     let current = NSDate().timeIntervalSince1970
     self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
+  }
+  
+  fileprivate func loadCandleChartData() {
+    let current = NSDate().timeIntervalSince1970
+    self.delegate?.chartViewController(self, run: .getCandleChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: "0xe9e7cea3dedca5984780bafc599bd69add087d56"))
   }
 
   fileprivate func loadTokenDetailInfo() {
@@ -641,5 +657,14 @@ extension ChartViewController: UITableViewDataSource {
     let poolData = self.viewModel.poolData[indexPath.row]
     cell.updateUI(poolDetail: poolData)
     return cell
+  }
+}
+
+extension ChartViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    self.viewModel.isLineChartMode = false
+    self.loadCandleChartData()
+    self.setupTradingView()
   }
 }

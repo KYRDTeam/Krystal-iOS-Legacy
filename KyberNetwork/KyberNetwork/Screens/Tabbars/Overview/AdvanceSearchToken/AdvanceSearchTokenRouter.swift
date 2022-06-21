@@ -187,6 +187,8 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
     case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
       break
+    case .selectPool(source: let source, quote: let quote):
+      break
     }
   }
 

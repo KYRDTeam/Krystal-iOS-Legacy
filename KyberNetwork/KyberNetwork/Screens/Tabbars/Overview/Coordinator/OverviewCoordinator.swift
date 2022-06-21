@@ -297,6 +297,8 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           }
         }
       }
+    case .selectPool(source: let source, quote: let quote):
+      break
     }
   }
 
