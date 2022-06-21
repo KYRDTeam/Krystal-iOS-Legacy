@@ -29,6 +29,44 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorBuyCrypto()
 }
 
+class PoolPairToken: Codable {
+  var address: String
+  var name: String
+  var symbol: String
+  var logo: String
+  var tvl: Double
+  var decimals: Int
+  var usdValue: Double
+
+  init(json: JSONDictionary) {
+    self.address = json["id"] as? String ?? ""
+    self.name = json["name"] as? String ?? ""
+    self.symbol = json["symbol"] as? String ?? ""
+    self.decimals = json["decimals"] as? Int ?? 0
+    self.logo = json["logo"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.usdValue = json["usdValue"] as? Double ?? 0.0
+  }
+}
+
+class TokenPoolDetail: Codable {
+  var address: String
+  var tvl: Double
+  var chainId: Int
+  
+  var token0: PoolPairToken
+  var token1: PoolPairToken
+  
+  init(json: JSONDictionary) {
+    self.address = json["address"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.chainId = json["chainId"] as? Int ?? 0
+    
+    self.token0 = PoolPairToken(json: json["token0"] as? JSONDictionary ?? JSONDictionary())
+    self.token1 = PoolPairToken(json: json["token1"] as? JSONDictionary ?? JSONDictionary())
+  }
+}
+
 class OverviewCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
@@ -41,6 +79,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
+  var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
 
   lazy var rootViewController: OverviewMainViewController = {
@@ -106,6 +145,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.searchRouter.appCoordinatorDidUpdateNewSession()
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -178,9 +218,26 @@ class OverviewCoordinator: NSObject, Coordinator {
 extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
+    case .getPoolList(address: let address, chainId: let chainId):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          var allPools: [TokenPoolDetail] = []
+          if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
+            jsonData.forEach { poolJson in
+              let tokenPoolDetail = TokenPoolDetail(json: poolJson)
+              allPools.append(tokenPoolDetail)
+            }
+          }
+          controller.coordinatorDidUpdatePoolData(poolData: allPools)
+        }
+      }
     case .getChartData(let address, let from, let to, let currency):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getChartData(address: address, quote: currency, from: from)) { result in
+      provider.request(.getChartData(chainPath: KNGeneralProvider.shared.chainPath, address: address, quote: currency, from: from)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -196,7 +253,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .getTokenDetailInfo(address: let address):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTokenDetail(address: address)) { (result) in
+      provider.request(.getTokenDetail(chainPath: KNGeneralProvider.shared.chainPath, address: address)) { (result) in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -225,11 +282,11 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     }
   }
 
-  fileprivate func openCommunityURL(_ url: String) {
+  func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
   }
 
-  fileprivate func openSendTokenView(_ token: Token?) {
+  func openSendTokenView(_ token: Token?) {
     let from: TokenObject = {
       if let fromToken = token {
         return fromToken.toObject()
@@ -248,7 +305,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     self.sendCoordinator = coordinator
   }
 
-  fileprivate func openSwapView(token: Token, isBuy: Bool) {
+  func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
 }
@@ -592,10 +649,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.start()
       self.notificationsCoordinator = coordinator
     case .search:
-      let searchController = OverviewSearchTokenViewController()
-      searchController.coordinatorUpdateCurrency(self.currentCurrencyType)
-      searchController.delegate = self
-      self.navigationController.pushViewController(searchController, animated: true)
+      let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
+      navigationController.pushViewController(module, animated: true)
     case .withdrawBalance(platform: let platform, balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.platform = platform
@@ -687,11 +742,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
 }
 
-extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
-  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
-    self.openChartView(token: token)
-  }
-}
+//extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
+//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
+//    self.openChartView(token: token)
+//  }
+//}
 
 extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
   func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {

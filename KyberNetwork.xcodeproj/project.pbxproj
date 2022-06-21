@@ -460,10 +460,16 @@
 		7E1EBE4A283500A800793B6D /* BridgeReminderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE48283500A800793B6D /* BridgeReminderCell.xib */; };
 		7E1EBE4D283507E200793B6D /* BridgeSwapButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1EBE4B283507E200793B6D /* BridgeSwapButtonCell.swift */; };
 		7E1EBE4E283507E200793B6D /* BridgeSwapButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */; };
+		7E3FCF0E28574DB9009DD914 /* AdvanceSearchTokenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */; };
+		7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */; };
+		7E3FCF1128574DB9009DD914 /* AdvanceSearchTokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */; };
+		7E3FCF1228574DB9009DD914 /* AdvanceSearchTokenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3FCF0C28574DB9009DD914 /* AdvanceSearchTokenInteractor.swift */; };
 		7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E448D022808064E00C1617F /* SelectChainViewController.swift */; };
 		7E448D052808064E00C1617F /* SelectChainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E448D032808064E00C1617F /* SelectChainViewController.xib */; };
 		7E44DBEA2849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */; };
 		7E44DBEB2849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E44DBE92849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib */; };
+		7E4793C92859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4793C72859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift */; };
+		7E4793CA2859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */; };
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
@@ -484,6 +490,8 @@
 		7E913AFA273CF6DA00B6E67C /* intro_reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF6273CF6DA00B6E67C /* intro_reward.json */; };
 		7E913AFB273CF6DA00B6E67C /* intro_earn.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AF7273CF6DA00B6E67C /* intro_earn.json */; };
 		7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AFF273D09FB00B6E67C /* intro_swap.json */; };
+		7E921A0D28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E921A0B28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift */; };
+		7E921A0E28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E921A0C28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */; };
@@ -507,6 +515,9 @@
 		7EC892D427DCE7A9000C5980 /* BifinityOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */; };
 		7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */; };
 		7EC892DC27DD10A9000C5980 /* FiatCryptoHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */; };
+		7ECCB1F8286170C800499FA0 /* ResultToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1F7286170C800499FA0 /* ResultToken.swift */; };
+		7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1F9286170F700499FA0 /* Portfolio.swift */; };
+		7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB1FB2861711800499FA0 /* SearchResult.swift */; };
 		7ECCB898270AEE030080DC3B /* OverviewLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */; };
 		7ECCB899270AEE030080DC3B /* OverviewLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */; };
 		7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */; };
@@ -515,6 +526,8 @@
 		7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */; };
 		7ED5FA8527D214D000F0CB8E /* SelectNetworkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */; };
 		7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */; };
+		7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */; };
+		7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */; };
 		7EE7A72A28446F7A00F4D8CF /* ConfirmBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */; };
 		7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */; };
 		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
@@ -1459,10 +1472,16 @@
 		7E1EBE48283500A800793B6D /* BridgeReminderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeReminderCell.xib; sourceTree = "<group>"; };
 		7E1EBE4B283507E200793B6D /* BridgeSwapButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeSwapButtonCell.swift; sourceTree = "<group>"; };
 		7E1EBE4C283507E200793B6D /* BridgeSwapButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSwapButtonCell.xib; sourceTree = "<group>"; };
+		7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenPresenter.swift; sourceTree = "<group>"; };
+		7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenRouter.swift; sourceTree = "<group>"; };
+		7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenProtocols.swift; sourceTree = "<group>"; };
+		7E3FCF0C28574DB9009DD914 /* AdvanceSearchTokenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenInteractor.swift; sourceTree = "<group>"; };
 		7E448D022808064E00C1617F /* SelectChainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChainViewController.swift; sourceTree = "<group>"; };
 		7E448D032808064E00C1617F /* SelectChainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectChainViewController.xib; sourceTree = "<group>"; };
 		7E44DBE82849BA3100E4AD26 /* BridgeTransactionStatusPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTransactionStatusPopup.swift; sourceTree = "<group>"; };
 		7E44DBE92849BA3100E4AD26 /* BridgeTransactionStatusPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeTransactionStatusPopup.xib; sourceTree = "<group>"; };
+		7E4793C72859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchPortfolioCell.swift; sourceTree = "<group>"; };
+		7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvanceSearchPortfolioCell.xib; sourceTree = "<group>"; };
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
@@ -1483,6 +1502,8 @@
 		7E913AF6273CF6DA00B6E67C /* intro_reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_reward.json; sourceTree = "<group>"; };
 		7E913AF7273CF6DA00B6E67C /* intro_earn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_earn.json; sourceTree = "<group>"; };
 		7E913AFF273D09FB00B6E67C /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
+		7E921A0B28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenCell.swift; sourceTree = "<group>"; };
+		7E921A0C28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvanceSearchTokenCell.xib; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
@@ -1506,6 +1527,9 @@
 		7EC892D227DCE7A9000C5980 /* BifinityOrderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BifinityOrderViewController.xib; sourceTree = "<group>"; };
 		7EC892D927DD10A9000C5980 /* FiatCryptoHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiatCryptoHistoryCell.swift; sourceTree = "<group>"; };
 		7EC892DA27DD10A9000C5980 /* FiatCryptoHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FiatCryptoHistoryCell.xib; sourceTree = "<group>"; };
+		7ECCB1F7286170C800499FA0 /* ResultToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultToken.swift; sourceTree = "<group>"; };
+		7ECCB1F9286170F700499FA0 /* Portfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
+		7ECCB1FB2861711800499FA0 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewLiquidityPoolCell.swift; sourceTree = "<group>"; };
 		7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7ECCB89A270BFDA20080DC3B /* LPTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPTokenModel.swift; sourceTree = "<group>"; };
@@ -1514,6 +1538,8 @@
 		7ED5FA8027D1EF4000F0CB8E /* SelectNetworkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkViewController.xib; sourceTree = "<group>"; };
 		7ED5FA8327D214D000F0CB8E /* SelectNetworkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNetworkCell.swift; sourceTree = "<group>"; };
 		7ED5FA8427D214D000F0CB8E /* SelectNetworkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectNetworkCell.xib; sourceTree = "<group>"; };
+		7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPoolCell.swift; sourceTree = "<group>"; };
+		7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenPoolCell.xib; sourceTree = "<group>"; };
 		7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBridgeViewController.swift; sourceTree = "<group>"; };
 		7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBridgeViewController.xib; sourceTree = "<group>"; };
 		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
@@ -4145,6 +4171,28 @@
 			path = RateTransactionPopup;
 			sourceTree = "<group>";
 		};
+		7E3FCF0728574D82009DD914 /* AdvanceSearchToken */ = {
+			isa = PBXGroup;
+			children = (
+				7E3FCF0828574DB9009DD914 /* AdvanceSearchTokenPresenter.swift */,
+				7E3FCF0928574DB9009DD914 /* AdvanceSearchTokenRouter.swift */,
+				7E3FCF0B28574DB9009DD914 /* AdvanceSearchTokenProtocols.swift */,
+				7E3FCF0C28574DB9009DD914 /* AdvanceSearchTokenInteractor.swift */,
+				C3053AF62685D2980079B505 /* OverviewSearchTokenViewController.swift */,
+				C3053AF72685D2980079B505 /* OverviewSearchTokenViewController.xib */,
+				7E921A0B28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift */,
+				7E921A0C28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib */,
+				7E4793C72859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift */,
+				7E4793C82859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib */,
+				7EE3143A286036AF0012ADF9 /* TokenPoolCell.swift */,
+				7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */,
+				7ECCB1F7286170C800499FA0 /* ResultToken.swift */,
+				7ECCB1F9286170F700499FA0 /* Portfolio.swift */,
+				7ECCB1FB2861711800499FA0 /* SearchResult.swift */,
+			);
+			path = AdvanceSearchToken;
+			sourceTree = "<group>";
+		};
 		7E49B25F27FC195F0093A00E /* MixPanel */ = {
 			isa = PBXGroup;
 			children = (
@@ -4819,6 +4867,7 @@
 		C31F748D25DCD1C2008B21F7 /* Overview */ = {
 			isa = PBXGroup;
 			children = (
+				7E3FCF0728574D82009DD914 /* AdvanceSearchToken */,
 				7EC4C6E927168A4900486C00 /* ViewModels */,
 				C31F749025DCD1F6008B21F7 /* Cells */,
 				C31F748F25DCD1EC008B21F7 /* Controllers */,
@@ -4854,8 +4903,6 @@
 				C3D560A9260C641E00408875 /* OverviewClaimViewController.xib */,
 				C30568A92670B87700F331CE /* OverviewMainViewController.swift */,
 				C30568AA2670B87700F331CE /* OverviewMainViewController.xib */,
-				C3053AF62685D2980079B505 /* OverviewSearchTokenViewController.swift */,
-				C3053AF72685D2980079B505 /* OverviewSearchTokenViewController.xib */,
 				C311AAD2269D86AC0082A728 /* OverviewChangeCurrencyViewController.swift */,
 				C311AAD3269D86AC0082A728 /* OverviewChangeCurrencyViewController.xib */,
 				C32649D926CF81BE001B6E11 /* OverviewNFTDetailViewController.swift */,
@@ -5593,6 +5640,7 @@
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
+				7E4793CA2859BC8400F15D3B /* AdvanceSearchPortfolioCell.xib in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
 				C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
@@ -5807,6 +5855,7 @@
 				25929C9220DA5CC10045CFA3 /* SFCompactText-SemiboldItalic.otf in Resources */,
 				C3A6911825638DE700F57756 /* Lato-BlackItalic.ttf in Resources */,
 				C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */,
+				7E921A0E28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib in Resources */,
 				25F96F8121537B6400D7F927 /* KNHoldingDocumentInfoPopUp.xib in Resources */,
 				C3EE06CB267A15E50090B432 /* README.txt in Resources */,
 				C320D80C27B39EBC0001DC71 /* MultiSendViewController.xib in Resources */,
@@ -5843,6 +5892,7 @@
 				7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */,
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
+				7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */,
 				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
@@ -6243,6 +6293,7 @@
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
+				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
@@ -6378,6 +6429,7 @@
 				A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */,
 				C33BB80627955C9A00851BC6 /* ABIValue.swift in Sources */,
 				C311AAD4269D86AD0082A728 /* OverviewChangeCurrencyViewController.swift in Sources */,
+				7ECCB1F8286170C800499FA0 /* ResultToken.swift in Sources */,
 				29FC0CB81F8299510036089F /* Coordinator.swift in Sources */,
 				29E9CFCF1FE7347200017744 /* ERC20Token.swift in Sources */,
 				25CE6F77207291EC00A3A2F9 /* KNEtherScanService.swift in Sources */,
@@ -6401,6 +6453,7 @@
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
+				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
@@ -6415,6 +6468,7 @@
 				25EE4A6D20C54AD200E2282F /* KNAppCoordinator+InSession.swift in Sources */,
 				C33C33B725ECC70700F347E5 /* AddTokenViewController.swift in Sources */,
 				2995739F1FA1F294006F17FD /* QRURLParser.swift in Sources */,
+				7E3FCF1228574DB9009DD914 /* AdvanceSearchTokenInteractor.swift in Sources */,
 				A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */,
 				7721A6BE202A5677004DB16C /* DecryptError.swift in Sources */,
 				A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */,
@@ -6455,6 +6509,7 @@
 				25F9C7692213D0D80001064D /* Double.swift in Sources */,
 				C32017B627BE28EC0055130B /* MultisendAddressListViewController.swift in Sources */,
 				29BDF1981FEE4DB00023A45F /* GasPriceConfiguration.swift in Sources */,
+				7E3FCF0F28574DB9009DD914 /* AdvanceSearchTokenRouter.swift in Sources */,
 				C3299D632773254A00D1065A /* BrowserURLParser.swift in Sources */,
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,
 				A6E6C9CF2817195D00EEB2E6 /* BaseTransactionListViewModel.swift in Sources */,
@@ -6601,6 +6656,7 @@
 				C3C0B0CB2602F8C6001A1710 /* Marketing.swift in Sources */,
 				C3053AF82685D2990079B505 /* OverviewSearchTokenViewController.swift in Sources */,
 				7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */,
+				7E4793C92859BC8400F15D3B /* AdvanceSearchPortfolioCell.swift in Sources */,
 				C30DB3F22771D79D00F3E545 /* DappBrowserHomeViewController.swift in Sources */,
 				25C45AE120AD75EC00CDA1FF /* KNImportSeedsViewController.swift in Sources */,
 				25CC0ABC20591DFB0009D0D5 /* KNGasCoordinator.swift in Sources */,
@@ -6637,6 +6693,7 @@
 				29E9CFD21FE737FE00017744 /* TrustRealmConfiguration.swift in Sources */,
 				C316809C25E785B700D0D887 /* TokenChartData.swift in Sources */,
 				25682ABE229FC3C7004AB452 /* KNApproveTokenViewController.swift in Sources */,
+				7EE3143C286036AF0012ADF9 /* TokenPoolCell.swift in Sources */,
 				A65194382835F13D008F4AEB /* TransactionDetailContract.swift in Sources */,
 				25CC0ABD20591DFB0009D0D5 /* KNGasConfiguration.swift in Sources */,
 				29AD8A0C1F93FBBF008E10E7 /* Subscribable.swift in Sources */,
@@ -6656,6 +6713,7 @@
 				A6E6C9CD28170D4B00EEB2E6 /* DefaultTransactionRepository.swift in Sources */,
 				291794FB1F95DC2200539A30 /* Web3Swift.swift in Sources */,
 				7EFE440D27158594006CF502 /* ToggleTokenCell.swift in Sources */,
+				7E921A0D28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift in Sources */,
 				C3ED1E2D261871FA0024970C /* LoginInfo.swift in Sources */,
 				C31F74A925DCEDA0008B21F7 /* OverviewDepositViewController.swift in Sources */,
 				2963B6C11F9AE0E4003063C1 /* Data.swift in Sources */,
@@ -6685,6 +6743,7 @@
 				25D325A720C075DE008BB235 /* KNSendTokenViewCoordinator.swift in Sources */,
 				C3743295278EC076002C97A9 /* Int.swift in Sources */,
 				A6E26FD8281289DC0054427E /* SolanaTransactionItemViewModel.swift in Sources */,
+				7E3FCF1128574DB9009DD914 /* AdvanceSearchTokenProtocols.swift in Sources */,
 				A6E6C9C92817000600EEB2E6 /* SolanaTransaction.swift in Sources */,
 				25E9E1FB208F0D9900A9090D /* KNPasscodeUtil.swift in Sources */,
 				291794FF1F95F5CE00539A30 /* Web3Request.swift in Sources */,
@@ -6705,6 +6764,7 @@
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
 				C31371F12603579D003D432B /* Krytal.swift in Sources */,
 				25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */,
+				7E3FCF0E28574DB9009DD914 /* AdvanceSearchTokenPresenter.swift in Sources */,
 				C365811E25E1132400A6DA4B /* Storage.swift in Sources */,
 				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,
 				A6E6C9EC2818056800EEB2E6 /* SolanaTransactionObject.swift in Sources */,

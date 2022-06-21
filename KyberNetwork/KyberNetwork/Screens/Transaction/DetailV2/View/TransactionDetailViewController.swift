@@ -80,7 +80,7 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
 extension TransactionDetailViewController: BridgeSubTransactionCellDelegate {
   
   func openTxDetail(cell: BridgeSubTransactionCell, hash: String, chainID: String) {
-    presenter?.onOpenTxScan(txHash: hash, chainID: chainID)
+    presenter.onOpenTxScan(txHash: hash, chainID: chainID)
   }
   
   func copyTxAddress(cell: BridgeSubTransactionCell, address: String) {

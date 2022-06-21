@@ -10,6 +10,7 @@ import SwiftChart
 import BigInt
 
 class ChartViewModel {
+  var poolData: [TokenPoolDetail] = []
   var dataSource: [(x: Double, y: Double)] = []
   var xLabels: [Double] = []
   let token: Token
@@ -20,11 +21,13 @@ class ChartViewModel {
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
+  var chainId = KNGeneralProvider.shared.currentChain.getChainId()
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
     didSet {
       UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
     }
   }
+  var isExpandingPoolTable: Bool = false
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
   let numberFormatter: NumberFormatter = {
@@ -253,7 +256,7 @@ enum ChartViewEvent {
   case openEtherscan(address: String)
   case openWebsite(url: String)
   case openTwitter(name: String)
-  
+  case getPoolList(address: String, chainId: Int)
 }
 
 enum ChartPeriodType: Int {
@@ -308,6 +311,18 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var tagImageView: UIImageView!
   @IBOutlet weak var tagLabel: UILabel!
   @IBOutlet weak var tagView: UIView!
+  @IBOutlet weak var chainView: UIView!
+  @IBOutlet weak var chainIcon: UIImageView!
+  @IBOutlet weak var chainAddressLabel: UILabel!
+  @IBOutlet weak var chainViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var tagViewTralingToChainViewConstraint: NSLayoutConstraint!
+  @IBOutlet weak var infoSegment: SegmentedControl!
+  @IBOutlet weak var poolTableView: UITableView!
+  @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var poolView: UIView!
+  @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var showAllPoolButton: UIButton!
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
 
@@ -324,6 +339,11 @@ class ChartViewController: KNBaseViewController {
     super.viewDidLoad()
     
     self.setupConstraints()
+    self.infoSegment.highlightSelectedSegment()
+    self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
+    self.infoSegment.selectedSegmentIndex = 0
+    self.poolTableView.registerCellNib(TokenPoolCell.self)
+
     self.chartView.showYLabelsAndGrid = false
     self.chartView.labelColor = UIColor(red: 164, green: 171, blue: 187)
     self.chartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
@@ -348,14 +368,43 @@ class ChartViewController: KNBaseViewController {
 
   func setupConstraints() {
     topBarHeight?.constant = UIScreen.statusBarHeight + 36 * 2 + 24
+    self.textViewLeadingConstraint.constant = UIScreen.main.bounds.size.width + 20
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.loadChartData()
+    self.getPoolList()
     self.loadTokenDetailInfo()
     self.updateUIChartInfo()
     self.updateUITokenInfo()
+  }
+  
+  func showPoolView() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.tableViewHeight.priority = .required
+      self.poolViewTrailingConstraint.constant = 0
+      self.textViewLeadingConstraint.constant = UIScreen.main.bounds.size.width + 20
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func hidePoolView() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.tableViewHeight.priority = .fittingSizeLevel
+      self.poolViewTrailingConstraint.constant = UIScreen.main.bounds.size.width
+      self.textViewLeadingConstraint.constant = 20
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+    self.infoSegment.underlinePosition()
+    if sender.selectedSegmentIndex == 1 {
+      self.hidePoolView()
+    } else {
+      self.showPoolView()
+    }
   }
 
   @IBAction func changeChartPeriodButtonTapped(_ sender: UIButton) {
@@ -402,7 +451,12 @@ class ChartViewController: KNBaseViewController {
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
   }
   
-  
+  @IBAction func showAllPoolButtonTapped(_ sender: Any) {
+    self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
+    self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
+    self.updatePoolTableHeight()
+  }
+
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
   }
@@ -427,9 +481,21 @@ class ChartViewController: KNBaseViewController {
       self.tagImageView.image = image
       self.tagLabel.text = self.viewModel.tagLabel
       self.tagView.isHidden = false
+      self.chainViewLeadingConstraint.isActive = false
+      self.tagViewTralingToChainViewConstraint.isActive = true
     } else {
       self.tagView.isHidden = true
+      self.chainViewLeadingConstraint.isActive = true
+      self.tagViewTralingToChainViewConstraint.isActive = false
     }
+    
+    if let chain = ChainType.make(chainID: self.viewModel.chainId) {
+      self.chainIcon.image = chain.chainIcon()
+    } else {
+      self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
+    }
+
+    self.chainAddressLabel.text = KNGeneralProvider.shared.currentWalletAddress
   }
 
   fileprivate func loadChartData() {
@@ -439,6 +505,10 @@ class ChartViewController: KNBaseViewController {
 
   fileprivate func loadTokenDetailInfo() {
     self.delegate?.chartViewController(self, run: .getTokenDetailInfo(address: self.viewModel.token.address))
+  }
+  
+  fileprivate func getPoolList() {
+    self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
   }
 
   fileprivate func updateUIPeriodSelectButtons() {
@@ -451,6 +521,24 @@ class ChartViewController: KNBaseViewController {
         button.backgroundColor = .clear
       }
     }
+  }
+  
+  func updatePoolTableHeight() {
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      if self.viewModel.isExpandingPoolTable {
+        self.tableViewHeight.constant = CGFloat(self.viewModel.poolData.count * 92)
+      } else {
+        self.tableViewHeight.constant = CGFloat(460)
+      }
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
+    self.viewModel.poolData = poolData
+    self.updatePoolTableHeight()
+    self.showAllPoolButton.isHidden = poolData.count <= 5
+    self.poolTableView.reloadData()
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
@@ -511,5 +599,18 @@ extension ChartViewController: ChartDelegate {
   
   func didEndTouchingChart(_ chart: Chart) {
     
+  }
+}
+
+extension ChartViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.viewModel.poolData.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
+    let poolData = self.viewModel.poolData[indexPath.row]
+    cell.updateUI(poolDetail: poolData)
+    return cell
   }
 }

@@ -16,11 +16,6 @@ enum OverviewMainCellMode {
   case search(token: Token)
 }
 
-let VERIFIED_TAG   = "VERIFIED"
-let PROMOTION_TAG  = "PROMOTION"
-let SCAM_TAG       = "SCAM"
-let UNVERIFIED_TAG = "UNVERIFIED"
-
 class OverviewMainCellViewModel {
   let mode: OverviewMainCellMode
   let currency: CurrencyMode
@@ -238,16 +233,7 @@ class OverviewMainCellViewModel {
   
   var tagImage: UIImage? {
     guard let tag = self.tag else { return nil }
-    if tag == VERIFIED_TAG {
-      return UIImage(named: "blueTick_icon")
-    } else if tag == PROMOTION_TAG {
-      return UIImage(named: "green-checked-tag-icon")
-    } else if tag == SCAM_TAG {
-      return UIImage(named: "warning-tag-icon")
-    } else if tag == UNVERIFIED_TAG {
-      return nil
-    }
-    return nil
+    return UIImage.imageWithTag(tag: tag)
   }
   
   func formatPoints(_ number: Double) -> String {
