@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol RewardHuntingCoordinatorDelegate: AnyObject {
+  func openRewards()
+}
+
 class RewardHuntingCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
   var session: KNSession
+  weak var delegate: RewardHuntingCoordinatorDelegate?
   
   init(navigationController: UINavigationController, session: KNSession) {
     self.navigationController = navigationController
@@ -35,8 +40,7 @@ class RewardHuntingCoordinator: Coordinator {
   }
   
   private func openRewards() {
-    let coordinator = RewardCoordinator(navigationController: navigationController, session: session)
-    coordinate(coordinator: coordinator)
+    delegate?.openRewards()
   }
   
   private func onClose() {
@@ -44,4 +48,3 @@ class RewardHuntingCoordinator: Coordinator {
   }
   
 }
-
