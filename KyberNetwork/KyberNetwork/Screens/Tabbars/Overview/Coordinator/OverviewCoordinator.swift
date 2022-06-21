@@ -53,6 +53,7 @@ class TokenPoolDetail: Codable {
   var address: String
   var tvl: Double
   var chainId: Int
+  var name: String
   
   var token0: PoolPairToken
   var token1: PoolPairToken
@@ -61,7 +62,7 @@ class TokenPoolDetail: Codable {
     self.address = json["address"] as? String ?? ""
     self.tvl = json["tvl"] as? Double ?? 0.0
     self.chainId = json["chainId"] as? Int ?? 0
-    
+    self.name = json["name"] as? String ?? ""
     self.token0 = PoolPairToken(json: json["token0"] as? JSONDictionary ?? JSONDictionary())
     self.token1 = PoolPairToken(json: json["token1"] as? JSONDictionary ?? JSONDictionary())
   }

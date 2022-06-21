@@ -314,6 +314,7 @@ protocol ChartViewControllerDelegate: class {
 
 class ChartViewController: KNBaseViewController {
 
+  @IBOutlet weak var containScrollView: UIScrollView!
   @IBOutlet weak var chartContainerView: UIView!
   @IBOutlet var periodChartSelectButtons: [UIButton]!
   @IBOutlet weak var priceLabel: UILabel!
@@ -681,7 +682,7 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    cell.updateUI(poolDetail: poolData)
+    cell.updateUI(poolDetail: poolData, baseTokenSymbol: self.viewModel.token.symbol)
     return cell
   }
 }
@@ -695,5 +696,6 @@ extension ChartViewController: UITableViewDelegate {
     let quote = poolData.token1.address
     self.loadCandleChartData(source: source, quote: quote)
     self.setupTradingView()
+    self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
   }
 }

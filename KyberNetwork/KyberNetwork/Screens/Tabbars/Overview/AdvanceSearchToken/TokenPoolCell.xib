@@ -17,14 +17,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="101" id="KGk-i7-Jjw" customClass="TokenPoolCell" customModule="Krystal" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="376" height="101"/>
+            <rect key="frame" x="0.0" y="0.0" width="380" height="101"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="376" height="101"/>
+                <rect key="frame" x="0.0" y="0.0" width="380" height="101"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0FW-XE-6Qa">
-                        <rect key="frame" x="16" y="8" width="344" height="76"/>
+                        <rect key="frame" x="16" y="8" width="348" height="76"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_token" translatesAutoresizingMaskIntoConstraints="NO" id="DSf-Dr-QTt">
                                 <rect key="frame" x="17" y="13" width="16" height="16"/>
@@ -33,14 +33,18 @@
                                     <constraint firstAttribute="height" constant="16" id="LqG-cB-Sow"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC/ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PT-OT-0Xr">
-                                <rect key="frame" x="52" y="10.5" width="73.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USDC/miWETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PT-OT-0Xr">
+                                <rect key="frame" x="52" y="10.5" width="125" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Bpx-TT-LXC"/>
+                                    <constraint firstAttribute="width" constant="125" id="rWu-NJ-Rvm"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kyber Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBl-mg-VyW">
-                                <rect key="frame" x="129.5" y="12.5" width="92" height="17"/>
+                                <rect key="frame" x="179" y="13" width="65" height="16.5"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -65,20 +69,24 @@
                                     <constraint firstAttribute="width" constant="16" id="Qx7-oq-8tj"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$2.87" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ski-Io-Y1x">
-                                <rect key="frame" x="283" y="16" width="40" height="19"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$20,000.87" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ski-Io-Y1x">
+                                <rect key="frame" x="246" y="10.5" width="81" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="81" id="XDa-v1-sg5"/>
+                                    <constraint firstAttribute="height" constant="21" id="kFh-SE-pgy"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$2.87" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKc-2s-MIz">
-                                <rect key="frame" x="283" y="45" width="40" height="19"/>
+                                <rect key="frame" x="287" y="45" width="40" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TVL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qj7-fg-Z8l">
-                                <rect key="frame" x="260.5" y="47.5" width="18.5" height="14"/>
+                                <rect key="frame" x="264.5" y="47.5" width="18.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -87,8 +95,9 @@
                         <color key="backgroundColor" name="innerContainerBgColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="76" id="2uL-Sk-YGL"/>
-                            <constraint firstItem="dBl-mg-VyW" firstAttribute="leading" secondItem="2PT-OT-0Xr" secondAttribute="trailing" constant="4" id="30O-oA-KLd"/>
+                            <constraint firstItem="dBl-mg-VyW" firstAttribute="leading" secondItem="2PT-OT-0Xr" secondAttribute="trailing" constant="2" id="30O-oA-KLd"/>
                             <constraint firstItem="CB5-AV-0UJ" firstAttribute="leading" secondItem="DSf-Dr-QTt" secondAttribute="trailing" constant="-2" id="7GI-Ez-rX1"/>
+                            <constraint firstItem="Ski-Io-Y1x" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dBl-mg-VyW" secondAttribute="trailing" constant="2" id="E4e-wz-KlX"/>
                             <constraint firstItem="4aj-TF-AF1" firstAttribute="leading" secondItem="5Lj-dU-CHA" secondAttribute="trailing" constant="5" id="EON-zS-WP6"/>
                             <constraint firstAttribute="bottom" secondItem="5Lj-dU-CHA" secondAttribute="bottom" constant="13" id="HYE-ge-4Ic"/>
                             <constraint firstItem="4aj-TF-AF1" firstAttribute="centerY" secondItem="5Lj-dU-CHA" secondAttribute="centerY" id="ILy-Kd-WMH"/>
@@ -103,8 +112,8 @@
                             <constraint firstItem="DSf-Dr-QTt" firstAttribute="leading" secondItem="0FW-XE-6Qa" secondAttribute="leading" constant="17" id="jXE-9i-irw"/>
                             <constraint firstItem="CB5-AV-0UJ" firstAttribute="centerY" secondItem="DSf-Dr-QTt" secondAttribute="centerY" id="kPm-16-zzr"/>
                             <constraint firstItem="cKc-2s-MIz" firstAttribute="leading" secondItem="qj7-fg-Z8l" secondAttribute="trailing" constant="4" id="kX7-M4-jd4"/>
+                            <constraint firstItem="Ski-Io-Y1x" firstAttribute="centerY" secondItem="dBl-mg-VyW" secondAttribute="centerY" id="m2U-0g-hgJ"/>
                             <constraint firstItem="qj7-fg-Z8l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4aj-TF-AF1" secondAttribute="trailing" constant="5" id="vfl-s4-y8k"/>
-                            <constraint firstItem="Ski-Io-Y1x" firstAttribute="top" secondItem="0FW-XE-6Qa" secondAttribute="top" constant="16" id="wIL-GR-XJn"/>
                             <constraint firstItem="DSf-Dr-QTt" firstAttribute="top" secondItem="0FW-XE-6Qa" secondAttribute="top" constant="13" id="xa8-cF-VUo"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -129,12 +138,14 @@
                 <outlet property="chainIcon" destination="5Lj-dU-CHA" id="6s3-dX-Rck"/>
                 <outlet property="fullNameLabel" destination="dBl-mg-VyW" id="Dwu-qt-kh7"/>
                 <outlet property="pairNameLabel" destination="2PT-OT-0Xr" id="u6X-XV-NL2"/>
-                <outlet property="token0Icon" destination="CB5-AV-0UJ" id="Xcd-5H-hFE"/>
-                <outlet property="token1Icon" destination="DSf-Dr-QTt" id="AMw-rB-m77"/>
+                <outlet property="pairNameLabelWidth" destination="rWu-NJ-Rvm" id="9Hx-EZ-Wja"/>
+                <outlet property="token0Icon" destination="DSf-Dr-QTt" id="Ksy-H7-jAX"/>
+                <outlet property="token1Icon" destination="CB5-AV-0UJ" id="CPB-kP-qnv"/>
                 <outlet property="totalValueLabel" destination="cKc-2s-MIz" id="mIt-2z-RSA"/>
                 <outlet property="valueLabel" destination="Ski-Io-Y1x" id="ifs-od-BGo"/>
+                <outlet property="valueLabelWidth" destination="XDa-v1-sg5" id="nAu-Cl-gHL"/>
             </connections>
-            <point key="canvasLocation" x="169.56521739130437" y="99.441964285714278"/>
+            <point key="canvasLocation" x="172.46376811594203" y="99.441964285714278"/>
         </tableViewCell>
     </objects>
     <resources>

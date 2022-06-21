@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -34,6 +34,7 @@
                 <outlet property="chainViewLeadingConstraint" destination="zON-Fc-Za2" id="DSv-hb-eP2"/>
                 <outlet property="chartContainerView" destination="ueJ-8I-pMk" id="3B5-13-zIW"/>
                 <outlet property="chartDetailLabel" destination="aFB-ff-HUe" id="SBH-EX-ap5"/>
+                <outlet property="containScrollView" destination="wC0-1c-nRc" id="PlA-Ck-TD4"/>
                 <outlet property="descriptionTextView" destination="yx2-K4-ikS" id="rud-bP-2OX"/>
                 <outlet property="ethBalanceLabel" destination="5JN-3d-A7T" id="xcI-7T-t4b"/>
                 <outlet property="favButton" destination="ak7-Ym-9X3" id="JHD-bG-e95"/>
