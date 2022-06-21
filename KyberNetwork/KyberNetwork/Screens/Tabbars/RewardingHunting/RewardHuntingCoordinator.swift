@@ -36,7 +36,7 @@ class RewardHuntingCoordinator: Coordinator {
   
   private func openRewards() {
     let coordinator = RewardCoordinator(navigationController: navigationController, session: session)
-    coordinator.start()
+    coordinate(coordinator: coordinator)
   }
   
   private func onClose() {
