@@ -7,7 +7,6 @@
 
 import UIKit
 import QRCodeReaderViewController
-import TrustCore
 import KrystalWallets
 
 protocol AddWatchWalletViewControllerDelegate: class {

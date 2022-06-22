@@ -2,8 +2,6 @@
 
 import Foundation
 @testable import Trust
-import TrustKeystore
-import TrustCore
 import BigInt
 
 extension UnconfirmedTransaction {

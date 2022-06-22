@@ -2,8 +2,6 @@
 
 import UIKit
 import SafariServices
-//import TrustKeystore
-//import TrustCore
 import MessageUI
 import KrystalWallets
 
@@ -74,11 +72,11 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     let controller = TermsAndConditionsViewController()
     return controller
   }()
-
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     keystore: Keystore
-    ) {
+  ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     self.keystore = keystore

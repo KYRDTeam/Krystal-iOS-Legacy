@@ -139,6 +139,8 @@ struct Strings {
   static let pleaseEnterAddress = "please.enter.address".toBeLocalised()
   static let removing = "removing".toBeLocalised()
   static let watchWalletNotSupportOperation = "watch.wallet.does.not.support.operation".toBeLocalised()
+  static let invalidAddress = "invalid.address".toBeLocalised()
+  static let pleaseEnterValidAddress = "please.enter.a.valid.address.to.continue".toBeLocalised()
   
   // Rewards
   static let switchToBSCToClaimRewards = "switch.to.bsc.to.claim.rewards".toBeLocalised()

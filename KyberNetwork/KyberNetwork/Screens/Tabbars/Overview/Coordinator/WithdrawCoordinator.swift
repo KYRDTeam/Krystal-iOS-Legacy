@@ -8,7 +8,6 @@
 import Foundation
 import Moya
 import BigInt
-import TrustCore
 import Result
 import APIKit
 import JSONRPCKit

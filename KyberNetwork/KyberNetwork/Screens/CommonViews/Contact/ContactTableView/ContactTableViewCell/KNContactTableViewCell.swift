@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import TrustCore
 import SwipeCellKit
 import KrystalWallets
 
@@ -21,9 +20,12 @@ struct KNContactTableViewCellModel {
     if self.contact.address.isValidSolanaAddress() {
       guard let data = SolanaUtil.convertBase58Data(addressString: self.contact.address) else { return nil }
       return UIImage.generateImage(with: 32, hash: data)
+    } else {
+      guard KNGeneralProvider.shared.isAddressValid(address: contact.address) else { return nil }
+      guard let data = Data(hexString: contact.address) else { return nil }
+      return UIImage.generateImage(with: 32, hash: data)
     }
-    guard let data = Address(string: self.contact.address)?.data else { return nil }
-    return UIImage.generateImage(with: 32, hash: data)
+    
   }
 
   var displayedName: String { return self.contact.name }

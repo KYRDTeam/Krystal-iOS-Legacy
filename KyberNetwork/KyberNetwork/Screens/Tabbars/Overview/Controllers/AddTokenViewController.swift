@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import TrustCore
 
 enum AddTokenViewEvent {
   case openQR
@@ -171,7 +170,7 @@ class AddTokenViewController: KNBaseViewController {
       return false
     }
     
-    if let text = self.addressField.text, Address(string: text) == nil {
+    if let text = self.addressField.text, KNGeneralProvider.shared.isAddressValid(address: text) {
       self.showErrorTopBannerMessage(with: "", message: "Address isn't correct")
       return false
     }

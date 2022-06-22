@@ -2,7 +2,6 @@
 
 import UIKit
 import BigInt
-import TrustCore
 import KrystalWallets
 
 struct RawSwapTransaction {

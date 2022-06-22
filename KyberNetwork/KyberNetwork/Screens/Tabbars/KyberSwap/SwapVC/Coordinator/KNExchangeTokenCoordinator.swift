@@ -3,7 +3,6 @@
 import UIKit
 import BigInt
 import TrustKeystore
-import TrustCore
 import Result
 import Moya
 import APIKit
@@ -179,8 +178,8 @@ extension KNExchangeTokenCoordinator {
       return
     }
 
-    let isValidSrcAddress = Address(string: srcTokenAddress) != nil
-    let isValidDestTokenAddress = Address(string: destTokenAddress) != nil
+    let isValidSrcAddress = KNGeneralProvider.shared.isAddressValid(address: srcTokenAddress)
+    let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
     
     guard isValidSrcAddress, isValidDestTokenAddress else {
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)

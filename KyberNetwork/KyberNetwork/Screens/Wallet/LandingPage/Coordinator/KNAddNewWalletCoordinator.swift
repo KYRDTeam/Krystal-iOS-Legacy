@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import BigInt
 import KrystalWallets
 

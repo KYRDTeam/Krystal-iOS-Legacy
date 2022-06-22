@@ -8,8 +8,6 @@
 import Foundation
 import BigInt
 import Result
-import TrustCore
-//import WalletCore
 import Moya
 import APIKit
 import JSONRPCKit

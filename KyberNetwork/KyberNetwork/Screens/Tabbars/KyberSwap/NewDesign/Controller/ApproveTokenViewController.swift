@@ -7,7 +7,6 @@
 
 import UIKit
 import BigInt
-import TrustCore
 
 protocol ApproveTokenViewModel {
   func getFee() -> BigInt

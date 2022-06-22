@@ -2,7 +2,6 @@
 
 import UIKit
 import BigInt
-import TrustCore
 
 enum KNSearchTokenViewEvent {
   case cancel
@@ -20,7 +19,7 @@ class KNSearchTokenViewModel {
   var balances: [String: Balance] = [:]
   var searchedText: String = "" {
     didSet {
-      guard Address(string: self.searchedText) == nil else {
+      if KNGeneralProvider.shared.isAddressValid(address: self.searchedText) {
         let tokens = self.checkExistAddress()
         self.displayedTokens = tokens
         return
@@ -47,7 +46,7 @@ class KNSearchTokenViewModel {
   }
   
   func checkSearchTextIsAddress() -> Bool {
-    return Address(string: self.searchedText) != nil
+    return KNGeneralProvider.shared.isAddressValid(address: self.searchedText)
   }
 
   func updateDisplayedTokens() {
@@ -199,7 +198,7 @@ class KNSearchTokenViewController: KNBaseViewController {
   }
   
   fileprivate func requestTokenInfoIfNeeded() {
-    guard Address(string: self.viewModel.searchedText) != nil else {
+    guard KNGeneralProvider.shared.isAddressValid(address: self.viewModel.searchedText) else {
       return
     }
     guard self.viewModel.checkExistAddress().isEmpty == true else {
