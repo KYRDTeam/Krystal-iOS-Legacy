@@ -14,7 +14,7 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
   weak private var view: AdvanceSearchTokenViewProtocol?
   var interactor: AdvanceSearchTokenInteractorProtocol?
   private let router: AdvanceSearchTokenWireframeProtocol
-
+  var isShowAll: Bool = false
   var searchResults: SearchResult?
   var currencyMode: CurrencyMode = .usd
   var recommendTags: [String] {
@@ -49,7 +49,13 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
     guard let dataSource = searchResults else {
       return 0
     }
-    return section == 0 ? dataSource.portfolios.count : dataSource.tokens.count
+    if section == 0 {
+      return dataSource.portfolios.count
+    } else if isShowAll {
+      return dataSource.tokens.count + 1
+    } else {
+      return dataSource.tokens.count <= 10 ? dataSource.tokens.count : 11
+    }
   }
   
   func shouldShowEmpty() -> Bool {

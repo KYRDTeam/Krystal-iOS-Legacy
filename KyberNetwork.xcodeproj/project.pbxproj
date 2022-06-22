@@ -530,6 +530,8 @@
 		7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */; };
 		7EE7A72A28446F7A00F4D8CF /* ConfirmBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */; };
 		7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */; };
+		7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE92A0D286307E10050DC8D /* ShowAllCell.swift */; };
+		7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE92A0E286307E10050DC8D /* ShowAllCell.xib */; };
 		7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */; };
 		7EFE440027144533006CF502 /* RewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43FE27144533006CF502 /* RewardsViewController.swift */; };
 		7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE43FF27144533006CF502 /* RewardsViewController.xib */; };
@@ -1543,6 +1545,8 @@
 		7EE3143B286036AF0012ADF9 /* TokenPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenPoolCell.xib; sourceTree = "<group>"; };
 		7EE7A72828446F7A00F4D8CF /* ConfirmBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBridgeViewController.swift; sourceTree = "<group>"; };
 		7EE7A72928446F7A00F4D8CF /* ConfirmBridgeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmBridgeViewController.xib; sourceTree = "<group>"; };
+		7EE92A0D286307E10050DC8D /* ShowAllCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAllCell.swift; sourceTree = "<group>"; };
+		7EE92A0E286307E10050DC8D /* ShowAllCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAllCell.xib; sourceTree = "<group>"; };
 		7EEB9270278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasFeeSelectorPopupViewModel.swift; sourceTree = "<group>"; };
 		7EFE43FE27144533006CF502 /* RewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsViewController.swift; sourceTree = "<group>"; };
 		7EFE43FF27144533006CF502 /* RewardsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewardsViewController.xib; sourceTree = "<group>"; };
@@ -4192,6 +4196,8 @@
 				7ECCB1F7286170C800499FA0 /* ResultToken.swift */,
 				7ECCB1F9286170F700499FA0 /* Portfolio.swift */,
 				7ECCB1FB2861711800499FA0 /* SearchResult.swift */,
+				7EE92A0D286307E10050DC8D /* ShowAllCell.swift */,
+				7EE92A0E286307E10050DC8D /* ShowAllCell.xib */,
 			);
 			path = AdvanceSearchToken;
 			sourceTree = "<group>";
@@ -5896,6 +5902,7 @@
 				C3743299278ED345002C97A9 /* SignMessageConfirmPopup.xib in Resources */,
 				C3137200260490A1003D432B /* ShareReferralLinkViewController.xib in Resources */,
 				7EE3143D286036AF0012ADF9 /* TokenPoolCell.xib in Resources */,
+				7EE92A10286307E10050DC8D /* ShowAllCell.xib in Resources */,
 				252EBD8121636D9A00609101 /* Localizable.stringsdict in Resources */,
 				C33BC64725E353F70075259B /* tokens_price.json in Resources */,
 				25073D29211AF20D00833C92 /* Montserrat-Medium.ttf in Resources */,
@@ -6266,6 +6273,7 @@
 				7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */,
 				C347DA3125C02A2B000D6E81 /* EarnCoordinator.swift in Sources */,
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
+				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,

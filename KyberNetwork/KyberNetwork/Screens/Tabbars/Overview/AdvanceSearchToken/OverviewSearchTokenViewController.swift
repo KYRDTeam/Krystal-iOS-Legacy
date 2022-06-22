@@ -35,6 +35,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
     searchField.setPlaceholder(text: Strings.searchByTokenWalletEND, color: UIColor(named: "normalTextColor")!)
     self.tableView.registerCellNib(AdvanceSearchTokenCell.self)
     self.tableView.registerCellNib(AdvanceSearchPortfolioCell.self)
+    self.tableView.registerCellNib(ShowAllCell.self)
     self.recentSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
     self.suggestSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
     self.suggestSearchTagList.addTags(presenter.recommendTags)
@@ -143,6 +144,11 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
       let portfolio = presenter.searchResults?.portfolios[indexPath.row]
       cell.updateUI(portfolio: portfolio)
       return cell
+    } else if indexPath.row == presenter.numberOfRows(section: indexPath.section) - 1 && indexPath.row >= 10 {
+      // last row
+      let cell = tableView.dequeueReusableCell(ShowAllCell.self, indexPath: indexPath)!
+      cell.titleLabel.text = presenter.isShowAll ? Strings.showLess : Strings.showMore
+      return cell
     } else {
       let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
       let token = presenter.searchResults?.tokens[indexPath.row]
@@ -157,6 +163,9 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 0 {
       self.openSafari(with: "https://docs.krystal.app/")
+    } else if indexPath.row == presenter.numberOfRows(section: indexPath.section) - 1 && indexPath.row >= 10  {
+      presenter.isShowAll = !presenter.isShowAll
+      self.tableView.reloadData()
     } else {
       if let token = presenter.searchResults?.tokens[indexPath.row] {
         presenter.openChartToken(token: token)
