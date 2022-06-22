@@ -20,6 +20,7 @@ protocol AdvanceSearchTokenWireframeProtocol: class {
 protocol AdvanceSearchTokenPresenterProtocol: class {
   var recommendTags: [String] { get }
   var searchResults: SearchResult? { get set }
+  var isShowAll: Bool { get set }
   func didGetSearchResult(result: SearchResult?, error: Error?)
   func doSearch(keyword: String)
   func openChartToken(token: ResultToken)

@@ -363,7 +363,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolNameContainerView: UIView!
   @IBOutlet weak var poolNameLabel: UILabel!
   @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
-  
+  fileprivate var tokenPoolTimer: Timer?
   init(viewModel: ChartViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ChartViewController.className, bundle: nil)
@@ -487,6 +487,12 @@ class ChartViewController: KNBaseViewController {
     self.loadTokenDetailInfo()
     self.updateUIChartInfo()
     self.updateUITokenInfo()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.tokenPoolTimer?.invalidate()
+    self.tokenPoolTimer = nil
   }
   
   func showPoolView() {
@@ -639,6 +645,15 @@ class ChartViewController: KNBaseViewController {
   
   fileprivate func getPoolList() {
     self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+    self.tokenPoolTimer = Timer.scheduledTimer(
+      withTimeInterval: KNLoadingInterval.seconds15,
+      repeats: true,
+      block: { [weak self] _ in
+        guard let `self` = self else { return }
+        self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+      }
+    )
+    
   }
 
   fileprivate func updateUIPeriodSelectButtons() {
