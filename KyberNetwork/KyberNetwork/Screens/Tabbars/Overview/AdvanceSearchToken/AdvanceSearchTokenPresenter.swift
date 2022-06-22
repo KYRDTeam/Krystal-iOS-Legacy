@@ -27,21 +27,24 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
     interactor?.getSearchData(keyword: keyword)
   }
 
-  func didGetSearchResult(result: SearchResult?) {
+  func didGetSearchResult(result: SearchResult?, error: Error?) {
     view?.hideLoading()
+    
+    if let error = error {
+      view?.showError(msg: error.localizedDescription)
+    }
+    
     guard let result = result else {
       searchResults = nil
       view?.reloadData()
       return
     }
-
-    
     if result.tokens.isNotEmpty || result.portfolios.isNotEmpty {
       searchResults = result
     }
     view?.reloadData()
   }
-  
+
   func numberOfRows(section: Int) -> Int {
     guard let dataSource = searchResults else {
       return 0

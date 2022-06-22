@@ -74,7 +74,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 10)) { result in
+        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
           switch result {
           case .failure(let error):
             controller.coordinatorFailUpdateApi(error)

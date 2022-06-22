@@ -19,14 +19,13 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
     provider.request(.advancedSearch(query: keyword, limit: 50)) { result in
       switch result {
       case .failure(let error):
-        self.presenter?.didGetSearchResult(result: nil)
-        print("[Get Search Data]" + error.localizedDescription)
+        self.presenter?.didGetSearchResult(result: nil, error: error)
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? JSONDictionary {
           let searchResult = SearchResult(json: jsonData)
-          self.presenter?.didGetSearchResult(result: searchResult)
+          self.presenter?.didGetSearchResult(result: searchResult, error: nil)
         } else {
-          self.presenter?.didGetSearchResult(result: nil)
+          self.presenter?.didGetSearchResult(result: nil, error: nil)
         }
       }
     }
