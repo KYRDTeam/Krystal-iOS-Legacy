@@ -25,6 +25,8 @@ protocol AdvanceSearchTokenPresenterProtocol: class {
   func openChartToken(token: ResultToken)
   func saveNewSearchTag(_ tag: String)
   func getRecentSearchTag() -> [String]
+  func numberOfRows(section: Int) -> Int
+  func shouldShowEmpty() -> Bool
 }
 
 //MARK: Interactor -

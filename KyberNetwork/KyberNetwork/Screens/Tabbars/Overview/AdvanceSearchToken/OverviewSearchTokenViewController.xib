@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -20,9 +20,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverviewSearchTokenViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="7RB-oC-gqB" id="OlC-C1-nFg"/>
-                <outlet property="emptyView" destination="q8G-Fg-GEl" id="5M6-W6-eBw"/>
+                <outlet property="emptyView" destination="jC8-u7-bJL" id="BUK-Rf-d66"/>
                 <outlet property="recentSearchTagList" destination="n3W-KU-Gsj" id="I98-vt-wli"/>
                 <outlet property="recentSearchTitle" destination="YQ0-4h-jAu" id="0cc-Ty-Qwg"/>
+                <outlet property="recentSearchView" destination="q8G-Fg-GEl" id="pJg-bn-X6H"/>
                 <outlet property="searchField" destination="wR3-b1-dUM" id="haR-hV-qhD"/>
                 <outlet property="searchFieldActionButton" destination="3af-Az-EFO" id="bmA-3l-ufm"/>
                 <outlet property="searchViewRightConstraint" destination="cbf-Ty-FYo" id="aob-zn-hbO"/>
@@ -131,6 +132,31 @@
                         <outlet property="delegate" destination="-1" id="qH1-lW-bea"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jC8-u7-bJL">
+                    <rect key="frame" x="0.0" y="162" width="375" height="505"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-search-token" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-hz-JYp">
+                            <rect key="frame" x="123.5" y="54" width="128" height="137"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="128" id="rMQ-Dy-vTY"/>
+                                <constraint firstAttribute="height" constant="137" id="tAo-Mu-zqf"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No records found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGt-zZ-FbH">
+                            <rect key="frame" x="132.5" y="209" width="110" height="17"/>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                            <color key="textColor" name="normalTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="mainViewBgColor"/>
+                    <constraints>
+                        <constraint firstItem="kGt-zZ-FbH" firstAttribute="top" secondItem="bs5-hz-JYp" secondAttribute="bottom" constant="18" id="0E4-eN-qmX"/>
+                        <constraint firstItem="kGt-zZ-FbH" firstAttribute="centerX" secondItem="jC8-u7-bJL" secondAttribute="centerX" id="Rbk-oD-T8w"/>
+                        <constraint firstItem="bs5-hz-JYp" firstAttribute="centerX" secondItem="jC8-u7-bJL" secondAttribute="centerX" id="bcp-Te-k4W"/>
+                        <constraint firstItem="bs5-hz-JYp" firstAttribute="top" secondItem="jC8-u7-bJL" secondAttribute="top" constant="54" id="xuS-H6-rlU"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q8G-Fg-GEl">
                     <rect key="frame" x="0.0" y="162" width="375" height="505"/>
                     <subviews>
@@ -244,12 +270,15 @@
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
                 <constraint firstItem="q8G-Fg-GEl" firstAttribute="top" secondItem="M1o-dc-yaV" secondAttribute="bottom" constant="15" id="0dh-nE-vUR"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="jC8-u7-bJL" secondAttribute="bottom" id="6cK-6G-A1D"/>
                 <constraint firstItem="wQ8-KH-51x" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="7oR-zC-lpM"/>
+                <constraint firstItem="jC8-u7-bJL" firstAttribute="top" secondItem="wQ8-KH-51x" secondAttribute="top" id="GPP-lR-aA6"/>
                 <constraint firstItem="7RB-oC-gqB" firstAttribute="height" secondItem="M1o-dc-yaV" secondAttribute="height" id="Kb1-Nq-PeE"/>
                 <constraint firstItem="7RB-oC-gqB" firstAttribute="centerY" secondItem="M1o-dc-yaV" secondAttribute="centerY" id="LgX-mA-ZAS"/>
                 <constraint firstItem="q8G-Fg-GEl" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Ol2-5j-wiP"/>
                 <constraint firstItem="q8G-Fg-GEl" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="P17-xo-oAb"/>
                 <constraint firstItem="M1o-dc-yaV" firstAttribute="top" secondItem="UGS-rW-Gvk" secondAttribute="bottom" constant="15" id="PvT-PR-ox8"/>
+                <constraint firstItem="jC8-u7-bJL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="QGT-p3-xrp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7RB-oC-gqB" secondAttribute="trailing" constant="16" id="SoZ-Rn-M33"/>
                 <constraint firstItem="UGS-rW-Gvk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XqM-rf-zer"/>
                 <constraint firstItem="UGS-rW-Gvk" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="cAD-1T-WbI"/>
@@ -258,6 +287,7 @@
                 <constraint firstItem="wQ8-KH-51x" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="dge-C0-Wn8"/>
                 <constraint firstItem="M1o-dc-yaV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="21" id="feS-Ku-HQI"/>
                 <constraint firstItem="wQ8-KH-51x" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rIY-h8-a0t"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jC8-u7-bJL" secondAttribute="trailing" id="rZt-dK-3kD"/>
                 <constraint firstItem="UGS-rW-Gvk" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="tRQ-5l-cBz"/>
                 <constraint firstItem="q8G-Fg-GEl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="w2z-Qr-Lmb"/>
             </constraints>
@@ -274,6 +304,7 @@
     </designables>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
+        <image name="empty-search-token" width="128" height="139"/>
         <image name="search_blue_icon" width="16" height="16"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -283,6 +314,9 @@
         </namedColor>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="tagBgColor">
             <color red="0.23137254901960785" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
