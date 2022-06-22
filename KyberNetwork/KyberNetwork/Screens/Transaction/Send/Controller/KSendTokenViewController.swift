@@ -720,22 +720,20 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.updateUIAddressQRCode()
       return
     }
-    DispatchQueue.main.async {
-      KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          if name != self.viewModel.inputAddress { return }
-          if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
-            self.viewModel.updateAddressFromENS(name, ensAddr: address)
-            self.updateUIEnsMessage()
-          } else {
-            self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
-              self.getEnsAddressFromName(self.viewModel.inputAddress)
-            }
+    KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
+      guard let `self` = self else { return }
+      DispatchQueue.main.async {
+        if name != self.viewModel.inputAddress { return }
+        if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
+          self.viewModel.updateAddressFromENS(name, ensAddr: address)
+          self.updateUIEnsMessage()
+        } else {
+          self.viewModel.updateAddressFromENS(name, ensAddr: nil)
+          DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
+            self.getEnsAddressFromName(self.viewModel.inputAddress)
           }
-          self.updateUIAddressQRCode()
         }
+        self.updateUIAddressQRCode()
       }
     }
   }

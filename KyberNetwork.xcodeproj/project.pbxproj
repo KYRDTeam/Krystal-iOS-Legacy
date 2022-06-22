@@ -567,6 +567,8 @@
 		A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A782818E877000FA9CE /* WebViewController.xib */; };
 		A65C7A802818EF75000FA9CE /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A7F2818EF74000FA9CE /* URL+.swift */; };
 		A65CBF1D2862BF5E008620E2 /* WalletUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF1C2862BF5E008620E2 /* WalletUtilities.swift */; };
+		A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF1F286307BD008620E2 /* UserDefaults.swift */; };
+		A65CBF2228631A13008620E2 /* AppMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF2128631A13008620E2 /* AppMigrationManager.swift */; };
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
 		A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D22285986A700CCAB1F /* SolanaSerumService.swift */; };
@@ -1637,6 +1639,8 @@
 		A65C7A782818E877000FA9CE /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		A65C7A7F2818EF74000FA9CE /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
 		A65CBF1C2862BF5E008620E2 /* WalletUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtilities.swift; sourceTree = "<group>"; };
+		A65CBF1F286307BD008620E2 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		A65CBF2128631A13008620E2 /* AppMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMigrationManager.swift; sourceTree = "<group>"; };
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D22285986A700CCAB1F /* SolanaSerumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSerumService.swift; sourceTree = "<group>"; };
@@ -2871,6 +2875,7 @@
 				25EE4A6C20C54AD200E2282F /* KNAppCoordinator+InSession.swift */,
 				25EE4A6E20C54BEC00E2282F /* KNAppCoordinator+Notification.swift */,
 				25EE4A7120C54D1000E2282F /* KNAppCoordinator+Delegation.swift */,
+				A65CBF2128631A13008620E2 /* AppMigrationManager.swift */,
 			);
 			path = AppCoordinator;
 			sourceTree = "<group>";
@@ -3734,6 +3739,7 @@
 				291F52AA1F6B805400B369AB /* Vendors */,
 				2996F14B1F6CA725005C33AE /* Extensions */,
 				A6DA40E327F6DAA00078C58E /* Resources */,
+				A65CBF1E286307A4008620E2 /* Utilities */,
 				A66B9C6A280818E3001B7A3D /* Common */,
 				257B84AE2074D7B8003DD40E /* Assets.xcassets */,
 				2912CCF81F6A830700C6CBE3 /* AppDelegate.swift */,
@@ -4578,6 +4584,14 @@
 			isa = PBXGroup;
 			children = (
 				A65CBF1C2862BF5E008620E2 /* WalletUtilities.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A65CBF1E286307A4008620E2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A65CBF1F286307BD008620E2 /* UserDefaults.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -6782,6 +6796,7 @@
 				29C80D491FB51C380037B1E0 /* Dictionary.swift in Sources */,
 				A6E26FE228129C780054427E /* TxObject.swift in Sources */,
 				C32656AD266F546100C69561 /* ActionController.swift in Sources */,
+				A65CBF2228631A13008620E2 /* AppMigrationManager.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
 				A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */,
 				A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */,
@@ -7046,6 +7061,7 @@
 				257740C720579457003323EB /* KNSplashScreenViewController.swift in Sources */,
 				2519E11020CFBB6A00D8AFC5 /* UIImageView+Kyber.swift in Sources */,
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
+				A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,

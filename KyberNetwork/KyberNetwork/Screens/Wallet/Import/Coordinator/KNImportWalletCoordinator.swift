@@ -16,17 +16,12 @@ class KNImportWalletCoordinator: Coordinator {
   
   weak var delegate: KNImportWalletCoordinatorDelegate?
   let navigationController: UINavigationController
-  var keystore: Keystore!
   var coordinators: [Coordinator] = []
   var refCode: String = ""
   let walletManager = WalletManager.shared
   
-  init(
-    navigationController: UINavigationController
-//    keystore: Keystore
-  ) {
+  init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-//    self.keystore = keystore
   }
   
   func start() {
@@ -139,16 +134,18 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     }
   }
   
-  func sendRefCode(_ code: String, account: Account) {
+  func sendRefCode(_ code: String, wallet: KWallet) {
+    guard let address = WalletManager.shared.address(forWalletID: wallet.id) else {
+      return
+    }
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
     let sendData = prefix + data
-    // TODO: TUNG - Sign message
-    let result = self.keystore.signMessage(sendData, for: account)
-    switch result {
-    case .success(let signedData):
+    let signer = SignerFactory().getSigner(address: address)
+    do {
+      let signedData = try signer.signMessage(address: address, data: sendData, addPrefix: false)
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+      provider.request(.registerReferrer(address: address.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let isSuccess = json["success"] as? Bool, isSuccess {
             self.navigationController.showTopBannerView(message: "Success register referral code")
@@ -159,11 +156,11 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
           }
         }
       }
-    case .failure(let error):
+    } catch {
       print("[Send ref code] \(error.localizedDescription)")
     }
   }
-  
+    
   private func onImportWalletSuccess(wallet: KWallet, chain: ChainType) {
     showImportSuccessMessage()
     addToContacts(wallet: wallet)
@@ -194,8 +191,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   private func sendRefCode(refCode: String, wallet: KWallet) {
     guard !refCode.isEmpty else { return }
     
-    // TODO: - Tung -
-    print("Send ref code here")
+    sendRefCode(refCode: refCode, wallet: wallet)
   }
 }
 

@@ -13,10 +13,9 @@ class KNPasscodeCoordinator: Coordinator {
   let navigationController: UINavigationController
   let window: UIWindow = UIWindow()
   let type: KNPasscodeViewType
-  internal var keystore: Keystore? = nil
-
+  
   weak var delegate: KNPasscodeCoordinatorDelegate?
-
+  
   lazy var passcodeViewController: KNPasscodeViewController = {
     let controller = KNPasscodeViewController(viewType: self.type, delegate: self)
     controller.loadViewIfNeeded()
@@ -25,19 +24,15 @@ class KNPasscodeCoordinator: Coordinator {
   
   init(
     navigationController: UINavigationController = UINavigationController(),
-    type: KNPasscodeViewType,
-    _ keystore: Keystore? = nil
+    type: KNPasscodeViewType
   ) {
     self.navigationController = navigationController
     self.type = type
-    self.keystore = keystore
     if case .authenticate(let isUpdating) = self.type, !isUpdating {
       self.window.windowLevel = UIWindow.Level.statusBar + 1.0
       self.window.rootViewController = self.passcodeViewController
       self.window.isHidden = true
     }
-    
-//    KNWalletStorage.shared.migrateDataIfNeeded(keyStore: self.keystore, vc: self.window.rootViewController)
   }
   
   func start() {
@@ -65,7 +60,7 @@ class KNPasscodeCoordinator: Coordinator {
       }
     }
   }
-
+  
   func stop(completion: @escaping () -> Void) {
     DispatchQueue.main.async {
       if case .authenticate(let isUpdating) = self.type {
@@ -84,9 +79,6 @@ class KNPasscodeCoordinator: Coordinator {
       } else if case .verifyPasscode = self.type {
         self.navigationController.dismiss(animated: true, completion: completion)
       }
-      if let keystore = self.keystore {
-        KNWalletStorage.shared.migrateDataIfNeeded(keyStore: keystore)
-      }
     }
   }
 }
@@ -104,14 +96,14 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
       self.didCreateNewPasscode(passcode)
     }
   }
-
+  
   fileprivate func didFinishEvaluatingWithBio() {
     KNPasscodeUtil.shared.deleteNumberAttempts()
     KNPasscodeUtil.shared.deleteCurrentMaxAttemptTime()
     KNAppTracker.saveLastTimeAuthenticate()
     self.delegate?.passcodeCoordinatorDidEvaluatePIN()
   }
-
+  
   fileprivate func didFinishEnterPasscode(_ passcode: String) {
     guard let currentPasscode = KNPasscodeUtil.shared.currentPasscode() else {
       self.stop {}
@@ -130,7 +122,7 @@ extension KNPasscodeCoordinator: KNPasscodeViewControllerDelegate {
       self.passcodeViewController.userDidTypeWrongPasscode()
     }
   }
-
+  
   fileprivate func didCreateNewPasscode(_ passcode: String) {
     KNPasscodeUtil.shared.setNewPasscode(passcode)
     self.delegate?.passcodeCoordinatorDidCreatePasscode()

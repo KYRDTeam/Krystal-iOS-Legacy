@@ -5,11 +5,8 @@ import IQKeyboardManager
 import BigInt
 import Moya
 import KrystalWallets
-//import OneSignal
-//import TwitterKit
 
 class KNAppCoordinator: NSObject, Coordinator {
-
   let navigationController: UINavigationController
   let window: UIWindow
   internal var keystore: Keystore
@@ -38,15 +35,14 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var authenticationCoordinator: KNPasscodeCoordinator = {
-    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false), self.keystore)
+    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false))
     passcode.delegate = self
     return passcode
   }()
 
   lazy var landingPageCoordinator: KNLandingPageCoordinator = {
     let coordinator = KNLandingPageCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
+      navigationController: self.navigationController
     )
     coordinator.delegate = self
     return coordinator
@@ -61,27 +57,28 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
   var isFirstLoad: Bool = true
   var isFirstUpdateChain: Bool = true
-
+  let appMigrationManager: AppMigrationManager
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,
     keystore: Keystore) {
-    self.navigationController = navigationController
-    self.window = window
-    self.keystore = keystore
-    super.init()
-    self.window.rootViewController = self.navigationController
-    self.window.makeKeyAndVisible()
-  }
-
+      self.navigationController = navigationController
+      self.window = window
+      self.keystore = keystore
+      self.appMigrationManager = .init(keystore: keystore)
+      super.init()
+      self.window.rootViewController = self.navigationController
+      self.window.makeKeyAndVisible()
+    }
+  
   deinit {
     self.removeInternalObserveNotification()
     self.removeObserveNotificationFromSession()
   }
 
   func start() {
-    self.addMissingWalletObjects()
-    //TODO: need improve by check condition to show landing or start session
+    self.appMigrationManager.execute()
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -93,13 +90,6 @@ class KNAppCoordinator: NSObject, Coordinator {
 
   fileprivate func setPredefineValues() {
     UserDefaults.standard.set(false, forKey: Constants.kisShowQuickTutorialForLongPendingTx)
-  }
-
-  fileprivate func addMissingWalletObjects() {
-    let walletObjects = self.keystore.wallets.filter {
-      return KNWalletStorage.shared.get(forPrimaryKey: $0.addressString) == nil
-    }.map { return KNWalletObject(address: $0.addressString) }
-    KNWalletStorage.shared.add(wallets: walletObjects)
   }
   
   func switchWallet(wallet: KWallet, chain: ChainType) {

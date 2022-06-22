@@ -246,8 +246,7 @@ extension KNAppCoordinator {
   func addPromoCode() {
     self.promoCodeCoordinator = nil
     self.promoCodeCoordinator = KNPromoCodeCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
+      navigationController: self.navigationController
     )
     self.promoCodeCoordinator?.delegate = self
     self.promoCodeCoordinator?.start()

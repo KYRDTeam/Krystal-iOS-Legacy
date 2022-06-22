@@ -68,7 +68,7 @@ class KNNewContactViewModel {
     } else if let addr = ensAddr {
       let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
       self.contact = KNContact(
-        address: addr.description.lowercased(),
+        address: addr,
         name: self.contact.name.isEmpty ? name : self.contact.name,
         chainType: chainType
       )

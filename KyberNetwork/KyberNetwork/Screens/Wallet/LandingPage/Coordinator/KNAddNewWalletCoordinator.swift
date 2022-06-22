@@ -33,9 +33,7 @@ class KNAddNewWalletCoordinator: Coordinator {
     return coordinator
   }()
 
-  init(
-    navigationController: UINavigationController = UINavigationController()
-  ) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     let rootViewController = UIViewController()
@@ -43,7 +41,6 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.viewControllers = [rootViewController]
     self.navigationController.modalPresentationStyle = .overCurrentContext
     self.navigationController.modalTransitionStyle = .crossDissolve
-//    self.keystore = keystore
   }
 
   func start() {

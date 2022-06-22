@@ -14,10 +14,7 @@ class KNContact: Object {
   convenience init(address: String, name: String, chainType: Int) {
     self.init()
     self.name = name
-    self.address = {
-      guard let addr = Address(string: address) else { return address }
-      return addr.description
-    }()
+    self.address = address
     self.chainType = chainType
     self.lastUsed = Date()
   }

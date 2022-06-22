@@ -259,7 +259,6 @@ class EarnViewModel {
     if currentAddress.isWatchWallet {
       return nil
     } else {
-      // TODO: - TUNG - check solana
       return SignTransaction(
         value: value,
         address: currentAddress.addressString,
