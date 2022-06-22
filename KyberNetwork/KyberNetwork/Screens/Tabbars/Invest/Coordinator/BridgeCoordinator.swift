@@ -698,7 +698,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 from: ExtraBridgeTransaction(
                   address: signTransaction.account.address.description,
                   token: sourceToken.symbol,
-                  amount: "\(viewModel.sourceAmount)".amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
+                  amount: viewModel.sourceAmount.amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
                   chainId: sourceChain.getChainId().toString(),
                   chainName: sourceChain.chainName(),
                   tx: hash,
@@ -713,7 +713,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                   chainName: destChain.chainName(),
                   tx: "",
                   txStatus: "PENDING",
-                  decimals: destToken.decimals
+                  decimals: sourceToken.decimals
                 ),
                 type: "crosschain",
                 crosschainStatus: "PENDING"
