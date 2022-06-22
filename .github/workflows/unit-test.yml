@@ -125,7 +125,7 @@ jobs:
         run: |
           #!/bin/bash
           # xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "OS=13.7,name=iPhone 11" -only-testing:KrystalUnitTests | xcpretty
-          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "platform=iOS Simulator, id=B683E1BD-29B0-41D8-8B4F-1670785111E9, OS=15.2, name="iPad  (7th generation)"" -only-testing:KrystalUnitTests | xcpretty
+          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "platform=iOS Simulator, id=B683E1BD-29B0-41D8-8B4F-1670785111E9, OS=15.2" -only-testing:KrystalUnitTests | xcpretty
       # - name: Get configuration items
       #   run: |
       #     echo $SSH_PRIVATE_KEY | base64 --decode > private.key
