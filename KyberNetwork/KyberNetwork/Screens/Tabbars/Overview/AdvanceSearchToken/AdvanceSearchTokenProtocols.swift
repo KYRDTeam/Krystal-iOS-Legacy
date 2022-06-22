@@ -20,7 +20,7 @@ protocol AdvanceSearchTokenWireframeProtocol: class {
 protocol AdvanceSearchTokenPresenterProtocol: class {
   var recommendTags: [String] { get }
   var searchResults: SearchResult? { get set }
-  func didGetSearchResult(result: SearchResult?)
+  func didGetSearchResult(result: SearchResult?, error: Error?)
   func doSearch(keyword: String)
   func openChartToken(token: ResultToken)
   func saveNewSearchTag(_ tag: String)
@@ -41,4 +41,5 @@ protocol AdvanceSearchTokenViewProtocol: class {
   func reloadData()
   func showLoading()
   func hideLoading()
+  func showError(msg: String)
 }

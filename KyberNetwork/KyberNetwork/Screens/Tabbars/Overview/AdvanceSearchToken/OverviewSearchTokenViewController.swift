@@ -60,6 +60,10 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
     self.hideLoading(animated: true)
   }
   
+  func showError(msg: String) {
+    self.showTopBannerView(message: msg)
+  }
+  
   func reloadData() {
     self.tableView.reloadData()
     self.emptyView.isHidden = !presenter.shouldShowEmpty()
