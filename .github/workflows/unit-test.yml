@@ -70,14 +70,16 @@ jobs:
   unit-test-ios:
     needs:
       - prepare
-    # strategy:
-    #   matrix: 
-    #     include:
-    #       - app_name: "Krystal: Staging"
-    #         env: stg
-    #         ota_key: STG_OTA_URL
-    #         krystal_ota_key: KRYSTAL_STG_OTA_URL
-    #         bump_build: false
+    strategy:
+      matrix: 
+        include:
+          - app_name: "Krystal: Dev"
+            env: dev
+          # - app_name: "Krystal: Staging"
+          #   env: stg
+          #   ota_key: STG_OTA_URL
+          #   krystal_ota_key: KRYSTAL_STG_OTA_URL
+          #   bump_build: false
             
     runs-on: macos-11
     env:
