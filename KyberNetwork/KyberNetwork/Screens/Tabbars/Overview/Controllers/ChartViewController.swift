@@ -46,7 +46,10 @@ class ChartViewModel {
   var tradingViewLineData: [SingleValueData] = []
   
   var isLineChartMode: Bool = true
-  var selectedPool: (String, String) = ("", "")
+  var selectedPoolDetail: TokenPoolDetail?
+  var selectedPool: (String, String) {
+    return (selectedPoolDetail?.token0.address ?? "", selectedPoolDetail?.token1.address ?? "")
+  }
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -266,6 +269,10 @@ class ChartViewModel {
       return false
     }
   }
+  
+  var displayPoolName: String {
+    return "\(selectedPoolDetail?.token0.symbol ?? "")/\(selectedPoolDetail?.token1.symbol ?? "")"
+  }
 }
 
 enum ChartViewEvent {
@@ -353,7 +360,10 @@ class ChartViewController: KNBaseViewController {
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
-
+  @IBOutlet weak var poolNameContainerView: UIView!
+  @IBOutlet weak var poolNameLabel: UILabel!
+  @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
+  
   init(viewModel: ChartViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ChartViewController.className, bundle: nil)
@@ -431,6 +441,7 @@ class ChartViewController: KNBaseViewController {
   
   private func setupTradingView() {
     if self.viewModel.isLineChartMode {
+      self.updateUIPoolName(hidden: true)
       self.candleChart?.removeFromSuperview()
       if let chart = self.lineChart {
         guard !chart.isDescendant(of: self.chartContainerView) else { return }
@@ -443,6 +454,7 @@ class ChartViewController: KNBaseViewController {
         self.setupLineTradingView()
       }
     } else {
+      self.updateUIPoolName(hidden: false)
       self.lineChart?.removeFromSuperview()
       if let chart = candleChart {
         guard !chart.isDescendant(of: self.chartContainerView) else { return }
@@ -460,6 +472,12 @@ class ChartViewController: KNBaseViewController {
   func setupConstraints() {
     topBarHeight?.constant = UIScreen.statusBarHeight + 36 * 2 + 24
     self.textViewLeadingConstraint.constant = UIScreen.main.bounds.size.width + 20
+  }
+  
+  func updateUIPoolName(hidden: Bool) {
+    self.poolNameContainerView.isHidden = hidden
+    self.poolNameLabel.text = self.viewModel.displayPoolName
+    self.chartDurationTopSpacing.constant = hidden ? 20 : 52
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -547,6 +565,13 @@ class ChartViewController: KNBaseViewController {
     self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
     self.updatePoolTableHeight()
   }
+  
+  @IBAction func closeCandleChartButtonTapped(_ sender: UIButton) {
+    self.viewModel.isLineChartMode = true
+    self.loadLineChartData()
+    self.setupTradingView()
+  }
+  
 
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
@@ -644,9 +669,7 @@ class ChartViewController: KNBaseViewController {
     self.updatePoolTableHeight()
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
-    if let firstPool = poolData.first {
-      self.viewModel.selectedPool = (firstPool.token0.address, firstPool.token1.address)
-    }
+    self.viewModel.selectedPoolDetail = poolData.first
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
@@ -692,6 +715,7 @@ extension ChartViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     self.viewModel.isLineChartMode = false
     let poolData = self.viewModel.poolData[indexPath.row]
+    self.viewModel.selectedPoolDetail = poolData
     let source = poolData.token0.address
     let quote = poolData.token1.address
     self.loadCandleChartData(source: source, quote: quote)
