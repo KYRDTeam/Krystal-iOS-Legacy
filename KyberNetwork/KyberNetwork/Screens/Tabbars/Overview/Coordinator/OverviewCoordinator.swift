@@ -53,6 +53,7 @@ class TokenPoolDetail: Codable {
   var address: String
   var tvl: Double
   var chainId: Int
+  var name: String
   
   var token0: PoolPairToken
   var token1: PoolPairToken
@@ -61,7 +62,7 @@ class TokenPoolDetail: Codable {
     self.address = json["address"] as? String ?? ""
     self.tvl = json["tvl"] as? Double ?? 0.0
     self.chainId = json["chainId"] as? Int ?? 0
-    
+    self.name = json["name"] as? String ?? ""
     self.token0 = PoolPairToken(json: json["token0"] as? JSONDictionary ?? JSONDictionary())
     self.token1 = PoolPairToken(json: json["token1"] as? JSONDictionary ?? JSONDictionary())
   }
@@ -279,6 +280,26 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       self.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.openCommunityURL("https://twitter.com/\(name)/")
+    case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.request(.getTradingViewData(chainPath: String(KNGeneralProvider.shared.chainPath.dropFirst()), address: address, quote: currency, from: from * 1000)) { result in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(TradingViewChartResponse.self, from: resp.data)
+            
+            controller.coordinatorDidUpdateTradingViewData(data.data)
+            print(data)
+          } catch let error {
+            print("[Debug]" + error.localizedDescription)
+          }
+        }
+      }
+    case .selectPool(source: let source, quote: let quote):
+      break
     }
   }
 

@@ -18,6 +18,11 @@ class TokenPoolCell: UITableViewCell {
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var totalValueLabel: UILabel!
 
+  @IBOutlet weak var pairNameLabelWidth: NSLayoutConstraint!
+  @IBOutlet weak var valueLabelWidth: NSLayoutConstraint!
+  
+  
+  
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
@@ -27,19 +32,29 @@ class TokenPoolCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
     
-  func updateUI(poolDetail: TokenPoolDetail) {
-    if let url = URL(string: poolDetail.token0.logo) {
+  func updateUI(poolDetail: TokenPoolDetail, baseTokenSymbol: String) {
+    var baseToken = poolDetail.token0
+    var otherToken = poolDetail.token1
+    
+    if poolDetail.token1.symbol == baseTokenSymbol {
+      baseToken = poolDetail.token1
+      otherToken = poolDetail.token0
+    }
+
+    if let url = URL(string: baseToken.logo) {
       token0Icon.setImage(with: url, placeholder: nil)
     }
-    if let url = URL(string: poolDetail.token1.logo) {
+    if let url = URL(string: otherToken.logo) {
       token1Icon.setImage(with: url, placeholder: nil)
     }
-    
-    self.pairNameLabel.text = "\(poolDetail.token0.symbol)/\(poolDetail.token1.symbol)"
-    self.fullNameLabel.text = poolDetail.token0.name
-    self.valueLabel.text = "$\(poolDetail.token0.usdValue)"
+
+    self.pairNameLabel.text = "\(baseToken.symbol)/\(otherToken.symbol)"
+    self.pairNameLabelWidth.constant = "\(baseToken.symbol)/\(otherToken.symbol)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
+    self.fullNameLabel.text = poolDetail.name
+    self.valueLabel.text = "\(baseToken.usdValue)"
+    self.valueLabelWidth.constant = "\(baseToken.usdValue)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 16))
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
-    self.totalValueLabel.text = "$\(poolDetail.tvl)"
+    self.totalValueLabel.text = StringFormatter.usdString(value: poolDetail.tvl)
   }
 }

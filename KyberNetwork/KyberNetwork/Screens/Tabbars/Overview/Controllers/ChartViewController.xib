@@ -13,7 +13,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -32,8 +32,9 @@
                 <outlet property="chainIcon" destination="Dww-Qh-cvZ" id="rdo-Rj-brZ"/>
                 <outlet property="chainView" destination="TZA-ye-PLf" id="ooP-G5-wMB"/>
                 <outlet property="chainViewLeadingConstraint" destination="zON-Fc-Za2" id="DSv-hb-eP2"/>
+                <outlet property="chartContainerView" destination="ueJ-8I-pMk" id="3B5-13-zIW"/>
                 <outlet property="chartDetailLabel" destination="aFB-ff-HUe" id="SBH-EX-ap5"/>
-                <outlet property="chartView" destination="ueJ-8I-pMk" id="mhm-uU-lyR"/>
+                <outlet property="containScrollView" destination="wC0-1c-nRc" id="PlA-Ck-TD4"/>
                 <outlet property="descriptionTextView" destination="yx2-K4-ikS" id="rud-bP-2OX"/>
                 <outlet property="ethBalanceLabel" destination="5JN-3d-A7T" id="xcI-7T-t4b"/>
                 <outlet property="favButton" destination="ak7-Ym-9X3" id="JHD-bG-e95"/>
@@ -46,7 +47,7 @@
                 <outlet property="poolViewTrailingConstraint" destination="8i8-9k-Jfw" id="PCE-bK-FCi"/>
                 <outlet property="priceDiffPercentageLabel" destination="rig-RH-skP" id="gEG-fm-naP"/>
                 <outlet property="priceLabel" destination="Lcl-Qq-nU6" id="0Hv-Ji-cky"/>
-                <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Joc-iO-9sf"/>
+                <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Wyo-th-Vej"/>
                 <outlet property="swapButton" destination="7pU-d9-FWK" id="Kte-g2-IIz"/>
                 <outlet property="tableViewHeight" destination="i2V-nn-eYr" id="wUn-wn-15v"/>
                 <outlet property="tagImageView" destination="Shb-Ii-4mW" id="xhw-zW-hqV"/>
@@ -302,7 +303,7 @@
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ueJ-8I-pMk" customClass="Chart" customModule="SwiftChart">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ueJ-8I-pMk">
                             <rect key="frame" x="15" y="192.66666666666669" width="345" height="220"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>

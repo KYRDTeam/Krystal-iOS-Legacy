@@ -16,7 +16,7 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
   
   func getSearchData(keyword: String) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.advancedSearch(query: keyword, limit: 10)) { result in
+    provider.request(.advancedSearch(query: keyword, limit: 50)) { result in
       switch result {
       case .failure(let error):
         self.presenter?.didGetSearchResult(result: nil)

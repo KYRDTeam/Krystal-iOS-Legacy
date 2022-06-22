@@ -20,6 +20,8 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   @IBOutlet weak var searchField: UITextField!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var emptyView: UIView!
+  
+  @IBOutlet weak var recentSearchView: UIView!
   @IBOutlet weak var recentSearchTitle: UILabel!
   @IBOutlet weak var recentSearchTagList: TagListView!
   @IBOutlet weak var suggestSearchTItle: UILabel!
@@ -30,12 +32,13 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   var timer: Timer?
   override func viewDidLoad() {
     super.viewDidLoad()
+    searchField.setPlaceholder(text: Strings.Search, color: UIColor(named: "normalTextColor")!)
     self.tableView.registerCellNib(AdvanceSearchTokenCell.self)
     self.tableView.registerCellNib(AdvanceSearchPortfolioCell.self)
     self.recentSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
     self.suggestSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
     self.suggestSearchTagList.addTags(presenter.recommendTags)
-    self.updateUIEmptyView()
+    self.updateUIRecentSearchView()
   }
   
   @IBAction func closeButtonTapped(_ sender: Any) {
@@ -59,12 +62,18 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   
   func reloadData() {
     self.tableView.reloadData()
-    self.updateUIEmptyView()
+    self.emptyView.isHidden = !presenter.shouldShowEmpty()
+    self.updateUIRecentSearchView()
   }
   
-  func updateUIEmptyView() {
-    guard (presenter.searchResults) != nil else {
-      self.emptyView.isHidden = false
+  func updateUIRecentSearchView() {
+    if searchField.text?.isEmpty == false {
+      self.recentSearchView.isHidden = true
+      return
+    }
+    
+    guard presenter.searchResults != nil else {
+      self.recentSearchView.isHidden = false
       let recentTags = presenter.getRecentSearchTag()
       self.recentSearchTagList.removeAllTags()
       self.recentSearchTagList.addTags(recentTags)
@@ -79,7 +88,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
       }
       return
     }
-    self.emptyView.isHidden = true
+    self.recentSearchView.isHidden = true
   }
   
   func updateUIStartSearchingMode() {
@@ -121,10 +130,7 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let dataSource = presenter.searchResults else {
-      return 0
-    }
-    return section == 0 ? dataSource.portfolios.count : dataSource.tokens.count
+    return presenter.numberOfRows(section: section)
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,7 +152,7 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 0 {
-      
+      self.openSafari(with: "https://docs.krystal.app/")
     } else {
       if let token = presenter.searchResults?.tokens[indexPath.row] {
         presenter.openChartToken(token: token)
@@ -179,7 +185,7 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
     if let text = self.searchField.text {
       presenter.doSearch(keyword: text)
     }
-    self.updateUIEmptyView()
+    self.updateUIRecentSearchView()
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -23,6 +23,7 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
 
   func doSearch(keyword: String) {
     view?.showLoading()
+    searchResults = nil
     interactor?.getSearchData(keyword: keyword)
   }
 
@@ -39,6 +40,20 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
       searchResults = result
     }
     view?.reloadData()
+  }
+  
+  func numberOfRows(section: Int) -> Int {
+    guard let dataSource = searchResults else {
+      return 0
+    }
+    return section == 0 ? dataSource.portfolios.count : dataSource.tokens.count
+  }
+  
+  func shouldShowEmpty() -> Bool {
+    guard let dataSource = searchResults else {
+      return true
+    }
+    return dataSource.portfolios.isEmpty && dataSource.tokens.isEmpty
   }
   
   func getRecentSearchTag() -> [String] {
