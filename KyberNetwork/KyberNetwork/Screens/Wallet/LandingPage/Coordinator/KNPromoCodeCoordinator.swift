@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import Moya
 import KrystalWallets
 
@@ -69,7 +68,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
                   }
                   return nil
                 }()
-                let isValidAddr = Address(string: destAddress ?? "") != nil
+                let isValidAddr = KNGeneralProvider.shared.isAddressValid(address: destAddress ?? "")
                 if isPayment && !isValidAddr {
                   self.navigationController.showWarningTopBannerMessage(
                     with: NSLocalizedString("error", value: "Error", comment: ""),

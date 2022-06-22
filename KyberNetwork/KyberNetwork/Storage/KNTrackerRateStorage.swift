@@ -2,7 +2,6 @@
 
 import RealmSwift
 import TrustKeystore
-import TrustCore
 import BigInt
 
 class KNTrackerRateStorage {

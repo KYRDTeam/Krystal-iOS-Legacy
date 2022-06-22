@@ -7,7 +7,6 @@ import QRCodeReaderViewController
 import Starscream
 import Web3
 import WalletConnectSwift
-import TrustCore
 import KrystalWallets
 
 class KNWalletConnectViewController: KNBaseViewController {

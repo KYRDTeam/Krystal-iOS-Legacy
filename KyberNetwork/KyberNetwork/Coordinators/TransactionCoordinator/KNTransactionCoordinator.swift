@@ -7,8 +7,6 @@ import JSONRPCKit
 import JavaScriptKit
 import Result
 import BigInt
-import TrustKeystore
-import TrustCore
 import Moya
 import Sentry
 import KrystalWallets

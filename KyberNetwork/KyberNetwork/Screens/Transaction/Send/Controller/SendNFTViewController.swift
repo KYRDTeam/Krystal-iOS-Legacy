@@ -7,12 +7,11 @@
 
 import UIKit
 import QRCodeReaderViewController
-import TrustCore
 import BigInt
 
 class SendNFTViewModel {
-  fileprivate(set) var addressString: String = ""
-  var address: String?
+  private(set) var inputString: String = ""
+  private(set) var address: String?
   fileprivate(set) var isUsingEns: Bool = false
 
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
@@ -63,34 +62,35 @@ class SendNFTViewModel {
     self.isSupportERC721 = supportERC721
   }
 
-  func updateAddress(_ address: String) {
-    self.addressString = address
-//    self.address = Address(string: address)
-    if self.address != nil {
+  func updateInputString(_ address: String) {
+    self.inputString = address
+    if KNGeneralProvider.shared.isAddressValid(address: address) {
       self.isUsingEns = false
+      self.address = inputString
     }
   }
 
   func updateAddressFromENS(_ ens: String, ensAddr: String?) {
-    if ens == self.addressString {
+    if ens == self.inputString {
       self.address = ensAddr
-      self.isUsingEns = ensAddr != nil
+      self.isUsingEns = KNGeneralProvider.shared.isAddressValid(address: ensAddr ?? "")
     }
   }
 
   var displayAddress: String? {
-    if self.address == nil { return self.addressString }
-    if let contact = KNContactStorage.shared.contacts.first(where: { self.addressString.lowercased() == $0.address.lowercased() }) {
-      return "\(contact.name) - \(self.addressString)"
+    if self.address == nil { return self.inputString }
+    if let contact = KNContactStorage.shared.contacts.first(where: { self.inputString == $0.address}) {
+      return "\(contact.name) - \(self.inputString)"
     }
-    return self.addressString
+    return self.inputString
   }
 
   var displayEnsMessage: String? {
-    if self.addressString.isEmpty { return nil }
-    if self.address == nil { return "Invalid address or your ens is not mapped yet" }
-    if Address(string: self.addressString) != nil { return nil }
-    let address = self.address?.description ?? ""
+    if self.inputString.isEmpty { return nil }
+    guard let address = self.address else {
+      return "Invalid address or your ens is not mapped yet"
+    }
+    if KNGeneralProvider.shared.isAddressValid(address: self.inputString) { return nil }
     return "\(address.prefix(12))...\(address.suffix(10))"
   }
 
@@ -167,7 +167,7 @@ class SendNFTViewModel {
   }
   
   var isAddressValid: Bool {
-    return self.address != nil && self.addressString.has0xPrefix
+    return self.address != nil && KNGeneralProvider.shared.isAddressValid(address: self.address!)
   }
   
   func updateEstimatedGasLimit(_ gasLimit: BigInt) {
@@ -299,7 +299,7 @@ class SendNFTViewController: KNBaseViewController {
   fileprivate func shouldUpdateEstimatedGasLimit(_ sender: Any?) {
     if self.viewModel.address == nil { return }
 
-    let event = KSendTokenViewEvent.estimateGasLimitTransferNFT(to: self.viewModel.addressString,item: self.viewModel.item, category: self.viewModel.category , gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, amount: self.viewModel.selectedBalance, isERC721: self.viewModel.isSupportERC721)
+    let event = KSendTokenViewEvent.estimateGasLimitTransferNFT(to: self.viewModel.address ?? "",item: self.viewModel.item, category: self.viewModel.category , gasPrice: self.viewModel.gasPrice, gasLimit: self.viewModel.gasLimit, amount: self.viewModel.selectedBalance, isERC721: self.viewModel.isSupportERC721)
     self.delegate?.kSendTokenViewController(self, run: event)
   }
   
@@ -380,15 +380,15 @@ class SendNFTViewController: KNBaseViewController {
   }
   
   func coordinatorDidSelectContact(_ contact: KNContact) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
-    self.viewModel.updateAddress(contact.address)
+    let isAddressChanged = self.viewModel.inputString != contact.address
+    self.viewModel.updateInputString(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
   
   func coordinatorSend(to address: String) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-    self.viewModel.updateAddress(address)
+    let isAddressChanged = self.viewModel.inputString != address
+    self.viewModel.updateInputString(address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
       KNContactStorage.shared.updateLastUsed(contact: contact)
@@ -452,9 +452,9 @@ class SendNFTViewController: KNBaseViewController {
         category: self.viewModel.category,
         gasPrice: self.viewModel.gasPrice,
         gasLimit: self.viewModel.gasLimit,
-        to: self.viewModel.addressString,
+        to: self.viewModel.address ?? "",
         amount: self.viewModel.selectedBalance,
-        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil,
+        ens: self.viewModel.isUsingEns ? self.viewModel.inputString : nil,
         isERC721: self.viewModel.isSupportERC721,
         advancedGasLimit: self.viewModel.advancedGasLimit,
         advancedPriorityFee: self.viewModel.advancedMaxPriorityFee != nil ? self.viewModel.advancedMaxPriorityFee : priorityFeeBigIntDefault.shortString(units: UnitConfiguration.gasPriceUnit) ,
@@ -468,9 +468,9 @@ class SendNFTViewController: KNBaseViewController {
         category: self.viewModel.category,
         gasPrice: self.viewModel.gasPrice,
         gasLimit: self.viewModel.gasLimit,
-        to: self.viewModel.addressString,
+        to: self.viewModel.address ?? "",
         amount: self.viewModel.selectedBalance,
-        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil,
+        ens: self.viewModel.isUsingEns ? self.viewModel.inputString : nil,
         isERC721: self.viewModel.isSupportERC721,
         advancedGasLimit: nil,
         advancedPriorityFee: nil,
@@ -508,15 +508,15 @@ extension SendNFTViewController: QRCodeReaderDelegate {
         if string.starts(with: "0x") { return string }
         return result
       }()
-      let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-      self.viewModel.updateAddress(address)
+      let isAddressChanged = self.viewModel.inputString != address
+      self.viewModel.updateInputString(address)
       self.getEnsAddressFromName(address)
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
   }
 
   fileprivate func getEnsAddressFromName(_ name: String) {
-    if Address(string: name) != nil { return }
+    if KNGeneralProvider.shared.isAddressValid(address: name) { return }
     if !name.contains(".") {
       self.viewModel.updateAddressFromENS(name, ensAddr: nil)
       self.updateUIAddressQRCode()
@@ -526,13 +526,13 @@ extension SendNFTViewController: QRCodeReaderDelegate {
       KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
-          if name != self.viewModel.addressString { return }
+          if name != self.viewModel.inputString { return }
           if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
             self.viewModel.updateAddressFromENS(name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name, ensAddr: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
-              self.getEnsAddressFromName(self.viewModel.addressString)
+              self.getEnsAddressFromName(self.viewModel.inputString)
             }
           }
           self.updateUIAddressQRCode()
@@ -557,8 +557,8 @@ extension SendNFTViewController: KNContactTableViewDelegate {
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
-        let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-        self.viewModel.updateAddress(address)
+        let isAddressChanged = self.viewModel.inputString != address
+        self.viewModel.updateInputString(address)
         self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
       }
     case .copiedAddress:
@@ -566,7 +566,7 @@ extension SendNFTViewController: KNContactTableViewDelegate {
         message: NSLocalizedString("address.copied", value: "Address copied", comment: "")
       )
     case .addContact:
-     break
+      break
     }
   }
 
@@ -582,8 +582,8 @@ extension SendNFTViewController: KNContactTableViewDelegate {
   }
 
   fileprivate func contactTableView(select contact: KNContact) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
-    self.viewModel.updateAddress(contact.address)
+    let isAddressChanged = self.viewModel.inputString != contact.address
+    self.viewModel.updateInputString(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
@@ -608,7 +608,7 @@ extension SendNFTViewController: UITextFieldDelegate {
     if textField == amountTextField {
       self.viewModel.selectedBalance = 0
     } else {
-      self.viewModel.updateAddress("")
+      self.viewModel.updateInputString("")
       self.updateUIAddressQRCode()
       self.getEnsAddressFromName("")
     }
@@ -629,7 +629,7 @@ extension SendNFTViewController: UITextFieldDelegate {
       }
     } else {
       textField.text = text
-      self.viewModel.updateAddress(text)
+      self.viewModel.updateInputString(text)
       self.updateUIEnsMessage()
       self.getEnsAddressFromName(text)
     }
@@ -642,7 +642,7 @@ extension SendNFTViewController: UITextFieldDelegate {
     if textField == amountTextField {
       self.amountTextField.text = self.viewModel.selectedBalance == 0 ? "" : "\(self.viewModel.selectedBalance)"
     } else {
-      self.addressTextField.text = self.viewModel.addressString
+      self.addressTextField.text = self.viewModel.inputString
     }
   }
 
@@ -651,7 +651,7 @@ extension SendNFTViewController: UITextFieldDelegate {
       
     } else {
       self.updateUIAddressQRCode()
-      self.getEnsAddressFromName(self.viewModel.addressString)
+      self.getEnsAddressFromName(self.viewModel.inputString)
     }
     self.shouldUpdateEstimatedGasLimit(nil)
   }

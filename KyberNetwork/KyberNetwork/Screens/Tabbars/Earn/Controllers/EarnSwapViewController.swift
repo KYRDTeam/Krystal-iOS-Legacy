@@ -7,8 +7,8 @@
 
 import UIKit
 import BigInt
-import TrustCore
 import KrystalWallets
+
 //swiftlint:disable file_length
 class EarnSwapViewModel {
   fileprivate var fromTokenData: TokenData?

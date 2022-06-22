@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import QRCodeReaderViewController
 
 protocol KNImportSeedsViewControllerDelegate: class {

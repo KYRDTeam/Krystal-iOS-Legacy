@@ -3,7 +3,6 @@
 import UIKit
 import BigInt
 import TrustKeystore
-import TrustCore
 
 class KNSendTokenViewModel: NSObject {
 
@@ -22,14 +21,15 @@ class KNSendTokenViewModel: NSObject {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.transferETHGasLimitDefault
-  fileprivate(set) var addressString: String = ""
-  fileprivate(set) var isUsingEns: Bool = false
   
   ///solana default lamport per signature
   fileprivate(set) var lamportPerSignature: BigInt = SolFeeCoordinator.shared.lamportPerSignature
   fileprivate(set) var minimumRentExemption: BigInt = SolFeeCoordinator.shared.minimumRentExemption
   fileprivate(set) var totalSignature: BigInt = BigInt(1)
   
+  private(set) var inputAddress: String = ""
+  private(set) var address: String?
+  private(set) var isUsingEns: Bool = false
 
   var isSendAllBalanace: Bool = false
 
@@ -107,8 +107,6 @@ class KNSendTokenViewModel: NSObject {
   var amountTextColor: UIColor {
     return isAmountValid ? UIColor.white : UIColor.red
   }
-
-  var address: String?
 
   var currentWalletAddress: String
 
@@ -219,21 +217,19 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var displayAddress: String? {
-    if self.address == nil { return self.addressString }
-    if let contact = KNContactStorage.shared.contacts.first(where: { self.addressString.lowercased() == $0.address.lowercased() }) {
-      return "\(contact.name) - \(self.addressString)"
+    if self.address == nil { return self.inputAddress }
+    if let contact = KNContactStorage.shared.contacts.first(where: { self.inputAddress == $0.address}) {
+      return "\(contact.name) - \(self.inputAddress)"
     }
-    return self.addressString
+    return self.inputAddress
   }
 
   var displayEnsMessage: String? {
-    if KNGeneralProvider.shared.currentChain == .solana {
-      return nil
+    if self.inputAddress.isEmpty { return nil }
+    guard let address = self.address else {
+      return "Invalid address or your ens is not mapped yet"
     }
-    if self.addressString.isEmpty { return nil }
-    if self.address == nil { return "Invalid address or your ens is not mapped yet" }
-    if Address(string: self.addressString) != nil { return nil }
-    let address = self.address?.description ?? ""
+    if KNGeneralProvider.shared.isAddressValid(address: self.inputAddress) { return nil }
     return "\(address.prefix(12))...\(address.suffix(10))"
   }
 
@@ -265,10 +261,7 @@ class KNSendTokenViewModel: NSObject {
   }
 
   var isAddressValid: Bool {
-    if KNGeneralProvider.shared.currentChain == .solana {
-      return self.addressString.isValidSolanaAddress()
-    }
-    return self.address != nil && self.addressString.has0xPrefix
+    return self.address != nil && KNGeneralProvider.shared.isAddressValid(address: self.address!)
   }
 
   var ethFeeBigInt: BigInt {
@@ -422,7 +415,7 @@ class KNSendTokenViewModel: NSObject {
 
   @discardableResult
   func updateEstimatedGasLimit(_ gasLimit: BigInt, from: TokenObject, address: String) -> Bool {
-    if self.from == from, self.addressString.lowercased() == address.lowercased() {
+    if self.from == from, self.inputAddress == address {
       if self.selectedGasPriceType == .custom {
         self.baseGasLimit = gasLimit
       } else {
@@ -435,20 +428,18 @@ class KNSendTokenViewModel: NSObject {
     return false
   }
 
-  func updateAddress(_ address: String) {
-    self.addressString = address
-    
-    // TODO: Replace with validator
-    self.address = address
-    if self.address != nil {
+  func updateInputString(_ address: String) {
+    self.inputAddress = address
+    if KNGeneralProvider.shared.isAddressValid(address: address) {
       self.isUsingEns = false
+      self.address = inputAddress
     }
   }
 
   func updateAddressFromENS(_ ens: String, ensAddr: String?) {
-    if ens == self.addressString {
+    if ens == self.inputAddress {
       self.address = ensAddr
-      self.isUsingEns = ensAddr != nil
+      self.isUsingEns = KNGeneralProvider.shared.isAddressValid(address: ensAddr ?? "")
     }
   }
 

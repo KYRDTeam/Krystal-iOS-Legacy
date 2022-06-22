@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import QRCodeReaderViewController
 import WalletConnect
 import Moya

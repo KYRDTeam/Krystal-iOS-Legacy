@@ -7,7 +7,6 @@
 
 import UIKit
 import SwipeCellKit
-import TrustCore
 import BigInt
 
 enum MultiSendCellEvent {
@@ -39,7 +38,7 @@ class MultiSendCellModel {
   var addButtonEnable: Bool = true
   var amount: String = ""
   var addressString: String = ""
-  var address: Address?
+//  var address: Address?
   var from: Token = Token.blankToken()
   var availableAmount: BigInt = BigInt.zero
   var isSendAllBalanace: Bool = false // Use for update amount when change gasfee
@@ -53,7 +52,7 @@ class MultiSendCellModel {
     self.addButtonEnable = object.addButtonEnable
     self.amount = object.amount
     self.addressString = object.addressString
-    self.address = Address(string: object.addressString)
+//    self.address = Address(string: object.addressString)
     self.from = object.from
     self.availableAmount = BigInt(object.availableAmount) ?? BigInt.zero
     self.isSendAllBalanace = object.isSendAllBalanace
@@ -66,7 +65,7 @@ class MultiSendCellModel {
   
   func updateAddress(_ address: String) {
     self.addressString = address
-    self.address = Address(string: address)
+//    self.address = Address(string: address)
   }
 
   var amountTextColor: UIColor {
@@ -118,8 +117,7 @@ class MultiSendCellModel {
 
   var isAddressValid: Bool {
     guard self.addressString.has0xPrefix else { return false }
-    let address = Address(string: self.addressString)
-    return address != nil
+    return KNGeneralProvider.shared.isAddressValid(address: self.addressString)
   }
   
   var isBalanceVaild: Bool {

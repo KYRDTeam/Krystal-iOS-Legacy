@@ -9,7 +9,6 @@ import Foundation
 import Moya
 import BigInt
 import Result
-import TrustCore
 import QRCodeReaderViewController
 import WalletConnect
 import MBProgressHUD

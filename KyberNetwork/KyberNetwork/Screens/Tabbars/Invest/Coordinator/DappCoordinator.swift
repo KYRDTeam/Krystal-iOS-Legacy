@@ -7,7 +7,6 @@
 
 import Foundation
 import TrustKeystore
-import TrustCore
 import CryptoKit
 import Result
 import APIKit

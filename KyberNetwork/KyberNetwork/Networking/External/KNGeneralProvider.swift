@@ -154,6 +154,10 @@ class KNGeneralProvider {
       self.currentChain = .eth
     }
   }
+  
+  func isAddressValid(address: String) -> Bool {
+    return WalletUtilities.isAddressValid(address: address, chainType: currentChain)
+  }
 
   // MARK: Balance
   func getETHBalanace(for address: String, completion: @escaping (Result<Balance, AnyError>) -> Void) {

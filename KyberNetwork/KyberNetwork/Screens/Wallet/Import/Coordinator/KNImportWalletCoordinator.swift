@@ -2,15 +2,12 @@
 
 import UIKit
 import Moya
-import TrustCore
 import TrustKeystore
 import KrystalWallets
 
 protocol KNImportWalletCoordinatorDelegate: class {
-//  func importWalletCoordinatorDidImport(address: KAddress, chain: ChainType)
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType)
   func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType)
-//  func importWalletCoordinatorDidImport(wallet: KWallet, selectedChain: ChainType)
   func importWalletCoordinatorDidClose()
   func importWalletCoordinatorDidSendRefCode(_ code: String)
 }

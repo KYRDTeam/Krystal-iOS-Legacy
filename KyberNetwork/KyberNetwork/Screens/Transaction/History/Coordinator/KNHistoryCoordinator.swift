@@ -3,7 +3,6 @@
 import UIKit
 import SafariServices
 import BigInt
-import TrustCore
 import Moya
 import MBProgressHUD
 import QRCodeReaderViewController

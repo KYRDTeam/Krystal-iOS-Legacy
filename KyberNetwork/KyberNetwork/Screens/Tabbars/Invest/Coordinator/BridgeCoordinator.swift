@@ -10,7 +10,6 @@ import Moya
 import MBProgressHUD
 import QRCodeReaderViewController
 import BigInt
-import TrustCore
 import JSONRPCKit
 import APIKit
 import Result
