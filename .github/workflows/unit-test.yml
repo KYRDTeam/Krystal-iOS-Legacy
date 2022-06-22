@@ -16,56 +16,7 @@ env:
   LANG: en_US.UTF-8
   
 jobs:
-  prepare:
-    runs-on: ubuntu-18.04
-    outputs:
-      current_branch: ${{ steps.current_branch.outputs.value }}
-      commit_tag: ${{ steps.commit_tag.outputs.value }}
-      version_tag: ${{ steps.version_tag.outputs.value }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Extract branch
-        shell: bash
-        id: current_branch
-        run: |
-          BRANCH="${GITHUB_REF#refs/heads/}"
-          if [[ "$GITHUB_REF" =~ refs/tags ]]; then
-            raw=$(git branch -r --contains ${{ github.ref }})
-            BRANCH=${raw/origin\/}
-          fi
-          echo "::set-output name=value::$BRANCH"
-
-      - name: Get Git Commit Tag
-        shell: bash
-        id: commit_tag
-        run: |
-          COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
-          echo "::set-output name=value::$COMMIT_HASH"
-
-      - name: Get version tag
-        id: version_tag
-        run: |
-          [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
-          echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
-
-      # This step will automatically run if any of the previous steps fail.
-      # DO NOT CHANGE IT
-      - name: Send notifications to a specify Telegram group
-        if: failure()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-          RUN_ID: ${{ github.run_id }}
-        shell: bash
-        run: .github/failure
-
   unit-test-ios:
-    needs:
-      - prepare
     strategy:
       matrix: 
         include:
