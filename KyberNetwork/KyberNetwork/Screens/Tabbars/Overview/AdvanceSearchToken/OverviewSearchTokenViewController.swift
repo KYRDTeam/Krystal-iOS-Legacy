@@ -199,6 +199,7 @@ extension OverviewSearchTokenViewController: UITextFieldDelegate {
       presenter.doSearch(keyword: text)
     }
     self.updateUIRecentSearchView()
+    self.emptyView.isHidden = true
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
