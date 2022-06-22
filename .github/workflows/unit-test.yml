@@ -1,10 +1,6 @@
 name: "Test on PR"
 
 on:
-  push:
-    branches:
-    # For testing only, will be removed when merge.
-      - KRYS-3199/ios-unit-test
   pull_request:
     types:
       - opened
@@ -188,11 +184,11 @@ jobs:
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
-      # - name: Send notifications to a specify Telegram group
-      #   if: failure()
-      #   env:
-      #     TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      #     TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-      #     RUN_ID: ${{ github.run_id }}
-      #   shell: bash
-      #   run: .github/failure
+      - name: Send notifications to a specify Telegram group
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: .github/failure
