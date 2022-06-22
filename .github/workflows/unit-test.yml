@@ -121,82 +121,69 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run unit test
+
+      - name: Get configuration items
         run: |
-          #!/bin/bash
-          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "id=B683E1BD-29B0-41D8-8B4F-1670785111E9,OS=15.2" -only-testing:KrystalUnitTests | xcpretty
-      # - name: Get configuration items
-      #   run: |
-      #     echo $SSH_PRIVATE_KEY | base64 --decode > private.key
+          echo $SSH_PRIVATE_KEY | base64 --decode > private.key
 
-      #     chmod 600 private.key
+          chmod 600 private.key
                     
-      #     rm -rf $HOME/krystal-mobile-enviroment
+          rm -rf $HOME/krystal-mobile-enviroment
 
-      #     GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
+          GIT_SSH_COMMAND='ssh -i private.key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no' git clone git@github.com:KYRDTeam/krystal-mobile-enviroment.git $HOME/krystal-mobile-enviroment
           
-      #     ls -al $HOME/krystal-mobile-enviroment/
+          ls -al $HOME/krystal-mobile-enviroment/
           
           
-      #     CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
-      #     ls -al $CONFIG_PATH
+          CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
+          ls -al $CONFIG_PATH
           
-      #     echo "Using gpg to decrypt the sensitive files now"
+          echo "Using gpg to decrypt the sensitive files now"
 
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
-      #     gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/devops_development.p12.gpg > $CONFIG_PATH/certificates/devops_development.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/certificates/distribution.p12.gpg > $CONFIG_PATH/certificates/distribution.p12
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_distribution.mobileprovision
+          gpg --quiet --batch --yes --decrypt --passphrase=$IOS_PASSPHRASE $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision.gpg > $CONFIG_PATH/profiles/devops_ios_ext_distribution.mobileprovision
 
-      #     ls -al $CONFIG_PATH
+          ls -al $CONFIG_PATH
 
-      #     mkdir -p /Users/runner/privates        
-      #     cp -va $CONFIG_PATH/* /Users/runner/privates
+          mkdir -p /Users/runner/privates        
+          cp -va $CONFIG_PATH/* /Users/runner/privates
 
-      # - name: Setup Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: 2.6
-      #     bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+          bundler-cache: true
           
-      # - name: Install Pod check
-      #   run: gem install cocoapods-check
+      - name: Install Pod check
+        run: gem install cocoapods-check
         
-      # - name: Install Pod binary
-      #   run: gem install cocoapods-binary
+      - name: Install Pod binary
+        run: gem install cocoapods-binary
           
-      # - name: Setup Sentry CLI
-      #   shell: bash
-      #   run: curl -sL https://sentry.io/get-cli/ | bash
+      - name: Setup Sentry CLI
+        shell: bash
+        run: curl -sL https://sentry.io/get-cli/ | bash
 
-      # don't need anymore
-      # - name: Setup Auth
-      #   uses: 'google-github-actions/auth@v0'
-      #   with:
-      #     credentials_json: '${{ secrets.GCS_SA_CREDENTIAL }}'
-      #
-      # don't need anymore
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v0
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-      # - name: Setup cache
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: Pods
-      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pods-
+      - name: Setup environments
+        shell: bash
+        env:
+          ENV: ${{ matrix.env }}
+        run: |
+          cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
+          cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
 
-      # - name: Setup environments
-      #   shell: bash
-      #   env:
-      #     ENV: ${{ matrix.env }}
-      #   run: |
-      #     cp /Users/runner/privates/environments/KNSecret.swift ./KyberNetwork/KyberNetwork/Configurations/Environments
-      #     cp /Users/runner/privates/environments/$ENV/KNEnvironment.swift ./KyberNetwork/KyberNetwork/Configurations/Environments/Sources
-
-      # - name: Pods install
-      #   run: pod check || pod install
+      - name: Pods install
+        run: pod check || pod install
 
       # - name: Build IPA
       #   uses: maierj/fastlane-action@v2.0.1
@@ -204,25 +191,11 @@ jobs:
       #     lane: all
       #     bundle-install-path: "vendor/bundle"
 
-      # tmp disable as 413 status code from ota server
-      # - name: Deploy to OTA Server
-      #   shell: bash
-      #   env:
-      #     OTA_URL: ${{ secrets[matrix.ota_key] }}
-      #     APP_NAME: ${{ matrix.app_name }}
-      #     OTA_ROBOT_EMAIL: ${{ secrets.KRYSTAL_OTA_ROBOT_EMAIL }} 
-      #     OTA_ROBOT_PASSWORD: ${{ secrets.KRYSTAL_OTA_ROBOT_PASSWORD }} 
-      #   run: .github/deploy 
-
-      # - name: Deploy to OTA Server
-      #   shell: bash
-      #   env:
-      #     OTA_URL: ${{ secrets[matrix.ota_key] }}
-      #     APP_NAME: ${{ matrix.app_name }}
-      #     OTA_ROBOT_EMAIL: ${{ secrets.OTA_ROBOT_EMAIL }} 
-      #     OTA_ROBOT_PASSWORD: ${{ secrets.OTA_ROBOT_PASSWORD }} 
-      #   run: .github/deploy 
-
+      - name: Run unit test
+        run: |
+          #!/bin/bash
+          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "id=B683E1BD-29B0-41D8-8B4F-1670785111E9,OS=15.2" -only-testing:KrystalUnitTests | xcpretty
+     
       # - name: Prepare bump build number
       #   run: |
       #     git config user.name "$GH_ACTOR"
