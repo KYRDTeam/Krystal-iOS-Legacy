@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -142,8 +142,8 @@
                                 <constraint firstAttribute="height" constant="137" id="tAo-Mu-zqf"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No records found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGt-zZ-FbH">
-                            <rect key="frame" x="132.5" y="209" width="110" height="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGt-zZ-FbH">
+                            <rect key="frame" x="142" y="209" width="91" height="17"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                             <color key="textColor" name="normalTextColor"/>
                             <nil key="highlightedColor"/>

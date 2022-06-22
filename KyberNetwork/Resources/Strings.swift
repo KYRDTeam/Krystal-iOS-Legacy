@@ -13,6 +13,7 @@ struct Strings {
   static let OK = "OK".toBeLocalised()
   static let Cancel = "Cancel".toBeLocalised()
   static let approve = "approve".toBeLocalised()
+  static let cancelled = "cancelled".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -84,6 +85,7 @@ struct Strings {
   static let showLess = "SHOW LESS".toBeLocalised()
   static let showMore = "SHOW MORE".toBeLocalised()
   static let Search = "Search".toBeLocalised()
+  static let searchByTokenWalletEND = "Search by token, wallet, ENS, ...".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()

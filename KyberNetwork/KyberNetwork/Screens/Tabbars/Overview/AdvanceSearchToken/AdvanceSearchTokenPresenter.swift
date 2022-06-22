@@ -30,7 +30,7 @@ class AdvanceSearchTokenPresenter: AdvanceSearchTokenPresenterProtocol {
   func didGetSearchResult(result: SearchResult?, error: Error?) {
     view?.hideLoading()
     
-    if let error = error {
+    if let error = error, error.localizedDescription != Strings.cancelled {
       view?.showError(msg: error.localizedDescription)
     }
     

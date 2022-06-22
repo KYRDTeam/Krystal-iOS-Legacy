@@ -32,7 +32,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   var timer: Timer?
   override func viewDidLoad() {
     super.viewDidLoad()
-    searchField.setPlaceholder(text: Strings.Search, color: UIColor(named: "normalTextColor")!)
+    searchField.setPlaceholder(text: Strings.searchByTokenWalletEND, color: UIColor(named: "normalTextColor")!)
     self.tableView.registerCellNib(AdvanceSearchTokenCell.self)
     self.tableView.registerCellNib(AdvanceSearchPortfolioCell.self)
     self.recentSearchTagList.textFont = UIFont.Kyber.regular(with: 14)
