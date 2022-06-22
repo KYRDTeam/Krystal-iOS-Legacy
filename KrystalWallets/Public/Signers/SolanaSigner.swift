@@ -21,7 +21,7 @@ public class SolanaSigner: KSignerProtocol {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
     }
-    let privateKey = try walletManager.privateKey(wallet: wallet, forAddressType: .solana)
+    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .solana)
     
     let transferMessage = SolanaTransfer.with {
       $0.recipient = recipient
@@ -41,7 +41,7 @@ public class SolanaSigner: KSignerProtocol {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
     }
-    let privateKey = try walletManager.privateKey(wallet: wallet, forAddressType: .solana)
+    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .solana)
     
     let tokenTransferMessage = SolanaTokenTransfer.with {
       $0.tokenMintAddress = tokenMintAddress
@@ -63,7 +63,7 @@ public class SolanaSigner: KSignerProtocol {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
     }
-    let privateKey = try walletManager.privateKey(wallet: wallet, forAddressType: .solana)
+    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .solana)
     
     let createAndTransferTokenMessage = SolanaCreateAndTransferToken.with {
       $0.recipientMainAddress = recipientMainAddress

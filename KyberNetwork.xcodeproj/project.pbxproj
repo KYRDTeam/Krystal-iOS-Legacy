@@ -592,6 +592,7 @@
 		A65CBF1D2862BF5E008620E2 /* WalletUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF1C2862BF5E008620E2 /* WalletUtilities.swift */; };
 		A65CBF20286307BD008620E2 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF1F286307BD008620E2 /* UserDefaults.swift */; };
 		A65CBF2228631A13008620E2 /* AppMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF2128631A13008620E2 /* AppMigrationManager.swift */; };
+		A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF2428632913008620E2 /* Dictionary+.swift */; };
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
 		A6664D23285986A700CCAB1F /* SolanaSerumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D22285986A700CCAB1F /* SolanaSerumService.swift */; };
@@ -1688,6 +1689,7 @@
 		A65CBF1C2862BF5E008620E2 /* WalletUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtilities.swift; sourceTree = "<group>"; };
 		A65CBF1F286307BD008620E2 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		A65CBF2128631A13008620E2 /* AppMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMigrationManager.swift; sourceTree = "<group>"; };
+		A65CBF2428632913008620E2 /* Dictionary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+.swift"; sourceTree = "<group>"; };
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D22285986A700CCAB1F /* SolanaSerumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaSerumService.swift; sourceTree = "<group>"; };
@@ -4708,6 +4710,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		A65CBF232863290A008620E2 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A65CBF2428632913008620E2 /* Dictionary+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		A66B9C6A280818E3001B7A3D /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -4829,6 +4839,7 @@
 		A6B0671C2859CDBE00DEBAE8 /* KrystalWallets */ = {
 			isa = PBXGroup;
 			children = (
+				A65CBF232863290A008620E2 /* Extension */,
 				A6D88647285C93DE00BB565B /* Key */,
 				A6790C5A28476FED007CE0CD /* Storage */,
 				A6790C5628476E58007CE0CD /* Public */,
@@ -7495,6 +7506,7 @@
 				A6B0673A2859CF5100DEBAE8 /* SolanaSigner.swift in Sources */,
 				A6B067372859CF5100DEBAE8 /* WalletType.swift in Sources */,
 				A6D88649285C93E900BB565B /* KeyManager.swift in Sources */,
+				A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */,
 				A6B067362859CF5100DEBAE8 /* Address.swift in Sources */,
 				A6B067392859CF5100DEBAE8 /* EthSigner.swift in Sources */,
 				A6B0672F2859CF5100DEBAE8 /* Signer.swift in Sources */,

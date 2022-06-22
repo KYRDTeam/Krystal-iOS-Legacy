@@ -263,12 +263,19 @@ public extension WalletManager {
   }
   
   func exportKeystore(address: KAddress, password: String) throws -> String {
-    // TODO: - Tung - Keystore
-    throw WalletManagerError.cannotExportKeystore
+    let privateKey = try exportPrivateKey(address: address)
+    guard let data = Data(hexString: privateKey) else {
+      throw WalletManagerError.cannotExportKeystore
+    }
+    guard let data = StoredKey.importPrivateKey(privateKey: data, name: "", password: Data(password.utf8), coin: address.addressType.coinType)?.exportJSON() else {
+      throw WalletManagerError.cannotExportKeystore
+    }
+    let dict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+    return dict.jsonString ?? ""
   }
   
   
-  func address(walletID: String, addressType: KAddressType) throws -> KAddress? {
+  func address(walletID: String, addressType: KAddressType) -> KAddress? {
     return realm.objects(AddressObject.self)
       .filter("%K = %@ AND %K = %@", "addressType", addressType.rawValue, "walletID", walletID)
       .map { $0.toAddress() }

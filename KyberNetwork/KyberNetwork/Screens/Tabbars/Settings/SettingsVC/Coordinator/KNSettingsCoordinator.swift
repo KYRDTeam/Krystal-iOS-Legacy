@@ -317,7 +317,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
           title: Strings.backupKeystore,
           style: .default,
           handler: { _ in
-            self.backupKeystore(wallet: wallet)
+            self.backupKeystore(wallet: wallet, addressType: addressType)
           }
         ))
       }
@@ -349,10 +349,11 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     self.passcodeCoordinator.start()
   }
 
-  fileprivate func backupKeystore(wallet: KWallet) {
+  fileprivate func backupKeystore(wallet: KWallet, addressType: KAddressType) {
     let createPassword = KNCreatePasswordViewController(wallet: wallet, delegate: self)
     createPassword.modalPresentationStyle = .overCurrentContext
     createPassword.modalTransitionStyle = .crossDissolve
+    self.selectedAddressType = addressType
     self.navigationController.topViewController?.present(createPassword, animated: true, completion: nil)
   }
 
@@ -452,13 +453,19 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
 
 extension KNSettingsCoordinator: KNCreatePasswordViewControllerDelegate {
   func createPasswordUserDidFinish(_ password: String, wallet: KWallet) {
+    guard let keystoreAddressType = self.selectedAddressType else {
+      return
+    }
+    guard let address = WalletManager.shared.address(walletID: wallet.id, addressType: keystoreAddressType) else {
+      return
+    }
     do {
-      // TODO: Tung - export keystore
-//      let key = try WalletManager.shared.exportKeystore(wallet: wallet, password: password)
-//      self.exportDataString(key)
+      let key = try WalletManager.shared.exportKeystore(address: address, password: password)
+      self.exportDataString(key, address: address)
     } catch {
       self.navigationController.topViewController?.displayError(error: error)
     }
+    self.selectedAddressType = nil
   }
 
   func createPasswordDidCancel(sender: KNCreatePasswordViewController) {

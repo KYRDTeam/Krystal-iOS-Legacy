@@ -18,7 +18,7 @@ public class EthSigner: KSignerProtocol {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
     }
-    let privateKey = try walletManager.privateKey(wallet: wallet, forAddressType: .evm)
+    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .evm)
     return privateKey.sign(digest: hash, curve: .secp256k1)!
   }
   
@@ -27,7 +27,7 @@ public class EthSigner: KSignerProtocol {
       throw SigningError.addressNotFound
     }
     let message = addPrefix ? Hash.keccak256(data: ethereumMessage(for: data)) : data
-    let privateKey = try walletManager.privateKey(wallet: wallet, forAddressType: .evm)
+    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .evm)
     var signed = privateKey.sign(digest: message, curve: .secp256k1)!
     signed[64] += 27
     return signed
