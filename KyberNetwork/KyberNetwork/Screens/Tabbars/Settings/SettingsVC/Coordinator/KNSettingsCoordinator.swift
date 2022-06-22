@@ -303,26 +303,26 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       switch wallet.importType {
       case .mnemonic:
         action.append(UIAlertAction(
-          title: NSLocalizedString("backup.mnemonic", value: "Backup Mnemonic", comment: ""),
+          title: Strings.backupMnemonic,
           style: .default,
           handler: { _ in
             self.backupMnemonic(wallet: wallet)
           }
         ))
       case .privateKey:
-        // TODO: - TUNG - not for solana
         break
       }
-      
+      if addressType.canExportKeystore {
+        action.append(UIAlertAction(
+          title: Strings.backupKeystore,
+          style: .default,
+          handler: { _ in
+            self.backupKeystore(wallet: wallet)
+          }
+        ))
+      }
       action.append(UIAlertAction(
-        title: NSLocalizedString("backup.keystore", value: "Backup Keystore", comment: ""),
-        style: .default,
-        handler: { _ in
-          self.backupKeystore(wallet: wallet)
-        }
-      ))
-      action.append(UIAlertAction(
-        title: NSLocalizedString("backup.private.key", value: "Backup Private Key", comment: ""),
+        title: Strings.backupPrivateKey,
         style: .default,
         handler: { _ in
           self.backupPrivateKey(wallet: wallet, addressType: addressType)
@@ -332,7 +332,7 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
       guard !action.isEmpty else { return }
       
       action.append(UIAlertAction(
-        title: NSLocalizedString("cancel", value: "Cancel", comment: ""),
+        title: Strings.cancel,
         style: .cancel,
         handler: nil)
       )

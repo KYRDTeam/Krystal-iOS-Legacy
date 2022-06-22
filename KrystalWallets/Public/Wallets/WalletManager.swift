@@ -92,7 +92,7 @@ public extension WalletManager {
       let walletObject = WalletObject(id: wallet.identifier, importType: .mnemonic, name: name)
       
       let addresses = try supportedAddressTypes.map { addressType -> AddressObject in
-        let privateKey = try privateKey(wallet: walletObject.toWallet(), forAddressType: addressType)
+        let privateKey = try getPrivateKey(wallet: walletObject.toWallet(), forAddressType: addressType)
         let address = getAddress(privateKey: privateKey, addressType: addressType)
         return AddressObject(walletID: walletObject.id, addressType: addressType, address: address, name: name)
       }
@@ -168,7 +168,7 @@ public extension WalletManager {
       let walletObject = WalletObject(id: wallet.identifier, importType: .mnemonic, name: name)
       keyManager.save(value: password, forKey: wallet.identifier)
       let addresses = try supportedAddressTypes.map { addressType -> AddressObject in
-        let privateKey = try privateKey(wallet: walletObject.toWallet(), forAddressType: addressType)
+        let privateKey = try getPrivateKey(wallet: walletObject.toWallet(), forAddressType: addressType)
         let address = getAddress(privateKey: privateKey, addressType: addressType)
         return AddressObject(walletID: walletObject.id, addressType: addressType, address: address, name: name)
       }
@@ -239,7 +239,7 @@ public extension WalletManager {
       throw WalletManagerError.cannotFindWallet
     }
     do {
-      let key = try privateKey(wallet: wallet, forAddressType: addressType)
+      let key = try getPrivateKey(wallet: wallet, forAddressType: addressType)
       
       switch addressType {
       case .evm:
@@ -263,9 +263,10 @@ public extension WalletManager {
   }
   
   func exportKeystore(address: KAddress, password: String) throws -> String {
-    // TODO: - Tung
+    // TODO: - Tung - Keystore
     throw WalletManagerError.cannotExportKeystore
   }
+  
   
   func address(walletID: String, addressType: KAddressType) throws -> KAddress? {
     return realm.objects(AddressObject.self)
@@ -299,13 +300,13 @@ public extension WalletManager {
         realm.delete(addressObjects)
         realm.delete(walletObjects)
       }
-      guard let keystoreWallet = keystore.wallets.first(where: { w in
-        w.identifier == wallet.id
-      }) else {
+      guard let keystoreWallet = keystore.wallets.first(where: { $0.identifier == wallet.id }) else {
         return
       }
-      // TODO: - TUNG - Change password
-      try keystore.delete(wallet: keystoreWallet, password: "")
+      guard let password = keyManager.value(forKey: wallet.id) else {
+        return
+      }
+      try keystore.delete(wallet: keystoreWallet, password: password)
     } catch {
       throw WalletManagerError.failedToRemoveWallet
     }
@@ -373,7 +374,7 @@ extension WalletManager {
     }
   }
   
-  func privateKey(wallet: KWallet, forAddressType addressType: KAddressType) throws -> PrivateKey {
+  func getPrivateKey(wallet: KWallet, forAddressType addressType: KAddressType) throws -> PrivateKey {
     guard let storedWallet = keystore.wallets.first(where: { $0.identifier == wallet.id }) else {
       throw WalletManagerError.cannotExportPrivateKey
     }

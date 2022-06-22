@@ -2,8 +2,6 @@
 
 import UIKit
 import RealmSwift
-import TrustKeystore
-import TrustCore
 
 // "ETH, ERC20 Tokens Transfer Events" by Address
 class KNTokenTransaction: Object {
@@ -96,7 +94,9 @@ class KNTokenTransaction: Object {
 
 extension KNTokenTransaction {
   func getToken() -> TokenObject? {
-    guard let _ = Address(string: self.contractAddress) else { return nil }
+    guard KNGeneralProvider.shared.isAddressValid(address: self.contractAddress) else {
+      return nil
+    }
     return TokenObject(
       contract: self.contractAddress,
       name: self.tokenName,

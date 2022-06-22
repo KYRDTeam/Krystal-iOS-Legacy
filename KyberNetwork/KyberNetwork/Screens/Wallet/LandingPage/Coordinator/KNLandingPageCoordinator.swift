@@ -28,7 +28,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 
   weak var delegate: KNLandingPageCoordinatorDelegate?
   let navigationController: UINavigationController
-  var keystore: Keystore
   var coordinators: [Coordinator] = []
 
   private var newWallet: KWallet?
@@ -74,12 +73,10 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   }()
   
   init(
-    navigationController: UINavigationController = UINavigationController(),
-    keystore: Keystore
+    navigationController: UINavigationController = UINavigationController()
   ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
-    self.keystore = keystore
   }
 
   func start() {
@@ -102,10 +99,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 
   func updateNewWallet(wallet: KWallet) {
     self.newWallet = wallet
-  }
-  
-  func update(keystore: Keystore) {
-    self.keystore = keystore
   }
   
   func didImportWallet(wallet: KWallet, chain: ChainType) {

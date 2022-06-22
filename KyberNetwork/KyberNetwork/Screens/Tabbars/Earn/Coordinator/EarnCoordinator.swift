@@ -186,17 +186,6 @@ class EarnCoordinator: NSObject, Coordinator {
     self.earnSwapViewController?.coordinatorUpdateTokenBalance(self.balances)
     self.rootViewController.coordinatorDidUpdateDidUpdateTokenList()
   }
-  
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
-//    self.session = session
-//    self.rootViewController.coordinatorAppSwitchAddress()
-//    self.menuViewController.coordinatorAppSwitchAddress()
-//    self.earnViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
-//    self.earnSwapViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
-////    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
-//    self.balances = [:]
-//    self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
-  }
 
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
@@ -621,9 +610,6 @@ extension EarnCoordinator: GasFeeSelectorPopupViewControllerDelegate {
         } else {
           gasTokenAddressString = "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
         }
-//        guard let tokenAddress = Address(string: gasTokenAddressString) else {
-//          return
-//        }
         provider.getAllowance(tokenAddress: gasTokenAddressString) { [weak self] result in
           guard let `self` = self else { return }
           switch result {

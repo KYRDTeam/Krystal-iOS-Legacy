@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import TrustKeystore
 import Moya
 import KrystalWallets
 
@@ -12,7 +11,6 @@ protocol KNPromoCodeCoordinatorDelegate: class {
 class KNPromoCodeCoordinator: Coordinator {
 
   let navigationController: UINavigationController
-  let keystore: Keystore
   var coordinators: [Coordinator] = []
 
   weak var delegate: KNPromoCodeCoordinatorDelegate?
@@ -24,9 +22,8 @@ class KNPromoCodeCoordinator: Coordinator {
     return controller
   }()
 
-  init(navigationController: UINavigationController, keystore: Keystore) {
+  init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-    self.keystore = keystore
   }
 
   func start() {

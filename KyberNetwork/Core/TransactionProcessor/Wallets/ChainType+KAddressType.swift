@@ -19,15 +19,6 @@ extension ChainType {
     }
   }
   
-  var canExportKeystore: Bool {
-    switch self {
-    case .solana:
-      return false
-    default:
-      return true
-    }
-  }
-  
 }
 
 extension KAddressType {
@@ -38,6 +29,15 @@ extension KAddressType {
       return .evm
     case .solana:
       return .solana
+    }
+  }
+  
+  var canExportKeystore: Bool {
+    switch self {
+    case .solana:
+      return false
+    default:
+      return true
     }
   }
   
