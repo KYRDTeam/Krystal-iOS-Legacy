@@ -73,13 +73,7 @@ jobs:
     strategy:
       matrix: 
         include:
-          - app_name: "Krystal: Dev"
-            env: dev
-          # - app_name: "Krystal: Staging"
-          #   env: stg
-          #   ota_key: STG_OTA_URL
-          #   krystal_ota_key: KRYSTAL_STG_OTA_URL
-          #   bump_build: false
+          - env: dev
             
     runs-on: macos-11
     env:
@@ -187,34 +181,10 @@ jobs:
       - name: Pods install
         run: pod check || pod install
 
-      # - name: Build IPA
-      #   uses: maierj/fastlane-action@v2.0.1
-      #   with:
-      #     lane: all
-      #     bundle-install-path: "vendor/bundle"
-
-      - name: Run unit test
+      - name: Unit test
+        shell: bash
         run: |
-          #!/bin/bash
-          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "id=B683E1BD-29B0-41D8-8B4F-1670785111E9,OS=15.2" -only-testing:KrystalUnitTests | xcpretty
-     
-      # - name: Prepare bump build number
-      #   run: |
-      #     git config user.name "$GH_ACTOR"
-      #     git config user.email "$GH_ACTOR@users.noreply.github.com"
-                    
-      # - name: Bump Build number
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main'
-      #   uses: maierj/fastlane-action@v2.0.1
-      #   with:
-      #     lane: bump_build_number
-      #     bundle-install-path: "vendor/bundle"
-
-      # - name: Push commit 
-      #   if: matrix.bump_build && needs.prepare.outputs.current_branch == 'main' 
-      #   shell: bash
-      #   run: | 
-      #     git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+          xcodebuild test -workspace KyberNetwork.xcworkspace -scheme KyberNetwork -destination "id=somethingnotexists" -only-testing:KrystalUnitTests | xcpretty
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT
