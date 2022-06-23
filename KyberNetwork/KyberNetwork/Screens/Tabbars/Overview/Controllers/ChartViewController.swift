@@ -178,6 +178,9 @@ class ChartViewModel {
   }
 
   var headerTitle: String {
+    if let detailInfo = self.detailInfo {
+      return "\(detailInfo.symbol.uppercased())/\(self.currency.uppercased())"
+    }
     return "\(self.token.symbol.uppercased())/\(self.currency.uppercased())"
   }
 
@@ -584,6 +587,7 @@ class ChartViewController: KNBaseViewController {
   }
 
   fileprivate func updateUITokenInfo() {
+    self.titleView.text = self.viewModel.headerTitle
     self.atlLabel.text = self.viewModel.displayAllTimeLow
     self.athLabel.text = self.viewModel.displayAllTimeHigh
     self.descriptionTextView.attributedText = self.viewModel.displayDescriptionAttribution
