@@ -7,7 +7,6 @@
 
 import UIKit
 import TagListView
-import SwiftUI
 
 enum DappBrowserHomeEvent {
   case enterText(text: String)

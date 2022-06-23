@@ -7,7 +7,6 @@
 
 import Foundation
 import WalletCore
-import SwiftUI
 import KeychainSwift
 import Moya
 import BigInt
