@@ -41,7 +41,7 @@ class ChartViewModel {
   var tradingViewCandleData: [TradingViewData] = []
   var candleSeries: CandlestickSeries!
   
-  var areaSeries: AreaSeries!
+  var lineSeries: LineSeries!
   
   var tradingViewLineData: [SingleValueData] = []
   
@@ -75,16 +75,18 @@ class ChartViewModel {
     return output
   }
   
-  func generateSingleValueData() -> [SingleValueData] {
-    var output: [SingleValueData] = []
+  func generateLineData() -> [LineData] {
+    var output: [LineData] = []
     self.chartData?.forEach({ element in
       let time = element.first ?? 0
       let timestamp = Double(time / 1000)
       let value = element.last ?? 0
-      let item = SingleValueData(time: .utc(timestamp: timestamp), value: value)
+      let item = LineData(time: .utc(timestamp: timestamp), value: value)
       output.append(item)
     })
     return output
+    
+    
   }
   
   var displayPrice: String {
@@ -367,6 +369,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolNameLabel: UILabel!
   @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
   fileprivate var tokenPoolTimer: Timer?
+  
+  var lineOptions: LineSeriesOptions!
+  
   init(viewModel: ChartViewModel) {
     self.viewModel = viewModel
     super.init(nibName: ChartViewController.className, bundle: nil)
@@ -402,8 +407,17 @@ class ChartViewController: KNBaseViewController {
   }
   
   fileprivate func setupCandleTradingView() {
-    let options = ChartOptions(crosshair: CrosshairOptions(mode: .normal))
+    let options = ChartOptions(
+      layout: LayoutOptions(backgroundColor: "#181921"),
+      crosshair: CrosshairOptions(mode: .normal),
+      grid: GridOptions(
+        verticalLines: GridLineOptions(color: ChartColor(hex: "2b2c36"), style: LineStyle.solid, visible: true),
+        horizontalLines: GridLineOptions(color: ChartColor(hex: "2b2c36"), style: LineStyle.solid, visible: true)
+      )
+    )
     let chart = LightweightCharts(options: options)
+    chart.clearWebViewBackground()
+    
     self.chartContainerView.addSubview(chart)
     chart.translatesAutoresizingMaskIntoConstraints = false
     chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
@@ -418,11 +432,18 @@ class ChartViewController: KNBaseViewController {
   
   fileprivate func setupLineTradingView() {
     let options = ChartOptions(
-        layout: LayoutOptions(fontFamily: "Lato-Regular"),
-        rightPriceScale: VisiblePriceScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
-        timeScale: TimeScaleOptions(borderColor: "rgba(197, 203, 206, 1)")
+      layout: LayoutOptions(backgroundColor: "#0F0F0F", fontFamily: "Lato-Regular"),
+      rightPriceScale: VisiblePriceScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
+      timeScale: TimeScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
+      crosshair: CrosshairOptions(mode: .normal),
+      grid: GridOptions(
+        verticalLines: GridLineOptions(color: nil, style: nil, visible: false),
+        horizontalLines: GridLineOptions(color: nil, style: nil, visible: false)
+      )
     )
     let chart = LightweightCharts(options: options)
+    chart.clearWebViewBackground()
+    
     self.chartContainerView.addSubview(chart)
     chart.translatesAutoresizingMaskIntoConstraints = false
     chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
@@ -430,14 +451,16 @@ class ChartViewController: KNBaseViewController {
     chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
     chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
     
-    let seriesOptions = AreaSeriesOptions(
-        topColor: "rgba(33, 150, 243, 0.56)",
-        bottomColor: "rgba(33, 150, 243, 0.04)",
-        lineColor: "rgba(33, 150, 243, 1)",
-        lineWidth: .two
+    self.lineOptions = LineSeriesOptions(
+      lastValueVisible: false, title: nil, visible: true,
+      color: ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor),
+      lineStyle: LineStyle.solid,
+      lineWidth: LineWidth.two,
+      lineType: LineType.simple,
+      lastPriceAnimation: LastPriceAnimationMode.continuous
     )
-    let series = chart.addAreaSeries(options: seriesOptions)
-    self.viewModel.areaSeries = series
+    
+    self.viewModel.lineSeries = chart.addLineSeries(options: lineOptions)
     self.lineChart = chart
     
   }
@@ -622,6 +645,8 @@ class ChartViewController: KNBaseViewController {
     }
 
     self.chainAddressLabel.text = KNGeneralProvider.shared.currentWalletAddress
+    self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
+    self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
   }
 
   fileprivate func loadChartData() {
@@ -695,8 +720,10 @@ class ChartViewController: KNBaseViewController {
     self.noDataLabel.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
     self.updateUIChartInfo()
-    let data = self.viewModel.generateSingleValueData()
-    self.viewModel.areaSeries.setData(data: data)
+    let data = self.viewModel.generateLineData()
+    self.viewModel.lineSeries.setData(data: data)
+    self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
+    self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
