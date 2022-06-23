@@ -408,7 +408,7 @@ class ChartViewController: KNBaseViewController {
   
   fileprivate func setupCandleTradingView() {
     let options = ChartOptions(
-      layout: LayoutOptions(backgroundColor: "#181921"),
+      layout: LayoutOptions(backgroundColor: "#181921", textColor: ChartColor(.white)),
       crosshair: CrosshairOptions(mode: .normal),
       grid: GridOptions(
         verticalLines: GridLineOptions(color: ChartColor(hex: "2b2c36"), style: LineStyle.solid, visible: true),
@@ -432,7 +432,7 @@ class ChartViewController: KNBaseViewController {
   
   fileprivate func setupLineTradingView() {
     let options = ChartOptions(
-      layout: LayoutOptions(backgroundColor: "#0F0F0F", fontFamily: "Lato-Regular"),
+      layout: LayoutOptions(backgroundColor: "#0F0F0F", textColor: ChartColor(.white)),
       rightPriceScale: VisiblePriceScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
       timeScale: TimeScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
       crosshair: CrosshairOptions(mode: .normal),
