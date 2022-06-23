@@ -147,7 +147,7 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
     } else if indexPath.row == presenter.numberOfRows(section: indexPath.section) - 1 && indexPath.row >= 10 {
       // last row
       let cell = tableView.dequeueReusableCell(ShowAllCell.self, indexPath: indexPath)!
-      cell.titleLabel.text = presenter.isShowAll ? Strings.showLess : Strings.showMore
+      cell.titleLabel.text = presenter.isShowAll ? Strings.showLess : Strings.showAll
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
@@ -164,7 +164,11 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
     if indexPath.section == 0 {
       let portfolio = presenter.searchResults?.portfolios[indexPath.row]
       let address = portfolio?.id ?? ""
-      self.openSafari(with: "https://defi.krystal.app/summary?address=\(address)")
+      var url = "https://defi.krystal.app/account/\(address)"
+      if KNEnvironment.default == .staging {
+        url = "https://defi-staging.krystal.team/account/\(address)"
+      }
+      self.openSafari(with: url)
     } else if indexPath.row == presenter.numberOfRows(section: indexPath.section) - 1 && indexPath.row >= 10  {
       presenter.isShowAll = !presenter.isShowAll
       self.tableView.reloadData()

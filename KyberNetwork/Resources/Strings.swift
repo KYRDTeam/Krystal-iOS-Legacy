@@ -84,6 +84,7 @@ struct Strings {
   static let xMins = "x.mins".toBeLocalised()
   static let showLess = "SHOW LESS".toBeLocalised()
   static let showMore = "SHOW MORE".toBeLocalised()
+  static let showAll = "SHOW ALL".toBeLocalised()
   static let Search = "Search".toBeLocalised()
   static let searchByTokenWalletEND = "Search by token, wallet, ENS, ...".toBeLocalised()
   
