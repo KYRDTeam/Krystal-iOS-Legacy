@@ -114,6 +114,19 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   func stop() {
   }
+  
+  func appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: String?, chainIdString: String?) {
+    guard let chainIdString = chainIdString, let tokenAddress = tokenAddress else {
+      return
+    }
+    let chainId = Int(chainIdString) ?? KNGeneralProvider.shared.currentChain.getChainId()
+    let tokenModel = Token(name: "", symbol: "", address: tokenAddress, decimals: 18, logo: "")
+    let viewModel = ChartViewModel(token: tokenModel, currencyMode: .usd)
+    viewModel.chainId = chainId
+    let controller = ChartViewController(viewModel: viewModel)
+    controller.delegate = self
+    self.navigationController.pushViewController(controller, animated: true)
+  }
 
   fileprivate func openChartView(token: Token) {
     KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
@@ -238,7 +251,11 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .getChartData(let address, let from, let to, let currency):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getChartData(chainPath: KNGeneralProvider.shared.chainPath, address: address, quote: currency, from: from)) { result in
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -254,7 +271,11 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .getTokenDetailInfo(address: let address):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTokenDetail(chainPath: KNGeneralProvider.shared.chainPath, address: address)) { (result) in
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)

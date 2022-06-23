@@ -162,7 +162,9 @@ extension OverviewSearchTokenViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 0 {
-      self.openSafari(with: "https://docs.krystal.app/")
+      let portfolio = presenter.searchResults?.portfolios[indexPath.row]
+      let address = portfolio?.id ?? ""
+      self.openSafari(with: "https://defi.krystal.app/summary?address=\(address)")
     } else if indexPath.row == presenter.numberOfRows(section: indexPath.section) - 1 && indexPath.row >= 10  {
       presenter.isShowAll = !presenter.isShowAll
       self.tableView.reloadData()
