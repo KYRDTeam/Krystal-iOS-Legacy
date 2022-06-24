@@ -643,7 +643,7 @@ class ChartViewController: KNBaseViewController {
       self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
     }
 
-    self.chainAddressLabel.text = KNGeneralProvider.shared.currentWalletAddress
+    self.chainAddressLabel.text = self.viewModel.token.address
     self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
     self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
   }

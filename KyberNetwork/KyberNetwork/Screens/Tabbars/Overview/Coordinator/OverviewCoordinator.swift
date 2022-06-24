@@ -275,7 +275,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
         chainPath = chainType.chainPath()
       }
-      provider.request(.getTokenDetail(chainPath: chainPath, address: address+"ssdfs@@@")) { (result) in
+      provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
