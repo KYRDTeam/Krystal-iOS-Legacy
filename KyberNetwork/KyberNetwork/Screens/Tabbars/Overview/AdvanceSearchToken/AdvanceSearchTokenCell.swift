@@ -17,6 +17,10 @@ class AdvanceSearchTokenCell: UITableViewCell {
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var totalValueLabel: UILabel!
   @IBOutlet weak var fullNameLabelLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet weak var tokenNameWidthConstraint: NSLayoutConstraint!
+  @IBOutlet weak var priceConstraint: NSLayoutConstraint!
+  
+  
   override func awakeFromNib() {
     super.awakeFromNib()
   }
@@ -37,8 +41,12 @@ class AdvanceSearchTokenCell: UITableViewCell {
       self.fullNameLabelLeadingConstraint.constant = 10
     }
     tokenNameLabel.text = token.symbol
+    tokenNameWidthConstraint.constant = token.symbol.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
+    
     fullNameLabel.text = token.name
     priceLabel.text = StringFormatter.usdString(value: token.usdValue)
+    priceConstraint.constant = StringFormatter.usdString(value: token.usdValue).width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 16))
+    
     if let chainType = ChainType.make(chainID: token.chainId) {
       chainIcon.image = chainType.chainIcon()
     }

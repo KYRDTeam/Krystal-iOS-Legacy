@@ -473,6 +473,8 @@
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
+		7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66A69A2865723C007DF078 /* ErrorViewController.swift */; };
+		7E66A69D2865723C007DF078 /* ErrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E66A69B2865723C007DF078 /* ErrorViewController.xib */; };
 		7E66D7A9284F2B98006B0B35 /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */; };
 		7E6F510427326122002DA0B2 /* OverviewTotalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */; };
 		7E6F510527326122002DA0B2 /* OverviewTotalInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */; };
@@ -1488,6 +1490,8 @@
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
+		7E66A69A2865723C007DF078 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
+		7E66A69B2865723C007DF078 /* ErrorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorViewController.xib; sourceTree = "<group>"; };
 		7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
 		7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTotalInfoCell.swift; sourceTree = "<group>"; };
 		7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewTotalInfoCell.xib; sourceTree = "<group>"; };
@@ -2648,6 +2652,7 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				7E66A6992865721D007DF078 /* ErrorView */,
 				A65C7A702818E373000FA9CE /* NavigationBar */,
 				A6A8A1EE28168B9600F7AB88 /* LoadingCell */,
 				C32656A5266F544100C69561 /* CustomActionSheet */,
@@ -4210,6 +4215,15 @@
 			path = MixPanel;
 			sourceTree = "<group>";
 		};
+		7E66A6992865721D007DF078 /* ErrorView */ = {
+			isa = PBXGroup;
+			children = (
+				7E66A69A2865723C007DF078 /* ErrorViewController.swift */,
+				7E66A69B2865723C007DF078 /* ErrorViewController.xib */,
+			);
+			path = ErrorView;
+			sourceTree = "<group>";
+		};
 		7E66D7A7284F2A8A006B0B35 /* BridgeOverView */ = {
 			isa = PBXGroup;
 			children = (
@@ -5642,6 +5656,7 @@
 				25929C8B20DA5CC10045CFA3 /* SFCompactText-Bold.otf in Resources */,
 				7ED5FA8627D214D000F0CB8E /* SelectNetworkCell.xib in Resources */,
 				259925BA20EF2D4900CCF2D6 /* KNContactTableViewCell.xib in Resources */,
+				7E66A69D2865723C007DF078 /* ErrorViewController.xib in Resources */,
 				25929C9A20DA5CC10045CFA3 /* SFCompactDisplay-Black.otf in Resources */,
 				259EC46A20E2A4A20081B2FC /* KNHistoryTransactionCollectionViewCell.xib in Resources */,
 				C31371FA2603B194003D432B /* KrytalTableViewCell.xib in Resources */,
@@ -6562,6 +6577,7 @@
 				25369F1020F88C3E007231FE /* KNWelcomeScreenCollectionView.swift in Sources */,
 				C320D80F27B3A7F60001DC71 /* MultiSendCell.swift in Sources */,
 				C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */,
+				7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */,
 				2963A2881FC401490095447D /* LocalizedOperation.swift in Sources */,
 				29C80D371FB2CD230037B1E0 /* PendingTransaction.swift in Sources */,
 				7E1EBE352834C9C900793B6D /* BridgeViewController.swift in Sources */,

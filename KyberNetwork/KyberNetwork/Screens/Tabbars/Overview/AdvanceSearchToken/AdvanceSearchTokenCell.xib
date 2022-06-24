@@ -35,6 +35,10 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfO-Hh-ji4">
                                 <rect key="frame" x="44" y="14.5" width="34.5" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="34.5" id="EPt-gz-Eua"/>
+                                    <constraint firstAttribute="height" constant="21" id="coc-6v-PvR"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
@@ -66,7 +70,11 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$2.87" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xn5-Pv-FjC">
-                                <rect key="frame" x="258" y="16" width="40" height="19"/>
+                                <rect key="frame" x="258" y="16" width="40" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="LjS-jp-Zvg"/>
+                                    <constraint firstAttribute="height" constant="20" id="XaJ-hI-owE"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <nil key="highlightedColor"/>
@@ -95,6 +103,7 @@
                             <constraint firstItem="Xn5-Pv-FjC" firstAttribute="top" secondItem="lnp-0u-OCH" secondAttribute="top" constant="16" id="QcL-Xb-OmK"/>
                             <constraint firstItem="2cG-tU-MNY" firstAttribute="centerY" secondItem="DVA-zL-kdu" secondAttribute="centerY" id="VJm-Nq-96z"/>
                             <constraint firstItem="goc-nC-KKX" firstAttribute="leading" secondItem="vfO-Hh-ji4" secondAttribute="trailing" constant="30" id="YKO-ov-6j1"/>
+                            <constraint firstItem="Xn5-Pv-FjC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="goc-nC-KKX" secondAttribute="trailing" constant="5" id="amR-eW-Pb9"/>
                             <constraint firstItem="vfO-Hh-ji4" firstAttribute="centerY" secondItem="khS-6z-hfx" secondAttribute="centerY" id="cp4-GA-Y7v"/>
                             <constraint firstItem="DVA-zL-kdu" firstAttribute="leading" secondItem="lnp-0u-OCH" secondAttribute="leading" constant="23" id="eKS-fl-bl3"/>
                             <constraint firstAttribute="height" constant="76" id="f5h-6A-cbr"/>
@@ -129,10 +138,12 @@
                 <outlet property="chainIcon" destination="DVA-zL-kdu" id="sMX-jP-UxV"/>
                 <outlet property="fullNameLabel" destination="goc-nC-KKX" id="buk-Uo-N2i"/>
                 <outlet property="fullNameLabelLeadingConstraint" destination="YKO-ov-6j1" id="v2s-yr-xZg"/>
+                <outlet property="priceConstraint" destination="LjS-jp-Zvg" id="rRA-gQ-zm4"/>
                 <outlet property="priceLabel" destination="Xn5-Pv-FjC" id="GzT-Wg-7CD"/>
                 <outlet property="tagIcon" destination="H6q-6h-rqh" id="PUF-re-GKL"/>
                 <outlet property="tokenIcon" destination="khS-6z-hfx" id="h8H-NJ-kgG"/>
                 <outlet property="tokenNameLabel" destination="vfO-Hh-ji4" id="XTs-Tf-A7W"/>
+                <outlet property="tokenNameWidthConstraint" destination="EPt-gz-Eua" id="suw-xs-jFh"/>
                 <outlet property="totalValueLabel" destination="iei-uf-qIN" id="5f2-02-Bic"/>
             </connections>
             <point key="canvasLocation" x="154.34782608695653" y="108.14732142857143"/>

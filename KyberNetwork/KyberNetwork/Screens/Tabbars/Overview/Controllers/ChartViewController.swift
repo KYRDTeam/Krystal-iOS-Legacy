@@ -383,7 +383,6 @@ class ChartViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.setupConstraints()
     self.infoSegment.highlightSelectedSegment()
     self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
@@ -730,7 +729,14 @@ class ChartViewController: KNBaseViewController {
     self.showErrorTopBannerMessage(with: "", message: error.localizedDescription)
   }
 
-  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
+  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
+    guard let detailInfo = detailInfo else {
+      self.navigationController?.popToRootViewController(animated: true)
+      let errorVC = ErrorViewController()
+      errorVC.modalPresentationStyle = .fullScreen
+      self.present(errorVC, animated: false)
+      return
+    }
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
     self.updateUIChartInfo()

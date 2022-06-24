@@ -168,7 +168,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     } else if components.path == "/token" {
       self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
-      self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"], chainIdString: parameters["chainId"])
+      let supportedChainIds = ChainType.getAllChain().map { return $0.getChainId() }
+      if let chainId = Int(parameters["chainId"] ?? "0"), supportedChainIds.contains(chainId) {
+        self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"], chainIdString: parameters["chainId"])
+      } else {
+        let errorVC = ErrorViewController()
+        errorVC.modalPresentationStyle = .fullScreen
+        self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
+      }
+        
     } else {
       self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }
