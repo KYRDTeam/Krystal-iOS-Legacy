@@ -74,7 +74,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+          DispatchQueue.main.async {
+            self.coordinator?.navigationController.hideLoading()
+          }
           switch result {
           case .failure(let error):
             controller.coordinatorFailUpdateApi(error)
@@ -83,7 +87,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
             if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
               jsonData.forEach { poolJson in
                 let tokenPoolDetail = TokenPoolDetail(json: poolJson)
-                allPools.append(tokenPoolDetail)
+                if !tokenPoolDetail.token0.symbol.isEmpty && !tokenPoolDetail.token1.symbol.isEmpty {
+                  allPools.append(tokenPoolDetail)
+                }
               }
             }
             controller.coordinatorDidUpdatePoolData(poolData: allPools)
@@ -95,7 +101,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           chainPath = chainType.chainPath()
         }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+        DispatchQueue.main.async {
+          self.coordinator?.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -116,8 +126,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
-        
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+        DispatchQueue.main.async {
+          self.coordinator?.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -145,6 +158,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
             secondButtonAction: {
               self.showPopupSwitchChain(controller) {
                 self.coordinator?.openSendTokenView(token)
+                self.pendingAction = nil
               }
             },
             firstButtonAction: nil
@@ -168,6 +182,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           secondButtonAction: {
             self.showPopupSwitchChain(controller) {
               self.coordinator?.openSwapView(token: token, isBuy: true)
+              self.pendingAction = nil
             }
           },
           firstButtonAction: nil

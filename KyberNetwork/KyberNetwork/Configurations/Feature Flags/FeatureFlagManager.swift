@@ -15,6 +15,8 @@ public struct FeatureFlagKeys {
   public static let solanaChainIntegration = "solana-chain"
   public static let klaytnChainIntegration = "klaytn-chain"
   public static let bridgeIntegration = "cross-chain-bridge"
+  public static let advancedSearch = "advanced-search"
+  public static let tokenPool = "token-pool"
 }
 
 class FeatureFlagManager {

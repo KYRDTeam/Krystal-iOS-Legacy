@@ -9,6 +9,7 @@ import UIKit
 import SwiftChart
 import BigInt
 import LightweightCharts
+import MBProgressHUD
 
 class ChartViewModel {
   var poolData: [TokenPoolDetail] = []
@@ -383,7 +384,6 @@ class ChartViewController: KNBaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.setupConstraints()
     self.infoSegment.highlightSelectedSegment()
     self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
@@ -395,6 +395,7 @@ class ChartViewController: KNBaseViewController {
     self.swapButton.rounded(radius: 16)
     self.investButton.rounded(radius: 16)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
+    self.favButton.isHidden = self.viewModel.chainId != KNGeneralProvider.shared.currentChain.getChainId()
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
@@ -402,8 +403,18 @@ class ChartViewController: KNBaseViewController {
       self.investButton.removeFromSuperview()
       self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
     }
-    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyTokenAddress))
+    self.chainAddressLabel.isUserInteractionEnabled = true
+    self.chainAddressLabel.addGestureRecognizer(tapGesture)
     self.setupTradingView()
+  }
+
+  @objc func copyTokenAddress() {
+    UIPasteboard.general.string = self.viewModel.token.address
+    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+    hud.mode = .text
+    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+    hud.hide(animated: true, afterDelay: 1.5)
   }
   
   fileprivate func setupCandleTradingView() {
@@ -644,7 +655,7 @@ class ChartViewController: KNBaseViewController {
       self.chainIcon.image = KNGeneralProvider.shared.chainIconImage
     }
 
-    self.chainAddressLabel.text = KNGeneralProvider.shared.currentWalletAddress
+    self.chainAddressLabel.text = self.viewModel.token.address
     self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
     self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
   }
@@ -673,13 +684,21 @@ class ChartViewController: KNBaseViewController {
   }
   
   fileprivate func getPoolList() {
-    self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+    var address = self.viewModel.token.address
+    if self.viewModel.token.isQuoteToken {
+      // incase current token is native token, find wrap token instead
+      let wsymbol = "W" + self.viewModel.token.symbol
+      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
+        address = wtoken.address
+      }
+    }
+    self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
     self.tokenPoolTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds15,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-        self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+        self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
       }
     )
     
@@ -730,7 +749,14 @@ class ChartViewController: KNBaseViewController {
     self.showErrorTopBannerMessage(with: "", message: error.localizedDescription)
   }
 
-  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo) {
+  func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
+    guard let detailInfo = detailInfo else {
+      self.navigationController?.popToRootViewController(animated: true)
+      let errorVC = ErrorViewController()
+      errorVC.modalPresentationStyle = .fullScreen
+      self.present(errorVC, animated: false)
+      return
+    }
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
     self.updateUIChartInfo()

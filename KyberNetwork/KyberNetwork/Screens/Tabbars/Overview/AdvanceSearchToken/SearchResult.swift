@@ -20,7 +20,10 @@ class SearchResult: Codable {
     }
     if let portfolios = json["portfolios"] as? [JSONDictionary] {
       portfolios.forEach { portfolioJson in
-        portfolioArray.append(Portfolio(json: portfolioJson))
+        let portfolio = Portfolio(json: portfolioJson)
+        if !portfolio.id.isEmpty {
+          portfolioArray.append(portfolio)
+        }
       }
     }
     self.tokens = tokensArray
