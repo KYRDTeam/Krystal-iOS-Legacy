@@ -28,9 +28,11 @@ class CrosschainTransactionService {
     if !pendingTxHashes.contains(txHash) {
       self.pendingTxHashes.append(txHash)
     }
+    refreshPendingTransactionStatus()
   }
   
   func scheduleFetchPendingTransaction() {
+    refreshPendingTransactionStatus()
     timer = Timer.scheduledTimer(withTimeInterval: KNLoadingInterval.seconds15, repeats: true, block: { [weak self] _ in
       self?.refreshPendingTransactionStatus()
     })
