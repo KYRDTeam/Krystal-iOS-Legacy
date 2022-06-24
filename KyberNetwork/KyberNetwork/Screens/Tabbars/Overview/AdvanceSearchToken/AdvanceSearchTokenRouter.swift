@@ -74,7 +74,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+          DispatchQueue.main.async {
+            self.coordinator?.navigationController.hideLoading()
+          }
           switch result {
           case .failure(let error):
             controller.coordinatorFailUpdateApi(error)
@@ -97,7 +101,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           chainPath = chainType.chainPath()
         }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+        DispatchQueue.main.async {
+          self.coordinator?.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -118,8 +126,11 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
-        
+        coordinator?.navigationController.showLoadingHUD()
         provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+        DispatchQueue.main.async {
+          self.coordinator?.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)

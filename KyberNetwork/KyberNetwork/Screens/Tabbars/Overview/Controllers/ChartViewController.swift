@@ -9,6 +9,7 @@ import UIKit
 import SwiftChart
 import BigInt
 import LightweightCharts
+import MBProgressHUD
 
 class ChartViewModel {
   var poolData: [TokenPoolDetail] = []
@@ -401,8 +402,18 @@ class ChartViewController: KNBaseViewController {
       self.investButton.removeFromSuperview()
       self.swapButton.rightAnchor.constraint(equalTo: self.swapButton.superview!.rightAnchor, constant: -26).isActive = true
     }
-    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyTokenAddress))
+    self.chainAddressLabel.isUserInteractionEnabled = true
+    self.chainAddressLabel.addGestureRecognizer(tapGesture)
     self.setupTradingView()
+  }
+
+  @objc func copyTokenAddress() {
+    UIPasteboard.general.string = self.viewModel.token.address
+    let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+    hud.mode = .text
+    hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
+    hud.hide(animated: true, afterDelay: 1.5)
   }
   
   fileprivate func setupCandleTradingView() {
