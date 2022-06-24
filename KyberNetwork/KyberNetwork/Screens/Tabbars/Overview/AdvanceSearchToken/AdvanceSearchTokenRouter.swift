@@ -83,7 +83,9 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
             if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
               jsonData.forEach { poolJson in
                 let tokenPoolDetail = TokenPoolDetail(json: poolJson)
-                allPools.append(tokenPoolDetail)
+                if !tokenPoolDetail.token0.symbol.isEmpty && !tokenPoolDetail.token1.symbol.isEmpty {
+                  allPools.append(tokenPoolDetail)
+                }
               }
             }
             controller.coordinatorDidUpdatePoolData(poolData: allPools)
