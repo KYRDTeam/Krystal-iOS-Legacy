@@ -44,8 +44,9 @@ class AdvanceSearchTokenCell: UITableViewCell {
     tokenNameWidthConstraint.constant = token.symbol.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     
     fullNameLabel.text = token.name
-    priceLabel.text = StringFormatter.usdString(value: token.usdValue)
-    priceConstraint.constant = StringFormatter.usdString(value: token.usdValue).width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 16))
+    let priceString = token.usdValue == 0 ? "$0" : "$\(token.usdValue)".displayRate()
+    priceLabel.text = priceString
+    priceConstraint.constant = priceString.width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 16))
     
     if let chainType = ChainType.make(chainID: token.chainId) {
       chainIcon.image = chainType.chainIcon()
