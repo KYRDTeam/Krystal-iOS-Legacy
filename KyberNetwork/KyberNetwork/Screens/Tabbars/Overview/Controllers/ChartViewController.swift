@@ -672,13 +672,21 @@ class ChartViewController: KNBaseViewController {
   }
   
   fileprivate func getPoolList() {
-    self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+    var address = self.viewModel.token.address
+    if self.viewModel.token.isQuoteToken {
+      // incase current token is native token, find wrap token instead
+      let wsymbol = "W" + self.viewModel.token.symbol
+      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
+        address = wtoken.address
+      }
+    }
+    self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
     self.tokenPoolTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds15,
       repeats: true,
       block: { [weak self] _ in
         guard let `self` = self else { return }
-        self.delegate?.chartViewController(self, run: .getPoolList(address: self.viewModel.token.address, chainId: self.viewModel.chainId ))
+        self.delegate?.chartViewController(self, run: .getPoolList(address: address, chainId: self.viewModel.chainId ))
       }
     )
     
