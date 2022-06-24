@@ -82,6 +82,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var notificationsCoordinator: NotificationCoordinator?
   var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
+  var pendingAction: (() -> Void)?
 
   lazy var rootViewController: OverviewMainViewController = {
     let viewModel = OverviewMainViewModel(session: self.session)
@@ -160,6 +161,9 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.searchRouter.appCoordinatorDidUpdateNewSession()
+    if let pendingAction = pendingAction {
+      pendingAction()
+    }
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -305,9 +309,54 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         }
       }
     case .transfer(token: let token):
-      self.openSendTokenView(token)
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      if chainPath != KNGeneralProvider.shared.chainPath {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
+          secondButtonAction: {
+            self.showPopupSwitchChain(controller) {
+              self.openSendTokenView(token)
+              self.pendingAction = nil
+            }
+          },
+          firstButtonAction: nil
+        )
+        alertController.popupHeight = 300
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.openSendTokenView(token)
+      }
+      
     case .swap(token: let token):
-      self.openSwapView(token: token, isBuy: true)
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      if chainPath != KNGeneralProvider.shared.chainPath {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
+          secondButtonAction: {
+            self.showPopupSwitchChain(controller) {
+              self.openSwapView(token: token, isBuy: true)
+              self.pendingAction = nil
+            }
+          },
+          firstButtonAction: nil
+        )
+        alertController.popupHeight = 300
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.openSwapView(token: token, isBuy: true)
+      }
     case .invest(token: let token):
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
     case .openEtherscan(address: let address):
@@ -338,6 +387,29 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       break
     }
   }
+  
+  func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+    self.pendingAction = nil
+    let popup = SwitchChainViewController()
+    var newChain = KNGeneralProvider.shared.currentChain
+    if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+      newChain = chainType
+    }
+    popup.selectedChain = newChain
+    popup.nextButtonTitle = "Confirm"
+    popup.completionHandler = { selected in
+      KNGeneralProvider.shared.currentChain = selected
+      var selectedAddress = ""
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        selectedAddress = appDelegate.coordinator.session.wallet.addressString
+      }
+      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
+      if selected == newChain {
+        self.pendingAction = completion
+      }
+    }
+    self.navigationController.present(popup, animated: true, completion: nil)
+  }
 
   func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
@@ -346,6 +418,9 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   func openSendTokenView(_ token: Token?) {
     let from: TokenObject = {
       if let fromToken = token {
+        if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
+          return fromTokenObject
+        }
         return fromToken.toObject()
       }
       return KNGeneralProvider.shared.quoteTokenObject

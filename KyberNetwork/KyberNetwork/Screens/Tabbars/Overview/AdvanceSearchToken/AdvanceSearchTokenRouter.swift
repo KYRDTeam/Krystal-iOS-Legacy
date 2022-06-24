@@ -158,6 +158,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
             secondButtonAction: {
               self.showPopupSwitchChain(controller) {
                 self.coordinator?.openSendTokenView(token)
+                self.pendingAction = nil
               }
             },
             firstButtonAction: nil
@@ -181,6 +182,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           secondButtonAction: {
             self.showPopupSwitchChain(controller) {
               self.coordinator?.openSwapView(token: token, isBuy: true)
+              self.pendingAction = nil
             }
           },
           firstButtonAction: nil
