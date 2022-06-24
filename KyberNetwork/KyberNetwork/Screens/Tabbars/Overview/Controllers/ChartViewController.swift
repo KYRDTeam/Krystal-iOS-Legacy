@@ -395,6 +395,7 @@ class ChartViewController: KNBaseViewController {
     self.swapButton.rounded(radius: 16)
     self.investButton.rounded(radius: 16)
     self.favButton.setImage(self.viewModel.displayFavIcon, for: .normal)
+    self.favButton.isHidden = self.viewModel.chainId != KNGeneralProvider.shared.currentChain.getChainId()
     periodChartSelectButtons.forEach { (button) in
       button.rounded(radius: 7)
     }
