@@ -245,6 +245,11 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   }
 
   fileprivate func openSendTokenView(_ token: Token?) {
+    let browser = KDappBrowserViewController.instantiateFromNib()
+    browser.hidesBottomBarWhenPushed = true
+    navigationController.pushViewController(browser, animated: true)
+    return
+    
     let from: TokenObject = {
       if let fromToken = token {
         return fromToken.toObject()

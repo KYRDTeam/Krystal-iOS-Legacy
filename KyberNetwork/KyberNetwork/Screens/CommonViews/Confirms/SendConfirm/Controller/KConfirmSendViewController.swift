@@ -113,14 +113,17 @@ class KConfirmSendViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_cancel", customAttributes: nil)
-    self.delegate?.kConfirmSendViewController(self, run: .cancel)
+    dismiss(animated: true)
+
+//    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_cancel", customAttributes: nil)
+//    self.delegate?.kConfirmSendViewController(self, run: .cancel)
   }
 
   @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
-    if sender.state == .ended {
-      self.delegate?.kConfirmSendViewController(self, run: .cancel)
-    }
+    dismiss(animated: true)
+//    if sender.state == .ended {
+//      self.delegate?.kConfirmSendViewController(self, run: .cancel)
+//    }
   }
 
   @IBAction func helpGasFeeButtonTapped(_ sender: UIButton) {
