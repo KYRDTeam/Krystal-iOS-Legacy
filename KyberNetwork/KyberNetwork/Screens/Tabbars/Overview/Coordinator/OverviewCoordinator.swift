@@ -396,6 +396,9 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     popup.completionHandler = { selected in
       if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
         self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: selected)
+        if selected == newChain {
+          self.pendingAction = completion
+        }
         return
       }
       KNGeneralProvider.shared.currentChain = selected
