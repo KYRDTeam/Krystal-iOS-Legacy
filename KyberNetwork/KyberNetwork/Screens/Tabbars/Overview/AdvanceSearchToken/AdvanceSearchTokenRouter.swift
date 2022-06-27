@@ -95,7 +95,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
                 }
               }
             }
-            controller.coordinatorDidUpdatePoolData(poolData: allPools)
+//            controller.coordinatorDidUpdatePoolData(poolData: allPools)
           }
         }
       case .getChartData(let address, let from, _, let currency):
@@ -116,7 +116,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
-            controller.coordinatorDidUpdateChartData(data.prices)
+//            controller.coordinatorDidUpdateChartData(data.prices)
           } catch let error {
             print("[Debug]" + error.localizedDescription)
           }
@@ -215,7 +215,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           do {
             let data = try decoder.decode(TradingViewChartResponse.self, from: resp.data)
             
-            controller.coordinatorDidUpdateTradingViewData(data.data)
+//            controller.coordinatorDidUpdateTradingViewData(data.data)
             print(data)
           } catch let error {
             print("[Debug]" + error.localizedDescription)

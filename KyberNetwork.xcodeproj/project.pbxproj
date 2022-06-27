@@ -582,6 +582,11 @@
 		A65C7A792818E877000FA9CE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A772818E877000FA9CE /* WebViewController.swift */; };
 		A65C7A7A2818E877000FA9CE /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A782818E877000FA9CE /* WebViewController.xib */; };
 		A65C7A802818EF75000FA9CE /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A7F2818EF74000FA9CE /* URL+.swift */; };
+		A65CC8EC28695BC7008620E2 /* TradingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8EB28695BC7008620E2 /* TradingView.swift */; };
+		A65CC8EF28695C05008620E2 /* mobile-charting-library in Resources */ = {isa = PBXBuildFile; fileRef = A65CC8EE28695C05008620E2 /* mobile-charting-library */; };
+		A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */; };
+		A65CC8F328698C11008620E2 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F228698C11008620E2 /* ChartType.swift */; };
+		A65CC8F528698C1F008620E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F428698C1F008620E2 /* Period.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */; };
 		A6790C2F284485E0007CE0CD /* MockTransactionDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */; };
@@ -1603,6 +1608,11 @@
 		A65C7A772818E877000FA9CE /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		A65C7A782818E877000FA9CE /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		A65C7A7F2818EF74000FA9CE /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
+		A65CC8EB28695BC7008620E2 /* TradingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingView.swift; sourceTree = "<group>"; };
+		A65CC8EE28695C05008620E2 /* mobile-charting-library */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "mobile-charting-library"; sourceTree = SOURCE_ROOT; };
+		A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLoadRequest.swift; sourceTree = "<group>"; };
+		A65CC8F228698C11008620E2 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
+		A65CC8F428698C1F008620E2 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewControllerTests.swift; sourceTree = "<group>"; };
 		A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailPresenter.swift; sourceTree = "<group>"; };
@@ -3622,6 +3632,7 @@
 				2996F14B1F6CA725005C33AE /* Extensions */,
 				A6DA40E327F6DAA00078C58E /* Resources */,
 				A66B9C6A280818E3001B7A3D /* Common */,
+				A65CC8E928695BB3008620E2 /* Libs */,
 				257B84AE2074D7B8003DD40E /* Assets.xcassets */,
 				2912CCF81F6A830700C6CBE3 /* AppDelegate.swift */,
 				2912CD061F6A830700C6CBE3 /* Info.plist */,
@@ -4485,6 +4496,34 @@
 				A65C7A752818E3D5000FA9CE /* NavigationBar.xib */,
 			);
 			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		A65CC8E928695BB3008620E2 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC8EA28695BBC008620E2 /* TradingView */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		A65CC8EA28695BBC008620E2 /* TradingView */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC8ED28695BD3008620E2 /* Resources */,
+				A65CC8EB28695BC7008620E2 /* TradingView.swift */,
+				A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */,
+				A65CC8F228698C11008620E2 /* ChartType.swift */,
+				A65CC8F428698C1F008620E2 /* Period.swift */,
+			);
+			path = TradingView;
+			sourceTree = "<group>";
+		};
+		A65CC8ED28695BD3008620E2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC8EE28695C05008620E2 /* mobile-charting-library */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A66B9C6A280818E3001B7A3D /* Common */ = {
@@ -5830,6 +5869,7 @@
 				C30292F1260317EA001929E1 /* MarketingPartnerCollectionViewCell.xib in Resources */,
 				25929C8920DA5CC10045CFA3 /* SFCompactDisplay-Light.otf in Resources */,
 				257A37A6205D187100E86794 /* KNTransactionStatusViewController.xib in Resources */,
+				A65CC8EF28695C05008620E2 /* mobile-charting-library in Resources */,
 				25073D22211AF20D00833C92 /* Montserrat-Italic.ttf in Resources */,
 				C3308F5D27B66D510045C569 /* MultiSendApproveViewController.xib in Resources */,
 				C3A6592125F1EC3300A89241 /* EarnOverviewViewController.xib in Resources */,
@@ -6388,6 +6428,7 @@
 				C320D80827B39DAE0001DC71 /* MultiSendCoordinator.swift in Sources */,
 				C326703F2579E4B70063AA1F /* GasFeeSelectorPopupViewController.swift in Sources */,
 				2561454620C648A700FB00CF /* KNContactStorage.swift in Sources */,
+				A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */,
 				29E14FDB1F7F4F3D00185568 /* Transaction.swift in Sources */,
 				C60BB88C239596D5006FE37D /* KNGetResolverRequest.swift in Sources */,
 				A6DA410027F7129E0078C58E /* UIScreen+.swift in Sources */,
@@ -6468,6 +6509,7 @@
 				C3299D672773415000D1065A /* WKWebViewConfiguration.swift in Sources */,
 				73D26837202E827E009777A1 /* DecimalFormatter.swift in Sources */,
 				2996F14D1F6CA743005C33AE /* UIViewController.swift in Sources */,
+				A65CC8EC28695BC7008620E2 /* TradingView.swift in Sources */,
 				2959961F1FAE759700DB66A8 /* RawTransaction.swift in Sources */,
 				C3ED1DDC2617027B0024970C /* Date+Kyber.swift in Sources */,
 				7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */,
@@ -6486,6 +6528,7 @@
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */,
+				A65CC8F328698C11008620E2 /* ChartType.swift in Sources */,
 				29C70C7C201990540072E454 /* SendTransaction.swift in Sources */,
 				7ECCB89B270BFDA20080DC3B /* LPTokenModel.swift in Sources */,
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
@@ -6563,6 +6606,7 @@
 				25C45AD320AD398C00CDA1FF /* KNImportJSONViewController.swift in Sources */,
 				C31F749225DCD213008B21F7 /* OverviewCoordinator.swift in Sources */,
 				2542604A21215C360015ECC7 /* KSwapViewModel.swift in Sources */,
+				A65CC8F528698C1F008620E2 /* Period.swift in Sources */,
 				C3362D8F2806D0E500840884 /* WalletData.swift in Sources */,
 				C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */,
 				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
