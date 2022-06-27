@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -47,6 +47,7 @@
                 <outlet property="poolTableView" destination="LuJ-IT-k2l" id="3gd-ud-nFX"/>
                 <outlet property="poolView" destination="Pwb-X0-eiY" id="Tfr-D6-Frd"/>
                 <outlet property="poolViewTrailingConstraint" destination="8i8-9k-Jfw" id="PCE-bK-FCi"/>
+                <outlet property="priceDiffImageView" destination="tdf-j3-WE5" id="8FZ-PT-7FB"/>
                 <outlet property="priceDiffPercentageLabel" destination="rig-RH-skP" id="gEG-fm-naP"/>
                 <outlet property="priceLabel" destination="Lcl-Qq-nU6" id="0Hv-Ji-cky"/>
                 <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Wyo-th-Vej"/>
@@ -669,6 +670,20 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wallet" translatesAutoresizingMaskIntoConstraints="NO" id="VuU-Hz-fH7">
+                            <rect key="frame" x="254.33333333333337" y="21" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="Ddr-Pa-jCz"/>
+                                <constraint firstAttribute="height" constant="16" id="NKk-g7-2qn"/>
+                            </constraints>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-price-up" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-j3-WE5">
+                            <rect key="frame" x="63.333333333333343" y="39.333333333333343" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="ObQ-rW-gis"/>
+                                <constraint firstAttribute="width" constant="24" id="hKj-hF-Jy5"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="5JN-3d-A7T" secondAttribute="trailing" constant="15" id="0IB-bU-ncX"/>
@@ -676,6 +691,7 @@
                         <constraint firstItem="Fcp-jR-KcB" firstAttribute="centerX" secondItem="ueJ-8I-pMk" secondAttribute="centerX" id="48i-nT-qRG"/>
                         <constraint firstItem="jOl-eR-l0u" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="20" id="5BQ-1P-Yom"/>
                         <constraint firstItem="aFB-ff-HUe" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="top" id="5LN-b5-4WP"/>
+                        <constraint firstItem="tdf-j3-WE5" firstAttribute="centerY" secondItem="rig-RH-skP" secondAttribute="centerY" id="5pL-sp-AQU"/>
                         <constraint firstItem="ueJ-8I-pMk" firstAttribute="top" secondItem="kpd-Ie-Axg" secondAttribute="bottom" constant="15" id="9Zs-1c-aTC"/>
                         <constraint firstItem="ioX-Gg-jnp" firstAttribute="top" secondItem="5JN-3d-A7T" secondAttribute="bottom" constant="3" id="AcW-Hb-7al"/>
                         <constraint firstItem="kpd-Ie-Axg" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="15" id="Ano-Oy-UHd"/>
@@ -702,6 +718,7 @@
                         <constraint firstItem="Lq3-Hn-cfD" firstAttribute="top" secondItem="VQr-Jp-lwB" secondAttribute="bottom" constant="40" id="Vgo-AW-Q7J"/>
                         <constraint firstItem="kpd-Ie-Axg" firstAttribute="top" secondItem="1Rg-Gc-aeW" secondAttribute="bottom" constant="17" id="W9F-vn-s6X"/>
                         <constraint firstItem="cri-x0-2Od" firstAttribute="top" secondItem="rig-RH-skP" secondAttribute="bottom" constant="12" id="XcI-ck-HmP"/>
+                        <constraint firstItem="5JN-3d-A7T" firstAttribute="centerY" secondItem="VuU-Hz-fH7" secondAttribute="centerY" id="Y86-vj-syR"/>
                         <constraint firstItem="1Rg-Gc-aeW" firstAttribute="top" secondItem="cri-x0-2Od" secondAttribute="bottom" constant="52" id="a6L-OL-sFs"/>
                         <constraint firstItem="7pU-d9-FWK" firstAttribute="leading" secondItem="VQr-Jp-lwB" secondAttribute="trailing" constant="20" id="bKc-HQ-a69"/>
                         <constraint firstItem="HI4-LR-6cR" firstAttribute="width" secondItem="VQr-Jp-lwB" secondAttribute="width" id="bYb-IR-zlq"/>
@@ -711,7 +728,9 @@
                         <constraint firstItem="yx2-K4-ikS" firstAttribute="width" secondItem="wC0-1c-nRc" secondAttribute="width" constant="-40" id="he9-GV-dVo"/>
                         <constraint firstItem="Lcl-Qq-nU6" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="20" id="iqi-0E-ABR"/>
                         <constraint firstItem="1Rg-Gc-aeW" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="bottom" constant="10" id="jyA-a3-UFg"/>
+                        <constraint firstItem="5JN-3d-A7T" firstAttribute="leading" secondItem="VuU-Hz-fH7" secondAttribute="trailing" constant="4" id="l6l-Y4-8f6"/>
                         <constraint firstItem="Lq3-Hn-cfD" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="16" id="mwG-Sx-Thv"/>
+                        <constraint firstItem="tdf-j3-WE5" firstAttribute="leading" secondItem="rig-RH-skP" secondAttribute="trailing" constant="1" id="sDq-BP-61j"/>
                         <constraint firstAttribute="trailing" secondItem="HI4-LR-6cR" secondAttribute="trailing" constant="26" id="sMD-yl-6bv"/>
                         <constraint firstItem="HI4-LR-6cR" firstAttribute="leading" secondItem="7pU-d9-FWK" secondAttribute="trailing" constant="20" id="shm-R9-FEf"/>
                         <constraint firstItem="cri-x0-2Od" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="15" id="tXD-JP-NPz"/>
@@ -748,6 +767,8 @@
         <image name="chain_bsc_icon" width="24" height="24"/>
         <image name="close-search-icon" width="24" height="24"/>
         <image name="etherscan_chart_icon" width="22" height="22"/>
+        <image name="icon-price-up" width="24" height="24"/>
+        <image name="icon-wallet" width="16" height="16"/>
         <image name="twitter_chart_icon" width="24" height="24"/>
         <image name="unFav_star_icon" width="22" height="21"/>
         <image name="website_chart_icon" width="24" height="24"/>

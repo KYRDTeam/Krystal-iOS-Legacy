@@ -95,7 +95,8 @@ class ChartViewModel {
   }
 
   var display24hVol: String {
-    return "\(self.detailInfo?.markets[self.currency]?.volume24H ?? 0)"
+    let volume24H = self.detailInfo?.markets[self.currency]?.volume24H ?? 0
+    return self.currencyMode.symbol() + "\(self.formatPoints(volume24H))" + self.currencyMode.suffixSymbol()
   }
 
   var diffPercent: Double {
@@ -119,6 +120,10 @@ class ChartViewModel {
   
   var displayDiffColor: UIColor? {
     return self.diffPercent > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+  }
+  
+  var diffImage: UIImage {
+    return self.diffPercent > 0 ? UIImage(named: "icon-price-up")! : UIImage(named: "icon-price-down")!
   }
   
   var diplayBalance: String {
@@ -152,11 +157,13 @@ class ChartViewModel {
   }
   
   var displayAllTimeHigh: String {
-    return "\(self.detailInfo?.markets[self.currency]?.ath ?? 0)"
+    let ath = self.detailInfo?.markets[self.currency]?.ath ?? 0
+    return self.currencyMode.symbol() + "\(self.formatPoints(ath))" + self.currencyMode.suffixSymbol()
   }
 
   var displayAllTimeLow: String {
-    return "\(self.detailInfo?.markets[self.currency]?.atl ?? 0)"
+    let atl = self.detailInfo?.markets[self.currency]?.atl ?? 0
+    return self.currencyMode.symbol() + "\(self.formatPoints(atl))" + self.currencyMode.suffixSymbol()
   }
 
   var displayDescription: String {
@@ -182,9 +189,9 @@ class ChartViewModel {
 
   var headerTitle: String {
     if let detailInfo = self.detailInfo {
-      return "\(detailInfo.symbol.uppercased())/\(self.currency.uppercased())"
+      return "\(detailInfo.symbol.uppercased())"
     }
-    return "\(self.token.symbol.uppercased())/\(self.currency.uppercased())"
+    return "\(self.token.symbol.uppercased())"
   }
 
   var tagImage: UIImage? {
@@ -227,7 +234,7 @@ class ChartViewModel {
     } else if thousand >= 1.0 {
       return ("\(round(thousand*10/10))K")
     } else {
-      return "\(Int(number))"
+      return "\(number)".displayRate()
     }
   }
   
@@ -332,6 +339,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet var periodChartSelectButtons: [UIButton]!
   @IBOutlet weak var priceLabel: UILabel!
   @IBOutlet weak var priceDiffPercentageLabel: UILabel!
+  @IBOutlet weak var priceDiffImageView: UIImageView!
   @IBOutlet weak var volumeLabel: UILabel!
   @IBOutlet weak var ethBalanceLabel: UILabel!
   @IBOutlet weak var usdBalanceLabel: UILabel!
@@ -632,6 +640,7 @@ class ChartViewController: KNBaseViewController {
     self.marketCapLabel.text = self.viewModel.displayMarketCap
     self.priceDiffPercentageLabel.text = self.viewModel.displayDiffPercent
     self.priceDiffPercentageLabel.textColor = self.viewModel.displayDiffColor
+    self.priceDiffImageView.image = self.viewModel.diffImage
     self.swapButton.backgroundColor = self.viewModel.displayDiffColor
     self.transferButton.backgroundColor = self.viewModel.displayDiffColor
     if self.viewModel.canEarn {
@@ -777,7 +786,7 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    cell.updateUI(poolDetail: poolData, baseTokenSymbol: self.viewModel.token.symbol)
+    cell.updateUI(poolDetail: poolData, baseTokenSymbol: self.viewModel.token.symbol, currencyMode: self.viewModel.currencyMode)
     return cell
   }
 }

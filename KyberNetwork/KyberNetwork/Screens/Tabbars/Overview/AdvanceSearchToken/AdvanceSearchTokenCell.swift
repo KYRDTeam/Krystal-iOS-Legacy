@@ -29,15 +29,17 @@ class AdvanceSearchTokenCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
   
-  func updateUI(token: ResultToken?) {
+  func updateUI(token: ResultToken?, currencyMode: CurrencyMode) {
     guard let token = token else {
       return
     }
     tokenIcon.setSymbolImage(symbol: token.symbol)
     if let image = UIImage.imageWithTag(tag: token.tag) {
       tagIcon.image = image
+      tagIcon.isHidden = false
       self.fullNameLabelLeadingConstraint.constant = 30
     } else {
+      tagIcon.isHidden = true
       self.fullNameLabelLeadingConstraint.constant = 10
     }
     tokenNameLabel.text = token.symbol
@@ -52,11 +54,6 @@ class AdvanceSearchTokenCell: UITableViewCell {
       chainIcon.image = chainType.chainIcon()
     }
     addressLabel.text = "\(token.id.prefix(7))...\(token.id.suffix(4))"
-    totalValueLabel.text = StringFormatter.usdString(value: token.tvl)
+    totalValueLabel.text = currencyMode.symbol() + "\(String.formatBigNumberCurrency(token.tvl))" + currencyMode.suffixSymbol()
   }
-  
-  func updateUI(poolData: TokenPoolDetail) {
-    
-  }
-    
 }
