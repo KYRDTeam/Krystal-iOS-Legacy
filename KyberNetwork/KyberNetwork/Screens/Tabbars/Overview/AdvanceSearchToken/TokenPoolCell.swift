@@ -32,11 +32,11 @@ class TokenPoolCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
     
-  func updateUI(poolDetail: TokenPoolDetail, baseTokenSymbol: String, currencyMode: CurrencyMode) {
+  func updateUI(poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
     var baseToken = poolDetail.token0
     var otherToken = poolDetail.token1
     
-    if poolDetail.token1.symbol == baseTokenSymbol {
+    if poolDetail.token1.address.lowercased() == baseTokenAddress.lowercased() {
       baseToken = poolDetail.token1
       otherToken = poolDetail.token0
     }
