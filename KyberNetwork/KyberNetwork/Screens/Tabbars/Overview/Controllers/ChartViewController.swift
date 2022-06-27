@@ -686,9 +686,9 @@ class ChartViewController: KNBaseViewController {
   
   func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
     self.viewModel.poolData = poolData
-    self.updatePoolTableHeight()
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
+    self.updatePoolTableHeight()
     self.viewModel.selectedPoolDetail = poolData.first
   }
 
