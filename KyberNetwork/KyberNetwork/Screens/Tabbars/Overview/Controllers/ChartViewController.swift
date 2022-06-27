@@ -802,7 +802,14 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    cell.updateUI(poolDetail: poolData, baseTokenSymbol: self.viewModel.token.symbol, currencyMode: .usd)
+    var symbol = self.viewModel.token.symbol
+    if self.viewModel.token.isQuoteToken {
+      let wsymbol = "W" + symbol
+      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
+        symbol = wsymbol
+      }
+    }
+    cell.updateUI(poolDetail: poolData, baseTokenSymbol: symbol, currencyMode: .usd)
     return cell
   }
 }
