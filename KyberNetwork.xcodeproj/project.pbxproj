@@ -587,7 +587,6 @@
 		A65CC8F128695D6A008620E2 /* ChartLoadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */; };
 		A65CC8F328698C11008620E2 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F228698C11008620E2 /* ChartType.swift */; };
 		A65CC8F528698C1F008620E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F428698C1F008620E2 /* Period.swift */; };
-		A65CC8F828699CF1008620E2 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F728699CF1008620E2 /* ChartViewModel.swift */; };
 		A65CC8FA2869A113008620E2 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC8F92869A113008620E2 /* UserDefault.swift */; };
 		A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B9C6B280818F6001B7A3D /* ValidationResult.swift */; };
 		A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */; };
@@ -1615,7 +1614,6 @@
 		A65CC8F028695D6A008620E2 /* ChartLoadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLoadRequest.swift; sourceTree = "<group>"; };
 		A65CC8F228698C11008620E2 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
 		A65CC8F428698C1F008620E2 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
-		A65CC8F728699CF1008620E2 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		A65CC8F92869A113008620E2 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		A66B9C6B280818F6001B7A3D /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewControllerTests.swift; sourceTree = "<group>"; };
@@ -4279,7 +4277,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */,
-				A65CC8F728699CF1008620E2 /* ChartViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -6676,7 +6673,6 @@
 				296AF9A51F736BA20058AF78 /* Config.swift in Sources */,
 				C33BF86A26D77E5C00D9F621 /* SendNFTViewController.swift in Sources */,
 				C320D80B27B39EBC0001DC71 /* MultiSendViewController.swift in Sources */,
-				A65CC8F828699CF1008620E2 /* ChartViewModel.swift in Sources */,
 				7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */,
 				253F50E721E5B5290068813D /* KNPromoCodeViewController.swift in Sources */,
 				C308BC1526D897290030022B /* ConfirmSendNFTViewController.swift in Sources */,

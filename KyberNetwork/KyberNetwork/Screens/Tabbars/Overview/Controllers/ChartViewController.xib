@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -35,11 +35,14 @@
                 <outlet property="chartContainerView" destination="ueJ-8I-pMk" id="3B5-13-zIW"/>
                 <outlet property="chartDetailLabel" destination="aFB-ff-HUe" id="SBH-EX-ap5"/>
                 <outlet property="chartDurationTopSpacing" destination="a6L-OL-sFs" id="INW-26-py0"/>
+                <outlet property="chartTopToPoolButtonConstraint" destination="NBa-PD-e2i" id="L3m-wC-REb"/>
+                <outlet property="chartTopToTimeConstraint" destination="9Zs-1c-aTC" id="iDF-oU-y6W"/>
                 <outlet property="containScrollView" destination="wC0-1c-nRc" id="PlA-Ck-TD4"/>
                 <outlet property="descriptionTextView" destination="yx2-K4-ikS" id="rud-bP-2OX"/>
                 <outlet property="ethBalanceLabel" destination="5JN-3d-A7T" id="xcI-7T-t4b"/>
                 <outlet property="favButton" destination="ak7-Ym-9X3" id="JHD-bG-e95"/>
                 <outlet property="infoSegment" destination="Lq3-Hn-cfD" id="h28-XW-7oF"/>
+                <outlet property="intervalStackview" destination="1Rg-Gc-aeW" id="Uil-eL-gfa"/>
                 <outlet property="investButton" destination="HI4-LR-6cR" id="2hL-Qn-ZYj"/>
                 <outlet property="lineChartView" destination="Hkg-wr-dzx" id="iV9-py-Kln"/>
                 <outlet property="marketCapLabel" destination="ncE-iU-gdT" id="0eE-JV-6Kl"/>
@@ -299,6 +302,9 @@
                                     </connections>
                                 </button>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="9cg-gQ-XV3"/>
+                            </constraints>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpd-Ie-Axg">
                             <rect key="frame" x="15" y="208.66666666666669" width="345" height="1"/>
@@ -656,8 +662,8 @@
                                 <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="YJs-uH-DKS"/>
                             </connections>
                         </segmentedControl>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOl-eR-l0u">
-                            <rect key="frame" x="20" y="125.66666666666666" width="133.33333333333334" height="32"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOl-eR-l0u" userLabel="Pool Button">
+                            <rect key="frame" x="15" y="125.66666666666666" width="133.33333333333334" height="32"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC/ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-IH-nRe">
                                     <rect key="frame" x="18" y="0.0" width="73.333333333333329" height="32"/>
@@ -715,7 +721,7 @@
                         <constraint firstAttribute="trailing" secondItem="5JN-3d-A7T" secondAttribute="trailing" constant="15" id="0IB-bU-ncX"/>
                         <constraint firstItem="7pU-d9-FWK" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="bottom" constant="15" id="2tJ-Ay-eHz"/>
                         <constraint firstItem="Fcp-jR-KcB" firstAttribute="centerX" secondItem="ueJ-8I-pMk" secondAttribute="centerX" id="48i-nT-qRG"/>
-                        <constraint firstItem="jOl-eR-l0u" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="20" id="5BQ-1P-Yom"/>
+                        <constraint firstItem="jOl-eR-l0u" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="15" id="5BQ-1P-Yom"/>
                         <constraint firstItem="aFB-ff-HUe" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="top" constant="8" id="5LN-b5-4WP"/>
                         <constraint firstItem="tdf-j3-WE5" firstAttribute="centerY" secondItem="rig-RH-skP" secondAttribute="centerY" id="5pL-sp-AQU"/>
                         <constraint firstItem="ueJ-8I-pMk" firstAttribute="top" secondItem="kpd-Ie-Axg" secondAttribute="bottom" constant="15" id="9Zs-1c-aTC"/>
@@ -733,6 +739,7 @@
                         <constraint firstAttribute="trailing" secondItem="ioX-Gg-jnp" secondAttribute="trailing" constant="15" id="Hdx-TD-3C1"/>
                         <constraint firstAttribute="trailing" secondItem="1Rg-Gc-aeW" secondAttribute="trailing" constant="17" id="Jix-iC-FIE"/>
                         <constraint firstItem="Lcl-Qq-nU6" firstAttribute="top" secondItem="wC0-1c-nRc" secondAttribute="top" constant="16" id="KVa-Ql-qo8"/>
+                        <constraint firstItem="ueJ-8I-pMk" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="bottom" constant="16" id="NBa-PD-e2i"/>
                         <constraint firstItem="HI4-LR-6cR" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="bottom" constant="15" id="OAB-Af-R20"/>
                         <constraint firstItem="VQr-Jp-lwB" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="bottom" constant="15" id="Ocn-MS-zLf"/>
                         <constraint firstAttribute="trailing" secondItem="paA-0H-8UK" secondAttribute="trailing" id="Pd1-cc-IzF"/>
@@ -766,6 +773,11 @@
                         <constraint firstItem="1Rg-Gc-aeW" firstAttribute="leading" secondItem="wC0-1c-nRc" secondAttribute="leading" constant="17" id="x78-mL-NQO"/>
                         <constraint firstItem="rig-RH-skP" firstAttribute="leading" secondItem="Lcl-Qq-nU6" secondAttribute="leading" id="zaY-jh-6IX"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="NBa-PD-e2i"/>
+                        </mask>
+                    </variation>
                 </scrollView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

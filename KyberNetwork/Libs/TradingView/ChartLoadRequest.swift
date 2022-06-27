@@ -70,6 +70,7 @@ class ChartLoadRequestBuilder {
       chain: chain,
       baseAddress: baseAddress,
       quoteAddress: quoteAddress,
+      period: period,
       chartType: chartType
     )
   }

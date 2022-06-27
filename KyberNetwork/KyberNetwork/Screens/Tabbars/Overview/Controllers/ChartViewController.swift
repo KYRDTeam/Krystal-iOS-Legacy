@@ -332,7 +332,6 @@ enum ChartPeriodType: Int {
   }
 }
 
-
 protocol ChartViewControllerDelegate: class {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent)
 }
@@ -380,6 +379,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
   @IBOutlet weak var tradingView: TradingView!
   @IBOutlet weak var tokenChartView: Chart!
+  @IBOutlet weak var chartTopToPoolButtonConstraint: NSLayoutConstraint!
+  @IBOutlet weak var chartTopToTimeConstraint: NSLayoutConstraint!
+  @IBOutlet weak var intervalStackview: UIStackView!
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
@@ -387,7 +389,7 @@ class ChartViewController: KNBaseViewController {
   
   var isSelectingLineChart: Bool = true {
     didSet {
-      self.setupChartViews()
+      self.reloadCharts()
     }
   }
   
@@ -410,10 +412,11 @@ class ChartViewController: KNBaseViewController {
     self.setupButtons()
     self.setupChartViews()
     self.loadTokenChartData()
+    self.reloadCharts()
   }
   
   func setupTitle() {
-    self.titleView.text = self.viewModel.headerTitle
+    self.titleView.attributedText = self.viewModel.headerTitle
   }
   
   func setupPoolInfoView() {
@@ -451,11 +454,6 @@ class ChartViewController: KNBaseViewController {
   }
   
   func setupChartViews() {
-    noDataLabel.isHidden = true
-    lineChartView.isHidden = !isSelectingLineChart
-    chartDetailLabel.isHidden = !isSelectingLineChart
-    tradingView.isHidden = isSelectingLineChart
-    
     tokenChartView.showYLabelsAndGrid = false
     tokenChartView.labelColor = UIColor.Kyber.SWPlaceHolder
     tokenChartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
@@ -463,8 +461,16 @@ class ChartViewController: KNBaseViewController {
     tokenChartView.gridColor = .clear
     tokenChartView.backgroundColor = .clear
     tokenChartView.delegate = self
-    
-    reloadTokenTradingView()
+  }
+  
+  func reloadCharts() {
+    noDataLabel.isHidden = true
+    lineChartView.isHidden = !isSelectingLineChart
+    chartDetailLabel.isHidden = !isSelectingLineChart
+    tradingView.isHidden = isSelectingLineChart
+    intervalStackview.isHidden = !isSelectingLineChart
+    chartTopToPoolButtonConstraint.isActive = !isSelectingLineChart
+    chartTopToTimeConstraint.isActive = isSelectingLineChart
   }
   
   @objc func copyTokenAddress() {
@@ -706,7 +712,7 @@ class ChartViewController: KNBaseViewController {
       let year = calendar.component(.year, from: date)
       switch self.viewModel.periodType {
       case .oneDay:
-        return String(format: "%02d:%02d", "\(hour)", "\(minutes)")
+        return String(format: "%02d:%02d", hour, minutes)
       case .sevenDay:
         return "\(dateFormatter.string(from: date)) \(hour)"
       case .oneMonth, .threeMonth:
@@ -745,19 +751,8 @@ class ChartViewController: KNBaseViewController {
       .chain(chain.customRPC().apiChainPath)
       .baseAddress(source)
       .quoteAddress(quote)
-      .period(.d1)
+      .period(.h1)
       .chartType(.candles)
-      .build()
-    
-    tradingView.load(request: request)
-  }
-  
-  func reloadTokenTradingView() {
-    let request = ChartLoadRequestBuilder()
-      .symbol("\(viewModel.token.symbol)/\(viewModel.currency)")
-      .baseAddress(viewModel.token.address)
-      .period(.d1)
-      .chartType(.line)
       .build()
     
     tradingView.load(request: request)
