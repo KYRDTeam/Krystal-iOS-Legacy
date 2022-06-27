@@ -11,22 +11,24 @@ import BigInt
 import MBProgressHUD
 
 class ChartViewModel {
+  var dataSource: [(x: Double, y: Double)] = []
   var poolData: [TokenPoolDetail] = []
   var xLabels: [Double] = []
   let token: Token
   var periodType: ChartPeriodType = .oneDay
   var detailInfo: TokenDetailInfo?
   var chartData: [[Double]]?
+  var chartOriginTimeStamp: Double = 0
 
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
   var chainId = KNGeneralProvider.shared.currentChain.getChainId()
-  var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
-    didSet {
-      UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
-    }
-  }
+  
+  
+  @UserDefault(key: Constants.hideBalanceKey, defaultValue: false)
+  var hideBalanceStatus: Bool
+  
   var isExpandingPoolTable: Bool = false
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
@@ -38,19 +40,7 @@ class ChartViewModel {
     return formatter
   }()
   
-//  var tradingViewCandleData: [TradingViewData] = []
-//  var candleSeries: CandlestickSeries!
-  
-//  var lineSeries: LineSeries!
-  
-//  var tradingViewLineData: [SingleValueData] = []
-  
-  var isLineChartMode: Bool = true
   var selectedPoolDetail: TokenPoolDetail?
-  
-  var selectedPool: (String, String) {
-    return (selectedPoolDetail?.token0.address ?? "", selectedPoolDetail?.token1.address ?? "")
-  }
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -62,6 +52,16 @@ class ChartViewModel {
   func updateChartData(_ data: [[Double]]) {
     guard !data.isEmpty else { return }
     self.chartData = data
+    let originTimeStamp = data[0][0]
+    self.chartOriginTimeStamp = originTimeStamp
+    self.dataSource = data.map { (item) -> (x: Double, y: Double) in
+      return (x: item[0] - originTimeStamp, y: item[1])
+    }
+    if let lastTimeStamp = data.last?[0] {
+      let interval = lastTimeStamp - originTimeStamp
+      let divide = interval / 7
+      self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
+    }
   }
   
   var series: ChartSeries {
@@ -295,7 +295,6 @@ class ChartViewModel {
 
 enum ChartViewEvent {
   case getChartData(address: String, from: Int, to: Int, currency: String)
-  case getCandleChartData(address: String, from: Int, to: Int, currency: String)
   case getTokenDetailInfo(address: String)
   case transfer(token: Token)
   case swap(token: Token)
@@ -332,6 +331,7 @@ enum ChartPeriodType: Int {
     return Int(current) - interval
   }
 }
+
 
 protocol ChartViewControllerDelegate: class {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent)
@@ -409,6 +409,7 @@ class ChartViewController: KNBaseViewController {
     self.setupTitle()
     self.setupButtons()
     self.setupChartViews()
+    self.loadTokenChartData()
   }
   
   func setupTitle() {
@@ -452,6 +453,7 @@ class ChartViewController: KNBaseViewController {
   func setupChartViews() {
     noDataLabel.isHidden = true
     lineChartView.isHidden = !isSelectingLineChart
+    chartDetailLabel.isHidden = !isSelectingLineChart
     tradingView.isHidden = isSelectingLineChart
     
     tokenChartView.showYLabelsAndGrid = false
@@ -622,25 +624,11 @@ class ChartViewController: KNBaseViewController {
 
     self.chainAddressLabel.text = self.viewModel.token.address
   }
-
-//  fileprivate func loadChartData() {
-//    if self.viewModel.isLineChartMode {
-//      self.loadLineChartData()
-//    } else {
-//      self.loadCandleChartData(source: self.viewModel.selectedPool.0, quote: self.viewModel.selectedPool.1)
-//    }
-//  }
-//
-//  fileprivate func loadLineChartData() {
-//    let current = NSDate().timeIntervalSince1970
-//    self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
-//  }
   
-//  fileprivate func loadCandleChartData(source: String, quote: String) {
-//    guard !source.isEmpty, !quote.isEmpty else { return }
-//    let current = NSDate().timeIntervalSince1970
-//    self.delegate?.chartViewController(self, run: .getCandleChartData(address: source, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: quote))
-//  }
+  func loadTokenChartData() {
+    let current = NSDate().timeIntervalSince1970
+    self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
+  }
 
   fileprivate func loadTokenDetailInfo() {
     self.delegate?.chartViewController(self, run: .getTokenDetailInfo(address: self.viewModel.token.address))
@@ -718,7 +706,7 @@ class ChartViewController: KNBaseViewController {
       let year = calendar.component(.year, from: date)
       switch self.viewModel.periodType {
       case .oneDay:
-        return "\(hour):\(minutes)"
+        return String(format: "%02d:%02d", "\(hour)", "\(minutes)")
       case .sevenDay:
         return "\(dateFormatter.string(from: date)) \(hour)"
       case .oneMonth, .threeMonth:
@@ -744,12 +732,6 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
     self.updateUIChartInfo()
-  }
-  
-  func coordinatorDidUpdateTradingViewData(_ data: [TradingViewData]) {
-//    self.viewModel.tradingViewCandleData = data
-//    let data = self.viewModel.generateCandleStickData()
-//    self.viewModel.candleSeries.setData(data: data)
   }
   
   func reloadPoolTradingView(pool: TokenPoolDetail) {
@@ -813,4 +795,21 @@ extension ChartViewController: UITableViewDelegate {
     self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
   }
   
+}
+
+extension ChartViewController: ChartDelegate {
+  func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
+    guard let index = indexes.first, let unwrappedIdx = index else {
+      return
+    }
+    self.chartDetailLabel.attributedText = self.viewModel.displayChartDetaiInfoAt(index: unwrappedIdx)
+  }
+  
+  func didFinishTouchingChart(_ chart: Chart) {
+    
+  }
+  
+  func didEndTouchingChart(_ chart: Chart) {
+    
+  }
 }

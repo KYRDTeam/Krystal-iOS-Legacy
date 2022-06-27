@@ -204,24 +204,6 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
-    case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTradingViewData(chainPath: String(KNGeneralProvider.shared.chainPath.dropFirst()), address: address, quote: currency, from: from * 1000)) { result in
-        switch result {
-        case .failure(let error):
-          controller.coordinatorFailUpdateApi(error)
-        case .success(let resp):
-          let decoder = JSONDecoder()
-          do {
-            let data = try decoder.decode(TradingViewChartResponse.self, from: resp.data)
-            
-//            controller.coordinatorDidUpdateTradingViewData(data.data)
-            print(data)
-          } catch let error {
-            print("[Debug]" + error.localizedDescription)
-          }
-        }
-      }
     case .selectPool(source: let source, quote: let quote):
       break
     }
