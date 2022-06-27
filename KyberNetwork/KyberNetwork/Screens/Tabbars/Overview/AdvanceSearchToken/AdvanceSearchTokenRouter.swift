@@ -49,6 +49,10 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     popup.selectedChain = newChain
     popup.nextButtonTitle = "Confirm"
     popup.completionHandler = { selected in
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.coordinator?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: selected)
+        return
+      }
       KNGeneralProvider.shared.currentChain = selected
       var selectedAddress = ""
       if let appDelegate = UIApplication.shared.delegate as? AppDelegate {

@@ -170,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
       let supportedChainIds = ChainType.getAllChain().map { return $0.getChainId() }
       if let chainId = Int(parameters["chainId"] ?? "0"), supportedChainIds.contains(chainId) {
-        self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"], chainIdString: parameters["chainId"])
+        self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"] ?? "", chainIdString: parameters["chainId"])
       } else {
         let errorVC = ErrorViewController()
         errorVC.modalPresentationStyle = .fullScreen

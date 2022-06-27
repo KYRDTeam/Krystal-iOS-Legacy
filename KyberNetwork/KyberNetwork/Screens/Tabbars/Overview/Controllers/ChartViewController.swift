@@ -187,11 +187,33 @@ class ChartViewModel {
     return string
   }
 
-  var headerTitle: String {
+  var headerTitle: NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    let titleAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.bold(with: 20),
+      NSAttributedString.Key.kern: 0.0,
+    ]
+    let subTitleAttributes: [NSAttributedString.Key: Any] = [
+      NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
+      NSAttributedString.Key.font: UIFont.Kyber.regular(with: 18),
+      NSAttributedString.Key.kern: 0.0,
+    ]
+    var titleString = ""
     if let detailInfo = self.detailInfo {
-      return "\(detailInfo.symbol.uppercased())"
+      titleString = "\(detailInfo.symbol.uppercased())"
+    } else {
+      titleString = "\(self.token.symbol.uppercased())"
     }
-    return "\(self.token.symbol.uppercased())"
+    var subTitleString = ""
+    if let detailInfo = self.detailInfo {
+      subTitleString = "\(detailInfo.name.uppercased())"
+    } else {
+      subTitleString = "\(self.token.name.uppercased())"
+    }
+    attributedString.append(NSAttributedString(string: "\(titleString) ", attributes: titleAttributes))
+    attributedString.append(NSAttributedString(string: "\(subTitleString)", attributes: subTitleAttributes))
+    return attributedString
   }
 
   var tagImage: UIImage? {
@@ -398,7 +420,7 @@ class ChartViewController: KNBaseViewController {
     self.infoSegment.selectedSegmentIndex = 0
     self.poolTableView.registerCellNib(TokenPoolCell.self)
     self.updateUIPeriodSelectButtons()
-    self.titleView.text = self.viewModel.headerTitle
+    self.titleView.attributedText = self.viewModel.headerTitle
     self.transferButton.rounded(radius: 16)
     self.swapButton.rounded(radius: 16)
     self.investButton.rounded(radius: 16)
@@ -629,7 +651,7 @@ class ChartViewController: KNBaseViewController {
   }
 
   fileprivate func updateUITokenInfo() {
-    self.titleView.text = self.viewModel.headerTitle
+    self.titleView.attributedText = self.viewModel.headerTitle
     self.atlLabel.text = self.viewModel.displayAllTimeLow
     self.athLabel.text = self.viewModel.displayAllTimeHigh
     self.descriptionTextView.attributedText = self.viewModel.displayDescriptionAttribution
