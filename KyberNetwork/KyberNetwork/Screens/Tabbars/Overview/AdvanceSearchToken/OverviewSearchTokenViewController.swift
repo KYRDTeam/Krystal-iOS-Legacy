@@ -152,7 +152,7 @@ extension OverviewSearchTokenViewController: UITableViewDataSource {
     } else {
       let cell = tableView.dequeueReusableCell(AdvanceSearchTokenCell.self, indexPath: indexPath)!
       let token = presenter.searchResults?.tokens[indexPath.row]
-      cell.updateUI(token: token)
+      cell.updateUI(token: token, currencyMode: presenter.currencyMode)
       return cell
     }
   }

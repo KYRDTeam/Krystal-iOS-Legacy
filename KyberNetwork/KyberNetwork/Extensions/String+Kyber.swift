@@ -118,6 +118,22 @@ extension String {
     let value2 = val21 * 1000000 + val22 * 1000 + val23
     return value1 >= value2
   }
+  
+  static func formatBigNumberCurrency(_ number: Double) -> String {
+    let thousand = number / 1000
+    let million = number / 1000000
+    let billion = number / 1000000000
+    
+    if billion >= 1.0 {
+      return "\(round(billion*10)/10)B"
+    } else if million >= 1.0 {
+      return "\(round(million*10)/10)M"
+    } else if thousand >= 1.0 {
+      return ("\(round(thousand*10/10))K")
+    } else {
+      return "\(number)".displayRate()
+    }
+  }
 
   func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
       let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)

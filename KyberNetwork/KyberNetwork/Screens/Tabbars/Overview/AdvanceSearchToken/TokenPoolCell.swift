@@ -32,7 +32,7 @@ class TokenPoolCell: UITableViewCell {
     super.setSelected(selected, animated: animated)
   }
     
-  func updateUI(poolDetail: TokenPoolDetail, baseTokenSymbol: String) {
+  func updateUI(poolDetail: TokenPoolDetail, baseTokenSymbol: String, currencyMode: CurrencyMode) {
     var baseToken = poolDetail.token0
     var otherToken = poolDetail.token1
     
@@ -55,6 +55,8 @@ class TokenPoolCell: UITableViewCell {
     self.valueLabelWidth.constant = "$\(baseToken.usdValue)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 16))
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
-    self.totalValueLabel.text = StringFormatter.usdString(value: poolDetail.tvl)
+    
+    let totalValueString = currencyMode.symbol() + "\(String.formatBigNumberCurrency(poolDetail.tvl))" + currencyMode.suffixSymbol()
+    self.totalValueLabel.text = totalValueString
   }
 }
