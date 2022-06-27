@@ -382,8 +382,6 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chainView: UIView!
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainAddressLabel: UILabel!
-  @IBOutlet weak var chainViewLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet weak var tagViewTralingToChainViewConstraint: NSLayoutConstraint!
   @IBOutlet weak var infoSegment: SegmentedControl!
   @IBOutlet weak var poolTableView: UITableView!
   @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
@@ -672,12 +670,8 @@ class ChartViewController: KNBaseViewController {
       self.tagImageView.image = image
       self.tagLabel.text = self.viewModel.tagLabel
       self.tagView.isHidden = false
-      self.chainViewLeadingConstraint.isActive = false
-      self.tagViewTralingToChainViewConstraint.isActive = true
     } else {
       self.tagView.isHidden = true
-      self.chainViewLeadingConstraint.isActive = true
-      self.tagViewTralingToChainViewConstraint.isActive = false
     }
     
     if let chain = ChainType.make(chainID: self.viewModel.chainId) {
@@ -808,7 +802,14 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    cell.updateUI(poolDetail: poolData, baseTokenSymbol: self.viewModel.token.symbol, currencyMode: self.viewModel.currencyMode)
+    var symbol = self.viewModel.token.symbol
+    if self.viewModel.token.isQuoteToken {
+      let wsymbol = "W" + symbol
+      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
+        symbol = wsymbol
+      }
+    }
+    cell.updateUI(poolDetail: poolData, baseTokenSymbol: symbol, currencyMode: .usd)
     return cell
   }
 }
