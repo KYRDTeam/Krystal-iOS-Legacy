@@ -382,6 +382,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chartTopToPoolButtonConstraint: NSLayoutConstraint!
   @IBOutlet weak var chartTopToTimeConstraint: NSLayoutConstraint!
   @IBOutlet weak var intervalStackview: UIStackView!
+  @IBOutlet weak var chartHeight: NSLayoutConstraint!
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
@@ -471,6 +472,9 @@ class ChartViewController: KNBaseViewController {
     intervalStackview.isHidden = !isSelectingLineChart
     chartTopToPoolButtonConstraint.isActive = !isSelectingLineChart
     chartTopToTimeConstraint.isActive = isSelectingLineChart
+    UIView.animate(withDuration: 1) {
+      self.chartHeight.constant = self.isSelectingLineChart ? 220 : 312
+    }
   }
   
   @objc func copyTokenAddress() {
@@ -691,7 +695,6 @@ class ChartViewController: KNBaseViewController {
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
     self.updatePoolTableHeight()
-    self.viewModel.selectedPoolDetail = poolData.first
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {

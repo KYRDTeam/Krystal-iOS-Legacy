@@ -16,6 +16,8 @@ class TradingView: UIView {
     configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
     let webView = WKWebView(frame: .zero, configuration: configuration)
     webView.translatesAutoresizingMaskIntoConstraints = false
+    webView.isOpaque = false
+    webView.backgroundColor = .clear
     return webView
   }()
   

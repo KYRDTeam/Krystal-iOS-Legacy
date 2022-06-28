@@ -35,6 +35,7 @@
                 <outlet property="chartContainerView" destination="ueJ-8I-pMk" id="3B5-13-zIW"/>
                 <outlet property="chartDetailLabel" destination="aFB-ff-HUe" id="SBH-EX-ap5"/>
                 <outlet property="chartDurationTopSpacing" destination="a6L-OL-sFs" id="INW-26-py0"/>
+                <outlet property="chartHeight" destination="E1T-qs-NAf" id="nGs-fn-x5l"/>
                 <outlet property="chartTopToPoolButtonConstraint" destination="NBa-PD-e2i" id="L3m-wC-REb"/>
                 <outlet property="chartTopToTimeConstraint" destination="9Zs-1c-aTC" id="iDF-oU-y6W"/>
                 <outlet property="containScrollView" destination="wC0-1c-nRc" id="PlA-Ck-TD4"/>
