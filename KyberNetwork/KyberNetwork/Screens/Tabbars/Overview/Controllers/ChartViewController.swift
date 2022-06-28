@@ -131,7 +131,9 @@ class ChartViewModel {
       return "********"
     }
     guard let balance = BalanceStorage.shared.balanceForAddress(self.token.address), let balanceBigInt = BigInt(balance.balance) else { return "---" }
-    return balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 4)) + " \(self.token.symbol.uppercased())"
+    let balanceString = balanceBigInt.string(decimals: self.token.decimals, minFractionDigits: 0, maxFractionDigits: min(self.token.decimals, 4))
+    let shortTypeBalance = String.formatBigNumberCurrency(balanceString.doubleValue)
+    return shortTypeBalance + " \(self.token.symbol.uppercased())"
   }
   
   var displayUSDBalance: String {
@@ -378,6 +380,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var favButton: UIButton!
   @IBOutlet weak var tagImageView: UIImageView!
   @IBOutlet weak var tagLabel: UILabel!
+  @IBOutlet weak var tagLabelWidth: NSLayoutConstraint!
+  @IBOutlet weak var addressToSuperViewLeading: NSLayoutConstraint!
+  @IBOutlet weak var addressLeading: NSLayoutConstraint!
   @IBOutlet weak var tagView: UIView!
   @IBOutlet weak var chainView: UIView!
   @IBOutlet weak var chainIcon: UIImageView!
@@ -669,9 +674,14 @@ class ChartViewController: KNBaseViewController {
     if let image = self.viewModel.tagImage {
       self.tagImageView.image = image
       self.tagLabel.text = self.viewModel.tagLabel
+      self.tagLabelWidth.constant = self.viewModel.tagLabel.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12))
+      self.addressToSuperViewLeading.isActive = false
+      self.addressLeading.isActive = true
       self.tagView.isHidden = false
     } else {
       self.tagView.isHidden = true
+      self.addressToSuperViewLeading.isActive = true
+      self.addressLeading.isActive = false
     }
     
     if let chain = ChainType.make(chainID: self.viewModel.chainId) {
@@ -802,14 +812,14 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    var symbol = self.viewModel.token.symbol
+    var address = self.viewModel.token.address
     if self.viewModel.token.isQuoteToken {
-      let wsymbol = "W" + symbol
+      let wsymbol = "W" + self.viewModel.token.symbol
       if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
-        symbol = wsymbol
+        address = wtoken.address
       }
     }
-    cell.updateUI(poolDetail: poolData, baseTokenSymbol: symbol, currencyMode: .usd)
+    cell.updateUI(poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
     return cell
   }
 }
