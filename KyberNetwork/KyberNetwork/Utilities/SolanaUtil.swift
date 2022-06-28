@@ -51,15 +51,22 @@ class SolanaUtil {
   static func seedsToPublicKey(_ seeds: String) -> String {
     let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
     let publicKey = privateKey.getPublicKeyEd25519()
-    var solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
+    let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
     return solanaAddress.description
   }
   
   // Generate privateKey from keypair
   static func keyPairToPrivateKey(_ keypair: String) -> PrivateKey? {
-    guard let data = Base58.decodeNoCheck(string: keypair) else { return nil }
-    let key = PrivateKey(data: data[0...31])
-    return key
+    if keypair.count < 87 {
+      guard let data = Data(hexString: keypair) else { return nil }
+      let privateKey = PrivateKey(data: data[0...31])
+      return privateKey
+    } else {
+      guard let data = Base58.decodeNoCheck(string: keypair) else { return nil }
+      let key = PrivateKey(data: data[0...31])
+      return key
+    }
+    
   }
 
   static func keyPairToPrivateKeyData(_ keypair: String) -> Data? {
@@ -356,7 +363,7 @@ class SolanaUtil {
   }
   
   static func exportKeyPair(privateKey: PrivateKey) -> String {
-    var publicKey = privateKey.getPublicKeyEd25519()
+    let publicKey = privateKey.getPublicKeyEd25519()
     let privateKeyData = privateKey.data
     let publicKeyData = publicKey.data
     
@@ -405,5 +412,24 @@ class SolanaUtil {
     } catch {
     }
     
+  }
+  
+  static func hexStringToData(_ text: String) -> Data? {
+    if text.count < 87 {
+      let data = Data(hexString: text)
+      return data
+    } else {
+      let data = Base58.decodeNoCheck(string: text)
+      return data
+    }
+  }
+  
+  static func isValidSolanaPrivateKey(_ text: String) -> Bool {
+    guard let data = SolanaUtil.hexStringToData(text) else { return false }
+    if text.count < 87 {
+      return data.count == 32
+    } else {
+      return data.count == 64
+    }
   }
 }

@@ -26,11 +26,22 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var containerRefCodeView: UIView!
   @IBOutlet weak var refCodeTitleLabel: UILabel!
   var importType: ImportWalletChainType = .multiChain
-  var limitCharacter = 0
+  
+  var isValueVaild: Bool {
+    guard let text = self.enterPrivateKeyTextField.text else { return false }
+    if importType == .solana {
+      return SolanaUtil.isValidSolanaPrivateKey(text)
+    } else {
+      return text.count == 64
+    }
+  }
+  
+  var privateKeyWarningText: String {
+    return importType == .solana ? "*Private key has to be 64 bytes" : "*Private key has to be 64 characters"
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.limitCharacter = importType == .solana ? 88 : 64
     self.setupUI()
   }
 
@@ -39,7 +50,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     self.enterPrivateKeyTextLabel.addLetterSpacing()
     self.enterPrivateKeyTextField.delegate = self
 
-    self.privateKeyNoteLabel.text = "*Private key has to be \(self.limitCharacter) characters"
+    self.privateKeyNoteLabel.text = self.privateKeyWarningText
     self.privateKeyNoteLabel.addLetterSpacing()
 
     self.nextButton.rounded(radius: 16)
@@ -75,10 +86,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   fileprivate func updateNextButton() {
-    let enabled: Bool = {
-      if let text = self.enterPrivateKeyTextField.text, text.count == self.limitCharacter { return true }
-      return false
-    }()
+    let enabled: Bool = self.isValueVaild
     self.nextButton.isEnabled = enabled
     let noteColor: UIColor = {
       let text = self.enterPrivateKeyTextField.text ?? ""
