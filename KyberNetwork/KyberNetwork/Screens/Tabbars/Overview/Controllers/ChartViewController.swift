@@ -247,19 +247,7 @@ class ChartViewModel {
   }
 
   func formatPoints(_ number: Double) -> String {
-    let thousand = number / 1000
-    let million = number / 1000000
-    let billion = number / 1000000000
-    
-    if billion >= 1.0 {
-      return "\(round(billion*10)/10)B"
-    } else if million >= 1.0 {
-      return "\(round(million*10)/10)M"
-    } else if thousand >= 1.0 {
-      return ("\(round(thousand*10/10))K")
-    } else {
-      return "\(number)".displayRate()
-    }
+    return String.formatBigNumberCurrency(number).displayRate()
   }
   
   func displayChartDetaiInfoAt(index: Int) -> NSAttributedString {
@@ -382,6 +370,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var tagLabel: UILabel!
   @IBOutlet weak var tagLabelWidth: NSLayoutConstraint!
   @IBOutlet weak var addressToSuperViewLeading: NSLayoutConstraint!
+  @IBOutlet weak var addressToSuperViewTrailing: NSLayoutConstraint!
   @IBOutlet weak var addressLeading: NSLayoutConstraint!
   @IBOutlet weak var tagView: UIView!
   @IBOutlet weak var chainView: UIView!
@@ -676,11 +665,16 @@ class ChartViewController: KNBaseViewController {
       self.tagLabel.text = self.viewModel.tagLabel
       self.tagLabelWidth.constant = self.viewModel.tagLabel.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12))
       self.addressToSuperViewLeading.isActive = false
+      self.addressToSuperViewTrailing.constant = 20
       self.addressLeading.isActive = true
       self.tagView.isHidden = false
     } else {
       self.tagView.isHidden = true
       self.addressToSuperViewLeading.isActive = true
+      let addressViewWidth = self.viewModel.token.address.width(withConstrainedHeight: 28, font: UIFont.Kyber.regular(with: 12)) + 43
+      let padding = (UIScreen.main.bounds.size.width - addressViewWidth) / 2
+      self.addressToSuperViewLeading.constant = CGFloat(padding)
+      self.addressToSuperViewTrailing.constant = CGFloat(padding)
       self.addressLeading.isActive = false
     }
     

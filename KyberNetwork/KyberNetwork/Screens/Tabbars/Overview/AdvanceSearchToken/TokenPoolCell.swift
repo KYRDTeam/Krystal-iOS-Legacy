@@ -51,7 +51,7 @@ class TokenPoolCell: UITableViewCell {
     self.pairNameLabel.text = "\(baseToken.symbol)/\(otherToken.symbol)"
     self.pairNameLabelWidth.constant = "\(baseToken.symbol)/\(otherToken.symbol)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.fullNameLabel.text = poolDetail.name
-    self.valueLabel.text = "$\(baseToken.usdValue)"
+    self.valueLabel.text = "$\(String.formatBigNumberCurrency(baseToken.usdValue))"
     self.valueLabelWidth.constant = "$\(baseToken.usdValue)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 16))
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
