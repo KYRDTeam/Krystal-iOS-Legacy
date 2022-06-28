@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+          token: '${{ secrets.GITHUB_PAT }}'
 
       - name: Extract branch
         shell: bash
@@ -116,6 +117,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+          token: '${{ secrets.GITHUB_PAT }}'
 
       - name: Get configuration items
         run: |
