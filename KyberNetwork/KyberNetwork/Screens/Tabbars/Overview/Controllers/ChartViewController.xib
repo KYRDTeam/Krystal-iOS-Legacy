@@ -314,14 +314,14 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ueJ-8I-pMk" userLabel="ChartViewContainer">
-                            <rect key="frame" x="15" y="224.66666666666669" width="345" height="220"/>
+                            <rect key="frame" x="15" y="224.66666666666669" width="345" height="250"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hkg-wr-dzx" userLabel="LineChartView" customClass="Chart" customModule="SwiftChart">
-                                    <rect key="frame" x="0.0" y="0.0" width="345" height="220"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="345" height="250"/>
                                     <color key="backgroundColor" red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ou-6D-rw9" userLabel="TradingView" customClass="TradingView" customModule="Krystal" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="345" height="220"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="345" height="250"/>
                                     <color key="backgroundColor" red="0.094117647058823528" green="0.10196078431372549" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
                             </subviews>
@@ -329,7 +329,7 @@
                             <constraints>
                                 <constraint firstItem="Hkg-wr-dzx" firstAttribute="leading" secondItem="ueJ-8I-pMk" secondAttribute="leading" id="4mC-F1-S3D"/>
                                 <constraint firstAttribute="trailing" secondItem="Hkg-wr-dzx" secondAttribute="trailing" id="9Av-fT-dvL"/>
-                                <constraint firstAttribute="height" constant="220" id="E1T-qs-NAf"/>
+                                <constraint firstAttribute="height" constant="250" id="E1T-qs-NAf"/>
                                 <constraint firstItem="8Ou-6D-rw9" firstAttribute="top" secondItem="ueJ-8I-pMk" secondAttribute="top" id="EGR-XI-DwA"/>
                                 <constraint firstItem="8Ou-6D-rw9" firstAttribute="leading" secondItem="ueJ-8I-pMk" secondAttribute="leading" id="MfB-ci-iuK"/>
                                 <constraint firstAttribute="trailing" secondItem="8Ou-6D-rw9" secondAttribute="trailing" id="X7N-SC-TIf"/>
@@ -346,13 +346,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fcp-jR-KcB">
-                            <rect key="frame" x="158" y="324.33333333333331" width="59" height="20.666666666666686"/>
+                            <rect key="frame" x="158" y="339.33333333333331" width="59" height="20.666666666666686"/>
                             <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VQr-Jp-lwB">
-                            <rect key="frame" x="25.999999999999993" y="459.66666666666663" width="94.333333333333314" height="32"/>
+                            <rect key="frame" x="25.999999999999993" y="489.66666666666663" width="94.333333333333314" height="32"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="mkd-05-9sv"/>
@@ -366,7 +366,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pU-d9-FWK">
-                            <rect key="frame" x="140.33333333333334" y="459.66666666666663" width="94.333333333333343" height="32"/>
+                            <rect key="frame" x="140.33333333333334" y="489.66666666666663" width="94.333333333333343" height="32"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="IYU-HM-jz1"/>
@@ -380,7 +380,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HI4-LR-6cR">
-                            <rect key="frame" x="254.66666666666666" y="459.66666666666663" width="94.333333333333343" height="32"/>
+                            <rect key="frame" x="254.66666666666666" y="489.66666666666663" width="94.333333333333343" height="32"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Tqv-Bk-C8L"/>
@@ -394,7 +394,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cvW-pe-IBf">
-                            <rect key="frame" x="15" y="556.66666666666663" width="345" height="1"/>
+                            <rect key="frame" x="15" y="586.66666666666663" width="345" height="1"/>
                             <color key="backgroundColor" red="0.25882352939999997" green="0.3411764706" blue="0.37254901959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="2pk-li-UFR"/>
@@ -518,7 +518,7 @@
                             </subviews>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="paA-0H-8UK">
-                            <rect key="frame" x="0.0" y="557.66666666666663" width="375" height="456"/>
+                            <rect key="frame" x="0.0" y="587.66666666666663" width="375" height="455.99999999999989"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="t95-BV-F1P">
                                     <rect key="frame" x="95" y="400.00000000000011" width="185" height="36"/>
@@ -650,7 +650,7 @@
                             </constraints>
                         </view>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lq3-Hn-cfD" customClass="SegmentedControl" customModule="Krystal" customModuleProvider="target">
-                            <rect key="frame" x="16" y="531.66666666666663" width="197" height="32"/>
+                            <rect key="frame" x="16" y="561.66666666666663" width="197" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <segments>
                                 <segment title="Pools" width="98"/>

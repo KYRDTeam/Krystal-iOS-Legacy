@@ -584,7 +584,9 @@ class ChartViewController: KNBaseViewController {
   
   @IBAction func closeCandleChartButtonTapped(_ sender: UIButton) {
     self.isSelectingLineChart = true
+    self.viewModel.selectedPoolDetail = nil
     self.updateUIPoolName(hidden: true)
+    self.poolTableView.reloadData()
   }
 
   fileprivate func updateUIChartInfo() {
@@ -757,6 +759,17 @@ class ChartViewController: KNBaseViewController {
     
     tradingView.load(request: request)
   }
+  
+  func onSelectPool(pool: TokenPoolDetail) {
+    if self.viewModel.selectedPoolDetail?.address == pool.address {
+      return
+    }
+    self.viewModel.selectedPoolDetail = pool
+    self.updateUIPoolName(hidden: false)
+    self.poolTableView.reloadData()
+    self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
+    self.reloadPoolTradingView(pool: pool)
+  }
 }
 
 extension ChartViewController: UITableViewDataSource {
@@ -774,20 +787,19 @@ extension ChartViewController: UITableViewDataSource {
         address = wtoken.address
       }
     }
-    cell.updateUI(poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
+    let isSelecting = poolData.address == viewModel.selectedPoolDetail?.address
+    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenSymbol: symbol, currencyMode: .usd)
     return cell
   }
 }
 
 extension ChartViewController: UITableViewDelegate {
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     self.isSelectingLineChart = false
     let poolData = self.viewModel.poolData[indexPath.row]
-    self.viewModel.selectedPoolDetail = poolData
-    self.reloadPoolTradingView(pool: poolData)
-    self.updateUIPoolName(hidden: false)
-    self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
+    onSelectPool(pool: poolData)
   }
   
 }
