@@ -18,11 +18,11 @@ extension String {
     let formatter = NumberFormatter()
     formatter.locale = Locale.current
     formatter.decimalSeparator = "."
-    if let result = formatter.number(from: self) {
+    if let result = formatter.number(from: self.removeGroupSeparator()) {
       return result.doubleValue
     } else {
       formatter.decimalSeparator = ","
-      if let result = formatter.number(from: self) {
+      if let result = formatter.number(from: self.removeGroupSeparator()) {
         return result.doubleValue
       }
     }
