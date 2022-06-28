@@ -22,7 +22,7 @@ class TokenPoolCell: UITableViewCell {
   @IBOutlet weak var valueLabelWidth: NSLayoutConstraint!
   @IBOutlet weak var containerView: UIView!
   
-  func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenSymbol: String, currencyMode: CurrencyMode) {
+  func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
     containerView.backgroundColor = isSelecting ? UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.2) : UIColor.Kyber.cellBackground
     
     var baseToken = poolDetail.token0

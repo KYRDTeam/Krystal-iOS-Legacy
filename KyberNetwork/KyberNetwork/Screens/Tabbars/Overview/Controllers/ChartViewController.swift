@@ -25,7 +25,6 @@ class ChartViewModel {
   var isFaved: Bool
   var chainId = KNGeneralProvider.shared.currentChain.getChainId()
   
-  
   @UserDefault(key: Constants.hideBalanceKey, defaultValue: false)
   var hideBalanceStatus: Bool
   
@@ -472,7 +471,8 @@ class ChartViewController: KNBaseViewController {
     intervalStackview.isHidden = !isSelectingLineChart
     chartTopToPoolButtonConstraint.isActive = !isSelectingLineChart
     chartTopToTimeConstraint.isActive = isSelectingLineChart
-    UIView.animate(withDuration: 1) {
+    
+    UIView.animate(withDuration: 1.0) {
       self.chartHeight.constant = self.isSelectingLineChart ? 220 : 312
     }
   }
@@ -791,7 +791,7 @@ extension ChartViewController: UITableViewDataSource {
       }
     }
     let isSelecting = poolData.address == viewModel.selectedPoolDetail?.address
-    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenSymbol: symbol, currencyMode: .usd)
+    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
     return cell
   }
 }
