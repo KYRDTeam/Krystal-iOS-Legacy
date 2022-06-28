@@ -7,6 +7,7 @@ on:
       - main
       - ci-test
       - testflight-build
+      - debug-action
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -26,7 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GH_PAT }}
           submodules: recursive
 
       - name: Extract branch
