@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-          token: '${{ secrets.GITHUB_PAT }}'
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
       - name: Extract branch
         shell: bash
@@ -117,7 +117,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-          token: '${{ secrets.GITHUB_PAT }}'
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
       - name: Get configuration items
         run: |
