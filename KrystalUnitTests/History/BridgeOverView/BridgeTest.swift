@@ -55,17 +55,17 @@ class BridgeTest: QuickSpec {
         }
       }
       
-      describe("Build Swap Chain Tx") {
-        it("should return value match bridge contract") {
-          waitUntil(timeout: .seconds(acceptableTimeOut)) { done in
-            let bridgeContract = "0x4f3Aff3A747fCADe12598081e80c6605A8be192F"
-            sut.buildSwapChainTx { txObject in
-              expect(txObject?.to).to(equal(bridgeContract), description: "response structure match client model")
-              done()
-            }
-          }
-        }
-      }
+//      describe("Build Swap Chain Tx") {
+//        it("should return value match bridge contract") {
+//          waitUntil(timeout: .seconds(acceptableTimeOut)) { done in
+//            let bridgeContract = "0x4f3Aff3A747fCADe12598081e80c6605A8be192F"
+//            sut.buildSwapChainTx { txObject in
+//              expect(txObject?.to).to(equal(bridgeContract), description: "response structure match client model")
+//              done()
+//            }
+//          }
+//        }
+//      }
       
       
     }
