@@ -131,7 +131,7 @@ extension String {
     } else if thousand >= 1.0 {
       return ("\(round(thousand*10/10))K")
     } else {
-      return "\(number)".displayRate()
+      return StringFormatter.amountString(value: number)
     }
   }
 
