@@ -330,45 +330,12 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
 
-    viewModel.isSpeedupMode = true
-    viewModel.transaction = transaction
+      viewModel.transaction = transaction
+      viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.gasPriceSelectVC = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isSpeedupMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.gasPriceSelectVC = vc
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
-      let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      navigationController.present(controller, animated: true)
-    }
-    */
   }
 
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {

@@ -815,8 +815,8 @@ extension DappCoordinator: KNTransactionStatusPopUpDelegate {
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
 
-    viewModel.isSpeedupMode = true
-    viewModel.transaction = transaction
+      viewModel.transaction = transaction
+      viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)
