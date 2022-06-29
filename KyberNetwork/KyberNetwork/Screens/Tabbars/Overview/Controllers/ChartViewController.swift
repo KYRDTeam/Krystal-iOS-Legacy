@@ -276,7 +276,25 @@ class ChartViewModel {
   }
   
   var displayPoolName: String {
-    return "\(selectedPoolDetail?.token0.symbol ?? "")/\(selectedPoolDetail?.token1.symbol ?? "")"
+    guard let selectedPoolDetail = selectedPoolDetail else {
+      return ""
+    }
+    if selectedPoolDetail.token1.address.lowercased() == baseTokenAddress.lowercased() {
+      return "\(selectedPoolDetail.token1.symbol)/\(selectedPoolDetail.token0.symbol)"
+    } else {
+      return "\(selectedPoolDetail.token0.symbol)/\(selectedPoolDetail.token1.symbol)"
+    }
+    
+  }
+  
+  var baseTokenAddress: String {
+    if token.isQuoteToken {
+      let wsymbol = "W" + self.token.symbol
+      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
+        return wtoken.address
+      }
+    }
+    return token.address
   }
 }
 
@@ -793,15 +811,8 @@ extension ChartViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(TokenPoolCell.self, indexPath: indexPath)!
     let poolData = self.viewModel.poolData[indexPath.row]
-    var address = self.viewModel.token.address
-    if self.viewModel.token.isQuoteToken {
-      let wsymbol = "W" + self.viewModel.token.symbol
-      if let wtoken = KNSupportedTokenStorage.shared.supportedToken.first { $0.symbol == wsymbol } {
-        address = wtoken.address
-      }
-    }
     let isSelecting = poolData.address == viewModel.selectedPoolDetail?.address
-    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
+    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenAddress: viewModel.baseTokenAddress, currencyMode: .usd)
     return cell
   }
 }
