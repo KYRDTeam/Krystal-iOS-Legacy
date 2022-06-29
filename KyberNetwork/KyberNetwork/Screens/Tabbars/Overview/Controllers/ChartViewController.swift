@@ -360,7 +360,6 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var investButton: UIButton!
   @IBOutlet weak var descriptionTextView: GrowingTextView!
   @IBOutlet weak var chartDetailLabel: UILabel!
-  @IBOutlet weak var noDataLabel: UILabel!
   @IBOutlet weak var favButton: UIButton!
   @IBOutlet weak var tagImageView: UIImageView!
   @IBOutlet weak var tagLabel: UILabel!
@@ -379,17 +378,16 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var poolView: UIView!
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet weak var lineChartView: UIView!
   @IBOutlet weak var showAllPoolButton: UIButton!
   @IBOutlet weak var poolNameContainerView: UIView!
   @IBOutlet weak var poolNameLabel: UILabel!
-  @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
   @IBOutlet weak var tradingView: TradingView!
   @IBOutlet weak var tokenChartView: Chart!
-  @IBOutlet weak var chartTopToPoolButtonConstraint: NSLayoutConstraint!
-  @IBOutlet weak var chartTopToTimeConstraint: NSLayoutConstraint!
+  @IBOutlet weak var poolChartContainer: TradingView!
+  @IBOutlet weak var tokenChartContainer: Chart!
   @IBOutlet weak var intervalStackview: UIStackView!
   @IBOutlet weak var chartHeight: NSLayoutConstraint!
+  @IBOutlet weak var noDataImageView: UIImageView!
   
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
@@ -472,17 +470,8 @@ class ChartViewController: KNBaseViewController {
   }
   
   func reloadCharts() {
-    noDataLabel.isHidden = true
-    lineChartView.isHidden = !isSelectingLineChart
-    chartDetailLabel.isHidden = !isSelectingLineChart
-    tradingView.isHidden = isSelectingLineChart
-    intervalStackview.isHidden = !isSelectingLineChart
-    chartTopToPoolButtonConstraint.isActive = !isSelectingLineChart
-    chartTopToTimeConstraint.isActive = isSelectingLineChart
-    
-    UIView.animate(withDuration: 1.0) {
-      self.chartHeight.constant = self.isSelectingLineChart ? 220 : 312
-    }
+    tokenChartContainer.isHidden = !isSelectingLineChart
+    poolChartContainer.isHidden = isSelectingLineChart
   }
   
   @objc func copyTokenAddress() {
@@ -501,7 +490,6 @@ class ChartViewController: KNBaseViewController {
   func updateUIPoolName(hidden: Bool) {
     self.poolNameContainerView.isHidden = hidden
     self.poolNameLabel.text = self.viewModel.displayPoolName
-    self.chartDurationTopSpacing.constant = hidden ? 20 : 52
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -556,6 +544,7 @@ class ChartViewController: KNBaseViewController {
     guard let type = ChartPeriodType(rawValue: sender.tag), type != self.viewModel.periodType else {
       return
     }
+    self.loadTokenChartData()
     self.viewModel.periodType = type
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
@@ -726,7 +715,7 @@ class ChartViewController: KNBaseViewController {
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
-    self.noDataLabel.isHidden = !data.isEmpty
+    self.noDataImageView.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
     self.tokenChartView.removeAllSeries()
     self.tokenChartView.add(self.viewModel.series)
@@ -786,6 +775,7 @@ class ChartViewController: KNBaseViewController {
       .quoteAddress(quote)
       .period(.h1)
       .chartType(.candles)
+      .apiURL(KNEnvironment.default.krytalAPIEndPoint)
       .build()
     
     tradingView.load(request: request)
