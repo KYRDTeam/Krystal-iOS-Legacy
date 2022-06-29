@@ -20,7 +20,7 @@ class SolanaUtil {
   let keyStore: KeyStore
   private let keychain: KeychainSwift
   private let defaultKeychainAccess: KeychainSwiftAccessOptions = .accessibleWhenUnlockedThisDeviceOnly
-  var keysDict: [String: String] = UserDefaults.standard.object(forKey: SolanaUtil.keysSavedKey) as? [String : String] ?? [:]
+  var keysDict: [String: String] = UserDefaults.standard.object(forKey: SolanaUtil.keysSavedKey) as? [String: String] ?? [:]
   
   init() {
     let keyDirURL = URL(fileURLWithPath: datadir + "/solanaKeyStore")
@@ -51,7 +51,7 @@ class SolanaUtil {
   static func seedsToPublicKey(_ seeds: String) -> String {
     let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
     let publicKey = privateKey.getPublicKeyEd25519()
-    let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
+      let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
     return solanaAddress.description
   }
   
@@ -145,7 +145,7 @@ class SolanaUtil {
         completion(nil)
         print("[Solana error] \(error.localizedDescription)")
       }
-      }
+    }
   }
 
   static func getRecentBlockhash(completion: @escaping (String?) -> Void) {
