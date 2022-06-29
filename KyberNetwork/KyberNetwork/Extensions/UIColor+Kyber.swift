@@ -102,6 +102,7 @@ extension UIColor {
     static let navButtonBg = UIColor(named: "navButtonBgColor")!
     static let mainViewBg = UIColor(named: "mainViewBgColor")!
     static let normalText = UIColor(named: "normalTextColor")!
+    static let cellBackground = UIColor(hex: "1B1D1C")
     
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,

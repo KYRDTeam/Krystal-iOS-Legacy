@@ -20,19 +20,11 @@ class TokenPoolCell: UITableViewCell {
 
   @IBOutlet weak var pairNameLabelWidth: NSLayoutConstraint!
   @IBOutlet weak var valueLabelWidth: NSLayoutConstraint!
+  @IBOutlet weak var containerView: UIView!
   
-  
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    // Initialization code
-  }
-
-  override func setSelected(_ selected: Bool, animated: Bool) {
-    super.setSelected(selected, animated: animated)
-  }
+  func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
+    containerView.backgroundColor = isSelecting ? UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.2) : UIColor.Kyber.cellBackground
     
-  func updateUI(poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
     var baseToken = poolDetail.token0
     var otherToken = poolDetail.token1
     

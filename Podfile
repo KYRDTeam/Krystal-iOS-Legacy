@@ -29,7 +29,6 @@ def uiPods
   pod 'FSPagerView'
   pod 'TagListView', :git => 'https://github.com/Expensify/TagListView.git'
   pod 'SkeletonView'
-  pod 'LightweightCharts', '~> 3.8.0'
 end
 
 def cryptoHelperPods

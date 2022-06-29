@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -136,6 +136,7 @@
             <connections>
                 <outlet property="addressLabel" destination="4aj-TF-AF1" id="w8K-lf-lAt"/>
                 <outlet property="chainIcon" destination="5Lj-dU-CHA" id="6s3-dX-Rck"/>
+                <outlet property="containerView" destination="0FW-XE-6Qa" id="4zi-oR-TFN"/>
                 <outlet property="fullNameLabel" destination="dBl-mg-VyW" id="Dwu-qt-kh7"/>
                 <outlet property="pairNameLabel" destination="2PT-OT-0Xr" id="u6X-XV-NL2"/>
                 <outlet property="pairNameLabelWidth" destination="rWu-NJ-Rvm" id="9Hx-EZ-Wja"/>

@@ -8,26 +8,26 @@
 import UIKit
 import SwiftChart
 import BigInt
-import LightweightCharts
 import MBProgressHUD
 
 class ChartViewModel {
+  var dataSource: [(x: Double, y: Double)] = []
   var poolData: [TokenPoolDetail] = []
   var xLabels: [Double] = []
   let token: Token
   var periodType: ChartPeriodType = .oneDay
   var detailInfo: TokenDetailInfo?
   var chartData: [[Double]]?
+  var chartOriginTimeStamp: Double = 0
 
   var currency: String
   let currencyMode: CurrencyMode
   var isFaved: Bool
   var chainId = KNGeneralProvider.shared.currentChain.getChainId()
-  var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
-    didSet {
-      UserDefaults.standard.set(self.hideBalanceStatus, forKey: Constants.hideBalanceKey)
-    }
-  }
+  
+  @UserDefault(key: Constants.hideBalanceKey, defaultValue: false)
+  var hideBalanceStatus: Bool
+  
   var isExpandingPoolTable: Bool = false
   let lendingTokens = Storage.retrieve(KNEnvironment.default.envPrefix + Constants.lendingTokensStoreFileName, as: [TokenData].self)
 
@@ -39,18 +39,7 @@ class ChartViewModel {
     return formatter
   }()
   
-  var tradingViewCandleData: [TradingViewData] = []
-  var candleSeries: CandlestickSeries!
-  
-  var lineSeries: LineSeries!
-  
-  var tradingViewLineData: [SingleValueData] = []
-  
-  var isLineChartMode: Bool = true
   var selectedPoolDetail: TokenPoolDetail?
-  var selectedPool: (String, String) {
-    return (selectedPoolDetail?.token0.address ?? "", selectedPoolDetail?.token1.address ?? "")
-  }
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -62,32 +51,23 @@ class ChartViewModel {
   func updateChartData(_ data: [[Double]]) {
     guard !data.isEmpty else { return }
     self.chartData = data
-  }
-  
-  func generateCandleStickData() -> [CandlestickData] {
-    var output: [CandlestickData] = []
-    self.tradingViewCandleData.forEach { element in
-      //Format open time stamp Time object
-      let timestamp = Double(element.openTime / 1000)
-      let item = CandlestickData(time: .utc(timestamp: timestamp), open: element.datumOpen, high: element.high, low: element.low, close: element.close)
-      
-      output.append(item)
+    let originTimeStamp = data[0][0]
+    self.chartOriginTimeStamp = originTimeStamp
+    self.dataSource = data.map { (item) -> (x: Double, y: Double) in
+      return (x: item[0] - originTimeStamp, y: item[1])
     }
-    return output
+    if let lastTimeStamp = data.last?[0] {
+      let interval = lastTimeStamp - originTimeStamp
+      let divide = interval / 7
+      self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
+    }
   }
   
-  func generateLineData() -> [LineData] {
-    var output: [LineData] = []
-    self.chartData?.forEach({ element in
-      let time = element.first ?? 0
-      let timestamp = Double(time / 1000)
-      let value = element.last ?? 0
-      let item = LineData(time: .utc(timestamp: timestamp), value: value)
-      output.append(item)
-    })
-    return output
-    
-    
+  var series: ChartSeries {
+    let series = ChartSeries(data: self.dataSource)
+    series.area = true
+    series.colors = (above: self.displayDiffColor!, below: UIColor(named: "mainViewBgColor")!, 0)
+    return series
   }
   
   var displayPrice: String {
@@ -302,7 +282,6 @@ class ChartViewModel {
 
 enum ChartViewEvent {
   case getChartData(address: String, from: Int, to: Int, currency: String)
-  case getCandleChartData(address: String, from: Int, to: Int, currency: String)
   case getTokenDetailInfo(address: String)
   case transfer(token: Token)
   case swap(token: Token)
@@ -345,7 +324,6 @@ protocol ChartViewControllerDelegate: class {
 }
 
 class ChartViewController: KNBaseViewController {
-
   @IBOutlet weak var containScrollView: UIScrollView!
   @IBOutlet weak var chartContainerView: UIView!
   @IBOutlet var periodChartSelectButtons: [UIButton]!
@@ -382,18 +360,27 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var poolView: UIView!
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
-  var candleChart: LightweightCharts?
-  var lineChart: LightweightCharts?
+  @IBOutlet weak var lineChartView: UIView!
   @IBOutlet weak var showAllPoolButton: UIButton!
-  
-  weak var delegate: ChartViewControllerDelegate?
-  let viewModel: ChartViewModel
   @IBOutlet weak var poolNameContainerView: UIView!
   @IBOutlet weak var poolNameLabel: UILabel!
   @IBOutlet weak var chartDurationTopSpacing: NSLayoutConstraint!
+  @IBOutlet weak var tradingView: TradingView!
+  @IBOutlet weak var tokenChartView: Chart!
+  @IBOutlet weak var chartTopToPoolButtonConstraint: NSLayoutConstraint!
+  @IBOutlet weak var chartTopToTimeConstraint: NSLayoutConstraint!
+  @IBOutlet weak var intervalStackview: UIStackView!
+  @IBOutlet weak var chartHeight: NSLayoutConstraint!
+  
+  weak var delegate: ChartViewControllerDelegate?
+  let viewModel: ChartViewModel
   fileprivate var tokenPoolTimer: Timer?
   
-  var lineOptions: LineSeriesOptions!
+  var isSelectingLineChart: Bool = true {
+    didSet {
+      self.reloadCharts()
+    }
+  }
   
   init(viewModel: ChartViewModel) {
     self.viewModel = viewModel
@@ -407,10 +394,31 @@ class ChartViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupConstraints()
+    self.setupPoolInfoView()
+    self.setupInfoSegment()
+    self.setupTableView()
+    self.setupTitle()
+    self.setupButtons()
+    self.setupChartViews()
+    self.loadTokenChartData()
+    self.reloadCharts()
+  }
+  
+  func setupTitle() {
+    self.titleView.attributedText = self.viewModel.headerTitle
+  }
+  
+  func setupPoolInfoView() {
+    self.updateUIPoolName(hidden: true)
+  }
+  
+  func setupInfoSegment() {
     self.infoSegment.highlightSelectedSegment()
     self.infoSegment.frame = CGRect(x: self.infoSegment.frame.minX, y: self.infoSegment.frame.minY, width: self.infoSegment.frame.width, height: 40)
     self.infoSegment.selectedSegmentIndex = 0
-    self.poolTableView.registerCellNib(TokenPoolCell.self)
+  }
+  
+  func setupButtons() {
     self.updateUIPeriodSelectButtons()
     self.titleView.attributedText = self.viewModel.headerTitle
     self.transferButton.rounded(radius: 16)
@@ -428,104 +436,42 @@ class ChartViewController: KNBaseViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyTokenAddress))
     self.chainAddressLabel.isUserInteractionEnabled = true
     self.chainAddressLabel.addGestureRecognizer(tapGesture)
-    self.setupTradingView()
   }
 
+  func setupTableView() {
+    self.poolTableView.registerCellNib(TokenPoolCell.self)
+  }
+  
+  func setupChartViews() {
+    tokenChartView.showYLabelsAndGrid = false
+    tokenChartView.labelColor = UIColor.Kyber.SWPlaceHolder
+    tokenChartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
+    tokenChartView.axesColor = .clear
+    tokenChartView.gridColor = .clear
+    tokenChartView.backgroundColor = .clear
+    tokenChartView.delegate = self
+  }
+  
+  func reloadCharts() {
+    noDataLabel.isHidden = true
+    lineChartView.isHidden = !isSelectingLineChart
+    chartDetailLabel.isHidden = !isSelectingLineChart
+    tradingView.isHidden = isSelectingLineChart
+    intervalStackview.isHidden = !isSelectingLineChart
+    chartTopToPoolButtonConstraint.isActive = !isSelectingLineChart
+    chartTopToTimeConstraint.isActive = isSelectingLineChart
+    
+    UIView.animate(withDuration: 1.0) {
+      self.chartHeight.constant = self.isSelectingLineChart ? 220 : 312
+    }
+  }
+  
   @objc func copyTokenAddress() {
     UIPasteboard.general.string = self.viewModel.token.address
     let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
-  }
-  
-  fileprivate func setupCandleTradingView() {
-    let options = ChartOptions(
-      layout: LayoutOptions(backgroundColor: "#181921", textColor: ChartColor(.white)),
-      crosshair: CrosshairOptions(mode: .normal),
-      grid: GridOptions(
-        verticalLines: GridLineOptions(color: ChartColor(hex: "2b2c36"), style: LineStyle.solid, visible: true),
-        horizontalLines: GridLineOptions(color: ChartColor(hex: "2b2c36"), style: LineStyle.solid, visible: true)
-      )
-    )
-    let chart = LightweightCharts(options: options)
-    chart.clearWebViewBackground()
-    
-    self.chartContainerView.addSubview(chart)
-    chart.translatesAutoresizingMaskIntoConstraints = false
-    chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
-    chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
-    chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
-    chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
-    
-    let series = chart.addCandlestickSeries(options: nil)
-    self.viewModel.candleSeries = series
-    self.candleChart = chart
-  }
-  
-  fileprivate func setupLineTradingView() {
-    let options = ChartOptions(
-      layout: LayoutOptions(backgroundColor: "#0F0F0F", textColor: ChartColor(.white)),
-      rightPriceScale: VisiblePriceScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
-      timeScale: TimeScaleOptions(borderColor: "rgba(197, 203, 206, 1)"),
-      crosshair: CrosshairOptions(mode: .normal),
-      grid: GridOptions(
-        verticalLines: GridLineOptions(color: nil, style: nil, visible: false),
-        horizontalLines: GridLineOptions(color: nil, style: nil, visible: false)
-      )
-    )
-    let chart = LightweightCharts(options: options)
-    chart.clearWebViewBackground()
-    
-    self.chartContainerView.addSubview(chart)
-    chart.translatesAutoresizingMaskIntoConstraints = false
-    chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
-    chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
-    chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
-    chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
-    
-    self.lineOptions = LineSeriesOptions(
-      lastValueVisible: false, title: nil, visible: true,
-      color: ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor),
-      lineStyle: LineStyle.solid,
-      lineWidth: LineWidth.two,
-      lineType: LineType.simple,
-      lastPriceAnimation: LastPriceAnimationMode.continuous
-    )
-    
-    self.viewModel.lineSeries = chart.addLineSeries(options: lineOptions)
-    self.lineChart = chart
-    
-  }
-  
-  private func setupTradingView() {
-    if self.viewModel.isLineChartMode {
-      self.updateUIPoolName(hidden: true)
-      self.candleChart?.removeFromSuperview()
-      if let chart = self.lineChart {
-        guard !chart.isDescendant(of: self.chartContainerView) else { return }
-        self.chartContainerView.addSubview(chart)
-        chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
-        chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
-        chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
-        chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
-      } else {
-        self.setupLineTradingView()
-      }
-    } else {
-      self.updateUIPoolName(hidden: false)
-      self.lineChart?.removeFromSuperview()
-      if let chart = candleChart {
-        guard !chart.isDescendant(of: self.chartContainerView) else { return }
-        self.chartContainerView.addSubview(chart)
-        chart.topAnchor.constraint(equalTo: chartContainerView.topAnchor).isActive = true
-        chart.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor).isActive = true
-        chart.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor).isActive = true
-        chart.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor).isActive = true
-      } else {
-        self.setupCandleTradingView()
-      }
-    }
   }
 
   func setupConstraints() {
@@ -541,7 +487,6 @@ class ChartViewController: KNBaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.loadChartData()
     self.getPoolList()
     self.loadTokenDetailInfo()
     self.updateUIChartInfo()
@@ -586,7 +531,6 @@ class ChartViewController: KNBaseViewController {
       return
     }
     self.viewModel.periodType = type
-    self.loadChartData()
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
   }
@@ -632,11 +576,11 @@ class ChartViewController: KNBaseViewController {
   }
   
   @IBAction func closeCandleChartButtonTapped(_ sender: UIButton) {
-    self.viewModel.isLineChartMode = true
-    self.loadLineChartData()
-    self.setupTradingView()
+    self.isSelectingLineChart = true
+    self.viewModel.selectedPoolDetail = nil
+    self.updateUIPoolName(hidden: true)
+    self.poolTableView.reloadData()
   }
-  
 
   fileprivate func updateUIChartInfo() {
     self.updateUIPeriodSelectButtons()
@@ -685,27 +629,11 @@ class ChartViewController: KNBaseViewController {
     }
 
     self.chainAddressLabel.text = self.viewModel.token.address
-    self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
-    self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
-  }
-
-  fileprivate func loadChartData() {
-    if self.viewModel.isLineChartMode {
-      self.loadLineChartData()
-    } else {
-      self.loadCandleChartData(source: self.viewModel.selectedPool.0, quote: self.viewModel.selectedPool.1)
-    }
   }
   
-  fileprivate func loadLineChartData() {
+  func loadTokenChartData() {
     let current = NSDate().timeIntervalSince1970
     self.delegate?.chartViewController(self, run: .getChartData(address: self.viewModel.token.address, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: self.viewModel.currency))
-  }
-  
-  fileprivate func loadCandleChartData(source: String, quote: String) {
-    guard !source.isEmpty, !quote.isEmpty else { return }
-    let current = NSDate().timeIntervalSince1970
-    self.delegate?.chartViewController(self, run: .getCandleChartData(address: source, from: self.viewModel.periodType.getFromTimeStamp(), to: Int(current), currency: quote))
   }
 
   fileprivate func loadTokenDetailInfo() {
@@ -758,20 +686,40 @@ class ChartViewController: KNBaseViewController {
   
   func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
     self.viewModel.poolData = poolData
-    self.updatePoolTableHeight()
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()
-    self.viewModel.selectedPoolDetail = poolData.first
+    self.updatePoolTableHeight()
   }
 
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
     self.noDataLabel.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
+    self.tokenChartView.removeAllSeries()
+    self.tokenChartView.add(self.viewModel.series)
+    self.tokenChartView.xLabels = self.viewModel.xLabels
     self.updateUIChartInfo()
-    let data = self.viewModel.generateLineData()
-    self.viewModel.lineSeries.setData(data: data)
-    self.lineOptions.color = ChartColor(viewModel.displayDiffColor ?? UIColor.Kyber.primaryGreenColor)
-    self.viewModel.lineSeries.applyOptions(options: self.lineOptions)
+    self.tokenChartView.xLabelsFormatter = { (labelIndex: Int, labelValue: Double) -> String in
+      let timestamp = labelValue + self.viewModel.chartOriginTimeStamp
+      let date = Date(timeIntervalSince1970: timestamp * 0.001)
+      let calendar = Calendar.current
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "EE"
+      let hour = calendar.component(.hour, from: date)
+      let minutes = calendar.component(.minute, from: date)
+      let day = calendar.component(.day, from: date)
+      let month = calendar.component(.month, from: date)
+      let year = calendar.component(.year, from: date)
+      switch self.viewModel.periodType {
+      case .oneDay:
+        return String(format: "%02d:%02d", hour, minutes)
+      case .sevenDay:
+        return "\(dateFormatter.string(from: date)) \(hour)"
+      case .oneMonth, .threeMonth:
+        return "\(day)/\(month)"
+      case .oneYear:
+        return "\(month)/\(year)"
+      }
+    }
   }
 
   func coordinatorFailUpdateApi(_ error: Error) {
@@ -791,10 +739,33 @@ class ChartViewController: KNBaseViewController {
     self.updateUIChartInfo()
   }
   
-  func coordinatorDidUpdateTradingViewData(_ data: [TradingViewData]) {
-    self.viewModel.tradingViewCandleData = data
-    let data = self.viewModel.generateCandleStickData()
-    self.viewModel.candleSeries.setData(data: data)
+  func reloadPoolTradingView(pool: TokenPoolDetail) {
+    guard let chain = ChainType.allCases.first(where: { chain in
+      chain.getChainId() == pool.chainId
+    }) else { return }
+    let source = pool.token0.address
+    let quote = pool.token1.address
+    let request = ChartLoadRequestBuilder()
+      .symbol("\(pool.token0.symbol)/\(pool.token1.symbol)")
+      .chain(chain.customRPC().apiChainPath)
+      .baseAddress(source)
+      .quoteAddress(quote)
+      .period(.h1)
+      .chartType(.candles)
+      .build()
+    
+    tradingView.load(request: request)
+  }
+  
+  func onSelectPool(pool: TokenPoolDetail) {
+    if self.viewModel.selectedPoolDetail?.address == pool.address {
+      return
+    }
+    self.viewModel.selectedPoolDetail = pool
+    self.updateUIPoolName(hidden: false)
+    self.poolTableView.reloadData()
+    self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
+    self.reloadPoolTradingView(pool: pool)
   }
 }
 
@@ -813,21 +784,36 @@ extension ChartViewController: UITableViewDataSource {
         address = wtoken.address
       }
     }
-    cell.updateUI(poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
+    let isSelecting = poolData.address == viewModel.selectedPoolDetail?.address
+    cell.updateUI(isSelecting: isSelecting, poolDetail: poolData, baseTokenAddress: address, currencyMode: .usd)
     return cell
   }
 }
 
 extension ChartViewController: UITableViewDelegate {
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    self.viewModel.isLineChartMode = false
+    self.isSelectingLineChart = false
     let poolData = self.viewModel.poolData[indexPath.row]
-    self.viewModel.selectedPoolDetail = poolData
-    let source = poolData.token0.address
-    let quote = poolData.token1.address
-    self.loadCandleChartData(source: source, quote: quote)
-    self.setupTradingView()
-    self.containScrollView.setContentOffset(CGPoint.zero, animated: true)
+    onSelectPool(pool: poolData)
+  }
+  
+}
+
+extension ChartViewController: ChartDelegate {
+  func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
+    guard let index = indexes.first, let unwrappedIdx = index else {
+      return
+    }
+    self.chartDetailLabel.attributedText = self.viewModel.displayChartDetaiInfoAt(index: unwrappedIdx)
+  }
+  
+  func didFinishTouchingChart(_ chart: Chart) {
+    
+  }
+  
+  func didEndTouchingChart(_ chart: Chart) {
+    
   }
 }
