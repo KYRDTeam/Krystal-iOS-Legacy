@@ -116,7 +116,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(ChartDataResponse.self, from: resp.data)
-//            controller.coordinatorDidUpdateChartData(data.prices)
+            controller.coordinatorDidUpdateChartData(data.prices)
           } catch let error {
             print("[Debug]" + error.localizedDescription)
           }

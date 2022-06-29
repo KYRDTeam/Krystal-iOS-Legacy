@@ -14,6 +14,7 @@ struct ChartLoadRequest {
   var quoteAddress: String?
   var period: Period = .d1
   var chartType: ChartType = .candles
+  var apiURL: String = ""
   
   func buildChartURL(withBaseURL url: URL) -> URL {
     return url
@@ -23,6 +24,7 @@ struct ChartLoadRequest {
       .appending("quoteAddress", value: quoteAddress)
       .appending("interval", value: period.interval)
       .appending("chartType", value: "\(chartType.rawValue)")
+      .appending("apiURL", value: apiURL)
   }
 }
 
@@ -33,6 +35,7 @@ class ChartLoadRequestBuilder {
   var quoteAddress: String?
   var period: Period = .d1
   var chartType: ChartType = .candles
+  var apiURL: String = ""
   
   func symbol(_ symbol: String) -> ChartLoadRequestBuilder {
     self.symbol = symbol
@@ -64,6 +67,11 @@ class ChartLoadRequestBuilder {
     return self
   }
   
+  func apiURL(_ apiURL: String) -> ChartLoadRequestBuilder {
+    self.apiURL = apiURL
+    return self
+  }
+  
   func build() -> ChartLoadRequest {
     return ChartLoadRequest(
       symbol: symbol,
@@ -71,7 +79,8 @@ class ChartLoadRequestBuilder {
       baseAddress: baseAddress,
       quoteAddress: quoteAddress,
       period: period,
-      chartType: chartType
+      chartType: chartType,
+      apiURL: apiURL
     )
   }
   
