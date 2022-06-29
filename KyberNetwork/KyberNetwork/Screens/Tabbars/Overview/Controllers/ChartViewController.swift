@@ -355,6 +355,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var chainAddressLabel: UILabel!
   @IBOutlet weak var infoSegment: SegmentedControl!
+  @IBOutlet weak var aboutTitleLabel: UILabel!
   @IBOutlet weak var poolTableView: UITableView!
   @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
   @IBOutlet weak var poolViewTrailingConstraint: NSLayoutConstraint!
@@ -508,8 +509,15 @@ class ChartViewController: KNBaseViewController {
     }
   }
   
-  func hidePoolView() {
-    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+  func hidePoolView(_ animate: Bool = true) {
+    if animate {
+      UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+        self.tableViewHeight.priority = .fittingSizeLevel
+        self.poolViewTrailingConstraint.constant = UIScreen.main.bounds.size.width
+        self.textViewLeadingConstraint.constant = 20
+        self.view.layoutIfNeeded()
+      }
+    } else {
       self.tableViewHeight.priority = .fittingSizeLevel
       self.poolViewTrailingConstraint.constant = UIScreen.main.bounds.size.width
       self.textViewLeadingConstraint.constant = 20
@@ -685,6 +693,14 @@ class ChartViewController: KNBaseViewController {
   }
   
   func coordinatorDidUpdatePoolData(poolData: [TokenPoolDetail]) {
+    if poolData.isEmpty {
+      self.infoSegment.isHidden = true
+      self.aboutTitleLabel.isHidden = false
+      self.hidePoolView(false)
+      return
+    }
+    self.infoSegment.isHidden = false
+    self.aboutTitleLabel.isHidden = true
     self.viewModel.poolData = poolData
     self.showAllPoolButton.isHidden = poolData.count <= 5
     self.poolTableView.reloadData()

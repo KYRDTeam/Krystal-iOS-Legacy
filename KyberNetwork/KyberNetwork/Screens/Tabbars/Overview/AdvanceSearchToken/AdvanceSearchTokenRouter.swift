@@ -95,7 +95,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
                 }
               }
             }
-//            controller.coordinatorDidUpdatePoolData(poolData: allPools)
+            controller.coordinatorDidUpdatePoolData(poolData: allPools)
           }
         }
       case .getChartData(let address, let from, _, let currency):
