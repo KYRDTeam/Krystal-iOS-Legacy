@@ -207,7 +207,7 @@
                         <constraint firstItem="7Xw-zE-84E" firstAttribute="centerX" secondItem="fxb-dr-nSP" secondAttribute="centerX" id="fN0-Wk-KNm"/>
                         <constraint firstItem="7Xw-zE-84E" firstAttribute="centerY" secondItem="r3Q-Ff-reg" secondAttribute="centerY" id="rzD-jM-EII"/>
                         <constraint firstItem="yUG-8q-zbi" firstAttribute="leading" secondItem="fxb-dr-nSP" secondAttribute="leading" constant="20" id="vaj-L9-I2I"/>
-                        <constraint firstItem="yUG-8q-zbi" firstAttribute="top" secondItem="7Xw-zE-84E" secondAttribute="bottom" constant="8" id="yRb-MG-KQF"/>
+                        <constraint firstItem="yUG-8q-zbi" firstAttribute="top" secondItem="7Xw-zE-84E" secondAttribute="bottom" constant="2" id="yRb-MG-KQF"/>
                         <constraint firstAttribute="trailing" secondItem="ak7-Ym-9X3" secondAttribute="trailing" constant="17" id="yXq-o5-Msf"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
