@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix: 
         include:
-          - env: dev
+          - env: stg
             
     runs-on: macos-11
     env:
