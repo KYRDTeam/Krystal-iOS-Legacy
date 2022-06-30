@@ -363,6 +363,10 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       self.openCommunityURL("https://twitter.com/\(name)/")
     case .selectPool(source: let source, quote: let quote):
       break
+    case .openDiscord(name: let name):
+      self.navigationController.openSafari(with: name)
+    case .openTelegram(name: let name):
+      self.navigationController.openSafari(with: name)
     }
   }
   
