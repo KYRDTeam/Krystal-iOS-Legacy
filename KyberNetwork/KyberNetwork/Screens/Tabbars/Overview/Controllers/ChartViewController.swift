@@ -756,7 +756,23 @@ class ChartViewController: KNBaseViewController {
       let supportedTokens = Storage.retrieve(chainDBPath + Constants.tokenStoreFileName, as: [Token].self) ?? []
       let customTokens = Storage.retrieve(chainDBPath + Constants.customTokenStoreFileName, as: [Token].self) ?? []
       let allFoundTokens = supportedTokens + customTokens
-      if allFoundTokens.first{ $0.address ==  self.viewModel.token.address } != nil {
+      if let foundToken = allFoundTokens.first{ $0.address ==  self.viewModel.token.address } {
+        let attributedString = NSMutableAttributedString()
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+          NSAttributedString.Key.foregroundColor: UIColor(named: "textWhiteColor")!,
+          NSAttributedString.Key.font: UIFont.Kyber.bold(with: 20),
+          NSAttributedString.Key.kern: 0.0,
+        ]
+        let subTitleAttributes: [NSAttributedString.Key: Any] = [
+          NSAttributedString.Key.foregroundColor: UIColor(named: "normalTextColor")!,
+          NSAttributedString.Key.font: UIFont.Kyber.regular(with: 18),
+          NSAttributedString.Key.kern: 0.0,
+        ]
+        let titleString = foundToken.symbol.uppercased()
+        let subTitleString = foundToken.name.uppercased()
+        attributedString.append(NSAttributedString(string: "\(titleString) ", attributes: titleAttributes))
+        attributedString.append(NSAttributedString(string: "\(subTitleString)", attributes: subTitleAttributes))
+        self.titleView.attributedText = attributedString
         return
       }
       self.navigationController?.popToRootViewController(animated: true)
