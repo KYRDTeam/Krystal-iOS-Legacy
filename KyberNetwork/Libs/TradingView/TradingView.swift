@@ -34,6 +34,12 @@ class TradingView: UIView {
   }
   
   func commonInit() {
+    addWebView()
+    
+    webView.configuration.userContentController.add(self, name: TradingView.moduleName)
+  }
+  
+  func addWebView() {
     addSubview(webView)
     
     NSLayoutConstraint.activate([
@@ -50,4 +56,67 @@ class TradingView: UIView {
     webView.load(URLRequest(url: url))
   }
   
+}
+
+extension TradingView: WKScriptMessageHandler {
+  
+  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    if message.name == TradingView.moduleName {
+      guard let body = message.body as? NSDictionary else { return }
+      guard let actionString = body["action"] as? String else { return }
+      guard let action = Action(rawValue: actionString) else { return }
+      guard let data = body["data"] as? NSDictionary else { return }
+      self.handle(action: action, data: data)
+    }
+  }
+  
+  func handle(action: Action, data: NSDictionary) {
+    switch action {
+    case .toggleFullscreen:
+      guard let isFullscreen = data["isFullscreen"] as? Bool else { return }
+      guard let window = UIApplication.shared.keyWindow else { return }
+      if isFullscreen {
+        webView.removeFromSuperview()
+        window.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = true
+        UIView.animate(withDuration: 0.5) {
+          let width = UIScreen.main.bounds.height
+          let height = UIScreen.main.bounds.width
+          self.webView.frame = CGRect(
+            x: -self.bounds.width / 2,
+            y: self.bounds.height / 2 + UIScreen.statusBarHeight,
+            width: width,
+            height: height
+          )
+          self.webView.rotate(angle: 90)
+        }
+      } else {
+        webView.removeFromSuperview()
+        addWebView()
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        UIView.animate(withDuration: 0.5) {
+          self.webView.rotate(angle: -90.0)
+        }
+      }
+    }
+  }
+  
+}
+
+extension TradingView {
+  
+  static let moduleName = "tradingView"
+  
+  enum Action: String {
+    case toggleFullscreen = "toggleFullscreen"
+  }
+  
+}
+
+extension UIView {
+  func rotate(angle: CGFloat) {
+    let radians = angle / 180.0 * CGFloat.pi
+    let rotation = self.transform.rotated(by: radians)
+    self.transform = rotation
+  }
 }

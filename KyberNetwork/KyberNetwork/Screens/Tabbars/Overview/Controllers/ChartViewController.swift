@@ -384,8 +384,8 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolNameLabel: UILabel!
   @IBOutlet weak var tradingView: TradingView!
   @IBOutlet weak var tokenChartView: Chart!
-  @IBOutlet weak var poolChartContainer: TradingView!
-  @IBOutlet weak var tokenChartContainer: Chart!
+  @IBOutlet weak var poolChartContainer: UIView!
+  @IBOutlet weak var tokenChartContainer: UIView!
   @IBOutlet weak var intervalStackview: UIStackView!
   @IBOutlet weak var chartHeight: NSLayoutConstraint!
   @IBOutlet weak var noDataImageView: UIImageView!

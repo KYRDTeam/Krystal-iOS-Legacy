@@ -15,6 +15,7 @@ struct ChartLoadRequest {
   var period: Period = .d1
   var chartType: ChartType = .candles
   var apiURL: String = ""
+  var fullScreen: Bool = false
   
   func buildChartURL(withBaseURL url: URL) -> URL {
     return url
@@ -25,6 +26,7 @@ struct ChartLoadRequest {
       .appending("interval", value: period.interval)
       .appending("chartType", value: "\(chartType.rawValue)")
       .appending("apiURL", value: apiURL)
+      .appending("fullScreen", value: "\(fullScreen)")
   }
 }
 
@@ -36,6 +38,7 @@ class ChartLoadRequestBuilder {
   var period: Period = .d1
   var chartType: ChartType = .candles
   var apiURL: String = ""
+  var fullScreen: Bool = false
   
   func symbol(_ symbol: String) -> ChartLoadRequestBuilder {
     self.symbol = symbol
@@ -72,6 +75,11 @@ class ChartLoadRequestBuilder {
     return self
   }
   
+  func fullScreen(_ fullScreen: Bool) -> ChartLoadRequestBuilder {
+    self.fullScreen = fullScreen
+    return self
+  }
+  
   func build() -> ChartLoadRequest {
     return ChartLoadRequest(
       symbol: symbol,
@@ -80,7 +88,8 @@ class ChartLoadRequestBuilder {
       quoteAddress: quoteAddress,
       period: period,
       chartType: chartType,
-      apiURL: apiURL
+      apiURL: apiURL,
+      fullScreen: fullScreen
     )
   }
   
