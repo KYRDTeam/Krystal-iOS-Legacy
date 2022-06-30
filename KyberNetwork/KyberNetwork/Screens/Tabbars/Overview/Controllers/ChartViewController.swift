@@ -71,7 +71,8 @@ class ChartViewModel {
   }
   
   var displayPrice: String {
-    return self.numberFormatter.string(from: NSNumber(value: self.detailInfo?.markets[self.currency]?.price ?? 0))?.displayRate(meaningNumber: 2) ?? "0"
+    let value = self.numberFormatter.string(from: NSNumber(value: self.detailInfo?.markets[self.currency]?.price ?? 0))?.displayRate(meaningNumber: 2) ?? "0"
+    return "$\(value)"
   }
 
   var display24hVol: String {
@@ -751,6 +752,13 @@ class ChartViewController: KNBaseViewController {
 
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
     guard let detailInfo = detailInfo else {
+      let chainDBPath = ChainType.make(chainID: self.viewModel.chainId)?.getChainDBPath() ?? ""
+      let supportedTokens = Storage.retrieve(chainDBPath + Constants.tokenStoreFileName, as: [Token].self) ?? []
+      let customTokens = Storage.retrieve(chainDBPath + Constants.customTokenStoreFileName, as: [Token].self) ?? []
+      let allFoundTokens = supportedTokens + customTokens
+      if allFoundTokens.first{ $0.address ==  self.viewModel.token.address } != nil {
+        return
+      }
       self.navigationController?.popToRootViewController(animated: true)
       let errorVC = ErrorViewController()
       errorVC.modalPresentationStyle = .fullScreen
