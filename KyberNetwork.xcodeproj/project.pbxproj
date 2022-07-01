@@ -861,7 +861,7 @@
 		C38E5D7925F63FC000E5FC48 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38E5D7825F63FC000E5FC48 /* TransactionHistory.swift */; };
 		C399118C249B553100A7C251 /* KNTutorialPagerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C399118A249B553100A7C251 /* KNTutorialPagerCell.swift */; };
 		C399118D249B553100A7C251 /* KNTutorialPagerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C399118B249B553100A7C251 /* KNTutorialPagerCell.xib */; };
-		C39A7EED24778B03003EA57D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C39A7EED24778B03003EA57D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		C39D3FE126FB33610021DF8A /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39D3FE026FB33610021DF8A /* History.swift */; };
 		C39E5FBB27F1A23600DDBF59 /* GoogleService-Info-Dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C39E5FBA27F1A23600DDBF59 /* GoogleService-Info-Dev.plist */; };
 		C3A2419B2567AD610073703C /* WalletsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A241992567AD610073703C /* WalletsListViewController.swift */; };
@@ -6331,7 +6331,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				7EE92A0F286307E10050DC8D /* ShowAllCell.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
-				C39A7EED24778B03003EA57D /* BuildFile in Sources */,
+				C39A7EED24778B03003EA57D /* (null) in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
@@ -7318,13 +7318,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.11;
+				MARKETING_VERSION = 1.2.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7348,12 +7348,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Devops Kyber (YKG7A8A764)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.2.11;
+				MARKETING_VERSION = 1.2.14;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios.KrystalNotificationServiceExtension;
