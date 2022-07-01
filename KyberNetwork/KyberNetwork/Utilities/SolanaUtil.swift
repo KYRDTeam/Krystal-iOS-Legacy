@@ -51,7 +51,7 @@ class SolanaUtil {
   static func seedsToPublicKey(_ seeds: String) -> String {
     let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
     let publicKey = privateKey.getPublicKeyEd25519()
-      let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
+    let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
     return solanaAddress.description
   }
   

@@ -27,7 +27,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var refCodeTitleLabel: UILabel!
   var importType: ImportWalletChainType = .multiChain
   
-  var isValueVaild: Bool {
+  var isValueValid: Bool {
     guard let text = self.enterPrivateKeyTextField.text else { return false }
     if importType == .solana {
       return SolanaUtil.isValidSolanaPrivateKey(text)
@@ -86,7 +86,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   fileprivate func updateNextButton() {
-    let enabled: Bool = self.isValueVaild
+    let enabled: Bool = self.isValueValid
     self.nextButton.isEnabled = enabled
     let noteColor: UIColor = {
       let text = self.enterPrivateKeyTextField.text ?? ""
