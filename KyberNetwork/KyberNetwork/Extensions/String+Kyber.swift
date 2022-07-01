@@ -224,6 +224,10 @@ extension String {
       }
       return true
   }
+  
+  var isTrustPK: Bool {
+    return self.count == 64
+  }
 }
 
 extension StringProtocol {

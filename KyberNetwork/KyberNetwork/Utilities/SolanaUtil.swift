@@ -57,7 +57,7 @@ class SolanaUtil {
   
   // Generate privateKey from keypair
   static func keyPairToPrivateKey(_ keypair: String) -> PrivateKey? {
-    if keypair.count < 87 {
+    if keypair.isTrustPK {
       guard let data = Data(hexString: keypair) else { return nil }
       let privateKey = PrivateKey(data: data[0...31])
       return privateKey
@@ -415,7 +415,7 @@ class SolanaUtil {
   }
   
   static func hexStringToData(_ text: String) -> Data? {
-    if text.count < 87 {
+    if text.isTrustPK {
       let data = Data(hexString: text)
       return data
     } else {
@@ -426,7 +426,7 @@ class SolanaUtil {
   
   static func isValidSolanaPrivateKey(_ text: String) -> Bool {
     guard let data = SolanaUtil.hexStringToData(text) else { return false }
-    if text.count < 87 {
+    if text.isTrustPK {
       return data.count == 32
     } else {
       return data.count == 64
