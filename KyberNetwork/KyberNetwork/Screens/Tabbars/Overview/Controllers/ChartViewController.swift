@@ -310,6 +310,8 @@ enum ChartViewEvent {
   case openTwitter(name: String)
   case getPoolList(address: String, chainId: Int)
   case selectPool(source: String, quote: String)
+  case openDiscord(link: String)
+  case openTelegram(link: String)
 }
 
 enum ChartPeriodType: Int {
@@ -577,6 +579,14 @@ class ChartViewController: KNBaseViewController {
   
   @IBAction func twitterButtonTapped(_ sender: UIButton) {
     self.delegate?.chartViewController(self, run: .openTwitter(name: self.viewModel.detailInfo?.links.twitterScreenName ?? ""))
+  }
+  
+  @IBAction func dicordButtonTapped(_ sender: UIButton) {
+    self.delegate?.chartViewController(self, run: .openDiscord(link: self.viewModel.detailInfo?.links.discord ?? ""))
+  }
+  
+  @IBAction func telegramButtonTapped(_ sender: UIButton) {
+    self.delegate?.chartViewController(self, run: .openTelegram(link: self.viewModel.detailInfo?.links.telegram ?? ""))
   }
   
   @IBAction func favButtonTapped(_ sender: UIButton) {

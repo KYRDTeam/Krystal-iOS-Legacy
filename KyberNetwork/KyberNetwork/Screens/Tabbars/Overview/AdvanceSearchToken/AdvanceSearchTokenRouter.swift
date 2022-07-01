@@ -206,6 +206,10 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
     case .selectPool(source: let source, quote: let quote):
       break
+    case .openDiscord(link: let link):
+      self.coordinator?.openCommunityURL(link)
+    case .openTelegram(link: let link):
+      self.coordinator?.openCommunityURL(link)
     }
   }
 
