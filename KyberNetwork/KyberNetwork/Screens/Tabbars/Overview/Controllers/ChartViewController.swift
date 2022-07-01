@@ -835,9 +835,11 @@ extension ChartViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    self.isSelectingLineChart = false
-    let poolData = self.viewModel.poolData[indexPath.row]
-    onSelectPool(pool: poolData)
+    runIfFeatureEnabled(key: FeatureFlagKeys.tradingView) {
+      self.isSelectingLineChart = false
+      let poolData = self.viewModel.poolData[indexPath.row]
+      self.onSelectPool(pool: poolData)
+    }
   }
   
 }
