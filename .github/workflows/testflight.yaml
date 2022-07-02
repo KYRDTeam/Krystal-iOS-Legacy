@@ -19,8 +19,6 @@ env:
 
 jobs:
   build-ios:
-    needs:
-      - prepare
     runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
