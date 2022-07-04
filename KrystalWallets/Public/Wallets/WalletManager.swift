@@ -22,7 +22,6 @@ public class WalletManager {
   }
   
   let realm: Realm
-  let securedDataManager = SecuredDataManager()
   let keystore: KeyStore
   
   var supportedAddressTypes: [KAddressType] = [.evm, .solana]

@@ -14,6 +14,7 @@ protocol RewardHuntingCoordinatorDelegate: AnyObject {
 class RewardHuntingCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var delegate: RewardHuntingCoordinatorDelegate?
   
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
