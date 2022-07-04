@@ -912,9 +912,9 @@ extension EarnCoordinator: KNTransactionStatusPopUpDelegate { //TODO: popup scre
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-
-      viewModel.transaction = transaction
-      viewModel.isSpeedupMode = true
+    
+    viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)

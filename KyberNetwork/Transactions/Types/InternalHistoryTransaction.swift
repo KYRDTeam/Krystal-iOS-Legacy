@@ -74,26 +74,26 @@ class InternalHistoryTransaction: Codable {
       self.extraData?.to = extraData.to
     }
   }
-    
-    var transactionGasPrice: String {
-        if let tx = transactionObject {
-            return tx.gasPrice
-        } else if let tx = eip1559Transaction {
-            return tx.maxGasFee
-        } else {
-            return ""
-        }
+  
+  var transactionGasPrice: String {
+    if let tx = transactionObject {
+      return tx.gasPrice
+    } else if let tx = eip1559Transaction {
+      return tx.maxGasFee
+    } else {
+      return ""
     }
-    
-    var transactionGasPriceBigInt: BigInt {
-        return BigInt(self.transactionGasPrice) ?? .zero
-    }
-    
-    var speedupGasBigInt: BigInt {
-        var speedupGas = self.transactionGasPriceBigInt
-        speedupGas += (speedupGas * 20 / 100) //Add 10%
-        return speedupGas
-    }
+  }
+  
+  var transactionGasPriceBigInt: BigInt {
+    return BigInt(self.transactionGasPrice) ?? .zero
+  }
+  
+  var speedupGasBigInt: BigInt {
+    var speedupGas = self.transactionGasPriceBigInt
+    speedupGas += (speedupGas * 20 / 100) //Add 10%
+    return speedupGas
+  }
 }
 
 struct InternalHistoryExtraData: Codable {

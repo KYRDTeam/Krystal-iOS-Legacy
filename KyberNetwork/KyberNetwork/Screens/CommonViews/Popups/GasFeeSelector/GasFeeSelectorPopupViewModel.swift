@@ -98,12 +98,12 @@ class GasFeeSelectorPopupViewModel {
   var gasLimit: BigInt
   var isAdvancedMode: Bool = false
   var currentNonce: Int = -1
-    var isSpeedupMode: Bool = false {
-        didSet {
-            guard isSpeedupMode == true, let tx = transaction else { return }
-            self.superFast = max(tx.speedupGasBigInt, KNGasCoordinator.shared.superFastKNGas)
-        }
+  var isSpeedupMode: Bool = false {
+    didSet {
+      guard isSpeedupMode == true, let tx = transaction else { return }
+      self.superFast = max(tx.speedupGasBigInt, KNGasCoordinator.shared.superFastKNGas)
     }
+  }
   var isCancelMode: Bool = false
   var transaction: InternalHistoryTransaction?
 
@@ -251,11 +251,11 @@ class GasFeeSelectorPopupViewModel {
     self.fast = fast
     self.medium = medium
     self.slow = slow
-      if isSpeedupMode {
-          self.superFast = max(self.transaction?.speedupGasBigInt ?? .zero, superFast)
-      } else {
-          self.superFast = superFast
-      }
+    if isSpeedupMode {
+      self.superFast = max(self.transaction?.speedupGasBigInt ?? .zero, superFast)
+    } else {
+      self.superFast = superFast
+    }
 
     self.priorityFast = KNGasCoordinator.shared.fastPriorityFee
     self.priorityMedium = KNGasCoordinator.shared.standardPriorityFee
