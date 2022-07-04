@@ -547,8 +547,8 @@ class ChartViewController: KNBaseViewController {
     guard let type = ChartPeriodType(rawValue: sender.tag), type != self.viewModel.periodType else {
       return
     }
-    self.loadTokenChartData()
     self.viewModel.periodType = type
+    self.loadTokenChartData()
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
   }
@@ -737,19 +737,18 @@ class ChartViewController: KNBaseViewController {
       let date = Date(timeIntervalSince1970: timestamp * 0.001)
       let calendar = Calendar.current
       let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "EE"
+      dateFormatter.dateFormat = "MMM dd"
       let hour = calendar.component(.hour, from: date)
       let minutes = calendar.component(.minute, from: date)
-      let day = calendar.component(.day, from: date)
       let month = calendar.component(.month, from: date)
       let year = calendar.component(.year, from: date)
       switch self.viewModel.periodType {
       case .oneDay:
         return String(format: "%02d:%02d", hour, minutes)
       case .sevenDay:
-        return "\(dateFormatter.string(from: date)) \(hour)"
+        return dateFormatter.string(from: date)
       case .oneMonth, .threeMonth:
-        return "\(day)/\(month)"
+        return dateFormatter.string(from: date)
       case .oneYear:
         return "\(month)/\(year)"
       }
