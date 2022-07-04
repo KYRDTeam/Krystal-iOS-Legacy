@@ -18,57 +18,7 @@ env:
   # GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
 
 jobs:
-  prepare:
-    runs-on: ubuntu-18.04
-    outputs:
-      current_branch: ${{ steps.current_branch.outputs.value }}
-      commit_tag: ${{ steps.commit_tag.outputs.value }}
-      version_tag: ${{ steps.version_tag.outputs.value }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
-          submodules: recursive
-
-      - name: Extract branch
-        shell: bash
-        id: current_branch
-        run: |
-          BRANCH="${GITHUB_REF#refs/heads/}"
-          if [[ "$GITHUB_REF" =~ refs/tags ]]; then
-            raw=$(git branch -r --contains ${{ github.ref }})
-            BRANCH=${raw/origin\/}
-          fi
-          echo "::set-output name=value::$BRANCH"
-
-      - name: Get Git Commit Tag
-        shell: bash
-        id: commit_tag
-        run: |
-          COMMIT_HASH="$(echo $GITHUB_SHA | head -c7)"
-          echo "::set-output name=value::$COMMIT_HASH"
-
-      - name: Get version tag
-        id: version_tag
-        run: |
-          [[ ! "$GITHUB_REF" =~ refs/tags ]] && exit
-          echo "::set-output name=value::${GITHUB_REF#refs/tags/}"
-
-      # This step will automatically run if any of the previous steps fail.
-      # DO NOT CHANGE IT
-      - name: Send notifications to a specify Telegram group
-        if: failure()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
-          RUN_ID: ${{ github.run_id }}
-        shell: bash
-        run: .github/failure
-
   build-ios:
-    needs:
-      - prepare
     runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
@@ -101,7 +51,7 @@ jobs:
       PROJECT_SLUG: ${{ secrets.PROJECT_SLUG }}
       SENTRY_URL: ${{ secrets.SENTRY_URL }}
       # default actor
-      GH_ACTOR: kyber-ci-bot
+      GH_ACTOR: Krystal-CICD
       # testflight
       APPLE_ID: ${{ secrets.APPLE_ID }}
       APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -203,13 +153,13 @@ jobs:
       - name: Bump Build number
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: bump_build_number
+          lane: ci_bump_build_number
           bundle-install-path: "vendor/bundle"
 
       - name: Push commit 
         shell: bash
         run: | 
-          git push --repo="https://$GH_ACTOR:$GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
+          git push --repo="https://$GH_ACTOR:$KRYSTAL_BOT_GH_PAT@github.com/${GITHUB_REPOSITORY}.git"
 
       # This step will automatically run if any of the previous steps fail.
       # DO NOT CHANGE IT

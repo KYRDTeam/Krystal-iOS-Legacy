@@ -237,3 +237,15 @@ lane :bump_build_number do
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
 end
+
+lane :ci_bump_build_number do
+  # make sure repo is clean
+  reset_git_repo(skip_clean: true, force: true)
+  git_pull
+  @old_build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+  increment_build_number()
+  git_add
+  @version = get_version_number(xcodeproj: "KyberNetwork.xcodeproj", target: "KyberNetwork")
+  @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
+  git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "[no ci] increase build number " + @build_number + " (ver: " + @version + ")")
+end
