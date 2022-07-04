@@ -253,7 +253,25 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
     case .bridge:
-      self.openBridgeView()
+      if UserDefaults.standard.bool(forKey: Constants.bridgeWarningAcceptedKey) == false {
+        let alertController = KNPrettyAlertController(
+          title: Strings.warningTitle,
+          isWarning: true,
+          message: Strings.bridgeWarningText,
+          secondButtonTitle: "I understand",
+          firstButtonTitle: "Go Back",
+          secondButtonAction: {
+            self.openBridgeView()
+            UserDefaults.standard.set(true, forKey: Constants.bridgeWarningAcceptedKey)
+          },
+          firstButtonAction: {
+          }
+        )
+        alertController.popupHeight = 468
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.openBridgeView()
+      }
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
 

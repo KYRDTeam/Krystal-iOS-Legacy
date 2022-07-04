@@ -9,6 +9,8 @@ class KNPrettyAlertController: KNBaseViewController {
   @IBOutlet weak var firstButton: UIButton!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  
+  @IBOutlet weak var popupHeightContraint: NSLayoutConstraint!
   @IBOutlet var backgroundView: UIView!
 
   let mainTitle: String?
@@ -57,7 +59,10 @@ class KNPrettyAlertController: KNBaseViewController {
       if self.isWarning {
         let fullString = NSMutableAttributedString()
         let image1Attachment = NSTextAttachment()
-        image1Attachment.image = UIImage(named: "warning_yellow_icon")
+        let iconImage = UIImage(named: "warning_yellow_icon")!
+        let titleFont = UIFont.Kyber.bold(with: 20)
+        image1Attachment.bounds = CGRect(x: 0, y: (titleFont.capHeight - iconImage.size.height).rounded() / 2, width: iconImage.size.width, height: iconImage.size.height)
+        image1Attachment.image = iconImage
         let image1String = NSAttributedString(attachment: image1Attachment)
         fullString.append(image1String)
         fullString.append(NSAttributedString(string: " " + titleTxt))
@@ -90,6 +95,7 @@ class KNPrettyAlertController: KNBaseViewController {
     
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     backgroundView.addGestureRecognizer(tapGesture)
+    self.popupHeightContraint.constant = self.popupHeight
   }
   
   @objc func tapOutside() {

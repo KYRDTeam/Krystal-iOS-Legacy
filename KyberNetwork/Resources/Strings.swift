@@ -123,4 +123,9 @@ struct Strings {
   static let tokenTypeAddress = "%@.address".toBeLocalised()
   static let viewOnX = "view.on.%@".toBeLocalised()
   static let addressCopied = "address.copied".toBeLocalised()
+  
+  static let bridgeWarningText = "Krystal strives to offer its users the best DeFi experience on a single platform. In order to do that, Krystal carefully evaluates & partners with other platforms to facilitate these services. However, Krystal does not assume any liability for any losses incurred due to any security breach on Krystal’s partners on chain contract."
+  static let warningTitle = "Risk Warning"
+  
+  static let skipBackupWarningText = "Warning: You must backup your wallet and keep your mnemonics secure.\n\nWhy? If you lose your device, or uninstall the app or clear app’s memory. You won’t be able to access your wallet and funds.\n\nWhy keep your backup secure? Anyone with your backup can steal your wallet assets"
 }

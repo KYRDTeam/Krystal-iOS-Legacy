@@ -143,6 +143,23 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   }
 
   func backupWalletViewControllerDidConfirmSkipWallet() {
+    let alertController = KNPrettyAlertController(
+      title: "Skip?",
+      isWarning: true,
+      message: Strings.skipBackupWarningText,
+      secondButtonTitle: "OK",
+      firstButtonTitle: "Cancel",
+      secondButtonAction: {
+        self.skipBackup()
+      },
+      firstButtonAction: {
+      }
+    )
+    alertController.popupHeight = 468
+    self.navigationController.present(alertController, animated: true, completion: nil)
+  }
+  
+  fileprivate func skipBackup() {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.addressString,
