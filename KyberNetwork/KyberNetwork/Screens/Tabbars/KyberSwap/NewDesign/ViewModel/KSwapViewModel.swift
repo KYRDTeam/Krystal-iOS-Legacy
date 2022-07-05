@@ -665,7 +665,7 @@ class KSwapViewModel {
   }
 
   func getRefPrice(from: TokenObject, to: TokenObject) -> String {
-    guard let refPrice = refPrice, from.isEqual(refPrice.from), from.isEqual(refPrice.to) else {
+    guard let refPrice = refPrice, from.isEqual(refPrice.from), to.isEqual(refPrice.to) else {
       return ""
     }
     return refPrice.price
