@@ -7,6 +7,7 @@ import Firebase
 import OneSignal
 import AppTrackingTransparency
 import WalletConnectSwift
+import IQKeyboardManager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
+    setupKeyboard()
     do {
       let keystore = try EtherKeystore()
       coordinator = KNAppCoordinator(window: window!, keystore: keystore)
@@ -105,6 +107,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return
       }
       FirebaseApp.configure(options: fileopts)
+    }
+  }
+  
+  func setupKeyboard() {
+    IQKeyboardManager.shared().isEnabled = true
+    IQKeyboardManager.shared().shouldResignOnTouchOutside = true
+    
+    let disabledToolbarClasses = [
+      KNImportSeedsViewController.self,
+      KNImportPrivateKeyViewController.self,
+      KNImportJSONViewController.self
+    ]
+    disabledToolbarClasses.forEach { Class in
+      IQKeyboardManager.shared().disabledToolbarClasses.add(Class)
     }
   }
 
