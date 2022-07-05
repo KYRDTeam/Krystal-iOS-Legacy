@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import IQKeyboardManager
 import BigInt
 import Moya
 //import OneSignal
@@ -229,8 +228,6 @@ extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start()
-    IQKeyboardManager.shared().isEnabled = true
-    IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
 
     UITabBarItem.appearance().setTitleTextAttributes(
