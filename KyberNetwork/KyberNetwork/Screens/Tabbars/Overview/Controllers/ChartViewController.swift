@@ -392,6 +392,13 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chartHeight: NSLayoutConstraint!
   @IBOutlet weak var noDataImageView: UIImageView!
   
+  @IBOutlet weak var socialButtonStackView: UIStackView!
+  @IBOutlet weak var blockExploreButton: UIButton!
+  @IBOutlet weak var websiteButton: UIButton!
+  @IBOutlet weak var twitterButton: UIButton!
+  @IBOutlet weak var discordButton: UIButton!
+  @IBOutlet weak var telegramButton: UIButton!
+  
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
   fileprivate var tokenPoolTimer: Timer?
@@ -426,6 +433,7 @@ class ChartViewController: KNBaseViewController {
     self.setupChartViews()
     self.loadTokenChartData()
     self.reloadCharts()
+    self.updateUISocialButtons()
   }
   
   func setupTitle() {
@@ -797,6 +805,31 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
     self.updateUIChartInfo()
+    self.updateUISocialButtons()
+  }
+  
+  fileprivate func updateUISocialButtons() {
+    guard let detail = self.viewModel.detailInfo else {
+      self.socialButtonStackView.isHidden = true
+      return
+    }
+    self.socialButtonStackView.isHidden = false
+    
+    if !detail.links.homepage.isValidURL {
+      self.websiteButton.removeFromSuperview()
+    }
+    
+    if !detail.links.twitter.isValidURL {
+      self.twitterButton.removeFromSuperview()
+    }
+    
+    if !detail.links.discord.isValidURL {
+      self.discordButton.removeFromSuperview()
+    }
+    
+    if !detail.links.telegram.isValidURL {
+      self.telegramButton.removeFromSuperview()
+    }
   }
   
   func reloadPoolTradingView(pool: TokenPoolDetail) {

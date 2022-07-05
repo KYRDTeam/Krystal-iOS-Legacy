@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -31,6 +31,7 @@
                 <outlet property="addressToSuperViewTrailing" destination="9GQ-PO-hMR" id="W3g-cb-1YW"/>
                 <outlet property="athLabel" destination="mSV-g5-nVV" id="rpP-YW-U85"/>
                 <outlet property="atlLabel" destination="ZFU-cs-HXo" id="oP5-pL-Kax"/>
+                <outlet property="blockExploreButton" destination="qxk-tV-BD3" id="F3x-ri-SEF"/>
                 <outlet property="chainAddressLabel" destination="jDc-fa-w5Z" id="fJP-W9-VvJ"/>
                 <outlet property="chainIcon" destination="Dww-Qh-cvZ" id="rdo-Rj-brZ"/>
                 <outlet property="chainView" destination="TZA-ye-PLf" id="ooP-G5-wMB"/>
@@ -39,6 +40,7 @@
                 <outlet property="chartHeight" destination="E1T-qs-NAf" id="nGs-fn-x5l"/>
                 <outlet property="containScrollView" destination="wC0-1c-nRc" id="PlA-Ck-TD4"/>
                 <outlet property="descriptionTextView" destination="yx2-K4-ikS" id="rud-bP-2OX"/>
+                <outlet property="discordButton" destination="R9N-LK-4cX" id="xY8-2D-cEW"/>
                 <outlet property="ethBalanceLabel" destination="5JN-3d-A7T" id="xcI-7T-t4b"/>
                 <outlet property="favButton" destination="ak7-Ym-9X3" id="JHD-bG-e95"/>
                 <outlet property="infoSegment" destination="Lq3-Hn-cfD" id="h28-XW-7oF"/>
@@ -56,12 +58,14 @@
                 <outlet property="priceDiffPercentageLabel" destination="rig-RH-skP" id="gEG-fm-naP"/>
                 <outlet property="priceLabel" destination="Lcl-Qq-nU6" id="0Hv-Ji-cky"/>
                 <outlet property="showAllPoolButton" destination="sr7-6z-kbT" id="Wyo-th-Vej"/>
+                <outlet property="socialButtonStackView" destination="t95-BV-F1P" id="eYe-1V-OJc"/>
                 <outlet property="swapButton" destination="7pU-d9-FWK" id="Kte-g2-IIz"/>
                 <outlet property="tableViewHeight" destination="i2V-nn-eYr" id="wUn-wn-15v"/>
                 <outlet property="tagImageView" destination="Shb-Ii-4mW" id="xhw-zW-hqV"/>
                 <outlet property="tagLabel" destination="45R-jO-Dpx" id="iXT-ya-KRf"/>
                 <outlet property="tagLabelWidth" destination="dyW-b2-oZz" id="hQY-bG-UjT"/>
                 <outlet property="tagView" destination="yUG-8q-zbi" id="PO7-pA-d0s"/>
+                <outlet property="telegramButton" destination="I7t-VN-TJp" id="MSK-L8-6J4"/>
                 <outlet property="textViewLeadingConstraint" destination="GRd-Gu-prc" id="1da-sO-z9P"/>
                 <outlet property="titleView" destination="7Xw-zE-84E" id="oMU-dq-mBA"/>
                 <outlet property="tokenChartContainer" destination="Hkg-wr-dzx" id="sRu-3O-ABa"/>
@@ -69,9 +73,11 @@
                 <outlet property="topBarHeight" destination="EIK-2V-Dtf" id="MYR-0D-9gp"/>
                 <outlet property="tradingView" destination="LXN-Tz-rz3" id="6Vw-La-PlF"/>
                 <outlet property="transferButton" destination="VQr-Jp-lwB" id="RcI-qA-xA1"/>
+                <outlet property="twitterButton" destination="YsQ-UP-P7p" id="8Hm-OH-rUu"/>
                 <outlet property="usdBalanceLabel" destination="ioX-Gg-jnp" id="miz-VU-R2A"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="volumeLabel" destination="9ja-Xc-2ZO" id="uIu-IU-JRp"/>
+                <outlet property="websiteButton" destination="Cz4-Kn-Lfn" id="oLd-fJ-4le"/>
                 <outletCollection property="periodChartSelectButtons" destination="6qh-Qz-0jL" collectionClass="NSMutableArray" id="dNU-du-gSj"/>
                 <outletCollection property="periodChartSelectButtons" destination="LCy-BD-bP1" collectionClass="NSMutableArray" id="FaW-9Y-3x4"/>
                 <outletCollection property="periodChartSelectButtons" destination="bin-x6-Kxs" collectionClass="NSMutableArray" id="ZZg-JA-zbd"/>
@@ -688,7 +694,6 @@
                                             </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="dicordButtonTapped:" destination="-1" eventType="touchUpInside" id="xqE-3I-mF7"/>
-                                                <action selector="twitterButtonTapped:" destination="-1" eventType="touchUpInside" id="HMN-uo-foW"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7t-VN-TJp">
@@ -710,7 +715,6 @@
                                             </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="telegramButtonTapped:" destination="-1" eventType="touchUpInside" id="vx0-tR-VXd"/>
-                                                <action selector="twitterButtonTapped:" destination="-1" eventType="touchUpInside" id="UXG-2F-HVq"/>
                                             </connections>
                                         </button>
                                     </subviews>
