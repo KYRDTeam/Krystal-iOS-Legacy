@@ -305,7 +305,7 @@ enum ChartViewEvent {
   case transfer(token: Token)
   case swap(token: Token)
   case invest(token: Token)
-  case openEtherscan(address: String)
+  case openEtherscan(address: String, chain: ChainType)
   case openWebsite(url: String)
   case openTwitter(name: String)
   case getPoolList(address: String, chainId: Int)
@@ -395,6 +395,10 @@ class ChartViewController: KNBaseViewController {
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
   fileprivate var tokenPoolTimer: Timer?
+  
+  var tokenChain: ChainType {
+    return ChainType.make(chainID: viewModel.chainId) ?? KNGeneralProvider.shared.currentChain
+  }
   
   var isSelectingLineChart: Bool = true {
     didSet {
@@ -570,7 +574,7 @@ class ChartViewController: KNBaseViewController {
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openEtherscan(address: self.viewModel.token.address))
+    self.delegate?.chartViewController(self, run: .openEtherscan(address: self.viewModel.token.address, chain: tokenChain))
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {

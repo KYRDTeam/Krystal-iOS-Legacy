@@ -198,8 +198,8 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       }
     case .invest(token: let token):
       self.coordinator?.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
-    case .openEtherscan(address: let address):
-      self.coordinator?.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
+    case .openEtherscan(let address, let chain):
+      self.coordinator?.openCommunityURL("\(chain.customRPC().etherScanEndpoint)address/\(address)")
     case .openWebsite(url: let url):
       self.coordinator?.openCommunityURL(url)
     case .openTwitter(name: let name):
