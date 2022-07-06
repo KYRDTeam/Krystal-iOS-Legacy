@@ -151,15 +151,6 @@ PODS:
   - nanopb/encode (2.30908.0)
   - Nimble (10.0.0)
   - OneSignal (3.10.2)
-  - PromiseKit (6.17.0):
-    - PromiseKit/CorePromise (= 6.17.0)
-    - PromiseKit/Foundation (= 6.17.0)
-    - PromiseKit/UIKit (= 6.17.0)
-  - PromiseKit/CorePromise (6.17.0)
-  - PromiseKit/Foundation (6.17.0):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.17.0):
-    - PromiseKit/CorePromise
   - PromisesObjC (2.0.0)
   - QRCodeReaderViewController (4.0.2)
   - Quick (5.0.1)
@@ -203,10 +194,6 @@ PODS:
     - TrustWalletCore/Types
   - TrustWalletCore/Types (2.6.36):
     - SwiftProtobuf
-  - WalletConnect (0.1.0):
-    - CryptoSwift
-    - PromiseKit
-    - Starscream
   - WalletConnectSwift (1.6.0):
     - CryptoSwift (~> 1.4)
     - Starscream (~> 3.1)
@@ -262,7 +249,6 @@ DEPENDENCIES:
   - TrustCore (~> 0.0.7)
   - TrustKeystore (~> 0.4.2)
   - TrustWalletCore (~> 2.6.29)
-  - WalletConnect (from `https://github.com/trustwallet/wallet-connect-swift`)
   - WalletConnectSwift
   - Web3
 
@@ -303,7 +289,6 @@ SPEC REPOS:
     - nanopb
     - Nimble
     - OneSignal
-    - PromiseKit
     - PromisesObjC
     - QRCodeReaderViewController
     - Quick
@@ -337,8 +322,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/gpbl/SwiftChart.git
   TagListView:
     :git: https://github.com/Expensify/TagListView.git
-  WalletConnect:
-    :git: https://github.com/trustwallet/wallet-connect-swift
 
 CHECKOUT OPTIONS:
   Sentry:
@@ -350,9 +333,6 @@ CHECKOUT OPTIONS:
   TagListView:
     :commit: 964553283e872c59d8a3e8901172e27ce792fe25
     :git: https://github.com/Expensify/TagListView.git
-  WalletConnect:
-    :commit: 7dd95468711d202608c37ce7cdef72a9b0f65123
-    :git: https://github.com/trustwallet/wallet-connect-swift
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
@@ -390,7 +370,6 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
   OneSignal: 29b555f5991109dc717f75d4440c565cab92511c
-  PromiseKit: 996202d4cae72b7801b312abef4cd2f995b2978a
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
   Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
@@ -416,10 +395,9 @@ SPEC CHECKSUMS:
   TrustCore: 688df9a241008cf9cfa3842ec8ef28777a8b7534
   TrustKeystore: ba8a33ccd7b6a46dfe25f209253d6ba13da6655c
   TrustWalletCore: f546b9eac65d7eb65fc6b0184f1f9a65ffc7bcbe
-  WalletConnect: c5be4e3ed9efbefb8480ab27e1766d4549a92709
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 81105e4ff1330c803e387f364bcb3c794689b7bf
+PODFILE CHECKSUM: fd84744a0a34100894289595de2b89c0ba3b976d
 
 COCOAPODS: 1.11.3

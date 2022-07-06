@@ -11,7 +11,6 @@ import BigInt
 import Result
 import TrustCore
 import QRCodeReaderViewController
-import WalletConnect
 import MBProgressHUD
 import APIKit
 import JSONRPCKit
