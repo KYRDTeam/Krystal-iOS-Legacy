@@ -815,19 +815,19 @@ class ChartViewController: KNBaseViewController {
     }
     self.socialButtonStackView.isHidden = false
     
-    if !detail.links.homepage.isValidURL {
+    if !detail.links.homepage.isValidURL, self.websiteButton != nil {
       self.websiteButton.removeFromSuperview()
     }
     
-    if !detail.links.twitter.isValidURL {
+    if !detail.links.twitter.isValidURL, self.twitterButton != nil {
       self.twitterButton.removeFromSuperview()
     }
     
-    if !detail.links.discord.isValidURL {
+    if !detail.links.discord.isValidURL, self.discordButton != nil {
       self.discordButton.removeFromSuperview()
     }
     
-    if !detail.links.telegram.isValidURL {
+    if !detail.links.telegram.isValidURL, self.telegramButton != nil {
       self.telegramButton.removeFromSuperview()
     }
   }
