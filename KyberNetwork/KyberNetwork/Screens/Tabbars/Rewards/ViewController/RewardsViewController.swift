@@ -89,10 +89,10 @@ class RewardsViewController: KNBaseViewController {
       emptyView.isHidden = false
       emptyLabel.text = "You are using watch wallet".toBeLocalised()
       emptyButton.isHidden = true
-      return
+    } else {
+      emptyButton.isHidden = false
+      emptyLabel.text = "You don't have any reward".toBeLocalised()
     }
-    emptyButton.isHidden = false
-    emptyLabel.text = "You don't have any reward".toBeLocalised()
   }
 
   func configUI() {

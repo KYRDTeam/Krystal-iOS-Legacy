@@ -246,6 +246,13 @@ extension String {
       }
       return true
   }
+  
+  var isValidURL: Bool {
+    if let url = URL(string: self) {
+      return UIApplication.shared.canOpenURL(url)
+    }
+    return false
+  }
 }
 
 extension StringProtocol {

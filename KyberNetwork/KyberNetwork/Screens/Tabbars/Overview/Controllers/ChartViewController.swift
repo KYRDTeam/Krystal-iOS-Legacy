@@ -305,7 +305,7 @@ enum ChartViewEvent {
   case transfer(token: Token)
   case swap(token: Token)
   case invest(token: Token)
-  case openEtherscan(address: String)
+  case openEtherscan(address: String, chain: ChainType)
   case openWebsite(url: String)
   case openTwitter(name: String)
   case getPoolList(address: String, chainId: Int)
@@ -392,9 +392,20 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var chartHeight: NSLayoutConstraint!
   @IBOutlet weak var noDataImageView: UIImageView!
   
+  @IBOutlet weak var socialButtonStackView: UIStackView!
+  @IBOutlet weak var blockExploreButton: UIButton!
+  @IBOutlet weak var websiteButton: UIButton!
+  @IBOutlet weak var twitterButton: UIButton!
+  @IBOutlet weak var discordButton: UIButton!
+  @IBOutlet weak var telegramButton: UIButton!
+  
   weak var delegate: ChartViewControllerDelegate?
   let viewModel: ChartViewModel
   fileprivate var tokenPoolTimer: Timer?
+  
+  var tokenChain: ChainType {
+    return ChainType.make(chainID: viewModel.chainId) ?? KNGeneralProvider.shared.currentChain
+  }
   
   var isSelectingLineChart: Bool = true {
     didSet {
@@ -422,6 +433,7 @@ class ChartViewController: KNBaseViewController {
     self.setupChartViews()
     self.loadTokenChartData()
     self.reloadCharts()
+    self.updateUISocialButtons()
   }
   
   func setupTitle() {
@@ -547,8 +559,8 @@ class ChartViewController: KNBaseViewController {
     guard let type = ChartPeriodType(rawValue: sender.tag), type != self.viewModel.periodType else {
       return
     }
-    self.loadTokenChartData()
     self.viewModel.periodType = type
+    self.loadTokenChartData()
     self.updateUIPeriodSelectButtons()
     self.updateUITokenInfo()
   }
@@ -570,7 +582,7 @@ class ChartViewController: KNBaseViewController {
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-    self.delegate?.chartViewController(self, run: .openEtherscan(address: self.viewModel.token.address))
+    self.delegate?.chartViewController(self, run: .openEtherscan(address: self.viewModel.token.address, chain: tokenChain))
   }
   
   @IBAction func websiteButtonTapped(_ sender: UIButton) {
@@ -737,19 +749,18 @@ class ChartViewController: KNBaseViewController {
       let date = Date(timeIntervalSince1970: timestamp * 0.001)
       let calendar = Calendar.current
       let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "EE"
+      dateFormatter.dateFormat = "MMM dd"
       let hour = calendar.component(.hour, from: date)
       let minutes = calendar.component(.minute, from: date)
-      let day = calendar.component(.day, from: date)
       let month = calendar.component(.month, from: date)
       let year = calendar.component(.year, from: date)
       switch self.viewModel.periodType {
       case .oneDay:
         return String(format: "%02d:%02d", hour, minutes)
       case .sevenDay:
-        return "\(dateFormatter.string(from: date)) \(hour)"
+        return dateFormatter.string(from: date)
       case .oneMonth, .threeMonth:
-        return "\(day)/\(month)"
+        return dateFormatter.string(from: date)
       case .oneYear:
         return "\(month)/\(year)"
       }
@@ -794,6 +805,31 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.detailInfo = detailInfo
     self.updateUITokenInfo()
     self.updateUIChartInfo()
+    self.updateUISocialButtons()
+  }
+  
+  fileprivate func updateUISocialButtons() {
+    guard let detail = self.viewModel.detailInfo else {
+      self.socialButtonStackView.isHidden = true
+      return
+    }
+    self.socialButtonStackView.isHidden = false
+    
+    if !detail.links.homepage.isValidURL, self.websiteButton != nil {
+      self.websiteButton.removeFromSuperview()
+    }
+    
+    if !detail.links.twitter.isValidURL, self.twitterButton != nil {
+      self.twitterButton.removeFromSuperview()
+    }
+    
+    if !detail.links.discord.isValidURL, self.discordButton != nil {
+      self.discordButton.removeFromSuperview()
+    }
+    
+    if !detail.links.telegram.isValidURL, self.telegramButton != nil {
+      self.telegramButton.removeFromSuperview()
+    }
   }
   
   func reloadPoolTradingView(pool: TokenPoolDetail) {

@@ -370,8 +370,8 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .invest(token: let token):
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
-    case .openEtherscan(address: let address):
-      self.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
+    case .openEtherscan(let address, let chain):
+      self.openCommunityURL("\(chain.customRPC().etherScanEndpoint)address/\(address)")
     case .openWebsite(url: let url):
       self.openCommunityURL(url)
     case .openTwitter(name: let name):
