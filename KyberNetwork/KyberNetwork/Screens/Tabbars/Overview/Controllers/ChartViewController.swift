@@ -431,9 +431,14 @@ class ChartViewController: KNBaseViewController {
     self.setupTitle()
     self.setupButtons()
     self.setupChartViews()
+    self.setupTradingView()
     self.loadTokenChartData()
     self.reloadCharts()
     self.updateUISocialButtons()
+  }
+  
+  func setupTradingView() {
+    tradingView.delegate = self
   }
   
   func setupTitle() {
@@ -832,13 +837,13 @@ class ChartViewController: KNBaseViewController {
     }
   }
   
-  func reloadPoolTradingView(pool: TokenPoolDetail) {
+  func constructTradingViewLoadRequest(pool: TokenPoolDetail, fullscreen: Bool = false) -> ChartLoadRequest? {
     guard let chain = ChainType.allCases.first(where: { chain in
       chain.getChainId() == pool.chainId
-    }) else { return }
+    }) else { return nil }
     let source = pool.token0.address
     let quote = pool.token1.address
-    let request = ChartLoadRequestBuilder()
+    return ChartLoadRequestBuilder()
       .symbol("\(pool.token0.symbol)/\(pool.token1.symbol)")
       .chain(chain.customRPC().apiChainPath)
       .baseAddress(source)
@@ -846,8 +851,12 @@ class ChartViewController: KNBaseViewController {
       .period(.h1)
       .chartType(.candles)
       .apiURL(KNEnvironment.default.krytalAPIEndPoint)
+      .fullscreen(fullscreen)
       .build()
-    
+  }
+  
+  func reloadPoolTradingView(pool: TokenPoolDetail) {
+    guard let request = constructTradingViewLoadRequest(pool: pool) else { return }
     tradingView.load(request: request)
   }
   
@@ -905,4 +914,24 @@ extension ChartViewController: ChartDelegate {
   func didEndTouchingChart(_ chart: Chart) {
     
   }
+}
+
+extension ChartViewController: TradingViewDelegate {
+  
+  func tradingView(_ tradingView: TradingView, handleAction action: TradingView.Action) {
+    switch action {
+    case .toggleFullscreen:
+      self.openFullscreenTradingView()
+    }
+  }
+  
+  func openFullscreenTradingView() {
+    guard let pool = viewModel.selectedPoolDetail else { return }
+    guard let request = constructTradingViewLoadRequest(pool: pool, fullscreen: true) else { return }
+    let vc = TradingViewController(request: request)
+    vc.modalTransitionStyle = .crossDissolve
+    vc.modalPresentationStyle = .overFullScreen
+    self.present(vc, animated: true)
+  }
+  
 }
