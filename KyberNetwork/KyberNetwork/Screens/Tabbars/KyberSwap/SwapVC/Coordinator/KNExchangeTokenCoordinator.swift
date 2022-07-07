@@ -8,7 +8,6 @@ import Result
 import Moya
 import APIKit
 import QRCodeReaderViewController
-import WalletConnect
 import MBProgressHUD
 import JSONRPCKit
 import WalletConnectSwift

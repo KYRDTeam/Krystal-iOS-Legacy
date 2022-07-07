@@ -9,7 +9,6 @@ import Foundation
 import Moya
 import QRCodeReaderViewController
 import MBProgressHUD
-import WalletConnect
 import WalletConnectSwift
 
 protocol OverviewCoordinatorDelegate: class {

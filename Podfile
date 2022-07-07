@@ -36,7 +36,6 @@ def cryptoHelperPods
   pod 'CryptoSwift'
   pod 'TrustWalletCore', '~> 2.6.29'
   pod 'TrustKeystore', '~> 0.4.2'
-  pod 'WalletConnect', git: 'https://github.com/trustwallet/wallet-connect-swift'
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
   pod 'Web3'
