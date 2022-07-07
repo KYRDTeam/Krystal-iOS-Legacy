@@ -59,7 +59,7 @@ class KNPrettyAlertController: KNBaseViewController {
       if self.isWarning {
         let fullString = NSMutableAttributedString()
         let image1Attachment = NSTextAttachment()
-        let iconImage = UIImage(named: "warning_yellow_icon")!
+        let iconImage = Images.warningRedIcon
         let titleFont = UIFont.Kyber.bold(with: 20)
         image1Attachment.bounds = CGRect(x: 0, y: (titleFont.capHeight - iconImage.size.height).rounded() / 2, width: iconImage.size.width, height: iconImage.size.height)
         image1Attachment.image = iconImage
@@ -99,7 +99,8 @@ class KNPrettyAlertController: KNBaseViewController {
   }
   
   @objc func tapOutside() {
-      self.dismiss(animated: true, completion: nil)
+    guard !self.isWarning else { return }
+    self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func yesButtonTapped(_ sender: UIButton) {
