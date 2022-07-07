@@ -35,8 +35,6 @@ protocol KSwapViewControllerDelegate: class {
 
 //swiftlint:disable type_body_length
 class KSwapViewController: KNBaseViewController {
-  //flag to check if should open confirm screen right after done edit transaction setting
-  fileprivate var shouldOpenConfirm: Bool = false
   fileprivate var isViewSetup: Bool = false
   fileprivate var isErrorMessageEnabled: Bool = false
 
@@ -89,6 +87,7 @@ class KSwapViewController: KNBaseViewController {
   fileprivate var previousCallEvent: KSwapViewEvent?
   fileprivate var previousCallTimeStamp: TimeInterval = 0
   var keyboardTimer: Timer?
+  var didConfirmTx: Bool = false
 
   init(viewModel: KSwapViewModel) {
     self.viewModel = viewModel
@@ -572,7 +571,6 @@ class KSwapViewController: KNBaseViewController {
   }
 
   @IBAction func gasPriceSelectButtonTapped(_ sender: UIButton) {
-    self.shouldOpenConfirm = false
     self.openTransactionSetting()
   }
 
@@ -894,11 +892,6 @@ extension KSwapViewController {
     self.setUpGasFeeView()
     self.updateFromAmountUIForSwapAllBalanceIfNeeded()
     self.viewModel.resetAdvancedSettings()
-    
-    if self.shouldOpenConfirm {
-      self.openSwapConfirm()
-      self.shouldOpenConfirm = false
-    }
   }
 
   func coordinatorDidUpdateMinRatePercentage(_ value: CGFloat) {
@@ -973,6 +966,10 @@ extension KSwapViewController {
   }
 
   func coordinatorSuccessUpdateEncodedTx(object: TxObject) {
+    if self.didConfirmTx {
+      self.didConfirmTx = false
+      return
+    }
     guard let from = viewModel.from, let to = viewModel.to else { return }
     self.hideLoading()
     guard let signTx = self.viewModel.buildSignSwapTx(object) else { return } //TODO: eip1559 refactor
@@ -1040,7 +1037,6 @@ extension KSwapViewController {
   }
   
   func coordinatorEditTransactionSetting() {
-    self.shouldOpenConfirm = true
     self.openTransactionSetting()
   }
 
@@ -1097,10 +1093,6 @@ extension KSwapViewController {
     self.viewModel.advancedMaxFee = maxFee
     self.viewModel.updateSelectedGasPriceType(.custom)
     self.setUpGasFeeView()
-    if self.shouldOpenConfirm {
-      self.openSwapConfirm()
-      self.shouldOpenConfirm = false
-    }
   }
 
   func coordinatorDidUpdateAdvancedNonce(_ nonce: String) {

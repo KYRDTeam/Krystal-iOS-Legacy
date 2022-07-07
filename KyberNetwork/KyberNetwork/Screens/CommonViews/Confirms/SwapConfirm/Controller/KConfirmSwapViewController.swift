@@ -7,6 +7,7 @@ protocol KConfirmSwapViewControllerDelegate: class {
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, signTransaction: SignTransaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction)
   func kConfirmSwapViewControllerDidCancel(_ controller: KConfirmSwapViewController)
+  func kConfirmSwapViewControllerDidConfirm(_ controller: KConfirmSwapViewController)
   func kConfirmSwapViewControllerOpenGasPriceSelect()
 }
 
@@ -59,6 +60,15 @@ class KConfirmSwapViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setupUI()
+  }
+  
+  func updateUI(gasPriceString: String, slippageString: String) {
+    self.slippageLabel.text = slippageString
+    let gasLimit: BigInt = self.viewModel.transactionGasLimit
+    let gasLimitText = EtherNumberFormatter.short.string(from: gasLimit, decimals: 0)
+    let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceString, gasLimitText)
+    transactionGasPriceLabel.text = labelText
+    transactionGasPriceLabel.addLetterSpacing()
   }
 
   fileprivate func setupUI() {
@@ -181,13 +191,11 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func editButtonTapped(_ sender: Any) {
-    self.dismiss(animated: true) {
-      self.delegate?.kConfirmSwapViewControllerOpenGasPriceSelect()
-    }
+    self.delegate?.kConfirmSwapViewControllerOpenGasPriceSelect()
   }
   
-  @IBAction func confirmButtonPressed(_ sender: Any) {
-    self.dismiss(animated: true, completion: nil)
+  
+  func coordinatorDidBuildTx() {
     if let unwrap = self.viewModel.signTransaction {
       let internalHistory = InternalHistoryTransaction(type: .swap, state: .pending, fromSymbol: self.viewModel.transaction.from.symbol, toSymbol: self.viewModel.transaction.to.symbol, transactionDescription: "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)", transactionDetailDescription: self.viewModel.displayEstimatedRate, transactionObj: unwrap.toSignTransactionObject(), eip1559Tx: nil)
       internalHistory.transactionSuccessDescription = "\(self.viewModel.leftAmountString) -> \(self.viewModel.rightAmountString)"
@@ -199,6 +207,11 @@ class KConfirmSwapViewController: KNBaseViewController {
       
       self.delegate?.kConfirmSwapViewController(self, confirm: self.viewModel.transaction, eip1559Tx: unwrap, internalHistoryTransaction: internalHistory)
     }
+  }
+  
+  @IBAction func confirmButtonPressed(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+    self.delegate?.kConfirmSwapViewControllerDidConfirm(self)
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {

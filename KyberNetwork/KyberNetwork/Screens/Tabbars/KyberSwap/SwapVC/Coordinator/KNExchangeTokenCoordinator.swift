@@ -422,6 +422,12 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
     self.rootViewController.coordinatorEditTransactionSetting()
   }
   
+  func kConfirmSwapViewControllerDidConfirm(_ controller: KConfirmSwapViewController) {
+    self.rootViewController.didConfirmTx = true
+    guard let raw = self.rootViewController.viewModel.buildRawSwapTx() else { return }
+    self.getEncodedSwapTransaction(raw)
+  }
+  
   func kConfirmSwapViewController(_ controller: KConfirmSwapViewController, confirm data: KNDraftExchangeTransaction, eip1559Tx: EIP1559Transaction, internalHistoryTransaction: InternalHistoryTransaction) {
     print("[EIP1559] send confirm \(eip1559Tx)")
     guard let provider = self.session.externalProvider else {
@@ -563,7 +569,12 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
       vc.delegate = self
       self.gasFeeSelectorVC = vc
-      self.navigationController.present(vc, animated: true, completion: nil)
+        
+      if let presentedVC = self.navigationController.presentedViewController {
+        presentedVC.present(vc, animated: true, completion: nil)
+      } else {
+        self.navigationController.present(vc, animated: true, completion: nil)
+      }
       self.getLatestNonce { result in
         switch result {
         case .success(let nonce):
@@ -766,16 +777,32 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       }
     }
   }
+  
+  func displayLoading() {
+    if let presentVC = self.navigationController.presentedViewController  {
+      presentVC.displayLoading()
+    } else {
+      self.navigationController.displayLoading()
+    }
+  }
+  
+  func hideLoading() {
+    if let presentVC = self.navigationController.presentedViewController  {
+      presentVC.hideLoading()
+    } else {
+      self.navigationController.hideLoading()
+    }
+  }
 
   func getExpectedRate(from: TokenObject, to: TokenObject, srcAmount: BigInt, hint: String) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
-    self.navigationController.displayLoading()
+    self.displayLoading()
     provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
-      self.navigationController.hideLoading()
+      self.hideLoading()
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let rateBigInt = BigInt(rate) {
         self.rootViewController.coordinatorDidUpdateExpectedRate(from: from, to: to, amount: srcAmount, rate: rateBigInt)
       } else {
@@ -786,16 +813,17 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
   func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    self.navigationController.displayLoading()
+    self.displayLoading()
     provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
-      self.navigationController.hideLoading()
+      self.hideLoading()
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
           let data = try decoder.decode(TransactionResponse.self, from: resp.data)
           self.rootViewController.coordinatorSuccessUpdateEncodedTx(object: data.txObject)
-        } catch let error {
+          self.confirmSwapVC?.coordinatorDidBuildTx()
+        } catch {
           self.rootViewController.coordinatorFailUpdateEncodedTx()
         }
       } else {
@@ -1148,10 +1176,23 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
 }
 
 extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate {
+  
+  func updateUIConfirmVCIfNeed(gasPriceString: String) {
+    if let presentVC = self.navigationController.presentedViewController, presentVC == self.confirmSwapVC {
+      self.confirmSwapVC?.updateUI(gasPriceString: gasPriceString, slippageString: self.rootViewController.viewModel.slippageString)
+      return
+    }
+  }
+  
   func gasFeeSelectorPopupViewController(_ controller: GasFeeSelectorPopupViewController, run event: GasFeeSelectorPopupViewEvent) {
     switch event {
     case .gasPriceChanged(let type, let value):
       self.rootViewController.coordinatorDidUpdateGasPriceType(type, value: value)
+      let gasPriceString = value.shortString(
+        units: .gwei,
+        maxFractionDigits: 5
+      )
+      self.updateUIConfirmVCIfNeed(gasPriceString: gasPriceString)
     case .helpPressed(let tag):
       var message = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
       switch tag {
@@ -1218,6 +1259,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       }
     case .updateAdvancedSetting(gasLimit: let gasLimit, maxPriorityFee: let maxPriorityFee, maxFee: let maxFee):
       self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
+      self.updateUIConfirmVCIfNeed(gasPriceString: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.rootViewController.coordinatorDidUpdateAdvancedNonce(nonce)
     case .speedupTransaction(transaction: let transaction, original: let original):

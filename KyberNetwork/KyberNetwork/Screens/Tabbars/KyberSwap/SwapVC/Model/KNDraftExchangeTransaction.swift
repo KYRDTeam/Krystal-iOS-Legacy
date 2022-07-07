@@ -12,7 +12,7 @@ struct KNDraftExchangeTransaction {
   let maxDestAmount: BigInt
   let expectedRate: BigInt
   let minRate: BigInt?
-  let gasPrice: BigInt?
+  var gasPrice: BigInt?
   let gasLimit: BigInt?
   let expectedReceivedString: String?
   let hint: String?
