@@ -37,7 +37,7 @@ class PoolInfo: Codable {
   func liquidityPoolString() -> String {
     let liquidity = Double(self.liquidity) ?? 0
     let displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
-    let displayLiquiditySring = StringFormatter.amountString(value: displayLiquidity)
+    let displayLiquiditySring = String(format: "%.0f", displayLiquidity)
     return " Pool: \(displayLiquiditySring) \(self.symbol)"
   }
 }
@@ -498,7 +498,13 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          var bridgeFeeString = ""
+          let viewModel = self.rootViewController.viewModel
+          if let currentDestToken = viewModel.currentDestToken {
+            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+          }
+
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc

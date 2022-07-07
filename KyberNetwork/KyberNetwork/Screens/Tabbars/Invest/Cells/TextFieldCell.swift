@@ -14,6 +14,7 @@ class TextFieldCell: UITableViewCell {
   @IBOutlet weak var errorLabel: UILabel!
   @IBOutlet weak var textFieldTrailingConstraint: NSLayoutConstraint!
   @IBOutlet weak var scanButton: UIButton!
+  @IBOutlet weak var descriptionLabel: UILabel!
   var textChangeBlock: ((String) -> Void)?
   var scanQRBlock: (() -> Void)?
   var isEditingAddress: Bool = false
@@ -37,12 +38,12 @@ class TextFieldCell: UITableViewCell {
     } else {
       self.inputContainView.layer.borderColor = UIColor.clear.cgColor
       self.inputContainView.layer.borderWidth = 1.0
-      self.containViewBottomConstraint.constant = 0.0
+      self.containViewBottomConstraint.constant = 12.0
       self.errorLabel.isHidden = true
     }
   }
   
-  func updateUI() {
+  func updateErrorUI() {
     if let text = self.textField.text {
       if CryptoAddressValidator.isValidAddress(text) {
         self.showErrorIfNeed(errorMsg: nil)
@@ -52,11 +53,19 @@ class TextFieldCell: UITableViewCell {
     }
   }
   
+  func updateDescriptionLabel(tokenString: String?, chainString: String?) {
+    guard let tokenString = tokenString, let chainString = chainString else {
+      self.descriptionLabel.text = ""
+      return
+    }
+    self.descriptionLabel.text = String(format: Strings.AboveAddressWillReceive, tokenString, chainString)
+  }
+  
   @objc func textFieldDidChange(_ textField: UITextField) {
     self.scanButton.setImage(UIImage(named: "qr_code_blue_icon"), for: .normal)
     self.isEditingAddress = false
     if let textChangeBlock = self.textChangeBlock, let text = textField.text {
-      self.updateUI()
+      self.updateErrorUI()
       textChangeBlock(text)
     }
   }
