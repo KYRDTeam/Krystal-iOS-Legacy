@@ -15,6 +15,7 @@ struct ConfirmBridgeViewModel {
   let toChain: ChainType?
   let toValue: String
   let toAddress: String
+  let bridgeFee: String
   let token: TokenObject
   var gasPrice: BigInt
   var gasLimit: BigInt
@@ -27,6 +28,7 @@ struct ConfirmBridgeViewModel {
        toChain: ChainType?,
        toValue: String,
        toAddress: String,
+       bridgeFee: String,
        token: TokenObject,
        gasPrice: BigInt,
        gasLimit: BigInt,
@@ -37,6 +39,7 @@ struct ConfirmBridgeViewModel {
     self.fromAddress = fromAddress
     self.toChain = toChain
     self.toValue = toValue
+    self.bridgeFee = bridgeFee
     self.toAddress = toAddress
     self.token = token
     self.gasPrice = gasPrice
@@ -92,8 +95,9 @@ class ConfirmBridgeViewController: KNBaseViewController {
   @IBOutlet weak var estimatedTimeLabel: UIButton!
   @IBOutlet weak var feeValueLabel: UILabel!
   @IBOutlet weak var tapOutsideView: UIView!
-  @IBOutlet weak var contentView: UIScrollView!
+  @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
+  @IBOutlet weak var bridgeFeeLabel: UILabel!
   fileprivate var viewModel: ConfirmBridgeViewModel
   weak var delegate: ConfirmBridgeViewControllerDelegate?
   let transitor = TransitionDelegate()
@@ -122,6 +126,7 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.toChainTokenValueLabel.text = self.viewModel.toValue
     self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(7))...\(self.viewModel.toAddress.suffix(4))"
     self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
+    self.bridgeFeeLabel.text = self.viewModel.bridgeFee
     self.usdValueLabel.text = self.viewModel.feeUSDString
     self.gasDescriptionLabel.text = self.viewModel.transactionGasPriceString
   }
