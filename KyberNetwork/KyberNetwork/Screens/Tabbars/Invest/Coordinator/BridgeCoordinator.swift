@@ -148,6 +148,9 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
+  @UserDefault(key: Constants.bridgeWarningAcceptedKey, defaultValue: false)
+  var bridgeWaringAccepted: Bool
+  
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
     let controller = BridgeViewController(viewModel: viewModel)
@@ -165,7 +168,25 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
+    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: {
+      if !self.bridgeWaringAccepted {
+        let alertController = KNPrettyAlertController(
+          title: Strings.warningTitle,
+          isWarning: true,
+          message: Strings.bridgeWarningText,
+          secondButtonTitle: Strings.understand,
+          firstButtonTitle: Strings.goBack,
+          secondButtonAction: {
+            self.bridgeWaringAccepted = true
+          },
+          firstButtonAction: {
+            self.navigationController.popViewController(animated: true, completion: nil)
+          }
+        )
+        alertController.popupHeight = 350
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      }
+    })
     self.fetchData()
   }
   
