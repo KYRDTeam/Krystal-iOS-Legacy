@@ -183,7 +183,7 @@ class BridgeCoordinator: NSObject, Coordinator {
             self.navigationController.popViewController(animated: true, completion: nil)
           }
         )
-        alertController.popupHeight = 468
+        alertController.popupHeight = 350
         self.navigationController.present(alertController, animated: true, completion: nil)
       }
     })
