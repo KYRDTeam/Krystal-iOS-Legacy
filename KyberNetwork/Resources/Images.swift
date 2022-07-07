@@ -31,6 +31,7 @@ struct Images {
   static let historyContractInteraction = UIImage(named: "history_contract_interaction_icon")!
   static let historyClaimReward = UIImage(named: "history_claim_reward_icon")!
   static let historyMultisend = UIImage(named: "multiSend_icon")!
+  static let warningYellowIcon = UIImage(named: "warning_yellow_icon")!
   
   // Overview
   static let emptyAsset = UIImage(named: "empty_asset_icon")

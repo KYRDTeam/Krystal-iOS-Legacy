@@ -71,7 +71,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="Uaf-6D-wkL"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
                             <state key="normal" title="YES">
                                 <color key="titleColor" name="mainViewBgColor"/>
                             </state>
