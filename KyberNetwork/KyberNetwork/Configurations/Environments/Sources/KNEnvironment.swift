@@ -42,7 +42,7 @@ enum KNEnvironment: Int {
   }
 
   static var `default`: KNEnvironment {
-    return .staging
+    return SettingsBundleHelper.defaultEnvironment()
   }
 
   var isMainnet: Bool {
@@ -89,7 +89,7 @@ enum KNEnvironment: Int {
   }
   
   var krystalEndpoint: String {
-    switch self {
+    switch SettingsBundleHelper.defaultAPIEndpoint() {
     case .production:
       return KNSecret.productionKrytalURL
     case .ropsten:

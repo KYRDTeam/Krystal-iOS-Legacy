@@ -20,7 +20,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwitchChainViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwitchChainViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="oOn-q0-SjN" id="3OU-PF-h0F"/>
                 <outlet property="contentView" destination="fwm-wF-0kt" id="Gez-OA-H2t"/>

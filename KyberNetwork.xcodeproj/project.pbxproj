@@ -473,6 +473,8 @@
 		7E49B26127FC19890093A00E /* MixPanelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E49B26027FC19890093A00E /* MixPanelManager.swift */; };
 		7E4E613128115CD200640625 /* UnconfirmedSolTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */; };
 		7E4EDD6328100A410000CB0B /* SolanaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EDD6228100A400000CB0B /* SolanaService.swift */; };
+		7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E59E5802872E80C00DFD01C /* Settings.bundle */; };
+		7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */; };
 		7E66A69C2865723C007DF078 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66A69A2865723C007DF078 /* ErrorViewController.swift */; };
 		7E66A69D2865723C007DF078 /* ErrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E66A69B2865723C007DF078 /* ErrorViewController.xib */; };
 		7E66D7A9284F2B98006B0B35 /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */; };
@@ -1499,6 +1501,8 @@
 		7E49B26027FC19890093A00E /* MixPanelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPanelManager.swift; sourceTree = "<group>"; };
 		7E4E613028115CD200640625 /* UnconfirmedSolTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedSolTransaction.swift; sourceTree = "<group>"; };
 		7E4EDD6228100A400000CB0B /* SolanaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaService.swift; sourceTree = "<group>"; };
+		7E59E5802872E80C00DFD01C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBundleHelper.swift; sourceTree = "<group>"; };
 		7E66A69A2865723C007DF078 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		7E66A69B2865723C007DF078 /* ErrorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorViewController.xib; sourceTree = "<group>"; };
 		7E66D7A8284F2B98006B0B35 /* BridgeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
@@ -2129,6 +2133,7 @@
 		251ABCA020578DA30069687F /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
+				7E59E5802872E80C00DFD01C /* Settings.bundle */,
 				7E49B25F27FC195F0093A00E /* MixPanel */,
 				7EB47FF627CCDD2B00FB28D9 /* Feature Flags */,
 				25929C3320DA5C4C0045CFA3 /* Fonts */,
@@ -2211,6 +2216,7 @@
 			children = (
 				251ABCBB205790210069687F /* KNCustomRPC.swift */,
 				251ABCBA205790210069687F /* KNEnvironment.swift */,
+				7E59E5822872F10900DFD01C /* SettingsBundleHelper.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -5487,6 +5493,7 @@
 				C379417E262816E100FBCA14 /* Embed App Extensions */,
 				C3D6996F2641454C004B34E1 /* Run Crashlytics */,
 				A6B3A86027FAD77900F84819 /* Upload dSYMs */,
+				7E59E57F2872E09A00DFD01C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -5829,6 +5836,7 @@
 				C31BE89925B045700070A832 /* AddWatchWalletViewController.xib in Resources */,
 				25696F5520BD2B72002CC53F /* KNDataDetailsView.xib in Resources */,
 				251ABCB320578F6E0069687F /* config_env_ropsten.json in Resources */,
+				7E59E5812872E80C00DFD01C /* Settings.bundle in Resources */,
 				C308BC1626D897290030022B /* ConfirmSendNFTViewController.xib in Resources */,
 				C3F367BF25C3F63E003207B7 /* EarnSelectTableViewCell.xib in Resources */,
 				A651945028362E54008F4AEB /* TxInfoCell.xib in Resources */,
@@ -6093,6 +6101,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7E59E57F2872E09A00DFD01C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nBUILD_APP_DIR=\"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app\"\n\necho $BUILD_APP_DIR\n\nif [ $CONFIGURATION == \"Release\" ]; then\n    rm -rf \"$BUILD_APP_DIR/Settings.bundle\"\nfi\n";
 		};
 		A6B3A86027FAD77900F84819 /* Upload dSYMs */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6549,6 +6574,7 @@
 				7EC892DB27DD10A9000C5980 /* FiatCryptoHistoryCell.swift in Sources */,
 				29FA00D0201CA66A002F7DC5 /* DAppError.swift in Sources */,
 				C337E15E27744D37001C8B03 /* RPCServers.swift in Sources */,
+				7E59E5832872F10900DFD01C /* SettingsBundleHelper.swift in Sources */,
 				291795011F95F5E200539A30 /* GetBalance.swift in Sources */,
 				C3FA3D972591AB3E00E17B47 /* ChooseRateViewController.swift in Sources */,
 				25EE4A6D20C54AD200E2282F /* KNAppCoordinator+InSession.swift in Sources */,
