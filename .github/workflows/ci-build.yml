@@ -255,7 +255,7 @@ jobs:
     needs:
       - prepare
       - build-ios
-    runs-on: kyrd
+    runs-on: ubuntu-latest
     steps:
       - name: Slack Notification on Success
         uses: rtCamp/action-slack-notify@v2
