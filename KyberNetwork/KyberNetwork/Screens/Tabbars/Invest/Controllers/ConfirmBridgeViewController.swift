@@ -119,11 +119,11 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.tapOutsideView.addGestureRecognizer(tapGesture)
     self.fromIcon.image = self.viewModel.fromChain?.chainIcon()
     self.fromChainLabel.text = self.viewModel.fromChain?.chainName()
-    self.fromTokenValueLabel.text = self.viewModel.fromValue
+    self.fromTokenValueLabel.text = "- " + self.viewModel.fromValue
     self.fromAddressLabel.text = "\(self.viewModel.fromAddress.prefix(7))...\(self.viewModel.fromAddress.suffix(4))"
     self.toIcon.image = self.viewModel.toChain?.chainIcon()
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
-    self.toChainTokenValueLabel.text = self.viewModel.toValue
+    self.toChainTokenValueLabel.text = "+ " + self.viewModel.toValue
     self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(7))...\(self.viewModel.toAddress.suffix(4))"
     self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
     self.bridgeFeeLabel.text = self.viewModel.bridgeFee

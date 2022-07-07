@@ -37,7 +37,7 @@ class PoolInfo: Codable {
   func liquidityPoolString() -> String {
     let liquidity = Double(self.liquidity) ?? 0
     let displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
-    let displayLiquiditySring = StringFormatter.amountString(value: displayLiquidity)
+    let displayLiquiditySring = String(format: "%.0f", displayLiquidity)
     return " Pool: \(displayLiquiditySring) \(self.symbol)"
   }
 }
