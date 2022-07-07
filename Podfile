@@ -50,7 +50,7 @@ def networkingPods
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
-  pod 'Moya', '~> 10.0.1'
+  pod 'Moya', '~> 10.0'
   pod 'Mixpanel-swift'
 end
 
@@ -66,6 +66,14 @@ def utilitiesPods
   pod 'SwiftLint', '~> 0.29.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'Lokalise', '~> 0.8.1'
+  pod 'DifferenceKit'
+end
+
+def rx
+  pod 'RxSwift', '~> 5.0'
+  pod 'RxCocoa', '~> 5.0'
+  pod 'RxDataSources'
+  pod 'NSObject+Rx'
 end
 
 target 'KyberNetwork' do
@@ -77,6 +85,7 @@ target 'KyberNetwork' do
   networkingPods
   databasePods
   utilitiesPods
+  rx
   
   target 'KyberNetworkTests' do
     inherit! :search_paths

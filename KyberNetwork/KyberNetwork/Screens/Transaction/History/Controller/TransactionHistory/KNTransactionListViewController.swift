@@ -46,7 +46,7 @@ class KNTransactionListViewController: BaseTransactionListViewController {
   }
   
   func bindViewModel() {
-    viewModel.groupedTransactions.observe(on: self) { [weak self] _ in
+    viewModel.groupedTransactions.bind { [weak self] _ in
       DispatchQueue.main.async {
         self?.reloadUI()
       }

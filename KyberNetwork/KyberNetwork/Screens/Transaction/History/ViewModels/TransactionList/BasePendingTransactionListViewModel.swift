@@ -13,7 +13,7 @@ class BasePendingTransactionListViewModel {
   var address: KAddress
   var transactions: [InternalHistoryTransaction] = []
   var headers: [String] = []
-  var groupedTransactions: Observable<[String: [InternalHistoryTransaction]]> = .init([:])
+  var groupedTransactions: Dynamic<[String: [InternalHistoryTransaction]]> = .init([:])
   var isTransactionActionEnabled: Bool = false
   
   init(address: KAddress) {

@@ -17,6 +17,7 @@ struct Strings {
   static let confirm = "confirm".toBeLocalised()
   static let cancel = "cancel".toBeLocalised()
   static let delete = "delete".toBeLocalised()
+  static let other = "other".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()

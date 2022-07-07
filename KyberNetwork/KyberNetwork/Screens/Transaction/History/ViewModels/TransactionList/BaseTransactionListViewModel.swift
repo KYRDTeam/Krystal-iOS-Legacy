@@ -16,7 +16,7 @@ class BaseTransactionListViewModel {
   
   var transactions: [TransactionHistoryItem] = []
   var headers: [String] = []
-  var groupedTransactions: Observable<[String: [TransactionHistoryItem]]> = .init([:])
+  var groupedTransactions: Dynamic<[String: [TransactionHistoryItem]]> = .init([:])
   
   init(address: KAddress) {
     self.address = address

@@ -1,5 +1,5 @@
 //
-//  Observable.swift
+//  CustomObservable.swift
 //  KyberNetwork
 //
 //  Created by Nguyen Tung on 26/04/2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Observable<Value> {
+final class CustomObservable<Value> {
   
   struct Observer<Value> {
     weak var observer: AnyObject?

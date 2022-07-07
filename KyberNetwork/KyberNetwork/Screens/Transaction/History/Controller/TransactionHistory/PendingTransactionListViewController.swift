@@ -42,10 +42,8 @@ class PendingTransactionListViewController: BaseTransactionListViewController {
   }
   
   func bindViewModel() {
-    viewModel.groupedTransactions.observe(on: self) { [weak self] _ in
-      DispatchQueue.main.async {
-        self?.reloadUI()
-      }
+    viewModel.groupedTransactions.bind { [weak self] _ in
+      self?.reloadUI()
     }
   }
   
