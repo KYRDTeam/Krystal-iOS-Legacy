@@ -261,7 +261,7 @@ jobs:
           SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been deployed'
           SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
           SLACK_USERNAME: deployment-notifier
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}
   
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2
@@ -273,4 +273,4 @@ jobs:
           SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed'
           SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
           SLACK_USERNAME: deployment-notifier
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}
