@@ -253,6 +253,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
     case .bridge:
+      guard KNGeneralProvider.shared.currentChain != .klaytn && KNGeneralProvider.shared.currentChain != .solana else {
+        self.navigationController.showErrorTopBannerMessage(message: Strings.unsupportedChain)
+        return
+      }
       self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
