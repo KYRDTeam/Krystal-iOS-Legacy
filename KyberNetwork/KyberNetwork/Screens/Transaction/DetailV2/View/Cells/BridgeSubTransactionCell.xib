@@ -81,8 +81,12 @@
                                 <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3000 USDT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kJ-Ep-09w">
-                                <rect key="frame" x="225.5" y="63.5" width="90.5" height="21.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3000 USDT" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kJ-Ep-09w">
+                                <rect key="frame" x="225.5" y="63.5" width="90.5" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="4NY-IQ-pRK"/>
+                                    <constraint firstAttribute="width" constant="90.5" id="Etw-lt-iuS"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -147,6 +151,7 @@
                             <constraint firstAttribute="trailing" secondItem="ZAL-VZ-7rE" secondAttribute="trailing" constant="24" id="Pqs-Cn-rMI"/>
                             <constraint firstItem="QQh-a4-yBx" firstAttribute="centerY" secondItem="gmd-tE-Cyd" secondAttribute="centerY" id="S0X-j6-gtF"/>
                             <constraint firstItem="8kJ-Ep-09w" firstAttribute="centerY" secondItem="QQh-a4-yBx" secondAttribute="centerY" id="Vb3-lO-XOd"/>
+                            <constraint firstItem="8kJ-Ep-09w" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QQh-a4-yBx" secondAttribute="trailing" constant="2" id="Vtw-Ln-gGz"/>
                             <constraint firstItem="GdG-sd-UdT" firstAttribute="leading" secondItem="had-8g-cV5" secondAttribute="leading" constant="24" id="ZSG-17-d7N"/>
                             <constraint firstItem="GdG-sd-UdT" firstAttribute="top" secondItem="gmd-tE-Cyd" secondAttribute="bottom" constant="16" id="cG7-pe-S73"/>
                             <constraint firstItem="9JB-Fw-Bqq" firstAttribute="top" secondItem="GdG-sd-UdT" secondAttribute="bottom" constant="12" id="fAF-kd-Icv"/>
@@ -182,6 +187,7 @@
                 <outlet property="addressLabel" destination="aKQ-dE-zqs" id="EqF-RF-eb4"/>
                 <outlet property="addressTitle" destination="9JB-Fw-Bqq" id="aUh-Rh-dAo"/>
                 <outlet property="amountLabel" destination="8kJ-Ep-09w" id="he6-2c-rfT"/>
+                <outlet property="amountValueWidth" destination="Etw-lt-iuS" id="dez-GF-SKq"/>
                 <outlet property="chainIconImageView" destination="gmd-tE-Cyd" id="4Dz-NI-pk1"/>
                 <outlet property="chainNameLabel" destination="QQh-a4-yBx" id="5O5-Vf-cDe"/>
                 <outlet property="copyImageView" destination="ZAL-VZ-7rE" id="cXd-OJ-N1K"/>

@@ -34,6 +34,9 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
   @IBOutlet weak var feeLabel: UILabel!
   @IBOutlet weak var contentWidth: NSLayoutConstraint!
   
+  @IBOutlet weak var fromValueWidth: NSLayoutConstraint!
+  @IBOutlet weak var toValueWidth: NSLayoutConstraint!
+
   fileprivate(set) var transaction: InternalHistoryTransaction
   let transitor = TransitionDelegate()
   
@@ -52,7 +55,9 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
     fromChainNameLabel.text = from.chainName
     fromTxHashLabel.text = from.tx
     fromChainIcon.image = getChainIcon(chainID: from.chainId)
-    fromChainValue.text = fromAmount + " " + from.token
+    let fromString = "- " + fromAmount + " " + from.token
+    fromChainValue.text = fromString
+    fromValueWidth.constant = fromString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     fromWalletLabel.text = from.address
     
     let fromStatus = TransactionStatus(status: from.txStatus)
@@ -65,7 +70,9 @@ class BridgeTransactionStatusPopup: KNBaseViewController {
     toChainNameLabel.text = to.chainName
     toTxHashLabel.text = to.tx
     toChainIcon.image = getChainIcon(chainID: to.chainId)
-    toChainValue.text = toAmount + " " + to.token
+    let toString = "+ " + toAmount + " " + to.token
+    toChainValue.text = toString
+    toValueWidth.constant = toString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     toWalletLabel.text = to.address
     
     let toStatus = TransactionStatus(status: to.txStatus)
