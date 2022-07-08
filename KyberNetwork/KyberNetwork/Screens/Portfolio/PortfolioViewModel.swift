@@ -43,37 +43,45 @@ class PortfolioViewModel: ViewModel, ViewModelType {
         guard let self = self else { return }
         switch page {
         case .asset:
-          let items = self.assets.value.map { token in
-            PortfolioSectionItem.asset(token: token, price: 0)
-          }
-          sections.accept([.assets(items: items)])
+          sections.accept(self.assetSections())
         case .supply:
-          let lendingDictionary = Dictionary(grouping: self.lendingPlatformBalances.value) { $0.name }
-          let lendingSections = lendingDictionary.keys.map { key -> PortfolioSectionModel in
-            let items = lendingDictionary[key]?.flatMap { platformLendingBalance in
-              return platformLendingBalance.balances.map {
-                PortfolioSectionItem.lending(balance: $0)
-              }
-            }
-            return PortfolioSectionModel.supply(title: key, items: items ?? [])
-          }
-          let lendingDistItems = self.lendingDistributionBalances.value.map { balance in
-            PortfolioSectionItem.lendingDist(balance: balance)
-          }
-          sections.accept(lendingSections + [.supply(title: Strings.other.uppercased(), items: lendingDistItems)])
+          sections.accept(self.lendingSections())
         case .liquidityPool:
-          return
+          sections.accept([])
         case .nft:
-          return
+          sections.accept([])
         case .market:
-          return
+          sections.accept([])
         case .favorite:
-          return
+          sections.accept([])
         }
       })
       .disposed(by: rx.disposeBag)
     
     return Output(selectedPage: selectedPage, sections: sections)
+  }
+  
+  private func assetSections() -> [PortfolioSectionModel] {
+    let items = self.assets.value.map { token in
+      PortfolioSectionItem.asset(token: token, price: 0)
+    }
+    return [.assets(items: items)]
+  }
+  
+  private func lendingSections() -> [PortfolioSectionModel] {
+    let lendingDictionary = Dictionary(grouping: self.lendingPlatformBalances.value) { $0.name }
+    let lendingSections = lendingDictionary.keys.map { key -> PortfolioSectionModel in
+      let items = lendingDictionary[key]?.flatMap { platformLendingBalance in
+        return platformLendingBalance.balances.map {
+          PortfolioSectionItem.lending(balance: $0)
+        }
+      }
+      return PortfolioSectionModel.supply(title: key, items: items ?? [])
+    }
+    let lendingDistItems = self.lendingDistributionBalances.value.map { balance in
+      PortfolioSectionItem.lendingDist(balance: balance)
+    }
+    return lendingSections + [.supply(title: Strings.other.uppercased(), items: lendingDistItems)]
   }
   
 }
