@@ -55,6 +55,14 @@ lane :all do
 #  sentry_upload
 end
 
+lane :debug do
+  prepare_keychain
+  install_profiles
+  update_project
+  build_debug
+#  sentry_upload
+end
+
 # pre_release build and upload to testflight 
 lane :pre_release do 
   prepare_keychain
@@ -199,6 +207,28 @@ lane :build do
   build_app(
     workspace: "KyberNetwork.xcworkspace",
     configuration: "Release",
+    scheme: "KyberNetwork",
+    clean: true,
+    output_directory: "archives",
+    output_name: "KyberSwap.ipa",
+    sdk: "iphoneos",
+    export_method: "ad-hoc",
+    export_team_id: team_id,
+    export_options: {
+      provisioningProfiles: { 
+        bundle_id => ad_hoc_profile,
+        @tid => ext_ad_hoc_profile
+      }
+    }
+  )
+end
+
+lane :build_debug do
+  # build app
+  @tid = bundle_id + ".KrystalNotificationServiceExtension" 
+  build_app(
+    workspace: "KyberNetwork.xcworkspace",
+    configuration: "Debug",
     scheme: "KyberNetwork",
     clean: true,
     output_directory: "archives",
