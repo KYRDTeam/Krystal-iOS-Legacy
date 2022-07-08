@@ -136,4 +136,5 @@ struct Strings {
   static let goBack = "Go Back".toBeLocalised()
   static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
   static let skip = "Skip?".toBeLocalised()
+  static let unsupportedChain = "Unsupported chain".toBeLocalised()
 }
