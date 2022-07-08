@@ -98,6 +98,8 @@ class ConfirmBridgeViewController: KNBaseViewController {
   @IBOutlet weak var contentView: UIView!
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
   @IBOutlet weak var bridgeFeeLabel: UILabel!
+  @IBOutlet weak var fromValueWidth: NSLayoutConstraint!
+  @IBOutlet weak var toValueWidth: NSLayoutConstraint!
   fileprivate var viewModel: ConfirmBridgeViewModel
   weak var delegate: ConfirmBridgeViewControllerDelegate?
   let transitor = TransitionDelegate()
@@ -119,11 +121,15 @@ class ConfirmBridgeViewController: KNBaseViewController {
     self.tapOutsideView.addGestureRecognizer(tapGesture)
     self.fromIcon.image = self.viewModel.fromChain?.chainIcon()
     self.fromChainLabel.text = self.viewModel.fromChain?.chainName()
-    self.fromTokenValueLabel.text = "- " + self.viewModel.fromValue
+    let fromString = "- " + self.viewModel.fromValue
+    self.fromTokenValueLabel.text = fromString
+    self.fromValueWidth.constant = fromString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.fromAddressLabel.text = "\(self.viewModel.fromAddress.prefix(7))...\(self.viewModel.fromAddress.suffix(4))"
     self.toIcon.image = self.viewModel.toChain?.chainIcon()
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
-    self.toChainTokenValueLabel.text = "+ " + self.viewModel.toValue
+    let toString = "+ " + self.viewModel.toValue
+    self.toChainTokenValueLabel.text = toString
+    self.toValueWidth.constant = toString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(7))...\(self.viewModel.toAddress.suffix(4))"
     self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
     self.bridgeFeeLabel.text = self.viewModel.bridgeFee

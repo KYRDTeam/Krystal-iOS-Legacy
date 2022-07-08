@@ -6,14 +6,13 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -32,12 +31,14 @@
                 <outlet property="fromChainLabel" destination="zTx-pW-l0R" id="9vf-3O-4Ol"/>
                 <outlet property="fromIcon" destination="vcg-bZ-26z" id="7Nr-JZ-DQh"/>
                 <outlet property="fromTokenValueLabel" destination="lEy-bW-Lr8" id="OQp-Qz-Jba"/>
+                <outlet property="fromValueWidth" destination="CFy-4f-Dny" id="RUs-l5-N3n"/>
                 <outlet property="gasDescriptionLabel" destination="Ut1-rx-85s" id="jOa-2v-vb0"/>
                 <outlet property="tapOutsideView" destination="EVc-q8-Lzl" id="o6g-R0-3Ip"/>
                 <outlet property="toAddressLabel" destination="ct4-Je-Bsz" id="0sQ-bG-cpx"/>
                 <outlet property="toChainLabel" destination="Uau-B8-6pu" id="olD-oE-Uz1"/>
                 <outlet property="toChainTokenValueLabel" destination="0zq-XS-N1b" id="dKT-OP-QBf"/>
                 <outlet property="toIcon" destination="bEH-rO-wZA" id="x83-dv-dPO"/>
+                <outlet property="toValueWidth" destination="Y7z-Jg-lgW" id="j5k-Dz-Lo0"/>
                 <outlet property="usdValueLabel" destination="FbZ-Ko-PxR" id="N0u-uy-LJG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -78,8 +79,8 @@
                                             <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zTx-pW-l0R">
-                                            <rect key="frame" x="53.000000000000007" y="51.333333333333314" width="71.666666666666686" height="19"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTx-pW-l0R">
+                                            <rect key="frame" x="53" y="51.333333333333314" width="59" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="rQ9-9r-dbU"/>
                                             </constraints>
@@ -106,9 +107,10 @@
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lEy-bW-Lr8">
-                                            <rect key="frame" x="223.66666666666666" y="50.333333333333314" width="89.333333333333343" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lEy-bW-Lr8">
+                                            <rect key="frame" x="114" y="50.333333333333314" width="199" height="21"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="199" id="CFy-4f-Dny"/>
                                                 <constraint firstAttribute="height" constant="21" id="tg0-j1-8fo"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -123,7 +125,7 @@
                                             </constraints>
                                         </imageView>
                                     </subviews>
-                                    <color key="backgroundColor" name="mainViewBgColor"/>
+                                    <color key="backgroundColor" name="innerContainerBgColor"/>
                                     <constraints>
                                         <constraint firstItem="9gh-VX-ke0" firstAttribute="leading" secondItem="1SE-HI-jNW" secondAttribute="trailing" constant="14" id="3TG-AC-bnl"/>
                                         <constraint firstItem="zTx-pW-l0R" firstAttribute="leading" secondItem="vcg-bZ-26z" secondAttribute="trailing" constant="8" id="5pa-14-Yem"/>
@@ -135,6 +137,7 @@
                                         <constraint firstItem="LWI-Nc-DgA" firstAttribute="leading" secondItem="JLS-Ui-nXQ" secondAttribute="leading" constant="25" id="Sey-yV-1F1"/>
                                         <constraint firstAttribute="height" constant="126" id="bpn-u9-YWd"/>
                                         <constraint firstItem="vcg-bZ-26z" firstAttribute="leading" secondItem="JLS-Ui-nXQ" secondAttribute="leading" constant="25" id="iGm-QA-0BD"/>
+                                        <constraint firstItem="lEy-bW-Lr8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zTx-pW-l0R" secondAttribute="trailing" constant="2" id="jvR-fH-0dc"/>
                                         <constraint firstItem="1SE-HI-jNW" firstAttribute="top" secondItem="vcg-bZ-26z" secondAttribute="bottom" constant="15" id="lHa-8m-9Mx"/>
                                         <constraint firstItem="vcg-bZ-26z" firstAttribute="top" secondItem="LWI-Nc-DgA" secondAttribute="bottom" constant="10" id="oJu-pU-Tah"/>
                                         <constraint firstItem="zTx-pW-l0R" firstAttribute="centerY" secondItem="vcg-bZ-26z" secondAttribute="centerY" id="p13-SC-ise"/>
@@ -159,9 +162,10 @@
                                             <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Uau-B8-6pu">
-                                            <rect key="frame" x="53.000000000000007" y="51.333333333333314" width="71.666666666666686" height="19"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BNB Smart Chain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uau-B8-6pu">
+                                            <rect key="frame" x="53" y="51.333333333333314" width="100" height="19"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="2Lg-nb-uBB"/>
                                                 <constraint firstAttribute="height" constant="19" id="yCK-sV-Jfl"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
@@ -178,9 +182,10 @@
                                             <color key="textColor" name="normalTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0zq-XS-N1b">
-                                            <rect key="frame" x="223.66666666666666" y="50.333333333333314" width="89.333333333333343" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995.299.2995 USDT" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zq-XS-N1b">
+                                            <rect key="frame" x="213" y="50.333333333333314" width="100" height="21"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="Y7z-Jg-lgW"/>
                                                 <constraint firstAttribute="height" constant="21" id="nQc-nS-ohg"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
@@ -204,7 +209,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" name="mainViewBgColor"/>
+                                    <color key="backgroundColor" name="innerContainerBgColor"/>
                                     <constraints>
                                         <constraint firstItem="Uau-B8-6pu" firstAttribute="centerY" secondItem="bEH-rO-wZA" secondAttribute="centerY" id="2G3-VN-Uus"/>
                                         <constraint firstItem="bEH-rO-wZA" firstAttribute="leading" secondItem="W1B-yj-K8z" secondAttribute="leading" constant="25" id="3Xa-1j-mQb"/>
@@ -217,6 +222,7 @@
                                         <constraint firstItem="qel-i6-AjP" firstAttribute="leading" secondItem="W1B-yj-K8z" secondAttribute="leading" constant="28" id="ZFo-w1-ZWN"/>
                                         <constraint firstItem="ct4-Je-Bsz" firstAttribute="centerY" secondItem="qel-i6-AjP" secondAttribute="centerY" id="ebd-RG-oPS"/>
                                         <constraint firstItem="J7S-u6-FpH" firstAttribute="leading" secondItem="W1B-yj-K8z" secondAttribute="leading" constant="25" id="hsP-2w-NSe"/>
+                                        <constraint firstItem="0zq-XS-N1b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Uau-B8-6pu" secondAttribute="trailing" constant="2" id="igV-48-iEg"/>
                                         <constraint firstAttribute="trailing" secondItem="0zq-XS-N1b" secondAttribute="trailing" constant="26" id="mNc-fs-v7p"/>
                                         <constraint firstItem="qel-i6-AjP" firstAttribute="top" secondItem="bEH-rO-wZA" secondAttribute="bottom" constant="15" id="rM6-l6-hdt"/>
                                         <constraint firstAttribute="trailing" secondItem="ct4-Je-Bsz" secondAttribute="trailing" constant="27" id="yEm-lu-dKD"/>
@@ -257,12 +263,12 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xgy-00-5Vf">
-                                    <rect key="frame" x="268" y="409.66666666666663" width="64" height="16"/>
+                                    <rect key="frame" x="261" y="409.66666666666663" width="71" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="aIf-aH-phn"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                                    <state key="normal" title="10-30 min">
+                                    <state key="normal" title="10-30 mins">
                                         <color key="titleColor" name="textWhiteColor"/>
                                     </state>
                                 </button>
@@ -362,7 +368,7 @@
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B28-zk-kO7">
                                     <rect key="frame" x="31" y="451.66666666666663" width="313" height="1"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" name="navButtonBgColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="rHt-TP-5dl"/>
                                     </constraints>
@@ -468,6 +474,9 @@
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="innerContainerBgColor">
+            <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="investButtonBgColor">
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -483,8 +492,5 @@
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
