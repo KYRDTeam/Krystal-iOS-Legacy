@@ -89,7 +89,10 @@ enum KNEnvironment: Int {
   }
   
   var krystalEndpoint: String {
-    switch SettingsBundleHelper.defaultAPIEndpoint() {
+    if let defaultEndpoint = SettingsBundleHelper.defaultAPIEndpoint() {
+      return defaultEndpoint
+    }
+    switch self {
     case .production:
       return KNSecret.productionKrytalURL
     case .ropsten:
