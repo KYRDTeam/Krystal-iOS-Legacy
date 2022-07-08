@@ -237,7 +237,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     switch event {
     case .getPoolList(address: let address, chainId: let chainId):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+      provider.requestWithFilter(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -261,7 +261,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         chainPath = chainType.chainPath()
       }
       self.navigationController.showLoadingHUD()
-      provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+      provider.requestWithFilter(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         DispatchQueue.main.async {
           self.navigationController.hideLoading()
         }
@@ -285,7 +285,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         chainPath = chainType.chainPath()
       }
       self.navigationController.showLoadingHUD()
-      provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+      provider.requestWithFilter(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
         DispatchQueue.main.async {
           self.navigationController.hideLoading()
         }

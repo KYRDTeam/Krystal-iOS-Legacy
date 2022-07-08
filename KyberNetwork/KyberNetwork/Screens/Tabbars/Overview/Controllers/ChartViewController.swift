@@ -772,8 +772,8 @@ class ChartViewController: KNBaseViewController {
     }
   }
 
-  func coordinatorFailUpdateApi(_ error: Error) {
-    self.showErrorTopBannerMessage(with: "", message: error.localizedDescription)
+  func coordinatorFailUpdateApi(_ error: NetworkError) {
+    self.showErrorTopBannerMessage(with: "", message: error.localizedDescription())
   }
 
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
