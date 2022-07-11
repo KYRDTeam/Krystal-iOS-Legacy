@@ -67,13 +67,24 @@ extension KNAppCoordinator {
 
     self.addCoordinator(self.settingsCoordinator!)
     self.settingsCoordinator?.start()
-
+    
+    let portfolio = PortfolioViewController.instantiateFromNib()
+    portfolio.viewModel = PortfolioViewModel()
+    let portfolioNav = UINavigationController(rootViewController: portfolio)
+    portfolioNav.tabBarItem = UITabBarItem(
+      title: nil,
+      image: UIImage(named: "tabbar_summary_icon"),
+      selectedImage: nil
+    )
+    portfolioNav.tabBarItem.tag = 5
+    
     self.tabbarController.viewControllers = [
       self.overviewTabCoordinator!.navigationController,
       self.exchangeCoordinator!.navigationController,
       self.investCoordinator!.navigationController,
       self.earnCoordinator!.navigationController,
-      self.settingsCoordinator!.navigationController,
+//      self.settingsCoordinator!.navigationController,
+      portfolio
     ]
     self.tabbarController.tabBar.tintColor = UIColor(named: "buttonBackgroundColor")
     if #available(iOS 15.0, *) {

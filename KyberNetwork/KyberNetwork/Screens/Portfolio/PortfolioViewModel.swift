@@ -8,6 +8,7 @@
 import Foundation
 import RxRelay
 import NSObject_Rx
+import RxSwift
 
 class PortfolioViewModel: ViewModel, ViewModelType {
   
@@ -20,11 +21,16 @@ class PortfolioViewModel: ViewModel, ViewModelType {
     case favorite
   }
   
+  let dataSource = PortfolioDataSource.dataSource()
   let currencyMode = BehaviorRelay<CurrencyMode>(value: .usd)
   let selectedPage = BehaviorRelay<PortfolioPage>(value: .asset)
   let assets = BehaviorRelay<[Token]>(value: [])
   let lendingPlatformBalances = BehaviorRelay<[LendingPlatformBalance]>(value: [])
   let lendingDistributionBalances = BehaviorRelay<[LendingDistributionBalance]>(value: [])
+  let liquidityPools = BehaviorRelay<[LPTokenModel]>(value: [])
+  let nfts = BehaviorRelay<[NFTItem]>(value: [])
+  let marketTokens = BehaviorRelay<[TokenObject]>(value: [])
+  let favoriteTokens = BehaviorRelay<[TokenObject]>(value: [])
   
   struct Input {
     
@@ -37,51 +43,69 @@ class PortfolioViewModel: ViewModel, ViewModelType {
   
   func transform(input: Input) -> Output {
     let sections = BehaviorRelay<[PortfolioSectionModel]>(value: [])
-    
-    selectedPage
-      .subscribe(onNext: { [weak self] page in
-        guard let self = self else { return }
+
+    Observable
+      .combineLatest(
+        selectedPage, assets, lendingPlatformBalances, lendingDistributionBalances, liquidityPools, nfts, marketTokens, favoriteTokens
+      ) { page, assets, platformBalances, distBalances, pools, nfts, marketTokens, favoriteTokens -> [PortfolioSectionModel] in
         switch page {
         case .asset:
-          sections.accept(self.assetSections())
+          return self.assetSections(fromAssets: assets)
         case .supply:
-          sections.accept(self.lendingSections())
+          return self.lendingSections(platformBalances: platformBalances, distBalances: distBalances)
         case .liquidityPool:
-          sections.accept([])
+          return self.poolSections(pools: pools)
         case .nft:
-          sections.accept([])
+          return self.nftSections(nfts: nfts)
         case .market:
-          sections.accept([])
+          return self.marketSections(tokens: marketTokens)
         case .favorite:
-          sections.accept([])
+          return self.favoriteSections(tokens: favoriteTokens)
         }
-      })
+      }
+      .bind(to: sections)
       .disposed(by: rx.disposeBag)
     
     return Output(selectedPage: selectedPage, sections: sections)
   }
   
-  private func assetSections() -> [PortfolioSectionModel] {
-    let items = self.assets.value.map { token in
+  private func assetSections(fromAssets assets: [Token]) -> [PortfolioSectionModel] {
+    let items = assets.map { token in
       PortfolioSectionItem.asset(token: token, price: 0)
     }
     return [.assets(items: items)]
   }
   
-  private func lendingSections() -> [PortfolioSectionModel] {
-    let lendingDictionary = Dictionary(grouping: self.lendingPlatformBalances.value) { $0.name }
+  private func lendingSections(platformBalances: [LendingPlatformBalance], distBalances: [LendingDistributionBalance]) -> [PortfolioSectionModel] {
+    let lendingDictionary = Dictionary(grouping: platformBalances) { $0.name }
     let lendingSections = lendingDictionary.keys.map { key -> PortfolioSectionModel in
-      let items = lendingDictionary[key]?.flatMap { platformLendingBalance in
-        return platformLendingBalance.balances.map {
+      let items = lendingDictionary[key]?.flatMap { lendingPlatformBalance in
+        return lendingPlatformBalance.balances.map {
           PortfolioSectionItem.lending(balance: $0)
         }
       }
       return PortfolioSectionModel.supply(title: key, items: items ?? [])
     }
-    let lendingDistItems = self.lendingDistributionBalances.value.map { balance in
+    let lendingDistItems = distBalances.map { balance in
       PortfolioSectionItem.lendingDist(balance: balance)
     }
     return lendingSections + [.supply(title: Strings.other.uppercased(), items: lendingDistItems)]
+  }
+  
+  private func poolSections(pools: [LPTokenModel]) -> [PortfolioSectionModel] {
+    return []
+  }
+  
+  private func nftSections(nfts: [NFTItem]) -> [PortfolioSectionModel] {
+    return []
+  }
+  
+  private func marketSections(tokens: [TokenObject]) -> [PortfolioSectionModel] {
+    return []
+  }
+  
+  private func favoriteSections(tokens: [TokenObject]) -> [PortfolioSectionModel] {
+    return []
   }
   
 }
