@@ -234,7 +234,7 @@ lane :build_debug do
     output_directory: "archives",
     output_name: "KyberSwap.ipa",
     sdk: "iphoneos",
-    export_method: "debug",
+    export_method: "development",
     export_team_id: team_id,
     export_options: {
       provisioningProfiles: { 
