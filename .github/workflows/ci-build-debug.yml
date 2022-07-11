@@ -193,7 +193,7 @@ jobs:
       - name: Build IPA Debug Mode
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: debug
+          lane: debug_mode
           bundle-install-path: "vendor/bundle"
 
       # tmp disable as 413 status code from ota server

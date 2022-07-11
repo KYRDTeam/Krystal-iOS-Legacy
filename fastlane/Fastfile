@@ -55,7 +55,7 @@ lane :all do
 #  sentry_upload
 end
 
-lane :debug do
+lane :debug_mode do
   prepare_keychain
   install_profiles
   update_project
