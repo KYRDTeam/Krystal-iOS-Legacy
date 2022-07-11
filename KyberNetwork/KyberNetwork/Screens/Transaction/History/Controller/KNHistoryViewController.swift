@@ -323,7 +323,9 @@ struct KNHistoryViewModel {
     let matchedSupply = (tx.type == .earn) && self.filters.isTrade
     let matchedWithdraw = (tx.type == .withdraw) && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == .claimReward) && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == .contractInteraction) && self.filters.isContractInteraction
+    
+    // TODO: Remove tx.type == .multiSend after update Multi-send UI
+    let matchedContractInteraction = (tx.type == .contractInteraction || tx.type == .multiSend) && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
     var tokenMatched = false
@@ -354,7 +356,9 @@ struct KNHistoryViewModel {
     let matchedSupply = (tx.type == "Supply") && self.filters.isTrade
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
-    let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
+    
+    // TODO: Remove tx.type == "Multi-send" after update Multi-send UI
+    let matchedContractInteraction = (tx.type == "Multi-send" || tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedBridge = (tx.type == "Bridge") && filters.isBridge
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchedBridge
 
