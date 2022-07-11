@@ -57,7 +57,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       return "+ \(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
     case .approval:
-      return self.historyItem.extraData?.token?.name ?? ""
+      return self.historyItem.extraData?.token?.symbol ?? ""
     case .claimReward:
       if let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
         guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
