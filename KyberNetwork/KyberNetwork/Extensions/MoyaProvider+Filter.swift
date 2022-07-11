@@ -7,6 +7,8 @@
 
 import Foundation
 import Moya
+import Sentry
+import Mixpanel
 
 typealias WrappedCompletion = (_ result: Result<Moya.Response, NetworkError>) -> Void
 
@@ -19,15 +21,22 @@ extension MoyaProvider {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(ErrorResponse.self, from: response.data)
-            completion(.failure(NetworkError.backendError(reponse: data)))
+            let err = NetworkError.backendError(reponse: data)
+            completion(.failure(err))
+            SentrySDK.capture(error: err.toNSError())
+            
           } catch let error {
-            completion(.failure(.unknow(description: "Decode Error: \(error.localizedDescription)")))
+            let err = NetworkError.unknow(description: "Decode Error: \(error.localizedDescription)")
+            completion(.failure(err))
+            SentrySDK.capture(error: err.toNSError())
           }
           return
         }
         completion(.success(response))
       case .failure(let error):
-        completion(.failure(.unknow(description: error.localizedDescription)))
+        let err = NetworkError.unknow(description: error.localizedDescription)
+        completion(.failure(err))
+        SentrySDK.capture(error: err.toNSError())
       }
     }
   }

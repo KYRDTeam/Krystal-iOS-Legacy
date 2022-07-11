@@ -19,6 +19,10 @@ enum NetworkError: Error {
       return description
     }
   }
+  
+  func toNSError() -> NSError {
+    return NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: self.localizedDescription])
+  }
 }
 
 // MARK: - ErrorResponse
