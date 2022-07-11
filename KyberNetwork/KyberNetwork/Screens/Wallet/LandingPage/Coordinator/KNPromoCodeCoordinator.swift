@@ -45,7 +45,7 @@ extension KNPromoCodeCoordinator: KNPromoCodeViewControllerDelegate {
     self.rootViewController.displayLoading()
     let provider = MoyaProvider<ProfileService>(plugins: [MoyaCacheablePlugin()])
     DispatchQueue.global(qos: .background).async {
-      provider.request(.promoCode(promoCode: promoCode, nonce: nonce), completion: { [weak self] result in
+      provider.requestWithFilter(.promoCode(promoCode: promoCode, nonce: nonce), completion: { [weak self] result in
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           self.rootViewController.hideLoading()

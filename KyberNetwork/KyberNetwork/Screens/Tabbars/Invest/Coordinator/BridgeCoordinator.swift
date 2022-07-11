@@ -242,7 +242,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
     
-    provider.request(.getServerInfo(chainId: chainId)) { result in
+    provider.requestWithFilter(.getServerInfo(chainId: chainId)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -268,7 +268,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
+    provider.requestWithFilter(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -299,7 +299,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     let amount = self.rootViewController.viewModel.sourceAmount.amountBigInt(decimals: decimal) ?? BigInt(0)
     let amountString = amount.description
     
-    provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
+    provider.requestWithFilter(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {

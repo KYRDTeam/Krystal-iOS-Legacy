@@ -24,7 +24,7 @@ class DefaultTransactionRepository: TransactionRepository {
     address: String, prevHash: String?, limit: Int,
     completion: @escaping ([SolanaTransaction]) -> ()
   ) {
-    provider.request(.transactions(address: address, prevHash: prevHash, limit: limit)) { result in
+    provider.requestWithFilter(.transactions(address: address, prevHash: prevHash, limit: limit)) { result in
       switch result {
       case .success(let json):
         do {

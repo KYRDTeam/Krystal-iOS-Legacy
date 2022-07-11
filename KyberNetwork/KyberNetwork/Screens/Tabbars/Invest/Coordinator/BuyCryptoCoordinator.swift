@@ -160,7 +160,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   func loadFiatPair() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    provider.request(.getCryptoFiatPair) { (result) in
+    provider.requestWithFilter(.getCryptoFiatPair) { (result) in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -182,7 +182,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
   func createBuyCryptoOrder(buyCryptoModel: BifinityOrder) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    provider.request(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
+    provider.requestWithFilter(.buyCrypto(buyCryptoModel: buyCryptoModel)) { (result) in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -206,7 +206,7 @@ class BuyCryptoCoordinator: NSObject, Coordinator {
     }
 
     presentViewController.showLoadingHUD()
-    self.historyProvider!.request(.getOrders(userWallet: self.session.wallet.addressString)) { (result) in
+    self.historyProvider!.requestWithFilter(.getOrders(userWallet: self.session.wallet.addressString)) { (result) in
       DispatchQueue.main.async {
         presentViewController.hideLoading()
       }

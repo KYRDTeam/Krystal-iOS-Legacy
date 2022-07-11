@@ -316,11 +316,11 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     }
   }
 
-  fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
+  fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping WrappedCompletion) {
     let address = self.session.wallet.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
-      provider.request(.getPreScreeningWallet(address: address)) { result in
+      provider.requestWithFilter(.getPreScreeningWallet(address: address)) { result in
         DispatchQueue.main.async {
           completion(result)
         }
