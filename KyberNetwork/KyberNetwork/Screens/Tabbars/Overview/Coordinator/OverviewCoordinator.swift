@@ -315,7 +315,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonTitle: Strings.OK,
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
-            self.showPopupSwitchChain(controller) {
+            self.handleSwitchChain(controller) {
               self.openSendTokenView(token)
               self.pendingAction = nil
             }
@@ -340,7 +340,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonTitle: Strings.OK,
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
-            self.showPopupSwitchChain(controller) {
+            self.handleSwitchChain(controller) {
               self.openSwapView(token: token, isBuy: true)
               self.pendingAction = nil
             }
@@ -369,34 +369,21 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     }
   }
   
-  func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+  func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
     self.pendingAction = nil
-    let popup = SwitchChainViewController()
     var newChain = KNGeneralProvider.shared.currentChain
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
-    popup.selectedChain = newChain
-    popup.nextButtonTitle = "Confirm"
-    popup.completionHandler = { selected in
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
-        self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: selected)
-        if selected == newChain {
-          self.pendingAction = completion
-        }
-        return
-      }
-      KNGeneralProvider.shared.currentChain = selected
-      var selectedAddress = ""
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.addressString
-      }
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
-      if selected == newChain {
-        self.pendingAction = completion
-      }
+    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
+      self.pendingAction = completion
+      return
     }
-    self.navigationController.present(popup, animated: true, completion: nil)
+    let viewModel = SwitchChainWalletsListViewModel(selected: newChain)
+    let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+    self.navigationController.present(secondPopup, animated: true, completion: nil)
+    self.pendingAction = completion
   }
 
   func openCommunityURL(_ url: String) {
