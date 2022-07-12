@@ -33,7 +33,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   }
   
   var displayedAmountString: String {
-    let defaultAmountString = "--/--"
+    let defaultAmountString = Strings.FunctionCall
     switch transactionType {
     case .swap, .supply, .withdraw:
       if self.isError {
