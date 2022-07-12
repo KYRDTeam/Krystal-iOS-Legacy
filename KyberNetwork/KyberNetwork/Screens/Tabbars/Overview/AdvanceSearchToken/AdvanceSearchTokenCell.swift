@@ -33,7 +33,12 @@ class AdvanceSearchTokenCell: UITableViewCell {
     guard let token = token else {
       return
     }
-    tokenIcon.setSymbolImage(symbol: token.symbol)
+    if let logoURL = URL(string: token.logo) {
+      tokenIcon.setImage(with: logoURL, placeholder: nil)
+    } else {
+      tokenIcon.setSymbolImage(symbol: token.symbol)
+    }
+    
     if let image = UIImage.imageWithTag(tag: token.tag) {
       tagIcon.image = image
       tagIcon.isHidden = false
