@@ -17,7 +17,8 @@ extension MoyaProvider {
     self.request(target) { result in
       switch result {
       case .success(let response):
-        guard response.statusCode == 200 else {
+        let success = 200...299
+        guard success.contains(response.statusCode) else {
           let decoder = JSONDecoder()
           do {
             let data = try decoder.decode(ErrorResponse.self, from: response.data)
