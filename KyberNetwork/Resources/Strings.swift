@@ -46,9 +46,11 @@ struct Strings {
   static let referral = "referral".toBeLocalised()
   static let dApps = "dapps".toBeLocalised()
   static let multiSend = "multisend".toBeLocalised()
+  static let multiReceive = "multi.receive".toBeLocalised()
   static let buyCrypto = "buy.crypto".toBeLocalised()
   static let promotion = "promotion".toBeLocalised()
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
+  static let gasFeeDescription = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
   
   // History
   static let success = "success".toBeLocalised()
@@ -137,4 +139,8 @@ struct Strings {
   static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
   static let skip = "Skip?".toBeLocalised()
   static let unsupportedChain = "Unsupported chain".toBeLocalised()
+  
+  // History
+  static let numberOfTransfers = "number.of.transfers".toBeLocalised()
+  static let txHash = "tx.hash".toBeLocalised()
 }

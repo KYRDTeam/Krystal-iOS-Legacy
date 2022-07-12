@@ -56,7 +56,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
       let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18) ?? "0"
       var rows: [TransactionDetailRowType] = [
-        .common(type: type, timestamp: tx.timestamp),
+        .common(type: type, timestamp: tx.timestamp, hideStatus: true),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
@@ -69,6 +69,26 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
                                 "\(minEstimatedTimeInMinutes)-\(maxEstimatedTimeInMinutes)")
         rows.append(.estimatedBridgeTime(time: timeString))
       }
+      return rows
+    case .multiSend, .multiReceive:
+      let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
+      var rows: [TransactionDetailRowType] = [
+        .common(type: type, timestamp: tx.timestamp, hideStatus: false),
+        .multisendHeader(total: tx.extraData?.txns?.count ?? 0),
+      ]
+      
+      let txRows: [TransactionDetailRowType] = tx.extraData?.txns?.enumerated().map { (index, subTx) in
+        let address = type == .multiSend ? subTx.to : tx.from
+        let amountString = (BigInt(subTx.value) ?? BigInt(0)).shortString(decimals: quoteToken.decimals)
+        let token = subTx.token?.symbol ?? ""
+        return TransactionDetailRowType.multisendTx(index: index, address: address ?? "", amount: amountString + " " + token)
+      } ?? []
+      rows.append(contentsOf: txRows)
+      rows.append(.application(walletAddress: tx.from, applicationAddress: tx.to))
+      
+      let fee = BigInt(tx.gasCost)?.fullString(decimals: quoteToken.decimals) ?? "0"
+      rows.append(.transactionFee(fee: fee + " " + quoteToken.symbol))
+      rows.append(.txHash(hash: tx.hash))
       return rows
     default:
       return []
@@ -84,7 +104,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
       let bridgeFee = internalTx.gasFee.fullString(decimals: 18)
       var rows: [TransactionDetailRowType] = [
-        .common(type: .bridge, timestamp: Int(internalTx.time.timeIntervalSince1970)),
+        .common(type: .bridge, timestamp: Int(internalTx.time.timeIntervalSince1970), hideStatus: true),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
@@ -128,6 +148,16 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     default:
       return false
     }
+  }
+  
+  func openAddress(address: String, chainID: String) {
+    guard let endpoint = getChain(chainID: chainID)?.customRPC().etherScanEndpoint else {
+      return
+    }
+    guard let url = URL(string: endpoint + "address/" + address) else {
+      return
+    }
+    router.openTxUrl(url: url)
   }
   
   func onOpenTxScan(txHash: String, chainID: String) {

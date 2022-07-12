@@ -14,6 +14,10 @@ class TransactionDetailViewController: KNBaseViewController, TransactionDetailVi
   
   var presenter: TransactionDetailPresenterProtocol!
   
+  var currentChainID: String {
+    return "\(KNGeneralProvider.shared.currentChain.getChainId())"
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -26,6 +30,9 @@ class TransactionDetailViewController: KNBaseViewController, TransactionDetailVi
     tableView.registerCellNib(BridgeSubTransactionCell.self)
     tableView.registerCellNib(TransactionStepSeparatorCell.self)
     tableView.registerCellNib(TransactionTypeInfoCell.self)
+    tableView.registerCellNib(MultiSendSubTransactionCell.self)
+    tableView.registerCellNib(TxListHeaderCell.self)
+    tableView.registerCellNib(TxApplicationInfoCell.self)
     tableView.registerCellNib(TxInfoCell.self)
   }
   
@@ -47,9 +54,9 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let item = presenter.items[indexPath.row]
     switch item {
-    case .common(let type, let timestamp):
+    case .common(let type, let timestamp, let hideStatus):
       let cell = tableView.dequeueReusableCell(TransactionTypeInfoCell.self, indexPath: indexPath)!
-      cell.configure(type: type, timestamp: timestamp)
+      cell.configure(type: type, timestamp: timestamp, hideStatus: hideStatus)
       cell.selectionStyle = .none
       return cell
     case .bridgeSubTx(let isSouceTx, let tx):
@@ -72,6 +79,62 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
       cell.configure(title: Strings.estimatedTimeOfArrival, value: timeString)
       cell.selectionStyle = .none
       return cell
+    case .multisendHeader(let total):
+      let cell = tableView.dequeueReusableCell(TxListHeaderCell.self, indexPath: indexPath)!
+      cell.selectionStyle = .none
+      cell.configure(title: Strings.numberOfTransfers, total: total)
+      return cell
+    case .multisendTx(let index, let address, let amount):
+      let cell = tableView.dequeueReusableCell(MultiSendSubTransactionCell.self, indexPath: indexPath)!
+      cell.selectionStyle = .none
+      cell.configure(index: index, address: address, amount: amount)
+      return cell
+    case .application(let walletAddress, let applicationAddress):
+      let cell = tableView.dequeueReusableCell(TxApplicationInfoCell.self, indexPath: indexPath)!
+      cell.selectionStyle = .none
+      cell.configure(walletAddress: walletAddress, applicationAddress: applicationAddress)
+      cell.onOpenWallet = { [weak self] in
+        guard let self = self else { return }
+        self.presenter.openAddress(address: walletAddress, chainID: self.currentChainID)
+      }
+      cell.onOpenApplication = { [weak self] in
+        guard let self = self else { return }
+        self.presenter.openAddress(address: applicationAddress, chainID: self.currentChainID)
+      }
+      return cell
+    case .transactionFee(let fee):
+      let cell = tableView.dequeueReusableCell(TxInfoCell.self, indexPath: indexPath)!
+      cell.selectionStyle = .none
+      cell.configure(title: Strings.transactionFee, value: fee, showHelpIcon: true)
+      cell.helpHandler = { [weak self] in
+        self?.showBottomBannerView(
+          message: Strings.gasFeeDescription,
+          icon: Images.helpLargeIcon,
+          time: 3
+        )
+      }
+      return cell
+    case .txHash(let hash):
+      let cell = tableView.dequeueReusableCell(TxInfoCell.self, indexPath: indexPath)!
+      cell.selectionStyle = .none
+      cell.configure(title: Strings.txHash, value: hash, actionIcon: Images.openLinkIcon)
+      cell.onAction = { [weak self] in
+        guard let self = self else { return }
+        self.presenter.onOpenTxScan(txHash: hash, chainID: self.currentChainID)
+      }
+      return cell
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    let item = presenter.items[indexPath.row]
+    switch item {
+    case .application:
+      return 102
+    case .multisendTx:
+      return 40
+    default:
+      return UITableView.automaticDimension
     }
   }
   

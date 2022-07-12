@@ -324,7 +324,7 @@ struct KNHistoryViewModel {
     let matchedWithdraw = (tx.type == .withdraw) && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == .claimReward) && self.filters.isClaimReward
     
-    // TODO: Remove tx.type == .multiSend after update Multi-send UI
+    // FIXME: Remove tx.type == .multiSend after update Multi-send UI
     let matchedContractInteraction = (tx.type == .contractInteraction || tx.type == .multiSend) && self.filters.isContractInteraction
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
 
@@ -357,7 +357,7 @@ struct KNHistoryViewModel {
     let matchedWithdraw = (tx.type == "Withdraw") && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
     
-    // TODO: Remove tx.type == "Multi-send" after update Multi-send UI
+    // FIXME: Remove tx.type == "Multi-send" after update Multi-send UI
     let matchedContractInteraction = (tx.type == "Multi-send" || tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedBridge = (tx.type == "Bridge") && filters.isBridge
     let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchedBridge

@@ -11,11 +11,13 @@ class TransactionTypeInfoCell: UITableViewCell {
   @IBOutlet weak var iconImageView: UIImageView!
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var typeLabel: UILabel!
+  @IBOutlet weak var statusView: UIView!
   
-  func configure(type: TransactionHistoryItemType, timestamp: Int) {
+  func configure(type: TransactionHistoryItemType, timestamp: Int, hideStatus: Bool = true) {
     iconImageView.image = icon(forType: type)
     typeLabel.text = title(forType: type)
     timeLabel.text = DateFormatterUtil.shared.MMMddYYYHHmma.string(from: .init(timeIntervalSince1970: TimeInterval(timestamp)))
+    statusView.isHidden = hideStatus
   }
   
   func icon(forType type: TransactionHistoryItemType) -> UIImage? {
@@ -32,6 +34,8 @@ class TransactionTypeInfoCell: UITableViewCell {
       return Images.historyClaimReward
     case .bridge:
       return Images.historyBridge
+    case .multiSend, .multiReceive:
+      return Images.historyMultisend
     default:
       return nil
     }
@@ -51,6 +55,10 @@ class TransactionTypeInfoCell: UITableViewCell {
       return Strings.claimReward
     case .bridge:
       return Strings.bridge
+    case .multiSend:
+      return Strings.multiSend
+    case .multiReceive:
+      return Strings.multiReceive
     default:
       return nil
     }
