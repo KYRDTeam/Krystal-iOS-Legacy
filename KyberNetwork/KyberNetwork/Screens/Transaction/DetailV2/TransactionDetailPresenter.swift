@@ -48,6 +48,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   
   func getTransactionItems(tx: KrystalHistoryTransaction) -> [TransactionDetailRowType] {
     let type = getTransactionType(txType: tx.type)
+    let status = TransactionStatus(status: tx.status)
     switch type {
     case .bridge:
       guard let from = tx.extraData?.from, let to = tx.extraData?.to else {
@@ -56,7 +57,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
       let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18) ?? "0"
       var rows: [TransactionDetailRowType] = [
-        .common(type: type, timestamp: tx.timestamp, hideStatus: true),
+        .common(type: type, timestamp: tx.timestamp, hideStatus: true, status: status),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
@@ -73,7 +74,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
     case .multiSend, .multiReceive:
       let quoteToken = KNGeneralProvider.shared.currentChain.quoteTokenObject()
       var rows: [TransactionDetailRowType] = [
-        .common(type: type, timestamp: tx.timestamp, hideStatus: false),
+        .common(type: type, timestamp: tx.timestamp, hideStatus: false, status: status),
         .multisendHeader(total: tx.extraData?.txns?.count ?? 0),
       ]
       
@@ -96,6 +97,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
   }
   
   func getTransactionItems(internalTx: InternalHistoryTransaction) -> [TransactionDetailRowType] {
+    let status = self.getTransactionStatus(state: internalTx.state)
     switch internalTx.type {
     case .bridge:
       guard let from = internalTx.extraData?.from, let to = internalTx.extraData?.to else {
@@ -104,7 +106,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
       let bridgeFee = internalTx.gasFee.fullString(decimals: 18)
       var rows: [TransactionDetailRowType] = [
-        .common(type: .bridge, timestamp: Int(internalTx.time.timeIntervalSince1970), hideStatus: true),
+        .common(type: .bridge, timestamp: Int(internalTx.time.timeIntervalSince1970), hideStatus: true, status: status),
         .bridgeSubTx(from: true, tx: from),
         .stepSeparator,
         .bridgeSubTx(from: false, tx: to),
@@ -120,6 +122,17 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       return rows
     default:
       return []
+    }
+  }
+  
+  private func getTransactionStatus(state: InternalTransactionState) -> TransactionStatus {
+    switch state {
+    case .done:
+      return .success
+    case .error:
+      return .failure
+    default:
+      return .pending
     }
   }
   

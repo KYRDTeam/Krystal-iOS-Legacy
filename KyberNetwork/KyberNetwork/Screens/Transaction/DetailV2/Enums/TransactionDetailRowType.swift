@@ -8,7 +8,7 @@
 import Foundation
 
 enum TransactionDetailRowType {
-  case common(type: TransactionHistoryItemType, timestamp: Int, hideStatus: Bool)
+  case common(type: TransactionHistoryItemType, timestamp: Int, hideStatus: Bool, status: TransactionStatus)
   case bridgeSubTx(from: Bool, tx: ExtraBridgeTransaction)
   case stepSeparator
   case bridgeFee(fee: String)
@@ -23,7 +23,7 @@ enum TransactionDetailRowType {
 extension TransactionDetailRowType: Equatable {
   static func == (lhs: TransactionDetailRowType, rhs: TransactionDetailRowType) -> Bool {
     switch (lhs, rhs) {
-    case (.common(let lhsType, let lhsTimestamp, let lhsHideStatus), .common(let rhsType, let rhsTimestamp, let rhsHideStatus)):
+    case (.common(let lhsType, let lhsTimestamp, let lhsHideStatus, _), .common(let rhsType, let rhsTimestamp, let rhsHideStatus, _)):
       return lhsType == rhsType && lhsTimestamp == rhsTimestamp && lhsHideStatus == rhsHideStatus
     case (.bridgeSubTx(let lhsIsFrom, let lhsTx), .bridgeSubTx(let rhsIsFrom, let rhsTx)):
       return lhsIsFrom == rhsIsFrom && lhsTx.tx == rhsTx.tx

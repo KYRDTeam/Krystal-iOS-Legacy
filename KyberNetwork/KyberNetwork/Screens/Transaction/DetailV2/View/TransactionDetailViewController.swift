@@ -54,9 +54,9 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let item = presenter.items[indexPath.row]
     switch item {
-    case .common(let type, let timestamp, let hideStatus):
+    case .common(let type, let timestamp, let hideStatus, let status):
       let cell = tableView.dequeueReusableCell(TransactionTypeInfoCell.self, indexPath: indexPath)!
-      cell.configure(type: type, timestamp: timestamp, hideStatus: hideStatus)
+      cell.configure(type: type, timestamp: timestamp, hideStatus: hideStatus, status: status)
       cell.selectionStyle = .none
       return cell
     case .bridgeSubTx(let isSouceTx, let tx):

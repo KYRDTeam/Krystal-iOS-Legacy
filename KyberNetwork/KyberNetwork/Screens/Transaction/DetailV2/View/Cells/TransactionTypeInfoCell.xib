@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -101,6 +101,8 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="iconImageView" destination="egQ-KC-Z3u" id="xUP-Bq-z10"/>
+                <outlet property="statusIconImageView" destination="sv2-wU-Hzt" id="T4a-26-is4"/>
+                <outlet property="statusLabel" destination="5Mc-sd-E5z" id="QRe-hY-nB4"/>
                 <outlet property="statusView" destination="Eak-yC-DaB" id="SXB-OQ-xFh"/>
                 <outlet property="timeLabel" destination="JQe-tz-U1k" id="YnS-Qa-1to"/>
                 <outlet property="typeLabel" destination="aZJ-hS-31r" id="tGb-NR-pp5"/>

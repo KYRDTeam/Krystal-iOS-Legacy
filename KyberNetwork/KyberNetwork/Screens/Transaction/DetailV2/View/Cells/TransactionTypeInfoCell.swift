@@ -12,12 +12,18 @@ class TransactionTypeInfoCell: UITableViewCell {
   @IBOutlet weak var timeLabel: UILabel!
   @IBOutlet weak var typeLabel: UILabel!
   @IBOutlet weak var statusView: UIView!
+  @IBOutlet weak var statusIconImageView: UIImageView!
+  @IBOutlet weak var statusLabel: UILabel!
   
-  func configure(type: TransactionHistoryItemType, timestamp: Int, hideStatus: Bool = true) {
+  func configure(type: TransactionHistoryItemType, timestamp: Int, hideStatus: Bool = true, status: TransactionStatus) {
     iconImageView.image = icon(forType: type)
     typeLabel.text = title(forType: type)
     timeLabel.text = DateFormatterUtil.shared.MMMddYYYHHmma.string(from: .init(timeIntervalSince1970: TimeInterval(timestamp)))
     statusView.isHidden = hideStatus
+    statusIconImageView.image = icon(forStatus: status)
+    statusLabel.text = title(forStatus: status)
+    statusView.backgroundColor = color(forStatus: status)?.withAlphaComponent(0.2)
+    statusLabel.textColor = color(forStatus: status)
   }
   
   func icon(forType type: TransactionHistoryItemType) -> UIImage? {
@@ -61,6 +67,43 @@ class TransactionTypeInfoCell: UITableViewCell {
       return Strings.multiReceive
     default:
       return nil
+    }
+  }
+  
+  func color(forStatus status: TransactionStatus) -> UIColor? {
+    switch status {
+    case .success:
+      return UIColor.Kyber.primaryGreenColor
+    case .failure:
+      return UIColor.Kyber.errorText
+    case .pending:
+      return UIColor.Kyber.pending
+    default:
+      return UIColor.Kyber.pending
+    }
+  }
+  
+  func icon(forStatus status: TransactionStatus) -> UIImage? {
+    switch status {
+    case .success:
+      return Images.txSuccess
+    case .failure:
+      return Images.failure
+    default:
+      return Images.pendingTx
+    }
+  }
+  
+  func title(forStatus status: TransactionStatus) -> String? {
+    switch status {
+    case .success:
+      return Strings.success
+    case .failure:
+      return Strings.failure
+    case .pending:
+      return Strings.pending
+    case .other:
+      return Strings.pending
     }
   }
   
