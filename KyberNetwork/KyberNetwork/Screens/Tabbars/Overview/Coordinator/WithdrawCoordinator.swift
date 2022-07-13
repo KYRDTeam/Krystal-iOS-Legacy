@@ -88,7 +88,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
     switch event {
     case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, tokenAddress: let tokenAddress):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
+      provider.requestWithFilter(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let amount = json["amount"] as? String {
           self.withdrawViewController?.coordinatorDidUpdateWithdrawableAmount(amount)
@@ -105,7 +105,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       self.getLatestNonce { [weak self] (nonce) in
         guard let `self` = self else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
+        provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
           if case .success(let resp) = result {
             let decoder = JSONDecoder()
             do {
@@ -214,7 +214,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
+      provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
@@ -982,7 +982,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
   
    func buildClaimTx(address: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.buildClaimTx(address: address, nonce: nonce)) { (result) in
+    provider.requestWithFilter(.buildClaimTx(address: address, nonce: nonce)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()

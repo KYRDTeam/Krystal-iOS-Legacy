@@ -22,7 +22,7 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
       currentProcess.cancel()
     }
     
-    self.currentProcess = provider.request(.advancedSearch(query: keyword, limit: 50)) { result in
+    self.currentProcess = provider.requestWithFilter(.advancedSearch(query: keyword, limit: 50)) { result in
       switch result {
       case .failure(let error):
         self.presenter?.didGetSearchResult(result: nil, error: error)
@@ -34,6 +34,6 @@ class AdvanceSearchTokenInteractor: AdvanceSearchTokenInteractorProtocol {
           self.presenter?.didGetSearchResult(result: nil, error: nil)
         }
       }
-    }
+    } as? Cancellable
   }
 }
