@@ -58,6 +58,7 @@ struct Strings {
   static let pending = "pending".toBeLocalised()
   static let unknown = "unknown".toBeLocalised()
   static let application = "application".toBeLocalised()
+  static let Account = "Account".toBeLocalised()
   static let fromWallet = "from.wallet".toBeLocalised()
   static let toWallet = "to.wallet".toBeLocalised()
   static let wallet = "wallet".toBeLocalised()
