@@ -374,7 +374,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOl-eR-l0u" userLabel="Pool Button">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC/ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-IH-nRe">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="KNC/ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-IH-nRe">
                                                     <rect key="frame" x="35.999999999999993" y="4" width="65.333333333333314" height="19"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
@@ -393,8 +393,8 @@
                                                         <action selector="tradingViewBackWasTapped:" destination="-1" eventType="touchUpInside" id="Sgk-6u-PQO"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LP Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dII-6D-EMA">
-                                                    <rect key="frame" x="109.33333333333333" y="5.3333333333333144" width="55.333333333333329" height="16.666666666666668"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LP Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dII-6D-EMA">
+                                                    <rect key="frame" x="109.33333333333333" y="5.3333333333333144" width="249.66666666666669" height="16.666666666666668"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
@@ -403,6 +403,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="dII-6D-EMA" secondAttribute="trailing" constant="16" id="32j-0O-Qlx"/>
                                                 <constraint firstAttribute="height" constant="27" id="51f-IR-X2c"/>
                                                 <constraint firstItem="O0Z-IH-nRe" firstAttribute="leading" secondItem="APg-Fc-60Q" secondAttribute="trailing" constant="8" id="Fsh-zo-A13"/>
                                                 <constraint firstItem="APg-Fc-60Q" firstAttribute="leading" secondItem="jOl-eR-l0u" secondAttribute="leading" constant="8" id="HNk-ZX-d6O"/>
