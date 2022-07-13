@@ -34,7 +34,7 @@ class AdvanceSearchTokenCell: UITableViewCell {
       return
     }
     if let logoURL = URL(string: token.logo) {
-      tokenIcon.setImage(with: logoURL, placeholder: nil)
+      tokenIcon.setImage(with: logoURL, placeholder: UIImage(named: "default_token"))
     } else {
       tokenIcon.image = UIImage(named: "default_token")
     }
