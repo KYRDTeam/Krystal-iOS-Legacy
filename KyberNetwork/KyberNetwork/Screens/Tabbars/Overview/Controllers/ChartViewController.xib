@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -50,7 +50,8 @@
                 <outlet property="noDataImageView" destination="xVv-vY-wjY" id="qNr-CN-KDs"/>
                 <outlet property="poolChartContainer" destination="8Ou-6D-rw9" id="nPR-No-YpO"/>
                 <outlet property="poolNameContainerView" destination="jOl-eR-l0u" id="qAg-YU-kl4"/>
-                <outlet property="poolNameLabel" destination="O0Z-IH-nRe" id="RSz-UX-Ijp"/>
+                <outlet property="poolNameLabel" destination="dII-6D-EMA" id="QcU-Ad-Del"/>
+                <outlet property="poolPairLabel" destination="O0Z-IH-nRe" id="tV9-Zx-vyv"/>
                 <outlet property="poolTableView" destination="LuJ-IT-k2l" id="3gd-ud-nFX"/>
                 <outlet property="poolView" destination="Pwb-X0-eiY" id="Tfr-D6-Frd"/>
                 <outlet property="poolViewTrailingConstraint" destination="8i8-9k-Jfw" id="PCE-bK-FCi"/>
@@ -371,57 +372,59 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="312"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOl-eR-l0u" userLabel="Pool Button">
-                                            <rect key="frame" x="16" y="12" width="133.33333333333334" height="32"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC/ETH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0Z-IH-nRe">
-                                                    <rect key="frame" x="18" y="0.0" width="73.333333333333329" height="32"/>
+                                                    <rect key="frame" x="35.999999999999993" y="4" width="65.333333333333314" height="19"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
-                                                    <color key="textColor" name="textWhiteColor"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                                    <color key="textColor" red="0.70196078431372544" green="0.71372549019607845" blue="0.73725490196078436" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APg-Fc-60Q">
-                                                    <rect key="frame" x="101.33333333333333" y="0.0" width="31.999999999999986" height="32"/>
+                                                    <rect key="frame" x="8" y="3.6666666666666288" width="20" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="32" id="9e2-Wm-Ptu"/>
-                                                        <constraint firstAttribute="height" constant="32" id="MXy-Rk-kSR"/>
+                                                        <constraint firstAttribute="width" constant="20" id="9e2-Wm-Ptu"/>
+                                                        <constraint firstAttribute="height" constant="20" id="MXy-Rk-kSR"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="close-search-icon"/>
+                                                    <state key="normal" image="small_back_green"/>
                                                     <connections>
-                                                        <action selector="closeCandleChartButtonTapped:" destination="-1" eventType="touchUpInside" id="dkl-gb-Kvs"/>
+                                                        <action selector="tradingViewBackWasTapped:" destination="-1" eventType="touchUpInside" id="Sgk-6u-PQO"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LP Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dII-6D-EMA">
+                                                    <rect key="frame" x="109.33333333333333" y="5.3333333333333144" width="55.333333333333329" height="16.666666666666668"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <color key="backgroundColor" name="tagBgColor"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="APg-Fc-60Q" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="top" id="56w-fq-3Y0"/>
-                                                <constraint firstAttribute="trailing" secondItem="APg-Fc-60Q" secondAttribute="trailing" id="5mF-37-FMd"/>
-                                                <constraint firstAttribute="bottom" secondItem="APg-Fc-60Q" secondAttribute="bottom" id="D7J-4m-zFY"/>
-                                                <constraint firstAttribute="bottom" secondItem="O0Z-IH-nRe" secondAttribute="bottom" id="UKF-Hk-ZPk"/>
-                                                <constraint firstItem="O0Z-IH-nRe" firstAttribute="leading" secondItem="jOl-eR-l0u" secondAttribute="leading" constant="18" id="Uma-nj-3Vr"/>
-                                                <constraint firstItem="APg-Fc-60Q" firstAttribute="leading" secondItem="O0Z-IH-nRe" secondAttribute="trailing" constant="10" id="cb2-do-rn1"/>
-                                                <constraint firstAttribute="height" constant="32" id="m9t-6a-7gA"/>
-                                                <constraint firstItem="O0Z-IH-nRe" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="top" id="ynh-ii-Ajn"/>
+                                                <constraint firstAttribute="height" constant="27" id="51f-IR-X2c"/>
+                                                <constraint firstItem="O0Z-IH-nRe" firstAttribute="leading" secondItem="APg-Fc-60Q" secondAttribute="trailing" constant="8" id="Fsh-zo-A13"/>
+                                                <constraint firstItem="APg-Fc-60Q" firstAttribute="leading" secondItem="jOl-eR-l0u" secondAttribute="leading" constant="8" id="HNk-ZX-d6O"/>
+                                                <constraint firstItem="dII-6D-EMA" firstAttribute="leading" secondItem="O0Z-IH-nRe" secondAttribute="trailing" constant="8" id="QXq-E0-MFK"/>
+                                                <constraint firstItem="APg-Fc-60Q" firstAttribute="centerY" secondItem="jOl-eR-l0u" secondAttribute="centerY" id="h0B-zD-BtA"/>
+                                                <constraint firstItem="O0Z-IH-nRe" firstAttribute="centerY" secondItem="jOl-eR-l0u" secondAttribute="centerY" id="l7F-xd-TnB"/>
+                                                <constraint firstItem="dII-6D-EMA" firstAttribute="centerY" secondItem="O0Z-IH-nRe" secondAttribute="centerY" id="s77-PQ-klg"/>
                                             </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
-                                                    <real key="value" value="12"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXN-Tz-rz3" userLabel="TradingView" customClass="TradingView" customModule="Krystal" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="56" width="375" height="256"/>
+                                            <rect key="frame" x="0.0" y="27" width="375" height="285"/>
                                             <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.058823529409999999" green="0.058823529409999999" blue="0.058823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.094117647058823528" green="0.10196078431372549" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstItem="jOl-eR-l0u" firstAttribute="top" secondItem="8Ou-6D-rw9" secondAttribute="top" constant="12" id="1qG-ub-5dn"/>
+                                        <constraint firstAttribute="trailing" secondItem="jOl-eR-l0u" secondAttribute="trailing" id="9ty-Fd-7z0"/>
+                                        <constraint firstItem="jOl-eR-l0u" firstAttribute="top" secondItem="8Ou-6D-rw9" secondAttribute="top" id="W40-Ps-T6O"/>
                                         <constraint firstItem="LXN-Tz-rz3" firstAttribute="leading" secondItem="8Ou-6D-rw9" secondAttribute="leading" id="d1Q-Vq-M6a"/>
-                                        <constraint firstItem="LXN-Tz-rz3" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="bottom" constant="12" id="iSK-pz-uLC"/>
-                                        <constraint firstItem="jOl-eR-l0u" firstAttribute="leading" secondItem="8Ou-6D-rw9" secondAttribute="leading" constant="16" id="kJf-K3-4Ew"/>
+                                        <constraint firstItem="LXN-Tz-rz3" firstAttribute="top" secondItem="jOl-eR-l0u" secondAttribute="bottom" id="iSK-pz-uLC"/>
                                         <constraint firstAttribute="bottom" secondItem="LXN-Tz-rz3" secondAttribute="bottom" id="lXx-3k-bbd"/>
+                                        <constraint firstItem="jOl-eR-l0u" firstAttribute="leading" secondItem="8Ou-6D-rw9" secondAttribute="leading" id="lfO-lw-1cE"/>
                                         <constraint firstAttribute="trailing" secondItem="LXN-Tz-rz3" secondAttribute="trailing" id="tIK-aj-x5M"/>
                                     </constraints>
                                 </view>
@@ -887,12 +890,12 @@
         <image name="blueTick_icon" width="24" height="24"/>
         <image name="chain_bsc_icon" width="24" height="24"/>
         <image name="chart_no_data" width="375" height="380"/>
-        <image name="close-search-icon" width="24" height="24"/>
         <image name="discord_chart_image" width="23" height="16"/>
         <image name="etherscan_chart_icon" width="22" height="22"/>
         <image name="icon-price-up" width="24" height="24"/>
         <image name="icon-wallet" width="16" height="16"/>
         <image name="setting_telegram" width="19" height="16"/>
+        <image name="small_back_green" width="20" height="20"/>
         <image name="twitter_chart_icon" width="24" height="24"/>
         <image name="unFav_star_icon" width="22" height="21"/>
         <image name="website_chart_icon" width="24" height="24"/>
@@ -910,9 +913,6 @@
         </namedColor>
         <namedColor name="normalTextColor">
             <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="tagBgColor">
-            <color red="0.23137254901960785" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

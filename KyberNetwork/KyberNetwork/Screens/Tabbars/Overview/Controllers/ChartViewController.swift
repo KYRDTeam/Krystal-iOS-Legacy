@@ -276,7 +276,7 @@ class ChartViewModel {
     }
   }
   
-  var displayPoolName: String {
+  var selectedPoolPair: String {
     guard let selectedPoolDetail = selectedPoolDetail else {
       return ""
     }
@@ -285,7 +285,10 @@ class ChartViewModel {
     } else {
       return "\(selectedPoolDetail.token0.symbol)/\(selectedPoolDetail.token1.symbol)"
     }
-    
+  }
+  
+  var selectedPoolName: String? {
+    return selectedPoolDetail?.name
   }
   
   var baseTokenAddress: String {
@@ -383,7 +386,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet weak var showAllPoolButton: UIButton!
   @IBOutlet weak var poolNameContainerView: UIView!
+  @IBOutlet weak var poolPairLabel: UILabel!
   @IBOutlet weak var poolNameLabel: UILabel!
+  
   @IBOutlet weak var tradingView: TradingView!
   @IBOutlet weak var tokenChartView: Chart!
   @IBOutlet weak var poolChartContainer: UIView!
@@ -509,7 +514,8 @@ class ChartViewController: KNBaseViewController {
   
   func updateUIPoolName(hidden: Bool) {
     self.poolNameContainerView.isHidden = hidden
-    self.poolNameLabel.text = self.viewModel.displayPoolName
+    self.poolPairLabel.text = self.viewModel.selectedPoolPair
+    self.poolNameLabel.text = self.viewModel.selectedPoolName
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -549,6 +555,14 @@ class ChartViewController: KNBaseViewController {
       self.textViewLeadingConstraint.constant = 20
       self.view.layoutIfNeeded()
     }
+  }
+  
+  
+  @IBAction func tradingViewBackWasTapped(_ sender: Any) {
+    self.isSelectingLineChart = true
+    self.viewModel.selectedPoolDetail = nil
+    self.updateUIPoolName(hidden: true)
+    self.poolTableView.reloadData()
   }
   
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -616,13 +630,6 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
     self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
     self.updatePoolTableHeight()
-  }
-  
-  @IBAction func closeCandleChartButtonTapped(_ sender: UIButton) {
-    self.isSelectingLineChart = true
-    self.viewModel.selectedPoolDetail = nil
-    self.updateUIPoolName(hidden: true)
-    self.poolTableView.reloadData()
   }
 
   fileprivate func updateUIChartInfo() {
