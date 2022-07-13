@@ -78,7 +78,12 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
     case .contractInteraction:
       return defaultAmountString
     case .multiSend, .multiReceive:
-      return "\(historyItem.extraData?.txns?.count ?? 0) transfers"
+      let totalTx = historyItem.extraData?.txns?.count ?? 0
+      if totalTx == 1 {
+        return Strings.oneTransfer
+      } else {
+        return String(format: Strings.xTransfers, totalTx)
+      }
     }
   }
   
