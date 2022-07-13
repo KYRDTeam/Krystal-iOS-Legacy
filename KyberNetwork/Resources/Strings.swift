@@ -145,4 +145,6 @@ struct Strings {
   // History
   static let numberOfTransfers = "number.of.transfers".toBeLocalised()
   static let txHash = "tx.hash".toBeLocalised()
+  static let xTransfers = "x.transfers".toBeLocalised()
+  static let oneTransfer = "1 Transfer".toBeLocalised()
 }

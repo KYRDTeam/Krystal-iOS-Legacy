@@ -857,6 +857,8 @@
 "number.of.transfers" = "Number of transfers: ";
 "tx.hash" = "Tx Hash";
 "multi.receive" = "Multi-receive";
+"x.transfers" = "%d Transfers";
+"1.transfer" = "1 Transfer";
 
 // Receive screen
 "receive_screen_warning_text" = "Send only %@ token or %@ to this address. Sending any other token may result in loss of your deposit.";
