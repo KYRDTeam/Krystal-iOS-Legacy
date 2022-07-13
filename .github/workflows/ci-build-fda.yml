@@ -71,9 +71,11 @@ jobs:
           - firebase_app_id: KRYSTAL_DEV_FIREBASE_APP_ID
             env: dev
             bump_build: true
+            slack_webhook: SLACK_WEBHOOK_DEV_IOS
           - firebase_app_id: KRYSTAL_STG_FIREBASE_APP_ID
             env: stg
             bump_build: false
+            slack_webhook: SLACK_WEBHOOK_STG_IOS
             
     runs-on: macos-11
     env:
@@ -245,10 +247,10 @@ jobs:
           SLACK_CHANNEL: release-krystal-ios-dev
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been built'
-          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | Dispatched manually in DEBUG mode | A new commit has been built | Download at https://console.firebase.google.com/u/0/project/stg-krystal-wallet/appdistribution/app/ios:com.kyrd.krystal.ios/releases'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }} | Dispatched manually in DEBUG mode'
           SLACK_USERNAME: deployment-notifier
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}
+          SLACK_WEBHOOK: ${{ secrets[matrix.slack_webhook] }}
   
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2
@@ -257,7 +259,7 @@ jobs:
           SLACK_CHANNEL: release-krystal-ios-dev
           SLACK_COLOR: 'fc5a03'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed'
-          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | Dispatched manually in DEBUG mode | The build/deployment failed'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }} | Dispatched manually in DEBUG mode'
           SLACK_USERNAME: deployment-notifier
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}
+          SLACK_WEBHOOK: ${{ secrets[matrix.slack_webhook] }}
