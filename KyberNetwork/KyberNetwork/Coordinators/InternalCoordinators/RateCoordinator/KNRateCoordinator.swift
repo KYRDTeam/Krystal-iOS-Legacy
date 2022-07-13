@@ -147,7 +147,7 @@ class KNRateCoordinator {
     }
     let splitCount = tokenAddress.count > 100 ? tokenAddress.count / 3 : 100
     let addressesTrucked = tokenAddress.chunked(into: splitCount)
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     var output: [TokenPrice] = []
     self.isLoadingExchangeTokenRates = true
     self.requestingChain = KNGeneralProvider.shared.currentChain

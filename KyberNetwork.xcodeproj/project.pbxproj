@@ -666,9 +666,10 @@
 		A6CECBB0287586AF001F3563 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBAF287586AF001F3563 /* ActivityIndicator.swift */; };
 		A6CECBB228758CC7001F3563 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBB128758CC7001F3563 /* ErrorTracker.swift */; };
 		A6CECBB4287593CB001F3563 /* Observable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBB3287593CB001F3563 /* Observable+.swift */; };
-		A6CECBB6287594C3001F3563 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBB5287594C3001F3563 /* Observable.swift */; };
 		A6D88649285C93E900BB565B /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D88648285C93E900BB565B /* KeyManager.swift */; };
 		A6D8864B285C958D00BB565B /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8864A285C958D00BB565B /* PasswordGenerator.swift */; };
+		A6D91BD2287EA2A600126DAA /* MarketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D91BD1287EA2A600126DAA /* MarketService.swift */; };
+		A6D91BD5287EA2C500126DAA /* MarketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D91BD4287EA2C500126DAA /* MarketEndpoint.swift */; };
 		A6D986092857450A0012D0ED /* TransactionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D986082857450A0012D0ED /* TransactionError.swift */; };
 		A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */; };
 		A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */; };
@@ -1774,9 +1775,10 @@
 		A6CECBAF287586AF001F3563 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		A6CECBB128758CC7001F3563 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		A6CECBB3287593CB001F3563 /* Observable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+.swift"; sourceTree = "<group>"; };
-		A6CECBB5287594C3001F3563 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		A6D88648285C93E900BB565B /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		A6D8864A285C958D00BB565B /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
+		A6D91BD1287EA2A600126DAA /* MarketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketService.swift; sourceTree = "<group>"; };
+		A6D91BD4287EA2C500126DAA /* MarketEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketEndpoint.swift; sourceTree = "<group>"; };
 		A6D986082857450A0012D0ED /* TransactionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionError.swift; sourceTree = "<group>"; };
 		A6D9861E285864660012D0ED /* SignerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignerTests.swift; sourceTree = "<group>"; };
 		A6D9862428586BAE0012D0ED /* KrystalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2275,7 +2277,6 @@
 		251ABC9F20578D980069687F /* KyberNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				A6E6C9D9281798D500EEB2E6 /* Utils */,
 				A6E6C9BB2816F92400EEB2E6 /* Domain */,
 				A6E6C9BF2816F9C900EEB2E6 /* Data */,
 				A6B3CD5A2811C35D005D0D66 /* DI */,
@@ -3484,6 +3485,7 @@
 		25CC0A922057DD2A0009D0D5 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				A6D91BD3287EA2BA00126DAA /* Endpoints */,
 				A6573B7E284DE14300A25CBF /* Services */,
 				258C47EA2081F20600BD4068 /* Reachability */,
 				25CC0AAC2059186E0009D0D5 /* Internal */,
@@ -4679,6 +4681,7 @@
 			isa = PBXGroup;
 			children = (
 				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
+				A6D91BD1287EA2A600126DAA /* MarketService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5059,6 +5062,14 @@
 			path = Key;
 			sourceTree = "<group>";
 		};
+		A6D91BD3287EA2BA00126DAA /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				A6D91BD4287EA2C500126DAA /* MarketEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
 		A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -5183,14 +5194,6 @@
 				A6E6C9EB2818056700EEB2E6 /* SolanaTransactionObject.swift */,
 			);
 			path = Storages;
-			sourceTree = "<group>";
-		};
-		A6E6C9D9281798D500EEB2E6 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				A6CECBB5287594C3001F3563 /* Observable.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		A6E6C9DC2817A3A600EEB2E6 /* Cells */ = {
@@ -6763,6 +6766,7 @@
 				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebasePerformance/FirebasePerformance.framework",
@@ -6814,6 +6818,10 @@
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalCore/OneSignalCore.framework/OneSignalCore",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalExtension/OneSignalExtension.framework/OneSignalExtension",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalOutcomes/OneSignalOutcomes.framework/OneSignalOutcomes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -6829,6 +6837,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebasePerformance.framework",
@@ -6880,6 +6889,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalOutcomes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -7141,6 +7154,7 @@
 				A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
 				A6B3CD582811C07C005D0D66 /* PendingHistoryTransactonViewModel.swift in Sources */,
+				A6D91BD5287EA2C500126DAA /* MarketEndpoint.swift in Sources */,
 				25E9E1F1208DE40F00A9090D /* KNEstimateGasLimitRequest.swift in Sources */,
 				A6DA40EF27F6E1450078C58E /* ExploreBannersCell.swift in Sources */,
 				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
@@ -7194,6 +7208,7 @@
 				252B174B20D3A0CE005B282D /* KNCustomToolbar.swift in Sources */,
 				29E14FD11F7F457D00185568 /* TransactionsStorage.swift in Sources */,
 				C3ED1DD82616F7540024970C /* Notifications.swift in Sources */,
+				A6D91BD2287EA2A600126DAA /* MarketService.swift in Sources */,
 				7E72917C27F1B36100ADF721 /* ChainType.swift in Sources */,
 				C30292F0260317EA001929E1 /* MarketingPartnerCollectionViewCell.swift in Sources */,
 				C3ED1DC82616EFDB0024970C /* NotificationCoordinator.swift in Sources */,
@@ -7354,7 +7369,6 @@
 				A66EC2DE287BE00300D15FE0 /* PortfolioAssetCell.swift in Sources */,
 				25682B7A20EE09C8009738C4 /* KNTransactionDetailsViewModel.swift in Sources */,
 				A6D986092857450A0012D0ED /* TransactionError.swift in Sources */,
-				A6CECBB6287594C3001F3563 /* Observable.swift in Sources */,
 				A66B9C6C280818F6001B7A3D /* ValidationResult.swift in Sources */,
 				296AF9A91F737F6F0058AF78 /* SendRawTransactionRequest.swift in Sources */,
 				258C47EF2081F29D00BD4068 /* NSObject+Kyber.swift in Sources */,

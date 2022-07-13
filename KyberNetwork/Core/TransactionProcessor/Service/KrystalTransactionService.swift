@@ -10,7 +10,7 @@ import Moya
 
 class KrystalTransactionService {
   
-  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+  let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
   
   func buildSwapTx(tx: RawSwapTransaction, completion: @escaping (TxObject?) -> ()) {
     provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { result in

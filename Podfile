@@ -50,7 +50,7 @@ def networkingPods
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'Starscream', '~> 3.1'
   pod 'Kingfisher', '~> 7.0'
-  pod 'Moya', '~> 10.0'
+  pod 'Moya'
   pod 'Mixpanel-swift'
 end
 
@@ -70,10 +70,11 @@ def utilitiesPods
 end
 
 def rx
-  pod 'RxSwift', '~> 5.0'
-  pod 'RxCocoa', '~> 5.0'
+  pod 'RxSwift', '~> 5.0.0'
+  pod 'RxCocoa', '~> 5.0.0'
   pod 'RxDataSources'
   pod 'NSObject+Rx'
+  pod 'Moya/RxSwift'
 end
 
 target 'KyberNetwork' do

@@ -176,7 +176,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     let signer = SignerFactory().getSigner(address: session.address)
     do {
       let signedData = try signer.signMessage(address: session.address, data: sendData, addPrefix: false)
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.request(.registerReferrer(address: session.address.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let isSuccess = json["success"] as? Bool, isSuccess {
@@ -202,7 +202,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     let signer = SignerFactory().getSigner(address: session.address)
     do {
       let signedData = try signer.signMessage(address: session.address, data: sendData, addPrefix: false)
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.request(.login(address: session.address.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result {

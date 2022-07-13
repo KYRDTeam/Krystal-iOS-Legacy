@@ -252,7 +252,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
     case .getPoolList(address: let address, chainId: let chainId):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
         switch result {
         case .failure(let error):
@@ -271,7 +271,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         }
       }
     case .getChartData(let address, let from, let to, let currency):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       var chainPath = KNGeneralProvider.shared.chainPath
       if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
         chainPath = chainType.chainPath()
@@ -295,7 +295,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         }
       }
     case .getTokenDetailInfo(address: let address):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       var chainPath = KNGeneralProvider.shared.chainPath
       if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
         chainPath = chainType.chainPath()
@@ -994,7 +994,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
         do {
           let signedData = try EthSigner().signHash(address: currentAddress, hash: sendData)
           print("[Send favorite nft] success")
-          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+          let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
           provider.request(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {

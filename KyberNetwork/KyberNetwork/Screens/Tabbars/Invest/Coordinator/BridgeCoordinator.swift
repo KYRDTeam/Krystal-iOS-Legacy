@@ -218,7 +218,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
   
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     self.rootViewController.showLoadingHUD()
     
     provider.request(.getServerInfo(chainId: chainId)) { result in
@@ -245,7 +245,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
   
   func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     self.rootViewController.showLoadingHUD()
     provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
       DispatchQueue.main.async {
@@ -266,7 +266,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
   
   func buildSwapChainTx(completion: @escaping ((TxObject?) -> Void)) {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     let fromAddress = self.currentAddress.addressString
     let toAddress = self.rootViewController.viewModel.currentSendToAddress
     let fromChainId = self.rootViewController.viewModel.currentSourceChain?.getChainId() ?? 0

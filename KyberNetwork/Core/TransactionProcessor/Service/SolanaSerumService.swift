@@ -11,7 +11,7 @@ import Moya
 class SolanaSerumService {
   
   func getMinimumBalanceForRentExemption(completion: @escaping (Int?) -> Void) {
-    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getMinimumBalanceForRentExemption) { result in
       switch result {
       case .success(let data):
@@ -30,7 +30,7 @@ class SolanaSerumService {
   }
 
   func getRecentBlockhash(completion: @escaping (String?) -> Void) {
-    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getRecentBlockhash) { result in
       switch result {
       case .success(let data):
@@ -51,7 +51,7 @@ class SolanaSerumService {
   }
   
   static func getLamportsPerSignature(completion: @escaping (Int?) -> Void) {
-    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getRecentBlockhash) { result in
       switch result {
       case .success(let data):
@@ -73,7 +73,7 @@ class SolanaSerumService {
   }
   
   func getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String, completion: @escaping (String?, String?) -> Void) {
-    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getTokenAccountsByOwner(ownerAddress: ownerAddress, tokenAddress: tokenAddress)) { result in
       switch result {
       case .success(let data):
@@ -108,7 +108,7 @@ class SolanaSerumService {
   }
   
   func sendSignedTransaction(signedTransaction: String, completion: @escaping (String?) -> Void) {
-    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.sendTransaction(signedTransaction: signedTransaction)) { result in
       switch result {
       case .success(let data):

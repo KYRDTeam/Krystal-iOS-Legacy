@@ -80,7 +80,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
         provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
           switch result {
           case .failure(let error):
@@ -103,7 +103,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
           chainPath = chainType.chainPath()
         }
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
         coordinator?.navigationController.showLoadingHUD()
         provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         DispatchQueue.main.async {
@@ -123,7 +123,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         }
       }
     case .getTokenDetailInfo(address: let address):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
       
         var chainPath = KNGeneralProvider.shared.chainPath
         if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {

@@ -76,7 +76,7 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func loadMarketAssets() {
-    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin()])
     provider.request(.getMarketingAssets) { (result) in
       switch result {
       case .success(let resp):
