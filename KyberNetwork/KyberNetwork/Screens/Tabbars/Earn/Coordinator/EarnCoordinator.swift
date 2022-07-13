@@ -11,7 +11,6 @@ import BigInt
 import Result
 import TrustCore
 import QRCodeReaderViewController
-import WalletConnect
 import MBProgressHUD
 import APIKit
 import JSONRPCKit
@@ -100,7 +99,7 @@ class EarnCoordinator: NSObject, Coordinator {
   func getLendingOverview() {
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getLendingOverview) { [weak self] (result) in
+      provider.requestWithFilter(.getLendingOverview) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
           let addresses = result.map { (dict) -> String in
@@ -265,7 +264,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getGasLimit(let platform, let src, let dest, let amount, let minDestAmount, let gasPrice, let isSwap):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildSwapAndDepositTx(
+      provider.requestWithFilter(.buildSwapAndDepositTx(
                         lendingPlatform: platform,
                         userAddress: self.session.wallet.addressString,
                         src: src,
@@ -470,7 +469,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
   
   func buildTx(lendingPlatform: String, userAddress: String, src: String, dest: String, srcAmount: String, minDestAmount: String, gasPrice: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.buildSwapAndDepositTx(
+    provider.requestWithFilter(.buildSwapAndDepositTx(
                       lendingPlatform: lendingPlatform,
                       userAddress: self.session.wallet.addressString,
                       src: src,
@@ -503,7 +502,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let dest = to.address.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
     let address = self.session.wallet.addressString
-    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
+    provider.requestWithFilter(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
@@ -526,7 +525,7 @@ extension EarnCoordinator: EarnViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.address.lowercased()
     let dest = to.address.lowercased()
-    provider.request(.getRefPrice(src: src, dst: dest)) { [weak self] result in
+    provider.requestWithFilter(.getRefPrice(src: src, dst: dest)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let change = json["refPrice"] as? String, let sources = json["sources"] as? [String] {
         self.earnSwapViewController?.coordinatorSuccessUpdateRefPrice(from: from, to: to, change: change, source: sources)

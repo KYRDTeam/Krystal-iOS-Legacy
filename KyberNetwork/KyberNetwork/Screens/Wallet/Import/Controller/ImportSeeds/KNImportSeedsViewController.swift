@@ -31,6 +31,8 @@ class KNImportSeedsViewController: KNBaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.seedsTextField.delegate = self
+    self.walletNameTextField.delegate = self
+    self.refCodeField.delegate = self
 
     self.recoverSeedsLabel.text = NSLocalizedString("recover.with.seeds", value: "Recover with seeds", comment: "")
     self.recoverSeedsLabel.addLetterSpacing()
@@ -138,24 +140,42 @@ class KNImportSeedsViewController: KNBaseViewController {
 }
 
 extension KNImportSeedsViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
   func textFieldShouldClear(_ textField: UITextField) -> Bool {
-    textField.text = ""
-    if textField == self.seedsTextField {
-      self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
-      self.wordsCountLabel.textColor = UIColor.Kyber.border
-      self.wordsCountLabel.addLetterSpacing()
-      self.updateNextButton()
+    switch textField {
+    case self.seedsTextField:
+      textField.text = ""
+      if textField == self.seedsTextField {
+        self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): 0"
+        self.wordsCountLabel.textColor = UIColor.Kyber.border
+        self.wordsCountLabel.addLetterSpacing()
+        self.updateNextButton()
+      }
+      return false
+    default:
+      return true
     }
-    return false
+    
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text
-    if textField == self.seedsTextField {
-      self.updateWordsCount()
+    switch textField {
+    case seedsTextField:
+      let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+      textField.text = text
+      if textField == self.seedsTextField {
+        self.updateWordsCount()
+      }
+      return false
+    default:
+      return true
     }
-    return false
+    
   }
 
   fileprivate func updateWordsCount() {

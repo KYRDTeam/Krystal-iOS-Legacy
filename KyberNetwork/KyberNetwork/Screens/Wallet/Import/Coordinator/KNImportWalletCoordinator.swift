@@ -146,7 +146,7 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     switch result {
     case .success(let signedData):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+      provider.requestWithFilter(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let isSuccess = json["success"] as? Bool, isSuccess {
             self.navigationController.showTopBannerView(message: "Success register referral code")

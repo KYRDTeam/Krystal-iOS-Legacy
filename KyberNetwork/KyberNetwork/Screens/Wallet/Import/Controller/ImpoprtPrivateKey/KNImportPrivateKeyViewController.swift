@@ -46,6 +46,9 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   fileprivate func setupUI() {
+    self.walletNameTextField.delegate = self
+    self.refCodeField.delegate = self
+    
     self.enterPrivateKeyTextLabel.text = NSLocalizedString("your.private.key", value: "Your Private Key", comment: "")
     self.enterPrivateKeyTextLabel.addLetterSpacing()
     self.enterPrivateKeyTextField.delegate = self
@@ -149,16 +152,27 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 }
 
 extension KNImportPrivateKeyViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text
-    if textField == self.enterPrivateKeyTextField {
-      if text.hasPrefix("0x") {
-        textField.text = string.drop0x
+    switch textField {
+    case enterPrivateKeyTextField:
+      let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+      textField.text = text
+      if textField == self.enterPrivateKeyTextField {
+        if text.hasPrefix("0x") {
+          textField.text = string.drop0x
+        }
+        self.updateNextButton()
       }
-      self.updateNextButton()
+      return false
+    default:
+      return true
     }
-    return false
   }
 }
 

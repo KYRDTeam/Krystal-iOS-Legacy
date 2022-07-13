@@ -2,11 +2,17 @@
 
 import BigInt
 import WalletCore
+import Darwin
+import Foundation
 
 extension String {
 
   func removeGroupSeparator() -> String {
     return self.replacingOccurrences(of: EtherNumberFormatter.short.groupingSeparator, with: "")
+  }
+  
+  func removeGroupSeparator(groupingSeparator: String) -> String {
+    return self.replacingOccurrences(of: groupingSeparator, with: "")
   }
 
   func cleanStringToNumber() -> String {
@@ -130,8 +136,10 @@ extension String {
       return "\(round(million*10)/10)M"
     } else if thousand >= 1.0 {
       return ("\(round(thousand*10/10))K")
+    } else if number < pow(10, -10) {
+      return "0"
     } else {
-      return StringFormatter.amountString(value: number)
+      return String(format: "%.10f", locale: .current, number).displayRate()
     }
   }
 
@@ -227,6 +235,13 @@ extension String {
   
   var isTrustPK: Bool {
     return self.count == 64
+  }
+
+  var isValidURL: Bool {
+    if let url = URL(string: self) {
+      return UIApplication.shared.canOpenURL(url)
+    }
+    return false
   }
 }
 

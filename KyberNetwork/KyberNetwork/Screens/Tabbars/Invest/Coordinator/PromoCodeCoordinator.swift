@@ -39,7 +39,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
     self.navigationController.displayLoading()
     let address = self.session.wallet.addressString
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.claimPromotion(code: code, address: address)) { result in
+    provider.requestWithFilter(.claimPromotion(code: code, address: address)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -67,7 +67,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
     case .checkCode(let code):
       guard !code.isEmpty else { return }
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getPromotions(code: code, address: "")) { result in
+      provider.requestWithFilter(.getPromotions(code: code, address: "")) { result in
         switch result {
         case .success(let resp):
           let decoder = JSONDecoder()
@@ -84,7 +84,7 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
     case .loadUsedCode:
       let address = self.session.wallet.addressString
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getPromotions(code: "", address: address)) { result in
+      provider.requestWithFilter(.getPromotions(code: "", address: address)) { result in
         switch result {
         case .success(let resp):
           let decoder = JSONDecoder()

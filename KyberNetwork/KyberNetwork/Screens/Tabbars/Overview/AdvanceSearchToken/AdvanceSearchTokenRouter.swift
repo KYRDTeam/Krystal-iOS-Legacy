@@ -39,34 +39,21 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     viewController?.navigationController?.pushViewController(controller, animated: true)
   }
   
-  func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+  func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
     self.pendingAction = nil
-    let popup = SwitchChainViewController()
     var newChain = KNGeneralProvider.shared.currentChain
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
-    popup.selectedChain = newChain
-    popup.nextButtonTitle = "Confirm"
-    popup.completionHandler = { selected in
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
-        self.coordinator?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: selected)
-        if selected == newChain {
-          self.pendingAction = completion
-        }
-        return
-      }
-      KNGeneralProvider.shared.currentChain = selected
-      var selectedAddress = ""
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.addressString
-      }
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
-      if selected == newChain {
-        self.pendingAction = completion
-      }
+    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+      self.coordinator?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: newChain)
+      self.pendingAction = completion
+      return
     }
-    viewController?.present(popup, animated: true, completion: nil)
+    let viewModel = SwitchChainWalletsListViewModel(selected: newChain)
+    let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+    viewController?.present(secondPopup, animated: true, completion: nil)
+    self.pendingAction = completion
   }
   
   func appCoordinatorDidUpdateNewSession() {
@@ -81,7 +68,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
     switch event {
       case .getPoolList(address: let address, chainId: let chainId):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+        provider.requestWithFilter(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
           switch result {
           case .failure(let error):
             controller.coordinatorFailUpdateApi(error)
@@ -105,7 +92,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
         }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
         coordinator?.navigationController.showLoadingHUD()
-        provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+        provider.requestWithFilter(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         DispatchQueue.main.async {
           self.coordinator?.navigationController.hideLoading()
         }
@@ -130,7 +117,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           chainPath = chainType.chainPath()
         }
         coordinator?.navigationController.showLoadingHUD()
-        provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+        provider.requestWithFilter(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
         DispatchQueue.main.async {
           self.coordinator?.navigationController.hideLoading()
         }
@@ -159,7 +146,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
             secondButtonTitle: Strings.OK,
             firstButtonTitle: Strings.Cancel,
             secondButtonAction: {
-              self.showPopupSwitchChain(controller) {
+              self.handleSwitchChain(controller) {
                 self.coordinator?.openSendTokenView(token)
                 self.pendingAction = nil
               }
@@ -183,7 +170,7 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
           secondButtonTitle: Strings.OK,
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
-            self.showPopupSwitchChain(controller) {
+            self.handleSwitchChain(controller) {
               self.coordinator?.openSwapView(token: token, isBuy: true)
               self.pendingAction = nil
             }
@@ -198,32 +185,18 @@ extension AdvanceSearchTokenRouter: ChartViewControllerDelegate {
       }
     case .invest(token: let token):
       self.coordinator?.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
-    case .openEtherscan(address: let address):
-      self.coordinator?.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
+    case .openEtherscan(let address, let chain):
+      self.coordinator?.openCommunityURL("\(chain.customRPC().etherScanEndpoint)address/\(address)")
     case .openWebsite(url: let url):
       self.coordinator?.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.coordinator?.openCommunityURL("https://twitter.com/\(name)/")
-    case .getCandleChartData(address: let address, from: let from, to: let to, currency: let currency):
-      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTradingViewData(chainPath: String(KNGeneralProvider.shared.chainPath.dropFirst()), address: address, quote: currency, from: from * 1000)) { result in
-        switch result {
-        case .failure(let error):
-          controller.coordinatorFailUpdateApi(error)
-        case .success(let resp):
-          let decoder = JSONDecoder()
-          do {
-            let data = try decoder.decode(TradingViewChartResponse.self, from: resp.data)
-            
-            controller.coordinatorDidUpdateTradingViewData(data.data)
-            print(data)
-          } catch let error {
-            print("[Debug]" + error.localizedDescription)
-          }
-        }
-      }
     case .selectPool(source: let source, quote: let quote):
       break
+    case .openDiscord(link: let link):
+      self.coordinator?.openCommunityURL(link)
+    case .openTelegram(link: let link):
+      self.coordinator?.openCommunityURL(link)
     }
   }
 

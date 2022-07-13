@@ -13,26 +13,16 @@ class TokenPoolCell: UITableViewCell {
   @IBOutlet weak var token1Icon: UIImageView!
   @IBOutlet weak var pairNameLabel: UILabel!
   @IBOutlet weak var fullNameLabel: UILabel!
-  @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var totalValueLabel: UILabel!
 
   @IBOutlet weak var pairNameLabelWidth: NSLayoutConstraint!
-  @IBOutlet weak var valueLabelWidth: NSLayoutConstraint!
+  @IBOutlet weak var containerView: UIView!
   
-  
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    // Initialization code
-  }
-
-  override func setSelected(_ selected: Bool, animated: Bool) {
-    super.setSelected(selected, animated: animated)
-  }
+  func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
+    containerView.backgroundColor = isSelecting ? UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.2) : UIColor.Kyber.cellBackground
     
-  func updateUI(poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
     var baseToken = poolDetail.token0
     var otherToken = poolDetail.token1
     
@@ -51,8 +41,6 @@ class TokenPoolCell: UITableViewCell {
     self.pairNameLabel.text = "\(baseToken.symbol)/\(otherToken.symbol)"
     self.pairNameLabelWidth.constant = "\(baseToken.symbol)/\(otherToken.symbol)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.fullNameLabel.text = poolDetail.name
-    self.valueLabel.text = "$\(baseToken.usdValue)"
-    self.valueLabelWidth.constant = "$\(baseToken.usdValue)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 16))
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
     

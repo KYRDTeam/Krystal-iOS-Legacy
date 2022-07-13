@@ -7,6 +7,8 @@ on:
       - main
       - ci-test
       - testflight-build
+      - debug-action
+      - feature/slack-notification
 
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
@@ -26,8 +28,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GH_PAT }}
           submodules: recursive
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
       - name: Extract branch
         shell: bash
@@ -120,6 +122,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+          token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
 
       - name: Get configuration items
         run: |
@@ -247,3 +250,32 @@ jobs:
           RUN_ID: ${{ github.run_id }}
         shell: bash
         run: .github/failure
+
+  notify:
+    needs:
+      - prepare
+      - build-ios
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification on Success
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: release-krystal-ios-dev
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | A new commit has been built'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_USERNAME: deployment-notifier
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}
+  
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2
+        if: failure()
+        env:
+          SLACK_CHANNEL: release-krystal-ios-dev
+          SLACK_COLOR: 'fc5a03'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: ':rocket: Krystal-iOS | ${{ matrix.command }} | The build/deployment failed'
+          SLACK_TITLE: ':rocket: Krystal-iOS | ${{ matrix.command }}'
+          SLACK_USERNAME: deployment-notifier
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_DEV_IOS }}

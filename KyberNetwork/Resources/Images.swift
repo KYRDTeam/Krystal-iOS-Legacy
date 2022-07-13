@@ -20,6 +20,7 @@ struct Images {
   static let explorePromotionIcon = UIImage(named: "promo_code_icon")!
   static let exploreRewardHuntingIcon = UIImage(named: "reward_hunting_icon")!
   static let exploreBridgeIcon = UIImage(named: "bridge_icon")!
+  
   // History
   static let giftIcon = UIImage(named: "gift_icon")!
   static let warningRedIcon = UIImage(named: "warning_red_icon")!
@@ -31,6 +32,8 @@ struct Images {
   static let historyContractInteraction = UIImage(named: "history_contract_interaction_icon")!
   static let historyClaimReward = UIImage(named: "history_claim_reward_icon")!
   static let historyMultisend = UIImage(named: "multiSend_icon")!
+  static let warningYellowIcon = UIImage(named: "warning_yellow_icon")!
+  static let openLinkIcon = UIImage(named: "open_link_icon_blue")!
   
   // Overview
   static let emptyAsset = UIImage(named: "empty_asset_icon")
@@ -47,4 +50,5 @@ struct Images {
   static let failure = UIImage(named: "fail")!
   static let pending = UIImage(named: "loading_icon")!
   static let txSuccess = UIImage(named: "tx_success_icon")!
+  static let helpLargeIcon = UIImage(named: "help_icon_large")!
 }

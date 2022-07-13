@@ -156,13 +156,41 @@ class BridgeViewModel {
   }
   
   func viewForHeader(section: Int) -> UIView {
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32))
-    view.backgroundColor = UIColor(named: "mainViewBgColor")!
-    let label = UILabel(frame: CGRect(x: 49, y: 0, width: 40, height: 24))
-    label.text = section == 0 ? "From" : "To"
-    label.textColor = UIColor(named: "textWhiteColor")!
-    view.addSubview(label)
-    return view
+    if section == 0 {
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 142))
+      view.backgroundColor = UIColor(named: "mainViewBgColor")!
+      let titleLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width - 140) / 2, y: 8, width: 140, height: 26))
+      titleLabel.text = Strings.KrystalBridge
+      titleLabel.textColor = UIColor(named: "textWhiteColor")!
+      titleLabel.font = UIFont.Kyber.regular(with: 22)
+
+      let detailLabel = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width - 300) / 2, y: 45, width: 300, height: 44))
+      detailLabel.text = "Seamlessly transfer tokens from one chain to another"
+      detailLabel.textColor = UIColor(named: "textWhiteColor70")!
+      detailLabel.font = UIFont.Kyber.regular(with: 16)
+      detailLabel.numberOfLines = 0
+      detailLabel.lineBreakMode = .byWordWrapping
+      detailLabel.textAlignment = .center
+
+      let label = UILabel(frame: CGRect(x: 49, y: 117, width: 40, height: 24))
+      label.text = Strings.From
+      label.textColor = UIColor(named: "textWhiteColor")!
+      label.font = UIFont.Kyber.regular(with: 16)
+
+      view.addSubview(titleLabel)
+      view.addSubview(detailLabel)
+      view.addSubview(label)
+      return view
+    } else {
+      let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32))
+      view.backgroundColor = UIColor(named: "mainViewBgColor")!
+      let label = UILabel(frame: CGRect(x: 49, y: 0, width: 40, height: 24))
+      label.font = UIFont.Kyber.regular(with: 16)
+      label.text = Strings.To
+      label.textColor = UIColor(named: "textWhiteColor")!
+      view.addSubview(label)
+      return view
+    }
   }
   
   func viewForFooter() -> UIView {
@@ -290,7 +318,8 @@ class BridgeViewModel {
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
         cell.scanQRBlock = self.scanQRBlock
-        cell.updateUI()
+        cell.updateDescriptionLabel(tokenString: self.currentSourceToken?.symbol, chainString: self.currentDestChain?.chainName())
+        cell.updateErrorUI()
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!

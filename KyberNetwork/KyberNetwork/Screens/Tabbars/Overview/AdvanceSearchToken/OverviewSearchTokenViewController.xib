@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -124,7 +124,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-KH-51x">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-KH-51x">
                     <rect key="frame" x="0.0" y="162" width="375" height="505"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
@@ -167,7 +167,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n3W-KU-Gsj" customClass="TagListView" customModule="TagListView">
-                            <rect key="frame" x="26" y="39" width="323" height="36"/>
+                            <rect key="frame" x="26" y="39" width="323" height="139"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -206,7 +206,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gM2-Su-00S" customClass="TagListView" customModule="TagListView">
-                            <rect key="frame" x="26" y="209" width="323" height="36"/>
+                            <rect key="frame" x="26" y="209" width="323" height="286"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -241,6 +241,8 @@
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="gM2-Su-00S" secondAttribute="bottom" constant="10" id="5vW-Ep-UsS"/>
+                        <constraint firstItem="rws-Xa-NEr" firstAttribute="top" secondItem="n3W-KU-Gsj" secondAttribute="bottom" constant="2" id="CUa-Sw-Vh5"/>
                         <constraint firstItem="n3W-KU-Gsj" firstAttribute="top" secondItem="YQ0-4h-jAu" secondAttribute="bottom" constant="10" id="U3W-xe-6np"/>
                         <constraint firstItem="rws-Xa-NEr" firstAttribute="top" secondItem="q8G-Fg-GEl" secondAttribute="top" constant="180" id="WZM-SY-H2Q"/>
                         <constraint firstItem="gM2-Su-00S" firstAttribute="top" secondItem="rws-Xa-NEr" secondAttribute="bottom" constant="10" id="XTN-Zk-ai8"/>

@@ -79,16 +79,16 @@ class RewardsViewController: KNBaseViewController {
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    guard case .real(let account) = self.session?.wallet.type else {
-      // current wallet is watch wallet
+    
+    switch self.session?.wallet.type {
+    case .watch:
       emptyView.isHidden = false
       emptyLabel.text = "You are using watch wallet".toBeLocalised()
       emptyButton.isHidden = true
-      return
+    default:
+      emptyButton.isHidden = false
+      emptyLabel.text = "You don't have any reward".toBeLocalised()
     }
-    
-    emptyButton.isHidden = false
-    emptyLabel.text = "You don't have any reward".toBeLocalised()
   }
 
   func configUI() {

@@ -36,8 +36,9 @@ class PoolInfo: Codable {
   
   func liquidityPoolString() -> String {
     let liquidity = Double(self.liquidity) ?? 0
-    let displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
-    let displayLiquiditySring = StringFormatter.amountString(value: displayLiquidity)
+    var displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
+    let currencyFormatter = StringFormatter()
+    let displayLiquiditySring = currencyFormatter.currencyString(value: displayLiquidity, decimals: 0)
     return " Pool: \(displayLiquiditySring) \(self.symbol)"
   }
 }
@@ -148,6 +149,9 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
+  @UserDefault(key: Constants.bridgeWarningAcceptedKey, defaultValue: false)
+  var bridgeWaringAccepted: Bool
+  
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
     let controller = BridgeViewController(viewModel: viewModel)
@@ -165,7 +169,25 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
+    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: {
+      if !self.bridgeWaringAccepted {
+        let alertController = KNPrettyAlertController(
+          title: Strings.warningTitle,
+          isWarning: true,
+          message: Strings.bridgeWarningText,
+          secondButtonTitle: Strings.understand,
+          firstButtonTitle: Strings.goBack,
+          secondButtonAction: {
+            self.bridgeWaringAccepted = true
+          },
+          firstButtonAction: {
+            self.navigationController.popViewController(animated: true, completion: nil)
+          }
+        )
+        alertController.popupHeight = 350
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      }
+    })
     self.fetchData()
   }
   
@@ -221,7 +243,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
     
-    provider.request(.getServerInfo(chainId: chainId)) { result in
+    provider.requestWithFilter(.getServerInfo(chainId: chainId)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -247,7 +269,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
+    provider.requestWithFilter(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -278,7 +300,7 @@ class BridgeCoordinator: NSObject, Coordinator {
     let amount = self.rootViewController.viewModel.sourceAmount.amountBigInt(decimals: decimal) ?? BigInt(0)
     let amountString = amount.description
     
-    provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
+    provider.requestWithFilter(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -477,7 +499,13 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
           let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          var bridgeFeeString = ""
+          let viewModel = self.rootViewController.viewModel
+          if let currentDestToken = viewModel.currentDestToken {
+            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+          }
+
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc

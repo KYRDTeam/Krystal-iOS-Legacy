@@ -55,6 +55,14 @@ lane :all do
 #  sentry_upload
 end
 
+lane :debug_mode do
+  prepare_keychain
+  install_profiles
+  update_project
+  build_debug
+#  sentry_upload
+end
+
 # pre_release build and upload to testflight 
 lane :pre_release do 
   prepare_keychain
@@ -215,6 +223,28 @@ lane :build do
   )
 end
 
+lane :build_debug do
+  # build app
+  @tid = bundle_id + ".KrystalNotificationServiceExtension" 
+  build_app(
+    workspace: "KyberNetwork.xcworkspace",
+    configuration: "Debug",
+    scheme: "KyberNetwork",
+    clean: true,
+    output_directory: "archives",
+    output_name: "KyberSwap.ipa",
+    sdk: "iphoneos",
+    export_method: "development",
+    export_team_id: team_id,
+    export_options: {
+      provisioningProfiles: { 
+        bundle_id => ad_hoc_profile,
+        @tid => ext_ad_hoc_profile
+      }
+    }
+  )
+end
+
 lane :sentry_upload do 
   sentry_upload_dsym(
     auth_token: sentry_token,
@@ -236,4 +266,16 @@ lane :bump_build_number do
   @version = get_version_number(xcodeproj: "KyberNetwork.xcodeproj", target: "KyberNetwork")
   @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
   git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "increase build number " + @build_number + " (ver: " + @version + ")")
+end
+
+lane :ci_bump_build_number do
+  # make sure repo is clean
+  reset_git_repo(skip_clean: true, force: true)
+  git_pull
+  @old_build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj")
+  increment_build_number()
+  git_add
+  @version = get_version_number(xcodeproj: "KyberNetwork.xcodeproj", target: "KyberNetwork")
+  @build_number = get_build_number(xcodeproj: "KyberNetwork.xcodeproj") 
+  git_commit(path: ["./*.plist", "KyberNetwork.xcodeproj/project.pbxproj"], message: "[no ci] increase build number " + @build_number + " (ver: " + @version + ")")
 end

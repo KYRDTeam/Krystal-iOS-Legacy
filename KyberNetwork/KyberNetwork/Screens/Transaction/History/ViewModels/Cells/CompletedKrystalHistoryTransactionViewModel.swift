@@ -33,7 +33,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
   }
   
   var displayedAmountString: String {
-    let defaultAmountString = "--/--"
+    let defaultAmountString = Strings.FunctionCall
     switch transactionType {
     case .swap, .supply, .withdraw:
       if self.isError {
@@ -57,7 +57,7 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       let valueString = valueBigInt.string(decimals: self.historyItem.extraData?.receiveToken?.decimals ?? 18, minFractionDigits: 0, maxFractionDigits: 6)
       return "+ \(valueString) \(self.historyItem.extraData?.receiveToken?.symbol ?? "")"
     case .approval:
-      return self.historyItem.extraData?.token?.name ?? ""
+      return self.historyItem.extraData?.token?.symbol ?? ""
     case .claimReward:
       if let decimal = self.historyItem.extraData?.receiveToken?.decimals, let symbol = self.historyItem.extraData?.receiveToken?.symbol {
         guard let receiveValueString = self.historyItem.extraData?.receiveValue, let receiveValue = BigInt(receiveValueString) else { return "" }
@@ -77,6 +77,8 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return "\(fromAmountString) \(from.token) → \(toAmountString) \(to.token)"
     case .contractInteraction:
       return defaultAmountString
+    case .multiSend, .multiReceive:
+      return "\(historyItem.extraData?.txns?.count ?? 0) transfers"
     }
   }
   
@@ -131,6 +133,10 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Strings.claimReward.uppercased()
     case .bridge:
       return Strings.bridge.uppercased()
+    case .multiSend:
+      return Strings.multiSend.uppercased()
+    case .multiReceive:
+      return Strings.multiReceive.uppercased()
     default:
       return Strings.contractExecution.uppercased()
     }
@@ -160,6 +166,8 @@ class CompletedKrystalHistoryTransactionViewModel: TransactionHistoryItemViewMod
       return Images.historyClaimReward
     case .bridge:
       return Images.historyBridge
+    case .multiSend, .multiReceive:
+      return Images.historyMultisend
     default:
       return Images.historyContractInteraction
     }
