@@ -14,6 +14,7 @@ struct KNTransactionFilter: Codable {
   let isContractInteraction: Bool
   let isClaimReward: Bool
   let isBridge: Bool
+  let isMultisend: Bool
   let tokens: [String]
 }
 
@@ -29,6 +30,7 @@ class KNTransactionFilterViewModel {
   var isContractInteraction: Bool = false
   var isClaimReward: Bool = false
   var isBridge: Bool = false
+  var isMultisend: Bool = false
   private(set) var tokens: [String] = []
   private(set) var supportedTokens: [String] = []
   private(set) var isSelectAll: Bool = true
@@ -46,6 +48,7 @@ class KNTransactionFilterViewModel {
     self.isContractInteraction = filter.isContractInteraction
     self.isClaimReward = filter.isClaimReward
     self.isBridge = filter.isBridge
+    self.isMultisend = filter.isMultisend
     self.tokens = filter.tokens
     self.supportedTokens = tokens
     if filter.tokens.count < self.supportedTokens.count / 2 { self.isSelectAll = false }
@@ -106,6 +109,8 @@ class KNTransactionFilterViewModel {
     self.isTrade = true
     self.isContractInteraction = true
     self.isClaimReward = true
+    self.isBridge = true
+    self.isMultisend = true
     self.tokens = self.supportedTokens
     self.isSelectAll = true
     self.isSeeMore = false
@@ -143,6 +148,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
   @IBOutlet weak var tradeButton: UIButton!
   @IBOutlet weak var contractInteractionButton: UIButton!
   @IBOutlet weak var bridgeButton: UIButton!
+  @IBOutlet weak var multisendButton: UIButton!
   
   @IBOutlet weak var claimRewardButton: UIButton!
   @IBOutlet weak var selectButton: UIButton!
@@ -329,6 +335,13 @@ class KNTransactionFilterViewController: KNBaseViewController {
         self.bridgeButton.backgroundColor = UIColor.Kyber.navButtonBg
         self.bridgeButton.setTitleColor(UIColor.Kyber.normalText, for: .normal)
       }
+      if self.viewModel.isMultisend {
+        self.multisendButton.backgroundColor = UIColor.Kyber.buttonBg
+        self.multisendButton.setTitleColor(UIColor.Kyber.mainViewBg, for: .normal)
+      } else {
+        self.multisendButton.backgroundColor = UIColor.Kyber.navButtonBg
+        self.multisendButton.setTitleColor(UIColor.Kyber.normalText, for: .normal)
+      }
       
       if let date = self.viewModel.from {
         self.fromDatePicker.setDate(date, animated: false)
@@ -429,7 +442,12 @@ class KNTransactionFilterViewController: KNBaseViewController {
     viewModel.isBridge.toggle()
     updateUI(isUpdatingTokens: false)
   }
-
+  
+  @IBAction func multisendWasTapped(_ sender: Any) {
+    viewModel.isMultisend.toggle()
+    updateUI(isUpdatingTokens: false)
+  }
+  
   @objc func fromDatePickerDidChange(_ sender: UIDatePicker) {
     let dob = DateFormatterUtil.shared.kycDateFormatter.string(from: self.fromDatePicker.date)
     self.fromTextField.text = dob
@@ -470,6 +488,7 @@ class KNTransactionFilterViewController: KNBaseViewController {
       isContractInteraction: self.viewModel.isContractInteraction,
       isClaimReward: self.viewModel.isClaimReward,
       isBridge: self.viewModel.isBridge,
+      isMultisend: self.viewModel.isMultisend,
       tokens: self.viewModel.tokens
     )
     self.navigationController?.popViewController(animated: true, completion: {
