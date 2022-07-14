@@ -61,7 +61,7 @@ class BridgeSubTransactionCell: UITableViewCell {
     chainNameLabel.text = tx.chainName
     chainIconImageView.image = getChainIcon(chainID: tx.chainId)
     
-    let amountString = (isSourceTransaction ? "+ " : "- ") + tx.amount.fullString(decimals: tx.decimals) + " " + tx.token
+    let amountString = (isSourceTransaction ? "- " : "+ ") + tx.amount.fullString(decimals: tx.decimals) + " " + tx.token
     amountLabel.text = amountString
     amountValueWidth.constant = amountString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     txHashLabel.text = tx.tx

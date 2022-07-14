@@ -53,6 +53,7 @@ struct Strings {
   static let gasFeeDescription = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
   
   // History
+  static let contract = "contract".toBeLocalised()
   static let success = "success".toBeLocalised()
   static let failure = "failed".toBeLocalised()
   static let pending = "pending".toBeLocalised()
