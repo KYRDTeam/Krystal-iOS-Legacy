@@ -290,7 +290,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     let address = currentAddress.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
-      provider.request(.getPreScreeningWallet(address: address)) { result in
+      provider.requestWithFilter(.getPreScreeningWallet(address: address)) { result in
         DispatchQueue.main.async {
           completion(result)
         }

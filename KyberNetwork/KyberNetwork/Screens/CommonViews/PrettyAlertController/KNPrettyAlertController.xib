@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,18 +12,19 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPrettyAlertController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNPrettyAlertController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="min-nb-lga" id="Adv-6V-1Zp"/>
                 <outlet property="containerView" destination="BsK-bO-fJV" id="CYY-wl-dsa"/>
                 <outlet property="contentLabel" destination="leR-UV-syU" id="JRb-Aw-5tg"/>
                 <outlet property="contentViewTopContraint" destination="nrs-rs-MZT" id="0yb-Aw-bos"/>
                 <outlet property="firstButton" destination="wWN-4D-kOE" id="nHt-Qb-46N"/>
+                <outlet property="popupHeightContraint" destination="lwi-dy-qip" id="74z-yX-kps"/>
                 <outlet property="secondButton" destination="zmr-vR-Vc9" id="mjg-b2-MD3"/>
                 <outlet property="titleLabel" destination="c5U-te-ZY2" id="QkS-E0-iyT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -38,13 +39,13 @@
                     <rect key="frame" x="0.0" y="267" width="375" height="300"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nam urna leo, interdum eu pretium a, lorem viverra imperdiet arcu. Curabitur interdum, enim a varius semper." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leR-UV-syU">
-                            <rect key="frame" x="21" y="88.5" width="333" height="56"/>
+                            <rect key="frame" x="27" y="88.5" width="321" height="56.5"/>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                             <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWN-4D-kOE">
-                            <rect key="frame" x="36" y="186.5" width="139.5" height="38"/>
+                            <rect key="frame" x="36" y="187" width="139.5" height="38"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="Aaf-ZQ-6h5"/>
@@ -58,19 +59,19 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5U-te-ZY2">
-                            <rect key="frame" x="147" y="43" width="81.5" height="23.5"/>
+                            <rect key="frame" x="141.5" y="43" width="92.5" height="23.5"/>
                             <color key="tintColor" name="textRedColor"/>
                             <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
                             <color key="textColor" name="textWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmr-vR-Vc9">
-                            <rect key="frame" x="199.5" y="186.5" width="139.5" height="38"/>
+                            <rect key="frame" x="199.5" y="187" width="139.5" height="38"/>
                             <color key="backgroundColor" name="buttonBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="Uaf-6D-wkL"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="15"/>
                             <state key="normal" title="YES">
                                 <color key="titleColor" name="mainViewBgColor"/>
                             </state>
@@ -81,11 +82,11 @@
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
                     <constraints>
-                        <constraint firstItem="leR-UV-syU" firstAttribute="leading" secondItem="BsK-bO-fJV" secondAttribute="leading" constant="21" id="1Av-z1-rAf"/>
+                        <constraint firstItem="leR-UV-syU" firstAttribute="leading" secondItem="BsK-bO-fJV" secondAttribute="leading" constant="27" id="1Av-z1-rAf"/>
                         <constraint firstItem="c5U-te-ZY2" firstAttribute="top" secondItem="BsK-bO-fJV" secondAttribute="top" constant="43" id="Hpb-KU-lEY"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="c5U-te-ZY2" secondAttribute="trailing" constant="21" id="J7i-bN-3ii"/>
                         <constraint firstItem="c5U-te-ZY2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BsK-bO-fJV" secondAttribute="leading" constant="21" id="Ky3-XV-noL"/>
-                        <constraint firstAttribute="trailing" secondItem="leR-UV-syU" secondAttribute="trailing" constant="21" id="RfL-U2-9EG"/>
+                        <constraint firstAttribute="trailing" secondItem="leR-UV-syU" secondAttribute="trailing" constant="27" id="RfL-U2-9EG"/>
                         <constraint firstItem="leR-UV-syU" firstAttribute="top" secondItem="c5U-te-ZY2" secondAttribute="bottom" constant="22" id="Vfa-c1-vmy"/>
                         <constraint firstItem="zmr-vR-Vc9" firstAttribute="width" secondItem="wWN-4D-kOE" secondAttribute="width" id="XIm-Pg-4oT"/>
                         <constraint firstAttribute="trailing" secondItem="zmr-vR-Vc9" secondAttribute="trailing" constant="36" id="YcT-CE-m83"/>
@@ -109,7 +110,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="min-nb-lga" secondAttribute="trailing" id="NIA-QQ-kWc"/>
                 <constraint firstItem="min-nb-lga" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="dda-Pc-C3b"/>
                 <constraint firstItem="BsK-bO-fJV" firstAttribute="top" secondItem="min-nb-lga" secondAttribute="bottom" id="ipV-Sz-9aw"/>
-                <constraint firstItem="BsK-bO-fJV" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="267" id="nrs-rs-MZT"/>
+                <constraint firstItem="BsK-bO-fJV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="267" id="nrs-rs-MZT"/>
                 <constraint firstItem="min-nb-lga" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ujz-Od-pwL"/>
                 <constraint firstItem="BsK-bO-fJV" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="wa5-GU-IZh"/>
             </constraints>
@@ -133,7 +134,7 @@
             <color red="0.16078431372549021" green="0.17647058823529413" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textRedColor">
-            <color red="0.9570000171661377" green="0.33300000429153442" blue="0.19599999487400055" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textWhiteColor">
             <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>

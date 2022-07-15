@@ -396,7 +396,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                       state: .pending,
                       fromSymbol: nil,
                       toSymbol: nil,
-                      transactionDescription: "Application",
+                      transactionDescription: Strings.application,
                       transactionDetailDescription: tx.to ?? "",
                       transactionObj: nil,
                       eip1559Tx: eipTx
@@ -450,7 +450,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                       state: .pending,
                       fromSymbol: nil,
                       toSymbol: nil,
-                      transactionDescription: "Application",
+                      transactionDescription: Strings.applicatio,
                       transactionDetailDescription: tx.to ?? "",
                       transactionObj: sendTx,
                       eip1559Tx: nil

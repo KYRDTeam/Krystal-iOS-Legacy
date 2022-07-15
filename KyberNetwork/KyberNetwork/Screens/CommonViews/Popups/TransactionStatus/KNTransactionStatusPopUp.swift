@@ -164,7 +164,7 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         } else if self.transaction.type == .multiSend {
           return "Successfully sent tokens"
         } else if self.transaction.type == .contractInteraction {
-          if self.transaction.transactionDescription == "Application" {
+          if self.transaction.transactionDescription == Strings.application {
             return "Dapp transaction is successfull".toBeLocalised()
           } else {
             return "Successfully claim".toBeLocalised()

@@ -37,7 +37,7 @@ class ExploreMenuItemViewModel {
     case .rewardHunting:
       return Strings.rewardHunting
     case .bridge:
-      return Strings.bridge
+      return Strings.KrystalBridge
     }
   }
   

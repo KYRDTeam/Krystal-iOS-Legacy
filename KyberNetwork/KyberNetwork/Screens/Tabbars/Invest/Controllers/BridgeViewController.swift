@@ -281,7 +281,7 @@ extension BridgeViewController: UITableViewDataSource {
 
 extension BridgeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return CGFloat(32.0)
+    return section == 0 ? CGFloat(150.0) : CGFloat(32.0)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

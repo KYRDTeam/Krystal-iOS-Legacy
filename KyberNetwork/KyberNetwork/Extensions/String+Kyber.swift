@@ -28,6 +28,10 @@ extension String {
   func removeGroupSeparator() -> String {
     return self.replacingOccurrences(of: EtherNumberFormatter.short.groupingSeparator, with: "")
   }
+  
+  func removeGroupSeparator(groupingSeparator: String) -> String {
+    return self.replacingOccurrences(of: groupingSeparator, with: "")
+  }
 
   func cleanStringToNumber() -> String {
     let decimals: Character = EtherNumberFormatter.short.decimalSeparator.first!

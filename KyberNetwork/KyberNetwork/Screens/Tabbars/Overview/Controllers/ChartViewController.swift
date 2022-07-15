@@ -276,7 +276,7 @@ class ChartViewModel {
     }
   }
   
-  var displayPoolName: String {
+  var selectedPoolPair: String {
     guard let selectedPoolDetail = selectedPoolDetail else {
       return ""
     }
@@ -285,7 +285,10 @@ class ChartViewModel {
     } else {
       return "\(selectedPoolDetail.token0.symbol)/\(selectedPoolDetail.token1.symbol)"
     }
-    
+  }
+  
+  var selectedPoolName: String? {
+    return selectedPoolDetail?.name
   }
   
   var baseTokenAddress: String {
@@ -383,7 +386,9 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet weak var showAllPoolButton: UIButton!
   @IBOutlet weak var poolNameContainerView: UIView!
+  @IBOutlet weak var poolPairLabel: UILabel!
   @IBOutlet weak var poolNameLabel: UILabel!
+  
   @IBOutlet weak var tradingView: TradingView!
   @IBOutlet weak var tokenChartView: Chart!
   @IBOutlet weak var poolChartContainer: UIView!
@@ -431,9 +436,14 @@ class ChartViewController: KNBaseViewController {
     self.setupTitle()
     self.setupButtons()
     self.setupChartViews()
+    self.setupTradingView()
     self.loadTokenChartData()
     self.reloadCharts()
     self.updateUISocialButtons()
+  }
+  
+  func setupTradingView() {
+    tradingView.delegate = self
   }
   
   func setupTitle() {
@@ -504,7 +514,8 @@ class ChartViewController: KNBaseViewController {
   
   func updateUIPoolName(hidden: Bool) {
     self.poolNameContainerView.isHidden = hidden
-    self.poolNameLabel.text = self.viewModel.displayPoolName
+    self.poolPairLabel.text = self.viewModel.selectedPoolPair
+    self.poolNameLabel.text = self.viewModel.selectedPoolName
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -544,6 +555,14 @@ class ChartViewController: KNBaseViewController {
       self.textViewLeadingConstraint.constant = 20
       self.view.layoutIfNeeded()
     }
+  }
+  
+  
+  @IBAction func tradingViewBackWasTapped(_ sender: Any) {
+    self.isSelectingLineChart = true
+    self.viewModel.selectedPoolDetail = nil
+    self.updateUIPoolName(hidden: true)
+    self.poolTableView.reloadData()
   }
   
   @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -611,13 +630,6 @@ class ChartViewController: KNBaseViewController {
     self.viewModel.isExpandingPoolTable = !self.viewModel.isExpandingPoolTable
     self.showAllPoolButton.setTitle(self.viewModel.isExpandingPoolTable ? Strings.showLess : Strings.showMore, for: .normal)
     self.updatePoolTableHeight()
-  }
-  
-  @IBAction func closeCandleChartButtonTapped(_ sender: UIButton) {
-    self.isSelectingLineChart = true
-    self.viewModel.selectedPoolDetail = nil
-    self.updateUIPoolName(hidden: true)
-    self.poolTableView.reloadData()
   }
 
   fileprivate func updateUIChartInfo() {
@@ -767,8 +779,8 @@ class ChartViewController: KNBaseViewController {
     }
   }
 
-  func coordinatorFailUpdateApi(_ error: Error) {
-    self.showErrorTopBannerMessage(with: "", message: error.localizedDescription)
+  func coordinatorFailUpdateApi(_ error: NetworkError) {
+    self.showErrorTopBannerMessage(with: "", message: error.localizedDescription())
   }
 
   func coordinatorDidUpdateTokenDetailInfo(_ detailInfo: TokenDetailInfo?) {
@@ -832,13 +844,13 @@ class ChartViewController: KNBaseViewController {
     }
   }
   
-  func reloadPoolTradingView(pool: TokenPoolDetail) {
+  func constructTradingViewLoadRequest(pool: TokenPoolDetail, fullscreen: Bool = false) -> ChartLoadRequest? {
     guard let chain = ChainType.allCases.first(where: { chain in
       chain.getChainId() == pool.chainId
-    }) else { return }
+    }) else { return nil }
     let source = pool.token0.address
     let quote = pool.token1.address
-    let request = ChartLoadRequestBuilder()
+    return ChartLoadRequestBuilder()
       .symbol("\(pool.token0.symbol)/\(pool.token1.symbol)")
       .chain(chain.customRPC().apiChainPath)
       .baseAddress(source)
@@ -846,8 +858,12 @@ class ChartViewController: KNBaseViewController {
       .period(.h1)
       .chartType(.candles)
       .apiURL(KNEnvironment.default.krytalAPIEndPoint)
+      .fullscreen(fullscreen)
       .build()
-    
+  }
+  
+  func reloadPoolTradingView(pool: TokenPoolDetail) {
+    guard let request = constructTradingViewLoadRequest(pool: pool) else { return }
     tradingView.load(request: request)
   }
   
@@ -905,4 +921,24 @@ extension ChartViewController: ChartDelegate {
   func didEndTouchingChart(_ chart: Chart) {
     
   }
+}
+
+extension ChartViewController: TradingViewDelegate {
+  
+  func tradingView(_ tradingView: TradingView, handleAction action: TradingView.Action) {
+    switch action {
+    case .toggleFullscreen:
+      self.openFullscreenTradingView()
+    }
+  }
+  
+  func openFullscreenTradingView() {
+    guard let pool = viewModel.selectedPoolDetail else { return }
+    guard let request = constructTradingViewLoadRequest(pool: pool, fullscreen: true) else { return }
+    let vc = TradingViewController(request: request)
+    vc.modalTransitionStyle = .crossDissolve
+    vc.modalPresentationStyle = .overFullScreen
+    self.present(vc, animated: true)
+  }
+  
 }

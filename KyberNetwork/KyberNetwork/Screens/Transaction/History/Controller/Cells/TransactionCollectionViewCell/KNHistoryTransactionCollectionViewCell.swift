@@ -44,8 +44,16 @@ class KNHistoryTransactionCollectionViewCell: SwipeCollectionViewCell {
     self.hideSwapIcon(!hasFromToIcon)
     self.historyTypeImage.isHidden = hasFromToIcon
     if hasFromToIcon {
-      self.fromIconImage.setSymbolImage(symbol: model.fromIconSymbol, size: self.toIconImage.frame.size)
-      self.toIconImage.setSymbolImage(symbol: model.toIconSymbol, size: self.toIconImage.frame.size)
+      self.fromIconImage.image = UIImage(named: "default_token")
+      self.toIconImage.image = UIImage(named: "default_token")
+      if let historyModel = model as? CompletedKrystalHistoryTransactionViewModel {
+        if let fromURL = URL(string: historyModel.historyItem.extraData?.sendToken?.logo ?? "") {
+          self.fromIconImage.setImage(with: fromURL, placeholder: UIImage(named: "default_token"))
+        }
+        if let toURL = URL(string: historyModel.historyItem.extraData?.receiveToken?.logo ?? "") {
+          self.toIconImage.setImage(with: toURL, placeholder: UIImage(named: "default_token"))
+        }
+      }
     } else {
       self.historyTypeImage.image = model.transactionTypeImage
     }

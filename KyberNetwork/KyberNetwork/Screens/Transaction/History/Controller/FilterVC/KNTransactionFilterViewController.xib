@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -23,7 +23,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTransactionFilterViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNTransactionFilterViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="approveButton" destination="gLc-gI-luH" id="5JS-Qo-Fz9"/>
                 <outlet property="bottomPaddingForButtonConstraint" destination="EZg-8H-jbs" id="zFh-1m-pXu"/>
@@ -33,6 +33,7 @@
                 <outlet property="fromDateTimeView" destination="4wa-DK-Evy" id="Ub4-qk-ag1"/>
                 <outlet property="fromTextField" destination="SjL-4y-uiz" id="ax1-zq-l9n"/>
                 <outlet property="headerContainerView" destination="c5L-Rn-ihd" id="CR2-a2-PvM"/>
+                <outlet property="multisendButton" destination="bm9-tf-1xE" id="6jd-12-rtg"/>
                 <outlet property="navTitleLabel" destination="bAy-go-jFV" id="O2U-gL-bVU"/>
                 <outlet property="receiveButton" destination="o8a-mb-4Ax" id="k03-Kv-Kpr"/>
                 <outlet property="selectButton" destination="ERQ-5G-6yC" id="GTM-uo-ua9"/>
@@ -413,6 +414,28 @@
                                 <action selector="bridgeWasTapped:" destination="-1" eventType="touchUpInside" id="cSZ-Yd-lQI"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bm9-tf-1xE">
+                            <rect key="frame" x="252" y="269" width="96" height="36"/>
+                            <color key="backgroundColor" name="navButtonBgColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="36" id="5HX-mJ-AMo"/>
+                                <constraint firstAttribute="width" constant="96" id="sYf-7d-yoM"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                            <state key="normal" title="Multi-send">
+                                <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="multisendWasTapped:" destination="-1" eventType="touchUpInside" id="ycH-za-dge"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -422,6 +445,7 @@
                         <constraint firstItem="7uq-tZ-DF7" firstAttribute="top" secondItem="YVW-aJ-91q" secondAttribute="bottom" constant="44" id="60H-eR-NBg"/>
                         <constraint firstAttribute="trailing" secondItem="XIv-Nj-ULc" secondAttribute="trailing" constant="20" id="8FY-ip-Ogx"/>
                         <constraint firstItem="QDY-eY-qXH" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="8SL-5p-fbh"/>
+                        <constraint firstItem="bm9-tf-1xE" firstAttribute="centerY" secondItem="XMW-f7-Al4" secondAttribute="centerY" id="9zz-fA-UqG"/>
                         <constraint firstItem="AHl-Ss-t5i" firstAttribute="centerY" secondItem="EkI-B8-sBF" secondAttribute="centerY" id="AW7-ox-kg2"/>
                         <constraint firstItem="gLc-gI-luH" firstAttribute="leading" secondItem="azj-Gr-GRt" secondAttribute="trailing" constant="20" id="AXo-oN-jR7"/>
                         <constraint firstItem="9av-Jz-r19" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" symbolic="YES" id="B7R-aH-3e0"/>
@@ -446,6 +470,7 @@
                         <constraint firstItem="if6-e1-R9s" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="Wbb-bU-tel"/>
                         <constraint firstItem="7uq-tZ-DF7" firstAttribute="leading" secondItem="3xY-JY-b3T" secondAttribute="leading" constant="20" id="X4w-v7-MO9"/>
                         <constraint firstItem="QDY-eY-qXH" firstAttribute="top" secondItem="fYD-bx-AVY" secondAttribute="bottom" constant="16" id="XZb-PC-xke"/>
+                        <constraint firstItem="bm9-tf-1xE" firstAttribute="leading" secondItem="XMW-f7-Al4" secondAttribute="trailing" constant="20" id="Zae-tX-BIJ"/>
                         <constraint firstItem="gLc-gI-luH" firstAttribute="centerY" secondItem="QDY-eY-qXH" secondAttribute="centerY" id="cIe-92-ldI"/>
                         <constraint firstAttribute="trailing" secondItem="7uq-tZ-DF7" secondAttribute="trailing" constant="20" id="ca3-iy-VuZ"/>
                         <constraint firstItem="o8a-mb-4Ax" firstAttribute="width" secondItem="QDY-eY-qXH" secondAttribute="width" id="d7S-4c-B4Y"/>

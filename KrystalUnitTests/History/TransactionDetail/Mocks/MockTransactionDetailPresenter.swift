@@ -9,7 +9,7 @@ import Foundation
 @testable import Krystal
 
 class MockTransactionDetailPresenter: TransactionDetailPresenterProtocol {
-  
+
   var items: [TransactionDetailRowType] = []
   var isOnViewLoadedCalled: Bool = false
   var isOnTapBackCalled: Bool = false
@@ -25,6 +25,10 @@ class MockTransactionDetailPresenter: TransactionDetailPresenterProtocol {
   
   func onOpenTxScan(txHash: String, chainID: String) {
     isOnOpenTxScanCall = true
+  }
+  
+  func openAddress(address: String, chainID: String) {
+    
   }
   
 }

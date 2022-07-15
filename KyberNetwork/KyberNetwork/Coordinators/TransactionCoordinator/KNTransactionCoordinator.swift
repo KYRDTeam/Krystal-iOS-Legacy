@@ -97,7 +97,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let lastBlock = EtherscanTransactionStorage.shared.getKrystalHistoryTransactionStartBlock()
 
-    provider.request(.getTransactionsHistory(address: address.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
+    provider.requestWithFilter(.getTransactionsHistory(address: address.addressString, lastBlock: isInit ? "0" : lastBlock)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -142,7 +142,7 @@ extension KNTransactionCoordinator {
       startBlock: startBlock
     )
     DispatchQueue.global(qos: .background).async {
-      provider.request(service) { result in
+      provider.requestWithFilter(service) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
@@ -156,11 +156,9 @@ extension KNTransactionCoordinator {
                 completion?(.failure(AnyError(error)))
               }
             } catch let error {
-              if isDebug { print("---- ERC20 Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            if isDebug { print("---- ERC20 Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -174,7 +172,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListTransactions(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
-      provider.request(service) { result in
+      provider.requestWithFilter(service) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
@@ -188,11 +186,9 @@ extension KNTransactionCoordinator {
                 completion?(.failure(AnyError(error)))
               }
             } catch let error {
-              if isDebug { print("---- All Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            if isDebug { print("---- All Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -206,7 +202,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getListInternalTransactions(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
-      provider.request(service) { result in
+      provider.requestWithFilter(service) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
@@ -221,11 +217,9 @@ extension KNTransactionCoordinator {
               }
 
             } catch let error {
-              if isDebug { print("---- Internal Token Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            if isDebug { print("---- Internal Token Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }
@@ -238,7 +232,7 @@ extension KNTransactionCoordinator {
     let provider = MoyaProvider<KNEtherScanService>()
     let service = KNEtherScanService.getNFTTransaction(address: address, startBlock: startBlock)
     DispatchQueue.global(qos: .background).async {
-      provider.request(service) { result in
+      provider.requestWithFilter(service) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):
@@ -253,11 +247,9 @@ extension KNTransactionCoordinator {
               }
 
             } catch let error {
-              if isDebug { print("---- NFT Transactions: Parse result failed with error: \(error.prettyError) ----") }
               completion?(.failure(AnyError(error)))
             }
           case .failure(let error):
-            if isDebug { print("---- NFT Transactions: Failed with error: \(error.errorDescription ?? "") ----") }
             completion?(.failure(AnyError(error)))
           }
         }

@@ -321,6 +321,9 @@ extension KNHistoryCoordinator: KNHistoryViewControllerDelegate {
           let module = TransactionDetailModule.build(tx: data.historyItem)
           navigationController.pushViewController(module, animated: true)
         }
+      case .multiSend, .multiReceive:
+        let module = TransactionDetailModule.build(tx: data.historyItem)
+        navigationController.pushViewController(module, animated: true)
       default:
         let coordinator = KNTransactionDetailsCoordinator(navigationController: self.navigationController, data: data)
         coordinator.start()

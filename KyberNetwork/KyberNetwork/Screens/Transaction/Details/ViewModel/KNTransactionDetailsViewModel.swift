@@ -295,35 +295,35 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   var fromFieldTitle: String {
     switch self.transaction.type {
     case .swap:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .withdraw:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .transferETH:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .receiveETH:
-      return "From Wallet".toBeLocalised()
+      return Strings.fromWallet
     case .transferToken:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .receiveToken:
-      return "From Wallet".toBeLocalised()
+      return Strings.fromWallet
     case .allowance:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .earn:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .contractInteraction:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .selfTransfer:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .createNFT:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .transferNFT:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .receiveNFT:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .claimReward:
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .bridge:
       return Strings.wallet
     }
@@ -332,35 +332,35 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
   var toFieldTitle: String {
     switch self.transaction.type {
     case .swap:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .withdraw:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .transferETH:
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     case .receiveETH:
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     case .transferToken:
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     case .receiveToken:
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     case .allowance:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .earn:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .contractInteraction:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .selfTransfer:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .createNFT:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .transferNFT:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .receiveNFT:
-      return "Wallet".toBeLocalised()
+      return Strings.wallet
     case .claimReward:
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .bridge:
       return Strings.wallet
     }
@@ -436,7 +436,7 @@ struct InternalTransactionDetailViewModel: TransactionDetailsViewModel {
     guard self.transaction.state != .cancel else {
       return "- 0 \(KNGeneralProvider.shared.quoteToken)"
     }
-    guard self.transaction.transactionDescription != "Application" else { return "" }
+    guard self.transaction.transactionDescription != Strings.application else { return "" }
     return self.transaction.transactionDescription
   }
 
@@ -537,7 +537,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
     case .selfTransfer:
       return "Wallet".toBeLocalised()
     case .createNFT:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .transferNFT:
       return "Wallet".toBeLocalised()
     case .receiveNFT:
@@ -554,9 +554,9 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
   var toFieldTitle: String {
     switch self.data.data.type {
     case .swap:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .withdraw:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .transferETH:
       return "To Wallet".toBeLocalised()
     case .receiveETH:
@@ -566,11 +566,11 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
     case .receiveToken:
       return "To Wallet".toBeLocalised()
     case .allowance:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .earn:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .contractInteraction:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .selfTransfer:
       return "Wallet".toBeLocalised()
     case .createNFT:
@@ -582,7 +582,7 @@ struct EtherscanTransactionDetailViewModel: TransactionDetailsViewModel {
     case .claimReward:
       return "ClaimReward-Wallet".toBeLocalised()
     case .multiSend:
-      return "Application".toBeLocalised()
+      return Strings.contract
     case .bridge:
       return "Wallet"
     }
@@ -738,15 +738,15 @@ struct KrystalTransactionDetailViewModel: TransactionDetailsViewModel {
   
   var toFieldTitle: String {
     if self.data.historyItem.type == "Swap" {
-      return "Application".toBeLocalised()
+      return Strings.contract
     } else if self.data.historyItem.type == "Received" {
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     } else if self.data.historyItem.type == "Transfer" {
-      return "To Wallet".toBeLocalised()
+      return Strings.toWallet
     } else if self.data.historyItem.type == "Approval" {
-      return "Application".toBeLocalised()
+      return Strings.contract
     } else {
-      return "Application".toBeLocalised()
+      return Strings.contract
     }
   }
   

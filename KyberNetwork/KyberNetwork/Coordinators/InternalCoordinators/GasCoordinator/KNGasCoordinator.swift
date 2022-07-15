@@ -93,7 +93,7 @@ class KNGasCoordinator {
   @objc func fetchKNGasPrice(_ sender: Timer?) {
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getGasPriceV2) { result in
+      provider.requestWithFilter(.getGasPriceV2) { result in
         switch result {
         case .success(let reponse):
           do {

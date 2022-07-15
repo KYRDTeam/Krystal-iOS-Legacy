@@ -9,7 +9,6 @@ import Foundation
 import Moya
 import QRCodeReaderViewController
 import MBProgressHUD
-import WalletConnect
 import WalletConnectSwift
 import KrystalWallets
 
@@ -253,7 +252,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     switch event {
     case .getPoolList(address: let address, chainId: let chainId):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+      provider.requestWithFilter(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -277,7 +276,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         chainPath = chainType.chainPath()
       }
       self.navigationController.showLoadingHUD()
-      provider.request(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+      provider.requestWithFilter(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
         DispatchQueue.main.async {
           self.navigationController.hideLoading()
         }
@@ -301,7 +300,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
         chainPath = chainType.chainPath()
       }
       self.navigationController.showLoadingHUD()
-      provider.request(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+      provider.requestWithFilter(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
         DispatchQueue.main.async {
           self.navigationController.hideLoading()
         }
@@ -331,7 +330,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonTitle: Strings.OK,
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
-            self.showPopupSwitchChain(controller) {
+            self.handleSwitchChain(controller) {
               self.openSendTokenView(token)
               self.pendingAction = nil
             }
@@ -356,7 +355,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
           secondButtonTitle: Strings.OK,
           firstButtonTitle: Strings.Cancel,
           secondButtonAction: {
-            self.showPopupSwitchChain(controller) {
+            self.handleSwitchChain(controller) {
               self.openSwapView(token: token, isBuy: true)
               self.pendingAction = nil
             }
@@ -385,34 +384,21 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     }
   }
   
-  func showPopupSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+  func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
     self.pendingAction = nil
-    let popup = SwitchChainViewController()
     var newChain = KNGeneralProvider.shared.currentChain
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
-    popup.selectedChain = newChain
-    popup.nextButtonTitle = "Confirm"
-    popup.completionHandler = { selected in
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
-        self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: selected)
-        if selected == newChain {
-          self.pendingAction = completion
-        }
-        return
-      }
-      KNGeneralProvider.shared.currentChain = selected
-      var selectedAddress = ""
-      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-        selectedAddress = appDelegate.coordinator.session.wallet.addressString
-      }
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: selectedAddress)
-      if selected == newChain {
-        self.pendingAction = completion
-      }
+    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
+      self.pendingAction = completion
+      return
     }
-    self.navigationController.present(popup, animated: true, completion: nil)
+    let viewModel = SwitchChainWalletsListViewModel(selected: newChain)
+    let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+    self.navigationController.present(secondPopup, animated: true, completion: nil)
+    self.pendingAction = completion
   }
 
   func openCommunityURL(_ url: String) {
@@ -995,7 +981,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
           let signedData = try EthSigner().signHash(address: currentAddress, hash: sendData)
           print("[Send favorite nft] success")
           let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-          provider.request(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+          provider.requestWithFilter(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))

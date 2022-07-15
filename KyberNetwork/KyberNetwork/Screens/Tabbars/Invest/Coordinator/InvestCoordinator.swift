@@ -77,7 +77,7 @@ class InvestCoordinator: Coordinator {
   
   fileprivate func loadMarketAssets() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getMarketingAssets) { (result) in
+    provider.requestWithFilter(.getMarketingAssets) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -253,6 +253,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         self.openRewardHunting()
       }
     case .bridge:
+      guard KNGeneralProvider.shared.currentChain.isSupportedBridge() else {
+        self.navigationController.showErrorTopBannerMessage(message: Strings.unsupportedChain)
+        return
+      }
       self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)

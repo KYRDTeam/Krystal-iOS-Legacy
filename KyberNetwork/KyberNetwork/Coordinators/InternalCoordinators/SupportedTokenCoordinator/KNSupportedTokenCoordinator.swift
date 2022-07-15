@@ -28,7 +28,7 @@ class KNSupportedTokenCoordinator {
 
   fileprivate func fetchSupportedTokens() {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getTokenList) { result in
+      self.provider.requestWithFilter(.getTokenList) { result in
         DispatchQueue.main.async {
           switch result {
           case .success(let response):

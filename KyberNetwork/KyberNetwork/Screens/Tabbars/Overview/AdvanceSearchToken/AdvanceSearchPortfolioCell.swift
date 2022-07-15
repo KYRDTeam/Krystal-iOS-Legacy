@@ -25,7 +25,7 @@ class AdvanceSearchPortfolioCell: UITableViewCell {
       return
     }
     addressLabel.text = portfolio.id
-    nameLabel.text = portfolio.ens
+    nameLabel.text = portfolio.ens.isEmpty ? Strings.Account : portfolio.ens
     
   }
     

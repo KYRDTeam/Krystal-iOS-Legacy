@@ -81,6 +81,7 @@ public struct Constants {
   public static let rewardHuntingPath = "reward-hunting"
   public static let multichainExplorerURL = "https://anyswap.net/explorer"
   static let maxFractionDigits: Int = 5
+  public static let bridgeWarningAcceptedKey = "bridge-warning-accept-key"
 }
 
 public struct UnitConfiguration {

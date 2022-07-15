@@ -872,7 +872,7 @@ class KSwapViewModel {
   }
   
   var shouldShowCommingSoon: Bool {
-    return KNGeneralProvider.shared.currentChain == .solana || KNGeneralProvider.shared.currentChain == .klaytn
+    return KNGeneralProvider.shared.currentChain == .solana
   }
 }
 

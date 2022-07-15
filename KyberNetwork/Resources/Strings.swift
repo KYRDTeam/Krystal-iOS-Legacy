@@ -49,16 +49,20 @@ struct Strings {
   static let referral = "referral".toBeLocalised()
   static let dApps = "dapps".toBeLocalised()
   static let multiSend = "multisend".toBeLocalised()
+  static let multiReceive = "multi.receive".toBeLocalised()
   static let buyCrypto = "buy.crypto".toBeLocalised()
   static let promotion = "promotion".toBeLocalised()
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
+  static let gasFeeDescription = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
   
   // History
+  static let contract = "contract".toBeLocalised()
   static let success = "success".toBeLocalised()
   static let failure = "failed".toBeLocalised()
   static let pending = "pending".toBeLocalised()
   static let unknown = "unknown".toBeLocalised()
   static let application = "application".toBeLocalised()
+  static let Account = "Account".toBeLocalised()
   static let fromWallet = "from.wallet".toBeLocalised()
   static let toWallet = "to.wallet".toBeLocalised()
   static let wallet = "wallet".toBeLocalised()
@@ -68,10 +72,11 @@ struct Strings {
   static let copied = "copied".toBeLocalised()
   static let to = "to".toBeLocalised()
   static let from = "from".toBeLocalised()
+  static let To = "To".toBeLocalised()
+  static let From = "From".toBeLocalised()
   static let receive = "receive".toBeLocalised()
   static let sender = "Sender".toBeLocalised()
   static let receiver = "Receiver".toBeLocalised()
-  static let bridge = "bridge".toBeLocalised()
   static let contractExecution = "contract.execution".toBeLocalised()
   static let approval = "approval".toBeLocalised()
   static let claimReward = "claim.reward".toBeLocalised()
@@ -81,7 +86,6 @@ struct Strings {
   static let transactionBroadcasted = "transaction.being.broadcasted".toBeLocalised()
   static let cannotCreateTransaction = "can.not.create.transaction".toBeLocalised()
   static let noTransactionFound = "no.transaction.found".toBeLocalised()
-  static let bridgeFee = "bridge.fee".toBeLocalised()
   static let transactionFee = "transaction.fee".toBeLocalised()
   static let estimatedTimeOfArrival = "estimated.time.of.arrival".toBeLocalised()
   static let xMins = "x.mins".toBeLocalised()
@@ -89,7 +93,8 @@ struct Strings {
   static let showMore = "SHOW MORE".toBeLocalised()
   static let showAll = "SHOW ALL".toBeLocalised()
   static let Search = "Search".toBeLocalised()
-  static let searchByTokenWalletEND = "Search by token, wallet, ENS, ...".toBeLocalised()
+  static let searchByTokenWalletEND = "Search token, wallet address ...".toBeLocalised()
+  static let FunctionCall = "Function call".toBeLocalised()
   static let transactions = "transactions".toBeLocalised()
   
   // Wallet
@@ -160,4 +165,24 @@ struct Strings {
   
   // Settings
   static let pinCodeUpdated = "your.pin.has.been.update.successfully".toBeLocalised()
+  
+  // Bridge
+  static let bridge = "bridge".toBeLocalised()
+  static let bridgeWarningText = "Krystal strives to offer its users the best DeFi experience on a single platform. In order to do that, Krystal carefully evaluates & partners with other platforms to facilitate these services. However, Krystal does not assume any liability for any losses incurred due to any security breach on Krystal’s partners on chain contract."
+  static let warningTitle = "Risk Warning"
+  
+  static let KrystalBridge = "Krystal Bridge".toBeLocalised()
+  static let bridgeFee = "bridge.fee".toBeLocalised()
+  static let skipBackupWarningText = "Warning: You must backup your wallet and keep your mnemonics secure.\n\nWhy? If you lose your device, or uninstall the app or clear app’s memory. You won’t be able to access your wallet and funds.\n\nWhy keep your backup secure? Anyone with your backup can steal your wallet assets"
+  static let understand = "I understand".toBeLocalised()
+  static let goBack = "Go Back".toBeLocalised()
+  static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
+  static let skip = "Skip?".toBeLocalised()
+  static let unsupportedChain = "Unsupported chain".toBeLocalised()
+  
+  // History
+  static let numberOfTransfers = "number.of.transfers".toBeLocalised()
+  static let txHash = "tx.hash".toBeLocalised()
+  static let xTransfers = "x.transfers".toBeLocalised()
+  static let oneTransfer = "1 Transfer".toBeLocalised()
 }

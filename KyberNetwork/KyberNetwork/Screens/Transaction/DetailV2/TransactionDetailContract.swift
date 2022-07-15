@@ -18,6 +18,7 @@ protocol TransactionDetailPresenterProtocol: class {
   func onViewLoaded()
   func onTapBack()
   func onOpenTxScan(txHash: String, chainID: String)
+  func openAddress(address: String, chainID: String)
 }
 
 protocol TransactionDetailInteractorProtocol: class {

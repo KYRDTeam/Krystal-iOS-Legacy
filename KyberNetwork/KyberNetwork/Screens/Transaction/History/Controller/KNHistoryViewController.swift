@@ -82,6 +82,7 @@ struct KNHistoryViewModel {
       isContractInteraction: true,
       isClaimReward: true,
       isBridge: true,
+      isMultisend: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
@@ -109,6 +110,7 @@ struct KNHistoryViewModel {
       isContractInteraction: true,
       isClaimReward: true,
       isBridge: true,
+      isMultisend: true,
       tokens: self.tokensSymbol
     )
     self.updateDisplayingData()
@@ -325,8 +327,10 @@ struct KNHistoryViewModel {
     let matchedSupply = (tx.type == .earn) && self.filters.isTrade
     let matchedWithdraw = (tx.type == .withdraw) && self.filters.isWithdraw
     let matchedClaimReward = (tx.type == .claimReward) && self.filters.isClaimReward
+    
     let matchedContractInteraction = (tx.type == .contractInteraction) && self.filters.isContractInteraction
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward
+    let matchMultisend = tx.type == .multiSend && self.filters.isMultisend
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchMultisend
 
     var tokenMatched = false
     var transactionToken: [String] = []
@@ -358,7 +362,8 @@ struct KNHistoryViewModel {
     let matchedClaimReward = (tx.type == "ClaimReward") && self.filters.isClaimReward
     let matchedContractInteraction = (tx.type == "" || tx.type == "ContractInteration") && self.filters.isContractInteraction
     let matchedBridge = (tx.type == "Bridge") && filters.isBridge
-    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchedBridge
+    let matchedMultisend = (tx.type == "Multi-send" || tx.type == "Multi-receive") && filters.isMultisend
+    let matchedType = matchedTransfer || matchedReceive || matchedSwap || matchedAppprove || matchedContractInteraction || matchedSupply || matchedWithdraw || matchedClaimReward || matchedBridge || matchedMultisend
 
     var tokenMatched = false
     var transactionToken: [String] = []

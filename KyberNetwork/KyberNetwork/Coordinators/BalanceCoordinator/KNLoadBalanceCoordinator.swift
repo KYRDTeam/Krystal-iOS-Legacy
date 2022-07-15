@@ -233,7 +233,7 @@ class KNLoadBalanceCoordinator {
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getBalances(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
+    provider.requestWithFilter(.getBalances(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -264,7 +264,7 @@ class KNLoadBalanceCoordinator {
   func loadTotalBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let addresses = AppDelegate.session.getCurrentWalletAddresses().map(\.addressString)
-    provider.request(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
+    provider.requestWithFilter(.getTotalBalance(address: addresses, forceSync: forceSync, KNEnvironment.allChainPath)) { (result) in
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let data = json["data"] as? JSONDictionary, let balances = data["balances"] as? [JSONDictionary] {
         var summaryChains: [KNSummaryChainModel] = []
         for item in balances {
@@ -287,7 +287,7 @@ class KNLoadBalanceCoordinator {
 
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getNTFBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { result in
+    provider.requestWithFilter(.getNTFBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -311,7 +311,7 @@ class KNLoadBalanceCoordinator {
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getLendingBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
+    provider.requestWithFilter(.getLendingBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
         var balances: [LendingPlatformBalance] = []
         result.forEach { (element) in
@@ -338,7 +338,7 @@ class KNLoadBalanceCoordinator {
     guard !KNGeneralProvider.shared.lendingDistributionPlatform.isEmpty else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
 
-    provider.request(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: address.addressString, forceSync: forceSync)) { (result) in
+    provider.requestWithFilter(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: address.addressString, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
         let balance = LendingDistributionBalance(dictionary: result)
         BalanceStorage.shared.setLendingDistributionBalance(balance)
@@ -354,7 +354,7 @@ class KNLoadBalanceCoordinator {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = AppDelegate.session.address.addressString
     let chain = KNGeneralProvider.shared.chainName
-    provider.request(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
+    provider.requestWithFilter(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
       if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
         var poolArray: [LiquidityPoolModel] = []
         for item in balances {

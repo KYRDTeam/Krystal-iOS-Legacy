@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import WalletConnect
 import BigInt
 import QRCodeReaderViewController
 import Starscream
@@ -260,7 +259,7 @@ class PersonalSignHandler: BaseHandler {
       let messageBytes = try request.parameter(of: String.self, at: 0)
       let address = try request.parameter(of: String.self, at: 1)
       
-      guard address == privateKey.address.hex(eip55: true) else {
+      guard address.lowercased() == privateKey.address.hex(eip55: true).lowercased() else {
         sever.send(.reject(request))
         return
       }
