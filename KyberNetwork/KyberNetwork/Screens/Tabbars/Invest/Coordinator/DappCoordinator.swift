@@ -450,7 +450,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                       state: .pending,
                       fromSymbol: nil,
                       toSymbol: nil,
-                      transactionDescription: Strings.applicatio,
+                      transactionDescription: Strings.application,
                       transactionDetailDescription: tx.to ?? "",
                       transactionObj: sendTx,
                       eip1559Tx: nil

@@ -653,6 +653,8 @@
 		A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */; };
 		A6B3CD8228125737005D0D66 /* KrystalApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD8128125737005D0D66 /* KrystalApi.swift */; };
 		A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */; };
+		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
+		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
 		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
 		A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */; };
 		A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */; };
@@ -660,15 +662,10 @@
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
+		A6CECBA62875421E001F3563 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBA52875421E001F3563 /* UIView+.swift */; };
 		A6D88649285C93E900BB565B /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D88648285C93E900BB565B /* KeyManager.swift */; };
 		A6D8864B285C958D00BB565B /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8864A285C958D00BB565B /* PasswordGenerator.swift */; };
 		A6D986092857450A0012D0ED /* TransactionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D986082857450A0012D0ED /* TransactionError.swift */; };
-		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
-		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
-		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
-		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
-		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
-		A6CECBA62875421E001F3563 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBA52875421E001F3563 /* UIView+.swift */; };
 		A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */; };
 		A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */; };
 		A6D9BE6B282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */; };
@@ -1041,13 +1038,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2912CCF41F6A830700C6CBE3;
 			remoteInfo = KyberNetwork;
-		};
-		A6B067032859CBDF00DEBAE8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2912CCED1F6A830700C6CBE3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A6C211AF2859C42E0079DC05;
-			remoteInfo = KrystalWalletManager;
 		};
 		A6B067282859CF1900DEBAE8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1762,25 +1752,21 @@
 		A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InternalHistoryTransaction+TransactionHistoryItem.swift"; sourceTree = "<group>"; };
 		A6B3CD8128125737005D0D66 /* KrystalApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalApi.swift; sourceTree = "<group>"; };
 		A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalSolanaTransaction.swift; sourceTree = "<group>"; };
+		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
+		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
 		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
 		A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559TransactionSigner.swift; sourceTree = "<group>"; };
 		A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionSigner.swift; sourceTree = "<group>"; };
 		A6BB3C2C2861CD6A0097EB75 /* KrystalWalletsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalWalletsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6C211B02859C42E0079DC05 /* KrystalWalletManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWalletManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
+		A6CECBA52875421E001F3563 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		A6D88648285C93E900BB565B /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		A6D8864A285C958D00BB565B /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		A6D986082857450A0012D0ED /* TransactionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionError.swift; sourceTree = "<group>"; };
 		A6D9861E285864660012D0ED /* SignerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignerTests.swift; sourceTree = "<group>"; };
 		A6D9862428586BAE0012D0ED /* KrystalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
-		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
-		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
-		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
-		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
-		A6CECBA52875421E001F3563 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		A6D9BE66282923890009EEB4 /* CreateChainWalletMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuViewController.swift; sourceTree = "<group>"; };
 		A6D9BE67282923890009EEB4 /* CreateChainWalletMenuViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateChainWalletMenuViewController.xib; sourceTree = "<group>"; };
 		A6D9BE6A282925E70009EEB4 /* CreateChainWalletMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChainWalletMenuCoordinator.swift; sourceTree = "<group>"; };
@@ -2197,13 +2183,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A6BB3C292861CD6A0097EB75 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6C211AD2859C42E0079DC05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3797,7 +3776,6 @@
 				A6790C3B28476E3C007CE0CD /* KrystalWalletManager.framework */,
 				A6790C4228476E3D007CE0CD /* KrystalWalletManagerTests.xctest */,
 				A6D9862428586BAE0012D0ED /* KrystalTests.xctest */,
-				A6C211B02859C42E0079DC05 /* KrystalWalletManager.framework */,
 				A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */,
 				A6BB3C2C2861CD6A0097EB75 /* KrystalWalletsTests.xctest */,
 			);
@@ -5021,6 +4999,14 @@
 			path = Signers;
 			sourceTree = "<group>";
 		};
+		A6CECBA428754215001F3563 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A6CECBA52875421E001F3563 /* UIView+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		A6D88647285C93DE00BB565B /* Key */ = {
 			isa = PBXGroup;
 			children = (
@@ -5028,14 +5014,6 @@
 				A6D8864A285C958D00BB565B /* PasswordGenerator.swift */,
 			);
 			path = Key;
-			sourceTree = "<group>";
-		};
-		A6CECBA428754215001F3563 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				A6CECBA52875421E001F3563 /* UIView+.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 		A6D9BE65282923630009EEB4 /* CreateChainWalletMenu */ = {
@@ -5899,13 +5877,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A6C211AB2859C42E0079DC05 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -5929,7 +5900,6 @@
 			);
 			dependencies = (
 				C379417C262816E100FBCA14 /* PBXTargetDependency */,
-				A6B067042859CBDF00DEBAE8 /* PBXTargetDependency */,
 				A6B067292859CF1900DEBAE8 /* PBXTargetDependency */,
 			);
 			name = KyberNetwork;
@@ -6032,24 +6002,6 @@
 			productReference = A6BB3C2C2861CD6A0097EB75 /* KrystalWalletsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A6C211AF2859C42E0079DC05 /* KrystalWalletManager */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A6C211B82859C42E0079DC05 /* Build configuration list for PBXNativeTarget "KrystalWalletManager" */;
-			buildPhases = (
-				A6C211AB2859C42E0079DC05 /* Headers */,
-				A6C211AC2859C42E0079DC05 /* Sources */,
-				A6C211AD2859C42E0079DC05 /* Frameworks */,
-				A6C211AE2859C42E0079DC05 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = KrystalWalletManager;
-			productName = KrystalWalletManager;
-			productReference = A6C211B02859C42E0079DC05 /* KrystalWalletManager.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		C3794175262816E100FBCA14 /* KrystalNotificationServiceExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C3794181262816E100FBCA14 /* Build configuration list for PBXNativeTarget "KrystalNotificationServiceExtension" */;
@@ -6125,10 +6077,6 @@
 						CreatedOnToolsVersion = 13.4;
 						TestTargetID = 2912CCF41F6A830700C6CBE3;
 					};
-					A6C211AF2859C42E0079DC05 = {
-						CreatedOnToolsVersion = 13.4;
-						ProvisioningStyle = Automatic;
-					};
 					C3794175262816E100FBCA14 = {
 						CreatedOnToolsVersion = 12.4;
 						ProvisioningStyle = Manual;
@@ -6153,7 +6101,6 @@
 				2912CD151F6A830700C6CBE3 /* KyberNetworkUITests */,
 				C3794175262816E100FBCA14 /* KrystalNotificationServiceExtension */,
 				A6394B442840D4DA0084C923 /* KrystalUnitTests */,
-				A6C211AF2859C42E0079DC05 /* KrystalWalletManager */,
 				A6B0671A2859CDBE00DEBAE8 /* KrystalWallets */,
 				A6BB3C2B2861CD6A0097EB75 /* KrystalWalletsTests */,
 			);
@@ -6528,13 +6475,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A6BB3C2A2861CD6A0097EB75 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6C211AE2859C42E0079DC05 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -7593,13 +7533,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A6C211AC2859C42E0079DC05 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C3794172262816E100FBCA14 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7625,12 +7558,6 @@
 			isa = PBXTargetDependency;
 			target = 2912CCF41F6A830700C6CBE3 /* KyberNetwork */;
 			targetProxy = A6394B492840D4DA0084C923 /* PBXContainerItemProxy */;
-		};
-		A6B067042859CBDF00DEBAE8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = A6C211AF2859C42E0079DC05 /* KrystalWalletManager */;
-			targetProxy = A6B067032859CBDF00DEBAE8 /* PBXContainerItemProxy */;
 		};
 		A6B067292859CF1900DEBAE8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -8132,86 +8059,6 @@
 			};
 			name = Release;
 		};
-		A6C211B92859C42E0079DC05 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = app.krystal.wallets;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		A6C211BA2859C42E0079DC05 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G9CRYMTLBL;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = app.krystal.wallets;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		C379417F262816E100FBCA14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 13E07B0062994C73E3E4D86B /* Pods-KrystalNotificationServiceExtension.debug.xcconfig */;
@@ -8340,15 +8187,6 @@
 			buildConfigurations = (
 				A6BB3C322861CD6A0097EB75 /* Debug */,
 				A6BB3C332861CD6A0097EB75 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A6C211B82859C42E0079DC05 /* Build configuration list for PBXNativeTarget "KrystalWalletManager" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A6C211B92859C42E0079DC05 /* Debug */,
-				A6C211BA2859C42E0079DC05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
