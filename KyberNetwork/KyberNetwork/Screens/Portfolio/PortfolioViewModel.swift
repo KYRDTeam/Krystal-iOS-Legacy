@@ -9,6 +9,7 @@ import Foundation
 import RxRelay
 import NSObject_Rx
 import RxSwift
+import RealmSwift
 
 class PortfolioViewModel: ViewModel, ViewModelType {
   
@@ -24,13 +25,15 @@ class PortfolioViewModel: ViewModel, ViewModelType {
   let dataSource = PortfolioDataSource.dataSource()
   let currencyMode = BehaviorRelay<CurrencyMode>(value: .usd)
   let selectedPage = BehaviorRelay<PortfolioPage>(value: .asset)
-  let assets = BehaviorRelay<[Token]>(value: [])
+  let assets = BehaviorRelay<[KTokenObject]>(value: [])
   let lendingPlatformBalances = BehaviorRelay<[LendingPlatformBalance]>(value: [])
   let lendingDistributionBalances = BehaviorRelay<[LendingDistributionBalance]>(value: [])
   let liquidityPools = BehaviorRelay<[LPTokenModel]>(value: [])
   let nfts = BehaviorRelay<[NFTItem]>(value: [])
   let marketTokens = BehaviorRelay<[TokenObject]>(value: [])
   let favoriteTokens = BehaviorRelay<[TokenObject]>(value: [])
+  
+  var notificationToken: NotificationToken?
   
   struct Input {
     
@@ -44,6 +47,20 @@ class PortfolioViewModel: ViewModel, ViewModelType {
   func transform(input: Input) -> Output {
     let sections = BehaviorRelay<[PortfolioSectionModel]>(value: [])
 
+//    notificationToken = TokenPriceManager.shared.realm
+//      .objects(KTokenObject.self)
+////      .filter("compoundPrimaryKey")
+//      .observe{ [weak self] change in
+//        switch change {
+//        case .update(let tokens, _, _, _):
+//          self?.assets.accept(Array(tokens))
+//        default:
+//          ()
+//        }
+//      }
+//    
+    assets.accept(Array(TokenPriceManager.shared.realm.objects(KTokenObject.self)))
+    
     Observable
       .combineLatest(
         selectedPage, assets, lendingPlatformBalances, lendingDistributionBalances, liquidityPools, nfts, marketTokens, favoriteTokens
@@ -69,9 +86,9 @@ class PortfolioViewModel: ViewModel, ViewModelType {
     return Output(selectedPage: selectedPage, sections: sections)
   }
   
-  private func assetSections(fromAssets assets: [Token]) -> [PortfolioSectionModel] {
+  private func assetSections(fromAssets assets: [KTokenObject]) -> [PortfolioSectionModel] {
     let items = assets.map { token in
-      PortfolioSectionItem.asset(token: token, price: 0)
+      PortfolioSectionItem.asset(token: token)
     }
     return [.assets(items: items)]
   }

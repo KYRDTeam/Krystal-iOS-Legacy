@@ -9,14 +9,12 @@ import Foundation
 import BigInt
 
 class PortfolioAssetCellViewModel {
-  var token: Token
-  var price: Double
+  var token: KTokenObject
   var hideBalance: Bool
   let balanceStorage = BalanceStorage.shared
   
-  init(token: Token, price: Double, currencyMode: CurrencyType, hideBalance: Bool) {
+  init(token: KTokenObject, currencyMode: CurrencyType, hideBalance: Bool) {
     self.token = token
-    self.price = price
     self.hideBalance = hideBalance
   }
   

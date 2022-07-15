@@ -93,21 +93,21 @@ class KNAppCoordinator: NSObject, Coordinator {
   
   func switchWallet(wallet: KWallet, chain: ChainType) {
     if let address = getAddresses(wallet: wallet, chain: chain).first {
-      KNGeneralProvider.shared.currentChain = chain
-      switchAddress(address: address)
-      AppEventCenter.shared.switchChain(chain: chain)
+      switchAddress(address: address, chain: chain)
     }
   }
   
   func switchToWatchAddress(address: KAddress, chain: ChainType) {
-    KNGeneralProvider.shared.currentChain = chain
-    AppEventCenter.shared.switchChain(chain: chain)
-    switchAddress(address: address)
+    switchAddress(address: address, chain: chain)
   }
   
-  private func switchAddress(address: KAddress) {
+  private func switchAddress(address: KAddress, chain: ChainType) {
+    KNGeneralProvider.shared.currentChain = chain
+    AppEventCenter.shared.switchChain(chain: chain)
     WalletCache.shared.lastUsedAddress = address
     KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
+    TokenPriceManager.shared.setChains(chains: [chain])
+    TokenPriceManager.shared.configure()
     if self.tabbarController == nil {
       self.startNewSession(address: address)
     } else {
@@ -137,6 +137,9 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate func startFirstSessionIfNeeded() {
     let lastUsedAddress = walletCache.lastUsedAddress
     let addresses = walletManager.getAllWallets().flatMap { walletManager.getAllAddresses(walletID: $0.id) }
+    
+    TokenPriceManager.shared.setChains(chains: [.eth])
+    TokenPriceManager.shared.configure()
     
     // For security, should always have passcode protection when user has imported wallets
     if let address = lastUsedAddress ?? addresses.first, KNPasscodeUtil.shared.currentPasscode() != nil {

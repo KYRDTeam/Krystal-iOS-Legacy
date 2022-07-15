@@ -186,11 +186,11 @@ PODS:
   - PromisesObjC (2.1.1)
   - QRCodeReaderViewController (4.0.2)
   - Quick (5.0.1)
-  - Realm (3.19.1):
-    - Realm/Headers (= 3.19.1)
-  - Realm/Headers (3.19.1)
-  - RealmSwift (3.19.1):
-    - Realm (= 3.19.1)
+  - Realm (10.28.2):
+    - Realm/Headers (= 10.28.2)
+  - Realm/Headers (10.28.2)
+  - RealmSwift (10.28.2):
+    - Realm (= 10.28.2)
   - Result (3.2.4)
   - RxCocoa (5.0.1):
     - RxRelay (~> 5)
@@ -283,7 +283,7 @@ DEPENDENCIES:
   - OneSignal (< 4.0, >= 3.0.0)
   - QRCodeReaderViewController (~> 4.0.2)
   - Quick
-  - RealmSwift (~> 3.19.0)
+  - RealmSwift (~> 10)
   - RxCocoa (~> 5.0.0)
   - RxDataSources
   - RxSwift (~> 5.0.0)
@@ -446,8 +446,8 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   QRCodeReaderViewController: e8f27d035b3e72b1d4b1c61ff66458287e3be0ff
   Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
-  Realm: fb377747e694c7deb62d402400454134fe321bee
-  RealmSwift: 1302b0ab60f3105a2b214a735eeb0938607cf16b
+  Realm: e617c54ad0f566b3d0f6a2abae7010de05f252ac
+  RealmSwift: 8a516a8759d80d52ebcec1ff1076f5f5159f98b2
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
@@ -476,6 +476,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: 633ae91a5075d41e4e4035e31b28a9c2f9d0c064
+PODFILE CHECKSUM: 35dee656c10f24269abc1c42873a71d636e6c484
 
 COCOAPODS: 1.11.3

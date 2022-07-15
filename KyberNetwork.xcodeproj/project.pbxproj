@@ -619,6 +619,13 @@
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
 		A693AFEF2819059B00880503 /* RewardHuntingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */; };
+		A6ABDFD7287FF1EA007802BF /* KTokenObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFD6287FF1EA007802BF /* KTokenObject.swift */; };
+		A6ABDFD9287FFF90007802BF /* KTokenQuoteObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFD8287FFF90007802BF /* KTokenQuoteObject.swift */; };
+		A6ABDFE128800B87007802BF /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFE028800B87007802BF /* BaseResponse.swift */; };
+		A6ABDFE328800BBC007802BF /* TokenDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFE228800BBC007802BF /* TokenDTO.swift */; };
+		A6ABDFE528800C94007802BF /* TokenQuoteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFE428800C94007802BF /* TokenQuoteDTO.swift */; };
+		A6ABDFEA28800E67007802BF /* TokenPriceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFE928800E67007802BF /* TokenPriceManager.swift */; };
+		A6ABDFEC28800E8F007802BF /* TokenPriceManagerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6ABDFEB28800E8F007802BF /* TokenPriceManagerConfig.swift */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1740,6 +1747,13 @@
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
 		A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewController.swift; sourceTree = "<group>"; };
+		A6ABDFD6287FF1EA007802BF /* KTokenObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTokenObject.swift; sourceTree = "<group>"; };
+		A6ABDFD8287FFF90007802BF /* KTokenQuoteObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KTokenQuoteObject.swift; sourceTree = "<group>"; };
+		A6ABDFE028800B87007802BF /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
+		A6ABDFE228800BBC007802BF /* TokenDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDTO.swift; sourceTree = "<group>"; };
+		A6ABDFE428800C94007802BF /* TokenQuoteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenQuoteDTO.swift; sourceTree = "<group>"; };
+		A6ABDFE928800E67007802BF /* TokenPriceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPriceManager.swift; sourceTree = "<group>"; };
+		A6ABDFEB28800E8F007802BF /* TokenPriceManagerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPriceManagerConfig.swift; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -2278,7 +2292,6 @@
 			isa = PBXGroup;
 			children = (
 				A6E6C9BB2816F92400EEB2E6 /* Domain */,
-				A6E6C9BF2816F9C900EEB2E6 /* Data */,
 				A6B3CD5A2811C35D005D0D66 /* DI */,
 				7E6F5115273A572B002DA0B2 /* LottieJSON */,
 				255C40EC2092DB6200475871 /* Storage */,
@@ -2288,6 +2301,7 @@
 				251ABCA320578E3D0069687F /* Utilities */,
 				251ABCA220578E1F0069687F /* Models */,
 				25CC0A922057DD2A0009D0D5 /* Networking */,
+				A6E6C9BF2816F9C900EEB2E6 /* Data */,
 				251ABCA020578DA30069687F /* Configurations */,
 			);
 			path = KyberNetwork;
@@ -3804,7 +3818,7 @@
 			isa = PBXGroup;
 			children = (
 				C344E91A2621715C00524B8D /* KyberSwap - Crypto ExchangeDebug.entitlements */,
-				A685D4AB2849FC780066E177 /* EventManager */,
+				A685D4AB2849FC780066E177 /* Managers */,
 				251ABC9F20578D980069687F /* KyberNetwork */,
 				29E6E0681FE897BB0079265A /* Browser */,
 				29AD8A0A1F93FBB7008E10E7 /* Foundation */,
@@ -4680,8 +4694,9 @@
 		A6573B7E284DE14300A25CBF /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
-				A6D91BD1287EA2A600126DAA /* MarketService.swift */,
+				A6ABDFDF28800B75007802BF /* DTO */,
+				A6ABDFE628800D1C007802BF /* Crosschain */,
+				A6ABDFDE28800B6E007802BF /* Market */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -4857,12 +4872,13 @@
 			path = Wallets;
 			sourceTree = "<group>";
 		};
-		A685D4AB2849FC780066E177 /* EventManager */ = {
+		A685D4AB2849FC780066E177 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				A685D4AC2849FC870066E177 /* AppEventCenter.swift */,
+				A6ABDFE828800E5E007802BF /* Price */,
+				A6ABDFE728800E56007802BF /* Events */,
 			);
-			path = EventManager;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		A693AFE92819052000880503 /* RewardingHunting */ = {
@@ -4881,6 +4897,67 @@
 				A6E6C9B428168DA100EEB2E6 /* LoadingIndicatorCell.swift */,
 			);
 			path = LoadingCell;
+			sourceTree = "<group>";
+		};
+		A6ABDFD4287FF1B4007802BF /* Tokens */ = {
+			isa = PBXGroup;
+			children = (
+				A6ABDFD6287FF1EA007802BF /* KTokenObject.swift */,
+				A6ABDFD8287FFF90007802BF /* KTokenQuoteObject.swift */,
+			);
+			path = Tokens;
+			sourceTree = "<group>";
+		};
+		A6ABDFD5287FF1BE007802BF /* SolanaTransactionStorage */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6C9D5281796C000EEB2E6 /* SolanaTransactionStorage.swift */,
+				A6E6C9EB2818056700EEB2E6 /* SolanaTransactionObject.swift */,
+			);
+			path = SolanaTransactionStorage;
+			sourceTree = "<group>";
+		};
+		A6ABDFDE28800B6E007802BF /* Market */ = {
+			isa = PBXGroup;
+			children = (
+				A6D91BD1287EA2A600126DAA /* MarketService.swift */,
+			);
+			path = Market;
+			sourceTree = "<group>";
+		};
+		A6ABDFDF28800B75007802BF /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				A6ABDFE028800B87007802BF /* BaseResponse.swift */,
+				A6ABDFE228800BBC007802BF /* TokenDTO.swift */,
+				A6ABDFE428800C94007802BF /* TokenQuoteDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		A6ABDFE628800D1C007802BF /* Crosschain */ = {
+			isa = PBXGroup;
+			children = (
+				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
+			);
+			path = Crosschain;
+			sourceTree = "<group>";
+		};
+		A6ABDFE728800E56007802BF /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				A685D4AC2849FC870066E177 /* AppEventCenter.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		A6ABDFE828800E5E007802BF /* Price */ = {
+			isa = PBXGroup;
+			children = (
+				A6ABDFE928800E67007802BF /* TokenPriceManager.swift */,
+				A6ABDFEB28800E8F007802BF /* TokenPriceManagerConfig.swift */,
+			);
+			path = Price;
 			sourceTree = "<group>";
 		};
 		A6B0671C2859CDBE00DEBAE8 /* KrystalWallets */ = {
@@ -5190,8 +5267,8 @@
 		A6E6C9D42817969500EEB2E6 /* Storages */ = {
 			isa = PBXGroup;
 			children = (
-				A6E6C9D5281796C000EEB2E6 /* SolanaTransactionStorage.swift */,
-				A6E6C9EB2818056700EEB2E6 /* SolanaTransactionObject.swift */,
+				A6ABDFD5287FF1BE007802BF /* SolanaTransactionStorage */,
+				A6ABDFD4287FF1B4007802BF /* Tokens */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -6974,6 +7051,7 @@
 				7E1EBE322834C7E900793B6D /* BridgeCoordinator.swift in Sources */,
 				299B5E491FD2C8900051361C /* ConfigureTransaction.swift in Sources */,
 				C3BBC56425FB4ACE004E1FB6 /* InvestViewController.swift in Sources */,
+				A6ABDFEA28800E67007802BF /* TokenPriceManager.swift in Sources */,
 				C35E9DF927DF2AA700E1E7CE /* PromoCodeStorage.swift in Sources */,
 				7EB47FFF27D095F200FB28D9 /* CryptoFiatCell.swift in Sources */,
 				A655619E28350D7600944624 /* TransactionStatus.swift in Sources */,
@@ -6984,6 +7062,7 @@
 				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
 				A6CECBAC28757FF8001F3563 /* ViewModel.swift in Sources */,
+				A6ABDFEC28800E8F007802BF /* TokenPriceManagerConfig.swift in Sources */,
 				C32656B0266F546100C69561 /* ActionControllerSettings.swift in Sources */,
 				A610C31E2876BE0C00D6F602 /* ViewController.swift in Sources */,
 				C33BB80827955C9A00851BC6 /* ABIType.swift in Sources */,
@@ -7030,6 +7109,7 @@
 				A65CBF2228631A13008620E2 /* AppMigrationManager.swift in Sources */,
 				29FF12F61F74799D00AFD326 /* NSAttributedString.swift in Sources */,
 				A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */,
+				A6ABDFD9287FFF90007802BF /* KTokenQuoteObject.swift in Sources */,
 				A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */,
 				A6DA410227F974B50078C58E /* ThreadProtectedObject.swift in Sources */,
 				C3409E1A25AEAEEC00C7C662 /* WalletListSectionTableViewCell.swift in Sources */,
@@ -7124,6 +7204,7 @@
 				25CC0AAB2058F1A00009D0D5 /* KNGetTokenAllowance.swift in Sources */,
 				C328015A277D69FB00158D27 /* BrowserStorage.swift in Sources */,
 				C3743298278ED344002C97A9 /* SignMessageConfirmPopup.swift in Sources */,
+				A6ABDFE528800C94007802BF /* TokenQuoteDTO.swift in Sources */,
 				259925B320EF286500CCF2D6 /* KNListContactViewController.swift in Sources */,
 				C32656AC266F546100C69561 /* ActionData.swift in Sources */,
 				A6E26FE428129CAC0054427E /* HistoryModelType.swift in Sources */,
@@ -7150,6 +7231,7 @@
 				C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */,
 				25BE329C209096E800D760FB /* KNListWalletsViewController.swift in Sources */,
 				25682B7D20EE0A36009738C4 /* KNTransactionDetailsCoordinator.swift in Sources */,
+				A6ABDFE328800BBC007802BF /* TokenDTO.swift in Sources */,
 				A64E17B8281934A700ED6E6D /* BasePendingTransactionListViewModel.swift in Sources */,
 				A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */,
 				25F9C7672213D0D20001064D /* UIColor.swift in Sources */,
@@ -7251,6 +7333,7 @@
 				7ECCB89D270C00A10080DC3B /* LiquidityPoolModel.swift in Sources */,
 				A693AFEF2819059B00880503 /* RewardHuntingViewController.swift in Sources */,
 				C3F08B572620AD9200DA6FCB /* TermsAndConditionsViewController.swift in Sources */,
+				A6ABDFE128800B87007802BF /* BaseResponse.swift in Sources */,
 				C333A6C927BA5123003A6C6B /* ApproveTokenCell.swift in Sources */,
 				C31F74AF25DD3211008B21F7 /* OverviewMarketTableViewCell.swift in Sources */,
 				257B84B620750F1D003DD40E /* KNHistoryTransaction.swift in Sources */,
@@ -7431,6 +7514,7 @@
 				A6F5DCB02857367100FD02C9 /* TransferTransactionResultData.swift in Sources */,
 				25CC0AC320591F8A0009D0D5 /* KNRateCoordinator.swift in Sources */,
 				A6E6C9D32817208C00EEB2E6 /* KrystalNetworkError.swift in Sources */,
+				A6ABDFD7287FF1EA007802BF /* KTokenObject.swift in Sources */,
 				7EB47FFB27D077DF00FB28D9 /* SearchFiatCryptoViewController.swift in Sources */,
 				257B84A62074C2B9003DD40E /* KNDebugMenuViewController.swift in Sources */,
 				C3F71CA0261C084C00285935 /* EarnTutorialViewController.swift in Sources */,

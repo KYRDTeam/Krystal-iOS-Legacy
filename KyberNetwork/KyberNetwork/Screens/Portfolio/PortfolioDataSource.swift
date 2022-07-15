@@ -14,8 +14,8 @@ struct PortfolioDataSource {
   static func dataSource() -> DataSource<PortfolioSectionModel> {
     return .init(configureCell: { dataSource, tableView, indexPath, item -> UITableViewCell in
       switch dataSource[indexPath] {
-      case .asset(let token, let price):
-        let viewModel = PortfolioAssetCellViewModel(token: token, price: price, currencyMode: .usd, hideBalance: false)
+      case .asset(let token):
+        let viewModel = PortfolioAssetCellViewModel(token: token, currencyMode: .usd, hideBalance: false)
         let cell = tableView.dequeueReusableCell(PortfolioAssetCell.self, indexPath: indexPath)!
         cell.configure(viewModel: viewModel)
         return cell

@@ -8,7 +8,7 @@
 import Foundation
 
 enum PortfolioSectionItem {
-  case asset(token: Token, price: Double)
+  case asset(token: KTokenObject)
   case lending(balance: LendingBalance)
   case lendingDist(balance: LendingDistributionBalance)
   case pool(lp: LPTokenModel)
