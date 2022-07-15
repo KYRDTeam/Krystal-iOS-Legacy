@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftChart
 import BigInt
 import MBProgressHUD
 import Charts
@@ -53,12 +52,18 @@ class ChartViewModel {
   
   func updateChartData(_ data: [[Double]]) {
     guard !data.isEmpty else { return }
-    
+    self.chartData = data
     let dataEntry = data.map { item -> ChartDataEntry in
       let timeStamp = item.first ?? 0.0
       let value = item.last ?? 0.0
       return ChartDataEntry(x: timeStamp, y: value)
     }
+    
+    let diff: Double = {
+      let firstPoint = data.first?.last ?? 0.0
+      let lastPoint = data.last?.last ?? 0.0
+      return lastPoint - firstPoint
+    }()
     
     let dataSet = LineChartDataSet(entries: dataEntry, label: "")
     dataSet.lineDashLengths = nil
@@ -87,7 +92,7 @@ class ChartViewModel {
     let greenGradientColors = [ChartColorTemplates.colorFromString("#1de9b6").cgColor,
                           ChartColorTemplates.colorFromString("#8EF4DA").cgColor]
     
-    let gradientColors = self.diffPercent > 0 ? greenGradientColors : redGradientColors
+    let gradientColors = diff > 0 ? greenGradientColors : redGradientColors
     let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
     dataSet.fillAlpha = 1
     dataSet.fill = LinearGradientFill(gradient: gradient, angle: 90)
@@ -97,13 +102,6 @@ class ChartViewModel {
     let data = LineChartData(dataSet: dataSet)
     
     self.lineChartData = data
-  }
-  
-  var series: ChartSeries {
-    let series = ChartSeries(data: self.dataSource)
-    series.area = true
-    series.colors = (above: self.displayDiffColor!, below: UIColor(named: "mainViewBgColor")!, 0)
-    return series
   }
   
   var displayPrice: String {

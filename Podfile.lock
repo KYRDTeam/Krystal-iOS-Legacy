@@ -3,9 +3,9 @@ PODS:
   - APIKit (3.2.1):
     - Result (~> 3.0)
   - BigInt (4.0.0)
-  - Charts (4.0.2):
-    - Charts/Core (= 4.0.2)
-  - Charts/Core (4.0.2):
+  - Charts (4.0.3):
+    - Charts/Core (= 4.0.3)
+  - Charts/Core (4.0.3):
     - SwiftAlgorithms (~> 1.0)
   - CryptoSwift (1.4.3)
   - Eureka (5.3.5)
@@ -170,7 +170,6 @@ PODS:
   - Starscream (3.1.1)
   - StatefulViewController (3.0)
   - SwiftAlgorithms (1.0.0)
-  - SwiftChart (1.0.1)
   - SwiftLint (0.29.4)
   - SwiftMessages (5.0.1):
     - SwiftMessages/App (= 5.0.1)
@@ -240,7 +239,6 @@ DEPENDENCIES:
   - SkeletonView
   - Starscream (~> 3.1)
   - StatefulViewController (~> 3.0)
-  - SwiftChart (from `https://github.com/gpbl/SwiftChart.git`)
   - SwiftLint (~> 0.29.4)
   - SwiftMessages (~> 5.0.1)
   - Swinject
@@ -318,8 +316,6 @@ EXTERNAL SOURCES:
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.2.8
-  SwiftChart:
-    :git: https://github.com/gpbl/SwiftChart.git
   TagListView:
     :git: https://github.com/Expensify/TagListView.git
 
@@ -327,9 +323,6 @@ CHECKOUT OPTIONS:
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.2.8
-  SwiftChart:
-    :commit: 4949a94090641ca85b8133129f7a7b2230694788
-    :git: https://github.com/gpbl/SwiftChart.git
   TagListView:
     :commit: 964553283e872c59d8a3e8901172e27ce792fe25
     :git: https://github.com/Expensify/TagListView.git
@@ -338,7 +331,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  Charts: cfa4e911e6dc289582c2fe011a0e87c03d96727f
+  Charts: d959d6723c8eedfdd0735dfc28cb0a71762ac4d9
   CryptoSwift: a0799ee936271bd2253a006f1e4523df21845000
   Eureka: 7b39a479d074620d43028a0e2bfc3e0d667724df
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
@@ -384,7 +377,6 @@ SPEC CHECKSUMS:
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   StatefulViewController: 4803bf900d44de26074344998e10e041113b5931
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
-  SwiftChart: 6ed8c61f3731cc32e3cb92858dba339d08ddac87
   SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
   SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
   SwiftProtobuf: 6ef3f0e422ef90d6605ca20b21a94f6c1324d6b3
@@ -398,6 +390,6 @@ SPEC CHECKSUMS:
   WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
   Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
 
-PODFILE CHECKSUM: fd84744a0a34100894289595de2b89c0ba3b976d
+PODFILE CHECKSUM: afeed4a9e507a8319e9f0d8defad1ba302d75dc6
 
 COCOAPODS: 1.11.3
