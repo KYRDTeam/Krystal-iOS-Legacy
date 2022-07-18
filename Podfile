@@ -65,6 +65,7 @@ def utilitiesPods
   pod 'SwiftLint', '~> 0.29.4'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.2.8'
   pod 'Lokalise', '~> 0.8.1'
+  pod 'GoogleMLKit/TextRecognition','2.2.0'
 end
 
 target 'KyberNetwork' do

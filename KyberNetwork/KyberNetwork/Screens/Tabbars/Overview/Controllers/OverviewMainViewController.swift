@@ -752,7 +752,11 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     }
     
     cell.transferButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .send)
+      let vc = KrystalScannerViewController.instantiateFromNib()
+      vc.hidesBottomBarWhenPushed = true
+      self.navigationController?.pushViewController(vc, animated: true)
+      return
+//      self.delegate?.overviewMainViewController(self, run: .send)
     }
     
     return cell
