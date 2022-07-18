@@ -866,4 +866,6 @@
 "%@.address" = "%@ address";
 "view.on.%@" = "View on %@";
 
-
+// Scanner
+"scan.qr.code" = "Scan QR Code";
+"scan.text" = "Scan Text";

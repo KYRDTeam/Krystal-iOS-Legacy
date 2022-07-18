@@ -7,12 +7,19 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-Bold.ttf">
+            <string>Karla-Bold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KrystalScannerViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="holeCover" destination="GmY-QA-hYd" id="zBl-Pv-jT5"/>
                 <outlet property="previewView" destination="iQh-Jq-20D" id="HdN-LL-qwb"/>
                 <outlet property="resultLabel" destination="A1q-Vk-pP3" id="2I3-TP-6F7"/>
+                <outlet property="segmentView" destination="Z7S-YW-t8R" id="tpq-dL-bsb"/>
+                <outlet property="titleLabel" destination="Uqx-qH-jQ7" id="9vD-o9-9mU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,6 +35,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GmY-QA-hYd" userLabel="HoleCover" customClass="CameraHoleCover" customModule="Krystal" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z7S-YW-t8R" customClass="CustomSegmentView" customModule="Krystal" customModuleProvider="target">
+                    <rect key="frame" x="32" y="782" width="350" height="48"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="czG-pR-UfM"/>
+                    </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L2g-M4-bAb">
                     <rect key="frame" x="16" y="60" width="32" height="32"/>
@@ -47,6 +61,12 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uqx-qH-jQ7">
+                    <rect key="frame" x="181.5" y="64.5" width="51" height="23.5"/>
+                    <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,10 +79,15 @@
                 <constraint firstItem="L2g-M4-bAb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="KA6-Ab-vjd"/>
                 <constraint firstItem="A1q-Vk-pP3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="48" id="LUd-U4-pnP"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Lbz-tw-AdL"/>
+                <constraint firstItem="Uqx-qH-jQ7" firstAttribute="centerY" secondItem="L2g-M4-bAb" secondAttribute="centerY" id="NCL-Sx-B35"/>
+                <constraint firstItem="Uqx-qH-jQ7" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RoZ-Ev-Bqx"/>
                 <constraint firstItem="A1q-Vk-pP3" firstAttribute="top" secondItem="L2g-M4-bAb" secondAttribute="bottom" constant="32" id="SyD-b2-cGw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z7S-YW-t8R" secondAttribute="trailing" constant="32" id="ceo-Ce-NOZ"/>
                 <constraint firstAttribute="bottom" secondItem="iQh-Jq-20D" secondAttribute="bottom" id="iQJ-S4-RJs"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="lzm-GD-vq6"/>
+                <constraint firstItem="Z7S-YW-t8R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="nAf-rt-s8h"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="A1q-Vk-pP3" secondAttribute="trailing" constant="48" id="tMk-lt-PRA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Z7S-YW-t8R" secondAttribute="bottom" constant="32" id="uuz-wk-WDK"/>
                 <constraint firstAttribute="bottom" secondItem="GmY-QA-hYd" secondAttribute="bottom" id="vxX-GO-6A2"/>
             </constraints>
             <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>

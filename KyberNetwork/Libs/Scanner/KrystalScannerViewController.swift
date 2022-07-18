@@ -12,6 +12,8 @@ class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var previewView: UIView!
   @IBOutlet weak var resultLabel: UILabel!
   @IBOutlet weak var holeCover: CameraHoleCover!
+  @IBOutlet weak var segmentView: CustomSegmentView!
+  @IBOutlet weak var titleLabel: UILabel!
   
   let captureSession = AVCaptureSession()
   lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
@@ -24,6 +26,7 @@ class KrystalScannerViewController: UIViewController {
   let minHoleSize: CGFloat = 64
   let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 48
   var lastHoleFrame: CGRect = .zero
+  var isDraggingEnabled = false
   
   var availableScanModes: [ScanMode] = [.qr, .ocr]
   
@@ -31,10 +34,13 @@ class KrystalScannerViewController: UIViewController {
   
   var scanMode: ScanMode = .qr {
     didSet {
+      self.titleLabel.text = self.title(forMode: scanMode)
       switch scanMode {
       case .qr:
+        isDraggingEnabled = false
         detector = BarCodeDetector()
       case .ocr:
+        isDraggingEnabled = true
         detector = OcrDetector()
       }
     }
@@ -43,12 +49,20 @@ class KrystalScannerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.setupViews()
+    self.setupSegmentView()
     self.setCameraInput()
     self.showCameraFeed()
     self.setCameraOutput()
     
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     holeCover.addGestureRecognizer(panGesture)
+  }
+  
+  override func loadView() {
+    super.loadView()
+    
+    self.view.backgroundColor = .white // Fix bug lagging when push, don't know why
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -72,6 +86,41 @@ class KrystalScannerViewController: UIViewController {
   
   @IBAction func closeWasTapped(_ sender: Any) {
     navigationController?.popViewController(animated: true)
+  }
+  
+  func setupViews() {
+    self.titleLabel.text = self.title(forMode: self.scanMode)
+  }
+  
+  func title(forMode scanMode: ScanMode) -> String {
+    switch scanMode {
+    case .qr:
+      return Strings.scanQRCode
+    case .ocr:
+      return Strings.scanText
+    }
+  }
+  
+  func setupSegmentView() {
+    segmentView.items = availableScanModes.map(\.title)
+    segmentView.onSelectItem = { [weak self] index in
+      guard let self = self else { return }
+      let mode = self.availableScanModes[index]
+      self.scanMode = mode
+      
+      let width = self.view.frame.width * 3 / 4
+      switch mode {
+      case .qr:
+        self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
+                                         y: self.view.frame.midY - width / 2,
+                                         width: width, height: width)
+      case .ocr:
+        let height = width / 2
+        self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
+                                         y: self.view.frame.midY - height / 2,
+                                         width: width, height: height)
+      }
+    }
   }
   
   private func setCameraInput() {
@@ -124,6 +173,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
 extension KrystalScannerViewController {
   
   @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+    guard isDraggingEnabled else { return }
     switch recognizer.state {
     case .began:
       lastTouch = recognizer.location(in: self.view)
@@ -174,18 +224,6 @@ extension KrystalScannerViewController {
       return
     }
     
-  }
-  
-}
-
-extension CGPoint {
-  
-  func distanceSquared(from: CGPoint) -> CGFloat {
-      return (from.x - x) * (from.x - x) + (from.y - y) * (from.y - y)
-  }
-
-  func distance(from: CGPoint) -> CGFloat {
-      return sqrt(distanceSquared(from: from))
   }
   
 }
