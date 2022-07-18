@@ -15,16 +15,19 @@ class SwitchChainViewController: KNBaseViewController {
   @IBOutlet weak var cancelButton: UIButton!
   @IBOutlet weak var outsideBackgroundView: UIView!
   let transitor = TransitionDelegate()
-  var dataSource:[ChainType] = []
+  var dataSource: [ChainType] = []
   var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
+  let isIncludedAllOption: Bool
 
-  init() {
+  init(includedAll: Bool = false) {
+    self.isIncludedAllOption = includedAll
     self.selectedChain = KNGeneralProvider.shared.currentChain
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
+    
   }
 
   required init?(coder: NSCoder) {
@@ -49,7 +52,7 @@ class SwitchChainViewController: KNBaseViewController {
 
   func initializeData() {
     if self.dataSource.isEmpty {
-      self.dataSource = ChainType.getAllChain()
+      self.dataSource = ChainType.getAllChain(includeAll: self.isIncludedAllOption)
     }
   }
 

@@ -252,17 +252,19 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
+    let popup = SwitchChainViewController(includedAll: true)
     popup.completionHandler = { [weak self] selected in
-      guard let self = self else { return }
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
-        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
-        return
-      } else {
-        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-        self.present(secondPopup, animated: true, completion: nil)
-      }
+//      guard let self = self else { return }
+//      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
+//        return
+//      } else {
+//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+//        self.present(secondPopup, animated: true, completion: nil)
+//      }
+      
+      //TODO: change filter logic
     }
     self.present(popup, animated: true, completion: nil)
   }

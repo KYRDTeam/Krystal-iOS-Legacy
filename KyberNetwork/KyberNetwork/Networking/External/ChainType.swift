@@ -41,6 +41,8 @@ enum ChainType: Codable, CaseIterable {
       self = .solana
     case 9:
       self = .klaytn
+    case 10:
+      self = .all
     default:
       throw CodingError.unknownValue
     }
@@ -69,6 +71,8 @@ enum ChainType: Codable, CaseIterable {
       try container.encode(8, forKey: .rawValue)
     case .klaytn:
       try container.encode(9, forKey: .rawValue)
+    case .all:
+      try container.encode(10, forKey: .rawValue)
     }
   }
 
@@ -76,7 +80,7 @@ enum ChainType: Codable, CaseIterable {
     return ChainType.getAllChain().first { $0.getChainId() == chainID }
   }
   
-  static func getAllChain() -> [ChainType] {
+  static func getAllChain(includeAll: Bool = false) -> [ChainType] {
     var allChains = ChainType.allCases
     let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
     if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
@@ -92,6 +96,12 @@ enum ChainType: Codable, CaseIterable {
     if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
       allChains = allChains.filter { $0 != .klaytn }
     }
+    
+    if !includeAll {
+      allChains = allChains.filter { $0 != .all }
+    } else {
+      allChains.bringToFront(item: .all)
+    }
     return allChains
   }
 
@@ -104,7 +114,7 @@ enum ChainType: Codable, CaseIterable {
         return AllChains.ethStaggingPRC
       }
       return AllChains.ethMainnetPRC
-    case .bsc:
+    case .bsc, .all:
       if KNEnvironment.default == .ropsten {
         return AllChains.bscRoptenPRC
       }
@@ -160,10 +170,16 @@ enum ChainType: Codable, CaseIterable {
   }
 
   func chainName() -> String {
-    return self.self.customRPC().name
+    if self == .all {
+      return "All Networks"
+    }
+    return self.customRPC().name
   }
 
   func chainIcon() -> UIImage? {
+    if self == .all {
+      return UIImage(named: "chain_all_icon")
+    }
     return UIImage(named: self.customRPC().chainIcon)
   }
 
@@ -274,6 +290,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .klaytn:
       return KNSupportedTokenStorage.shared.usdcToken
+    case .all:
+      return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -313,7 +331,7 @@ enum ChainType: Codable, CaseIterable {
       return true
     }
   }
-
+  
   case eth
   case bsc
   case polygon
@@ -324,6 +342,7 @@ enum ChainType: Codable, CaseIterable {
   case aurora
   case solana
   case klaytn
+  case all
 }
 
 enum CurrencyMode: Int {
