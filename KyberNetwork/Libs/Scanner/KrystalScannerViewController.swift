@@ -10,7 +10,6 @@ import AVFoundation
 
 class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var previewView: UIView!
-  @IBOutlet weak var resultLabel: UILabel!
   @IBOutlet weak var holeCover: CameraHoleCover!
   @IBOutlet weak var segmentView: CustomSegmentView!
   @IBOutlet weak var titleLabel: UILabel!
@@ -163,9 +162,8 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
   
   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     detector.detect(buffer: sampleBuffer) { [weak self] texts in
-      DispatchQueue.main.async {
-        self?.resultLabel.text = texts.joined(separator: " ")
-      }
+      // On result
+      
     }
   }
 }
