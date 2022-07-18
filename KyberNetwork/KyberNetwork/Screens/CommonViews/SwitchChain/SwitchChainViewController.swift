@@ -21,9 +21,9 @@ class SwitchChainViewController: KNBaseViewController {
   var completionHandler: (ChainType) -> Void = { selected in }
   let isIncludedAllOption: Bool
 
-  init(includedAll: Bool = false) {
+  init(includedAll: Bool = false, selected: ChainType = KNGeneralProvider.shared.currentChain) {
     self.isIncludedAllOption = includedAll
-    self.selectedChain = KNGeneralProvider.shared.currentChain
+    self.selectedChain = selected
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor

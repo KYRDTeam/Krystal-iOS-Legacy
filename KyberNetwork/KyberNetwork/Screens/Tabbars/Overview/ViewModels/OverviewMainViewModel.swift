@@ -204,6 +204,11 @@ class OverviewMainViewModel {
   var didTapAddNFTHeader: (() -> Void)?
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   let queue = DispatchQueue(label: "overview.property.lock.queue")
+  var currentChain: ChainType {
+    didSet {
+      Storage.store(self.currentChain, as: Constants.overviewChainSaveFileName)
+    }
+  }
   
   init(session: KNSession) {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
@@ -212,6 +217,11 @@ class OverviewMainViewModel {
       self.currencyMode = .usd
     }
     self.session = session
+    if let saved = Storage.retrieve(Constants.overviewChainSaveFileName, as: ChainType.self) {
+      self.currentChain = saved
+    } else {
+      self.currentChain = .all
+    }
   }
   
   func isEmpty() -> Bool {

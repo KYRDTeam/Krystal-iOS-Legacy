@@ -198,9 +198,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
-    self.currentChainLabel.text = KNGeneralProvider.shared.chainName
+    let selected = self.viewModel.currentChain
+    self.currentChainIcon.image = selected.chainIcon()
+    self.currentChainLabel.text = selected.chainName()
   }
   
   fileprivate func updateCh24Button() {
@@ -252,19 +252,11 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController(includedAll: true)
+    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
     popup.completionHandler = { [weak self] selected in
-//      guard let self = self else { return }
-//      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
-//        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
-//        return
-//      } else {
-//        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
-//        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
-//        self.present(secondPopup, animated: true, completion: nil)
-//      }
-      
-      //TODO: change filter logic
+
+      self?.viewModel.currentChain = selected
+      self?.updateUISwitchChain()
     }
     self.present(popup, animated: true, completion: nil)
   }
