@@ -124,7 +124,7 @@ class SolanaUtil {
   
   static func getMinimumBalanceForRentExemption(completion: @escaping (Int?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getMinimumBalanceForRentExemption) { result in
+    provider.requestWithFilter(.getMinimumBalanceForRentExemption) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -143,7 +143,7 @@ class SolanaUtil {
 
   static func getRecentBlockhash(completion: @escaping (String?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getRecentBlockhash) { result in
+    provider.requestWithFilter(.getRecentBlockhash) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -164,7 +164,7 @@ class SolanaUtil {
   
   static func getLamportsPerSignature(completion: @escaping (Int?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getRecentBlockhash) { result in
+    provider.requestWithFilter(.getRecentBlockhash) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -186,7 +186,7 @@ class SolanaUtil {
   
   static func getTokenAccountsByOwner(ownerAddress: String, tokenAddress: String, completion: @escaping (String?, String?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getTokenAccountsByOwner(ownerAddress: ownerAddress, tokenAddress: tokenAddress)) { result in
+    provider.requestWithFilter(.getTokenAccountsByOwner(ownerAddress: ownerAddress, tokenAddress: tokenAddress)) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -221,7 +221,7 @@ class SolanaUtil {
   
   static func sendSignedTransaction(signedTransaction: String, completion: @escaping (String?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.sendTransaction(signedTransaction: signedTransaction)) { result in
+    provider.requestWithFilter(.sendTransaction(signedTransaction: signedTransaction)) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -245,7 +245,7 @@ class SolanaUtil {
   
   static func getTransactionStatus(signature: String, completion: @escaping (InternalTransactionState?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getSignatureStatuses(signature: signature)) { result in
+    provider.requestWithFilter(.getSignatureStatuses(signature: signature)) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
@@ -271,7 +271,7 @@ class SolanaUtil {
   
   static func getBalance(address: String, completion: @escaping (BigInt?) -> Void) {
     let provider = MoyaProvider<SolanaService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getBalance(address: address)) { result in
+    provider.requestWithFilter(.getBalance(address: address)) { result in
       switch result {
       case .success(let data):
         if let json = try? data.mapJSON() as? JSONDictionary ?? [:] {

@@ -46,16 +46,20 @@ struct Strings {
   static let referral = "referral".toBeLocalised()
   static let dApps = "dapps".toBeLocalised()
   static let multiSend = "multisend".toBeLocalised()
+  static let multiReceive = "multi.receive".toBeLocalised()
   static let buyCrypto = "buy.crypto".toBeLocalised()
   static let promotion = "promotion".toBeLocalised()
   static let supportedPlatforms = "supported.platforms".toBeLocalised()
+  static let gasFeeDescription = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
   
   // History
+  static let contract = "contract".toBeLocalised()
   static let success = "success".toBeLocalised()
   static let failure = "failed".toBeLocalised()
   static let pending = "pending".toBeLocalised()
   static let unknown = "unknown".toBeLocalised()
   static let application = "application".toBeLocalised()
+  static let Account = "Account".toBeLocalised()
   static let fromWallet = "from.wallet".toBeLocalised()
   static let toWallet = "to.wallet".toBeLocalised()
   static let wallet = "wallet".toBeLocalised()
@@ -86,7 +90,8 @@ struct Strings {
   static let showMore = "SHOW MORE".toBeLocalised()
   static let showAll = "SHOW ALL".toBeLocalised()
   static let Search = "Search".toBeLocalised()
-  static let searchByTokenWalletEND = "Search by token, wallet, ENS, ...".toBeLocalised()
+  static let searchByTokenWalletEND = "Search token, wallet address ...".toBeLocalised()
+  static let FunctionCall = "Function call".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
@@ -136,4 +141,11 @@ struct Strings {
   static let goBack = "Go Back".toBeLocalised()
   static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
   static let skip = "Skip?".toBeLocalised()
+  static let unsupportedChain = "Unsupported chain".toBeLocalised()
+  
+  // History
+  static let numberOfTransfers = "number.of.transfers".toBeLocalised()
+  static let txHash = "tx.hash".toBeLocalised()
+  static let xTransfers = "x.transfers".toBeLocalised()
+  static let oneTransfer = "1 Transfer".toBeLocalised()
 }

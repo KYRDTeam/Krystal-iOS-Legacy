@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Karla-VariableFont_wght.ttf">
+            <string>Karla-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="160" id="KGk-i7-Jjw" customClass="TxApplicationInfoCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="434" height="160"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="434" height="160"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CLo-9a-heg">
+                        <rect key="frame" x="24" y="42" width="181" height="76"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G27-Nb-Ppe">
+                                <rect key="frame" x="20" y="16" width="46" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" name="normalTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x00000000000" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Saw-KB-NOp">
+                                <rect key="frame" x="20" y="41" width="118" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="open_link_icon_blue" translatesAutoresizingMaskIntoConstraints="NO" id="eaI-7H-1fj">
+                                <rect key="frame" x="148" y="41.5" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="7pL-7m-6zk"/>
+                                    <constraint firstAttribute="width" constant="16" id="doo-qT-OQh"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="innerContainerBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="76" id="2of-P5-H2x"/>
+                            <constraint firstItem="eaI-7H-1fj" firstAttribute="leading" secondItem="Saw-KB-NOp" secondAttribute="trailing" constant="10" id="UG9-En-c8K"/>
+                            <constraint firstItem="Saw-KB-NOp" firstAttribute="leading" secondItem="G27-Nb-Ppe" secondAttribute="leading" id="a97-AF-sz4"/>
+                            <constraint firstItem="Saw-KB-NOp" firstAttribute="top" secondItem="G27-Nb-Ppe" secondAttribute="bottom" constant="6" id="bqC-ad-AmT"/>
+                            <constraint firstItem="G27-Nb-Ppe" firstAttribute="leading" secondItem="CLo-9a-heg" secondAttribute="leading" constant="20" id="c0d-C2-QM8"/>
+                            <constraint firstItem="G27-Nb-Ppe" firstAttribute="top" secondItem="CLo-9a-heg" secondAttribute="top" constant="16" id="hpr-gh-SWu"/>
+                            <constraint firstAttribute="trailing" secondItem="eaI-7H-1fj" secondAttribute="trailing" constant="17" id="nPk-dY-HSO"/>
+                            <constraint firstItem="eaI-7H-1fj" firstAttribute="centerY" secondItem="Saw-KB-NOp" secondAttribute="centerY" id="xDm-eW-Tlh"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                <real key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8kV-2S-8po">
+                        <rect key="frame" x="229" y="42" width="181" height="76"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contract" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzH-ns-TCe">
+                                <rect key="frame" x="20" y="16" width="64" height="19"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
+                                <color key="textColor" name="normalTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x00000000000" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyL-Th-4Ae">
+                                <rect key="frame" x="20" y="41" width="118" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="textWhiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="open_link_icon_blue" translatesAutoresizingMaskIntoConstraints="NO" id="7ws-Xi-qli">
+                                <rect key="frame" x="148" y="41.5" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="16" id="CUB-ot-LRi"/>
+                                    <constraint firstAttribute="height" constant="16" id="qwj-xN-oyS"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="innerContainerBgColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="76" id="3Lt-QL-evH"/>
+                            <constraint firstItem="7ws-Xi-qli" firstAttribute="leading" secondItem="dyL-Th-4Ae" secondAttribute="trailing" constant="10" id="9hg-46-GAg"/>
+                            <constraint firstItem="dyL-Th-4Ae" firstAttribute="leading" secondItem="dzH-ns-TCe" secondAttribute="leading" id="9nd-fC-bUH"/>
+                            <constraint firstAttribute="trailing" secondItem="7ws-Xi-qli" secondAttribute="trailing" constant="17" id="FNS-nE-Eef"/>
+                            <constraint firstItem="dzH-ns-TCe" firstAttribute="top" secondItem="8kV-2S-8po" secondAttribute="top" constant="16" id="PvZ-96-LWg"/>
+                            <constraint firstItem="dzH-ns-TCe" firstAttribute="leading" secondItem="8kV-2S-8po" secondAttribute="leading" constant="20" id="VU0-zg-owd"/>
+                            <constraint firstItem="dyL-Th-4Ae" firstAttribute="top" secondItem="dzH-ns-TCe" secondAttribute="bottom" constant="6" id="j5s-MA-01V"/>
+                            <constraint firstItem="7ws-Xi-qli" firstAttribute="centerY" secondItem="dyL-Th-4Ae" secondAttribute="centerY" id="l7f-Vs-GbH"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                <real key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="8kV-2S-8po" firstAttribute="leading" secondItem="CLo-9a-heg" secondAttribute="trailing" constant="24" id="Whx-Tw-BuJ"/>
+                    <constraint firstItem="8kV-2S-8po" firstAttribute="centerY" secondItem="CLo-9a-heg" secondAttribute="centerY" id="mnu-sW-0X3"/>
+                    <constraint firstItem="8kV-2S-8po" firstAttribute="width" secondItem="CLo-9a-heg" secondAttribute="width" id="nFS-7U-TNH"/>
+                    <constraint firstItem="CLo-9a-heg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="nhg-RA-eyS"/>
+                    <constraint firstItem="8kV-2S-8po" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tMG-Je-PYJ"/>
+                    <constraint firstAttribute="trailing" secondItem="8kV-2S-8po" secondAttribute="trailing" constant="24" id="xhh-Fa-uS1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="applicationAddressLabel" destination="dyL-Th-4Ae" id="2Bf-CW-k1g"/>
+                <outlet property="openApplicationIcon" destination="7ws-Xi-qli" id="hJc-eY-uA8"/>
+                <outlet property="openWalletIcon" destination="eaI-7H-1fj" id="xQe-1r-zw3"/>
+                <outlet property="walletAddressLabel" destination="Saw-KB-NOp" id="ghu-Fb-AKE"/>
+            </connections>
+            <point key="canvasLocation" x="220.28985507246378" y="54.910714285714285"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="open_link_icon_blue" width="14" height="14"/>
+        <namedColor name="innerContainerBgColor">
+            <color red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textWhiteColor">
+            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

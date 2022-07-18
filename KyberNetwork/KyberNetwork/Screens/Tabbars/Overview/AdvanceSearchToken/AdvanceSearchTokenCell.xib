@@ -34,7 +34,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KNC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfO-Hh-ji4">
-                                <rect key="frame" x="44" y="14.5" width="34.5" height="21"/>
+                                <rect key="frame" x="46" y="14.5" width="34.5" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="34.5" id="EPt-gz-Eua"/>
                                     <constraint firstAttribute="height" constant="21" id="coc-6v-PvR"/>
@@ -44,7 +44,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kyber Network" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="goc-nC-KKX">
-                                <rect key="frame" x="108.5" y="16.5" width="92" height="17"/>
+                                <rect key="frame" x="110.5" y="16.5" width="92" height="17"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                 <color key="textColor" name="normalTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -56,7 +56,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H6q-6h-rqh">
-                                <rect key="frame" x="80.5" y="16" width="18" height="18"/>
+                                <rect key="frame" x="82.5" y="16" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="18" id="OLz-Wm-aRi"/>
                                     <constraint firstAttribute="height" constant="18" id="fFB-KK-FD1"/>
@@ -97,7 +97,7 @@
                             <constraint firstAttribute="trailing" secondItem="Xn5-Pv-FjC" secondAttribute="trailing" constant="21" id="1Nz-bV-8Yy"/>
                             <constraint firstItem="H6q-6h-rqh" firstAttribute="leading" secondItem="vfO-Hh-ji4" secondAttribute="trailing" constant="2" id="9SF-3V-67E"/>
                             <constraint firstItem="H6q-6h-rqh" firstAttribute="centerY" secondItem="khS-6z-hfx" secondAttribute="centerY" id="AGd-6W-IzT"/>
-                            <constraint firstItem="vfO-Hh-ji4" firstAttribute="leading" secondItem="khS-6z-hfx" secondAttribute="trailing" constant="2" id="Jp8-Tg-qZn"/>
+                            <constraint firstItem="vfO-Hh-ji4" firstAttribute="leading" secondItem="khS-6z-hfx" secondAttribute="trailing" constant="4" id="Jp8-Tg-qZn"/>
                             <constraint firstAttribute="bottom" secondItem="DVA-zL-kdu" secondAttribute="bottom" constant="13" id="Mhc-v0-lQo"/>
                             <constraint firstItem="iei-uf-qIN" firstAttribute="centerY" secondItem="syj-xb-ZAq" secondAttribute="centerY" id="O7w-o0-uCd"/>
                             <constraint firstItem="Xn5-Pv-FjC" firstAttribute="top" secondItem="lnp-0u-OCH" secondAttribute="top" constant="16" id="QcL-Xb-OmK"/>

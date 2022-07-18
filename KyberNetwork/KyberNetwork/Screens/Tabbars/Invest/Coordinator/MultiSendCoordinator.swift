@@ -201,7 +201,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = self.session.wallet.addressString
     
-    provider.request(.buildMultiSendTx(sender: address, items: items)) { result in
+    provider.requestWithFilter(.buildMultiSendTx(sender: address, items: items)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {

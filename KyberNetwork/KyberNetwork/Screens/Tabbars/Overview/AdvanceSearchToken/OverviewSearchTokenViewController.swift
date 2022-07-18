@@ -43,10 +43,7 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   }
   
   @IBAction func closeButtonTapped(_ sender: Any) {
-    searchField.text = ""
-    presenter.searchResults = nil
-    updateUIEndSearchingMode()
-    reloadData()
+    self.disableSearch()
   }
 
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -122,8 +119,14 @@ class OverviewSearchTokenViewController: KNBaseViewController, AdvanceSearchToke
   }
   
   @IBAction func cancelButtonTapped(_ sender: Any) {
-    self.searchField.resignFirstResponder()
-    self.updateUIEndSearchingMode()
+    self.disableSearch()
+  }
+  
+  func disableSearch() {
+    searchField.text = ""
+    presenter.searchResults = nil
+    updateUIEndSearchingMode()
+    reloadData()
   }
 
 }

@@ -13,13 +13,11 @@ class TokenPoolCell: UITableViewCell {
   @IBOutlet weak var token1Icon: UIImageView!
   @IBOutlet weak var pairNameLabel: UILabel!
   @IBOutlet weak var fullNameLabel: UILabel!
-  @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var chainIcon: UIImageView!
   @IBOutlet weak var addressLabel: UILabel!
   @IBOutlet weak var totalValueLabel: UILabel!
 
   @IBOutlet weak var pairNameLabelWidth: NSLayoutConstraint!
-  @IBOutlet weak var valueLabelWidth: NSLayoutConstraint!
   @IBOutlet weak var containerView: UIView!
   
   func updateUI(isSelecting: Bool, poolDetail: TokenPoolDetail, baseTokenAddress: String, currencyMode: CurrencyMode) {
@@ -43,8 +41,6 @@ class TokenPoolCell: UITableViewCell {
     self.pairNameLabel.text = "\(baseToken.symbol)/\(otherToken.symbol)"
     self.pairNameLabelWidth.constant = "\(baseToken.symbol)/\(otherToken.symbol)".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     self.fullNameLabel.text = poolDetail.name
-    self.valueLabel.text = "$\(String.formatBigNumberCurrency(baseToken.usdValue))"
-    self.valueLabelWidth.constant = "$\(String.formatBigNumberCurrency(baseToken.usdValue))".width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 16))
     self.chainIcon.image = ChainType.make(chainID: poolDetail.chainId)?.chainIcon()
     self.addressLabel.text = "\(poolDetail.address.prefix(7))...\(poolDetail.address.suffix(4))"
     

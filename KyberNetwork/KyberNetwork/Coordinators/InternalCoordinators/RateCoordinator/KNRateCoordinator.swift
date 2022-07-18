@@ -62,7 +62,7 @@ class KNRateCoordinator {
 
 
   @objc func fetchPlatformFee(_ sender: Any?) {
-    self.userInfoProvider.request(.getPlatformFee) { [weak self] (response) in
+    self.userInfoProvider.requestWithFilter(.getPlatformFee) { [weak self] (response) in
       guard let _ = self else { return }
       switch response {
       case .success(let resp):
@@ -109,7 +109,7 @@ class KNRateCoordinator {
     let toAddr = to.contract
 
     DispatchQueue.global().async {
-      self.provider.request(.getSourceAmount(src: fromAddr, dest: toAddr, amount: destAmount)) { [weak self] result in
+      self.provider.requestWithFilter(.getSourceAmount(src: fromAddr, dest: toAddr, amount: destAmount)) { [weak self] result in
         guard let _ = self else { return }
         DispatchQueue.main.async {
           switch result {
@@ -154,7 +154,7 @@ class KNRateCoordinator {
     let allChainQuote: [String] = (["btc", "usd"] + ChainType.getAllChain().map { $0.quoteToken().lowercased() }).unique
     let group = DispatchGroup()
     group.enter()
-    provider.request(.getOverviewMarket(addresses: [], quotes: allChainQuote)) { result in
+    provider.requestWithFilter(.getOverviewMarket(addresses: [], quotes: allChainQuote)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -175,7 +175,7 @@ class KNRateCoordinator {
 
     addressesTrucked.forEach { (element) in
       group.enter()
-      provider.request(.getOverviewMarket(addresses: element, quotes: allChainQuote)) { result in
+      provider.requestWithFilter(.getOverviewMarket(addresses: element, quotes: allChainQuote)) { result in
         if case .success(let resp) = result {
           let decoder = JSONDecoder()
           do {

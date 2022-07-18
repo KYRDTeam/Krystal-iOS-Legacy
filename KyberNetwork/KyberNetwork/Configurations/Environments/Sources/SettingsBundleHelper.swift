@@ -26,16 +26,16 @@ class SettingsBundleHelper {
     return .staging
   }
   
-  static func defaultAPIEndpoint() -> KNEnvironment {
+  static func defaultAPIEndpoint() -> String? {
     if let value = UserDefaults.standard.string(forKey: SettingsBundleKeys.APIEndpointSetting) {
       if value == "Production" {
-        return .production
+        return KNSecret.productionKrytalURL
       } else if  value == "Staging" {
-        return .staging
+        return KNSecret.staggingKrytalURL
       } else {
-        return . ropsten
+        return KNSecret.devKrytalURL
       }
     }
-    return .staging
+    return nil
   }
 }
