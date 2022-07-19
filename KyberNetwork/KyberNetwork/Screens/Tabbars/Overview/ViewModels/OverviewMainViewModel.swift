@@ -628,9 +628,12 @@ class OverviewMainViewModel {
       view.backgroundColor = .clear
       let rightTextString = self.getTotalValueForSection(section)
       let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
-      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: tableView.frame.size.width - rightLabelWidth - 70, height: 40))
+      
+      let titleText = self.displayHeader.value[section]
+      let titleTextWidth = titleText.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
+      let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: titleTextWidth, height: 40))
       titleLabel.center.y = view.center.y
-      titleLabel.text = self.displayHeader.value[section]
+      titleLabel.text = titleText
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
@@ -641,6 +644,32 @@ class OverviewMainViewModel {
       valueLabel.textAlignment = .right
       valueLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(valueLabel)
+      
+      let iconChain = UIImageView(frame: CGRect(x: 8, y: 0, width: 12, height: 12))
+      iconChain.image = self.currentChain.chainIcon()
+      
+      let chainTitle = self.currentChain.chainName()
+      
+      let chainTitleWidth = chainTitle.width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 12))
+      
+      let containerChainView = UIView(frame: CGRect(x: titleLabel.frame.origin.x + titleLabel.frame.size.width + 8, y: 0, width: 32 + chainTitleWidth, height: 20))
+      containerChainView.backgroundColor = UIColor(named: "toolbarBgColor")
+      containerChainView.center.y = view.center.y
+      
+      iconChain.center.y = 10
+      containerChainView.addSubview(iconChain)
+      
+      let chainNameLabel = UILabel(frame: CGRect(x: 24, y: 0, width: chainTitleWidth, height: 20))
+      chainNameLabel.text = chainTitle
+      chainNameLabel.font = UIFont.Kyber.regular(with: 12)
+      chainNameLabel.textColor = UIColor(named: "normalTextColor")
+      chainNameLabel.center.y = 10
+      containerChainView.addSubview(chainNameLabel)
+      
+      containerChainView.rounded(cornerRadius: 8)
+      
+      view.addSubview(containerChainView)
+      
       
       return view
     }
