@@ -599,6 +599,10 @@ class OverviewMainViewModel {
         icon.image = UIImage(named: "fav_section_icon")
       } else {
         icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
+        
+        let iconChain = UIImageView(frame: CGRect(x: 20, y: 20, width: 12, height: 12))
+        iconChain.image = self.currentChain.chainIcon()
+        icon.addSubview(iconChain)
       }
       
       view.addSubview(icon)
