@@ -300,7 +300,7 @@ extension KNAppCoordinator {
           KNWalletStorage.shared.delete(wallet: solWalletObject)
         }
         
-        delayTime = 0.5
+        delayTime = 0.25
         DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
           self.restartNewSession(newWallet, isLoading: false)
         }
@@ -311,7 +311,7 @@ extension KNAppCoordinator {
         if let unwrap = obj, unwrap.chainType == 2 {
           let wal = unwrap.toSolanaWallet()
           KNGeneralProvider.shared.currentChain = .solana
-          delayTime = 1
+          delayTime = 0.25
           DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
             self.restartNewSession(wal, isLoading: false)
           }
