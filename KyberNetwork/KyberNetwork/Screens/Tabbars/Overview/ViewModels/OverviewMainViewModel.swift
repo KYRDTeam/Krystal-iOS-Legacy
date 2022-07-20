@@ -8,7 +8,7 @@ import BigInt
 import UIKit
 
 enum OverviewMainViewEvent {
-  case send
+  case send(recipientAddress: String?)
   case receive
   case search
   case notifications
@@ -27,6 +27,8 @@ enum OverviewMainViewEvent {
   case buyCrypto
   case addNewWallet
   case addChainWallet(chain: ChainType)
+  case scannedWalletConnect(url: String)
+  case importWallet(privateKey: String, chain: ChainType)
 }
 
 enum OverviewMode {

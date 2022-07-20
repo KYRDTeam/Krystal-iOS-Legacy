@@ -319,6 +319,30 @@ class OverviewMainViewController: KNBaseViewController {
     self.delegate?.overviewMainViewController(self, run: .search)
   }
   
+  @IBAction func scanWasTapped(_ sender: Any) {
+    guard let nav = self.navigationController else { return }
+    ScannerModule.start(navigationController: nav) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        self.delegate?.overviewMainViewController(self, run: .scannedWalletConnect(url: text))
+      case .ethPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .ethPrivateKey:
+        let currentChain = KNGeneralProvider.shared.currentChain
+        if currentChain.isEVM {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: currentChain))
+        } else {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .eth))
+        }
+      case .solPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
+      case .solPrivateKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      }
+    }
+  }
+  
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
     if dec {
       let img = UIImage(named: "sort_down_icon")
@@ -752,11 +776,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     }
     
     cell.transferButtonTapped = {
-      let vc = KrystalScannerViewController.instantiateFromNib()
-      vc.hidesBottomBarWhenPushed = true
-      self.navigationController?.pushViewController(vc, animated: true)
-      return
-//      self.delegate?.overviewMainViewController(self, run: .send)
+      self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: nil))
     }
     
     return cell

@@ -112,12 +112,14 @@ class KNSendTokenViewModel: NSObject {
 
   var currentWalletAddress: String
 
-  init(from: TokenObject, balances: [String: Balance], currentAddress: String) {
+  init(from: TokenObject, balances: [String: Balance], currentAddress: String, recipientAddress: String = "") {
     self.from = from.clone()
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
     self.baseGasLimit = self.gasLimit
     self.currentWalletAddress = currentAddress
+    super.init()
+    self.updateAddress(recipientAddress)
   }
 
   var navTitle: String {

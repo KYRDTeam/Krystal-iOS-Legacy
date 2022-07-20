@@ -13,10 +13,14 @@ class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var holeCover: CameraHoleCover!
   @IBOutlet weak var segmentView: CustomSegmentView!
   @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet weak var draggingNoteView: UIView!
+  
+  var isDebug = true
   
   let captureSession = AVCaptureSession()
   lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
   let videoDataOutput = AVCaptureVideoDataOutput()
+  private lazy var sessionQueue = DispatchQueue(label: "app.krystal.scanner.queue")
   
   // Support drawing
   let borderLayer = CAShapeLayer()
@@ -27,18 +31,21 @@ class KrystalScannerViewController: UIViewController {
   var lastHoleFrame: CGRect = .zero
   var isDraggingEnabled = false
   
-  var availableScanModes: [ScanMode] = [.qr, .ocr]
-  
+  var availableScanModes: [ScanMode] = [.qr, .text]
+  var acceptedResults: [ScanResultType] = [.walletConnect, .ethPublicKey, .ethPrivateKey, .solPublicKey, .solPrivateKey]
   var detector: TextDetector = BarCodeDetector()
+  var onScanSuccess: ((_ text: String, _ type: ScanResultType) -> ())?
   
   var scanMode: ScanMode = .qr {
     didSet {
       self.titleLabel.text = self.title(forMode: scanMode)
       switch scanMode {
       case .qr:
+        draggingNoteView.isHidden = true
         isDraggingEnabled = false
         detector = BarCodeDetector()
-      case .ocr:
+      case .text:
+        draggingNoteView.isHidden = false
         isDraggingEnabled = true
         detector = OcrDetector()
       }
@@ -50,12 +57,9 @@ class KrystalScannerViewController: UIViewController {
     
     self.setupViews()
     self.setupSegmentView()
-    self.setCameraInput()
     self.showCameraFeed()
     self.setCameraOutput()
-    
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-    holeCover.addGestureRecognizer(panGesture)
+    self.setCameraInput()
   }
   
   override func loadView() {
@@ -67,7 +71,6 @@ class KrystalScannerViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    self.videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "camera_frame_processing_queue"))
     self.captureSession.startRunning()
   }
   
@@ -89,13 +92,16 @@ class KrystalScannerViewController: UIViewController {
   
   func setupViews() {
     self.titleLabel.text = self.title(forMode: self.scanMode)
+    
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+    holeCover.addGestureRecognizer(panGesture)
   }
   
   func title(forMode scanMode: ScanMode) -> String {
     switch scanMode {
     case .qr:
       return Strings.scanQRCode
-    case .ocr:
+    case .text:
       return Strings.scanText
     }
   }
@@ -113,7 +119,7 @@ class KrystalScannerViewController: UIViewController {
         self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
                                          y: self.view.frame.midY - width / 2,
                                          width: width, height: width)
-      case .ocr:
+      case .text:
         let height = width / 2
         self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
                                          y: self.view.frame.midY - height / 2,
@@ -123,15 +129,35 @@ class KrystalScannerViewController: UIViewController {
   }
   
   private func setCameraInput() {
-    guard let device = AVCaptureDevice.DiscoverySession(
-      deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera],
-      mediaType: .video,
-      position: .back).devices.first else {
-      print("No back camera device found.")
-      return
+    weak var weakSelf = self
+    sessionQueue.async {
+      guard let strongSelf = weakSelf else {
+        print("Self is nil!")
+        return
+      }
+      let cameraPosition: AVCaptureDevice.Position = .back
+      guard let device = strongSelf.captureDevice(forPosition: cameraPosition) else {
+        print("Failed to get capture device for camera position: \(cameraPosition)")
+        return
+      }
+      do {
+        strongSelf.captureSession.beginConfiguration()
+        let currentInputs = strongSelf.captureSession.inputs
+        for input in currentInputs {
+          strongSelf.captureSession.removeInput(input)
+        }
+        
+        let input = try AVCaptureDeviceInput(device: device)
+        guard strongSelf.captureSession.canAddInput(input) else {
+          print("Failed to add capture session input.")
+          return
+        }
+        strongSelf.captureSession.addInput(input)
+        strongSelf.captureSession.commitConfiguration()
+      } catch {
+        print("Failed to create capture device input: \(error.localizedDescription)")
+      }
     }
-    let cameraInput = try! AVCaptureDeviceInput(device: device)
-    self.captureSession.addInput(cameraInput)
   }
   
   private func showCameraFeed() {
@@ -141,31 +167,116 @@ class KrystalScannerViewController: UIViewController {
   }
   
   private func setCameraOutput() {
-    self.videoDataOutput.videoSettings = [
-      (kCVPixelBufferPixelFormatTypeKey as String): kCVPixelFormatType_32BGRA
-    ]
-    
-    self.videoDataOutput.alwaysDiscardsLateVideoFrames = true
-    self.videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "camera_frame_processing_queue"))
-    self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1920x1080
-    self.captureSession.addOutput(self.videoDataOutput)
-    
-    guard let connection = self.videoDataOutput.connection(with: AVMediaType.video),
-          connection.isVideoOrientationSupported else { return }
-    
-    connection.videoOrientation = .portrait
+    weak var weakSelf = self
+    sessionQueue.async {
+      guard let strongSelf = weakSelf else {
+        print("Self is nil!")
+        return
+      }
+      strongSelf.captureSession.beginConfiguration()
+      // When performing latency tests to determine ideal capture settings,
+      // run the app in 'release' mode to get accurate performance metrics
+      strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
+      
+      let output = AVCaptureVideoDataOutput()
+      output.videoSettings = [
+        (kCVPixelBufferPixelFormatTypeKey as String): kCVPixelFormatType_32BGRA
+      ]
+      output.alwaysDiscardsLateVideoFrames = true
+      
+      let outputQueue = DispatchQueue(label: "app.krystal.scanner.output")
+      output.setSampleBufferDelegate(strongSelf, queue: outputQueue)
+      guard strongSelf.captureSession.canAddOutput(output) else {
+        print("Failed to add capture session output.")
+        return
+      }
+      strongSelf.captureSession.addOutput(output)
+      strongSelf.captureSession.commitConfiguration()
+    }
+  }
+  
+  private func captureDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+    let discoverySession = AVCaptureDevice.DiscoverySession(
+      deviceTypes: [.builtInWideAngleCamera],
+      mediaType: .video,
+      position: .back
+    )
+    return discoverySession.devices.first { $0.position == position }
   }
   
 }
 
 extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
   
+  private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer, videoOrientation: AVCaptureVideoOrientation) -> CGImage? {
+    if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+      let context = CIContext()
+      var ciImage = CIImage(cvPixelBuffer: imageBuffer)
+      
+      if videoOrientation == .landscapeLeft {
+        ciImage = ciImage.oriented(forExifOrientation: 3)
+      } else if videoOrientation == .landscapeRight {
+        ciImage = ciImage.oriented(forExifOrientation: 1)
+      } else if videoOrientation == .portrait {
+        ciImage = ciImage.oriented(forExifOrientation: 6)
+      } else if videoOrientation == .portraitUpsideDown {
+        ciImage = ciImage.oriented(forExifOrientation: 8)
+      }
+      
+      return context.createCGImage(ciImage, from: ciImage.extent)
+    }
+    
+    return nil
+  }
+  
   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-    detector.detect(buffer: sampleBuffer) { [weak self] texts in
-      // On result
+    guard var cgImage = self.imageFromSampleBuffer(sampleBuffer: sampleBuffer, videoOrientation: .portrait) else {
+      return
+    }
+    if scanMode == .text {
+      guard let croppedImage = cropDetectingFrame(cgImage: cgImage, inRect: self.holeCover.holeFrame) else {
+        return
+      }
+      cgImage = croppedImage
+    }
+    detector.detect(cgImage: cgImage) { [weak self] texts in
+      self?.processScanResult(texts: texts)
+    }
+  }
+  
+  private func cropDetectingFrame(cgImage: CGImage, inRect rect: CGRect) -> CGImage? {
+    let imageWidth = CGFloat(cgImage.width)
+    let imageHeight = CGFloat(cgImage.height)
+    
+    let scale = imageHeight / UIScreen.main.bounds.height
+    let frameWidth = holeCover.holeFrame.width * scale
+    let frameHeigth = holeCover.holeFrame.height * scale
+    let cropFrame = CGRect(x: imageWidth / 2 - frameWidth / 2,
+                           y: imageHeight / 2 - frameHeigth / 2,
+                           width: frameWidth,
+                           height: frameHeigth)
+    
+    return cgImage.cropping(to: cropFrame)
+  }
+  
+  func processScanResult(texts: [String]) {
+    for text in texts {
+      if let type = ScannerUtils.getResultType(ofText: text), acceptedResults.contains(type) {
+        handleValidResult(text: ScannerUtils.smoothen(text: text, forType: type), type: type)
+        break
+      }
+    }
+  }
+  
+  func handleValidResult(text: String, type: ScanResultType) {
+    DispatchQueue.main.async {
+      self.navigationController?.popViewController(animated: true, completion: { [weak self] in
+        self?.onScanSuccess?(text, type)
+      })
       
     }
   }
+  
 }
 
 extension KrystalScannerViewController {
@@ -213,7 +324,7 @@ extension KrystalScannerViewController {
           newHeight = holeCover.holeFrame.height
         }
       }
-
+      
       let newFrame = CGRect(x: holeCover.frame.midX - newWidth / 2,
                             y: holeCover.frame.midY - newHeight / 2,
                             width: newWidth, height: newHeight)

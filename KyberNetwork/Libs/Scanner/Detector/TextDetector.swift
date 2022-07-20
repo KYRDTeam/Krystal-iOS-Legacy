@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import AVFoundation
+import UIKit
 
 protocol TextDetector {
-  func detect(buffer: CMSampleBuffer, completion: @escaping ([String]) -> ())
+  func detect(cgImage: CGImage, completion: @escaping ([String]) -> ())
 }

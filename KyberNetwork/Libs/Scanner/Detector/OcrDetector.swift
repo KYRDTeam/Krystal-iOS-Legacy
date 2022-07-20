@@ -10,37 +10,23 @@ import MLImage
 import MLKit
 import UIKit
 import AVFoundation
+import MLKitVision
 
 class OcrDetector: TextDetector {
   
   let textRecognizer = TextRecognizer.textRecognizer()
   
-  func detect(buffer: CMSampleBuffer, completion: @escaping ([String]) -> Void) {
-    let visionImage = VisionImage(buffer: buffer)
-    visionImage.orientation = .up
-    
-    textRecognizer.process(visionImage) { result, error in
-      guard let result = result else { return }
-      let resultText = result.text
-      for block in result.blocks {
-        let blockText = block.text
-        let blockLanguages = block.recognizedLanguages
-        let blockCornerPoints = block.cornerPoints
-        let blockFrame = block.frame
-        for line in block.lines {
-          let lineText = line.text
-          let lineLanguages = line.recognizedLanguages
-          print(lineText)
-        }
+  func detect(cgImage: CGImage, completion: @escaping ([String]) -> Void) {
+    let visionImage = VisionImage(image: UIImage(cgImage: cgImage))
+    textRecognizer.process(visionImage) { result, _ in
+      guard let result = result else {
+        return
       }
+      let texts = result.blocks.map { block -> String in
+        let blockText = block.lines.map { $0.text }.joined()
+        return blockText
+      }
+      completion(texts)
     }
   }
-  
-  func convert(ciimage: CIImage) -> UIImage {
-    let context = CIContext(options: nil)
-    let cgImage = context.createCGImage(ciimage, from: ciimage.extent)!
-    let image = UIImage(cgImage: cgImage)
-    return image
-  }
-  
 }

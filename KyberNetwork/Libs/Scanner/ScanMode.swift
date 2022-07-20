@@ -9,13 +9,13 @@ import Foundation
 
 enum ScanMode {
   case qr
-  case ocr
+  case text
   
   var title: String {
     switch self {
     case .qr:
       return "QR"
-    case .ocr:
+    case .text:
       return "Text"
     }
   }

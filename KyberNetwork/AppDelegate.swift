@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
+    setupImageProcessor()
     setupKeyboard()
     do {
       let keystore = try EtherKeystore()
@@ -40,6 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     })
     KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
     return true
+  }
+  
+  func setupImageProcessor() {
+    OCRUtilities.doBadSwizzleStuff()
   }
   
   func setupOneSignal(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {

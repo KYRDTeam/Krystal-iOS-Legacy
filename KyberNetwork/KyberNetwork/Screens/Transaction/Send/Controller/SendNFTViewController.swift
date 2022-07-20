@@ -57,10 +57,11 @@ class SendNFTViewModel {
   var selectedBalance: Int = 0
   let isSupportERC721: Bool
 
-  init(item: NFTItem, category: NFTSection, supportERC721: Bool) {
+  init(item: NFTItem, category: NFTSection, supportERC721: Bool, recipientAddress: String = "") {
     self.item = item
     self.category = category
     self.isSupportERC721 = supportERC721
+    self.addressString = recipientAddress
   }
 
   func updateAddress(_ address: String) {

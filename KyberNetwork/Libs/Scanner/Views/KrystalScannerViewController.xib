@@ -11,7 +11,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic-VariableFont_wght.ttf">
+        <array key="Karla-Italic.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -21,6 +21,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KrystalScannerViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="draggingNoteView" destination="eqj-Ml-w8v" id="vAH-VT-S1c"/>
                 <outlet property="holeCover" destination="GmY-QA-hYd" id="zBl-Pv-jT5"/>
                 <outlet property="previewView" destination="iQh-Jq-20D" id="HdN-LL-qwb"/>
                 <outlet property="segmentView" destination="Z7S-YW-t8R" id="tpq-dL-bsb"/>
@@ -99,7 +100,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xS-Dx-Yio" userLabel="note_secure">
-                    <rect key="frame" x="32" y="731" width="350" height="33"/>
+                    <rect key="frame" x="45" y="731" width="324" height="33"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scanner_secure" translatesAutoresizingMaskIntoConstraints="NO" id="yks-aF-Iri">
                             <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -111,7 +112,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private key detection is performed on your mobile device" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pL-d7-CdD">
-                            <rect key="frame" x="28" y="0.0" width="322" height="33"/>
+                            <rect key="frame" x="28" y="0.0" width="296" height="33"/>
                             <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -127,8 +128,8 @@
                         <constraint firstItem="8pL-d7-CdD" firstAttribute="top" secondItem="6xS-Dx-Yio" secondAttribute="top" id="p8L-JP-GjA"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eqj-Ml-w8v" userLabel="note_dragging">
-                    <rect key="frame" x="32" y="698.5" width="350" height="16.5"/>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eqj-Ml-w8v" userLabel="note_dragging">
+                    <rect key="frame" x="45" y="698.5" width="324" height="16.5"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scanner_drag" translatesAutoresizingMaskIntoConstraints="NO" id="bdl-ZM-oOT">
                             <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -138,7 +139,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag the crop frame to adjust capturing area" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cPH-0u-895">
-                            <rect key="frame" x="28" y="0.0" width="322" height="16.5"/>
+                            <rect key="frame" x="28" y="0.0" width="296" height="16.5"/>
                             <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -166,7 +167,7 @@
                 <constraint firstItem="GmY-QA-hYd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="7gn-Kc-2Lq"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="gI3-oT-c1v" secondAttribute="trailing" constant="24" id="Ab7-vW-Pbl"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BPR-UI-owG"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6xS-Dx-Yio" secondAttribute="trailing" constant="32" id="Iw2-UY-n8e"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6xS-Dx-Yio" secondAttribute="trailing" constant="45" id="Iw2-UY-n8e"/>
                 <constraint firstItem="L2g-M4-bAb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="KA6-Ab-vjd"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Lbz-tw-AdL"/>
                 <constraint firstItem="Uqx-qH-jQ7" firstAttribute="centerY" secondItem="L2g-M4-bAb" secondAttribute="centerY" id="NCL-Sx-B35"/>
@@ -177,11 +178,11 @@
                 <constraint firstAttribute="bottom" secondItem="iQh-Jq-20D" secondAttribute="bottom" id="iQJ-S4-RJs"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="lzm-GD-vq6"/>
                 <constraint firstItem="Z7S-YW-t8R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="nAf-rt-s8h"/>
-                <constraint firstItem="eqj-Ml-w8v" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="rIC-T3-9Ey"/>
-                <constraint firstItem="6xS-Dx-Yio" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="rdD-2s-FK8"/>
+                <constraint firstItem="eqj-Ml-w8v" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="rIC-T3-9Ey"/>
+                <constraint firstItem="6xS-Dx-Yio" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="rdD-2s-FK8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Z7S-YW-t8R" secondAttribute="bottom" constant="32" id="uuz-wk-WDK"/>
                 <constraint firstAttribute="bottom" secondItem="GmY-QA-hYd" secondAttribute="bottom" id="vxX-GO-6A2"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eqj-Ml-w8v" secondAttribute="trailing" constant="32" id="wQS-H5-93C"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eqj-Ml-w8v" secondAttribute="trailing" constant="45" id="wQS-H5-93C"/>
             </constraints>
             <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
         </view>

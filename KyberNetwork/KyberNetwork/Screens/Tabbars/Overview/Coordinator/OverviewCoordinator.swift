@@ -390,7 +390,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     self.navigationController.openSafari(with: url)
   }
 
-  func openSendTokenView(_ token: Token?) {
+  func openSendTokenView(_ token: Token?, recipientAddress: String = "") {
     let from: TokenObject = {
       if let fromToken = token {
         if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
@@ -405,7 +405,8 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       navigationController: self.navigationController,
       session: self.session,
       balances: self.balances,
-      from: from
+      from: from,
+      recipientAddress: recipientAddress
     )
     coordinator.delegate = self
     coordinator.start()
@@ -747,8 +748,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
-    case .send:
-      self.openSendTokenView(nil)
+    case .send(let recipientAddress):
+      self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")
     case .receive:
       self.openQRCodeScreen()
     case .notifications:
@@ -844,7 +845,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
     case .addChainWallet(let chain):
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
-      
+    case .scannedWalletConnect(let url):
+      self.handleWalletConnectURI(url)
+    case .importWallet(let privateKey, let chain):
+      ()
     }
   }
 }

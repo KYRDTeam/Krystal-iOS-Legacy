@@ -45,6 +45,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   let sendNFT: Bool
   fileprivate var isSupportERC721 = true
+  var recipientAddress: String = ""
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -85,13 +86,15 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     session: KNSession,
     balances: [String: Balance],
     from: TokenObject = KNGeneralProvider.shared.quoteTokenObject,
-    sendNFT: Bool = false
+    sendNFT: Bool = false,
+    recipientAddress: String = ""
   ) {
     self.navigationController = navigationController
     self.session = session
     self.balances = balances
     self.from = from
     self.sendNFT = sendNFT
+    self.recipientAddress = recipientAddress
   }
   
   init(
@@ -100,7 +103,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     nftItem: NFTItem,
     supportERC721: Bool,
     nftCategory: NFTSection,
-    sendNFT: Bool = false
+    sendNFT: Bool = false,
+    recipientAddress: String = ""
   ) {
     self.navigationController = navigationController
     self.session = session
@@ -109,6 +113,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     self.from = KNGeneralProvider.shared.quoteTokenObject
     self.isSupportERC721 = supportERC721
     self.sendNFT = sendNFT
+    self.recipientAddress = recipientAddress
   }
 
   func start() {
@@ -122,7 +127,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
-        currentAddress: address
+        currentAddress: address,
+        recipientAddress: recipientAddress
       )
       let controller = KSendTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
