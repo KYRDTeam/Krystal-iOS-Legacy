@@ -254,9 +254,22 @@ class OverviewMainViewController: KNBaseViewController {
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
     let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
     popup.completionHandler = { [weak self] selected in
-
-      self?.viewModel.currentChain = selected
-      self?.updateUISwitchChain()
+      guard let self = self else { return }
+      guard selected != .all else {
+        self.viewModel.currentChain = selected
+        self.updateUISwitchChain()
+        self.tableView.reloadData()
+        return
+      }
+      
+      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+        self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
+        return
+      } else {
+        let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+        self.present(secondPopup, animated: true, completion: nil)
+      }
     }
     self.present(popup, animated: true, completion: nil)
   }
@@ -343,10 +356,12 @@ class OverviewMainViewController: KNBaseViewController {
   
   func coordinatorDidUpdateNewSession(_ session: KNSession) {
     self.viewModel.session = session
+    self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
+        self.updateUISwitchChain()
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
