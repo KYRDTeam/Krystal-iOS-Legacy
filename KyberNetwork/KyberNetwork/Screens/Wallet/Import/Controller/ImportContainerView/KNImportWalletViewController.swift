@@ -48,6 +48,7 @@ class KNImportWalletViewController: KNBaseViewController {
   
   var importType: ImportWalletChainType = .multiChain
   var selectedChainType: ChainType = KNGeneralProvider.shared.currentChain
+  var privateKey: String = ""
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
@@ -162,6 +163,7 @@ class KNImportWalletViewController: KNBaseViewController {
     let importPrivateKeyVC: KNImportPrivateKeyViewController = {
       let controller = KNImportPrivateKeyViewController()
       controller.delegate = self
+      controller.privateKey = self.privateKey
       controller.importType = self.importType
       return controller
     }()
@@ -238,6 +240,7 @@ class KNImportWalletViewController: KNBaseViewController {
   }
   
   fileprivate func updateDefaultPage() {
+    
     self.updateUIWithCurrentPage(0)
   }
 

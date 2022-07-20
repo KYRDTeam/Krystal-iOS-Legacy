@@ -21,6 +21,7 @@ class KrystalScannerViewController: UIViewController {
   lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
   let videoDataOutput = AVCaptureVideoDataOutput()
   private lazy var sessionQueue = DispatchQueue(label: "app.krystal.scanner.queue")
+  var device: AVCaptureDevice?
   
   // Support drawing
   let borderLayer = CAShapeLayer()
@@ -72,12 +73,6 @@ class KrystalScannerViewController: UIViewController {
     super.viewDidAppear(animated)
     
     self.captureSession.startRunning()
-  }
-  
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    self.videoDataOutput.setSampleBufferDelegate(nil, queue: nil)
-    self.captureSession.stopRunning()
   }
   
   override func viewDidLayoutSubviews() {
@@ -140,6 +135,7 @@ class KrystalScannerViewController: UIViewController {
         print("Failed to get capture device for camera position: \(cameraPosition)")
         return
       }
+      self.device = device
       do {
         strongSelf.captureSession.beginConfiguration()
         let currentInputs = strongSelf.captureSession.inputs
@@ -230,6 +226,10 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
   }
   
   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    if device?.isAdjustingFocus ?? true {
+      return
+    }
+    
     guard var cgImage = self.imageFromSampleBuffer(sampleBuffer: sampleBuffer, videoOrientation: .portrait) else {
       return
     }
@@ -270,6 +270,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
   
   func handleValidResult(text: String, type: ScanResultType) {
     DispatchQueue.main.async {
+      self.captureSession.stopRunning()
       self.navigationController?.popViewController(animated: true, completion: { [weak self] in
         self?.onScanSuccess?(text, type)
       })

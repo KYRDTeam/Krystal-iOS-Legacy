@@ -27,6 +27,17 @@ class KNImportWalletCoordinator: Coordinator {
     self.keystore = keystore
   }
 
+  func startImportFlow(privateKey: String, chain: ChainType) {
+    let importType: ImportWalletChainType = chain.isEVM ? .evm : .solana
+    let vc = KNImportWalletViewController.instantiateFromNib()
+    vc.importType = importType
+    vc.selectedChainType = chain
+    vc.currentImportWalletType = .privateKey
+    vc.privateKey = privateKey
+    vc.delegate = self
+    self.navigationController.pushViewController(vc, animated: true)
+  }
+  
   func start() {
     let selectChainVC = SelectChainViewController()
     selectChainVC.delegate = self

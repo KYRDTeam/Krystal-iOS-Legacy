@@ -27,6 +27,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var refCodeTitleLabel: UILabel!
   var importType: ImportWalletChainType = .multiChain
   var limitCharacter = 0
+  var privateKey: String = ""
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -63,7 +64,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   func resetUI() {
-    self.enterPrivateKeyTextField.text = ""
+    self.enterPrivateKeyTextField.text = privateKey
     self.walletNameTextField.text = ""
     self.isSecureText = true
     self.updateSecureTextEntry()

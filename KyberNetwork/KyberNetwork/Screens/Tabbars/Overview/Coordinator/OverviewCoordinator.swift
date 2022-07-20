@@ -79,6 +79,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
+  var importWalletCoordinator: KNImportWalletCoordinator?
   var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
   var pendingAction: (() -> Void)?
@@ -848,9 +849,29 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .scannedWalletConnect(let url):
       self.handleWalletConnectURI(url)
     case .importWallet(let privateKey, let chain):
-      ()
+      let coordinator = KNImportWalletCoordinator(navigationController: navigationController, keystore: session.keystore)
+      self.importWalletCoordinator = coordinator
+      coordinator.delegate = self
+      coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     }
   }
+}
+
+extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
+    // FIXME: Update after merging the new wallet PR
+    navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    
+  }
+  
+  func importWalletCoordinatorDidSendRefCode(_ code: String) {
+    
+  }
+  
 }
 
 //extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
