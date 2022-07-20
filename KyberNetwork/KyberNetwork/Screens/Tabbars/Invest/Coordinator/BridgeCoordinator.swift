@@ -242,7 +242,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    
+    self.data = []
     provider.requestWithFilter(.getServerInfo(chainId: chainId)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
