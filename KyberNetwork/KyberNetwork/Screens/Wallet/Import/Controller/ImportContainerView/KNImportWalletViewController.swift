@@ -169,6 +169,7 @@ class KNImportWalletViewController: KNBaseViewController {
     let importSeedsVC: KNImportSeedsViewController = {
       let controller = KNImportSeedsViewController()
       controller.delegate = self
+      controller.importType = self.importType
       return controller
     }()
     self.importSeedsVC = importSeedsVC

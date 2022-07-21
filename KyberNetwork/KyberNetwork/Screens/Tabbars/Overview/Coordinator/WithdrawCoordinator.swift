@@ -335,9 +335,9 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-
-    viewModel.isSpeedupMode = true
+    
     viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.gasPriceSelectVC = vc

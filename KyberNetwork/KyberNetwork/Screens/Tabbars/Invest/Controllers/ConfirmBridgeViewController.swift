@@ -124,13 +124,13 @@ class ConfirmBridgeViewController: KNBaseViewController {
     let fromString = "- " + self.viewModel.fromValue
     self.fromTokenValueLabel.text = fromString
     self.fromValueWidth.constant = fromString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
-    self.fromAddressLabel.text = "\(self.viewModel.fromAddress.prefix(7))...\(self.viewModel.fromAddress.suffix(4))"
+    self.fromAddressLabel.text = "\(self.viewModel.fromAddress.prefix(8))...\(self.viewModel.fromAddress.suffix(4))"
     self.toIcon.image = self.viewModel.toChain?.chainIcon()
     self.toChainLabel.text = self.viewModel.toChain?.chainName()
     let toString = "+ " + self.viewModel.toValue
     self.toChainTokenValueLabel.text = toString
     self.toValueWidth.constant = toString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
-    self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(7))...\(self.viewModel.toAddress.suffix(4))"
+    self.toAddressLabel.text = "\(self.viewModel.toAddress.prefix(8))...\(self.viewModel.toAddress.suffix(4))"
     self.feeValueLabel.text = self.viewModel.feeString + " \(self.viewModel.fromChain?.quoteToken() ?? "")"
     self.bridgeFeeLabel.text = self.viewModel.bridgeFee
     self.usdValueLabel.text = self.viewModel.feeUSDString

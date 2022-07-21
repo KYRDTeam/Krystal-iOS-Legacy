@@ -251,6 +251,24 @@ extension String {
       return true
   }
   
+  var isTrustPK: Bool {
+    return self.count == 64
+  }
+  
+  var isSoletPrivateKey: Bool {
+    let checkPrefix = self.hasPrefix("[")
+    let checkSufFix = self.hasSuffix("]")
+    
+    return checkPrefix && checkSufFix
+  }
+  
+  var isSoletPKVaild: Bool {
+    guard self.isSoletPrivateKey else { return false }
+    
+    let stringList = self.dropFirst().dropLast().split(separator: ",")
+    return stringList.count == 64
+  }
+
   var isValidURL: Bool {
     if let url = URL(string: self) {
       return UIApplication.shared.canOpenURL(url)

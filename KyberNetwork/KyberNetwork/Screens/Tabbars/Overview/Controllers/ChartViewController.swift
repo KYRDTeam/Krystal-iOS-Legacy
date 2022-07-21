@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import SwiftChart
 import BigInt
 import MBProgressHUD
+import Charts
 
 class ChartViewModel {
   var dataSource: [(x: Double, y: Double)] = []
@@ -40,6 +40,8 @@ class ChartViewModel {
   }()
   
   var selectedPoolDetail: TokenPoolDetail?
+  
+  var lineChartData: LineChartData?
 
   init(token: Token, currencyMode: CurrencyMode) {
     self.token = token
@@ -51,23 +53,55 @@ class ChartViewModel {
   func updateChartData(_ data: [[Double]]) {
     guard !data.isEmpty else { return }
     self.chartData = data
-    let originTimeStamp = data[0][0]
-    self.chartOriginTimeStamp = originTimeStamp
-    self.dataSource = data.map { (item) -> (x: Double, y: Double) in
-      return (x: item[0] - originTimeStamp, y: item[1])
+    let dataEntry = data.map { item -> ChartDataEntry in
+      let timeStamp = item.first ?? 0.0
+      let value = item.last ?? 0.0
+      return ChartDataEntry(x: timeStamp, y: value)
     }
-    if let lastTimeStamp = data.last?[0] {
-      let interval = lastTimeStamp - originTimeStamp
-      let divide = interval / 7
-      self.xLabels = [0, divide, divide * 2, divide * 3, divide * 4, divide * 5, divide * 6]
-    }
-  }
-  
-  var series: ChartSeries {
-    let series = ChartSeries(data: self.dataSource)
-    series.area = true
-    series.colors = (above: self.displayDiffColor!, below: UIColor(named: "mainViewBgColor")!, 0)
-    return series
+    
+    let diff: Double = {
+      let firstPoint = data.first?.last ?? 0.0
+      let lastPoint = data.last?.last ?? 0.0
+      return lastPoint - firstPoint
+    }()
+    
+    let dataSet = LineChartDataSet(entries: dataEntry, label: "")
+    dataSet.lineDashLengths = nil
+    dataSet.highlightLineDashLengths = nil
+    dataSet.setCircleColor(.black)
+    dataSet.setColors(.clear)
+    dataSet.gradientPositions = [0, 40, 100]
+    dataSet.lineWidth = 1
+    dataSet.circleRadius = 3
+    dataSet.drawCircleHoleEnabled = false
+    dataSet.valueFont = .systemFont(ofSize: 9)
+    dataSet.formLineDashLengths = nil
+    dataSet.formLineWidth = 1
+    dataSet.formSize = 15
+    
+    dataSet.drawValuesEnabled = false
+    dataSet.mode = .linear
+    dataSet.drawCirclesEnabled = false
+    dataSet.isDrawLineWithGradientEnabled = true
+    dataSet.highlightEnabled = true
+    
+    
+    let redGradientColors = [ChartColorTemplates.colorFromString("#00ff0000").cgColor,
+                               ChartColorTemplates.colorFromString("#ffff0000").cgColor]
+    
+    let greenGradientColors = [ChartColorTemplates.colorFromString("#1de9b6").cgColor,
+                          ChartColorTemplates.colorFromString("#8EF4DA").cgColor]
+    
+    let gradientColors = diff > 0 ? greenGradientColors : redGradientColors
+    let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
+    dataSet.fillAlpha = 1
+    dataSet.fill = LinearGradientFill(gradient: gradient, angle: 90)
+    dataSet.drawFilledEnabled = true
+    
+
+    let data = LineChartData(dataSet: dataSet)
+    
+    self.lineChartData = data
   }
   
   var displayPrice: String {
@@ -231,13 +265,9 @@ class ChartViewModel {
     return String.formatBigNumberCurrency(number).displayRate()
   }
   
-  func displayChartDetaiInfoAt(index: Int) -> NSAttributedString {
-    guard let priceItem = self.chartData?[index],
-    let price = priceItem.last,
-    let timestamp = priceItem.first
-    else {
-      return NSAttributedString()
-    }
+  func displayChartDetaiInfoAt(x: Double, y: Double) -> NSAttributedString {
+    let price = y
+    let timestamp = x
     let date = Date(timeIntervalSince1970: timestamp * 0.001)
     let dateFormater = DateFormatterUtil.shared.chartViewDateFormatter
     let dateString = dateFormater.string(from: date)
@@ -390,7 +420,7 @@ class ChartViewController: KNBaseViewController {
   @IBOutlet weak var poolNameLabel: UILabel!
   
   @IBOutlet weak var tradingView: TradingView!
-  @IBOutlet weak var tokenChartView: Chart!
+  @IBOutlet weak var tokenChartView: LineChartView!
   @IBOutlet weak var poolChartContainer: UIView!
   @IBOutlet weak var tokenChartContainer: UIView!
   @IBOutlet weak var intervalStackview: UIStackView!
@@ -485,13 +515,40 @@ class ChartViewController: KNBaseViewController {
   }
   
   func setupChartViews() {
-    tokenChartView.showYLabelsAndGrid = false
-    tokenChartView.labelColor = UIColor.Kyber.SWPlaceHolder
-    tokenChartView.labelFont = UIFont.Kyber.latoRegular(with: 10)
-    tokenChartView.axesColor = .clear
-    tokenChartView.gridColor = .clear
-    tokenChartView.backgroundColor = .clear
+    
     tokenChartView.delegate = self
+
+    tokenChartView.chartDescription.enabled = false
+    tokenChartView.dragEnabled = true
+    tokenChartView.setScaleEnabled(true)
+    tokenChartView.pinchZoomEnabled = false
+    tokenChartView.xAxis.labelTextColor = .white
+    tokenChartView.xAxis.labelPosition = .bottom
+    tokenChartView.leftAxis.labelTextColor = .white
+    tokenChartView.rightAxis.enabled = false
+    
+    tokenChartView.xAxis.valueFormatter = DefaultAxisValueFormatter(block: { value, _ in
+      let date = Date(timeIntervalSince1970: value * 0.001)
+      let calendar = Calendar.current
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "MMM dd"
+      let hour = calendar.component(.hour, from: date)
+      let minutes = calendar.component(.minute, from: date)
+      let month = calendar.component(.month, from: date)
+      let year = calendar.component(.year, from: date)
+      switch self.viewModel.periodType {
+      case .oneDay:
+        return String(format: "%02d:%02d", hour, minutes)
+      case .sevenDay:
+        return dateFormatter.string(from: date)
+      case .oneMonth, .threeMonth:
+        return dateFormatter.string(from: date)
+      case .oneYear:
+        return "\(month)/\(year)"
+      }
+    })
+    tokenChartView.animate(xAxisDuration: 2.5)
+    
   }
   
   func reloadCharts() {
@@ -752,30 +809,11 @@ class ChartViewController: KNBaseViewController {
   func coordinatorDidUpdateChartData(_ data: [[Double]]) {
     self.noDataImageView.isHidden = !data.isEmpty
     self.viewModel.updateChartData(data)
-    self.tokenChartView.removeAllSeries()
-    self.tokenChartView.add(self.viewModel.series)
-    self.tokenChartView.xLabels = self.viewModel.xLabels
     self.updateUIChartInfo()
-    self.tokenChartView.xLabelsFormatter = { (labelIndex: Int, labelValue: Double) -> String in
-      let timestamp = labelValue + self.viewModel.chartOriginTimeStamp
-      let date = Date(timeIntervalSince1970: timestamp * 0.001)
-      let calendar = Calendar.current
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "MMM dd"
-      let hour = calendar.component(.hour, from: date)
-      let minutes = calendar.component(.minute, from: date)
-      let month = calendar.component(.month, from: date)
-      let year = calendar.component(.year, from: date)
-      switch self.viewModel.periodType {
-      case .oneDay:
-        return String(format: "%02d:%02d", hour, minutes)
-      case .sevenDay:
-        return dateFormatter.string(from: date)
-      case .oneMonth, .threeMonth:
-        return dateFormatter.string(from: date)
-      case .oneYear:
-        return "\(month)/\(year)"
-      }
+    if let data = self.viewModel.lineChartData {
+      self.tokenChartView.data = data
+      
+      self.tokenChartView.setNeedsDisplay()
     }
   }
 
@@ -906,23 +944,6 @@ extension ChartViewController: UITableViewDelegate {
   
 }
 
-extension ChartViewController: ChartDelegate {
-  func didTouchChart(_ chart: Chart, indexes: [Int?], x: Double, left: CGFloat) {
-    guard let index = indexes.first, let unwrappedIdx = index else {
-      return
-    }
-    self.chartDetailLabel.attributedText = self.viewModel.displayChartDetaiInfoAt(index: unwrappedIdx)
-  }
-  
-  func didFinishTouchingChart(_ chart: Chart) {
-    
-  }
-  
-  func didEndTouchingChart(_ chart: Chart) {
-    
-  }
-}
-
 extension ChartViewController: TradingViewDelegate {
   
   func tradingView(_ tradingView: TradingView, handleAction action: TradingView.Action) {
@@ -940,5 +961,23 @@ extension ChartViewController: TradingViewDelegate {
     vc.modalPresentationStyle = .overFullScreen
     self.present(vc, animated: true)
   }
+}
+
+extension ChartViewController: ChartViewDelegate {
+  func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+    print("[Chart] selected")
+    self.chartDetailLabel.attributedText = self.viewModel.displayChartDetaiInfoAt(x: entry.x, y: entry.y)
+  }
   
+  func chartValueNothingSelected(_ chartView: ChartViewBase) {
+    print("[Chart] Nothing selected")
+  }
+  
+  func chartScaled(_ chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat) {
+    print("[Chart] scale")
+  }
+  
+  func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
+    print("[Chart] translate")
+  }
 }

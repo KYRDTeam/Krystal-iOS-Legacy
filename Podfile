@@ -18,7 +18,6 @@ def uiPods
   pod 'SwipeCellKit'
   pod 'Charts'
   pod 'SeedStackViewController'
-  pod 'SwiftChart', :git => 'https://github.com/gpbl/SwiftChart.git'
   pod 'IQKeyboardManager', '~> 6.5'
   pod 'JdenticonSwift', '~> 0.0.1'
   pod 'QRCodeReaderViewController', '~> 4.0.2'
