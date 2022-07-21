@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic.ttf">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -67,7 +67,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7qz-Hf-Jyx">
-                    <rect key="frame" x="37" y="97.5" width="301" height="42"/>
+                    <rect key="frame" x="37" y="102.5" width="301" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gIO-Zo-F0D">
                             <rect key="frame" x="16" y="0.0" width="197" height="42"/>
@@ -125,14 +125,14 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMq-0K-qYG">
-                    <rect key="frame" x="309" y="62.5" width="20" height="22"/>
-                    <state key="normal" image="qr_code_blue_icon"/>
+                    <rect key="frame" x="306" y="57.5" width="32" height="32"/>
+                    <state key="normal" image="scan"/>
                     <connections>
                         <action selector="qrCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="dj0-VP-d07"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DME-Jx-FUE">
-                    <rect key="frame" x="37" y="193.5" width="301" height="42"/>
+                    <rect key="frame" x="37" y="198.5" width="301" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of your wallet (optional)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AJn-1q-kYb">
                             <rect key="frame" x="16" y="0.0" width="269" height="42"/>
@@ -157,25 +157,25 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of your wallet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYy-mE-m5j">
-                    <rect key="frame" x="37" y="161.5" width="144" height="19"/>
+                    <rect key="frame" x="37" y="166.5" width="144" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private key has to be 64 characters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uw1-5o-rqh">
-                    <rect key="frame" x="37" y="144.5" width="301" height="12"/>
+                    <rect key="frame" x="37" y="149.5" width="301" height="12"/>
                     <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="10"/>
                     <color key="textColor" name="normalTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paste your Referral Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4P7-9D-OeH">
-                    <rect key="frame" x="37" y="257.5" width="301" height="19"/>
+                    <rect key="frame" x="37" y="262.5" width="301" height="19"/>
                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                     <color key="textColor" name="textWhiteColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="faw-Xo-Aor">
-                    <rect key="frame" x="37" y="289.5" width="301" height="42"/>
+                    <rect key="frame" x="37" y="294.5" width="301" height="42"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Paste your referral link" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="te6-jn-Nf7">
                             <rect key="frame" x="16" y="0.0" width="196" height="42"/>
@@ -245,7 +245,7 @@
             <constraints>
                 <constraint firstItem="eMq-0K-qYG" firstAttribute="centerY" secondItem="lPr-sF-4PB" secondAttribute="centerY" id="0S2-Ya-xmr"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="DME-Jx-FUE" secondAttribute="trailing" constant="37" id="5So-bH-Nwv"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eMq-0K-qYG" secondAttribute="trailing" constant="46" id="65a-f7-M0m"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eMq-0K-qYG" secondAttribute="trailing" constant="37" id="65a-f7-M0m"/>
                 <constraint firstItem="4P7-9D-OeH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="6LM-1x-UeA"/>
                 <constraint firstItem="gtS-Vn-IPm" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="7qp-Er-GTh"/>
                 <constraint firstItem="lPr-sF-4PB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="37" id="A3H-a3-WwU"/>
@@ -277,6 +277,7 @@
     </objects>
     <resources>
         <image name="qr_code_blue_icon" width="20" height="20"/>
+        <image name="scan" width="32" height="32"/>
         <image name="show_eye_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

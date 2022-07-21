@@ -240,8 +240,17 @@ class KNImportWalletViewController: KNBaseViewController {
   }
   
   fileprivate func updateDefaultPage() {
-    
-    self.updateUIWithCurrentPage(0)
+    let defaultPage: Int = {
+      switch importType {
+      case .multiChain:
+        return privateKey.isEmpty ? 0 : 1
+      case .evm:
+        return privateKey.isEmpty ? 0 : 1
+      case .solana:
+        return 0
+      }
+    }()
+    self.updateUIWithCurrentPage(defaultPage)
   }
 
   fileprivate func updateUIWithCurrentPage(_ page: Int) {

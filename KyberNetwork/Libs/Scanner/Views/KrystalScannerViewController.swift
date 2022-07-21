@@ -173,7 +173,7 @@ class KrystalScannerViewController: UIViewController {
       strongSelf.captureSession.beginConfiguration()
       // When performing latency tests to determine ideal capture settings,
       // run the app in 'release' mode to get accurate performance metrics
-      strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
+      strongSelf.captureSession.sessionPreset = AVCaptureSession.Preset.hd1920x1080
       
       let output = AVCaptureVideoDataOutput()
       output.videoSettings = [

@@ -101,9 +101,23 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
       return
     }
-    let qrcodeReader = QRCodeReaderViewController()
-    qrcodeReader.delegate = self
-    self.parent?.present(qrcodeReader, animated: true, completion: nil)
+    guard let navigation = self.navigationController else {
+      return
+    }
+    let acceptedResultTypes: [ScanResultType] = {
+      switch importType {
+      case .multiChain:
+        return []
+      case .evm:
+        return [.ethPrivateKey]
+      case .solana:
+        return [.solPrivateKey]
+      }
+    }()
+    ScannerModule.start(navigationController: navigation, acceptedResultTypes: acceptedResultTypes) { [weak self] privateKey, _ in
+      self?.enterPrivateKeyTextField.text = privateKey.drop0x
+      self?.updateNextButton()
+    }
   }
 
   @IBAction func secureTextButtonPressed(_ sender: Any) {
@@ -131,7 +145,6 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       } else {
         self.refCodeField.text = string
       }
-      
     }
   }
   

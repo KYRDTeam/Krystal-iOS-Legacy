@@ -34,6 +34,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var insestView: UIView!
+  @IBOutlet weak var scanButton: UIButton!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
@@ -106,8 +107,13 @@ class OverviewMainViewController: KNBaseViewController {
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
     
+    self.setupViews()
     self.configPullToRefresh()
     self.configHeaderTapped()
+  }
+  
+  func setupViews() {
+    scanButton.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   func configHeaderTapped() {
@@ -320,6 +326,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
+    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+      return
+    }
     guard let nav = self.navigationController else { return }
     ScannerModule.start(navigationController: nav) { [weak self] text, type in
       guard let self = self else { return }
@@ -336,9 +345,9 @@ class OverviewMainViewController: KNBaseViewController {
           self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .eth))
         }
       case .solPublicKey:
-        self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
-      case .solPrivateKey:
         self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .solPrivateKey:
+        self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
       }
     }
   }
