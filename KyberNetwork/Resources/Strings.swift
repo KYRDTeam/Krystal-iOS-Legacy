@@ -139,7 +139,7 @@ struct Strings {
   static let skipBackupWarningText = "Warning: You must backup your wallet and keep your mnemonics secure.\n\nWhy? If you lose your device, or uninstall the app or clear app’s memory. You won’t be able to access your wallet and funds.\n\nWhy keep your backup secure? Anyone with your backup can steal your wallet assets"
   static let understand = "I understand".toBeLocalised()
   static let goBack = "Go Back".toBeLocalised()
-  static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
+  static let TheAboveAddressWillReceive = "The above address will receive %@ on %@".toBeLocalised()
   static let skip = "Skip?".toBeLocalised()
   static let unsupportedChain = "Unsupported chain".toBeLocalised()
   
