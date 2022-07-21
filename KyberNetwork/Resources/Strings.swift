@@ -53,6 +53,7 @@ struct Strings {
   static let gasFeeDescription = "Gas.fee.is.the.fee.you.pay.to.the.miner".toBeLocalised()
   
   // History
+  static let contract = "contract".toBeLocalised()
   static let success = "success".toBeLocalised()
   static let failure = "failed".toBeLocalised()
   static let pending = "pending".toBeLocalised()
@@ -138,11 +139,13 @@ struct Strings {
   static let skipBackupWarningText = "Warning: You must backup your wallet and keep your mnemonics secure.\n\nWhy? If you lose your device, or uninstall the app or clear app’s memory. You won’t be able to access your wallet and funds.\n\nWhy keep your backup secure? Anyone with your backup can steal your wallet assets"
   static let understand = "I understand".toBeLocalised()
   static let goBack = "Go Back".toBeLocalised()
-  static let AboveAddressWillReceive = "Above address will receive %@ on %@".toBeLocalised()
+  static let TheAboveAddressWillReceive = "The above address will receive %@ on %@".toBeLocalised()
   static let skip = "Skip?".toBeLocalised()
   static let unsupportedChain = "Unsupported chain".toBeLocalised()
   
   // History
   static let numberOfTransfers = "number.of.transfers".toBeLocalised()
   static let txHash = "tx.hash".toBeLocalised()
+  static let xTransfers = "x.transfers".toBeLocalised()
+  static let oneTransfer = "1 Transfer".toBeLocalised()
 }

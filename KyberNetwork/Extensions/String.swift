@@ -17,14 +17,8 @@ extension String {
   var doubleValue: Double {
     let formatter = NumberFormatter()
     formatter.locale = Locale.current
-    formatter.decimalSeparator = "."
-    if let result = formatter.number(from: self.removeGroupSeparator(groupingSeparator: ",")) {
+    if let result = formatter.number(from: self.removeGroupSeparator(groupingSeparator: formatter.groupingSeparator)) {
       return result.doubleValue
-    } else {
-      formatter.decimalSeparator = ","
-      if let result = formatter.number(from: self.removeGroupSeparator(groupingSeparator: ".")) {
-        return result.doubleValue
-      }
     }
     return 0
   }

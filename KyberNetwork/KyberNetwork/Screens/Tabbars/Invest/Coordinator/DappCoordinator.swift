@@ -386,7 +386,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                       state: .pending,
                       fromSymbol: nil,
                       toSymbol: nil,
-                      transactionDescription: "Application",
+                      transactionDescription: Strings.application,
                       transactionDetailDescription: tx.to ?? "",
                       transactionObj: nil,
                       eip1559Tx: eipTx
@@ -440,7 +440,7 @@ extension DappCoordinator: BrowserViewControllerDelegate {
                         state: .pending,
                         fromSymbol: nil,
                         toSymbol: nil,
-                        transactionDescription: "Application",
+                        transactionDescription: Strings.application,
                         transactionDetailDescription: tx.to ?? "",
                         transactionObj: sendTx,
                         eip1559Tx: nil
@@ -814,9 +814,9 @@ extension DappCoordinator: KNTransactionStatusPopUpDelegate {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-
-    viewModel.isSpeedupMode = true
+    
     viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)

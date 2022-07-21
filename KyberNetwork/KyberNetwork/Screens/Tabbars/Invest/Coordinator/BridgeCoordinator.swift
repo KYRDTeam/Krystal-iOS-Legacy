@@ -242,7 +242,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    
+    self.data = []
     provider.requestWithFilter(.getServerInfo(chainId: chainId)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
@@ -260,7 +260,11 @@ class BridgeCoordinator: NSObject, Coordinator {
           }
         }
       case .failure(let error):
-        print("[Get Server Info] \(error.localizedDescription)")
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
       }
       completion()
     }
@@ -281,7 +285,12 @@ class BridgeCoordinator: NSObject, Coordinator {
         } else {
           completion(nil)
         }
-      case .failure( _):
+      case .failure(let error):
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
         completion(nil)
       }
     }
@@ -498,11 +507,11 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         let viewModel = self.rootViewController.viewModel
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-          let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
+          let toValue = "\(viewModel.calculateDesAmountString()) \(viewModel.currentDestToken?.symbol ?? currentSourceToken.symbol)"
           var bridgeFeeString = ""
           let viewModel = self.rootViewController.viewModel
           if let currentDestToken = viewModel.currentDestToken {
-            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
           }
 
           let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)

@@ -55,7 +55,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
         return []
       }
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
-      let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18) ?? "0"
+      let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18).displayRate(meaningNumber: 6) ?? "0"
       var rows: [TransactionDetailRowType] = [
         .common(type: type, timestamp: tx.timestamp, hideStatus: true, status: status),
         .bridgeSubTx(from: true, tx: from),
@@ -79,10 +79,11 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
       ]
       
       let txRows: [TransactionDetailRowType] = tx.extraData?.txns?.enumerated().map { (index, subTx) in
+        let decimals = subTx.token?.decimals ?? quoteToken.decimals
+        let symbol = subTx.token?.symbol ?? ""
         let address = type == .multiSend ? subTx.to : tx.from
-        let amountString = (BigInt(subTx.value) ?? BigInt(0)).shortString(decimals: quoteToken.decimals)
-        let token = subTx.token?.symbol ?? ""
-        return TransactionDetailRowType.multisendTx(index: index, address: address ?? "", amount: amountString + " " + token)
+        let amountString = (BigInt(subTx.value) ?? BigInt(0)).shortString(decimals: decimals)
+        return .multisendTx(index: index, address: address ?? "", amount: amountString + " " + symbol)
       } ?? []
       rows.append(contentsOf: txRows)
       rows.append(.application(walletAddress: tx.from, applicationAddress: tx.to))
