@@ -260,7 +260,11 @@ class BridgeCoordinator: NSObject, Coordinator {
           }
         }
       case .failure(let error):
-        print("[Get Server Info] \(error.localizedDescription)")
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
       }
       completion()
     }
@@ -281,7 +285,12 @@ class BridgeCoordinator: NSObject, Coordinator {
         } else {
           completion(nil)
         }
-      case .failure( _):
+      case .failure(let error):
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
         completion(nil)
       }
     }
