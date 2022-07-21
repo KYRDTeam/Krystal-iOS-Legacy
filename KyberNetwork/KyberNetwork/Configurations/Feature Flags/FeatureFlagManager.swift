@@ -7,14 +7,17 @@
 
 import LaunchDarkly
 
-public struct FeatureFlagKeys {
-  public static let bifinityIntegration = "bifinity-integration"
-  public static let promotionCodeIntegration = "promotion-code"
-  public static let auroraChainIntegration = "aurora-chain"
-  public static let rewardHunting = "reward-hunting"
-  public static let solanaChainIntegration = "solana-chain"
-  public static let klaytnChainIntegration = "klaytn-chain"
-  public static let bridgeIntegration = "cross-chain-bridge"
+struct FeatureFlagKeys {
+  static let bifinityIntegration = "bifinity-integration"
+  static let promotionCodeIntegration = "promotion-code"
+  static let auroraChainIntegration = "aurora-chain"
+  static let rewardHunting = "reward-hunting"
+  static let solanaChainIntegration = "solana-chain"
+  static let klaytnChainIntegration = "klaytn-chain"
+  static let bridgeIntegration = "cross-chain-bridge"
+  static let advancedSearch = "advanced-search"
+  static let tokenPool = "token-pool"
+  static let tradingView = "trading-view"
 }
 
 class FeatureFlagManager {
@@ -40,5 +43,11 @@ class FeatureFlagManager {
   func showFeature(forKey flagKey: String) -> Bool {
     guard let client = LDClient.get() else { return false }
     return client.variation(forKey: flagKey, defaultValue: false)
+  }
+}
+
+func runIfFeatureEnabled(key: String, block: () -> ()) {
+  if FeatureFlagManager.shared.showFeature(forKey: key) {
+    block()
   }
 }

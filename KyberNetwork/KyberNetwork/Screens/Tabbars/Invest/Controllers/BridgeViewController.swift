@@ -16,7 +16,6 @@ enum BridgeEvent {
   case willSelectDestChain
   case didSelectDestChain(chain: ChainType)
   case selectDestToken
-  case changeShowDestAddress
   case changeAmount(amount: Double)
   case changeDestAddress(address: String)
   case selectSwap
@@ -24,6 +23,7 @@ enum BridgeEvent {
   case checkAllowance(token: TokenObject)
   case sendApprove(token: TokenObject, remain: BigInt, value: BigInt)
   case pullToRefresh
+  case scanAddress
 }
 
 protocol BridgeViewControllerDelegate: class {
@@ -117,11 +117,7 @@ class BridgeViewController: KNBaseViewController {
     self.viewModel.selectDestTokenBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectDestToken)
     }
-    
-    self.viewModel.selectSenToBlock = {
-      self.delegate?.bridgeViewControllerController(self, run: .changeShowDestAddress)
-    }
-    
+
     self.viewModel.changeAmountBlock = { amount in
       self.delegate?.bridgeViewControllerController(self, run: .changeAmount(amount: amount.doubleValue ))
     }
@@ -142,6 +138,10 @@ class BridgeViewController: KNBaseViewController {
     }
     self.viewModel.selectMaxBlock = {
       self.delegate?.bridgeViewControllerController(self, run: .selectMaxSource)
+    }
+    
+    self.viewModel.scanQRBlock = {
+      self.delegate?.bridgeViewControllerController(self, run: .scanAddress)
     }
   }
   
@@ -282,7 +282,7 @@ extension BridgeViewController: UITableViewDataSource {
 
 extension BridgeViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return CGFloat(32.0)
+    return section == 0 ? CGFloat(150.0) : CGFloat(32.0)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

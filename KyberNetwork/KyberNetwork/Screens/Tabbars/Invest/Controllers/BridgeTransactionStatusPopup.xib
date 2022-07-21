@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,6 +30,7 @@
                 <outlet property="fromStatusLabel" destination="Bqy-sO-Oum" id="FzM-6B-eCH"/>
                 <outlet property="fromStatusView" destination="FEM-bv-S9K" id="dlB-iD-yGU"/>
                 <outlet property="fromTxHashLabel" destination="MSQ-WI-Nse" id="JVk-j3-FFt"/>
+                <outlet property="fromValueWidth" destination="K45-JL-NXK" id="0ue-Kk-r0J"/>
                 <outlet property="fromWalletLabel" destination="ktx-hm-5Kl" id="IYW-OA-zMM"/>
                 <outlet property="tapOutsideView" destination="qfG-Tt-qIp" id="ImA-8h-dZl"/>
                 <outlet property="toChainIcon" destination="VkC-eN-IEx" id="nV1-bA-49V"/>
@@ -39,6 +40,7 @@
                 <outlet property="toStatusLabel" destination="Llb-lD-aKN" id="Fs2-Km-4jY"/>
                 <outlet property="toStatusView" destination="5Kk-fj-oTr" id="oko-Cx-Li0"/>
                 <outlet property="toTxHashLabel" destination="Wmw-DF-y7M" id="KSZ-2t-ObT"/>
+                <outlet property="toValueWidth" destination="Xyu-jH-d5W" id="5tO-AG-63e"/>
                 <outlet property="toWalletLabel" destination="gBY-ts-hu0" id="Qzz-4p-c83"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -72,7 +74,7 @@
                                     <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KiM-tv-gCu">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KiM-tv-gCu">
                                     <rect key="frame" x="53.000000000000007" y="51.333333333333314" width="71.666666666666686" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="jJL-mU-40F"/>
@@ -112,7 +114,7 @@
                                         <action selector="openFromTxHashTapped:" destination="-1" eventType="touchUpInside" id="PZ5-rB-NIi"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7Kn-s0-LBQ">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7Kn-s0-LBQ">
                                     <rect key="frame" x="28" y="115" width="52" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="52" id="4K9-DG-OAv"/>
@@ -143,10 +145,11 @@
                                         <action selector="copyFromWalletTapped:" destination="-1" eventType="touchUpInside" id="ymd-13-K2u"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="c4S-JJ-Hug">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4S-JJ-Hug">
                                     <rect key="frame" x="223.66666666666666" y="50.333333333333314" width="89.333333333333343" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="3NQ-KM-o8g"/>
+                                        <constraint firstAttribute="width" constant="89.329999999999998" id="K45-JL-NXK"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                     <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -175,6 +178,7 @@
                                 <constraint firstItem="Ugx-zh-4Aj" firstAttribute="centerY" secondItem="MSQ-WI-Nse" secondAttribute="centerY" id="Oxo-yV-6E3"/>
                                 <constraint firstAttribute="trailing" secondItem="c4S-JJ-Hug" secondAttribute="trailing" constant="26" id="Ra8-Zx-TwY"/>
                                 <constraint firstItem="KiM-tv-gCu" firstAttribute="centerY" secondItem="1iD-6v-Uix" secondAttribute="centerY" id="Woq-QB-HHl"/>
+                                <constraint firstItem="c4S-JJ-Hug" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KiM-tv-gCu" secondAttribute="trailing" constant="2" id="Y5X-IP-MYx"/>
                                 <constraint firstItem="hIz-WR-8aX" firstAttribute="leading" secondItem="A6j-zt-EQO" secondAttribute="leading" constant="28" id="Zo2-oB-Z50"/>
                                 <constraint firstItem="ktx-hm-5Kl" firstAttribute="leading" secondItem="7Kn-s0-LBQ" secondAttribute="trailing" constant="14" id="aYk-kj-Mw3"/>
                                 <constraint firstItem="c4S-JJ-Hug" firstAttribute="centerY" secondItem="KiM-tv-gCu" secondAttribute="centerY" id="bLG-Vm-scM"/>
@@ -242,7 +246,7 @@
                                     <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QJ0-98-0el">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethereum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJ0-98-0el">
                                     <rect key="frame" x="53.000000000000007" y="51.333333333333343" width="71.666666666666686" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="Wsk-25-lxc"/>
@@ -251,10 +255,11 @@
                                     <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yGB-g3-gTh">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2995 USDT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yGB-g3-gTh">
                                     <rect key="frame" x="222.66666666666666" y="50.333333333333343" width="89.333333333333343" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="FSl-Dr-D1O"/>
+                                        <constraint firstAttribute="width" constant="89.329999999999998" id="Xyu-jH-d5W"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                     <color key="textColor" red="0.92549019610000005" green="0.92941176469999998" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -298,7 +303,7 @@
                                         <action selector="openToTxHashTapped:" destination="-1" eventType="touchUpInside" id="ywe-B2-tWF"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cTE-MB-GmD">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cTE-MB-GmD">
                                     <rect key="frame" x="28" y="115" width="52" height="19"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="52" id="ZSt-3d-YCJ"/>
@@ -337,6 +342,7 @@
                                 <constraint firstItem="gBY-ts-hu0" firstAttribute="leading" secondItem="cTE-MB-GmD" secondAttribute="trailing" constant="14" id="Bmj-cc-97U"/>
                                 <constraint firstItem="Wmw-DF-y7M" firstAttribute="leading" secondItem="FR1-Lj-txh" secondAttribute="trailing" constant="14" id="FvE-2C-9ca"/>
                                 <constraint firstItem="cTE-MB-GmD" firstAttribute="top" secondItem="FR1-Lj-txh" secondAttribute="bottom" constant="10" id="G8T-q2-PyF"/>
+                                <constraint firstItem="yGB-g3-gTh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QJ0-98-0el" secondAttribute="trailing" constant="2" id="MTX-TJ-dPa"/>
                                 <constraint firstItem="FR1-Lj-txh" firstAttribute="leading" secondItem="kyf-uZ-u6V" secondAttribute="leading" constant="28" id="MnB-lI-ZQE"/>
                                 <constraint firstItem="QJ0-98-0el" firstAttribute="centerY" secondItem="VkC-eN-IEx" secondAttribute="centerY" id="NKq-Bi-VIw"/>
                                 <constraint firstItem="cTE-MB-GmD" firstAttribute="leading" secondItem="kyf-uZ-u6V" secondAttribute="leading" constant="28" id="Opj-ff-VnL"/>
@@ -419,12 +425,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebd-p1-Bkx">
-                            <rect key="frame" x="265" y="523" width="64" height="16"/>
+                            <rect key="frame" x="258" y="523" width="71" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="v26-Fz-0Ou"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                            <state key="normal" title="10-30 min">
+                            <state key="normal" title="10-30 mins">
                                 <color key="titleColor" name="textWhiteColor"/>
                             </state>
                         </button>

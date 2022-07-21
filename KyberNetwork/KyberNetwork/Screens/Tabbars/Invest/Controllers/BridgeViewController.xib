@@ -9,9 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-Bold.ttf">
-            <string>Karla-Bold</string>
-        </array>
         <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
@@ -35,7 +32,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jqR-bc-zqg">
-                            <rect key="frame" x="249" y="59.5" width="110" height="32"/>
+                            <rect key="frame" x="249" y="59" width="110" height="32"/>
                             <color key="backgroundColor" name="navButtonBgColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="110" id="ajY-ja-5yb"/>
@@ -59,7 +56,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BJc-2u-Tru" userLabel="Dot View">
-                            <rect key="frame" x="391" y="62.5" width="6" height="6"/>
+                            <rect key="frame" x="391" y="62" width="6" height="6"/>
                             <color key="backgroundColor" name="secondaryColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="6" id="e9W-Ww-i06"/>
@@ -73,7 +70,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vky-EL-Kh4">
-                            <rect key="frame" x="174" y="59.5" width="63" height="32"/>
+                            <rect key="frame" x="174" y="59" width="63" height="32"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_switch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="PYW-ur-ewr">
                                     <rect key="frame" x="38" y="6" width="20" height="20"/>
@@ -113,7 +110,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pds-8Z-FES">
-                            <rect key="frame" x="365" y="59.5" width="32" height="32"/>
+                            <rect key="frame" x="365" y="59" width="32" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Fdb-gQ-udx"/>
@@ -131,7 +128,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BE5-Xd-L7f">
-                            <rect key="frame" x="30" y="57.5" width="46" height="36"/>
+                            <rect key="frame" x="30" y="57" width="46" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="41y-Zj-e6c"/>
                                 <constraint firstAttribute="width" constant="46" id="Yxk-0o-xhs"/>
@@ -141,28 +138,21 @@
                                 <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="17b-Sa-o0X"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bridge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ge-Ji-wjJ">
-                            <rect key="frame" x="76" y="63.5" width="62" height="23.5"/>
-                            <fontDescription key="fontDescription" name="Karla-Bold" family="Karla" pointSize="20"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" name="mainViewBgColor"/>
                     <constraints>
-                        <constraint firstItem="5ge-Ji-wjJ" firstAttribute="centerY" secondItem="BE5-Xd-L7f" secondAttribute="centerY" id="AoT-vs-kS5"/>
+                        <constraint firstItem="vky-EL-Kh4" firstAttribute="centerY" secondItem="BE5-Xd-L7f" secondAttribute="centerY" id="5aD-jB-2jC"/>
+                        <constraint firstItem="Pds-8Z-FES" firstAttribute="centerY" secondItem="BE5-Xd-L7f" secondAttribute="centerY" id="9xV-k7-L4E"/>
+                        <constraint firstItem="jqR-bc-zqg" firstAttribute="centerY" secondItem="BE5-Xd-L7f" secondAttribute="centerY" id="GS2-PI-Ysp"/>
                         <constraint firstAttribute="height" constant="113" id="IUU-1q-8ft"/>
-                        <constraint firstItem="5ge-Ji-wjJ" firstAttribute="leading" secondItem="BE5-Xd-L7f" secondAttribute="trailing" id="Q8Y-bH-nSG"/>
                         <constraint firstItem="BJc-2u-Tru" firstAttribute="top" secondItem="Pds-8Z-FES" secondAttribute="top" constant="3" id="Sk5-MS-qiC"/>
                         <constraint firstAttribute="trailing" secondItem="Pds-8Z-FES" secondAttribute="trailing" constant="17" id="Wyc-Qh-ThM"/>
-                        <constraint firstItem="jqR-bc-zqg" firstAttribute="centerY" secondItem="5ge-Ji-wjJ" secondAttribute="centerY" id="a7r-V2-s2j"/>
-                        <constraint firstItem="Pds-8Z-FES" firstAttribute="centerY" secondItem="5ge-Ji-wjJ" secondAttribute="centerY" id="bzb-YE-LGB"/>
                         <constraint firstItem="BE5-Xd-L7f" firstAttribute="leading" secondItem="fZC-zF-BsC" secondAttribute="leading" constant="30" id="dXH-3o-ERd"/>
                         <constraint firstItem="Pds-8Z-FES" firstAttribute="leading" secondItem="jqR-bc-zqg" secondAttribute="trailing" constant="6" id="jql-AT-tKW"/>
                         <constraint firstItem="Pds-8Z-FES" firstAttribute="centerY" secondItem="vky-EL-Kh4" secondAttribute="centerY" id="lmi-7n-gXv"/>
                         <constraint firstItem="Pds-8Z-FES" firstAttribute="trailing" secondItem="BJc-2u-Tru" secondAttribute="trailing" id="oJQ-by-Rc4"/>
                         <constraint firstItem="jqR-bc-zqg" firstAttribute="leading" secondItem="vky-EL-Kh4" secondAttribute="trailing" constant="12" id="p9L-74-hkX"/>
-                        <constraint firstAttribute="bottom" secondItem="5ge-Ji-wjJ" secondAttribute="bottom" constant="26" id="qDm-PF-OnV"/>
+                        <constraint firstAttribute="bottom" secondItem="BE5-Xd-L7f" secondAttribute="bottom" constant="20" id="t8o-fD-zpA"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>

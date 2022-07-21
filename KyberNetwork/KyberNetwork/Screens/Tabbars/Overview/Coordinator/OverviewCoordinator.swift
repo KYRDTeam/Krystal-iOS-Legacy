@@ -9,7 +9,6 @@ import Foundation
 import Moya
 import QRCodeReaderViewController
 import MBProgressHUD
-import WalletConnect
 import WalletConnectSwift
 
 protocol OverviewCoordinatorDelegate: class {
@@ -29,6 +28,45 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorBuyCrypto()
 }
 
+class PoolPairToken: Codable {
+  var address: String
+  var name: String
+  var symbol: String
+  var logo: String
+  var tvl: Double
+  var decimals: Int
+  var usdValue: Double
+
+  init(json: JSONDictionary) {
+    self.address = json["id"] as? String ?? ""
+    self.name = json["name"] as? String ?? ""
+    self.symbol = json["symbol"] as? String ?? ""
+    self.decimals = json["decimals"] as? Int ?? 0
+    self.logo = json["logo"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.usdValue = json["usdValue"] as? Double ?? 0.0
+  }
+}
+
+class TokenPoolDetail: Codable {
+  var address: String
+  var tvl: Double
+  var chainId: Int
+  var name: String
+  
+  var token0: PoolPairToken
+  var token1: PoolPairToken
+  
+  init(json: JSONDictionary) {
+    self.address = json["address"] as? String ?? ""
+    self.tvl = json["tvl"] as? Double ?? 0.0
+    self.chainId = json["chainId"] as? Int ?? 0
+    self.name = json["name"] as? String ?? ""
+    self.token0 = PoolPairToken(json: json["token0"] as? JSONDictionary ?? JSONDictionary())
+    self.token1 = PoolPairToken(json: json["token1"] as? JSONDictionary ?? JSONDictionary())
+  }
+}
+
 class OverviewCoordinator: NSObject, Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
@@ -41,7 +79,9 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
+  var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
+  var pendingAction: (() -> Void)?
 
   lazy var rootViewController: OverviewMainViewController = {
     let viewModel = OverviewMainViewModel(session: self.session)
@@ -73,6 +113,19 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
   
   func stop() {
+  }
+  
+  func appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: String?, chainIdString: String?) {
+    guard let chainIdString = chainIdString, let tokenAddress = tokenAddress else {
+      return
+    }
+    let chainId = Int(chainIdString) ?? KNGeneralProvider.shared.currentChain.getChainId()
+    let tokenModel = Token(name: "", symbol: "", address: tokenAddress, decimals: 18, logo: "")
+    let viewModel = ChartViewModel(token: tokenModel, currencyMode: .usd)
+    viewModel.chainId = chainId
+    let controller = ChartViewController(viewModel: viewModel)
+    controller.delegate = self
+    self.navigationController.pushViewController(controller, animated: true)
   }
 
   fileprivate func openChartView(token: Token) {
@@ -106,6 +159,10 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
     self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
+    self.searchRouter.appCoordinatorDidUpdateNewSession()
+    if let pendingAction = pendingAction {
+      pendingAction()
+    }
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -178,9 +235,36 @@ class OverviewCoordinator: NSObject, Coordinator {
 extension OverviewCoordinator: ChartViewControllerDelegate {
   func chartViewController(_ controller: ChartViewController, run event: ChartViewEvent) {
     switch event {
+    case .getPoolList(address: let address, chainId: let chainId):
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.requestWithFilter(.getPoolList(tokenAddress: address, chainId: chainId, limit: 50)) { result in
+        switch result {
+        case .failure(let error):
+          controller.coordinatorFailUpdateApi(error)
+        case .success(let resp):
+          var allPools: [TokenPoolDetail] = []
+          if let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsonData = json["data"] as? [JSONDictionary] {
+            jsonData.forEach { poolJson in
+              let tokenPoolDetail = TokenPoolDetail(json: poolJson)
+              if !tokenPoolDetail.token0.symbol.isEmpty && !tokenPoolDetail.token1.symbol.isEmpty {
+                allPools.append(tokenPoolDetail)
+              }
+            }
+          }
+          controller.coordinatorDidUpdatePoolData(poolData: allPools)
+        }
+      }
     case .getChartData(let address, let from, let to, let currency):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getChartData(address: address, quote: currency, from: from)) { result in
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      self.navigationController.showLoadingHUD()
+      provider.requestWithFilter(.getChartData(chainPath: chainPath, address: address, quote: currency, from: from)) { result in
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -196,7 +280,15 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
       }
     case .getTokenDetailInfo(address: let address):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getTokenDetail(address: address)) { (result) in
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      self.navigationController.showLoadingHUD()
+      provider.requestWithFilter(.getTokenDetail(chainPath: chainPath, address: address)) { (result) in
+        DispatchQueue.main.async {
+          self.navigationController.hideLoading()
+        }
         switch result {
         case .failure(let error):
           controller.coordinatorFailUpdateApi(error)
@@ -207,31 +299,103 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
             controller.coordinatorDidUpdateTokenDetailInfo(data.result)
           } catch let error {
             print("[Debug]" + error.localizedDescription)
+            controller.coordinatorDidUpdateTokenDetailInfo(nil)
           }
         }
       }
     case .transfer(token: let token):
-      self.openSendTokenView(token)
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      if chainPath != KNGeneralProvider.shared.chainPath {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
+          secondButtonAction: {
+            self.handleSwitchChain(controller) {
+              self.openSendTokenView(token)
+              self.pendingAction = nil
+            }
+          },
+          firstButtonAction: nil
+        )
+        alertController.popupHeight = 300
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.openSendTokenView(token)
+      }
+      
     case .swap(token: let token):
-      self.openSwapView(token: token, isBuy: true)
+      var chainPath = KNGeneralProvider.shared.chainPath
+      if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+        chainPath = chainType.chainPath()
+      }
+      if chainPath != KNGeneralProvider.shared.chainPath {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: Strings.pleaseSwitchTo + " \(chainPath.dropFirst().uppercased()) " + Strings.toSwap,
+          secondButtonTitle: Strings.OK,
+          firstButtonTitle: Strings.Cancel,
+          secondButtonAction: {
+            self.handleSwitchChain(controller) {
+              self.openSwapView(token: token, isBuy: true)
+              self.pendingAction = nil
+            }
+          },
+          firstButtonAction: nil
+        )
+        alertController.popupHeight = 300
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      } else {
+        self.openSwapView(token: token, isBuy: true)
+      }
     case .invest(token: let token):
       self.delegate?.overviewCoordinatorDidSelectDepositMore(tokenAddress: token.address)
-    case .openEtherscan(address: let address):
-      self.openCommunityURL("\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(address)")
+    case .openEtherscan(let address, let chain):
+      self.openCommunityURL("\(chain.customRPC().etherScanEndpoint)address/\(address)")
     case .openWebsite(url: let url):
       self.openCommunityURL(url)
     case .openTwitter(name: let name):
       self.openCommunityURL("https://twitter.com/\(name)/")
+    case .selectPool(source: let source, quote: let quote):
+      break
+    case .openDiscord(link: let link):
+      self.navigationController.openSafari(with: link)
+    case .openTelegram(link: let link):
+      self.navigationController.openSafari(with: link)
     }
   }
+  
+  func handleSwitchChain(_ controller: ChartViewController, completion: @escaping () -> Void) {
+    self.pendingAction = nil
+    var newChain = KNGeneralProvider.shared.currentChain
+    if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
+      newChain = chainType
+    }
+    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+      self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
+      self.pendingAction = completion
+      return
+    }
+    let viewModel = SwitchChainWalletsListViewModel(selected: newChain)
+    let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
+    self.navigationController.present(secondPopup, animated: true, completion: nil)
+    self.pendingAction = completion
+  }
 
-  fileprivate func openCommunityURL(_ url: String) {
+  func openCommunityURL(_ url: String) {
     self.navigationController.openSafari(with: url)
   }
 
-  fileprivate func openSendTokenView(_ token: Token?) {
+  func openSendTokenView(_ token: Token?) {
     let from: TokenObject = {
       if let fromToken = token {
+        if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
+          return fromTokenObject
+        }
         return fromToken.toObject()
       }
       return KNGeneralProvider.shared.quoteTokenObject
@@ -248,7 +412,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     self.sendCoordinator = coordinator
   }
 
-  fileprivate func openSwapView(token: Token, isBuy: Bool) {
+  func openSwapView(token: Token, isBuy: Bool) {
     self.delegate?.overviewCoordinatorDidSelectSwapToken(token: token, isBuy: isBuy)
   }
 }
@@ -592,10 +756,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       coordinator.start()
       self.notificationsCoordinator = coordinator
     case .search:
-      let searchController = OverviewSearchTokenViewController()
-      searchController.coordinatorUpdateCurrency(self.currentCurrencyType)
-      searchController.delegate = self
-      self.navigationController.pushViewController(searchController, animated: true)
+      let module = searchRouter.createModule(currencyMode: self.currentCurrencyType, coordinator: self)
+      navigationController.pushViewController(module, animated: true)
     case .withdrawBalance(platform: let platform, balance: let balance):
       let coordinator = WithdrawCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.platform = platform
@@ -687,11 +849,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
   }
 }
 
-extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
-  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
-    self.openChartView(token: token)
-  }
-}
+//extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
+//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
+//    self.openChartView(token: token)
+//  }
+//}
 
 extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
   func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {
@@ -837,7 +999,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
         case .success(let signedData):
           print("[Send favorite nft] success")
           let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-          provider.request(.registerNFTFavorite(address: self.session.wallet.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+          provider.requestWithFilter(.registerNFTFavorite(address: self.session.wallet.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))

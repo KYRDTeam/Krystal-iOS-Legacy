@@ -28,7 +28,7 @@ class TransactionDetailViewControllerSpec: QuickSpec {
         let tx = ExtraBridgeTransaction(address: "0xabcdef", token: "anyUSDT", amount: BigInt("12000000000000000000"), chainId: "56", chainName: "BNB", tx: "0x010101", txStatus: "success", decimals: 18)
         
         presenter.items = [
-          .common(type: .bridge, timestamp: 123456789),
+          .common(type: .bridge, timestamp: 123456789, hideStatus: true, status: .success),
           .bridgeSubTx(from: true, tx: tx),
           .stepSeparator,
           .bridgeFee(fee: "0.0001234 BNB"),
@@ -50,7 +50,7 @@ class TransactionDetailViewControllerSpec: QuickSpec {
           let cell1 = sut.tableView(sut.tableView, cellForRowAt: .init(row: 1, section: 0)) as? BridgeSubTransactionCell
           expect(cell1).toNot(beNil())
           expect(cell1?.addressLabel.text).to(equal("0xabcdef"))
-          expect(cell1?.addressTitle.text).to(equal("From"))
+          expect(cell1?.addressTitle.text).to(equal("Sender"))
           expect(cell1?.amountLabel.text).to(equal("12 anyUSDT"))
           
           let cell2 = sut.tableView(sut.tableView, cellForRowAt: .init(row: 2, section: 0)) as? TransactionStepSeparatorCell

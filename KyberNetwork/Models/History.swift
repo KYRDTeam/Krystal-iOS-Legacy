@@ -55,6 +55,7 @@ struct ExtraData: Codable {
   var type: String?
   var error: String?
   var crosschainStatus: String?
+  var txns: [ExtraMultisendTransaction]?
   
   static let terminatedStatuses: [String] = [
     "success",
@@ -66,6 +67,12 @@ struct ExtraData: Codable {
   var isBridgeCompleted: Bool {
     return from?.isCompleted == true && to?.isCompleted == true
   }
+}
+
+struct ExtraMultisendTransaction: Codable {
+  var token: Token?
+  var value: String
+  var to: String?
 }
 
 struct ExtraBridgeTransaction: Codable {

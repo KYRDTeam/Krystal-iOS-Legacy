@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Karla-Italic.ttf">
+            <string>Karla-Italic</string>
+        </array>
         <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
@@ -16,28 +19,44 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="90" id="KGk-i7-Jjw" customClass="TextFieldCell" customModule="Krystal" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="333" height="90"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="144" id="KGk-i7-Jjw" customClass="TextFieldCell" customModule="Krystal" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="333" height="144"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="333" height="90"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="333" height="144"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n5F-Pb-7oO">
                         <rect key="frame" x="38" y="0.0" width="257" height="42"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fQX-8i-Z51">
-                                <rect key="frame" x="17" y="0.0" width="223" height="42"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fQX-8i-Z51">
+                                <rect key="frame" x="17" y="0.0" width="190" height="42"/>
                                 <color key="textColor" name="textWhiteColor"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="upf-Jm-aMS"/>
+                                </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpQ-E7-Prh">
+                                <rect key="frame" x="220" y="9" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="H2h-Ip-Zz5"/>
+                                    <constraint firstAttribute="height" constant="24" id="U1P-BV-Il9"/>
+                                </constraints>
+                                <state key="normal" image="qr_code_blue_icon"/>
+                                <connections>
+                                    <action selector="scanButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="OaK-2y-ILf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="toolbarBgColor"/>
                         <constraints>
+                            <constraint firstItem="hpQ-E7-Prh" firstAttribute="centerY" secondItem="n5F-Pb-7oO" secondAttribute="centerY" id="1X8-G7-yyY"/>
                             <constraint firstAttribute="height" constant="42" id="2kD-h2-aNi"/>
-                            <constraint firstAttribute="trailing" secondItem="fQX-8i-Z51" secondAttribute="trailing" constant="17" id="ChU-b7-RLr"/>
+                            <constraint firstAttribute="trailing" secondItem="fQX-8i-Z51" secondAttribute="trailing" constant="50" id="ChU-b7-RLr"/>
                             <constraint firstItem="fQX-8i-Z51" firstAttribute="top" secondItem="n5F-Pb-7oO" secondAttribute="top" id="Xvj-C7-qGt"/>
+                            <constraint firstAttribute="trailing" secondItem="hpQ-E7-Prh" secondAttribute="trailing" constant="13" id="aIA-cb-NFp"/>
                             <constraint firstAttribute="bottom" secondItem="fQX-8i-Z51" secondAttribute="bottom" id="dM3-OZ-TrN"/>
                             <constraint firstItem="fQX-8i-Z51" firstAttribute="leading" secondItem="n5F-Pb-7oO" secondAttribute="leading" constant="17" id="rfT-Dj-SCC"/>
                         </constraints>
@@ -57,13 +76,25 @@
                         <color key="textColor" name="textRedColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The above address will receive ${token} on ${chain}" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0O7-zT-mNS">
+                        <rect key="frame" x="56" y="92" width="221" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="vtU-We-cSg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Karla-Italic" family="Karla" pointSize="14"/>
+                        <color key="textColor" name="normalTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="0O7-zT-mNS" secondAttribute="trailing" constant="56" id="4Be-fX-tQc"/>
+                    <constraint firstItem="0O7-zT-mNS" firstAttribute="top" secondItem="n5F-Pb-7oO" secondAttribute="bottom" constant="50" id="FGo-Aj-zqN"/>
+                    <constraint firstAttribute="bottom" secondItem="0O7-zT-mNS" secondAttribute="bottom" constant="8" id="FTd-Le-HNY"/>
                     <constraint firstItem="myY-1I-3gn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="50" id="FYt-uj-hlM"/>
                     <constraint firstItem="n5F-Pb-7oO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="38" id="G6h-Jl-4g0"/>
-                    <constraint firstAttribute="bottom" secondItem="n5F-Pb-7oO" secondAttribute="bottom" id="TbO-qt-tl0"/>
                     <constraint firstItem="n5F-Pb-7oO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="WXZ-gU-D65"/>
+                    <constraint firstItem="0O7-zT-mNS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="56" id="bAc-AY-NAM"/>
                     <constraint firstAttribute="trailing" secondItem="myY-1I-3gn" secondAttribute="trailing" constant="50" id="uHz-v7-HPr"/>
                     <constraint firstAttribute="trailing" secondItem="n5F-Pb-7oO" secondAttribute="trailing" constant="38" id="w13-cY-KgZ"/>
                     <constraint firstItem="myY-1I-3gn" firstAttribute="top" secondItem="n5F-Pb-7oO" secondAttribute="bottom" constant="10" id="zLc-rC-wf0"/>
@@ -71,17 +102,24 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="containViewBottomConstraint" destination="TbO-qt-tl0" id="RXA-8n-Kq8"/>
+                <outlet property="containViewBottomConstraint" destination="FGo-Aj-zqN" id="x0O-sv-tdM"/>
+                <outlet property="descriptionLabel" destination="0O7-zT-mNS" id="5vZ-eK-mDH"/>
                 <outlet property="errorLabel" destination="myY-1I-3gn" id="6P8-zI-j06"/>
                 <outlet property="inputContainView" destination="n5F-Pb-7oO" id="9tG-BJ-TTe"/>
+                <outlet property="scanButton" destination="hpQ-E7-Prh" id="DFZ-C2-M4w"/>
                 <outlet property="textField" destination="fQX-8i-Z51" id="tEa-cM-lJb"/>
+                <outlet property="textFieldTrailingConstraint" destination="ChU-b7-RLr" id="IZp-h3-s77"/>
             </connections>
-            <point key="canvasLocation" x="147.10144927536234" y="141.29464285714286"/>
+            <point key="canvasLocation" x="147.10144927536234" y="159.375"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="qr_code_blue_icon" width="20" height="20"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="normalTextColor">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="textRedColor">
             <color red="0.95686274509803926" green="0.33333333333333331" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

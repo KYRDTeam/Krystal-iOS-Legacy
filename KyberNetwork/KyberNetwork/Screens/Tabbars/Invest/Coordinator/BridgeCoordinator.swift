@@ -9,7 +9,6 @@ import UIKit
 import Moya
 import MBProgressHUD
 import QRCodeReaderViewController
-import WalletConnectSwift
 import BigInt
 import TrustCore
 import JSONRPCKit
@@ -37,8 +36,9 @@ class PoolInfo: Codable {
   
   func liquidityPoolString() -> String {
     let liquidity = Double(self.liquidity) ?? 0
-    let displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
-    let displayLiquiditySring = StringFormatter.amountString(value: displayLiquidity)
+    var displayLiquidity = liquidity / pow(10, self.decimals).doubleValue
+    let currencyFormatter = StringFormatter()
+    let displayLiquiditySring = currencyFormatter.currencyString(value: displayLiquidity, decimals: 0)
     return " Pool: \(displayLiquiditySring) \(self.symbol)"
   }
 }
@@ -149,6 +149,9 @@ class BridgeCoordinator: NSObject, Coordinator {
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
   fileprivate(set) var isOpenGasSettingForApprove: Bool = false
   
+  @UserDefault(key: Constants.bridgeWarningAcceptedKey, defaultValue: false)
+  var bridgeWaringAccepted: Bool
+  
   lazy var rootViewController: BridgeViewController = {
     let viewModel = BridgeViewModel(wallet: self.session.wallet)
     let controller = BridgeViewController(viewModel: viewModel)
@@ -166,7 +169,25 @@ class BridgeCoordinator: NSObject, Coordinator {
   }
 
   func start() {
-    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
+    self.navigationController.pushViewController(self.rootViewController, animated: true, completion: {
+      if !self.bridgeWaringAccepted {
+        let alertController = KNPrettyAlertController(
+          title: Strings.warningTitle,
+          isWarning: true,
+          message: Strings.bridgeWarningText,
+          secondButtonTitle: Strings.understand,
+          firstButtonTitle: Strings.goBack,
+          secondButtonAction: {
+            self.bridgeWaringAccepted = true
+          },
+          firstButtonAction: {
+            self.navigationController.popViewController(animated: true, completion: nil)
+          }
+        )
+        alertController.popupHeight = 350
+        self.navigationController.present(alertController, animated: true, completion: nil)
+      }
+    })
     self.fetchData()
   }
   
@@ -221,8 +242,8 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getServerInfo(chainId: Int, completion: @escaping (() -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    
-    provider.request(.getServerInfo(chainId: chainId)) { result in
+    self.data = []
+    provider.requestWithFilter(.getServerInfo(chainId: chainId)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -239,7 +260,11 @@ class BridgeCoordinator: NSObject, Coordinator {
           }
         }
       case .failure(let error):
-        print("[Get Server Info] \(error.localizedDescription)")
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
       }
       completion()
     }
@@ -248,7 +273,7 @@ class BridgeCoordinator: NSObject, Coordinator {
   func getPoolInfo(chainId: Int, tokenAddress: String, completion: @escaping ((PoolInfo?) -> Void)) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.rootViewController.showLoadingHUD()
-    provider.request(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
+    provider.requestWithFilter(.getPoolInfo(chainId: chainId, tokenAddress: tokenAddress)) { result in
       DispatchQueue.main.async {
         self.rootViewController.hideLoading()
       }
@@ -260,7 +285,12 @@ class BridgeCoordinator: NSObject, Coordinator {
         } else {
           completion(nil)
         }
-      case .failure( _):
+      case .failure(let error):
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
         completion(nil)
       }
     }
@@ -276,10 +306,10 @@ class BridgeCoordinator: NSObject, Coordinator {
     
     let decimal = self.rootViewController.viewModel.currentSourceToken?.decimals ?? 0
     
-    let amount = BigInt(self.rootViewController.viewModel.sourceAmount * pow(10.0, Double(decimal)))
-    let amountString = String(amount)
+    let amount = self.rootViewController.viewModel.sourceAmount.amountBigInt(decimals: decimal) ?? BigInt(0)
+    let amountString = amount.description
     
-    provider.request(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
+    provider.requestWithFilter(.buildSwapChainTx(fromAddress: fromAddress, toAddress: toAddress, fromChainId: fromChainId, toChainId: toChainId, tokenAddress: tokenAddress, amount: amountString)) { result in
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
         do {
@@ -370,6 +400,50 @@ class BridgeCoordinator: NSObject, Coordinator {
 }
 
 extension BridgeCoordinator: BridgeViewControllerDelegate {
+  
+  func didSelectDestChain(newChain: ChainType) {
+    self.rootViewController.viewModel.currentDestChain = newChain
+    self.rootViewController.viewModel.showReminder = true
+    if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
+      if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
+      }) {
+        let currentDestChainToken = currentBridgeToken.destChains[newChain.getChainId().toString()]
+        self.rootViewController.viewModel.currentDestToken = currentDestChainToken
+
+        if let address = currentDestChainToken?.address {
+          self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
+            self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
+            self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
+            self.rootViewController.coordinatorDidUpdateData()
+          }
+        }
+      }
+    }
+    self.getBuildTx()
+    self.rootViewController.coordinatorDidUpdateData()
+  }
+  
+  func currentDestChains() -> [ChainType]? {
+    guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return nil }
+    let currentData = self.data.first {
+      $0.address.lowercased() ==  sourceToken.address.lowercased()
+    }
+    guard let currentData = currentData else {
+      return nil
+    }
+    let sourceChain = currentData.destChains.keys.map { key -> ChainType in
+      let chainId = Int(key) ?? 0
+      return ChainType.getAllChain().first { $0.getChainId() == chainId } ?? .eth
+    }
+    return sourceChain
+  }
+  
+  func willSelectDestChain() {
+    if let destChains = self.currentDestChains() {
+      self.rootViewController.openSwitchChainPopup(destChains, false)
+    }
+  }
+  
   func bridgeViewControllerController(_ controller: BridgeViewController, run event: BridgeEvent) {
     switch event {
     case .pullToRefresh:
@@ -378,25 +452,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       self.rootViewController.viewModel.sourceAmount = amount
       self.rootViewController.coordinatorDidUpdateData()
     case .didSelectDestChain(chain: let newChain):
-      self.rootViewController.viewModel.currentDestChain = newChain
-      self.rootViewController.viewModel.showReminder = true
-      if let currentSourceToken = self.rootViewController.viewModel.currentSourceToken {
-        if let currentBridgeToken = self.data.first(where: { $0.address.lowercased() == currentSourceToken.address.lowercased()
-        }) {
-          let currentDestChainToken = currentBridgeToken.destChains[newChain.getChainId().toString()]
-          self.rootViewController.viewModel.currentDestToken = currentDestChainToken
-
-          if let address = currentDestChainToken?.address {
-            self.getPoolInfo(chainId: newChain.getChainId(), tokenAddress: address) { poolInfo in
-              self.rootViewController.viewModel.currentDestPoolInfo = poolInfo
-              self.rootViewController.viewModel.showToPoolInfo = poolInfo?.isUnlimited == false
-              self.rootViewController.coordinatorDidUpdateData()
-            }
-          }
-        }
-      }
-      self.getBuildTx()
-      self.rootViewController.coordinatorDidUpdateData()
+      self.didSelectDestChain(newChain: newChain)
     case .openHistory:
         self.delegate?.didSelectOpenHistoryList()
     case .openWalletsList:
@@ -410,18 +466,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
     case .addChainWallet(let chainType):
       self.delegate?.didSelectAddChainWallet(chainType: chainType)
     case .willSelectDestChain:
-      guard let sourceToken = self.rootViewController.viewModel.currentSourceToken else { return }
-      let currentData = self.data.first {
-        $0.address.lowercased() ==  sourceToken.address.lowercased()
-      }
-      guard let currentData = currentData else {
-        return
-      }
-      let sourceChain = currentData.destChains.keys.map { key -> ChainType in
-        let chainId = Int(key) ?? 0
-        return ChainType.getAllChain().first { $0.getChainId() == chainId } ?? .eth
-      }
-      self.rootViewController.openSwitchChainPopup(sourceChain, false)
+      self.willSelectDestChain()
     case .selectSourceToken:
 //      var tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
 //      let supportedAddress = self.data.map { return $0.address.lowercased() }
@@ -450,10 +495,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       controller.loadViewIfNeeded()
       controller.delegate = self
       self.rootViewController.present(controller, animated: true, completion: nil)
-    case .changeShowDestAddress:
-      self.rootViewController.viewModel.showSendAddress = !self.rootViewController.viewModel.showSendAddress
-      self.rootViewController.viewModel.resetAddressIfNeed()
-      self.rootViewController.coordinatorDidUpdateData()
     case .changeDestAddress(address: let address):
       self.rootViewController.viewModel.currentSendToAddress = address
       self.rootViewController.coordinatorDidUpdateData()
@@ -466,8 +507,14 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         let viewModel = self.rootViewController.viewModel
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-          let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
-          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
+          let toValue = "\(viewModel.calculateDesAmountString()) \(viewModel.currentDestToken?.symbol ?? currentSourceToken.symbol)"
+          var bridgeFeeString = ""
+          let viewModel = self.rootViewController.viewModel
+          if let currentDestToken = viewModel.currentDestToken {
+            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
+          }
+
+          let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
           let vc = ConfirmBridgeViewController(viewModel: bridgeViewModel)
           vc.delegate = self
           self.confirmVC = vc
@@ -478,6 +525,7 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
       let vm = ApproveTokenViewModelForTokenObject(token: token, res: remain)
       vm.value = value
       vm.showEditSettingButton = true
+      vm.headerTitle = "Approve Transfer"
       let vc = ApproveTokenViewController(viewModel: vm)
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
@@ -508,6 +556,16 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         self.rootViewController.viewModel.sourceAmount = doubleValue
       }
       self.rootViewController.coordinatorDidUpdateData()
+    case .scanAddress:
+        if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self.rootViewController) {
+        return
+      }
+      let qrcodeReaderVC: QRCodeReaderViewController = {
+        let controller = QRCodeReaderViewController()
+        controller.delegate = self
+        return controller
+      }()
+      self.rootViewController.present(qrcodeReaderVC, animated: true, completion: nil)
     }
   }
   
@@ -567,7 +625,6 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         self.buildSwapChainTx { txObject in
           if let txObject = txObject {
             let viewModel = self.rootViewController.viewModel
-            let decimal = viewModel.currentSourceToken?.decimals ?? 0
             let newTxObject = TxObject(nonce: BigInt(nonce).hexEncoded, from: txObject.from, to: txObject.to, data: txObject.data, value: txObject.value, gasPrice: self.gasPrice.hexEncoded, gasLimit: txObject.gasLimit)
             self.bridgeContract = txObject.to
             guard let signTx = self.buildSignTx(newTxObject) else {
@@ -678,7 +735,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 from: ExtraBridgeTransaction(
                   address: signTransaction.account.address.description,
                   token: sourceToken.symbol,
-                  amount: BigInt(viewModel.sourceAmount * pow(10, Double(sourceToken.decimals))),
+                  amount: viewModel.sourceAmount.amountBigInt(decimals: sourceToken.decimals) ?? BigInt(0),
                   chainId: sourceChain.getChainId().toString(),
                   chainName: sourceChain.chainName(),
                   tx: hash,
@@ -688,12 +745,12 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 to: ExtraBridgeTransaction(
                   address: viewModel.currentSendToAddress,
                   token: destToken.symbol,
-                  amount: BigInt(viewModel.estimatedDestAmount * pow(10, Double(destToken.decimals))),
+                  amount: viewModel.estimatedDestAmount,
                   chainId: destChain.getChainId().toString(),
                   chainName: destChain.chainName(),
                   tx: "",
                   txStatus: "PENDING",
-                  decimals: destToken.decimals
+                  decimals: sourceToken.decimals
                 ),
                 type: "crosschain",
                 crosschainStatus: "PENDING"
@@ -950,6 +1007,19 @@ extension BridgeCoordinator: KNSearchTokenViewControllerDelegate {
           self.rootViewController.coordinatorDidUpdateData()
         }
       }
+      if let destChains = self.currentDestChains() {
+        var selectedDestChain: ChainType? = nil
+        if self.rootViewController.viewModel.currentSourceChain == .bsc {
+          selectedDestChain = destChains.contains(.polygon) ? .polygon : destChains.first
+        } else if self.rootViewController.viewModel.currentSourceChain == .polygon {
+          selectedDestChain = destChains.contains(.bsc) ? .bsc : destChains.first
+        } else {
+          selectedDestChain = destChains.contains(.bsc) ? .bsc : (destChains.contains(.polygon) ? .polygon : destChains.first)
+        }
+        if let selectedDestChain = selectedDestChain {
+          self.didSelectDestChain(newChain: selectedDestChain)
+        }
+      }
       self.rootViewController.coordinatorDidUpdateData()
     default:
       return
@@ -990,35 +1060,15 @@ extension BridgeCoordinator: QRCodeReaderDelegate {
 
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
-      guard let url = WCURL(result) else {
-        self.navigationController.showTopBannerView(
-          with: "Invalid session".toBeLocalised(),
-          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
-          time: 1.5
-        )
-        return
-      }
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: "Private Key Error",
-            message: "Can not get Private key",
-            time: 1.5
-          )
-        }
-      }
+      let address: String = {
+        if result.count < 42 { return result }
+        if result.starts(with: "0x") { return result }
+        let string = "\(result.suffix(42))"
+        if string.starts(with: "0x") { return string }
+        return result
+      }()
+      self.rootViewController.viewModel.currentSendToAddress = address
+      self.rootViewController.coordinatorDidUpdateData()
     }
   }
 }

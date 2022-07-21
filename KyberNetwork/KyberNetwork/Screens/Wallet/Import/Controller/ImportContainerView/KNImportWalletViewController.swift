@@ -2,7 +2,6 @@
 
 import UIKit
 import QRCodeReaderViewController
-import WalletConnect
 
 enum ImportWalletChainType: Int {
   case multiChain = 0

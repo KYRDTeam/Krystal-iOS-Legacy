@@ -4,7 +4,6 @@ import UIKit
 import TrustKeystore
 import TrustCore
 import QRCodeReaderViewController
-import WalletConnect
 import Moya
 
 protocol KNCreateWalletCoordinatorDelegate: class {
@@ -113,7 +112,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     switch result {
     case .success(let signedData):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+      provider.requestWithFilter(.registerReferrer(address: account.address.description, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
           if let isSuccess = json["success"] as? Bool, isSuccess {
             self.navigationController.showTopBannerView(message: "Success register referral code")
@@ -143,6 +142,23 @@ extension KNCreateWalletCoordinator: KNBackUpWalletViewControllerDelegate {
   }
 
   func backupWalletViewControllerDidConfirmSkipWallet() {
+    let alertController = KNPrettyAlertController(
+      title: Strings.skip,
+      isWarning: true,
+      message: Strings.skipBackupWarningText,
+      secondButtonTitle: Strings.OK,
+      firstButtonTitle: Strings.Cancel,
+      secondButtonAction: {
+        self.skipBackup()
+      },
+      firstButtonAction: {
+      }
+    )
+    alertController.popupHeight = 468
+    self.navigationController.present(alertController, animated: true, completion: nil)
+  }
+  
+  fileprivate func skipBackup() {
     guard let wallet = self.newWallet else { return }
     let walletObject = KNWalletObject(
       address: wallet.addressString,

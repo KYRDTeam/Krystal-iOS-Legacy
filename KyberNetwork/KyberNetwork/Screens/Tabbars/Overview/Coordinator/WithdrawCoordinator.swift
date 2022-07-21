@@ -88,7 +88,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
     switch event {
     case .getWithdrawableAmount(platform: let platform, userAddress: let userAddress, tokenAddress: let tokenAddress):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
+      provider.requestWithFilter(.getWithdrawableAmount(platform: platform, userAddress: userAddress, token: tokenAddress)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let amount = json["amount"] as? String {
           self.withdrawViewController?.coordinatorDidUpdateWithdrawableAmount(amount)
@@ -105,7 +105,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       self.getLatestNonce { [weak self] (nonce) in
         guard let `self` = self else { return }
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
+        provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: nonce, useGasToken: useGasToken)) { (result) in
           if case .success(let resp) = result {
             let decoder = JSONDecoder()
             do {
@@ -214,7 +214,7 @@ extension WithdrawCoordinator: WithdrawViewControllerDelegate {
       }
     case .updateGasLimit(platform: let platform, token: let token, amount: let amount, gasPrice: let gasPrice, useGasToken: let useGasToken):
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.request(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
+      provider.requestWithFilter(.buildWithdrawTx(platform: platform, userAddress: self.session.wallet.addressString, token: token, amount: amount, gasPrice: gasPrice, nonce: 1, useGasToken: useGasToken)) { [weak self] (result) in
         guard let `self` = self else { return }
         if case .success(let resp) = result,
             let json = try? resp.mapJSON() as? JSONDictionary ?? [:],
@@ -329,46 +329,13 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-
-    viewModel.isSpeedupMode = true
+    
     viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.gasPriceSelectVC = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-        
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isSpeedupMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.gasPriceSelectVC = vc
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = SpeedUpCustomGasSelectViewModel(transaction: transaction)
-      let controller = SpeedUpCustomGasSelectViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      navigationController.present(controller, animated: true)
-    }
-    */
   }
 
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
@@ -982,7 +949,7 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
   
    func buildClaimTx(address: String, nonce: Int, completion: @escaping (Result<TxObject, AnyError>) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.buildClaimTx(address: address, nonce: nonce)) { (result) in
+    provider.requestWithFilter(.buildClaimTx(address: address, nonce: nonce)) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()

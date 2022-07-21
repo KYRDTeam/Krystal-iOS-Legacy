@@ -68,7 +68,7 @@ class TransactionDetailPresenterSpec: QuickSpec {
             sut = TransactionDetailPresenter(view: view, interactor: interactor, router: router)
             sut.setupTransaction(tx: tx)
             expect(sut.items.count).to(equal(5))
-            expect(sut.items[0]).to(equal(.common(type: .bridge, timestamp: 123456789)))
+            expect(sut.items[0]).to(equal(.common(type: .bridge, timestamp: 123456789, hideStatus: true, status: .success)))
             expect(sut.items[1]).to(equal(.bridgeSubTx(from: true, tx: from)))
             expect(sut.items[2]).to(equal(.stepSeparator))
             expect(sut.items[3]).to(equal(.bridgeSubTx(from: false, tx: to)))

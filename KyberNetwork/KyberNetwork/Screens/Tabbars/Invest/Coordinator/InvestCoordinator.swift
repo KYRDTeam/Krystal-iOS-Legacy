@@ -28,7 +28,7 @@ class InvestCoordinator: Coordinator {
   var bridgeCoordinator: BridgeCoordinator?
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
-  var webViewCoordinator: RewardHuntingCoordinator?
+  var rewardHuntingCoordinator: RewardHuntingCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -75,7 +75,7 @@ class InvestCoordinator: Coordinator {
   
   fileprivate func loadMarketAssets() {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getMarketingAssets) { (result) in
+    provider.requestWithFilter(.getMarketingAssets) { (result) in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -180,7 +180,8 @@ class InvestCoordinator: Coordinator {
   func openRewardHunting() {
     let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, session: session)
     coordinator.start()
-    self.webViewCoordinator = coordinator
+    coordinator.delegate = self
+    self.rewardHuntingCoordinator = coordinator
   }
   
   func appCoordinatorPendingTransactionsDidUpdate() {
@@ -252,6 +253,10 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
       }
     case .bridge:
+      guard KNGeneralProvider.shared.currentChain.isSupportedBridge() else {
+        self.navigationController.showErrorTopBannerMessage(message: Strings.unsupportedChain)
+        return
+      }
       self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
@@ -396,4 +401,12 @@ extension InvestCoordinator: BridgeCoordinatorDelegate {
   func didSelectOpenHistoryList() {
     self.openHistoryScreen()
   }
+}
+
+extension InvestCoordinator: RewardHuntingCoordinatorDelegate {
+  
+  func openRewards() {
+    self.openRewardView()
+  }
+  
 }

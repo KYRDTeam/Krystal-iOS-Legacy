@@ -7,6 +7,7 @@ import Firebase
 import OneSignal
 import AppTrackingTransparency
 import WalletConnectSwift
+import IQKeyboardManager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
+    setupKeyboard()
     do {
       let keystore = try EtherKeystore()
       coordinator = KNAppCoordinator(window: window!, keystore: keystore)
@@ -107,6 +109,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
       FirebaseApp.configure(options: fileopts)
     }
   }
+  
+  func setupKeyboard() {
+    IQKeyboardManager.shared().isEnabled = true
+    IQKeyboardManager.shared().shouldResignOnTouchOutside = true
+    
+    let disabledToolbarClasses = [
+      KNImportSeedsViewController.self,
+      KNImportPrivateKeyViewController.self,
+      KNImportJSONViewController.self
+    ]
+    disabledToolbarClasses.forEach { Class in
+      IQKeyboardManager.shared().disabledToolbarClasses.add(Class)
+    }
+  }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
     coordinator.appDidBecomeActive()
@@ -165,6 +181,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     
     if components.path == "/swap" {
       self.coordinator.exchangeCoordinator?.appCoordinatorReceivedTokensSwapFromUniversalLink(srcTokenAddress: parameters["srcAddress"], destTokenAddress: parameters["destAddress"], chainIdString: parameters["chainId"])
+    } else if components.path == "/token" {
+      self.coordinator.overviewTabCoordinator?.navigationController.tabBarController?.selectedIndex = 0
+      self.coordinator.overviewTabCoordinator?.navigationController.popToRootViewController(animated: false)
+      let supportedChainIds = ChainType.getAllChain().map { return $0.getChainId() }
+      if let chainId = Int(parameters["chainId"] ?? "0"), supportedChainIds.contains(chainId) {
+        self.coordinator.overviewTabCoordinator?.appCoordinatorReceivedTokensDetailFromUniversalLink(tokenAddress: parameters["address"] ?? "", chainIdString: parameters["chainId"])
+      } else {
+        let errorVC = ErrorViewController()
+        errorVC.modalPresentationStyle = .fullScreen
+        self.coordinator.overviewTabCoordinator?.navigationController.present(errorVC, animated: false)
+      }
+        
     } else {
       self.coordinator.overviewTabCoordinator?.navigationController.openSafari(with: url)
     }

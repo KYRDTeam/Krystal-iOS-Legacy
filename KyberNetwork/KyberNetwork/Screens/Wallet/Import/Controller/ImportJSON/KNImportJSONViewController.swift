@@ -64,6 +64,9 @@ class KNImportJSONViewController: KNBaseViewController {
       radius: 16
     )
     self.enterPasswordTextField.delegate = self
+    self.nameWalletTextField.delegate = self
+    self.refCodeField.delegate = self
+    
     self.passwordFieldContainer.rounded(radius: 8)
     self.nameWalletTextField.rounded(radius: 8)
 
@@ -182,12 +185,22 @@ extension KNImportJSONViewController: UIDocumentPickerDelegate {
 }
 
 extension KNImportJSONViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-    textField.text = text
-    if textField == self.enterPasswordTextField {
+    switch textField {
+    case enterPasswordTextField:
+      let text = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+      textField.text = text
       self.updateNextButton()
+      return false
+    default:
+      return true
     }
-    return false
+    
   }
 }

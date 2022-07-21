@@ -26,7 +26,7 @@ class BridgeSubTransactionCell: UITableViewCell {
   @IBOutlet weak var addressTitle: UILabel!
   @IBOutlet weak var linkImageView: UIImageView!
   @IBOutlet weak var copyImageView: UIImageView!
-  
+  @IBOutlet weak var amountValueWidth: NSLayoutConstraint!
   weak var delegate: BridgeSubTransactionCellDelegate?
   
   var tx: ExtraBridgeTransaction!
@@ -61,11 +61,12 @@ class BridgeSubTransactionCell: UITableViewCell {
     chainNameLabel.text = tx.chainName
     chainIconImageView.image = getChainIcon(chainID: tx.chainId)
     
-    let amountString = tx.amount.fullString(decimals: tx.decimals)
-    amountLabel.text = amountString + " " + tx.token
+    let amountString = (isSourceTransaction ? "- " : "+ ") + tx.amount.fullString(decimals: tx.decimals) + " " + tx.token
+    amountLabel.text = amountString
+    amountValueWidth.constant = amountString.width(withConstrainedHeight: 21, font: UIFont.Kyber.regular(with: 18))
     txHashLabel.text = tx.tx
-    addressLabel.text = tx.address
-    addressTitle.text = isSourceTransaction ? Strings.from : Strings.receive
+    addressLabel.text = "\(tx.address.prefix(8))...\(tx.address.suffix(4))"
+    addressTitle.text = isSourceTransaction ? Strings.sender : Strings.receiver
   }
   
   func color(forStatus status: TransactionStatus) -> UIColor? {

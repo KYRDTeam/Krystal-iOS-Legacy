@@ -1,0 +1,3 @@
+[submodule "mobile-charting-library"]
+	path = mobile-charting-library
+	url = https://github.com/KYRDTeam/mobile-charting-library.git

@@ -65,7 +65,8 @@ class OverviewMainViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+//    let isAdvancedSearchEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.advancedSearch)
+//    self.searchButton.isHidden = !isAdvancedSearchEnabled
     let nib = UINib(nibName: OverviewMainViewCell.className, bundle: nil)
     self.tableView.register(
       nib,
@@ -387,8 +388,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-    let newConstraintAdjust = UIDevice.isIphoneXOrLater ? CGFloat(-15.0) : CGFloat(-10.0)
-    self.tableViewTopConstraint.constant = isSummary ? newConstraintAdjust : 0
+    self.tableViewTopConstraint.constant = 0
     self.insestView.frame.size.height = insetViewHeight
     self.tableView.reloadData()
     self.configPullToRefresh()

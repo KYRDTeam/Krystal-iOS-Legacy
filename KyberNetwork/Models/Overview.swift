@@ -59,8 +59,11 @@ struct TokenDetailInfo: Codable {
 
 // MARK: - Links
 struct Links: Codable {
-    let homepage: String
-    let twitterScreenName: String
+  let homepage: String
+  let twitterScreenName: String
+  let discord: String
+  let telegram: String
+  let twitter: String
 }
 
 // MARK: - Market

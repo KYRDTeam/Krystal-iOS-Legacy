@@ -21,7 +21,7 @@ class KNInternalProvider {
   // MARK: Rate
   func getKNExchangeTokenRate(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getRate) { [weak self] (result) in
+      self.provider.requestWithFilter(.getRate) { [weak self] (result) in
         guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {
@@ -52,7 +52,7 @@ class KNInternalProvider {
 
   func getProductionCachedRate(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getCachedRate) { [weak self] (result) in
+      self.provider.requestWithFilter(.getCachedRate) { [weak self] (result) in
         guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {
@@ -82,7 +82,7 @@ class KNInternalProvider {
 
   func getProductionChainLinkRate(sym: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getReferencePrice(sym: sym)) { [weak self] (result) in
+      self.provider.requestWithFilter(.getReferencePrice(sym: sym)) { [weak self] (result) in
         guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {
@@ -110,7 +110,7 @@ class KNInternalProvider {
 
   func getKNExchangeRateUSD(completion: @escaping (Result<[KNRate], AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(.getRateUSD) { [weak self] (result) in
+      self.provider.requestWithFilter(.getRateUSD) { [weak self] (result) in
         guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {
@@ -183,7 +183,7 @@ class KNInternalProvider {
 
   private func performFetchRequest(service: KyberNetworkService, completion: @escaping (Result<JSONDictionary, AnyError>) -> Void) {
     DispatchQueue.global(qos: .background).async {
-      self.provider.request(service) { [weak self] (result) in
+      self.provider.requestWithFilter(service) { [weak self] (result) in
         guard let _ = `self` else { return }
         DispatchQueue.main.async {
           switch result {

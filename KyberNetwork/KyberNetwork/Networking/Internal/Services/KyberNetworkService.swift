@@ -875,8 +875,8 @@ enum KrytalService {
   case claimReward(address: String, amount: Double, accessToken: String)
   case getBalances(address: String, forceSync: Bool)
   case getOverviewMarket(addresses: [String], quotes: [String])
-  case getTokenDetail(address: String)
-  case getChartData(address: String, quote: String, from: Int)
+  case getTokenDetail(chainPath: String, address: String)
+  case getChartData(chainPath: String, address: String, quote: String, from: Int)
   case getNTFBalance(address: String, forceSync: Bool)
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
   case getTransactionsHistory(address: String, lastBlock: String)
@@ -897,6 +897,9 @@ enum KrytalService {
   case getPoolInfo(chainId: Int, tokenAddress: String)
   case buildSwapChainTx(fromAddress: String, toAddress: String, fromChainId: Int, toChainId: Int, tokenAddress: String, amount: String)
   case checkTxStatus(txHash: String, chainId: String)
+  case advancedSearch(query: String, limit: Int)
+  case getPoolList(tokenAddress: String, chainId: Int, limit: Int)
+  case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
 }
 
 extension KrytalService: TargetType {
@@ -915,8 +918,10 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
+    case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
+      return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -979,7 +984,7 @@ extension KrytalService: TargetType {
       return "/v1/account/balances"
     case .getOverviewMarket:
       return "/v1/market/overview"
-    case .getTokenDetail(address: let address):
+    case .getTokenDetail:
       return "/v1/token/tokenDetails"
     case .getChartData:
       return "/v1/market/priceSeries"
@@ -1023,6 +1028,12 @@ extension KrytalService: TargetType {
       return "/v1/crosschain/buildSwapChainTx"
     case .checkTxStatus:
       return "/v1/crosschain/checkTxStatus"
+    case .advancedSearch:
+      return "/v1/advancedSearch/search"
+    case .getPoolList:
+      return "/v1/pool/list"
+	case .getTradingViewData:
+      return "/v1/tradingview/history"
     }
   }
 
@@ -1226,19 +1237,19 @@ extension KrytalService: TargetType {
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
       
-    case .getTokenDetail(address: let address):
+    case .getTokenDetail(chainPath: let chainPath, address: let address):
       let json: JSONDictionary = [
         "address": address
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getChartData(address: let address, quote: let quote, from: let from):
+    case .getChartData(chainPath: _, address: let address, quote: let quote, from: let from):
       let json: JSONDictionary = [
         "token": address,
         "quoteCurrency": quote,
         "from": from
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-      case .getNTFBalance(address: let address, forceSync: let forceSync):
+    case .getNTFBalance(address: let address, forceSync: let forceSync):
       let json: JSONDictionary = [
         "address": address,
         "forceSync": forceSync
@@ -1291,9 +1302,6 @@ extension KrytalService: TargetType {
         "address": address.joined(separator: ","),
         "forceSync": forceSync
       ]
-//      if let chains = chains {
-//        json["chains"] = chains
-//      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getGasPriceV2:
       return .requestPlain
@@ -1378,6 +1386,32 @@ extension KrytalService: TargetType {
       let json: JSONDictionary = [
         "txHash": txHash,
         "chainId": chainId
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+        
+    case .advancedSearch(query: let query, limit: let limit):
+      let json: JSONDictionary = [
+        "query": query,
+        "limit": limit
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getPoolList(let address, let chainId, let limit):
+      let json: JSONDictionary = [
+        "token": address,
+        "chainId": chainId,
+        "limit": limit
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+	case .getTradingViewData(chainPath: let chainPath, address: let address, quote: let quote, from: let from):
+      let current = Int(NSDate().timeIntervalSince1970 * 1000)
+      let json: JSONDictionary = [
+        "network": chainPath,
+        "baseAddress": address,
+        "quoteAddress": quote,
+        "fromTime": from,
+        "toTime": current,
+        "interval": 240 //TODO: check if trading view support interval button
+        
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }

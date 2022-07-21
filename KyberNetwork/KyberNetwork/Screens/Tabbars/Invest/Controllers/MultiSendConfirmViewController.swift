@@ -7,7 +7,6 @@
 
 import UIKit
 import BigInt
-import SwiftUI
 
 enum MultiSendConfirmViewEvent {
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)

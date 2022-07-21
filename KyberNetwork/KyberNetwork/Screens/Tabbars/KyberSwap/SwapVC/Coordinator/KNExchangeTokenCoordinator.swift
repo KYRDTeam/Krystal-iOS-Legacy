@@ -8,7 +8,6 @@ import Result
 import Moya
 import APIKit
 import QRCodeReaderViewController
-import WalletConnect
 import MBProgressHUD
 import JSONRPCKit
 import WalletConnectSwift
@@ -748,7 +747,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
     let address = self.session.wallet.addressString
-    provider.request(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
+    provider.requestWithFilter(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
@@ -773,7 +772,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let dest = to.contract.lowercased()
     let amt = srcAmount.isZero ? from.placeholderValue.description : srcAmount.description
     self.navigationController.displayLoading()
-    provider.request(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
+    provider.requestWithFilter(.getExpectedRate(src: src, dst: dest, srcAmount: amt, hint: hint, isCaching: true)) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let rate = json["rate"] as? String, let rateBigInt = BigInt(rate) {
@@ -787,7 +786,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   func getEncodedSwapTransaction(_ tx: RawSwapTransaction) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     self.navigationController.displayLoading()
-    provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
+    provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: tx.nonce, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
       if case .success(let resp) = result {
@@ -806,7 +805,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 
   func getGasLimit(from: TokenObject, to: TokenObject, amount: BigInt, tx: RawSwapTransaction) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: 1, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
+    provider.requestWithFilter(.buildSwapTx(address: tx.userAddress, src: tx.src, dst: tx.dest, srcAmount: tx.srcQty, minDstAmount: tx.minDesQty, gasPrice: tx.gasPrice, nonce: 1, hint: tx.hint, useGasToken: tx.useGasToken)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
         let decoder = JSONDecoder()
@@ -836,7 +835,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    provider.request(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
+    provider.requestWithFilter(.getGasLimit(src: src, dst: dest, srcAmount: amt, hint: hint)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let gasLimitString = json["gasLimit"] as? String, let gasLimit = BigInt(gasLimitString.drop0x, radix: 16) {
         self.rootViewController.coordinatorDidUpdateGasLimit(
@@ -856,7 +855,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
-    provider.request(.getRefPrice(src: src, dst: dest)) { [weak self] result in
+    provider.requestWithFilter(.getRefPrice(src: src, dst: dest)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let change = json["refPrice"] as? String, let sources = json["sources"] as? [String] {
         self.priceImpactSource = sources
@@ -892,18 +891,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
           gasLimit: estimate
         )
         self.gasFeeSelectorVC?.coordinatorDidUpdateGasLimit(estimate)
-      }
-    }
-  }
-
-  fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping (Result<Moya.Response, MoyaError>) -> Void) {
-    let address = self.session.wallet.addressString
-    DispatchQueue.global(qos: .background).async {
-      let provider = MoyaProvider<UserInfoService>()
-      provider.request(.getPreScreeningWallet(address: address)) { result in
-        DispatchQueue.main.async {
-          completion(result)
-        }
       }
     }
   }
@@ -1071,8 +1058,8 @@ extension KNExchangeTokenCoordinator: KNTransactionStatusPopUpDelegate {
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
 
-    viewModel.isSpeedupMode = true
     viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.gasFeeSelectorVC = vc

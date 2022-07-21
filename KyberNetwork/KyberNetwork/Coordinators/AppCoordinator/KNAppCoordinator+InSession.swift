@@ -189,13 +189,13 @@ extension KNAppCoordinator {
     
     if KNGeneralProvider.shared.currentChain == .solana {
       if !wallet.isSolanaWallet {
-        if let walletObject = KNWalletStorage.shared.solanaWallet.first, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
+        if let walletObject = KNWalletStorage.shared.solanaWallet.first, !walletObject.isInvalidated, let solWallet = self.keystore.matchWithWalletObject(walletObject, chainType: .solana) {
           aWallet = solWallet
         }
       }
     } else {
       if wallet.isSolanaWallet {
-        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
+        if let walletObject = KNWalletStorage.shared.nonSolanaWallet.first, !walletObject.isInvalidated, let nonSolWallet = self.keystore.matchWithWalletObject(walletObject) {
           aWallet = nonSolWallet
         }
       }
@@ -296,12 +296,14 @@ extension KNAppCoordinator {
     if isRemovingCurrentWallet {
       if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
         
-        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: {$0.evmAddress == self.currentWallet.evmAddressString}) {
+        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: { $0.evmAddress.lowercased() == self.session.wallet.evmAddressString.lowercased() }) {
           KNWalletStorage.shared.delete(wallet: solWalletObject)
         }
         
-        self.restartNewSession(newWallet, isLoading: false)
-        delayTime = 0.25
+        delayTime = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
+          self.restartNewSession(newWallet, isLoading: false)
+        }
       } else {
         let obj = KNWalletStorage.shared.wallets.last { element in
           return element.address != wallet.addressString
@@ -309,8 +311,10 @@ extension KNAppCoordinator {
         if let unwrap = obj, unwrap.chainType == 2 {
           let wal = unwrap.toSolanaWallet()
           KNGeneralProvider.shared.currentChain = .solana
-          self.restartNewSession(wal, isLoading: false)
-          delayTime = 0.25
+          delayTime = 0.5
+          DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
+            self.restartNewSession(wal, isLoading: false)
+          }
         } else {
           self.navigationController.hideLoading()
           return
@@ -319,6 +323,7 @@ extension KNAppCoordinator {
     }
     self.loadBalanceCoordinator?.exit()
     DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
+      
       if self.session.removeWallet(wallet) {
         self.loadBalanceCoordinator?.restartNewSession(self.session)
         self.exchangeCoordinator?.appCoordinatorDidUpdateNewSession(

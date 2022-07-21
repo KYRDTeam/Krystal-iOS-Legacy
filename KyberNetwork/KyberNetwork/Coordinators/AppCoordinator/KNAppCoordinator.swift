@@ -1,7 +1,6 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
-import IQKeyboardManager
 import BigInt
 import Moya
 //import OneSignal
@@ -121,7 +120,7 @@ class KNAppCoordinator: NSObject, Coordinator {
   func showBackupWalletIfNeeded() -> Bool {
     guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
     guard let walletObj = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
-      return object.isBackedUp == false && object.address.lowercased() == currentWallet.addressString && !object.isWatchWallet
+      return object.isBackedUp == false && object.address == currentWallet.addressString && !object.isWatchWallet
     }) else {
       return false
     }
@@ -170,7 +169,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       switch result {
       case .success(let signedData):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.registerReferrer(address: self.session.wallet.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+        provider.requestWithFilter(.registerReferrer(address: self.session.wallet.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
           if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
             if let isSuccess = json["success"] as? Bool, isSuccess {
               self.tabbarController.showTopBannerView(message: "Success register referral code")
@@ -201,7 +200,7 @@ class KNAppCoordinator: NSObject, Coordinator {
       switch result {
       case .success(let signedData):
         let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.request(.login(address: self.session.wallet.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { (result) in
+        provider.requestWithFilter(.login(address: self.session.wallet.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { (result) in
           if case .success(let resp) = result {
             print(resp.debugDescription)
             let decoder = JSONDecoder()
@@ -229,8 +228,6 @@ extension KNAppCoordinator {
   func appDidFinishLaunch() {
     self.splashScreenCoordinator.start()
     self.authenticationCoordinator.start()
-    IQKeyboardManager.shared().isEnabled = true
-    IQKeyboardManager.shared().shouldResignOnTouchOutside = true
     KNSession.resumeInternalSession()
 
     UITabBarItem.appearance().setTitleTextAttributes(

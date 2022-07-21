@@ -21,8 +21,14 @@ class BridgeReminderCell: UITableViewCell {
       // Configure the view for the selected state
   }
   
-  func updateReminderText(crossChainFee: String, gasFeeString: String, miniAmount: String, maxAmount: String, thresholdString: String) {
-    self.reminderLabel.text = "Crosschain Fee is \(crossChainFee) %, Gas fee \(gasFeeString) for your cross-chain transaction on destination chain. Minimum Crosschain Amount is \(miniAmount). Maximum Crosschain Amount is \(maxAmount). Estimated Time of Crosschain Arrival is 10-30 min. Crosschain amount larger than \(thresholdString) could take up to 12 hours."
+  func updateReminderText(crossChainFee: String, miniAmount: String, maxAmount: String, minFeeString: String, maxFeeString: String) {
+    let reminder1 = minFeeString == maxFeeString ? "•  Bridge fee is \(minFeeString) & it is paid to nodes facilitating token transfer \n" : "•  Bridge fee is \(minFeeString) (max \(maxFeeString)) & it is paid to nodes facilitating token transfer \n"
+    let text = "\(reminder1)•  Minimum transfer amount is \(miniAmount) (Maximum \(maxAmount))\n•  Estimated time to transfer is 10 - 30 mins"
+    let attributedString = NSMutableAttributedString(string: text)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 5
+    attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+    self.reminderLabel.attributedText = attributedString
   }
     
 }
