@@ -27,6 +27,7 @@ class ScannerUtils {
         .replacingOccurrences(of: "l", with: "1")
         .replacingOccurrences(of: "o", with: "0")
         .replacingOccurrences(of: "O", with: "0")
+        .replacingOccurrences(of: "ethereum:", with: "")
     case .solPublicKey, .solPrivateKey:
       return text.trimmed.replacingOccurrences(of: " ", with: "")
     default:
