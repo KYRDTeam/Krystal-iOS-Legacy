@@ -296,11 +296,11 @@ extension KNAppCoordinator {
     if isRemovingCurrentWallet {
       if let newWallet = self.keystore.wallets.last(where: { $0 != wallet }) {
         
-        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: { $0.evmAddress.lowercased() == self.currentWallet.evmAddressString.lowercased() }) {
+        if let solWalletObject = KNWalletStorage.shared.solanaWallet.first(where: { $0.evmAddress.lowercased() == self.session.wallet.evmAddressString.lowercased() }) {
           KNWalletStorage.shared.delete(wallet: solWalletObject)
         }
         
-        delayTime = 0.25
+        delayTime = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
           self.restartNewSession(newWallet, isLoading: false)
         }
@@ -311,7 +311,7 @@ extension KNAppCoordinator {
         if let unwrap = obj, unwrap.chainType == 2 {
           let wal = unwrap.toSolanaWallet()
           KNGeneralProvider.shared.currentChain = .solana
-          delayTime = 0.25
+          delayTime = 0.5
           DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
             self.restartNewSession(wal, isLoading: false)
           }
