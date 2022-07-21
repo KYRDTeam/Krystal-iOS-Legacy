@@ -302,8 +302,11 @@ class BridgeViewModel {
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           // calculate with same decimal of source token
-          let liquidity = currentDestPoolInfo.liquidity.amountBigInt(decimals: self.currentSourceToken?.decimals ?? 0) ?? BigInt(0)
-          if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
+          let liquidity = Double(currentDestPoolInfo.liquidity) ?? 0
+          let displayLiquidity = liquidity / pow(10, currentDestPoolInfo.decimals).doubleValue
+          let liquidityBigInt = BigInt(displayLiquidity * pow(10, Double(self.currentSourceToken?.decimals ?? 0)))
+          
+          if !currentDestPoolInfo.isUnlimited && liquidityBigInt < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
         }
@@ -318,7 +321,7 @@ class BridgeViewModel {
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
         cell.scanQRBlock = self.scanQRBlock
-        cell.updateDescriptionLabel(tokenString: self.currentSourceToken?.symbol, chainString: self.currentDestChain?.chainName())
+        cell.updateDescriptionLabel(tokenString: self.currentDestToken?.symbol, chainString: self.currentDestChain?.chainName())
         cell.updateErrorUI()
         return cell
       case .reminderRow:
