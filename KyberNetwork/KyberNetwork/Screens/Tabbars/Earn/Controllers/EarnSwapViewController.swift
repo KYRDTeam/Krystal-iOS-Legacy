@@ -820,7 +820,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_earn_swap_view", customAttributes: nil)
+    Tracker.track(event: .openEarnSwapView)
     self.updateAllRates()
     self.estRateTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,

@@ -258,7 +258,7 @@ extension KNAppCoordinator {
       )
   
       MixPanelManager.shared.updateWalletAddress(address: aWallet.addressString)
-      KNCrashlyticsUtil.updateUserId(userId: aWallet.addressString)
+      Tracker.updateUserID(aWallet.addressString)
     }
   }
 

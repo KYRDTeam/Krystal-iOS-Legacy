@@ -96,9 +96,9 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType, selectedChain: ChainType) {
     self.navigationController.topViewController?.displayLoading(text: "\(NSLocalizedString("importing.wallet", value: "Importing wallet", comment: ""))...", animated: true)
     if name == nil || name?.isEmpty == true {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
+      Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_empty"])
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_not_empty"])
+      Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_not_empty"])
     }
     self.keystore.importWallet(type: type, importType: importType) { [weak self] result in
       guard let `self` = self else { return }
@@ -125,11 +125,11 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
         }
         switch type {
         case .keystore:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_success", customAttributes: nil)
+          Tracker.track(event: .iwJSONSuccess)
         case .privateKey:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_success", customAttributes: nil)
+          Tracker.track(event: .iwPKSuccess)
         case .mnemonic:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_success", customAttributes: nil)
+          Tracker.track(event: .iwSeedSuccess)
         case .watch:
           break
         }
@@ -137,11 +137,11 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
         self.navigationController.topViewController?.displayError(error: error)
         switch type {
         case .keystore:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_fail", customAttributes: nil)
+          Tracker.track(event: .iwJSONFail)
         case .privateKey:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_fail", customAttributes: nil)
+          Tracker.track(event: .iwPKFail)
         case .mnemonic:
-          KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_fail", customAttributes: nil)
+          Tracker.track(event: .iwSeedFail)
         case .watch:
           break
         }

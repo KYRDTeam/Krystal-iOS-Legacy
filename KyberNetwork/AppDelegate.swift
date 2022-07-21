@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         self.requestAcceptTrackingFirebaseIfNeeded()
       }
     })
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_app_event", customAttributes: nil)
+    Tracker.track(event: .openApp)
     return true
   }
   

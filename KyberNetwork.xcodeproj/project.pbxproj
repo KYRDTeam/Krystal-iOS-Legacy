@@ -634,6 +634,8 @@
 		A6BE04B02887E9B300E63714 /* ScanResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04AF2887E9B300E63714 /* ScanResultType.swift */; };
 		A6BE04B22887F15A00E63714 /* ScannerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B12887F15A00E63714 /* ScannerModule.swift */; };
 		A6BE04B4288904C900E63714 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B3288904C900E63714 /* StringUtils.swift */; };
+		A6BE04B7288927B600E63714 /* ScreenName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B6288927B600E63714 /* ScreenName.swift */; };
+		A6BE04B92889285400E63714 /* TrackingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B82889285400E63714 /* TrackingEvent.swift */; };
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
@@ -1689,6 +1691,8 @@
 		A6BE04AF2887E9B300E63714 /* ScanResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultType.swift; sourceTree = "<group>"; };
 		A6BE04B12887F15A00E63714 /* ScannerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModule.swift; sourceTree = "<group>"; };
 		A6BE04B3288904C900E63714 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
+		A6BE04B6288927B600E63714 /* ScreenName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenName.swift; sourceTree = "<group>"; };
+		A6BE04B82889285400E63714 /* TrackingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingEvent.swift; sourceTree = "<group>"; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -2171,6 +2175,7 @@
 				251ABCA320578E3D0069687F /* Utilities */,
 				251ABCA220578E1F0069687F /* Models */,
 				25CC0A922057DD2A0009D0D5 /* Networking */,
+				A6BE04B52889279F00E63714 /* Tracking */,
 				251ABCA020578DA30069687F /* Configurations */,
 			);
 			path = KyberNetwork;
@@ -2229,7 +2234,6 @@
 				255B88C3222E36E100D23189 /* DateFormatterUtil.swift */,
 				251ABCBE205790B10069687F /* KNJSONLoaderUtil.swift */,
 				251ABCA420578E630069687F /* KNNotificationUtil.swift */,
-				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
 				2543D863223A0E8D0085F40E /* NumberFormatterUtil.swift */,
 				C315AD5D240F845200620096 /* CustomAxisValueFormatter.swift */,
 				A6DA410127F974B40078C58E /* ThreadProtectedObject.swift */,
@@ -4727,6 +4731,16 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		A6BE04B52889279F00E63714 /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
+				A6BE04B6288927B600E63714 /* ScreenName.swift */,
+				A6BE04B82889285400E63714 /* TrackingEvent.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
 		A6CC316F2877E51E00891200 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -6719,6 +6733,7 @@
 				2995739F1FA1F294006F17FD /* QRURLParser.swift in Sources */,
 				7E3FCF1228574DB9009DD914 /* AdvanceSearchTokenInteractor.swift in Sources */,
 				A6B3CD5C2811C3D0005D0D66 /* Assembler+.swift in Sources */,
+				A6BE04B92889285400E63714 /* TrackingEvent.swift in Sources */,
 				7721A6BE202A5677004DB16C /* DecryptError.swift in Sources */,
 				A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */,
 				A6573B80284DE16000A25CBF /* CrosschainTransactionService.swift in Sources */,
@@ -6988,6 +7003,7 @@
 				2543D864223A0E8D0085F40E /* NumberFormatterUtil.swift in Sources */,
 				293112351FC9A0D500966EEA /* CallRequest.swift in Sources */,
 				C33BB80727955C9A00851BC6 /* Function.swift in Sources */,
+				A6BE04B7288927B600E63714 /* ScreenName.swift in Sources */,
 				A6E26FE028129C480054427E /* SignTransactionObject.swift in Sources */,
 				291F52A91F6B7BE100B369AB /* BlockNumber.swift in Sources */,
 				257C9FC02078A5E400EE0128 /* Array+Kyber.swift in Sources */,

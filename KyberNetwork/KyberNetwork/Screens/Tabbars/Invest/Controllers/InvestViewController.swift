@@ -21,6 +21,7 @@ enum InvestViewEvent {
   case rewardHunting
   case bridge
   case addChainWallet(chainType: ChainType)
+  case scanner
 }
 
 protocol InvestViewControllerDelegate: class {
@@ -241,6 +242,8 @@ extension InvestViewController: UICollectionViewDelegate {
         delegate?.investViewController(self, run: .rewardHunting)
       case .bridge:
         delegate?.investViewController(self, run: .bridge)
+      case .scanner:
+        delegate?.investViewController(self, run: .scanner)
       }
     case .partners:
       let partner = viewModel.partners.value[indexPath.item]

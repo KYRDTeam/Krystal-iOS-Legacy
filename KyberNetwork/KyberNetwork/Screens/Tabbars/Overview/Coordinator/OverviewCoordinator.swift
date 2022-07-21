@@ -130,7 +130,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func openChartView(token: Token) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
+    Tracker.track(event: .marketOpenDetail)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
@@ -780,10 +780,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         if case .market(let mode) = current {
           switch mode {
           case .lastPrice:
-            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_24h", customAttributes: nil)
+            Tracker.track(event: .marketSwitch24h)
             controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
           default:
-            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_cap", customAttributes: nil)
+            Tracker.track(event: .marketSwitchCap)
             controller.coordinatorDidSelectMode(.market(rightMode: .lastPrice))
           }
         }

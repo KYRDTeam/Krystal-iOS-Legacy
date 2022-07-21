@@ -113,7 +113,7 @@ class KSendTokenViewController: KNBaseViewController {
     self.isViewDisappeared = false
     self.updateUIAddressQRCode()
     self.updateUIPendingTxIndicatorView()
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_send_view", customAttributes: nil)
+    Tracker.track(event: .openSendView)
     self.updateUISwitchChain()
   }
 
@@ -211,7 +211,7 @@ class KSendTokenViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_submit", customAttributes: nil)
+    Tracker.track(event: .transferSubmit)
     if self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) { return }
     if self.showWarningInvalidAddressIfNeeded() { return }
     

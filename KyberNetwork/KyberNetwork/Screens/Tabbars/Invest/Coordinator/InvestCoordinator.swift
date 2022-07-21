@@ -241,7 +241,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openBuyCryptoScreen()
     case .multiSend:
       self.multiSendCoordinator.start()
-      KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
+      Tracker.track(event: .exploreMultisend)
     case .promoCode:
       let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, session: self.session)
       coordinator.start()
@@ -260,7 +260,8 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-
+    case .scanner:
+      ()
     }
   }
   

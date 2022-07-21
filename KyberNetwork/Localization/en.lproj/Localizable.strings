@@ -869,3 +869,4 @@
 // Scanner
 "scan.qr.code" = "Scan QR Code";
 "scan.text" = "Scan Text";
+"scanner" = "Scanner";

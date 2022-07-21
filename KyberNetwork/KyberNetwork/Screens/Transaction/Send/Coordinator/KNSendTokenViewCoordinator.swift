@@ -316,7 +316,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       }
     case .openMultiSend:
       self.multiSendCoordinator.start()
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_click_multiple_transfer", customAttributes: nil)
+      Tracker.track(event: .transferClickMultipleTransfer)
     case .addChainWallet(let chainType):
       self.delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }

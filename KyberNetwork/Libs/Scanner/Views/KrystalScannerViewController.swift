@@ -28,8 +28,8 @@ class KrystalScannerViewController: UIViewController {
   let borderLayer = CAShapeLayer()
   let maskLayer = CAShapeLayer()
   var lastTouch: CGPoint = .zero
-  let minHoleSize: CGFloat = 64
-  let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 48
+  let minHoleSize: CGFloat = 100
+  let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 16
   var lastHoleFrame: CGRect = .zero
   var isDraggingEnabled = false
   
@@ -329,13 +329,13 @@ extension KrystalScannerViewController {
         }
       }
       if dy * dyLastTouchToCenter < 0 {
-        if newHeight - abs(dy) * 2 >= minHoleSize && newHeight - abs(dy) * 2 <= 500 {
+        if newHeight - abs(dy) * 2 >= minHoleSize {
           newHeight -= abs(dy) * 2
         } else {
           newHeight = holeCover.holeFrame.height
         }
       } else {
-        if newHeight + abs(dy) * 2 >= minHoleSize && newHeight + abs(dy) * 2 <= 500 {
+        if newHeight + abs(dy) * 2 >= minHoleSize {
           newHeight += abs(dy) * 2
         } else {
           newHeight = holeCover.holeFrame.height

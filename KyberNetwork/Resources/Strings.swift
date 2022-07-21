@@ -152,4 +152,5 @@ struct Strings {
   // Scanner
   static let scanQRCode = "scan.qr.code".toBeLocalised()
   static let scanText = "scan.text".toBeLocalised()
+  static let scanner = "scanner".toBeLocalised()
 }

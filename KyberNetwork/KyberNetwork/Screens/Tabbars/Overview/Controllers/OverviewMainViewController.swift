@@ -278,35 +278,35 @@ class OverviewMainViewController: KNBaseViewController {
       } else {
         self.viewModel.marketSortType = .name(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_name", customAttributes: nil)
+      Tracker.track(event: .marketSortName)
     } else if sender.tag == 2 {
       if case let .ch24(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .ch24(des: !dec)
       } else {
         self.viewModel.marketSortType = .ch24(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_24h", customAttributes: nil)
+      Tracker.track(event: .marketSort24h)
     } else if sender.tag == 3 {
       if case let .vol(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .vol(des: !dec)
       } else {
         self.viewModel.marketSortType = .vol(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_vol", customAttributes: nil)
+      Tracker.track(event: .marketSortVol)
     } else  if sender.tag == 4 {
       if case let .price(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .price(des: !dec)
       } else {
         self.viewModel.marketSortType = .price(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_price", customAttributes: nil)
+      Tracker.track(event: .marketSortPrice)
     } else  if sender.tag == 5 {
       if case let .cap(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .cap(des: !dec)
       } else {
         self.viewModel.marketSortType = .cap(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
+      Tracker.track(event: .marketSortCap)
     }
     self.reloadUI()
   }
@@ -690,7 +690,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "token_disable": true,
           "screen_name": "OverviewMainViewController",
         ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
+        Tracker.track(event: .tokenChangeDisable, customAttributes: params)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
           MBProgressHUD.hide(for: self.view, animated: true)
@@ -712,7 +712,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "token_address": token.address,
           "screen_name": "OverviewMainViewController",
         ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
+        Tracker.track(event: .tokenDelete, customAttributes: params)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
           MBProgressHUD.hide(for: self.view, animated: true)

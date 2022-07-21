@@ -170,17 +170,17 @@ class BrowserViewController: KNBaseViewController {
 
   func coodinatorDidReceiveBackEvent() {
     self.webView.goBack()
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_back", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappBack, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
 
   func coodinatorDidReceiveForwardEvent() {
     self.webView.goForward()
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_forward", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappForward, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
 
   func coodinatorDidReceiveRefreshEvent() {
     self.webView.reload()
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_refresh", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappRefresh, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
 
   func coodinatorDidReceiveShareEvent() {
@@ -193,7 +193,7 @@ class BrowserViewController: KNBaseViewController {
     activitiy.title = NSLocalizedString("share.with.friends", value: "Share with friends", comment: "")
     activitiy.popoverPresentationController?.sourceView = self.navigationController?.view!
     self.navigationController?.present(activitiy, animated: true, completion: nil)
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_share", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappShare, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
 
   func coodinatorDidReceiveCopyEvent() {
@@ -202,7 +202,7 @@ class BrowserViewController: KNBaseViewController {
     hud.mode = .text
     hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
     hud.hide(animated: true, afterDelay: 1.5)
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_copy", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappCopy, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
 
   func coodinatorDidReceiveFavoriteEvent() {
@@ -219,7 +219,7 @@ class BrowserViewController: KNBaseViewController {
     } else {
       BrowserStorage.shared.addNewFavorite(item: item)
     }
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_favorite", customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
+    Tracker.track(event: .dappFavorite, customAttributes: ["title": self.navTitleLabel.text ?? "", "url": self.viewModel.url])
   }
   
   func coodinatorDidReceiveSwitchWalletEvent() {

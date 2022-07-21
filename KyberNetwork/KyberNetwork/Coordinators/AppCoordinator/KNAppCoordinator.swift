@@ -112,7 +112,7 @@ class KNAppCoordinator: NSObject, Coordinator {
         }
       }
       self.startNewSession(with: wallet)
-      KNCrashlyticsUtil.updateUserId(userId: session.currentWalletObject.address)
+      Tracker.updateUserID( session.currentWalletObject.address)
     }
   }
 

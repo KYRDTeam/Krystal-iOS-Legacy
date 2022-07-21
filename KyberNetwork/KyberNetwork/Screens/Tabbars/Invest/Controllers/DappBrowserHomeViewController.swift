@@ -168,7 +168,7 @@ class DappBrowserHomeViewController: UIViewController {
   }
 
   @IBAction func showAllRecently(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "dapp_show_all_history", customAttributes: nil)
+    Tracker.track(event: .dappShowAllHistory)
     self.delegate?.dappBrowserHomeViewController(self, run: .showAllRecently)
   }
   
