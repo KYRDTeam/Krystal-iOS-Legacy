@@ -58,7 +58,7 @@ class TextFieldCell: UITableViewCell {
       self.descriptionLabel.text = ""
       return
     }
-    self.descriptionLabel.text = String(format: Strings.AboveAddressWillReceive, tokenString, chainString)
+    self.descriptionLabel.text = String(format: Strings.TheAboveAddressWillReceive, tokenString, chainString)
   }
   
   @objc func textFieldDidChange(_ textField: UITextField) {

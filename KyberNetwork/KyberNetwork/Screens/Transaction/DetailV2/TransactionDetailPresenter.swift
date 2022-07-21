@@ -55,7 +55,7 @@ class TransactionDetailPresenter: TransactionDetailPresenterProtocol {
         return []
       }
       let quoteToken = getChain(chainID: from.chainId)?.quoteToken() ?? ""
-      let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18) ?? "0"
+      let bridgeFee = BigInt(tx.gasCost)?.fullString(decimals: 18).displayRate(meaningNumber: 6) ?? "0"
       var rows: [TransactionDetailRowType] = [
         .common(type: type, timestamp: tx.timestamp, hideStatus: true, status: status),
         .bridgeSubTx(from: true, tx: from),
