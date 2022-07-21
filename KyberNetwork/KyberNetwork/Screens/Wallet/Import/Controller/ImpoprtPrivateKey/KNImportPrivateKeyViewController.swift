@@ -79,8 +79,17 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
 
   fileprivate func updateNextButton() {
     let enabled: Bool = {
-      if let text = self.enterPrivateKeyTextField.text, text.count == self.limitCharacter { return true }
-      return false
+      guard let text = self.enterPrivateKeyTextField.text else { return false }
+      if importType == .solana {
+        if text.isSoletPrivateKey {
+          return text.isSoletPKVaild
+        } else {
+          return text.count == self.limitCharacter
+        }
+      } else {
+        if text.count == self.limitCharacter { return true }
+        return false
+      }
     }()
     self.nextButton.isEnabled = enabled
     let noteColor: UIColor = {

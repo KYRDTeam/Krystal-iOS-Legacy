@@ -206,13 +206,17 @@ extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
       var solanaAddress = ""
       
       if case .mnemonic(let words, _) = importType {
-        finalImportChainType = .multiChain
-        let key = words.joined(separator: " ")
-        let address = SolanaUtil.seedsToPublicKey(key)
-        solanaAddress = address
-        
-        if let existSolanaWallet = KNWalletStorage.shared.get(forSolanaAddress: solanaAddress) {
-          KNWalletStorage.shared.delete(wallet: existSolanaWallet)
+        if words.count == 12 {
+          finalImportChainType = .multiChain
+          let key = words.joined(separator: " ")
+          let address = SolanaUtil.seedsToPublicKey(key)
+          solanaAddress = address
+          
+          if let existSolanaWallet = KNWalletStorage.shared.get(forSolanaAddress: solanaAddress) {
+            KNWalletStorage.shared.delete(wallet: existSolanaWallet)
+          }
+        } else {
+          finalImportChainType = .solana
         }
       }
       
