@@ -507,11 +507,11 @@ extension BridgeCoordinator: BridgeViewControllerDelegate {
         let viewModel = self.rootViewController.viewModel
         if let currentSourceToken = viewModel.currentSourceToken {
           let fromValue = "\(viewModel.sourceAmount) \(currentSourceToken.symbol)"
-          let toValue = "\(viewModel.calculateDesAmountString()) \(currentSourceToken.symbol)"
+          let toValue = "\(viewModel.calculateDesAmountString()) \(viewModel.currentDestToken?.symbol ?? currentSourceToken.symbol)"
           var bridgeFeeString = ""
           let viewModel = self.rootViewController.viewModel
           if let currentDestToken = viewModel.currentDestToken {
-            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
+            bridgeFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
           }
 
           let bridgeViewModel = ConfirmBridgeViewModel(fromChain: viewModel.currentSourceChain, fromValue: fromValue, fromAddress: self.session.wallet.addressString, toChain: viewModel.currentDestChain, toValue: toValue, toAddress: viewModel.currentSendToAddress, bridgeFee: bridgeFeeString, token: currentSourceToken, gasPrice: self.gasPrice, gasLimit: self.estimateGasLimit, signTransaction: self.currentSignTransaction, eip1559Transaction: nil)
