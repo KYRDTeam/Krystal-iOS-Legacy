@@ -1,4 +1,4 @@
-name: Krystal iOS CI Build Debug Mode to FDA
+name: K-iOS CI Build Debug Mode FDA
 
 on:
   workflow_dispatch:
