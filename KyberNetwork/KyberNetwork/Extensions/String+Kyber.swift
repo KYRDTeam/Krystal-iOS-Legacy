@@ -233,6 +233,10 @@ extension String {
       return true
   }
   
+  var isTrustPK: Bool {
+    return self.count == 64
+  }
+  
   var isSoletPrivateKey: Bool {
     let checkPrefix = self.hasPrefix("[")
     let checkSufFix = self.hasSuffix("]")
@@ -247,7 +251,7 @@ extension String {
     return stringList.count == 64
   }
 
-	var isValidURL: Bool {
+  var isValidURL: Bool {
     if let url = URL(string: self) {
       return UIApplication.shared.canOpenURL(url)
     }
