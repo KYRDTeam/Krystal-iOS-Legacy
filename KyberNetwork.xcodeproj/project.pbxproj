@@ -633,6 +633,7 @@
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
 		A6BE04B02887E9B300E63714 /* ScanResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04AF2887E9B300E63714 /* ScanResultType.swift */; };
 		A6BE04B22887F15A00E63714 /* ScannerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B12887F15A00E63714 /* ScannerModule.swift */; };
+		A6BE04B4288904C900E63714 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B3288904C900E63714 /* StringUtils.swift */; };
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
@@ -1687,6 +1688,7 @@
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
 		A6BE04AF2887E9B300E63714 /* ScanResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultType.swift; sourceTree = "<group>"; };
 		A6BE04B12887F15A00E63714 /* ScannerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModule.swift; sourceTree = "<group>"; };
+		A6BE04B3288904C900E63714 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -2236,6 +2238,7 @@
 				A693AFE72819017500880503 /* ClosureSleeve.swift */,
 				C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */,
 				C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */,
+				A6BE04B3288904C900E63714 /* StringUtils.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -6733,6 +6736,7 @@
 				C337E16027748849001C8B03 /* DAppRequster.swift in Sources */,
 				7E1EBE4D283507E200793B6D /* BridgeSwapButtonCell.swift in Sources */,
 				C30F78E6271414AD00E3233D /* EIP1559Transaction.swift in Sources */,
+				A6BE04B4288904C900E63714 /* StringUtils.swift in Sources */,
 				251ABCBF205790B10069687F /* KNJSONLoaderUtil.swift in Sources */,
 				2561454420C6442400FB00CF /* KNContact.swift in Sources */,
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,

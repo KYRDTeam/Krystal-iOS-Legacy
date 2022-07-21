@@ -11,7 +11,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic.ttf">
+        <array key="Karla-Italic-VariableFont_wght.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -23,6 +23,7 @@
             <connections>
                 <outlet property="draggingNoteView" destination="eqj-Ml-w8v" id="vAH-VT-S1c"/>
                 <outlet property="holeCover" destination="GmY-QA-hYd" id="zBl-Pv-jT5"/>
+                <outlet property="infoLabel" destination="N6S-tE-E0c" id="1o8-G9-LEq"/>
                 <outlet property="previewView" destination="iQh-Jq-20D" id="HdN-LL-qwb"/>
                 <outlet property="segmentView" destination="Z7S-YW-t8R" id="tpq-dL-bsb"/>
                 <outlet property="titleLabel" destination="Uqx-qH-jQ7" id="9vD-o9-9mU"/>

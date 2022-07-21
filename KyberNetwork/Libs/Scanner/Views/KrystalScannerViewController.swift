@@ -14,6 +14,7 @@ class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var segmentView: CustomSegmentView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var draggingNoteView: UIView!
+  @IBOutlet weak var infoLabel: UILabel!
   
   var isDebug = true
   
@@ -87,7 +88,7 @@ class KrystalScannerViewController: UIViewController {
   
   func setupViews() {
     self.titleLabel.text = self.title(forMode: self.scanMode)
-    
+    self.infoLabel.text = self.getInfoText()
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     holeCover.addGestureRecognizer(panGesture)
   }
@@ -198,6 +199,21 @@ class KrystalScannerViewController: UIViewController {
       position: .back
     )
     return discoverySession.devices.first { $0.position == position }
+  }
+  
+  private func getInfoText() -> String {
+    var acceptedResultTypeName: [String] = []
+    if acceptedResults.contains(.walletConnect) {
+      acceptedResultTypeName.append("WalletConnect")
+    }
+    if acceptedResults.contains(.ethPublicKey) || acceptedResults.contains(.solPublicKey) {
+      acceptedResultTypeName.append("wallet address")
+    }
+    if acceptedResults.contains(.ethPrivateKey) || acceptedResults.contains(.solPrivateKey) {
+      acceptedResultTypeName.append("private key to import your wallet")
+    }
+    let listText = StringUtils.concat(strings: acceptedResultTypeName, normalJoinSeparator: ", ", lastJoinSeparator: " or ")
+    return "Securely scan " + listText
   }
   
 }
