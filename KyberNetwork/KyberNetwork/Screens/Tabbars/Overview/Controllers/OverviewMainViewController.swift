@@ -330,7 +330,16 @@ class OverviewMainViewController: KNBaseViewController {
       return
     }
     guard let nav = self.navigationController else { return }
-    ScannerModule.start(navigationController: nav) { [weak self] text, type in
+    
+    var acceptedResultTypes: [ScanResultType] = [.walletConnect]
+    
+    if KNGeneralProvider.shared.currentChain.isEVM {
+      acceptedResultTypes.append(contentsOf: [.ethPrivateKey, .ethPublicKey])
+    } else if KNGeneralProvider.shared.currentChain == .solana {
+      acceptedResultTypes.append(contentsOf: [.solPrivateKey, .solPublicKey])
+    }
+    
+    ScannerModule.start(navigationController: nav, acceptedResultTypes: acceptedResultTypes) { [weak self] text, type in
       guard let self = self else { return }
       switch type {
       case .walletConnect:

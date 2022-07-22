@@ -33,6 +33,7 @@ class KrystalScannerViewController: UIViewController {
   var lastHoleFrame: CGRect = .zero
   var isDraggingEnabled = false
   var hasLayout = false
+  var defaultScanMode: ScanMode = .qr
   
   var availableScanModes: [ScanMode] = [.qr, .text]
   var acceptedResults: [ScanResultType] = [.walletConnect, .ethPublicKey, .ethPrivateKey, .solPublicKey, .solPrivateKey]
@@ -62,6 +63,7 @@ class KrystalScannerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.scanMode = defaultScanMode
     self.setupViews()
     self.setupSegmentView()
     self.showCameraFeed()
@@ -105,10 +107,19 @@ class KrystalScannerViewController: UIViewController {
   }
   
   func resetHoleFrame() {
-    let size = self.view.frame.width * 3 / 4
-    self.holeCover.holeFrame = .init(x: self.view.frame.midX - size / 2,
-                                     y: self.holeContainer.frame.midY - size / 2,
-                                     width: size, height: size)
+    let width = self.view.frame.width * 3 / 4
+    switch scanMode {
+    case .qr:
+      self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
+                                       y: self.holeContainer.frame.midY - width / 2,
+                                       width: width, height: width)
+    case .text:
+      let height = width / 2
+      self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
+                                       y: self.holeContainer.frame.midY - height / 2,
+                                       width: width, height: height)
+    }
+    
   }
   
   func title(forMode scanMode: ScanMode) -> String {
@@ -122,23 +133,12 @@ class KrystalScannerViewController: UIViewController {
   
   func setupSegmentView() {
     segmentView.items = availableScanModes.map(\.title)
+    segmentView.selectedIndex = defaultScanMode == .qr ? 0 : 1
     segmentView.onSelectItem = { [weak self] index in
       guard let self = self else { return }
       let mode = self.availableScanModes[index]
       self.scanMode = mode
-      
-      let width = self.view.frame.width * 3 / 4
-      switch mode {
-      case .qr:
-        self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
-                                         y: self.holeContainer.frame.midY - width / 2,
-                                         width: width, height: width)
-      case .text:
-        let height = width / 2
-        self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
-                                         y: self.holeContainer.frame.midY - height / 2,
-                                         width: width, height: height)
-      }
+      self.resetHoleFrame()
     }
   }
   
@@ -236,6 +236,65 @@ class KrystalScannerViewController: UIViewController {
   
 }
 
+extension KrystalScannerViewController {
+  
+  @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+    guard isDraggingEnabled else { return }
+    switch recognizer.state {
+    case .began:
+      lastTouch = recognizer.location(in: self.view)
+      lastHoleFrame = holeCover.holeFrame
+    case .changed:
+      let location = recognizer.location(in: self.view)
+      
+      let dx = location.x - lastTouch.x
+      let dy = location.y - lastTouch.y
+      let dxLastTouchToCenter = lastTouch.x - holeContainer.center.x
+      let dyLastTouchToCenter = lastTouch.y - holeContainer.center.y
+      
+      var newWidth = lastHoleFrame.width
+      var newHeight = lastHoleFrame.height
+      
+      if dx * dxLastTouchToCenter < 0 {
+        if newWidth - abs(dx) * 2 >= minHoleSize && newWidth - abs(dx) * 2 <= maxHoleWidth {
+          newWidth -= abs(dx) * 2
+        } else {
+          newWidth = holeCover.holeFrame.width
+        }
+      } else {
+        if newWidth + abs(dx) * 2 >= minHoleSize && newWidth + abs(dx) * 2 <= maxHoleWidth {
+          newWidth += abs(dx) * 2
+        } else {
+          newWidth = holeCover.holeFrame.width
+        }
+      }
+      if dy * dyLastTouchToCenter < 0 {
+        if newHeight - abs(dy) * 2 >= minHoleSize {
+          newHeight -= abs(dy) * 2
+        } else {
+          newHeight = holeCover.holeFrame.height
+        }
+      } else {
+        if newHeight + abs(dy) * 2 >= minHoleSize {
+          newHeight += abs(dy) * 2
+        } else {
+          newHeight = holeCover.holeFrame.height
+        }
+      }
+      
+      let newFrame = CGRect(x: holeCover.frame.midX - newWidth / 2,
+                            y: holeCover.frame.midY - newHeight / 2,
+                            width: newWidth, height: newHeight)
+      holeCover.holeFrame = newFrame
+    default:
+      return
+    }
+    
+  }
+  
+}
+
+// MARK: - Process image
 extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
   
   private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer, videoOrientation: AVCaptureVideoOrientation) -> CGImage? {
@@ -310,64 +369,6 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
       })
       
     }
-  }
-  
-}
-
-extension KrystalScannerViewController {
-  
-  @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-    guard isDraggingEnabled else { return }
-    switch recognizer.state {
-    case .began:
-      lastTouch = recognizer.location(in: self.view)
-      lastHoleFrame = holeCover.holeFrame
-    case .changed:
-      let location = recognizer.location(in: self.view)
-      
-      let dx = location.x - lastTouch.x
-      let dy = location.y - lastTouch.y
-      let dxLastTouchToCenter = lastTouch.x - holeContainer.center.x
-      let dyLastTouchToCenter = lastTouch.y - holeContainer.center.y
-      
-      var newWidth = lastHoleFrame.width
-      var newHeight = lastHoleFrame.height
-      
-      if dx * dxLastTouchToCenter < 0 {
-        if newWidth - abs(dx) * 2 >= minHoleSize && newWidth - abs(dx) * 2 <= maxHoleWidth {
-          newWidth -= abs(dx) * 2
-        } else {
-          newWidth = holeCover.holeFrame.width
-        }
-      } else {
-        if newWidth + abs(dx) * 2 >= minHoleSize && newWidth + abs(dx) * 2 <= maxHoleWidth {
-          newWidth += abs(dx) * 2
-        } else {
-          newWidth = holeCover.holeFrame.width
-        }
-      }
-      if dy * dyLastTouchToCenter < 0 {
-        if newHeight - abs(dy) * 2 >= minHoleSize {
-          newHeight -= abs(dy) * 2
-        } else {
-          newHeight = holeCover.holeFrame.height
-        }
-      } else {
-        if newHeight + abs(dy) * 2 >= minHoleSize {
-          newHeight += abs(dy) * 2
-        } else {
-          newHeight = holeCover.holeFrame.height
-        }
-      }
-      
-      let newFrame = CGRect(x: holeCover.frame.midX - newWidth / 2,
-                            y: holeCover.frame.midY - newHeight / 2,
-                            width: newWidth, height: newHeight)
-      holeCover.holeFrame = newFrame
-    default:
-      return
-    }
-    
   }
   
 }

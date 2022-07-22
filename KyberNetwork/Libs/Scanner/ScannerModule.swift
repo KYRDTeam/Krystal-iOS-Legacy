@@ -11,10 +11,12 @@ class ScannerModule {
   
   static func start(navigationController: UINavigationController,
                     acceptedResultTypes: [ScanResultType] = ScanResultType.allCases,
+                    defaultScanMode: ScanMode = .qr,
                     onComplete: @escaping (String, ScanResultType) -> Void)  {
     let vc = KrystalScannerViewController.instantiateFromNib()
     vc.onScanSuccess = onComplete
     vc.acceptedResults = acceptedResultTypes
+    vc.defaultScanMode = defaultScanMode
     vc.hidesBottomBarWhenPushed = true
     navigationController.pushViewController(vc, animated: true)
   }

@@ -114,7 +114,9 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
         return [.solPrivateKey]
       }
     }()
-    ScannerModule.start(navigationController: navigation, acceptedResultTypes: acceptedResultTypes) { [weak self] privateKey, _ in
+    ScannerModule.start(navigationController: navigation,
+                        acceptedResultTypes: acceptedResultTypes,
+                        defaultScanMode: .text) { [weak self] privateKey, _ in
       self?.enterPrivateKeyTextField.text = privateKey.drop0x
       self?.updateNextButton()
     }

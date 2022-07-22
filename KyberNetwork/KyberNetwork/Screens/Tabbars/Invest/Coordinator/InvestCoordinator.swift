@@ -267,7 +267,14 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: rootViewController) {
         return
       }
-      ScannerModule.start(navigationController: navigationController) { [weak self] text, type in
+      var acceptedResultTypes: [ScanResultType] = [.walletConnect]
+      if KNGeneralProvider.shared.currentChain.isEVM {
+        acceptedResultTypes.append(contentsOf: [.ethPrivateKey, .ethPublicKey])
+      } else if KNGeneralProvider.shared.currentChain == .solana {
+        acceptedResultTypes.append(contentsOf: [.solPrivateKey, .solPublicKey])
+      }
+      
+      ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes) { [weak self] text, type in
         guard let self = self else { return }
         switch type {
         case .walletConnect:
