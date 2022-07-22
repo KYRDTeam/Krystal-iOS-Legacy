@@ -23,6 +23,7 @@ class AppMigrationManager {
       migrateKeystoreWallets()
       UserDefaults.hasMigratedKeystoreWallet = true
     }
+    self.migrateCustomNFTIfNeeded()
   }
   
   private func migrateKeystoreWallets() {
@@ -105,6 +106,40 @@ class AppMigrationManager {
         }
       }
     }
+  }
+  
+  private func migrateCustomNFTIfNeeded() {
+    let allChain = ChainType.getAllChain()
+    let address = AppDelegate.session.address.addressString
+    let filePaths = allChain.map { e in
+      return e.getChainDBPath() + address + Constants.summaryChainStoreFileName
+    }
+    
+    var existsData = false
+    
+    filePaths.forEach { e in
+      if Storage.isFileExistAtPath(e) {
+        existsData = true
+      }
+    }
+    
+    guard existsData else {
+      return
+    }
+    
+    var customSections: [NFTSection] = []
+    
+    for (index, element) in filePaths.enumerated() {
+      if let data = Storage.retrieve(element, as: [NFTSection].self) {
+        data.forEach { e in
+          e.chainType = allChain[index]
+        }
+        customSections.append(contentsOf: data)
+        Storage.removeFileAtPath(element)
+      }
+    }
+    
+    Storage.store(customSections, as: address + Constants.customNftBalanceStoreFileName)
   }
   
 }
