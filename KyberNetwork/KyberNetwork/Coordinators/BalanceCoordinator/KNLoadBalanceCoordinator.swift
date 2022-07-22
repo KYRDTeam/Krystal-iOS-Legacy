@@ -287,25 +287,60 @@ class KNLoadBalanceCoordinator {
 
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getNTFBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { result in
+    let address = AppDelegate.session.address.addressString
+    provider.requestWithFilter(.getAllNftBalance(address: address, chains: [])) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
         do {
-          let data = try decoder.decode(NftResponse.self, from: resp.data)
+          let data = try decoder.decode(AllNftResponse.self, from: resp.data)
           print("[LoadNFT] \(data)")
-          BalanceStorage.shared.setNFTBalance(data.balances)
+          
+          //TODO: process data
+          var allBalances: [NFTSection] = []
+          
+          data.data.forEach { e in
+            let chain = ChainType.getChain(id: e.chainID)
+            e.balances.forEach { bal in
+              bal.chainType = chain
+            }
+            allBalances.append(contentsOf: e.balances)
+          }
+          
+//          print("[LoadNFT] \(allBalances)")
+          BalanceStorage.shared.setNFTBalance(allBalances)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           completion(true)
         } catch let error {
-          print("[LoadNFT] \(error.localizedDescription)")
           completion(false)
         }
       case .failure(let error):
-        print("[LoadNFT] \(error.localizedDescription)")
         completion(false)
       }
     }
+    
+    
+    
+//    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+//    provider.requestWithFilter(.getNTFBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { result in
+//      switch result {
+//      case .success(let resp):
+//        let decoder = JSONDecoder()
+//        do {
+//          let data = try decoder.decode(NftResponse.self, from: resp.data)
+//          print("[LoadNFT] \(data)")
+//          BalanceStorage.shared.setNFTBalance(data.balances)
+//          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+//          completion(true)
+//        } catch let error {
+//          print("[LoadNFT] \(error.localizedDescription)")
+//          completion(false)
+//        }
+//      case .failure(let error):
+//        print("[LoadNFT] \(error.localizedDescription)")
+//        completion(false)
+//      }
+//    }
   }
 
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {

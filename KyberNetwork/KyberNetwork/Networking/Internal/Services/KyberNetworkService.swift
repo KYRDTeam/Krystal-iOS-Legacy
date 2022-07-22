@@ -900,6 +900,7 @@ enum KrytalService {
   case advancedSearch(query: String, limit: Int)
   case getPoolList(tokenAddress: String, chainId: Int, limit: Int)
   case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
+  case getAllNftBalance(address: String, chains: [String])
 }
 
 extension KrytalService: TargetType {
@@ -918,7 +919,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1032,8 +1033,10 @@ extension KrytalService: TargetType {
       return "/v1/advancedSearch/search"
     case .getPoolList:
       return "/v1/pool/list"
-	case .getTradingViewData:
+    case .getTradingViewData:
       return "/v1/tradingview/history"
+    case .getAllNftBalance:
+      return "/v1/balance/nft"
     }
   }
 
@@ -1413,6 +1416,16 @@ extension KrytalService: TargetType {
         "interval": 240 //TODO: check if trading view support interval button
         
       ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getAllNftBalance(address: let address, chains: let chains):
+      var json: JSONDictionary = [
+        "address": address
+      ]
+      
+      if chains.isNotEmpty {
+        json["chainId"] = chains.joined(separator: ",")
+      }
+      
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }

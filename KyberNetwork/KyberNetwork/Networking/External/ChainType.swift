@@ -104,6 +104,18 @@ enum ChainType: Codable, CaseIterable {
     }
     return allChains
   }
+  
+  static func getAllChainID() -> [String] {
+    return ChainType.getAllChain().map { item in
+      return "\(item.customRPC().chainID)"
+    }
+  }
+  
+  static func getChain(id: Int) -> ChainType? {
+    return ChainType.getAllChain().first { e in
+      return e.customRPC().chainID == id
+    }
+  }
 
   func customRPC() -> CustomRPC {
     switch self {

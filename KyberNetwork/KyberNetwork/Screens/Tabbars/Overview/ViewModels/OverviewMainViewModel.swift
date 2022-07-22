@@ -215,7 +215,6 @@ class OverviewMainViewModel {
     } else {
       self.currencyMode = .usd
     }
-    self.session = session
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
       self.currentChain = saved
     } else {
@@ -433,7 +432,7 @@ class OverviewMainViewModel {
       self.displayHeader.value = []
       self.displayNFTDataSource.value = [:]
       self.displayNFTHeader.value = []
-      let nftSections = BalanceStorage.shared.getAllNFTBalance()
+      let nftSections = BalanceStorage.shared.getNFTBalanceForChain(self.currentChain)
       self.displayNFTHeader.value = nftSections
       nftSections.forEach({ item in
         var viewModels: [OverviewNFTCellViewModel] = []
@@ -598,10 +597,12 @@ class OverviewMainViewModel {
         icon.image = UIImage(named: "fav_section_icon")
       } else {
         icon.setImage(with: sectionItem.collectibleLogo, placeholder: UIImage(named: "placeholder_nft_section"), size: CGSize(width: 32, height: 32), applyNoir: false)
+        if let chain = sectionItem.chainType {
+          let iconChain = UIImageView(frame: CGRect(x: 20, y: 20, width: 12, height: 12))
+          iconChain.image = chain.chainIcon()
+          icon.addSubview(iconChain)
+        }
         
-        let iconChain = UIImageView(frame: CGRect(x: 20, y: 20, width: 12, height: 12))
-        iconChain.image = self.currentChain.chainIcon()
-        icon.addSubview(iconChain)
       }
       
       view.addSubview(icon)

@@ -58,7 +58,7 @@ class BalanceStorage {
       self.allLendingBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
-      self.nftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
+      self.nftBalance.value = Storage.retrieve(addressString + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.customNftBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.summaryChainModels.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
 
@@ -333,6 +333,15 @@ class BalanceStorage {
     return self.nftBalance.value + self.customNftBalance.value
   }
   
+  func getNFTBalanceForChain(_ chain: ChainType) -> [NFTSection] {
+    guard chain != .all else {
+      return self.getAllNFTBalance()
+    }
+    return self.getAllNFTBalance().filter { e in
+      return e.chainType == chain
+    }
+  }
+  
   func setNFTBalance(_ balance: [NFTSection]) {
     guard let unwrapped = self.address else {
       return
@@ -353,11 +362,11 @@ class BalanceStorage {
           self.customNftBalance.value.remove(at: idx)
         }
       }
-      Storage.store(self.customNftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.nftBalanceStoreFileName)
+      Storage.store(self.customNftBalance.value, as: unwrapped.addressString + Constants.nftBalanceStoreFileName)
     }
 
     self.nftBalance.value = balance
-    Storage.store(self.nftBalance.value, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.nftBalanceStoreFileName)
+    Storage.store(self.nftBalance.value, as: unwrapped.addressString + Constants.nftBalanceStoreFileName)
   }
   
   func getCustomNFT() -> [NFTSection] {
