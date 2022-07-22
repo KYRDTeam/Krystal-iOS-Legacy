@@ -23,7 +23,6 @@ class AppMigrationManager {
       migrateKeystoreWallets()
       UserDefaults.hasMigratedKeystoreWallet = true
     }
-    self.migrateCustomNFTIfNeeded()
   }
   
   private func migrateKeystoreWallets() {
@@ -108,7 +107,7 @@ class AppMigrationManager {
     }
   }
   
-  private func migrateCustomNFTIfNeeded() {
+  static func migrateCustomNFTIfNeeded() {
     let allChain = ChainType.getAllChain()
     let address = AppDelegate.session.address.addressString
     let filePaths = allChain.map { e in
