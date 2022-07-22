@@ -611,7 +611,6 @@
 		A66EC31B287D258100D15FE0 /* TxListHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */; };
 		A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */; };
 		A6790C2F284485E0007CE0CD /* MockTransactionDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */; };
-		A68727C12885DEB9001C6369 /* OCRUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68727C02885DEB9001C6369 /* OCRUtilities.swift */; };
 		A685D4912848766A0066E177 /* GasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4902848766A0066E177 /* GasCalculator.swift */; };
 		A685D494284877DF0066E177 /* SolanaGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D493284877DF0066E177 /* SolanaGasCalculator.swift */; };
 		A685D496284877EA0066E177 /* EthGasCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D495284877EA0066E177 /* EthGasCalculator.swift */; };
@@ -619,6 +618,7 @@
 		A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A22848B78F0066E177 /* KWallet+Codable.swift */; };
 		A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A92849F2620066E177 /* KAddress+Codable.swift */; };
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
+		A68727C12885DEB9001C6369 /* OCRUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68727C02885DEB9001C6369 /* OCRUtilities.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
@@ -661,15 +661,15 @@
 		A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */; };
 		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
+		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
+		A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */; };
+		A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */; };
+		A6BB3C352861CD7D0097EB75 /* WalletManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AE284A651D0066E177 /* WalletManagerTests.swift */; };
 		A6BE04B02887E9B300E63714 /* ScanResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04AF2887E9B300E63714 /* ScanResultType.swift */; };
 		A6BE04B22887F15A00E63714 /* ScannerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B12887F15A00E63714 /* ScannerModule.swift */; };
 		A6BE04B4288904C900E63714 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B3288904C900E63714 /* StringUtils.swift */; };
 		A6BE04B7288927B600E63714 /* ScreenName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B6288927B600E63714 /* ScreenName.swift */; };
 		A6BE04B92889285400E63714 /* TrackingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BE04B82889285400E63714 /* TrackingEvent.swift */; };
-		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
-		A6BB3C2428605E470097EB75 /* EIP1559TransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */; };
-		A6BB3C2628605F760097EB75 /* EthereumTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */; };
-		A6BB3C352861CD7D0097EB75 /* WalletManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AE284A651D0066E177 /* WalletManagerTests.swift */; };
 		A6C561AC27F4752200E88ED6 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AB27F4752200E88ED6 /* UITableView+register.swift */; };
 		A6C561AE27F4755800E88ED6 /* UICollectionView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */; };
 		A6C561B027F4758900E88ED6 /* UIViewController+nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */; };
@@ -1729,7 +1729,6 @@
 		A66EC319287D258100D15FE0 /* TxListHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TxListHeaderCell.xib; sourceTree = "<group>"; };
 		A6790C2C2844858D007CE0CD /* TransactionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewControllerTests.swift; sourceTree = "<group>"; };
 		A6790C2E284485E0007CE0CD /* MockTransactionDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailPresenter.swift; sourceTree = "<group>"; };
-		A68727C02885DEB9001C6369 /* OCRUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRUtilities.swift; sourceTree = "<group>"; };
 		A6790C3B28476E3C007CE0CD /* KrystalWalletManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWalletManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6790C4228476E3D007CE0CD /* KrystalWalletManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalWalletManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6790C5728476E66007CE0CD /* WalletManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManager.swift; sourceTree = "<group>"; };
@@ -1748,6 +1747,7 @@
 		A685D4A92849F2620066E177 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 		A685D4AC2849FC870066E177 /* AppEventCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventCenter.swift; sourceTree = "<group>"; };
 		A685D4AE284A651D0066E177 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
+		A68727C02885DEB9001C6369 /* OCRUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRUtilities.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
@@ -1777,15 +1777,15 @@
 		A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalSolanaTransaction.swift; sourceTree = "<group>"; };
 		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
+		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
+		A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559TransactionSigner.swift; sourceTree = "<group>"; };
+		A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionSigner.swift; sourceTree = "<group>"; };
+		A6BB3C2C2861CD6A0097EB75 /* KrystalWalletsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalWalletsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6BE04AF2887E9B300E63714 /* ScanResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultType.swift; sourceTree = "<group>"; };
 		A6BE04B12887F15A00E63714 /* ScannerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerModule.swift; sourceTree = "<group>"; };
 		A6BE04B3288904C900E63714 /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A6BE04B6288927B600E63714 /* ScreenName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenName.swift; sourceTree = "<group>"; };
 		A6BE04B82889285400E63714 /* TrackingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingEvent.swift; sourceTree = "<group>"; };
-		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
-		A6BB3C2328605E470097EB75 /* EIP1559TransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EIP1559TransactionSigner.swift; sourceTree = "<group>"; };
-		A6BB3C2528605F760097EB75 /* EthereumTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionSigner.swift; sourceTree = "<group>"; };
-		A6BB3C2C2861CD6A0097EB75 /* KrystalWalletsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalWalletsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C561AB27F4752200E88ED6 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
 		A6C561AD27F4755800E88ED6 /* UICollectionView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+register.swift"; sourceTree = "<group>"; };
 		A6C561AF27F4758900E88ED6 /* UIViewController+nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+nib.swift"; sourceTree = "<group>"; };
@@ -4793,16 +4793,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		A68727D22887E913001C6369 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A6CC31702877E53200891200 /* KrystalScannerViewController.swift */,
-				A6CC31712877E53200891200 /* KrystalScannerViewController.xib */,
-				A6156B4D2885188700276120 /* CameraHoleCover.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};	
 		A6790C5628476E58007CE0CD /* Public */ = {
 			isa = PBXGroup;
 			children = (
@@ -4892,6 +4882,16 @@
 				A685D4AC2849FC870066E177 /* AppEventCenter.swift */,
 			);
 			path = EventManager;
+			sourceTree = "<group>";
+		};
+		A68727D22887E913001C6369 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6CC31702877E53200891200 /* KrystalScannerViewController.swift */,
+				A6CC31712877E53200891200 /* KrystalScannerViewController.xib */,
+				A6156B4D2885188700276120 /* CameraHoleCover.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A693AFE92819052000880503 /* RewardingHunting */ = {
@@ -5003,39 +5003,6 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		A6BE04B52889279F00E63714 /* Tracking */ = {
-			isa = PBXGroup;
-			children = (
-				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
-				A6BE04B6288927B600E63714 /* ScreenName.swift */,
-				A6BE04B82889285400E63714 /* TrackingEvent.swift */,
-			);
-			path = Tracking;
-			sourceTree = "<group>";
-		};
-		A6CC316F2877E51E00891200 /* Scanner */ = {
-			isa = PBXGroup;
-			children = (
-				A68727D22887E913001C6369 /* Views */,
-				A6CC31782877E7F000891200 /* Detector */,
-				A6CC317D2877F06800891200 /* ScanMode.swift */,
-				A6BE04AF2887E9B300E63714 /* ScanResultType.swift */,
-				A6BE04B12887F15A00E63714 /* ScannerModule.swift */,
-			);
-			path = Scanner;
-			sourceTree = "<group>";
-		};
-		A6CC31782877E7F000891200 /* Detector */ = {
-			isa = PBXGroup;
-			children = (
-				A6CC31762877E7AD00891200 /* TextDetector.swift */,
-				A6CC31792877E7FB00891200 /* BarCodeDetector.swift */,
-				A6CC317B2877ED8700891200 /* OcrDetector.swift */,
-				A68727C02885DEB9001C6369 /* OCRUtilities.swift */,
-			);
-			path = Detector;
-			sourceTree = "<group>";
-		};
 		A6BB3C2028605E260097EB75 /* Signers */ = {
 			isa = PBXGroup;
 			children = (
@@ -5082,12 +5049,45 @@
 			path = KrystalWalletsTests;
 			sourceTree = "<group>";
 		};
+		A6BE04B52889279F00E63714 /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				2546C6D4221167460076E52B /* KNCrashlyticsUtil.swift */,
+				A6BE04B6288927B600E63714 /* ScreenName.swift */,
+				A6BE04B82889285400E63714 /* TrackingEvent.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
 		A6C211BF2859C4870079DC05 /* Signers */ = {
 			isa = PBXGroup;
 			children = (
 				A6D9861E285864660012D0ED /* SignerTests.swift */,
 			);
 			path = Signers;
+			sourceTree = "<group>";
+		};
+		A6CC316F2877E51E00891200 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				A68727D22887E913001C6369 /* Views */,
+				A6CC31782877E7F000891200 /* Detector */,
+				A6CC317D2877F06800891200 /* ScanMode.swift */,
+				A6BE04AF2887E9B300E63714 /* ScanResultType.swift */,
+				A6BE04B12887F15A00E63714 /* ScannerModule.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		A6CC31782877E7F000891200 /* Detector */ = {
+			isa = PBXGroup;
+			children = (
+				A6CC31762877E7AD00891200 /* TextDetector.swift */,
+				A6CC31792877E7FB00891200 /* BarCodeDetector.swift */,
+				A6CC317B2877ED8700891200 /* OcrDetector.swift */,
+				A68727C02885DEB9001C6369 /* OCRUtilities.swift */,
+			);
+			path = Detector;
 			sourceTree = "<group>";
 		};
 		A6CECBA428754215001F3563 /* Extension */ = {
@@ -7863,7 +7863,10 @@
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.16;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
@@ -7894,7 +7897,10 @@
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				INFOPLIST_FILE = KyberNetwork/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyrd.krystal.ios;
 				PRODUCT_NAME = Krystal;
@@ -8197,7 +8203,11 @@
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.16;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -8226,7 +8236,11 @@
 				DEVELOPMENT_TEAM = G9CRYMTLBL;
 				INFOPLIST_FILE = KrystalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.2.16;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

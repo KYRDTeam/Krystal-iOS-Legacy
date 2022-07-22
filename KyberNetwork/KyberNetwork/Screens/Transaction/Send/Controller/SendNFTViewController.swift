@@ -60,7 +60,7 @@ class SendNFTViewModel {
     self.item = item
     self.category = category
     self.isSupportERC721 = supportERC721
-    self.addressString = recipientAddress
+    self.updateInputString(recipientAddress)
   }
 
   func updateInputString(_ address: String) {

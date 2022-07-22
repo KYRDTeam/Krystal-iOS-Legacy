@@ -73,7 +73,6 @@ class SolanaUtil {
       let key = PrivateKey(data: data[0...31])
       return key
     }
-    
   }
 
   static func keyPairToPrivateKeyData(_ keypair: String) -> Data? {

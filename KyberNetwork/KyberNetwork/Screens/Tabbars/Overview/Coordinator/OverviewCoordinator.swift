@@ -832,7 +832,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .scannedWalletConnect(let url):
       self.handleWalletConnectURI(url)
     case .importWallet(let privateKey, let chain):
-      let coordinator = KNImportWalletCoordinator(navigationController: navigationController, keystore: session.keystore)
+      let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
       coordinator.delegate = self
       coordinator.startImportFlow(privateKey: privateKey, chain: chain)
@@ -842,9 +842,12 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 
 extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
-    // FIXME: Update after merging the new wallet PR
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    
   }
   
   func importWalletCoordinatorDidClose() {

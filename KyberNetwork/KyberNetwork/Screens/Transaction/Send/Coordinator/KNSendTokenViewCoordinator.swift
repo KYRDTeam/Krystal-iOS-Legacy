@@ -106,8 +106,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
+        currentAddress: currentAddress.addressString,
         recipientAddress: recipientAddress
-        currentAddress: currentAddress.addressString
       )
       let controller = KSendTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()

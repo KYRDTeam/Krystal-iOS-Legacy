@@ -117,7 +117,7 @@ class KNSendTokenViewModel: NSObject {
     self.baseGasLimit = self.gasLimit
     self.currentWalletAddress = currentAddress
     super.init()
-    self.updateAddress(recipientAddress)
+    self.updateInputString(recipientAddress)
   }
 
   var navTitle: String {

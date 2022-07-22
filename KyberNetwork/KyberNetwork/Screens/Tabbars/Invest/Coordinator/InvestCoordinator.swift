@@ -16,6 +16,8 @@ protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
   func investCoordinatorDidSelectAddChainWallet(chainType: ChainType)
+  func investCoordinator(didAdd wallet: KWallet, chain: ChainType)
+  func investCoordinator(didAdd watchAddress: KAddress, chain: ChainType)
 }
 
 class InvestCoordinator: Coordinator {
@@ -299,7 +301,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   }
   
   func openImportWalletFlow(privateKey: String, chain: ChainType) {
-    let coordinator = KNImportWalletCoordinator(navigationController: navigationController, keystore: session.keystore)
+    let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
     self.importWalletCoordinator = coordinator
     coordinator.delegate = self
     coordinator.startImportFlow(privateKey: privateKey, chain: chain)
@@ -308,34 +310,28 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
     guard let url = WCURL(result) else {
       self.navigationController.showTopBannerView(
-        with: "Invalid session".toBeLocalised(),
-        message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+        with: Strings.invalidSession,
+        message: Strings.invalidSessionTryOtherQR,
         time: 1.5
       )
       return
     }
-
-    if case .real(let account) = self.session.wallet.type {
-      let result = self.session.keystore.exportPrivateKey(account: account)
-      switch result {
-      case .success(let data):
-        DispatchQueue.main.async {
-          let pkString = data.hexString
-          let controller = KNWalletConnectViewController(
-            wcURL: url,
-            knSession: self.session,
-            pk: pkString
-          )
-          controller.disconnectAfterDisappear = disconnectAfterDisappear
-          self.navigationController.present(controller, animated: true, completion: nil)
-        }
-      case .failure(_):
-        self.navigationController.showTopBannerView(
-          with: Strings.privateKeyError,
-          message: Strings.canNotGetPrivateKey,
-          time: 1.5
+    
+    do {
+      let privateKey = try WalletManager.shared.exportPrivateKey(address: AppDelegate.session.address)
+      DispatchQueue.main.async {
+        let controller = KNWalletConnectViewController(
+          wcURL: url,
+          pk: privateKey
         )
+        self.navigationController.present(controller, animated: true, completion: nil)
       }
+    } catch {
+      self.navigationController.showTopBannerView(
+        with: Strings.privateKeyError,
+        message: Strings.canNotGetPrivateKey,
+        time: 1.5
+      )
     }
   }
 }
@@ -454,4 +450,24 @@ extension InvestCoordinator: RewardHuntingCoordinatorDelegate {
     self.openRewardView()
   }
   
+}
+
+extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.investCoordinator(didAdd: wallet, chain: chain)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.investCoordinator(didAdd: watchAddress, chain: chain)
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    importWalletCoordinator = nil
+  }
+  
+  func importWalletCoordinatorDidSendRefCode(_ code: String) {
+    
+  }
+
 }

@@ -11,7 +11,7 @@ extension KNAppCoordinator {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
     OneSignal.setExternalUserId(address.addressString)
-    KNCrashlyticsUtil.updateUserId(userId: address.addressString)
+    Tracker.updateUserID(address.addressString)
     self.session = KNSession(address: address)
     self.session.startSession()
     
@@ -179,7 +179,7 @@ extension KNAppCoordinator {
       )
   
       MixPanelManager.shared.updateWalletAddress(address: address.addressString)
-      Tracker.updateUserID(aWallet.addressString)
+      Tracker.updateUserID(address.addressString)
     }
     
   }

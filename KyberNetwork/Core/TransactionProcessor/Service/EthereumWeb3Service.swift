@@ -13,7 +13,7 @@ import JSONRPCKit
 
 class EthereumWeb3Service {
   
-  let web3: Web3Swift
+  let web3: Web3Swift?
   let chain: ChainType
   
   var baseURL: URL? {
@@ -22,7 +22,7 @@ class EthereumWeb3Service {
   
   init(chain: ChainType) {
     self.chain = chain
-    self.web3 = Web3Swift(url: URL(string: chain.customRPC().endpoint + KNEnvironment.default.nodeEndpoint)!)
+    self.web3 = URL(string: chain.customRPC().endpoint + KNEnvironment.default.nodeEndpoint).map { Web3Swift(url: $0) }
   }
   
   func getTransferTokenData(transferQuoteToken: Bool, amount: BigInt, address: String, completion: @escaping (Result<Data, AnyError>) -> Void) {
@@ -30,7 +30,7 @@ class EthereumWeb3Service {
       completion(.success(Data()))
       return
     }
-    web3.request(request: ContractERC20Transfer(amount: amount, address: address)) { result in
+    web3?.request(request: ContractERC20Transfer(amount: amount, address: address)) { result in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
@@ -72,7 +72,7 @@ class EthereumWeb3Service {
   
   func getTokenAllowanceEncodeData(for address: String, networkAddress: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = KNGetTokenAllowanceEndcode(ownerAddress: address, spenderAddress: networkAddress)
-    web3.request(request: request) { result in
+    web3?.request(request: request) { result in
       switch result {
       case .success(let data):
         completion(.success(data))
@@ -88,7 +88,7 @@ class EthereumWeb3Service {
       return
     }
     let decodeRequest = KNGetTokenAllowanceDecode(data: data)
-    web3.request(request: decodeRequest, completion: { decodeResult in
+    web3?.request(request: decodeRequest, completion: { decodeResult in
       switch decodeResult {
       case .success(let value):
         let remain: BigInt = BigInt(value) ?? BigInt(0)
@@ -142,7 +142,7 @@ class EthereumWeb3Service {
   }
   
   func requestDataForNFTTransfer(from: String, to: String, tokenID: String, amount: Int, isERC721: Bool, completion: @escaping (Result<Data, AnyError>) -> Void) {
-    web3.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
+    web3?.request(request: ContractNFTTransfer(from: from, to: to, tokenID: tokenID, amount: amount, isERC721Format: isERC721)) { (result) in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
@@ -199,7 +199,7 @@ class EthereumWeb3Service {
   
   func getNFTBalanceEncodeData(for address: String, id: String, completion: @escaping (Result<String, AnyError>) -> Void) {
     let request = GetERC721BalanceEncode(address: address, id: id)
-    web3.request(request: request) { result in
+    web3?.request(request: request) { result in
       switch result {
       case .success(let data):
         completion(.success(data))
@@ -215,7 +215,7 @@ class EthereumWeb3Service {
       return
     }
     let request = GetERC721BalanceDecode(data: balance)
-    web3.request(request: request) { result in
+    web3?.request(request: request) { result in
       switch result {
       case .success(let res):
         completion(.success(BigInt(res) ?? BigInt()))
@@ -252,7 +252,7 @@ class EthereumWeb3Service {
   
   func requestDataForTokenExchange(address: String, exchange: KNDraftExchangeTransaction, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = KNExchangeRequestEncode(exchange: exchange, address: address)
-    web3.request(request: encodeRequest) { result in
+    web3?.request(request: encodeRequest) { result in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
@@ -318,7 +318,7 @@ class EthereumWeb3Service {
       completion(.success(Data()))
       return
     }
-    web3.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to ?? "")) { (result) in
+    web3?.request(request: ContractERC20Transfer(amount: transaction.value, address: transaction.to ?? "")) { (result) in
       switch result {
       case .success(let res):
         let data = Data(hex: res.drop0x)
@@ -331,7 +331,7 @@ class EthereumWeb3Service {
   
   func getSendApproveERC20TokenEncodeData(networkAddress: String, value: BigInt = Constants.maxValueBigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
     let encodeRequest = ApproveERC20Encode(address: networkAddress, value: value)
-    web3.request(request: encodeRequest) { (encodeResult) in
+    web3?.request(request: encodeRequest) { (encodeResult) in
       switch encodeResult {
       case .success(let data):
         completion(.success(Data(hex: data.drop0x)))

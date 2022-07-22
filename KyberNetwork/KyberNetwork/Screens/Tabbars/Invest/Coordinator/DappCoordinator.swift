@@ -597,7 +597,7 @@ extension DappCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-
+      
       do {
         let privateKey = try WalletManager.shared.exportPrivateKey(address: AppDelegate.session.address)
         DispatchQueue.main.async {

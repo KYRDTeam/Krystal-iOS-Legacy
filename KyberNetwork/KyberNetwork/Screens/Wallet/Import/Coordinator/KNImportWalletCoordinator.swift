@@ -110,29 +110,29 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .privateKey(let privateKey):
       do {
         let wallet = try walletManager.import(privateKey: privateKey, addressType: addressType, name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_success", customAttributes: nil)
+        Tracker.track(event: .iwPKSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_fail", customAttributes: nil)
+        Tracker.track(event: .iwPKFail)
       }
     case .mnemonic(let words, _):
       do {
         let wallet = try walletManager.import(mnemonic: words.joined(separator: " "), name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_success", customAttributes: nil)
+        Tracker.track(event: .iwSeedSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_fail", customAttributes: nil)
+        Tracker.track(event: .iwSeedFail)
       }
     case .keystore(let key, let password):
       do {
         let wallet = try walletManager.import(keystore: key, addressType: addressType, password: password, name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_success", customAttributes: nil)
+        Tracker.track(event: .iwJSONSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_fail", customAttributes: nil)
+        Tracker.track(event: .iwJSONFail)
       }
 
     case .watch(let address, _):

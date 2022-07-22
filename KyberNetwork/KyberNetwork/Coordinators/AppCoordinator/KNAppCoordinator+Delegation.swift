@@ -186,6 +186,15 @@ extension KNAppCoordinator: KrytalCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: InvestCoordinatorDelegate {
+  
+  func investCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    switchWallet(wallet: wallet, chain: chain)
+  }
+  
+  func investCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+    switchToWatchAddress(address: watchAddress, chain: chain)
+  }
+  
   func investCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.addNewWallet(type: .chain(chainType: chainType))
   }

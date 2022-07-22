@@ -56,10 +56,7 @@ class ScannerUtils {
     case .solPublicKey:
       return AnyAddress.isValid(string: text, coin: .solana)
     case .solPrivateKey:
-      guard let data = Data(hexString: text) else {
-        return false
-      }
-      return PrivateKey.isValid(data: data, curve: .ed25519)
+      return SolanaUtil.isValidSolanaPrivateKey(text)
     }
   }
   
