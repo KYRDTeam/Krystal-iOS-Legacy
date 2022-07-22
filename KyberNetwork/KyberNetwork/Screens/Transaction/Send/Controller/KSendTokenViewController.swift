@@ -15,7 +15,7 @@ enum KSendTokenViewEvent {
   case validate(transaction: UnconfirmedTransaction, ens: String?)
   case validateSolana
   case send(transaction: UnconfirmedTransaction, ens: String?)
-  case sendSolana(transaction: UnconfirmedSolTransaction)
+//  case sendSolana(transaction: UnconfirmedSolTransaction)
   case addContact(address: String, ens: String?)
   case openContactList
   case openGasPriceSelect(gasLimit: BigInt, baseGasLimit: BigInt, selectType: KNSelectedGasPriceType, advancedGasLimit: String?, advancedPriorityFee: String?, advancedMaxFee: String?, advancedNonce: String?)
@@ -144,7 +144,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.walletName, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.inputAddress, for: .normal)
   }
 
   fileprivate func setupTokenView() {
@@ -221,7 +221,7 @@ class KSendTokenViewController: KNBaseViewController {
     } else {
       let event = KSendTokenViewEvent.validate(
         transaction: self.viewModel.unconfirmTransaction,
-        ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+        ens: self.viewModel.isUsingEns ? self.viewModel.inputAddress : nil
       )
       self.delegate?.kSendTokenViewController(self, run: event)
     }
@@ -478,7 +478,7 @@ extension KSendTokenViewController {
       self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
         self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
         
-        self.viewModel.updateAddress(text)
+        self.viewModel.updateInputString(text)
         self.updateUIEnsMessage()
         self.view.layoutIfNeeded()
       }
@@ -551,15 +551,15 @@ extension KSendTokenViewController {
   }
 
   func coordinatorDidSelectContact(_ contact: KNContact) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
-    self.viewModel.updateAddress(contact.address)
+    let isAddressChanged = self.viewModel.inputAddress != contact.address
+    self.viewModel.updateInputString(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     KNContactStorage.shared.updateLastUsed(contact: contact)
   }
 
   func coordinatorSend(to address: String) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-    self.viewModel.updateAddress(address)
+    let isAddressChanged = self.viewModel.inputAddress != address
+    self.viewModel.updateInputString(address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     if let contact = KNContactStorage.shared.contacts.first(where: { return address.lowercased() == $0.address.lowercased() }) {
       KNContactStorage.shared.updateLastUsed(contact: contact)
@@ -572,20 +572,16 @@ extension KSendTokenViewController {
   func coordinatorDidValidateTransferTransaction() {
     let event = KSendTokenViewEvent.send(
       transaction: self.viewModel.unconfirmTransaction,
-      ens: self.viewModel.isUsingEns ? self.viewModel.addressString : nil
+      ens: self.viewModel.isUsingEns ? self.viewModel.inputAddress : nil
     )
     self.delegate?.kSendTokenViewController(self, run: event)
   }
 
   func coordinatorDidValidateSolTransferTransaction() {
-    let transferType = self.viewModel.from.isQuoteToken ? SolTransferType.sol(destination: self.viewModel.addressString) : SolTransferType.splToken(self.viewModel.from)
     let fee = self.estGasFeeValueLabel.text == self.viewModel.solFeeString ? self.viewModel.solanaFeeBigInt : self.viewModel.solanaFeeBigInt + self.viewModel.minimumRentExemption
-
-    var unconfirmedSolTransaction = UnconfirmedSolTransaction(value: self.viewModel.amountBigInt, to: self.viewModel.addressString, data: Data(), fee: fee, transferType: transferType)
-    unconfirmedSolTransaction.mintTokenAddress = self.viewModel.from.address
-    unconfirmedSolTransaction.decimal = self.viewModel.from.decimals
-
-    self.delegate?.kSendTokenViewController(self, run: .sendSolana(transaction: unconfirmedSolTransaction))
+    let transferType: TransferType = self.viewModel.from.isQuoteToken ? .ether(destination: self.viewModel.inputAddress) : .token(viewModel.from)
+    let unconfirmTx = UnconfirmedTransaction(transferType: transferType, value: viewModel.amountBigInt, to: viewModel.inputAddress, data: Data(), gasLimit: nil, gasPrice: nil, nonce: nil, maxInclusionFeePerGas: nil, maxGasFee: nil, estimatedFee: fee)
+    self.delegate?.kSendTokenViewController(self, run: .send(transaction: unconfirmTx, ens: nil))
   }
 
   func coordinatorDidUpdateGasPriceType(_ type: KNSelectedGasPriceType, value: BigInt) {
@@ -601,8 +597,7 @@ extension KSendTokenViewController {
     KNNotificationUtil.postNotification(for: kUpdateListContactNotificationKey)
   }
 
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.currentWalletAddress = wallet.addressString
+  func coordinatorAppSwitchAddress() {
     self.setupNavigationView()
     self.updateUIBalanceDidChange()
     self.updateUIPendingTxIndicatorView()
@@ -650,7 +645,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
       self.view.layoutIfNeeded()
     } else {
       self.estGasFeeValueLabel.text = self.viewModel.solFeeString
-      self.viewModel.updateAddress("")
+      self.viewModel.updateInputString("")
       self.updateUIAddressQRCode()
       self.getEnsAddressFromName("")
     }
@@ -677,16 +672,16 @@ extension KSendTokenViewController: UITextFieldDelegate {
           self.checkIfReceivedWalletHasTokenAccount(walletAddress: text) { tokenAccount in
             self.estGasFeeValueLabel.text = tokenAccount == nil ? self.viewModel.solFeeWithRentTokenAccountFeeString : self.viewModel.solFeeString
             
-            self.viewModel.updateAddress(text)
+            self.viewModel.updateInputString(text)
             self.view.layoutIfNeeded()
           }
         } else {
           self.estGasFeeValueLabel.text = self.viewModel.solFeeString
-          self.viewModel.updateAddress(text)
+          self.viewModel.updateInputString(text)
           self.view.layoutIfNeeded()
         }
       } else {
-        self.viewModel.updateAddress(text)
+        self.viewModel.updateInputString(text)
         self.view.layoutIfNeeded()
       }
       textField.text = text
@@ -703,7 +698,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     self.viewModel.isSendAllBalanace = false
     self.amountTextField.textColor = UIColor.white
     if textField == self.addressTextField {
-      self.addressTextField.text = self.viewModel.addressString
+      self.addressTextField.text = self.viewModel.inputAddress
     }
   }
 
@@ -711,7 +706,7 @@ extension KSendTokenViewController: UITextFieldDelegate {
     self.amountTextField.textColor = self.viewModel.amountTextColor
     if textField == self.addressTextField {
       self.updateUIAddressQRCode()
-      self.getEnsAddressFromName(self.viewModel.addressString)
+      self.getEnsAddressFromName(self.viewModel.inputAddress)
     } else {
       _ = self.showWarningInvalidAmountDataIfNeeded()
       self.shouldUpdateEstimatedGasLimit(nil)
@@ -719,28 +714,26 @@ extension KSendTokenViewController: UITextFieldDelegate {
   }
 
   fileprivate func getEnsAddressFromName(_ name: String) {
-    if Address(string: name) != nil { return }
+    if KNGeneralProvider.shared.isAddressValid(address: name) { return }
     if !name.contains(".") {
       self.viewModel.updateAddressFromENS(name, ensAddr: nil)
       self.updateUIAddressQRCode()
       return
     }
-    DispatchQueue.main.async {
-      KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
-        guard let `self` = self else { return }
-        DispatchQueue.main.async {
-          if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
-            self.viewModel.updateAddressFromENS(name, ensAddr: address)
-            self.updateUIEnsMessage()
-          } else {
-            self.viewModel.updateAddressFromENS(name, ensAddr: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
-              self.getEnsAddressFromName(self.viewModel.addressString)
-            }
+    KNGeneralProvider.shared.getAddressByEnsName(name.lowercased()) { [weak self] result in
+      guard let `self` = self else { return }
+      DispatchQueue.main.async {
+        if name != self.viewModel.inputAddress { return }
+        if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
+          self.viewModel.updateAddressFromENS(name, ensAddr: address)
+          self.updateUIEnsMessage()
+        } else {
+          self.viewModel.updateAddressFromENS(name, ensAddr: nil)
+          DispatchQueue.main.asyncAfter(deadline: .now() + KNLoadingInterval.seconds30) {
+            self.getEnsAddressFromName(self.viewModel.inputAddress)
           }
-          self.updateUIAddressQRCode()
         }
+        self.updateUIAddressQRCode()
       }
     }
   }
@@ -770,8 +763,8 @@ extension KSendTokenViewController: QRCodeReaderDelegate {
         if string.starts(with: "0x") { return string }
         return result
       }()
-      let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-      self.viewModel.updateAddress(address)
+      let isAddressChanged = self.viewModel.inputAddress != address
+      self.viewModel.updateInputString(address)
       self.getEnsAddressFromName(address)
       self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     }
@@ -793,8 +786,8 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
       if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == address.lowercased() }) {
         self.contactTableView(select: contact)
       } else {
-        let isAddressChanged = self.viewModel.addressString.lowercased() != address.lowercased()
-        self.viewModel.updateAddress(address)
+        let isAddressChanged = self.viewModel.inputAddress != address
+        self.viewModel.updateInputString(address)
         self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
       }
     case .copiedAddress:
@@ -818,8 +811,8 @@ extension KSendTokenViewController: KNContactTableViewDelegate {
   }
 
   fileprivate func contactTableView(select contact: KNContact) {
-    let isAddressChanged = self.viewModel.addressString.lowercased() != contact.address.lowercased()
-    self.viewModel.updateAddress(contact.address)
+    let isAddressChanged = self.viewModel.inputAddress != contact.address
+    self.viewModel.updateInputString(contact.address)
     self.updateUIAddressQRCode(isAddressChanged: isAddressChanged)
     self.checkTokenAccountForReceiptAddress()
     KNContactStorage.shared.updateLastUsed(contact: contact)

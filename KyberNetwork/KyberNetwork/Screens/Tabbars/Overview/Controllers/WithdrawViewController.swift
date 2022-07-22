@@ -7,10 +7,10 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 class WithdrawViewModel {
   let platform: String
-  let session: KNSession
   let balance: LendingBalance
   var withdrawableAmountBigInt: BigInt
   fileprivate(set) var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
@@ -22,6 +22,10 @@ class WithdrawViewModel {
   var approvingTokenAddress: String?
   var toAddress: String = ""
   var remainApproveAmt: BigInt = BigInt(0)
+  
+  var address: KAddress {
+    return AppDelegate.session.address
+  }
   
   var advancedGasLimit: String? {
     didSet {
@@ -55,9 +59,8 @@ class WithdrawViewModel {
     }
   }
 
-  init(platform: String, session: KNSession, balance: LendingBalance) {
+  init(platform: String, balance: LendingBalance) {
     self.platform = platform
-    self.session = session
     self.balance = balance
     self.withdrawableAmountBigInt = BigInt(balance.supplyBalance) ?? BigInt(0)
   }
@@ -267,7 +270,7 @@ class WithdrawViewController: KNBaseViewController {
   }
 
   fileprivate func loadWithdrawableAmount() {
-    self.delegate?.withdrawViewController(self, run: .getWithdrawableAmount(platform: self.viewModel.platform, userAddress: self.viewModel.session.wallet.addressString, tokenAddress: self.viewModel.balance.address))
+    self.delegate?.withdrawViewController(self, run: .getWithdrawableAmount(platform: self.viewModel.platform, userAddress: self.viewModel.address.addressString, tokenAddress: self.viewModel.balance.address))
   }
 
   fileprivate func buildTx() {

@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import QRCodeReaderViewController
 
 protocol KNImportSeedsViewControllerDelegate: class {
@@ -27,6 +26,7 @@ class KNImportSeedsViewController: KNBaseViewController {
   @IBOutlet weak var refCodeField: UITextField!
   @IBOutlet weak var containerRefCodeView: UIView!
   @IBOutlet weak var refCodeTitleLabel: UILabel!
+  var importType: ImportWalletChainType = .multiChain
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -66,7 +66,7 @@ class KNImportSeedsViewController: KNBaseViewController {
       guard let seeds = self.seedsTextField.text?.trimmed else { return false }
       var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      return words.count == self.numberWords
+      return self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
     }()
     self.nextButton.isEnabled = enabled
     if enabled {
@@ -99,7 +99,8 @@ class KNImportSeedsViewController: KNBaseViewController {
       }
       var words = seeds.components(separatedBy: " ").map({ $0.trimmed })
       words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
-      if words.count == self.numberWords {
+      let isVaild = self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
+      if isVaild {
         self.delegate?.importSeedsViewControllerDidPressNext(
           sender: self,
           seeds: words.map({ return try! String($0) }),
@@ -183,7 +184,8 @@ extension KNImportSeedsViewController: UITextFieldDelegate {
     var words = text.trimmed.components(separatedBy: " ").map({ $0.trimmed })
     words = words.filter({ return !$0.replacingOccurrences(of: " ", with: "").isEmpty })
     self.wordsCountLabel.text = "\(NSLocalizedString("words.count", value: "Words Count", comment: "")): \(words.count)"
-    let color = words.isEmpty || words.count == 12 ? UIColor.Kyber.border : UIColor.Kyber.strawberry
+    let isVaild = self.importType == .solana ? words.count <= 24 :  words.count == self.numberWords
+    let color = words.isEmpty || isVaild ? UIColor.Kyber.border : UIColor.Kyber.strawberry
     self.wordsCountLabel.textColor = color
     self.wordsCountLabel.addLetterSpacing()
     self.updateNextButton()

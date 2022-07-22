@@ -11,27 +11,31 @@ import BigInt
 import MBProgressHUD
 import QRCodeReaderViewController
 import WalletConnectSwift
+import KrystalWallets
 
 class KNTransactionHistoryCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
-  var session: KNSession
-  var wallet: KNWalletObject
   let type: KNTransactionHistoryType
   weak var delegate: KNHistoryCoordinatorDelegate?
   
   var viewController: KNTransactionHistoryViewController?
   
-  init(navigationController: UINavigationController, session: KNSession, type: KNTransactionHistoryType) {
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  var session: KNSession {
+    return AppDelegate.session
+  }
+  
+  init(navigationController: UINavigationController, type: KNTransactionHistoryType) {
     self.navigationController = navigationController
-    self.session = session
     self.type = type
-    let address = session.wallet.addressString
-    self.wallet = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
   }
   
   func start() {
-    let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, arguments: wallet, type)!
+    let vc = DIContainer.resolve(KNTransactionHistoryViewController.self, argument: type)!
     
     vc.viewModel.actions = KNTransactionHistoryViewModelActions(
       closeTransactionHistory: closeTransactionHistory,
@@ -41,16 +45,11 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
       openSwap: openSwap,
       speedupTransaction: speedupTransaction,
       cancelTransaction: cancelTransaction,
-      openWalletSelectPopup: openWalletSelectPopup,
-      onUpdateWallet: onWalletUpdated
+      openWalletSelectPopup: openWalletSelectPopup
     )
     
     self.viewController = vc
     self.navigationController.pushViewController(vc, animated: true)
-  }
-  
-  private func onWalletUpdated(wallet: KNWalletObject) {
-    self.wallet = wallet
   }
   
   private func closeTransactionHistory() {
@@ -58,7 +57,7 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
   }
   
   private func openWalletSelectPopup() {
-    let viewModel = WalletsListViewModel(walletObjects: KNWalletStorage.shared.availableWalletObjects, currentWallet: wallet)
+    let viewModel = WalletsListViewModel()
     let walletsList = WalletsListViewController(viewModel: viewModel)
     walletsList.delegate = self
     self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -103,8 +102,8 @@ class KNTransactionHistoryCoordinator: NSObject, Coordinator {
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
 
-    viewModel.isSpeedupMode = true
     viewModel.transaction = transaction
+    viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
     vc.delegate = self
     self.navigationController.present(vc, animated: true, completion: nil)
@@ -153,7 +152,7 @@ extension KNTransactionHistoryCoordinator: KNTransactionStatusPopUpDelegate {
 }
 
 extension KNTransactionHistoryCoordinator: GasFeePopupDelegateCoordinator {
-  
+
   func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
     let controller = KNTransactionStatusPopUp(transaction: transaction)
     controller.delegate = self
@@ -187,18 +186,8 @@ extension KNTransactionHistoryCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.historyCoordinatorDidSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = Strings.copied
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.viewController?.updateWallet(wallet: wallet)
-      self.delegate?.historyCoordinatorDidSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.delegate?.historyCoordinatorDidSelectAddWallet()
     }
@@ -222,26 +211,21 @@ extension KNTransactionHistoryCoordinator: QRCodeReaderDelegate {
         return
       }
 
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-          
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: Strings.privateKeyError,
-            message: Strings.canNotGetPrivateKey
+      do {
+        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
+        DispatchQueue.main.async {
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            pk: privateKey
           )
+          self.navigationController.present(controller, animated: true, completion: nil)
         }
+      } catch {
+        self.navigationController.showTopBannerView(
+          with: Strings.privateKeyError,
+          message: Strings.canNotGetPrivateKey,
+          time: 1.5
+        )
       }
     }
   }

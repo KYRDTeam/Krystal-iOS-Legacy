@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import KrystalWallets
 
 class KrytalHistoryViewModel {
-  var wallet: Wallet?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
   var claimedItems: [Claim] = [] {
     didSet {
       let dates = self.claimedItems.map { (item) -> String in
@@ -75,7 +80,7 @@ class KrytalHistoryViewController: KNBaseViewController {
   
   fileprivate func updateUI() {
     self.historyTableView.reloadData()
-    self.walletListButton.setTitle(self.viewModel.wallet?.addressString, for: .normal)
+    self.walletListButton.setTitle(self.viewModel.currentAddress.addressString, for: .normal)
   }
 
   func coordinatorDidUpdateClaimedTransaction(_ items: [Claim]) {
@@ -86,8 +91,7 @@ class KrytalHistoryViewController: KNBaseViewController {
     self.historyTableView.reloadData()
   }
   
-  func coordinatorDidUpdateWallet(_ wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
     self.updateUI()
   }

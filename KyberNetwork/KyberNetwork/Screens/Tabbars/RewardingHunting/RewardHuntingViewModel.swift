@@ -6,26 +6,25 @@
 //
 
 import Foundation
+import KrystalWallets
 
 struct RewardHuntingViewModelActions {
   var goBack: () -> ()
   var openRewards: () -> ()
-  var onUpdateSession: (KNSession) -> ()
   var onClose: () -> ()
 }
 
 class RewardHuntingViewModel {
   var actions: RewardHuntingViewModelActions?
-  var session: KNSession
-  var onUpdateSession: (() -> ())?
+  var onSwitchAddress: (() -> ())?
   
-  init(session: KNSession) {
-    self.session = session
+  var address: KAddress {
+    return AppDelegate.session.address
   }
-  
+
   var url: URL {
     return URL(string: KNEnvironment.default.krystalWebUrl + "/" + Constants.rewardHuntingPath)!
-      .appending("address", value: session.wallet.addressString)
+      .appending("address", value: address.addressString)
   }
   
   func didTapBack() {
@@ -39,32 +38,19 @@ class RewardHuntingViewModel {
   func onViewLoaded() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(appDidUpdateSession),
-      name: Notification.Name(kAppDidUpdateNewSession),
+      selector: #selector(appDidSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
       object: nil
     )
   }
   
-  @objc func appDidUpdateSession(notification: Notification) {
-    guard let session = notification.userInfo?["session"] as? KNSession else {
-       return
-    }
-    self.session = session
-    
+  @objc func appDidSwitchAddress() {
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
-    let isImportedWallet = isImportedWallet(address: session.wallet.addressString)
     
-    if isRewardHuntingEnabled && isImportedWallet {
-      self.onUpdateSession?()
-      self.actions?.onUpdateSession(session)
+    if isRewardHuntingEnabled && !address.isWatchWallet {
+      self.onSwitchAddress?()
     } else {
       self.actions?.onClose()
-    }
-  }
-  
-  private func isImportedWallet(address: String) -> Bool {
-    return KNWalletStorage.shared.realWallets.contains { wallet in
-      wallet.address.description == address
     }
   }
   

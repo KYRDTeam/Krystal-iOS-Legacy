@@ -3,7 +3,6 @@
 import UIKit
 import TrustKeystore
 import BigInt
-import TrustCore
 
 struct KNDraftExchangeTransaction {
   let from: TokenObject
@@ -82,38 +81,6 @@ extension KNDraftExchangeTransaction {
       gasLimit: gasLimit ?? self.gasLimit,
       expectedReceivedString: (expectedRate * amount / BigInt(10).power(self.from.decimals)).fullString(decimals: self.to.decimals),
       hint: self.hint
-    )
-  }
-
-  func toTransaction(hash: String, fromAddr: Address, toAddr: Address, nounce: Int, type: TransactionType = .normal) -> Transaction {
-    // temporary: local object contains from and to tokens + expected rate
-    let expectedAmount: String = {
-      return self.expectedReceive.fullString(decimals: self.to.decimals)
-    }()
-    let localObject = LocalizedOperationObject(
-      from: self.from.contract,
-      to: self.to.contract,
-      contract: nil,
-      type: "exchange",
-      value: expectedAmount,
-      symbol: self.from.symbol,
-      name: self.to.symbol,
-      decimals: self.to.decimals
-    )
-    return Transaction(
-      id: hash,
-      blockNumber: 0,
-      from: fromAddr.description,
-      to: toAddr.description,
-      value: self.amount.fullString(decimals: self.from.decimals),
-      gas: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      gasPrice: self.gasPrice?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      gasUsed: self.gasLimit?.fullString(units: .wei).removeGroupSeparator() ?? "",
-      nonce: "\(nounce)",
-      date: Date(),
-      localizedOperations: [localObject],
-      state: .pending,
-      type: type
     )
   }
 }

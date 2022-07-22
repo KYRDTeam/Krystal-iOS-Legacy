@@ -21,7 +21,7 @@ struct EIP155Signer: Signer {
             transaction.nonce,
             transaction.gasPrice,
             transaction.gasLimit,
-            transaction.to?.data ?? Data(),
+            transaction.to.map { Data(hexString: $0) ?? Data() } ?? Data(),
             transaction.value,
             transaction.data,
             transaction.chainID, 0, 0,

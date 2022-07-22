@@ -43,7 +43,7 @@ class RewardHuntingViewController: WebViewController {
   }
   
   func bindViewModel() {
-    viewModel.onUpdateSession = { [weak self] in
+    viewModel.onSwitchAddress = { [weak self] in
       self?.reloadWebView()
     }
   }

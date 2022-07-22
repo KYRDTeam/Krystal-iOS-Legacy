@@ -7,11 +7,16 @@
 
 import UIKit
 import MBProgressHUD
+import KrystalWallets
 
 class KrytalViewModel {
   var referralOverViewData: ReferralOverviewData?
-  var wallet: Wallet?
   var tiers: ReferralTiers?
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
   var displayTotalReward: String {
     guard let unwrapped = self.referralOverViewData else { return "---" }
     return StringFormatter.amountString(value: unwrapped.rewardAmount) + " " + unwrapped.rewardToken.symbol
@@ -34,8 +39,7 @@ class KrytalViewModel {
   }
   
   var displayWalletString: String {
-    guard let unwrapped = self.wallet else { return "" }
-    return unwrapped.getWalletObject()?.name ?? "---"
+    return currentAddress.name
   }
   
   var displayIntroAttributedString: NSAttributedString {
@@ -132,9 +136,8 @@ class KrytalViewController: KNBaseViewController {
   func coordinatorDidUpdateTiers(_ tiers: ReferralTiers?) {
     self.viewModel.tiers = tiers
   }
-
-  func coordinatorDidUpdateWallet(_ wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  
+  func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
     self.updateUI()
   }

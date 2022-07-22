@@ -172,7 +172,6 @@ enum MarketSortType {
 }
 
 class OverviewMainViewModel {
-  var session: KNSession!
   var currentMode: ViewMode = Storage.retrieve(Constants.viewModeStoreFileName, as: ViewMode.self) ?? .asset(rightMode: .value) {
     didSet {
       Storage.store(self.currentMode, as: Constants.viewModeStoreFileName)
@@ -204,9 +203,13 @@ class OverviewMainViewModel {
   var didTapAddNFTHeader: (() -> Void)?
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   let queue = DispatchQueue(label: "overview.property.lock.queue")
-  var currentChain: ChainType
   
-  init(session: KNSession) {
+  var currentChain: ChainType
+  var currentWalletName: String {
+    return AppDelegate.session.address.name
+  }
+  
+  init() {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
       self.currencyMode = savedCurrencyMode.isQuoteCurrency ? KNGeneralProvider.shared.quoteCurrency : savedCurrencyMode
     } else {

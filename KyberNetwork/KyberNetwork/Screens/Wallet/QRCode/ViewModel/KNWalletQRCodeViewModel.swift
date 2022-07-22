@@ -1,38 +1,31 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import KrystalWallets
 
 struct KNWalletQRCodeViewModel {
-  let wallet: KNWalletObject
-
-  init(wallet: KNWalletObject) {
-    self.wallet = wallet
+  
+  var address: KAddress {
+    return AppDelegate.session.address
   }
-
-  var displayedAddress: String {
-    return self.address
-  }
-
-  var address: String {
-    if KNGeneralProvider.shared.currentChain == .solana {
-      return self.wallet.address
-    }
-    return self.wallet.address.lowercased()
+  
+  var addressString: String {
+    return address.addressString
   }
 
   var shareText: String {
-    return "\(self.displayedAddress)"
+    return addressString
   }
 
   var copyAddressBtnTitle: String {
-    return NSLocalizedString("copy", value: "Copy", comment: "")
+    return Strings.copy
   }
 
   var shareBtnTitle: String {
-    return NSLocalizedString("share", value: "Share", comment: "")
+    return Strings.share
   }
 
   var navigationTitle: String {
-    return self.wallet.name
+    return address.name
   }
 }

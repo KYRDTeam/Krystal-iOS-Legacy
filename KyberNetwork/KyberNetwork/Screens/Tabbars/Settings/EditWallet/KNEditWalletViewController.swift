@@ -1,12 +1,13 @@
 // Copyright SIX DAY LLC. All rights reserved.
 
 import UIKit
+import KrystalWallets
 
 enum KNEditWalletViewEvent {
   case back
-  case update(newWallet: KNWalletObject)
-  case backup(wallet: KNWalletObject)
-  case delete(wallet: KNWalletObject)
+  case update(wallet: KWallet, name: String)
+  case backup(wallet: KWallet, addressType: KAddressType)
+  case delete(wallet: KWallet)
 }
 
 protocol KNEditWalletViewControllerDelegate: class {
@@ -14,10 +15,12 @@ protocol KNEditWalletViewControllerDelegate: class {
 }
 
 struct KNEditWalletViewModel {
-  let wallet: KNWalletObject
+  let wallet: KWallet
+  let addressType: KAddressType
 
-  init(wallet: KNWalletObject) {
+  init(wallet: KWallet, addressType: KAddressType) {
     self.wallet = wallet
+    self.addressType = addressType
   }
 }
 
@@ -72,7 +75,7 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBAction func showBackUpPhraseButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet))
+    self.delegate?.editWalletViewController(self, run: .backup(wallet: self.viewModel.wallet, addressType: viewModel.addressType))
   }
 
   @IBAction func deleteButtonPressed(_ sender: Any) {
@@ -82,8 +85,8 @@ class KNEditWalletViewController: KNBaseViewController {
 
   @IBAction func saveButtonPressed(_ sender: Any) {
     self.view.endEditing(true)
-    let wallet = self.viewModel.wallet.copy(withNewName: self.walletNameTextField.text ?? "")
-    self.delegate?.editWalletViewController(self, run: .update(newWallet: wallet))
+    let newName = self.walletNameTextField.text ?? Strings.untitled
+    self.delegate?.editWalletViewController(self, run: .update(wallet: self.viewModel.wallet, name: newName))
   }
 
   @IBAction func edgePanGestureAction(_ sender: UIScreenEdgePanGestureRecognizer) {

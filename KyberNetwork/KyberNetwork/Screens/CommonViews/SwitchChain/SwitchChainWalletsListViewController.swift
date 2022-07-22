@@ -6,23 +6,19 @@
 //
 
 import UIKit
+import KrystalWallets
 
 class SwitchChainWalletsListViewModel {
   let dataSource: [KNWalletTableCellViewModel]
-  var selectedAddress: String = ""
+  var selectedAddress: KAddress?
   let selectedChain: ChainType
+  var addresses: [KAddress]
+  
   init(selected: ChainType) {
-    self.selectedChain = selected    
-    let wallets = KNWalletStorage.shared.getAvailableWalletForChain(selected)
-    self.dataSource = wallets.map({ (obj) -> KNWalletTableCellViewModel in
-      return KNWalletTableCellViewModel(wallet: obj)
-    })
-    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-      let address = selected == .solana ? appDelegate.coordinator.session.currentWalletObject.solanaAddress : appDelegate.coordinator.session.wallet.addressString
-      let foundWallet = wallets.first { element in
-        return element.address == address
-      }
-      self.selectedAddress = foundWallet != nil ? address : ""
+    self.selectedChain = selected
+    self.addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+    self.dataSource = addresses.map { address -> KNWalletTableCellViewModel in
+      return KNWalletTableCellViewModel(address: address)
     }
   }
   
@@ -65,7 +61,7 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
     self.titleLabel.text = self.viewModel.title
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
     backgroundView.addGestureRecognizer(tapGesture)
-    self.updateUINextButton(isActive: !self.viewModel.selectedAddress.isEmpty)
+    self.updateUINextButton(isActive: viewModel.selectedAddress != nil)
   }
 
   @objc func tapOutside() {
@@ -73,12 +69,18 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
   }
 
   @IBAction func nextButtonTapped(_ sender: UIButton) {
-    if self.viewModel.selectedAddress.isEmpty {
-      self.viewModel.selectedAddress = self.viewModel.dataSource.first?.wallet.address ?? ""
+    if viewModel.selectedAddress == nil {
+      self.viewModel.selectedAddress = self.viewModel.dataSource.first?.address
     }
     self.dismiss(animated: true) {
       KNGeneralProvider.shared.currentChain = self.viewModel.selectedChain
-      KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: self.viewModel.selectedAddress)
+      var userInfo: [String: Any] = [:]
+      userInfo["address"] = self.viewModel.selectedAddress
+      KNNotificationUtil.postNotification(
+        for: kChangeChainNotificationKey,
+        object: nil,
+        userInfo: userInfo
+      )
     }
   }
   
@@ -120,8 +122,8 @@ extension SwitchChainWalletsListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     let cellModel = self.viewModel.dataSource[indexPath.row]
-    self.viewModel.selectedAddress = cellModel.wallet.address.description
-    self.updateUINextButton(isActive: !self.viewModel.selectedAddress.isEmpty)
+    self.viewModel.selectedAddress = cellModel.address
+    self.updateUINextButton(isActive: viewModel.selectedAddress != nil)
     tableView.reloadData()
   }
 }

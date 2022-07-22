@@ -19,10 +19,14 @@ extension UIViewController {
     }
 
     func displayError(error: Error) {
-      let alertController = UIAlertController(title: error.prettyError, message: "", preferredStyle: UIAlertController.Style.alert)
-        alertController.popoverPresentationController?.sourceView = self.view
-      alertController.addAction(UIAlertAction(title: NSLocalizedString("ok", value: "OK", comment: ""), style: UIAlertAction.Style.default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+      displayAlert(message: error.prettyError)
+    }
+  
+    func displayAlert(message: String) {
+      let alertController = UIAlertController(title: message, message: "", preferredStyle: .alert)
+      alertController.popoverPresentationController?.sourceView = self.view
+      alertController.addAction(UIAlertAction(title: Strings.ok, style: UIAlertAction.Style.default, handler: nil))
+      present(alertController, animated: true, completion: nil)
     }
 
     func confirm(

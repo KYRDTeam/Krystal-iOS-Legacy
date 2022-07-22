@@ -9,6 +9,7 @@ import UIKit
 import BigInt
 import SwipeCellKit
 import MBProgressHUD
+import KrystalWallets
 
 protocol OverviewMainViewControllerDelegate: class {
   func overviewMainViewController(_ controller: OverviewMainViewController, run event: OverviewMainViewEvent)
@@ -262,7 +263,8 @@ class OverviewMainViewController: KNBaseViewController {
         return
       }
       
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+      if addresses.isEmpty {
         self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
         return
       } else {
@@ -354,8 +356,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
   }
   
-  func coordinatorDidUpdateNewSession(_ session: KNSession) {
-    self.viewModel.session = session
+  func coordinatorAppSwitchAddress() {
     self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
@@ -739,9 +740,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       for: indexPath
     ) as! OverviewTotalInfoCell
     
-    let walletName = self.viewModel.session.wallet.getWalletObject()?.name ?? "---"
-    
-    cell.updateCell(walletName: walletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
+    cell.updateCell(walletName: viewModel.currentWalletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
     
     cell.walletListButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .selectListWallet)

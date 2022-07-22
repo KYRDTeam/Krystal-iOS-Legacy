@@ -8,45 +8,24 @@
 import UIKit
 import Alamofire
 import TrustKeystore
+import KrystalWallets
 
 class CopyAddressViewModel {
-  let walletData: WalletData
   let dataSource: [CopyAddressCellModel]
-  let keyStore: Keystore
+  let wallet: KWallet
   
-  init(data: WalletData, keyStore: Keystore) {
-    self.walletData = data
-    self.keyStore = keyStore
-    let allChains = ChainType.getAllChain()
-    
-    var result: [CopyAddressCellModel] = []
-    for element in allChains {
-      if element == .solana {
-        let solData = WalletData(
-          address: data.solanaAddress,
-          name: "",
-          icon: "",
-          isBackedUp: true,
-          isWatchWallet: false,
-          date: Date(),
-          chainType: .solana,
-          storageType: .seeds,
-          evmAddress: data.evmAddress,
-          solanaAddress: data.solanaAddress,
-          walletID: data.walletID
-        )
-        result.append(CopyAddressCellModel(type: element, data: solData))
-      } else {
-        result.append(CopyAddressCellModel(type: element, data: data))
-      }
+  init(wallet: KWallet) {
+    self.wallet = wallet
+    self.dataSource = ChainType.getAllChain().flatMap { chain in
+      return WalletManager.shared
+        .getAllAddresses(walletID: wallet.id, addressType: chain.addressType)
+        .map { CopyAddressCellModel(type: chain, address: $0) }
     }
-
-    self.dataSource = result
   }
 }
 
 protocol CopyAddressViewControllerDelegate: class {
-  func copyAddressViewController(_ controller: CopyAddressViewController, didSelect wallet: WalletData, chain: ChainType)
+  func copyAddressViewController(_ controller: CopyAddressViewController, didSelect wallet: KWallet, chain: ChainType)
 }
 
 class CopyAddressViewController: KNBaseViewController {
@@ -101,6 +80,6 @@ extension CopyAddressViewController: CopyAddressCellDelegate {
 extension CopyAddressViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let cm = self.viewModel.dataSource[indexPath.row]
-    self.delegate?.copyAddressViewController(self, didSelect: cm.data, chain: cm.type)
+    self.delegate?.copyAddressViewController(self, didSelect: viewModel.wallet, chain: cm.type)
   }
 }
