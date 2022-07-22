@@ -2,7 +2,6 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import QRCodeReaderViewController
 
 enum KNNewContactViewEvent {
@@ -18,7 +17,7 @@ class KNNewContactViewModel {
 
   fileprivate(set) var contact: KNContact
   fileprivate(set) var isEditing: Bool
-  fileprivate(set) var address: Address?
+  fileprivate(set) var address: String?
   fileprivate(set) var addressString: String
 
   init(
@@ -32,7 +31,7 @@ class KNNewContactViewModel {
       self.contact = KNContact(address: address.lowercased(), name: ens ?? "", chainType: chainType)
       self.isEditing = false
     }
-    self.address = Address(string: address)
+    self.address = address
     self.addressString = ens ?? address
   }
 
@@ -44,7 +43,7 @@ class KNNewContactViewModel {
     if self.addressString.isEmpty { return nil }
     if KNGeneralProvider.shared.currentChain == .solana && self.addressString.isValidSolanaAddress() { return nil }
     if self.address == nil { return "Invalid address or your ens is not mapped yet" }
-    if Address(string: self.addressString) != nil { return nil }
+    if KNGeneralProvider.shared.isAddressValid(address: self.addressString) { return nil }
     let address = self.address?.description ?? ""
     return "\(address.prefix(12))...\(address.suffix(10))"
   }
@@ -57,10 +56,10 @@ class KNNewContactViewModel {
 
   func updateViewModel(address: String) {
     self.addressString = address
-    self.address = Address(string: address)
+    self.address = address
   }
 
-  func updateAddressFromENS(name: String, ensAddr: Address?) {
+  func updateAddressFromENS(name: String, ensAddr: String?) {
     self.addressString = name
     self.address = ensAddr
     if let contact = KNContactStorage.shared.contacts.first(where: { $0.address.lowercased() == (ensAddr?.description.lowercased() ?? "") }) {
@@ -69,7 +68,7 @@ class KNNewContactViewModel {
     } else if let addr = ensAddr {
       let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
       self.contact = KNContact(
-        address: addr.description.lowercased(),
+        address: addr,
         name: self.contact.name.isEmpty ? name : self.contact.name,
         chainType: chainType
       )
@@ -180,33 +179,19 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    
     guard let name = self.nameTextField.text, !name.isEmpty else {
       self.showWarningTopBannerMessage(with: "", message: NSLocalizedString("contact.should.have.a.name", value: "Contact should have a name", comment: ""))
       return
     }
-    var contactAddress = ""
-    if KNGeneralProvider.shared.currentChain == .solana {
-      guard let text = self.addressTextField.text, text.isValidSolanaAddress() else {
-        self.showErrorTopBannerMessage(
-          with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-          message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
-          time: 2.0
-        )
-        return
-      }
-      contactAddress = text
-    } else {
-      guard let text = self.addressTextField.text, text.has0xPrefix, let address = Address(string: text) else {
-        self.showErrorTopBannerMessage(
-          with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-          message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
-          time: 2.0
-        )
-        return
-      }
-      contactAddress = address.description.lowercased()
+    guard let contactAddress = self.addressTextField.text, KNGeneralProvider.shared.isAddressValid(address: contactAddress) else {
+      self.showErrorTopBannerMessage(
+        with: Strings.invalidAddress,
+        message: Strings.pleaseEnterValidAddress,
+        time: 2.0
+      )
+      return
     }
+    
     let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
     let contact = KNContact(address: contactAddress, name: name, chainType: chainType)
     KNContactStorage.shared.update(contacts: [contact])
@@ -232,15 +217,16 @@ class KNNewContactViewController: KNBaseViewController {
   }
 
   @IBAction func sendButtonPressed(_ sender: Any) {
-    guard let address = Address(string: self.addressTextField.text ?? "") else {
+    let address = self.addressTextField.text ?? ""
+    guard KNGeneralProvider.shared.isAddressValid(address: address) else {
       self.showErrorTopBannerMessage(
-        with: NSLocalizedString("invalid.address", value: "Invalid Address", comment: ""),
-        message: NSLocalizedString("please.enter.a.valid.address.to.continue", value: "Please enter a valid address to continue", comment: ""),
+        with: Strings.invalidAddress,
+        message: Strings.pleaseEnterValidAddress,
         time: 2.0
       )
       return
     }
-    self.delegate?.newContactViewController(self, run: .send(address: address.description))
+    self.delegate?.newContactViewController(self, run: .send(address: address))
   }
 
   @IBAction func qrcodeButtonPressed(_ sender: Any) {
@@ -306,7 +292,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
     if KNGeneralProvider.shared.currentChain == .solana {
       return
     }
-    if Address(string: name) != nil { return }
+    if KNGeneralProvider.shared.isAddressValid(address: name) { return }
     if !name.contains(".") {
       self.viewModel.updateAddressFromENS(name: name, ensAddr: nil)
       self.updateUI()
@@ -317,7 +303,7 @@ extension KNNewContactViewController: QRCodeReaderDelegate {
         guard let `self` = self else { return }
         DispatchQueue.main.async {
           if name != self.viewModel.addressString { return }
-          if case .success(let addr) = result, let address = addr, address != Address(string: "0x0000000000000000000000000000000000000000") {
+          if case .success(let addr) = result, let address = addr, address != "0x0000000000000000000000000000000000000000" {
             self.viewModel.updateAddressFromENS(name: name, ensAddr: address)
           } else {
             self.viewModel.updateAddressFromENS(name: name, ensAddr: nil)

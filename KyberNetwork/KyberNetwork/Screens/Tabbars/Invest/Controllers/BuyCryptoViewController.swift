@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KrystalWallets
 
 enum BuyCryptoEvent {
   case openHistory
@@ -24,13 +25,13 @@ protocol BuyCryptoViewControllerDelegate: class {
 }
 
 class BuyCryptoViewModel {
-  var wallet: Wallet
   var dataSource: [FiatCryptoModel]?
   var currentNetworks: [FiatNetwork]?
   var fiatCurrency: [FiatModel]?
   var cryptoCurrency: [FiatModel]?
-  init(wallet: Wallet) {
-    self.wallet = wallet
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
   
 }
@@ -72,8 +73,8 @@ class BuyCryptoViewController: KNBaseViewController {
   }
 
   func updateUI() {
-    self.walletsListButton.setTitle(self.viewModel.wallet.addressString, for: .normal)
-    self.addressTextField.text = self.viewModel.wallet.addressString
+    self.walletsListButton.setTitle(viewModel.currentAddress.addressString, for: .normal)
+    self.addressTextField.text = viewModel.currentAddress.addressString
     self.updateUIPendingTxIndicatorView()
   }
 
@@ -126,9 +127,9 @@ class BuyCryptoViewController: KNBaseViewController {
     })
     return fiatCryptoModel
   }
+  
 
-  func coordinatorDidUpdateWallet(_ wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
     self.updateUI()
     self.setDefaultValue()
@@ -314,7 +315,7 @@ class BuyCryptoViewController: KNBaseViewController {
       return nil
     }
 
-    let buyCryptoModel = BifinityOrder(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetwork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, merchantOrderId: "", orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation, userWallet: self.viewModel.wallet.addressString, fiatLogo: "", cryptoLogo: "", networkLogo: "", status: "", executePrice: 0, createdTime: 0, errorCode: "", errorReason: "")
+    let buyCryptoModel = BifinityOrder(cryptoAddress: address, cryptoCurrency: cryptoCurrency, cryptoNetwork: self.networkLabel.text ?? "", fiatCurrency: fiatCurrency, merchantOrderId: "", orderAmount: fiatAmount.doubleValue, requestPrice: currentFiatModel.quotation, userWallet: self.viewModel.currentAddress.addressString, fiatLogo: "", cryptoLogo: "", networkLogo: "", status: "", executePrice: 0, createdTime: 0, errorCode: "", errorReason: "")
 
     return buyCryptoModel
   }

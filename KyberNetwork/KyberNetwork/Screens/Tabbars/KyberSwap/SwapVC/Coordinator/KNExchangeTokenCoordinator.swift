@@ -3,7 +3,6 @@
 import UIKit
 import BigInt
 import TrustKeystore
-import TrustCore
 import Result
 import Moya
 import APIKit
@@ -12,17 +11,16 @@ import MBProgressHUD
 import JSONRPCKit
 import WalletConnectSwift
 import MBProgressHUD
+import KrystalWallets
 
 protocol KNExchangeTokenCoordinatorDelegate: class {
+  func exchangeTokenCoordinator(didAdd wallet: KWallet, chain: ChainType)
+  func exchangeTokenCoordinator(didAdd watchAddress: KAddress, chain: ChainType)
   func exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType)
-  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: KNWalletObject)
-  func exchangeTokenCoordinatorRemoveWallet(_ wallet: Wallet)
+  func exchangeTokenCoordinatorRemoveWallet(_ wallet: KWallet)
   func exchangeTokenCoordinatorDidSelectAddWallet()
   func exchangeTokenCoordinatorDidSelectPromoCode()
   func exchangeTokenCoordinatorOpenManageOrder()
-  func exchangeTokenCoordinatorDidUpdateWalletObjects()
-  func exchangeTokenCoordinatorDidSelectRemoveWallet(_ wallet: Wallet)
-  func exchangeTokenCoordinatorDidSelectWallet(_ wallet: Wallet)
   func exchangeTokenCoordinatorDidSelectManageWallet()
   func exchangeTokenCoodinatorDidSendRefCode(_ code: String)
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
@@ -33,10 +31,9 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
 class KNExchangeTokenCoordinator: NSObject, Coordinator {
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
-  fileprivate(set) var session: KNSession
+  
   var tokens: [TokenObject] = KNSupportedTokenStorage.shared.supportedTokens
   var isSelectingSourceToken: Bool = true
-//  var coordinators: [Coordinator] = []
   /// src and dest token used for deeplink
   var srcTokenAddress, destTokenAddress: String?
   var priceImpactSource: [String] = []
@@ -48,18 +45,13 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
-  fileprivate var currentWallet: KNWalletObject {
-    return self.session.currentWalletObject
-  }
-
   lazy var rootViewController: KSwapViewController = {
     let (from, to): (TokenObject, TokenObject) = {
-      let address = self.session.wallet.addressString
+      let address = AppDelegate.session.address.addressString
       let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: address)
       return (KNSupportedTokenStorage.shared.ethToken, KNSupportedTokenStorage.shared.kncToken)
     }()
     let viewModel = KSwapViewModel(
-      wallet: self.session.wallet,
       from: from,
       to: to,
       supportedTokens: tokens
@@ -73,10 +65,8 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
   fileprivate var promoCodeCoordinator: KNPromoCodeCoordinator?
 
   fileprivate var qrcodeCoordinator: KNWalletQRCodeCoordinator? {
-    guard let walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.session.wallet.addressString) else { return nil }
     let qrcodeCoordinator = KNWalletQRCodeCoordinator(
-      navigationController: self.navigationController,
-      walletObject: walletObject
+      navigationController: self.navigationController
     )
     return qrcodeCoordinator
   }
@@ -88,17 +78,22 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
     self.stop()
   }
   
-  init(
-    navigationController: UINavigationController = UINavigationController(),
-    session: KNSession
-  ) {
+  var session: KNSession {
+    return AppDelegate.session
+  }
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
-    self.session = session
   }
 
   func start() {
     self.navigationController.viewControllers = [self.rootViewController]
+    self.observeAppEvents()
   }
 
   func stop() {
@@ -108,34 +103,35 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
     self.promoCodeCoordinator = nil
     self.historyCoordinator = nil
     self.searchTokensViewController = nil
+    self.removeObservers()
   }
+  
+  func removeObservers() {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
+  func observeAppEvents() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(appDidSwitchAddress),
+      name: AppEventCenter.shared.kAppDidChangeAddress,
+      object: nil
+    )
+  }
+  
 }
 
 // MARK: Update from app coordinator
 extension KNExchangeTokenCoordinator {
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession, resetRoot: Bool = false) {
-    self.session = session
-    self.rootViewController.coordinatorUpdateNewSession(wallet: session.wallet)
-    if resetRoot {
-      self.navigationController.popToRootViewController(animated: false)
-    }
+  
+  @objc func appDidSwitchAddress() {
+    rootViewController.coordinatorAppDidUpdateAddress()
+    navigationController.popToRootViewController(animated: false)
     self.balances = [:]
-    
-    if self.navigationController.viewControllers.first(where: { $0 is KNHistoryViewController }) == nil {
-      self.historyCoordinator = nil
-      self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController,
-        session: self.session
-      )
-    }
-    self.historyCoordinator?.delegate = self
-    self.historyCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    
-  }
-
-  func appCoordinatorDidUpdateWalletObjects() {
-    self.rootViewController.coordinatorUpdateWalletObjects()
-    self.historyCoordinator?.appCoordinatorDidUpdateWalletObjects()
   }
 
   func appCoordinatorTokenBalancesDidUpdate(totalBalanceInUSD: BigInt, totalBalanceInETH: BigInt, otherTokensBalance: [String: Balance]) {
@@ -181,8 +177,8 @@ extension KNExchangeTokenCoordinator {
       return
     }
 
-    let isValidSrcAddress = Address(string: srcTokenAddress) != nil
-    let isValidDestTokenAddress = Address(string: destTokenAddress) != nil
+    let isValidSrcAddress = KNGeneralProvider.shared.isAddressValid(address: srcTokenAddress)
+    let isValidDestTokenAddress = KNGeneralProvider.shared.isAddressValid(address: destTokenAddress)
     
     guard isValidSrcAddress, isValidDestTokenAddress else {
       self.rootViewController.coordinatorUpdateTokens(fromToken: fromToken, toToken: toToken)
@@ -312,7 +308,6 @@ extension KNExchangeTokenCoordinator {
   func appCoordinatorGasPriceCachedDidUpdate() {
     self.rootViewController.coordinatorUpdateGasPriceCached()
     self.sendTokenCoordinator?.coordinatorGasPriceCachedDidUpdate()
-    self.historyCoordinator?.coordinatorGasPriceCachedDidUpdate()
     self.gasFeeSelectorVC?.coordinatorDidUpdateGasPrices(
       fast: KNGasCoordinator.shared.fastKNGas,
       medium: KNGasCoordinator.shared.standardKNGas,
@@ -576,10 +571,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     case .openHistory:
       self.openHistoryScreen()
     case .openWalletsList:
-      let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.availableWalletObjects,
-        currentWallet: self.currentWallet
-      )
+      let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -591,7 +583,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .checkAllowance(let from):
-      guard let provider = self.session.externalProvider else {
+      guard let provider = AppDelegate.session.externalProvider else {
         return
       }
       provider.getAllowance(token: from) { [weak self] getAllowanceResult in
@@ -608,8 +600,8 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .getExpectedRate(let from, let to, let srcAmount, let hint):
-      guard self.session.externalProvider != nil else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+      if currentAddress.isWatchWallet {
+        self.navigationController.showTopBannerView(message: Strings.watchWalletCannotDoThisOperation)
         self.navigationController.hideLoading()
         return
       }
@@ -746,7 +738,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let src = from.contract.lowercased()
     let dest = to.contract.lowercased()
     let amt = amount.isZero ? from.placeholderValue.description : amount.description
-    let address = self.session.wallet.addressString
+    let address = currentAddress.addressString
     provider.requestWithFilter(.getAllRates(src: src, dst: dest, amount: amt, focusSrc: focusSrc, userAddress: address)) { [weak self] result in
       guard let `self` = self else { return }
       if case .success(let resp) = result {
@@ -757,7 +749,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
             return BigInt.bigIntFromString(value: rate1.rate)  > BigInt.bigIntFromString(value: rate2.rate)
           }
           self.rootViewController.coordinatorDidUpdateRates(from: from, to: to, srcAmount: amount, rates: sortedRate)
-        } catch let error {
+        } catch {
           self.rootViewController.coordinatorFailUpdateRates()
         }
       } else {
@@ -794,7 +786,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
         do {
           let data = try decoder.decode(TransactionResponse.self, from: resp.data)
           self.rootViewController.coordinatorSuccessUpdateEncodedTx(object: data.txObject)
-        } catch let error {
+        } catch {
           self.rootViewController.coordinatorFailUpdateEncodedTx()
         }
       } else {
@@ -903,7 +895,6 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
-      session: self.session,
       balances: self.balances,
       from: from
     )
@@ -919,25 +910,20 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
   fileprivate func openAddWalletView() {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddWallet()
   }
-
-  fileprivate func updateCurrentWallet(_ wallet: KNWalletObject) {
-    self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wallet)
-  }
   
   fileprivate func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
       coordinator.delegate = self
       coordinate(coordinator: coordinator)
     default:
       self.historyCoordinator = nil
       self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController,
-        session: self.session
+        navigationController: self.navigationController
       )
       self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.appDidSwitchAddress()
       self.historyCoordinator?.start()
     }
   }
@@ -976,17 +962,19 @@ extension KNExchangeTokenCoordinator: KNSearchTokenViewControllerDelegate {
 
 // MARK: Add new wallet delegate
 extension KNExchangeTokenCoordinator: KNAddNewWalletCoordinatorDelegate {
+  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType) {
+    delegate?.exchangeTokenCoordinator(didAdd: wallet, chain: chain)
+  }
+  
+  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType) {
+    delegate?.exchangeTokenCoordinator(didAdd: watchAddress, chain: chain)
+  }
+  
   func addNewWalletCoordinatorDidSendRefCode(_ code: String) {
     self.delegate?.exchangeTokenCoodinatorDidSendRefCode(code.uppercased())
   }
-  
-  func addNewWalletCoordinator(add wallet: Wallet) {
-    let address = wallet.addressString
-    let walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
-    self.delegate?.exchangeTokenCoordinatorDidSelectWallet(walletObject)
-  }
 
-  func addNewWalletCoordinator(remove wallet: Wallet) {
+  func addNewWalletCoordinator(remove wallet: KWallet) {
     self.delegate?.exchangeTokenCoordinatorRemoveWallet(wallet)
   }
 }
@@ -1010,16 +998,6 @@ extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
 
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
-  }
-
-  func historyCoordinatorDidUpdateWalletObjects() {
-    
-  }
-  func historyCoordinatorDidSelectRemoveWallet(_ wallet: Wallet) {
-    
-  }
-  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wallet)
   }
 }
 
@@ -1107,28 +1085,22 @@ extension KNExchangeTokenCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-          
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: "Private Key Error",
-            message: "Can not get Private key",
-            time: 1.5
+      
+      do {
+        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
+        DispatchQueue.main.async {
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            pk: privateKey
           )
+          self.navigationController.present(controller, animated: true, completion: nil)
         }
+      } catch {
+        self.navigationController.showTopBannerView(
+          with: "Private Key Error",
+          message: "Can not get Private key",
+          time: 1.5
+        )
       }
     }
   }
@@ -1171,11 +1143,8 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
         } else {
           gasTokenAddressString = "0x0000000000004946c0e9F43F4Dee607b0eF1fA1c"
         }
-        guard let tokenAddress = Address(string: gasTokenAddressString) else {
-          return
-        }
         
-        provider.getAllowance(tokenAddress: tokenAddress) { [weak self] result in
+        provider.getAllowance(tokenAddress: gasTokenAddressString) { [weak self] result in
           guard let `self` = self else { return }
           switch result {
           case .success(let res):
@@ -1207,126 +1176,14 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       self.rootViewController.coordinatorDidUpdateAdvancedSettings(gasLimit: gasLimit, maxPriorityFee: maxPriorityFee, maxFee: maxFee)
     case .updateAdvancedNonce(nonce: let nonce):
       self.rootViewController.coordinatorDidUpdateAdvancedNonce(nonce)
-    case .speedupTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            print(error.description)
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-    case .cancelTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .cancel
-            savedTx?.type = .transferETH
-            savedTx?.transactionSuccessDescription = "-0 ETH"
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-    case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-       
-        let speedupTx = transaction.toSignTransaction(account: account)
-        speedupTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            print("GasSelector][Legacy][Speedup][Sent] \(hash)")
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
-    case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        
-        let cancelTx = transaction.toSignTransaction(account: account)
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.state = .cancel
-            saved?.type = .transferETH
-            saved?.transactionSuccessDescription = "-0 ETH"
-            saved?.hash = hash
-            print("GasSelector][Legacy][Cancel][Sent] \(hash)")
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
+    case .speedupTransactionSuccessfully(let speedupTransaction):
+      self.openTransactionStatusPopUp(transaction: speedupTransaction)
+    case .cancelTransactionSuccessfully(let cancelTransaction):
+      self.openTransactionStatusPopUp(transaction: cancelTransaction)
+    case .speedupTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
+    case .cancelTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
     default:
       break
     }
@@ -1337,7 +1194,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     if let saved = UserDefaults.standard.object(forKey: Constants.useGasTokenDataKey) as? [String: Bool] {
       data = saved
     }
-    data[self.session.wallet.addressString] = state
+    data[currentAddress.addressString] = state
     UserDefaults.standard.setValue(data, forKey: Constants.useGasTokenDataKey)
   }
 
@@ -1348,7 +1205,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data.keys.contains(self.session.wallet.addressString)
+    return data.keys.contains(currentAddress.addressString)
   }
 
   fileprivate func isAccountUseGasToken() -> Bool {
@@ -1358,7 +1215,7 @@ extension KNExchangeTokenCoordinator: GasFeeSelectorPopupViewControllerDelegate 
     } else {
       return false
     }
-    return data[self.session.wallet.addressString] ?? false
+    return data[currentAddress.addressString] ?? false
   }
 }
 
@@ -1371,17 +1228,8 @@ extension KNExchangeTokenCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.exchangeTokenCoordinatorDidSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.openAddWalletView()
     }
@@ -1399,11 +1247,8 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
     
   }
   
-  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: Address, value: BigInt) {
-    guard case .real(let account) = self.session.wallet.type else {
-      return
-    }
-    KNGeneralProvider.shared.buildSignTxForApprove(tokenAddress: tokenAddress, account: account) { signTx in
+  func approveTokenViewControllerGetEstimateGas(_ controller: ApproveTokenViewController, tokenAddress: String, value: BigInt) {
+    KNGeneralProvider.shared.buildSignTxForApprove(tokenAddress: tokenAddress, address: currentAddress.addressString) { signTx in
       guard let unwrap = signTx else { return }
       KNGeneralProvider.shared.getEstimateGasLimit(transaction: unwrap) { result in
         switch result {
@@ -1418,11 +1263,11 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
 
   func approveTokenViewControllerDidApproved(_ controller: ApproveTokenViewController, address: String, remain: BigInt, state: Bool, toAddress: String?, gasLimit: BigInt) {
     self.navigationController.displayLoading()
-    guard let provider = self.session.externalProvider, let gasTokenAddress = Address(string: address) else {
+    guard let provider = self.session.externalProvider else {
       return
     }
     provider.sendApproveERCTokenAddress(
-      for: gasTokenAddress,
+      for: address,
       value: Constants.maxValueBigInt,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
       gasLimit: gasLimit
@@ -1487,143 +1332,6 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
   }
 }
 
-extension KNExchangeTokenCoordinator: SpeedUpCustomGasSelectDelegate {
-  func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
-    switch event {
-    case .done(let transaction, let newValue):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-        
-        if let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) {
-          savedTx?.state = .speedup
-          speedupTx.send(provider: provider) { (result) in
-            switch result {
-            case .success(let hash):
-              savedTx?.hash = hash
-              if let unwrapped = savedTx {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Speedup failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          }
-        }
-
-        if let speedupTx = transaction.eip1559Transaction?.toSpeedupTransaction(gasPrice: newValue), let data = provider.signContractGenericEIP1559Transaction(speedupTx) {
-          savedTx?.state = .speedup
-          KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-            switch sendResult {
-            case .success(let hash):
-              savedTx?.hash = hash
-              if let unwrapped = savedTx {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Speedup failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          })
-        }
-      } else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
-      }
-    case .invaild:
-      self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "your.gas.must.be.10.percent.higher".toBeLocalised(),
-        time: 1.5
-      )
-    }
-  }
-}
-
-extension KNExchangeTokenCoordinator: KNConfirmCancelTransactionPopUpDelegate {
-  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
-    if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-
-      if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
-        saved?.state = .cancel
-        saved?.type = .transferETH
-        saved?.transactionSuccessDescription = "-0 ETH"
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.hash = hash
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
-
-      if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
-        saved?.state = .cancel
-        saved?.type = .transferETH
-        saved?.transactionSuccessDescription = "-0 ETH"
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            saved?.hash = hash
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-    } else {
-      self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
-    }
-  }
-}
-
 extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
@@ -1635,10 +1343,6 @@ extension KNExchangeTokenCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.exchangeTokenCoordinatorDidSelectAddToken(token)
-  }
-
-  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.exchangeTokenCoordinatorDidSelectWallet(wallet)
   }
 
   func sendTokenViewCoordinatorSelectOpenHistoryList() {

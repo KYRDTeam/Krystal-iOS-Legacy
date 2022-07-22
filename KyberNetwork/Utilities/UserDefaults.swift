@@ -1,8 +1,8 @@
 //
-//  UserDefault.swift
+//  UserDefaults.swift
 //  KyberNetwork
 //
-//  Created by Tung Nguyen on 27/06/2022.
+//  Created by Tung Nguyen on 22/06/2022.
 //
 
 import Foundation
@@ -21,4 +21,11 @@ struct UserDefault<Value> {
       container.set(newValue, forKey: key)
     }
   }
+}
+
+extension UserDefaults {
+  
+  @UserDefault(key: "has_migrated_keystore_wallets", defaultValue: false)
+  static var hasMigratedKeystoreWallet: Bool
+  
 }

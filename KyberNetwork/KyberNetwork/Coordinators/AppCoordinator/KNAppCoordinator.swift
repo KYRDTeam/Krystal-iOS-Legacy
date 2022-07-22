@@ -3,17 +3,19 @@
 import UIKit
 import BigInt
 import Moya
-//import OneSignal
-//import TwitterKit
+import KrystalWallets
 
 class KNAppCoordinator: NSObject, Coordinator {
-
   let navigationController: UINavigationController
   let window: UIWindow
   internal var keystore: Keystore
   var coordinators: [Coordinator] = []
   internal var session: KNSession!
-  internal var currentWallet: Wallet!
+  
+  let walletManager = WalletManager.shared
+  let walletCache = WalletCache.shared
+  var currentAddress: KAddress?
+  
   internal var loadBalanceCoordinator: KNLoadBalanceCoordinator?
 
   internal var exchangeCoordinator: KNExchangeTokenCoordinator?
@@ -32,22 +34,21 @@ class KNAppCoordinator: NSObject, Coordinator {
   }()
 
   lazy var authenticationCoordinator: KNPasscodeCoordinator = {
-    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false), self.keystore)
+    let passcode = KNPasscodeCoordinator(type: .authenticate(isUpdating: false))
     passcode.delegate = self
     return passcode
   }()
 
   lazy var landingPageCoordinator: KNLandingPageCoordinator = {
     let coordinator = KNLandingPageCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
+      navigationController: self.navigationController
     )
     coordinator.delegate = self
     return coordinator
   }()
 
   lazy var addWalletCoordinator: KNAddNewWalletCoordinator = {
-    let coordinator = KNAddNewWalletCoordinator(keystore: self.session.keystore)
+    let coordinator = KNAddNewWalletCoordinator()
     coordinator.delegate = self
     return coordinator
   }()
@@ -55,27 +56,28 @@ class KNAppCoordinator: NSObject, Coordinator {
   internal var promoCodeCoordinator: KNPromoCodeCoordinator?
   var isFirstLoad: Bool = true
   var isFirstUpdateChain: Bool = true
-
+  let appMigrationManager: AppMigrationManager
+  
   init(
     navigationController: UINavigationController = UINavigationController(),
     window: UIWindow,
     keystore: Keystore) {
-    self.navigationController = navigationController
-    self.window = window
-    self.keystore = keystore
-    super.init()
-    self.window.rootViewController = self.navigationController
-    self.window.makeKeyAndVisible()
-  }
-
+      self.navigationController = navigationController
+      self.window = window
+      self.keystore = keystore
+      self.appMigrationManager = .init(keystore: keystore)
+      super.init()
+      self.window.rootViewController = self.navigationController
+      self.window.makeKeyAndVisible()
+    }
+  
   deinit {
     self.removeInternalObserveNotification()
     self.removeObserveNotificationFromSession()
   }
 
   func start() {
-    self.addMissingWalletObjects()
-    //TODO: need improve by check condition to show landing or start session
+    self.appMigrationManager.execute()
     self.startLandingPageCoordinator()
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
@@ -88,12 +90,43 @@ class KNAppCoordinator: NSObject, Coordinator {
   fileprivate func setPredefineValues() {
     UserDefaults.standard.set(false, forKey: Constants.kisShowQuickTutorialForLongPendingTx)
   }
-
-  fileprivate func addMissingWalletObjects() {
-    let walletObjects = self.keystore.wallets.filter {
-      return KNWalletStorage.shared.get(forPrimaryKey: $0.addressString) == nil
-    }.map { return KNWalletObject(address: $0.addressString) }
-    KNWalletStorage.shared.add(wallets: walletObjects)
+  
+  func switchWallet(wallet: KWallet, chain: ChainType) {
+    if let address = getAddresses(wallet: wallet, chain: chain).first {
+      KNGeneralProvider.shared.currentChain = chain
+      switchAddress(address: address)
+      AppEventCenter.shared.switchChain(chain: chain)
+    }
+  }
+  
+  func switchToWatchAddress(address: KAddress, chain: ChainType) {
+    KNGeneralProvider.shared.currentChain = chain
+    AppEventCenter.shared.switchChain(chain: chain)
+    switchAddress(address: address)
+  }
+  
+  private func switchAddress(address: KAddress) {
+    WalletCache.shared.lastUsedAddress = address
+    KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
+    if self.tabbarController == nil {
+      self.startNewSession(address: address)
+    } else {
+      self.restartSession(address: address)
+    }
+  }
+  
+  private func getAddresses(wallet: KWallet, chain: ChainType) -> [KAddress] {
+    let addressType = getAddressType(forChain: chain)
+    return walletManager.getAllAddresses(walletID: wallet.id, addressType: addressType)
+  }
+  
+  private func getAddressType(forChain chain: ChainType) -> KAddressType {
+    switch chain {
+    case .solana:
+      return .solana
+    default:
+      return .evm
+    }
   }
 
   fileprivate func startLandingPageCoordinator() {
@@ -102,123 +135,94 @@ class KNAppCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func startFirstSessionIfNeeded() {
+    let lastUsedAddress = walletCache.lastUsedAddress
+    let addresses = walletManager.getAllWallets().flatMap { walletManager.getAllAddresses(walletID: $0.id) }
+    
     // For security, should always have passcode protection when user has imported wallets
-    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first,
-      KNPasscodeUtil.shared.currentPasscode() != nil {
-      if case .real(let account) = wallet.type {
-        // Check case if password for account is not exist, cancel start new session
-        guard let _ = keystore.getPassword(for: account) else {
-           return
-        }
-      }
-      self.startNewSession(with: wallet)
-      KNCrashlyticsUtil.updateUserId(userId: session.currentWalletObject.address)
+    if let address = lastUsedAddress ?? addresses.first, KNPasscodeUtil.shared.currentPasscode() != nil {
+      self.startNewSession(address: address)
     }
   }
 
   @discardableResult
   func showBackupWalletIfNeeded() -> Bool {
-    guard let currentWallet = self.keystore.recentlyUsedWallet else { return false }
-    guard let walletObj = KNWalletStorage.shared.wallets.first(where: { (object) -> Bool in
-      return object.isBackedUp == false && object.address == currentWallet.addressString && !object.isWatchWallet
+    guard let lastUsedAddress = walletCache.lastUsedAddress else {
+      return false
+    }
+    guard let _ = walletManager.getAllWallets().first(where: { wallet in
+      return walletCache.isWalletBackedUp(walletID: wallet.id) == false
+        && lastUsedAddress.walletID == wallet.id
+        && lastUsedAddress.isWatchWallet == false
     }) else {
       return false
     }
-    if self.keystore.wallets.count >= 1 {
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(_):
-          let controller = OverviewWarningBackupViewController {
-            self.tabbarController = nil
-            self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
-            self.addCoordinator(self.landingPageCoordinator)
-            self.landingPageCoordinator.start()
-          } alreadyAction: {
-            let walletObject = walletObj.clone()
-            walletObject.isBackedUp = true
-            KNWalletStorage.shared.add(wallets: [walletObject])
-          }
-          self.overviewTabCoordinator?.navigationController.present(controller, animated: true, completion: {
-          })
-        default:
-          let walletObject = walletObj.clone()
-          walletObject.isWatchWallet = true
-          KNWalletStorage.shared.add(wallets: [walletObject])
-        }
-      } else {
-        let walletObject = walletObj.clone()
-        walletObject.isWatchWallet = true
-        KNWalletStorage.shared.add(wallets: [walletObject])
-      }
-      return false
-    } else {
-      self.landingPageCoordinator.updateNewWallet(wallet: currentWallet)
+
+    let controller = OverviewWarningBackupViewController {
+      self.tabbarController = nil
       self.addCoordinator(self.landingPageCoordinator)
       self.landingPageCoordinator.start()
-      return true
+    } alreadyAction: {
+      self.walletCache.markWalletBackedUp(walletID: lastUsedAddress.walletID)
+      print(self.walletCache.isWalletBackedUp(walletID: lastUsedAddress.walletID))
     }
+    self.overviewTabCoordinator?.navigationController.present(controller, animated: true)
+    return false
   }
 
   func sendRefCode(_ code: String) {
     let data = Data(code.utf8)
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
     let sendData = prefix + data
-    if case .real(let account) = self.session.wallet.type {
-      let result = self.session.keystore.signMessage(sendData, for: account)
-      switch result {
-      case .success(let signedData):
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.requestWithFilter(.registerReferrer(address: self.session.wallet.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
-          if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
-            if let isSuccess = json["success"] as? Bool, isSuccess {
-              self.tabbarController.showTopBannerView(message: "Success register referral code")
-            } else if let error = json["error"] as? String {
-              self.tabbarController.showTopBannerView(message: error)
-            } else {
-              self.tabbarController.showTopBannerView(message: "Fail to register referral code")
-            }
+    let signer = SignerFactory().getSigner(address: session.address)
+    do {
+      let signedData = try signer.signMessage(address: session.address, data: sendData, addPrefix: false)
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.requestWithFilter(.registerReferrer(address: session.address.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
+        if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
+          if let isSuccess = json["success"] as? Bool, isSuccess {
+            self.tabbarController.showTopBannerView(message: "Success register referral code")
+          } else if let error = json["error"] as? String {
+            self.tabbarController.showTopBannerView(message: error)
+          } else {
+            self.tabbarController.showTopBannerView(message: "Fail to register referral code")
           }
         }
-      case .failure(let error):
-        print("[Send ref code] \(error.localizedDescription)")
       }
+    } catch {
+      print("[Send ref code] \(error.localizedDescription)")
     }
   }
   
   func doLogin(_ completion: @escaping (Bool) -> Void) {
-    guard case .real(let account) = self.session.wallet.type else {
-      return
-    }
-    DispatchQueue.global(qos: .background).async {
-      let timestamp = Int(NSDate().timeIntervalSince1970)
-      let message = "\(self.session.wallet.addressString)_\(timestamp)"
-      let data = Data(message.utf8)
-      let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
-      let sendData = prefix + data
-      let result = self.session.keystore.signMessage(sendData, for: account)
-      switch result {
-      case .success(let signedData):
-        let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.requestWithFilter(.login(address: self.session.wallet.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { (result) in
-          if case .success(let resp) = result {
-            print(resp.debugDescription)
-            let decoder = JSONDecoder()
-            do {
-              let data = try decoder.decode(LoginToken.self, from: resp.data)
-              Storage.store(data, as: self.session.wallet.addressString + Constants.loginTokenStoreFileName)
-              completion(true)
-            } catch let error {
-              print("[Login][Error] \(error.localizedDescription)")
-              completion(false)
-            }
-          } else {
+    let timestamp = Int(NSDate().timeIntervalSince1970)
+    let message = "\(session.address.addressString)_\(timestamp)"
+    let data = Data(message.utf8)
+    let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+    let sendData = prefix + data
+    let signer = SignerFactory().getSigner(address: session.address)
+    do {
+      let signedData = try signer.signMessage(address: session.address, data: sendData, addPrefix: false)
+      let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+      provider.requestWithFilter(.login(address: session.address.addressString, timestamp: timestamp, signature: signedData.hexEncoded)) { [weak self] (result) in
+        guard let `self` = self else { return }
+        if case .success(let resp) = result {
+          print(resp.debugDescription)
+          let decoder = JSONDecoder()
+          do {
+            let data = try decoder.decode(LoginToken.self, from: resp.data)
+            Storage.store(data, as: self.session.address.addressString + Constants.loginTokenStoreFileName)
+            completion(true)
+          } catch let error {
+            print("[Login][Error] \(error.localizedDescription)")
             completion(false)
           }
+        } else {
+          completion(false)
         }
-      case .failure(let error):
-        self.doLogin(completion)
       }
+    } catch {
+      print("[Login] Failed to sign login message")
+      completion(false)
     }
   }
 }

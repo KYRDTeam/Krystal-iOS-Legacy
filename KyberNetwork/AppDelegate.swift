@@ -13,6 +13,14 @@ import IQKeyboardManager
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
   var window: UIWindow?
   var coordinator: KNAppCoordinator!
+  
+  static var shared: AppDelegate {
+    return UIApplication.shared.delegate as! AppDelegate
+  }
+  
+  static var session: KNSession {
+    return shared.coordinator.session
+  }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)

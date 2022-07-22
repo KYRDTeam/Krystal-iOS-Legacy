@@ -33,7 +33,7 @@ end
 def cryptoHelperPods
   pod 'BigInt', '~> 4.0'
   pod 'CryptoSwift'
-  pod 'TrustWalletCore', '~> 2.6.29'
+  pod 'TrustWalletCore', '~> 2.9'
   pod 'TrustKeystore', '~> 0.4.2'
   pod 'TrustCore', '~> 0.0.7'
   pod 'WalletConnectSwift'
@@ -93,6 +93,14 @@ target 'KyberNetwork' do
     # Pods for testing
   end
   
+end
+
+target 'KrystalWallets' do
+  use_frameworks!
+
+  databasePods
+  pod 'TrustWalletCore', '~> 2.9'
+  pod 'KeychainSwift'
 end
 
 target 'KrystalNotificationServiceExtension' do

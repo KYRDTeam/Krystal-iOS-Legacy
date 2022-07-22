@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import Result
+import KrystalWallets
 
 /*
  Handling notification from many fetchers, views, ...
@@ -98,7 +99,6 @@ extension KNAppCoordinator {
       name: gasPriceName,
       object: nil
     )
-
   }
 
   func removeObserveNotificationFromSession() {
@@ -199,22 +199,15 @@ extension KNAppCoordinator {
     self.settingsCoordinator?.appCoordinatorUSDRateUpdate()
   }
   
-  @objc func chainDidUpdateNotification(_ sender: Notification) {
-    if let address = sender.object as? String {
-      let walletObject = KNWalletStorage.shared.availableWalletObjects.first { element in
-        return element.address == address
-      }
-      if let unwrap = walletObject {
-        var wal: Wallet?
-        if KNGeneralProvider.shared.currentChain == .solana {
-          wal = unwrap.toSolanaWallet()
-        } else {
-          wal = self.keystore.matchWithWalletObject(unwrap)
-        }
-        if let unwrapWal = wal {
-          self.restartNewSession(unwrapWal)
-        }
-      }
+  @objc func chainDidUpdateNotification(_ notification: Notification) {
+    let currentAddress = session.address
+    let targetAddressType = KNGeneralProvider.shared.currentChain.addressType
+    if targetAddressType == currentAddress.addressType {
+      restartSession(address: currentAddress)
+    } else if let address = walletManager.getAllAddresses(walletID: currentAddress.walletID, addressType: targetAddressType).first {
+      restartSession(address: address)
+    } else if let address = walletManager.getAllAddresses(addressType: targetAddressType).first {
+      restartSession(address: address)
     }
     KNSupportedTokenCoordinator.shared.pause()
     KNSupportedTokenCoordinator.shared.resume()
@@ -298,7 +291,7 @@ extension KNAppCoordinator {
 
     if transaction.state == .done || transaction.state == .drop || transaction.state == .error {
       self.loadBalanceCoordinator?.loadAllBalances()
-      self.session.transacionCoordinator?.loadEtherscanTransactions()
+      self.session.transactionCoordinator?.loadEtherscanTransactions()
     }
   }
 
@@ -354,8 +347,7 @@ extension KNAppCoordinator {
     
     if transaction.type == .earn {
       let tokenTx = transaction.tokenTransactions.first { (tx) -> Bool in
-        let address = self.session.wallet.addressString
-        return tx.to.lowercased() == address
+        return tx.to == self.session.address.addressString
       }
 
       if let unwrapped = tokenTx, let amount = BigInt(unwrapped.value), let decimals = Int(unwrapped.tokenDecimal) {

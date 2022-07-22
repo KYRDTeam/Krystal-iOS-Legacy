@@ -2,7 +2,7 @@
 
 import UIKit
 import BigInt
-import TrustCore
+import KrystalWallets
 
 struct RawSwapTransaction {
   let userAddress: String
@@ -21,8 +21,10 @@ class KSwapViewModel {
   let eth = KNSupportedTokenStorage.shared.getETH().toObject()
   let knc = KNSupportedTokenStorage.shared.getKNC().toObject()
 
-  fileprivate(set) var wallet: Wallet
-  fileprivate(set) var walletObject: KNWalletObject
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
   fileprivate var supportedTokens: [TokenObject] = []
 
   fileprivate(set) var from: TokenObject?
@@ -67,22 +69,20 @@ class KSwapViewModel {
   var advancedMaxFee: String?
   var advancedNonce: String?
 
-  init(wallet: Wallet,
-       from: TokenObject,
-       to: TokenObject,
-       supportedTokens: [TokenObject]
-    ) {
-    self.wallet = wallet
-    let addr = wallet.addressString
-    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: addr)?.clone() ?? KNWalletObject(address: addr)
+  init(from: TokenObject, to: TokenObject, supportedTokens: [TokenObject]) {
     self.from = from.clone()
     self.to = to.clone()
     self.supportedTokens = supportedTokens.map({ return $0.clone() })
   }
+  
+  var addressName: String {
+    return currentAddress.name
+  }
+  
   // MARK: Wallet name
   var walletNameString: String {
-    let address = self.walletObject.address.lowercased()
-    return "|  \(address.prefix(10))...\(address.suffix(8))"
+    let addressString = currentAddress.addressString
+    return "|  \(addressString.prefix(10))...\(addressString.suffix(8))"
   }
 
   // MARK: From Token
@@ -152,7 +152,7 @@ class KSwapViewModel {
   }
 
   var isFromTokenBtnEnabled: Bool {
-    guard KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.walletObject.address) != nil else {
+    guard KNWalletPromoInfoStorage.shared.getDestinationToken(from: currentAddress.addressString) != nil else {
       // not a promo wallet, always enabled
       return true
     }
@@ -198,7 +198,7 @@ class KSwapViewModel {
   }
 
   var isToTokenBtnEnabled: Bool {
-    guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: self.walletObject.address) else {
+    guard let destToken = KNWalletPromoInfoStorage.shared.getDestinationToken(from: AppDelegate.session.address.addressString) else {
       // not a promo wallet, always enabled
       return true
     }
@@ -455,12 +455,7 @@ class KSwapViewModel {
     self.to = to
   }
 
-  // MARK: Update data
-  func updateWallet(_ wallet: Wallet) {
-    self.wallet = wallet
-    let address = wallet.addressString
-    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: address) ?? KNWalletObject(address: address)
-
+  func updateAddress() {
     self.resetDefaultTokensPair()
 
     self.amountFrom = ""
@@ -475,7 +470,8 @@ class KSwapViewModel {
   }
 
   func updateWalletObject() {
-    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address)?.clone() ?? self.walletObject
+    
+//    self.walletObject = KNWalletStorage.shared.get(forPrimaryKey: self.walletObject.address)?.clone() ?? self.walletObject
   }
 
   func swapTokens() {
@@ -731,7 +727,7 @@ class KSwapViewModel {
   func buildRawSwapTx() -> RawSwapTransaction? {
     guard let from = from, let to = to else { return nil }
     return RawSwapTransaction(
-      userAddress: self.wallet.addressString,
+      userAddress: currentAddress.addressString,
       src: from.address ,
       dest: to.address,
       srcQty: self.fromAmount.description,
@@ -771,25 +767,22 @@ class KSwapViewModel {
       nonce = value
     }
     
-    if case let .real(account) = self.wallet.type {
-      return SignTransaction(
-        value: value,
-        account: account,
-        to: Address(string: object.to),
-        nonce: nonce,
-        data: Data(hex: object.data.drop0x),
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        chainID: KNGeneralProvider.shared.customRPC.chainID
-      )
-    } else {
-      //TODO: handle watch wallet type
+    if currentAddress.isWatchWallet {
       return nil
     }
+    return SignTransaction(
+      value: value,
+      address: currentAddress.addressString,
+      to: object.to,
+      nonce: nonce,
+      data: Data(hex: object.data.drop0x),
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      chainID: KNGeneralProvider.shared.customRPC.chainID
+    )
   }
   
   func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
-    guard let baseFeeBigInt = KNGasCoordinator.shared.baseFee else { return nil }
     let gasLimitDefault = BigInt(object.gasLimit.drop0x, radix: 16) ?? self.estimateGasLimit
     let gasPrice = BigInt(object.gasPrice.drop0x, radix: 16) ?? self.gasPrice
     let priorityFeeBigIntDefault = self.selectedPriorityFee

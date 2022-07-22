@@ -10,7 +10,7 @@ struct KNGetUserCapInWeiEncode: Web3Request {
 
   static let abi = "{\"constant\":true,\"inputs\":[{\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getUserCapInWei\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}"
 
-  let address: Address
+  let address: String
 
   var type: Web3RequestType {
     let run = "web3.eth.abi.encodeFunctionCall(\(KNGetUserCapInWeiEncode.abi), [\"\(address)\"])"

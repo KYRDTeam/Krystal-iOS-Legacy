@@ -11,9 +11,9 @@ import QRCodeReaderViewController
 import WalletConnectSwift
 import JSONRPCKit
 import WalletCore
+import KrystalWallets
 
 protocol KNSendTokenViewCoordinatorDelegate: class {
-  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet)
   func sendTokenViewCoordinatorSelectOpenHistoryList()
   func sendTokenCoordinatorDidSelectManageWallet()
   func sendTokenCoordinatorDidSelectAddWallet()
@@ -26,14 +26,10 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   weak var delegate: KNSendTokenViewCoordinatorDelegate?
   var coordinators: [Coordinator] = []
   let navigationController: UINavigationController
-  fileprivate var session: KNSession
   var balances: [String: Balance] = [:]
   fileprivate var from: TokenObject
   fileprivate var nftItem: NFTItem = NFTItem()
   fileprivate var nftCategory: NFTSection = NFTSection(collectibleName: "", collectibleAddress: "", collectibleSymbol: "", collectibleLogo: "", items: [])
-  fileprivate var currentWallet: KNWalletObject {
-    return self.session.currentWalletObject
-  }
 
   var rootViewController: KSendTokenViewController?
   
@@ -45,6 +41,10 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   let sendNFT: Bool
   fileprivate var isSupportERC721 = true
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 
   lazy var addContactVC: KNNewContactViewController = {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: "")
@@ -55,26 +55,10 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   }()
 
   lazy var multiSendCoordinator: MultiSendCoordinator = {
-    let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = MultiSendCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self.delegate
     return coordinator
   }()
-
-  var solanaPrivateKey: PrivateKey? {
-    if let key = self.session.keystore.solanaUtil.exportKeyPair(walletID: self.currentWallet.walletID) {
-      return key
-    } else if let account = self.session.keystore.matchWithEvmAccount(address: self.currentWallet.evmAddress) {
-      let result = self.session.keystore.exportMnemonics(account: account)
-      if case .success(let seeds) = result {
-        let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
-        return privateKey
-      } else {
-        return nil
-      }
-    } else {
-      return nil
-    }
-  }
 
   deinit {
     self.rootViewController?.removeObserveNotification()
@@ -82,13 +66,11 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
 
   init(
     navigationController: UINavigationController,
-    session: KNSession,
     balances: [String: Balance],
     from: TokenObject = KNGeneralProvider.shared.quoteTokenObject,
     sendNFT: Bool = false
   ) {
     self.navigationController = navigationController
-    self.session = session
     self.balances = balances
     self.from = from
     self.sendNFT = sendNFT
@@ -96,14 +78,12 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   
   init(
     navigationController: UINavigationController,
-    session: KNSession,
     nftItem: NFTItem,
     supportERC721: Bool,
     nftCategory: NFTSection,
     sendNFT: Bool = false
   ) {
     self.navigationController = navigationController
-    self.session = session
     self.nftItem = nftItem
     self.nftCategory = nftCategory
     self.from = KNGeneralProvider.shared.quoteTokenObject
@@ -118,11 +98,10 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       self.sendNFTController = controller
       self.navigationController.pushViewController(controller, animated: true)
     } else {
-      let address = self.session.wallet.addressString
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
-        currentAddress: address
+        currentAddress: currentAddress.addressString
       )
       let controller = KSendTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
@@ -189,9 +168,9 @@ extension KNSendTokenViewCoordinator {
     self.multiSendCoordinator.coordinatorDidUpdatePendingTx()
   }
   
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
-    self.rootViewController?.coordinatorUpdateNewSession(wallet: session.wallet)
-    self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
+  func coordinatorAppSwitchAddress() {
+    self.rootViewController?.coordinatorAppSwitchAddress()
+    self.multiSendCoordinator.appCoordinatorSwitchAddress()
   }
 
   func appCoordinatorDidUpdateChain() {
@@ -213,10 +192,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .searchToken(let selectedToken):
       self.openSearchToken(selectedToken: selectedToken)
     case .validate:
-      // validate transaction before transfer,
-      // currently only validate sender's address, could be added more later
-      guard self.session.externalProvider != nil else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
+      if currentAddress.isWatchWallet {
+        self.navigationController.showTopBannerView(message: Strings.watchWalletNotSupportOperation)
         return
       }
 
@@ -246,8 +223,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       self.rootViewController?.coordinatorDidValidateSolTransferTransaction()
     case .send(let transaction, let ens):
       self.openConfirmTransfer(transaction: transaction, ens: ens)
-    case .sendSolana(transaction: let transaction):
-      self.openConfirmSolTransfer(transaction: transaction)
     case .addContact(let address, let ens):
       self.openNewContact(address: address, ens: ens)
     case .openContactList:
@@ -282,10 +257,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     case .openHistory:
       self.delegate?.sendTokenViewCoordinatorSelectOpenHistoryList()
     case .openWalletsList:
-      let viewModel = WalletsListViewModel(
-        walletObjects: KNWalletStorage.shared.availableWalletObjects,
-        currentWallet: self.currentWallet
-      )
+      let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
@@ -295,10 +267,8 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       vc.delegate = self
       self.navigationController.present(vc, animated: true, completion: nil)
     case .estimateGasLimitTransferNFT(to: let to, item: let item, category: let category, gasPrice: let gasPrice, gasLimit: let gasLimit, amount: let amount, isERC721: let isERC721):
-      guard let provider = self.session.externalProvider else {
-        return
-      }
-      provider.getEstimateGasLimitForTransferNFT(to: to, categoryAddress: category.collectibleAddress, tokenID: item.tokenID, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount, isERC721: isERC721) { result in
+      let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+      web3Service.getEstimateGasLimitForTransferNFT(address: currentAddress.addressString, to: to, categoryAddress: category.collectibleAddress, tokenID: item.tokenID, gasPrice: gasPrice, gasLimit: gasLimit, amount: amount, isERC721: isERC721) { result in
         if case .success(let gasLimit) = result {
           self.sendNFTController?.coordinatorUpdateEstimatedGasLimit(
             gasLimit
@@ -317,7 +287,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func sendGetPreScreeningWalletRequest(completion: @escaping WrappedCompletion) {
-    let address = self.session.wallet.addressString
+    let address = currentAddress.addressString
     DispatchQueue.global(qos: .background).async {
       let provider = MoyaProvider<UserInfoService>()
       provider.requestWithFilter(.getPreScreeningWallet(address: address)) { result in
@@ -329,16 +299,16 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
 
   fileprivate func estimateGasLimit(for transaction: UnconfirmedTransaction) {
-    guard let provider = self.session.externalProvider else {
+    if currentAddress.isWatchWallet {
       return
     }
-    provider.getEstimateGasLimit(
-    for: transaction) { [weak self] result in
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+    web3Service.getEstimateGasLimit(address: currentAddress.addressString, transferTransaction: transaction) { [weak self] result in
       if case .success(let gasLimit) = result {
         self?.rootViewController?.coordinatorUpdateEstimatedGasLimit(
           gasLimit,
           from: transaction.transferType.tokenObject(),
-          address: transaction.to?.description ?? ""
+          address: transaction.to ?? ""
         )
         self?.gasPriceSelector?.coordinatorDidUpdateGasLimit(gasLimit)
       } else {
@@ -372,17 +342,6 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
     }()
     self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
   }
-  
-  fileprivate func openConfirmSolTransfer(transaction: UnconfirmedSolTransaction) {
-    self.confirmVC = {
-      let viewModel = KConfirmSendViewModel(solTransaction: transaction)
-      let controller = KConfirmSendViewController(viewModel: viewModel)
-      controller.delegate = self
-      controller.loadViewIfNeeded()
-      return controller
-    }()
-    self.navigationController.present(self.confirmVC!, animated: true, completion: nil)
-  }
 
   fileprivate func openNewContact(address: String, ens: String?) {
     let viewModel: KNNewContactViewModel = KNNewContactViewModel(address: address, ens: ens)
@@ -398,10 +357,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
   }
   
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
-    guard let provider = self.session.externalProvider else {
-      return
-    }
-    provider.getTransactionCount { result in
+    EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain).getTransactionCount(for: currentAddress.addressString) { result in
       switch result {
       case .success(let res):
         completion(.success(res))
@@ -433,7 +389,7 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
     switch event {
     case .confirm(let type, let historyTransaction):
       if case .transfer(let transaction) = type {
-        guard self.session.externalProvider != nil else {
+        if currentAddress.isWatchWallet {
           return
         }
         self.didConfirmTransfer(transaction, historyTransaction: historyTransaction)
@@ -441,33 +397,29 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
         self.confirmVC = nil
         self.navigationController.displayLoading()
       }
-    case .confirmSolana(let transaction, let historyTransaction):
-      controller.dismiss(animated: true) {
-        self.didConfirmSolTransfer(transaction, historyTransaction)
-      }
     case .cancel:
       controller.dismiss(animated: true) {
         self.confirmVC = nil
       }
     case .confirmNFT(nftItem: let nftItem, nftCategory: let nftCategory, gasPrice: let gasPrice, gasLimit: let gasLimit, address: let address, amount: let amount, isSupportERC721: let isSupportERC721, historyTransaction: let historyTransaction, advancedGasLimit: let advancedGasLimit, advancedPriorityFee: let advancedPriorityFee, advancedMaxFee: let advancedMaxFee, advancedNonce: let advancedNonce):
-      guard let provider = self.session.externalProvider else {
+      if currentAddress.isWatchWallet {
         return
       }
       var paramGasLimit = gasLimit
       if let unwrap = advancedGasLimit, let customGasLimit = BigInt(unwrap) {
         paramGasLimit = customGasLimit
       }
-      provider.transferNFT(from: self.currentWallet.address, to: address, item: nftItem, category: nftCategory, gasLimit: paramGasLimit, gasPrice: gasPrice, amount: amount, isERC721: isSupportERC721, advancedPriorityFee: advancedPriorityFee, advancedMaxfee: advancedMaxFee, advancedNonce: advancedNonce) { [weak self] sendResult in
+      
+      self.transferNFT(to: address, item: nftItem, category: nftCategory, gasLimit: paramGasLimit, gasPrice: gasPrice, amount: amount, isERC721: isSupportERC721, advancedPriorityFee: advancedPriorityFee, advancedMaxfee: advancedMaxFee, advancedNonce: advancedNonce) { [weak self] sendResult in
         guard let `self` = self else { return }
         self.navigationController.hideLoading()
         switch sendResult {
         case .success(let result):
-          historyTransaction.hash = result.0
+          historyTransaction.hash = result.hash
           historyTransaction.time = Date()
-          historyTransaction.nonce = provider.minTxCount
-          historyTransaction.transactionObject = result.1?.toSignTransactionObject()
-          historyTransaction.eip1559Transaction = result.2
-          provider.minTxCount += 1
+          historyTransaction.nonce = result.nonce ?? 0
+          historyTransaction.transactionObject = result.transaction
+          historyTransaction.eip1559Transaction = result.eip1559Transaction
           EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
           self.openTransactionStatusPopUp(transaction: historyTransaction)
           controller.dismiss(animated: true, completion: nil)
@@ -482,124 +434,70 @@ extension KNSendTokenViewCoordinator: KConfirmSendViewControllerDelegate {
       }
     }
   }
+  
+  private func transferNFT(to: String, item: NFTItem, category: NFTSection, gasLimit: BigInt, gasPrice: BigInt, amount: Int, isERC721: Bool, advancedPriorityFee: String?, advancedMaxfee: String?, advancedNonce: String?, completion: @escaping (Result<TransferTransactionResultData, AnyError>) -> Void) {
+    let web3Service = EthereumWeb3Service(chain: KNGeneralProvider.shared.currentChain)
+    web3Service.getTransactionCount(for: currentAddress.addressString) { [weak self] txCountResult in
+      guard let `self` = self else { return }
+      switch txCountResult {
+      case .success:
+        web3Service.requestDataForNFTTransfer(from: self.currentAddress.addressString, to: to, tokenID: item.tokenID, amount: amount, isERC721: isERC721) { dataResult in
+          switch dataResult {
+          case .success(let data):
+            let processor: TransactionProcessor = {
+              if let unwrapPriorityFee = advancedPriorityFee,
+                 let _ = unwrapPriorityFee.shortBigInt(units: UnitConfiguration.gasPriceUnit),
+                 let unwrapMaxFee = advancedMaxfee,
+                 let _ = unwrapMaxFee.shortBigInt(units: UnitConfiguration.gasPriceUnit) {
+                return EthereumEIP1559TransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+              } else {
+                return EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+              }
+            }()
+            processor.transferNFT(transferData: data, from: self.currentAddress, to: to, gasLimit: gasLimit, gasPrice: gasPrice, amount: amount, isERC721: isERC721, collectibleAddress: category.collectibleAddress, advancedPriorityFee: advancedPriorityFee, advancedMaxfee: advancedMaxfee, advancedNonce: advancedNonce, completion: completion)
+          case .failure(let error):
+            completion(.failure(error))
+          }
+        }
+      case .failure(let error):
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  
 }
 
 // MARK: Network requests
 extension KNSendTokenViewCoordinator {
-
-  fileprivate func sendSPLTokens(walletAddress: String, privateKeyData: Data, receiptAddress: String, tokenAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
-    self.rootViewController?.showLoadingHUD()
-    SolanaUtil.getTokenAccountsByOwner(ownerAddress: walletAddress, tokenAddress: tokenAddress) { sendTokenBalance, senderTokenAddress in
-      guard let senderTokenAddress = senderTokenAddress else {
-        self.rootViewController?.hideLoading()
-        completion(nil)
-        return
-      }
-      SolanaUtil.getTokenAccountsByOwner(ownerAddress: receiptAddress, tokenAddress: tokenAddress) { receiptTokenBalance, recipientAccount in
-        var recipientTokenAddress = ""
-        var signedEncodedString = ""
-
-        SolanaUtil.getRecentBlockhash { recentBlockHash in
-          guard let recentBlockHash = recentBlockHash else {
-            self.rootViewController?.hideLoading()
-            completion(nil)
-            return
-          }
-          if let recipientAccount = recipientAccount {
-            recipientTokenAddress = recipientAccount
-            signedEncodedString = SolanaUtil.signTokenTransferTransaction(tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
-          } else {
-            recipientTokenAddress = SolanaUtil.generateTokenAccountAddress(receiptWalletAddress: receiptAddress, tokenMintAddress: tokenAddress)
-            signedEncodedString = SolanaUtil.signCreateAndTransferToken(recipientMainAddress: receiptAddress, tokenMintAddress: tokenAddress, senderTokenAddress: senderTokenAddress, privateKeyData: privateKeyData, recipientTokenAddress: recipientTokenAddress, amount: amount, recentBlockhash: recentBlockHash, tokenDecimals: decimals)
-          }
-
-          SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
-            self.rootViewController?.hideLoading()
-            guard let signature = signature else {
-              completion(nil)
-              return
-            }
-            completion(signature)
-          }
-        }
-      }
-    }
-  }
-
-  fileprivate func sendSOL(privateKeyData: Data, receiptAddress: String, amount: UInt64, decimals: UInt32, completion: @escaping (String?) -> Void) {
-    self.rootViewController?.showLoadingHUD()
-    SolanaUtil.getRecentBlockhash { recentBlockHash in
-      guard let recentBlockHash = recentBlockHash else {
-        self.rootViewController?.hideLoading()
-        completion(nil)
-        return
-      }
-      
-      let signedEncodedString = SolanaUtil.signTransferTransaction(privateKeyData: privateKeyData, recipient: receiptAddress, value: amount, recentBlockhash: recentBlockHash)
-      SolanaUtil.sendSignedTransaction(signedTransaction: signedEncodedString) { signature in
-        self.rootViewController?.hideLoading()
-        guard let signature = signature else {
-          completion(nil)
-          return
-        }
-        completion(signature)
-      }
-    }
-  }
   
-  fileprivate func getTransactionStatus(signature: String?, historyTransaction: InternalHistoryTransaction) {
-    guard let signature = signature else {
-      return
-    }
-    historyTransaction.hash = signature
-    historyTransaction.time = Date()
-    EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-    self.openTransactionStatusPopUp(transaction: historyTransaction)
-    self.rootViewController?.coordinatorSuccessSendTransaction()
-  }
-  
-  fileprivate func didConfirmSolTransfer(_ transaction: UnconfirmedSolTransaction, _ historyTransaction: InternalHistoryTransaction) {
-    guard let pk = self.solanaPrivateKey else { return }
-    let receiptAddress = transaction.to
-    let privateKeyData = pk.data
-    let walletAddress = self.session.wallet.addressString
-    
-    let tokenDecimal = transaction.decimal ?? 0
-    let feeString = transaction.fee.description
-    
-    historyTransaction.toAddress = receiptAddress
-    historyTransaction.tokenAddress = transaction.mintTokenAddress
-    historyTransaction.transactionObject = SignTransactionObject(value: transaction.value.string(decimals: tokenDecimal, minFractionDigits: 0, maxFractionDigits: tokenDecimal), from: walletAddress, to: receiptAddress, nonce: 0, data: Data(), gasPrice: feeString, gasLimit: feeString, chainID: AllChains.solana.chainID, reservedGasLimit: "")
-
-    if transaction.mintTokenAddress != AllChains.solana.quoteTokenAddress {
-      self.sendSPLTokens(walletAddress: walletAddress, privateKeyData: privateKeyData, receiptAddress: receiptAddress, tokenAddress: transaction.mintTokenAddress ?? "", amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
-        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
-      }
-    } else {
-      self.sendSOL(privateKeyData: privateKeyData, receiptAddress: receiptAddress, amount: UInt64(transaction.value), decimals: UInt32(tokenDecimal)) { signature in
-        self.getTransactionStatus(signature: signature, historyTransaction: historyTransaction)
-      }
-    }
-  }
-
   fileprivate func didConfirmTransfer(_ transaction: UnconfirmedTransaction, historyTransaction: InternalHistoryTransaction) {
-    guard let provider = self.session.externalProvider else {
-      return
-    }
-    self.rootViewController?.coordinatorSendTokenUserDidConfirmTransaction()
-    // send transaction request
-    provider.transfer(transaction: transaction, completion: { [weak self] sendResult in
+    
+    let processor: TransactionProcessor = {
+      switch KNGeneralProvider.shared.currentChain {
+      case .solana:
+        return SolanaTransactionProcessor()
+      default:
+        if transaction.maxInclusionFeePerGas != nil, transaction.maxGasFee != nil {
+          return EthereumEIP1559TransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+        } else {
+          return EthereumTransactionProcessor(chain: KNGeneralProvider.shared.currentChain)
+        }
+      }
+    }()
+    
+    processor.transfer(address: currentAddress, transaction: transaction) { [weak self] result in
       guard let `self` = self else { return }
       self.navigationController.hideLoading()
-      switch sendResult {
-      case .success(let result):
-
-        historyTransaction.hash = result.0
+      switch result {
+      case .success(let txData):
+        historyTransaction.hash = txData.hash
         historyTransaction.time = Date()
-        historyTransaction.nonce = Int(provider.minTxCount - 1)
-        historyTransaction.transactionObject = result.1?.toSignTransactionObject()
-        historyTransaction.toAddress = transaction.to?.description
-        historyTransaction.eip1559Transaction = result.2
+        historyTransaction.nonce = txData.nonce ?? 0
+        historyTransaction.transactionObject = txData.transaction
+        historyTransaction.toAddress = transaction.to
+        historyTransaction.tokenAddress = transaction.transferType.tokenObject().address
+        historyTransaction.eip1559Transaction = txData.eip1559Transaction
 
         EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
         self.openTransactionStatusPopUp(transaction: historyTransaction)
@@ -620,7 +518,7 @@ extension KNSendTokenViewCoordinator {
         self.navigationController.showTopBannerView(message: errorMessage)
         self.navigationController.hideLoading()
       }
-    })
+    }
   }
 
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
@@ -773,122 +671,14 @@ extension KNSendTokenViewCoordinator: GasFeeSelectorPopupViewControllerDelegate 
       } else {
         self.rootViewController?.coordinatorDidUpdateAdvancedNonce(nonce)
       }
-    case .speedupTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-    case .cancelTransaction(transaction: let transaction, original: let original):
-      if let data = self.session.externalProvider?.signContractGenericEIP1559Transaction(transaction) {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            savedTx?.state = .cancel
-            savedTx?.type = .transferETH
-            savedTx?.transactionSuccessDescription = "-0 ETH"
-            savedTx?.hash = hash
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-    case .speedupTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        let speedupTx = transaction.toSignTransaction(account: account)
-        speedupTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            savedTx?.state = .speedup
-            savedTx?.hash = hash
-            print("GasSelector][Legacy][Speedup][Sent] \(hash)")
-            if let unwrapped = savedTx {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Speedup failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
-    case .cancelTransactionLegacy(legacyTransaction: let transaction, original: let original):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(original.hash)
-        let cancelTx = transaction.toSignTransaction(account: account)
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.state = .cancel
-            saved?.type = .transferETH
-            saved?.transactionSuccessDescription = "-0 ETH"
-            saved?.hash = hash
-            print("GasSelector][Legacy][Cancel][Sent] \(hash)")
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
+    case .speedupTransactionSuccessfully(let speedupTransaction):
+      self.openTransactionStatusPopUp(transaction: speedupTransaction)
+    case .cancelTransactionSuccessfully(let cancelTransaction):
+      self.openTransactionStatusPopUp(transaction: cancelTransaction)
+    case .speedupTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
+    case .cancelTransactionFailure(let message):
+      self.navigationController.showTopBannerView(message: message)
     default:
       break
     }
@@ -904,156 +694,10 @@ extension KNSendTokenViewCoordinator: WalletsListViewControllerDelegate {
       self.navigationController.present(qrcode, animated: true, completion: nil)
     case .manageWallet:
       self.delegate?.sendTokenCoordinatorDidSelectManageWallet()
-    case .copy(let wallet):
-      UIPasteboard.general.string = wallet.address
-      let hud = MBProgressHUD.showAdded(to: controller.view, animated: true)
-      hud.mode = .text
-      hud.label.text = NSLocalizedString("copied", value: "Copied", comment: "")
-      hud.hide(animated: true, afterDelay: 1.5)
-    case .select(let wallet):
-      guard let wal = self.session.keystore.matchWithWalletObject(wallet, chainType: KNGeneralProvider.shared.currentChain == .solana ? .solana : .multiChain) else {
-        return
-      }
-      self.delegate?.sendTokenViewCoordinatorDidSelectWallet(wal)
+    case .didSelect(let address):
+      return
     case .addWallet:
       self.delegate?.sendTokenCoordinatorDidSelectAddWallet()
-    }
-  }
-}
-
-extension KNSendTokenViewCoordinator: SpeedUpCustomGasSelectDelegate {
-  func speedUpCustomGasSelectViewController(_ controller: SpeedUpCustomGasSelectViewController, run event: SpeedUpCustomGasSelectViewEvent) {
-    switch event {
-    case .done(let transaction, let newValue):
-      if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-        let savedTx = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-        savedTx?.state = .speedup
-        if let speedupTx = transaction.transactionObject?.toSpeedupTransaction(account: account, gasPrice: newValue) {
-          speedupTx.send(provider: provider) { (result) in
-            switch result {
-            case .success(let hash):
-              savedTx?.hash = hash
-              if let unwrapped = savedTx {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Speedup failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          }
-        }
-        if let speedupTx = transaction.eip1559Transaction?.toSpeedupTransaction(gasPrice: newValue), let data = provider.signContractGenericEIP1559Transaction(speedupTx) {
-          KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-            switch sendResult {
-            case .success(let hash):
-              savedTx?.hash = hash
-              if let unwrapped = savedTx {
-                self.openTransactionStatusPopUp(transaction: unwrapped)
-                KNNotificationUtil.postNotification(
-                  for: kTransactionDidUpdateNotificationKey,
-                  object: unwrapped,
-                  userInfo: nil
-                )
-              }
-            case .failure(let error):
-              var errorMessage = "Speedup failed"
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showTopBannerView(message: errorMessage)
-            }
-          })
-        }
-      } else {
-        self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
-      }
-    case .invaild:
-      self.navigationController.showErrorTopBannerMessage(
-        with: NSLocalizedString("error", value: "Error", comment: ""),
-        message: "your.gas.must.be.10.percent.higher".toBeLocalised(),
-        time: 1.5
-      )
-    }
-  }
-}
-
-extension KNSendTokenViewCoordinator: KNConfirmCancelTransactionPopUpDelegate {
-  func didConfirmCancelTransactionPopup(_ controller: KNConfirmCancelTransactionPopUp, transaction: InternalHistoryTransaction) {
-    if case .real(let account) = self.session.wallet.type, let provider = self.session.externalProvider {
-      let saved = EtherscanTransactionStorage.shared.getInternalHistoryTransactionWithHash(transaction.hash)
-      
-      if let cancelTx = transaction.transactionObject?.toCancelTransaction(account: account) {
-        saved?.state = .cancel
-        saved?.type = .transferETH
-        saved?.transactionSuccessDescription = "-0 ETH"
-        cancelTx.send(provider: provider) { (result) in
-          switch result {
-          case .success(let hash):
-            saved?.hash = hash
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        }
-      }
-      
-      if let cancelTx = transaction.eip1559Transaction?.toCancelTransaction(), let data = provider.signContractGenericEIP1559Transaction(cancelTx) {
-        saved?.state = .cancel
-        saved?.type = .transferETH
-        saved?.transactionSuccessDescription = "-0 ETH"
-        print("[EIP1559] cancel tx \(cancelTx)")
-        print("[EIP1559] cancel hex tx \(data.hexString)")
-        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
-          switch sendResult {
-          case .success(let hash):
-            saved?.hash = hash
-            if let unwrapped = saved {
-              self.openTransactionStatusPopUp(transaction: unwrapped)
-              KNNotificationUtil.postNotification(
-                for: kTransactionDidUpdateNotificationKey,
-                object: unwrapped,
-                userInfo: nil
-              )
-            }
-          case .failure(let error):
-            var errorMessage = "Cancel failed"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showTopBannerView(message: errorMessage)
-          }
-        })
-      }
-      
-    } else {
-      self.navigationController.showTopBannerView(message: "Watched wallet can not do this operation".toBeLocalised())
     }
   }
 }
@@ -1067,34 +711,28 @@ extension KNSendTokenViewCoordinator: QRCodeReaderDelegate {
     reader.dismiss(animated: true) {
       guard let url = WCURL(result) else {
         self.navigationController.showTopBannerView(
-          with: "Invalid session".toBeLocalised(),
-          message: "Your session is invalid, please try with another QR code".toBeLocalised(),
+          with: Strings.invalidSession,
+          message: Strings.invalidSessionTryOtherQR,
           time: 1.5
         )
         return
       }
 
-      if case .real(let account) = self.session.wallet.type {
-        let result = self.session.keystore.exportPrivateKey(account: account)
-        switch result {
-        case .success(let data):
-          DispatchQueue.main.async {
-            let pkString = data.hexString
-            let controller = KNWalletConnectViewController(
-              wcURL: url,
-              knSession: self.session,
-              pk: pkString
-            )
-            self.navigationController.present(controller, animated: true, completion: nil)
-          }
-          
-        case .failure(_):
-          self.navigationController.showTopBannerView(
-            with: "Private Key Error",
-            message: "Can not get Private key",
-            time: 1.5
+      do {
+        let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
+        DispatchQueue.main.async {
+          let controller = KNWalletConnectViewController(
+            wcURL: url,
+            pk: privateKey
           )
+          self.navigationController.present(controller, animated: true, completion: nil)
         }
+      } catch {
+        self.navigationController.showTopBannerView(
+          with: Strings.privateKeyError,
+          message: Strings.canNotGetPrivateKey,
+          time: 1.5
+        )
       }
     }
   }

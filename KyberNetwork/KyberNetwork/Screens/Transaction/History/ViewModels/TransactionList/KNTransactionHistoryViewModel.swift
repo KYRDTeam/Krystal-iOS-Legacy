@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import KrystalWallets
 
 enum KNTransactionHistoryType {
   case krystal
@@ -22,15 +23,17 @@ struct KNTransactionHistoryViewModelActions {
   var speedupTransaction: (InternalHistoryTransaction) -> ()
   var cancelTransaction: (InternalHistoryTransaction) -> ()
   var openWalletSelectPopup: () -> ()
-  var onUpdateWallet: (KNWalletObject) -> ()
 }
 
 class KNTransactionHistoryViewModel {
   fileprivate(set) var tokens: [String] = []
-  fileprivate(set) var currentWallet: KNWalletObject
   fileprivate(set) var filters: KNTransactionFilter!
   var actions: KNTransactionHistoryViewModelActions?
   var type: KNTransactionHistoryType
+  
+  var address: KAddress {
+    return AppDelegate.session.address
+  }
   
   var tokenSymbols: [String] {
     if !KNGeneralProvider.shared.currentChain.isSupportedHistoryAPI() {
@@ -43,8 +46,7 @@ class KNTransactionHistoryViewModel {
     return !EtherscanTransactionStorage.shared.getInternalHistoryTransaction().isEmpty
   }
 
-  init(currentWallet: KNWalletObject, type: KNTransactionHistoryType) {
-    self.currentWallet = currentWallet
+  init(type: KNTransactionHistoryType) {
     self.type = type
     self.tokens = tokenSymbols
     self.filters = KNTransactionFilter(
@@ -62,11 +64,6 @@ class KNTransactionHistoryViewModel {
       isMultisend: true,
       tokens: []
     )
-  }
-
-  func updateCurrentWallet(_ currentWallet: KNWalletObject) {
-    self.currentWallet = currentWallet
-    actions?.onUpdateWallet(currentWallet)
   }
   
   func didTapBack() {

@@ -14,6 +14,9 @@ struct Strings {
   static let Cancel = "Cancel".toBeLocalised()
   static let approve = "approve".toBeLocalised()
   static let cancelled = "cancelled".toBeLocalised()
+  static let confirm = "confirm".toBeLocalised()
+  static let cancel = "cancel".toBeLocalised()
+  static let delete = "delete".toBeLocalised()
   
   // Actions
   static let add = "add".toBeLocalised()
@@ -92,6 +95,7 @@ struct Strings {
   static let Search = "Search".toBeLocalised()
   static let searchByTokenWalletEND = "Search token, wallet address ...".toBeLocalised()
   static let FunctionCall = "Function call".toBeLocalised()
+  static let transactions = "transactions".toBeLocalised()
   
   // Wallet
   static let chooseChainWallet = "choose.chain.wallet".toBeLocalised()
@@ -128,6 +132,39 @@ struct Strings {
   static let tokenTypeAddress = "%@.address".toBeLocalised()
   static let viewOnX = "view.on.%@".toBeLocalised()
   static let addressCopied = "address.copied".toBeLocalised()
+  
+  // Wallets
+  static let walletImported = "wallet.imported".toBeLocalised()
+  static let importWalletSuccess = "you.have.successfully.imported.a.wallet".toBeLocalised()
+  static let failedToParseJSON = "failed.to.parse.key.json".toBeLocalised()
+  static let alreadyAddedWalletAddress = "you.already.added.this.address.to.wallets".toBeLocalised()
+  static let failedToCreateWallet = "failed.to.create.wallet".toBeLocalised()
+  static let failedToImportWallet = "can.not.import.your.wallet".toBeLocalised()
+  static let failedToImportPrivateKey = "failed.to.import.private.key".toBeLocalised()
+  static let notInContact = "not.in.contact".toBeLocalised()
+  static let watchWalletCannotDoThisOperation = "watch.wallet.can.not.do.this.operation".toBeLocalised()
+  static let untitled = "untitled".toBeLocalised()
+  static let deleteWalletConfirmMessage = "do.you.want.to.remove.this.wallet".toBeLocalised()
+  static let editWalletSuccess = "edit.wallet.success".toBeLocalised()
+  static let imported = "imported".toBeLocalised()
+  static let walletCreatedSuccess = "you.have.successfully.created.a.new.wallet".toBeLocalised()
+  static let walletCreated = "wallet.created".toBeLocalised()
+  static let creating = "creating".toBeLocalised()
+  static let addressExisted = "address.existed".toBeLocalised()
+  static let pleaseEnterAddress = "please.enter.address".toBeLocalised()
+  static let removing = "removing".toBeLocalised()
+  static let watchWalletNotSupportOperation = "watch.wallet.does.not.support.operation".toBeLocalised()
+  static let invalidAddress = "invalid.address".toBeLocalised()
+  static let pleaseEnterValidAddress = "please.enter.a.valid.address.to.continue".toBeLocalised()
+  static let backupKeystore = "backup.keystore".toBeLocalised()
+  static let backupPrivateKey = "backup.private.key".toBeLocalised()
+  static let backupMnemonic = "backup.mnemonic".toBeLocalised()
+  
+  // Rewards
+  static let switchToBSCToClaimRewards = "switch.to.bsc.to.claim.rewards".toBeLocalised()
+  
+  // Settings
+  static let pinCodeUpdated = "your.pin.has.been.update.successfully".toBeLocalised()
   
   // Bridge
   static let bridge = "bridge".toBeLocalised()

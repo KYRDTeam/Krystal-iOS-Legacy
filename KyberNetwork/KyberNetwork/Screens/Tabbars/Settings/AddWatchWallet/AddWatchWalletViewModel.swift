@@ -7,11 +7,18 @@
 
 import Foundation
 import UIKit
-import TrustCore
+import KrystalWallets
 
 class AddWatchWalletViewModel {
   var inputAddress: String = ""
-  var ensAddress: Address?
+  var ensAddress: String?
+  
+  var address: KAddress? {
+    didSet {
+      guard let address = address else { return }
+      inputAddress = address.addressString
+    }
+  }
   
   var isNameServiceSupported: Bool {
     switch KNGeneralProvider.shared.currentChain {
@@ -30,21 +37,10 @@ class AddWatchWalletViewModel {
     }
   }
 
-  var wallet: KNWalletObject? {
-    didSet {
-      if let wallet = self.wallet {
-        self.inputAddress = KNGeneralProvider.shared.currentChain == .solana ? wallet.address : wallet.address.lowercased()
-      }
-    }
-  }
-  
   var isAddressValid: Bool {
     guard !self.addressString.isEmpty else { return false }
-    if KNGeneralProvider.shared.currentChain == .solana {
-      return SolanaUtil.isVaildSolanaAddress(self.addressString)
-    } else {
-      return Address.isAddressValid(self.addressString)
-    }
+    let addressType = KNGeneralProvider.shared.currentChain.addressType
+    return WalletManager.shared.validateAddress(address: addressString, forAddressType: addressType)
   }
   
   var displayAddress: String? {
@@ -55,7 +51,7 @@ class AddWatchWalletViewModel {
   }
   
   var displayTitle: String {
-    if self.wallet == nil {
+    if self.address == nil {
       return Strings.addWatchWallet
     } else {
       return Strings.editWatchWallet
@@ -63,14 +59,14 @@ class AddWatchWalletViewModel {
   }
   
   var displayAddButtonTitle: String {
-    if self.wallet == nil {
+    if self.address == nil {
       return Strings.add
     } else {
       return Strings.edit
     }
   }
   
-  func onEnsAddressUpdated(address: Address?) {
+  func onEnsAddressUpdated(address: String?) {
     self.ensAddress = address
   }
   
@@ -79,7 +75,7 @@ class AddWatchWalletViewModel {
       guard let `self` = self else { return }
       switch result {
       case .success(let address):
-        guard let address = address, address != Address(string: "0x0000000000000000000000000000000000000000") else {
+        guard let address = address, address != "0x0000000000000000000000000000000000000000" else {
           completion(false)
           return
         }

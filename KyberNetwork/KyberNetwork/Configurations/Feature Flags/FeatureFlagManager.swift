@@ -24,7 +24,7 @@ class FeatureFlagManager {
   static let shared = FeatureFlagManager()
 
   func configClient(session: KNSession?) {
-    var currentAddress = session?.wallet.addressString ?? ""
+    var currentAddress = session?.address.addressString ?? ""
     if KNGeneralProvider.shared.currentChain != .solana {
       currentAddress = currentAddress.lowercased()
     }

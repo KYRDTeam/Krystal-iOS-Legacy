@@ -59,4 +59,11 @@ extension UIViewController {
     present(alert, animated: true, completion: nil)
   }
   
+  func showMessage(text: String) {
+    let hud = MBProgressHUD.showAdded(to: view, animated: true)
+    hud.mode = .text
+    hud.label.text = text
+    hud.hide(animated: true, afterDelay: 1.5)
+  }
+  
 }

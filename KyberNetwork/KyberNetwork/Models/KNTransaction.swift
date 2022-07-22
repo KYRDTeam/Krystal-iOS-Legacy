@@ -158,81 +158,6 @@ extension KNTransaction {
     )
   }
 
-  func getDetails() -> String {
-    let status: KNTransactionStatus = {
-      if self.state == .pending { return .pending }
-      if self.state == .failed || self.state == .error { return .failed }
-      if self.state == .completed { return .success }
-      return .unknown
-    }()
-    let details: String = {
-      if status == .pending {
-        return NSLocalizedString("your.transaction.has.been.broadcasted", comment: "")
-      }
-      guard let object = self.localizedOperations.first, status == .failed || status == .success else { return status.statusDetails }
-      let storage: KNTokenStorage? = {
-        do {
-          let keystore = try EtherKeystore()
-          guard let wallet = keystore.recentlyUsedWallet else { return nil }
-          let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-          do {
-            let realm = try Realm(configuration: config)
-            return KNTokenStorage(realm: realm)
-          } catch { }
-        } catch { }
-        return nil
-      }()
-      guard let from = storage?.get(forPrimaryKey: object.from) else { return status.statusDetails }
-      guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return status.statusDetails }
-      let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      if object.type.lowercased() == "transfer" {
-        let localisedString: String = {
-          if status == .success {
-            return NSLocalizedString("successfully.sent.to", value: "%@ successfully sent to %@", comment: "")
-          }
-          return NSLocalizedString("can.not.send.to", value: "Can not send %@ to %@", comment: "")
-        }()
-        return String(format: localisedString, arguments: ["\(amountFrom) \(from.symbol)", "\n\(self.to)"])
-      }
-      guard let to = storage?.get(forPrimaryKey: object.to) else { return status.statusDetails }
-      guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return status.statusDetails }
-      let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      let localisedString: String = {
-        if status == .success {
-          return NSLocalizedString("successfully.converted.to", value: "%@ successfully converted to %@", comment: "")
-        }
-        return NSLocalizedString("can.not.convert.from.to", value: "Can not convert from %@ to %@", comment: "")
-      }()
-      return String(format: localisedString, arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
-    }()
-    return details
-  }
-
-  func getSourceAmount() -> String {
-    let status: KNTransactionStatus = {
-      if self.state == .pending { return .pending }
-      if self.state == .failed || self.state == .error { return .failed }
-      if self.state == .completed { return .success }
-      return .unknown
-    }()
-    let storage: KNTokenStorage? = {
-      do {
-        let keystore = try EtherKeystore()
-        guard let wallet = keystore.recentlyUsedWallet else { return nil }
-        let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-        do {
-          let realm = try Realm(configuration: config)
-          return KNTokenStorage(realm: realm)
-        } catch { }
-      } catch { }
-      return nil
-    }()
-    guard let object = self.localizedOperations.first, status == .failed || status == .success else { return "" }
-    guard let from = storage?.get(forPrimaryKey: object.from) else { return "" }
-    guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return "" }
-    return "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-  }
-
   func getDestinationAmount() -> String {
     let status: KNTransactionStatus = {
       if self.state == .pending { return .pending }
@@ -243,46 +168,6 @@ extension KNTransaction {
     guard let object = self.localizedOperations.first, status == .failed || status == .success else { return "" }
     guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return "" }
     return "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-  }
-
-  // return details to dispaly + rate if a swap
-  func getNewTxDetails() -> (String, String?) {
-    let status: KNTransactionStatus = {
-      if self.state == .pending { return .pending }
-      if self.state == .failed || self.state == .error { return .failed }
-      if self.state == .completed { return .success }
-      return .unknown
-    }()
-    let detail: String? = {
-      if status == .failed {
-        return nil
-      }
-      guard let object = self.localizedOperations.first, status == .failed || status == .success || status == .pending else { return nil }
-      let storage: KNTokenStorage? = {
-        do {
-          let keystore = try EtherKeystore()
-          guard let wallet = keystore.recentlyUsedWallet else { return nil }
-          let config = RealmConfiguration.configuration(for: wallet, chainID: KNGeneralProvider.shared.customRPC.chainID)
-          do {
-            let realm = try Realm(configuration: config)
-            return KNTokenStorage(realm: realm)
-          } catch { }
-        } catch { }
-        return nil
-      }()
-      guard let from = storage?.get(forPrimaryKey: object.from) else { return nil }
-      guard let amount = self.value.removeGroupSeparator().fullBigInt(decimals: from.decimals) else { return nil }
-      let amountFrom: String = "\(amount.string(decimals: from.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      if object.type.lowercased() == "transfer" {
-        let address = "\(self.to.prefix(5))...\(self.to.suffix(3))"
-        return String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", address])
-      }
-      guard let to = storage?.get(forPrimaryKey: object.to) else { return nil }
-      guard let expectedAmount = object.value.removeGroupSeparator().fullBigInt(decimals: object.decimals) else { return nil }
-      let amountTo: String = "\(expectedAmount.string(decimals: object.decimals, minFractionDigits: 0, maxFractionDigits: 9).prefix(10))"
-      return String(format: "%@ to %@", arguments: ["\(amountFrom) \(from.symbol)", "\(amountTo) \(to.symbol)"])
-    }()
-    return (self.id, detail)
   }
 }
 

@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import KrystalWallets
 
 struct CopyAddressCellModel {
   let type: ChainType
-  let data: WalletData
+  let address: KAddress
 }
 
 protocol CopyAddressCellDelegate: class {
@@ -24,11 +25,6 @@ class CopyAddressCell: UITableViewCell {
   
   weak var delegate: CopyAddressCellDelegate?
 
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    // Initialization code
-  }
-
   @IBAction func copyButtonTapped(_ sender: UIButton) {
     self.delegate?.copyAddressCellDidSelectAddress(cell: self, address: self.addressLabel.text ?? "")
   }
@@ -36,6 +32,6 @@ class CopyAddressCell: UITableViewCell {
   func updateCell(model: CopyAddressCellModel) {
     self.iconImageView.image = model.type.chainIcon()
     self.nameLabel.text = model.type.chainName()
-    self.addressLabel.text = model.data.address
+    self.addressLabel.text = model.address.addressString
   }
 }

@@ -2,12 +2,13 @@
 
 import UIKit
 import TrustKeystore
-import TrustCore
 import BigInt
+import KrystalWallets
 
 protocol KNAddNewWalletCoordinatorDelegate: class {
-  func addNewWalletCoordinator(add wallet: Wallet)
-  func addNewWalletCoordinator(remove wallet: Wallet)
+  func addNewWalletCoordinator(didAdd wallet: KWallet, chain: ChainType)
+  func addNewWalletCoordinator(didAdd watchAddress: KAddress, chain: ChainType)
+  func addNewWalletCoordinator(remove wallet: KWallet)
   func addNewWalletCoordinatorDidSendRefCode(_ code: String)
 }
 
@@ -20,38 +21,19 @@ enum AddNewWalletType {
 
 class KNAddNewWalletCoordinator: Coordinator {
   var coordinators: [Coordinator] = []
-  let navigationController: UINavigationController
-  fileprivate var keystore: Keystore
-
-  fileprivate var newWallet: Wallet?
-  fileprivate var isCreate: Bool = false
-
+  let navigationController: UINavigationController  
   weak var delegate: KNAddNewWalletCoordinatorDelegate?
-
-  lazy var createWalletCoordinator: KNCreateWalletCoordinator = {
-    let coordinator = KNCreateWalletCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore,
-      newWallet: nil,
-      name: nil
-    )
-    coordinator.delegate = self
-    return coordinator
-  }()
-
+  var createWalletCoordinator: KNCreateWalletCoordinator?
+  
   lazy var importWalletCoordinator: KNImportWalletCoordinator = {
     let coordinator = KNImportWalletCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
+      navigationController: self.navigationController
     )
     coordinator.delegate = self
     return coordinator
   }()
 
-  init(
-    navigationController: UINavigationController = UINavigationController(),
-    keystore: Keystore
-  ) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
     let rootViewController = UIViewController()
@@ -59,14 +41,13 @@ class KNAddNewWalletCoordinator: Coordinator {
     self.navigationController.viewControllers = [rootViewController]
     self.navigationController.modalPresentationStyle = .overCurrentContext
     self.navigationController.modalTransitionStyle = .crossDissolve
-    self.keystore = keystore
   }
 
   func start() {
     
   }
   
-  func start(type: AddNewWalletType, wallet: KNWalletObject? = nil) {
+  func start(type: AddNewWalletType, address: KAddress? = nil) {
     self.navigationController.popToRootViewController(animated: false)
     switch type {
     case .full, .onlyReal:
@@ -82,31 +63,31 @@ class KNAddNewWalletCoordinator: Coordinator {
       popup.delegate = self
       self.navigationController.present(popup, animated: true, completion: {})
     case .watch:
-      self.createWatchWallet(wallet)
+      self.createWatchWallet(address)
     case .chain(let chainType):
       let coordinator = CreateChainWalletMenuCoordinator(parentViewController: navigationController, chainType: chainType, delegate: self)
       coordinate(coordinator: coordinator)
     }
   }
 
-  fileprivate func createNewWallet() {
-    self.isCreate = true
-    self.newWallet = nil
-    self.createWalletCoordinator.updateNewWallet(nil, name: nil)
-    self.createWalletCoordinator.start()
+  fileprivate func createNewWallet(chain: ChainType = KNGeneralProvider.shared.currentChain) {
+    self.createWalletCoordinator = KNCreateWalletCoordinator(
+      navigationController: self.navigationController,
+      newWallet: nil,
+      name: nil,
+      targetChain: chain
+    )
+    self.createWalletCoordinator?.delegate = self
+    self.createWalletCoordinator?.start()
   }
 
   fileprivate func importAWallet() {
-    self.isCreate = false
-    self.newWallet = nil
     self.importWalletCoordinator.start()
   }
 
-  fileprivate func createWatchWallet(_ wallet: KNWalletObject? = nil) {
-    self.isCreate = false
-    self.newWallet = nil
+  fileprivate func createWatchWallet(_ address: KAddress? = nil) {
     let viewModel = AddWatchWalletViewModel()
-    viewModel.wallet = wallet
+    viewModel.address = address
     let controller = AddWatchWalletViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
@@ -118,149 +99,34 @@ extension KNAddNewWalletCoordinator: KNCreateWalletCoordinatorDelegate {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
-    guard let wallet = wallet, case .real(let acc) = wallet.type else { return }
-    let seedResult = self.keystore.exportMnemonics(account: acc)
-    guard case .success(let mnemonics) = seedResult else { return }
-
-    self.navigationController.dismiss(animated: true) {
-      var isWatchWallet = false
-      var solWalletId = ""
-      if case WalletType.watch(_) = wallet.type {
-        isWatchWallet = true
-      }
-      
-      if case WalletType.solana(_, _, let walletID) = wallet.type {
-        solWalletId = walletID
-      }
-
-      let finalImportChainType: ImportWalletChainType = .multiChain
-      var solanaAddress = ""
-      
-      let address = SolanaUtil.seedsToPublicKey(mnemonics)
-      solanaAddress = address
-
-      let walletObject = KNWalletObject(
-        address: wallet.addressString,
-        name: name ?? "Untitled",
-        isBackedUp: isBackUp,
-        isWatchWallet: isWatchWallet,
-        chainType: finalImportChainType,
-        storageType: .seeds,
-        evmAddress: wallet.evmAddressString,
-        solanaAddress: solanaAddress,
-        walletID: solWalletId
-      )
-      let wallets = [walletObject]
-      
-      let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
-      KNWalletStorage.shared.add(wallets: wallets)
-      let contact = KNContact(
-        address: wallet.addressString,
-        name: name ?? "Untitled",
-        chainType: chainType
-      )
-      KNContactStorage.shared.update(contacts: [contact])
-      
-      var newWallet = wallet
-      if KNGeneralProvider.shared.currentChain == .solana {
-        newWallet = walletObject.toSolanaWallet()
-      }
-      
-      self.delegate?.addNewWalletCoordinator(add: newWallet)
+  func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType) {
+    guard let wallet = wallet else { return }
+    navigationController.dismiss(animated: true) {
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
     }
   }
 
   func createWalletCoordinatorDidClose() {
     self.navigationController.dismiss(animated: false, completion: nil)
   }
-
-  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet) {
-    self.navigationController.dismiss(animated: true) {
-      self.delegate?.addNewWalletCoordinator(remove: wallet)
-    }
-  }
 }
 
 extension KNAddNewWalletCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.addNewWalletCoordinator(didAdd: watchAddress, chain: chain)
+  }
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    navigationController.dismiss(animated: true) {
+      self.delegate?.addNewWalletCoordinator(didAdd: wallet, chain: chain)
+    }
+  }
   
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
     self.delegate?.addNewWalletCoordinatorDidSendRefCode(code)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
-    KNGeneralProvider.shared.currentChain = selectedChain
-    KNNotificationUtil.postNotification(for: kChangeChainNotificationKey, object: wallet.addressString)
-    self.navigationController.dismiss(animated: true) {
-      var isWatchWallet = false
-      var solWalletId = ""
-      if case WalletType.watch(_) = wallet.type {
-        isWatchWallet = true
-      }
-
-      if case WalletType.solana(_, _, let walletID) = wallet.type {
-        solWalletId = walletID
-      }
-
-      var finalImportChainType = importChainType
-      var solanaAddress = ""
-      
-      if case .mnemonic(let words, _) = importType {
-        if words.count == 12 {
-          finalImportChainType = .multiChain
-          let key = words.joined(separator: " ")
-          let address = SolanaUtil.seedsToPublicKey(key)
-          solanaAddress = address
-          
-          if let existSolanaWallet = KNWalletStorage.shared.get(forSolanaAddress: solanaAddress) {
-            KNWalletStorage.shared.delete(wallet: existSolanaWallet)
-          }
-        } else {
-          finalImportChainType = .solana
-        }
-      }
-      
-      if importChainType == .solana {
-        solanaAddress = wallet.addressString
-      }
-      
-      let walletObject = KNWalletObject(
-        address: wallet.addressString,
-        name: name ?? "Untitled",
-        isBackedUp: true,
-        isWatchWallet: isWatchWallet,
-        chainType: finalImportChainType,
-        storageType: importMethod,
-        evmAddress: wallet.evmAddressString,
-        solanaAddress: solanaAddress,
-        walletID: solWalletId
-      )
-      let wallets = [walletObject]
-
-      KNWalletStorage.shared.add(wallets: wallets)
-      
-      var contacts: [KNContact] = []
-      let contact = KNContact(
-        address: wallet.addressString,
-        name: name ?? "Untitled",
-        chainType: finalImportChainType.rawValue
-      )
-      contacts.append(contact)
-      if !solanaAddress.isEmpty && wallet.addressString != solanaAddress {
-        let solContact = KNContact(
-          address: solanaAddress,
-          name: name ?? "Untitled",
-          chainType: ImportWalletChainType.solana.rawValue// finalImportChainType.rawValue
-        )
-        contacts.append(solContact)
-      }
-      
-      KNContactStorage.shared.update(contacts: contacts)
-      KNGeneralProvider.shared.currentChain = selectedChain
-      self.delegate?.addNewWalletCoordinator(add: wallet)
-    }
-  }
-
   func importWalletCoordinatorDidClose() {
     self.navigationController.dismiss(animated: true, completion: nil)
   }
@@ -282,42 +148,29 @@ extension KNAddNewWalletCoordinator: CreateWalletMenuViewControllerDelegate {
 }
 
 extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
-  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, wallet: KNWalletObject, address: String, name: String?) {
-    if wallet.address.lowercased() == address.lowercased() {
-      wallet.name = name ?? "Imported"
-      KNWalletStorage.shared.add(wallets: [wallet])
-      if let contact = KNContactStorage.shared.get(forPrimaryKey: address) {
+  func addWatchWalletViewControllerDidEdit(_ controller: AddWatchWalletViewController, address: KAddress, addressString: String, name: String?) {
+    if address.addressString == addressString {
+      var address = address
+      address.addressString = addressString
+      address.name = name.whenNilOrEmpty(Strings.imported)
+      
+      try? WalletManager.shared.updateWatchAddress(address: address)
+      
+      if let contact = KNContactStorage.shared.get(forPrimaryKey: addressString) {
         let newContact = contact.clone()
-        newContact.name = name ?? "Imported"
+        newContact.name = name.whenNilOrEmpty(Strings.imported)
         KNContactStorage.shared.update(contacts: [newContact])
         self.navigationController.showSuccessTopBannerMessage(
           with: "",
-          message: "Edit wallet successful".toBeLocalised(),
+          message: Strings.editWalletSuccess,
           time: 1
         )
       }
+      delegate?.addNewWalletCoordinator(didAdd: address, chain: KNGeneralProvider.shared.currentChain)
       self.navigationController.dismiss(animated: true, completion: nil)
-      if KNGeneralProvider.shared.currentChain == .solana {
-        self.delegate?.addNewWalletCoordinator(add: Wallet(type: .solana(wallet.address, wallet.evmAddress, wallet.walletID)))
-      } else if let walletAddress = Address(string: wallet.address) {
-        self.delegate?.addNewWalletCoordinator(add: Wallet(type: .watch(walletAddress)))
-      }
-      
     } else {
-      if KNGeneralProvider.shared.currentChain == .solana {
-        self.keystore.solanaUtil.removeWatchWallet(address)
-        self.importNewWatchWallet(address: address, name: name, isAdd: false)
-      } else {
-        guard let walletAddress = Address(string: wallet.address) else {
-          return
-        }
-        let aWallet = Wallet(type: .watch(walletAddress))
-        self.keystore.delete(wallet: aWallet)
-        KNWalletStorage.shared.delete(wallet: wallet)
-
-        self.importNewWatchWallet(address: address, name: name, isAdd: false)
-      }
-      
+      try? WalletManager.shared.removeAddress(address: address)
+      self.importNewWatchWallet(address: addressString, name: name, isAdd: false)
     }
   }
   
@@ -330,56 +183,40 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
   }
 
   fileprivate func importNewWatchWallet(address: String, name: String?, isAdd: Bool = true) {
-    let importType: ImportWalletChainType = KNGeneralProvider.shared.currentChain == .solana ? .solana : .evm
-    self.keystore.importWallet(type: .watch(address: address, name: name ?? ""), importType: importType) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let wallet):
-        if isAdd {
-          self.navigationController.showSuccessTopBannerMessage(
-            with: NSLocalizedString("wallet.imported", value: "Wallet Imported", comment: ""),
-            message: NSLocalizedString("you.have.successfully.imported.a.wallet", value: "You have successfully imported a wallet", comment: ""),
-            time: 1
-          )
-        } else {
-          self.navigationController.showSuccessTopBannerMessage(
-            with: "",
-            message: "Edit wallet successful".toBeLocalised(),
-            time: 1
-          )
-        }
-
-        let walletName: String = {
-          if name == nil || name?.isEmpty == true { return "Imported" }
-          return name ?? "Imported"
-        }()
-        let walletObject = KNWalletObject(
-          address: wallet.addressString,
-          name: walletName,
-          isWatchWallet: true,
-          chainType: importType
+    let currentChain = KNGeneralProvider.shared.currentChain
+    do {
+      let watchAddress = try WalletManager.shared.addWatchWallet(address: address, addressType: currentChain.addressType, name: name.whenNilOrEmpty(Strings.imported))
+      if isAdd {
+        self.navigationController.showSuccessTopBannerMessage(
+          with: Strings.walletImported,
+          message: Strings.importWalletSuccess,
+          time: 1
         )
-        KNWalletStorage.shared.add(wallets: [walletObject])
-        let chainType = KNGeneralProvider.shared.currentChain == .solana ? 2 : 1
-        let contact = KNContact(
-          address: wallet.addressString,
-          name: name ?? "Untitled",
-          chainType: chainType
+      } else {
+        self.navigationController.showSuccessTopBannerMessage(
+          with: "",
+          message: Strings.editWalletSuccess,
+          time: 1
         )
-        KNContactStorage.shared.update(contacts: [contact])
-        self.navigationController.dismiss(animated: true, completion: nil)
-        self.delegate?.addNewWalletCoordinator(add: wallet)
-      case .failure(let error):
-        self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
       }
+      let contact = KNContact(
+        address: address,
+        name: name.whenNilOrEmpty(Strings.untitled),
+        chainType: watchAddress.addressType.importChainType.rawValue
+      )
+      KNContactStorage.shared.update(contacts: [contact])
+      delegate?.addNewWalletCoordinator(didAdd: watchAddress, chain: currentChain)
+      self.navigationController.dismiss(animated: true, completion: nil)
+    } catch {
+      self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
     }
   }
 }
 
 extension KNAddNewWalletCoordinator: CreateChainWalletMenuCoordinatorDelegate {
   
-  func onSelectCreateNewWallet() {
-    createNewWallet()
+  func onSelectCreateNewWallet(chain: ChainType) {
+    createNewWallet(chain: chain)
   }
   
   func onSelectImportWallet() {
