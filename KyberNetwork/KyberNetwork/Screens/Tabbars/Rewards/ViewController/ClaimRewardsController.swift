@@ -8,6 +8,7 @@
 import UIKit
 import Moya
 import BigInt
+import KrystalWallets
 
 class ClaimRewardsViewModel {
   var totalTokenBalance: Double
@@ -52,7 +53,6 @@ class ClaimRewardsViewModel {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.claimRewardGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
   fileprivate(set) var baseGasLimit: BigInt
-  private(set) var session: KNSession
   var txObject: TxObject
 
   var transactionFee: BigInt {
@@ -80,15 +80,18 @@ class ClaimRewardsViewModel {
     let labelText = String(format: NSLocalizedString("%@ (Gas Price) * %@ (Gas Limit)", comment: ""), gasPriceText, gasLimitText)
     return labelText
   }
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 
-  init(totalTokenBalance: Double, totalTokenSymbol: String, totalTokensValue: String, tokenIconURL: String, gasLimit: BigInt, session: KNSession, txObject: TxObject) {
+  init(totalTokenBalance: Double, totalTokenSymbol: String, totalTokensValue: String, tokenIconURL: String, gasLimit: BigInt, txObject: TxObject) {
     self.totalTokenBalance = totalTokenBalance
     self.totalTokenSymbol = totalTokenSymbol
     self.totalTokensValue = totalTokensValue
     self.tokenIconURL = tokenIconURL
     self.gasLimit = gasLimit
     self.baseGasLimit = gasLimit
-    self.session = session
     self.txObject = txObject
   }
   
@@ -224,7 +227,7 @@ class ClaimRewardsController: KNBaseViewController {
     } else {
       return false
     }
-    return data[self.viewModel.session.wallet.addressString] ?? false
+    return data[viewModel.currentAddress.addressString] ?? false
   }
 
   @IBAction func selectGasPriceButtonTapped(_ sender: Any) {

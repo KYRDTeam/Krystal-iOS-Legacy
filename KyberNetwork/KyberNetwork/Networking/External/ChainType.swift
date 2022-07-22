@@ -307,7 +307,7 @@ enum ChainType: Codable, CaseIterable {
   
   func isSupportedBridge() -> Bool {
     switch self {
-    case .solana, .klaytn:
+    case .solana:
       return false
     default:
       return true

@@ -7,10 +7,11 @@
 
 import Foundation
 import UIKit
+import KrystalWallets
 
 class BaseTransactionListViewController: UIViewController {
   
-  func updateWallet(wallet: KNWalletObject) {
+  func updateAddress(address: KAddress) {
     
   }
   

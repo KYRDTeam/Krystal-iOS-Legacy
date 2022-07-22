@@ -2,13 +2,12 @@
 
 import UIKit
 import SafariServices
-import TrustKeystore
-import TrustCore
 import MessageUI
+import KrystalWallets
 
 protocol KNLandingPageCoordinatorDelegate: class {
-  func landingPageCoordinator(import wallet: Wallet)
-  func landingPageCoordinator(remove wallet: Wallet)
+  func landingPageCoordinator(import wallet: KWallet, chain: ChainType)
+  func landingPageCoordinator(add watchAddress: KAddress, chain: ChainType)
   func landingPageCoordinatorDidSendRefCode(_ code: String)
 }
 
@@ -29,11 +28,12 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
 
   weak var delegate: KNLandingPageCoordinatorDelegate?
   let navigationController: UINavigationController
-  var keystore: Keystore
   var coordinators: [Coordinator] = []
 
-  fileprivate var newWallet: Wallet?
+  private var newWallet: KWallet?
+  private var targetChain: ChainType?
   fileprivate var isCreate: Bool = false
+  let walletManager = WalletManager.shared
 
   lazy var rootViewController: KNLandingPageViewController = {
     let controller = KNLandingPageViewController()
@@ -45,7 +45,6 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   lazy var createWalletCoordinator: KNCreateWalletCoordinator = {
     let coordinator = KNCreateWalletCoordinator(
       navigationController: self.navigationController,
-      keystore: self.keystore,
       newWallet: self.newWallet,
       name: nil
     )
@@ -54,10 +53,7 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
   }()
 
   lazy var importWalletCoordinator: KNImportWalletCoordinator = {
-    let coordinator = KNImportWalletCoordinator(
-      navigationController: self.navigationController,
-      keystore: self.keystore
-    )
+    let coordinator = KNImportWalletCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     return coordinator
   }()
@@ -75,52 +71,25 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     let controller = TermsAndConditionsViewController()
     return controller
   }()
-
+  
   init(
-    navigationController: UINavigationController = UINavigationController(),
-    keystore: Keystore
-    ) {
+    navigationController: UINavigationController = UINavigationController()
+  ) {
     self.navigationController = navigationController
     self.navigationController.setNavigationBarHidden(true, animated: false)
-    self.keystore = keystore
   }
 
   func start() {
-    if self.keystore.wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
-      // In case user delete the app, wallets are removed but passcode is still save in keychain
+    let wallets = walletManager.getAllWallets()
+    if wallets.isEmpty && KNPasscodeUtil.shared.currentPasscode() != nil {
       self.navigationController.viewControllers = [self.rootViewController]
       KNPasscodeUtil.shared.deletePasscode()
     }
-    if let wallet = self.newWallet {
-      self.navigationController.viewControllers = [self.rootViewController]
-      self.createWalletCoordinator.updateNewWallet(wallet, name: "Untitled")
-      self.createWalletCoordinator.start()
-      return
-    }
-    if let wallet = self.keystore.recentlyUsedWallet ?? self.keystore.wallets.first {
-      if case .real(let account) = wallet.type {
-         //In case backup with icloud/local backup there is no keychain so delete all keystore in keystore directory
-         guard let _ =  keystore.getPassword(for: account) else {
-            KNPasscodeUtil.shared.deletePasscode()
-            let fileManager = FileManager.default
-            do {
-                let filePaths = try fileManager.contentsOfDirectory(atPath: keystore.keysDirectory.path)
-                for filePath in filePaths {
-                    let keyPath = URL(fileURLWithPath: keystore.keysDirectory.path).appendingPathComponent(filePath).absoluteURL
-                    try fileManager.removeItem(at: keyPath)
-                }
-            } catch {
-                print("Could not clear keystore folder: \(error)")
-            }
-            KNWalletStorage.shared.deleteAll()
-            return
-         }
-        
-      }
+    
+    if !wallets.isEmpty {
       if KNPasscodeUtil.shared.currentPasscode() == nil {
         self.navigationController.viewControllers = [self.rootViewController]
-        // In case user imported a wallet and kill the app during settings passcode
-        self.newWallet = wallet
+        self.newWallet = wallets.first
         self.passcodeCoordinator.start()
       }
     } else {
@@ -128,71 +97,23 @@ class KNLandingPageCoordinator: NSObject, Coordinator {
     }
   }
 
-  func updateNewWallet(wallet: Wallet) {
+  func updateNewWallet(wallet: KWallet) {
     self.newWallet = wallet
   }
-  func update(keystore: Keystore) {
-    self.keystore = keystore
-  }
-
-  fileprivate func addNewWallet(_ wallet: Wallet, isCreate: Bool, name: String?, addToContact: Bool = true, isBackUp: Bool, importType: ImportType, importMethod: StorageType, importChainType: ImportWalletChainType) {
-    var isWatchWallet = false
-    var solWalletId = ""
-    if case WalletType.watch(_) = wallet.type {
-      isWatchWallet = true
-    }
-    
-    if case WalletType.solana(_, _, let walletID) = wallet.type {
-      solWalletId = walletID
-    }
-
-    var finalImportChainType = importChainType
-    var solanaAddress = ""
-    
-    if case .mnemonic(let words, _) = importType {
-      finalImportChainType = .multiChain
-      let key = words.joined(separator: " ")
-      let address = SolanaUtil.seedsToPublicKey(key)
-      solanaAddress = address
-    }
-    
-    if importChainType == .solana {
-      solanaAddress = wallet.addressString
-    }
-    
-    let walletObject = KNWalletObject(
-      address: wallet.addressString,
-      name: name ?? "Untitled",
-      isBackedUp: isBackUp,
-      isWatchWallet: isWatchWallet,
-      chainType: finalImportChainType,
-      storageType: importMethod,
-      evmAddress: wallet.evmAddressString,
-      solanaAddress: solanaAddress,
-      walletID: solWalletId
-    )
-    let wallets = [walletObject]
-
-    KNWalletStorage.shared.add(wallets: wallets)
-    if addToContact {
-      let contact = KNContact(
-        address: wallet.addressString,
-        name: name ?? "Untitled",
-        chainType: finalImportChainType.rawValue
-      )
-      KNContactStorage.shared.update(contacts: [contact])
-    }
+  
+  func didImportWallet(wallet: KWallet, chain: ChainType) {
     self.newWallet = wallet
-    self.isCreate = isCreate
-    self.keystore.recentlyUsedWallet = wallet
+    self.targetChain = chain
     
-    if KNWalletStorage.shared.wallets.count == 1 {
+    // Check if first wallet
+    if WalletManager.shared.getAllWallets().count == 1 {
       KNPasscodeUtil.shared.deletePasscode()
       self.passcodeCoordinator.start()
     } else {
-      self.delegate?.landingPageCoordinator(import: wallet)
+      self.delegate?.landingPageCoordinator(import: wallet, chain: chain)
     }
   }
+
 }
 
 extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
@@ -250,14 +171,17 @@ extension KNLandingPageCoordinator: KNLandingPageViewControllerDelegate {
 }
 
 extension KNLandingPageCoordinator: KNImportWalletCoordinatorDelegate {
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.landingPageCoordinator(add: watchAddress, chain: chain)
   }
   
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
-    KNGeneralProvider.shared.currentChain = selectedChain
-    self.addNewWallet(wallet, isCreate: false, name: name, isBackUp: true, importType: importType, importMethod: importMethod, importChainType: importChainType)
-    
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    didImportWallet(wallet: wallet, chain: chain)
+  }
+  
+  func importWalletCoordinatorDidSendRefCode(_ code: String) {
+    self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
 
   func importWalletCoordinatorDidClose() {
@@ -274,16 +198,21 @@ extension KNLandingPageCoordinator: KNPasscodeCoordinatorDelegate {
   }
 
   func passcodeCoordinatorDidCreatePasscode() {
-    guard let wallet = self.newWallet else { return }
-    self.navigationController.topViewController?.displayLoading()
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
-      self.navigationController.topViewController?.hideLoading()
-      self.delegate?.landingPageCoordinator(import: wallet)
+    guard let wallet = self.newWallet else {
+      return
     }
+    guard let address = walletManager.address(forWalletID: wallet.id) else {
+      return
+    }
+    guard let chain = ChainType.allCases.first(where: { $0.addressType == address.addressType }) else {
+      return
+    }
+    self.delegate?.landingPageCoordinator(import: wallet, chain: self.targetChain ?? chain)
   }
 }
 
 extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
+
   func createWalletCoordinatorDidSendRefCode(_ code: String) {
     self.delegate?.landingPageCoordinatorDidSendRefCode(code.uppercased())
   }
@@ -291,19 +220,9 @@ extension KNLandingPageCoordinator: KNCreateWalletCoordinatorDelegate {
   func createWalletCoordinatorDidClose() {
   }
 
-  func createWalletCoordinatorCancelCreateWallet(_ wallet: Wallet) {
-    self.navigationController.popViewController(animated: true) {
-      self.delegate?.landingPageCoordinator(remove: wallet)
-    }
-  }
-
-  func createWalletCoordinatorDidCreateWallet(_ wallet: Wallet?, name: String?, isBackUp: Bool) {
-    guard let wallet = wallet, case .real(let acc) = wallet.type else { return }
-    let seedResult = self.keystore.exportMnemonics(account: acc)
-    guard case .success(let mnemonics) = seedResult else { return }
-    let seeds = mnemonics.split(separator: " ").map({ return String($0) })
-
-    self.addNewWallet(wallet, isCreate: true, name: name, isBackUp: isBackUp, importType: .mnemonic(words: seeds, password: ""), importMethod: .seeds, importChainType: .multiChain)
+  func createWalletCoordinatorDidCreateWallet(_ wallet: KWallet?, name: String?, chain: ChainType) {
+    guard let wallet = wallet else { return }
+    didImportWallet(wallet: wallet, chain: chain)
   }
 }
 

@@ -7,6 +7,7 @@
 
 import UIKit
 import SwipeCellKit
+import KrystalWallets
 
 protocol PendingTransactionListViewControllerDelegate: AnyObject {
   func selectSwapNow(_ viewController: PendingTransactionListViewController)
@@ -91,12 +92,6 @@ class PendingTransactionListViewController: BaseTransactionListViewController {
       cancelLabel?.removeFromSuperview()
       self.animatingCell = nil
     })
-  }
-
-  override func updateWallet(wallet: KNWalletObject) {
-    DispatchQueue.global().async {
-      self.viewModel.updateWallet(wallet: wallet)
-    }
   }
   
   override func reload() {

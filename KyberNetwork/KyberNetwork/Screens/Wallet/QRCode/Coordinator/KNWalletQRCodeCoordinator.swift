@@ -2,23 +2,19 @@
 
 import UIKit
 import MBProgressHUD
+import KrystalWallets
 
 class KNWalletQRCodeCoordinator: Coordinator {
 
   let navigationController: UINavigationController
-  let walletObject: KNWalletObject
   var coordinators: [Coordinator] = []
 
-  init(
-    navigationController: UINavigationController,
-    walletObject: KNWalletObject
-    ) {
+  init(navigationController: UINavigationController) {
     self.navigationController = navigationController
-    self.walletObject = walletObject
   }
 
   lazy var viewModel: KNWalletQRCodeViewModel = {
-    return KNWalletQRCodeViewModel(wallet: self.walletObject)
+    return KNWalletQRCodeViewModel()
   }()
 
   lazy var rootViewController: KNWalletQRCodeViewController = {

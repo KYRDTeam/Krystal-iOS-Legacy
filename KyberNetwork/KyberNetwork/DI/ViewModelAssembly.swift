@@ -11,20 +11,20 @@ import Swinject
 class ViewModelAssembly: Assembly {
   
   func assemble(container: Container) {
-    container.register(KNTransactionHistoryViewModel.self) { resolver, wallet, type in
-      return KNTransactionHistoryViewModel(currentWallet: wallet, type: type)
+    container.register(KNTransactionHistoryViewModel.self) { resolver, type in
+      return KNTransactionHistoryViewModel(type: type)
     }
-    container.register(SolanaTransactionListViewModel.self) { resolver, wallet in
+    container.register(SolanaTransactionListViewModel.self) { resolver, address in
       return SolanaTransactionListViewModel(
-        wallet: wallet,
+        address: address,
         getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase(
-          address: wallet.address,
+          address: address.addressString,
           repository: DefaultTransactionRepository()
         )
       )
     }
-    container.register(BasePendingTransactionListViewModel.self) { resolver, wallet in
-      return BasePendingTransactionListViewModel(wallet: wallet)
+    container.register(BasePendingTransactionListViewModel.self) { resolver, address in
+      return BasePendingTransactionListViewModel(address: address)
     }
     container.register(KNTransactionFilterViewModel.self) { resolver, tokens, filter in
       return KNTransactionFilterViewModel(tokens: tokens, filter: filter)

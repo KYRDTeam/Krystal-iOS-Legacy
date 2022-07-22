@@ -2,6 +2,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 struct KNTransactionDetailsViewModel {
 
@@ -12,14 +13,13 @@ struct KNTransactionDetailsViewModel {
   }()
 
   fileprivate(set) var transaction: Transaction?
-  fileprivate(set) var currentWallet: KNWalletObject
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
 
-  init(
-    transaction: Transaction?,
-    currentWallet: KNWalletObject
-    ) {
+  init(transaction: Transaction?) {
     self.transaction = transaction
-    self.currentWallet = currentWallet
   }
 
   var isSwap: Bool {
@@ -28,7 +28,7 @@ struct KNTransactionDetailsViewModel {
 
   var isSent: Bool {
     guard let transaction = self.transaction, !self.isSwap else { return false }
-    return transaction.from.lowercased() == self.currentWallet.address.lowercased()
+    return transaction.from == currentAddress.addressString
   }
 
   var isContractInteraction: Bool {
@@ -55,7 +55,7 @@ struct KNTransactionDetailsViewModel {
     guard let notNilTransaction = self.transaction else {
       return false
     }
-    return notNilTransaction.from.lowercased() == notNilTransaction.to.lowercased()
+    return notNilTransaction.from == notNilTransaction.to
   }
 
   var displayTxTypeString: String {
@@ -73,7 +73,7 @@ struct KNTransactionDetailsViewModel {
   }
 
   var displayedAmountString: String {
-    return self.transaction?.displayedAmountStringDetailsView(curWallet: self.currentWallet.address) ?? ""
+    return self.transaction?.displayedAmountStringDetailsView(curWallet: currentAddress.addressString) ?? ""
   }
 
   var displayFee: String? {
@@ -200,10 +200,9 @@ struct KNTransactionDetailsViewModel {
     return self.dateFormatter.string(from: date)
   }
 
-  mutating func update(transaction: Transaction, currentWallet: KNWalletObject) {
-    self.transaction = transaction
-    self.currentWallet = currentWallet
-  }
+//  mutating func update(transaction: Transaction) {
+//    self.transaction = transaction
+//  }
 }
 
 protocol TransactionDetailsViewModel {

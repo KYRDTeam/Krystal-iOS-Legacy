@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 enum FromSectionRows: CaseIterable {
   case selectChainRow
@@ -47,7 +48,6 @@ enum ToSectionRows: CaseIterable {
   }
 }
 class BridgeViewModel {
-  fileprivate(set) var wallet: Wallet
   var showFromPoolInfo: Bool = false
   var showToPoolInfo: Bool = false
   var showReminder: Bool = false
@@ -75,16 +75,13 @@ class BridgeViewModel {
   var sourceAmount: Double = 0.0
   var isValidSourceAmount: Bool = false
   var isValidDestAmount: Bool = false
-
-  init(wallet: Wallet) {
-    self.wallet = wallet
-    self.currentSendToAddress = wallet.addressString
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
 
-  func updateWallet(_ wallet: Wallet) {
-    self.wallet = wallet
-    // reset info when update wallet
-    self.resetUI()
+  init() {
+    self.currentSendToAddress = currentAddress.addressString
   }
   
   func resetUI() {
@@ -96,12 +93,12 @@ class BridgeViewModel {
     self.sourceAmount = 0
     self.showFromPoolInfo = false
     self.showToPoolInfo = false
-    self.currentSendToAddress = self.wallet.addressString
+    self.currentSendToAddress = self.currentAddress.addressString
   }
   
   func resetAddressIfNeed() {
     if !CryptoAddressValidator.isValidAddress(self.currentSendToAddress) {
-      self.currentSendToAddress = self.wallet.addressString
+      self.currentSendToAddress = self.currentAddress.addressString
     }
   }
 
@@ -302,8 +299,11 @@ class BridgeViewModel {
         let currentDestText = cell.amountTextField.text ?? ""
         if let currentDestPoolInfo = self.currentDestPoolInfo {
           // calculate with same decimal of source token
-          let liquidity = currentDestPoolInfo.liquidity.amountBigInt(decimals: self.currentSourceToken?.decimals ?? 0) ?? BigInt(0)
-          if !currentDestPoolInfo.isUnlimited && liquidity < self.estimatedDestAmount {
+          let liquidity = Double(currentDestPoolInfo.liquidity) ?? 0
+          let displayLiquidity = liquidity / pow(10, currentDestPoolInfo.decimals).doubleValue
+          let liquidityBigInt = BigInt(displayLiquidity * pow(10, Double(self.currentSourceToken?.decimals ?? 0)))
+          
+          if !currentDestPoolInfo.isUnlimited && liquidityBigInt < self.estimatedDestAmount {
             errMsg = "Insufficient pool".toBeLocalised()
           }
         }
@@ -318,17 +318,17 @@ class BridgeViewModel {
         cell.textField.text = self.currentSendToAddress
         cell.textChangeBlock = self.changeAddressBlock
         cell.scanQRBlock = self.scanQRBlock
-        cell.updateDescriptionLabel(tokenString: self.currentSourceToken?.symbol, chainString: self.currentDestChain?.chainName())
+        cell.updateDescriptionLabel(tokenString: self.currentDestToken?.symbol, chainString: self.currentDestChain?.chainName())
         cell.updateErrorUI()
         return cell
       case .reminderRow:
         let cell = tableView.dequeueReusableCell(BridgeReminderCell.self, indexPath: indexPath)!
-          if let currentDestToken = self.currentDestToken {
+          if let currentDestToken = self.currentDestToken, let currentSourceToken = self.currentSourceToken {
             let crossChainFee = currentDestToken.maximumSwapFee == currentDestToken.minimumSwapFee ? "0.0" : String(format: "%.1f", currentDestToken.swapFeeRatePerMillion)
-            let minFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentDestToken.symbol)"
-            let maxFeeString = StringFormatter.amountString(value: currentDestToken.maximumSwapFee) + " \(currentDestToken.symbol)"
-            let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentDestToken.symbol)"
-            let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentDestToken.symbol)"
+            let minFeeString = StringFormatter.amountString(value: currentDestToken.minimumSwapFee) + " \(currentSourceToken.symbol)"
+            let maxFeeString = StringFormatter.amountString(value: currentDestToken.maximumSwapFee) + " \(currentSourceToken.symbol)"
+            let miniAmount = StringFormatter.amountString(value: currentDestToken.minimumSwap) + " \(currentSourceToken.symbol)"
+            let maxAmount = StringFormatter.amountString(value: currentDestToken.maximumSwap) + " \(currentSourceToken.symbol)"
             cell.updateReminderText(crossChainFee: crossChainFee, miniAmount: miniAmount, maxAmount: maxAmount, minFeeString: minFeeString, maxFeeString: maxFeeString)
           }
         return cell

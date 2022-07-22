@@ -20,7 +20,7 @@ class SolanaUtil {
   let keyStore: KeyStore
   private let keychain: KeychainSwift
   private let defaultKeychainAccess: KeychainSwiftAccessOptions = .accessibleWhenUnlockedThisDeviceOnly
-  var keysDict: [String: String] = UserDefaults.standard.object(forKey: SolanaUtil.keysSavedKey) as? [String : String] ?? [:]
+  var keysDict: [String: String] = UserDefaults.standard.object(forKey: SolanaUtil.keysSavedKey) as? [String: String] ?? [:]
   
   init() {
     let keyDirURL = URL(fileURLWithPath: datadir + "/solanaKeyStore")
@@ -34,6 +34,13 @@ class SolanaUtil {
     let hdWallet = HDWallet(mnemonic: seeds, passphrase: "")
     let privateKey = hdWallet!.getKey(coin: .solana, derivationPath: "m/44'/501'/0'/0'")
     return privateKey
+  }
+  
+  static func soletSeedsToPrivateKey(_ seeds: String) -> PrivateKey? {
+    let path = "m/44'/501'/0'/0'"
+    let hdWal = HDWallet(mnemonic: seeds, passphrase: "")
+    let pk = hdWal?.getKey(coin: .solana, derivationPath: path)
+    return pk
   }
   
   // Generate 88 private key from seeds
@@ -51,15 +58,22 @@ class SolanaUtil {
   static func seedsToPublicKey(_ seeds: String) -> String {
     let privateKey = SolanaUtil.seedsToPrivateKey(seeds)
     let publicKey = privateKey.getPublicKeyEd25519()
-    var solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
+    let solanaAddress = AnyAddress(publicKey: publicKey, coin: .solana)
     return solanaAddress.description
   }
   
   // Generate privateKey from keypair
   static func keyPairToPrivateKey(_ keypair: String) -> PrivateKey? {
-    guard let data = Base58.decodeNoCheck(string: keypair) else { return nil }
-    let key = PrivateKey(data: data[0...31])
-    return key
+    if keypair.isTrustPK {
+      guard let data = Data(hexString: keypair) else { return nil }
+      let privateKey = PrivateKey(data: data[0...31])
+      return privateKey
+    } else {
+      guard let data = Base58.decodeNoCheck(string: keypair) else { return nil }
+      let key = PrivateKey(data: data[0...31])
+      return key
+    }
+    
   }
 
   static func keyPairToPrivateKeyData(_ keypair: String) -> Data? {
@@ -69,6 +83,16 @@ class SolanaUtil {
   
   static func generateTokenAccountAddress(receiptWalletAddress: String, tokenMintAddress: String) -> String {
     return SolanaAddress(string: receiptWalletAddress)?.defaultTokenAddress(tokenMintAddress: tokenMintAddress) ?? ""
+  }
+  
+  static func soletStringToPrivateKey(_ key: String) -> PrivateKey? {
+    guard key.isSoletPKVaild else { return nil }
+    let stringList = key.dropFirst().dropLast().split(separator: ",").map { item in
+      return UInt8(item) ?? 0
+    }
+    let data = Data(bytes: stringList)
+    let privateKey = PrivateKey(data: data[0...31])
+    return privateKey
   }
   
   static func signTransferTransaction(privateKeyData: Data, recipient: String, value: UInt64, recentBlockhash: String) -> String {
@@ -138,7 +162,7 @@ class SolanaUtil {
         completion(nil)
         print("[Solana error] \(error.localizedDescription)")
       }
-      }
+    }
   }
 
   static func getRecentBlockhash(completion: @escaping (String?) -> Void) {
@@ -326,6 +350,42 @@ class SolanaUtil {
     return (nil, nil, nil)
   }
   
+  func importSoletString(_ key: String) -> (String?, WalletCore.Account?, String?) {
+    guard let pk = SolanaUtil.soletStringToPrivateKey(key) else {
+      return (nil, nil, nil)
+    }
+    
+    let newPassword = PasswordGenerator.generateRandom()
+    let wallet = try? self.keyStore.import(privateKey: pk, name: "", password: newPassword, coin: .ethereum)
+    if let unwrap = wallet {
+      self.setPassword(newPassword, for: unwrap)
+      let address = AnyAddress(publicKey: pk.getPublicKeyEd25519(), coin: .solana)
+      self.keysDict[address.description] = unwrap.identifier
+      let account = try! unwrap.getAccount(password: newPassword, coin: .ethereum)
+      return (address.description, account, unwrap.identifier)
+    }
+    
+    return (nil, nil, nil)
+  }
+  
+  func importSoletSeeds(_ seeds: String) -> (String?, WalletCore.Account?, String?) {
+    guard let pk = SolanaUtil.soletSeedsToPrivateKey(seeds) else {
+      return (nil, nil, nil)
+    }
+    
+    let newPassword = PasswordGenerator.generateRandom()
+    let wallet = try? self.keyStore.import(privateKey: pk, name: "", password: newPassword, coin: .ethereum)
+    if let unwrap = wallet {
+      self.setPassword(newPassword, for: unwrap)
+      let address = AnyAddress(publicKey: pk.getPublicKeyEd25519(), coin: .solana)
+      self.keysDict[address.description] = unwrap.identifier
+      let account = try! unwrap.getAccount(password: newPassword, coin: .ethereum)
+      return (address.description, account, unwrap.identifier)
+    }
+    
+    return (nil, nil, nil)
+  }
+  
   func exportKeyPair(walletID: String) -> PrivateKey? {
     let filtered = self.keyStore.wallets.first { element in
       return element.identifier == walletID
@@ -356,7 +416,7 @@ class SolanaUtil {
   }
   
   static func exportKeyPair(privateKey: PrivateKey) -> String {
-    var publicKey = privateKey.getPublicKeyEd25519()
+    let publicKey = privateKey.getPublicKeyEd25519()
     let privateKeyData = privateKey.data
     let publicKeyData = publicKey.data
     
@@ -405,5 +465,24 @@ class SolanaUtil {
     } catch {
     }
     
+  }
+  
+  static func hexStringToData(_ text: String) -> Data? {
+    if text.isTrustPK {
+      let data = Data(hexString: text)
+      return data
+    } else {
+      let data = Base58.decodeNoCheck(string: text)
+      return data
+    }
+  }
+  
+  static func isValidSolanaPrivateKey(_ text: String) -> Bool {
+    guard let data = SolanaUtil.hexStringToData(text) else { return false }
+    if text.isTrustPK {
+      return data.count == 32
+    } else {
+      return data.count == 64
+    }
   }
 }

@@ -9,6 +9,7 @@ import Foundation
 import BigInt
 import TrustCore
 import TrustKeystore
+import KrystalWallets
 
 struct SignTransactionObject: Codable {
   let value: String
@@ -27,7 +28,8 @@ struct SignTransactionObject: Codable {
 }
 
 extension SignTransactionObject {
-  func toSignTransaction(account: Account, setting: ConfirmAdvancedSetting? = nil) -> SignTransaction {
+  
+  func toSignTransaction(address: KAddress, setting: ConfirmAdvancedSetting? = nil) -> SignTransaction {
     if let unwrap = setting {
       var nonceInt = self.nonce
       if let unwrapSetting = unwrap.advancedNonce {
@@ -46,8 +48,8 @@ extension SignTransactionObject {
       
       return SignTransaction(
         value: BigInt(self.value) ?? BigInt(0),
-        account: account,
-        to: Address(string: self.to ?? ""),
+        address: address.addressString,
+        to: self.to,
         nonce: nonceInt,
         data: self.data,
         gasPrice: gasPriceBigInt ?? BigInt.zero,
@@ -58,8 +60,49 @@ extension SignTransactionObject {
     } else {
       return SignTransaction(
         value: BigInt(self.value) ?? BigInt(0),
-        account: account,
-        to: Address(string: self.to ?? ""),
+        address: address.addressString,
+        to: self.to,
+        nonce: self.nonce,
+        data: self.data,
+        gasPrice: BigInt(gasPrice) ?? BigInt(0),
+        gasLimit: BigInt(gasLimit) ?? BigInt(0),
+        chainID: self.chainID
+      )
+    }
+  }
+  func toSignTransaction(address: String, setting: ConfirmAdvancedSetting? = nil) -> SignTransaction {
+    if let unwrap = setting {
+      var nonceInt = self.nonce
+      if let unwrapSetting = unwrap.advancedNonce {
+        nonceInt = unwrapSetting
+      }
+      
+      var gasLimitBigInt = BigInt(self.gasLimit)
+      if let unwrapSetting = unwrap.advancedGasLimit {
+        gasLimitBigInt = BigInt(unwrapSetting)
+      }
+      
+      var gasPriceBigInt = BigInt(self.gasPrice)
+      if let unwrapSetting = unwrap.avancedMaxFee {
+        gasPriceBigInt = unwrapSetting.shortBigInt(units: UnitConfiguration.gasPriceUnit)
+      }
+      
+      return SignTransaction(
+        value: BigInt(self.value) ?? BigInt(0),
+        address: address,
+        to: self.to,
+        nonce: nonceInt,
+        data: self.data,
+        gasPrice: gasPriceBigInt ?? BigInt.zero,
+        gasLimit: gasLimitBigInt ?? BigInt.zero,
+        chainID: self.chainID
+      )
+      
+    } else {
+      return SignTransaction(
+        value: BigInt(self.value) ?? BigInt(0),
+        address: address,
+        to: self.to,
         nonce: self.nonce,
         data: self.data,
         gasPrice: BigInt(gasPrice) ?? BigInt(0),
@@ -126,7 +169,7 @@ extension SignTransactionObject {
     return SignTransaction(
       value: BigInt(self.value) ?? BigInt(0),
       account: account,
-      to: Address(string: self.to ?? ""),
+      to: self.to,
       nonce: self.nonce,
       data: self.data,
       gasPrice: gasPrice,
@@ -139,7 +182,7 @@ extension SignTransactionObject {
     return SignTransaction(
       value: BigInt(0),
       account: account,
-      to: account.address,
+      to: account.address.description,
       nonce: self.nonce,
       data: Data(),
       gasPrice: self.gasPriceForCancelTransaction(),

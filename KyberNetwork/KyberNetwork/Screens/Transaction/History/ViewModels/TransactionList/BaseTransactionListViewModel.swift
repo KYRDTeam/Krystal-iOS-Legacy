@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import KrystalWallets
 
 class BaseTransactionListViewModel {
-  var wallet: KNWalletObject
+  var address: KAddress
   
   var canLoadMore: Bool = false
   var isLoading: Bool = true
@@ -17,8 +18,8 @@ class BaseTransactionListViewModel {
   var headers: [String] = []
   var groupedTransactions: Observable<[String: [TransactionHistoryItem]]> = .init([:])
   
-  init(wallet: KNWalletObject) {
-    self.wallet = wallet
+  init(address: KAddress) {
+    self.address = address
   }
   
   func loadCacheData() {
@@ -33,8 +34,8 @@ class BaseTransactionListViewModel {
     
   }
   
-  func updateWallet(wallet: KNWalletObject) {
-    self.wallet = wallet
+  func updateWallet(address: KAddress) {
+    self.address = address
   }
   
 }

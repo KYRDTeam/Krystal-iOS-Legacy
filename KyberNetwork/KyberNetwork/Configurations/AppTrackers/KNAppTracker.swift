@@ -87,7 +87,7 @@ class KNAppTracker {
   }
 
   // MARK: Transaction load state
-  static func transactionLoadState(for address: Address) -> KNTransactionLoadState {
+  static func transactionLoadState(for address: String) -> KNTransactionLoadState {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionLoadStateKey + sessionID
     if let value = userDefaults.object(forKey: key) as? Int {
@@ -96,14 +96,14 @@ class KNAppTracker {
     return .none
   }
 
-  static func updateTransactionLoadState(_ state: KNTransactionLoadState, for address: Address) {
+  static func updateTransactionLoadState(_ state: KNTransactionLoadState, for address: String) {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionLoadStateKey + sessionID
     userDefaults.set(state.rawValue, forKey: key)
     userDefaults.synchronize()
   }
 
-  static func lastBlockLoadAllTransaction(for address: Address) -> Int {
+  static func lastBlockLoadAllTransaction(for address: String) -> Int {
     let sessionID = KNSession.sessionID(from: address)
     let key = kAllTransactionLoadLastBlockKey + sessionID
     if let value = userDefaults.object(forKey: key) as? Int {
@@ -112,14 +112,14 @@ class KNAppTracker {
     return 0
   }
 
-  static func updateAllTransactionLastBlockLoad(_ block: Int, for address: Address) {
+  static func updateAllTransactionLastBlockLoad(_ block: Int, for address: String) {
     let sessionID = KNSession.sessionID(from: address)
     let key = kAllTransactionLoadLastBlockKey + sessionID
     userDefaults.set(block, forKey: key)
     userDefaults.synchronize()
   }
 
-  static func lastBlockLoadInternalTransaction(for address: Address) -> Int {
+  static func lastBlockLoadInternalTransaction(for address: String) -> Int {
     let sessionID = KNSession.sessionID(from: address)
     let key = kInternalTransactionLoadLastBlockKey + sessionID
     if let value = userDefaults.object(forKey: key) as? Int {
@@ -128,20 +128,20 @@ class KNAppTracker {
     return 0
   }
 
-  static func updateInternalTransactionLastBlockLoad(_ block: Int, for address: Address) {
+  static func updateInternalTransactionLastBlockLoad(_ block: Int, for address: String) {
     let sessionID = KNSession.sessionID(from: address)
     let key = kInternalTransactionLoadLastBlockKey + sessionID
     userDefaults.set(block, forKey: key)
     userDefaults.synchronize()
   }
 
-  static func transactionNonce(for address: Address) -> Int {
+  static func transactionNonce(for address: String) -> Int {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionNonceKey + sessionID
     return userDefaults.object(forKey: key) as? Int ?? 0
   }
 
-  static func updateTransactionNonce(_ nonce: Int, address: Address) {
+  static func updateTransactionNonce(_ nonce: Int, address: String) {
     let sessionID = KNSession.sessionID(from: address)
     let key = kTransactionNonceKey + sessionID
     userDefaults.set(nonce, forKey: key)
@@ -202,7 +202,7 @@ class KNAppTracker {
   }
 
   // MARK: Reset app tracker
-  static func resetAppTrackerData(for address: Address?) {
+  static func resetAppTrackerData(for address: String?) {
     guard let address = address else {
       return
     }
@@ -416,11 +416,11 @@ class KNAppTracker {
 
   static func isNightMode() -> Bool { return true }
 
-  static func getPlatformFee(source: Address, dest: Address) -> Int {
+  static func getPlatformFee(source: String, dest: String) -> Int {
     let eth = KNSupportedTokenStorage.shared.ethToken
     if let weth = KNSupportedTokenStorage.shared.wethToken {
-      let ethAddress = eth.addressObj
-      let wethAddress = weth.addressObj
+      let ethAddress = eth.contract
+      let wethAddress = weth.contract
       if (source == ethAddress && dest == wethAddress) ||
         (dest == ethAddress && source == wethAddress) {
         return 0

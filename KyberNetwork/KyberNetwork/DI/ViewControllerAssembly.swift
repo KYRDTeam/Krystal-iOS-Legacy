@@ -11,9 +11,9 @@ import Swinject
 class ViewControllerAssembly: Assembly {
   
   func assemble(container: Container) {
-    container.register(KNTransactionHistoryViewController.self) { (resolver: Resolver, wallet: KNWalletObject, type: KNTransactionHistoryType) in
+    container.register(KNTransactionHistoryViewController.self) { (resolver: Resolver, type: KNTransactionHistoryType) in
       let vc = KNTransactionHistoryViewController.instantiateFromNib()
-      let vm = resolver.resolve(KNTransactionHistoryViewModel.self, arguments: wallet, type)
+      let vm = resolver.resolve(KNTransactionHistoryViewModel.self, argument: type)
       vc.viewModel = vm
       return vc
     }

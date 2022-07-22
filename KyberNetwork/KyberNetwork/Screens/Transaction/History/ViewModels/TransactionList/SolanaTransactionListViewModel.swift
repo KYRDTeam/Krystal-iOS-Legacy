@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import KrystalWallets
 
 class SolanaTransactionListViewModel: BaseTransactionListViewModel {
   let getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase
@@ -13,9 +14,9 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
   var lastHash: String?
   var timer: Timer?
   
-  init(wallet: KNWalletObject, getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase) {
+  init(address: KAddress, getSolanaTransactionsUseCase: GetSolanaTransactionsUseCase) {
     self.getSolanaTransactionsUseCase = getSolanaTransactionsUseCase
-    super.init(wallet: wallet)
+    super.init(address: address)
     self.canLoadMore = true
     self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(scheduledFetchTransactions), userInfo: nil, repeats: true)
     RunLoop.current.add(timer!, forMode: .common)
@@ -91,9 +92,9 @@ class SolanaTransactionListViewModel: BaseTransactionListViewModel {
     self.groupedTransactions.value = groupedTransactions
   }
   
-  override func updateWallet(wallet: KNWalletObject) {
-    self.wallet = wallet
-    self.getSolanaTransactionsUseCase.address = wallet.address
+  override func updateWallet(address: KAddress) {
+    self.address = address
+    self.getSolanaTransactionsUseCase.address = address.addressString
     self.reload()
   }
   

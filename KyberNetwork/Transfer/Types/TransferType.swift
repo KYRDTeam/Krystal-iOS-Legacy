@@ -5,7 +5,7 @@ import TrustKeystore
 import TrustCore
 
 enum TransferType {
-    case ether(destination: Address?)
+    case ether(destination: String?)
     case token(TokenObject)
 }
 

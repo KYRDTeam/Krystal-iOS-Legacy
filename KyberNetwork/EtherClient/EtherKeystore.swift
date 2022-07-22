@@ -120,16 +120,30 @@ open class EtherKeystore: Keystore {
             }
         case .privateKey(let privateKey):
           if importType == .solana {
-            let result = self.solanaUtil.importKeyPair(privateKey)
-            if let address = result.0, let walletIdentity = result.2 {
-              if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
-                completion(.failure(.duplicateAccount))
+            if privateKey.isSoletPrivateKey {
+              let result = self.solanaUtil.importSoletString(privateKey)
+              if let address = result.0, let walletIdentity = result.2 {
+                if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                  completion(.failure(.duplicateAccount))
+                } else {
+                  completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                }
+                
               } else {
-                completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                completion(.failure(.failedToCreateWallet))
               }
-              
             } else {
-              completion(.failure(.failedToCreateWallet))
+              let result = self.solanaUtil.importKeyPair(privateKey)
+              if let address = result.0, let walletIdentity = result.2 {
+                if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                  completion(.failure(.duplicateAccount))
+                } else {
+                  completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+                }
+                
+              } else {
+                completion(.failure(.failedToCreateWallet))
+              }
             }
           } else {
             keystore(for: privateKey, password: newPassword) { result in
@@ -154,17 +168,33 @@ open class EtherKeystore: Keystore {
           }
         case .mnemonic(let words, let password):
           let key = words.joined(separator: " ")
-          do {
-            let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
-            _ = setPassword(newPassword, for: account)
-            completion(.success(Wallet(type: .real(account))))
-          } catch let error {
-            if case KeyStore.Error.accountAlreadyExists = error {
-              completion(.failure(.duplicateAccount))
+          if words.count == 24 && importType == .solana {
+            let result = self.solanaUtil.importSoletSeeds(key)
+            if let address = result.0, let walletIdentity = result.2 {
+              if KNWalletStorage.shared.checkSolanaAddressExisted(address) {
+                completion(.failure(.duplicateAccount))
+              } else {
+                completion(.success(Wallet(type: .solana(address, "", walletIdentity))))
+              }
+              
             } else {
-              completion(.failure(.failedToImport(error)))
+              completion(.failure(.failedToCreateWallet))
+            }
+            
+          } else {
+            do {
+              let account = try self.keyStore.import(mnemonic: key, passphrase: password, encryptPassword: newPassword)
+              _ = setPassword(newPassword, for: account)
+              completion(.success(Wallet(type: .real(account))))
+            } catch let error {
+              if case KeyStore.Error.accountAlreadyExists = error {
+                completion(.failure(.duplicateAccount))
+              } else {
+                completion(.failure(.failedToImport(error)))
+              }
             }
           }
+          
         case .watch(let address, let name):
           if importType == .solana {
             self.solanaUtil.addWatchWallet(name: name, address: address)
@@ -403,37 +433,39 @@ open class EtherKeystore: Keystore {
     }
 
     func signTransaction(_ transaction: SignTransaction) -> Result<Data, KeystoreError> {
-        guard let account = keyStore.account(for: transaction.account.address) else {
-            return .failure(.failedMissingAccountOrPassword)
-        }
-        guard let password = getPassword(for: account) else {
-            return .failure(.failedMissingAccountOrPassword)
-        }
-
-        let signer: Signer
-        if transaction.chainID == 0 {
-            signer = HomesteadSigner()
-        } else {
-            signer = EIP155Signer(chainId: BigInt(transaction.chainID))
-        }
-
-        do {
-            let hash = signer.hash(transaction: transaction)
-            let signature = try keyStore.signHash(hash, account: account, password: password)
-            let (r, s, v) = signer.values(transaction: transaction, signature: signature)
-            let data = RLP.encode([
-                transaction.nonce,
-                transaction.gasPrice,
-                transaction.gasLimit,
-                transaction.to?.data ?? Data(),
-                transaction.value,
-                transaction.data,
-                v, r, s,
-            ])!
-            return .success(data)
-        } catch {
-            return .failure(.failedToSignTransaction)
-        }
+      // TODO: - Sign Transaction
+//        guard let account = keyStore.account(for: transaction.account.address) else {
+//            return .failure(.failedMissingAccountOrPassword)
+//        }
+//        guard let password = getPassword(for: account) else {
+//            return .failure(.failedMissingAccountOrPassword)
+//        }
+//
+//        let signer: Signer
+//        if transaction.chainID == 0 {
+//            signer = HomesteadSigner()
+//        } else {
+//            signer = EIP155Signer(chainId: BigInt(transaction.chainID))
+//        }
+//
+//        do {
+//            let hash = signer.hash(transaction: transaction)
+//            let signature = try keyStore.signHash(hash, account: account, password: password)
+//            let (r, s, v) = signer.values(transaction: transaction, signature: signature)
+//            let data = RLP.encode([
+//                transaction.nonce,
+//                transaction.gasPrice,
+//                transaction.gasLimit,
+//                transaction.to?.data ?? Data(),
+//                transaction.value,
+//                transaction.data,
+//                v, r, s,
+//            ])!
+//            return .success(data)
+//        } catch {
+//            return .failure(.failedToSignTransaction)
+//        }
+      return .failure(.failedToSignTransaction)
     }
 
     func getPassword(for account: Account) -> String? {

@@ -9,9 +9,9 @@ import Foundation
 import Moya
 import BigInt
 import WalletConnectSwift
+import KrystalWallets
 
 protocol InvestCoordinatorDelegate: class {
-  func investCoordinatorDidSelectWallet(_ wallet: Wallet)
   func investCoordinatorDidSelectManageWallet()
   func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
@@ -21,7 +21,6 @@ protocol InvestCoordinatorDelegate: class {
 class InvestCoordinator: Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  var session: KNSession
   var balances: [String: Balance] = [:]
   var sendCoordinator: KNSendTokenViewCoordinator?
   var krytalCoordinator: KrytalCoordinator?
@@ -43,14 +42,17 @@ class InvestCoordinator: Coordinator {
   }()
   
   lazy var multiSendCoordinator: MultiSendCoordinator = {
-    let coordinator = MultiSendCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = MultiSendCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     return coordinator
   }()
   
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
+  }
+  
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
   }
   
   func start() {
@@ -116,7 +118,6 @@ class InvestCoordinator: Coordinator {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
-      session: self.session,
       balances: self.balances,
       from: from,
       recipientAddress: recipientAddress
@@ -127,20 +128,20 @@ class InvestCoordinator: Coordinator {
   }
   
   fileprivate func openKrytalView() {
-    let coordinator = KrytalCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = KrytalCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     coordinator.start()
     self.krytalCoordinator = coordinator
   }
   
   fileprivate func openRewardView() {
-    let coordinator = RewardCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = RewardCoordinator(navigationController: self.navigationController)
     coordinator.start()
     self.rewardCoordinator = coordinator
   }
   
   fileprivate func openBridgeView() {
-    let coordinator = BridgeCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = BridgeCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     coordinator.start()
     self.bridgeCoordinator = coordinator
@@ -149,24 +150,23 @@ class InvestCoordinator: Coordinator {
   func openHistoryScreen() {
     switch KNGeneralProvider.shared.currentChain {
     case .solana:
-      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, session: session, type: .solana)
+      let coordinator = KNTransactionHistoryCoordinator(navigationController: navigationController, type: .solana)
       coordinator.delegate = self
       coordinate(coordinator: coordinator)
     default:
       self.historyCoordinator = nil
       self.historyCoordinator = KNHistoryCoordinator(
-        navigationController: self.navigationController,
-        session: self.session
+        navigationController: self.navigationController
       )
       self.historyCoordinator?.delegate = self
-      self.historyCoordinator?.appCoordinatorDidUpdateNewSession(self.session)
+      self.historyCoordinator?.appDidSwitchAddress()
       self.historyCoordinator?.start()
     }
   }
   
   func openDappBrowserScreen() {
     self.dappCoordinator = nil
-    let coordinator = DappCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = DappCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     coordinator.start()
     self.dappCoordinator = coordinator
@@ -174,14 +174,14 @@ class InvestCoordinator: Coordinator {
   
   func openBuyCryptoScreen() {
     self.buyCryptoCoordinator = nil
-    let coordinator = BuyCryptoCoordinator(navigationController: self.navigationController, session: self.session)
+    let coordinator = BuyCryptoCoordinator(navigationController: self.navigationController)
     coordinator.delegate = self
     coordinator.start()
     self.buyCryptoCoordinator = coordinator
   }
   
   func openRewardHunting() {
-    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController, session: session)
+    let coordinator = RewardHuntingCoordinator(navigationController: self.navigationController)
     coordinator.start()
     coordinator.delegate = self
     self.rewardHuntingCoordinator = coordinator
@@ -195,14 +195,14 @@ class InvestCoordinator: Coordinator {
     self.historyCoordinator?.appCoordinatorPendingTransactionDidUpdate()
   }
   
-  func appCoordinatorDidUpdateNewSession(_ session: KNSession) {
-    self.sendCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.krytalCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.rewardCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.dappCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.buyCryptoCoordinator?.appCoordinatorDidUpdateNewSession(session)
-    self.multiSendCoordinator.appCoordinatorDidUpdateNewSession(session)
-    self.bridgeCoordinator?.appCoordinatorDidUpdateNewSession(session)
+  func appCoordinatorSwitchAddress() {
+    self.sendCoordinator?.coordinatorAppSwitchAddress()
+    self.krytalCoordinator?.coordinatorAppSwitchAddress()
+    self.rewardCoordinator?.appCoordinatorSwitchAddress()
+    self.dappCoordinator?.appCoordinatorSwitchAddress()
+    self.buyCryptoCoordinator?.appCoordinatorSwitchAddress()
+    self.multiSendCoordinator.appCoordinatorSwitchAddress()
+    self.bridgeCoordinator?.appCoordinatorSwitchAddress()
   }
   
   func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
@@ -246,14 +246,14 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.multiSendCoordinator.start()
       Tracker.track(event: .exploreMultisend)
     case .promoCode:
-      let coordinator = PromoCodeCoordinator(navigationController: self.navigationController, session: self.session)
+      let coordinator = PromoCodeCoordinator(navigationController: self.navigationController)
       coordinator.start()
       self.promoCodeCoordinator = coordinator
     case .rewardHunting:
-      if isImportedWallet(address: session.wallet.addressString) {
-        self.openRewardHunting()
-      } else {
+      if currentAddress.isWatchWallet {
         self.rootViewController.showErrorTopBannerMessage(message: Strings.rewardHuntingWatchWalletErrorMessage)
+      } else {
+        self.openRewardHunting()
       }
     case .bridge:
       guard KNGeneralProvider.shared.currentChain.isSupportedBridge() else {
@@ -305,12 +305,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     coordinator.startImportFlow(privateKey: privateKey, chain: chain)
   }
   
-  private func isImportedWallet(address: String) -> Bool {
-    return !KNWalletStorage.shared.watchWallets.contains { wallet in
-      wallet.address.description == address
-    }
-  }
-  
   func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
     guard let url = WCURL(result) else {
       self.navigationController.showTopBannerView(
@@ -346,23 +340,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
   }
 }
 
-extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
-  
-  func importWalletCoordinatorDidImport(wallet: Wallet, name: String?, importType: ImportType, importMethod: StorageType, selectedChain: ChainType, importChainType: ImportWalletChainType) {
-    // FIXME: Update after merging the new wallet PR
-    navigationController.popViewController(animated: true, completion: nil)
-  }
-  
-  func importWalletCoordinatorDidClose() {
-    importWalletCoordinator = nil
-  }
-  
-  func importWalletCoordinatorDidSendRefCode(_ code: String) {
-    
-  }
-  
-}
-
 extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
   func sendTokenCoordinatorDidSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
@@ -374,10 +351,6 @@ extension InvestCoordinator: KNSendTokenViewCoordinatorDelegate {
   
   func sendTokenCoordinatorDidSelectAddToken(_ token: TokenObject) {
     self.delegate?.investCoordinatorDidSelectAddToken(token)
-  }
-  
-  func sendTokenViewCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
   }
   
   func sendTokenViewCoordinatorSelectOpenHistoryList() {
@@ -406,10 +379,6 @@ extension InvestCoordinator: KNHistoryCoordinatorDelegate {
     self.historyCoordinator = nil
   }
   
-  func historyCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
-  }
-  
   func historyCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
   }
@@ -422,10 +391,6 @@ extension InvestCoordinator: KNHistoryCoordinatorDelegate {
 extension InvestCoordinator: KrytalCoordinatorDelegate {
   func krytalCoordinatorDidSelectAddWallet() {
     self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-  
-  func krytalCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
   }
   
   func krytalCoordinatorDidSelectManageWallet() {
@@ -442,10 +407,6 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
     self.delegate?.investCoordinatorDidSelectAddWallet()
   }
   
-  func buyCryptoCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
-  }
-  
   func buyCryptoCoordinatorDidSelectManageWallet() {
     self.delegate?.investCoordinatorDidSelectManageWallet()
   }
@@ -458,10 +419,6 @@ extension InvestCoordinator: BuyCryptoCoordinatorDelegate {
 extension InvestCoordinator: DappCoordinatorDelegate {
   func dAppCoordinatorDidSelectAddWallet() {
     self.delegate?.investCoordinatorDidSelectAddWallet()
-  }
-
-  func dAppCoordinatorDidSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
   }
   
   func dAppCoordinatorDidSelectManageWallet() {
@@ -476,10 +433,6 @@ extension InvestCoordinator: DappCoordinatorDelegate {
 extension InvestCoordinator: BridgeCoordinatorDelegate {
   func didSelectAddChainWallet(chainType: ChainType) {
     self.delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
-  }
-
-  func didSelectWallet(_ wallet: Wallet) {
-    self.delegate?.investCoordinatorDidSelectWallet(wallet)
   }
   
   func didSelectAddWallet() {

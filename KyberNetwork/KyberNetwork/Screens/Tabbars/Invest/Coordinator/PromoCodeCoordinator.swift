@@ -7,11 +7,15 @@
 
 import Foundation
 import Moya
+import KrystalWallets
 
 class PromoCodeCoordinator: Coordinator {
   let navigationController: UINavigationController
   var coordinators: [Coordinator] = []
-  var session: KNSession
+  
+  var address: KAddress {
+    return AppDelegate.session.address
+  }
   
   lazy var rootViewController: PromoCodeListViewController = {
     let vm = PromoCodeListViewModel()
@@ -20,9 +24,8 @@ class PromoCodeCoordinator: Coordinator {
     return controller
   }()
   
-  init(navigationController: UINavigationController = UINavigationController(), session: KNSession) {
+  init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-    self.session = session
   }
   
   func start() {
@@ -37,9 +40,8 @@ class PromoCodeCoordinator: Coordinator {
 extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
   fileprivate func claimPromotionCode(_ code: String) {
     self.navigationController.displayLoading()
-    let address = self.session.wallet.addressString
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.claimPromotion(code: code, address: address)) { result in
+    provider.requestWithFilter(.claimPromotion(code: code, address: address.addressString)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -82,9 +84,8 @@ extension PromoCodeCoordinator: PromoCodeListViewControllerDelegate {
         }
       }
     case .loadUsedCode:
-      let address = self.session.wallet.addressString
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-      provider.requestWithFilter(.getPromotions(code: "", address: address)) { result in
+      provider.requestWithFilter(.getPromotions(code: "", address: address.addressString)) { result in
         switch result {
         case .success(let resp):
           let decoder = JSONDecoder()

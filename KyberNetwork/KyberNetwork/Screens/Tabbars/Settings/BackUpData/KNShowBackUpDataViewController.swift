@@ -12,11 +12,11 @@ class KNShowBackUpDataViewController: KNBaseViewController {
   @IBOutlet weak var saveButton: UIButton!
 
   fileprivate let backupData: String
-  fileprivate let wallet: String
+  fileprivate let address: String
 
-  init(wallet: String, backupData: String) {
+  init(address: String, backupData: String) {
     self.backupData = backupData
-    self.wallet = wallet
+    self.address = address
     super.init(nibName: "KNShowBackUpDataViewController", bundle: nil)
   }
 
@@ -56,7 +56,7 @@ class KNShowBackUpDataViewController: KNBaseViewController {
   }
 
   @IBAction func saveButtonPressed(_ sender: Any) {
-    let fileName = "krystal_backup_\(self.wallet.description)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
+    let fileName = "krystal_backup_\(address)_\(DateFormatterUtil.shared.backupDateFormatter.string(from: Date())).json"
     let url = URL(fileURLWithPath: NSTemporaryDirectory().appending(fileName))
     do {
       try self.backupData.data(using: .utf8)!.write(to: url)

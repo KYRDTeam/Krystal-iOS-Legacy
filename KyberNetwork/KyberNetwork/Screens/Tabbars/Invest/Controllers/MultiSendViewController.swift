@@ -9,6 +9,7 @@ import UIKit
 import SwipeCellKit
 import QRCodeReaderViewController
 import BigInt
+import KrystalWallets
 
 typealias MultiSendItem = (String, BigInt, Token)
 typealias ApproveMultiSendItem = (BigInt, Token)
@@ -34,11 +35,11 @@ class MultiSendViewModel {
   static let multisendFormDataStoreFileName: String = "MultisendStoreFile.data"
   var cellModels = [MultiSendCellModel()]
   var updatingIndex = 0
-  fileprivate(set) var wallet: Wallet
+  private(set) var address: KAddress
   var needValidation: Bool = false
   
-  init(wallet: Wallet) {
-    self.wallet = wallet
+  init() {
+    self.address = AppDelegate.session.address
     if let stored = self.storedData {
       let models = stored.map { element in
         return MultiSendCellModel(element)
@@ -83,8 +84,8 @@ class MultiSendViewModel {
 
   }
   
-  func updateWallet(_ wallet: Wallet) {
-    self.wallet = wallet
+  func updateWallet(_ address: KAddress) {
+    self.address = address
   }
   
   func saveFormData() {
@@ -217,7 +218,7 @@ class MultiSendViewController: KNBaseViewController {
   }
   
   fileprivate func updateUIWalletButton() {
-    self.walletsListButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsListButton.setTitle(self.viewModel.address.name, for: .normal)
   }
 
   fileprivate func updateUISwitchChain() {
@@ -298,9 +299,8 @@ class MultiSendViewController: KNBaseViewController {
     self.updateUISwitchChain()
   }
   
-  func coordinatorUpdateNewSession(wallet: Wallet) {
+  func coordinatorAppSwitchAddress() {
     guard self.isViewLoaded else { return }
-    self.viewModel.updateWallet(wallet)
     self.updateUIWalletButton()
     self.viewModel.resetDataSource()
     self.updateUIInputTableView()

@@ -7,7 +7,8 @@
 
 import UIKit
 import BigInt
-import TrustCore
+import KrystalWallets
+
 //swiftlint:disable file_length
 class EarnSwapViewModel {
   fileprivate var fromTokenData: TokenData?
@@ -21,7 +22,7 @@ class EarnSwapViewModel {
   fileprivate(set) var gasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var baseGasLimit: BigInt = KNGasConfiguration.earnGasLimitDefault
   fileprivate(set) var selectedGasPriceType: KNSelectedGasPriceType = .medium
-  fileprivate(set) var wallet: Wallet
+//  fileprivate(set) var wallet: Wallet
   var showingRevertRate: Bool = false
   var advancedGasLimit: String? {
     didSet {
@@ -71,7 +72,11 @@ class EarnSwapViewModel {
   var gasPriceSelectedAmount: (String, String) = ("", "")
   var approvingToken: TokenObject?
 
-  init(to: TokenData, from: TokenData?, wallet: Wallet) {
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  init(to: TokenData, from: TokenData?) {
     self.fromTokenData = from
     self.toTokenData = to
     let dataSource = self.toTokenData.lendingPlatforms.map { EarnSelectTableViewCellViewModel(platform: $0) }
@@ -82,7 +87,7 @@ class EarnSwapViewModel {
       notNilValue.isSelected = true
     }
     self.platformDataSource = dataSource
-    self.wallet = wallet
+//    self.wallet = wallet
   }
   
   func updateFocusingField(_ isSource: Bool) {
@@ -325,21 +330,21 @@ class EarnSwapViewModel {
       nonce = value
     }
     
-    if case let .real(account) = self.wallet.type {
+    if currentAddress.isWatchWallet {
+      return nil
+    } else {
       return SignTransaction(
         value: value,
-        account: account,
-        to: Address(string: object.to),
+        address: currentAddress.addressString,
+        to: object.to,
         nonce: nonce,
         data: Data(hex: object.data.drop0x),
         gasPrice: gasPrice,
         gasLimit: gasLimit,
         chainID: KNGeneralProvider.shared.customRPC.chainID
       )
-    } else {
-      //TODO: handle watch wallet type
-      return nil
     }
+    
   }
 
   func buildEIP1559Tx(_ object: TxObject) -> EIP1559Transaction? {
@@ -608,7 +613,7 @@ class EarnSwapViewModel {
     } else {
       return false
     }
-    return data[self.wallet.addressString] ?? false
+    return data[self.currentAddress.addressString] ?? false
   }
 
   func updateExchangeMinRatePercent(_ percent: Double) {
@@ -949,7 +954,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     guard self.isViewLoaded else {
       return
     }
-    self.walletsSelectButton.setTitle(self.viewModel.wallet.getWalletObject()?.name ?? "---", for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.currentAddress.name, for: .normal)
   }
 
   fileprivate func updateUIForSendApprove(isShowApproveButton: Bool, token: TokenObject? = nil) {
@@ -1353,8 +1358,7 @@ class EarnSwapViewController: KNBaseViewController, AbstractEarnViewControler {
     self.updateGasFeeUI()
   }
 
-  func coordinatorUpdateNewSession(wallet: Wallet) {
-    self.viewModel.wallet = wallet
+  func coordinatorAppSwitchAddress() {
     if self.isViewSetup {
       self.updateUIBalanceDidChange()
       self.updateUIWalletSelectButton()
