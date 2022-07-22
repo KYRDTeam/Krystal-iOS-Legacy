@@ -47,8 +47,6 @@ class CameraHoleCover: UIView {
   
   func commonInit() {
     backgroundColor = .clear
-    let size = frame.width * 3 / 4
-    holeFrame = .init(x: frame.midX - size / 2, y: frame.midY - size / 2, width: size, height: size)
   }
   
   override func layoutSubviews() {

@@ -22,9 +22,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KrystalScannerViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="draggingNoteView" destination="eqj-Ml-w8v" id="vAH-VT-S1c"/>
+                <outlet property="holeContainer" destination="iqH-aW-spd" id="3fN-pH-Jda"/>
                 <outlet property="holeCover" destination="GmY-QA-hYd" id="zBl-Pv-jT5"/>
                 <outlet property="infoLabel" destination="N6S-tE-E0c" id="1o8-G9-LEq"/>
                 <outlet property="previewView" destination="iQh-Jq-20D" id="HdN-LL-qwb"/>
+                <outlet property="secureNoteView" destination="6xS-Dx-Yio" id="UxE-Bb-Gwx"/>
                 <outlet property="segmentView" destination="Z7S-YW-t8R" id="tpq-dL-bsb"/>
                 <outlet property="titleLabel" destination="Uqx-qH-jQ7" id="9vD-o9-9mU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -35,6 +37,10 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iqH-aW-spd" userLabel="HoleContainer">
+                    <rect key="frame" x="0.0" y="201.5" width="414" height="513.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQh-Jq-20D" userLabel="PreviewView">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -175,15 +181,19 @@
                 <constraint firstItem="Uqx-qH-jQ7" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RoZ-Ev-Bqx"/>
                 <constraint firstItem="gI3-oT-c1v" firstAttribute="top" secondItem="L2g-M4-bAb" secondAttribute="bottom" constant="24" id="Zha-98-Zk1"/>
                 <constraint firstItem="gI3-oT-c1v" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="bhD-Rg-8I5"/>
+                <constraint firstItem="6xS-Dx-Yio" firstAttribute="top" secondItem="iqH-aW-spd" secondAttribute="bottom" constant="16" id="bkH-0S-FC8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z7S-YW-t8R" secondAttribute="trailing" constant="32" id="ceo-Ce-NOZ"/>
+                <constraint firstItem="iqH-aW-spd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fd5-5q-BKY"/>
                 <constraint firstAttribute="bottom" secondItem="iQh-Jq-20D" secondAttribute="bottom" id="iQJ-S4-RJs"/>
                 <constraint firstItem="iQh-Jq-20D" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="lzm-GD-vq6"/>
                 <constraint firstItem="Z7S-YW-t8R" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="nAf-rt-s8h"/>
+                <constraint firstItem="iqH-aW-spd" firstAttribute="top" secondItem="gI3-oT-c1v" secondAttribute="bottom" constant="16" id="nVS-UX-LxH"/>
                 <constraint firstItem="eqj-Ml-w8v" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="rIC-T3-9Ey"/>
                 <constraint firstItem="6xS-Dx-Yio" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="45" id="rdD-2s-FK8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Z7S-YW-t8R" secondAttribute="bottom" constant="32" id="uuz-wk-WDK"/>
                 <constraint firstAttribute="bottom" secondItem="GmY-QA-hYd" secondAttribute="bottom" id="vxX-GO-6A2"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eqj-Ml-w8v" secondAttribute="trailing" constant="45" id="wQS-H5-93C"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iqH-aW-spd" secondAttribute="trailing" id="ydE-Vh-QFa"/>
             </constraints>
             <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
         </view>

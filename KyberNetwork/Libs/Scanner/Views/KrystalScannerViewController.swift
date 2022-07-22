@@ -13,10 +13,10 @@ class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var holeCover: CameraHoleCover!
   @IBOutlet weak var segmentView: CustomSegmentView!
   @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet weak var secureNoteView: UIView!
   @IBOutlet weak var draggingNoteView: UIView!
   @IBOutlet weak var infoLabel: UILabel!
-  
-  var isDebug = true
+  @IBOutlet weak var holeContainer: UIView!
   
   let captureSession = AVCaptureSession()
   lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
@@ -32,11 +32,16 @@ class KrystalScannerViewController: UIViewController {
   let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 16
   var lastHoleFrame: CGRect = .zero
   var isDraggingEnabled = false
+  var hasLayout = false
   
   var availableScanModes: [ScanMode] = [.qr, .text]
   var acceptedResults: [ScanResultType] = [.walletConnect, .ethPublicKey, .ethPrivateKey, .solPublicKey, .solPrivateKey]
   var detector: TextDetector = BarCodeDetector()
   var onScanSuccess: ((_ text: String, _ type: ScanResultType) -> ())?
+  
+  var isPrivateKeyAccepted: Bool {
+    return acceptedResults.contains(.solPrivateKey) || acceptedResults.contains(.ethPrivateKey)
+  }
   
   var scanMode: ScanMode = .qr {
     didSet {
@@ -80,6 +85,10 @@ class KrystalScannerViewController: UIViewController {
     super.viewDidLayoutSubviews()
     
     self.previewLayer.frame = self.previewView.bounds
+    if !hasLayout {
+      resetHoleFrame()
+      hasLayout = true
+    }
   }
   
   @IBAction func closeWasTapped(_ sender: Any) {
@@ -89,8 +98,17 @@ class KrystalScannerViewController: UIViewController {
   func setupViews() {
     self.titleLabel.text = self.title(forMode: self.scanMode)
     self.infoLabel.text = self.getInfoText()
+    self.secureNoteView.isHidden = !isPrivateKeyAccepted
+    
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     holeCover.addGestureRecognizer(panGesture)
+  }
+  
+  func resetHoleFrame() {
+    let size = self.view.frame.width * 3 / 4
+    self.holeCover.holeFrame = .init(x: self.view.frame.midX - size / 2,
+                                     y: self.holeContainer.frame.midY - size / 2,
+                                     width: size, height: size)
   }
   
   func title(forMode scanMode: ScanMode) -> String {
@@ -113,12 +131,12 @@ class KrystalScannerViewController: UIViewController {
       switch mode {
       case .qr:
         self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
-                                         y: self.view.frame.midY - width / 2,
+                                         y: self.holeContainer.frame.midY - width / 2,
                                          width: width, height: width)
       case .text:
         let height = width / 2
         self.holeCover.holeFrame = .init(x: self.view.frame.midX - width / 2,
-                                         y: self.view.frame.midY - height / 2,
+                                         y: self.holeContainer.frame.midY - height / 2,
                                          width: width, height: height)
       }
     }
@@ -309,8 +327,8 @@ extension KrystalScannerViewController {
       
       let dx = location.x - lastTouch.x
       let dy = location.y - lastTouch.y
-      let dxLastTouchToCenter = lastTouch.x - view.center.x
-      let dyLastTouchToCenter = lastTouch.y - view.center.y
+      let dxLastTouchToCenter = lastTouch.x - holeContainer.center.x
+      let dyLastTouchToCenter = lastTouch.y - holeContainer.center.y
       
       var newWidth = lastHoleFrame.width
       var newHeight = lastHoleFrame.height
