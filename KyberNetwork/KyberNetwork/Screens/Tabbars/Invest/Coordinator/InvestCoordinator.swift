@@ -270,13 +270,16 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         return
       }
       var acceptedResultTypes: [ScanResultType] = [.walletConnect]
+      var scanModes: [ScanMode] = [.qr, .text]
       if KNGeneralProvider.shared.currentChain.isEVM {
         acceptedResultTypes.append(contentsOf: [.ethPublicKey, .ethPrivateKey])
+        scanModes = [.qr, .text]
       } else if KNGeneralProvider.shared.currentChain == .solana {
         acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
+        scanModes = [.qr]
       }
       
-      ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes) { [weak self] text, type in
+      ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
         guard let self = self else { return }
         switch type {
         case .walletConnect:
