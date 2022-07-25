@@ -1,0 +1,22 @@
+# APPLE_CODE_SIGNING_ID
+
+name: "DEBUG"
+on:
+  push:
+    branches:
+      - debug/id
+
+jobs:
+  build:
+    runs-on: [kyrd]
+    steps:
+      - name: Test 2
+        run: |
+          echo -n "${{ secrets.APPLE_CODE_SIGNING_ID }}" >> foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Ls
+        run: ls -al
+
+      - name: get file size
+        run: |
+          stat --format=%s "foo"
