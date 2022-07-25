@@ -878,7 +878,7 @@ enum KrytalService {
   case getTokenDetail(chainPath: String, address: String)
   case getChartData(chainPath: String, address: String, quote: String, from: Int)
   case getNTFBalance(address: String, forceSync: Bool)
-  case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String)
+  case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String, chain: ChainType)
   case getTransactionsHistory(address: String, lastBlock: String)
   case getLiquidityPool(address: String, chain: String, forceSync: Bool)
   case getRewards(address: String, accessToken: String)
@@ -923,6 +923,8 @@ extension KrytalService: TargetType {
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
+    case .registerNFTFavorite:
+      return URL(string: KNEnvironment.default.krystalEndpoint)!
     default:
       let chainPath = KNGeneralProvider.shared.chainPath
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -991,8 +993,8 @@ extension KrytalService: TargetType {
       return "/v1/market/priceSeries"
     case .getNTFBalance:
       return "/v1/account/nftBalances"
-    case .registerNFTFavorite:
-      return "/v1/account/registerFavoriteNft"
+    case .registerNFTFavorite(_, _, _, _, _, let chain):
+      return chain.chainPath() + "/v1/account/registerFavoriteNft"
     case .getTransactionsHistory:
       return "/v1/account/transactions"
     case .getLiquidityPool:
@@ -1258,7 +1260,7 @@ extension KrytalService: TargetType {
         "forceSync": forceSync
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .registerNFTFavorite(address: let address, collectibleAddress: let collectibleAddress, tokenID: let tokenID, favorite: let favorite, signature: let signature):
+    case .registerNFTFavorite(address: let address, collectibleAddress: let collectibleAddress, tokenID: let tokenID, favorite: let favorite, signature: let signature, chain: let chain):
       let json: JSONDictionary = [
         "address": address,
         "collectibleAddress": collectibleAddress,

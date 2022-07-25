@@ -113,7 +113,7 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   }
   
   @IBAction func shareButtonTapped(_ sender: UIButton) {
-    self.navigationController?.openSafari(with: "https://defi.krystal.app/nft?collectibleAddress=\(self.viewModel.category.collectibleAddress)&tokenID=\(self.viewModel.item.tokenID)?chainId=\(KNGeneralProvider.shared.customRPC.chainID)")
+    self.navigationController?.openSafari(with: "https://defi.krystal.app/nft?collectibleAddress=\(self.viewModel.category.collectibleAddress)&tokenID=\(self.viewModel.item.tokenID)?chainId=\(self.viewModel.category.chainType?.customRPC().chainID ?? 1)")
   }
   
   @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -125,6 +125,6 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   }
   
   @IBAction func etherscanButtonTapped(_ sender: UIButton) {
-    self.navigationController?.openSafari(with: "\(KNGeneralProvider.shared.customRPC.etherScanEndpoint)address/\(self.viewModel.category.collectibleAddress)")
+    self.navigationController?.openSafari(with: "\(self.viewModel.category.chainType?.customRPC().etherScanEndpoint ?? "")address/\(self.viewModel.category.collectibleAddress)")
   }
 }
