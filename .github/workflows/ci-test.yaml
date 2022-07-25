@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [kyrd]
+    runs-on: [self-hosted]
     steps:
       - name: Test 2
         run: |
