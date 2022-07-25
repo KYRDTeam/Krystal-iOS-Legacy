@@ -307,7 +307,6 @@ class KNLoadBalanceCoordinator {
             allBalances.append(contentsOf: e.balances)
           }
           
-//          print("[LoadNFT] \(allBalances)")
           BalanceStorage.shared.setNFTBalance(allBalances)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           completion(true)
@@ -318,29 +317,6 @@ class KNLoadBalanceCoordinator {
         completion(false)
       }
     }
-    
-    
-    
-//    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-//    provider.requestWithFilter(.getNTFBalance(address: self.session.wallet.addressString, forceSync: forceSync)) { result in
-//      switch result {
-//      case .success(let resp):
-//        let decoder = JSONDecoder()
-//        do {
-//          let data = try decoder.decode(NftResponse.self, from: resp.data)
-//          print("[LoadNFT] \(data)")
-//          BalanceStorage.shared.setNFTBalance(data.balances)
-//          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-//          completion(true)
-//        } catch let error {
-//          print("[LoadNFT] \(error.localizedDescription)")
-//          completion(false)
-//        }
-//      case .failure(let error):
-//        print("[LoadNFT] \(error.localizedDescription)")
-//        completion(false)
-//      }
-//    }
   }
 
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {

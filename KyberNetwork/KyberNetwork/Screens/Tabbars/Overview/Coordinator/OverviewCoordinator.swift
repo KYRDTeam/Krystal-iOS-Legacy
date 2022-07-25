@@ -988,6 +988,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))
                 controller.coordinatorDidUpdateFavStatus(status)
+                AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadNFTBalance(completion: { _ in })
               } else if let error = json["error"] as? String {
                 self.navigationController.showTopBannerView(message: error)
               } else {
