@@ -980,7 +980,7 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
         let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
         let sendData = prefix + data
         do {
-          let signedData = try EthSigner().signHash(address: currentAddress, hash: sendData)
+          let signedData = try EthSigner().signMessage(address: currentAddress, data: sendData)
           print("[Send favorite nft] success")
           let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
           provider.requestWithFilter(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded, chain: category.chainType ?? KNGeneralProvider.shared.currentChain)) { result in

@@ -13,20 +13,12 @@ public class EthSigner: KSignerProtocol {
   let walletManager = WalletManager.shared
   
   public init() {}
-  
-  public func signHash(address: KAddress, hash: Data) throws -> Data {
+
+  public func signMessage(address: KAddress, data: Data, addPrefix: Bool = false) throws -> Data {
     guard let wallet = walletManager.wallet(forAddress: address) else {
       throw SigningError.addressNotFound
     }
-    let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .evm)
-    return privateKey.sign(digest: hash, curve: .secp256k1)!
-  }
-  
-  public func signMessage(address: KAddress, data: Data, addPrefix: Bool) throws -> Data {
-    guard let wallet = walletManager.wallet(forAddress: address) else {
-      throw SigningError.addressNotFound
-    }
-    let message = addPrefix ? Hash.keccak256(data: ethereumMessage(for: data)) : data
+    let message = Hash.keccak256(data: addPrefix ? ethereumMessage(for: data) : data)
     let privateKey = try walletManager.getPrivateKey(wallet: wallet, forAddressType: .evm)
     var signed = privateKey.sign(digest: message, curve: .secp256k1)!
     signed[64] += 27
