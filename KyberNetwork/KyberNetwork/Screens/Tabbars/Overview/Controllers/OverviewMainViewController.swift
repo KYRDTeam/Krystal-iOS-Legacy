@@ -114,7 +114,7 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   func setupViews() {
-    scanButton.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
+    scanButton.isHidden = false // !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   func configHeaderTapped() {
@@ -334,11 +334,10 @@ class OverviewMainViewController: KNBaseViewController {
     guard let nav = self.navigationController else { return }
     
     var acceptedResultTypes: [ScanResultType] = [.walletConnect]
-    
     if KNGeneralProvider.shared.currentChain.isEVM {
-      acceptedResultTypes.append(contentsOf: [.ethPrivateKey, .ethPublicKey])
+      acceptedResultTypes.append(contentsOf: [.ethPublicKey, .ethPrivateKey])
     } else if KNGeneralProvider.shared.currentChain == .solana {
-      acceptedResultTypes.append(contentsOf: [.solPrivateKey, .solPublicKey])
+      acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
     }
     
     ScannerModule.start(navigationController: nav, acceptedResultTypes: acceptedResultTypes) { [weak self] text, type in

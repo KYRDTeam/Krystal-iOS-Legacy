@@ -122,9 +122,20 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
         return [.solPrivateKey]
       }
     }()
+    let scanModes: [ScanMode] = {
+      switch importType {
+      case .multiChain:
+        return []
+      case .evm:
+        return [.qr, .text]
+      case .solana:
+        return [.qr]
+      }
+    }()
     ScannerModule.start(navigationController: navigation,
                         acceptedResultTypes: acceptedResultTypes,
-                        defaultScanMode: .text) { [weak self] privateKey, _ in
+                        defaultScanMode: scanModes.contains(.text) ? .text : .qr,
+                        scanModes: scanModes) { [weak self] privateKey, _ in
       self?.enterPrivateKeyTextField.text = privateKey.drop0x
       self?.updateNextButton()
     }

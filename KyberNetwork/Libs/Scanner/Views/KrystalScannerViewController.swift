@@ -17,6 +17,7 @@ class KrystalScannerViewController: UIViewController {
   @IBOutlet weak var draggingNoteView: UIView!
   @IBOutlet weak var infoLabel: UILabel!
   @IBOutlet weak var holeContainer: UIView!
+  @IBOutlet weak var holeFrameLimit: UIView!
   
   let captureSession = AVCaptureSession()
   lazy var previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
@@ -29,7 +30,7 @@ class KrystalScannerViewController: UIViewController {
   let maskLayer = CAShapeLayer()
   var lastTouch: CGPoint = .zero
   let minHoleSize: CGFloat = 100
-  let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 16
+  let maxHoleWidth: CGFloat = UIScreen.main.bounds.width - 32
   var lastHoleFrame: CGRect = .zero
   var isDraggingEnabled = false
   var hasLayout = false
@@ -40,6 +41,7 @@ class KrystalScannerViewController: UIViewController {
   var detector: TextDetector = BarCodeDetector()
   var onScanSuccess: ((_ text: String, _ type: ScanResultType) -> ())?
   
+  // true if accepted result types contains private key
   var isPrivateKeyAccepted: Bool {
     return acceptedResults.contains(.solPrivateKey) || acceptedResults.contains(.ethPrivateKey)
   }
@@ -98,6 +100,7 @@ class KrystalScannerViewController: UIViewController {
   }
   
   func setupViews() {
+    self.segmentView.isHidden = availableScanModes.count < 2
     self.titleLabel.text = self.title(forMode: self.scanMode)
     self.infoLabel.text = self.getInfoText()
     self.secureNoteView.isHidden = !isPrivateKeyAccepted
@@ -269,13 +272,13 @@ extension KrystalScannerViewController {
         }
       }
       if dy * dyLastTouchToCenter < 0 {
-        if newHeight - abs(dy) * 2 >= minHoleSize {
+        if newHeight - abs(dy) * 2 >= minHoleSize && newHeight - abs(dy) * 2 <= holeFrameLimit.frame.height {
           newHeight -= abs(dy) * 2
         } else {
           newHeight = holeCover.holeFrame.height
         }
       } else {
-        if newHeight + abs(dy) * 2 >= minHoleSize {
+        if newHeight + abs(dy) * 2 >= minHoleSize && newHeight + abs(dy) * 2 <= holeFrameLimit.frame.height {
           newHeight += abs(dy) * 2
         } else {
           newHeight = holeCover.holeFrame.height

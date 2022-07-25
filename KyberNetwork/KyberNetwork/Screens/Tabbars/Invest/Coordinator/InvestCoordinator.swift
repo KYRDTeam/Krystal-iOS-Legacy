@@ -271,9 +271,9 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       }
       var acceptedResultTypes: [ScanResultType] = [.walletConnect]
       if KNGeneralProvider.shared.currentChain.isEVM {
-        acceptedResultTypes.append(contentsOf: [.ethPrivateKey, .ethPublicKey])
+        acceptedResultTypes.append(contentsOf: [.ethPublicKey, .ethPrivateKey])
       } else if KNGeneralProvider.shared.currentChain == .solana {
-        acceptedResultTypes.append(contentsOf: [.solPrivateKey, .solPublicKey])
+        acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
       }
       
       ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes) { [weak self] text, type in
