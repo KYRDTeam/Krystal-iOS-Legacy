@@ -130,10 +130,10 @@ struct AllNftData: Codable {
 
 // MARK: - Balance
 class NFTSection: Codable {
-    let collectibleName, collectibleAddress, collectibleSymbol: String
-    let collectibleLogo: String
-    var items: [NFTItem]
-    var chainType: ChainType?
+  let collectibleName, collectibleAddress, collectibleSymbol: String
+  let collectibleLogo: String
+  var items: [NFTItem]
+  var chainType: ChainType?
   
   init(
     collectibleName: String,

@@ -103,6 +103,28 @@ class OverviewNFTDetailViewController: KNBaseViewController {
   }
   
   @IBAction func tranferButtonTapped(_ sender: UIButton) {
+    guard self.viewModel.category.chainType == KNGeneralProvider.shared.currentChain else {
+      if let chain = self.viewModel.category.chainType {
+        let alertController = KNPrettyAlertController(
+          title: "",
+          message: "Please switch to \(chain.chainName()) to continue".toBeLocalised(),
+          secondButtonTitle: Strings.ok,
+          firstButtonTitle: Strings.cancel,
+          secondButtonAction: {
+            
+            KNGeneralProvider.shared.currentChain = chain
+            KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+          },
+          firstButtonAction: {
+            
+          }
+        )
+        alertController.popupHeight = 220
+        self.present(alertController, animated: true, completion: nil)
+      }
+      
+      return
+    }
     self.delegate?.overviewNFTDetailViewController(self, run: .sendItem(item: self.viewModel.item, category: self.viewModel.category))
   }
   

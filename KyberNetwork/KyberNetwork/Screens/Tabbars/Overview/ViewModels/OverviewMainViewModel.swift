@@ -450,17 +450,17 @@ class OverviewMainViewModel {
         self.displayNFTDataSource.value[item.collectibleName] = viewModels
       })
       
-      let favedItems = BalanceStorage.shared.getAllFavedItems()
+      let favedItems = BalanceStorage.shared.getAllFavedItems(self.currentChain)
       if !favedItems.isEmpty {
         let favSection = NFTSection(collectibleName: "Favorite NFT", collectibleAddress: "", collectibleSymbol: "FAV", collectibleLogo: "", items: [])
         self.displayNFTHeader.value.insert(favSection, at: 0)
         var viewModels: [OverviewNFTCellViewModel] = []
         if favedItems.count <= 2 {
-          viewModels.append(OverviewNFTCellViewModel(item1: favedItems[safeIndex: 0]?.0, item2: favedItems[safeIndex: 1]?.0, category1: favedItems[safeIndex: 0]?.1, category2: favedItems[safeIndex: 1]?.1))
+          viewModels.append(OverviewNFTCellViewModel(item1: favedItems[safeIndex: 0]?.0, item2: favedItems[safeIndex: 1]?.0, category1: favedItems[safeIndex: 0]?.1, category2: favedItems[safeIndex: 1]?.1, isFav: true))
         } else {
           let chucked = favedItems.chunked(into: 2)
           let vm = chucked.map { slided in
-            return OverviewNFTCellViewModel(item1: slided[safeIndex: 0]?.0, item2: slided[safeIndex: 1]?.0, category1: slided[safeIndex: 0]?.1, category2: slided[safeIndex: 1]?.1)
+            return OverviewNFTCellViewModel(item1: slided[safeIndex: 0]?.0, item2: slided[safeIndex: 1]?.0, category1: slided[safeIndex: 0]?.1, category2: slided[safeIndex: 1]?.1, isFav: true)
           }
           viewModels.append(contentsOf: vm)
         }

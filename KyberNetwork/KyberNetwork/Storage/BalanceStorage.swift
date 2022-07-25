@@ -450,13 +450,19 @@ class BalanceStorage {
     Storage.store(self.customNftBalance.value, as: unwrapped.addressString + Constants.customNftBalanceStoreFileName)
   }
   
-  func getAllFavedItems() -> [(NFTItem, NFTSection)] {
+  func getAllFavedItems(_ chain: ChainType) -> [(NFTItem, NFTSection)] {
     var result: [(NFTItem, NFTSection)] = []
     
     self.getAllNFTBalance().forEach { section in
       section.items.forEach { item in
         if item.favorite {
-          result.append((item, section))
+          if chain == .all {
+            result.append((item, section))
+          } else {
+            if section.chainType == chain {
+              result.append((item, section))
+            }
+          }
         }
       }
     }

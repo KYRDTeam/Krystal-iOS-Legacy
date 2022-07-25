@@ -7,11 +7,20 @@
 
 import UIKit
 
-struct OverviewNFTCellViewModel {
+class OverviewNFTCellViewModel {
   let item1: NFTItem?
   let item2: NFTItem?
   let category1: NFTSection?
   let category2: NFTSection?
+  var isFav: Bool
+  
+  init(item1: NFTItem?, item2: NFTItem?, category1: NFTSection?, category2: NFTSection?, isFav: Bool = false) {
+    self.item1 = item1
+    self.item2 = item2
+    self.category1 = category1
+    self.category2 = category2
+    self.isFav = isFav
+  }
   
 }
 
@@ -24,13 +33,15 @@ class OverviewNFTTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenId1: UILabel!
   @IBOutlet weak var container1: UIView!
   @IBOutlet weak var tokenBalance1: UILabel!
+  @IBOutlet weak var tokenChain1: UIImageView!
   
   @IBOutlet weak var icon2: UIImageView!
   @IBOutlet weak var tokenName2: UILabel!
   @IBOutlet weak var tokenId2: UILabel!
   @IBOutlet weak var container2: UIView!
   @IBOutlet weak var tokenBalance2: UILabel!
-  
+  @IBOutlet weak var tokenChain2: UIImageView!
+
   var viewModel: OverviewNFTCellViewModel?
   var completeHandle: ((NFTItem, NFTSection) -> Void)?
   
@@ -56,6 +67,13 @@ class OverviewNFTTableViewCell: UITableViewCell {
       } else {
         self.tokenBalance1.text = ""
       }
+      
+      if viewModel.isFav == true, let chainType = viewModel.category1?.chainType {
+        self.tokenChain1.image = chainType.chainIcon()
+        self.tokenChain1.isHidden = false
+      } else {
+        self.tokenChain1.isHidden = true
+      }
     }
     
     if let notNil2 = viewModel.item2 {
@@ -66,6 +84,13 @@ class OverviewNFTTableViewCell: UITableViewCell {
         self.tokenBalance2.text = "x\(notNil2.balanceInt)"
       } else {
         self.tokenBalance2.text = ""
+      }
+      
+      if viewModel.isFav == true, let chainType = viewModel.category2?.chainType {
+        self.tokenChain2.image = chainType.chainIcon()
+        self.tokenChain2.isHidden = false
+      } else {
+        self.tokenChain2.isHidden = true
       }
     }
     
