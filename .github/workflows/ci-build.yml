@@ -137,6 +137,9 @@ jobs:
           
           ls -al $HOME/krystal-mobile-enviroment/
           
+          cd $HOME/krystal-mobile-enviroment
+          
+          git log
           
           CONFIG_PATH=$HOME/krystal-mobile-enviroment/ios/
           ls -al $CONFIG_PATH
