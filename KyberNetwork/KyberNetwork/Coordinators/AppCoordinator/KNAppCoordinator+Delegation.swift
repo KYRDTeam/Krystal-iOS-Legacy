@@ -108,6 +108,11 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
+  
+  func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType) {
+    switchWallet(wallet: wallet, chain: chainType)
+  }
+  
   func overviewCoordinatorDidStart() {
     if self.isFirstLoad {
       self.showBackupWalletIfNeeded()

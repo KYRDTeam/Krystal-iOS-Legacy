@@ -13,6 +13,7 @@ import WalletConnectSwift
 import KrystalWallets
 
 protocol OverviewCoordinatorDelegate: class {
+  func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectManageWallet()
@@ -843,6 +844,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
 extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
     navigationController.popViewController(animated: true, completion: nil)
   }
   
