@@ -30,9 +30,9 @@ class OverviewMainViewCell: UITableViewCell {
     self.viewModel = viewModel
     self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.displayTitle)
     self.tokenLabel.text = viewModel.displayTitle
-    self.tokenBalanceLabel.text = viewModel.displaySubTitleDetail
-    self.tokenValueLabel.text = viewModel.displayAccessoryTitle
-    self.tokenValueLabel.textColor = viewModel.displayAccessoryTextColor
+    self.tokenBalanceLabel.text = viewModel.multiChainSubTitle
+    self.tokenValueLabel.text = viewModel.multiChainAccessoryTitle
+    self.tokenValueLabel.textColor = viewModel.multichainAccessoryTextColor
     self.change24Button.isHidden = viewModel.displayDetailBox.isEmpty
     self.change24Button.setTitle(viewModel.displayDetailBox, for: .normal)
     self.change24Button.backgroundColor = viewModel.displayAccessoryColor

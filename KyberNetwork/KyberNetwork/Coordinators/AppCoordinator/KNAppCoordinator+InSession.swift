@@ -25,6 +25,7 @@ extension KNAppCoordinator {
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
     self.loadBalanceCoordinator = KNLoadBalanceCoordinator()
+    self.loadBalanceCoordinator?.delegate = self
     self.loadBalanceCoordinator?.resume()
 
     self.tabbarController = KNTabBarController()

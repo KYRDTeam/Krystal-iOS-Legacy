@@ -12,6 +12,9 @@ import FirebasePerformance
 import Firebase
 import KrystalWallets
 
+protocol KNLoadBalanceCoordinatorDelegate: class {
+  func loadBalanceCoordinatorDidGetBalance(chainBalances: [ChainBalanceModel])
+}
 class KNLoadBalanceCoordinator {
 
 //  fileprivate var session: KNSession! //TODO: use general provider to load balance instead of external provider
@@ -25,7 +28,7 @@ class KNLoadBalanceCoordinator {
   fileprivate var fetchTotalBalanceTimer: Timer?
   fileprivate var fetchTokenBalanceTimer: Timer?
   fileprivate var isFetchNonSupportedBalance: Bool = false
-
+  weak var delegate: KNLoadBalanceCoordinatorDelegate?
   fileprivate var lastRefreshTime: Date = Date()
 
   var address: KAddress {
@@ -42,7 +45,7 @@ class KNLoadBalanceCoordinator {
 
   func restartNewSession(_ session: KNSession) {
 //    self.session = session
-//    self.resume()
+    self.resume()
   }
 
   func loadAllBalances() {
@@ -233,29 +236,42 @@ class KNLoadBalanceCoordinator {
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getBalances(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
+    var addressString = ""
+    if AppDelegate.session.address.addressType == .evm {
+      addressString = "ethereum:\(AppDelegate.session.address.addressString)"
+    } else {
+      addressString = "solana:\(AppDelegate.session.address.addressString)"
+    }
+    let quoteSymbols = ["btc,usd,\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())"]
+    provider.requestWithFilter(.getMultichainBalance(address: [addressString], chainIds: ["\(KNGeneralProvider.shared.currentChain.getChainId())"], quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
-        let decoder = JSONDecoder()
-        do {
-          let data = try decoder.decode(BalancesResponse.self, from: resp.data)
-          let balances = data.balances.map { (data) -> TokenBalance in
-            return TokenBalance(address: data.token.address, balance: data.balance)
+        var chainBalanceModels: [ChainBalanceModel] = []
+        if let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] {
+          var allTokens: [Token] = []
+          var tokenBalances: [TokenBalance] = []
+          jsons.forEach { jsonData in
+            let chainModel = ChainBalanceModel(json: jsonData)
+            chainBalanceModels.append(chainModel)
+            chainModel.balances.forEach { balance in
+              allTokens.append(balance.token)
+              let tokenBalance = TokenBalance(address: balance.token.address, balance: balance.balance)
+              tokenBalances.append(tokenBalance)
+            }
           }
-          let tokens = data.balances.map { data -> Token in
-            return data.token
-          }
-          BalanceStorage.shared.setBalances(balances)
-          KNSupportedTokenStorage.shared.updateNewDataForCustomTokensIfHave(tokens)
-          KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded(tokens)
+          BalanceStorage.shared.setBalances(tokenBalances)
+          KNSupportedTokenStorage.shared.updateNewDataForCustomTokensIfHave(allTokens)
+          KNSupportedTokenStorage.shared.checkAddCustomTokenIfNeeded(allTokens)
           KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-          completion(true)
-        } catch let error {
-          print("[LoadBalance] \(error.localizedDescription)")
-          completion(false)
+          self.delegate?.loadBalanceCoordinatorDidGetBalance(chainBalances: chainBalanceModels)
         }
+        completion(true)
       case .failure(let error):
-        print("[LoadBalance] \(error.localizedDescription)")
+//        self.rootViewController.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
