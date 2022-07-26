@@ -264,8 +264,8 @@ class OverviewMainViewModel {
     self.summaryDataSource.value.forEach { data in
       total += data.value
     }
-    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
-    let totalBigInt = BigInt(total * pow(10.0, 18.0)) - hideAndDeleteTotal
+//    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
+    let totalBigInt = BigInt(total * pow(10.0, 18.0))// - hideAndDeleteTotal
 
     let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
       //re-calculate value and percent for each chain by subtract to hide or delete tokens
@@ -284,46 +284,21 @@ class OverviewMainViewModel {
     self.summaryDataSource.value = array
   }
   
-  func reloadSingleChainAssetData(mode: RightMode) {
-    var assetTokens = KNSupportedTokenStorage.shared.getAssetTokens().sorted { (left, right) -> Bool in
-      return left.getValueBigInt(self.currencyMode) > right.getValueBigInt(self.currencyMode)
-    }
-    self.displayHeader.value = []
-    self.displayTotalValues.value = [:]
-    let models = assetTokens.map { (item) -> OverviewMainCellViewModel in
-      let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
-      viewModel.tag = item.tag
-      return viewModel
-    }
-    self.dataSource.value = ["": models]
-    // filter to hide small assets
-    if self.isHidingSmallAssetsToken {
-      assetTokens = self.filterSmallAssetTokens(tokens: assetTokens)
-    }
-    var total = BigInt(0)
-    let displayModels = assetTokens.map { (item) -> OverviewMainCellViewModel in
-      total += item.getValueBigInt(self.currencyMode)
-      let viewModel = OverviewMainCellViewModel(mode: .asset(token: item, rightMode: mode), currency: self.currencyMode)
-      viewModel.tag = item.tag
-      return viewModel
-    }
-    self.displayDataSource.value = ["": displayModels]
-    let displayTotalString = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-    self.displayTotalValues.value["all"] = displayTotalString
-    self.displayNFTHeader.value = []
-    self.displayNFTDataSource.value = [:]
-  }
-  
-  func reloadMultiChainAssetData(mode: RightMode)  {
+  func reloadAssetData(mode: RightMode) {
     var displayModels: [OverviewMainCellViewModel] = []
     var total:Double = 0
     self.assetChainBalanceModels.forEach { chainBalanceModel in
-      var filterValues = chainBalanceModel.balances.filter { balance in
-        let chainType = ChainType.make(chainID: chainBalanceModel.chainId) ?? KNGeneralProvider.shared.currentChain
-        if let disableTokens = KNSupportedTokenStorage.shared.chainDisableTokens[chainType] {
-          return !disableTokens.contains(balance.token)
+      // filter lending token
+      let chainType = ChainType.make(chainID: chainBalanceModel.chainId) ?? KNGeneralProvider.shared.currentChain
+      let lendingBalances = BalanceStorage.shared.getAllLendingBalances(chainType)
+      var lendingSymbols: [String] = []
+      lendingBalances.forEach { (lendingPlatform) in
+        lendingPlatform.balances.forEach { (balance) in
+          lendingSymbols.append(balance.interestBearingTokenSymbol.lowercased())
         }
-        return true
+      }
+      var filterValues = chainBalanceModel.balances.filter { balance in
+        return !lendingSymbols.contains(balance.token.symbol.lowercased())
       }
       if self.isHidingSmallAssetsToken {
         filterValues = filterValues.filter { balance in
@@ -352,20 +327,10 @@ class OverviewMainViewModel {
       displayModels.append(contentsOf: displayModel)
     }
     self.displayDataSource.value = ["": displayModels]
-    
-    
     let displayTotalString = self.currencyMode.symbol() + StringFormatter.currencyString(value: total, symbol: self.currencyMode.toString()) + self.currencyMode.suffixSymbol()
     self.displayTotalValues.value["all"] = displayTotalString
     self.displayNFTHeader.value = []
     self.displayNFTDataSource.value = [:]
-  }
-  
-  func reloadAssetData(mode: RightMode) {
-    if self.currentChain == .all {
-      self.reloadMultiChainAssetData(mode: mode)
-      return
-    }
-    self.reloadSingleChainAssetData(mode: mode)
   }
   
   func reloadAllData() {

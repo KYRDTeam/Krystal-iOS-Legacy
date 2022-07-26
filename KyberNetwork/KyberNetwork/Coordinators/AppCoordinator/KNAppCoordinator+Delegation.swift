@@ -205,6 +205,12 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
   }
 }
 
+extension KNAppCoordinator: KNLoadBalanceCoordinatorDelegate {
+  func loadBalanceCoordinatorDidGetBalance(chainBalances: [ChainBalanceModel]) {
+    self.overviewTabCoordinator?.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalances)
+  }
+}
+
 // MARK: Settings Coordinator Delegate
 extension KNAppCoordinator: KNSettingsCoordinatorDelegate {
 
