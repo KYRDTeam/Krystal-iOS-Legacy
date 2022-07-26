@@ -543,7 +543,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }
@@ -620,7 +620,7 @@ extension OverviewMainViewController: UITableViewDelegate {
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
         let platform = self.viewModel.displayHeader.value[indexPath.section]
-        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform, balance: lendingBalance))
+        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.0, balance: lendingBalance))
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         self.delegate?.overviewMainViewController(self, run: .claim(balance: distributionBalance))
       }

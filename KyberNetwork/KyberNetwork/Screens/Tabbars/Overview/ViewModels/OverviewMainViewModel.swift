@@ -186,7 +186,7 @@ class OverviewMainViewModel {
   var summaryDataSource: ThreadProtectedObject<[OverviewSummaryCellViewModel]> = .init(storageValue: [])
   
   var displayLPDataSource: ThreadProtectedObject<[String: [OverviewLiquidityPoolViewModel]]> = .init(storageValue: [:])
-  var displayHeader: ThreadProtectedObject<[String]> = .init(storageValue: [])
+  var displayHeader: ThreadProtectedObject<[(String, ChainType?)]> = .init(storageValue: [])
   
   var displayTotalValues: ThreadProtectedObject<[String: String]> = .init(storageValue: [:])
   
@@ -338,7 +338,7 @@ class OverviewMainViewModel {
       self.displayNFTHeader.value = []
       self.displayNFTDataSource.value = [:]
     case .supply:
-      let supplyBalance = BalanceStorage.shared.getSupplyBalances()
+      let supplyBalance = BalanceStorage.shared.getSupplyBalances(self.currentChain)
       self.displayHeader.value = supplyBalance.0
       let data = supplyBalance.1
       var models: [String: [OverviewMainCellViewModel]] = [:]
@@ -346,7 +346,7 @@ class OverviewMainViewModel {
       self.displayHeader.value.forEach { (key) in
         var sectionModels: [OverviewMainCellViewModel] = []
         var totalSection = BigInt(0)
-        data[key]?.forEach({ (item) in
+        data[key.0]?.forEach({ (item) in
           if let lendingBalance = item as? LendingBalance {
             if !lendingBalance.hasSmallAmount {
               totalSection += lendingBalance.getValueBigInt(self.currencyMode)
@@ -357,9 +357,9 @@ class OverviewMainViewModel {
             sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
           }
         })
-        models[key] = sectionModels
+        models[key.0] = sectionModels
         let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-        self.displayTotalValues.value[key] = displayTotalSection
+        self.displayTotalValues.value[key.0] = displayTotalSection
         total += totalSection
       }
       self.dataSource.value = models
@@ -369,7 +369,10 @@ class OverviewMainViewModel {
       self.displayNFTDataSource.value = [:]
     case .showLiquidityPool:
       let liquidityPoolData = BalanceStorage.shared.getLiquidityPools(currency: self.currencyMode)
-      self.displayHeader.value = liquidityPoolData.0
+      //TODO: temp fix replace later
+      self.displayHeader.value = liquidityPoolData.0.map({ e in
+        return (e, nil)
+      })
       let data = liquidityPoolData.1
       var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
       var total = 0.0
@@ -378,7 +381,7 @@ class OverviewMainViewModel {
         var sectionModels: [OverviewLiquidityPoolViewModel] = []
         //value for total balance of current pool
         var totalSection = 0.0
-        data[key.lowercased()]?.forEach({ (item) in
+        data[key.0.lowercased()]?.forEach({ (item) in
           if let poolPairToken = item as? [LPTokenModel] {
             poolPairToken.forEach { token in
               //add total value of each token in current pair
@@ -388,11 +391,11 @@ class OverviewMainViewModel {
           }
         })
         
-        models[key] = sectionModels
+        models[key.0] = sectionModels
         let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
         let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
         
-        self.displayTotalValues.value[key] = displayTotalSection
+        self.displayTotalValues.value[key.0] = displayTotalSection
         total += totalSection
       }
       self.displayLPDataSource.value = models
@@ -494,7 +497,7 @@ class OverviewMainViewModel {
     }
     
     let key = self.displayHeader.value[section]
-    return self.displayDataSource.value[key] ?? []
+    return self.displayDataSource.value[key.0] ?? []
   }
   
   func numberOfRowsInSection(section: Int) -> Int {
@@ -516,7 +519,7 @@ class OverviewMainViewModel {
       return self.getViewModelsForSection(section).count + 1
     case .showLiquidityPool:
       let key = self.displayHeader.value[section]
-      return self.displayLPDataSource.value[key]?.count ?? 0
+      return self.displayLPDataSource.value[key.0]?.count ?? 0
     default:
       return self.getViewModelsForSection(section).count
     }
@@ -630,10 +633,10 @@ class OverviewMainViewModel {
       let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
       
       let titleText = self.displayHeader.value[section]
-      let titleTextWidth = titleText.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
+      let titleTextWidth = titleText.0.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
       let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: titleTextWidth, height: 40))
       titleLabel.center.y = view.center.y
-      titleLabel.text = titleText
+      titleLabel.text = titleText.0
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
@@ -645,32 +648,33 @@ class OverviewMainViewModel {
       valueLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(valueLabel)
       
-      let iconChain = UIImageView(frame: CGRect(x: 8, y: 0, width: 12, height: 12))
-      iconChain.image = self.currentChain.chainIcon()
-      
-      let chainTitle = self.currentChain.chainName()
-      
-      let chainTitleWidth = chainTitle.width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 12))
-      
-      let containerChainView = UIView(frame: CGRect(x: titleLabel.frame.origin.x + titleLabel.frame.size.width + 8, y: 0, width: 32 + chainTitleWidth, height: 20))
-      containerChainView.backgroundColor = UIColor(named: "toolbarBgColor")
-      containerChainView.center.y = view.center.y
-      
-      iconChain.center.y = 10
-      containerChainView.addSubview(iconChain)
-      
-      let chainNameLabel = UILabel(frame: CGRect(x: 24, y: 0, width: chainTitleWidth, height: 20))
-      chainNameLabel.text = chainTitle
-      chainNameLabel.font = UIFont.Kyber.regular(with: 12)
-      chainNameLabel.textColor = UIColor(named: "normalTextColor")
-      chainNameLabel.center.y = 10
-      containerChainView.addSubview(chainNameLabel)
-      
-      containerChainView.rounded(cornerRadius: 8)
-      
-      view.addSubview(containerChainView)
-      
-      
+      if let chain = titleText.1 {
+        let iconChain = UIImageView(frame: CGRect(x: 8, y: 0, width: 12, height: 12))
+        iconChain.image = chain.chainIcon()
+        
+        let chainTitle = chain.chainName()
+        
+        let chainTitleWidth = chainTitle.width(withConstrainedHeight: 20, font: UIFont.Kyber.regular(with: 12))
+        
+        let containerChainView = UIView(frame: CGRect(x: titleLabel.frame.origin.x + titleLabel.frame.size.width + 8, y: 0, width: 32 + chainTitleWidth, height: 20))
+        containerChainView.backgroundColor = UIColor(named: "toolbarBgColor")
+        containerChainView.center.y = view.center.y
+        
+        iconChain.center.y = 10
+        containerChainView.addSubview(iconChain)
+        
+        let chainNameLabel = UILabel(frame: CGRect(x: 24, y: 0, width: chainTitleWidth, height: 20))
+        chainNameLabel.text = chainTitle
+        chainNameLabel.font = UIFont.Kyber.regular(with: 12)
+        chainNameLabel.textColor = UIColor(named: "normalTextColor")
+        chainNameLabel.center.y = 10
+        containerChainView.addSubview(chainNameLabel)
+        
+        containerChainView.rounded(cornerRadius: 8)
+        
+        view.addSubview(containerChainView)
+      }
+
       return view
     }
   }
@@ -690,7 +694,7 @@ class OverviewMainViewModel {
       return "********"
     }
     let key = self.displayHeader.value[section]
-    return self.displayTotalValues.value[key] ?? ""
+    return self.displayTotalValues.value[key.0] ?? ""
   }
   
   var displayTotalValue: String {

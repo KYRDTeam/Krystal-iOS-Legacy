@@ -25,8 +25,14 @@ class BalanceStorage {
     return self.supportedTokenBalances.value
   }
   
-  func getAllLendingBalances() -> [LendingPlatformBalance] {
-    return self.allLendingBalance.value
+  func getAllLendingBalances(_ chain: ChainType) -> [LendingPlatformBalance] {
+    if chain == .all {
+      return self.allLendingBalance.value
+    } else {
+      return self.allLendingBalance.value.filter { e in
+        return e.chainType == chain
+      }
+    }
   }
   
   func getDistributionBalance() -> LendingDistributionBalance? {
@@ -55,7 +61,7 @@ class BalanceStorage {
         self.chainTokenBalances[chain] = self.retrieveBalancesInHardDisk(address: addressString, chainType: chain)
       }
       self.supportedTokenBalances.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
-      self.allLendingBalance.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
+      self.allLendingBalance.value = Storage.retrieve(addressString + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
       self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
       self.nftBalance.value = Storage.retrieve(addressString + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
@@ -112,7 +118,7 @@ class BalanceStorage {
       return
     }
     self.allLendingBalance.value = balances
-    Storage.store(balances, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.lendingBalanceStoreFileName)
+    Storage.store(balances, as: unwrapped.addressString + Constants.lendingBalanceStoreFileName)
   }
 
   func setLendingDistributionBalance(_ balance: LendingDistributionBalance) {
@@ -158,7 +164,7 @@ class BalanceStorage {
   func getTotalAssetBalanceUSD(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
     let tokens = KNSupportedTokenStorage.shared.allActiveTokens
-    let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
+    let lendingBalances = BalanceStorage.shared.getAllLendingBalances(KNGeneralProvider.shared.currentChain)
     var lendingSymbols: [String] = []
     lendingBalances.forEach { (lendingPlatform) in
       lendingPlatform.balances.forEach { (balance) in
@@ -204,7 +210,7 @@ class BalanceStorage {
 
   func getTotalSupplyBalance(_ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
-    let allBalances: [LendingPlatformBalance] = self.getAllLendingBalances()
+    let allBalances: [LendingPlatformBalance] = self.getAllLendingBalances(KNGeneralProvider.shared.currentChain)
 
     allBalances.forEach { (item) in
       item.balances.forEach { (balanceItem) in
@@ -225,19 +231,20 @@ class BalanceStorage {
     return total
   }
 
-  func getSupplyBalances() -> ([String], [String : [Any]]) {
-    var sectionKeys: [String] = []
-    var balanceDict: [String : [Any]] = [:]
-    let allBalances: [LendingPlatformBalance] = BalanceStorage.shared.getAllLendingBalances()
+  func getSupplyBalances(_ chain: ChainType) -> ([(String, ChainType?)], [String: [Any]]) {
+    var sectionKeys: [(String, ChainType?)] = []
+    var balanceDict: [String: [Any]] = [:]
+    let allBalances: [LendingPlatformBalance] = BalanceStorage.shared.getAllLendingBalances(chain)
+
     allBalances.forEach { (item) in
       if !item.balances.isEmpty {
         balanceDict[item.name] = item.balances
-        sectionKeys.append(item.name)
+        sectionKeys.append((item.name, item.chainType))
       }
     }
     if let otherData = BalanceStorage.shared.getDistributionBalance() {
       balanceDict["OTHER"] = [otherData]
-      sectionKeys.append("OTHER")
+      sectionKeys.append(("OTHER", nil))
     }
     
     return (sectionKeys, balanceDict)

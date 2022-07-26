@@ -25,7 +25,7 @@ class OverviewDepositViewModel {
   func reloadAllData() {
     self.dataSource.removeAll()
     self.sectionKeys.removeAll()
-    let allBalances: [LendingPlatformBalance] = BalanceStorage.shared.getAllLendingBalances()
+    let allBalances: [LendingPlatformBalance] = BalanceStorage.shared.getAllLendingBalances(KNGeneralProvider.shared.currentChain)
     allBalances.forEach { (item) in
       var balances: [OverviewDepositLendingBalanceCellViewModel] = []
       item.balances.forEach { (balanceItem) in

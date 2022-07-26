@@ -901,6 +901,8 @@ enum KrytalService {
   case getPoolList(tokenAddress: String, chainId: Int, limit: Int)
   case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
   case getAllNftBalance(address: String, chains: [String])
+  case getAllLendingBalance(address: String, chains: [String])
+  case getAllLendingDistributionBalance(lendingPlatform: String, address: String, chains: [String])
 }
 
 extension KrytalService: TargetType {
@@ -919,7 +921,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1039,6 +1041,10 @@ extension KrytalService: TargetType {
       return "/v1/tradingview/history"
     case .getAllNftBalance:
       return "/v1/balance/nft"
+    case .getAllLendingBalance:
+      return "/v1/balance/lending"
+    case .getAllLendingDistributionBalance:
+      return "/v1/balance/distributionLending"
     }
   }
 
@@ -1428,6 +1434,26 @@ extension KrytalService: TargetType {
         json["chainId"] = chains.joined(separator: ",")
       }
       
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getAllLendingBalance(address: let address, chains: let chains):
+      var json: JSONDictionary = [
+        "address": address
+      ]
+      
+      if chains.isNotEmpty {
+        json["chainIds"] = chains.joined(separator: ",")
+      }
+      
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getAllLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address, chains: let chains):
+      var json: JSONDictionary = [
+        "address": address,
+        "lendingPlatform": lendingPlatform
+      ]
+      
+      if chains.isNotEmpty {
+        json["chainIds"] = chains.joined(separator: ",")
+      }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }

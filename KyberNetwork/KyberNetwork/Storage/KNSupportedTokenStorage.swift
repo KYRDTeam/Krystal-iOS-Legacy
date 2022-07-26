@@ -427,7 +427,7 @@ class KNSupportedTokenStorage {
   func getAssetTokens() -> [Token] {
     var result: [Token] = []
     let tokens = KNSupportedTokenStorage.shared.allActiveTokens
-    let lendingBalances = BalanceStorage.shared.getAllLendingBalances()
+    let lendingBalances = BalanceStorage.shared.getAllLendingBalances(KNGeneralProvider.shared.currentChain)
     var lendingSymbols: [String] = []
     lendingBalances.forEach { (lendingPlatform) in
       lendingPlatform.balances.forEach { (balance) in

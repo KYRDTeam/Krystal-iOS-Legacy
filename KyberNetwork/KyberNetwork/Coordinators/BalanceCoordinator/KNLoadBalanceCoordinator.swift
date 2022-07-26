@@ -296,7 +296,6 @@ class KNLoadBalanceCoordinator {
           let data = try decoder.decode(AllNftResponse.self, from: resp.data)
           print("[LoadNFT] \(data)")
           
-          //TODO: process data
           var allBalances: [NFTSection] = []
           
           data.data.forEach { e in
@@ -322,26 +321,56 @@ class KNLoadBalanceCoordinator {
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getLendingBalance(address: AppDelegate.session.address.addressString, forceSync: forceSync)) { (result) in
-      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
-        var balances: [LendingPlatformBalance] = []
-        result.forEach { (element) in
-          var lendingBalances: [LendingBalance] = []
-          if let lendingBalancesDicts = element["balances"] as? [JSONDictionary] {
-            lendingBalancesDicts.forEach { (item) in
-              lendingBalances.append(LendingBalance(dictionary: item))
+    provider.requestWithFilter(.getAllLendingBalance(address: AppDelegate.session.address.addressString, chains: [])) { (result) in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(AllLendingBalanceResponse.self, from: response.data)
+          print(data.data)
+          
+          var balances: [LendingPlatformBalance] = []
+          
+          data.data.forEach { e in
+            if let chain = ChainType.getChain(id: e.chainID) {
+              let lendingBalances = e.balances
+              lendingBalances.forEach { bal in
+                bal.chainType = chain
+              }
+              balances.append(contentsOf: lendingBalances)
             }
           }
-          let platformBalance = LendingPlatformBalance(name: element["name"] as? String ?? "", balances: lendingBalances)
-          balances.append(platformBalance)
+//          print(balances)
+          BalanceStorage.shared.setLendingBalances(balances)
+//          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+          completion(true)
+        } catch let error {
+          print(error.localizedDescription)
         }
-        BalanceStorage.shared.setLendingBalances(balances)
-        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-        completion(true)
-      } else {
-        if KNEnvironment.default != .production { return }
-        self.loadLendingBalances(completion: completion)
+        
+      case .failure(let error):
+        completion(false)
       }
+      
+//      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
+//        var balances: [LendingPlatformBalance] = []
+//        result.forEach { (element) in
+//          var lendingBalances: [LendingBalance] = []
+//          if let lendingBalancesDicts = element["balances"] as? [JSONDictionary] {
+//            lendingBalancesDicts.forEach { (item) in
+//              lendingBalances.append(LendingBalance(dictionary: item))
+//            }
+//          }
+//          let platformBalance = LendingPlatformBalance(name: element["name"] as? String ?? "", balances: lendingBalances)
+//          balances.append(platformBalance)
+//        }
+//        BalanceStorage.shared.setLendingBalances(balances)
+//        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+//        completion(true)
+//      } else {
+//        if KNEnvironment.default != .production { return }
+//        self.loadLendingBalances(completion: completion)
+//      }
     }
   }
 
