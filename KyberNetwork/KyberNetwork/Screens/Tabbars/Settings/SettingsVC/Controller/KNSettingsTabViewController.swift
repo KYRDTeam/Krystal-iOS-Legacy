@@ -23,7 +23,6 @@ enum KNSettingsTabViewEvent {
   case reportBugs
   case rateOurApp
   case addCustomToken
-  case manangeCustomToken
   case termOfUse
   case privacyPolicy
   case fingerPrint(status: Bool)
@@ -167,10 +166,6 @@ class KNSettingsTabViewController: KNBaseViewController {
   
   @IBAction func addCustomTokenTapped(_ sender: UIButton) {
     self.delegate?.settingsTabViewController(self, run: .addCustomToken)
-  }
-  
-  @IBAction func manageCustomTokenTapped(_ sender: UIButton) {
-    self.delegate?.settingsTabViewController(self, run: .manangeCustomToken)
   }
   
   @IBAction func referralPolicyButtonTapped(_ sender: UIButton) {

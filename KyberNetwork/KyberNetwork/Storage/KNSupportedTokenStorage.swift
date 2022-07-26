@@ -11,7 +11,7 @@ class KNSupportedTokenStorage {
   private var customTokens: [Token]
   private var disableTokens: [Token]
   private var deletedTokens: [Token]
-  private var chainDisableTokens: [ChainType : [Token]]
+  var chainDisableTokens: [ChainType : [Token]]
   private var chainDeletedTokens: [ChainType : [Token]]
 
   var allActiveTokens: [Token] {
@@ -270,6 +270,24 @@ class KNSupportedTokenStorage {
     self.setCacheDisableToken(chain: KNGeneralProvider.shared.currentChain, tokens: self.disableTokens)
   }
   
+  func setTokenActiveStatus(token: Token, status: Bool, chainType: ChainType) {
+    var disableTokens = KNSupportedTokenStorage.retrieveDisableTokensFromHardDisk(chainType: chainType)
+    if status {
+      if let index = self.disableTokens.firstIndex(where: { item in
+        return item == token
+      }) {
+        disableTokens.remove(at: index)
+        KNSupportedTokenStorage.saveDisableTokensFromHardDisk(chainType: chainType, disableTokens: disableTokens)
+      }
+    } else {
+      if !disableTokens.contains(token) {
+        disableTokens.append(token)
+        KNSupportedTokenStorage.saveDisableTokensFromHardDisk(chainType: chainType, disableTokens: disableTokens)
+      }
+    }
+    self.setCacheDisableToken(chain: chainType, tokens: disableTokens)
+  }
+  
   private func setCacheDisableToken(chain: ChainType, tokens: [Token]) {
     self.chainDisableTokens[chain] = tokens
   }
@@ -452,6 +470,10 @@ class KNSupportedTokenStorage {
     return disableTokens
   }
   
+  static func saveDisableTokensFromHardDisk(chainType: ChainType, disableTokens: [Token]) {
+    Storage.store(disableTokens, as: chainType.getChainDBPath() + Constants.disableTokenStoreFileName)
+  }
+  
   static func retrieveDeleteTokensFromHardDisk(chainType: ChainType) -> [Token] {
     let deletedTokens = Storage.retrieve(chainType.getChainDBPath() + Constants.deleteTokenStoreFileName, as: [Token].self) ?? []
     return deletedTokens
@@ -467,27 +489,27 @@ class KNSupportedTokenStorage {
 
   func getHideAndDeleteTokensBalanceUSD(_ currency: CurrencyMode, chainType: ChainType?) -> BigInt {
     var total = BigInt(0)
-    guard let chainType = chainType else {
-      return total
-    }
-    let disableTokens = self.getDisableTokensFor(chainType: chainType)
-    let deletedTokens = self.getDeletedTokensFor(chainType: chainType)
-    let tokens = disableTokens + deletedTokens
-
-    tokens.forEach { token in
-      let balance = token.getBalanceBigIntForChain(chainType: chainType)
-      let rateBigInt = BigInt(token.getTokenLastPrice(currency, chainType: chainType) * pow(10.0, 18.0))
-      let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)
-      total += valueBigInt
-    }
+//    guard let chainType = chainType else {
+//      return total
+//    }
+//    let disableTokens = self.getDisableTokensFor(chainType: chainType)
+//    let deletedTokens = self.getDeletedTokensFor(chainType: chainType)
+//    let tokens = disableTokens + deletedTokens
+//
+//    tokens.forEach { token in
+//      let balance = token.getBalanceBigIntForChain(chainType: chainType)
+//      let rateBigInt = BigInt(token.getTokenLastPrice(currency, chainType: chainType) * pow(10.0, 18.0))
+//      let valueBigInt = balance * rateBigInt / BigInt(10).power(token.decimals)
+//      total += valueBigInt
+//    }
     return total
   }
   
   func getAllChainHideAndDeleteTokensBalanceUSD( _ currency: CurrencyMode) -> BigInt {
     var total = BigInt(0)
-    ChainType.getAllChain().forEach { chain in
-      total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: chain)
-    }
+//    ChainType.getAllChain().forEach { chain in
+//      total += self.getHideAndDeleteTokensBalanceUSD(currency, chainType: chain)
+//    }
     return total
   }
 

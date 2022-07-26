@@ -132,9 +132,12 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(controller, animated: true)
   }
 
-  fileprivate func openChartView(token: Token) {
+  fileprivate func openChartView(token: Token, chainId: Int? = nil) {
     KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
+    if let chainId = chainId {
+      viewModel.chainId = chainId
+    }
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.pushViewController(controller, animated: true)
@@ -723,8 +726,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.changeMode(mode: mode, controller: controller)
     case .walletConfig:
         self.configWallet(controller: controller)
-    case .select(token: let token):
-      self.openChartView(token: token)
+    case .select(token: let token, chainId: let chainId):
+      self.openChartView(token: token, chainId: chainId)
     case .selectListWallet:
       let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -827,16 +830,50 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
     case .addChainWallet(let chain):
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
-      
+    case .selectAllChain:
+      self.loadMultichainAssetsData { chainBalanceModels in
+        self.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalanceModels)
+      }
+    }
+  }
+  
+  
+  func loadMultichainAssetsData(completion: @escaping ([ChainBalanceModel]) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let allChainIds = ChainType.getAllChain().map {
+      return "\($0.getChainId())"
+    }
+    let addressesString = AppDelegate.session.getCurrentWalletAddresses().map { address -> String in
+      if address.addressType == .evm {
+        return "ethereum:\(address.addressString)"
+      } else {
+        return "solana:\(address.addressString)"
+      }
+    }
+    var quoteSymbols = ["btc,usd"]
+    
+    provider.requestWithFilter(.getMultichainBalance(address: addressesString, chainIds: allChainIds, quoteSymbols: quoteSymbols)) { (result) in
+      switch result {
+      case .success(let resp):
+        var chainBalanceModels: [ChainBalanceModel] = []
+        if let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] {
+          jsons.forEach { jsonData in
+            let model = ChainBalanceModel(json: jsonData)
+            chainBalanceModels.append(model)
+          }
+        }
+        completion(chainBalanceModels)
+      case .failure(let error):
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
+        completion([])
+      }
     }
   }
 }
-
-//extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
-//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
-//    self.openChartView(token: token)
-//  }
-//}
 
 extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
   func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {
