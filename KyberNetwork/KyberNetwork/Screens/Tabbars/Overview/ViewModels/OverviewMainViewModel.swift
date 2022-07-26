@@ -595,7 +595,7 @@ class OverviewMainViewModel {
     switch self.currentMode {
     case .asset, .market, .favourite:
       return OverviewMainViewCell.kCellHeight
-    case.supply:
+    case .supply:
       return OverviewDepositTableViewCell.kCellHeight
     case.showLiquidityPool:
       return OverviewLiquidityPoolCell.kCellHeight
