@@ -17,7 +17,7 @@ class BalanceStorage {
   private var allLiquidityPool: ThreadProtectedObject<[LiquidityPoolModel]> = .init(storageValue: [])
   private var nftBalance: ThreadProtectedObject<[NFTSection]> = .init(storageValue: [])
   private var customNftBalance: ThreadProtectedObject<[NFTSection]> = .init(storageValue: [])
-  private var distributionBalance: LendingDistributionBalance?
+  private var distributionBalance: [LendingDistributionBalance] = []
   private var address: KAddress?
   private var chainTokenBalances: [ChainType: [TokenBalance]] = [:]
   
@@ -35,8 +35,14 @@ class BalanceStorage {
     }
   }
   
-  func getDistributionBalance() -> LendingDistributionBalance? {
-    return self.distributionBalance
+  func getDistributionBalance(_ chain: ChainType) -> [LendingDistributionBalance] {
+    if chain == .all {
+      return self.distributionBalance
+    } else {
+      return self.distributionBalance.filter { e in
+        return e.chainType == chain
+      }
+    }
   }
 
   func setBalances(_ balances: [TokenBalance]) {
@@ -63,7 +69,7 @@ class BalanceStorage {
       self.supportedTokenBalances.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.balanceStoreFileName, as: [TokenBalance].self) ?? []
       self.allLendingBalance.value = Storage.retrieve(addressString + Constants.lendingBalanceStoreFileName, as: [LendingPlatformBalance].self) ?? []
       self.allLiquidityPool.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.liquidityPoolStoreFileName, as: [LiquidityPoolModel].self) ?? []
-      self.distributionBalance = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.lendingDistributionBalanceStoreFileName, as: LendingDistributionBalance.self)
+      self.distributionBalance = Storage.retrieve(addressString + Constants.lendingDistributionBalanceStoreFileName, as: [LendingDistributionBalance].self) ?? []
       self.nftBalance.value = Storage.retrieve(addressString + Constants.nftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.customNftBalance.value = Storage.retrieve(addressString + Constants.customNftBalanceStoreFileName, as: [NFTSection].self) ?? []
       self.summaryChainModels.value = Storage.retrieve(KNEnvironment.default.envPrefix + addressString + Constants.summaryChainStoreFileName, as: [KNSummaryChainModel].self) ?? []
@@ -121,12 +127,12 @@ class BalanceStorage {
     Storage.store(balances, as: unwrapped.addressString + Constants.lendingBalanceStoreFileName)
   }
 
-  func setLendingDistributionBalance(_ balance: LendingDistributionBalance) {
+  func setLendingDistributionBalance(_ balance: [LendingDistributionBalance]) {
     guard let unwrapped = self.address else {
       return
     }
     self.distributionBalance = balance
-    Storage.store(balance, as: KNEnvironment.default.envPrefix + unwrapped.addressString + Constants.lendingDistributionBalanceStoreFileName)
+    Storage.store(balance, as: unwrapped.addressString + Constants.lendingDistributionBalanceStoreFileName)
   }
   
   func setLiquidityPools(_ liquidityPools: [LiquidityPoolModel]) {
@@ -221,10 +227,10 @@ class BalanceStorage {
       }
     }
     
-    if let otherData = BalanceStorage.shared.getDistributionBalance() {
-      let balance = BigInt(otherData.unclaimed) ?? BigInt(0)
-      let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: otherData.address, currency: currency)
-      let value = balance * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(otherData.decimal)
+    BalanceStorage.shared.getDistributionBalance(KNGeneralProvider.shared.currentChain).forEach { e in
+      let balance = BigInt(e.unclaimed) ?? BigInt(0)
+      let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: e.address, currency: currency)
+      let value = balance * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(e.decimal)
       total += value
     }
 
@@ -242,10 +248,9 @@ class BalanceStorage {
         sectionKeys.append((item.name, item.chainType))
       }
     }
-    if let otherData = BalanceStorage.shared.getDistributionBalance() {
-      balanceDict["OTHER"] = [otherData]
-      sectionKeys.append(("OTHER", nil))
-    }
+    
+    balanceDict["OTHER"] = BalanceStorage.shared.getDistributionBalance(chain)
+    sectionKeys.append(("OTHER", nil))
     
     return (sectionKeys, balanceDict)
   }

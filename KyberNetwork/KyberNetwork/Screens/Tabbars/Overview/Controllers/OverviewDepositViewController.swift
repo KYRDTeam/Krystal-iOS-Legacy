@@ -40,12 +40,24 @@ class OverviewDepositViewModel {
         self.sectionKeys.append(item.name)
       }
     }
-    if let otherData = BalanceStorage.shared.getDistributionBalance() {
-      let viewModel = OverviewDepositDistributionBalanceCellViewModel(balance: otherData)
+    var otherSection: [OverviewDepositDistributionBalanceCellViewModel] = []
+    BalanceStorage.shared.getDistributionBalance(KNGeneralProvider.shared.currentChain).forEach { e in
+      let viewModel = OverviewDepositDistributionBalanceCellViewModel(balance: e)
       viewModel.hideBalanceStatus = self.hideBalanceStatus
-      self.dataSource["OTHER"] = [viewModel]
+      otherSection.append(viewModel)
+    }
+    
+    if !otherSection.isEmpty {
+      self.dataSource["OTHER"] = otherSection
       self.sectionKeys.append("OTHER")
     }
+    
+//    if let otherData = BalanceStorage.shared.getDistributionBalance(KNGeneralProvider.shared.currentChain) {
+//      let viewModel = OverviewDepositDistributionBalanceCellViewModel(balance: otherData)
+//      viewModel.hideBalanceStatus = self.hideBalanceStatus
+//      self.dataSource["OTHER"] = [viewModel]
+//      self.sectionKeys.append("OTHER")
+//    }
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
       self.currencyType = savedCurrencyMode
     }

@@ -903,7 +903,7 @@ enum KrytalService {
   case getMultichainBalance(address: [String], chainIds: [String], quoteSymbols: [String])
   case getAllNftBalance(address: String, chains: [String])
   case getAllLendingBalance(address: String, chains: [String])
-  case getAllLendingDistributionBalance(lendingPlatform: String, address: String, chains: [String])
+  case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String])
 }
 
 extension KrytalService: TargetType {
@@ -1456,10 +1456,10 @@ extension KrytalService: TargetType {
       }
       
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllLendingDistributionBalance(lendingPlatform: let lendingPlatform, address: let address, chains: let chains):
+    case .getAllLendingDistributionBalance(lendingPlatforms: let lendingPlatforms, address: let address, chains: let chains):
       var json: JSONDictionary = [
         "address": address,
-        "lendingPlatform": lendingPlatform
+        "lendingPlatforms": lendingPlatforms.joined(separator: ",")
       ]
       
       if chains.isNotEmpty {

@@ -340,52 +340,44 @@ class KNLoadBalanceCoordinator {
               balances.append(contentsOf: lendingBalances)
             }
           }
-//          print(balances)
+
           BalanceStorage.shared.setLendingBalances(balances)
-//          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+          KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
           completion(true)
         } catch let error {
           print(error.localizedDescription)
         }
-        
-      case .failure(let error):
+      case .failure( _):
         completion(false)
       }
-      
-//      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["result"] as? [JSONDictionary] {
-//        var balances: [LendingPlatformBalance] = []
-//        result.forEach { (element) in
-//          var lendingBalances: [LendingBalance] = []
-//          if let lendingBalancesDicts = element["balances"] as? [JSONDictionary] {
-//            lendingBalancesDicts.forEach { (item) in
-//              lendingBalances.append(LendingBalance(dictionary: item))
-//            }
-//          }
-//          let platformBalance = LendingPlatformBalance(name: element["name"] as? String ?? "", balances: lendingBalances)
-//          balances.append(platformBalance)
-//        }
-//        BalanceStorage.shared.setLendingBalances(balances)
-//        KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-//        completion(true)
-//      } else {
-//        if KNEnvironment.default != .production { return }
-//        self.loadLendingBalances(completion: completion)
-//      }
     }
   }
 
   func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
-    guard !KNGeneralProvider.shared.lendingDistributionPlatform.isEmpty else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-
-    provider.requestWithFilter(.getLendingDistributionBalance(lendingPlatform: KNGeneralProvider.shared.lendingDistributionPlatform, address: address.addressString, forceSync: forceSync)) { (result) in
-      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let result = json["balance"] as? JSONDictionary {
-        let balance = LendingDistributionBalance(dictionary: result)
-        BalanceStorage.shared.setLendingDistributionBalance(balance)
-        completion(true)
-      } else {
-        if KNEnvironment.default != .production { return }
-        self.loadLendingDistributionBalance(completion: completion)
+    
+    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: [])) { result in
+      switch result {
+      case .success(let response):
+        let decoder = JSONDecoder()
+        do {
+          let data = try decoder.decode(AllLendingDistributionBalanceResponse.self, from: response.data)
+          var result: [LendingDistributionBalance] = []
+          data.data.forEach { d in
+            if let chain = ChainType.getChain(id: d.chainID) {
+              d.balances?.forEach({ e in
+                e.chainType = chain
+                result.append(e)
+              })
+            }
+          }
+          BalanceStorage.shared.setLendingDistributionBalance(result)
+          completion(true)
+        } catch let error {
+          print(error.localizedDescription)
+        }
+      case .failure( _):
+        completion(false)
       }
     }
   }

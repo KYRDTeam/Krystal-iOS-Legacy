@@ -252,6 +252,19 @@ enum ChainType: Codable, CaseIterable {
       return ""
     }
   }
+  
+  static func allLendingDistributionPlatform() -> [String] {
+    var result: [String] = []
+    
+    ChainType.getAllChain().forEach { e in
+      let plaform = e.lendingDistributionPlatform()
+      if !plaform.isEmpty {
+        result.append(plaform)
+      }
+    }
+    
+    return result
+  }
 
   func quoteTokenObject() -> TokenObject {
     let token = KNSupportedTokenStorage.shared.supportedToken.first { (token) -> Bool in

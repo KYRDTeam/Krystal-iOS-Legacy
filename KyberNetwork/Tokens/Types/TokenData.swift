@@ -360,7 +360,20 @@ class LendingPlatformBalance: Codable {
   }
 }
 
-struct LendingDistributionBalance: Codable {
+// MARK: - AllLendingDistributionBalanceResponse
+struct AllLendingDistributionBalanceResponse: Codable {
+    let data: [AllLendingDistributionBalanceData]
+}
+
+// MARK: - Datum
+struct AllLendingDistributionBalanceData: Codable {
+    let chainName: String
+    let chainID: Int
+    let chainLogo: String
+    let balances: [LendingDistributionBalance]?
+}
+
+class LendingDistributionBalance: Codable {
   let name: String
   let symbol: String
   let address: String
@@ -368,6 +381,8 @@ struct LendingDistributionBalance: Codable {
   let current: String
   let unclaimed: String
   let logo: String
+  
+  var chainType: ChainType?
 
   init(dictionary: JSONDictionary) {
     self.name = dictionary["name"] as? String ?? ""
