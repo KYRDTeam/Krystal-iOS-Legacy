@@ -459,6 +459,7 @@ extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
   
   func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
     delegate?.investCoordinator(didAdd: wallet, chain: chain)
+    navigationController.popViewController(animated: true, completion: nil)
   }
   
   func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
