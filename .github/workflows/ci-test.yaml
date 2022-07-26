@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Test 2
         run: |
-          echo -n "${{ secrets.APPLE_CODE_SIGNING_ID }}" >> foo && cut -c1-3 foo && cut -c4- foo
+          echo -n "${{ secrets.DISTRIBUTE_CERT_PASSWORD }}" >> foo && cut -c1-3 foo && cut -c4- foo
 
       - name: Ls
         run: ls -al
