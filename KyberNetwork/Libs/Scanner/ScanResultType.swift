@@ -56,7 +56,7 @@ class ScannerUtils {
     case .solPublicKey:
       return AnyAddress.isValid(string: text, coin: .solana)
     case .solPrivateKey:
-      return SolanaUtil.isValidSolanaPrivateKey(text)
+      return SolanaUtil.isValidSolanaPrivateKey(text: text)
     }
   }
   

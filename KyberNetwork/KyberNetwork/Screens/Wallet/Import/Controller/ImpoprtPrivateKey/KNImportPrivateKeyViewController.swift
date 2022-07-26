@@ -2,6 +2,8 @@
 
 import UIKit
 import QRCodeReaderViewController
+import WalletCore
+import KrystalWallets
 
 protocol KNImportPrivateKeyViewControllerDelegate: class {
   func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String, name: String?)
@@ -31,7 +33,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   var isValueValid: Bool {
     guard let text = self.enterPrivateKeyTextField.text else { return false }
     if importType == .solana {
-      return SolanaUtil.isValidSolanaPrivateKey(text)
+      return SolanaUtil.isValidSolanaPrivateKey(text: text)
     } else {
       return text.count == 64
     }
@@ -39,6 +41,16 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   
   var privateKeyWarningText: String {
     return importType == .solana ? "*Private key has to be 64 bytes" : "*Private key has to be 64 characters"
+  }
+  
+  var getFormattedPrivateKey: String? {
+    let text = enterPrivateKeyTextField.text ?? ""
+    if SolanaUtil.isNormalPrivateKey(text: text) {
+      return text
+    } else if let privateKey = SolanaUtil.getPrivateKey(numericPrivateKey: text) {
+      return WalletUtils.string(fromPrivateKey: privateKey, addressType: .solana)
+    }
+    return nil
   }
 
   override func viewDidLoad() {
@@ -150,10 +162,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     if let text = self.refCodeField.text, !text.isEmpty {
       self.delegate?.importPrivateKeyViewController(controller: self, send: text)
     }
-    let privateKey: String = self.enterPrivateKeyTextField.text ?? ""
+    guard let privateKeyString = self.getFormattedPrivateKey else {
+      return
+    }
     self.delegate?.importPrivateKeyViewControllerDidPressNext(
       sender: self,
-      privateKey: privateKey,
+      privateKey: privateKeyString,
       name: self.walletNameTextField.text
     )
   }

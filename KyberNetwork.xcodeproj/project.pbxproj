@@ -618,6 +618,7 @@
 		A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A22848B78F0066E177 /* KWallet+Codable.swift */; };
 		A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A92849F2620066E177 /* KAddress+Codable.swift */; };
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
+		A686BC50288FEC0100DCE0E2 /* WalletUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */; };
 		A68727C12885DEB9001C6369 /* OCRUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68727C02885DEB9001C6369 /* OCRUtilities.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
@@ -1747,6 +1748,7 @@
 		A685D4A92849F2620066E177 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 		A685D4AC2849FC870066E177 /* AppEventCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventCenter.swift; sourceTree = "<group>"; };
 		A685D4AE284A651D0066E177 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
+		A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtils.swift; sourceTree = "<group>"; };
 		A68727C02885DEB9001C6369 /* OCRUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRUtilities.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
@@ -5152,6 +5154,7 @@
 			children = (
 				A6790C5728476E66007CE0CD /* WalletManager.swift */,
 				A685D4892847BFC20066E177 /* WalletManagerError.swift */,
+				A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -7648,6 +7651,7 @@
 				A6B067322859CF5100DEBAE8 /* WalletManager.swift in Sources */,
 				A6B0673A2859CF5100DEBAE8 /* SolanaSigner.swift in Sources */,
 				A6B067372859CF5100DEBAE8 /* WalletType.swift in Sources */,
+				A686BC50288FEC0100DCE0E2 /* WalletUtils.swift in Sources */,
 				A6D88649285C93E900BB565B /* KeyManager.swift in Sources */,
 				A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */,
 				A6B067362859CF5100DEBAE8 /* Address.swift in Sources */,

@@ -466,22 +466,23 @@ class SolanaUtil {
     
   }
   
-  static func hexStringToData(_ text: String) -> Data? {
-    if text.isTrustPK {
-      let data = Data(hexString: text)
-      return data
-    } else {
-      let data = Base58.decodeNoCheck(string: text)
-      return data
-    }
+  static func isValidSolanaPrivateKey(text: String) -> Bool {
+    return isNormalPrivateKey(text: text) || getPrivateKey(numericPrivateKey: text) != nil
   }
   
-  static func isValidSolanaPrivateKey(_ text: String) -> Bool {
-    guard let data = SolanaUtil.hexStringToData(text) else { return false }
-    if text.isTrustPK {
-      return data.count == 32
-    } else {
-      return data.count == 64
+  static func isNormalPrivateKey(text: String) -> Bool {
+    return AnyAddress.isValid(string: text, coin: .solana)
+  }
+  
+  static func getPrivateKey(numericPrivateKey: String) -> PrivateKey? {
+    let bytes = numericPrivateKey
+                  .replacingOccurrences(of: "[", with: "")
+                  .replacingOccurrences(of: "]", with: "")
+                  .split(separator: ",")
+                  .compactMap { UInt8($0) }
+    guard bytes.count == 64 else {
+      return nil
     }
+    return PrivateKey(data: Data(bytes[0...31]))
   }
 }

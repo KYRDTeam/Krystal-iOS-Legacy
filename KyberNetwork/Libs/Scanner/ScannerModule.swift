@@ -13,7 +13,7 @@ class ScannerModule {
                     acceptedResultTypes: [ScanResultType] = ScanResultType.allCases,
                     defaultScanMode: ScanMode = .qr,
                     scanModes: [ScanMode] = [.qr, .text],
-                    onComplete: @escaping (String, ScanResultType) -> Void)  {
+                    onComplete: @escaping (String, ScanResultType) -> Void) {
     let vc = KrystalScannerViewController.instantiateFromNib()
     vc.onScanSuccess = onComplete
     vc.acceptedResults = acceptedResultTypes
