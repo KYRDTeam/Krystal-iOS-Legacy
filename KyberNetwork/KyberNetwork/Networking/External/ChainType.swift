@@ -22,27 +22,27 @@ enum ChainType: Codable, CaseIterable {
     let rawValue = try container.decode(Int.self, forKey: .rawValue)
     switch rawValue {
     case 0:
-      self = .eth
-    case 1:
-      self = .bsc
-    case 2:
-      self = .polygon
-    case 3:
-      self = .avalanche
-    case 4:
-      self = .cronos
-    case 5:
-      self = .fantom
-    case 6:
-      self = .arbitrum
-    case 7:
-      self = .aurora
-    case 8:
-      self = .solana
-    case 9:
-      self = .klaytn
-    case 10:
       self = .all
+    case 1:
+      self = .eth
+    case 2:
+      self = .bsc
+    case 3:
+      self = .polygon
+    case 4:
+      self = .avalanche
+    case 5:
+      self = .cronos
+    case 6:
+      self = .fantom
+    case 7:
+      self = .arbitrum
+    case 8:
+      self = .aurora
+    case 9:
+      self = .solana
+    case 10:
+      self = .klaytn
     default:
       throw CodingError.unknownValue
     }
@@ -51,27 +51,27 @@ enum ChainType: Codable, CaseIterable {
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
-    case .eth:
-      try container.encode(0, forKey: .rawValue)
-    case .bsc:
-      try container.encode(1, forKey: .rawValue)
-    case .polygon:
-      try container.encode(2, forKey: .rawValue)
-    case .avalanche:
-      try container.encode(3, forKey: .rawValue)
-    case .cronos:
-      try container.encode(4, forKey: .rawValue)
-    case .fantom:
-      try container.encode(5, forKey: .rawValue)
-    case .arbitrum:
-      try container.encode(6, forKey: .rawValue)
-    case .aurora:
-      try container.encode(7, forKey: .rawValue)
-    case .solana:
-      try container.encode(8, forKey: .rawValue)
-    case .klaytn:
-      try container.encode(9, forKey: .rawValue)
     case .all:
+      try container.encode(0, forKey: .rawValue)
+    case .eth:
+      try container.encode(1, forKey: .rawValue)
+    case .bsc:
+      try container.encode(2, forKey: .rawValue)
+    case .polygon:
+      try container.encode(3, forKey: .rawValue)
+    case .avalanche:
+      try container.encode(4, forKey: .rawValue)
+    case .cronos:
+      try container.encode(5, forKey: .rawValue)
+    case .fantom:
+      try container.encode(6, forKey: .rawValue)
+    case .arbitrum:
+      try container.encode(7, forKey: .rawValue)
+    case .aurora:
+      try container.encode(8, forKey: .rawValue)
+    case .solana:
+      try container.encode(9, forKey: .rawValue)
+    case .klaytn:
       try container.encode(10, forKey: .rawValue)
     }
   }
@@ -343,7 +343,7 @@ enum ChainType: Codable, CaseIterable {
       return true
     }
   }
-  
+  case all
   case eth
   case bsc
   case polygon
@@ -354,7 +354,6 @@ enum ChainType: Codable, CaseIterable {
   case aurora
   case solana
   case klaytn
-  case all
 }
 
 enum CurrencyMode: Int {

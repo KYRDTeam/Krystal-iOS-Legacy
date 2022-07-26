@@ -440,6 +440,14 @@ class KNLoadBalanceCoordinator {
 }
 
 extension KNLoadBalanceCoordinator {
+  func refreshMultiChainData(mode: ViewMode) {
+    
+  }
+  
+  func refreshSingleChainData(mode: ViewMode) {
+    
+  }
+  
   func appCoordinatorRefreshData(mode: ViewMode, overviewMode: OverviewMode) {
     if overviewMode == .summary {
       self.loadTotalBalance(forceSync: true) { _ in

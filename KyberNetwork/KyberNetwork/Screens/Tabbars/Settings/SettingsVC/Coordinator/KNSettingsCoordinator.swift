@@ -206,8 +206,6 @@ extension KNSettingsCoordinator: KNSettingsTabViewControllerDelegate {
     case .addCustomToken:
       self.customTokenCoordinator.rootViewController.tokenObject = nil
       self.customTokenCoordinator.start()
-    case .manangeCustomToken:
-      self.customTokenCoordinator.start(showList: true)
     case .termOfUse:
       self.navigationController.openSafari(with: "https://files.krystal.app/terms.pdf")
     case .privacyPolicy:

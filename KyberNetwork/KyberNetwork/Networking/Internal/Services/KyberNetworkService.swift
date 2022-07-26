@@ -900,6 +900,7 @@ enum KrytalService {
   case advancedSearch(query: String, limit: Int)
   case getPoolList(tokenAddress: String, chainId: Int, limit: Int)
   case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
+  case getMultichainBalance(address: [String], chainIds: [String], quoteSymbols: [String])
   case getAllNftBalance(address: String, chains: [String])
 }
 
@@ -919,7 +920,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance:
+      case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getMultichainBalance, .getAllNftBalance:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1039,6 +1040,8 @@ extension KrytalService: TargetType {
       return "/v1/tradingview/history"
     case .getAllNftBalance:
       return "/v1/balance/nft"
+    case .getMultichainBalance:
+      return "/v1/balance/token"
     }
   }
 
@@ -1407,7 +1410,7 @@ extension KrytalService: TargetType {
         "limit": limit
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-	case .getTradingViewData(chainPath: let chainPath, address: let address, quote: let quote, from: let from):
+    case .getTradingViewData(chainPath: let chainPath, address: let address, quote: let quote, from: let from):
       let current = Int(NSDate().timeIntervalSince1970 * 1000)
       let json: JSONDictionary = [
         "network": chainPath,
@@ -1419,7 +1422,15 @@ extension KrytalService: TargetType {
         
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllNftBalance(address: let address, chains: let chains):
+        
+    case .getMultichainBalance(let address, let chainIds, let quoteSymbols):
+      let json: JSONDictionary = [
+        "addresses": address.joined(separator: ","),
+        "chainIds": chainIds.joined(separator: ","),
+        "quoteSymbols": quoteSymbols.joined(separator: ",")
+      ]
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+   case .getAllNftBalance(address: let address, chains: let chains):
       var json: JSONDictionary = [
         "address": address
       ]
