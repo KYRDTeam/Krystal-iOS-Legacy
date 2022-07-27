@@ -333,10 +333,10 @@ extension DappCoordinator: BrowserViewControllerDelegate {
     do {
       switch type {
       case .message(let data):
-        let signedData = try signer.signHash(address: address, hash: data)
+        let signedData = try signer.signMessage(address: address, data: data)
         result = .success(signedData)
       case .personalMessage(let data):
-        let signedData = try signer.signHash(address: address, hash: data)
+        let signedData = try signer.signMessage(address: address, data: data)
         result = .success(signedData)
       case .typedMessage(let typedData):
         if typedData.isEmpty {
@@ -345,11 +345,11 @@ extension DappCoordinator: BrowserViewControllerDelegate {
           let schemas = typedData.map { $0.schemaData }.reduce(Data(), { $0 + $1 }).sha3(.keccak256)
           let values = typedData.map { $0.typedData }.reduce(Data(), { $0 + $1 }).sha3(.keccak256)
           let combined = (schemas + values).sha3(.keccak256)
-          let signedData = try signer.signHash(address: address, hash: combined)
+          let signedData = try signer.signMessage(address: address, data: combined)
           result = .success(signedData)
         }
       case .eip712v3And4(let data):
-        let signedData = try signer.signHash(address: address, hash: data.digest)
+        let signedData = try signer.signMessage(address: address, data: data.digest)
         result = .success(signedData)
       }
     } catch {
