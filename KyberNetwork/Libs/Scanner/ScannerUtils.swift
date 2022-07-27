@@ -35,13 +35,6 @@ class ScannerUtils {
     }
   }
   
-  static func getResultType(ofText text: String) -> ScanResultType? {
-    return ScanResultType.allCases.first { type in
-      let formattedText = smoothen(text: text, forType: type)
-      return isValid(text: formattedText, forType: type)
-    }
-  }
-  
   static func isValid(text: String, forType type: ScanResultType) -> Bool {
     switch type {
     case .walletConnect:
