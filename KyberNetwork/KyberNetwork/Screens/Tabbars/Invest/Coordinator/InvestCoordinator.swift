@@ -266,9 +266,6 @@ extension InvestCoordinator: InvestViewControllerDelegate {
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
     case .scanner:
-      if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: rootViewController) {
-        return
-      }
       var acceptedResultTypes: [ScanResultType] = []
       var scanModes: [ScanMode] = [.qr, .text]
       if KNGeneralProvider.shared.currentChain.isEVM {

@@ -123,9 +123,6 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {
-    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
-      return
-    }
     guard let navigation = self.navigationController else {
       return
     }

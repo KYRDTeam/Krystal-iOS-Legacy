@@ -328,9 +328,6 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func scanWasTapped(_ sender: Any) {
-    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
-      return
-    }
     guard let nav = self.navigationController else { return }
     
     var acceptedResultTypes: [ScanResultType] = []
