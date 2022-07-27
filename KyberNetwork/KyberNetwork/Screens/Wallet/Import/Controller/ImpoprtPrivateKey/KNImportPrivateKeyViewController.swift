@@ -45,12 +45,17 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   
   var getFormattedPrivateKey: String? {
     let text = enterPrivateKeyTextField.text ?? ""
-    if SolanaUtil.isNormalPrivateKey(text: text) {
+    switch importType {
+    case .solana:
+      if SolanaUtil.isNormalPrivateKey(text: text) {
+        return text
+      } else if let privateKey = SolanaUtil.getPrivateKey(numericPrivateKey: text) {
+        return WalletUtils.string(fromPrivateKey: privateKey, addressType: .solana)
+      }
+      return nil
+    default:
       return text
-    } else if let privateKey = SolanaUtil.getPrivateKey(numericPrivateKey: text) {
-      return WalletUtils.string(fromPrivateKey: privateKey, addressType: .solana)
     }
-    return nil
   }
 
   override func viewDidLoad() {

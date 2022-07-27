@@ -471,7 +471,10 @@ class SolanaUtil {
   }
   
   static func isNormalPrivateKey(text: String) -> Bool {
-    return AnyAddress.isValid(string: text, coin: .solana)
+    guard let data = Base58.decodeNoCheck(string: text) else {
+      return false
+    }
+    return data.count == 64
   }
   
   static func getPrivateKey(numericPrivateKey: String) -> PrivateKey? {
