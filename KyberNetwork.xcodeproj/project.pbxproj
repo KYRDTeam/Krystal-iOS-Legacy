@@ -7935,8 +7935,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
+				CODE_SIGN_IDENTITY = "Apple Distribution: KYRD International Limited (G9CRYMTLBL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: KYRD International Limited (G9CRYMTLBL)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -7977,8 +7977,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CODE_SIGN_IDENTITY = "Apple Development: Toi Duong (PZRB6AA23F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Toi Duong (PZRB6AA23F)";
+				CODE_SIGN_IDENTITY = "Apple Distribution: KYRD International Limited (G9CRYMTLBL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: KYRD International Limited (G9CRYMTLBL)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
