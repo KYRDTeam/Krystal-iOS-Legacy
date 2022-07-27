@@ -487,9 +487,11 @@ extension OverviewMainViewController: UITableViewDataSource {
       for: indexPath
     ) as! OverviewMainViewCell
     
-    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-    cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-    cell.updateCell(cellModel)
+    if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+      cell.updateCell(cellModel)
+    }
+
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
@@ -500,9 +502,11 @@ extension OverviewMainViewController: UITableViewDataSource {
   func multiChainTokenInfoCell(indexPath: IndexPath) -> OverviewAllChainTokenCell {
     let cell = tableView.dequeueReusableCell(OverviewAllChainTokenCell.self, indexPath: indexPath)!
     
-    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-    cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-    cell.updateCell(cellModel)
+    if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+      cell.updateCell(cellModel)
+    }
+    
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
@@ -557,9 +561,11 @@ extension OverviewMainViewController: UITableViewDataSource {
         withIdentifier: OverviewDepositTableViewCell.kCellID,
         for: indexPath
       ) as! OverviewDepositTableViewCell
-      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-      cell.updateCell(cellModel)
+      if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+        cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+        cell.updateCell(cellModel)
+      }
+      
       return cell
     case .showLiquidityPool:
       let cell = tableView.dequeueReusableCell(
@@ -635,7 +641,7 @@ extension OverviewMainViewController: UITableViewDelegate {
       self.reloadUI()
       return
     }
-    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
+    guard let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] else { return }
     switch cellModel.mode {
     case .asset(token: let token, _):
       self.delegate?.overviewMainViewController(self, run: .select(token: token, chainId: cellModel.chainId))
@@ -763,7 +769,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
     
     switch self.viewModel.currentMode {
     case .asset:
-      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
+      guard let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] else { return nil }
       // hide action
       let hideAction = self.viewModel.currentChain == .all ? self.hideActionForMultiChain(cellModel: cellModel) : self.hideActionForSingleChain(cellModel: cellModel)
       
