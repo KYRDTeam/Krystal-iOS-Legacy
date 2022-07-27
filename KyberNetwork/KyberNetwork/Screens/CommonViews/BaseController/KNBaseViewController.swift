@@ -126,3 +126,24 @@ extension KNBaseViewController {
 
   @objc func quickTutorialContentLabelTapped() {}
 }
+
+extension KNBaseViewController {
+  func showSwitchChainAlert(_ chain: ChainType) {
+    let alertController = KNPrettyAlertController(
+      title: "",
+      message: "Please switch to \(chain.chainName()) to continue".toBeLocalised(),
+      secondButtonTitle: Strings.ok,
+      firstButtonTitle: Strings.cancel,
+      secondButtonAction: {
+        
+        KNGeneralProvider.shared.currentChain = chain
+        KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+      },
+      firstButtonAction: {
+        
+      }
+    )
+    alertController.popupHeight = 220
+    self.present(alertController, animated: true, completion: nil)
+  }
+}

@@ -784,4 +784,8 @@ class OverviewMainViewModel {
       return "NFT"
     }
   }
+  
+  func getChainForSection(_ section: Int) -> ChainType? {
+    return self.displayHeader.value[section].1
+  }
 }

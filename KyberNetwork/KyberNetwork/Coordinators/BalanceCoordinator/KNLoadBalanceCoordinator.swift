@@ -349,7 +349,7 @@ class KNLoadBalanceCoordinator {
           
           data.data.forEach { e in
             if let chain = ChainType.getChain(id: e.chainID) {
-              let lendingBalances = e.balances
+              let lendingBalances = e.balances ?? []
               lendingBalances.forEach { bal in
                 bal.chainType = chain
               }
