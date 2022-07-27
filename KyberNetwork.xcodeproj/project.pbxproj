@@ -572,13 +572,11 @@
 		A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF2428632913008620E2 /* Dictionary+.swift */; };
 		A65CC08E286572C6008620E2 /* KrystalJSBridge.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */; };
 		A65CC08F286572C6008620E2 /* KrystalJSBridge.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A65CC09828657311008620E2 /* GetBalanceCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09328657311008620E2 /* GetBalanceCommand.swift */; };
 		A65CC09928657311008620E2 /* Web3BridgeFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09528657311008620E2 /* Web3BridgeFactory.m */; };
 		A65CC09A28657311008620E2 /* Web3BridgeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09628657311008620E2 /* Web3BridgeModule.swift */; };
 		A65CC09B28657311008620E2 /* Web3BridgeModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09728657311008620E2 /* Web3BridgeModuleFactory.swift */; };
 		A65CC09F28657481008620E2 /* KDappBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */; };
 		A65CC0A028657481008620E2 /* KDappBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */; };
-		A65CC0A2286577DC008620E2 /* TransferCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC0A1286577DC008620E2 /* TransferCommand.swift */; };
 		A65CC0A428657926008620E2 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC0A328657926008620E2 /* UIApplication+.swift */; };
 		A6664D1F2858878800CCAB1F /* TransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */; };
 		A6664D212859839100CCAB1F /* SolanaTransactionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */; };
@@ -593,6 +591,11 @@
 		A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A22848B78F0066E177 /* KWallet+Codable.swift */; };
 		A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A92849F2620066E177 /* KAddress+Codable.swift */; };
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
+		A686BC4E288FD58E00DCE0E2 /* krystal-solana.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */; };
+		A686BC52288FF65E00DCE0E2 /* ConnectCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */; };
+		A686BC54288FFDF000DCE0E2 /* krystal-common.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */; };
+		A686BC56288FFDFF00DCE0E2 /* krystal-webbridge.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */; };
+		A686BC5828901D5800DCE0E2 /* GetPrivateKeyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
@@ -1656,13 +1659,11 @@
 		A65CBF2428632913008620E2 /* Dictionary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+.swift"; sourceTree = "<group>"; };
 		A65CC08A286572A7008620E2 /* KrystalJSBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KrystalJSBridge.framework; sourceTree = "<group>"; };
 		A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = KrystalJSBridge.xcframework; sourceTree = "<group>"; };
-		A65CC09328657311008620E2 /* GetBalanceCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBalanceCommand.swift; sourceTree = "<group>"; };
 		A65CC09528657311008620E2 /* Web3BridgeFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Web3BridgeFactory.m; sourceTree = "<group>"; };
 		A65CC09628657311008620E2 /* Web3BridgeModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web3BridgeModule.swift; sourceTree = "<group>"; };
 		A65CC09728657311008620E2 /* Web3BridgeModuleFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web3BridgeModuleFactory.swift; sourceTree = "<group>"; };
 		A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KDappBrowserViewController.swift; sourceTree = "<group>"; };
 		A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KDappBrowserViewController.xib; sourceTree = "<group>"; };
-		A65CC0A1286577DC008620E2 /* TransferCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferCommand.swift; sourceTree = "<group>"; };
 		A65CC0A328657926008620E2 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		A6664D1E2858878800CCAB1F /* TransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionProcessor.swift; sourceTree = "<group>"; };
 		A6664D202859839100CCAB1F /* SolanaTransactionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaTransactionProcessor.swift; sourceTree = "<group>"; };
@@ -1689,6 +1690,11 @@
 		A685D4A92849F2620066E177 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 		A685D4AC2849FC870066E177 /* AppEventCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventCenter.swift; sourceTree = "<group>"; };
 		A685D4AE284A651D0066E177 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
+		A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-solana.min.js"; sourceTree = "<group>"; };
+		A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectCommand.swift; sourceTree = "<group>"; };
+		A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-common.min.js"; sourceTree = "<group>"; };
+		A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-webbridge.min.js"; sourceTree = "<group>"; };
+		A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateKeyCommand.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
@@ -4650,8 +4656,8 @@
 		A65CC09228657311008620E2 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
-				A65CC09328657311008620E2 /* GetBalanceCommand.swift */,
-				A65CC0A1286577DC008620E2 /* TransferCommand.swift */,
+				A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */,
+				A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -4672,6 +4678,9 @@
 				A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */,
 				A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */,
 				A65CC0A328657926008620E2 /* UIApplication+.swift */,
+				A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */,
+				A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */,
+				A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */,
 			);
 			path = DappBrowser;
 			sourceTree = "<group>";
@@ -6108,6 +6117,7 @@
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
+				A686BC56288FFDFF00DCE0E2 /* krystal-webbridge.min.js in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -6118,6 +6128,7 @@
 				7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */,
 				C3EEA45C2671EF840011DB97 /* OverviewMainViewCell.xib in Resources */,
 				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
+				A686BC4E288FD58E00DCE0E2 /* krystal-solana.min.js in Resources */,
 				C3F08B582620AD9200DA6FCB /* TermsAndConditionsViewController.xib in Resources */,
 				C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
@@ -6176,6 +6187,7 @@
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
+				A686BC54288FFDF000DCE0E2 /* krystal-common.min.js in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -6646,6 +6658,7 @@
 				"${BUILT_PRODUCTS_DIR}/FirebaseABTesting/FirebaseABTesting.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebasePerformance/FirebasePerformance.framework",
@@ -6692,6 +6705,10 @@
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalCore/OneSignalCore.framework/OneSignalCore",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalExtension/OneSignalExtension.framework/OneSignalExtension",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignalOutcomes/OneSignalOutcomes.framework/OneSignalOutcomes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -6705,6 +6722,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseABTesting.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebasePerformance.framework",
@@ -6751,6 +6769,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignalOutcomes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -7042,6 +7064,7 @@
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
 				25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */,
 				A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */,
+				A686BC52288FF65E00DCE0E2 /* ConnectCommand.swift in Sources */,
 				A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */,
 				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
 				A6B3CD512811BF85005D0D66 /* TransactionHistoryItemViewModelProtocol.swift in Sources */,
@@ -7202,7 +7225,6 @@
 				C334A865283354C3006B3D55 /* KeyboardTypingUltil.swift in Sources */,
 				A6B3CD462811BC9B005D0D66 /* KNTransactionHistoryViewModel.swift in Sources */,
 				29A0E1851F706B8C00BAAAED /* String.swift in Sources */,
-				A65CC0A2286577DC008620E2 /* TransferCommand.swift in Sources */,
 				7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */,
 				A651944828361ABB008F4AEB /* TransactionDetailRowType.swift in Sources */,
 				252B174E20D4319C005B282D /* KNCustomSegmentedControl.swift in Sources */,
@@ -7224,13 +7246,13 @@
 				296AF9AB1F7380920058AF78 /* GetTransactionCountRequest.swift in Sources */,
 				25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */,
 				7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */,
+				A686BC5828901D5800DCE0E2 /* GetPrivateKeyCommand.swift in Sources */,
 				A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */,
 				C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
 				C68AA276237A6BE900B9EC35 /* KNTransactionStatusPopUp.swift in Sources */,
 				73ED85A72034BFEF00593BF3 /* UITextFieldAdditions.swift in Sources */,
 				C3A58E2426D49BCF00EE3801 /* OverviewAddNFTViewController.swift in Sources */,
-				A65CC09828657311008620E2 /* GetBalanceCommand.swift in Sources */,
 				2923D9B51FDA4E07000CF3F8 /* PasswordGenerator.swift in Sources */,
 				25C45AE620AEB4A700CDA1FF /* KNEnterWalletNameViewController.swift in Sources */,
 				C6B4CA2923CC50190049C843 /* KNTransferConsentViewController.swift in Sources */,

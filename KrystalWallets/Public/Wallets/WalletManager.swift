@@ -367,6 +367,24 @@ public extension WalletManager {
     }
   }
   
+  func privateKeyData(address: KAddress) -> Data? {
+    guard let wallet = getAllWallets().first(where: { $0.id == address.walletID }) else {
+      return nil
+    }
+    guard let privateKey = try? getPrivateKey(wallet: wallet, forAddressType: address.addressType) else {
+      return nil
+    }
+    switch address.addressType {
+    case .evm:
+      return privateKey.data
+    case .solana:
+      let publicKey = privateKey.getPublicKeyEd25519()
+      let privateKeyData = privateKey.data
+      let publicKeyData = publicKey.data
+      return privateKeyData + publicKeyData
+    }
+  }
+  
 }
 
 extension WalletManager {

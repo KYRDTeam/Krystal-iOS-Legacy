@@ -1,0 +1,125 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name KrystalJSBridge
+import Foundation
+@_exported import KrystalJSBridge
+import Swift
+import WebKit
+import _Concurrency
+@objc @_inheritsConvenienceInitializers public class UnitCodable : ObjectiveC.NSObject, Swift.Codable {
+  @objc override dynamic public init()
+  @objc deinit
+  public func encode(to encoder: Swift.Encoder) throws
+  required public init(from decoder: Swift.Decoder) throws
+}
+@objc public class BridgeModuleManager : ObjectiveC.NSObject {
+  @objc public init(eventEmitter: KrystalJSBridge.EventEmitter)
+  @objc public func invoke(moduleName: Swift.String, methodName: Swift.String, subscriberId: Swift.String, requestString: Swift.String)
+  @objc public func unsubscribe(moduleName: Swift.String, subscriberId: Swift.String)
+  public func getModuleNames() -> [Swift.String]
+  @objc public func loadBridgeModules()
+  @objc deinit
+}
+@objc open class BaseBridgeModule : ObjectiveC.NSObject {
+  open func getModuleName() -> Swift.String
+  public init(eventEmitter: KrystalJSBridge.EventEmitter)
+  public func addCommand(command: KrystalJSBridge.RawBridgeCommandProtocol)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class BridgeDataUtils {
+  public static func getRequestData<T>(from source: Swift.String) throws -> T where T : Swift.Decodable
+  public static func getRequestData<T>(from source: [Swift.String : Any]) throws -> T where T : Swift.Decodable
+  public static func getClassName(moduleName: Swift.String) -> Swift.String
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class KWebView : WebKit.WKWebView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreGraphics.CGRect, configuration: WebKit.WKWebViewConfiguration)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+extension KrystalJSBridge.KWebView : WebKit.WKScriptMessageHandler {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func userContentController(_ userContentController: WebKit.WKUserContentController, didReceive message: WebKit.WKScriptMessage)
+}
+public protocol BridgeCommandProtocol : KrystalJSBridge.BaseBridgeCommandProtocol {
+  func execute(moduleName: Swift.String, subscriberId: Swift.String, params: Self.BridgeInput) throws -> KrystalJSBridge.CommandSubscription?
+}
+extension KrystalJSBridge.BridgeCommandProtocol {
+  public func execute(moduleName: Swift.String, subscriberId: Swift.String, params: KrystalJSBridge.RequestData) throws -> KrystalJSBridge.CommandSubscription?
+}
+public class ResponseData {
+  public init(statusCode: KrystalJSBridge.StatusCode, result: Any?, error: Swift.String?)
+  public func toDictionary() -> [Swift.String : Any?]
+  @objc deinit
+}
+public enum StatusCode {
+  case success
+  case failure
+  case other(value: Swift.Int)
+  public func toInt() -> Swift.Int
+}
+@objc public class JSResponseData : ObjectiveC.NSObject {
+  final public let subscriberId: Swift.String?
+  final public let data: KrystalJSBridge.ResponseData?
+  public init(subscriberId: Swift.String?, data: KrystalJSBridge.ResponseData)
+  public func toDictionary() -> [Swift.String : Any?]
+  @objc deinit
+}
+@objc public class RequestData : ObjectiveC.NSObject, Swift.Decodable {
+  public var subscriberId: Swift.String
+  public var parameters: [Swift.String : Any]
+  required public init(from decoder: Swift.Decoder) throws
+  @objc deinit
+}
+@objc public protocol EventEmitter {
+  @objc func sendResponseEvent(to eventName: Swift.String, with response: KrystalJSBridge.JSResponseData)
+}
+public protocol RawBridgeCommandProtocol : ObjectiveC.NSObject {
+  var eventEmitter: KrystalJSBridge.EventEmitter { get }
+  var commandName: Swift.String { get }
+  init(eventEmitter: KrystalJSBridge.EventEmitter)
+  func execute(moduleName: Swift.String, subscriberId: Swift.String, params: KrystalJSBridge.RequestData) throws -> KrystalJSBridge.CommandSubscription?
+}
+extension KrystalJSBridge.RawBridgeCommandProtocol {
+  public func getCommandName() -> Swift.String
+  public func sendResponseEvent(to eventName: Swift.String, with response: KrystalJSBridge.JSResponseData)
+  public func sendSuccessEvent(to eventName: Swift.String, with subscriberId: Swift.String, and data: Any?)
+  public func sendErrorEvent(to eventName: Swift.String, with subscriberId: Swift.String, and error: Swift.String)
+  public func execute(moduleName: Swift.String, subscriberId: Swift.String, parameter: Swift.String) throws -> KrystalJSBridge.CommandSubscription?
+}
+public protocol BaseBridgeCommandProtocol : KrystalJSBridge.RawBridgeCommandProtocol {
+  associatedtype BridgeInput : Swift.Decodable
+  associatedtype BridgeOutput
+}
+public protocol BridgeModuleFactory {
+  func createBridgeModule(eventEmitter: KrystalJSBridge.EventEmitter) throws -> KrystalJSBridge.BaseBridgeModule
+}
+@_hasMissingDesignatedInitializers public class BusResponse<T> : ObjectiveC.NSObject, Swift.Decodable where T : Swift.Decodable {
+  public var isSuccess: Swift.Bool
+  public var code: Swift.String?
+  public var result: T?
+  public var message: Swift.String?
+  @objc deinit
+  required public init(from decoder: Swift.Decoder) throws
+}
+public typealias Unsubscriber = () -> Swift.Void
+@objc @_hasMissingDesignatedInitializers public class CommandSubscription : ObjectiveC.NSObject {
+  public func unsubscribe()
+  @objc deinit
+}
+public class BaseBridgeError : Swift.Error {
+  public init(_ message: Swift.String)
+  @objc deinit
+}
+extension KrystalJSBridge.BaseBridgeError : Foundation.LocalizedError {
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+public class NoSuchMethodException : KrystalJSBridge.BaseBridgeError {
+  public init(methodName: Swift.String, moduleName: Swift.String)
+  @objc deinit
+}
+public class NoSuchModuleException : KrystalJSBridge.BaseBridgeError {
+  public init(moduleName: Swift.String)
+  @objc deinit
+}

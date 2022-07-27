@@ -1,0 +1,11 @@
+framework module KrystalJSBridge {
+  umbrella header "KrystalJSBridge.h"
+
+  export *
+  module * { export * }
+}
+
+module KrystalJSBridge.Swift {
+    header "KrystalJSBridge-Swift.h"
+    requires objc
+}

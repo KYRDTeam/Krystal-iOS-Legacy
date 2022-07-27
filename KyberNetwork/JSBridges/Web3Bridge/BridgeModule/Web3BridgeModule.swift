@@ -11,12 +11,12 @@ import KrystalJSBridge
 class Web3BridgeModule: BaseBridgeModule {
   
   override func getModuleName() -> String {
-    return "Web3Module"
+    return "SolanaModule"
   }
   
   required override init(eventEmitter: EventEmitter) {
     super.init(eventEmitter: eventEmitter)
-    addCommand(command: GetBalanceCommand(eventEmitter: eventEmitter))
-    addCommand(command: TransferCommand(eventEmitter: eventEmitter))
+    addCommand(command: ConnectCommand(eventEmitter: eventEmitter))
+    addCommand(command: GetPrivateKeyCommand(eventEmitter: eventEmitter))
   }
 }
