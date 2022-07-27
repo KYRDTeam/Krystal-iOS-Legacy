@@ -88,6 +88,8 @@ class OverviewMainViewController: KNBaseViewController {
       forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
     
+    self.tableView.registerCellNib(OverviewMultichainLiquidityPoolCell.self)
+    
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibEmpty,
@@ -402,6 +404,11 @@ class OverviewMainViewController: KNBaseViewController {
     self.reloadUI()
   }
   
+  func coordinatorDidUpdateAllLPData(models: [ChainLiquidityPoolModel]) {
+    self.viewModel.chainLiquidityPoolModels = models
+    self.reloadUI()
+  }
+  
   func overviewModeDidChanged(isSummary: Bool) {
     self.viewModel.overviewMode = isSummary ? .summary : .overview
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
@@ -568,12 +575,22 @@ extension OverviewMainViewController: UITableViewDataSource {
       
       return cell
     case .showLiquidityPool:
+      if self.viewModel.currentChain == .all {
+        let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
+        let key = self.viewModel.displayHeader.value[indexPath.section]
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+          viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+          cell.updateCell(viewModel)
+        }
+        return cell
+      }
+        
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewLiquidityPoolCell.kCellID,
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }

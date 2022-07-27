@@ -26,6 +26,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()
+  func overviewCoordinatorDidSelectAllChain()
 }
 
 class PoolPairToken: Codable {
@@ -831,6 +832,7 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
     case .addChainWallet(let chain):
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
     case .selectAllChain:
+      self.delegate?.overviewCoordinatorDidSelectAllChain()
       self.loadMultichainAssetsData { chainBalanceModels in
         self.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalanceModels)
       }

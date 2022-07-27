@@ -22,12 +22,6 @@ extension KNAppCoordinator {
     }
     
     FeatureFlagManager.shared.configClient(session: self.session)
-    self.loadBalanceCoordinator?.exit()
-    self.loadBalanceCoordinator = nil
-    self.loadBalanceCoordinator = KNLoadBalanceCoordinator()
-    self.loadBalanceCoordinator?.delegate = self
-    self.loadBalanceCoordinator?.resume()
-
     self.tabbarController = KNTabBarController()
     
     let overviewCoordinator = OverviewCoordinator()
@@ -35,6 +29,13 @@ extension KNAppCoordinator {
     overviewCoordinator.delegate = self
     overviewCoordinator.start()
     self.overviewTabCoordinator = overviewCoordinator
+    
+    self.loadBalanceCoordinator?.exit()
+    self.loadBalanceCoordinator = nil
+    self.loadBalanceCoordinator = KNLoadBalanceCoordinator()
+    self.loadBalanceCoordinator?.delegate = self
+    self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
+    self.loadBalanceCoordinator?.resume()
 
     // KyberSwap Tab
     self.exchangeCoordinator = {
@@ -163,6 +164,7 @@ extension KNAppCoordinator {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
       self.session.switchAddress(address: address)
       FeatureFlagManager.shared.configClient(session: self.session)
+      self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
       self.loadBalanceCoordinator?.restartNewSession(self.session)
       self.investCoordinator?.appCoordinatorSwitchAddress()
 

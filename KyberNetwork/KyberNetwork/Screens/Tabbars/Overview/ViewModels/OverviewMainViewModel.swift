@@ -206,6 +206,7 @@ class OverviewMainViewModel {
     return AppDelegate.session.address.name
   }
   var assetChainBalanceModels: [ChainBalanceModel] = []
+  var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
   
   init() {
     if let savedCurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) {
@@ -333,6 +334,131 @@ class OverviewMainViewModel {
     self.displayNFTDataSource.value = [:]
   }
   
+  func reloadLPData() {
+    var total = 0.0
+    let currencyFormatter = StringFormatter()
+    var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
+    var headers: [(String, ChainType?)] = []
+
+    self.chainLiquidityPoolModels.forEach { chainLPModel in
+      let liquidityPoolData = self.getLiquidityPools(currency: self.currencyMode, allLiquidityPool: chainLPModel.balances)
+      //TODO: temp fix replace later
+      let header: [(String, ChainType?)] = liquidityPoolData.0.map({ e in
+        return (e, ChainType.make(chainID: chainLPModel.chainId))
+      })
+      headers.append(contentsOf: header)
+      let data = liquidityPoolData.1
+
+      header.forEach { (key) in
+        var sectionModels: [OverviewLiquidityPoolViewModel] = []
+        //value for total balance of current pool
+        var totalSection = 0.0
+        data[key.0.lowercased()]?.forEach({ (item) in
+          if let poolPairToken = item as? [LPTokenModel] {
+            poolPairToken.forEach { token in
+              //add total value of each token in current pair
+              totalSection += token.getTokenValue(self.currencyMode)
+            }
+            let cellVM = OverviewLiquidityPoolViewModel(currency: self.currencyMode, pairToken: poolPairToken)
+            cellVM.chainId = chainLPModel.chainId
+            cellVM.chainName = chainLPModel.chainName
+            cellVM.chainLogo = chainLPModel.chainLogo
+            sectionModels.append(cellVM)
+          }
+        })
+        
+        models[key.0 + (key.1?.chainName() ?? "")] = sectionModels
+        let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
+        let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+        
+        self.displayTotalValues.value[key.0 + (key.1?.chainName() ?? "")] = displayTotalSection
+        total += totalSection
+      }
+    }
+    self.displayHeader.value = headers
+    self.displayLPDataSource.value = models
+    let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
+    self.displayTotalValues.value["all"] = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+    self.displayNFTHeader.value = []
+    self.displayNFTDataSource.value = [:]
+  }
+  
+  func getLiquidityPools(currency: CurrencyMode, allLiquidityPool: [LiquidityPoolModel]) -> ([String], [String: [Any]]) {
+    var poolDict: [String: [Any]] = [:]
+    var allProject: [String] = []
+
+    allLiquidityPool.forEach { poolModel in
+      let element = allProject.first { project in
+        project.lowercased() == poolModel.project.lowercased()
+      }
+      if element == nil {
+        // only add project if `allProject` doesn't contain it < with case sensitive checked >
+        allProject.append(poolModel.project)
+      }
+    }
+
+    allProject.forEach { project in
+      var currentPoolPairTokens: [[LPTokenModel]] = []
+      // add all pair of current pool project
+      allLiquidityPool.forEach { poolModel in
+        if poolModel.project.lowercased() == project.lowercased() {
+          currentPoolPairTokens.append(poolModel.lpTokenArray)
+        }
+      }
+      // sort all pair in current pool project first by value then by balance
+      currentPoolPairTokens = currentPoolPairTokens.sorted { pair1, pair2 in
+        var totalPair1 = 0.0
+        var pair1Balance = 0.0
+        pair1.forEach { lpmodel in
+          totalPair1 += lpmodel.getTokenValue(currency)
+          pair1Balance += Double(lpmodel.getBalanceBigInt().string(decimals: lpmodel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(lpmodel.token.decimals, 5))) ?? 0
+        }
+        
+        var totalPair2 = 0.0
+        var pair2Balance = 0.0
+        pair2.forEach { lpmodel in
+          totalPair2 += lpmodel.getTokenValue(currency)
+          pair2Balance += Double(lpmodel.getBalanceBigInt().string(decimals: lpmodel.token.decimals, minFractionDigits: 0, maxFractionDigits: min(lpmodel.token.decimals, 5))) ?? 0
+        }
+        
+        if totalPair1 != totalPair2 {
+          return totalPair1 > totalPair2
+        } else {
+          return pair1Balance > pair2Balance
+        }
+        
+      }
+      // add sorted list pair tokens with current pool project key
+      poolDict[project.lowercased()] = currentPoolPairTokens
+    }
+
+    allProject = allProject.sorted { key1, key2 in
+      var totalSection1 = 0.0
+      poolDict[key1.lowercased()]?.forEach({ (item) in
+        if let poolPairToken = item as? [LPTokenModel] {
+          poolPairToken.forEach { token in
+            //add total value of each token in current pair
+            totalSection1 += token.getTokenValue(currency)
+          }
+        }
+      })
+      
+      var totalSection2 = 0.0
+      poolDict[key2.lowercased()]?.forEach({ (item) in
+        if let poolPairToken = item as? [LPTokenModel] {
+          poolPairToken.forEach { token in
+            //add total value of each token in current pair
+            totalSection2 += token.getTokenValue(currency)
+          }
+        }
+      })
+
+      return totalSection1 > totalSection2
+    }
+
+    return (allProject, poolDict)
+  }
+  
   func reloadAllData() {
     reloadSummaryChainData()
     switch self.currentMode {
@@ -393,41 +519,7 @@ class OverviewMainViewModel {
       self.displayNFTHeader.value = []
       self.displayNFTDataSource.value = [:]
     case .showLiquidityPool:
-      let liquidityPoolData = BalanceStorage.shared.getLiquidityPools(currency: self.currencyMode)
-      //TODO: temp fix replace later
-      self.displayHeader.value = liquidityPoolData.0.map({ e in
-        return (e, nil)
-      })
-      let data = liquidityPoolData.1
-      var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
-      var total = 0.0
-      let currencyFormatter = StringFormatter()
-      self.displayHeader.value.forEach { (key) in
-        var sectionModels: [OverviewLiquidityPoolViewModel] = []
-        //value for total balance of current pool
-        var totalSection = 0.0
-        data[key.0.lowercased()]?.forEach({ (item) in
-          if let poolPairToken = item as? [LPTokenModel] {
-            poolPairToken.forEach { token in
-              //add total value of each token in current pair
-              totalSection += token.getTokenValue(self.currencyMode)
-            }
-            sectionModels.append(OverviewLiquidityPoolViewModel(currency: self.currencyMode, pairToken: poolPairToken))
-          }
-        })
-        
-        models[key.0] = sectionModels
-        let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
-        let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
-        
-        self.displayTotalValues.value[key.0] = displayTotalSection
-        total += totalSection
-      }
-      self.displayLPDataSource.value = models
-      let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
-      self.displayTotalValues.value["all"] = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
-      self.displayNFTHeader.value = []
-      self.displayNFTDataSource.value = [:]
+      self.reloadLPData()
     case .favourite(let mode):
       let marketToken = KNSupportedTokenStorage.shared.allActiveTokens.sorted { (left, right) -> Bool in
         switch self.marketSortType {
@@ -544,7 +636,7 @@ class OverviewMainViewModel {
       return self.getViewModelsForSection(section).count + 1
     case .showLiquidityPool:
       let key = self.displayHeader.value[section]
-      return self.displayLPDataSource.value[key.0]?.count ?? 0
+      return self.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?.count ?? 0
     default:
       return self.getViewModelsForSection(section).count
     }
@@ -719,7 +811,8 @@ class OverviewMainViewModel {
       return "********"
     }
     let key = self.displayHeader.value[section]
-    return self.displayTotalValues.value[key.0] ?? ""
+    let headerKey = self.currentMode == .showLiquidityPool ? key.0 + (key.1?.chainName() ?? "") : key.0
+    return self.displayTotalValues.value[headerKey] ?? ""
   }
   
   var displayTotalValue: String {

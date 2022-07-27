@@ -14,6 +14,7 @@ import KrystalWallets
 
 protocol KNLoadBalanceCoordinatorDelegate: class {
   func loadBalanceCoordinatorDidGetBalance(chainBalances: [ChainBalanceModel])
+  func loadBalanceCoordinatorDidGetLP(chainLP: [ChainLiquidityPoolModel])
 }
 class KNLoadBalanceCoordinator {
 
@@ -30,7 +31,7 @@ class KNLoadBalanceCoordinator {
   fileprivate var isFetchNonSupportedBalance: Bool = false
   weak var delegate: KNLoadBalanceCoordinatorDelegate?
   fileprivate var lastRefreshTime: Date = Date()
-
+  var shouldFetchAllChain: Bool = false
   var address: KAddress {
     return AppDelegate.session.address
   }
@@ -236,14 +237,30 @@ class KNLoadBalanceCoordinator {
 
   func loadTokenBalancesFromApi(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    var addressString = ""
+    var addressString:[String] = []
     if AppDelegate.session.address.addressType == .evm {
-      addressString = "ethereum:\(AppDelegate.session.address.addressString)"
+      addressString.append("ethereum:\(AppDelegate.session.address.addressString)")
     } else {
-      addressString = "solana:\(AppDelegate.session.address.addressString)"
+      addressString.append("solana:\(AppDelegate.session.address.addressString)")
     }
-    let quoteSymbols = ["btc,usd,\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())"]
-    provider.requestWithFilter(.getMultichainBalance(address: [addressString], chainIds: ["\(KNGeneralProvider.shared.currentChain.getChainId())"], quoteSymbols: quoteSymbols)) { (result) in
+    var quoteSymbols = ["btc","usd"]
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+      addressString = AppDelegate.session.getCurrentWalletAddresses().map { address -> String in
+        if address.addressType == .evm {
+          return "ethereum:\(address.addressString)"
+        } else {
+          return "solana:\(address.addressString)"
+        }
+      }
+    }
+
+    provider.requestWithFilter(.getMultichainBalance(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
         var chainBalanceModels: [ChainBalanceModel] = []
@@ -400,21 +417,37 @@ class KNLoadBalanceCoordinator {
 
   func loadLiquidityPool(forceSync: Bool = false, completion:  @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    let address = AppDelegate.session.address.addressString
-    let chain = KNGeneralProvider.shared.chainName
-    provider.requestWithFilter(.getLiquidityPool(address: address, chain: chain, forceSync: forceSync)) { (result) in
-      if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:], let balances = json["balances"] as? [JSONDictionary] {
-        var poolArray: [LiquidityPoolModel] = []
-        for item in balances {
-          if let poolJSON = item["token"] as? JSONDictionary, let tokensJSON = item["underlying"] as? [JSONDictionary], let project = item["project"] as? String {
-            let lpmodel = LiquidityPoolModel(poolJSON: poolJSON, tokensJSON: tokensJSON)
-            lpmodel.project = project
-            poolArray.append(lpmodel)
+    let addressString:[String] = [AppDelegate.session.address.addressString]
+    var quoteSymbols = ["btc","usd"]
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+      chainIds = ["1", "56"]
+    }
+
+    provider.requestWithFilter(.getLiquidityPool(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
+      
+      switch result {
+      case .success(let resp):
+        var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
+        if let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] {
+          jsons.forEach { jsonData in
+            let chainModel = ChainLiquidityPoolModel(json: jsonData)
+            chainLiquidityPoolModels.append(chainModel)
           }
+          self.delegate?.loadBalanceCoordinatorDidGetLP(chainLP: chainLiquidityPoolModels)
         }
-        BalanceStorage.shared.setLiquidityPools(poolArray)
         completion(true)
-      } else {
+      case .failure(let error):
+//        self.rootViewController.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
