@@ -67,7 +67,7 @@ lane :fda do
   prepare_keychain
   install_profiles
   update_project
-  build_debug
+  build
   firebase_distribution
 end
 

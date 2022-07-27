@@ -9,7 +9,8 @@ on:
       - testflight-build
       - debug-action
       - feature/slack-notification
-
+      - fix/cicd
+      
 concurrency: 
   group: ios-build-dev-${{ github.ref }}
   cancel-in-progress: true
