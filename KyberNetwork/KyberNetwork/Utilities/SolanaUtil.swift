@@ -471,10 +471,17 @@ class SolanaUtil {
   }
   
   static func isNormalPrivateKey(text: String) -> Bool {
-    guard let data = Base58.decodeNoCheck(string: text) else {
-      return false
+    if text.count == 64 { // Trust private key
+      guard let data = Data(hexString: text) else {
+        return false
+      }
+      return data.count == 32
+    } else {
+      guard let data = Base58.decodeNoCheck(string: text) else {
+        return false
+      }
+      return data.count == 64
     }
-    return data.count == 64
   }
   
   static func getPrivateKey(numericPrivateKey: String) -> PrivateKey? {
