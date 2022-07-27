@@ -28,11 +28,15 @@ class ScannerModule {
     
     switch AVCaptureDevice.authorizationStatus(for: .video) {
     case .authorized:
-      moveToScanner()
+      DispatchQueue.main.async {
+        moveToScanner()
+      }
     case .notDetermined:
       AVCaptureDevice.requestAccess(for: .video) { granted in
         if granted {
-          moveToScanner()
+          DispatchQueue.main.async {
+            moveToScanner()
+          }
         }
       }
     case .denied:
