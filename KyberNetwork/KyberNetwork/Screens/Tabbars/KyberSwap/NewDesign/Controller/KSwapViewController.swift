@@ -473,7 +473,8 @@ class KSwapViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       self.viewModel.isFromDeepLink = false
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+      if addresses.isEmpty {
         self.delegate?.kSwapViewController(self, run: .addChainWallet(chainType: selected))
         return
       } else {
