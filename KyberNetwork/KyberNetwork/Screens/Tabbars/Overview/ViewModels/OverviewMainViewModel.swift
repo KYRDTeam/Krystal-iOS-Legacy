@@ -329,12 +329,23 @@ class OverviewMainViewModel {
     }
     
     displayModels = displayModels.sorted(by: { firstModel, secondModel in
-      if let quote1 = firstModel.quotes["usd"], let quote2 = secondModel.quotes["usd"] {
-        return quote1.value > quote2.value
-      } else {
+      var quote1Value: Double = 0.0
+      var quote2Value: Double = 0.0
+      if let quote1 = firstModel.quotes["usd"] {
+        quote1Value = quote1.value
+      }
+      if let quote2 = secondModel.quotes["usd"] {
+        quote2Value = quote2.value
+      }
+
+      if quote1Value == quote2Value, quote1Value == 0 {
         let balance1 = firstModel.balance.amountBigInt(decimals: firstModel.decimals) ?? BigInt(0)
         let balance2 = secondModel.balance.amountBigInt(decimals: secondModel.decimals) ?? BigInt(0)
         return balance1 > balance2
+      } else {
+        let stringValue1 = firstModel.multiChainAccessoryTitle
+        let stringValue2 = secondModel.multiChainAccessoryTitle
+        return stringValue1.doubleValue > stringValue2.doubleValue
       }
     })
     self.displayHeader.value = []
