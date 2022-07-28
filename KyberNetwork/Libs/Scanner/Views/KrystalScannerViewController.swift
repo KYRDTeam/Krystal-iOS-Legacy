@@ -46,6 +46,9 @@ class KrystalScannerViewController: UIViewController {
     return acceptedResults.contains(.solPrivateKey) || acceptedResults.contains(.ethPrivateKey)
   }
   
+  // For tracking
+  var previousScreen: String = ""
+  
   var scanMode: ScanMode = .qr {
     didSet {
       self.titleLabel.text = self.title(forMode: scanMode)
@@ -142,6 +145,13 @@ class KrystalScannerViewController: UIViewController {
       let mode = self.availableScanModes[index]
       self.scanMode = mode
       self.resetHoleFrame()
+      if mode == .text {
+        Tracker.track(event: .scanText,
+                      customAttributes: [
+                        "previous_screen": "",
+                        "scan_output": self.acceptedResults.map { $0.trackingOutputKey }.joined(separator: "|")
+                      ])
+      }
     }
   }
   
