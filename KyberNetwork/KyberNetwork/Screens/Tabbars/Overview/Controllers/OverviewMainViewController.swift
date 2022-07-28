@@ -75,6 +75,8 @@ class OverviewMainViewController: KNBaseViewController {
       forCellReuseIdentifier: OverviewMainViewCell.kCellID
     )
     
+    self.tableView.registerCellNib(OverviewAllChainTokenCell.self)
+    
     let nibSupply = UINib(nibName: OverviewDepositTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibSupply,
@@ -86,6 +88,8 @@ class OverviewMainViewController: KNBaseViewController {
       nibLiquidityPool,
       forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
+    
+    self.tableView.registerCellNib(OverviewMultichainLiquidityPoolCell.self)
     
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
     self.tableView.register(
@@ -205,9 +209,9 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func updateUISwitchChain() {
-    let icon = KNGeneralProvider.shared.chainIconImage
-    self.currentChainIcon.image = icon
-    self.currentChainLabel.text = KNGeneralProvider.shared.chainName
+    let selected = self.viewModel.currentChain
+    self.currentChainIcon.image = selected.chainIcon()
+    self.currentChainLabel.text = selected.chainName()
   }
   
   fileprivate func updateCh24Button() {
@@ -259,9 +263,17 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   @IBAction func switchChainButtonTapped(_ sender: UIButton) {
-    let popup = SwitchChainViewController()
+    let popup = SwitchChainViewController(includedAll: true, selected: self.viewModel.currentChain)
     popup.completionHandler = { [weak self] selected in
       guard let self = self else { return }
+      guard selected != .all else {
+        self.viewModel.currentChain = selected
+        self.updateUISwitchChain()
+//        self.tableView.reloadData()
+        self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+        return
+      }
+      
       let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
       if addresses.isEmpty {
         self.delegate?.overviewMainViewController(self, run: .addChainWallet(chain: selected))
@@ -391,10 +403,12 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   func coordinatorAppSwitchAddress() {
+    self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
+        self.updateUISwitchChain()
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
@@ -424,6 +438,16 @@ class OverviewMainViewController: KNBaseViewController {
     DispatchQueue.main.async {
       self.refreshControl.endRefreshing()
     }
+  }
+  
+  func coordinatorDidUpdateAllTokenData(models: [ChainBalanceModel]) {
+    self.viewModel.assetChainBalanceModels = models
+    self.reloadUI()
+  }
+  
+  func coordinatorDidUpdateAllLPData(models: [ChainLiquidityPoolModel]) {
+    self.viewModel.chainLiquidityPoolModels = models
+    self.reloadUI()
   }
   
   func overviewModeDidChanged(isSummary: Bool) {
@@ -511,13 +535,28 @@ extension OverviewMainViewController: UITableViewDataSource {
       for: indexPath
     ) as! OverviewMainViewCell
     
-    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-    cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-    cell.updateCell(cellModel)
+    if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+      cell.updateCell(cellModel)
+    }
+
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
-    cell.delegate = self
+    return cell
+  }
+  
+  func multiChainTokenInfoCell(indexPath: IndexPath) -> OverviewAllChainTokenCell {
+    let cell = tableView.dequeueReusableCell(OverviewAllChainTokenCell.self, indexPath: indexPath)!
+    
+    if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+      cell.updateCell(cellModel)
+    }
+    
+    cell.action = {
+      self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
+    }
     return cell
   }
   
@@ -557,6 +596,9 @@ extension OverviewMainViewController: UITableViewDataSource {
     switch self.viewModel.currentMode {
     case .asset:
       let isLastCell = indexPath.row == self.viewModel.numberOfRowsInSection(section: indexPath.section) - 1
+      if self.viewModel.currentChain == .all {
+        return isLastCell ? showOrHideSmallValueTokenCell() : multiChainTokenInfoCell(indexPath: indexPath)
+      }
       return isLastCell ? showOrHideSmallValueTokenCell() : tokenInfoCell(indexPath: indexPath)
     case .market, .favourite:
       return tokenInfoCell(indexPath: indexPath)
@@ -565,17 +607,29 @@ extension OverviewMainViewController: UITableViewDataSource {
         withIdentifier: OverviewDepositTableViewCell.kCellID,
         for: indexPath
       ) as! OverviewDepositTableViewCell
-      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-      cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
-      cell.updateCell(cellModel)
+      if let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] {
+        cellModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+        cell.updateCell(cellModel)
+      }
+      
       return cell
     case .showLiquidityPool:
+      if self.viewModel.currentChain == .all {
+        let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
+        let key = self.viewModel.displayHeader.value[indexPath.section]
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+          viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+          cell.updateCell(viewModel)
+        }
+        return cell
+      }
+        
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewLiquidityPoolCell.kCellID,
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }
@@ -643,17 +697,29 @@ extension OverviewMainViewController: UITableViewDelegate {
       self.reloadUI()
       return
     }
-    let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
+    guard let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] else { return }
     switch cellModel.mode {
     case .asset(token: let token, _):
-      self.delegate?.overviewMainViewController(self, run: .select(token: token))
+      self.delegate?.overviewMainViewController(self, run: .select(token: token, chainId: cellModel.chainId))
     case .market(token: let token, _):
       self.delegate?.overviewMainViewController(self, run: .select(token: token))
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
+        guard self.viewModel.getChainForSection(indexPath.section) == KNGeneralProvider.shared.currentChain else {
+          if let chain = self.viewModel.getChainForSection(indexPath.section) {
+            self.showSwitchChainAlert(chain)
+          }
+          return
+        }
         let platform = self.viewModel.displayHeader.value[indexPath.section]
-        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform, balance: lendingBalance))
+        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.0, balance: lendingBalance))
       } else if let distributionBalance = balance as? LendingDistributionBalance {
+        guard distributionBalance.chainType == KNGeneralProvider.shared.currentChain else {
+          if let chain = distributionBalance.chainType {
+            self.showSwitchChainAlert(chain)
+          }
+          return
+        }
         self.delegate?.overviewMainViewController(self, run: .claim(balance: distributionBalance))
       }
     case .search:
@@ -689,78 +755,6 @@ extension OverviewMainViewController: UIScrollViewDelegate {
   
 }
 
-extension OverviewMainViewController: SwipeTableViewCellDelegate {
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-    guard orientation == .right else {
-      return nil
-    }
-    
-    switch self.viewModel.currentMode {
-    case .asset:
-      let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[indexPath.row]
-      guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
-      // hide action
-      let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
-        KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "token_disable": true,
-          "screen_name": "OverviewMainViewController",
-        ]
-        Tracker.track(event: .tokenChangeDisable, customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      hideAction.title = "Hide".toBeLocalised().uppercased()
-      hideAction.textColor = UIColor(named: "normalTextColor")
-      hideAction.font = UIFont.Kyber.medium(with: 12)
-      let bgImg = UIImage(named: "history_cell_edit_bg")!
-      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-      hideAction.backgroundColor = UIColor(patternImage: resized)
-      
-      // soft delete action for custom token
-      let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
-        KNSupportedTokenStorage.shared.deleteCustomToken(token)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "screen_name": "OverviewMainViewController",
-        ]
-        Tracker.track(event: .tokenDelete, customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      deleteAction.title = "Delete".toBeLocalised().uppercased()
-      deleteAction.textColor = UIColor(named: "normalTextColor")
-      deleteAction.font = UIFont.Kyber.medium(with: 12)
-      deleteAction.backgroundColor = UIColor(patternImage: resized)
-      
-      if KNSupportedTokenStorage.shared.getActiveCustomToken().contains(token) {
-        return [hideAction, deleteAction]
-      }
-      return [hideAction]
-    default:
-      return nil
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-    var options = SwipeOptions()
-    options.transitionStyle = .reveal
-    options.backgroundColor = UIColor(named: "mainViewBgColor")
-    options.minimumButtonWidth = 90
-    options.maximumButtonWidth = 90
-    return options
-  }
-}
-
 extension OverviewMainViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 2
@@ -772,7 +766,14 @@ extension OverviewMainViewController: UICollectionViewDataSource {
       for: indexPath
     ) as! OverviewTotalInfoCell
     
-    cell.updateCell(walletName: viewModel.currentWalletName, totalValue: indexPath.row == 0 ? self.viewModel.displayTotalValue : self.viewModel.displayTotalSummaryValue, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
+    var totalValueString = ""
+    if indexPath.row == 0 && self.viewModel.currentChain != .all {
+      totalValueString = self.viewModel.displayTotalValue
+    } else {
+      totalValueString = self.viewModel.displayTotalSummaryValue
+    }
+    
+    cell.updateCell(walletName: viewModel.currentWalletName, totalValue: totalValueString, hideBalanceStatus: self.viewModel.hideBalanceStatus, shouldShowAction: indexPath.item == 0)
     
     cell.walletListButtonTapped = {
       self.delegate?.overviewMainViewController(self, run: .selectListWallet)

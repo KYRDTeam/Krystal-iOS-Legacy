@@ -12,6 +12,9 @@ class OverviewLiquidityPoolViewModel {
   let currency: CurrencyMode
   let pairTokens: [LPTokenModel]
   var hideBalanceStatus: Bool = true
+  var chainName: String = ""
+  var chainId: Int = KNGeneralProvider.shared.currentChain.getChainId()
+  var chainLogo: String = ""
   init(currency: CurrencyMode, pairToken: [LPTokenModel]) {
     self.currency = currency
     self.pairTokens = pairToken

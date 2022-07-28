@@ -135,7 +135,8 @@ class OverviewDepositTableViewCell: UITableViewCell {
   @IBOutlet weak var tokenBalanceInfoLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
   @IBOutlet weak var tokenApyInfo: UILabel!
-
+  @IBOutlet weak var chainTypeImageView: UIImageView!
+  
   func updateCell(viewModel: OverviewDepositCellViewModel) {
     self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.symbol)
     self.tokenBalanceInfoLabel.text = viewModel.displayBalance
@@ -150,5 +151,11 @@ class OverviewDepositTableViewCell: UITableViewCell {
     self.tokenApyInfo.text = viewModel.displaySubTitleDetail
     self.valueLabel.text = viewModel.displayAccessoryTitle
     self.tokenApyInfo.isHidden = viewModel.displaySubTitleDetail.isEmpty
+    if case .supply(let bal) = viewModel.mode, let distributionBal = bal as? LendingDistributionBalance, let chain = distributionBal.chainType {
+      self.chainTypeImageView.image = chain.chainIcon()
+      self.chainTypeImageView.isHidden = false
+    } else {
+      self.chainTypeImageView.isHidden = true
+    }
   }
 }

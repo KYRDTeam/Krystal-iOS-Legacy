@@ -22,24 +22,26 @@ enum ChainType: Codable, CaseIterable {
     let rawValue = try container.decode(Int.self, forKey: .rawValue)
     switch rawValue {
     case 0:
-      self = .eth
+      self = .all
     case 1:
-      self = .bsc
+      self = .eth
     case 2:
-      self = .polygon
+      self = .bsc
     case 3:
-      self = .avalanche
+      self = .polygon
     case 4:
-      self = .cronos
+      self = .avalanche
     case 5:
-      self = .fantom
+      self = .cronos
     case 6:
-      self = .arbitrum
+      self = .fantom
     case 7:
-      self = .aurora
+      self = .arbitrum
     case 8:
-      self = .solana
+      self = .aurora
     case 9:
+      self = .solana
+    case 10:
       self = .klaytn
     default:
       throw CodingError.unknownValue
@@ -49,26 +51,28 @@ enum ChainType: Codable, CaseIterable {
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
-    case .eth:
+    case .all:
       try container.encode(0, forKey: .rawValue)
-    case .bsc:
+    case .eth:
       try container.encode(1, forKey: .rawValue)
-    case .polygon:
+    case .bsc:
       try container.encode(2, forKey: .rawValue)
-    case .avalanche:
+    case .polygon:
       try container.encode(3, forKey: .rawValue)
-    case .cronos:
+    case .avalanche:
       try container.encode(4, forKey: .rawValue)
-    case .fantom:
+    case .cronos:
       try container.encode(5, forKey: .rawValue)
-    case .arbitrum:
+    case .fantom:
       try container.encode(6, forKey: .rawValue)
-    case .aurora:
+    case .arbitrum:
       try container.encode(7, forKey: .rawValue)
-    case .solana:
+    case .aurora:
       try container.encode(8, forKey: .rawValue)
-    case .klaytn:
+    case .solana:
       try container.encode(9, forKey: .rawValue)
+    case .klaytn:
+      try container.encode(10, forKey: .rawValue)
     }
   }
 
@@ -76,7 +80,7 @@ enum ChainType: Codable, CaseIterable {
     return ChainType.getAllChain().first { $0.getChainId() == chainID }
   }
   
-  static func getAllChain() -> [ChainType] {
+  static func getAllChain(includeAll: Bool = false) -> [ChainType] {
     var allChains = ChainType.allCases
     let shouldShowAurora = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.auroraChainIntegration)
     if !shouldShowAurora && KNGeneralProvider.shared.currentChain != .aurora {
@@ -92,7 +96,25 @@ enum ChainType: Codable, CaseIterable {
     if !shouldShowKlaytn && KNGeneralProvider.shared.currentChain != .klaytn {
       allChains = allChains.filter { $0 != .klaytn }
     }
+    
+    if !includeAll {
+      allChains = allChains.filter { $0 != .all }
+    } else {
+      allChains.bringToFront(item: .all)
+    }
     return allChains
+  }
+  
+  static func getAllChainID() -> [Int] {
+    return ChainType.getAllChain().map { item in
+      return item.customRPC().chainID
+    }
+  }
+  
+  static func getChain(id: Int) -> ChainType? {
+    return ChainType.getAllChain().first { e in
+      return e.customRPC().chainID == id
+    }
   }
 
   func customRPC() -> CustomRPC {
@@ -104,7 +126,7 @@ enum ChainType: Codable, CaseIterable {
         return AllChains.ethStaggingPRC
       }
       return AllChains.ethMainnetPRC
-    case .bsc:
+    case .bsc, .all:
       if KNEnvironment.default == .ropsten {
         return AllChains.bscRoptenPRC
       }
@@ -160,10 +182,16 @@ enum ChainType: Codable, CaseIterable {
   }
 
   func chainName() -> String {
-    return self.self.customRPC().name
+    if self == .all {
+      return "All Networks"
+    }
+    return self.customRPC().name
   }
 
   func chainIcon() -> UIImage? {
+    if self == .all {
+      return UIImage(named: "chain_all_icon")
+    }
     return UIImage(named: self.customRPC().chainIcon)
   }
 
@@ -224,6 +252,19 @@ enum ChainType: Codable, CaseIterable {
       return ""
     }
   }
+  
+  static func allLendingDistributionPlatform() -> [String] {
+    var result: [String] = []
+    
+    ChainType.getAllChain().forEach { e in
+      let plaform = e.lendingDistributionPlatform()
+      if !plaform.isEmpty {
+        result.append(plaform)
+      }
+    }
+    
+    return result
+  }
 
   func quoteTokenObject() -> TokenObject {
     let token = KNSupportedTokenStorage.shared.supportedToken.first { (token) -> Bool in
@@ -274,6 +315,8 @@ enum ChainType: Codable, CaseIterable {
         return KNSupportedTokenStorage.shared.usdcToken
     case .klaytn:
       return KNSupportedTokenStorage.shared.usdcToken
+    case .all:
+      return KNSupportedTokenStorage.shared.usdcToken
     }
   }
 
@@ -322,7 +365,7 @@ enum ChainType: Codable, CaseIterable {
       return true
     }
   }
-
+  case all
   case eth
   case bsc
   case polygon

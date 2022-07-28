@@ -27,6 +27,7 @@ protocol OverviewCoordinatorDelegate: class {
   func overviewCoordinatorDidStart()
   func overviewCoordinatorDidPullToRefresh(mode: ViewMode, overviewMode: OverviewMode)
   func overviewCoordinatorBuyCrypto()
+  func overviewCoordinatorDidSelectAllChain()
 }
 
 class PoolPairToken: Codable {
@@ -134,9 +135,12 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(controller, animated: true)
   }
 
-  fileprivate func openChartView(token: Token) {
+  fileprivate func openChartView(token: Token, chainId: Int? = nil) {
     Tracker.track(event: .marketOpenDetail)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
+    if let chainId = chainId {
+      viewModel.chainId = chainId
+    }
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
     self.navigationController.pushViewController(controller, animated: true)
@@ -727,8 +731,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.changeMode(mode: mode, controller: controller)
     case .walletConfig:
         self.configWallet(controller: controller)
-    case .select(token: let token):
-      self.openChartView(token: token)
+    case .select(token: let token, chainId: let chainId):
+      self.openChartView(token: token, chainId: chainId)
     case .selectListWallet:
       let viewModel = WalletsListViewModel()
       let walletsList = WalletsListViewController(viewModel: viewModel)
@@ -833,6 +837,11 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
     case .scannedWalletConnect(let url):
       self.handleWalletConnectURI(url)
+    case .selectAllChain:
+      self.delegate?.overviewCoordinatorDidSelectAllChain()
+      self.loadMultichainAssetsData { chainBalanceModels in
+        self.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalanceModels)
+      }
     case .importWallet(let privateKey, let chain):
       let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
       self.importWalletCoordinator = coordinator
@@ -860,14 +869,44 @@ extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
   func importWalletCoordinatorDidSendRefCode(_ code: String) {
     
   }
+
+  func loadMultichainAssetsData(completion: @escaping ([ChainBalanceModel]) -> Void) {
+    let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let allChainIds = ChainType.getAllChain().map {
+      return "\($0.getChainId())"
+    }
+    let addressesString = AppDelegate.session.getCurrentWalletAddresses().map { address -> String in
+      if address.addressType == .evm {
+        return "ethereum:\(address.addressString)"
+      } else {
+        return "solana:\(address.addressString)"
+      }
+    }
+    var quoteSymbols = ["btc,usd"]
+    
+    provider.requestWithFilter(.getMultichainBalance(address: addressesString, chainIds: allChainIds, quoteSymbols: quoteSymbols)) { (result) in
+      switch result {
+      case .success(let resp):
+        var chainBalanceModels: [ChainBalanceModel] = []
+        if let responseJson = try? resp.mapJSON() as? JSONDictionary ?? [:], let jsons = responseJson["data"] as? [JSONDictionary] {
+          jsons.forEach { jsonData in
+            let model = ChainBalanceModel(json: jsonData)
+            chainBalanceModels.append(model)
+          }
+        }
+        completion(chainBalanceModels)
+      case .failure(let error):
+        self.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
+        completion([])
+      }
+    }
+  }
   
 }
-
-//extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {
-//  func overviewSearchTokenViewController(_ controller: OverviewSearchTokenViewController, open token: Token) {
-//    self.openChartView(token: token)
-//  }
-//}
 
 extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
   func addTokenViewController(_ controller: OverviewAddNFTViewController, run event: AddNFTViewEvent) {
@@ -897,6 +936,7 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
                     case.success(let name):
                       let nftItem = NFTItem(name: name, tokenID: id)
                       let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftCategory.chainType = KNGeneralProvider.shared.currentChain
                       nftItem.tokenBalance = "1"
                       let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
                       self.navigationController.showTopBannerView(message: msg)
@@ -948,6 +988,7 @@ extension OverviewCoordinator: OverviewAddNFTViewControllerDelegate {
                     case.success(let name):
                       let nftItem = NFTItem(name: name, tokenID: id)
                       let nftCategory = NFTSection(collectibleName: name, collectibleAddress: address, collectibleSymbol: "", collectibleLogo: "", items: [nftItem])
+                      nftCategory.chainType = KNGeneralProvider.shared.currentChain
                       nftItem.tokenBalance = bigInt.description
                       let msg = BalanceStorage.shared.setCustomNFT(nftCategory) ? "NFT item is saved" : "This NFT is added already"
                       self.navigationController.showTopBannerView(message: msg)
@@ -1012,11 +1053,12 @@ extension OverviewCoordinator: OverviewNFTDetailViewControllerDelegate {
           let signedData = try EthSigner().signMessage(address: currentAddress, data: sendData)
           print("[Send favorite nft] success")
           let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-          provider.requestWithFilter(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded)) { result in
+          provider.requestWithFilter(.registerNFTFavorite(address: currentAddress.addressString, collectibleAddress: category.collectibleAddress, tokenID: item.tokenID, favorite: status, signature: signedData.hexEncoded, chain: category.chainType ?? KNGeneralProvider.shared.currentChain)) { result in
             if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
               if let isSuccess = json["success"] as? Bool, isSuccess {
                 self.navigationController.showTopBannerView(message: (status ? "Successful added to your favorites" : "Removed from your favorites" ))
                 controller.coordinatorDidUpdateFavStatus(status)
+                AppDelegate.shared.coordinator.loadBalanceCoordinator?.loadNFTBalance(completion: { _ in })
               } else if let error = json["error"] as? String {
                 self.navigationController.showTopBannerView(message: error)
               } else {

@@ -440,6 +440,8 @@
 		7721A6C8202EF81B004DB16C /* CustomRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7721A6C7202EF81B004DB16C /* CustomRPC.swift */; };
 		775C00B520195BFB001B5EBC /* BrowserAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C00B420195BFB001B5EBC /* BrowserAction.swift */; };
 		778EAF7D1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */; };
+		7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E01EFE92890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift */; };
+		7E01EFEC2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */; };
 		7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */; };
 		7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */; };
 		7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */; };
@@ -497,6 +499,8 @@
 		7E913B00273D09FB00B6E67C /* intro_swap.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E913AFF273D09FB00B6E67C /* intro_swap.json */; };
 		7E921A0D28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E921A0B28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift */; };
 		7E921A0E28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E921A0C28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib */; };
+		7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */; };
+		7EA34EB42886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */; };
 		7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */; };
 		7EA5849D26F8A5900060250F /* KNActionSheetAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */; };
 		7EA694DB2839D5EB0033E5D2 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */; };
@@ -511,6 +515,7 @@
 		7EB47FFC27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */; };
 		7EB47FFF27D095F200FB28D9 /* CryptoFiatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */; };
 		7EB4800027D095F200FB28D9 /* CryptoFiatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */; };
+		7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC008A1288F957800FCED48 /* OverviewMainCellViewModel.swift */; };
 		7EC4C6EB27168A7800486C00 /* OverviewMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */; };
 		7EC4C6EF2716BDB800486C00 /* RewardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */; };
 		7EC4C6F12716E23C00486C00 /* KNRewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */; };
@@ -1555,6 +1560,8 @@
 		775C00B420195BFB001B5EBC /* BrowserAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAction.swift; sourceTree = "<group>"; };
 		778EAF7C1FF10AF400C8E2AB /* SettingsCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorTests.swift; sourceTree = "<group>"; };
 		7CB2F22269385D9C08A2DF2D /* Pods-KrystalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KrystalTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KrystalTests/Pods-KrystalTests.release.xcconfig"; sourceTree = "<group>"; };
+		7E01EFE92890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMultichainLiquidityPoolCell.swift; sourceTree = "<group>"; };
+		7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewMultichainLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateTransactionPopupViewController.swift; sourceTree = "<group>"; };
 		7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateTransactionPopupViewController.xib; sourceTree = "<group>"; };
 		7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersViewController.swift; sourceTree = "<group>"; };
@@ -1612,6 +1619,8 @@
 		7E913AFF273D09FB00B6E67C /* intro_swap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intro_swap.json; sourceTree = "<group>"; };
 		7E921A0B28589B8D00CA6F5C /* AdvanceSearchTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceSearchTokenCell.swift; sourceTree = "<group>"; };
 		7E921A0C28589B8D00CA6F5C /* AdvanceSearchTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvanceSearchTokenCell.xib; sourceTree = "<group>"; };
+		7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewAllChainTokenCell.swift; sourceTree = "<group>"; };
+		7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewAllChainTokenCell.xib; sourceTree = "<group>"; };
 		7EA5849A26F8A5900060250F /* KNActionSheetAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNActionSheetAlertViewController.swift; sourceTree = "<group>"; };
 		7EA5849B26F8A5900060250F /* KNActionSheetAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KNActionSheetAlertViewController.xib; sourceTree = "<group>"; };
 		7EA694D92839D5EB0033E5D2 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
@@ -1626,6 +1635,7 @@
 		7EB47FFA27D077DF00FB28D9 /* SearchFiatCryptoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchFiatCryptoViewController.xib; sourceTree = "<group>"; };
 		7EB47FFD27D095F200FB28D9 /* CryptoFiatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoFiatCell.swift; sourceTree = "<group>"; };
 		7EB47FFE27D095F200FB28D9 /* CryptoFiatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CryptoFiatCell.xib; sourceTree = "<group>"; };
+		7EC008A1288F957800FCED48 /* OverviewMainCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainCellViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewMainViewModel.swift; sourceTree = "<group>"; };
 		7EC4C6EE2716BDB800486C00 /* RewardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCoordinator.swift; sourceTree = "<group>"; };
 		7EC4C6F02716E23B00486C00 /* KNRewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KNRewardModel.swift; sourceTree = "<group>"; };
@@ -4486,6 +4496,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC4C6EA27168A7800486C00 /* OverviewMainViewModel.swift */,
+				7EC008A1288F957800FCED48 /* OverviewMainCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5498,12 +5509,16 @@
 				C31F74BA25DD32A6008B21F7 /* OverviewDepositTableViewCell.xib */,
 				C3EEA4592671EF840011DB97 /* OverviewMainViewCell.swift */,
 				C3EEA45A2671EF840011DB97 /* OverviewMainViewCell.xib */,
+				7EA34EB12886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift */,
+				7EA34EB22886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib */,
 				C3012CC1269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.swift */,
 				C3012CC2269C1D9300AB9BB8 /* OverviewEmptyTableViewCell.xib */,
 				C35136E426CCE53D006A55F4 /* OverviewNFTTableViewCell.swift */,
 				C35136E526CCE53D006A55F4 /* OverviewNFTTableViewCell.xib */,
 				7ECCB896270AEE030080DC3B /* OverviewLiquidityPoolCell.swift */,
 				7ECCB897270AEE030080DC3B /* OverviewLiquidityPoolCell.xib */,
+				7E01EFE92890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift */,
+				7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */,
 				7E6F510227326122002DA0B2 /* OverviewTotalInfoCell.swift */,
 				7E6F510327326122002DA0B2 /* OverviewTotalInfoCell.xib */,
 				7E6F51062733895D002DA0B2 /* OverviewSummaryCell.swift */,
@@ -6375,6 +6390,7 @@
 				C3EE06C0267A15E50090B432 /* Karla-ExtraLightItalic.ttf in Resources */,
 				25929C5A20DA5C760045CFA3 /* SF-Pro-Display-Ultralight.otf in Resources */,
 				25929C5F20DA5C760045CFA3 /* SF-Pro-Display-BlackItalic.otf in Resources */,
+				7EA34EB42886ACB7001D1DE6 /* OverviewAllChainTokenCell.xib in Resources */,
 				C31F74B025DD3211008B21F7 /* OverviewMarketTableViewCell.xib in Resources */,
 				257C9FCA2078F6A600EE0128 /* KNCreatePasswordViewController.xib in Resources */,
 				C3285AB6277EDFED00D28BC6 /* BrowserCell.xib in Resources */,
@@ -6505,6 +6521,7 @@
 				257C9FC52078A9F800EE0128 /* KNTransactionCollectionReusableView.xib in Resources */,
 				25929C9920DA5CC10045CFA3 /* SFCompactDisplay-Bold.otf in Resources */,
 				C325984726D345A100F87D25 /* OverviewShareNFTViewController.xib in Resources */,
+				7E01EFEC2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib in Resources */,
 				7ED5FA8227D1EF4000F0CB8E /* SelectNetworkViewController.xib in Resources */,
 				C3F71C9B261B27BB00285935 /* EarnTutorialCell.xib in Resources */,
 				C3233EFF2807DF4D0086C2BC /* CopyAddressCell.xib in Resources */,
@@ -7006,6 +7023,7 @@
 				257A3794205BC27400E86794 /* KNBaseViewController.swift in Sources */,
 				25CE6F7220723F7C00A3A2F9 /* KNAppTracker.swift in Sources */,
 				255F6F2620BBC9C000EF808F /* UIImage+Kyber.swift in Sources */,
+				7E01EFEB2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.swift in Sources */,
 				A6B3CD592811C07C005D0D66 /* PendingInternalHistoryTransactonViewModel.swift in Sources */,
 				7ECCB1FA286170F700499FA0 /* Portfolio.swift in Sources */,
 				C31371FF260490A1003D432B /* ShareReferralLinkViewController.swift in Sources */,
@@ -7359,6 +7377,7 @@
 				A6D9BE682829238A0009EEB4 /* CreateChainWalletMenuViewController.swift in Sources */,
 				299B5E291FCA8F040051361C /* GetERC20Balance.swift in Sources */,
 				C313720626077A44003D432B /* CustomTokenListViewController.swift in Sources */,
+				7EA34EB32886ACB7001D1DE6 /* OverviewAllChainTokenCell.swift in Sources */,
 				A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */,
 				C34A2265277AE64300F240B8 /* BrowserOptionsViewController.swift in Sources */,
 				A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */,
@@ -7390,6 +7409,7 @@
 				A6E6070E2851A25600387388 /* SignerFactory.swift in Sources */,
 				255A70EA214F9ECE005D7A6A /* KNSettingsTabViewController.swift in Sources */,
 				C65D31EA21D4DCD1005D0B04 /* UITextField+Kyber.swift in Sources */,
+				7EC008A2288F957900FCED48 /* OverviewMainCellViewModel.swift in Sources */,
 				C32F1F632431ABCD00990706 /* KNMarket.swift in Sources */,
 				25696F6320BE8973002CC53F /* KNSetSlippageRateViewController.swift in Sources */,
 				25CE6F912073E0BC00A3A2F9 /* KNHistoryViewController.swift in Sources */,

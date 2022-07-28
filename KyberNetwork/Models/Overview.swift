@@ -108,11 +108,46 @@ struct NftResponse: Codable {
     let balances: [NFTSection]
 }
 
+// MARK: - AllNftResponse
+struct AllNftResponse: Codable {
+    let timestamp: Int
+    let data: [AllNftData]
+}
+
+// MARK: - Datum
+struct AllNftData: Codable {
+    let chainName: String
+    let chainID: Int
+    let chainLogo: String
+    let balances: [NFTSection]
+
+    enum CodingKeys: String, CodingKey {
+        case chainName
+        case chainID = "chainId"
+        case chainLogo, balances
+    }
+}
+
 // MARK: - Balance
-struct NFTSection: Codable {
-    let collectibleName, collectibleAddress, collectibleSymbol: String
-    let collectibleLogo: String
-    var items: [NFTItem]
+class NFTSection: Codable {
+  let collectibleName, collectibleAddress, collectibleSymbol: String
+  let collectibleLogo: String
+  var items: [NFTItem]
+  var chainType: ChainType?
+  
+  init(
+    collectibleName: String,
+    collectibleAddress: String,
+    collectibleSymbol: String,
+    collectibleLogo: String,
+    items: [NFTItem]
+  ) {
+    self.collectibleName = collectibleName
+    self.collectibleAddress = collectibleAddress
+    self.collectibleSymbol = collectibleSymbol
+    self.collectibleLogo = collectibleLogo
+    self.items = items
+  }
 }
 
 // MARK: - Item
@@ -162,3 +197,6 @@ struct ExternalData: Codable {
     case image
   }
 }
+
+
+

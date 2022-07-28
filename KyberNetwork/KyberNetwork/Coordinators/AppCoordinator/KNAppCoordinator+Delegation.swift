@@ -108,7 +108,10 @@ extension KNAppCoordinator: EarnCoordinatorDelegate {
 }
 
 extension KNAppCoordinator: OverviewCoordinatorDelegate {
-  
+  func overviewCoordinatorDidSelectAllChain() {
+    self.loadBalanceCoordinator?.shouldFetchAllChain = true
+    self.loadBalanceCoordinator?.resume()
+  }
   func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType) {
     switchWallet(wallet: wallet, chain: chainType)
   }
@@ -216,6 +219,16 @@ extension KNAppCoordinator: InvestCoordinatorDelegate {
   
   func investCoordinatorDidSelectAddWallet() {
     self.addNewWallet(type: .full)
+  }
+}
+
+extension KNAppCoordinator: KNLoadBalanceCoordinatorDelegate {
+  func loadBalanceCoordinatorDidGetLP(chainLP: [ChainLiquidityPoolModel]) {
+    self.overviewTabCoordinator?.rootViewController.coordinatorDidUpdateAllLPData(models: chainLP)
+  }
+  
+  func loadBalanceCoordinatorDidGetBalance(chainBalances: [ChainBalanceModel]) {
+    self.overviewTabCoordinator?.rootViewController.coordinatorDidUpdateAllTokenData(models: chainBalances)
   }
 }
 

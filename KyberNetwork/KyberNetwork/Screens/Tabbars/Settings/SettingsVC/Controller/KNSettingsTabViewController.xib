@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +17,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KNSettingsTabViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="fingerprintButton" destination="qeT-KP-iDr" id="DUg-RD-QD6"/>
                 <outlet property="fingerprintSwitch" destination="bzU-97-rEA" id="wKc-b1-oPx"/>
@@ -113,7 +113,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uha-ah-auB">
-                            <rect key="frame" x="15" y="151" width="345" height="118"/>
+                            <rect key="frame" x="15" y="151" width="345" height="87"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CUSTOM TOKENS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOs-38-ntL">
                                     <rect key="frame" x="24" y="18" width="123.5" height="19"/>
@@ -121,18 +121,6 @@
                                     <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkE-jA-LEc">
-                                    <rect key="frame" x="24" y="80" width="297" height="19"/>
-                                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
-                                    <color key="tintColor" name="textWhiteColor"/>
-                                    <inset key="titleEdgeInsets" minX="18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" title="Manage Tokens" image="setting_manage_token">
-                                        <color key="titleColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="manageCustomTokenTapped:" destination="-1" eventType="touchUpInside" id="IGf-VC-Phc"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NwH-fq-MHe">
                                     <rect key="frame" x="24" y="49" width="297" height="19"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
@@ -149,14 +137,11 @@
                             <color key="backgroundColor" name="mainViewBgColor"/>
                             <constraints>
                                 <constraint firstItem="XOs-38-ntL" firstAttribute="top" secondItem="Uha-ah-auB" secondAttribute="top" constant="18" id="3Be-Vb-Jt7"/>
-                                <constraint firstItem="lkE-jA-LEc" firstAttribute="leading" secondItem="Uha-ah-auB" secondAttribute="leading" constant="24" id="Ho2-Dl-qTj"/>
-                                <constraint firstItem="lkE-jA-LEc" firstAttribute="top" secondItem="NwH-fq-MHe" secondAttribute="bottom" constant="12" id="Mmb-gX-Ru1"/>
                                 <constraint firstAttribute="trailing" secondItem="NwH-fq-MHe" secondAttribute="trailing" constant="24" id="Tvx-ZE-eDe"/>
-                                <constraint firstAttribute="trailing" secondItem="lkE-jA-LEc" secondAttribute="trailing" constant="24" id="dTi-FY-DTY"/>
                                 <constraint firstItem="NwH-fq-MHe" firstAttribute="top" secondItem="XOs-38-ntL" secondAttribute="bottom" constant="12" id="gKj-Lv-LLG"/>
                                 <constraint firstItem="XOs-38-ntL" firstAttribute="leading" secondItem="Uha-ah-auB" secondAttribute="leading" constant="24" id="luO-Y8-2KC"/>
                                 <constraint firstItem="NwH-fq-MHe" firstAttribute="leading" secondItem="Uha-ah-auB" secondAttribute="leading" constant="24" id="vFS-Vs-kCh"/>
-                                <constraint firstAttribute="height" constant="118" id="wiS-UV-CbY"/>
+                                <constraint firstAttribute="height" constant="87" id="wiS-UV-CbY"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -166,7 +151,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ow-BM-69D">
-                            <rect key="frame" x="15" y="287" width="345" height="120"/>
+                            <rect key="frame" x="15" y="256" width="345" height="120"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECURITY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcM-p5-aad">
                                     <rect key="frame" x="24" y="18" width="70" height="19"/>
@@ -226,7 +211,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtu-Tc-Eer">
-                            <rect key="frame" x="15" y="425" width="345" height="118"/>
+                            <rect key="frame" x="15" y="394" width="345" height="118"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUPPORT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cG4-Dx-3rq">
                                     <rect key="frame" x="24" y="18" width="66" height="19"/>
@@ -279,7 +264,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dr4-La-f9X">
-                            <rect key="frame" x="15" y="561" width="345" height="400"/>
+                            <rect key="frame" x="15" y="530" width="345" height="400"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTHERS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2pf-32-VzG">
                                     <rect key="frame" x="24" y="18" width="57.5" height="19"/>
@@ -510,7 +495,6 @@
         <image name="setting_email_icon" width="24" height="24"/>
         <image name="setting_fa0" width="24" height="24"/>
         <image name="setting_fingerprint" width="20" height="22"/>
-        <image name="setting_manage_token" width="18" height="19"/>
         <image name="setting_medium" width="20" height="17"/>
         <image name="setting_telegram" width="19" height="16"/>
         <image name="setting_term" width="24" height="24"/>
