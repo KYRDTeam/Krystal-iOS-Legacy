@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import KrystalWallets
 
 enum InvestViewEvent {
   case openLink(url: String)
@@ -87,7 +88,8 @@ class InvestViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.completionHandler = { [weak self] selected in
       guard let self = self else { return }
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+      if addresses.isEmpty {
         self.delegate?.investViewController(self, run: .addChainWallet(chainType: selected))
         return
       } else {

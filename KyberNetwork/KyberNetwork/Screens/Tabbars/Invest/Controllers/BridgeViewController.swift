@@ -7,6 +7,7 @@
 
 import UIKit
 import BigInt
+import KrystalWallets
 
 enum BridgeEvent {
   case openHistory
@@ -227,9 +228,10 @@ class BridgeViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.dataSource = chainTypes.filter({ $0.isSupportedBridge() })
     popup.completionHandler = { selected in
+      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
       if !shouldChangeWallet {
         self.delegate?.bridgeViewControllerController(self, run: .didSelectDestChain(chain: selected))
-      } else if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+      } else if addresses.isEmpty {
         self.delegate?.bridgeViewControllerController(self, run: .addChainWallet(chainType: selected))
         return
       } else {

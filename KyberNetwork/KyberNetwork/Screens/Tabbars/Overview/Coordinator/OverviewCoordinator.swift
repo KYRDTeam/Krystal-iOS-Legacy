@@ -392,7 +392,8 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
-    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+    let addresses = WalletManager.shared.getAllAddresses(addressType: newChain.addressType)
+    if addresses.isEmpty {
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: newChain)
       self.pendingAction = completion
       return
