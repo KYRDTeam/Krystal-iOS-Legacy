@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Regular.ttf">
+        <array key="Karla-VariableFont_wght.ttf">
             <string>Karla-Regular</string>
         </array>
         <array key="Lato-Bold.ttf">
@@ -20,7 +20,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddTokenViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddTokenViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="addressField" destination="Mos-5c-xjL" id="Q6V-lM-P6e"/>
                 <outlet property="blockchainField" destination="OKt-3y-6Iq" id="ns5-Qn-kKb"/>
@@ -89,7 +89,7 @@
                                 <constraint firstAttribute="width" constant="24" id="HAg-tV-u32"/>
                                 <constraint firstAttribute="height" constant="24" id="zvD-XZ-7Ka"/>
                             </constraints>
-                            <state key="normal" image="qr_code_blue_icon"/>
+                            <state key="normal" image="scan"/>
                             <connections>
                                 <action selector="qrButtonTapped:" destination="-1" eventType="touchUpInside" id="eeP-bR-hhc"/>
                             </connections>
@@ -291,7 +291,7 @@
     </objects>
     <resources>
         <image name="back_blue_icon" width="22" height="18"/>
-        <image name="qr_code_blue_icon" width="20" height="20"/>
+        <image name="scan" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

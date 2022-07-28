@@ -62,7 +62,7 @@ class TextFieldCell: UITableViewCell {
   }
   
   @objc func textFieldDidChange(_ textField: UITextField) {
-    self.scanButton.setImage(UIImage(named: "qr_code_blue_icon"), for: .normal)
+    self.scanButton.setImage(UIImage(named: "scan"), for: .normal)
     self.isEditingAddress = false
     if let textChangeBlock = self.textChangeBlock, let text = textField.text {
       self.updateErrorUI()

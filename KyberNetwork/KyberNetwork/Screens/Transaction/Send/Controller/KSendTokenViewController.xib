@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KSendTokenViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KSendTokenViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="addressTextField" destination="mKI-g6-kJR" id="xnI-Un-3Kw"/>
                 <outlet property="amountTextField" destination="W0L-lr-Mjz" id="30q-Tt-kpk"/>
@@ -229,7 +229,7 @@
                                         <constraint firstAttribute="width" constant="24" id="3yp-Je-v7O"/>
                                         <constraint firstAttribute="height" constant="24" id="4kH-Ym-kKN"/>
                                     </constraints>
-                                    <state key="normal" image="qr_code_blue_icon"/>
+                                    <state key="normal" image="scan"/>
                                     <connections>
                                         <action selector="scanQRCodeButtonPressed:" destination="-1" eventType="touchUpInside" id="dtA-7P-ZT5"/>
                                     </connections>
@@ -283,7 +283,7 @@
                                     <color key="textColor" red="0.61960784310000006" green="0.63137254899999995" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HiG-vL-Xx8" customClass="KNContactTableView" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HiG-vL-Xx8" customClass="KNContactTableView" customModule="Krystal" customModuleProvider="target">
                                     <rect key="frame" x="13" y="36.5" width="349" height="84"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
@@ -516,7 +516,7 @@
         <image name="contact_icon" width="21" height="18"/>
         <image name="gas_config_icon" width="36" height="36"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
-        <image name="qr_code_blue_icon" width="20" height="20"/>
+        <image name="scan" width="32" height="32"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
