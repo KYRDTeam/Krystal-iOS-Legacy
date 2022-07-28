@@ -269,8 +269,15 @@ class OverviewMainViewController: KNBaseViewController {
       guard selected != .all else {
         self.viewModel.currentChain = selected
         self.updateUISwitchChain()
-//        self.tableView.reloadData()
+        self.tableView.reloadData()
         self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+        return
+      }
+      
+      guard selected != KNGeneralProvider.shared.currentChain else {
+        self.viewModel.currentChain = selected
+        self.updateUISwitchChain()
+        self.tableView.reloadData()
         return
       }
       

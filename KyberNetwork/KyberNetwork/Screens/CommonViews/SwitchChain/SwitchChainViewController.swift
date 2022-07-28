@@ -18,12 +18,14 @@ class SwitchChainViewController: KNBaseViewController {
   var dataSource: [ChainType] = []
   var nextButtonTitle: String = "Next"
   var selectedChain: ChainType
+  var currentChain: ChainType
   var completionHandler: (ChainType) -> Void = { selected in }
   let isIncludedAllOption: Bool
 
   init(includedAll: Bool = false, selected: ChainType = KNGeneralProvider.shared.currentChain) {
     self.isIncludedAllOption = includedAll
     self.selectedChain = selected
+    self.currentChain = selected
     super.init(nibName: SwitchChainViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -57,7 +59,7 @@ class SwitchChainViewController: KNBaseViewController {
   }
 
   fileprivate func updateSelectedChainUI() {
-    let enableNextButton = self.selectedChain != KNGeneralProvider.shared.currentChain
+    let enableNextButton = self.selectedChain != self.currentChain
     self.nextButton.isEnabled = enableNextButton
     self.nextButton.alpha = enableNextButton ? 1.0 : 0.5
   }
