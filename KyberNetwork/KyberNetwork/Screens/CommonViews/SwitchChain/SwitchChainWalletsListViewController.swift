@@ -13,6 +13,7 @@ class SwitchChainWalletsListViewModel {
   var selectedAddress: KAddress?
   let selectedChain: ChainType
   var addresses: [KAddress]
+  var completionHandler: (ChainType) -> Void = { selected in }
   
   init(selected: ChainType) {
     self.selectedChain = selected
@@ -81,6 +82,7 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
         object: nil,
         userInfo: userInfo
       )
+      self.viewModel.completionHandler(self.viewModel.selectedChain)
       guard let address = self.viewModel.selectedAddress else {
         return
       }

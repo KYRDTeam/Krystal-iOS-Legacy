@@ -628,7 +628,12 @@ class OverviewMainViewModel {
       if !self.displayNFTHeader.value.isEmpty {
         guard self.currentChain != .all else { return }
         let addMoreSection = NFTSection(collectibleName: "add-more-krystal", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
-        self.displayNFTHeader.value.append(addMoreSection)
+        let existed = self.displayNFTHeader.value.first { e in
+          return e.collectibleSymbol == "ADDMORE"
+        }
+        if existed == nil {
+          self.displayNFTHeader.value.append(addMoreSection)
+        }
       }
     }
   }
