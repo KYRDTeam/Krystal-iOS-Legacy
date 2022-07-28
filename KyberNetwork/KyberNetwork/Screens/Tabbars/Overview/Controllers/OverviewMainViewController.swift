@@ -543,7 +543,6 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
-//    cell.delegate = self
     return cell
   }
   
@@ -558,7 +557,6 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
-//    cell.delegate = self
     return cell
   }
   
@@ -755,126 +753,6 @@ extension OverviewMainViewController: UIScrollViewDelegate {
     }
   }
   
-}
-
-extension OverviewMainViewController: SwipeTableViewCellDelegate {
-  
-  private func hideActionForMultiChain(cellModel: OverviewMainCellViewModel) -> SwipeAction? {
-    switch cellModel.mode {
-    case .asset(token: let token, rightMode: _):
-      // hide action
-      let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
-        let chainType = ChainType.make(chainID: cellModel.chainId) ?? KNGeneralProvider.shared.currentChain
-        KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false, chainType: chainType)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "token_disable": true,
-          "screen_name": "OverviewMainViewController",
-        ]
-        Tracker.track(event: .tokenChangeDisable, customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      hideAction.title = "Hide".toBeLocalised().uppercased()
-      hideAction.textColor = UIColor(named: "normalTextColor")
-      hideAction.font = UIFont.Kyber.medium(with: 12)
-      let bgImg = UIImage(named: "history_cell_edit_bg")!
-      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-      hideAction.backgroundColor = UIColor(patternImage: resized)
-
-      return hideAction
-    default:
-      return nil
-    }
-  }
-  
-  private func hideActionForSingleChain(cellModel: OverviewMainCellViewModel) -> SwipeAction? {
-    guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
-    // hide action
-    let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
-      KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
-      let params: [String: Any] = [
-        "token_name": token.name,
-        "token_address": token.address,
-        "token_disable": true,
-        "screen_name": "OverviewMainViewController",
-      ]
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
-      MBProgressHUD.showAdded(to: self.view, animated: true)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-        MBProgressHUD.hide(for: self.view, animated: true)
-        self.reloadUI()
-      })
-    }
-    hideAction.title = "Hide".toBeLocalised().uppercased()
-    hideAction.textColor = UIColor(named: "normalTextColor")
-    hideAction.font = UIFont.Kyber.medium(with: 12)
-    let bgImg = UIImage(named: "history_cell_edit_bg")!
-    let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-    hideAction.backgroundColor = UIColor(patternImage: resized)
-
-    return hideAction
-  }
-  
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-    guard orientation == .right else {
-      return nil
-    }
-    
-    switch self.viewModel.currentMode {
-    case .asset:
-      guard let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] else { return nil }
-      // hide action
-      let hideAction = self.viewModel.currentChain == .all ? self.hideActionForMultiChain(cellModel: cellModel) : self.hideActionForSingleChain(cellModel: cellModel)
-      
-      // soft delete action for custom token
-      guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
-      let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
-        KNSupportedTokenStorage.shared.deleteCustomToken(token)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "screen_name": "OverviewMainViewController",
-        ]
-        Tracker.track(event: .tokenDelete, customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      deleteAction.title = "Delete".toBeLocalised().uppercased()
-      deleteAction.textColor = UIColor(named: "normalTextColor")
-      deleteAction.font = UIFont.Kyber.medium(with: 12)
-      let bgImg = UIImage(named: "history_cell_edit_bg")!
-      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-      deleteAction.backgroundColor = UIColor(patternImage: resized)
-
-      guard let hideAction = hideAction else {
-        return nil
-      }
-//      if KNSupportedTokenStorage.shared.getActiveCustomToken().contains(token) {
-//        return [hideAction, deleteAction]
-//      }
-      
-      return [hideAction]
-    default:
-      return nil
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-    var options = SwipeOptions()
-    options.transitionStyle = .reveal
-    options.backgroundColor = UIColor(named: "mainViewBgColor")
-    options.minimumButtonWidth = 90
-    options.maximumButtonWidth = 90
-    return options
-  }
 }
 
 extension OverviewMainViewController: UICollectionViewDataSource {
