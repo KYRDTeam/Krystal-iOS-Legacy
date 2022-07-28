@@ -14,7 +14,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletsListViewController" customModule="KyberSwap___Crypto_Exchange" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WalletsListViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
                 <outlet property="connectWalletButton" destination="IL6-Em-hFa" id="neW-lb-9V7"/>
                 <outlet property="contentView" destination="uTk-Ha-UYF" id="jSd-qf-3D2"/>
