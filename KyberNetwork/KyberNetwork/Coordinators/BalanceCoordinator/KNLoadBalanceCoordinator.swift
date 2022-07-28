@@ -426,7 +426,6 @@ class KNLoadBalanceCoordinator {
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
-      chainIds = ["1", "56"]
     }
 
     provider.requestWithFilter(.getLiquidityPool(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in

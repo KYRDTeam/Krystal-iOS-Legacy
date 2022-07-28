@@ -22,6 +22,7 @@ class OverviewMainCellViewModel {
   var chainId: Int = KNGeneralProvider.shared.currentChain.getChainId()
   var chainLogo: String = ""
   var balance: String = ""
+  var decimals: Int = 0
   var quotes: [String: Quotes] = [:]
   var hideBalanceStatus: Bool = true
   var tag: String?

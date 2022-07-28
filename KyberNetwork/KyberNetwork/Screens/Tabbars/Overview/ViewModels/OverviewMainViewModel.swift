@@ -319,7 +319,7 @@ class OverviewMainViewModel {
         viewModel.tag = balance.token.tag
         viewModel.balance = balance.balance
         viewModel.quotes = balance.quotes
-        
+        viewModel.decimals = balance.token.decimals
         if let currentQuoteValue = balance.quotes[self.currencyMode.toString()] {
           total += currentQuoteValue.value
         }
@@ -327,6 +327,17 @@ class OverviewMainViewModel {
       }
       displayModels.append(contentsOf: displayModel)
     }
+    
+    displayModels = displayModels.sorted(by: { firstModel, secondModel in
+      if let quote1 = firstModel.quotes["usd"], let quote2 = secondModel.quotes["usd"] {
+        return quote1.value > quote2.value
+      } else {
+        let balance1 = firstModel.balance.amountBigInt(decimals: firstModel.decimals) ?? BigInt(0)
+        let balance2 = secondModel.balance.amountBigInt(decimals: secondModel.decimals) ?? BigInt(0)
+        return balance1 > balance2
+      }
+    })
+    self.displayHeader.value = []
     self.displayDataSource.value = ["": displayModels]
     let displayTotalString = self.currencyMode.symbol() + StringFormatter.currencyString(value: total, symbol: self.currencyMode.toString()) + self.currencyMode.suffixSymbol()
     self.displayTotalValues.value["all"] = displayTotalString
