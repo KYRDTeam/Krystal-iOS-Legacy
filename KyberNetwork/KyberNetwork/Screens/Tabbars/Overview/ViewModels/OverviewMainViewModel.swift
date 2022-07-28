@@ -612,6 +612,7 @@ class OverviewMainViewModel {
         self.displayNFTDataSource.value[favSection.collectibleName] = viewModels
       }
       if !self.displayNFTHeader.value.isEmpty {
+        guard self.currentChain != .all else { return }
         let addMoreSection = NFTSection(collectibleName: "add-more-krystal", collectibleAddress: "", collectibleSymbol: "ADDMORE", collectibleLogo: "", items: [])
         self.displayNFTHeader.value.append(addMoreSection)
       }
