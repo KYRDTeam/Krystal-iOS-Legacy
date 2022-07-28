@@ -16,7 +16,6 @@ class OverviewMultichainLiquidityPoolCell: UITableViewCell {
   @IBOutlet weak var firstTokenValueLabel: UILabel!
   @IBOutlet weak var secondTokenValueLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
-  @IBOutlet weak var percentLabel: UILabel!
   @IBOutlet weak var chainIcon: UIImageView!
   override func awakeFromNib() {
     super.awakeFromNib()

@@ -378,20 +378,23 @@ class OverviewMainViewModel {
     let currencyFormatter = StringFormatter()
     var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
     var headers: [(String, ChainType?)] = []
-
+    var headerTotalValue: [String: Double] = [:]
     self.chainLiquidityPoolModels.forEach { chainLPModel in
       let liquidityPoolData = self.getLiquidityPools(currency: self.currencyMode, allLiquidityPool: chainLPModel.balances)
       //TODO: temp fix replace later
       let header: [(String, ChainType?)] = liquidityPoolData.0.map({ e in
-        return (e, ChainType.make(chainID: chainLPModel.chainId))
+        return (e, nil)
       })
-      headers.append(contentsOf: header)
+      header.forEach { item in
+        if !headers.contains( where: {$0.0 == item.0}) {
+          headers.append(item)
+        }
+      }
       let data = liquidityPoolData.1
-
       header.forEach { (key) in
+        var totalSection = 0.0
         var sectionModels: [OverviewLiquidityPoolViewModel] = []
         //value for total balance of current pool
-        var totalSection = 0.0
         data[key.0.lowercased()]?.forEach({ (item) in
           if let poolPairToken = item as? [LPTokenModel] {
             poolPairToken.forEach { token in
@@ -405,15 +408,24 @@ class OverviewMainViewModel {
             sectionModels.append(cellVM)
           }
         })
+        let currentSectionModels = models[key.0] ?? []
+        models[key.0] = currentSectionModels + sectionModels
         
-        models[key.0 + (key.1?.chainName() ?? "")] = sectionModels
-        let valueString = currencyFormatter.currencyString(value: totalSection, decimals: self.currencyMode.decimalNumber())
-        let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+        let currentHeaderTotalValue = headerTotalValue[key.0] ?? 0.0
+        headerTotalValue[key.0] = currentHeaderTotalValue + totalSection
         
-        self.displayTotalValues.value[key.0 + (key.1?.chainName() ?? "")] = displayTotalSection
         total += totalSection
       }
     }
+    
+    headers.forEach { (key) in
+      let currentHeaderTotalValue = headerTotalValue[key.0] ?? 0.0
+      let valueString = currencyFormatter.currencyString(value: currentHeaderTotalValue, decimals: self.currencyMode.decimalNumber())
+      let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
+
+      self.displayTotalValues.value[key.0] = displayTotalSection
+    }
+    
     self.displayHeader.value = headers
     self.displayLPDataSource.value = models
     let valueString = currencyFormatter.currencyString(value: total, decimals: self.currencyMode.decimalNumber())
@@ -676,7 +688,7 @@ class OverviewMainViewModel {
       return self.getViewModelsForSection(section).count + 1
     case .showLiquidityPool:
       let key = self.displayHeader.value[section]
-      return self.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?.count ?? 0
+      return self.displayLPDataSource.value[key.0]?.count ?? 0
     default:
       return self.getViewModelsForSection(section).count
     }
@@ -851,8 +863,7 @@ class OverviewMainViewModel {
       return "********"
     }
     let key = self.displayHeader.value[section]
-    let headerKey = self.currentMode == .showLiquidityPool ? key.0 + (key.1?.chainName() ?? "") : key.0
-    return self.displayTotalValues.value[headerKey] ?? ""
+    return self.displayTotalValues.value[key.0] ?? ""
   }
   
   var displayTotalValue: String {

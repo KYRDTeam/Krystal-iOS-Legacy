@@ -52,23 +52,6 @@
                                 <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.42%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJw-NQ-a8Z">
-                                <rect key="frame" x="294" y="35" width="51" height="24"/>
-                                <color key="backgroundColor" name="tagBgColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="51" id="Dcf-ja-2jb"/>
-                                    <constraint firstAttribute="height" constant="24" id="aDq-Ma-tSH"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
-                                <color key="textColor" name="textWhiteColor"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="12"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="12,654.25 USDT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcF-j6-az9">
                                 <rect key="frame" x="75" y="36" width="109" height="19"/>
                                 <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
@@ -86,10 +69,8 @@
                         <color key="backgroundColor" name="toolbarBgColor"/>
                         <constraints>
                             <constraint firstItem="p0H-U6-kfD" firstAttribute="top" secondItem="7uz-Z6-UZa" secondAttribute="top" constant="14" id="3Bf-0q-Rw9"/>
-                            <constraint firstItem="hJw-NQ-a8Z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tcF-j6-az9" secondAttribute="trailing" constant="5" id="3bq-91-aIN"/>
                             <constraint firstItem="Ebz-rF-iZ6" firstAttribute="top" secondItem="p0H-U6-kfD" secondAttribute="top" constant="17" id="6Jt-3j-qTt"/>
                             <constraint firstItem="p0H-U6-kfD" firstAttribute="leading" secondItem="7uz-Z6-UZa" secondAttribute="leading" constant="26" id="92u-aA-ob8"/>
-                            <constraint firstAttribute="trailing" secondItem="hJw-NQ-a8Z" secondAttribute="trailing" constant="19" id="CeB-Nl-ojJ"/>
                             <constraint firstItem="DGa-R4-ou0" firstAttribute="leading" secondItem="p0H-U6-kfD" secondAttribute="trailing" constant="25" id="IHN-ul-qru"/>
                             <constraint firstItem="tcF-j6-az9" firstAttribute="leading" secondItem="DGa-R4-ou0" secondAttribute="leading" id="Lsm-id-UDv"/>
                             <constraint firstItem="tcF-j6-az9" firstAttribute="bottom" secondItem="Ebz-rF-iZ6" secondAttribute="bottom" id="NcW-p6-vbZ"/>
@@ -97,7 +78,6 @@
                             <constraint firstItem="sOc-jY-Yn8" firstAttribute="centerY" secondItem="DGa-R4-ou0" secondAttribute="centerY" id="TEL-WC-dnS"/>
                             <constraint firstItem="mvY-Mi-lpW" firstAttribute="top" secondItem="7uz-Z6-UZa" secondAttribute="top" constant="11" id="b4l-uP-i1T"/>
                             <constraint firstItem="DGa-R4-ou0" firstAttribute="top" secondItem="p0H-U6-kfD" secondAttribute="top" id="g06-C1-zNK"/>
-                            <constraint firstItem="hJw-NQ-a8Z" firstAttribute="top" secondItem="sOc-jY-Yn8" secondAttribute="bottom" constant="2" id="rXN-XS-tGA"/>
                             <constraint firstItem="Ebz-rF-iZ6" firstAttribute="leading" secondItem="p0H-U6-kfD" secondAttribute="leading" constant="12" id="tPe-eq-yOb"/>
                             <constraint firstItem="mvY-Mi-lpW" firstAttribute="leading" secondItem="7uz-Z6-UZa" secondAttribute="leading" constant="11" id="vbs-fK-M9f"/>
                         </constraints>
@@ -124,7 +104,6 @@
                 <outlet property="chainIcon" destination="mvY-Mi-lpW" id="dmv-7I-oBm"/>
                 <outlet property="firstTokenIcon" destination="p0H-U6-kfD" id="0k5-Nz-QKR"/>
                 <outlet property="firstTokenValueLabel" destination="DGa-R4-ou0" id="SLP-h8-l1i"/>
-                <outlet property="percentLabel" destination="hJw-NQ-a8Z" id="Usr-eK-vkf"/>
                 <outlet property="secondTokenIcon" destination="Ebz-rF-iZ6" id="4qu-lF-rqJ"/>
                 <outlet property="secondTokenValueLabel" destination="tcF-j6-az9" id="buB-gc-n13"/>
             </connections>
@@ -137,12 +116,6 @@
         <image name="knc" width="36" height="36"/>
         <namedColor name="mainViewBgColor">
             <color red="0.0039215686274509803" green="0.0039215686274509803" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="tagBgColor">
-            <color red="0.23137254901960785" green="0.24313725490196078" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="textWhiteColor">
-            <color red="1" green="1" blue="1" alpha="0.94999998807907104" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="toolbarBgColor">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

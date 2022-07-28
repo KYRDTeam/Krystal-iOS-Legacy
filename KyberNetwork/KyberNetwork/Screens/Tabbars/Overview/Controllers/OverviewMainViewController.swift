@@ -627,7 +627,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       if self.viewModel.currentChain == .all {
         let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
         let key = self.viewModel.displayHeader.value[indexPath.section]
-        if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
           viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
           cell.updateCell(viewModel)
         }
@@ -639,7 +639,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }
