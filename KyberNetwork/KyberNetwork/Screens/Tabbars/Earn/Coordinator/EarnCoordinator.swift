@@ -36,11 +36,14 @@ class EarnCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var sendCoordinator: KNSendTokenViewCoordinator?
   
-  private(set) var session: KNSession!
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   
   var currentAddress: KAddress {
-    return AppDelegate.session.address
+    return session.address
+  }
+  
+  var session: KNSession {
+    return AppDelegate.session
   }
   
   lazy var rootViewController: EarnOverviewViewController = {
