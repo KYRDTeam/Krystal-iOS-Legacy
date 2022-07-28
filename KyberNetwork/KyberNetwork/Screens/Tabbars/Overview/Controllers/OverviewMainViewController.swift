@@ -269,8 +269,15 @@ class OverviewMainViewController: KNBaseViewController {
       guard selected != .all else {
         self.viewModel.currentChain = selected
         self.updateUISwitchChain()
-//        self.tableView.reloadData()
+        self.tableView.reloadData()
         self.delegate?.overviewMainViewController(self, run: .selectAllChain)
+        return
+      }
+      
+      guard selected != KNGeneralProvider.shared.currentChain else {
+        self.viewModel.currentChain = selected
+        self.updateUISwitchChain()
+        self.tableView.reloadData()
         return
       }
       
@@ -403,7 +410,10 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   func coordinatorAppSwitchAddress() {
-    self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+    if self.viewModel.currentChain != .all {
+      self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+    }
+    
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
@@ -617,7 +627,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       if self.viewModel.currentChain == .all {
         let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
         let key = self.viewModel.displayHeader.value[indexPath.section]
-        if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
           viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
           cell.updateCell(viewModel)
         }
@@ -629,7 +639,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }

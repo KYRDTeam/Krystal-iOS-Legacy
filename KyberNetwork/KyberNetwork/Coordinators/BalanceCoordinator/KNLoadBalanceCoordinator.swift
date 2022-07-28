@@ -99,10 +99,14 @@ class KNLoadBalanceCoordinator {
 
     group.notify(queue: .global()) {
       tx.finish()
+      DispatchQueue.main.async {
+        AppDelegate.shared.window?.rootViewController?.hideLoading()
+      }
     }
   }
 
   func resume() {
+    AppDelegate.shared.window?.rootViewController?.showLoadingHUD()
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
@@ -259,7 +263,6 @@ class KNLoadBalanceCoordinator {
         }
       }
     }
-
     provider.requestWithFilter(.getMultichainBalance(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
@@ -270,10 +273,12 @@ class KNLoadBalanceCoordinator {
           jsons.forEach { jsonData in
             let chainModel = ChainBalanceModel(json: jsonData)
             chainBalanceModels.append(chainModel)
-            chainModel.balances.forEach { balance in
-              allTokens.append(balance.token)
-              let tokenBalance = TokenBalance(address: balance.token.address, balance: balance.balance)
-              tokenBalances.append(tokenBalance)
+            if chainModel.chainId == KNGeneralProvider.shared.currentChain.getChainId() {
+              chainModel.balances.forEach { balance in
+                allTokens.append(balance.token)
+                let tokenBalance = TokenBalance(address: balance.token.address, balance: balance.balance)
+                tokenBalances.append(tokenBalance)
+              }
             }
           }
           BalanceStorage.shared.setBalances(tokenBalances)
@@ -284,11 +289,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-//        self.rootViewController.showWarningTopBannerMessage(
-//          with: "",
-//          message: error.localizedDescription,
-//          time: 2.0
-//        )
+        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
         completion(false)
       }
     }
@@ -427,9 +432,7 @@ class KNLoadBalanceCoordinator {
         return "\($0.getChainId())"
       }
     }
-
     provider.requestWithFilter(.getLiquidityPool(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
-      
       switch result {
       case .success(let resp):
         var chainLiquidityPoolModels: [ChainLiquidityPoolModel] = []
@@ -442,11 +445,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-//        self.rootViewController.showWarningTopBannerMessage(
-//          with: "",
-//          message: error.localizedDescription,
-//          time: 2.0
-//        )
+        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+          with: "",
+          message: error.localizedDescription,
+          time: 2.0
+        )
         completion(false)
       }
     }

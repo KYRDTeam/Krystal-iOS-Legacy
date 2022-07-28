@@ -82,6 +82,7 @@ public struct Constants {
   public static let multichainExplorerURL = "https://anyswap.net/explorer"
   static let maxFractionDigits: Int = 5
   public static let bridgeWarningAcceptedKey = "bridge-warning-accept-key"
+  public static let didSelectAllChainOption = "did-select-all-chain-key"
 }
 
 public struct UnitConfiguration {
