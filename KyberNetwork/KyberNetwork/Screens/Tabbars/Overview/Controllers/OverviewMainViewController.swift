@@ -367,7 +367,10 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   func coordinatorAppSwitchAddress() {
-    self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+    if self.viewModel.currentChain != .all {
+      self.viewModel.currentChain = KNGeneralProvider.shared.currentChain
+    }
+    
     guard self.isViewLoaded else { return }
     calculatingQueue.async {
       self.viewModel.reloadAllData()
