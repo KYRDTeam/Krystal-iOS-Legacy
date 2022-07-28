@@ -113,7 +113,7 @@ class KConfirmSendViewController: KNBaseViewController {
   }
 
   @IBAction func backButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "transfer_cancel", customAttributes: nil)
+    Tracker.track(event: .transferCancel)
     self.delegate?.kConfirmSendViewController(self, run: .cancel)
   }
 

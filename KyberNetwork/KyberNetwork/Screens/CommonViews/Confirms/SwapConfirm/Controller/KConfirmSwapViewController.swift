@@ -202,7 +202,7 @@ class KConfirmSwapViewController: KNBaseViewController {
   }
 
   @IBAction func cancelButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "swap_cancel", customAttributes: nil)
+    Tracker.track(event: .swapCancel)
     self.dismiss(animated: true, completion: nil)
     self.delegate?.kConfirmSwapViewControllerDidCancel(self)
   }

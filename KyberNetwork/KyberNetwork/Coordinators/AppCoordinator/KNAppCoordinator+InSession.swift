@@ -11,7 +11,7 @@ extension KNAppCoordinator {
     self.walletCache.lastUsedAddress = address
     self.currentAddress = address
     OneSignal.setExternalUserId(address.addressString)
-    KNCrashlyticsUtil.updateUserId(userId: address.addressString)
+    Tracker.updateUserID(address.addressString)
     self.session = KNSession(address: address)
     self.session.startSession()
     
@@ -158,33 +158,27 @@ extension KNAppCoordinator {
     self.tabbarController = nil
   }
 
-  func restartSession(address: KAddress, showLoading: Bool = true) {
-    if showLoading { self.navigationController.displayLoading() }
-    
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-      self.session.switchAddress(address: address)
-      FeatureFlagManager.shared.configClient(session: self.session)
+  func restartSession(address: KAddress) {
+    self.session.switchAddress(address: address)
+    FeatureFlagManager.shared.configClient(session: self.session)
       self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
-      self.loadBalanceCoordinator?.restartNewSession(self.session)
-      self.investCoordinator?.appCoordinatorSwitchAddress()
+    self.loadBalanceCoordinator?.restartNewSession(self.session)
+    self.investCoordinator?.appCoordinatorSwitchAddress()
 
-      KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
-      self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-      self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
+    KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
+    self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
+    self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
 
-      self.doLogin { _ in }
-      self.navigationController.hideLoading()
-      
-      NotificationCenter.default.post(
-        name: Notification.Name(kAppDidUpdateNewSession),
-        object: nil,
-        userInfo: ["session": self.session]
-      )
-  
-      MixPanelManager.shared.updateWalletAddress(address: address.addressString)
-      KNCrashlyticsUtil.updateUserId(userId: address.addressString)
-    }
+    self.doLogin { _ in }
     
+    NotificationCenter.default.post(
+      name: Notification.Name(kAppDidUpdateNewSession),
+      object: nil,
+      userInfo: ["session": self.session]
+    )
+
+    MixPanelManager.shared.updateWalletAddress(address: address.addressString)
+    Tracker.updateUserID(address.addressString)
   }
   
   private func switchToLastImportedAddress() {

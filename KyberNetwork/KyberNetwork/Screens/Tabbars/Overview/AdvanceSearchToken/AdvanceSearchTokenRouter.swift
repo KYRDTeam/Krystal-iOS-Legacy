@@ -10,6 +10,7 @@
 
 import UIKit
 import Moya
+import KrystalWallets
 
 class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     
@@ -45,7 +46,8 @@ class AdvanceSearchTokenRouter: AdvanceSearchTokenWireframeProtocol {
     if let chainType = ChainType.make(chainID: controller.viewModel.chainId) {
       newChain = chainType
     }
-    if KNWalletStorage.shared.getAvailableWalletForChain(newChain).isEmpty {
+    let addresses = WalletManager.shared.getAllAddresses(addressType: newChain.addressType)
+    if addresses.isEmpty {
       self.coordinator?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: newChain)
       self.pendingAction = completion
       return

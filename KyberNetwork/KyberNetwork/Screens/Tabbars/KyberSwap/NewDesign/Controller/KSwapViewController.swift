@@ -124,7 +124,7 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
+    Tracker.track(event: .openSwapView)
     self.isErrorMessageEnabled = true
 
     self.updateAllRates()
@@ -365,7 +365,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "swap_submit", customAttributes: nil)
+    Tracker.track(event: .swapSubmit)
     self.openSwapConfirm()
   }
 
@@ -473,7 +473,8 @@ class KSwapViewController: KNBaseViewController {
     let popup = SwitchChainViewController()
     popup.completionHandler = { selected in
       self.viewModel.isFromDeepLink = false
-      if KNWalletStorage.shared.getAvailableWalletForChain(selected).isEmpty {
+      let addresses = WalletManager.shared.getAllAddresses(addressType: selected.addressType)
+      if addresses.isEmpty {
         self.delegate?.kSwapViewController(self, run: .addChainWallet(chainType: selected))
         return
       } else {

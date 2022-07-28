@@ -35,6 +35,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var insestView: UIView!
+  @IBOutlet weak var scanButton: UIButton!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
@@ -111,8 +112,13 @@ class OverviewMainViewController: KNBaseViewController {
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
     
+    self.setupViews()
     self.configPullToRefresh()
     self.configHeaderTapped()
+  }
+  
+  func setupViews() {
+    scanButton.isHidden = false // !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   func configHeaderTapped() {
@@ -292,35 +298,35 @@ class OverviewMainViewController: KNBaseViewController {
       } else {
         self.viewModel.marketSortType = .name(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_name", customAttributes: nil)
+      Tracker.track(event: .marketSortName)
     } else if sender.tag == 2 {
       if case let .ch24(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .ch24(des: !dec)
       } else {
         self.viewModel.marketSortType = .ch24(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_24h", customAttributes: nil)
+      Tracker.track(event: .marketSort24h)
     } else if sender.tag == 3 {
       if case let .vol(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .vol(des: !dec)
       } else {
         self.viewModel.marketSortType = .vol(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_vol", customAttributes: nil)
+      Tracker.track(event: .marketSortVol)
     } else  if sender.tag == 4 {
       if case let .price(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .price(des: !dec)
       } else {
         self.viewModel.marketSortType = .price(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_price", customAttributes: nil)
+      Tracker.track(event: .marketSortPrice)
     } else  if sender.tag == 5 {
       if case let .cap(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .cap(des: !dec)
       } else {
         self.viewModel.marketSortType = .cap(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
+      Tracker.track(event: .marketSortCap)
     }
     self.reloadUI()
   }
@@ -331,6 +337,41 @@ class OverviewMainViewController: KNBaseViewController {
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
+  }
+  
+  @IBAction func scanWasTapped(_ sender: Any) {
+    guard let nav = self.navigationController else { return }
+    
+    var acceptedResultTypes: [ScanResultType] = []
+    var scanModes: [ScanMode] = [.qr, .text]
+    if KNGeneralProvider.shared.currentChain.isEVM {
+      acceptedResultTypes.append(contentsOf: [.walletConnect, .ethPublicKey, .ethPrivateKey])
+      scanModes = [.qr, .text]
+    } else if KNGeneralProvider.shared.currentChain == .solana {
+      acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
+      scanModes = [.qr]
+    }
+    
+    ScannerModule.start(navigationController: nav, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        self.delegate?.overviewMainViewController(self, run: .scannedWalletConnect(url: text))
+      case .ethPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .ethPrivateKey:
+        let currentChain = KNGeneralProvider.shared.currentChain
+        if currentChain.isEVM {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: currentChain))
+        } else {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .eth))
+        }
+      case .solPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .solPrivateKey:
+        self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
+      }
+    }
   }
   
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -731,7 +772,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "token_disable": true,
           "screen_name": "OverviewMainViewController",
         ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
+        Tracker.track(event: .tokenChangeDisable, customAttributes: params)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
           MBProgressHUD.hide(for: self.view, animated: true)
@@ -799,7 +840,7 @@ extension OverviewMainViewController: SwipeTableViewCellDelegate {
           "token_address": token.address,
           "screen_name": "OverviewMainViewController",
         ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
+        Tracker.track(event: .tokenDelete, customAttributes: params)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
           MBProgressHUD.hide(for: self.view, animated: true)
@@ -874,7 +915,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     }
     
     cell.transferButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .send)
+      self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: nil))
     }
     
     return cell

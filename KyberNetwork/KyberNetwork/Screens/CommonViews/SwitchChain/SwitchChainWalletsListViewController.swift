@@ -75,12 +75,19 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
     self.dismiss(animated: true) {
       KNGeneralProvider.shared.currentChain = self.viewModel.selectedChain
       var userInfo: [String: Any] = [:]
-      userInfo["address"] = self.viewModel.selectedAddress
+      userInfo["chain"] = self.viewModel.selectedChain
       KNNotificationUtil.postNotification(
         for: kChangeChainNotificationKey,
         object: nil,
         userInfo: userInfo
       )
+      guard let address = self.viewModel.selectedAddress else {
+        return
+      }
+      guard let wallet = WalletManager.shared.wallet(forAddress: address) else {
+        return
+      }
+      AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: self.viewModel.selectedChain)
     }
   }
   

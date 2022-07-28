@@ -36,11 +36,11 @@ class WalletsListViewModel {
   }
 
   var watchAddresses: [KAddress] {
-    return addresses.filter { $0.isWatchWallet }
+    return addresses.filter { $0.isWatchWallet }.sorted(by: { lhs, _ in lhs == currentAddress })
   }
   
   var realAddresses: [KAddress] {
-    return addresses.filter { !$0.isWatchWallet }
+    return addresses.filter { !$0.isWatchWallet }.sorted(by: { lhs, _ in lhs == currentAddress })
   }
 
   var dataSource: [Any] {

@@ -41,6 +41,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   let sendNFT: Bool
   fileprivate var isSupportERC721 = true
+  var recipientAddress: String = ""
   
   var currentAddress: KAddress {
     return AppDelegate.session.address
@@ -68,12 +69,14 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     navigationController: UINavigationController,
     balances: [String: Balance],
     from: TokenObject = KNGeneralProvider.shared.quoteTokenObject,
-    sendNFT: Bool = false
+    sendNFT: Bool = false,
+    recipientAddress: String = ""
   ) {
     self.navigationController = navigationController
     self.balances = balances
     self.from = from
     self.sendNFT = sendNFT
+    self.recipientAddress = recipientAddress
   }
   
   init(
@@ -81,7 +84,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     nftItem: NFTItem,
     supportERC721: Bool,
     nftCategory: NFTSection,
-    sendNFT: Bool = false
+    sendNFT: Bool = false,
+    recipientAddress: String = ""
   ) {
     self.navigationController = navigationController
     self.nftItem = nftItem
@@ -89,6 +93,7 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
     self.from = KNGeneralProvider.shared.quoteTokenObject
     self.isSupportERC721 = supportERC721
     self.sendNFT = sendNFT
+    self.recipientAddress = recipientAddress
   }
 
   func start() {
@@ -101,7 +106,8 @@ class KNSendTokenViewCoordinator: NSObject, Coordinator {
       let viewModel = KNSendTokenViewModel(
         from: self.from,
         balances: self.balances,
-        currentAddress: currentAddress.addressString
+        currentAddress: currentAddress.addressString,
+        recipientAddress: recipientAddress
       )
       let controller = KSendTokenViewController(viewModel: viewModel)
       controller.loadViewIfNeeded()
@@ -280,7 +286,7 @@ extension KNSendTokenViewCoordinator: KSendTokenViewControllerDelegate {
       }
     case .openMultiSend:
       self.multiSendCoordinator.start()
-      KNCrashlyticsUtil.logCustomEvent(withName: "transfer_click_multiple_transfer", customAttributes: nil)
+      Tracker.track(event: .transferClickMultipleTransfer)
     case .addChainWallet(let chainType):
       self.delegate?.sendTokenCoordinatorDidSelectAddChainWallet(chainType: chainType)
     }

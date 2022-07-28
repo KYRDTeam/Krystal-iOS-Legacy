@@ -239,19 +239,7 @@ public extension WalletManager {
     }
     do {
       let key = try getPrivateKey(wallet: wallet, forAddressType: addressType)
-      
-      switch addressType {
-      case .evm:
-        return key.data.hexString
-      case .solana:
-        let publicKey = key.getPublicKeyEd25519()
-        let privateKeyData = key.data
-        let publicKeyData = publicKey.data
-        
-        let data = privateKeyData + publicKeyData
-        let keyPairString = Base58.encodeNoCheck(data: data)
-        return keyPairString
-      }
+      return WalletUtils.string(fromPrivateKey: key, addressType: addressType)
     } catch {
       throw WalletManagerError.cannotExportPrivateKey
     }
