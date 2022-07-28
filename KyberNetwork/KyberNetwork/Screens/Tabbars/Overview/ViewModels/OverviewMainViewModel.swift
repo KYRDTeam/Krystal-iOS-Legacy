@@ -322,6 +322,7 @@ class OverviewMainViewModel {
         viewModel.balance = balance.balance
         viewModel.quotes = balance.quotes
         viewModel.decimals = balance.token.decimals
+        viewModel.hideBalanceStatus = self.hideBalanceStatus
         if let currentQuoteValue = balance.quotes[self.currencyMode.toString()] {
           total += currentQuoteValue.value
         }
@@ -345,8 +346,8 @@ class OverviewMainViewModel {
         let balance2 = secondModel.balance.amountBigInt(decimals: secondModel.decimals) ?? BigInt(0)
         return balance1 > balance2
       } else {
-        let stringValue1 = firstModel.multiChainAccessoryTitle
-        let stringValue2 = secondModel.multiChainAccessoryTitle
+        let stringValue1 = StringFormatter.currencyString(value: quote1Value, symbol: "usd")
+        let stringValue2 = StringFormatter.currencyString(value: quote2Value, symbol: "usd")
         return stringValue1.doubleValue > stringValue2.doubleValue
       }
     })
