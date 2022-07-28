@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Test 2
         run: |
-          echo -n "${{ secrets.DEVELOPMENT_CERT_PASSWORD }}" >> foo && cut -c1-3 foo && cut -c4- foo
+          echo -n "${{ secrets.AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
 
       - name: Ls
         run: ls -al
