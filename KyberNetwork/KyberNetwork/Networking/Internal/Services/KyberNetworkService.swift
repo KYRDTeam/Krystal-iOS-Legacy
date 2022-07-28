@@ -1441,8 +1441,13 @@ extension KrytalService: TargetType {
         "address": address
       ]
       
-      if chains.isNotEmpty {
-        json["chainId"] = chains.joined(separator: ",")
+      if chains.isEmpty {
+        let chainTypes = ChainType.getAllChainID().map { e in
+          return "\(e)"
+        }
+        json["chainIds"] = chainTypes.joined(separator: ",")
+      } else {
+        json["chainIds"] = chains.joined(separator: ",")
       }
       
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
