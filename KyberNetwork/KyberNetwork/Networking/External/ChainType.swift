@@ -313,6 +313,15 @@ enum ChainType: Codable, CaseIterable {
       return true
     }
   }
+  
+  var isEVM: Bool {
+    switch self {
+    case .solana:
+      return false
+    default:
+      return true
+    }
+  }
 
   case eth
   case bsc

@@ -284,13 +284,13 @@ class KNTransactionStatusPopUp: KNBaseViewController {
         
         switch self.transaction.type {
         case .swap:
-          KNCrashlyticsUtil.logCustomEvent(withName: "swap_speedup", customAttributes: nil)
+          Tracker.track(event: .swapSpeedup)
         case .earn:
-          KNCrashlyticsUtil.logCustomEvent(withName: "earn_speedup", customAttributes: nil)
+          Tracker.track(event: .earnSpeedup)
         case .transferETH:
-          KNCrashlyticsUtil.logCustomEvent(withName: "transfer_speedup", customAttributes: nil)
-          default:
-            print("Send other log here if needed")
+          Tracker.track(event: .transferSpeedup)
+        default:
+          print("Send other log here if needed")
         }
         self.delegate?.transactionStatusPopUp(self, action: .speedUp(tx: self.transaction))
       } else if self.transaction.state == .done {

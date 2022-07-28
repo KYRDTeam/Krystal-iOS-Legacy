@@ -58,7 +58,7 @@ class RecentlyHistoryViewController: UIViewController {
       secondButtonTitle: "OK".toBeLocalised(),
       firstButtonTitle: "Cancel".toBeLocalised(),
       secondButtonAction: {
-        KNCrashlyticsUtil.logCustomEvent(withName: "dapp_delete_all_history", customAttributes: nil)
+        Tracker.track(event: .dappDeleteAllHistory, customAttributes: nil)
         BrowserStorage.shared.deleteAllRecentlyItem()
         self.viewModel.reloadDataSource()
         self.historyTableView.reloadData()
@@ -113,7 +113,7 @@ extension RecentlyHistoryViewController: SwipeTableViewCellDelegate {
         firstButtonTitle: "Cancel".toBeLocalised(),
         secondButtonAction: {
           let item = self.viewModel.dataSource[indexPath.row].item
-          KNCrashlyticsUtil.logCustomEvent(withName: "dapp_delete_history", customAttributes: ["url": item.url, "title": item.title])
+          Tracker.track(event: .dappDeleteHistory, customAttributes: ["url": item.url, "title": item.title])
           BrowserStorage.shared.deleteRecentlyItem(item)
           self.viewModel.reloadDataSource()
           tableView.reloadData()

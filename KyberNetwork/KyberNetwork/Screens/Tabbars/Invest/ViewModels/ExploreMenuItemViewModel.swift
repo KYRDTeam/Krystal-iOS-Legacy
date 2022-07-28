@@ -38,6 +38,8 @@ class ExploreMenuItemViewModel {
       return Strings.rewardHunting
     case .bridge:
       return Strings.KrystalBridge
+    case .scanner:
+      return Strings.scanner
     }
   }
   
@@ -63,6 +65,8 @@ class ExploreMenuItemViewModel {
       return Images.exploreRewardHuntingIcon
     case .bridge:
       return Images.exploreBridgeIcon
+    case .scanner:
+      return Images.exploreScannerIcon
     }
   }
   

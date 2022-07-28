@@ -273,7 +273,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.approveVC = controller
-    KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_approve", customAttributes: ["numberAddress": items.count])
+    Tracker.track(event: .multisendApprove, customAttributes: ["numberAddress": items.count])
   }
 
   fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject) {
@@ -288,7 +288,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       return element.0
     }
     
-    KNCrashlyticsUtil.logCustomEvent(withName: "multiple_transfer_confirm", customAttributes: ["numberAddress": Set(allAddresses)])
+    Tracker.track(event: .multisendConfirm, customAttributes: ["numberAddress": Set(allAddresses)])
   }
   
   fileprivate func openGasPriceSelectView(_ gasLimit: BigInt, _ selectType: KNSelectedGasPriceType, _ baseGasLimit: BigInt, _ advancedGasLimit: String?, _ advancedPriorityFee: String?, _ advancedMaxFee: String?, _ advancedNonce: String?, _ controller: UIViewController) {

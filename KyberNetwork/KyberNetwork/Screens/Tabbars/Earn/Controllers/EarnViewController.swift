@@ -520,7 +520,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
     super.viewDidAppear(animated)
     self.updateUIBalanceDidChange()
     self.updateAllowance()
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_earn_view", customAttributes: nil)
+    Tracker.track(event: .openEarnView)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -634,7 +634,7 @@ class EarnViewController: KNBaseViewController, AbstractEarnViewControler {
   }
   
   @IBAction func nextButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "earn_submit", customAttributes: nil)
+    Tracker.track(event: .earnSubmit)
     //TODO: validate data before send
     guard !self.showWarningInvalidAmountDataIfNeeded(isConfirming: true) else {
       return

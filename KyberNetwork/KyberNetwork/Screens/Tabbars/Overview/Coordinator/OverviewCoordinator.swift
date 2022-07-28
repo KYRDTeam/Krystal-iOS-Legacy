@@ -13,6 +13,7 @@ import WalletConnectSwift
 import KrystalWallets
 
 protocol OverviewCoordinatorDelegate: class {
+  func overviewCoordinatorDidImportWallet(wallet: KWallet, chainType: ChainType)
   func overviewCoordinatorOpenCreateChainWalletMenu(chainType: ChainType)
   func overviewCoordinatorDidSelectAddWallet()
   func overviewCoordinatorDidSelectManageWallet()
@@ -78,6 +79,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   var withdrawCoordinator: WithdrawCoordinator?
   var krytalCoordinator: KrytalCoordinator?
   var notificationsCoordinator: NotificationCoordinator?
+  var importWalletCoordinator: KNImportWalletCoordinator?
   var searchRouter = AdvanceSearchTokenRouter()
   var currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
   var pendingAction: (() -> Void)?
@@ -133,7 +135,7 @@ class OverviewCoordinator: NSObject, Coordinator {
   }
 
   fileprivate func openChartView(token: Token) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "market_open_detail", customAttributes: nil)
+    Tracker.track(event: .marketOpenDetail)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     let controller = ChartViewController(viewModel: viewModel)
     controller.delegate = self
@@ -405,7 +407,7 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     self.navigationController.openSafari(with: url)
   }
 
-  func openSendTokenView(_ token: Token?) {
+  func openSendTokenView(_ token: Token?, recipientAddress: String = "") {
     let from: TokenObject = {
       if let fromToken = token {
         if let fromTokenObject = KNSupportedTokenStorage.shared.supportedToken.first { $0.address == fromToken.address }?.toObject() {
@@ -419,7 +421,8 @@ extension OverviewCoordinator: ChartViewControllerDelegate {
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       balances: self.balances,
-      from: from
+      from: from,
+      recipientAddress: recipientAddress
     )
     coordinator.delegate = self
     coordinator.start()
@@ -730,8 +733,8 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       let walletsList = WalletsListViewController(viewModel: viewModel)
       walletsList.delegate = self
       self.navigationController.present(walletsList, animated: true, completion: nil)
-    case .send:
-      self.openSendTokenView(nil)
+    case .send(let recipientAddress):
+      self.openSendTokenView(nil, recipientAddress: recipientAddress ?? "")
     case .receive:
       self.openQRCodeScreen()
     case .notifications:
@@ -761,10 +764,10 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
         if case .market(let mode) = current {
           switch mode {
           case .lastPrice:
-            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_24h", customAttributes: nil)
+            Tracker.track(event: .marketSwitch24h)
             controller.coordinatorDidSelectMode(.market(rightMode: .ch24))
           default:
-            KNCrashlyticsUtil.logCustomEvent(withName: "market_switch_cap", customAttributes: nil)
+            Tracker.track(event: .marketSwitchCap)
             controller.coordinatorDidSelectMode(.market(rightMode: .lastPrice))
           }
         }
@@ -827,9 +830,36 @@ extension OverviewCoordinator: OverviewMainViewControllerDelegate {
       self.delegate?.overviewCoordinatorDidSelectAddWallet()
     case .addChainWallet(let chain):
       self.delegate?.overviewCoordinatorOpenCreateChainWalletMenu(chainType: chain)
-      
+    case .scannedWalletConnect(let url):
+      self.handleWalletConnectURI(url)
+    case .importWallet(let privateKey, let chain):
+      let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
+      self.importWalletCoordinator = coordinator
+      coordinator.delegate = self
+      coordinator.startImportFlow(privateKey: privateKey, chain: chain)
     }
   }
+}
+
+extension OverviewCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.overviewCoordinatorDidImportWallet(wallet: wallet, chainType: chain)
+    navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    
+  }
+  
+  func importWalletCoordinatorDidSendRefCode(_ code: String) {
+    
+  }
+  
 }
 
 //extension OverviewCoordinator: OverviewSearchTokenViewControllerDelegate {

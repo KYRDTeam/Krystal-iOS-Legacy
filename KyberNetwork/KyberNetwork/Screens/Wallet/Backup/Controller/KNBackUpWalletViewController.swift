@@ -137,12 +137,12 @@ class KNBackUpWalletViewController: KNBaseViewController {
   }
 
   @IBAction func skipButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "cw_skip_confirm", customAttributes: nil)
+    Tracker.track(event: .cwSkipConfirm)
     self.delegate?.backupWalletViewControllerDidConfirmSkipWallet()
   }
 
   @IBAction func completeButtonPressed(_ sender: Any) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "cw_confirm", customAttributes: nil)
+    Tracker.track(event: .cwConfirm)
     guard let firstWord = self.firstWordTextField.text, let secondWord = self.secondWordTextField.text else {
       return
     }

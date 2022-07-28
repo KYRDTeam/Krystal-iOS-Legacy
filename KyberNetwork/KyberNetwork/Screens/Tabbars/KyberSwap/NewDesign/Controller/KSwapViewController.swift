@@ -124,7 +124,7 @@ class KSwapViewController: KNBaseViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    KNCrashlyticsUtil.logCustomEvent(withName: "krystal_open_swap_view", customAttributes: nil)
+    Tracker.track(event: .openSwapView)
     self.isErrorMessageEnabled = true
 
     self.updateAllRates()
@@ -365,7 +365,7 @@ class KSwapViewController: KNBaseViewController {
    - send exchange tx to coordinator for preparing trade
    */
   @IBAction func continueButtonPressed(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "swap_submit", customAttributes: nil)
+    Tracker.track(event: .swapSubmit)
     self.openSwapConfirm()
   }
 
