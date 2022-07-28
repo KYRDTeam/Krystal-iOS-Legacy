@@ -82,7 +82,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     self.startFirstSessionIfNeeded()
     self.addInternalObserveNotification()
     self.setPredefineValues()
-    AppMigrationManager.migrateCustomNFTIfNeeded()
+//    AppMigrationManager.migrateCustomNFTIfNeeded()
     if UIDevice.isIphone5 {
       self.navigationController.displaySuccess(title: "", message: "We are not fully supported iphone5 or small screen size. Some UIs might be broken.")
     }
@@ -97,13 +97,14 @@ class KNAppCoordinator: NSObject, Coordinator {
       KNGeneralProvider.shared.currentChain = chain
       switchAddress(address: address)
       AppEventCenter.shared.switchChain(chain: chain)
+      
     }
   }
   
   func switchToWatchAddress(address: KAddress, chain: ChainType) {
     KNGeneralProvider.shared.currentChain = chain
-    AppEventCenter.shared.switchChain(chain: chain)
     switchAddress(address: address)
+    AppEventCenter.shared.switchChain(chain: chain)
   }
   
   private func switchAddress(address: KAddress) {
@@ -142,6 +143,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     // For security, should always have passcode protection when user has imported wallets
     if let address = lastUsedAddress ?? addresses.first, KNPasscodeUtil.shared.currentPasscode() != nil {
       self.startNewSession(address: address)
+      Tracker.updateUserID(address.addressString)
     }
   }
 

@@ -880,7 +880,7 @@ enum KrytalService {
   case getNTFBalance(address: String, forceSync: Bool)
   case registerNFTFavorite(address: String, collectibleAddress: String, tokenID: String, favorite: Bool, signature: String, chain: ChainType)
   case getTransactionsHistory(address: String, lastBlock: String)
-  case getLiquidityPool(address: String, chain: String, forceSync: Bool)
+  case getLiquidityPool(address: [String], chainIds: [String], quoteSymbols: [String])
   case getRewards(address: String, accessToken: String)
   case getClaimRewards(address: String, accessToken: String)
   case checkEligibleWallet(address: String)
@@ -922,7 +922,7 @@ extension KrytalService: TargetType {
       }
       urlComponents.queryItems = queryItems
       return urlComponents.url!
-    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance:
+    case .getTotalBalance, .getReferralOverview, .getReferralTiers, .getPromotions, .claimPromotion, .sendRate, .getCryptoFiatPair, . buyCrypto, . getOrders, .getServerInfo, .getPoolInfo, .buildSwapChainTx, .checkTxStatus, .advancedSearch, .getPoolList, .getTradingViewData, .getAllNftBalance, .getAllLendingBalance, .getAllLendingDistributionBalance, .getMultichainBalance, .getLiquidityPool:
       return URL(string: KNEnvironment.default.krystalEndpoint + "/all")!
     case .getChartData(chainPath: let chainPath, address: _, quote: _, from: _), .getTokenDetail(chainPath: let chainPath, address: _):
       return URL(string: KNEnvironment.default.krystalEndpoint + chainPath)!
@@ -1001,7 +1001,7 @@ extension KrytalService: TargetType {
     case .getTransactionsHistory:
       return "/v1/account/transactions"
     case .getLiquidityPool:
-      return "/v1/account/poolBalances"
+      return "/v1/balance/lp"
     case .getRewards:
       return "/v1/account/rewards"
     case .getClaimRewards:
@@ -1289,11 +1289,11 @@ extension KrytalService: TargetType {
         json["limit"] = "20"
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-      case .getLiquidityPool(address: let address, chain: let chain, forceSync: let forceSync):
+    case .getLiquidityPool(let address, let chainIds, let quoteSymbols):
       let json: JSONDictionary = [
-        "address": address,
-        "chain": chain,
-        "forceSync": forceSync
+        "addresses": address.joined(separator: ","),
+        "chainIds": chainIds.joined(separator: ","),
+        "quoteSymbols": quoteSymbols.joined(separator: ",")
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     case .getRewards(address: let address, _):

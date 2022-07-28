@@ -38,9 +38,9 @@ class CustomTokenListViewModel {
   func changeAllTokensActiveStatus() {
     KNSupportedTokenStorage.shared.changeAllTokensActiveStatus(isActive: !currentActiveStatus)
     if currentActiveStatus {
-      KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_select_all", customAttributes: nil)
+      Tracker.track(event: .manageTokenSelectAll)
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_deselect_all", customAttributes: nil)
+      Tracker.track(event: .manageTokenDeselectAll)
     }
   }
 }
@@ -146,9 +146,9 @@ extension CustomTokenListViewController: UITableViewDataSource {
         "screen_name": "CustomTokenListViewController",
       ]
       if let searchText = self.searchTextField.text, !searchText.isEmpty {
-        KNCrashlyticsUtil.logCustomEvent(withName: "manage_token_search", customAttributes: params)
+        Tracker.track(event: .manageTokenSearch, customAttributes: params)
       } else {
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
+        Tracker.track(event: .tokenChangeDisable, customAttributes: params)
       }
       
       if !viewModel.isCustomToken {
@@ -179,7 +179,7 @@ extension CustomTokenListViewController: SwipeTableViewCellDelegate {
         "token_name": token.name,
         "token_address": token.address
       ]
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_edit", customAttributes: params)
+      Tracker.track(event: .tokenEdit, customAttributes: params)
       self.delegate?.customTokenListViewController(self, run: .edit(token: token))
     }
     edit.hidesWhenSelected = true
@@ -196,7 +196,7 @@ extension CustomTokenListViewController: SwipeTableViewCellDelegate {
         "token_address": token.address,
         "screen_name": "CustomTokenListViewController",
       ]
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
+      Tracker.track(event: .tokenDelete, customAttributes: params)
       self.delegate?.customTokenListViewController(self, run: .delete(token: token))
     }
     delete.title = "Delete".toBeLocalised().uppercased()

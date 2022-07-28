@@ -866,6 +866,11 @@
 "%@.address" = "%@ address";
 "view.on.%@" = "View on %@";
 
+// Scanner
+"scan.qr.code" = "Scan QR Code";
+"scan.text" = "Scan Text";
+"scanner" = "Scanner";
+
 "watch.wallet.can.not.do.this.operation" = "Watched wallet can not do this operation";
 "please.enter.address" = "Please enter address";
 

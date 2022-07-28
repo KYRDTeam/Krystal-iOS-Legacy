@@ -23,6 +23,7 @@
                 <outlet property="insestView" destination="AQD-Qn-mCt" id="gZU-nP-B6b"/>
                 <outlet property="notificationButton" destination="aSf-cz-DTw" id="8Fu-ML-9f7"/>
                 <outlet property="rightModeSortLabel" destination="5Qq-qF-bu6" id="Sab-Cf-EUf"/>
+                <outlet property="scanButton" destination="V1w-zU-fbD" id="aPW-M4-wyk"/>
                 <outlet property="searchButton" destination="IGF-fz-Lgs" id="Nb2-tr-xJd"/>
                 <outlet property="sortMarketByCh24Button" destination="Ih9-uC-ejJ" id="sHj-uS-odB"/>
                 <outlet property="sortMarketByNameButton" destination="RXK-up-Jn3" id="78S-2R-VkD"/>
@@ -85,7 +86,7 @@
                                 <rect key="frame" x="0.0" y="263" width="375" height="17"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3v-0U-qKY">
-                                        <rect key="frame" x="26" y="0.0" width="43" height="17"/>
+                                        <rect key="frame" x="26" y="0.0" width="42.5" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" name="normalTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -186,13 +187,13 @@
                                 <rect key="frame" x="12" y="210" width="351" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assets " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNo-ND-wfP">
-                                        <rect key="frame" x="22" y="9.5" width="55.5" height="21"/>
+                                        <rect key="frame" x="22" y="10" width="55.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,320.65 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVo-h3-Re9">
-                                        <rect key="frame" x="86.5" y="9.5" width="80" height="21"/>
+                                        <rect key="frame" x="86.5" y="10" width="80" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -255,28 +256,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLC-f0-6zS">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGF-fz-Lgs">
-                            <rect key="frame" x="328" y="4" width="32" height="32"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="YOy-Gr-sGT"/>
-                                <constraint firstAttribute="height" constant="32" id="xH9-sR-fxt"/>
-                            </constraints>
-                            <state key="normal" image="search_overview_icon"/>
-                            <connections>
-                                <action selector="searchButtonTapped:" destination="-1" eventType="touchUpInside" id="p5H-wJ-iBe"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-cz-DTw">
-                            <rect key="frame" x="273" y="4" width="32" height="32"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="WpY-QG-Ogi"/>
-                                <constraint firstAttribute="height" constant="32" id="xeL-kV-yCY"/>
-                            </constraints>
-                            <state key="normal" image="noti_overview_icon"/>
-                            <connections>
-                                <action selector="notificationsButtonTapped:" destination="-1" eventType="touchUpInside" id="kNW-76-wqb"/>
-                            </connections>
-                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WKv-HI-2Uf">
                             <rect key="frame" x="16" y="4" width="171" height="32"/>
                             <subviews>
@@ -297,7 +276,7 @@
                                     <rect key="frame" x="142" y="6" width="20" height="20"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BNB Smart chain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8HD-f0-AMK">
-                                    <rect key="frame" x="38" y="9" width="94" height="14"/>
+                                    <rect key="frame" x="38" y="9" width="94" height="14.5"/>
                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -325,16 +304,55 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dCw-rk-TQ8">
+                            <rect key="frame" x="231" y="4" width="128" height="32"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-cz-DTw">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="WpY-QG-Ogi"/>
+                                        <constraint firstAttribute="height" constant="32" id="xeL-kV-yCY"/>
+                                    </constraints>
+                                    <state key="normal" image="noti_overview_icon"/>
+                                    <connections>
+                                        <action selector="notificationsButtonTapped:" destination="-1" eventType="touchUpInside" id="kNW-76-wqb"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V1w-zU-fbD">
+                                    <rect key="frame" x="48" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="Vsy-b6-qWf"/>
+                                        <constraint firstAttribute="height" constant="32" id="frc-Ij-8bB"/>
+                                    </constraints>
+                                    <state key="normal" image="scan"/>
+                                    <connections>
+                                        <action selector="scanWasTapped:" destination="-1" eventType="touchUpInside" id="VDE-TI-PGA"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGF-fz-Lgs">
+                                    <rect key="frame" x="96" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="YOy-Gr-sGT"/>
+                                        <constraint firstAttribute="height" constant="32" id="xH9-sR-fxt"/>
+                                    </constraints>
+                                    <state key="normal" image="search_overview_icon"/>
+                                    <connections>
+                                        <action selector="searchButtonTapped:" destination="-1" eventType="touchUpInside" id="p5H-wJ-iBe"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Aso-A4-wlk"/>
+                            </constraints>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="CAZ-0J-Oug"/>
-                        <constraint firstAttribute="trailing" secondItem="IGF-fz-Lgs" secondAttribute="trailing" constant="15" id="Xaq-Dy-Xmz"/>
                         <constraint firstItem="WKv-HI-2Uf" firstAttribute="leading" secondItem="TLC-f0-6zS" secondAttribute="leading" constant="16" id="aX9-39-uaP"/>
+                        <constraint firstAttribute="trailing" secondItem="dCw-rk-TQ8" secondAttribute="trailing" constant="16" id="fbp-4C-8zp"/>
+                        <constraint firstItem="dCw-rk-TQ8" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="k0k-HU-wGM"/>
                         <constraint firstItem="WKv-HI-2Uf" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="nNg-ja-elj"/>
-                        <constraint firstItem="aSf-cz-DTw" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="p6x-lu-Vzc"/>
-                        <constraint firstItem="IGF-fz-Lgs" firstAttribute="leading" secondItem="aSf-cz-DTw" secondAttribute="trailing" constant="23" id="ubS-GB-EPX"/>
-                        <constraint firstItem="IGF-fz-Lgs" firstAttribute="centerY" secondItem="TLC-f0-6zS" secondAttribute="centerY" id="y43-Zj-ZGS"/>
                     </constraints>
                 </view>
             </subviews>
@@ -357,6 +375,7 @@
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="noti_overview_icon" width="18" height="21"/>
         <image name="option_overview_icon" width="25" height="25"/>
+        <image name="scan" width="32" height="32"/>
         <image name="search_overview_icon" width="33" height="33"/>
         <image name="sort_down_icon" width="16" height="16"/>
         <image name="sort_none_icon" width="16" height="16"/>

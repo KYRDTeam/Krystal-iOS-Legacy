@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 import BigInt
+import WalletConnectSwift
 import KrystalWallets
 
 protocol InvestCoordinatorDelegate: class {
@@ -15,6 +16,8 @@ protocol InvestCoordinatorDelegate: class {
   func investCoordinatorDidSelectAddWallet()
   func investCoordinatorDidSelectAddToken(_ token: TokenObject)
   func investCoordinatorDidSelectAddChainWallet(chainType: ChainType)
+  func investCoordinator(didAdd wallet: KWallet, chain: ChainType)
+  func investCoordinator(didAdd watchAddress: KAddress, chain: ChainType)
 }
 
 class InvestCoordinator: Coordinator {
@@ -28,6 +31,7 @@ class InvestCoordinator: Coordinator {
   var dappCoordinator: DappCoordinator?
   var buyCryptoCoordinator: BuyCryptoCoordinator?
   var rewardHuntingCoordinator: RewardHuntingCoordinator?
+  var importWalletCoordinator: KNImportWalletCoordinator?
   fileprivate var loadTimer: Timer?
   weak var delegate: InvestCoordinatorDelegate?
   var historyCoordinator: KNHistoryCoordinator?
@@ -112,12 +116,13 @@ class InvestCoordinator: Coordinator {
     )
   }
   
-  fileprivate func openSendTokenView() {
+  fileprivate func openSendTokenView(recipientAddress: String = "") {
     let from: TokenObject = KNGeneralProvider.shared.quoteTokenObject
     let coordinator = KNSendTokenViewCoordinator(
       navigationController: self.navigationController,
       balances: self.balances,
-      from: from
+      from: from,
+      recipientAddress: recipientAddress
     )
     coordinator.delegate = self
     coordinator.start()
@@ -241,7 +246,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openBuyCryptoScreen()
     case .multiSend:
       self.multiSendCoordinator.start()
-      KNCrashlyticsUtil.logCustomEvent(withName: "explore_multiple_transfer", customAttributes: nil)
+      Tracker.track(event: .exploreMultisend)
     case .promoCode:
       let coordinator = PromoCodeCoordinator(navigationController: self.navigationController)
       coordinator.start()
@@ -260,7 +265,73 @@ extension InvestCoordinator: InvestViewControllerDelegate {
       self.openBridgeView()
     case .addChainWallet(let chainType):
       delegate?.investCoordinatorDidSelectAddChainWallet(chainType: chainType)
+    case .scanner:
+      var acceptedResultTypes: [ScanResultType] = []
+      var scanModes: [ScanMode] = [.qr, .text]
+      if KNGeneralProvider.shared.currentChain.isEVM {
+        acceptedResultTypes.append(contentsOf: [.walletConnect, .ethPublicKey, .ethPrivateKey])
+        scanModes = [.qr, .text]
+      } else if KNGeneralProvider.shared.currentChain == .solana {
+        acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
+        scanModes = [.qr]
+      }
+      
+      ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+        guard let self = self else { return }
+        switch type {
+        case .walletConnect:
+          self.handleWalletConnectURI(text)
+        case .ethPublicKey:
+          self.openSendTokenView(recipientAddress: text)
 
+        case .ethPrivateKey:
+          let currentChain = KNGeneralProvider.shared.currentChain
+          if currentChain.isEVM {
+            self.openImportWalletFlow(privateKey: text, chain: currentChain)
+          } else {
+            self.openImportWalletFlow(privateKey: text, chain: .eth)
+          }
+        case .solPublicKey:
+          self.openSendTokenView(recipientAddress: text)
+        case .solPrivateKey:
+          self.openImportWalletFlow(privateKey: text, chain: .solana)
+        }
+      }
+    }
+  }
+  
+  func openImportWalletFlow(privateKey: String, chain: ChainType) {
+    let coordinator = KNImportWalletCoordinator(navigationController: navigationController)
+    self.importWalletCoordinator = coordinator
+    coordinator.delegate = self
+    coordinator.startImportFlow(privateKey: privateKey, chain: chain)
+  }
+  
+  func handleWalletConnectURI(_ result: String, disconnectAfterDisappear: Bool = true) {
+    guard let url = WCURL(result) else {
+      self.navigationController.showTopBannerView(
+        with: Strings.invalidSession,
+        message: Strings.invalidSessionTryOtherQR,
+        time: 1.5
+      )
+      return
+    }
+    
+    do {
+      let privateKey = try WalletManager.shared.exportPrivateKey(address: AppDelegate.session.address)
+      DispatchQueue.main.async {
+        let controller = KNWalletConnectViewController(
+          wcURL: url,
+          pk: privateKey
+        )
+        self.navigationController.present(controller, animated: true, completion: nil)
+      }
+    } catch {
+      self.navigationController.showTopBannerView(
+        with: Strings.privateKeyError,
+        message: Strings.canNotGetPrivateKey,
+        time: 1.5
+      )
     }
   }
 }
@@ -379,4 +450,25 @@ extension InvestCoordinator: RewardHuntingCoordinatorDelegate {
     self.openRewardView()
   }
   
+}
+
+extension InvestCoordinator: KNImportWalletCoordinatorDelegate {
+  
+  func importWalletCoordinatorDidImport(wallet: KWallet, chain: ChainType) {
+    delegate?.investCoordinator(didAdd: wallet, chain: chain)
+    navigationController.popViewController(animated: true, completion: nil)
+  }
+  
+  func importWalletCoordinatorDidImport(watchAddress: KAddress, chain: ChainType) {
+    delegate?.investCoordinator(didAdd: watchAddress, chain: chain)
+  }
+  
+  func importWalletCoordinatorDidClose() {
+    importWalletCoordinator = nil
+  }
+  
+  func importWalletCoordinatorDidSendRefCode(_ code: String) {
+    
+  }
+
 }

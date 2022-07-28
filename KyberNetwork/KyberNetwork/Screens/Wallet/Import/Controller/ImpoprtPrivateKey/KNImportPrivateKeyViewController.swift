@@ -2,6 +2,8 @@
 
 import UIKit
 import QRCodeReaderViewController
+import WalletCore
+import KrystalWallets
 
 protocol KNImportPrivateKeyViewControllerDelegate: class {
   func importPrivateKeyViewControllerDidPressNext(sender: KNImportPrivateKeyViewController, privateKey: String, name: String?)
@@ -26,11 +28,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   @IBOutlet weak var containerRefCodeView: UIView!
   @IBOutlet weak var refCodeTitleLabel: UILabel!
   var importType: ImportWalletChainType = .multiChain
+  var privateKey: String = ""
   
   var isValueValid: Bool {
     guard let text = self.enterPrivateKeyTextField.text else { return false }
     if importType == .solana {
-      return SolanaUtil.isValidSolanaPrivateKey(text)
+      return SolanaUtil.isValidSolanaPrivateKey(text: text)
     } else {
       return text.count == 64
     }
@@ -38,6 +41,21 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   
   var privateKeyWarningText: String {
     return importType == .solana ? "*Private key has to be 64 bytes" : "*Private key has to be 64 characters"
+  }
+  
+  var getFormattedPrivateKey: String? {
+    let text = enterPrivateKeyTextField.text ?? ""
+    switch importType {
+    case .solana:
+      if SolanaUtil.isNormalPrivateKey(text: text) {
+        return text
+      } else if let privateKey = SolanaUtil.getPrivateKey(numericPrivateKey: text) {
+        return WalletUtils.string(fromPrivateKey: privateKey, addressType: .solana)
+      }
+      return nil
+    default:
+      return text
+    }
   }
 
   override func viewDidLoad() {
@@ -74,7 +92,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   func resetUI() {
-    self.enterPrivateKeyTextField.text = ""
+    self.enterPrivateKeyTextField.text = privateKey
     self.walletNameTextField.text = ""
     self.isSecureText = true
     self.updateSecureTextEntry()
@@ -105,12 +123,36 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   }
 
   @IBAction func qrCodeButtonPressed(_ sender: Any) {
-    if KNOpenSettingsAllowCamera.openCameraNotAllowAlertIfNeeded(baseVC: self) {
+    guard let navigation = self.navigationController else {
       return
     }
-    let qrcodeReader = QRCodeReaderViewController()
-    qrcodeReader.delegate = self
-    self.parent?.present(qrcodeReader, animated: true, completion: nil)
+    let acceptedResultTypes: [ScanResultType] = {
+      switch importType {
+      case .multiChain:
+        return []
+      case .evm:
+        return [.ethPrivateKey]
+      case .solana:
+        return [.solPrivateKey]
+      }
+    }()
+    let scanModes: [ScanMode] = {
+      switch importType {
+      case .multiChain:
+        return []
+      case .evm:
+        return [.qr, .text]
+      case .solana:
+        return [.qr]
+      }
+    }()
+    ScannerModule.start(navigationController: navigation,
+                        acceptedResultTypes: acceptedResultTypes,
+                        defaultScanMode: scanModes.contains(.text) ? .text : .qr,
+                        scanModes: scanModes) { [weak self] privateKey, _ in
+      self?.enterPrivateKeyTextField.text = privateKey.drop0x
+      self?.updateNextButton()
+    }
   }
 
   @IBAction func secureTextButtonPressed(_ sender: Any) {
@@ -122,10 +164,12 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     if let text = self.refCodeField.text, !text.isEmpty {
       self.delegate?.importPrivateKeyViewController(controller: self, send: text)
     }
-    let privateKey: String = self.enterPrivateKeyTextField.text ?? ""
+    guard let privateKeyString = self.getFormattedPrivateKey else {
+      return
+    }
     self.delegate?.importPrivateKeyViewControllerDidPressNext(
       sender: self,
-      privateKey: privateKey,
+      privateKey: privateKeyString,
       name: self.walletNameTextField.text
     )
   }
@@ -138,7 +182,6 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       } else {
         self.refCodeField.text = string
       }
-      
     }
   }
   

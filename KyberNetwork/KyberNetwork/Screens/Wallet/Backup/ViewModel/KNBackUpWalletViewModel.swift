@@ -63,7 +63,7 @@ class KNBackUpWalletViewModel {
 
   func updateNextBackUpWords() {
     self.currentWordIndex += self.numberWords
-    KNCrashlyticsUtil.logCustomEvent(withName: "cw_paper_\(self.currentPage)", customAttributes: nil)
+    Tracker.track(eventName: "cw_paper_\(self.currentPage)")
     if self.currentWordIndex >= self.maxWords - 1 {
       self.state = .testBackup
       self.firstWordID = Int(arc4random() % 11) + 1

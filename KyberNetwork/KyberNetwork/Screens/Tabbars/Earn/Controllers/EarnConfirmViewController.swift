@@ -192,7 +192,7 @@ class EarnConfirmViewController: KNBaseViewController {
   }
   
   @IBAction func cancelButtonTapped(_ sender: UIButton) {
-    KNCrashlyticsUtil.logCustomEvent(withName: "earn_cancel", customAttributes: nil)
+    Tracker.track(event: .earnCancel)
     self.dismiss(animated: true, completion: nil)
   }
   

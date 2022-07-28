@@ -185,4 +185,9 @@ struct Strings {
   static let txHash = "tx.hash".toBeLocalised()
   static let xTransfers = "x.transfers".toBeLocalised()
   static let oneTransfer = "1 Transfer".toBeLocalised()
+  
+  // Scanner
+  static let scanQRCode = "scan.qr.code".toBeLocalised()
+  static let scanText = "scan.text".toBeLocalised()
+  static let scanner = "scanner".toBeLocalised()
 }

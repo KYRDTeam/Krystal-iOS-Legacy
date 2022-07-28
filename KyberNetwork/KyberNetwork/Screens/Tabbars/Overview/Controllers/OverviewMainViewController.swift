@@ -35,6 +35,7 @@ class OverviewMainViewController: KNBaseViewController {
   @IBOutlet weak var infoCollectionView: UICollectionView!
   @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
   @IBOutlet weak var insestView: UIView!
+  @IBOutlet weak var scanButton: UIButton!
   
   weak var delegate: OverviewMainViewControllerDelegate?
   let refreshControl = UIRefreshControl()
@@ -88,6 +89,8 @@ class OverviewMainViewController: KNBaseViewController {
       forCellReuseIdentifier: OverviewLiquidityPoolCell.kCellID
     )
     
+    self.tableView.registerCellNib(OverviewMultichainLiquidityPoolCell.self)
+    
     let nibEmpty = UINib(nibName: OverviewEmptyTableViewCell.className, bundle: nil)
     self.tableView.register(
       nibEmpty,
@@ -109,8 +112,13 @@ class OverviewMainViewController: KNBaseViewController {
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
     
+    self.setupViews()
     self.configPullToRefresh()
     self.configHeaderTapped()
+  }
+  
+  func setupViews() {
+    scanButton.isHidden = false // !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   func configHeaderTapped() {
@@ -297,35 +305,35 @@ class OverviewMainViewController: KNBaseViewController {
       } else {
         self.viewModel.marketSortType = .name(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_name", customAttributes: nil)
+      Tracker.track(event: .marketSortName)
     } else if sender.tag == 2 {
       if case let .ch24(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .ch24(des: !dec)
       } else {
         self.viewModel.marketSortType = .ch24(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_24h", customAttributes: nil)
+      Tracker.track(event: .marketSort24h)
     } else if sender.tag == 3 {
       if case let .vol(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .vol(des: !dec)
       } else {
         self.viewModel.marketSortType = .vol(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_vol", customAttributes: nil)
+      Tracker.track(event: .marketSortVol)
     } else  if sender.tag == 4 {
       if case let .price(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .price(des: !dec)
       } else {
         self.viewModel.marketSortType = .price(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_price", customAttributes: nil)
+      Tracker.track(event: .marketSortPrice)
     } else  if sender.tag == 5 {
       if case let .cap(dec) = self.viewModel.marketSortType {
         self.viewModel.marketSortType = .cap(des: !dec)
       } else {
         self.viewModel.marketSortType = .cap(des: true)
       }
-      KNCrashlyticsUtil.logCustomEvent(withName: "market_sort_cap", customAttributes: nil)
+      Tracker.track(event: .marketSortCap)
     }
     self.reloadUI()
   }
@@ -336,6 +344,41 @@ class OverviewMainViewController: KNBaseViewController {
   
   @IBAction func searchButtonTapped(_ sender: UIButton) {
     self.delegate?.overviewMainViewController(self, run: .search)
+  }
+  
+  @IBAction func scanWasTapped(_ sender: Any) {
+    guard let nav = self.navigationController else { return }
+    
+    var acceptedResultTypes: [ScanResultType] = []
+    var scanModes: [ScanMode] = [.qr, .text]
+    if KNGeneralProvider.shared.currentChain.isEVM {
+      acceptedResultTypes.append(contentsOf: [.walletConnect, .ethPublicKey, .ethPrivateKey])
+      scanModes = [.qr, .text]
+    } else if KNGeneralProvider.shared.currentChain == .solana {
+      acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
+      scanModes = [.qr]
+    }
+    
+    ScannerModule.start(navigationController: nav, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+      guard let self = self else { return }
+      switch type {
+      case .walletConnect:
+        self.delegate?.overviewMainViewController(self, run: .scannedWalletConnect(url: text))
+      case .ethPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .ethPrivateKey:
+        let currentChain = KNGeneralProvider.shared.currentChain
+        if currentChain.isEVM {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: currentChain))
+        } else {
+          self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .eth))
+        }
+      case .solPublicKey:
+        self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: text))
+      case .solPrivateKey:
+        self.delegate?.overviewMainViewController(self, run: .importWallet(privateKey: text, chain: .solana))
+      }
+    }
   }
   
   fileprivate func updateUIForIndicatorView(button: UIButton, dec: Bool) {
@@ -409,6 +452,11 @@ class OverviewMainViewController: KNBaseViewController {
   
   func coordinatorDidUpdateAllTokenData(models: [ChainBalanceModel]) {
     self.viewModel.assetChainBalanceModels = models
+    self.reloadUI()
+  }
+  
+  func coordinatorDidUpdateAllLPData(models: [ChainLiquidityPoolModel]) {
+    self.viewModel.chainLiquidityPoolModels = models
     self.reloadUI()
   }
   
@@ -505,7 +553,6 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
-//    cell.delegate = self
     return cell
   }
   
@@ -520,7 +567,6 @@ extension OverviewMainViewController: UITableViewDataSource {
     cell.action = {
       self.delegate?.overviewMainViewController(self, run: .changeRightMode(current: self.viewModel.currentMode))
     }
-//    cell.delegate = self
     return cell
   }
   
@@ -578,12 +624,22 @@ extension OverviewMainViewController: UITableViewDataSource {
       
       return cell
     case .showLiquidityPool:
+      if self.viewModel.currentChain == .all {
+        let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
+        let key = self.viewModel.displayHeader.value[indexPath.section]
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
+          viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
+          cell.updateCell(viewModel)
+        }
+        return cell
+      }
+        
       let cell = tableView.dequeueReusableCell(
         withIdentifier: OverviewLiquidityPoolCell.kCellID,
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.0 + (key.1?.chainName() ?? "")]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }
@@ -709,126 +765,6 @@ extension OverviewMainViewController: UIScrollViewDelegate {
   
 }
 
-extension OverviewMainViewController: SwipeTableViewCellDelegate {
-  
-  private func hideActionForMultiChain(cellModel: OverviewMainCellViewModel) -> SwipeAction? {
-    switch cellModel.mode {
-    case .asset(token: let token, rightMode: _):
-      // hide action
-      let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
-        let chainType = ChainType.make(chainID: cellModel.chainId) ?? KNGeneralProvider.shared.currentChain
-        KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false, chainType: chainType)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "token_disable": true,
-          "screen_name": "OverviewMainViewController",
-        ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      hideAction.title = "Hide".toBeLocalised().uppercased()
-      hideAction.textColor = UIColor(named: "normalTextColor")
-      hideAction.font = UIFont.Kyber.medium(with: 12)
-      let bgImg = UIImage(named: "history_cell_edit_bg")!
-      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-      hideAction.backgroundColor = UIColor(patternImage: resized)
-
-      return hideAction
-    default:
-      return nil
-    }
-  }
-  
-  private func hideActionForSingleChain(cellModel: OverviewMainCellViewModel) -> SwipeAction? {
-    guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
-    // hide action
-    let hideAction = SwipeAction(style: .default, title: nil) { _, _ in
-      KNSupportedTokenStorage.shared.setTokenActiveStatus(token: token, status: false)
-      let params: [String: Any] = [
-        "token_name": token.name,
-        "token_address": token.address,
-        "token_disable": true,
-        "screen_name": "OverviewMainViewController",
-      ]
-      KNCrashlyticsUtil.logCustomEvent(withName: "token_change_disable", customAttributes: params)
-      MBProgressHUD.showAdded(to: self.view, animated: true)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-        MBProgressHUD.hide(for: self.view, animated: true)
-        self.reloadUI()
-      })
-    }
-    hideAction.title = "Hide".toBeLocalised().uppercased()
-    hideAction.textColor = UIColor(named: "normalTextColor")
-    hideAction.font = UIFont.Kyber.medium(with: 12)
-    let bgImg = UIImage(named: "history_cell_edit_bg")!
-    let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-    hideAction.backgroundColor = UIColor(patternImage: resized)
-
-    return hideAction
-  }
-  
-  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-    guard orientation == .right else {
-      return nil
-    }
-    
-    switch self.viewModel.currentMode {
-    case .asset:
-      guard let cellModel = self.viewModel.getViewModelsForSection(indexPath.section)[safe: indexPath.row] else { return nil }
-      // hide action
-      let hideAction = self.viewModel.currentChain == .all ? self.hideActionForMultiChain(cellModel: cellModel) : self.hideActionForSingleChain(cellModel: cellModel)
-      
-      // soft delete action for custom token
-      guard let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: cellModel.tokenSymbol) else { return nil }
-      let deleteAction = SwipeAction(style: .default, title: nil) { _, _ in
-        KNSupportedTokenStorage.shared.deleteCustomToken(token)
-        let params: [String: Any] = [
-          "token_name": token.name,
-          "token_address": token.address,
-          "screen_name": "OverviewMainViewController",
-        ]
-        KNCrashlyticsUtil.logCustomEvent(withName: "token_delete", customAttributes: params)
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
-          MBProgressHUD.hide(for: self.view, animated: true)
-          self.reloadUI()
-        })
-      }
-      deleteAction.title = "Delete".toBeLocalised().uppercased()
-      deleteAction.textColor = UIColor(named: "normalTextColor")
-      deleteAction.font = UIFont.Kyber.medium(with: 12)
-      let bgImg = UIImage(named: "history_cell_edit_bg")!
-      let resized = bgImg.resizeImage(to: CGSize(width: 104, height: OverviewMainViewCell.kCellHeight))!
-      deleteAction.backgroundColor = UIColor(patternImage: resized)
-
-      guard let hideAction = hideAction else {
-        return nil
-      }
-//      if KNSupportedTokenStorage.shared.getActiveCustomToken().contains(token) {
-//        return [hideAction, deleteAction]
-//      }
-      
-      return [hideAction]
-    default:
-      return nil
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-    var options = SwipeOptions()
-    options.transitionStyle = .reveal
-    options.backgroundColor = UIColor(named: "mainViewBgColor")
-    options.minimumButtonWidth = 90
-    options.maximumButtonWidth = 90
-    return options
-  }
-}
-
 extension OverviewMainViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 2
@@ -867,7 +803,7 @@ extension OverviewMainViewController: UICollectionViewDataSource {
     }
     
     cell.transferButtonTapped = {
-      self.delegate?.overviewMainViewController(self, run: .send)
+      self.delegate?.overviewMainViewController(self, run: .send(recipientAddress: nil))
     }
     
     return cell

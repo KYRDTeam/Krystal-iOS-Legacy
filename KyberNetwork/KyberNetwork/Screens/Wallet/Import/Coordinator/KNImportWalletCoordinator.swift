@@ -23,6 +23,17 @@ class KNImportWalletCoordinator: Coordinator {
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
   }
+
+  func startImportFlow(privateKey: String, chain: ChainType) {
+    let importType: ImportWalletChainType = chain.isEVM ? .evm : .solana
+    let vc = KNImportWalletViewController.instantiateFromNib()
+    vc.importType = importType
+    vc.selectedChainType = chain
+    vc.currentImportWalletType = .privateKey
+    vc.privateKey = privateKey
+    vc.delegate = self
+    self.navigationController.pushViewController(vc, animated: true)
+  }
   
   func start() {
     let selectChainVC = SelectChainViewController()
@@ -81,9 +92,9 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
   
   fileprivate func importWallet(with type: ImportType, name: String?, importType: ImportWalletChainType, selectedChain: ChainType) {
     if name == nil || name?.isEmpty == true {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_empty"])
+      Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_empty"])
     } else {
-      KNCrashlyticsUtil.logCustomEvent(withName: "screen_import_wallet", customAttributes: ["action": "name_not_empty"])
+      Tracker.track(event: .screenImportWallet, customAttributes: ["action": "name_not_empty"])
     }
     
     let addressType: KAddressType = {
@@ -99,29 +110,29 @@ extension KNImportWalletCoordinator: KNImportWalletViewControllerDelegate {
     case .privateKey(let privateKey):
       do {
         let wallet = try walletManager.import(privateKey: privateKey, addressType: addressType, name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_success", customAttributes: nil)
+        Tracker.track(event: .iwPKSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_pk_fail", customAttributes: nil)
+        Tracker.track(event: .iwPKFail)
       }
     case .mnemonic(let words, _):
       do {
         let wallet = try walletManager.import(mnemonic: words.joined(separator: " "), name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_success", customAttributes: nil)
+        Tracker.track(event: .iwSeedSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_seed_fail", customAttributes: nil)
+        Tracker.track(event: .iwSeedFail)
       }
     case .keystore(let key, let password):
       do {
         let wallet = try walletManager.import(keystore: key, addressType: addressType, password: password, name: name.whenNilOrEmpty("Imported"))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_success", customAttributes: nil)
+        Tracker.track(event: .iwJSONSuccess)
         onImportWalletSuccess(wallet: wallet, chain: selectedChain)
       } catch {
         navigationController.topViewController?.displayAlert(message: importErrorMessage(error: error))
-        KNCrashlyticsUtil.logCustomEvent(withName: "iw_json_fail", customAttributes: nil)
+        Tracker.track(event: .iwJSONFail)
       }
 
     case .watch(let address, _):
