@@ -203,7 +203,15 @@ class OverviewMainViewModel {
   var didTapAddNFTHeader: (() -> Void)?
   var didTapSectionButtonHeader: (( _ : UIButton) -> Void)?
   let queue = DispatchQueue(label: "overview.property.lock.queue")
-  var currentChain: ChainType
+  var currentChain: ChainType {
+    didSet {
+      if self.currentChain == .all {
+        UserDefaults.standard.set(true, forKey: Constants.didSelectAllChainOption)
+      } else {
+        UserDefaults.standard.set(false, forKey: Constants.didSelectAllChainOption)
+      }
+    }
+  }
   var currentWalletName: String {
     return AppDelegate.session.address.name
   }
@@ -216,11 +224,17 @@ class OverviewMainViewModel {
     } else {
       self.currencyMode = .usd
     }
-    if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
-      self.currentChain = saved
-    } else {
+    
+    if UserDefaults.standard.bool(forKey: Constants.didSelectAllChainOption) {
       self.currentChain = .all
+    } else {
+      if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
+        self.currentChain = saved
+      } else {
+        self.currentChain = .all
+      }
     }
+    
   }
   
   func isEmpty() -> Bool {
