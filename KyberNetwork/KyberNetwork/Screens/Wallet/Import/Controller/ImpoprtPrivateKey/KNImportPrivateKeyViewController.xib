@@ -12,7 +12,7 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
-        <array key="Karla-Italic-VariableFont_wght.ttf">
+        <array key="Karla-Italic.ttf">
             <string>Karla-Italic</string>
         </array>
         <array key="Karla-VariableFont_wght.ttf">
@@ -190,7 +190,7 @@
                                 <constraint firstAttribute="width" constant="24" id="5nz-m5-KWh"/>
                                 <constraint firstAttribute="height" constant="24" id="oaZ-m9-hOK"/>
                             </constraints>
-                            <state key="normal" image="qr_code_blue_icon"/>
+                            <state key="normal" image="scan"/>
                             <connections>
                                 <action selector="qrCodeButtonTapped:" destination="-1" eventType="touchUpInside" id="UWC-Ty-Ybc"/>
                             </connections>
@@ -276,7 +276,6 @@
         </view>
     </objects>
     <resources>
-        <image name="qr_code_blue_icon" width="20" height="20"/>
         <image name="scan" width="32" height="32"/>
         <image name="show_eye_icon" width="24" height="24"/>
         <namedColor name="buttonBackgroundColor">
