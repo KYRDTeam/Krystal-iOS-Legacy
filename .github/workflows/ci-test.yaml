@@ -12,10 +12,10 @@ jobs:
     steps:
       - name: Test DEV_PROFILE
         run: |
-          echo -n "${{ secrets.DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-8 foo && cut -c9- foo
-          echo -n "${{ secrets.KRYSTAL_DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-8 foo && cut -c9- foo
-          echo -n "${{ secrets.AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-8 foo && cut -c9- foo
-          echo -n "${{ secrets.EXT_AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-8 foo && cut -c9- foo
+          # echo -n "${{ secrets.DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-12 foo && cut -c13- foo
+          echo -n "${{ secrets.KRYSTAL_DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-12 foo && cut -c13- foo
+          echo -n "${{ secrets.AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-12 foo && cut -c13- foo
+          echo -n "${{ secrets.EXT_AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4-12 foo && cut -c13- foo
 
       - name: Ls
         run: ls -al
