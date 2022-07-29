@@ -13,17 +13,8 @@ jobs:
       - name: Test DEV_PROFILE
         run: |
           echo -n "${{ secrets.DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
-
-      - name: Test KRYSTAL_DEV_PROFILE
-        run: |
           echo -n "${{ secrets.KRYSTAL_DEV_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
-
-      - name: Test AD_HOC_PROFILE
-        run: |
           echo -n "${{ secrets.AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
-
-      - name: Test EXT_AD_HOC_PROFILE
-        run: |
           echo -n "${{ secrets.EXT_AD_HOC_PROFILE }}" >> foo && cut -c1-3 foo && cut -c4- foo
 
       - name: Ls
