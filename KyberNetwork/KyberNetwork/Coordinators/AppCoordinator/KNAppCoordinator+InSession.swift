@@ -157,18 +157,18 @@ extension KNAppCoordinator {
     self.settingsCoordinator = nil
     self.tabbarController = nil
   }
-
+  
   func restartSession(address: KAddress) {
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
-      self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
+    self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
     self.loadBalanceCoordinator?.restartNewSession(self.session)
     self.investCoordinator?.appCoordinatorSwitchAddress()
-
+    
     KNNotificationUtil.postNotification(for: kOtherBalanceDidUpdateNotificationKey)
     self.exchangeCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
     self.overviewTabCoordinator?.appCoordinatorPendingTransactionsDidUpdate()
-
+    
     self.doLogin { _ in }
     
     NotificationCenter.default.post(

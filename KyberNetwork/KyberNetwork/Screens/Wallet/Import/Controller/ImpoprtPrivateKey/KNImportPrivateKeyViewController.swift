@@ -146,7 +146,8 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
         return [.qr]
       }
     }()
-    ScannerModule.start(navigationController: navigation,
+    ScannerModule.start(previousScreen: ScreenName.importWallet,
+                        navigationController: navigation,
                         acceptedResultTypes: acceptedResultTypes,
                         defaultScanMode: scanModes.contains(.text) ? .text : .qr,
                         scanModes: scanModes) { [weak self] privateKey, _ in
@@ -154,7 +155,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
       self?.updateNextButton()
     }
   }
-
+  
   @IBAction func secureTextButtonPressed(_ sender: Any) {
     self.isSecureText = !self.isSecureText
     self.updateSecureTextEntry()

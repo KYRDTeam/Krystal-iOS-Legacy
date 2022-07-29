@@ -112,13 +112,8 @@ class OverviewMainViewController: KNBaseViewController {
     let infoNib = UINib(nibName: OverviewTotalInfoCell.className, bundle: nil)
     self.infoCollectionView.register(infoNib, forCellWithReuseIdentifier: OverviewTotalInfoCell.cellID)
     
-    self.setupViews()
     self.configPullToRefresh()
     self.configHeaderTapped()
-  }
-  
-  func setupViews() {
-    scanButton.isHidden = false // !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   func configHeaderTapped() {
@@ -187,8 +182,13 @@ class OverviewMainViewController: KNBaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    self.updateUIByFeatureFlags()
     self.updateUISwitchChain()
     self.delegate?.overviewMainViewController(self, run: .didAppear)
+  }
+  
+  func updateUIByFeatureFlags() {
+    scanButton.isHidden = !FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
   }
   
   fileprivate func reloadUI() {
@@ -361,8 +361,7 @@ class OverviewMainViewController: KNBaseViewController {
       acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
       scanModes = [.qr]
     }
-    
-    ScannerModule.start(navigationController: nav, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+    ScannerModule.start(previousScreen: ScreenName.explore, navigationController: nav, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
       guard let self = self else { return }
       switch type {
       case .walletConnect:
