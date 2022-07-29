@@ -22,7 +22,7 @@ class EthereumWeb3Service {
   
   init(chain: ChainType) {
     self.chain = chain
-    self.web3 = URL(string: chain.customRPC().endpoint + KNEnvironment.default.nodeEndpoint).map { Web3Swift(url: $0) }
+    self.web3 = Web3Factory.shared.web3Instance(forChain: chain)
   }
   
   func getTransferTokenData(transferQuoteToken: Bool, amount: BigInt, address: String, completion: @escaping (Result<Data, AnyError>) -> Void) {
@@ -107,6 +107,8 @@ class EthereumWeb3Service {
     Session.send(request) { result in
       switch result {
       case .success(let count):
+        let currentNonce = NonceCache.shared.getCachingNonce(address: address, chain: self.chain)
+        NonceCache.shared.updateNonce(address: address, chain: self.chain, nonce: max(count, currentNonce))
         completion(.success(count))
       case .failure(let error):
         completion(.failure(AnyError(error)))
