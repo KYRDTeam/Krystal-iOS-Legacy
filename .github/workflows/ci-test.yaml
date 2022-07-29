@@ -26,6 +26,11 @@ jobs:
         run: |
           echo -n "${{ secrets.EXT_AD_HOC_PROFILE }}" > foo && cut -c1-3 foo && cut -c4-12 foo && cut -c13-18 foo && cut -c19- foo
 
+      - name: Test APPLE_TEAM_ID
+        run: |
+          echo -n "${{ secrets.APPLE_TEAM_ID }}" > foo && cut -c1-3 foo && cut -c4-12
+
+
       - name: Ls
         run: ls -al
 
