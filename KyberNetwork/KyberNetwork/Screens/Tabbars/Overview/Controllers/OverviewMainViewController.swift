@@ -287,6 +287,9 @@ class OverviewMainViewController: KNBaseViewController {
         return
       } else {
         let viewModel = SwitchChainWalletsListViewModel(selected: selected)
+        viewModel.completionHandler = { selected in
+          self.viewModel.currentChain = selected
+        }
         let secondPopup = SwitchChainWalletsListViewController(viewModel: viewModel)
         self.present(secondPopup, animated: true, completion: nil)
       }
@@ -649,10 +652,12 @@ extension OverviewMainViewController: UITableViewDataSource {
         withIdentifier: OverviewNFTTableViewCell.kCellID,
         for: indexPath
       ) as! OverviewNFTTableViewCell
-      let key = self.viewModel.displayNFTHeader.value[indexPath.section].collectibleName
-      if let viewModel = self.viewModel.displayNFTDataSource.value[key]?[indexPath.row] {
-        cell.updateCell(viewModel)
+      if let key = self.viewModel.displayNFTHeader.value[safe: indexPath.section]?.collectibleName {
+        if let viewModel = self.viewModel.displayNFTDataSource.value[key]?[indexPath.row] {
+          cell.updateCell(viewModel)
+        }
       }
+      
       cell.completeHandle = { item, category in
         self.delegate?.overviewMainViewController(self, run: .openNFTDetail(item: item, category: category))
       }
