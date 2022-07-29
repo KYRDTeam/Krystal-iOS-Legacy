@@ -202,8 +202,9 @@ extension KNAppCoordinator {
   @objc func chainDidUpdateNotification(_ notification: Notification) {
     let currentAddress = session.address
     let targetAddressType = KNGeneralProvider.shared.currentChain.addressType
+    
     if targetAddressType == currentAddress.addressType {
-      restartSession(address: currentAddress)
+      // Do nothing
     } else if let address = walletManager.getAllAddresses(walletID: currentAddress.walletID, addressType: targetAddressType).first {
       restartSession(address: address)
     } else if let address = walletManager.getAllAddresses(addressType: targetAddressType).first {
