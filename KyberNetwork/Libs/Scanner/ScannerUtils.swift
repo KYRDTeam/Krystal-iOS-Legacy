@@ -15,6 +15,17 @@ enum ScanResultType: CaseIterable {
   case ethPrivateKey
   case solPublicKey
   case solPrivateKey
+  
+  var trackingOutputKey: String {
+    switch self {
+    case .walletConnect:
+      return "wallet_connect"
+    case .ethPublicKey, .solPublicKey:
+      return "public_key"
+    case .ethPrivateKey, .solPrivateKey:
+      return "private_key"
+    }
+  }
 }
 
 class ScannerUtils {

@@ -53,7 +53,7 @@ class ExploreViewModel {
     let isPromoCodeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.promotionCodeIntegration)
     let isRewardHuntingEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.rewardHunting)
     let isBridgeEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.bridgeIntegration)
-    let isScannerEnabled = true // FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
+    let isScannerEnabled = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.scanner)
     
     var menuItems: [ExploreMenuItem] = []
     menuItems.append(.swap)
