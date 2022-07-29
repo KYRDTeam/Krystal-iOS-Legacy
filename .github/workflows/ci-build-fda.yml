@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - feature/fda-support
+      - debug/with-steve
 
 concurrency: 
   group: manual-debug-fda-dev-${{ github.ref }}
@@ -148,6 +149,9 @@ jobs:
 
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
+          sha256sum $DISTRIBUTE_CERT_PATH
+          sha256sum $DISTRIBUTE_CERT_PASSWORD
+          sha256sum $DEVELOPMENT_CERT_PATH
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
