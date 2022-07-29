@@ -234,7 +234,11 @@ class OverviewMainViewModel {
         self.currentChain = .all
       }
     }
-    
+  }
+  
+  func clearCache() {
+    self.assetChainBalanceModels = []
+    self.chainLiquidityPoolModels = []
   }
   
   func isEmpty() -> Bool {
