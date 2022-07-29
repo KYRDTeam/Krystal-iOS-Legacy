@@ -119,7 +119,7 @@ jobs:
 
       - name: Get configuration items
         run: |
-          brew install coreutils
+          brew install coreutils 
           echo $SSH_PRIVATE_KEY | base64 --decode > private.key
 
           chmod 600 private.key
