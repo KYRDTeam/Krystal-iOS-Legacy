@@ -92,6 +92,14 @@ class KNAppCoordinator: NSObject, Coordinator {
     UserDefaults.standard.set(false, forKey: Constants.kisShowQuickTutorialForLongPendingTx)
   }
   
+  func onChangeAddress(address: KAddress) {
+    if self.tabbarController == nil {
+      self.startNewSession(address: address)
+    } else {
+      self.restartSession(address: address)
+    }
+  }
+  
   func switchWallet(wallet: KWallet, chain: ChainType) {
     if let address = getAddresses(wallet: wallet, chain: chain).first {
       KNGeneralProvider.shared.currentChain = chain
@@ -110,11 +118,11 @@ class KNAppCoordinator: NSObject, Coordinator {
   private func switchAddress(address: KAddress) {
     WalletCache.shared.lastUsedAddress = address
     KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
-    if self.tabbarController == nil {
-      self.startNewSession(address: address)
-    } else {
-      self.restartSession(address: address)
-    }
+//    if self.tabbarController == nil {
+//      self.startNewSession(address: address)
+//    } else {
+//      self.restartSession(address: address)
+//    }
   }
   
   private func getAddresses(wallet: KWallet, chain: ChainType) -> [KAddress] {

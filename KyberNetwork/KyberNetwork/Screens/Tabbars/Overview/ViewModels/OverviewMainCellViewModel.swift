@@ -97,12 +97,24 @@ class OverviewMainCellViewModel {
   
   var multiChainSubTitle: String {
     switch self.mode {
+    case .market(token: let token, rightMode: let mode):
+      let vol = token.getVol(self.currency)
+      return "Vol: " + self.formatPoints(vol)
     case .asset(token: let token, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
       }
       let balanceBigInt = self.balance.bigInt ?? BigInt(0)
       return balanceBigInt.string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 5))
+    case .supply(balance: let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        let rateString = String(format: "%.2f", lendingBalance.supplyRate * 100)
+        return "\(rateString)%".paddingString()
+      } else {
+        return ""
+      }
+    case .search(token: let token):
+      return token.name
     default:
       return ""
     }
@@ -110,7 +122,12 @@ class OverviewMainCellViewModel {
   
   var multiChainAccessoryTitle: String {
     switch self.mode {
-      case .asset(token: _, rightMode: let mode):
+    case .market(token: let token, rightMode: let mode):
+      let price = token.getTokenLastPrice(self.currency)
+      let priceBigInt = BigInt(price * pow(10.0, 18.0))
+        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
+      return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
+    case .asset(token: _, rightMode: let mode):
       guard !self.hideBalanceStatus else {
         return "********"
       }
@@ -125,59 +142,6 @@ class OverviewMainCellViewModel {
         return String(format: "%.2f", quote.priceChange24hPercentage) + "%"
       case .lastPrice:
         let valueString = StringFormatter.currencyString(value: quote.price, symbol: self.currency.toString())
-        return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
-      }
-    default:
-      return ""
-    }
-  }
-
-  var displaySubTitleDetail: String {
-    switch self.mode {
-    case .market(token: let token, rightMode: let mode):
-      let vol = token.getVol(self.currency)
-      return "Vol: " + self.formatPoints(vol)
-    case .asset(token: let token, rightMode: let mode):
-      guard !self.hideBalanceStatus else {
-        return "********"
-      }
-      return token.getBalanceBigInt().string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 5))
-    case .supply(balance: let balance):
-      if let lendingBalance = balance as? LendingBalance {
-        let rateString = String(format: "%.2f", lendingBalance.supplyRate * 100)
-        return "\(rateString)%".paddingString()
-      } else {
-        return ""
-      }
-    case .search(token: let token):
-      return token.name
-    }
-  }
-
-  var displayAccessoryTitle: String {
-    switch self.mode {
-    case .market(token: let token, rightMode: let mode):
-      let price = token.getTokenLastPrice(self.currency)
-      let priceBigInt = BigInt(price * pow(10.0, 18.0))
-        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
-      return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
-    case .asset(token: let token, rightMode: let mode):
-      guard !self.hideBalanceStatus else {
-        return "********"
-      }
-      switch mode {
-      case .value:
-        let rateBigInt = BigInt(token.getTokenLastPrice(self.currency) * pow(10.0, 18.0))
-        let valueBigInt = token.getBalanceBigInt() * rateBigInt / BigInt(10).power(token.decimals)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
-        return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
-      case .ch24:
-        let change24 = token.getTokenChange24(self.currency)
-        return String(format: "%.2f", change24) + "%"
-      case .lastPrice:
-        let price = token.getTokenLastPrice(self.currency)
-        let priceBigInt = BigInt(price * pow(10.0, 18.0))
-        let valueString = priceBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: 18).displayRate(meaningNumber: 2)
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       }
     case .supply(balance: let balance):
@@ -205,51 +169,42 @@ class OverviewMainCellViewModel {
     case .search(token: let token):
       let price = token.getTokenLastPrice(self.currency)
       return self.currency.symbol() + String(format: "%.2f", price)
+    default:
+      return ""
+    }
+  }
+
+  var displaySubTitleDetail: String {
+    switch self.mode {
+    case .market(token: let token, rightMode: let mode):
+      let vol = token.getVol(self.currency)
+      return "Vol: " + self.formatPoints(vol)
+    case .asset(token: let token, rightMode: let mode):
+      guard !self.hideBalanceStatus else {
+        return "********"
+      }
+      return token.getBalanceBigInt().string(decimals: token.decimals, minFractionDigits: 0, maxFractionDigits: min(token.decimals, 5))
+    case .supply(balance: let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        let rateString = String(format: "%.2f", lendingBalance.supplyRate * 100)
+        return "\(rateString)%".paddingString()
+      } else {
+        return ""
+      }
+    case .search(token: let token):
+      return token.name
     }
   }
   
   var multichainAccessoryTextColor: UIColor? {
-    guard let quote = self.quotes[self.currency.toString()] else {
-      return UIColor(named: "buttonBackgroundColor")
-    }
-    return quote.priceChange24hPercentage > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
-  }
-  
-  var displayAccessoryTextColor: UIColor? {
     switch self.mode {
     case .market, .search:
       return UIColor(named: "textWhiteColor")
-    default:
-      return self.displayAccessoryColor
-    }
-  }
-
-  var displayAccessoryColor: UIColor? {
-    switch self.mode {
-    case .market(token: let token, rightMode: let mode):
-      switch mode {
-      case .ch24:
-        let change24 = token.getTokenChange24(self.currency)
-        if change24 == 0 {
-          return UIColor.clear
-        } else {
-          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
-        }
-      default:
-        let change24 = token.getTokenChange24(self.currency)
-        let cap = token.getMarketCap(self.currency)
-        if cap == 0 {
-          return UIColor.clear
-        } else {
-          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
-        }
+    case .asset(token: _, rightMode: _):
+      guard let quote = self.quotes[self.currency.toString()] else {
+        return UIColor(named: "buttonBackgroundColor")
       }
-    case .asset(token: let token, rightMode: let mode):
-      let change24 = token.getTokenChange24(self.currency)
-      return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
-    case .search(token: let token):
-      let change24 = token.getTokenChange24(self.currency)
-      return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+      return quote.priceChange24hPercentage > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
     default:
       return UIColor(named: "buttonBackgroundColor")
     }

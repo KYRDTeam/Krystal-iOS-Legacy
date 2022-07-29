@@ -149,7 +149,7 @@ class OverviewDepositTableViewCell: UITableViewCell {
     self.iconImageView.setImage(urlString: viewModel.logo, symbol: viewModel.tokenSymbol)
     self.tokenBalanceInfoLabel.text = viewModel.displayTitle
     self.tokenApyInfo.text = viewModel.displaySubTitleDetail
-    self.valueLabel.text = viewModel.displayAccessoryTitle
+    self.valueLabel.text = viewModel.multiChainAccessoryTitle
     self.tokenApyInfo.isHidden = viewModel.displaySubTitleDetail.isEmpty
     if case .supply(let bal) = viewModel.mode, let distributionBal = bal as? LendingDistributionBalance, let chain = distributionBal.chainType {
       self.chainTypeImageView.image = chain.chainIcon()
