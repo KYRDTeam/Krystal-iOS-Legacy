@@ -74,7 +74,7 @@ jobs:
             bump_build: false
             slack_webhook: SLACK_WEBHOOK_STG_IOS
             
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
