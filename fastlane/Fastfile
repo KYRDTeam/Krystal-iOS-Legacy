@@ -64,6 +64,7 @@ lane :debug_mode do
 end
 
 lane :fda do
+  xcversion(version: "13.2.1")
   prepare_keychain
   install_profiles
   update_project
