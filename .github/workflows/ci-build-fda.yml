@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - feature/fda-support
-      - debug/with-steve
+      - debug/with-steve-2
 
 concurrency: 
   group: manual-debug-fda-dev-${{ github.ref }}
@@ -74,7 +74,7 @@ jobs:
             bump_build: false
             slack_webhook: SLACK_WEBHOOK_STG_IOS
             
-    runs-on: macos-12
+    runs-on: macos-11
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
@@ -127,6 +127,8 @@ jobs:
   
       - name: Get configuration items
         run: |
+          /usr/bin/xcodebuild -version
+
           echo $SSH_PRIVATE_KEY | base64 --decode > private.key
 
           chmod 600 private.key
