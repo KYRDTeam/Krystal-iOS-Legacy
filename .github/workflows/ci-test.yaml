@@ -34,6 +34,10 @@ jobs:
         run: |
           echo -n "${{ secrets.APPLE_CODE_SIGNING_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
 
+      - name: Test APPLE_TESTFIGHT_SIGNING_ID
+        run: |
+          echo -n "${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
+
       - name: Ls
         run: ls -al
 
