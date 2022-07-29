@@ -136,8 +136,7 @@ class EthereumEIP1559TransactionProcessor: TransactionProcessor {
     guard let signedData = self.transactionSigner.signTransaction(address: address, eip1559Tx: eip1559Tx) else {
       return
     }
-    KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { [weak self] result in
-      guard let `self` = self else { return }
+    KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { result in
       if case .success(let hash) = result {
         self.nonceCache.increaseNonce(address: address.addressString, chain: self.chain)
         completion(.success(.init(hash: hash, nonce: nonce, eip1559Transaction: eip1559Tx, transaction: nil, signature: nil)))
