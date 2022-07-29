@@ -209,7 +209,7 @@ extension WalletsListViewController: WalletListTableViewCellDelegate {
     case .select(let addressString):
       self.dismiss(animated: true) {
         if let address = self.viewModel.getAddress(addressString: addressString) {
-          AppDelegate.shared.coordinator.onChangeAddress(address: address)
+          AppDelegate.shared.coordinator.switchAddress(address: address)
           self.delegate?.walletsListViewController(self, run: .didSelect(address: address))
         }
       }
