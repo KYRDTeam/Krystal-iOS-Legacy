@@ -121,9 +121,6 @@ jobs:
         with:
           submodules: recursive
           token: '${{ secrets.KRYSTAL_BOT_GH_PAT }}'
-
-      - name: Install coreutils for macOS
-        run: brew install coreutils
   
       - name: Get configuration items
         run: |
