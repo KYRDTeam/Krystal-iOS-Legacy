@@ -152,14 +152,6 @@ jobs:
 
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
-          echo "1"
-          md5sum $CONFIG_PATH/certificates/distribution.p12
-          echo "2"
-          md5sum /Users/runner/privates/certificates/distribution.p12
-          echo "3"
-          # md5sum $DISTRIBUTE_CERT_PATH
-          # md5sum $DISTRIBUTE_CERT_PASSWORD
-          # md5sum $DEVELOPMENT_CERT_PATH
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
