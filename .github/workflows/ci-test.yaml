@@ -28,7 +28,7 @@ jobs:
 
       - name: Test APPLE_TEAM_ID
         run: |
-          echo -n "${{ secrets.APPLE_TEAM_ID }}" > foo && cut -c1-3 foo && cut -c4-12
+          echo -n "${{ secrets.APPLE_TEAM_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
 
 
       - name: Ls
