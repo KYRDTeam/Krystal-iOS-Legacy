@@ -694,7 +694,9 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
       return
     }
     if KNGeneralProvider.shared.isUseEIP1559 {
-      guard let unwrap = eip1559Transaction, let data = provider.signContractGenericEIP1559Transaction(unwrap) else { return }
+      guard let unwrap = eip1559Transaction, let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: unwrap) else {
+        return
+      }
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
         switch sendResult {

@@ -902,8 +902,8 @@ enum KrytalService {
   case getTradingViewData(chainPath: String, address: String, quote: String, from: Int)
   case getMultichainBalance(address: [String], chainIds: [String], quoteSymbols: [String])
   case getAllNftBalance(address: String, chains: [String])
-  case getAllLendingBalance(address: String, chains: [String])
-  case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String])
+  case getAllLendingBalance(address: String, chains: [String], quotes: [String])
+  case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String], quotes: [String])
 }
 
 extension KrytalService: TargetType {
@@ -1451,7 +1451,7 @@ extension KrytalService: TargetType {
       }
       
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllLendingBalance(address: let address, chains: let chains):
+    case .getAllLendingBalance(address: let address, chains: let chains, quotes: let quotes):
       var json: JSONDictionary = [
         "address": address
       ]
@@ -1460,8 +1460,13 @@ extension KrytalService: TargetType {
         json["chainIds"] = chains.joined(separator: ",")
       }
       
+      if quotes.isEmpty {
+        let currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
+        json["quoteSymbols"] = currentCurrencyType.toString()
+      }
+      
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
-    case .getAllLendingDistributionBalance(lendingPlatforms: let lendingPlatforms, address: let address, chains: let chains):
+    case .getAllLendingDistributionBalance(lendingPlatforms: let lendingPlatforms, address: let address, chains: let chains, quotes: let quotes):
       var json: JSONDictionary = [
         "address": address,
         "lendingPlatforms": lendingPlatforms.joined(separator: ",")
@@ -1469,6 +1474,10 @@ extension KrytalService: TargetType {
       
       if chains.isNotEmpty {
         json["chainIds"] = chains.joined(separator: ",")
+      }
+      if quotes.isEmpty {
+        let currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
+        json["quoteSymbols"] = currentCurrencyType.toString()
       }
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
