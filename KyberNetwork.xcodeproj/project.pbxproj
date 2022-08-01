@@ -532,6 +532,9 @@
 		7EFE71492817DC2E00476184 /* SolFeeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE71482817DC2E00476184 /* SolFeeCoordinator.swift */; };
 		8B67BA07556BB623E015CA60 /* Pods_KyberNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A95682795E696525B3A48A /* Pods_KyberNetwork.framework */; };
 		938288E2ED2CF2CECDBAEA28 /* Pods_KyberNetworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3307D3057FDE081F5E731EEF /* Pods_KyberNetworkTests.framework */; };
+		A62F910328944EFC00399652 /* solana-kit.js in Resources */ = {isa = PBXBuildFile; fileRef = A62F910028944EFB00399652 /* solana-kit.js */; };
+		A62F910428944EFC00399652 /* common.js in Resources */ = {isa = PBXBuildFile; fileRef = A62F910128944EFC00399652 /* common.js */; };
+		A62F910528944EFC00399652 /* web-bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = A62F910228944EFC00399652 /* web-bridge.js */; };
 		A6394B542840D51E0084C923 /* MockTransactionDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B532840D51E0084C923 /* MockTransactionDetailInteractor.swift */; };
 		A6394B562840D5360084C923 /* MockTransactionDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */; };
 		A6394B582840D5680084C923 /* MockTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6394B572840D5680084C923 /* MockTransactionDetailView.swift */; };
@@ -572,9 +575,9 @@
 		A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CBF2428632913008620E2 /* Dictionary+.swift */; };
 		A65CC08E286572C6008620E2 /* KrystalJSBridge.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */; };
 		A65CC08F286572C6008620E2 /* KrystalJSBridge.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A65CC09928657311008620E2 /* Web3BridgeFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09528657311008620E2 /* Web3BridgeFactory.m */; };
-		A65CC09A28657311008620E2 /* Web3BridgeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09628657311008620E2 /* Web3BridgeModule.swift */; };
-		A65CC09B28657311008620E2 /* Web3BridgeModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09728657311008620E2 /* Web3BridgeModuleFactory.swift */; };
+		A65CC09928657311008620E2 /* SolanaBridgeModuleFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09528657311008620E2 /* SolanaBridgeModuleFactory.m */; };
+		A65CC09A28657311008620E2 /* SolanaBridgeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09628657311008620E2 /* SolanaBridgeModule.swift */; };
+		A65CC09B28657311008620E2 /* SolanaBridgeModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09728657311008620E2 /* SolanaBridgeModuleFactory.swift */; };
 		A65CC09F28657481008620E2 /* KDappBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */; };
 		A65CC0A028657481008620E2 /* KDappBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */; };
 		A65CC0A428657926008620E2 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65CC0A328657926008620E2 /* UIApplication+.swift */; };
@@ -591,11 +594,8 @@
 		A685D4A32848B78F0066E177 /* KWallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A22848B78F0066E177 /* KWallet+Codable.swift */; };
 		A685D4AA2849F2620066E177 /* KAddress+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4A92849F2620066E177 /* KAddress+Codable.swift */; };
 		A685D4AD2849FC870066E177 /* AppEventCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A685D4AC2849FC870066E177 /* AppEventCenter.swift */; };
-		A686BC4E288FD58E00DCE0E2 /* krystal-solana.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */; };
-		A686BC52288FF65E00DCE0E2 /* ConnectCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */; };
-		A686BC54288FFDF000DCE0E2 /* krystal-common.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */; };
-		A686BC56288FFDFF00DCE0E2 /* krystal-webbridge.min.js in Resources */ = {isa = PBXBuildFile; fileRef = A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */; };
-		A686BC5828901D5800DCE0E2 /* GetPrivateKeyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */; };
+		A686BC52288FF65E00DCE0E2 /* SolanaConnectCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC51288FF65E00DCE0E2 /* SolanaConnectCommand.swift */; };
+		A686BC5828901D5800DCE0E2 /* SolanaGetPrivateKeyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A686BC5728901D5800DCE0E2 /* SolanaGetPrivateKeyCommand.swift */; };
 		A693AFE82819017500880503 /* ClosureSleeve.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFE72819017500880503 /* ClosureSleeve.swift */; };
 		A693AFEB2819054300880503 /* RewardHuntingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */; };
 		A693AFED2819057E00880503 /* RewardHuntingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */; };
@@ -1618,6 +1618,9 @@
 		97C64E77FB15CCDC5F0BA6B5 /* Pods_KrystalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KrystalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B747245A27436E621E7E41 /* Pods-TrustUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrustUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrustUITests/Pods-TrustUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A48A17FC2CC895AF2BB871D0 /* Pods_TrustTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrustTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A62F910028944EFB00399652 /* solana-kit.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "solana-kit.js"; sourceTree = "<group>"; };
+		A62F910128944EFC00399652 /* common.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = common.js; sourceTree = "<group>"; };
+		A62F910228944EFC00399652 /* web-bridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "web-bridge.js"; sourceTree = "<group>"; };
 		A6394B452840D4DA0084C923 /* KrystalUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KrystalUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6394B532840D51E0084C923 /* MockTransactionDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailInteractor.swift; sourceTree = "<group>"; };
 		A6394B552840D5360084C923 /* MockTransactionDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionDetailRouter.swift; sourceTree = "<group>"; };
@@ -1659,9 +1662,9 @@
 		A65CBF2428632913008620E2 /* Dictionary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+.swift"; sourceTree = "<group>"; };
 		A65CC08A286572A7008620E2 /* KrystalJSBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KrystalJSBridge.framework; sourceTree = "<group>"; };
 		A65CC08D286572C6008620E2 /* KrystalJSBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = KrystalJSBridge.xcframework; sourceTree = "<group>"; };
-		A65CC09528657311008620E2 /* Web3BridgeFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Web3BridgeFactory.m; sourceTree = "<group>"; };
-		A65CC09628657311008620E2 /* Web3BridgeModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web3BridgeModule.swift; sourceTree = "<group>"; };
-		A65CC09728657311008620E2 /* Web3BridgeModuleFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Web3BridgeModuleFactory.swift; sourceTree = "<group>"; };
+		A65CC09528657311008620E2 /* SolanaBridgeModuleFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SolanaBridgeModuleFactory.m; sourceTree = "<group>"; };
+		A65CC09628657311008620E2 /* SolanaBridgeModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolanaBridgeModule.swift; sourceTree = "<group>"; };
+		A65CC09728657311008620E2 /* SolanaBridgeModuleFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolanaBridgeModuleFactory.swift; sourceTree = "<group>"; };
 		A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KDappBrowserViewController.swift; sourceTree = "<group>"; };
 		A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KDappBrowserViewController.xib; sourceTree = "<group>"; };
 		A65CC0A328657926008620E2 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
@@ -1690,11 +1693,8 @@
 		A685D4A92849F2620066E177 /* KAddress+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KAddress+Codable.swift"; sourceTree = "<group>"; };
 		A685D4AC2849FC870066E177 /* AppEventCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventCenter.swift; sourceTree = "<group>"; };
 		A685D4AE284A651D0066E177 /* WalletManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTests.swift; sourceTree = "<group>"; };
-		A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-solana.min.js"; sourceTree = "<group>"; };
-		A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectCommand.swift; sourceTree = "<group>"; };
-		A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-common.min.js"; sourceTree = "<group>"; };
-		A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "krystal-webbridge.min.js"; sourceTree = "<group>"; };
-		A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateKeyCommand.swift; sourceTree = "<group>"; };
+		A686BC51288FF65E00DCE0E2 /* SolanaConnectCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaConnectCommand.swift; sourceTree = "<group>"; };
+		A686BC5728901D5800DCE0E2 /* SolanaGetPrivateKeyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaGetPrivateKeyCommand.swift; sourceTree = "<group>"; };
 		A693AFE72819017500880503 /* ClosureSleeve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureSleeve.swift; sourceTree = "<group>"; };
 		A693AFEA2819054300880503 /* RewardHuntingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingCoordinator.swift; sourceTree = "<group>"; };
 		A693AFEC2819057E00880503 /* RewardHuntingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewModel.swift; sourceTree = "<group>"; };
@@ -4016,6 +4016,7 @@
 		2996F14B1F6CA725005C33AE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A65CC0A328657926008620E2 /* UIApplication+.swift */,
 				25F9C7682213D0D80001064D /* Double.swift */,
 				25F9C7662213D0D20001064D /* UIColor.swift */,
 				2996F14C1F6CA742005C33AE /* UIViewController.swift */,
@@ -4468,6 +4469,43 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A62F91072894F15200399652 /* Javascripts */ = {
+			isa = PBXGroup;
+			children = (
+				A62F910128944EFC00399652 /* common.js */,
+				A62F910028944EFB00399652 /* solana-kit.js */,
+				A62F910228944EFC00399652 /* web-bridge.js */,
+			);
+			path = Javascripts;
+			sourceTree = "<group>";
+		};
+		A62F91082894F15E00399652 /* Bridges */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC09428657311008620E2 /* Solana */,
+			);
+			path = Bridges;
+			sourceTree = "<group>";
+		};
+		A62F91092894F17C00399652 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */,
+				A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
+		A62F910A2894F23900399652 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				A65CC09528657311008620E2 /* SolanaBridgeModuleFactory.m */,
+				A65CC09628657311008620E2 /* SolanaBridgeModule.swift */,
+				A65CC09728657311008620E2 /* SolanaBridgeModuleFactory.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
 		A6394B462840D4DA0084C923 /* KrystalUnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -4639,48 +4677,34 @@
 		A65CC090286572D1008620E2 /* JSBridges */ = {
 			isa = PBXGroup;
 			children = (
-				A65CC091286572D7008620E2 /* Web3Bridge */,
 			);
 			path = JSBridges;
-			sourceTree = "<group>";
-		};
-		A65CC091286572D7008620E2 /* Web3Bridge */ = {
-			isa = PBXGroup;
-			children = (
-				A65CC09428657311008620E2 /* BridgeModule */,
-				A65CC09228657311008620E2 /* Commands */,
-			);
-			path = Web3Bridge;
 			sourceTree = "<group>";
 		};
 		A65CC09228657311008620E2 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
-				A686BC51288FF65E00DCE0E2 /* ConnectCommand.swift */,
-				A686BC5728901D5800DCE0E2 /* GetPrivateKeyCommand.swift */,
+				A686BC51288FF65E00DCE0E2 /* SolanaConnectCommand.swift */,
+				A686BC5728901D5800DCE0E2 /* SolanaGetPrivateKeyCommand.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
 		};
-		A65CC09428657311008620E2 /* BridgeModule */ = {
+		A65CC09428657311008620E2 /* Solana */ = {
 			isa = PBXGroup;
 			children = (
-				A65CC09528657311008620E2 /* Web3BridgeFactory.m */,
-				A65CC09628657311008620E2 /* Web3BridgeModule.swift */,
-				A65CC09728657311008620E2 /* Web3BridgeModuleFactory.swift */,
+				A62F910A2894F23900399652 /* Module */,
+				A65CC09228657311008620E2 /* Commands */,
 			);
-			path = BridgeModule;
+			path = Solana;
 			sourceTree = "<group>";
 		};
 		A65CC09C2865746F008620E2 /* DappBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				A65CC09D28657481008620E2 /* KDappBrowserViewController.swift */,
-				A65CC09E28657481008620E2 /* KDappBrowserViewController.xib */,
-				A65CC0A328657926008620E2 /* UIApplication+.swift */,
-				A686BC4D288FD58E00DCE0E2 /* krystal-solana.min.js */,
-				A686BC53288FFDF000DCE0E2 /* krystal-common.min.js */,
-				A686BC55288FFDFF00DCE0E2 /* krystal-webbridge.min.js */,
+				A62F91072894F15200399652 /* Javascripts */,
+				A62F91092894F17C00399652 /* Browser */,
+				A62F91082894F15E00399652 /* Bridges */,
 			);
 			path = DappBrowser;
 			sourceTree = "<group>";
@@ -6117,7 +6141,6 @@
 				C6FE41822383A0C10096AAD8 /* KNWalletConnectViewController.xib in Resources */,
 				25682ABF229FC3C7004AB452 /* KNApproveTokenViewController.xib in Resources */,
 				25929C9D20DA5CC10045CFA3 /* SFCompactDisplay-Ultralight.otf in Resources */,
-				A686BC56288FFDFF00DCE0E2 /* krystal-webbridge.min.js in Resources */,
 				25929C6C20DA5C760045CFA3 /* SF-Pro-Text-SemiboldItalic.otf in Resources */,
 				25BE329D209096E800D760FB /* KNListWalletsViewController.xib in Resources */,
 				257B84A72074C2B9003DD40E /* KNDebugMenuViewController.xib in Resources */,
@@ -6128,7 +6151,6 @@
 				7EE7A72B28446F7A00F4D8CF /* ConfirmBridgeViewController.xib in Resources */,
 				C3EEA45C2671EF840011DB97 /* OverviewMainViewCell.xib in Resources */,
 				25369F1220F88C52007231FE /* KNWelcomeScreenCollectionView.xib in Resources */,
-				A686BC4E288FD58E00DCE0E2 /* krystal-solana.min.js in Resources */,
 				C3F08B582620AD9200DA6FCB /* TermsAndConditionsViewController.xib in Resources */,
 				C32EA22C246934AA00866968 /* KNPrettyAlertController.xib in Resources */,
 				25929C5B20DA5C760045CFA3 /* SF-Pro-Display-SemiboldItalic.otf in Resources */,
@@ -6153,6 +6175,7 @@
 				25929C5720DA5C760045CFA3 /* SF-Pro-Display-MediumItalic.otf in Resources */,
 				7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */,
 				25929C6E20DA5C760045CFA3 /* SF-Pro-Display-Thin.otf in Resources */,
+				A62F910328944EFC00399652 /* solana-kit.js in Resources */,
 				C37AC1E424A0874200D0DF5B /* KNTutorialPagerWithAccessoryCell.xib in Resources */,
 				C333A6CA27BA5123003A6C6B /* ApproveTokenCell.xib in Resources */,
 				7EFE440127144533006CF502 /* RewardsViewController.xib in Resources */,
@@ -6187,7 +6210,6 @@
 				25696F6E20BEAD97002CC53F /* KNSearchTokenTableViewCell.xib in Resources */,
 				25929C9C20DA5CC10045CFA3 /* SFCompactText-HeavyItalic.otf in Resources */,
 				2542605021218EF40015ECC7 /* KMinAcceptableRatePopupViewController.xib in Resources */,
-				A686BC54288FFDF000DCE0E2 /* krystal-common.min.js in Resources */,
 				250EE8E32221A40800121138 /* KNShowBackUpDataViewController.xib in Resources */,
 				C322EB0C25B1A3D8009746FB /* CreateWalletMenuViewController.xib in Resources */,
 				25073D1B211AF20D00833C92 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
@@ -6195,6 +6217,7 @@
 				7E1EBE462834F82A00793B6D /* BridgeSendToCell.xib in Resources */,
 				25929C6520DA5C760045CFA3 /* SF-Pro-Display-Bold.otf in Resources */,
 				A6D9BE692829238A0009EEB4 /* CreateChainWalletMenuViewController.xib in Resources */,
+				A62F910528944EFC00399652 /* web-bridge.js in Resources */,
 				C360D223255E9AEE00B166E0 /* KNBottomPopupViewController.xib in Resources */,
 				25CE6F922073E0BC00A3A2F9 /* KNHistoryViewController.xib in Resources */,
 				A651943E2835F13D008F4AEB /* TransactionDetailViewController.xib in Resources */,
@@ -6312,6 +6335,7 @@
 				7E6F51092733895D002DA0B2 /* OverviewSummaryCell.xib in Resources */,
 				C31371ED26035182003D432B /* KrytalViewController.xib in Resources */,
 				7EB2199727C5DD1500CF243C /* BuyCryptoViewController.xib in Resources */,
+				A62F910428944EFC00399652 /* common.js in Resources */,
 				C3BBC56525FB4ACE004E1FB6 /* InvestViewController.xib in Resources */,
 				C3A6911225638DE700F57756 /* Lato-Italic.ttf in Resources */,
 				C32017B727BE28EC0055130B /* MultisendAddressListViewController.xib in Resources */,
@@ -6828,7 +6852,7 @@
 				7EA5849C26F8A5900060250F /* KNActionSheetAlertViewController.swift in Sources */,
 				25EE4A7220C54D1000E2282F /* KNAppCoordinator+Delegation.swift in Sources */,
 				C39A7EED24778B03003EA57D /* (null) in Sources */,
-				A65CC09928657311008620E2 /* Web3BridgeFactory.m in Sources */,
+				A65CC09928657311008620E2 /* SolanaBridgeModuleFactory.m in Sources */,
 				C31BE89825B045700070A832 /* AddWatchWalletViewController.swift in Sources */,
 				C3233EFE2807DF4D0086C2BC /* CopyAddressCell.swift in Sources */,
 				C3285AAD277EC2A600D28BC6 /* RecentlyHistoryViewController.swift in Sources */,
@@ -7064,7 +7088,7 @@
 				294DFBAE1FE6F254004CEB56 /* TokenObject.swift in Sources */,
 				25931F0F20AEE85200BAC774 /* KNBackUpWalletViewController.swift in Sources */,
 				A6B3CD602811CBBA005D0D66 /* ViewControllerAssembly.swift in Sources */,
-				A686BC52288FF65E00DCE0E2 /* ConnectCommand.swift in Sources */,
+				A686BC52288FF65E00DCE0E2 /* SolanaConnectCommand.swift in Sources */,
 				A6F5DCAA2857129E00FD02C9 /* EthereumWeb3Service.swift in Sources */,
 				C3263B0225EDE6FB005FBB60 /* WithdrawCoordinator.swift in Sources */,
 				A6B3CD512811BF85005D0D66 /* TransactionHistoryItemViewModelProtocol.swift in Sources */,
@@ -7089,7 +7113,7 @@
 				2546C6D92211871F0076E52B /* TrustDocumentPickerViewController.swift in Sources */,
 				A6E6C9CF2817195D00EEB2E6 /* BaseTransactionListViewModel.swift in Sources */,
 				25CC0A8E2057D0410009D0D5 /* KNSession.swift in Sources */,
-				A65CC09B28657311008620E2 /* Web3BridgeModuleFactory.swift in Sources */,
+				A65CC09B28657311008620E2 /* SolanaBridgeModuleFactory.swift in Sources */,
 				29FA00CC201CA63C002F7DC5 /* Method.swift in Sources */,
 				257A37A0205CFEF300E86794 /* KNTransactionReceipt.swift in Sources */,
 				2963A28A1FC402940095447D /* LocalizedOperationObject.swift in Sources */,
@@ -7246,7 +7270,7 @@
 				296AF9AB1F7380920058AF78 /* GetTransactionCountRequest.swift in Sources */,
 				25BE32A12090970F00D760FB /* KNListWalletsCoordinator.swift in Sources */,
 				7E448D042808064E00C1617F /* SelectChainViewController.swift in Sources */,
-				A686BC5828901D5800DCE0E2 /* GetPrivateKeyCommand.swift in Sources */,
+				A686BC5828901D5800DCE0E2 /* SolanaGetPrivateKeyCommand.swift in Sources */,
 				A6B3CD3F28117806005D0D66 /* KNTransactionHistoryViewController.swift in Sources */,
 				C314F1692785525B00E3599B /* DappBrowerTransactionConfirmPopup.swift in Sources */,
 				25C45ACD20AC475700CDA1FF /* KNImportWalletViewController.swift in Sources */,
@@ -7349,7 +7373,7 @@
 				291ED08D1F6F5F0A00E7E93A /* KeyStoreError.swift in Sources */,
 				C31371F12603579D003D432B /* Krytal.swift in Sources */,
 				25EBE93120B40CC000A57579 /* KNTestBackUpStatusViewController.swift in Sources */,
-				A65CC09A28657311008620E2 /* Web3BridgeModule.swift in Sources */,
+				A65CC09A28657311008620E2 /* SolanaBridgeModule.swift in Sources */,
 				C365811E25E1132400A6DA4B /* Storage.swift in Sources */,
 				A685D494284877DF0066E177 /* SolanaGasCalculator.swift in Sources */,
 				C3A241A42567BEB50073703C /* WalletListTableViewCell.swift in Sources */,

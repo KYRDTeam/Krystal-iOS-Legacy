@@ -24,9 +24,9 @@ class KDappBrowserViewController: UIViewController {
   }
   
   func injectJS() {
-    loadJS(fileName: "krystal-common.min")
-    loadJS(fileName: "krystal-webbridge.min")
-    loadJS(fileName: "krystal-solana.min")
+    loadJS(fileName: "common")
+    loadJS(fileName: "web-bridge")
+    loadJS(fileName: "solana-kit")
   }
   
   func loadJS(fileName: String) {

@@ -9,13 +9,13 @@ import Foundation
 import KrystalJSBridge
 import UIKit
 
-class ConnectCommand: NSObject, BridgeCommandProtocol {
+class SolanaConnectCommand: NSObject, BridgeCommandProtocol {
   
   typealias BridgeInput = ConnectInput
   typealias BridgeOutput = ConnectOutput
   
   var eventEmitter: EventEmitter
-  var commandName: String = "connect"
+  var commandName: String = "sol_connect"
   
   required init(eventEmitter: EventEmitter) {
     self.eventEmitter = eventEmitter

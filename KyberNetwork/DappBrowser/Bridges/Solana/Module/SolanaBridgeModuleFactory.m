@@ -9,4 +9,4 @@
 #import <KrystalJSBridge/BridgeModule.h>
 #import "Krystal-Swift.h"
 
-KRYSTAL_JS_BRIDGE_MODULE_FACTORY_CLASS(Web3BridgeModuleFactory)
+KRYSTAL_JS_BRIDGE_MODULE_FACTORY_CLASS(SolanaBridgeModuleFactory)

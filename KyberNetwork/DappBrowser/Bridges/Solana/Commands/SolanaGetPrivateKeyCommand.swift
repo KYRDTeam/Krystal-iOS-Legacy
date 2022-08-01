@@ -10,13 +10,13 @@ import KrystalJSBridge
 import UIKit
 import KrystalWallets
 
-class GetPrivateKeyCommand: NSObject, BridgeCommandProtocol {
+class SolanaGetPrivateKeyCommand: NSObject, BridgeCommandProtocol {
   
   typealias BridgeInput = PrivateKeyInput
   typealias BridgeOutput = PrivateKeyOutput
   
   var eventEmitter: EventEmitter
-  var commandName: String = "getPrivateKey"
+  var commandName: String = "sol_getPrivateKey"
   let walletManager = WalletManager.shared
   
   required init(eventEmitter: EventEmitter) {
