@@ -14,5 +14,6 @@ public enum SigningError: Error {
 
 
 public protocol KSignerProtocol {
-  func signMessage(address: KAddress, data: Data, addPrefix: Bool) throws -> Data
+  func signTransaction(address: KAddress, hash: Data) throws -> Data
+  func signMessageHash(address: KAddress, data: Data, addPrefix: Bool) throws -> Data
 }

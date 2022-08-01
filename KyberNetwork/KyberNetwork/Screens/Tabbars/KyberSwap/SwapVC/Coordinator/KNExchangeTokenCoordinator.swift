@@ -421,7 +421,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
     guard let provider = self.session.externalProvider else {
       return
     }
-    guard let data = provider.signContractGenericEIP1559Transaction(eip1559Tx) else {
+    guard let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: eip1559Tx) else {
       return
     }
     self.navigationController.displayLoading()
