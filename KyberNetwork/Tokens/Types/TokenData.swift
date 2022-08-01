@@ -281,7 +281,7 @@ struct LendingBalance: Codable {
   let interestBearingTokenDecimals: Int
   let interestBearingTokenBalance: String
   let requiresApproval: Bool
-//  let supplyQuotes, stableBorrowQuotes, variableBorrowQuotes: [String: Quote]
+  let supplyQuotes, stableBorrowQuotes, variableBorrowQuotes: [String: LendingQuote]
 
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
     let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
@@ -294,6 +294,24 @@ struct LendingBalance: Codable {
     let limit = BigInt(0.00001 * pow(10.0, Double(self.decimals)))
     return balanceBigInt < limit
   }
+}
+
+// MARK: - Quote
+struct LendingQuote: Codable {
+    let symbol: Symbol
+    let price, priceChange24HPercentage, value: Double
+
+    enum CodingKeys: String, CodingKey {
+        case symbol, price
+        case priceChange24HPercentage = "priceChange24hPercentage"
+        case value
+    }
+}
+
+enum Symbol: String, Codable {
+    case bnb = "BNB"
+    case btc = "BTC"
+    case usd = "USD"
 }
 
 enum Tag: String, Codable {
