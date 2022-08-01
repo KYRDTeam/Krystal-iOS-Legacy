@@ -394,7 +394,7 @@ class KNLoadBalanceCoordinator {
   func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     
-    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: [])) { result in
+    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: [], quotes: [])) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
