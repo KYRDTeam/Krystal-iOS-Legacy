@@ -35,12 +35,16 @@ class EarnCoordinator: NSObject, Coordinator {
   var balances: [String: Balance] = [:]
   var withdrawCoordinator: WithdrawCoordinator?
   var sendCoordinator: KNSendTokenViewCoordinator?
+
   
-  private(set) var session: KNSession!
   fileprivate var historyCoordinator: KNHistoryCoordinator?
   
   var currentAddress: KAddress {
-    return AppDelegate.session.address
+    return session.address
+  }
+  
+  var session: KNSession {
+    return AppDelegate.session
   }
   
   lazy var rootViewController: EarnOverviewViewController = {
@@ -73,16 +77,11 @@ class EarnCoordinator: NSObject, Coordinator {
   fileprivate weak var earnViewController: EarnViewController?
   fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
   fileprivate weak var earnSwapViewController: EarnSwapViewController?
-  
-//  fileprivate var currentWallet: KNWalletObject {
-//    return self.session.currentWalletObject
-//  }
-//
+
   weak var delegate: EarnCoordinatorDelegate?
   
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
-//    self.session = session
     self.navigationController.setNavigationBarHidden(true, animated: false)
     
   }
@@ -90,7 +89,6 @@ class EarnCoordinator: NSObject, Coordinator {
   func start() {
     //TODO: pesist token data in to disk then load into memory
     self.navigationController.viewControllers = [self.rootViewController]
-//    self.menuViewController.coordinatorUpdateNewSession(wallet: self.session.wallet)
     self.getLendingOverview()
     self.observeAppEvents()
   }

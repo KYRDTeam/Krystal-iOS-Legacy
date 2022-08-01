@@ -275,8 +275,7 @@ extension InvestCoordinator: InvestViewControllerDelegate {
         acceptedResultTypes.append(contentsOf: [.solPublicKey, .solPrivateKey])
         scanModes = [.qr]
       }
-      
-      ScannerModule.start(navigationController: navigationController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
+      ScannerModule.start(previousScreen: ScreenName.explore, navigationController: navigationController, acceptedResultTypes: acceptedResultTypes, scanModes: scanModes) { [weak self] text, type in
         guard let self = self else { return }
         switch type {
         case .walletConnect:

@@ -10,14 +10,24 @@ import AVFoundation
 
 class ScannerModule {
   
-  static func start(navigationController: UINavigationController,
+  static func start(previousScreen: ScreenName,
+                    navigationController: UINavigationController,
                     acceptedResultTypes: [ScanResultType] = ScanResultType.allCases,
                     defaultScanMode: ScanMode = .qr,
                     scanModes: [ScanMode] = [.qr, .text],
                     onComplete: @escaping (String, ScanResultType) -> Void) {
     
     func moveToScanner() {
+      Tracker.track(
+        event: .scanOpen,
+        customAttributes: [
+          "previous_screen": previousScreen,
+          "scan_output": acceptedResultTypes.map { $0.trackingOutputKey }.joined(separator: "|")
+        ]
+      )
+      
       let vc = KrystalScannerViewController.instantiateFromNib()
+      vc.previousScreen = previousScreen.rawValue
       vc.onScanSuccess = onComplete
       vc.acceptedResults = acceptedResultTypes
       vc.defaultScanMode = defaultScanMode

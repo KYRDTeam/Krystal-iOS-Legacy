@@ -77,7 +77,7 @@ jobs:
             bump_build: false
             slack_webhook: SLACK_WEBHOOK_STG_IOS
             
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       TMP_KEYCHAIN_NAME: "fastlane_tmp_keychain"
       # cetificate environment
@@ -88,7 +88,7 @@ jobs:
       # xcode project environment
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
-      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID }}
+      APPLE_CODE_SIGNING_ID_KRYSTAL: ${{ secrets.APPLE_CODE_SIGNING_ID_KRYSTAL }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}

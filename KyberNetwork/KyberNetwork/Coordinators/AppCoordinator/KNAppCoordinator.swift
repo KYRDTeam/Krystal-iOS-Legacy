@@ -97,7 +97,6 @@ class KNAppCoordinator: NSObject, Coordinator {
       KNGeneralProvider.shared.currentChain = chain
       switchAddress(address: address)
       AppEventCenter.shared.switchChain(chain: chain)
-      
     }
   }
   
@@ -107,7 +106,7 @@ class KNAppCoordinator: NSObject, Coordinator {
     AppEventCenter.shared.switchChain(chain: chain)
   }
   
-  private func switchAddress(address: KAddress) {
+  func switchAddress(address: KAddress) {
     WalletCache.shared.lastUsedAddress = address
     KNAppTracker.updateAllTransactionLastBlockLoad(0, for: address.addressString)
     if self.tabbarController == nil {

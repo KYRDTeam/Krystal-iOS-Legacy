@@ -14,6 +14,8 @@ class Web3Swift: NSObject {
 
     init(url: URL = URL(string: "http://localhost:8545")!) {
         self.url = url
+        super.init()
+        self.start()
     }
 
     func start() {

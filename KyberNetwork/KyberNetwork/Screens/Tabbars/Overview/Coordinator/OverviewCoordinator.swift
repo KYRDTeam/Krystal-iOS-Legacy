@@ -472,6 +472,7 @@ extension OverviewCoordinator: WalletsListViewControllerDelegate {
     case .manageWallet:
       self.delegate?.overviewCoordinatorDidSelectManageWallet()
     case .didSelect(let address):
+      self.rootViewController.viewModel.clearCache()
       return
     case .addWallet:
       self.delegate?.overviewCoordinatorDidSelectAddWallet()

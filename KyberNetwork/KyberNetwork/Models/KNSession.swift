@@ -57,11 +57,7 @@ class KNSession {
   }
   
   func configureWeb3() {
-    if let path = URL(string: KNGeneralProvider.shared.customRPC.endpoint + KNEnvironment.default.nodeEndpoint) {
-      self.web3Swift = Web3Swift(url: path)
-    } else {
-      self.web3Swift = Web3Swift()
-    }
+    self.web3Swift = Web3Factory.shared.web3Instance(forChain: KNGeneralProvider.shared.currentChain)
   }
   
   func configureProvider() {
