@@ -1,0 +1,43 @@
+name: "K. iOS PR Gitleak Scan"
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+      - main
+      - feat/gitleaks-pr-scan
+ 
+jobs:
+  gitleak-pr-scan:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.18.x"
+
+      - name: Install gitleak
+        run: git clone https://github.com/zricethezav/gitleaks.git; go version; cd gitleaks; pwd; ls -al; make build; mv gitleaks /usr/local/bin/
+
+      - name: 🧨 Gitleak Test (You can read the test result here) 🧨
+        shell: bash
+        run: |
+          PR_SOURCE_BRANCH=${{ github.PR_SOURCE_BRANCH	}}
+          echo PR_SOURCE_BRANCH: $PR_SOURCE_BRANCH
+          git checkout $PR_SOURCE_BRANCH
+          export PR_SOURCE_BRANCH_LATEST_HASH=$(git rev-parse HEAD)
+          export PR_TARGET_BRANCH=${{ github.event.pull_request.base.ref }}
+          echo PR_TARGET_BRANCH $PR_TARGET_BRANCH
+          echo Getting target branch latest hash
+          export PR_TARGET_BRANCH_LATEST_HASH="$(git log -n 1 --pretty=format:"%H" origin/"$PR_TARGET_BRANCH" )"
+          echo PR_TARGET_BRANCH_LATEST_HASH $PR_TARGET_BRANCH_LATEST_HASH
+          gitleaks detect --redact -v --exit-code=2 --report-format=sarif --report-path=results.sarif --log-level=debug --log-opts="$PR_TARGET_BRANCH_LATEST_HASH..$PR_SOURCE_BRANCH_LATEST_HASH"
