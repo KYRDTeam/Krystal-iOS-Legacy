@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'release-*'
-      - ci-testflight
+      - feat/tf-workflow
 
 concurrency: 
   group: ${{ github.ref }}
@@ -30,7 +30,7 @@ jobs:
       # xcode project environment
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       APPLE_BUNDLE_ID: ${{ secrets.APPLE_BUNDLE_ID }}
-      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}
+      APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_CODE_SIGNING_ID_KRYSTAL }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
       KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
