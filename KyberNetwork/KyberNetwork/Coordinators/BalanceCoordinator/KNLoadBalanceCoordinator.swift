@@ -172,7 +172,7 @@ class KNLoadBalanceCoordinator {
       return
     }
     var isBalanceChanged = false
-    provider.getMultipleERC20Balances(tokens) { [weak self] result in
+    provider.getMultipleERC20Balances(address: AppDelegate.session.address, tokens) { [weak self] result in
       guard let `self` = self else {
         completion(.success(false))
         return

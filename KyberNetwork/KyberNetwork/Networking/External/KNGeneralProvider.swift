@@ -415,7 +415,6 @@ class KNGeneralProvider {
         DispatchQueue.main.async {
           switch result {
           case .success(let count):
-//            minTxCount = max(minTxCount, count)
             completion(.success(count))
           case .failure(let error):
             completion(.failure(AnyError(error)))
@@ -594,7 +593,7 @@ class KNGeneralProvider {
     }
   }
 
-  func approve(token: TokenObject, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: String, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(address: KAddress, token: TokenObject, value: BigInt = Constants.maxValueBigInt, currentNonce: Int, networkAddress: String, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -611,7 +610,7 @@ class KNGeneralProvider {
       group.leave()
     })
     group.enter()
-    self.getTransactionCount(for: account.address.description) { result in
+    self.getTransactionCount(for: address.addressString) { result in
       switch result {
       case .success(let resp):
         txCount = max(resp, currentNonce)
@@ -626,7 +625,7 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(forApproving: token.contract, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+      self.signTransactionData(address: address, forApproving: token.contract, nonce: txCount, data: encodeData, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -678,7 +677,7 @@ class KNGeneralProvider {
     })
   }
 
-  func approve(tokenAddress: String, value: BigInt = Constants.maxValueBigInt, account: Account, keystore: Keystore, currentNonce: Int, networkAddress: String, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
+  func approve(address: KAddress, tokenAddress: String, value: BigInt = Constants.maxValueBigInt, currentNonce: Int, networkAddress: String, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Int, AnyError>) -> Void) {
     var error: Error?
     var encodeData: Data = Data()
     var txCount: Int = 0
@@ -695,7 +694,7 @@ class KNGeneralProvider {
       group.leave()
     })
     group.enter()
-    self.getTransactionCount(for: account.address.description) { result in
+    self.getTransactionCount(for: address.addressString) { result in
       switch result {
       case .success(let resp):
         txCount = max(resp, currentNonce)
@@ -710,7 +709,7 @@ class KNGeneralProvider {
         completion(.failure(AnyError(error)))
         return
       }
-      self.signTransactionData(forApproving: tokenAddress, account: account, nonce: txCount, data: encodeData, keystore: keystore, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
+      self.signTransactionData(address: address, forApproving: tokenAddress, nonce: txCount, data: encodeData, gasPrice: gasPrice, gasLimit: gasLimit) { [weak self] result in
         guard let `self` = self else { return }
         switch result {
         case .success(let signData):
@@ -876,31 +875,10 @@ class KNGeneralProvider {
 
 // MARK: Sign transaction
 extension KNGeneralProvider {
-  private func signTransactionData(forApproving token: TokenObject, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<Data, AnyError>) -> Void) {
+  private func signTransactionData(address: KAddress, forApproving tokenAddress: String, nonce: Int, data: Data, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
     let signTransaction = SignTransaction(
       value: BigInt(0),
-      account: account,
-      to: token.contract,
-      nonce: nonce,
-      data: data,
-      gasPrice: gasPrice,
-      gasLimit: gasLimit,
-      chainID: KNGeneralProvider.shared.customRPC.chainID
-    )
-    let signResult = keystore.signTransaction(signTransaction)
-    switch signResult {
-    case .success(let data):
-      completion(.success(data))
-    case .failure(let error):
-      completion(.failure(AnyError(error)))
-    }
-  }
-
-  private func signTransactionData(forApproving tokenAddress: String, account: Account, nonce: Int, data: Data, keystore: Keystore, gasPrice: BigInt, gasLimit: BigInt, completion: @escaping (Result<(Data, SignTransaction), AnyError>) -> Void) {
-
-    let signTransaction = SignTransaction(
-      value: BigInt(0),
-      account: account,
+      address: address.addressString,
       to: tokenAddress,
       nonce: nonce,
       data: data,
@@ -908,7 +886,8 @@ extension KNGeneralProvider {
       gasLimit: gasLimit,
       chainID: KNGeneralProvider.shared.customRPC.chainID
     )
-    let signResult = keystore.signTransaction(signTransaction)
+    
+    let signResult = EthereumTransactionSigner().signTransaction(address: address, transaction: signTransaction)
     switch signResult {
     case .success(let data):
       completion(.success((data, signTransaction)))
@@ -916,6 +895,7 @@ extension KNGeneralProvider {
       completion(.failure(AnyError(error)))
     }
   }
+
 }
 
 // MARK: Web3Swift Encoding

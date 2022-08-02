@@ -97,7 +97,10 @@ class AppMigrationManager {
         case .solana(_, _, let walletID):
           guard let pk = self.keystore.solanaUtil.exportKeyPair(walletID: walletID) else { return }
           let keypair = SolanaUtil.exportKeyPair(privateKey: pk)
-          _ = try? self.walletManager.import(privateKey: keypair, addressType: .solana, name: walletObject.name)
+          guard let wallet = try? self.walletManager.import(privateKey: keypair, addressType: .solana, name: walletObject.name) else {
+            return
+          }
+          walletCache.markWalletBackedUp(walletID: wallet.id)
         case .watch:
           let addressString = walletObject.address
           _ = try? self.walletManager.addWatchWallet(address: addressString, addressType: addressType, name: walletObject.name)

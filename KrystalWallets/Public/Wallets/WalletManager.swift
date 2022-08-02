@@ -44,6 +44,10 @@ public extension WalletManager {
     return getAllAddresses(walletID: "")
   }
   
+  func getWallet(id: String) -> KWallet? {
+    return getAllWallets().first { $0.id == id }
+  }
+  
   func getAllWallets() -> [KWallet] {
     return realm.objects(WalletObject.self).map { $0.toWallet() }
   }
