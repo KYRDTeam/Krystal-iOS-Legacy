@@ -432,42 +432,6 @@ open class EtherKeystore: Keystore {
         }
     }
 
-    func signTransaction(_ transaction: SignTransaction) -> Result<Data, KeystoreError> {
-      // TODO: - Sign Transaction
-//        guard let account = keyStore.account(for: transaction.account.address) else {
-//            return .failure(.failedMissingAccountOrPassword)
-//        }
-//        guard let password = getPassword(for: account) else {
-//            return .failure(.failedMissingAccountOrPassword)
-//        }
-//
-//        let signer: Signer
-//        if transaction.chainID == 0 {
-//            signer = HomesteadSigner()
-//        } else {
-//            signer = EIP155Signer(chainId: BigInt(transaction.chainID))
-//        }
-//
-//        do {
-//            let hash = signer.hash(transaction: transaction)
-//            let signature = try keyStore.signHash(hash, account: account, password: password)
-//            let (r, s, v) = signer.values(transaction: transaction, signature: signature)
-//            let data = RLP.encode([
-//                transaction.nonce,
-//                transaction.gasPrice,
-//                transaction.gasLimit,
-//                transaction.to?.data ?? Data(),
-//                transaction.value,
-//                transaction.data,
-//                v, r, s,
-//            ])!
-//            return .success(data)
-//        } catch {
-//            return .failure(.failedToSignTransaction)
-//        }
-      return .failure(.failedToSignTransaction)
-    }
-
     func getPassword(for account: Account) -> String? {
         return keychain.get(account.address.description.lowercased())
     }

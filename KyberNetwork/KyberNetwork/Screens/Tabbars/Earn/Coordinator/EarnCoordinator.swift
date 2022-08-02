@@ -694,9 +694,7 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
       return
     }
     if KNGeneralProvider.shared.isUseEIP1559 {
-      guard let unwrap = eip1559Transaction, let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: unwrap) else {
-        return
-      }
+      guard let unwrap = eip1559Transaction, let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: unwrap) else { return }
       self.navigationController.displayLoading()
       KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
         switch sendResult {
@@ -731,46 +729,43 @@ extension EarnCoordinator: EarnConfirmViewControllerDelegate {
     } else {
       guard let unwrap = transaction else { return }
       self.navigationController.displayLoading()
-      provider.signTransactionData(from: unwrap) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let signedData):
-          KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-            self.navigationController.hideLoading()
-            switch sendResult {
-            case .success(let hash):
-              print(hash)
-              provider.minTxCount += 1
-              historyTransaction.hash = hash
-              historyTransaction.time = Date()
-              historyTransaction.nonce = unwrap.nonce
-              EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
-              self.openTransactionStatusPopUp(transaction: historyTransaction)
-              self.transactionStatusVC?.earnAmountString = amount
-              self.transactionStatusVC?.netAPYEarnString = netAPY
-              self.transactionStatusVC?.earnPlatform = platform
-              self.earnViewController?.coordinatorSuccessSendTransaction()
-              self.earnSwapViewController?.coordinatorSuccessSendTransaction()
-            case .failure(let error):
-              var errorMessage = error.description
-              if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-                if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                  errorMessage = message
-                }
-              }
-              self.navigationController.showErrorTopBannerMessage(
-                with: "Error",
-                message: errorMessage,
-                time: 1.5
-              )
-            }
-          })
-        case .failure:
+      let signResult = EthereumTransactionSigner().signTransaction(address: currentAddress, transaction: unwrap)
+      switch signResult {
+      case .success(let signedData):
+        KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
           self.navigationController.hideLoading()
-        }
+          switch sendResult {
+          case .success(let hash):
+            print(hash)
+            provider.minTxCount += 1
+            historyTransaction.hash = hash
+            historyTransaction.time = Date()
+            historyTransaction.nonce = unwrap.nonce
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTransaction)
+            self.openTransactionStatusPopUp(transaction: historyTransaction)
+            self.transactionStatusVC?.earnAmountString = amount
+            self.transactionStatusVC?.netAPYEarnString = netAPY
+            self.transactionStatusVC?.earnPlatform = platform
+            self.earnViewController?.coordinatorSuccessSendTransaction()
+            self.earnSwapViewController?.coordinatorSuccessSendTransaction()
+          case .failure(let error):
+            var errorMessage = error.description
+            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+                errorMessage = message
+              }
+            }
+            self.navigationController.showErrorTopBannerMessage(
+              with: "Error",
+              message: errorMessage,
+              time: 1.5
+            )
+          }
+        })
+      case .failure:
+        self.navigationController.hideLoading()
       }
     }
-    
   }
 
   fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
@@ -887,6 +882,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
       return
     }
     provider.sendApproveERCTokenAddress(
+      address: currentAddress,
       for: address,
       value: Constants.maxValueBigInt,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
@@ -918,7 +914,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
+        provider.sendApproveERCToken(address: self.currentAddress, for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
           switch result {
           case .success:
             if let viewController = self.navigationController.viewControllers.last as? AbstractEarnViewControler {
@@ -954,6 +950,7 @@ extension EarnCoordinator: ApproveTokenViewControllerDelegate {
     }
     let gasPrice = KNGasCoordinator.shared.defaultKNGas
     provider.sendApproveERCToken(
+      address: currentAddress,
       for: token,
       value: BigInt(0),
       gasPrice: gasPrice,

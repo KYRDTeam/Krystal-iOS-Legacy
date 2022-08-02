@@ -192,20 +192,15 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func reloadUI() {
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-        self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
-        self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-        self.insestView.frame.size.height = self.insetViewHeight
-        self.updateCh24Button()
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
-    
+    self.viewModel.reloadAllData()
+    self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+    self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
+    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+    self.insestView.frame.size.height = self.insetViewHeight
+    self.updateCh24Button()
+    self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
   
   fileprivate func updateUISwitchChain() {
@@ -271,13 +266,6 @@ class OverviewMainViewController: KNBaseViewController {
         self.updateUISwitchChain()
         self.tableView.reloadData()
         self.delegate?.overviewMainViewController(self, run: .selectAllChain)
-        return
-      }
-      
-      guard selected != KNGeneralProvider.shared.currentChain else {
-        self.viewModel.currentChain = selected
-        self.updateUISwitchChain()
-        self.tableView.reloadData()
         return
       }
       
@@ -421,18 +409,6 @@ class OverviewMainViewController: KNBaseViewController {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
         self.updateUISwitchChain()
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
-  }
-  
-  func coordinatorDidUpdateDidUpdateTokenList() {
-    guard self.isViewLoaded else { return }
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
@@ -719,21 +695,21 @@ extension OverviewMainViewController: UITableViewDelegate {
       self.delegate?.overviewMainViewController(self, run: .select(token: token))
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
-        guard self.viewModel.getChainForSection(indexPath.section) == KNGeneralProvider.shared.currentChain else {
-          if let chain = self.viewModel.getChainForSection(indexPath.section) {
-            self.showSwitchChainAlert(chain)
-          }
-          return
-        }
+//        guard self.viewModel.getChainForSection(indexPath.section) == KNGeneralProvider.shared.currentChain else {
+//          if let chain = self.viewModel.getChainForSection(indexPath.section) {
+//            self.showSwitchChainAlert(chain)
+//          }
+//          return
+//        }
         let platform = self.viewModel.displayHeader.value[indexPath.section]
         self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.0, balance: lendingBalance))
       } else if let distributionBalance = balance as? LendingDistributionBalance {
-        guard distributionBalance.chainType == KNGeneralProvider.shared.currentChain else {
-          if let chain = distributionBalance.chainType {
-            self.showSwitchChainAlert(chain)
-          }
-          return
-        }
+//        guard distributionBalance.chainType == KNGeneralProvider.shared.currentChain else {
+//          if let chain = distributionBalance.chainType {
+//            self.showSwitchChainAlert(chain)
+//          }
+//          return
+//        }
         self.delegate?.overviewMainViewController(self, run: .claim(balance: distributionBalance))
       }
     case .search:

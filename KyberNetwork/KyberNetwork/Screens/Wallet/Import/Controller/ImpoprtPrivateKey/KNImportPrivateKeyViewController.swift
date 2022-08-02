@@ -33,7 +33,7 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
   var isValueValid: Bool {
     guard let text = self.enterPrivateKeyTextField.text else { return false }
     if importType == .solana {
-      return SolanaUtil.isValidSolanaPrivateKey(text: text)
+      return SolanaUtils.isValidSolanaPrivateKey(text: text)
     } else {
       return text.count == 64
     }
@@ -47,9 +47,9 @@ class KNImportPrivateKeyViewController: KNBaseViewController {
     let text = enterPrivateKeyTextField.text ?? ""
     switch importType {
     case .solana:
-      if SolanaUtil.isNormalPrivateKey(text: text) {
+      if SolanaUtils.isNormalPrivateKey(text: text) {
         return text
-      } else if let privateKey = SolanaUtil.getPrivateKey(numericPrivateKey: text) {
+      } else if let privateKey = SolanaUtils.getPrivateKey(numericPrivateKey: text) {
         return WalletUtils.string(fromPrivateKey: privateKey, addressType: .solana)
       }
       return nil

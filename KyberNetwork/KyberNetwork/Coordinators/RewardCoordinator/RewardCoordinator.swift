@@ -261,21 +261,19 @@ class RewardCoordinator: Coordinator {
     KNGeneralProvider.shared.getEstimateGasLimit(transaction: transaction) { (result) in
       switch result {
       case .success:
-        provider.signTransactionData(from: transaction) { [weak self] result in
-          guard let `self` = self else { return }
-          switch result {
-          case .success(let signedData):
-            self.sendSignedTransactionData(signedData.0, transaction: transaction)
-          case .failure(let error):
-            self.navigationController.hideLoading()
-            var errorMessage = "Can not sign transaction data"
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
+        let signResult = EthereumTransactionSigner().signTransaction(address: self.currentAddress, transaction: transaction)
+        switch signResult {
+        case .success(let signedData):
+          self.sendSignedTransactionData(signedData, transaction: transaction)
+        case .failure(let error):
+          self.navigationController.hideLoading()
+          var errorMessage = "Can not sign transaction data"
+          if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+            if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+              errorMessage = message
             }
-            self.navigationController.showErrorTopBannerMessage(message: errorMessage)
           }
+          self.navigationController.showErrorTopBannerMessage(message: errorMessage)
         }
       case .failure(let error):
         self.navigationController.hideLoading()

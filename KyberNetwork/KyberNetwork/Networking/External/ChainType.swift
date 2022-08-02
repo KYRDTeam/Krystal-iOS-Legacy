@@ -97,7 +97,8 @@ enum ChainType: Codable, CaseIterable {
       allChains = allChains.filter { $0 != .klaytn }
     }
     
-    if !includeAll {
+    let shouldShowAll = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.multichainPortfolio)
+    if !includeAll || !shouldShowAll {
       allChains = allChains.filter { $0 != .all }
     } else {
       allChains.bringToFront(item: .all)

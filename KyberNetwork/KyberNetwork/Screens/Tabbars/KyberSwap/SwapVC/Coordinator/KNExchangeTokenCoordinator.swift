@@ -371,6 +371,7 @@ extension KNExchangeTokenCoordinator {
     }
     let gasPrice = exchangeTransaction.gasPrice ?? KNGasCoordinator.shared.defaultKNGas
     provider.sendApproveERCToken(
+      address: currentAddress,
       for: exchangeTransaction.from,
       value: BigInt(0),
       gasPrice: gasPrice,
@@ -395,6 +396,7 @@ extension KNExchangeTokenCoordinator {
     }
     let gasPrice = KNGasCoordinator.shared.defaultKNGas
     provider.sendApproveERCToken(
+      address: currentAddress,
       for: token,
       value: BigInt(0),
       gasPrice: gasPrice,
@@ -421,7 +423,7 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
     guard let provider = self.session.externalProvider else {
       return
     }
-    guard let data = provider.signContractGenericEIP1559Transaction(eip1559Tx) else {
+    guard let data = EIP1559TransactionSigner().signTransaction(address: currentAddress, eip1559Tx: eip1559Tx) else {
       return
     }
     self.navigationController.displayLoading()
@@ -462,41 +464,39 @@ extension KNExchangeTokenCoordinator: KConfirmSwapViewControllerDelegate {
       return
     }
     self.navigationController.displayLoading()
-    provider.signTransactionData(from: signTransaction) { [weak self] result in
-      guard let `self` = self else { return }
-      switch result {
-      case .success(let signedData):
-        KNGeneralProvider.shared.sendSignedTransactionData(signedData.0, completion: { sendResult in
-          self.navigationController.hideLoading()
-          switch sendResult {
-          case .success(let hash):
-            provider.minTxCount += 1
-            internalHistoryTransaction.hash = hash
-            internalHistoryTransaction.nonce = signTransaction.nonce
-            internalHistoryTransaction.time = Date()
-            
-            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
-            controller.dismiss(animated: true) {
-              self.confirmSwapVC = nil
-              self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
-            }
-            self.rootViewController.coordinatorSuccessSendTransaction()
-          case .failure(let error):
-            var errorMessage = error.description
-            if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
-              if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
-                errorMessage = message
-              }
-            }
-            self.navigationController.showErrorTopBannerMessage(
-              with: "Error",
-              message: errorMessage
-            )
+    let signResult = EthereumTransactionSigner().signTransaction(address: currentAddress, transaction: signTransaction)
+    switch signResult {
+    case .success(let signedData):
+      KNGeneralProvider.shared.sendSignedTransactionData(signedData, completion: { sendResult in
+        self.navigationController.hideLoading()
+        switch sendResult {
+        case .success(let hash):
+          provider.minTxCount += 1
+          internalHistoryTransaction.hash = hash
+          internalHistoryTransaction.nonce = signTransaction.nonce
+          internalHistoryTransaction.time = Date()
+          
+          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(internalHistoryTransaction)
+          controller.dismiss(animated: true) {
+            self.confirmSwapVC = nil
+            self.openTransactionStatusPopUp(transaction: internalHistoryTransaction)
           }
-        })
-      case .failure:
-        self.rootViewController.coordinatorFailSendTransaction()
-      }
+          self.rootViewController.coordinatorSuccessSendTransaction()
+        case .failure(let error):
+          var errorMessage = error.description
+          if case let APIKit.SessionTaskError.responseError(apiKitError) = error.error {
+            if case let JSONRPCKit.JSONRPCError.responseError(_, message, _) = apiKitError {
+              errorMessage = message
+            }
+          }
+          self.navigationController.showErrorTopBannerMessage(
+            with: "Error",
+            message: errorMessage
+          )
+        }
+      })
+    case .failure:
+      self.rootViewController.coordinatorFailSendTransaction()
     }
   }
 
@@ -623,23 +623,21 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       guard let provider = self.session.externalProvider else {
         return
       }
-      provider.signTransactionData(from: tx) { [weak self] result in
-        guard let `self` = self else { return }
-        switch result {
-        case .success(let data):
-          KNGeneralProvider.shared.sendSignedTransactionData(data.0, completion: { sendResult in
-            switch sendResult {
-            case .success:
-              provider.minTxCount += 1
-              self.rootViewController.coordinatorSuccessSendTransaction()
-            case .failure(let error):
-              print("[Debug] error send \(error)")
-              self.rootViewController.coordinatorFailSendTransaction()
-            }
-          })
-        case .failure:
-          self.rootViewController.coordinatorFailSendTransaction()
-        }
+      let signResult = EthereumTransactionSigner().signTransaction(address: currentAddress, transaction: tx)
+      switch signResult {
+      case .success(let data):
+        KNGeneralProvider.shared.sendSignedTransactionData(data, completion: { sendResult in
+          switch sendResult {
+          case .success:
+            provider.minTxCount += 1
+            self.rootViewController.coordinatorSuccessSendTransaction()
+          case .failure(let error):
+            print("[Debug] error send \(error)")
+            self.rootViewController.coordinatorFailSendTransaction()
+          }
+        })
+      case .failure:
+        self.rootViewController.coordinatorFailSendTransaction()
       }
     case .getRefPrice(let from, let to):
       self.getRefPrice(from: from, to: to)
@@ -874,7 +872,7 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
       expectedReceivedString: nil,
       hint: hint
     )
-    provider.getEstimateGasLimit(for: exchangeTx) { result in
+    provider.getEstimateGasLimit(address: currentAddress, for: exchangeTx) { result in
       if case .success(let estimate) = result {
         self.rootViewController.coordinatorDidUpdateGasLimit(
           from: from,
@@ -1267,6 +1265,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
       return
     }
     provider.sendApproveERCTokenAddress(
+      address: currentAddress,
       for: address,
       value: Constants.maxValueBigInt,
       gasPrice: KNGasCoordinator.shared.defaultKNGas,
@@ -1306,7 +1305,7 @@ extension KNExchangeTokenCoordinator: ApproveTokenViewControllerDelegate {
       self.navigationController.hideLoading()
       switch resetResult {
       case .success:
-        provider.sendApproveERCToken(for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
+        provider.sendApproveERCToken(address: self.currentAddress, for: token, value: Constants.maxValueBigInt, gasPrice: KNGasCoordinator.shared.defaultKNGas, gasLimit: gasLimit) { (result) in
           switch result {
           case .success:
             self.rootViewController.coordinatorSuccessApprove(token: token)
