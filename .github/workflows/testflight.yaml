@@ -201,7 +201,3 @@ jobs:
           SLACK_USERNAME: deployment-notifier
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TF_IOS }}
 
-
-### iOS
-# Testflight
-# devops_distribution
