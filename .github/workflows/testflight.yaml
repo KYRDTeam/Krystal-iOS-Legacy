@@ -33,7 +33,7 @@ jobs:
       APPLE_CODE_SIGNING_ID: ${{ secrets.APPLE_TESTFIGHT_SIGNING_ID }}
       # profiles
       DEV_PROFILE: ${{ secrets.DEV_PROFILE }}
-      KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}
+      KRYSTAL_DEV_PROFILE: ${{ secrets.KRYSTAL_DEV_PROFILE }}   # Krytal Dev
       AD_HOC_PROFILE: ${{ secrets.AD_HOC_PROFILE }}
       EXT_AD_HOC_PROFILE: ${{ secrets.EXT_AD_HOC_PROFILE }}
       KRYSTAL_PROD_PROFILE: ${{ secrets.KRYSTAL_PROD_PROFILE }}
@@ -101,7 +101,7 @@ jobs:
 
           brew install coreutils
           md5sum $DEV_PROFILE_PATH
-          md5sum $KRYSTAL_DEV_PROFILE_PATH
+          # md5sum $KRYSTAL_DEV_PROFILE_PATH
           md5sum $AD_HOC_PROFILE_PATH
           md5sum $EXT_AD_HOC_PROFILE_PATH
           md5sum $KRYSTAL_PROD_PROFILE_PATH
