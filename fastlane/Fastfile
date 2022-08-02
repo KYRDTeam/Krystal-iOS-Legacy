@@ -16,7 +16,8 @@ bundle_id = ENV["APPLE_BUNDLE_ID"]
 
 # apple code siging identity
 # e.g: Apple Development: XXXX 
-signing_id = ENV["APPLE_CODE_SIGNING_ID"] 
+signing_id = ENV["APPLE_CODE_SIGNING_ID_KRYSTAL"] 
+test_flight_signing_id = ENV["APPLE_CODE_SIGNING_ID"] 
 
 # profile names
 dev_profile = ENV["DEV_PROFILE"]
@@ -78,7 +79,7 @@ lane :pre_release do
 
   update_code_signing_settings(
     team_id: team_id,
-    code_sign_identity: signing_id,
+    code_sign_identity: test_flight_signing_id,
     targets: "KyberNetwork",
     profile_name: krystal_prod_profile
   )
@@ -86,7 +87,7 @@ lane :pre_release do
   # update code signing identity for KrystalNotificationServiceExtension
   update_code_signing_settings(
     team_id: team_id,
-    code_sign_identity: signing_id,
+    code_sign_identity: test_flight_signing_id,
     targets: "KrystalNotificationServiceExtension",
     profile_name: krystal_prod_ext_profile
   )
@@ -171,6 +172,15 @@ end
 
 # install_profiles 
 lane :install_profiles do 
+  # install dev profile
+  install_provisioning_profile(path: dev_profile_path)
+  # install krystall dev profile
+  install_provisioning_profile(path: krystal_dev_profile_path)
+  # install ad hoc profile
+  install_provisioning_profile(path: ad_hoc_profile_path)
+  # install extension ad hoc profile
+  install_provisioning_profile(path: ext_ad_hoc_profile_path)
+  # install krystal production profile
   install_provisioning_profile(path:krystal_prod_profile_path)
   # install krystal production extension profile
   install_provisioning_profile(path:krystal_prod_ext_profile_path)
