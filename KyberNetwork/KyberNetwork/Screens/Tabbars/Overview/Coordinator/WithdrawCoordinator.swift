@@ -558,7 +558,9 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
     controller.dismiss(animated: true) {
       guard balance?.chainType == KNGeneralProvider.shared.currentChain else {
         if let chain = balance?.chainType {
-          self.navigationController.showSwitchChainAlert(chain)
+          self.navigationController.showSwitchChainAlert(chain) {
+            self.withdrawConfirmPopupViewControllerDidSelectFirstButton(controller, balance: balance)
+          }
         }
         return
       }
@@ -580,7 +582,9 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
       controller.dismiss(animated: true) {
         guard self.claimBalance?.chainType == KNGeneralProvider.shared.currentChain else {
           if let chain = self.claimBalance?.chainType {
-            self.navigationController.showSwitchChainAlert(chain)
+            self.navigationController.showSwitchChainAlert(chain) {
+              self.withdrawConfirmPopupViewControllerDidSelectSecondButton(controller, balance: balance)
+            }
           }
           return
         }
@@ -701,7 +705,9 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
       controller.dismiss(animated: true, completion: {
         guard balance?.chainType == KNGeneralProvider.shared.currentChain else {
           if let chain = balance?.chainType {
-            self.navigationController.showSwitchChainAlert(chain)
+            self.navigationController.showSwitchChainAlert(chain) {
+              self.withdrawConfirmPopupViewControllerDidSelectSecondButton(controller, balance: balance)
+            }
           }
           return
         }

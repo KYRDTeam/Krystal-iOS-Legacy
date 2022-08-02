@@ -149,19 +149,14 @@ class OverviewMainCellViewModel {
         guard !self.hideBalanceStatus else {
           return "********"
         }
-//        let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: lendingBalance.address, currency: self.currency)
-        let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
-        let valueBigInt = balanceBigInt * BigInt(lendingBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(lendingBalance.decimals)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
+        
+        let valueString = supplyValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         guard !self.hideBalanceStatus else {
           return "********"
         }
-//        let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: distributionBalance.address, currency: self.currency)
-        let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
-        let valueBigInt = balanceBigInt * BigInt(distributionBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(distributionBalance.decimal)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
+        let valueString = supplyValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       } else {
         return ""
@@ -254,6 +249,27 @@ class OverviewMainCellViewModel {
       return ("\(round(thousand*10/10))K")
     } else {
       return "\(Int(number))"
+    }
+  }
+  
+  var supplyValueBigInt: BigInt {
+    switch mode {
+    case .supply(let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
+        let valueBigInt = balanceBigInt * BigInt(lendingBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(lendingBalance.decimals)
+        
+        return valueBigInt
+      } else if let distributionBalance = balance as? LendingDistributionBalance {
+        let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
+        let valueBigInt = balanceBigInt * BigInt(distributionBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(distributionBalance.decimal)
+        
+        return valueBigInt
+      } else {
+        return .zero
+      }
+    default:
+      return .zero
     }
   }
 }

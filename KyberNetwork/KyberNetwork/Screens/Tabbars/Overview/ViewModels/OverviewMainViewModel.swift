@@ -563,7 +563,9 @@ class OverviewMainViewModel {
             sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
           }
         })
-        models[key.0] = sectionModels
+        models[key.0] = sectionModels.sorted(by: { leftE, rightE in
+          return leftE.supplyValueBigInt > rightE.supplyValueBigInt
+        })
         let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
         self.displayTotalValues.value[key.0] = displayTotalSection
         total += totalSection
