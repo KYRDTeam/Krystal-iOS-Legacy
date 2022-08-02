@@ -99,6 +99,16 @@ jobs:
           mkdir -p /Users/runner/privates        
           cp -va $CONFIG_PATH/* /Users/runner/privates
 
+          brew install coreutils
+          md5sum $DEV_PROFILE_PATH
+          md5sum $KRYSTAL_DEV_PROFILE_PATH
+          md5sum $AD_HOC_PROFILE_PATH
+          md5sum $EXT_AD_HOC_PROFILE_PATH
+          md5sum $KRYSTAL_PROD_PROFILE_PATH
+          md5sum $KRYSTAL_PROD_EXT_PROFILE_PATH
+      
+          
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
