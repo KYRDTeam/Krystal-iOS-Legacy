@@ -16,7 +16,7 @@ bundle_id = ENV["APPLE_BUNDLE_ID"]
 
 # apple code siging identity
 # e.g: Apple Development: XXXX 
-signing_id = ENV["APPLE_CODE_SIGNING_ID_KRYSTAL"] 
+signing_id = ENV["APPLE_CODE_SIGNING_ID"] 
 
 # profile names
 dev_profile = ENV["DEV_PROFILE"]
