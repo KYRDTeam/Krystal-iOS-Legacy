@@ -268,7 +268,7 @@ class FavedToken: Codable {
   }
 }
 
-struct LendingBalance: Codable {
+class LendingBalance: Codable {
 
   let address, symbol, name: String
   let decimals: Int
@@ -282,9 +282,10 @@ struct LendingBalance: Codable {
   let interestBearingTokenBalance: String
   let requiresApproval: Bool
   let supplyQuotes, stableBorrowQuotes, variableBorrowQuotes: [String: LendingQuote]
+  
+  var chainType: ChainType?
 
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
-//    let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.supplyBalance) ?? BigInt(0)
     return balanceBigInt * BigInt(self.getPriceDouble(currency) * pow(10.0, 18.0)) / BigInt(10).power(self.decimals)
   }
@@ -340,7 +341,13 @@ struct LendingBalanceData: Codable {
 class LendingPlatformBalance: Codable {
   let name: String
   let balances: [LendingBalance]
-  var chainType: ChainType?
+  var chainType: ChainType? {
+    didSet {
+      self.balances.forEach { e in
+        e.chainType = self.chainType
+      }
+    }
+  }
   
   init(name: String, balances: [LendingBalance]) {
     self.name = name

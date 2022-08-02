@@ -127,7 +127,7 @@ extension KNBaseViewController {
   @objc func quickTutorialContentLabelTapped() {}
 }
 
-extension KNBaseViewController {
+extension UIViewController {
   func showSwitchChainAlert(_ chain: ChainType) {
     let alertController = KNPrettyAlertController(
       title: "",
