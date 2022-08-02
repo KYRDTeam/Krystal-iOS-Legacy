@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="417" height="156"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65a-eV-zir">
-                                <rect key="frame" x="28" y="14" width="361" height="142"/>
+                                <rect key="frame" x="20" y="14" width="377" height="142"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kyber_icon_medium" translatesAutoresizingMaskIntoConstraints="NO" id="Y8y-eo-Ahs">
                                         <rect key="frame" x="20" y="20" width="24" height="24"/>
@@ -36,13 +36,13 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SmartSwap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RK2-WY-16w">
-                                        <rect key="frame" x="56" y="22.5" width="196.5" height="19"/>
+                                        <rect key="frame" x="56" y="22.5" width="212.5" height="19"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="2,245.54" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fiu-vS-jYB">
-                                        <rect key="frame" x="272.5" y="21.5" width="68.5" height="21.5"/>
+                                        <rect key="frame" x="288.5" y="21.5" width="68.5" height="21.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -65,7 +65,7 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$30.33" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSr-Ch-ddQ">
-                                        <rect key="frame" x="289" y="54" width="52" height="16.5"/>
+                                        <rect key="frame" x="305" y="54" width="52" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -95,8 +95,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="65a-eV-zir" firstAttribute="top" secondItem="e9r-HW-VuP" secondAttribute="top" constant="14" id="JJg-Je-ADP"/>
-                            <constraint firstItem="65a-eV-zir" firstAttribute="leading" secondItem="e9r-HW-VuP" secondAttribute="leading" constant="28" id="MZv-do-eGZ"/>
-                            <constraint firstAttribute="trailing" secondItem="65a-eV-zir" secondAttribute="trailing" constant="28" id="gYe-Pq-Wtd"/>
+                            <constraint firstItem="65a-eV-zir" firstAttribute="leading" secondItem="e9r-HW-VuP" secondAttribute="leading" constant="20" id="MZv-do-eGZ"/>
+                            <constraint firstAttribute="trailing" secondItem="65a-eV-zir" secondAttribute="trailing" constant="20" id="gYe-Pq-Wtd"/>
                             <constraint firstAttribute="bottom" secondItem="65a-eV-zir" secondAttribute="bottom" id="jhE-gd-Jt7"/>
                         </constraints>
                     </view>

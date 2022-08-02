@@ -11,6 +11,8 @@ class SwapV2ViewModel {
   
   var platformRates: [PlatformRate] = []
   
+  var platformRatesViewModels: [SwapPlatformItemViewModel] = []
+  
   // inject platform rate service - load rates
   // inject node service - load balances
   init() {

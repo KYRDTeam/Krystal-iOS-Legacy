@@ -14,9 +14,12 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var destTokenLabel: UILabel!
   @IBOutlet weak var sourceBalanceLabel: UILabel!
   
+  var viewModel: SwapV2ViewModel = SwapV2ViewModel()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    configureViews()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -26,7 +29,32 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func configureViews() {
-    
+    setupTableView()
+  }
+  
+  func setupTableView() {
+    platformTableView.registerCellNib(SwapV2PlatformCell.self)
+    platformTableView.delegate = self
+    platformTableView.dataSource = self
+  }
+  
+}
+
+extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//    return viewModel.platformRatesViewModels.count
+    return 2
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(SwapV2PlatformCell.self, indexPath: indexPath)!
+    cell.selectionStyle = .none
+    return cell
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 96
   }
   
 }
