@@ -139,8 +139,8 @@ extension KNAppCoordinator {
   
   func stopAllSessions() {
     KNPasscodeUtil.shared.deletePasscode()
-    self.landingPageCoordinator.navigationController.popToRootViewController(animated: false)
-
+    
+    self.landingPageCoordinator.resetNavigationToRoot()
     self.loadBalanceCoordinator?.exit()
     self.loadBalanceCoordinator = nil
 
