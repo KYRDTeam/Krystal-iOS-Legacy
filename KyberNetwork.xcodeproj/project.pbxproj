@@ -687,6 +687,7 @@
 		A6CC317C2877ED8700891200 /* OcrDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CC317B2877ED8700891200 /* OcrDetector.swift */; };
 		A6CC317E2877F06800891200 /* ScanMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CC317D2877F06800891200 /* ScanMode.swift */; };
 		A6CECBA62875421E001F3563 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CECBA52875421E001F3563 /* UIView+.swift */; };
+		A6D38BE72898DCCE003579F2 /* SolanaUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */; };
 		A6D88649285C93E900BB565B /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D88648285C93E900BB565B /* KeyManager.swift */; };
 		A6D8864B285C958D00BB565B /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8864A285C958D00BB565B /* PasswordGenerator.swift */; };
 		A6D986092857450A0012D0ED /* TransactionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D986082857450A0012D0ED /* TransactionError.swift */; };
@@ -1810,6 +1811,7 @@
 		A6CC317B2877ED8700891200 /* OcrDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OcrDetector.swift; sourceTree = "<group>"; };
 		A6CC317D2877F06800891200 /* ScanMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMode.swift; sourceTree = "<group>"; };
 		A6CECBA52875421E001F3563 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaUtils.swift; sourceTree = "<group>"; };
 		A6D88648285C93E900BB565B /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		A6D8864A285C958D00BB565B /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		A6D986082857450A0012D0ED /* TransactionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionError.swift; sourceTree = "<group>"; };
@@ -5169,6 +5171,7 @@
 				A6790C5728476E66007CE0CD /* WalletManager.swift */,
 				A685D4892847BFC20066E177 /* WalletManagerError.swift */,
 				A686BC4F288FEC0100DCE0E2 /* WalletUtils.swift */,
+				A6D38BE62898DCCE003579F2 /* SolanaUtils.swift */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -7677,6 +7680,7 @@
 				A6B067372859CF5100DEBAE8 /* WalletType.swift in Sources */,
 				A686BC50288FEC0100DCE0E2 /* WalletUtils.swift in Sources */,
 				A6D88649285C93E900BB565B /* KeyManager.swift in Sources */,
+				A6D38BE72898DCCE003579F2 /* SolanaUtils.swift in Sources */,
 				A65CBF2528632913008620E2 /* Dictionary+.swift in Sources */,
 				A6B067362859CF5100DEBAE8 /* Address.swift in Sources */,
 				A6B067392859CF5100DEBAE8 /* EthSigner.swift in Sources */,

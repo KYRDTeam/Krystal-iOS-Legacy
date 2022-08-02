@@ -45,7 +45,7 @@ class EthereumTransactionSigner {
       }
 
       let hash = signer.hash(transaction: transaction)
-      let signature = try EthSigner().signMessage(address: address, data: hash)
+      let signature = try EthSigner().signTransaction(address: address, hash: hash)
       let (r, s, v) = signer.values(transaction: transaction, signature: signature)
       let data = RLP.encode([
           transaction.nonce,

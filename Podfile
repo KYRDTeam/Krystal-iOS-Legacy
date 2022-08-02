@@ -102,6 +102,7 @@ target 'KrystalWallets' do
   databasePods
   pod 'TrustWalletCore', '~> 2.9'
   pod 'KeychainSwift'
+  pod 'CryptoSwift'
 end
 
 target 'KrystalNotificationServiceExtension' do

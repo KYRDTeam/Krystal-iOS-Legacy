@@ -8,6 +8,7 @@
 import Foundation
 import WalletCore
 import WalletConnectSwift
+import KrystalWallets
 
 enum ScanResultType: CaseIterable {
   case walletConnect
@@ -60,7 +61,7 @@ class ScannerUtils {
     case .solPublicKey:
       return AnyAddress.isValid(string: text, coin: .solana)
     case .solPrivateKey:
-      return SolanaUtil.isValidSolanaPrivateKey(text: text)
+      return SolanaUtils.isValidSolanaPrivateKey(text: text)
     }
   }
   

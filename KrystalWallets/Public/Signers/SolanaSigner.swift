@@ -13,8 +13,12 @@ public class SolanaSigner: KSignerProtocol {
   
   public init() {}
   
-  public func signMessage(address: KAddress, data: Data, addPrefix: Bool) throws -> Data {
+  public func signTransaction(address: KAddress, hash: Data) throws -> Data {
     throw SigningError.cannotSignMessage
+  }
+  
+  public func signMessageHash(address: KAddress, data: Data, addPrefix: Bool) throws -> Data {
+    return Data()
   }
   
   public func signTransferTransaction(address: KAddress, recipient: String, value: UInt64, recentBlockhash: String) throws -> String {
