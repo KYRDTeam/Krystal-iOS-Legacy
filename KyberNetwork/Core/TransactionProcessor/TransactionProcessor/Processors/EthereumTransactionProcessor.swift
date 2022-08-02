@@ -129,8 +129,7 @@ class EthereumTransactionProcessor: TransactionProcessor {
     let signResult = transactionSigner.signTransaction(address: address, transaction: signTx)
     switch signResult {
     case .success(let signData):
-      KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { [weak self] result in
-        guard let `self` = self else { return }
+      KNGeneralProvider.shared.sendSignedTransactionData(signData, completion: { result in
         switch result {
         case .success(let hash):
           self.nonceCache.increaseNonce(address: address.addressString, chain: self.chain)

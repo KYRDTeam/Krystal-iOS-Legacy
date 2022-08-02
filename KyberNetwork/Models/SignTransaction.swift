@@ -36,25 +36,6 @@ extension SignTransaction {
   func toSignTransactionObject() -> SignTransactionObject {
     return SignTransactionObject(value: self.value.description, from: address, to: self.to, nonce: self.nonce, data: self.data, gasPrice: self.gasPrice.description, gasLimit: self.gasLimit.description, chainID: self.chainID, reservedGasLimit: self.gasLimit.description)
   }
-  
-  func send(provider: KNExternalProvider, completion: @escaping (Result<String, AnyError>) -> Void) {
-    provider.signTransactionData(from: self) { (result) in
-      switch result {
-      case .success((let signData, _)):
-        KNGeneralProvider.shared.sendSignedTransactionData(signData) { (sendResult) in
-          switch sendResult {
-          case .success(let hash):
-            provider.minTxCount += 1
-            completion(.success(hash))
-          case .failure(let sendError):
-            completion(.failure(sendError))
-          }
-        }
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
-  }
 }
 
 extension SignTransaction {
@@ -88,6 +69,4 @@ extension SignTransaction: GasLimitRequestable {
     )
     return request
   }
-  
-  
 }

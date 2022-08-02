@@ -93,7 +93,7 @@ class KNCreateWalletCoordinator: NSObject, Coordinator {
     let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
     let sendData = prefix + data
     do {
-      let signedData = try SignerFactory().getSigner(address: address).signMessage(address: address, data: sendData, addPrefix: false)
+      let signedData = try SignerFactory().getSigner(address: address).signMessageHash(address: address, data: sendData, addPrefix: false)
       let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
       provider.requestWithFilter(.registerReferrer(address: address.addressString, referralCode: code, signature: signedData.hexEncoded)) { (result) in
         if case .success(let data) = result, let json = try? data.mapJSON() as? JSONDictionary ?? [:] {
