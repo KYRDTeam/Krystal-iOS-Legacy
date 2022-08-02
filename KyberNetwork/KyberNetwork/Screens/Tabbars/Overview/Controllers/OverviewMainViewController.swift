@@ -192,20 +192,15 @@ class OverviewMainViewController: KNBaseViewController {
   }
   
   fileprivate func reloadUI() {
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
-        self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
-        self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
-        self.insestView.frame.size.height = self.insetViewHeight
-        self.updateCh24Button()
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
-    
+    self.viewModel.reloadAllData()
+    self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
+    self.currentPageNameLabel.text = self.viewModel.displayCurrentPageName
+    self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
+    self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
+    self.insestView.frame.size.height = self.insetViewHeight
+    self.updateCh24Button()
+    self.tableView.reloadData()
+    self.infoCollectionView.reloadData()
   }
   
   fileprivate func updateUISwitchChain() {
@@ -271,13 +266,6 @@ class OverviewMainViewController: KNBaseViewController {
         self.updateUISwitchChain()
         self.tableView.reloadData()
         self.delegate?.overviewMainViewController(self, run: .selectAllChain)
-        return
-      }
-      
-      guard selected != KNGeneralProvider.shared.currentChain else {
-        self.viewModel.currentChain = selected
-        self.updateUISwitchChain()
-        self.tableView.reloadData()
         return
       }
       
@@ -421,18 +409,6 @@ class OverviewMainViewController: KNBaseViewController {
       self.viewModel.reloadAllData()
       DispatchQueue.main.async {
         self.updateUISwitchChain()
-        self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
-        self.tableView.reloadData()
-        self.infoCollectionView.reloadData()
-      }
-    }
-  }
-  
-  func coordinatorDidUpdateDidUpdateTokenList() {
-    guard self.isViewLoaded else { return }
-    calculatingQueue.async {
-      self.viewModel.reloadAllData()
-      DispatchQueue.main.async {
         self.totalPageValueLabel.text = self.viewModel.displayPageTotalValue
         self.tableView.reloadData()
         self.infoCollectionView.reloadData()
