@@ -171,15 +171,6 @@ end
 
 # install_profiles 
 lane :install_profiles do 
-  # install dev profile
-  install_provisioning_profile(path: dev_profile_path)
-  # install krystall dev profile
-  install_provisioning_profile(path: krystal_dev_profile_path)
-  # install ad hoc profile
-  install_provisioning_profile(path: ad_hoc_profile_path)
-  # install extension ad hoc profile
-  install_provisioning_profile(path: ext_ad_hoc_profile_path)
-  # install krystal production profile
   install_provisioning_profile(path:krystal_prod_profile_path)
   # install krystal production extension profile
   install_provisioning_profile(path:krystal_prod_ext_profile_path)
