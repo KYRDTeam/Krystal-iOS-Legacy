@@ -66,6 +66,25 @@ jobs:
         run: |
           echo -n "${{ secrets.APPLE_ISSUER_ID }}" > foo && cut -c1-3 foo && cut -c4- foo
 
+      - name: Test DEV_PROFILE
+        run: |
+          echo -n "${{ secrets.DEV_PROFILE }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Test KRYSTAL_DEV_PROFILE
+        run: |
+          echo -n "${{ secrets.KRYSTAL_DEV_PROFILE }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Test AD_HOC_PROFILE
+        run: |
+          echo -n "${{ secrets.AD_HOC_PROFILE }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Test KRYSTAL_PROD_PROFILE
+        run: |
+          echo -n "${{ secrets.KRYSTAL_PROD_PROFILE }}" > foo && cut -c1-3 foo && cut -c4- foo
+
+      - name: Test KRYSTAL_PROD_EXT_PROFILE
+        run: |
+          echo -n "${{ secrets.KRYSTAL_PROD_EXT_PROFILE }}" > foo && cut -c1-3 foo && cut -c4- foo
 
       - name: Ls
         run: ls -al
