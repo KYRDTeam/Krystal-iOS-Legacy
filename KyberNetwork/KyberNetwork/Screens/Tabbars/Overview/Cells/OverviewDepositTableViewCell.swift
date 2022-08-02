@@ -64,8 +64,9 @@ class OverviewDepositLendingBalanceCellViewModel: OverviewDepositCellViewModel {
   }
 
   var valueBigInt: BigInt {
-    guard let tokenPrice = KNTrackerRateStorage.shared.getPriceWithAddress(self.balance.address) else { return BigInt(0) }
-    return self.balanceBigInt * BigInt(tokenPrice.priceWithCurrency(currencyMode: self.currencyType) * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimals)
+    let tokenPrice = self.balance.getPriceDouble(self.currencyType)
+    guard tokenPrice > 0 else { return BigInt(0) }
+    return self.balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(self.balance.decimals)
   }
 
   let balance: LendingBalance

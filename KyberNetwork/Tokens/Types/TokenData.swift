@@ -284,9 +284,9 @@ struct LendingBalance: Codable {
   let supplyQuotes, stableBorrowQuotes, variableBorrowQuotes: [String: LendingQuote]
 
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
-    let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
+//    let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.supplyBalance) ?? BigInt(0)
-    return balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(self.decimals)
+    return balanceBigInt * BigInt(self.getPriceDouble(currency) * pow(10.0, 18.0)) / BigInt(10).power(self.decimals)
   }
 
   var hasSmallAmount: Bool {
@@ -294,11 +294,15 @@ struct LendingBalance: Codable {
     let limit = BigInt(0.00001 * pow(10.0, Double(self.decimals)))
     return balanceBigInt < limit
   }
+  
+  func getPriceDouble(_ currency: CurrencyMode) -> Double {
+    return self.supplyQuotes[currency.toString()]?.price ?? 0
+  }
 }
 
 // MARK: - Quote
 struct LendingQuote: Codable {
-    let symbol: Symbol
+    let symbol: String
     let price, priceChange24HPercentage, value: Double
 
     enum CodingKeys: String, CodingKey {
@@ -308,11 +312,11 @@ struct LendingQuote: Codable {
     }
 }
 
-enum Symbol: String, Codable {
-    case bnb = "BNB"
-    case btc = "BTC"
-    case usd = "USD"
-}
+//enum Symbol: String, Codable {
+//    case bnb = "BNB"
+//    case btc = "BTC"
+//    case usd = "USD"
+//}
 
 enum Tag: String, Codable {
     case scam = "SCAM"
@@ -365,23 +369,18 @@ class LendingDistributionBalance: Codable {
   let current: String
   let unclaimed: String
   let logo: String
+  let currentQuote, unclaimedQuote: [String: LendingQuote]
   
   var chainType: ChainType?
-
-  init(dictionary: JSONDictionary) {
-    self.name = dictionary["name"] as? String ?? ""
-    self.symbol = dictionary["symbol"] as? String ?? ""
-    self.address = (dictionary["address"] as? String ?? "").lowercased()
-    self.decimal = dictionary["decimal"] as? Int ?? 0
-    self.current = dictionary["current"] as? String ?? ""
-    self.unclaimed = dictionary["unclaimed"] as? String ?? ""
-    self.logo = dictionary["logo"] as? String ?? ""
-  }
   
   func getValueBigInt(_ currency: CurrencyMode) -> BigInt {
-    let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
+//    let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: self.address, currency: currency)
     let balanceBigInt = BigInt(self.unclaimed) ?? BigInt(0)
-    return balanceBigInt * BigInt(tokenPrice * pow(10.0, 18.0)) / BigInt(10).power(self.decimal)
+    return balanceBigInt * BigInt(self.getPriceDouble(currency) * pow(10.0, 18.0)) / BigInt(10).power(self.decimal)
+  }
+  
+  func getPriceDouble(_ currency: CurrencyMode) -> Double {
+    return self.currentQuote[currency.toString()]?.price ?? 0.0
   }
 }
 
