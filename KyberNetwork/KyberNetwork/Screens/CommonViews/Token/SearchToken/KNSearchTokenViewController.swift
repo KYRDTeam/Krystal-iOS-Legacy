@@ -97,6 +97,7 @@ class KNSearchTokenViewModel {
     balances.forEach { (key, value) in
       self.balances[key] = value
     }
+    self.updateDisplayedTokens()
   }
 }
 
