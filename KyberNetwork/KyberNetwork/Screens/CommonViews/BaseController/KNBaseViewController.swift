@@ -2,6 +2,8 @@
 
 import UIKit
 
+
+
 class KNBaseViewController: UIViewController, UIGestureRecognizerDelegate {
 
   @IBOutlet weak var topBarHeight: NSLayoutConstraint?
@@ -128,7 +130,7 @@ extension KNBaseViewController {
 }
 
 extension UIViewController {
-  func showSwitchChainAlert(_ chain: ChainType) {
+  func showSwitchChainAlert(_ chain: ChainType, completion: @escaping () -> Void = {}) {
     let alertController = KNPrettyAlertController(
       title: "",
       message: "Please switch to \(chain.chainName()) to continue".toBeLocalised(),
@@ -138,6 +140,9 @@ extension UIViewController {
         
         KNGeneralProvider.shared.currentChain = chain
         KNNotificationUtil.postNotification(for: kChangeChainNotificationKey)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          completion()
+        }
       },
       firstButtonAction: {
         
