@@ -695,21 +695,11 @@ extension OverviewMainViewController: UITableViewDelegate {
       self.delegate?.overviewMainViewController(self, run: .select(token: token))
     case .supply(balance: let balance):
       if let lendingBalance = balance as? LendingBalance {
-//        guard self.viewModel.getChainForSection(indexPath.section) == KNGeneralProvider.shared.currentChain else {
-//          if let chain = self.viewModel.getChainForSection(indexPath.section) {
-//            self.showSwitchChainAlert(chain)
-//          }
-//          return
-//        }
+
         let platform = self.viewModel.displayHeader.value[indexPath.section]
         self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.0, balance: lendingBalance))
       } else if let distributionBalance = balance as? LendingDistributionBalance {
-//        guard distributionBalance.chainType == KNGeneralProvider.shared.currentChain else {
-//          if let chain = distributionBalance.chainType {
-//            self.showSwitchChainAlert(chain)
-//          }
-//          return
-//        }
+
         self.delegate?.overviewMainViewController(self, run: .claim(balance: distributionBalance))
       }
     case .search:
