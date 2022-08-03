@@ -549,6 +549,7 @@ class OverviewMainViewModel {
       let data = supplyBalance.1
       var models: [String: [OverviewMainCellViewModel]] = [:]
       var total = BigInt(0)
+      var emptyHeaders: [(String, ChainType?)] = []
       self.displayHeader.value.forEach { (key) in
         var sectionModels: [OverviewMainCellViewModel] = []
         var totalSection = BigInt(0)
@@ -563,13 +564,26 @@ class OverviewMainViewModel {
             sectionModels.append(OverviewMainCellViewModel(mode: .supply(balance: item), currency: self.currencyMode))
           }
         })
-        models[key.0] = sectionModels.sorted(by: { leftE, rightE in
-          return leftE.supplyValueBigInt > rightE.supplyValueBigInt
-        })
-        let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-        self.displayTotalValues.value[key.0] = displayTotalSection
-        total += totalSection
+        if sectionModels.isEmpty {
+          emptyHeaders.append(key)
+        } else {
+          models[key.0] = sectionModels.sorted(by: { leftE, rightE in
+            return leftE.supplyValueBigInt > rightE.supplyValueBigInt
+          })
+          let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
+          self.displayTotalValues.value[key.0] = displayTotalSection
+          total += totalSection
+        }
       }
+      
+      if emptyHeaders.isNotEmpty {
+        emptyHeaders.forEach { e in
+          self.displayHeader.value.removeAll { i in
+            return i.0 == e.0 && i.1 == e.1
+          }
+        }
+      }
+      
       self.dataSource.value = models
       self.displayDataSource.value = models
       self.displayTotalValues.value["all"] = self.currencyMode.symbol() + total.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
