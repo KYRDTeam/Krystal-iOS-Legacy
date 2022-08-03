@@ -326,7 +326,14 @@ class KNLoadBalanceCoordinator {
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = AppDelegate.session.address.addressString
-    provider.requestWithFilter(.getAllNftBalance(address: address, chains: [])) { result in
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllNftBalance(address: address, chains: chainIds)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -359,7 +366,14 @@ class KNLoadBalanceCoordinator {
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getAllLendingBalance(address: AppDelegate.session.address.addressString, chains: [], quotes: [])) { (result) in
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllLendingBalance(address: AppDelegate.session.address.addressString, chains: chainIds, quotes: [])) { (result) in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
@@ -393,8 +407,14 @@ class KNLoadBalanceCoordinator {
 
   func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: [], quotes: [])) { result in
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: chainIds, quotes: [])) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
