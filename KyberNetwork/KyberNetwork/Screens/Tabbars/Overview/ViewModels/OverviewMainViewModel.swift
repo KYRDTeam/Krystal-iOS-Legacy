@@ -210,7 +210,6 @@ class OverviewMainViewModel {
       } else {
         UserDefaults.standard.set(false, forKey: Constants.didSelectAllChainOption)
       }
-      KNGeneralProvider.shared.overviewCurrentChain = self.currentChain
     }
   }
   var currentWalletName: String {

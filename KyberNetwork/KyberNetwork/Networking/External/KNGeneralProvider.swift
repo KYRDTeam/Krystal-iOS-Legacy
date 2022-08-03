@@ -146,20 +146,12 @@ class KNGeneralProvider {
   var chainAddressType: KAddressType {
     return currentChain.addressType
   }
-  
-  var overviewCurrentChain: ChainType
 
   init() {
     if let saved = Storage.retrieve(Constants.currentChainSaveFileName, as: ChainType.self) {
       self.currentChain = saved
     } else {
       self.currentChain = .eth
-    }
-    
-    if UserDefaults.standard.bool(forKey: Constants.didSelectAllChainOption) {
-      self.overviewCurrentChain = .all
-    } else {
-      self.overviewCurrentChain = self.currentChain
     }
   }
   

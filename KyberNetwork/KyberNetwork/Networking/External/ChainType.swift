@@ -112,19 +112,9 @@ enum ChainType: Codable, CaseIterable {
     }
   }
   
-  func getChainIdParam() -> [String] {
-    if self == .all {
-      return ChainType.getAllChainID().map { e in
-        return "\(e)"
-      }
-    } else {
-      return ["\(self.customRPC().chainID)"]
-    }
-  }
-  
   static func getChain(id: Int) -> ChainType? {
-    return ChainType.getAllChain().first { e in
-      return e.customRPC().chainID == id
+    return ChainType.getAllChain().first {
+      return $0.customRPC().chainID == id
     }
   }
 
