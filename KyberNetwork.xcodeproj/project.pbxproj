@@ -697,6 +697,7 @@
 		A6D38BF8289915F8003579F2 /* SwapPlatformItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */; };
 		A6D38BFB28991683003579F2 /* PlatformRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFA28991683003579F2 /* PlatformRate.swift */; };
 		A6D38BFD289916F7003579F2 /* SwapV2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */; };
+		A6D38BFF289A3A18003579F2 /* CircularArrowProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */; };
 		A6D88649285C93E900BB565B /* KeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D88648285C93E900BB565B /* KeyManager.swift */; };
 		A6D8864B285C958D00BB565B /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8864A285C958D00BB565B /* PasswordGenerator.swift */; };
 		A6D986092857450A0012D0ED /* TransactionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D986082857450A0012D0ED /* TransactionError.swift */; };
@@ -1830,6 +1831,7 @@
 		A6D38BF7289915F8003579F2 /* SwapPlatformItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapPlatformItemViewModel.swift; sourceTree = "<group>"; };
 		A6D38BFA28991683003579F2 /* PlatformRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRate.swift; sourceTree = "<group>"; };
 		A6D38BFC289916F7003579F2 /* SwapV2ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapV2ViewModel.swift; sourceTree = "<group>"; };
+		A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularArrowProgressView.swift; sourceTree = "<group>"; };
 		A6D88648285C93E900BB565B /* KeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManager.swift; sourceTree = "<group>"; };
 		A6D8864A285C958D00BB565B /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		A6D986082857450A0012D0ED /* TransactionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionError.swift; sourceTree = "<group>"; };
@@ -5154,6 +5156,7 @@
 				A6D38BEF28990593003579F2 /* SwapInfoView.xib */,
 				A6D38BF12899118F003579F2 /* SwapV2PlatformCell.swift */,
 				A6D38BF22899118F003579F2 /* SwapV2PlatformCell.xib */,
+				A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7472,6 +7475,7 @@
 				C31F152923F549F6006CCACE /* SpeedUpCustomGasSelectViewController.swift in Sources */,
 				A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */,
 				C31F74B525DD3284008B21F7 /* OverviewAssetsTableViewCell.swift in Sources */,
+				A6D38BFF289A3A18003579F2 /* CircularArrowProgressView.swift in Sources */,
 				C38E5D7425F5CD3000E5FC48 /* WithdrawConfirmPopupViewController.swift in Sources */,
 				C335C21F26672E8E00AD7E20 /* SwitchChainWalletsListViewController.swift in Sources */,
 				A66EC31A287D258100D15FE0 /* TxListHeaderCell.swift in Sources */,

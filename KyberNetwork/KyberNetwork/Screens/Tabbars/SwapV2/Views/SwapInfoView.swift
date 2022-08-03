@@ -30,13 +30,13 @@ class SwapInfoView: BaseXibView {
     titleLabel.text = title
     let attributedString = NSMutableAttributedString(string: title)
     
-//    if underlined {
+    if underlined {
       let attrs: [NSAttributedString.Key: Any] = [
-        .underlineStyle: NSUnderlineStyle.patternDash.rawValue | NSUnderlineStyle.single.rawValue,
+        .underlineStyle: NSUnderlineStyle.patternDashDot.rawValue | NSUnderlineStyle.single.rawValue,
         .underlineColor: UIColor.white.withAlphaComponent(0.5)
       ]
       attributedString.addAttributes(attrs, range: NSRange(location: 0, length: attributedString.length))
-//    }
+    }
     titleLabel.attributedText = attributedString
   }
   
