@@ -187,7 +187,7 @@ class OverviewMainViewModel {
   var displayNFTHeader: ThreadProtectedObject<[NFTSection]> = .init(storageValue: [])
   var summaryDataSource: ThreadProtectedObject<[OverviewSummaryCellViewModel]> = .init(storageValue: [])
   var displayLPDataSource: ThreadProtectedObject<[String: [OverviewLiquidityPoolViewModel]]> = .init(storageValue: [:])
-  var displayHeader: ThreadProtectedObject<[(String, ChainType?)]> = .init(storageValue: [])
+  var displayHeader: ThreadProtectedObject<[SectionKeyType]> = .init(storageValue: [])
   
   var displayTotalValues: ThreadProtectedObject<[String: String]> = .init(storageValue: [:])
   var hideBalanceStatus: Bool = UserDefaults.standard.bool(forKey: Constants.hideBalanceKey) {
@@ -381,12 +381,12 @@ class OverviewMainViewModel {
     var total = 0.0
     let currencyFormatter = StringFormatter()
     var models: [String: [OverviewLiquidityPoolViewModel]] = [:]
-    var headers: [(String, ChainType?)] = []
+    var headers: [SectionKeyType] = []
     var headerTotalValue: [String: Double] = [:]
     self.chainLiquidityPoolModels.forEach { chainLPModel in
       let liquidityPoolData = self.getLiquidityPools(currency: self.currencyMode, allLiquidityPool: chainLPModel.balances)
       //TODO: temp fix replace later
-      let header: [(String, ChainType?)] = liquidityPoolData.0.map({ e in
+      let header: [SectionKeyType] = liquidityPoolData.0.map({ e in
         return (e, nil)
       })
       header.forEach { item in
@@ -549,7 +549,7 @@ class OverviewMainViewModel {
       let data = supplyBalance.1
       var models: [String: [OverviewMainCellViewModel]] = [:]
       var total = BigInt(0)
-      var emptyHeaders: [(String, ChainType?)] = []
+      var emptyHeaders: [SectionKeyType] = []
       self.displayHeader.value.forEach { (key) in
         var sectionModels: [OverviewMainCellViewModel] = []
         var totalSection = BigInt(0)
@@ -579,7 +579,7 @@ class OverviewMainViewModel {
       if emptyHeaders.isNotEmpty {
         emptyHeaders.forEach { e in
           self.displayHeader.value.removeAll { i in
-            return i.0 == e.0 && i.1 == e.1
+            return i.key == e.key && i.chain == e.chain
           }
         }
       }

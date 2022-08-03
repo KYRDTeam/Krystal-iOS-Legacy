@@ -9,6 +9,8 @@ import Foundation
 import BigInt
 import KrystalWallets
 
+typealias SectionKeyType = (key: String, chain: ChainType?)
+
 class BalanceStorage {
   static let shared = BalanceStorage()
   private var supportedTokenBalances: ThreadProtectedObject<[TokenBalance]> = .init(storageValue: [])
@@ -237,8 +239,8 @@ class BalanceStorage {
     return total
   }
 
-  func getSupplyBalances(_ chain: ChainType) -> ([(String, ChainType?)], [String: [Any]]) {
-    var sectionKeys: [(String, ChainType?)] = []
+  func getSupplyBalances(_ chain: ChainType) -> ([SectionKeyType], [String: [Any]]) {
+    var sectionKeys: [SectionKeyType] = []
     var balanceDict: [String: [Any]] = [:]
     let allBalances: [LendingPlatformBalance] = BalanceStorage.shared.getAllLendingBalances(chain)
 
