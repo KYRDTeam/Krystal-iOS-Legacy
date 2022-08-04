@@ -162,7 +162,6 @@ extension KNAppCoordinator {
     self.session.switchAddress(address: address)
     FeatureFlagManager.shared.configClient(session: self.session)
     self.loadBalanceCoordinator?.shouldFetchAllChain = self.overviewTabCoordinator?.rootViewController.viewModel.currentChain == .all
-    self.navigationController.displayLoading()
     self.loadBalanceCoordinator?.restartNewSession(self.session)
     self.investCoordinator?.appCoordinatorSwitchAddress()
     

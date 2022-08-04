@@ -115,7 +115,6 @@ class InvestViewController: KNBaseViewController {
   }
   
   func coordinatorDidSwitchAddress() {
-    self.updateUISwitchChain()
     self.viewModel.reloadMenuItems()
   }
 }
