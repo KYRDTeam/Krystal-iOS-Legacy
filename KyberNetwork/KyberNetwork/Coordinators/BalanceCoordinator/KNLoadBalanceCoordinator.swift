@@ -288,11 +288,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
@@ -397,6 +397,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -432,6 +433,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -464,11 +466,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }

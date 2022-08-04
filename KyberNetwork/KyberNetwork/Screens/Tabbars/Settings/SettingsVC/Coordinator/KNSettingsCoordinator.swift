@@ -537,6 +537,7 @@ extension KNSettingsCoordinator: KNPasscodeCoordinatorDelegate {
           try? WalletManager.shared.remove(wallet: wallet)
           self.delegate?.settingsCoordinatorUserDidRemoveWallet(wallet)
           self.deleteWallet = nil
+          self.listWalletsCoordinator?.rootViewController.reloadData()
         }
       }
     } else {
