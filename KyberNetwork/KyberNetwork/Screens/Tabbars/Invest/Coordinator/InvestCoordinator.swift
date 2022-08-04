@@ -198,6 +198,7 @@ class InvestCoordinator: Coordinator {
   }
   
   func appCoordinatorSwitchAddress() {
+    self.rootViewController.coordinatorDidSwitchAddress()
     self.sendCoordinator?.coordinatorAppSwitchAddress()
     self.krytalCoordinator?.coordinatorAppSwitchAddress()
     self.rewardCoordinator?.appCoordinatorSwitchAddress()

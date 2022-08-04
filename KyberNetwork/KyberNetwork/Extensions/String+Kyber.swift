@@ -18,6 +18,13 @@ extension Optional where Wrapped == String {
 
 extension String {
   
+  func replacing(pattern: String) -> String {
+    guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else {
+      return self
+    }
+    return regex.stringByReplacingMatches(in: self, options: [], range: NSRange(location: 0, length: self.count), withTemplate: "")
+  }
+  
   func whenEmpty(_ value: String) -> String {
     if isEmpty {
       return value
