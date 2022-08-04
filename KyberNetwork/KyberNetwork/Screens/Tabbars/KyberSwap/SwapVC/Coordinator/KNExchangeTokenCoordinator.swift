@@ -674,16 +674,24 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
     if let topVC = self.navigationController.topViewController, topVC is KNSearchTokenViewController { return }
     self.isSelectingSourceToken = isSource
     self.tokens = KNSupportedTokenStorage.shared.getAllTokenObject()
-    self.searchTokensViewController = {
-      let viewModel = KNSearchTokenViewModel(
-        supportedTokens: self.tokens
-      )
-      let controller = KNSearchTokenViewController(viewModel: viewModel)
-      controller.loadViewIfNeeded()
-      controller.delegate = self
-      return controller
-    }()
-    self.navigationController.present(self.searchTokensViewController!, animated: true, completion: nil)
+//    self.searchTokensViewController = {
+//      let viewModel = KNSearchTokenViewModel(
+//        supportedTokens: self.tokens
+//      )
+//      let controller = KNSearchTokenViewController(viewModel: viewModel)
+//      controller.loadViewIfNeeded()
+//      controller.delegate = self
+//      return controller
+//    }()
+    
+    let viewModel = KNSearchTokenViewModel(
+      supportedTokens: self.tokens
+    )
+    let controller = SearchTokenViewController(viewModel: viewModel)
+//    controller.loadViewIfNeeded()
+//    controller.delegate = self
+    
+    self.navigationController.present(controller, animated: true, completion: nil)
     self.searchTokensViewController?.updateBalances(self.balances)
   }
 
