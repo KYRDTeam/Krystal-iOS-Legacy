@@ -46,8 +46,7 @@ class EthereumWeb3Service {
       completion(.success(BigInt(2).power(255)))
       return
     }
-    self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { [weak self] dataResult in
-      guard let self = self else { return }
+    self.getTokenAllowanceEncodeData(for: address, networkAddress: networkAddress) { dataResult in
       switch dataResult {
       case .success(let data):
         let callRequest = CallRequest(to: tokenAddress, data: data)
@@ -55,8 +54,7 @@ class EthereumWeb3Service {
           batch: BatchFactory().create(callRequest),
           nodeURL: self.baseURL
         )
-        Session.send(request) { [weak self] getAllowanceResult in
-          guard let `self` = self else { return }
+        Session.send(request) { getAllowanceResult in
           switch getAllowanceResult {
           case .success(let data):
             self.getTokenAllowanceDecodeData(data, completion: completion)
