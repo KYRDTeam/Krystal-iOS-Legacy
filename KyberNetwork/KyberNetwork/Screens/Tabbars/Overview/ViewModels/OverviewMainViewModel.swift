@@ -285,7 +285,7 @@ class OverviewMainViewModel {
     self.summaryDataSource.value.forEach { data in
       total += data.value
     }
-//    let hideAndDeleteTotal = KNSupportedTokenStorage.shared.getAllChainHideAndDeleteTokensBalanceUSD(self.currencyMode)
+
     let totalBigInt = BigInt(total * pow(10.0, 18.0))// - hideAndDeleteTotal
 
     let array: [OverviewSummaryCellViewModel] = summaryChainModels.map({ summaryModel in
@@ -387,10 +387,10 @@ class OverviewMainViewModel {
       let liquidityPoolData = self.getLiquidityPools(currency: self.currencyMode, allLiquidityPool: chainLPModel.balances)
       //TODO: temp fix replace later
       let header: [SectionKeyType] = liquidityPoolData.0.map({ e in
-        return (e, nil)
+        return SectionKeyType(key: e, chain: nil)
       })
       header.forEach { item in
-        if !headers.contains( where: {$0.0 == item.0}) {
+        if !headers.contains( where: {$0.key == item.key}) {
           headers.append(item)
         }
       }
@@ -399,7 +399,7 @@ class OverviewMainViewModel {
         var totalSection = 0.0
         var sectionModels: [OverviewLiquidityPoolViewModel] = []
         //value for total balance of current pool
-        data[key.0.lowercased()]?.forEach({ (item) in
+        data[key.key.lowercased()]?.forEach({ (item) in
           if let poolPairToken = item as? [LPTokenModel] {
             poolPairToken.forEach { token in
               //add total value of each token in current pair
@@ -412,22 +412,22 @@ class OverviewMainViewModel {
             sectionModels.append(cellVM)
           }
         })
-        let currentSectionModels = models[key.0] ?? []
-        models[key.0] = currentSectionModels + sectionModels
+        let currentSectionModels = models[key.key] ?? []
+        models[key.key] = currentSectionModels + sectionModels
         
-        let currentHeaderTotalValue = headerTotalValue[key.0] ?? 0.0
-        headerTotalValue[key.0] = currentHeaderTotalValue + totalSection
+        let currentHeaderTotalValue = headerTotalValue[key.key] ?? 0.0
+        headerTotalValue[key.key] = currentHeaderTotalValue + totalSection
         
         total += totalSection
       }
     }
     
     headers.forEach { (key) in
-      let currentHeaderTotalValue = headerTotalValue[key.0] ?? 0.0
+      let currentHeaderTotalValue = headerTotalValue[key.key] ?? 0.0
       let valueString = currencyFormatter.currencyString(value: currentHeaderTotalValue, decimals: self.currencyMode.decimalNumber())
       let displayTotalSection = !self.currencyMode.symbol().isEmpty ? self.currencyMode.symbol() + valueString : valueString + self.currencyMode.suffixSymbol()
 
-      self.displayTotalValues.value[key.0] = displayTotalSection
+      self.displayTotalValues.value[key.key] = displayTotalSection
     }
     
     self.displayHeader.value = headers
@@ -553,7 +553,7 @@ class OverviewMainViewModel {
       self.displayHeader.value.forEach { (key) in
         var sectionModels: [OverviewMainCellViewModel] = []
         var totalSection = BigInt(0)
-        data[key.0]?.forEach({ (item) in
+        data[key.toString()]?.forEach({ (item) in
           if let lendingBalance = item as? LendingBalance {
             if !lendingBalance.hasSmallAmount {
               totalSection += lendingBalance.getValueBigInt(self.currencyMode)
@@ -567,11 +567,11 @@ class OverviewMainViewModel {
         if sectionModels.isEmpty {
           emptyHeaders.append(key)
         } else {
-          models[key.0] = sectionModels.sorted(by: { leftE, rightE in
+          models[key.toString()] = sectionModels.sorted(by: { leftE, rightE in
             return leftE.supplyValueBigInt > rightE.supplyValueBigInt
           })
           let displayTotalSection = self.currencyMode.symbol() + totalSection.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currencyMode.decimalNumber()) + self.currencyMode.suffixSymbol()
-          self.displayTotalValues.value[key.0] = displayTotalSection
+          self.displayTotalValues.value[key.toString()] = displayTotalSection
           total += totalSection
         }
       }
@@ -691,7 +691,7 @@ class OverviewMainViewModel {
     }
     
     let key = self.displayHeader.value[section]
-    return self.displayDataSource.value[key.0] ?? []
+    return self.displayDataSource.value[key.toString()] ?? []
   }
   
   func numberOfRowsInSection(section: Int) -> Int {
@@ -713,7 +713,7 @@ class OverviewMainViewModel {
       return self.getViewModelsForSection(section).count + 1
     case .showLiquidityPool:
       let key = self.displayHeader.value[section]
-      return self.displayLPDataSource.value[key.0]?.count ?? 0
+      return self.displayLPDataSource.value[key.key]?.count ?? 0
     default:
       return self.getViewModelsForSection(section).count
     }
@@ -827,10 +827,10 @@ class OverviewMainViewModel {
       let rightLabelWidth = rightTextString.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
       
       let titleText = self.displayHeader.value[section]
-      let titleTextWidth = titleText.0.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
+      let titleTextWidth = titleText.key.width(withConstrainedHeight: 40, font: UIFont.Kyber.regular(with: 18))
       let titleLabel = UILabel(frame: CGRect(x: 35, y: 0, width: titleTextWidth, height: 40))
       titleLabel.center.y = view.center.y
-      titleLabel.text = titleText.0
+      titleLabel.text = titleText.key
       titleLabel.font = UIFont.Kyber.regular(with: 18)
       titleLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(titleLabel)
@@ -842,7 +842,7 @@ class OverviewMainViewModel {
       valueLabel.textColor = UIColor(named: "textWhiteColor")
       view.addSubview(valueLabel)
       
-      if let chain = titleText.1 {
+      if let chain = titleText.chain {
         let iconChain = UIImageView(frame: CGRect(x: 8, y: 0, width: 12, height: 12))
         iconChain.image = chain.chainIcon()
         
@@ -888,7 +888,7 @@ class OverviewMainViewModel {
       return "********"
     }
     let key = self.displayHeader.value[section]
-    return self.displayTotalValues.value[key.0] ?? ""
+    return self.displayTotalValues.value[key.toString()] ?? ""
   }
   
   var displayTotalValue: String {
@@ -955,6 +955,6 @@ class OverviewMainViewModel {
   }
   
   func getChainForSection(_ section: Int) -> ChainType? {
-    return self.displayHeader.value[section].1
+    return self.displayHeader.value[section].chain
   }
 }
