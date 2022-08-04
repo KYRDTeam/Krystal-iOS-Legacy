@@ -14,7 +14,6 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var destTokenLabel: UILabel!
   @IBOutlet weak var sourceBalanceLabel: UILabel!
   @IBOutlet weak var destViewHeight: NSLayoutConstraint!
-  
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
   @IBOutlet weak var minReceiveInfoView: SwapInfoView!
@@ -22,18 +21,33 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var maxGasFeeInfoView: SwapInfoView!
   @IBOutlet weak var priceImpactInfoView: SwapInfoView!
   @IBOutlet weak var routeInfoView: SwapInfoView!
-  @IBOutlet weak var reloadRateImageView: UIImageView!
   @IBOutlet weak var sourceView: UIView!
+  @IBOutlet weak var rateLoadingView: CircularArrowProgressView!
+  @IBOutlet weak var loadingView: UIView!
+  @IBOutlet weak var expandIcon: UIImageView!
+  @IBOutlet weak var sourceTextField: UITextField!
   
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
-  var numberOfRows = 0
   let platformRateItemHeight: CGFloat = 96
+  let loadingViewHeight: CGFloat = 142
+  let rateReloadingInterval: Int = 10
+  var timer: Timer?
+  var remainingTime: Int = 0
+  
+  var isExpanded: Bool = false
+  
+  var canExpand: Bool = false {
+    didSet {
+      self.expandIcon.isHidden = !canExpand
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     configureViews()
+    bindViewModel()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -42,16 +56,32 @@ class SwapV2ViewController: KNBaseViewController {
     navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    rateLoadingView.startAnimation(duration: rateReloadingInterval)
+  }
+  
+  deinit {
+    timer?.invalidate()
+    timer = nil
+  }
+  
   func configureViews() {
+    setupSourceView()
     setupInfoViews()
     setupTableView()
     setupRateLoadingView()
+    setupDropdownView()
   }
   
-  func setupRateLoadingView() {
-    reloadRateImageView.image = UIImage(named: "progress_exclude")?.withRenderingMode(.alwaysTemplate)
-    reloadRateImageView.tintColor = sourceView.backgroundColor
-    reloadRateImageView.backgroundColor = .red
+  func setupSourceView() {
+    sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
+  }
+  
+  func setupDropdownView() {
+    expandIcon.isUserInteractionEnabled = true
+    expandIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onToggleExpand)))
   }
   
   func setupInfoViews() {
@@ -71,27 +101,100 @@ class SwapV2ViewController: KNBaseViewController {
     destViewHeight.constant = 112
   }
   
-  @IBAction func continueWasTapped(_ sender: Any) {
-//    numberOfRows += 1
-    platformTableView.reloadData()
-    
-      self.priceImpactInfoView.isHidden = true
-      self.routeInfoView.isHidden = true
-    UIView.animate(withDuration: 0.5) {
-      self.destViewHeight.constant = CGFloat(112) + CGFloat(self.numberOfRows) * self.platformRateItemHeight + 24
-      self.view.layoutIfNeeded()
+  func bindViewModel() {
+    viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
+      self?.reloadRates()
     }
-    
+  }
+  
+  @IBAction func continueWasTapped(_ sender: Any) {
     priceImpactInfoView.isHidden.toggle()
     routeInfoView.isHidden.toggle()
   }
   
-  func showFetchingRatesAnimation() {
-    
+  @objc func onToggleExpand() {
+    isExpanded.toggle()
+    expandIcon.image = isExpanded ? Images.swapPullup : Images.swapDropdown
+    let numberOfRows = viewModel.numberOfRateRows
+    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
+    UIView.animate(withDuration: 0.5) {
+      self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
+      self.view.layoutIfNeeded()
+    }
   }
   
-  func onFetchedPlatformRates() {
+}
+
+// MARK: Data
+extension SwapV2ViewController {
+  
+  func reloadRates() {
+    let numberOfRows = viewModel.numberOfRateRows
+    let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
     
+    canExpand = numberOfRows > 2
+    if !canExpand {
+      isExpanded = false
+    }
+    platformTableView.reloadData()
+    platformTableView.isHidden = false
+    
+    UIView.animate(withDuration: 0.5) {
+      self.loadingView.isHidden = true
+      self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func showFetchingPlatformsAnimation() {
+    loadingView.isHidden = false
+  }
+  
+  func reloadDestView() {
+  }
+  
+}
+
+// MARK: Rate loading animation
+extension SwapV2ViewController {
+  
+  func setupRateLoadingView() {
+    remainingTime = rateReloadingInterval
+    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
+      self?.onTimerTick()
+    })
+    rateLoadingView.isUserInteractionEnabled = true
+    let reloadRateGesture = UITapGestureRecognizer(target: self, action: #selector(onTapReloadRate))
+    rateLoadingView.addGestureRecognizer(reloadRateGesture)
+  }
+  
+  @objc func onTapReloadRate() {
+    resetTimer()
+  }
+  
+  func onTimerTick() {
+    remainingTime -= 1
+    if remainingTime == 0 {
+      resetTimer()
+    } else {
+      rateLoadingView.setRemainingTime(seconds: remainingTime)
+    }
+  }
+  
+  func resetTimer() {
+    requestRates()
+    remainingTime = rateReloadingInterval
+    rateLoadingView.setRemainingTime(seconds: remainingTime)
+    rateLoadingView.startAnimation(duration: rateReloadingInterval)
+  }
+  
+  func requestRates() {
+    UIView.animate(withDuration: 0.5) {
+      self.loadingView.isHidden = false
+      self.platformTableView.isHidden = true
+      self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+    }
+    viewModel.reloadRates()
   }
   
 }
@@ -99,13 +202,13 @@ class SwapV2ViewController: KNBaseViewController {
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//    return viewModel.platformRatesViewModels.count
-    return numberOfRows
+    return viewModel.platformRatesViewModels.value.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(SwapV2PlatformCell.self, indexPath: indexPath)!
     cell.selectionStyle = .none
+    cell.configure(viewModel: viewModel.platformRatesViewModels.value[indexPath.row])
     return cell
   }
   

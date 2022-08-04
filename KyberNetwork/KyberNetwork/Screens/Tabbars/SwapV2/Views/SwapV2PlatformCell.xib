@@ -112,8 +112,8 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="amountLabel" destination="Fiu-vS-jYB" id="kRR-H2-pca"/>
+                <outlet property="amountUsdLabel" destination="MSr-Ch-ddQ" id="JAb-Bt-LgC"/>
                 <outlet property="feeLabel" destination="qEk-BR-28I" id="h53-8f-1g2"/>
-                <outlet property="feeUsdLabel" destination="MSr-Ch-ddQ" id="Qzv-nz-vra"/>
                 <outlet property="iconLabel" destination="Y8y-eo-Ahs" id="LDD-vR-uSQ"/>
                 <outlet property="nameLabel" destination="RK2-WY-16w" id="9DT-xJ-lau"/>
             </connections>

@@ -6,20 +6,21 @@
 //
 
 import Foundation
+import BigInt
 
 class SwapPlatformItemViewModel {
   var icon: String
   var name: String
   var amountString: String
   var feeString: String
-  var feeUsdString: String
+  var amountUsdString: String
   
-  init(platformRate: PlatformRate) {
+  init(platformRate: Rate) {
     self.icon = platformRate.platformIcon
     self.name = platformRate.platform
-    self.amountString = platformRate.rate
+    self.amountString = (BigInt(platformRate.rate) ?? BigInt(0))?.shortString(decimals: 18) ?? ""
     self.feeString = ""
-    self.feeUsdString = ""
+    self.amountUsdString = ""
   }
   
 }

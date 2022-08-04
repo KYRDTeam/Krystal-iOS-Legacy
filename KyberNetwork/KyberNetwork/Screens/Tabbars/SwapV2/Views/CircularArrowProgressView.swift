@@ -7,16 +7,23 @@
 
 import UIKit
 
-class CircularArrowProgressView: UIView {
+class CircularArrowProgressView: BaseXibView {
+  @IBOutlet weak var timeLabel: UILabel!
+  @IBOutlet weak var backgroundProgressView: CircularProgressView!
+  @IBOutlet weak var excludeImageView: UIImageView!
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override func commonInit() {
+    super.commonInit()
+    
+    excludeImageView.image = Images.excludeCircleArrow.withRenderingMode(.alwaysTemplate)
   }
   
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  func startAnimation(duration: Int) {
+    backgroundProgressView.progressAnimation(duration: Double(duration))
   }
   
-  
+  func setRemainingTime(seconds: Int) {
+    timeLabel.text = "\(seconds)"
+  }
   
 }

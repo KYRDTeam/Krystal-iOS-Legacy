@@ -26,16 +26,19 @@
                 <outlet property="continueButton" destination="SOT-hf-WqE" id="62Y-4M-DdU"/>
                 <outlet property="destTokenLabel" destination="zcv-Ge-Q6K" id="MQe-cp-NXk"/>
                 <outlet property="destViewHeight" destination="eQD-AS-tzq" id="sSc-sr-lbW"/>
+                <outlet property="expandIcon" destination="O2G-q7-6ar" id="jRQ-Gp-GOf"/>
                 <outlet property="gasFeeInfoView" destination="2FU-38-AjM" id="Gdp-rq-0xw"/>
+                <outlet property="loadingView" destination="acI-9i-ctB" id="0CN-WJ-k5r"/>
                 <outlet property="maxGasFeeInfoView" destination="yq6-eX-uWR" id="ZAq-Zf-VgV"/>
                 <outlet property="minReceiveInfoView" destination="nnl-CE-rqV" id="V0e-NQ-qW1"/>
                 <outlet property="platformTableView" destination="j8z-tt-vDQ" id="6We-BK-mCU"/>
                 <outlet property="priceImpactInfoView" destination="1LR-C5-k87" id="YC3-4J-xtJ"/>
                 <outlet property="rateInfoView" destination="c25-Oe-hgy" id="4Oj-28-b7f"/>
-                <outlet property="reloadRateImageView" destination="XIu-na-6yz" id="ccf-T3-nsz"/>
+                <outlet property="rateLoadingView" destination="13u-tV-7BB" id="P8t-jH-grh"/>
                 <outlet property="routeInfoView" destination="aTl-kC-ce3" id="XsK-79-8FI"/>
                 <outlet property="slippageInfoView" destination="GRw-Yi-h5h" id="Bzk-W2-VM6"/>
                 <outlet property="sourceBalanceLabel" destination="zEe-a6-qHl" id="Lpl-kZ-JvG"/>
+                <outlet property="sourceTextField" destination="B1w-Ik-ZYI" id="JyF-ds-JIL"/>
                 <outlet property="sourceTokenLabel" destination="sbz-na-3Pt" id="N19-h1-XO5"/>
                 <outlet property="sourceView" destination="aHo-uv-839" id="RI0-4Q-nd1"/>
                 <outlet property="topBarHeight" destination="YZf-Zr-bXd" id="LVr-ym-Lgv"/>
@@ -206,7 +209,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r61-Ec-gfY">
-                                                    <rect key="frame" x="24" y="50.5" width="152.5" height="24"/>
+                                                    <rect key="frame" x="24" y="50.5" width="103" height="24"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_bsc_icon" translatesAutoresizingMaskIntoConstraints="NO" id="b6J-Kg-J3o">
                                                             <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -215,14 +218,14 @@
                                                                 <constraint firstAttribute="width" constant="24" id="czK-qn-KUc"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAFEMOON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-na-3Pt">
-                                                            <rect key="frame" x="32" y="2" width="92.5" height="20.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAKE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbz-na-3Pt">
+                                                            <rect key="frame" x="32" y="2" width="43" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="3xH-ya-ky5">
-                                                            <rect key="frame" x="136.5" y="10" width="8" height="4"/>
+                                                            <rect key="frame" x="87" y="10" width="8" height="4"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="8" id="8f2-0C-3KP"/>
                                                                 <constraint firstAttribute="height" constant="4" id="Qrj-lf-qMW"/>
@@ -242,13 +245,13 @@
                                                     </constraints>
                                                 </view>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0.00" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B1w-Ik-ZYI">
-                                                    <rect key="frame" x="192.5" y="46.5" width="163.5" height="32"/>
+                                                    <rect key="frame" x="143" y="46.5" width="213" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="heb-eC-Owy"/>
                                                     </constraints>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="24"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="decimalPad" returnKeyType="done"/>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" red="0.10588235294117647" green="0.11372549019607843" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
@@ -298,7 +301,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z1d-0B-gOX">
-                                                            <rect key="frame" x="24" y="50.5" width="152.5" height="24"/>
+                                                            <rect key="frame" x="24" y="50.5" width="105.5" height="24"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chain_bsc_icon" translatesAutoresizingMaskIntoConstraints="NO" id="JRM-vW-woZ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -307,14 +310,14 @@
                                                                         <constraint firstAttribute="height" constant="24" id="lev-Jg-bjJ"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAFEMOON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcv-Ge-Q6K">
-                                                                    <rect key="frame" x="32" y="2" width="92.5" height="20.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BUSD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcv-Ge-Q6K">
+                                                                    <rect key="frame" x="32" y="2" width="45.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon_white" translatesAutoresizingMaskIntoConstraints="NO" id="RpT-Gc-n8g">
-                                                                    <rect key="frame" x="136.5" y="10" width="8" height="4"/>
+                                                                    <rect key="frame" x="89.5" y="10" width="8" height="4"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="8" id="D9M-ki-hjC"/>
                                                                         <constraint firstAttribute="height" constant="4" id="mJH-T1-gSX"/>
@@ -333,21 +336,12 @@
                                                                 <constraint firstItem="zcv-Ge-Q6K" firstAttribute="centerY" secondItem="JRM-vW-woZ" secondAttribute="centerY" id="reL-Pa-FSF"/>
                                                             </constraints>
                                                         </view>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13u-tV-7BB">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13u-tV-7BB" customClass="CircularArrowProgressView" customModule="Krystal" customModuleProvider="target">
                                                             <rect key="frame" x="316" y="46.5" width="32" height="32"/>
-                                                            <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_exclude" translatesAutoresizingMaskIntoConstraints="NO" id="XIu-na-6yz">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
-                                                                </imageView>
-                                                            </subviews>
-                                                            <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                            <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="bottom" secondItem="XIu-na-6yz" secondAttribute="bottom" id="CPI-FF-RDf"/>
-                                                                <constraint firstItem="XIu-na-6yz" firstAttribute="top" secondItem="13u-tV-7BB" secondAttribute="top" id="HLQ-A4-KYT"/>
-                                                                <constraint firstItem="XIu-na-6yz" firstAttribute="leading" secondItem="13u-tV-7BB" secondAttribute="leading" id="ODa-gu-5Tz"/>
                                                                 <constraint firstAttribute="width" constant="32" id="Q92-Wt-ino"/>
                                                                 <constraint firstAttribute="height" constant="32" id="V4B-BV-Lo0"/>
-                                                                <constraint firstAttribute="trailing" secondItem="XIu-na-6yz" secondAttribute="trailing" id="yt3-hA-esI"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
@@ -387,7 +381,7 @@
                                                     <rect key="frame" x="0.0" y="96" width="372" height="112"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </tableView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap_dropdown_grey" translatesAutoresizingMaskIntoConstraints="NO" id="O2G-q7-6ar">
+                                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap_dropdown_grey" translatesAutoresizingMaskIntoConstraints="NO" id="O2G-q7-6ar">
                                                     <rect key="frame" x="170" y="208" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="bJ4-Kw-v0e"/>
@@ -564,7 +558,6 @@
         <image name="chain_eth_icon" width="24" height="24"/>
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
-        <image name="progress_exclude" width="144" height="144"/>
         <image name="swap_dropdown_grey" width="32" height="32"/>
         <image name="swap_settings" width="32" height="32"/>
         <image name="swap_swap" width="32" height="32"/>
