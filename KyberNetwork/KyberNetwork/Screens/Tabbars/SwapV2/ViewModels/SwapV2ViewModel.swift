@@ -10,10 +10,18 @@ import BigInt
 
 class SwapV2ViewModel {
   
+  var selectedRateIndex: Int = 0
+  
+  var currentChain: ChainType {
+    return KNGeneralProvider.shared.currentChain
+  }
+  
   private var platformRates: [Rate] = [] {
     didSet {
-      self.platformRatesViewModels.value = platformRates.map { rate in
-        return SwapPlatformItemViewModel(platformRate: rate)
+      self.platformRatesViewModels.value = platformRates.enumerated().map { index, rate in
+        return SwapPlatformItemViewModel(platformRate: rate,
+                                         isSelected: index == selectedRateIndex,
+                                         quoteToken: currentChain.quoteTokenObject())
       }
     }
   }
@@ -48,7 +56,6 @@ class SwapV2ViewModel {
   
   private let rateService = SwapRateService()
 
-  
   init() {
     self.reloadRates()
   }

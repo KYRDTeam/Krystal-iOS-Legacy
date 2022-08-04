@@ -591,6 +591,7 @@
 		A655619B283503A900944624 /* BridgeSubTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6556199283503A900944624 /* BridgeSubTransactionCell.xib */; };
 		A655619E28350D7600944624 /* TransactionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655619D28350D7600944624 /* TransactionStatus.swift */; };
 		A6573B80284DE16000A25CBF /* CrosschainTransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */; };
+		A6595C80289C0EA300CE7E42 /* PolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6595C7F289C0EA300CE7E42 /* PolygonView.swift */; };
 		A65C7A742818E3C6000FA9CE /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A732818E3C6000FA9CE /* NavigationBar.swift */; };
 		A65C7A762818E3D5000FA9CE /* NavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = A65C7A752818E3D5000FA9CE /* NavigationBar.xib */; };
 		A65C7A792818E877000FA9CE /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C7A772818E877000FA9CE /* WebViewController.swift */; };
@@ -1730,6 +1731,7 @@
 		A6556199283503A900944624 /* BridgeSubTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BridgeSubTransactionCell.xib; sourceTree = "<group>"; };
 		A655619D28350D7600944624 /* TransactionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatus.swift; sourceTree = "<group>"; };
 		A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosschainTransactionService.swift; sourceTree = "<group>"; };
+		A6595C7F289C0EA300CE7E42 /* PolygonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonView.swift; sourceTree = "<group>"; };
 		A65C7A732818E3C6000FA9CE /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		A65C7A752818E3D5000FA9CE /* NavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationBar.xib; sourceTree = "<group>"; };
 		A65C7A772818E877000FA9CE /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -5174,6 +5176,7 @@
 				A6D38BFE289A3A18003579F2 /* CircularArrowProgressView.swift */,
 				A6D38C00289A8ED0003579F2 /* CircularArrowProgressView.xib */,
 				A6D38C02289A92B3003579F2 /* CircleProgressView.swift */,
+				A6595C7F289C0EA300CE7E42 /* PolygonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7253,6 +7256,7 @@
 				257740DE2057AC82003323EB /* CAGradientLayer+Kyber.swift in Sources */,
 				2546C6D5221167460076E52B /* KNCrashlyticsUtil.swift in Sources */,
 				A6E6C9D8281796F100EEB2E6 /* SolanaTransaction+TransactionHistoryItem.swift in Sources */,
+				A6595C80289C0EA300CE7E42 /* PolygonView.swift in Sources */,
 				A6B3CD562811C07C005D0D66 /* CompletedHistoryTransactonViewModel.swift in Sources */,
 				291ED08B1F6F5D2100E7E93A /* Bundle.swift in Sources */,
 				C3233EFA2807DAEC0086C2BC /* CopyAddressViewController.swift in Sources */,

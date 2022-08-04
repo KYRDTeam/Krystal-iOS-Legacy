@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,6 +29,15 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65a-eV-zir">
                                 <rect key="frame" x="20" y="14" width="377" height="142"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m8V-VF-iTv">
+                                        <rect key="frame" x="0.0" y="0.0" width="377" height="142"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kyber_icon_medium" translatesAutoresizingMaskIntoConstraints="NO" id="Y8y-eo-Ahs">
                                         <rect key="frame" x="20" y="20" width="24" height="24"/>
                                         <constraints>
@@ -73,9 +83,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="m8V-VF-iTv" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" id="3eA-ji-iHc"/>
                                     <constraint firstItem="Y8y-eo-Ahs" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" constant="20" id="4Xl-ZM-0zg"/>
                                     <constraint firstItem="RK2-WY-16w" firstAttribute="leading" secondItem="Y8y-eo-Ahs" secondAttribute="trailing" constant="12" id="6OV-lm-4AD"/>
+                                    <constraint firstAttribute="trailing" secondItem="m8V-VF-iTv" secondAttribute="trailing" id="87e-4m-Ilk"/>
+                                    <constraint firstItem="m8V-VF-iTv" firstAttribute="top" secondItem="65a-eV-zir" secondAttribute="top" id="BeV-zz-YKy"/>
                                     <constraint firstItem="Fiu-vS-jYB" firstAttribute="leading" secondItem="RK2-WY-16w" secondAttribute="trailing" constant="20" id="KhW-Ke-ikj"/>
+                                    <constraint firstAttribute="bottom" secondItem="m8V-VF-iTv" secondAttribute="bottom" id="RtJ-UD-BYt"/>
                                     <constraint firstItem="MSr-Ch-ddQ" firstAttribute="centerY" secondItem="wCx-ci-yAZ" secondAttribute="centerY" id="Sa8-oo-cRE"/>
                                     <constraint firstItem="JQP-BI-SqN" firstAttribute="top" secondItem="Y8y-eo-Ahs" secondAttribute="bottom" constant="10" id="ehM-rS-vgY"/>
                                     <constraint firstAttribute="trailing" secondItem="MSr-Ch-ddQ" secondAttribute="trailing" constant="20" id="fq3-39-ocj"/>
@@ -91,13 +105,31 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e4N-Cg-EgX" customClass="PolygonView" customModule="Krystal" customModuleProvider="target">
+                                <rect key="frame" x="40" y="2" width="89" height="24"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="BS2-wg-SU1"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save 16%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4s-g9-iPN">
+                                <rect key="frame" x="56" y="6" width="57" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                <color key="textColor" name="buttonTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="a4s-g9-iPN" firstAttribute="leading" secondItem="e4N-Cg-EgX" secondAttribute="leading" constant="16" id="ADX-fE-9dh"/>
                             <constraint firstItem="65a-eV-zir" firstAttribute="top" secondItem="e9r-HW-VuP" secondAttribute="top" constant="14" id="JJg-Je-ADP"/>
                             <constraint firstItem="65a-eV-zir" firstAttribute="leading" secondItem="e9r-HW-VuP" secondAttribute="leading" constant="20" id="MZv-do-eGZ"/>
+                            <constraint firstItem="e4N-Cg-EgX" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" constant="20" id="SOB-82-u4i"/>
+                            <constraint firstItem="e4N-Cg-EgX" firstAttribute="top" secondItem="65a-eV-zir" secondAttribute="top" constant="-12" id="Sck-YV-2fH"/>
                             <constraint firstAttribute="trailing" secondItem="65a-eV-zir" secondAttribute="trailing" constant="20" id="gYe-Pq-Wtd"/>
                             <constraint firstAttribute="bottom" secondItem="65a-eV-zir" secondAttribute="bottom" id="jhE-gd-Jt7"/>
+                            <constraint firstItem="a4s-g9-iPN" firstAttribute="centerY" secondItem="e4N-Cg-EgX" secondAttribute="centerY" id="rWE-Yi-y8k"/>
+                            <constraint firstItem="a4s-g9-iPN" firstAttribute="trailing" secondItem="e4N-Cg-EgX" secondAttribute="trailing" constant="-16" id="u9W-i3-WdU"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -113,14 +145,20 @@
             <connections>
                 <outlet property="amountLabel" destination="Fiu-vS-jYB" id="kRR-H2-pca"/>
                 <outlet property="amountUsdLabel" destination="MSr-Ch-ddQ" id="JAb-Bt-LgC"/>
+                <outlet property="containerView" destination="65a-eV-zir" id="5X2-Sm-jG6"/>
                 <outlet property="feeLabel" destination="qEk-BR-28I" id="h53-8f-1g2"/>
                 <outlet property="iconLabel" destination="Y8y-eo-Ahs" id="LDD-vR-uSQ"/>
                 <outlet property="nameLabel" destination="RK2-WY-16w" id="9DT-xJ-lau"/>
+                <outlet property="overlayView" destination="m8V-VF-iTv" id="P9U-17-Ubp"/>
+                <outlet property="polygonView" destination="e4N-Cg-EgX" id="F4w-G2-uVF"/>
             </connections>
             <point key="canvasLocation" x="207.97101449275365" y="72.321428571428569"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="kyber_icon_medium" width="24" height="24"/>
+        <namedColor name="buttonTextColor">
+            <color red="0.058823529411764705" green="0.058823529411764705" blue="0.058823529411764705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

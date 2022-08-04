@@ -13,6 +13,9 @@ class SwapV2PlatformCell: UITableViewCell {
   @IBOutlet weak var amountLabel: UILabel!
   @IBOutlet weak var feeLabel: UILabel!
   @IBOutlet weak var amountUsdLabel: UILabel!
+  @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var overlayView: UIView!
+  @IBOutlet weak var polygonView: PolygonView!
   
   func configure(viewModel: SwapPlatformItemViewModel) {
     iconLabel.loadImage(viewModel.icon)
@@ -20,5 +23,9 @@ class SwapV2PlatformCell: UITableViewCell {
     amountLabel.text = viewModel.amountString
     feeLabel.text = viewModel.feeString
     amountUsdLabel.text = viewModel.amountUsdString
+    overlayView.kn_borderColor = viewModel.isSelected ? UIColor.Kyber.primaryGreenColor : UIColor.clear
+    overlayView.kn_borderWidth = viewModel.isSelected ? 1 : 0
+    overlayView.backgroundColor = viewModel.isSelected ? UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.1) : .clear
+    polygonView.isHidden = !viewModel.isSelected
   }
 }
