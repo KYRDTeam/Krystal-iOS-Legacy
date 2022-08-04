@@ -605,7 +605,7 @@ extension OverviewMainViewController: UITableViewDataSource {
       if self.viewModel.currentChain == .all {
         let cell = tableView.dequeueReusableCell(OverviewMultichainLiquidityPoolCell.self, indexPath: indexPath)!
         let key = self.viewModel.displayHeader.value[indexPath.section]
-        if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
+        if let viewModel = self.viewModel.displayLPDataSource.value[key.key]?[indexPath.row] {
           viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
           cell.updateCell(viewModel)
         }
@@ -617,7 +617,7 @@ extension OverviewMainViewController: UITableViewDataSource {
         for: indexPath
       ) as! OverviewLiquidityPoolCell
       let key = self.viewModel.displayHeader.value[indexPath.section]
-      if let viewModel = self.viewModel.displayLPDataSource.value[key.0]?[indexPath.row] {
+      if let viewModel = self.viewModel.displayLPDataSource.value[key.key]?[indexPath.row] {
         viewModel.hideBalanceStatus = self.viewModel.hideBalanceStatus
         cell.updateCell(viewModel)
       }
@@ -697,7 +697,7 @@ extension OverviewMainViewController: UITableViewDelegate {
       if let lendingBalance = balance as? LendingBalance {
 
         let platform = self.viewModel.displayHeader.value[indexPath.section]
-        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.0, balance: lendingBalance))
+        self.delegate?.overviewMainViewController(self, run: .withdrawBalance(platform: platform.key, balance: lendingBalance))
       } else if let distributionBalance = balance as? LendingDistributionBalance {
 
         self.delegate?.overviewMainViewController(self, run: .claim(balance: distributionBalance))
