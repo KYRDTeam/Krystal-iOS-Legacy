@@ -478,6 +478,7 @@ class KNLoadBalanceCoordinator {
 
   func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
     guard let provider = AppDelegate.session.externalProvider else {
+      completion(false)
       return
     }
 

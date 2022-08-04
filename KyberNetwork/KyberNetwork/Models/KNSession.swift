@@ -44,6 +44,9 @@ class KNSession {
   }
   
   func getCurrentWalletAddresses() -> [KAddress] {
+    if address.isWatchWallet {
+      return [address]
+    }
     return walletManager.getAllAddresses(walletID: address.walletID)
   }
   
