@@ -397,6 +397,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -432,6 +433,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
