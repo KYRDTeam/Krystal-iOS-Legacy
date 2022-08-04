@@ -198,6 +198,7 @@ class OverviewMainViewController: KNBaseViewController {
     self.sortingContainerView.isHidden = self.viewModel.currentMode != .market(rightMode: .ch24) || self.viewModel.overviewMode == .summary
     self.totatlInfoView.isHidden = self.viewModel.overviewMode == .summary
     self.insestView.frame.size.height = self.insetViewHeight
+    self.updateUIByFeatureFlags()
     self.updateCh24Button()
     self.tableView.reloadData()
     self.infoCollectionView.reloadData()
