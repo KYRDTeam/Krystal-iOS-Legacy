@@ -106,7 +106,6 @@ class KNLoadBalanceCoordinator {
   }
 
   func resume() {
-    AppDelegate.shared.window?.rootViewController?.showLoadingHUD()
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
