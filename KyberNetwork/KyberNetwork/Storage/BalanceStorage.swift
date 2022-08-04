@@ -9,7 +9,23 @@ import Foundation
 import BigInt
 import KrystalWallets
 
-typealias SectionKeyType = (key: String, chain: ChainType?)
+
+struct SectionKeyType: Hashable {
+  let key: String
+  let chain: ChainType?
+  
+  static func == (lhs: SectionKeyType, rhs: SectionKeyType) -> Bool {
+    return (lhs.key == rhs.key) && (lhs.chain == rhs.chain)
+  }
+  
+  func toString() -> String {
+    if let unwrap = self.chain {
+      return "\(key)###\(unwrap.getChainId())"
+    } else {
+      return "\(key)"
+    }
+  }
+}
 
 class BalanceStorage {
   static let shared = BalanceStorage()
@@ -246,13 +262,14 @@ class BalanceStorage {
 
     allBalances.forEach { (item) in
       if !item.balances.isEmpty {
-        balanceDict[item.name] = item.balances
-        sectionKeys.append((item.name, item.chainType))
+        let key = SectionKeyType(key: item.name, chain: item.chainType)
+        balanceDict[key.toString()] = item.balances
+        sectionKeys.append(key)
       }
     }
     
     balanceDict["OTHER"] = BalanceStorage.shared.getDistributionBalance(chain)
-    sectionKeys.append(("OTHER", nil))
+    sectionKeys.append(SectionKeyType(key: "OTHER", chain: nil))
     
     return (sectionKeys, balanceDict)
   }

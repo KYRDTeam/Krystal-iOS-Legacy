@@ -3,6 +3,7 @@
 import UIKit
 import BigInt
 import TrustKeystore
+import KrystalWallets
 
 class KNSendTokenViewModel: NSObject {
 
@@ -33,6 +34,14 @@ class KNSendTokenViewModel: NSObject {
 
   var isSendAllBalanace: Bool = false
 
+  var currentAddress: KAddress {
+    return AppDelegate.session.address
+  }
+  
+  var addressName: String {
+    return currentAddress.name
+  }
+  
   var advancedGasLimit: String? {
     didSet {
       if self.advancedGasLimit != nil {
@@ -108,14 +117,15 @@ class KNSendTokenViewModel: NSObject {
     return isAmountValid ? UIColor.white : UIColor.red
   }
 
-  var currentWalletAddress: String
+  var currentWalletAddress: String {
+    return currentAddress.addressString
+  }
 
   init(from: TokenObject, balances: [String: Balance], currentAddress: String, recipientAddress: String = "") {
     self.from = from.clone()
     self.isSendAllBalanace = false
     self.gasLimit = KNGasConfiguration.calculateDefaultGasLimitTransfer(token: from)
     self.baseGasLimit = self.gasLimit
-    self.currentWalletAddress = currentAddress
     super.init()
     self.updateInputString(recipientAddress)
   }
