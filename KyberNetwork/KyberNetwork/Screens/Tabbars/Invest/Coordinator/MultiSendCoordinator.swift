@@ -487,7 +487,12 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           KNGeneralProvider.shared.getEstimateGasLimit(request: item.1.createGasLimitRequest()) { result in
             switch result {
             case.success(let gas):
-              output.append((item.0, gas))
+              if let previousGas = output.last?.1 {
+                output.append((item.0, gas + previousGas))
+              } else {
+                output.append((item.0, gas))
+              }
+              
             default:
               output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
             }
