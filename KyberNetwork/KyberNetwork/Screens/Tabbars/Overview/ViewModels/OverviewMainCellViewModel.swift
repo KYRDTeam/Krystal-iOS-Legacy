@@ -214,7 +214,7 @@ class OverviewMainCellViewModel {
         if change24 == 0 {
           return UIColor.clear
         } else {
-          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
         }
       default:
         let change24 = token.getTokenChange24(self.currency)
@@ -222,19 +222,19 @@ class OverviewMainCellViewModel {
         if cap == 0 {
           return UIColor.clear
         } else {
-          return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
         }
       }
     case .asset(token: let token, rightMode: let mode):
       guard let quote = self.quotes[self.currency.toString()] else {
-        return UIColor(named: "buttonBackgroundColor")
+        return UIColor.Kyber.buttonBg
       }
-      return quote.priceChange24hPercentage > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+      return quote.priceChange24hPercentage > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
     case .search(token: let token):
       let change24 = token.getTokenChange24(self.currency)
-      return change24 > 0 ? UIColor(named: "buttonBackgroundColor") : UIColor(named: "textRedColor")
+      return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
     default:
-      return UIColor(named: "buttonBackgroundColor")
+      return UIColor.Kyber.buttonBg
     }
   }
 
