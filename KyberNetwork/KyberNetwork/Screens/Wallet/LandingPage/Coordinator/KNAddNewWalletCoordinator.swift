@@ -218,6 +218,7 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
       default:
         self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
       }
+      self.navigationController.dismiss(animated: true, completion: nil)
     }
   }
 }
