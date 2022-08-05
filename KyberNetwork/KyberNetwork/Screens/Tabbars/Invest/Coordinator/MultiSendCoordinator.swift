@@ -593,7 +593,6 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         group.leave()
       })
     }
-    group.wait()
     group.notify(queue: .main) {
       guard self.approveRequestCountDown == 0 else { return }
       self.isRequestingApprove = false
