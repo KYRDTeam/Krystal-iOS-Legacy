@@ -328,7 +328,7 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorUpdateSelectedToken(to, isSource: false)
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
+  func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool { //TODO: update transaction view state
     if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.historyCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let trans = self.transactionStatusVC?.transaction, trans.hash == tx.hash {
@@ -353,7 +353,7 @@ extension KNExchangeTokenCoordinator {
 
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
-  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) { //TODO: Call new status popup
     let controller = KNTransactionStatusPopUp(transaction: transaction)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
