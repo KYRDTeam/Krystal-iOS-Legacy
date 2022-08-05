@@ -173,20 +173,16 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
-    DispatchQueue.global(qos: .background).async {
-      self.requestBuildTx(items: items) { object in
-        guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
-          DispatchQueue.global().asyncAfter(deadline: .now() + 1.5) {
-            self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
-          }
-          return
-        }
-        self.processingTx = object
-        self.processingTx?.nonce = nonce
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-          self.openConfirmView(items: items, txObject: object)
-        }
+    self.requestBuildTx(items: items) { object in
+      guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
+        self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
+        return
+      }
+      self.processingTx = object
+      self.processingTx?.nonce = nonce
+      DispatchQueue.main.async {
+        self.navigationController.hideLoading()
+        self.openConfirmView(items: items, txObject: object)
       }
     }
   }
