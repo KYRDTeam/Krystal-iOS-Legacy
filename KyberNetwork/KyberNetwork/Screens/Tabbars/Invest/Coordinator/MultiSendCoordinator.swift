@@ -141,6 +141,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .confirm(items: let items):
       self.navigationController.displayLoading()
       self.getLatestNonce { result in
+        self.navigationController.hideLoading()
         switch result {
         case .success(let nonce):
           let nonceStr = BigInt(nonce).hexEncoded.hexSigned2Complement
@@ -172,20 +173,16 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
-    DispatchQueue.global(qos: .background).async {
-      self.requestBuildTx(items: items) { object in
-        guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
-          DispatchQueue.global().asyncAfter(deadline: .now() + 1.5) {
-            self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
-          }
-          return
-        }
-        self.processingTx = object
-        self.processingTx?.nonce = nonce
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-          self.openConfirmView(items: items, txObject: object)
-        }
+    self.requestBuildTx(items: items) { object in
+      guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
+        self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
+        return
+      }
+      self.processingTx = object
+      self.processingTx?.nonce = nonce
+      DispatchQueue.main.async {
+        self.navigationController.hideLoading()
+        self.openConfirmView(items: items, txObject: object)
       }
     }
   }
@@ -552,7 +549,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         group.leave()
       }
 
-      group.notify(queue: .global()) {
+      group.notify(queue: .main) {
         completion(dataList)
       }
     }
@@ -630,23 +627,27 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       sendGroup.enter()
       let item = txData.0
 
-      KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
-        switch sendResult {
-        case .success(let hash):
-          let message = item.0.isZero ? "Reset \(item.1.name) approval" : "Approve \(item.1.name)"
-          let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx: nil )
-          historyTx.hash = hash
-          historyTx.time = Date()
-          historyTx.nonce = txData.1.nonce
-          EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
-          
-        case .failure(let error):
-          unApproveItem.append(txData.0)
-          errors.append(error)
-        }
-        self.approveRequestCountDown -= 1
-        sendGroup.leave()
-      })
+      // FIXME: Don't know why, but `sendRawTransactionWithInfura` only complete when call on this thread. Need investigate more.
+      DispatchQueue.global().async {
+        KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
+          switch sendResult {
+          case .success(let hash):
+            let message = item.0.isZero ? "Reset \(item.1.name) approval" : "Approve \(item.1.name)"
+            let historyTx = InternalHistoryTransaction(type: .allowance, state: .pending, fromSymbol: nil, toSymbol: nil, transactionDescription: message, transactionDetailDescription: "", transactionObj: txData.1.toSignTransactionObject(), eip1559Tx: nil )
+            historyTx.hash = hash
+            historyTx.time = Date()
+            historyTx.nonce = txData.1.nonce
+            EtherscanTransactionStorage.shared.appendInternalHistoryTransaction(historyTx)
+            
+          case .failure(let error):
+            unApproveItem.append(txData.0)
+            errors.append(error)
+          }
+          self.approveRequestCountDown -= 1
+          sendGroup.leave()
+        })
+      }
+      
       sendGroup.wait()
     }
 
