@@ -250,7 +250,6 @@ class KNLoadBalanceCoordinator {
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
     if self.shouldFetchAllChain {
-      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -261,7 +260,10 @@ class KNLoadBalanceCoordinator {
           return "solana:\(address.addressString)"
         }
       }
+    } else {
+      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
     }
+    
     provider.requestWithFilter(.getMultichainBalance(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
