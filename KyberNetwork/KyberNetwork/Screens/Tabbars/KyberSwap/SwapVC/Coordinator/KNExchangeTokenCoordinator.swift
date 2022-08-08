@@ -25,6 +25,7 @@ protocol KNExchangeTokenCoordinatorDelegate: class {
   func exchangeTokenCoodinatorDidSendRefCode(_ code: String)
   func exchangeTokenCoordinatorDidSelectAddToken(_ token: TokenObject)
   func exchangeTokenCoordinatorDidAddTokens(srcToken: TokenObject?, destToken: TokenObject?)
+  func exchangeTokenCoordinatorDidSelectTokens(token: Token)
 }
 
 //swiftlint:disable file_length
@@ -1010,8 +1011,7 @@ extension KNExchangeTokenCoordinator: SwapProcessPopupDelegate {
         self.navigationController.openSafari(with: "https://t.me/KrystalDefi")
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
-          let urlString = KNGeneralProvider.shared.customRPC.etherScanEndpoint + "address/\(token.address)"
-          self.navigationController.openSafari(with: urlString)
+          self.delegate?.exchangeTokenCoordinatorDidSelectTokens(token: token)
         }
       }
     }

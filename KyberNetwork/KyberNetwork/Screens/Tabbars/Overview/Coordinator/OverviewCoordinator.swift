@@ -135,7 +135,7 @@ class OverviewCoordinator: NSObject, Coordinator {
     self.navigationController.pushViewController(controller, animated: true)
   }
 
-  fileprivate func openChartView(token: Token, chainId: Int? = nil) {
+  func openChartView(token: Token, chainId: Int? = nil) {
     Tracker.track(event: .marketOpenDetail)
     let viewModel = ChartViewModel(token: token, currencyMode: self.currentCurrencyType)
     if let chainId = chainId {

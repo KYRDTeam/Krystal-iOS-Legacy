@@ -115,7 +115,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
       self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
-      self.transactionStateIcon.image = UIImage(named: "success")
+      self.transactionStateIcon.image = UIImage(named: "tx_status_success")
       self.secondButton.setTitle("", for: .normal)
       let buttonTitle = "View \(self.transaction.toSymbol ?? "")"
       self.secondButton.setTitle(buttonTitle, for: .normal)
@@ -125,7 +125,7 @@ class SwapProcessPopup: KNBaseViewController {
       self.loadingIndicatorView.isHidden = true
       self.transactionStateIcon.isHidden = false
       self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
-      self.transactionStateIcon.image = UIImage(named: "fail")
+      self.transactionStateIcon.image = UIImage(named: "tx_status_fail")
       let buttonTitle = "Go to support"
       self.secondButton.setTitle(buttonTitle, for: .normal)
       self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
