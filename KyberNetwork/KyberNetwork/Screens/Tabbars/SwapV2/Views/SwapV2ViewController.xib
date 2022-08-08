@@ -13,11 +13,11 @@
         <array key="Karla-Bold.ttf">
             <string>Karla-Bold</string>
         </array>
+        <array key="Karla-Regular.ttf">
+            <string>Karla-Regular</string>
+        </array>
         <array key="Karla-SemiBold.ttf">
             <string>Karla-SemiBold</string>
-        </array>
-        <array key="Karla-VariableFont_wght.ttf">
-            <string>Karla-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -25,6 +25,7 @@
             <connections>
                 <outlet property="continueButton" destination="SOT-hf-WqE" id="62Y-4M-DdU"/>
                 <outlet property="destTokenLabel" destination="zcv-Ge-Q6K" id="MQe-cp-NXk"/>
+                <outlet property="destTokenView" destination="z1d-0B-gOX" id="a8F-dv-U21"/>
                 <outlet property="destViewHeight" destination="eQD-AS-tzq" id="sSc-sr-lbW"/>
                 <outlet property="expandIcon" destination="O2G-q7-6ar" id="jRQ-Gp-GOf"/>
                 <outlet property="fetchingAnimationView" destination="nzk-yc-rhc" id="ynk-5D-zpe"/>
@@ -41,6 +42,7 @@
                 <outlet property="sourceBalanceLabel" destination="zEe-a6-qHl" id="Lpl-kZ-JvG"/>
                 <outlet property="sourceTextField" destination="B1w-Ik-ZYI" id="JyF-ds-JIL"/>
                 <outlet property="sourceTokenLabel" destination="sbz-na-3Pt" id="N19-h1-XO5"/>
+                <outlet property="sourceTokenView" destination="r61-Ec-gfY" id="2xx-ve-UFZ"/>
                 <outlet property="sourceView" destination="aHo-uv-839" id="RI0-4Q-nd1"/>
                 <outlet property="topBarHeight" destination="YZf-Zr-bXd" id="LVr-ym-Lgv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -575,6 +577,9 @@
             <point key="canvasLocation" x="136" y="108.84557721139431"/>
         </view>
     </objects>
+    <designables>
+        <designable name="nzk-yc-rhc"/>
+    </designables>
     <resources>
         <image name="arrow_down_icon_white" width="10" height="6"/>
         <image name="arrow_down_template" width="24" height="24"/>
