@@ -37,6 +37,7 @@ class SearchTokenViewController: KNBaseViewController {
     self.viewModel = viewModel
     super.init(nibName: SearchTokenViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
+    self.viewModel.controller = self
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -56,7 +57,7 @@ class SearchTokenViewController: KNBaseViewController {
   }
   
   func setupUI() {
-    self.searchField.setPlaceholder(text: Strings.searchByTokenWalletEND, color: UIColor(named: "normalTextColor")!)
+    self.searchField.setPlaceholder(text: Strings.findTokenByNameSymbolAddress, color: UIColor(named: "normalTextColor")!)
     self.tableView.registerCellNib(SearchTokenViewCell.self)
     self.collectionView.registerCellNib(CommonBaseTokenCell.self)
     self.collectionViewHeight.constant = 40 * 2 + 16
@@ -103,7 +104,7 @@ class SearchTokenViewController: KNBaseViewController {
   }
   
   @IBAction func cancelButtonTapped(_ sender: Any) {
-    self.disableSearch()
+    self.updateUIEndSearchingMode()
   }
   
   func disableSearch() {
