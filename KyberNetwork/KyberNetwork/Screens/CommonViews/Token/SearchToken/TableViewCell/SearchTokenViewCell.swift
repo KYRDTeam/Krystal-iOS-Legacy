@@ -31,14 +31,14 @@ class SearchTokenViewCell: UITableViewCell {
     }
     self.symbolLabel.text = token.token.name
     if let balanceBigInt = token.balance.amountBigInt(decimals: 0) {
-      self.balanceLabel.text = balanceBigInt.shortString(decimals: token.token.decimals)
+      self.balanceLabel.text = balanceBigInt.shortString(decimals: token.token.decimals, maxFractionDigits: 6) + " " + token.token.symbol
     } else {
       self.balanceLabel.text = ""
     }
     if let quoteUSD = token.quotes["usd"] {
       self.valueLabel.text = "$" + quoteUSD.value.displayUSD()
     } else {
-      self.valueLabel.text = ""
+      self.valueLabel.text = "$0"
     }
   }
     
