@@ -1493,6 +1493,7 @@ extension KrytalService: TargetType {
         "address": address,
         "query": querry,
         "orderBy": orderBy,
+        "limit": 50,
         "tags": "PROMOTION,VERIFIED,UNVERIFIED"
       ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
