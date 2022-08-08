@@ -250,7 +250,6 @@ class KNLoadBalanceCoordinator {
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
     if self.shouldFetchAllChain {
-      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -261,7 +260,10 @@ class KNLoadBalanceCoordinator {
           return "solana:\(address.addressString)"
         }
       }
+    } else {
+      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
     }
+    
     provider.requestWithFilter(.getMultichainBalance(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
@@ -288,11 +290,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
@@ -397,6 +399,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -432,6 +435,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -464,11 +468,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
@@ -476,6 +480,7 @@ class KNLoadBalanceCoordinator {
 
   func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
     guard let provider = AppDelegate.session.externalProvider else {
+      completion(false)
       return
     }
 

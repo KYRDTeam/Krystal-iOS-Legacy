@@ -193,9 +193,9 @@ class KNListWalletsViewController: KNBaseViewController {
   }
 
   func reloadData() {
-    self.updateEmptyView()
     self.viewModel.reloadDataSource {
       DispatchQueue.main.async {
+        self.updateEmptyView()
         self.walletTableView.reloadData()
         self.hideLoading()
       }

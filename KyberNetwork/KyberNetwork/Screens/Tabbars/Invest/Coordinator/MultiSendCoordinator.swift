@@ -43,7 +43,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   fileprivate(set) var confirmVC: MultiSendConfirmViewController?
   fileprivate(set) var processingTx: TxObject?
   fileprivate(set) var transactionStatusVC: KNTransactionStatusPopUp?
-
+  
   var approvingItems: [ApproveMultiSendItem] = []
   var allowance: [Token: BigInt] = [:]
   var approveRequestCountDown = 0
@@ -56,7 +56,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   init(navigationController: UINavigationController = UINavigationController()) {
     self.navigationController = navigationController
   }
-
+  
   func start() {
     guard self.navigationController.viewControllers.last != self.rootViewController else { return }
     self.navigationController.pushViewController(self.rootViewController, animated: true, completion: nil)
@@ -90,7 +90,7 @@ class MultiSendCoordinator: NSObject, Coordinator {
   func appCoordinatorSwitchAddress() {
     self.rootViewController.coordinatorAppSwitchAddress()
   }
-
+  
   func coordinatorDidUpdatePendingTx() {
     self.rootViewController.coordinatorDidUpdatePendingTx()
   }
@@ -141,6 +141,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     case .confirm(items: let items):
       self.navigationController.displayLoading()
       self.getLatestNonce { result in
+        self.navigationController.hideLoading()
         switch result {
         case .success(let nonce):
           let nonceStr = BigInt(nonce).hexEncoded.hexSigned2Complement
@@ -172,20 +173,16 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
   }
   
   fileprivate func openConfirmViewAfterRequestBuildTx(items: [MultiSendItem], nonce: String) {
-    DispatchQueue.global(qos: .background).async {
-      self.requestBuildTx(items: items) { object in
-        guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
-          DispatchQueue.global().asyncAfter(deadline: .now() + 1.5) {
-            self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
-          }
-          return
-        }
-        self.processingTx = object
-        self.processingTx?.nonce = nonce
-        DispatchQueue.main.async {
-          self.navigationController.hideLoading()
-          self.openConfirmView(items: items, txObject: object)
-        }
+    self.requestBuildTx(items: items) { object in
+      guard let gasLimit = BigInt(object.gasLimit.drop0x, radix: 16), !gasLimit.isZero else {
+        self.openConfirmViewAfterRequestBuildTx(items: items, nonce: nonce)
+        return
+      }
+      self.processingTx = object
+      self.processingTx?.nonce = nonce
+      DispatchQueue.main.async {
+        self.navigationController.hideLoading()
+        self.openConfirmView(items: items, txObject: object)
       }
     }
   }
@@ -252,7 +249,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
       completion(remaining)
     }
   }
-
+  
   fileprivate func openListContactsView() {
     let controller = KNListContactViewController()
     controller.loadViewIfNeeded()
@@ -275,7 +272,7 @@ extension MultiSendCoordinator: MultiSendViewControllerDelegate {
     self.approveVC = controller
     Tracker.track(event: .multisendApprove, customAttributes: ["numberAddress": items.count])
   }
-
+  
   fileprivate func openConfirmView(items: [MultiSendItem], txObject: TxObject) {
     guard self.confirmVC == nil else { return }
     let gasLimit = BigInt(txObject.gasLimit.drop0x, radix: 16) ?? BigInt.zero
@@ -365,7 +362,7 @@ extension MultiSendCoordinator: KNNewContactViewControllerDelegate {
       if case .send(let address) = event {
         self.rootViewController.coordinatorSend(to: address)
       }
-
+      
       if case .dismiss = event {
         self.rootViewController.coordinatorDidAddNewContact()
       }
@@ -374,14 +371,14 @@ extension MultiSendCoordinator: KNNewContactViewControllerDelegate {
 }
 
 extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
-
+  
   func multiSendApproveVieController(_ controller: MultiSendApproveViewController, run event: MultiSendApproveViewEvent) {
     switch event {
     case .openGasPriceSelect(let gasLimit, let baseGasLimit, let selectType, let advancedGasLimit, let advancedPriorityFee, let advancedMaxFee, let advancedNonce):
       openGasPriceSelectView(gasLimit, selectType, baseGasLimit, advancedGasLimit, advancedPriorityFee, advancedMaxFee, advancedNonce, controller)
     case .dismiss:
       self.approveVC = nil
-    
+      
     case .approve(items: let items, isApproveUnlimit: let isApproveUnlimit, settings: let setting, estNoTx: let noTx):
       if currentAddress.isWatchWallet {
         return
@@ -408,7 +405,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
                 legacyTxs.append((item, tx))
               }
             }
-
+            
             if !eipTxs.isEmpty {
               self.sendEIP1559Txs(eipTxs) { remaining in
                 guard remaining.0.isEmpty else {
@@ -490,7 +487,12 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
           KNGeneralProvider.shared.getEstimateGasLimit(request: item.1.createGasLimitRequest()) { result in
             switch result {
             case.success(let gas):
-              output.append((item.0, gas))
+              if let previousGas = output.last?.1 {
+                output.append((item.0, gas + previousGas))
+              } else {
+                output.append((item.0, gas))
+              }
+              
             default:
               output.append((item.0, KNGasConfiguration.approveTokenGasLimitDefault))
             }
@@ -503,7 +505,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       }
     }
   }
-
+  
   fileprivate func getLatestNonce(completion: @escaping (Result<Int, AnyError>) -> Void) {
     if currentAddress.isWatchWallet {
       return
@@ -541,7 +543,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
       
       let value = isApproveUnlimit ? Constants.maxValueBigInt : item.0
       group.enter()
-
+      
       KNGeneralProvider.shared.getSendApproveERC20TokenEncodeData(networkAddress: addressStr, value: value) { encodeResult in
         switch encodeResult {
         case .success(let data):
@@ -551,13 +553,13 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         }
         group.leave()
       }
-
-      group.notify(queue: .global()) {
+      
+      group.notify(queue: .main) {
         completion(dataList)
       }
     }
   }
-
+  
   fileprivate func sendEIP1559Txs(_ txs: [(ApproveMultiSendItem, EIP1559Transaction)], completion: @escaping (([ApproveMultiSendItem], [AnyError])) -> Void) {
     if currentAddress.isWatchWallet {
       self.navigationController.showErrorTopBannerMessage(message: Strings.watchWalletNotSupportOperation)
@@ -572,7 +574,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         signedData.append((element.0, element.1, data))
       }
     }
-
+    
     let group = DispatchGroup()
     var unApproveItem: [ApproveMultiSendItem] = []
     var errors: [AnyError] = []
@@ -595,9 +597,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         self.approveRequestCountDown -= 1
         group.leave()
       })
-      
     }
-    group.wait()
     group.notify(queue: .main) {
       guard self.approveRequestCountDown == 0 else { return }
       self.isRequestingApprove = false
@@ -629,7 +629,7 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
     signedData.forEach { txData in
       sendGroup.enter()
       let item = txData.0
-
+      
       KNGeneralProvider.shared.sendRawTransactionWithInfura(txData.2, completion: { sendResult in
         switch sendResult {
         case .success(let hash):
@@ -647,9 +647,8 @@ extension MultiSendCoordinator: MultiSendApproveViewControllerDelegate {
         self.approveRequestCountDown -= 1
         sendGroup.leave()
       })
-      sendGroup.wait()
     }
-
+    
     sendGroup.notify(queue: .main) {
       guard self.approveRequestCountDown == 0 else { return }
       self.isRequestingApprove = false
@@ -778,7 +777,7 @@ extension MultiSendCoordinator: MultiSendConfirmViewControllerDelegate {
           }
         }
       }
-
+      
       self.confirmVC = nil
       self.processingTx = nil
     case .showAddresses(let items):
@@ -823,7 +822,7 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
       slow: KNGasCoordinator.shared.lowKNGas,
       superFast: KNGasCoordinator.shared.superFastKNGas
     )
-
+    
     viewModel.transaction = transaction
     viewModel.isSpeedupMode = true
     let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
@@ -831,7 +830,7 @@ extension MultiSendCoordinator: KNTransactionStatusPopUpDelegate {
     self.gasPriceSelector = vc
     self.navigationController.present(vc, animated: true, completion: nil)
   }
-
+  
   fileprivate func openTransactionCancelConfirmPopUpFor(transaction: InternalHistoryTransaction) {
     let gasLimit: BigInt = {
       if KNGeneralProvider.shared.isUseEIP1559 {
@@ -879,7 +878,7 @@ extension MultiSendCoordinator: QRCodeReaderDelegate {
   func readerDidCancel(_ reader: QRCodeReaderViewController!) {
     reader.dismiss(animated: true, completion: nil)
   }
-
+  
   func reader(_ reader: QRCodeReaderViewController!, didScanResult result: String!) {
     reader.dismiss(animated: true) {
       guard let url = WCURL(result) else {
@@ -890,7 +889,7 @@ extension MultiSendCoordinator: QRCodeReaderDelegate {
         )
         return
       }
-
+      
       do {
         let privateKey = try WalletManager.shared.exportPrivateKey(address: self.currentAddress)
         DispatchQueue.main.async {

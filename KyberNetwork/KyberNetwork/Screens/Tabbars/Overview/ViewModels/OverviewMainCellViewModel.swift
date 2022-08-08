@@ -204,6 +204,39 @@ class OverviewMainCellViewModel {
       return UIColor(named: "buttonBackgroundColor")
     }
   }
+  
+  var displayAccessoryColor: UIColor? {
+    switch self.mode {
+    case .market(token: let token, rightMode: let mode):
+      switch mode {
+      case .ch24:
+        let change24 = token.getTokenChange24(self.currency)
+        if change24 == 0 {
+          return UIColor.clear
+        } else {
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+        }
+      default:
+        let change24 = token.getTokenChange24(self.currency)
+        let cap = token.getMarketCap(self.currency)
+        if cap == 0 {
+          return UIColor.clear
+        } else {
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+        }
+      }
+    case .asset(token: let token, rightMode: let mode):
+      guard let quote = self.quotes[self.currency.toString()] else {
+        return UIColor.Kyber.buttonBg
+      }
+      return quote.priceChange24hPercentage > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+    case .search(token: let token):
+      let change24 = token.getTokenChange24(self.currency)
+      return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+    default:
+      return UIColor.Kyber.buttonBg
+    }
+  }
 
   var displayDetailBox: String {
     switch self.mode {

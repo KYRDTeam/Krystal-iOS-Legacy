@@ -208,7 +208,17 @@ extension KNAddNewWalletCoordinator: AddWatchWalletViewControllerDelegate {
       delegate?.addNewWalletCoordinator(didAdd: watchAddress, chain: currentChain)
       self.navigationController.dismiss(animated: true, completion: nil)
     } catch {
-      self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
+      guard let error = error as? WalletManagerError else {
+        self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
+        return
+      }
+      switch error {
+      case .duplicatedWallet:
+        self.navigationController.showErrorTopBannerMessage(message: Strings.addressExisted)
+      default:
+        self.navigationController.showErrorTopBannerMessage(message: error.localizedDescription)
+      }
+      self.navigationController.dismiss(animated: true, completion: nil)
     }
   }
 }
