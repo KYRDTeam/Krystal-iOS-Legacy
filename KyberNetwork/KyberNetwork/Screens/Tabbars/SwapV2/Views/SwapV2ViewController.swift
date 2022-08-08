@@ -33,7 +33,7 @@ class SwapV2ViewController: KNBaseViewController {
   
   let platformRateItemHeight: CGFloat = 96
   let loadingViewHeight: CGFloat = 142
-  let rateReloadingInterval: Int = 10
+  let rateReloadingInterval: Int = 30
   var timer: Timer?
   var remainingTime: Int = 0
   
@@ -50,6 +50,7 @@ class SwapV2ViewController: KNBaseViewController {
     
     configureViews()
     bindViewModel()
+    resetTimer()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -161,6 +162,7 @@ extension SwapV2ViewController {
   }
   
   func reloadDestView() {
+    
   }
   
 }
@@ -200,6 +202,7 @@ extension SwapV2ViewController {
   
   func requestRates() {
     UIView.animate(withDuration: 0.5) {
+      self.expandIcon.isHidden = true
       self.loadingView.isHidden = false
       self.platformTableView.isHidden = true
       self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24

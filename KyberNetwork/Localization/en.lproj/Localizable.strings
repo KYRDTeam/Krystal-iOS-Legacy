@@ -880,3 +880,6 @@
 
 "imported" = "Imported";
 "watch.wallet.does.not.support.operation" = "Watched wallet does not support this operation";
+
+// Swap
+"swap.network.fee" = "Network Fee ~$%@";

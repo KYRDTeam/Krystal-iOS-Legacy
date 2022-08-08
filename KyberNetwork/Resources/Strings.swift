@@ -190,4 +190,7 @@ struct Strings {
   static let scanQRCode = "scan.qr.code".toBeLocalised()
   static let scanText = "scan.text".toBeLocalised()
   static let scanner = "scanner".toBeLocalised()
+  
+  // Swap
+  static let swapNetworkFee = "swap.network.fee".toBeLocalised()
 }

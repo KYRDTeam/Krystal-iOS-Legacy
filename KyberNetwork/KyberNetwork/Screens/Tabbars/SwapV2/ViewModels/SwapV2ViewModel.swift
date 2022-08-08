@@ -18,27 +18,36 @@ class SwapV2ViewModel {
   
   private var platformRates: [Rate] = [] {
     didSet {
+      guard let destToken = self.destToken else {
+        self.platformRatesViewModels.value = []
+        return
+      }
       self.platformRatesViewModels.value = platformRates.enumerated().map { index, rate in
         return SwapPlatformItemViewModel(platformRate: rate,
                                          isSelected: index == selectedRateIndex,
-                                         quoteToken: currentChain.quoteTokenObject())
+                                         quoteToken: currentChain.quoteTokenObject(),
+                                         destToken: destToken,
+                                         gasPrice: gasPrice)
       }
     }
   }
   
-  var sourceToken: String? = "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82" {
+  static let mockSourceToken = ChainType.bsc.quoteTokenObject()
+  static let mockDestToken = TokenObject(name: "BUSD", symbol: "BUSD", address: "0xe9e7cea3dedca5984780bafc599bd69add087d56", decimals: 18, logo: "")
+  
+  var sourceToken: TokenObject? = SwapV2ViewModel.mockSourceToken {
     didSet {
       self.reloadRates()
     }
   }
   
-  var destToken: String? = "0xe9e7cea3dedca5984780bafc599bd69add087d56" {
+  var destToken: TokenObject? = SwapV2ViewModel.mockDestToken {
     didSet {
       self.reloadRates()
     }
   }
   
-  var amount: BigInt? = BigInt(100000000000) {
+  var amount: BigInt? = BigInt(100000000000000000) {
     didSet {
       self.reloadRates()
     }
@@ -52,7 +61,9 @@ class SwapV2ViewModel {
     return platformRatesViewModels.value.count
   }
   
-  public private(set) var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
+  var gasPrice: BigInt = KNGasCoordinator.shared.standardKNGas
+  
+  private(set) var platformRatesViewModels: Observable<[SwapPlatformItemViewModel]> = .init([])
   
   private let rateService = SwapRateService()
 
@@ -62,7 +73,7 @@ class SwapV2ViewModel {
   
   func reloadRates() {
     guard let sourceToken = sourceToken, let destToken = destToken, let amount = amount else { return }
-    rateService.getAllRates(address: address, srcTokenContract: sourceToken, destTokenContract: destToken,
+    rateService.getAllRates(address: address, srcTokenContract: sourceToken.address, destTokenContract: destToken.address,
                             amount: amount, focusSrc: true) { rates in
       self.platformRates = rates
     }
