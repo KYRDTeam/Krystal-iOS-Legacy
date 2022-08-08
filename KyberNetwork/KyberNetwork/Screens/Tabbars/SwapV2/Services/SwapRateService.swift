@@ -20,6 +20,7 @@ class SwapRateService {
       switch result {
       case .success(let response):
         do {
+          print(String(data: response.data, encoding: .utf8) ?? "")
           let data = try JSONDecoder().decode(RateResponse.self, from: response.data)
           let sortedRate = data.rates.sorted { rate1, rate2 in
             return BigInt.bigIntFromString(value: rate1.rate)  > BigInt.bigIntFromString(value: rate2.rate)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var platformTableView: UITableView!
@@ -26,6 +27,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var loadingView: UIView!
   @IBOutlet weak var expandIcon: UIImageView!
   @IBOutlet weak var sourceTextField: UITextField!
+  @IBOutlet weak var fetchingAnimationView: AnimationView!
   
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
@@ -68,11 +70,19 @@ class SwapV2ViewController: KNBaseViewController {
   }
   
   func configureViews() {
+    setupAnimation()
     setupSourceView()
     setupInfoViews()
     setupTableView()
     setupRateLoadingView()
     setupDropdownView()
+  }
+  
+  func setupAnimation() {
+    fetchingAnimationView.animation = Animation.rocket
+    fetchingAnimationView.contentMode = .scaleAspectFit
+    fetchingAnimationView.loopMode = .loop
+    fetchingAnimationView.play()
   }
   
   func setupSourceView() {
@@ -141,7 +151,7 @@ extension SwapV2ViewController {
     
     UIView.animate(withDuration: 0.5) {
       self.loadingView.isHidden = true
-      self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
+      self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + (rowsToShow > 0 ? 24.0 : 0.0)
       self.view.layoutIfNeeded()
     }
   }
