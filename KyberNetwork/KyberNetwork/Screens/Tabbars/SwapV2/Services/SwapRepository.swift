@@ -9,7 +9,7 @@ import Foundation
 import BigInt
 import Moya
 
-class SwapRateService {
+class SwapRepository {
   
   let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
   
@@ -27,6 +27,27 @@ class SwapRateService {
         }
       case .failure:
         completion([])
+      }
+    }
+  }
+  
+  func getBalance(tokenAddress: String, address: String, completion: @escaping (BigInt?, String) -> ()) {
+    KNGeneralProvider.shared.getTokenBalance(for: address, contract: tokenAddress) { result in
+      switch result {
+      case .success(let amount):
+        completion(amount, tokenAddress)
+      case .failure:
+        completion(nil, tokenAddress)
+      }
+    }
+  }
+  
+  func getRefPrice(sourceToken: String, destToken: String, completion: @escaping (String?) -> ()) {
+    provider.requestWithFilter(.getRefPrice(src: sourceToken.lowercased(), dst: destToken.lowercased())) { [weak self] result in
+      if case .success(let resp) = result, let json = try? resp.mapJSON() as? JSONDictionary ?? [:], let change = json["refPrice"] as? String {
+        completion(change)
+      } else {
+        completion(nil)
       }
     }
   }

@@ -10,6 +10,10 @@ import BigInt
 
 class NumberFormatUtils {
 
+  static func rate(value: BigInt, decimals: Int) -> String {
+    return format(value: value, decimals: decimals, maxDecimalMeaningDigits: 4, maxDecimalDigits: 4)
+  }
+  
   static func gasFee(value: BigInt) -> String {
     if String(value).count > 18 {
       return format(value: value, decimals: 18, maxDecimalMeaningDigits: 2, maxDecimalDigits: 2)

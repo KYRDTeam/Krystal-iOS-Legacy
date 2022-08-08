@@ -7,6 +7,7 @@
 
 import UIKit
 import Lottie
+import BigInt
 
 class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var platformTableView: UITableView!
@@ -15,6 +16,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var destTokenLabel: UILabel!
   @IBOutlet weak var sourceBalanceLabel: UILabel!
   @IBOutlet weak var sourceTokenIcon: UIImageView!
+  @IBOutlet weak var destBalanceLabel: UILabel!
   @IBOutlet weak var destTokenIcon: UIImageView!
   @IBOutlet weak var destViewHeight: NSLayoutConstraint!
   @IBOutlet weak var rateInfoView: SwapInfoView!
@@ -55,8 +57,9 @@ class SwapV2ViewController: KNBaseViewController {
     super.viewDidLoad()
     
     configureViews()
+    resetViews()
     bindViewModel()
-    resetTimer()
+    reloadRatesIfNeeded()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -85,6 +88,16 @@ class SwapV2ViewController: KNBaseViewController {
     setupDropdownView()
   }
   
+  func resetViews() {
+    rateInfoView.isHidden = true
+    slippageInfoView.isHidden = true
+    minReceiveInfoView.isHidden = true
+    gasFeeInfoView.isHidden = true
+    maxGasFeeInfoView.isHidden = true
+    priceImpactInfoView.isHidden = true
+    routeInfoView.isHidden = true
+  }
+  
   func setupAnimation() {
     fetchingAnimationView.animation = Animation.rocket
     fetchingAnimationView.contentMode = .scaleAspectFit
@@ -104,12 +117,24 @@ class SwapV2ViewController: KNBaseViewController {
   
   func setupInfoViews() {
     rateInfoView.setTitle(title: "Rate", underlined: false)
-    slippageInfoView.setTitle(title: "Price Slippage", underlined: true)
+    
+    slippageInfoView.setTitle(title: "Max Slippage", underlined: true)
+    slippageInfoView.iconImageView.isHidden = true
+    
     minReceiveInfoView.setTitle(title: "Min. Received", underlined: true)
+    minReceiveInfoView.iconImageView.isHidden = true
+    
     gasFeeInfoView.setTitle(title: "Gas Fee (est)", underlined: true)
+    gasFeeInfoView.iconImageView.isHidden = true
+    
     maxGasFeeInfoView.setTitle(title: "Max Gas Fee", underlined: true)
+    maxGasFeeInfoView.iconImageView.isHidden = true
+    
     priceImpactInfoView.setTitle(title: "Price Impact", underlined: true)
+    priceImpactInfoView.iconImageView.isHidden = true
+    
     routeInfoView.setTitle(title: "Route", underlined: true)
+    routeInfoView.iconImageView.isHidden = true
   }
   
   func setupTableView() {
@@ -123,6 +148,7 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
       self?.reloadRates()
     }
+    
     viewModel.sourceToken.observeAndFire(on: self) { [weak self] token in
       DispatchQueue.main.async {
         self?.sourceTokenLabel.text = token?.symbol
@@ -135,6 +161,7 @@ class SwapV2ViewController: KNBaseViewController {
         }
       }
     }
+    
     viewModel.destToken.observeAndFire(on: self) { [weak self] token in
       DispatchQueue.main.async {
         self?.destTokenLabel.text = token?.symbol
@@ -147,6 +174,63 @@ class SwapV2ViewController: KNBaseViewController {
         }
       }
     }
+    
+    viewModel.sourceBalance.observeAndFire(on: self) { [weak self] balance in
+      guard let self = self else { return }
+      guard let sourceToken = self.viewModel.sourceToken.value else { return }
+      let amount = balance ?? .zero
+      let soureSymbol = sourceToken.symbol
+      let decimals = sourceToken.decimals
+      DispatchQueue.main.async {
+        self.sourceBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(soureSymbol)"
+      }
+    }
+    
+    viewModel.destBalance.observeAndFire(on: self) { [weak self] balance in
+      guard let self = self else { return }
+      guard let destToken = self.viewModel.destToken.value else { return }
+      let destSymbol = destToken.symbol
+      let decimals = destToken.decimals
+      let amount = balance ?? .zero
+      DispatchQueue.main.async {
+        self.destBalanceLabel.text = "\(NumberFormatUtils.receivingAmount(value: amount, decimals: decimals)) \(destSymbol)"
+      }
+    }
+    
+    viewModel.rateString.observeAndFire(on: self) { [weak self] rate in
+      self?.rateInfoView.setValue(value: rate, highlighted: false)
+    }
+    
+    viewModel.slippageString.observeAndFire(on: self) { [weak self] string in
+      self?.slippageInfoView.setValue(value: string, highlighted: true)
+    }
+    
+    viewModel.minReceiveString.observeAndFire(on: self) { [weak self] string in
+      self?.minReceiveInfoView.setValue(value: string, highlighted: false)
+    }
+    
+    viewModel.maxGasFeeString.observeAndFire(on: self) { [weak self] string in
+      self?.maxGasFeeInfoView.setValue(value: string, highlighted: true)
+    }
+    
+    viewModel.priceImpactString.observeAndFire(on: self) { [weak self] string in
+      self?.priceImpactInfoView.setValue(value: string, highlighted: false)
+    }
+    
+    viewModel.selectedPlatformRate.observeAndFire(on: self) { [weak self] rate in
+      self?.rateInfoView.isHidden = rate == nil
+      self?.slippageInfoView.isHidden = rate == nil
+      self?.minReceiveInfoView.isHidden = rate == nil
+      self?.gasFeeInfoView.isHidden = rate == nil
+      self?.maxGasFeeInfoView.isHidden = rate == nil
+      self?.priceImpactInfoView.isHidden = rate == nil
+      self?.routeInfoView.isHidden = rate == nil
+    }
+  }
+  
+  @IBAction func swapPairWasTapped(_ sender: Any) {
+    viewModel.swapPair()
+    reloadRatesIfNeeded()
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
@@ -191,10 +275,6 @@ extension SwapV2ViewController {
     loadingView.isHidden = false
   }
   
-  func reloadDestView() {
-    
-  }
-  
 }
 
 // MARK: Rate loading animation
@@ -212,24 +292,27 @@ extension SwapV2ViewController {
   }
   
   @objc func onTapReloadRate() {
-    resetTimer()
+    reloadRatesIfNeeded()
   }
   
   func onTimerTick() {
     remainingTime -= 1
     if remainingTime == 0 {
-      resetTimer()
+      reloadRatesIfNeeded()
     } else {
       rateLoadingView.setRemainingTime(seconds: remainingTime)
     }
   }
   
-  func resetTimer() {
+  func reloadRatesIfNeeded() {
+    if !viewModel.isInputValid {
+      return
+    }
     requestRates()
-    rateLoadingView.isHidden = false
     remainingTime = rateReloadingInterval
     rateLoadingView.setRemainingTime(seconds: remainingTime)
     rateLoadingView.startAnimation(duration: rateReloadingInterval)
+    rateLoadingView.isHidden = !viewModel.isInputValid
   }
   
   func requestRates() {
@@ -248,7 +331,7 @@ extension SwapV2ViewController {
     if doubleValue <= 0 {
       self.rateLoadingView.isHidden = true
     } else {
-      self.resetTimer()
+      self.reloadRatesIfNeeded()
     }
   }
   

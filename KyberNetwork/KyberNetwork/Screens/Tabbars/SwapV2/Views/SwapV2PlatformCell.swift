@@ -27,8 +27,9 @@ class SwapV2PlatformCell: UITableViewCell {
     overlayView.kn_borderColor = viewModel.isSelected ? UIColor.Kyber.primaryGreenColor : UIColor.clear
     overlayView.kn_borderWidth = viewModel.isSelected ? 1 : 0
     overlayView.backgroundColor = viewModel.isSelected ? UIColor.Kyber.primaryGreenColor.withAlphaComponent(0.1) : .clear
-    polygonView.isHidden = !viewModel.showSavedTag
     savedLabel.isHidden = !viewModel.showSavedTag
     savedLabel.text = viewModel.savedAmountString
+    polygonView.isHidden = !viewModel.showSavedTag
+    polygonView.layoutSubviews()
   }
 }
