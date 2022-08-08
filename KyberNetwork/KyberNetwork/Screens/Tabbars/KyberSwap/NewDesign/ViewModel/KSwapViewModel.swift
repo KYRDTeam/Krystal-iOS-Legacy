@@ -708,7 +708,7 @@ class KSwapViewModel {
     guard !price.isEmpty, !refPrice.isEmpty, let priceBigInt = BigInt(price) else {
       return 0
     }
-    let refPriceDouble = refPrice.doubleValue
+    let refPriceDouble = Double(refPrice) ?? 0.0
     let priceDouble: Double = Double(priceBigInt) / pow(10.0, 18)
     let change = (priceDouble - refPriceDouble) / refPriceDouble * 100.0
     return change

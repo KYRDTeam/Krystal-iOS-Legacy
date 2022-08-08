@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Karla-VariableFont_wght.ttf">
+        <array key="Karla-Regular.ttf">
             <string>Karla-Regular</string>
         </array>
     </customFonts>
@@ -57,25 +57,14 @@
                                         <color key="textColor" white="1" alpha="0.94999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="JQP-BI-SqN">
-                                        <rect key="frame" x="20" y="54" width="147" height="16.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Fee" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCx-ci-yAZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="77.5" height="16.5"/>
-                                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                                                <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~0.04BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEk-BR-28I">
-                                                <rect key="frame" x="85.5" y="0.0" width="61.5" height="16.5"/>
-                                                <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
-                                                <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~0.04BNB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEk-BR-28I">
+                                        <rect key="frame" x="20" y="51.5" width="61.5" height="16.5"/>
+                                        <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="~$30.33" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSr-Ch-ddQ">
-                                        <rect key="frame" x="305" y="54" width="52" height="16.5"/>
+                                        <rect key="frame" x="305" y="51.5" width="52" height="16.5"/>
                                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="14"/>
                                         <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -89,13 +78,13 @@
                                     <constraint firstAttribute="trailing" secondItem="m8V-VF-iTv" secondAttribute="trailing" id="87e-4m-Ilk"/>
                                     <constraint firstItem="m8V-VF-iTv" firstAttribute="top" secondItem="65a-eV-zir" secondAttribute="top" id="BeV-zz-YKy"/>
                                     <constraint firstItem="Fiu-vS-jYB" firstAttribute="leading" secondItem="RK2-WY-16w" secondAttribute="trailing" constant="20" id="KhW-Ke-ikj"/>
+                                    <constraint firstItem="MSr-Ch-ddQ" firstAttribute="centerY" secondItem="qEk-BR-28I" secondAttribute="centerY" id="LcM-dZ-33X"/>
                                     <constraint firstAttribute="bottom" secondItem="m8V-VF-iTv" secondAttribute="bottom" id="RtJ-UD-BYt"/>
-                                    <constraint firstItem="MSr-Ch-ddQ" firstAttribute="centerY" secondItem="wCx-ci-yAZ" secondAttribute="centerY" id="Sa8-oo-cRE"/>
-                                    <constraint firstItem="JQP-BI-SqN" firstAttribute="top" secondItem="Y8y-eo-Ahs" secondAttribute="bottom" constant="10" id="ehM-rS-vgY"/>
                                     <constraint firstAttribute="trailing" secondItem="MSr-Ch-ddQ" secondAttribute="trailing" constant="20" id="fq3-39-ocj"/>
                                     <constraint firstItem="Fiu-vS-jYB" firstAttribute="centerY" secondItem="RK2-WY-16w" secondAttribute="centerY" id="gbu-Yq-Lag"/>
-                                    <constraint firstItem="JQP-BI-SqN" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" constant="20" id="gmA-kw-5WA"/>
                                     <constraint firstAttribute="trailing" secondItem="Fiu-vS-jYB" secondAttribute="trailing" constant="20" id="h98-yf-8Me"/>
+                                    <constraint firstItem="qEk-BR-28I" firstAttribute="leading" secondItem="65a-eV-zir" secondAttribute="leading" constant="20" id="j4G-tI-SaV"/>
+                                    <constraint firstItem="qEk-BR-28I" firstAttribute="top" secondItem="RK2-WY-16w" secondAttribute="bottom" constant="10" id="n3c-wK-Cr2"/>
                                     <constraint firstItem="RK2-WY-16w" firstAttribute="centerY" secondItem="Y8y-eo-Ahs" secondAttribute="centerY" id="tjw-G8-bMN"/>
                                     <constraint firstItem="Y8y-eo-Ahs" firstAttribute="top" secondItem="65a-eV-zir" secondAttribute="top" constant="20" id="up4-d8-n4A"/>
                                 </constraints>

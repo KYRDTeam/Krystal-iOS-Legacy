@@ -35,7 +35,7 @@ class OverviewMainViewCell: UITableViewCell {
     self.tokenValueLabel.textColor = viewModel.multichainAccessoryTextColor
     self.change24Button.isHidden = viewModel.displayDetailBox.isEmpty
     self.change24Button.setTitle(viewModel.displayDetailBox, for: .normal)
-    self.change24Button.backgroundColor = viewModel.multichainAccessoryTextColor
+    self.change24Button.backgroundColor = viewModel.displayAccessoryColor
     if viewModel.displayDetailBox == "---" {
       self.change24Button.setTitleColor(UIColor(named: "textWhiteColor"), for: .normal)
       self.change24Button.contentHorizontalAlignment = .right

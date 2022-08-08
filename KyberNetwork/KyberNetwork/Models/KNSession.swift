@@ -13,14 +13,10 @@ protocol KNSessionDelegate: class {
 }
 
 class KNSession {
-
-  private(set) var keystore: Keystore!
-  private(set) var wallet: Wallet!
-  
   var address: KAddress
-  var web3Swift: Web3Swift!
+  var web3Swift: Web3Swift?
   var realm: Realm!
-  var externalProvider: KNExternalProvider!
+  var externalProvider: KNExternalProvider?
   let walletManager = WalletManager.shared
   
   private(set) var transactionStorage: TransactionsStorage!
@@ -48,6 +44,9 @@ class KNSession {
   }
   
   func getCurrentWalletAddresses() -> [KAddress] {
+    if address.isWatchWallet {
+      return [address]
+    }
     return walletManager.getAllAddresses(walletID: address.walletID)
   }
   
@@ -61,7 +60,9 @@ class KNSession {
   }
   
   func configureProvider() {
-    self.externalProvider = KNExternalProvider(address: address, web3: web3Swift)
+    if let web3Swift = self.web3Swift {
+      self.externalProvider = KNExternalProvider(address: address, web3: web3Swift)
+    }
     let pendingTxs = self.transactionStorage.kyberPendingTransactions
     guard let tx = pendingTxs.first(where: { $0.from.lowercased() == address.addressString.lowercased() }) else {
       return
@@ -69,7 +70,7 @@ class KNSession {
     guard let nonce = Int(tx.nonce) else {
       return
     }
-    self.externalProvider.updateNonceWithLastRecordedTxNonce(nonce)
+    self.externalProvider?.updateNonceWithLastRecordedTxNonce(nonce)
   }
   
   func configureStorages() {
@@ -111,7 +112,7 @@ class KNSession {
   }
 
   func startSession() {
-    self.web3Swift.start()
+    self.web3Swift?.start()
     self.transactionCoordinator?.start()
     BalanceStorage.shared.updateCurrentWallet(address)
     EtherscanTransactionStorage.shared.updateCurrentWallet(address)

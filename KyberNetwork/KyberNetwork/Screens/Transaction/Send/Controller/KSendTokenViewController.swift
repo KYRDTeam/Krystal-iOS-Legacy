@@ -145,7 +145,7 @@ class KSendTokenViewController: KNBaseViewController {
 
   fileprivate func setupNavigationView() {
     self.navTitleLabel.text = self.viewModel.navTitle
-    self.walletsSelectButton.setTitle(self.viewModel.inputAddress, for: .normal)
+    self.walletsSelectButton.setTitle(self.viewModel.addressName, for: .normal)
   }
 
   fileprivate func setupTokenView() {

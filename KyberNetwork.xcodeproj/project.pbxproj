@@ -643,6 +643,7 @@
 		A693AFEF2819059B00880503 /* RewardHuntingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */; };
 		A6945A9528913BAB0041FE2E /* ScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6945A9428913BAB0041FE2E /* ScannerUtils.swift */; };
 		A6977DF1289BD08A00B2B6BD /* SwapRateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */; };
+		A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -679,6 +680,8 @@
 		A6B3CD7928124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */; };
 		A6B3CD8228125737005D0D66 /* KrystalApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD8128125737005D0D66 /* KrystalApi.swift */; };
 		A6B3CD84281258CD005D0D66 /* KrystalSolanaTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */; };
+		A6BA4C9D28A0CEC6002E2B30 /* NumberFormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */; };
+		A6BA4CA028A0F0BF002E2B30 /* NumberFormatUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA4C9F28A0F0BF002E2B30 /* NumberFormatUtilsTests.swift */; };
 		A6BAD3D2287445B80016E127 /* TradingView+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D1287445B80016E127 /* TradingView+Action.swift */; };
 		A6BAD3D4287446F30016E127 /* TradingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BAD3D3287446F30016E127 /* TradingViewController.swift */; };
 		A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */; };
@@ -1804,6 +1807,7 @@
 		A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewController.swift; sourceTree = "<group>"; };
 		A6945A9428913BAB0041FE2E /* ScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerUtils.swift; sourceTree = "<group>"; };
 		A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapRateService.swift; sourceTree = "<group>"; };
+		A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerUtilsTests.swift; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -1827,6 +1831,8 @@
 		A6B3CD7828124FFC005D0D66 /* InternalHistoryTransaction+TransactionHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InternalHistoryTransaction+TransactionHistoryItem.swift"; sourceTree = "<group>"; };
 		A6B3CD8128125737005D0D66 /* KrystalApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalApi.swift; sourceTree = "<group>"; };
 		A6B3CD83281258CD005D0D66 /* KrystalSolanaTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalSolanaTransaction.swift; sourceTree = "<group>"; };
+		A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtils.swift; sourceTree = "<group>"; };
+		A6BA4C9F28A0F0BF002E2B30 /* NumberFormatUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatUtilsTests.swift; sourceTree = "<group>"; };
 		A6BAD3D1287445B80016E127 /* TradingView+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradingView+Action.swift"; sourceTree = "<group>"; };
 		A6BAD3D3287446F30016E127 /* TradingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewController.swift; sourceTree = "<group>"; };
 		A6BB3C1E28605CDA0097EB75 /* EthereumNodeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumNodeRequest.swift; sourceTree = "<group>"; };
@@ -2436,6 +2442,7 @@
 				C3554D88280E5E3F0043BC1B /* SolanaUtil.swift */,
 				C334A864283354C3006B3D55 /* KeyboardTypingUltil.swift */,
 				A6BE04B3288904C900E63714 /* StringUtils.swift */,
+				A6BA4C9C28A0CEC6002E2B30 /* NumberFormatUtils.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -4657,6 +4664,8 @@
 		A6394B462840D4DA0084C923 /* KrystalUnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				A6BA4C9E28A0F0AD002E2B30 /* Format */,
+				A6977DEC289BA01300B2B6BD /* Scanner */,
 				A6C211BF2859C4870079DC05 /* Signers */,
 				A6394B4E2840D4EF0084C923 /* History */,
 			);
@@ -4989,6 +4998,14 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		A6977DEC289BA01300B2B6BD /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -5086,6 +5103,14 @@
 				A6B3CD8128125737005D0D66 /* KrystalApi.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		A6BA4C9E28A0F0AD002E2B30 /* Format */ = {
+			isa = PBXGroup;
+			children = (
+				A6BA4C9F28A0F0BF002E2B30 /* NumberFormatUtilsTests.swift */,
+			);
+			path = Format;
 			sourceTree = "<group>";
 		};
 		A6BB3C2028605E260097EB75 /* Signers */ = {
@@ -7470,6 +7495,7 @@
 				250EE8E22221A40800121138 /* KNShowBackUpDataViewController.swift in Sources */,
 				A6D38C03289A92B3003579F2 /* CircleProgressView.swift in Sources */,
 				25C151C420C5414500A6F684 /* KNCreateWalletCoordinator.swift in Sources */,
+				A6BA4C9D28A0CEC6002E2B30 /* NumberFormatUtils.swift in Sources */,
 				255A68E720AADB2000F39749 /* Double+Kyber.swift in Sources */,
 				2932045C1F8DCD6E0095B7C1 /* CurrencyRate.swift in Sources */,
 				25CC0AA82058F1A00009D0D5 /* KNExchangeRequest.swift in Sources */,
@@ -7794,10 +7820,12 @@
 				A6394B582840D5680084C923 /* MockTransactionDetailView.swift in Sources */,
 				A6394B562840D5360084C923 /* MockTransactionDetailRouter.swift in Sources */,
 				A6790C2F284485E0007CE0CD /* MockTransactionDetailPresenter.swift in Sources */,
+				A6BA4CA028A0F0BF002E2B30 /* NumberFormatUtilsTests.swift in Sources */,
 				A6394B5A2840D57D0084C923 /* TransactionDetailPresenterTests.swift in Sources */,
 				A6394B542840D51E0084C923 /* MockTransactionDetailInteractor.swift in Sources */,
 				A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */,
 				A6B0673B2859D0A900DEBAE8 /* SignerTests.swift in Sources */,
+				A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

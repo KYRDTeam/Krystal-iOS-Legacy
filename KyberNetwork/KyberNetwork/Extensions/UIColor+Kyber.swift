@@ -104,6 +104,7 @@ extension UIColor {
     static let normalText = UIColor(named: "normalTextColor")!
     static let cellBackground = UIColor(hex: "1B1D1C")
     static let secondaryBg = UIColor(hex: "323232")
+    static let textRedColor = UIColor(named: "textRedColor")!
     
     static var buttonColors: [UIColor] = [
       UIColor.Kyber.enygold,

@@ -21,7 +21,7 @@ class SwapV2PlatformCell: UITableViewCell {
     iconLabel.loadImage(viewModel.icon)
     nameLabel.text = viewModel.name
     amountLabel.text = viewModel.amountString
-    feeLabel.text = viewModel.feeString
+    feeLabel.text = viewModel.gasFeeString
     amountUsdLabel.text = viewModel.amountUsdString
     overlayView.kn_borderColor = viewModel.isSelected ? UIColor.Kyber.primaryGreenColor : UIColor.clear
     overlayView.kn_borderWidth = viewModel.isSelected ? 1 : 0

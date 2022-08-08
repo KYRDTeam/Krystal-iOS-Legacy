@@ -78,10 +78,14 @@ class SwitchChainWalletsListViewController: KNBaseViewController {
       guard let address = self.viewModel.selectedAddress else {
         return
       }
-      guard let wallet = WalletManager.shared.wallet(forAddress: address) else {
-        return
+      if address.isWatchWallet {
+        AppDelegate.shared.coordinator.switchToWatchAddress(address: address, chain: self.viewModel.selectedChain)
+      } else {
+        guard let wallet = WalletManager.shared.wallet(forAddress: address) else {
+          return
+        }
+        AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: self.viewModel.selectedChain)
       }
-      AppDelegate.shared.coordinator.switchWallet(wallet: wallet, chain: self.viewModel.selectedChain)
     }
   }
   

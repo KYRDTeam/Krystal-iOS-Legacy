@@ -720,7 +720,7 @@ extension BridgeCoordinator: ConfirmBridgeViewControllerDelegate {
                 chainName: destChain.chainName(),
                 tx: "",
                 txStatus: "PENDING",
-                decimals: destToken.decimals
+                decimals: sourceToken.decimals
               ),
               type: "crosschain",
               crosschainStatus: "PENDING"
