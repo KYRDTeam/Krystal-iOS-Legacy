@@ -14,6 +14,8 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var sourceTokenLabel: UILabel!
   @IBOutlet weak var destTokenLabel: UILabel!
   @IBOutlet weak var sourceBalanceLabel: UILabel!
+  @IBOutlet weak var sourceTokenIcon: UIImageView!
+  @IBOutlet weak var destTokenIcon: UIImageView!
   @IBOutlet weak var destViewHeight: NSLayoutConstraint!
   @IBOutlet weak var rateInfoView: SwapInfoView!
   @IBOutlet weak var slippageInfoView: SwapInfoView!
@@ -37,7 +39,11 @@ class SwapV2ViewController: KNBaseViewController {
   var timer: Timer?
   var remainingTime: Int = 0
   
-  var isExpanded: Bool = false
+  var isExpanded: Bool = false {
+    didSet {
+      self.expandIcon.image = isExpanded ? Images.swapPullup : Images.swapDropdown
+    }
+  }
   
   var canExpand: Bool = false {
     didSet {
@@ -88,6 +94,7 @@ class SwapV2ViewController: KNBaseViewController {
   
   func setupSourceView() {
     sourceTextField.setPlaceholder(text: "0.00", color: .white.withAlphaComponent(0.5))
+    sourceTextField.delegate = self
   }
   
   func setupDropdownView() {
@@ -116,6 +123,30 @@ class SwapV2ViewController: KNBaseViewController {
     viewModel.platformRatesViewModels.observe(on: self) { [weak self] _ in
       self?.reloadRates()
     }
+    viewModel.sourceToken.observeAndFire(on: self) { [weak self] token in
+      DispatchQueue.main.async {
+        self?.sourceTokenLabel.text = token?.symbol
+        if let token = token {
+          self?.sourceTokenIcon.isHidden = false
+          self?.sourceTokenIcon.setSymbolImage(symbol: token.symbol)
+        } else {
+          self?.sourceTokenIcon.isHidden = true
+          self?.sourceTokenLabel.text = "Select Token"
+        }
+      }
+    }
+    viewModel.destToken.observeAndFire(on: self) { [weak self] token in
+      DispatchQueue.main.async {
+        self?.destTokenLabel.text = token?.symbol
+        if let token = token {
+          self?.destTokenIcon.isHidden = false
+          self?.destTokenIcon.setSymbolImage(symbol: token.symbol)
+        } else {
+          self?.destTokenIcon.isHidden = true
+          self?.destTokenLabel.text = "Select Token"
+        }
+      }
+    }
   }
   
   @IBAction func continueWasTapped(_ sender: Any) {
@@ -125,7 +156,6 @@ class SwapV2ViewController: KNBaseViewController {
   
   @objc func onToggleExpand() {
     isExpanded.toggle()
-    expandIcon.image = isExpanded ? Images.swapPullup : Images.swapDropdown
     let numberOfRows = viewModel.numberOfRateRows
     let rowsToShow = isExpanded ? numberOfRows : min(2, numberOfRows)
     UIView.animate(withDuration: 0.5) {
@@ -171,6 +201,7 @@ extension SwapV2ViewController {
 extension SwapV2ViewController {
   
   func setupRateLoadingView() {
+    rateLoadingView.isHidden = true
     remainingTime = rateReloadingInterval
     timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
       self?.onTimerTick()
@@ -195,6 +226,7 @@ extension SwapV2ViewController {
   
   func resetTimer() {
     requestRates()
+    rateLoadingView.isHidden = false
     remainingTime = rateReloadingInterval
     rateLoadingView.setRemainingTime(seconds: remainingTime)
     rateLoadingView.startAnimation(duration: rateReloadingInterval)
@@ -210,9 +242,37 @@ extension SwapV2ViewController {
     viewModel.reloadRates()
   }
   
+  func onSourceAmountChange(value: String) {
+    let doubleValue = Double(value) ?? 0
+    viewModel.sourceAmountValue = doubleValue
+    if doubleValue <= 0 {
+      self.rateLoadingView.isHidden = true
+    } else {
+      self.resetTimer()
+    }
+  }
+  
+  func onSelectPlatformRateAt(index: Int) {
+    viewModel.selectPlatform(platform: viewModel.platformRatesViewModels.value[index].rate.platform)
+  }
+  
+}
+
+extension SwapV2ViewController: UITextFieldDelegate {
+  
+  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    onSourceAmountChange(value: textField.text ?? "")
+    return true
+  }
+  
 }
 
 extension SwapV2ViewController: UITableViewDelegate, UITableViewDataSource {
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    isExpanded = false
+    onSelectPlatformRateAt(index: indexPath.row)
+  }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return viewModel.platformRatesViewModels.value.count

@@ -140,6 +140,7 @@
                 <outlet property="nameLabel" destination="RK2-WY-16w" id="9DT-xJ-lau"/>
                 <outlet property="overlayView" destination="m8V-VF-iTv" id="P9U-17-Ubp"/>
                 <outlet property="polygonView" destination="e4N-Cg-EgX" id="F4w-G2-uVF"/>
+                <outlet property="savedLabel" destination="a4s-g9-iPN" id="EbI-aq-OMH"/>
             </connections>
             <point key="canvasLocation" x="207.97101449275365" y="72.321428571428569"/>
         </tableViewCell>
