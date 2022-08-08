@@ -966,6 +966,8 @@
 		C3A6911A25638DE700F57756 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */; };
 		C3A6911B25638DE700F57756 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911025638DE700F57756 /* Lato-Light.ttf */; };
 		C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */; };
+		C3A6E02128A103730079926E /* TransactionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */; };
+		C3A6E02228A103730079926E /* TransactionSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */; };
 		C3B79EC5285C70B8008547F5 /* TradingViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B79EC4285C70B8008547F5 /* TradingViewData.swift */; };
 		C3BA31FD27184367008E8DF6 /* GasPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BA31FC27184367008E8DF6 /* GasPrice.swift */; };
 		C3BBC55F25FB4A2F004E1FB6 /* InvestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */; };
@@ -2105,6 +2107,8 @@
 		C3A6910F25638DE700F57756 /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C3A6911025638DE700F57756 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		C3A6911125638DE700F57756 /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSettingsViewController.swift; sourceTree = "<group>"; };
+		C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionSettingsViewController.xib; sourceTree = "<group>"; };
 		C3B79EC4285C70B8008547F5 /* TradingViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingViewData.swift; sourceTree = "<group>"; };
 		C3BA31FC27184367008E8DF6 /* GasPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPrice.swift; sourceTree = "<group>"; };
 		C3BBC55E25FB4A2F004E1FB6 /* InvestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoordinator.swift; sourceTree = "<group>"; };
@@ -2876,6 +2880,7 @@
 		25696F4720BD0ED5002CC53F /* CommonViews */ = {
 			isa = PBXGroup;
 			children = (
+				C3A6E01E28A101C40079926E /* TransactionSettings */,
 				7E66A6992865721D007DF078 /* ErrorView */,
 				A65C7A702818E373000FA9CE /* NavigationBar */,
 				A6A8A1EE28168B9600F7AB88 /* LoadingCell */,
@@ -5771,6 +5776,15 @@
 			path = Lato;
 			sourceTree = "<group>";
 		};
+		C3A6E01E28A101C40079926E /* TransactionSettings */ = {
+			isa = PBXGroup;
+			children = (
+				C3A6E01F28A103730079926E /* TransactionSettingsViewController.swift */,
+				C3A6E02028A103730079926E /* TransactionSettingsViewController.xib */,
+			);
+			path = TransactionSettings;
+			sourceTree = "<group>";
+		};
 		C3BBC55B25FB4979004E1FB6 /* Invest */ = {
 			isa = PBXGroup;
 			children = (
@@ -6509,6 +6523,7 @@
 				C351B6F32722A54C00811319 /* OverviewWarningBackupViewController.xib in Resources */,
 				C3ED1DCE2616F0090024970C /* NotificationsViewController.xib in Resources */,
 				254BB359211D9F1400B8E75D /* KConfirmSendViewController.xib in Resources */,
+				C3A6E02228A103730079926E /* TransactionSettingsViewController.xib in Resources */,
 				7E1EBE4A283500A800793B6D /* BridgeReminderCell.xib in Resources */,
 				C3A6911C25638DE700F57756 /* Lato-ThinItalic.ttf in Resources */,
 				C37CC092245803CA0081FB32 /* Roboto-Medium.ttf in Resources */,
@@ -7081,6 +7096,7 @@
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
 				C33696102595A387000EDD5D /* ApproveTokenViewController.swift in Sources */,
 				294EC1DA1FD8E4E60065EB20 /* GasPriceRequest.swift in Sources */,
+				C3A6E02128A103730079926E /* TransactionSettingsViewController.swift in Sources */,
 				299B5E2D1FCBC0660051361C /* BalanceProtocol.swift in Sources */,
 				25682B7420EE06CD009738C4 /* KNTransactionDetailsViewController.swift in Sources */,
 				29358DA91F79FD1C00925D61 /* CALayer.swift in Sources */,
