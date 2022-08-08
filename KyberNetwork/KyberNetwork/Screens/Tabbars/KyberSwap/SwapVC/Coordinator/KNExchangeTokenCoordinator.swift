@@ -1007,7 +1007,7 @@ extension KNExchangeTokenCoordinator: SwapProcessPopupDelegate {
       case .openLink(let url):
         self.navigationController.openSafari(with: url)
       case .goToSupport:
-        self.navigationController.openSafari(with: "https://docs.krystal.app/")
+        self.navigationController.openSafari(with: "https://t.me/KrystalDefi")
       case .viewToken(let sym):
         if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
           let urlString = KNGeneralProvider.shared.customRPC.etherScanEndpoint + "address/\(token.address)"
