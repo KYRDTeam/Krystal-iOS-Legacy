@@ -42,7 +42,7 @@ class KNExchangeTokenCoordinator: NSObject, Coordinator {
 
   fileprivate var sendTokenCoordinator: KNSendTokenViewCoordinator?
   fileprivate var confirmSwapVC: KConfirmSwapViewController?
-  fileprivate weak var transactionStatusVC: KNTransactionStatusPopUp?
+  fileprivate weak var transactionStatusVC: SwapProcessPopup?
   fileprivate var gasFeeSelectorVC: GasFeeSelectorPopupViewController?
 
   lazy var rootViewController: KSwapViewController = {
@@ -328,7 +328,7 @@ extension KNExchangeTokenCoordinator {
     self.rootViewController.coordinatorUpdateSelectedToken(to, isSource: false)
   }
 
-  func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool { //TODO: update transaction view state
+  func appCoordinatorUpdateTransaction(_ tx: InternalHistoryTransaction) -> Bool {
     if self.sendTokenCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if self.historyCoordinator?.coordinatorDidUpdateTransaction(tx) == true { return true }
     if let trans = self.transactionStatusVC?.transaction, trans.hash == tx.hash {
@@ -353,8 +353,8 @@ extension KNExchangeTokenCoordinator {
 
 // MARK: Network requests
 extension KNExchangeTokenCoordinator {
-  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) { //TODO: Call new status popup
-    let controller = KNTransactionStatusPopUp(transaction: transaction)
+  fileprivate func openTransactionStatusPopUp(transaction: InternalHistoryTransaction) {
+    let controller = SwapProcessPopup(transaction: transaction)
     controller.delegate = self
     self.navigationController.present(controller, animated: true, completion: nil)
     self.transactionStatusVC = controller
@@ -996,6 +996,25 @@ extension KNExchangeTokenCoordinator: KNHistoryCoordinatorDelegate {
 
   func historyCoordinatorDidClose() {
     self.historyCoordinator = nil
+  }
+}
+
+extension KNExchangeTokenCoordinator: SwapProcessPopupDelegate {
+  func swapProcessPopup(_ controller: SwapProcessPopup, action: SwapProcessPopupEvent) {
+    controller.dismiss(animated: true) {
+      self.transactionStatusVC = nil
+      switch action {
+      case .openLink(let url):
+        self.navigationController.openSafari(with: url)
+      case .goToSupport:
+        self.navigationController.openSafari(with: "https://docs.krystal.app/")
+      case .viewToken(let sym):
+        if let token = KNSupportedTokenStorage.shared.getTokenWith(symbol: sym) {
+          let urlString = KNGeneralProvider.shared.customRPC.etherScanEndpoint + "address/\(token.address)"
+          self.navigationController.openSafari(with: urlString)
+        }
+      }
+    }
   }
 }
 

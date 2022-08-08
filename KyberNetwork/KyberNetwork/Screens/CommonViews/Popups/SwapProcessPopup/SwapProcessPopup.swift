@@ -7,8 +7,24 @@
 
 import UIKit
 
+enum ProcessStatusState {
+  case processing
+  case success
+  case failure
+}
+
+enum SwapProcessPopupEvent {
+  case openLink(url: String)
+  case goToSupport
+  case viewToken(sym: String)
+}
+
+protocol SwapProcessPopupDelegate: class {
+  func swapProcessPopup(_ controller: SwapProcessPopup, action: SwapProcessPopupEvent)
+}
+
 class SwapProcessPopup: KNBaseViewController {
-//  fileprivate(set) var transaction: InternalHistoryTransaction
+  fileprivate(set) var transaction: InternalHistoryTransaction
   let transitor = TransitionDelegate()
   
   @IBOutlet weak var contentViewTopContraint: NSLayoutConstraint!
@@ -27,9 +43,25 @@ class SwapProcessPopup: KNBaseViewController {
   
   @IBOutlet weak var txHashLabel: UILabel!
   @IBOutlet weak var loadingIndicatorView: SRCountdownTimer!
+  @IBOutlet weak var statusContainerView: UIView!
+  @IBOutlet weak var transactionStateIcon: UIImageView!
   
-  init() {
-//    self.transaction = transaction
+  @IBOutlet weak var sourceTokenInfoContainerView: UIView!
+  @IBOutlet weak var destTokenInfoContainerView: UIView!
+  @IBOutlet weak var sourceTokenIcon: UIImageView!
+  @IBOutlet weak var sourceTokenAmountLabel: UILabel!
+  @IBOutlet weak var destTokenIcon: UIImageView!
+  @IBOutlet weak var destTokenAmountLabel: UILabel!
+  
+  weak var delegate: SwapProcessPopupDelegate?
+  var state: ProcessStatusState! {
+    didSet {
+      self.updateUIForStateChange(self.state)
+    }
+  }
+  
+  init(transaction: InternalHistoryTransaction) {
+    self.transaction = transaction
     super.init(nibName: SwapProcessPopup.className, bundle: nil)
     self.modalPresentationStyle = .custom
     self.transitioningDelegate = transitor
@@ -41,12 +73,73 @@ class SwapProcessPopup: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    // Do any additional setup after loading the view.
-    self.loadingIndicatorView.start(beginingValue: 5, interval: 1)
+    self.setupUI()
+    self.setupLoadingView()
+    self.state = .processing
+  }
+  
+  @IBAction func firstButtonTapped(_ sender: UIButton) {
+    self.dismiss(animated: true)
+  }
+  
+  @IBAction func secondButtonTapped(_ sender: UIButton) {
+    switch state {
+    case .processing:
+      self.txHashButtonTapped(sender)
+    case .success:
+      self.delegate?.swapProcessPopup(self, action: .viewToken(sym: self.transaction.toSymbol ?? ""))
+    case .failure:
+      self.delegate?.swapProcessPopup(self, action: .goToSupport)
+    case .none:
+      break
+    }
   }
   
   @IBAction func txHashButtonTapped(_ sender: UIButton) {
+    let urlString = KNGeneralProvider.shared.customRPC.etherScanEndpoint + "tx/\(self.transaction.hash)"
+    self.delegate?.swapProcessPopup(self, action: .openLink(url: urlString))
+  }
+  
+  func updateUIForStateChange(_ state: ProcessStatusState) {
+    switch state {
+    case .processing:
+      self.loadingIndicatorView.isHidden = false
+      self.transactionStateIcon.isHidden = true
+      self.statusContainerView.bringSubviewToFront(self.loadingIndicatorView)
+      self.loadingIndicatorView.start(beginingValue: 1)
+      let buttonTitle = "Open \(KNGeneralProvider.shared.currentChain.customRPC().webScanName)"
+      self.secondButton.setTitle(buttonTitle, for: .normal)
+      self.sourceTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
+      self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+    case .success:
+      self.loadingIndicatorView.isHidden = true
+      self.transactionStateIcon.isHidden = false
+      self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
+      self.transactionStateIcon.image = UIImage(named: "success")
+      self.secondButton.setTitle("", for: .normal)
+      let buttonTitle = "View \(self.transaction.toSymbol ?? "")"
+      self.secondButton.setTitle(buttonTitle, for: .normal)
+      self.destTokenInfoContainerView.rounded(color: UIColor.Kyber.buttonBg, width: 1, radius: 16)
+      self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+    case .failure:
+      self.loadingIndicatorView.isHidden = true
+      self.transactionStateIcon.isHidden = false
+      self.statusContainerView.bringSubviewToFront(self.transactionStateIcon)
+      self.transactionStateIcon.image = UIImage(named: "fail")
+      let buttonTitle = "Go to support"
+      self.secondButton.setTitle(buttonTitle, for: .normal)
+      self.destTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+      self.sourceTokenInfoContainerView.rounded(color: UIColor.clear, width: 0, radius: 16)
+    }
+  }
+  
+  func setupUI() {
+    self.sourceTokenIcon.setSymbolImage(symbol: self.transaction.fromSymbol, size: sourceTokenIcon.frame.size)
+    self.destTokenIcon.setSymbolImage(symbol: self.transaction.toSymbol, size: destTokenIcon.frame.size)
+    self.txHashLabel.text = self.transaction.hash
+    let descriptions = self.transaction.transactionDescription.split(separator: "#").map { String($0) }
+    self.sourceTokenAmountLabel.text = descriptions.first ?? ""
+    self.destTokenAmountLabel.text = descriptions.last ?? ""
     
   }
 
@@ -57,12 +150,38 @@ class SwapProcessPopup: KNBaseViewController {
     self.present(vc, animated: true, completion: nil)
   }
   
+  fileprivate func setupLoadingView() {
+    self.loadingIndicatorView.lineWidth = 2
+    self.loadingIndicatorView.lineColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingIndicatorView.labelTextColor = UIColor(named: "buttonBackgroundColor")!
+    self.loadingIndicatorView.trailLineColor = UIColor(named: "buttonBackgroundColor")!.withAlphaComponent(0.2)
+    self.loadingIndicatorView.isLoadingIndicator = true
+    self.loadingIndicatorView.isLabelHidden = true
+  }
+  
   func updateRateUI(rate: Int) {
     self.oneStarButton.configStarRate(isHighlight: rate >= 1)
     self.twoStarButton.configStarRate(isHighlight: rate >= 2)
     self.threeStarButton.configStarRate(isHighlight: rate >= 3)
     self.fourStarButton.configStarRate(isHighlight: rate >= 4)
     self.fiveStarButton.configStarRate(isHighlight: rate >= 5)
+  }
+  
+  func updateView(with tx: InternalHistoryTransaction) {
+    switch tx.state {
+    case .pending:
+      self.state = .processing
+    case .error, .drop:
+      state = .failure
+    case .done:
+      state = .success
+    default:
+      state = .processing
+    }
+  }
+  
+  @IBAction func tapOutsidePopup(_ sender: UITapGestureRecognizer) {
+    self.dismiss(animated: true, completion: nil)
   }
   
 }
@@ -79,12 +198,6 @@ extension SwapProcessPopup: BottomPopUpAbstract {
   func getPopupContentView() -> UIView {
     return self.containerView
   }
-}
-
-extension SwapProcessPopup {
-  
-
-  
 }
 
 extension SwapProcessPopup: RateTransactionPopupDelegate {

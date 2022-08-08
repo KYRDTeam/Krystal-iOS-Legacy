@@ -21,14 +21,22 @@
             <connections>
                 <outlet property="containerView" destination="vxo-37-OUJ" id="tbA-J8-lxZ"/>
                 <outlet property="contentViewTopContraint" destination="bH2-Re-DKR" id="lax-Fr-fWV"/>
+                <outlet property="destTokenAmountLabel" destination="DsT-uS-Z26" id="guV-3Y-OMn"/>
+                <outlet property="destTokenIcon" destination="ZmA-TJ-ZK6" id="Uck-X6-njz"/>
+                <outlet property="destTokenInfoContainerView" destination="wdu-qB-zI2" id="mFm-B4-oSj"/>
                 <outlet property="firstButton" destination="45H-8d-CXI" id="di1-jF-Os4"/>
                 <outlet property="fiveStarButton" destination="GAC-kM-dNT" id="zlP-uz-1xT"/>
                 <outlet property="fourStarButton" destination="FmF-OZ-Hqb" id="7Ae-7R-Z91"/>
-                <outlet property="loadingIndicatorView" destination="pef-ca-DXP" id="C0V-3b-WsA"/>
+                <outlet property="loadingIndicatorView" destination="uav-4z-cuu" id="9DI-ge-c1d"/>
                 <outlet property="oneStarButton" destination="06X-Gc-FJT" id="t0T-yN-yrH"/>
                 <outlet property="rateContainView" destination="eEI-Zt-39Q" id="Bs8-yD-sqN"/>
                 <outlet property="secondButton" destination="PDV-Rc-Rba" id="iXV-ui-hQm"/>
+                <outlet property="sourceTokenAmountLabel" destination="1T9-yY-YwM" id="3HJ-qR-9JG"/>
+                <outlet property="sourceTokenIcon" destination="ChB-oP-GR4" id="uGp-ki-ZzF"/>
+                <outlet property="sourceTokenInfoContainerView" destination="tH0-fD-rF1" id="TfR-YF-5wV"/>
+                <outlet property="statusContainerView" destination="jrs-lc-WjI" id="ZOK-IX-Qsl"/>
                 <outlet property="threeStarButton" destination="FbQ-r6-LKq" id="dIy-gq-CS1"/>
+                <outlet property="transactionStateIcon" destination="3QI-6S-UOY" id="dmX-Zc-VNd"/>
                 <outlet property="twoStarButton" destination="ONJ-J3-siW" id="Dmz-S2-kfR"/>
                 <outlet property="txHashLabel" destination="YFp-Le-pk8" id="fMb-eh-Obi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -48,18 +56,25 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrs-lc-WjI">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pef-ca-DXP" customClass="SRCountdownTimer" customModule="Krystal" customModuleProvider="target">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="success" translatesAutoresizingMaskIntoConstraints="NO" id="3QI-6S-UOY">
+                                            <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uav-4z-cuu" customClass="SRCountdownTimer" customModule="Krystal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="pef-ca-DXP" firstAttribute="leading" secondItem="jrs-lc-WjI" secondAttribute="leading" id="BaH-Xb-MPE"/>
-                                        <constraint firstItem="pef-ca-DXP" firstAttribute="top" secondItem="jrs-lc-WjI" secondAttribute="top" id="D12-Oe-jji"/>
-                                        <constraint firstAttribute="bottom" secondItem="pef-ca-DXP" secondAttribute="bottom" id="UKu-3g-CIE"/>
-                                        <constraint firstAttribute="trailing" secondItem="pef-ca-DXP" secondAttribute="trailing" id="ZMZ-Sr-KB7"/>
+                                        <constraint firstAttribute="trailing" secondItem="3QI-6S-UOY" secondAttribute="trailing" id="6FJ-CE-Sjk"/>
+                                        <constraint firstItem="uav-4z-cuu" firstAttribute="top" secondItem="jrs-lc-WjI" secondAttribute="top" id="E1f-Kb-zdG"/>
+                                        <constraint firstAttribute="bottom" secondItem="3QI-6S-UOY" secondAttribute="bottom" id="IhP-PU-2eh"/>
+                                        <constraint firstItem="uav-4z-cuu" firstAttribute="leading" secondItem="jrs-lc-WjI" secondAttribute="leading" id="NOq-ft-Irx"/>
+                                        <constraint firstAttribute="trailing" secondItem="uav-4z-cuu" secondAttribute="trailing" id="PAV-hV-BQ3"/>
                                         <constraint firstAttribute="width" constant="32" id="etv-JQ-kFv"/>
+                                        <constraint firstAttribute="bottom" secondItem="uav-4z-cuu" secondAttribute="bottom" id="oOJ-To-T3n"/>
+                                        <constraint firstItem="3QI-6S-UOY" firstAttribute="top" secondItem="jrs-lc-WjI" secondAttribute="top" id="t58-zS-D51"/>
+                                        <constraint firstItem="3QI-6S-UOY" firstAttribute="leading" secondItem="jrs-lc-WjI" secondAttribute="leading" id="tpU-Iu-5Ef"/>
                                         <constraint firstAttribute="height" constant="32" id="xDV-JI-UZ7"/>
                                     </constraints>
                                 </view>
@@ -100,9 +115,14 @@
                                                 <constraint firstAttribute="width" constant="32" id="ZLB-Jr-gs8"/>
                                                 <constraint firstAttribute="height" constant="32" id="cSs-Ux-O5X"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                    <real key="value" value="16"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1 BNB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsT-uS-Z26">
-                                            <rect key="frame" x="0.0" y="56" width="145.5" height="22"/>
+                                            <rect key="frame" x="0.0" y="56" width="145.5" height="21"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -132,9 +152,14 @@
                                                 <constraint firstAttribute="width" constant="32" id="4VU-7e-Uhk"/>
                                                 <constraint firstAttribute="height" constant="32" id="ahb-gn-snM"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                    <real key="value" value="16"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1 BNB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1T9-yY-YwM">
-                                            <rect key="frame" x="0.0" y="56" width="145.5" height="22"/>
+                                            <rect key="frame" x="0.0" y="56" width="145.5" height="21"/>
                                             <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="18"/>
                                             <color key="textColor" name="textWhiteColor"/>
                                             <nil key="highlightedColor"/>
@@ -242,6 +267,9 @@
                                     <real key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="secondButtonTapped:" destination="-1" eventType="touchUpInside" id="faZ-H4-Grm"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="45H-8d-CXI">
                             <rect key="frame" x="37" y="307" width="143" height="38"/>
@@ -258,6 +286,9 @@
                                     <real key="value" value="16"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="firstButtonTapped:" destination="-1" eventType="touchUpInside" id="Kt1-Wn-R9g"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eEI-Zt-39Q" customClass="RectangularDashedView" customModule="Krystal" customModuleProvider="target">
                             <rect key="frame" x="37" y="365" width="301" height="112"/>
@@ -365,6 +396,7 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" name="popupBackgroundColor"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="eEI-Zt-39Q" firstAttribute="leading" secondItem="vxo-37-OUJ" secondAttribute="leading" constant="37" id="0de-i1-XqK"/>
                         <constraint firstItem="VtB-IA-jcK" firstAttribute="centerX" secondItem="vxo-37-OUJ" secondAttribute="centerX" id="0dv-kE-sL7"/>
@@ -390,23 +422,37 @@
                             <real key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="snS-td-FyT" appends="YES" id="3s5-Ds-xv2"/>
+                    </connections>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="vxo-37-OUJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="9m0-VQ-gga"/>
                 <constraint firstItem="vxo-37-OUJ" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="G3w-rg-pK0"/>
                 <constraint firstItem="vxo-37-OUJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="137" id="bH2-Re-DKR"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="QQ9-4e-PZW" appends="YES" id="M2T-17-uAM"/>
+            </connections>
             <point key="canvasLocation" x="138.40000000000001" y="108.39580209895054"/>
         </view>
+        <tapGestureRecognizer id="QQ9-4e-PZW">
+            <connections>
+                <action selector="tapOutsidePopup:" destination="-1" id="ZkZ-0c-AN8"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="snS-td-FyT"/>
     </objects>
     <resources>
         <image name="bnb" width="36" height="36"/>
         <image name="circle_arrow_right" width="19" height="19"/>
         <image name="open_link_icon_blue" width="14" height="14"/>
         <image name="star_icon" width="38" height="32"/>
+        <image name="success" width="64" height="64"/>
         <namedColor name="buttonBackgroundColor">
             <color red="0.11372549019607843" green="0.9137254901960784" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
