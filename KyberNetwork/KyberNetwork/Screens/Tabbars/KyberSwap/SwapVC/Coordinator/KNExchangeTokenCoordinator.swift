@@ -688,6 +688,10 @@ extension KNExchangeTokenCoordinator: KSwapViewControllerDelegate {
 //      supportedTokens: self.tokens
 //    )
     let controller = SearchTokenViewController(viewModel: SearchTokenViewModel())
+    controller.isSourceToken = self.isSelectingSourceToken
+    controller.onSelectTokenCompletion = { selectedToken in
+      print("THANGGG")
+    }
 //    controller.loadViewIfNeeded()
 //    controller.delegate = self
     

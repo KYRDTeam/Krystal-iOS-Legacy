@@ -8,7 +8,6 @@
 import UIKit
 import Moya
 
-
 class SwapToken: Codable {
   var token: Token
   var balance: String
@@ -53,10 +52,15 @@ class SwapToken: Codable {
 }
 
 class SearchSwapTokenService: NSObject {
+  var searchTokensProcess: Cancellable?
 
-  static func getCommonBaseTokens(completion: @escaping ([Token]?) -> Void) {
+  func getCommonBaseTokens(completion: @escaping ([Token]?) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    AppDelegate.shared.window?.rootViewController?.showLoadingHUD()
     provider.request(.getCommonBaseToken) { result in
+      DispatchQueue.main.async {
+        AppDelegate.shared.window?.rootViewController?.hideLoading()
+      }
       switch result {
       case .success(let response):
         if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let tokenJsons = json["tokens"] as? [JSONDictionary] {
@@ -74,9 +78,16 @@ class SearchSwapTokenService: NSObject {
     }
   }
   
-  static func getSearchTokens(address: String, querry: String, orderBy: String, completion: @escaping ([SwapToken]?) -> ()) {
+   func getSearchTokens(address: String, querry: String, orderBy: String, completion: @escaping ([SwapToken]?) -> ()) {
+     if let searchTokensProcess = self.searchTokensProcess {
+      searchTokensProcess.cancel()
+    }
+    AppDelegate.shared.window?.rootViewController?.showLoadingHUD()
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.request(.getSearchToken(address: address, querry: querry, orderBy: orderBy)) { result in
+     self.searchTokensProcess = provider.request(.getSearchToken(address: address, querry: querry, orderBy: orderBy)) { result in
+      DispatchQueue.main.async {
+        AppDelegate.shared.window?.rootViewController?.hideLoading()
+      }
       switch result {
       case .success(let response):
         if let json = try? response.mapJSON() as? JSONDictionary ?? [:], let balancesJsons = json["balances"] as? [JSONDictionary] {

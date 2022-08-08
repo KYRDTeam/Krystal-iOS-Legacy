@@ -14,17 +14,25 @@ class SearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var searchFieldActionButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
-  let onSelectTokenCompletion: ((SwapToken) -> ())? = nil
+  @IBOutlet weak var searchViewRightConstraint: NSLayoutConstraint!
+  @IBOutlet weak var topView: UIView!
+  @IBOutlet weak var topViewHeight: NSLayoutConstraint!
+  @IBOutlet weak var cancelButton: UIButton!
+  
+  var onSelectTokenCompletion: ((SwapToken) -> Void)?
   let collectionViewLeftPadding = 21.0
   let collectionViewCellPadding = 12.0
   let collectionViewCellWidth = 86.0
   var defaultCommonTokensInOneRow: CGFloat {
-    get {
-      return UIScreen.main.bounds.size.width - collectionViewLeftPadding * 2 >= collectionViewCellWidth * 4 + collectionViewCellPadding * 3 ? 4 : 3
-    }
+    return UIScreen.main.bounds.size.width - collectionViewLeftPadding * 2 >= collectionViewCellWidth * 4 + collectionViewCellPadding * 3 ? 4 : 3
   }
   var viewModel: SearchTokenViewModel
   var timer: Timer?
+  var isSourceToken: Bool = true
+  var orderBy: String {
+    return self.isSourceToken ? "usdValue" : "tag"
+  }
+  
   init(viewModel: SearchTokenViewModel) {
     self.viewModel = viewModel
     super.init(nibName: SearchTokenViewController.className, bundle: nil)
@@ -42,7 +50,7 @@ class SearchTokenViewController: KNBaseViewController {
       self.collectionView.reloadData()
     }
     
-    self.viewModel.fetchDataFromAPI(querry: "", orderBy: "usdValue") {
+    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
       self.tableView.reloadData()
     }
   }
@@ -53,16 +61,71 @@ class SearchTokenViewController: KNBaseViewController {
     self.collectionView.registerCellNib(CommonBaseTokenCell.self)
     self.collectionViewHeight.constant = 40 * 2 + 16
   }
+  
+  func updateUIStartSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 77
+      self.topViewHeight.constant = 0
+      self.topView.isHidden = true
+      self.cancelButton.isHidden = false
+      self.searchFieldActionButton.setImage(UIImage(named: "close-search-icon"), for: .normal)
+      self.view.layoutIfNeeded()
+    }
+  }
+  
+  func updateUIEndSearchingMode() {
+    self.view.layoutIfNeeded()
+    UIView.animate(withDuration: 0.65, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0, options: .curveEaseInOut) {
+      self.searchViewRightConstraint.constant = 21
+      self.topViewHeight.constant = 90
+      self.topView.isHidden = false
+      self.cancelButton.isHidden = true
+      self.searchFieldActionButton.setImage(UIImage(named: "search_blue_icon"), for: .normal)
+      self.view.endEditing(true)
+      self.view.layoutIfNeeded()
+    }
+  }
 
-  @IBAction func cancelButtonTapped(_ sender: Any) {
+  @IBAction func closeButtonTapped(_ sender: Any) {
     self.dismiss(animated: true)
   }
   
   @IBAction func onSearchButtonTapped(_ sender: Any) {
+    if self.topView.isHidden {
+      searchField.text = ""
+      self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+        self.tableView.reloadData()
+      }
+    } else {
+      self.updateUIStartSearchingMode()
+    }
+  }
+  
+  @IBAction func cancelButtonTapped(_ sender: Any) {
+    self.disableSearch()
+  }
+  
+  func disableSearch() {
+    searchField.text = ""
+    updateUIEndSearchingMode()
+    self.viewModel.fetchDataFromAPI(querry: "", orderBy: self.orderBy) {
+      self.tableView.reloadData()
+    }
   }
 }
 
 extension SearchTokenViewController: UITextFieldDelegate {
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    self.updateUIStartSearchingMode()
+    return true
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.updateUIEndSearchingMode()
+  }
+  
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     timer?.invalidate()
     timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
@@ -71,7 +134,7 @@ extension SearchTokenViewController: UITextFieldDelegate {
   
   @objc func doSearch() {
     if let text = self.searchField.text {
-      self.viewModel.fetchDataFromAPI(querry: text, orderBy: "usdValue") {
+      self.viewModel.fetchDataFromAPI(querry: text, orderBy: self.orderBy) {
         self.tableView.reloadData()
       }
     }

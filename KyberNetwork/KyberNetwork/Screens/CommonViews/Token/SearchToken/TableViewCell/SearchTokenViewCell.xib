@@ -46,7 +46,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="$3,123.31" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1U-N7-VX2">
-                        <rect key="frame" x="196.5" y="12" width="64.5" height="19"/>
+                        <rect key="frame" x="227.5" y="12" width="64.5" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="16"/>
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,21 +59,12 @@
                             <constraint firstAttribute="height" constant="17" id="usD-wV-3hc"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon_orange_star" translatesAutoresizingMaskIntoConstraints="NO" id="9XN-Ev-fjR">
-                        <rect key="frame" x="269" y="12" width="16" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="VvD-xI-2yg"/>
-                            <constraint firstAttribute="width" constant="16" id="wCo-g5-mW9"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
                     <constraint firstItem="V7E-Yw-QdE" firstAttribute="leading" secondItem="wyc-LC-FJE" secondAttribute="trailing" constant="12" id="0Xy-Nn-Jex"/>
                     <constraint firstItem="CzO-5S-wtP" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="leading" id="17F-VZ-Z41"/>
-                    <constraint firstItem="9XN-Ev-fjR" firstAttribute="leading" secondItem="L1U-N7-VX2" secondAttribute="trailing" constant="8" id="7GB-b1-1Mh"/>
                     <constraint firstItem="L1U-N7-VX2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="U59-J6-RFQ" secondAttribute="trailing" constant="5" id="98T-gj-8Pz"/>
-                    <constraint firstItem="9XN-Ev-fjR" firstAttribute="top" secondItem="L1U-N7-VX2" secondAttribute="top" id="AML-07-NvA"/>
                     <constraint firstItem="CzO-5S-wtP" firstAttribute="top" secondItem="V7E-Yw-QdE" secondAttribute="bottom" constant="4" id="Sxz-24-3ZI"/>
                     <constraint firstItem="U59-J6-RFQ" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="trailing" constant="2" id="UNg-Ej-JGp"/>
                     <constraint firstItem="wyc-LC-FJE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="XJE-qY-anC"/>
@@ -82,14 +73,13 @@
                     <constraint firstItem="V7E-Yw-QdE" firstAttribute="top" secondItem="wyc-LC-FJE" secondAttribute="top" id="b0Y-nK-3C3"/>
                     <constraint firstItem="wyc-LC-FJE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="dHd-ZD-uBA"/>
                     <constraint firstItem="L1U-N7-VX2" firstAttribute="centerY" secondItem="V7E-Yw-QdE" secondAttribute="centerY" id="faX-mh-pRI"/>
-                    <constraint firstAttribute="trailing" secondItem="9XN-Ev-fjR" secondAttribute="trailing" constant="30" id="j8L-Mq-pbM"/>
+                    <constraint firstAttribute="trailing" secondItem="L1U-N7-VX2" secondAttribute="trailing" constant="23" id="hdD-Ke-vtm"/>
                     <constraint firstAttribute="trailing" secondItem="CzO-5S-wtP" secondAttribute="trailing" constant="30" id="yc0-qy-lVa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="balanceLabel" destination="CzO-5S-wtP" id="Grm-cc-Vng"/>
-                <outlet property="favoriteIcon" destination="9XN-Ev-fjR" id="g6G-qw-2hq"/>
                 <outlet property="iconImageView" destination="wyc-LC-FJE" id="ie0-97-Ud2"/>
                 <outlet property="symbolLabel" destination="V7E-Yw-QdE" id="RmM-px-oUq"/>
                 <outlet property="valueLabel" destination="L1U-N7-VX2" id="QvN-4f-m8u"/>
@@ -98,7 +88,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Icon_orange_star" width="16.5" height="16"/>
         <image name="blueTick_icon" width="24" height="24"/>
         <image name="eth" width="32" height="32"/>
         <namedColor name="mainViewBgColor">

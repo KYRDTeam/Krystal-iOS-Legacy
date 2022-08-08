@@ -12,7 +12,6 @@ class SearchTokenViewCell: UITableViewCell {
   @IBOutlet weak var symbolLabel: UILabel!
   @IBOutlet weak var balanceLabel: UILabel!
   @IBOutlet weak var valueLabel: UILabel!
-  @IBOutlet weak var favoriteIcon: UIImageView!
 
   override func awakeFromNib() {
     super.awakeFromNib()

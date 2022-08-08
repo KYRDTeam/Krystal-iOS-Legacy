@@ -19,11 +19,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchTokenViewController" customModule="Krystal" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="hHp-Y8-e7X" id="CpQ-aY-cVI"/>
                 <outlet property="collectionView" destination="96q-8h-wfj" id="z7A-d4-f3w"/>
                 <outlet property="collectionViewHeight" destination="dwg-hN-oMZ" id="7LD-ti-zL1"/>
                 <outlet property="searchField" destination="JdW-VG-kNz" id="oX9-lP-b01"/>
                 <outlet property="searchFieldActionButton" destination="9lH-9E-ucZ" id="eKm-N8-NDO"/>
+                <outlet property="searchViewRightConstraint" destination="D82-S2-TcH" id="eWN-Iq-RO0"/>
                 <outlet property="tableView" destination="ftT-qp-sxx" id="yJp-IS-NL9"/>
+                <outlet property="topView" destination="Eqr-th-ABs" id="m7C-jY-GI6"/>
+                <outlet property="topViewHeight" destination="jsV-70-SyG" id="9Es-A5-Nua"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -49,7 +53,7 @@
                             </constraints>
                             <state key="normal" image="close-search-icon"/>
                             <connections>
-                                <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="Esn-ob-F6n"/>
+                                <action selector="closeButtonTapped:" destination="-1" eventType="touchUpInside" id="gaW-ei-XcT"/>
                             </connections>
                         </button>
                     </subviews>
@@ -115,6 +119,18 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHp-Y8-e7X">
+                    <rect key="frame" x="307" y="105" width="47" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="47" id="TeA-RW-oPY"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Karla-Regular" family="Karla" pointSize="15"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Cancel"/>
+                    <connections>
+                        <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="Lap-VA-jz0"/>
+                    </connections>
+                </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ftT-qp-sxx">
                     <rect key="frame" x="0.0" y="243" width="375" height="424"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -123,6 +139,13 @@
                         <outlet property="delegate" destination="-1" id="Tx9-fs-lHU"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-0X-v4W">
+                    <rect key="frame" x="24" y="234" width="327" height="1"/>
+                    <color key="backgroundColor" name="grayBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="Ml7-jU-Gak"/>
+                    </constraints>
+                </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scrollEnabled="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="96q-8h-wfj">
                     <rect key="frame" x="0.0" y="158" width="375" height="60"/>
                     <color key="backgroundColor" name="mainViewBgColor"/>
@@ -140,18 +163,13 @@
                         <outlet property="delegate" destination="-1" id="oWX-Dw-jWG"/>
                     </connections>
                 </collectionView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-0X-v4W">
-                    <rect key="frame" x="24" y="234" width="327" height="1"/>
-                    <color key="backgroundColor" name="grayBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="Ml7-jU-Gak"/>
-                    </constraints>
-                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="mainViewBgColor"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hHp-Y8-e7X" secondAttribute="trailing" constant="21" id="3LC-IG-bSK"/>
                 <constraint firstItem="ftT-qp-sxx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6VP-SQ-HcI"/>
+                <constraint firstItem="hHp-Y8-e7X" firstAttribute="centerY" secondItem="ARh-ze-PHc" secondAttribute="centerY" id="7wR-K2-Vk6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ARh-ze-PHc" secondAttribute="trailing" constant="21" id="D82-S2-TcH"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UWq-0X-v4W" secondAttribute="trailing" constant="24" id="Dh2-Bg-PMc"/>
                 <constraint firstItem="96q-8h-wfj" firstAttribute="top" secondItem="ARh-ze-PHc" secondAttribute="bottom" constant="11" id="ElU-tE-Ugr"/>
@@ -160,6 +178,7 @@
                 <constraint firstItem="Eqr-th-ABs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="QYO-sz-0VX"/>
                 <constraint firstItem="ftT-qp-sxx" firstAttribute="top" secondItem="UWq-0X-v4W" secondAttribute="bottom" constant="8" id="VGY-wO-NUw"/>
                 <constraint firstItem="UWq-0X-v4W" firstAttribute="top" secondItem="96q-8h-wfj" secondAttribute="bottom" constant="16" id="azG-76-S1M"/>
+                <constraint firstItem="hHp-Y8-e7X" firstAttribute="height" secondItem="ARh-ze-PHc" secondAttribute="height" id="ees-RX-HJ3"/>
                 <constraint firstItem="Eqr-th-ABs" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ele-rA-s1S"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Eqr-th-ABs" secondAttribute="trailing" id="fdU-O3-I2a"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ftT-qp-sxx" secondAttribute="bottom" id="hYm-ZJ-Obs"/>
