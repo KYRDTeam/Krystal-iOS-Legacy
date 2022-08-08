@@ -36,7 +36,7 @@ class SearchTokenViewCell: UITableViewCell {
       self.balanceLabel.text = ""
     }
     if let quoteUSD = token.quotes["usd"] {
-      self.valueLabel.text = "$" + quoteUSD.value.displayUSD()
+      self.valueLabel.text = "$" + "\(quoteUSD.value)".displayRate()
     } else {
       self.valueLabel.text = "$0"
     }
