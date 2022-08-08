@@ -14,18 +14,19 @@ class SearchTokenViewController: KNBaseViewController {
   @IBOutlet weak var searchFieldActionButton: UIButton!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
-  
+  let onSelectTokenCompletion: ((SwapToken) -> ())? = nil
   let collectionViewLeftPadding = 21.0
   let collectionViewCellPadding = 12.0
   let collectionViewCellWidth = 86.0
-
   var defaultCommonTokensInOneRow: CGFloat {
     get {
       return UIScreen.main.bounds.size.width - collectionViewLeftPadding * 2 >= collectionViewCellWidth * 4 + collectionViewCellPadding * 3 ? 4 : 3
     }
   }
-
-  init(viewModel: KNSearchTokenViewModel) {
+  var viewModel: SearchTokenViewModel
+  var timer: Timer?
+  init(viewModel: SearchTokenViewModel) {
+    self.viewModel = viewModel
     super.init(nibName: SearchTokenViewController.className, bundle: nil)
     self.modalPresentationStyle = .custom
   }
@@ -36,6 +37,17 @@ class SearchTokenViewController: KNBaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.setupUI()
+    self.viewModel.getCommonBaseToken {
+      self.collectionView.reloadData()
+    }
+    
+    self.viewModel.fetchDataFromAPI(querry: "", orderBy: "usdValue") {
+      self.tableView.reloadData()
+    }
+  }
+  
+  func setupUI() {
     self.searchField.setPlaceholder(text: Strings.searchByTokenWalletEND, color: UIColor(named: "normalTextColor")!)
     self.tableView.registerCellNib(SearchTokenViewCell.self)
     self.collectionView.registerCellNib(CommonBaseTokenCell.self)
@@ -50,30 +62,66 @@ class SearchTokenViewController: KNBaseViewController {
   }
 }
 
+extension SearchTokenViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+    return true
+  }
+  
+  @objc func doSearch() {
+    if let text = self.searchField.text {
+      self.viewModel.fetchDataFromAPI(querry: text, orderBy: "usdValue") {
+        self.tableView.reloadData()
+      }
+    }
+  }
+}
+
 extension SearchTokenViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 15
+    return self.viewModel.numberOfSearchTokens()
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(SearchTokenViewCell.self, indexPath: indexPath)!
+    let swapToken = self.viewModel.searchTokens[indexPath.row]
+    cell.updateUI(token: swapToken)
     return cell
+  }
+}
+
+extension SearchTokenViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let onSelectTokenCompletion = self.onSelectTokenCompletion {
+      let swapToken = self.viewModel.searchTokens[indexPath.row]
+      onSelectTokenCompletion(swapToken)
+      self.dismiss(animated: true)
+    }
   }
 }
 
 extension SearchTokenViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 4//section == 0 ? 3 : 1
-  }
-  
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
+    return self.viewModel.numberOfCommonBaseTokens()
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(CommonBaseTokenCell.self, indexPath: indexPath)!
-    cell.tokenLabel.text = "s+ \(indexPath.row)"
+    let token = self.viewModel.commonBaseTokens[indexPath.row]
+    cell.updateUI(token: token)
     return cell
+  }
+}
+
+extension SearchTokenViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    if let onSelectTokenCompletion = self.onSelectTokenCompletion {
+      let token = self.viewModel.commonBaseTokens[indexPath.row]
+      let swapToken = SwapToken(token: token)
+      onSelectTokenCompletion(swapToken)
+      self.dismiss(animated: true)
+    }
   }
 }
 

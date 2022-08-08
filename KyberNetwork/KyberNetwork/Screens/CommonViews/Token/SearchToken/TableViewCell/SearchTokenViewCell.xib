@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,9 +39,8 @@
                         <color key="textColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CzO-5S-wtP">
-                        <rect key="frame" x="78" y="33" width="42" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 ETH" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CzO-5S-wtP">
+                        <rect key="frame" x="76" y="35" width="209" height="17"/>
                         <fontDescription key="fontDescription" name="Karla-Medium" family="Karla" pointSize="14"/>
                         <color key="textColor" name="normalTextColor"/>
                         <nil key="highlightedColor"/>
@@ -71,9 +70,11 @@
                 <color key="backgroundColor" name="mainViewBgColor"/>
                 <constraints>
                     <constraint firstItem="V7E-Yw-QdE" firstAttribute="leading" secondItem="wyc-LC-FJE" secondAttribute="trailing" constant="12" id="0Xy-Nn-Jex"/>
+                    <constraint firstItem="CzO-5S-wtP" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="leading" id="17F-VZ-Z41"/>
                     <constraint firstItem="9XN-Ev-fjR" firstAttribute="leading" secondItem="L1U-N7-VX2" secondAttribute="trailing" constant="8" id="7GB-b1-1Mh"/>
                     <constraint firstItem="L1U-N7-VX2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="U59-J6-RFQ" secondAttribute="trailing" constant="5" id="98T-gj-8Pz"/>
                     <constraint firstItem="9XN-Ev-fjR" firstAttribute="top" secondItem="L1U-N7-VX2" secondAttribute="top" id="AML-07-NvA"/>
+                    <constraint firstItem="CzO-5S-wtP" firstAttribute="top" secondItem="V7E-Yw-QdE" secondAttribute="bottom" constant="4" id="Sxz-24-3ZI"/>
                     <constraint firstItem="U59-J6-RFQ" firstAttribute="leading" secondItem="V7E-Yw-QdE" secondAttribute="trailing" constant="2" id="UNg-Ej-JGp"/>
                     <constraint firstItem="wyc-LC-FJE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="XJE-qY-anC"/>
                     <constraint firstAttribute="bottom" secondItem="wyc-LC-FJE" secondAttribute="bottom" constant="12" id="YDR-c2-Z6x"/>
@@ -82,9 +83,17 @@
                     <constraint firstItem="wyc-LC-FJE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="dHd-ZD-uBA"/>
                     <constraint firstItem="L1U-N7-VX2" firstAttribute="centerY" secondItem="V7E-Yw-QdE" secondAttribute="centerY" id="faX-mh-pRI"/>
                     <constraint firstAttribute="trailing" secondItem="9XN-Ev-fjR" secondAttribute="trailing" constant="30" id="j8L-Mq-pbM"/>
+                    <constraint firstAttribute="trailing" secondItem="CzO-5S-wtP" secondAttribute="trailing" constant="30" id="yc0-qy-lVa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="balanceLabel" destination="CzO-5S-wtP" id="Grm-cc-Vng"/>
+                <outlet property="favoriteIcon" destination="9XN-Ev-fjR" id="g6G-qw-2hq"/>
+                <outlet property="iconImageView" destination="wyc-LC-FJE" id="ie0-97-Ud2"/>
+                <outlet property="symbolLabel" destination="V7E-Yw-QdE" id="RmM-px-oUq"/>
+                <outlet property="valueLabel" destination="L1U-N7-VX2" id="QvN-4f-m8u"/>
+            </connections>
             <point key="canvasLocation" x="128.2608695652174" y="118.19196428571428"/>
         </tableViewCell>
     </objects>

@@ -444,6 +444,8 @@
 		7E01EFEC2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */; };
 		7E0AE5C427D86A2A0078D135 /* RateTransactionPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */; };
 		7E0AE5C527D86A2A0078D135 /* RateTransactionPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */; };
+		7E12788B289CF92C00A2AE34 /* SearchSwapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */; };
+		7E12788D289D005400A2AE34 /* SearchTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12788C289D005400A2AE34 /* SearchTokenViewModel.swift */; };
 		7E16B8CF2769CF5F00F9A234 /* ReferralTiersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */; };
 		7E16B8D02769CF5F00F9A234 /* ReferralTiersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */; };
 		7E16B8D32769DB3300F9A234 /* ReferralTiersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */; };
@@ -1572,6 +1574,8 @@
 		7E01EFEA2890EFFA007E4363 /* OverviewMultichainLiquidityPoolCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewMultichainLiquidityPoolCell.xib; sourceTree = "<group>"; };
 		7E0AE5C227D86A2A0078D135 /* RateTransactionPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateTransactionPopupViewController.swift; sourceTree = "<group>"; };
 		7E0AE5C327D86A2A0078D135 /* RateTransactionPopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RateTransactionPopupViewController.xib; sourceTree = "<group>"; };
+		7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSwapTokenService.swift; sourceTree = "<group>"; };
+		7E12788C289D005400A2AE34 /* SearchTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTokenViewModel.swift; sourceTree = "<group>"; };
 		7E16B8CD2769CF5F00F9A234 /* ReferralTiersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersViewController.swift; sourceTree = "<group>"; };
 		7E16B8CE2769CF5F00F9A234 /* ReferralTiersViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReferralTiersViewController.xib; sourceTree = "<group>"; };
 		7E16B8D12769DB3300F9A234 /* ReferralTiersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralTiersCell.swift; sourceTree = "<group>"; };
@@ -2945,6 +2949,7 @@
 				25696F6720BE9EB6002CC53F /* KNSearchTokenViewController.xib */,
 				7E8FF1C228991B0C00A5E22F /* SearchTokenViewController.swift */,
 				7E8FF1C328991B0C00A5E22F /* SearchTokenViewController.xib */,
+				7E12788C289D005400A2AE34 /* SearchTokenViewModel.swift */,
 			);
 			path = SearchToken;
 			sourceTree = "<group>";
@@ -4742,6 +4747,7 @@
 			isa = PBXGroup;
 			children = (
 				A6573B7F284DE16000A25CBF /* CrosschainTransactionService.swift */,
+				7E12788A289CF92C00A2AE34 /* SearchSwapTokenService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -7087,6 +7093,7 @@
 				C313720D26078051003D432B /* CustomTokenTableViewCell.swift in Sources */,
 				A6E6C9B528168DA200EEB2E6 /* LoadingIndicatorCell.swift in Sources */,
 				A651944628361AA6008F4AEB /* TransactionHistoryItemType.swift in Sources */,
+				7E12788D289D005400A2AE34 /* SearchTokenViewModel.swift in Sources */,
 				A6BB3C1F28605CDA0097EB75 /* EthereumNodeRequest.swift in Sources */,
 				291ED08F1F6F613200E7E93A /* GetTransactionRequest.swift in Sources */,
 				C33696102595A387000EDD5D /* ApproveTokenViewController.swift in Sources */,
@@ -7234,6 +7241,7 @@
 				7ECCB1FC2861711800499FA0 /* SearchResult.swift in Sources */,
 				A64CC665289405B8006BA1C6 /* Web3Factory.swift in Sources */,
 				C33BB80027955BC800851BC6 /* ABIEncoder.swift in Sources */,
+				7E12788B289CF92C00A2AE34 /* SearchSwapTokenService.swift in Sources */,
 				C39D3FE126FB33610021DF8A /* History.swift in Sources */,
 				7EEB9271278C478B002D1C3B /* GasFeeSelectorPopupViewModel.swift in Sources */,
 				A651944F28362E54008F4AEB /* TxInfoCell.swift in Sources */,

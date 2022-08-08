@@ -904,6 +904,8 @@ enum KrytalService {
   case getAllNftBalance(address: String, chains: [String])
   case getAllLendingBalance(address: String, chains: [String], quotes: [String])
   case getAllLendingDistributionBalance(lendingPlatforms: [String], address: String, chains: [String], quotes: [String])
+  case getCommonBaseToken
+  case getSearchToken(address: String, querry: String, orderBy: String)
 }
 
 extension KrytalService: TargetType {
@@ -1048,6 +1050,10 @@ extension KrytalService: TargetType {
       return "/v1/balance/distributionLending"
     case .getMultichainBalance:
       return "/v1/balance/token"
+    case .getCommonBaseToken:
+      return "/v1/token/commonBase"
+    case .getSearchToken:
+      return "/v1/token/search"
     }
   }
 
@@ -1479,6 +1485,16 @@ extension KrytalService: TargetType {
         let currentCurrencyType: CurrencyMode = CurrencyMode(rawValue: UserDefaults.standard.integer(forKey: Constants.currentCurrencyMode)) ?? .usd
         json["quoteSymbols"] = currentCurrencyType.toString()
       }
+      return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
+    case .getCommonBaseToken:
+      return .requestPlain
+    case .getSearchToken(let address, let querry, let orderBy):
+      let json: JSONDictionary = [
+        "address": address,
+        "query": querry,
+        "orderBy": orderBy,
+        "tags": "PROMOTION,VERIFIED,UNVERIFIED"
+      ]
       return .requestParameters(parameters: json, encoding: URLEncoding.queryString)
     }
   }
