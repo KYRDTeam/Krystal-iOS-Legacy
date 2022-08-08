@@ -340,7 +340,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
       return
     }
     if scanMode == .text {
-      guard let croppedImage = cropDetectingFrame(cgImage: cgImage, inRect: self.holeCover.holeFrame) else {
+      guard let croppedImage = cropDetectingFrame(cgImage: cgImage) else {
         return
       }
       cgImage = croppedImage
@@ -350,7 +350,7 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
     }
   }
   
-  private func cropDetectingFrame(cgImage: CGImage, inRect rect: CGRect) -> CGImage? {
+  private func cropDetectingFrame(cgImage: CGImage) -> CGImage? {
     let imageWidth = CGFloat(cgImage.width)
     let imageHeight = CGFloat(cgImage.height)
     

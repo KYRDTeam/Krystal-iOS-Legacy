@@ -11,7 +11,7 @@ extension UITextField {
     self.attributedPlaceholder = attributedString
   }
   
-  func setPlaceholder (text: String, color: UIColor) {
+  func setPlaceholder(text: String, color: UIColor) {
     self.attributedPlaceholder = NSAttributedString(string: text, attributes: [NSAttributedString.Key.foregroundColor: color])
   }
   

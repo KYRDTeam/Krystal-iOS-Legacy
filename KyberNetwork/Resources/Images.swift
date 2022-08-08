@@ -52,4 +52,9 @@ struct Images {
   static let pending = UIImage(named: "loading_icon")!
   static let txSuccess = UIImage(named: "tx_success_icon")!
   static let helpLargeIcon = UIImage(named: "help_icon_large")!
+  
+  // Swap
+  static let excludeCircleArrow = UIImage(named: "progress_exclude")!
+  static let swapDropdown = UIImage(named: "swap_dropdown_grey")!
+  static let swapPullup = UIImage(named: "swap_dropup_grey")!
 }
