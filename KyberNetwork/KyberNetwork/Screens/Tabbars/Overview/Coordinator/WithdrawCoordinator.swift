@@ -368,38 +368,6 @@ extension WithdrawCoordinator: KNTransactionStatusPopUpDelegate {
     vc.delegate = self
     self.gasPriceSelectVC = vc
     self.navigationController.present(vc, animated: true, completion: nil)
-    /*
-    if KNGeneralProvider.shared.isUseEIP1559 {
-      if let eipTx = transaction.eip1559Transaction,
-         let gasLimitBigInt = BigInt(eipTx.gasLimit.drop0x, radix: 16),
-         let maxPriorityBigInt = BigInt(eipTx.maxInclusionFeePerGas.drop0x, radix: 16),
-         let maxGasFeeBigInt = BigInt(eipTx.maxGasFee.drop0x, radix: 16) {
-
-        let viewModel = GasFeeSelectorPopupViewModel(isSwapOption: true, gasLimit: gasLimitBigInt, selectType: .custom, currentRatePercentage: 0, isUseGasToken: false)
-        viewModel.updateGasPrices(
-          fast: KNGasCoordinator.shared.fastKNGas,
-          medium: KNGasCoordinator.shared.standardKNGas,
-          slow: KNGasCoordinator.shared.lowKNGas,
-          superFast: KNGasCoordinator.shared.superFastKNGas
-        )
-
-        viewModel.advancedGasLimit = gasLimitBigInt.description
-        viewModel.advancedMaxPriorityFee = maxPriorityBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.advancedMaxFee = maxGasFeeBigInt.shortString(units: UnitConfiguration.gasPriceUnit)
-        viewModel.isCancelMode = true
-        viewModel.transaction = transaction
-        let vc = GasFeeSelectorPopupViewController(viewModel: viewModel)
-        vc.delegate = self
-        self.gasPriceSelectVC = vc
-        self.navigationController.present(vc, animated: true, completion: nil)
-      }
-    } else {
-      let viewModel = KNConfirmCancelTransactionViewModel(transaction: transaction)
-      let confirmPopup = KNConfirmCancelTransactionPopUp(viewModel: viewModel)
-      confirmPopup.delegate = self
-      self.navigationController.present(confirmPopup, animated: true, completion: nil)
-    }
-    */
   }
 
   fileprivate func openSendTokenView() {
@@ -588,6 +556,15 @@ extension WithdrawCoordinator: GasFeeSelectorPopupViewControllerDelegate {
 extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
   func withdrawConfirmPopupViewControllerDidSelectFirstButton(_ controller: WithdrawConfirmPopupViewController, balance: LendingBalance?) {
     controller.dismiss(animated: true) {
+      guard balance?.chainType == KNGeneralProvider.shared.currentChain else {
+        if let chain = balance?.chainType {
+          self.navigationController.showSwitchChainAlert(chain) {
+            self.withdrawConfirmPopupViewControllerDidSelectFirstButton(controller, balance: balance)
+          }
+        }
+        return
+      }
+      
       if let controller = self.withdrawViewController {
         self.navigationController.present(controller, animated: true, completion: {
           controller.coordinatorUpdateIsUseGasToken(self.isAccountUseGasToken())
@@ -603,6 +580,15 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
         return
       }
       controller.dismiss(animated: true) {
+        guard self.claimBalance?.chainType == KNGeneralProvider.shared.currentChain else {
+          if let chain = self.claimBalance?.chainType {
+            self.navigationController.showSwitchChainAlert(chain) {
+              self.withdrawConfirmPopupViewControllerDidSelectSecondButton(controller, balance: balance)
+            }
+          }
+          return
+        }
+        
         self.navigationController.displayLoading()
         if self.claimViewController != nil {
           self.getLatestNonce { (nonce) in
@@ -717,6 +703,14 @@ extension WithdrawCoordinator: WithdrawConfirmPopupViewControllerDelegate {
       }
     } else {
       controller.dismiss(animated: true, completion: {
+        guard balance?.chainType == KNGeneralProvider.shared.currentChain else {
+          if let chain = balance?.chainType {
+            self.navigationController.showSwitchChainAlert(chain) {
+              self.withdrawConfirmPopupViewControllerDidSelectSecondButton(controller, balance: balance)
+            }
+          }
+          return
+        }
         guard let unwrapped = balance else { return }
         self.delegate?.withdrawCoordinatorDidSelectEarnMore(balance: unwrapped)
       })

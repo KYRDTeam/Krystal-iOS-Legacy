@@ -97,7 +97,8 @@ enum ChainType: Codable, CaseIterable {
       allChains = allChains.filter { $0 != .klaytn }
     }
     
-    if !includeAll {
+    let shouldShowAll = FeatureFlagManager.shared.showFeature(forKey: FeatureFlagKeys.multichainPortfolio)
+    if !includeAll || !shouldShowAll {
       allChains = allChains.filter { $0 != .all }
     } else {
       allChains.bringToFront(item: .all)
@@ -112,8 +113,8 @@ enum ChainType: Codable, CaseIterable {
   }
   
   static func getChain(id: Int) -> ChainType? {
-    return ChainType.getAllChain().first { e in
-      return e.customRPC().chainID == id
+    return ChainType.getAllChain().first {
+      return $0.customRPC().chainID == id
     }
   }
 

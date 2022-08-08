@@ -367,11 +367,14 @@ extension KrystalScannerViewController: AVCaptureVideoDataOutputSampleBufferDele
   
   func processScanResult(texts: [String]) {
     for text in texts {
-      if let type = acceptedResults.first(where: { ScannerUtils.isValid(text: text, forType: $0) }) {
+      if let type = acceptedResults.first(where: { type in
+        let formattedText = ScannerUtils.formattedText(text: text, forType: type)
+        return ScannerUtils.isValid(text: formattedText, forType: type)
+      }) {
         if scanMode == .text && (type == .solPrivateKey || type == .solPublicKey) {
           continue
         } else {
-          handleValidResult(text: ScannerUtils.smoothen(text: text, forType: type), type: type)
+          handleValidResult(text: ScannerUtils.formattedText(text: text, forType: type), type: type)
           break
         }
       }

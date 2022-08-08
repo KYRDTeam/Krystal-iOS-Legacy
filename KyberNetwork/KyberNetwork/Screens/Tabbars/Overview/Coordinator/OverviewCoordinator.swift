@@ -183,7 +183,6 @@ class OverviewCoordinator: NSObject, Coordinator {
   
   //TODO: coordinator update balance, coordinator change wallet
   func appCoordinatorDidUpdateTokenList() {
-    self.rootViewController.coordinatorDidUpdateDidUpdateTokenList()
     self.sendCoordinator?.coordinatorTokenBalancesDidUpdate(balances: [:])
   }
 

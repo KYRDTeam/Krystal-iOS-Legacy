@@ -106,7 +106,6 @@ class KNLoadBalanceCoordinator {
   }
 
   func resume() {
-    AppDelegate.shared.window?.rootViewController?.showLoadingHUD()
     fetchBalanceTimer?.invalidate()
     fetchBalanceTimer = Timer.scheduledTimer(
       withTimeInterval: KNLoadingInterval.seconds30,
@@ -251,7 +250,6 @@ class KNLoadBalanceCoordinator {
     var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
     if self.shouldFetchAllChain {
-      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
       chainIds = ChainType.getAllChain().map {
         return "\($0.getChainId())"
       }
@@ -262,7 +260,10 @@ class KNLoadBalanceCoordinator {
           return "solana:\(address.addressString)"
         }
       }
+    } else {
+      quoteSymbols.append("\(KNGeneralProvider.shared.currentChain.quoteToken().lowercased())")
     }
+    
     provider.requestWithFilter(.getMultichainBalance(address: addressString, chainIds: chainIds, quoteSymbols: quoteSymbols)) { (result) in
       switch result {
       case .success(let resp):
@@ -289,11 +290,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
@@ -326,7 +327,14 @@ class KNLoadBalanceCoordinator {
   func loadNFTBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     let address = AppDelegate.session.address.addressString
-    provider.requestWithFilter(.getAllNftBalance(address: address, chains: [])) { result in
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllNftBalance(address: address, chains: chainIds)) { result in
       switch result {
       case .success(let resp):
         let decoder = JSONDecoder()
@@ -359,7 +367,14 @@ class KNLoadBalanceCoordinator {
   func loadLendingBalances(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     guard KNGeneralProvider.shared.currentChain.isSupportSwap() else { return }
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-    provider.requestWithFilter(.getAllLendingBalance(address: AppDelegate.session.address.addressString, chains: [], quotes: [])) { (result) in
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
+    
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllLendingBalance(address: AppDelegate.session.address.addressString, chains: chainIds, quotes: [])) { (result) in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
@@ -384,6 +399,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -393,8 +409,14 @@ class KNLoadBalanceCoordinator {
 
   func loadLendingDistributionBalance(forceSync: Bool = false, completion: @escaping (Bool) -> Void) {
     let provider = MoyaProvider<KrytalService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    var chainIds = ["\(KNGeneralProvider.shared.currentChain.getChainId())"]
     
-    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: [], quotes: [])) { result in
+    if self.shouldFetchAllChain {
+      chainIds = ChainType.getAllChain().map {
+        return "\($0.getChainId())"
+      }
+    }
+    provider.requestWithFilter(.getAllLendingDistributionBalance(lendingPlatforms: ChainType.allLendingDistributionPlatform(), address: address.addressString, chains: chainIds, quotes: [])) { result in
       switch result {
       case .success(let response):
         let decoder = JSONDecoder()
@@ -413,6 +435,7 @@ class KNLoadBalanceCoordinator {
           completion(true)
         } catch let error {
           print(error.localizedDescription)
+          completion(false)
         }
       case .failure( _):
         completion(false)
@@ -445,11 +468,11 @@ class KNLoadBalanceCoordinator {
         }
         completion(true)
       case .failure(let error):
-        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
-          with: "",
-          message: error.localizedDescription,
-          time: 2.0
-        )
+//        AppDelegate.shared.window?.rootViewController?.showWarningTopBannerMessage(
+//          with: "",
+//          message: error.localizedDescription,
+//          time: 2.0
+//        )
         completion(false)
       }
     }
@@ -457,6 +480,7 @@ class KNLoadBalanceCoordinator {
 
   func loadCustomNFTBalane(completion: @escaping (Bool) -> Void) {
     guard let provider = AppDelegate.session.externalProvider else {
+      completion(false)
       return
     }
 

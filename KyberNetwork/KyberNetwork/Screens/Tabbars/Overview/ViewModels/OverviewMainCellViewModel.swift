@@ -149,19 +149,14 @@ class OverviewMainCellViewModel {
         guard !self.hideBalanceStatus else {
           return "********"
         }
-//        let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: lendingBalance.address, currency: self.currency)
-        let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
-        let valueBigInt = balanceBigInt * BigInt(lendingBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(lendingBalance.decimals)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
+        
+        let valueString = supplyValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       } else if let distributionBalance = balance as? LendingDistributionBalance {
         guard !self.hideBalanceStatus else {
           return "********"
         }
-//        let tokenPrice = KNTrackerRateStorage.shared.getLastPriceWith(address: distributionBalance.address, currency: self.currency)
-        let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
-        let valueBigInt = balanceBigInt * BigInt(distributionBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(distributionBalance.decimal)
-        let valueString = valueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
+        let valueString = supplyValueBigInt.string(decimals: 18, minFractionDigits: 0, maxFractionDigits: self.currency.decimalNumber())
         return !self.currency.symbol().isEmpty ? self.currency.symbol() + valueString : valueString + self.currency.suffixSymbol()
       } else {
         return ""
@@ -209,6 +204,39 @@ class OverviewMainCellViewModel {
       return UIColor(named: "buttonBackgroundColor")
     }
   }
+  
+  var displayAccessoryColor: UIColor? {
+    switch self.mode {
+    case .market(token: let token, rightMode: let mode):
+      switch mode {
+      case .ch24:
+        let change24 = token.getTokenChange24(self.currency)
+        if change24 == 0 {
+          return UIColor.clear
+        } else {
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+        }
+      default:
+        let change24 = token.getTokenChange24(self.currency)
+        let cap = token.getMarketCap(self.currency)
+        if cap == 0 {
+          return UIColor.clear
+        } else {
+          return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+        }
+      }
+    case .asset(token: let token, rightMode: let mode):
+      guard let quote = self.quotes[self.currency.toString()] else {
+        return UIColor.Kyber.buttonBg
+      }
+      return quote.priceChange24hPercentage > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+    case .search(token: let token):
+      let change24 = token.getTokenChange24(self.currency)
+      return change24 > 0 ? UIColor.Kyber.buttonBg : UIColor.Kyber.textRedColor
+    default:
+      return UIColor.Kyber.buttonBg
+    }
+  }
 
   var displayDetailBox: String {
     switch self.mode {
@@ -254,6 +282,27 @@ class OverviewMainCellViewModel {
       return ("\(round(thousand*10/10))K")
     } else {
       return "\(Int(number))"
+    }
+  }
+  
+  var supplyValueBigInt: BigInt {
+    switch mode {
+    case .supply(let balance):
+      if let lendingBalance = balance as? LendingBalance {
+        let balanceBigInt = BigInt(lendingBalance.supplyBalance) ?? BigInt(0)
+        let valueBigInt = balanceBigInt * BigInt(lendingBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(lendingBalance.decimals)
+        
+        return valueBigInt
+      } else if let distributionBalance = balance as? LendingDistributionBalance {
+        let balanceBigInt = BigInt(distributionBalance.unclaimed) ?? BigInt(0)
+        let valueBigInt = balanceBigInt * BigInt(distributionBalance.getPriceDouble(self.currency) * pow(10.0, 18.0)) / BigInt(10).power(distributionBalance.decimal)
+        
+        return valueBigInt
+      } else {
+        return .zero
+      }
+    default:
+      return .zero
     }
   }
 }

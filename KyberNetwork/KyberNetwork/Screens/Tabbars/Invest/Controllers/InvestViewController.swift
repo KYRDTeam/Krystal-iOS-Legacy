@@ -113,6 +113,10 @@ class InvestViewController: KNBaseViewController {
     self.updateUISwitchChain()
     self.viewModel.reloadMenuItems()
   }
+  
+  func coordinatorDidSwitchAddress() {
+    self.viewModel.reloadMenuItems()
+  }
 }
 
 extension InvestViewController: UICollectionViewDelegateFlowLayout {

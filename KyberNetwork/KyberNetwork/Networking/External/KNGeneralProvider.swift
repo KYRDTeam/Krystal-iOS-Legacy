@@ -62,10 +62,7 @@ class KNGeneralProvider {
   }
   
   var currentWalletAddress: String {
-    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-      return appDelegate.coordinator.session.wallet.addressString
-    }
-    return ""
+    return AppDelegate.session.address.addressString
   }
 
   var proxyAddress: String {

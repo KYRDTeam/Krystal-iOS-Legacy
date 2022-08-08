@@ -635,6 +635,7 @@
 		A693AFEF2819059B00880503 /* RewardHuntingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */; };
 		A6945A9528913BAB0041FE2E /* ScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6945A9428913BAB0041FE2E /* ScannerUtils.swift */; };
 		A6977DF1289BD08A00B2B6BD /* SwapRateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */; };
+		A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */; };
 		A6B0671E2859CDBE00DEBAE8 /* KrystalWallets.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6B067262859CF1900DEBAE8 /* KrystalWallets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; platformFilter = ios; };
 		A6B067272859CF1900DEBAE8 /* KrystalWallets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1790,6 +1791,7 @@
 		A693AFEE2819059B00880503 /* RewardHuntingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardHuntingViewController.swift; sourceTree = "<group>"; };
 		A6945A9428913BAB0041FE2E /* ScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerUtils.swift; sourceTree = "<group>"; };
 		A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapRateService.swift; sourceTree = "<group>"; };
+		A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerUtilsTests.swift; sourceTree = "<group>"; };
 		A6B0671B2859CDBE00DEBAE8 /* KrystalWallets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KrystalWallets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6B0671D2859CDBE00DEBAE8 /* KrystalWallets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KrystalWallets.h; sourceTree = "<group>"; };
 		A6B0673C2859F43A00DEBAE8 /* KrystalTransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrystalTransactionService.swift; sourceTree = "<group>"; };
@@ -4640,6 +4642,7 @@
 			isa = PBXGroup;
 			children = (
 				A6BA4C9E28A0F0AD002E2B30 /* Format */,
+				A6977DEC289BA01300B2B6BD /* Scanner */,
 				A6C211BF2859C4870079DC05 /* Signers */,
 				A6394B4E2840D4EF0084C923 /* History */,
 			);
@@ -4969,6 +4972,14 @@
 				A6977DF0289BD08A00B2B6BD /* SwapRateService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		A6977DEC289BA01300B2B6BD /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				A6977DED289BA01C00B2B6BD /* ScannerUtilsTests.swift */,
+			);
+			path = Scanner;
 			sourceTree = "<group>";
 		};
 		A6A8A1EE28168B9600F7AB88 /* LoadingCell */ = {
@@ -7782,6 +7793,7 @@
 				A6394B542840D51E0084C923 /* MockTransactionDetailInteractor.swift in Sources */,
 				A6790C2D2844858D007CE0CD /* TransactionViewControllerTests.swift in Sources */,
 				A6B0673B2859D0A900DEBAE8 /* SignerTests.swift in Sources */,
+				A6977DEE289BA01C00B2B6BD /* ScannerUtilsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

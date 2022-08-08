@@ -31,15 +31,22 @@ enum ScanResultType: CaseIterable {
 
 class ScannerUtils {
   
-  static func smoothen(text: String, forType type: ScanResultType) -> String {
+  static func formattedText(text: String, forType type: ScanResultType) -> String {
     switch type {
-    case .ethPublicKey, .ethPrivateKey:
+    case .ethPublicKey:
       return text.trimmed
         .replacingOccurrences(of: " ", with: "")
         .replacingOccurrences(of: "l", with: "1")
         .replacingOccurrences(of: "o", with: "0")
         .replacingOccurrences(of: "O", with: "0")
-        .replacingOccurrences(of: "ethereum:", with: "")
+        .replacing(pattern: "@.*")
+        .replacing(pattern: ".*:")
+    case .ethPrivateKey:
+      return text.trimmed
+        .replacingOccurrences(of: " ", with: "")
+        .replacingOccurrences(of: "l", with: "1")
+        .replacingOccurrences(of: "o", with: "0")
+        .replacingOccurrences(of: "O", with: "0")
     case .solPublicKey, .solPrivateKey:
       return text.trimmed.replacingOccurrences(of: " ", with: "")
     default:
