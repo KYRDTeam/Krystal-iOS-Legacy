@@ -32,6 +32,7 @@ class SwapV2ViewController: KNBaseViewController {
   @IBOutlet weak var expandIcon: UIImageView!
   @IBOutlet weak var sourceTextField: UITextField!
   @IBOutlet weak var fetchingAnimationView: AnimationView!
+  @IBOutlet weak var notFoundView: UIView!
   
   var viewModel: SwapV2ViewModel = SwapV2ViewModel()
   
@@ -262,12 +263,23 @@ extension SwapV2ViewController {
       isExpanded = false
     }
     platformTableView.reloadData()
-    platformTableView.isHidden = false
     
-    UIView.animate(withDuration: 0.5) {
-      self.loadingView.isHidden = true
-      self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + (rowsToShow > 0 ? 24.0 : 0.0)
-      self.view.layoutIfNeeded()
+    if rowsToShow > 0 {
+      UIView.animate(withDuration: 0.5) {
+        self.platformTableView.isHidden = false
+        self.loadingView.isHidden = true
+        self.notFoundView.isHidden = true
+        self.destViewHeight.constant = CGFloat(112) + CGFloat(rowsToShow) * self.platformRateItemHeight + 24
+        self.view.layoutIfNeeded()
+      }
+    } else {
+      UIView.animate(withDuration: 0.5) {
+        self.platformTableView.isHidden = true
+        self.loadingView.isHidden = true
+        self.notFoundView.isHidden = false
+        self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
+        self.view.layoutIfNeeded()
+      }
     }
   }
   
@@ -320,6 +332,7 @@ extension SwapV2ViewController {
       self.expandIcon.isHidden = true
       self.loadingView.isHidden = false
       self.platformTableView.isHidden = true
+      self.notFoundView.isHidden = true
       self.destViewHeight.constant = CGFloat(112) + self.loadingViewHeight + 24
     }
     viewModel.reloadRates()

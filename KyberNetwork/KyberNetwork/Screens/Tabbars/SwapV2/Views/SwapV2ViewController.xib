@@ -34,6 +34,7 @@
                 <outlet property="loadingView" destination="acI-9i-ctB" id="0CN-WJ-k5r"/>
                 <outlet property="maxGasFeeInfoView" destination="yq6-eX-uWR" id="ZAq-Zf-VgV"/>
                 <outlet property="minReceiveInfoView" destination="nnl-CE-rqV" id="V0e-NQ-qW1"/>
+                <outlet property="notFoundView" destination="WqM-n4-842" id="94q-Ej-fmV"/>
                 <outlet property="platformTableView" destination="j8z-tt-vDQ" id="6We-BK-mCU"/>
                 <outlet property="priceImpactInfoView" destination="1LR-C5-k87" id="YC3-4J-xtJ"/>
                 <outlet property="rateInfoView" destination="c25-Oe-hgy" id="4Oj-28-b7f"/>
@@ -400,6 +401,40 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WqM-n4-842" userLabel="NotFound">
+                                                    <rect key="frame" x="24" y="96" width="324" height="142"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="VH4-dR-zVd">
+                                                            <rect key="frame" x="47" y="12.5" width="230" height="117"/>
+                                                            <subviews>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swap_not_found" translatesAutoresizingMaskIntoConstraints="NO" id="h2Z-V2-jah">
+                                                                    <rect key="frame" x="64" y="0.0" width="102" height="90"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="102" id="6N5-iG-WqP"/>
+                                                                        <constraint firstAttribute="height" constant="90" id="Qt3-hf-hO8"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, We can not find any rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Irp-ki-ZyN">
+                                                                    <rect key="frame" x="0.0" y="98" width="230" height="19"/>
+                                                                    <fontDescription key="fontDescription" name="Karla-SemiBold" family="Karla" pointSize="16"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.058823529409999999" green="0.058823529409999999" blue="0.058823529409999999" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="142" id="03V-s7-89n"/>
+                                                        <constraint firstItem="VH4-dR-zVd" firstAttribute="centerX" secondItem="WqM-n4-842" secondAttribute="centerX" id="Cl1-eF-6Q1"/>
+                                                        <constraint firstItem="VH4-dR-zVd" firstAttribute="centerY" secondItem="WqM-n4-842" secondAttribute="centerY" id="ehP-w0-FXm"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="kn_radius">
+                                                            <real key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="j8z-tt-vDQ">
                                                     <rect key="frame" x="0.0" y="96" width="372" height="112"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -416,14 +451,18 @@
                                             <constraints>
                                                 <constraint firstItem="j8z-tt-vDQ" firstAttribute="top" secondItem="c9B-FC-8cu" secondAttribute="bottom" id="5eO-Wx-Iq4"/>
                                                 <constraint firstAttribute="trailing" secondItem="acI-9i-ctB" secondAttribute="trailing" constant="24" id="67A-WF-7Ku"/>
+                                                <constraint firstItem="WqM-n4-842" firstAttribute="top" secondItem="acI-9i-ctB" secondAttribute="top" id="CvZ-1q-pSP"/>
                                                 <constraint firstAttribute="trailing" secondItem="c9B-FC-8cu" secondAttribute="trailing" id="EeJ-jm-GYM"/>
                                                 <constraint firstAttribute="bottom" secondItem="O2G-q7-6ar" secondAttribute="bottom" id="HGi-C4-HmS"/>
                                                 <constraint firstAttribute="bottom" secondItem="j8z-tt-vDQ" secondAttribute="bottom" constant="32" id="M0B-Oi-ZAb"/>
+                                                <constraint firstItem="WqM-n4-842" firstAttribute="trailing" secondItem="acI-9i-ctB" secondAttribute="trailing" id="M2M-yS-a7z"/>
                                                 <constraint firstItem="c9B-FC-8cu" firstAttribute="top" secondItem="Bw6-Um-U7Z" secondAttribute="top" id="TNP-Ub-DTT"/>
                                                 <constraint firstAttribute="height" constant="240" id="eQD-AS-tzq"/>
+                                                <constraint firstItem="WqM-n4-842" firstAttribute="leading" secondItem="acI-9i-ctB" secondAttribute="leading" id="g5G-oP-4mh"/>
                                                 <constraint firstItem="acI-9i-ctB" firstAttribute="leading" secondItem="Bw6-Um-U7Z" secondAttribute="leading" constant="24" id="l2b-aT-lZ2"/>
                                                 <constraint firstItem="c9B-FC-8cu" firstAttribute="leading" secondItem="Bw6-Um-U7Z" secondAttribute="leading" id="m5E-3x-Vw1"/>
                                                 <constraint firstItem="O2G-q7-6ar" firstAttribute="centerX" secondItem="Bw6-Um-U7Z" secondAttribute="centerX" id="mXP-bG-fYz"/>
+                                                <constraint firstItem="WqM-n4-842" firstAttribute="bottom" secondItem="acI-9i-ctB" secondAttribute="bottom" id="pgw-Ye-Fff"/>
                                                 <constraint firstItem="j8z-tt-vDQ" firstAttribute="leading" secondItem="Bw6-Um-U7Z" secondAttribute="leading" id="rfM-qd-dzp"/>
                                                 <constraint firstAttribute="trailing" secondItem="j8z-tt-vDQ" secondAttribute="trailing" id="xds-sZ-usp"/>
                                                 <constraint firstItem="acI-9i-ctB" firstAttribute="top" secondItem="c9B-FC-8cu" secondAttribute="bottom" id="yUY-Sj-4lb"/>
@@ -587,6 +626,7 @@
         <image name="chain_switch_icon" width="20" height="20"/>
         <image name="history_actionsheet_icon" width="24" height="24"/>
         <image name="swap_dropdown_grey" width="32" height="32"/>
+        <image name="swap_not_found" width="102" height="91"/>
         <image name="swap_settings" width="32" height="32"/>
         <image name="swap_swap" width="32" height="32"/>
         <image name="swap_wallet" width="16" height="16"/>
